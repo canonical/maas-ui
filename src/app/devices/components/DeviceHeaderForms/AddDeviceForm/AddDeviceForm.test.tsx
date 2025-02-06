@@ -8,15 +8,18 @@ import { domainActions } from "@/app/store/domain";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
   waitFor,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("AddDeviceForm", () => {
   let state: RootState;
@@ -76,6 +79,7 @@ describe("AddDeviceForm", () => {
       store,
       queryData,
     });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Device name" }),
@@ -89,7 +93,7 @@ describe("AddDeviceForm", () => {
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
-      "default"
+      "zone-1"
     );
 
     // Add interfaces
@@ -179,7 +183,7 @@ describe("AddDeviceForm", () => {
         },
       ],
       primary_mac: "11:11:11:11:11:11",
-      zone: { name: "default" },
+      zone: { name: "1" },
     });
     const actualActions = store.getActions();
     await waitFor(() =>

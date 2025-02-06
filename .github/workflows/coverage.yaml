@@ -54,6 +54,9 @@ jobs:
           # See:
           # https://github.com/tiobe/tics-github-action?tab=readme-ov-file#tics-github-action
           mode: ${{ github.event_name == 'pull_request' && 'client' || 'qserver' }}
+          # In case of a scheduled run, we want TiCS to analyze main,
+          # otherwise the ref (branch/tag) we just pushed to
+          branchname: ${{ github.event_name == 'schedule' && 'main' || github.ref_name }}
           project: maas-ui
           viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
           ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}

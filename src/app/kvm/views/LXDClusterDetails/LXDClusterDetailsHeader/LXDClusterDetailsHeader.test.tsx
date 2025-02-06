@@ -4,18 +4,23 @@ import urls from "@/app/base/urls";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import { zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  userEvent,
+  screen,
+  renderWithBrowserRouter,
+  waitFor,
+  setupMockServer,
+} from "@/testing/utils";
+
+setupMockServer(zoneResolvers.getZone.handler());
 
 describe("LXDClusterDetailsHeader", () => {
   let state: RootState;
-  const zone = factory.zone({ id: 111, name: "danger" });
-  const queryData = {
-    zones: [zone],
-  };
 
   beforeEach(() => {
     const cluster = factory.vmCluster({
-      availability_zone: zone.id,
+      availability_zone: 1,
       id: 1,
       name: "vm-cluster",
       project: "cluster-project",
@@ -31,7 +36,7 @@ describe("LXDClusterDetailsHeader", () => {
     state.vmcluster.items = [];
     renderWithBrowserRouter(
       <LXDClusterDetailsHeader clusterId={1} setSidePanelContent={vi.fn()} />,
-      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state, queryData }
+      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -41,7 +46,7 @@ describe("LXDClusterDetailsHeader", () => {
 
     renderWithBrowserRouter(
       <LXDClusterDetailsHeader clusterId={1} setSidePanelContent={vi.fn()} />,
-      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state, queryData }
+      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state }
     );
 
     expect(screen.getAllByTestId("block-subtitle")[0]).toHaveTextContent(
@@ -57,7 +62,7 @@ describe("LXDClusterDetailsHeader", () => {
     ];
     renderWithBrowserRouter(
       <LXDClusterDetailsHeader clusterId={1} setSidePanelContent={vi.fn()} />,
-      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state, queryData }
+      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state }
     );
 
     expect(screen.getAllByTestId("block-subtitle")[1]).toHaveTextContent(
@@ -65,21 +70,23 @@ describe("LXDClusterDetailsHeader", () => {
     );
   });
 
-  it("displays the cluster's zone's name", () => {
+  it("displays the cluster's zone's name", async () => {
     renderWithBrowserRouter(
       <LXDClusterDetailsHeader clusterId={1} setSidePanelContent={vi.fn()} />,
-      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state, queryData }
+      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state }
     );
 
-    expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
-      "danger"
+    await waitFor(() =>
+      expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
+        "zone-1"
+      )
     );
   });
 
   it("displays the cluster's project", () => {
     renderWithBrowserRouter(
       <LXDClusterDetailsHeader clusterId={1} setSidePanelContent={vi.fn()} />,
-      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state, queryData }
+      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state }
     );
 
     expect(screen.getAllByTestId("block-subtitle")[3]).toHaveTextContent(
@@ -96,7 +103,7 @@ describe("LXDClusterDetailsHeader", () => {
         clusterId={1}
         setSidePanelContent={setSidePanelContent}
       />,
-      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state, queryData }
+      { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state }
     );
 
     await userEvent.click(

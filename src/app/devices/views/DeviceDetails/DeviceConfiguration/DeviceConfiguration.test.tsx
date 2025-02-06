@@ -7,16 +7,19 @@ import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneS
 import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
   waitFor,
   renderWithBrowserRouter,
+  setupMockServer,
 } from "@/testing/utils";
+
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("DeviceConfiguration", () => {
   let state: RootState;
-  const queryData = { zones: [factory.zone({ name: "twilight" })] };
 
   beforeEach(() => {
     state = factory.rootState({
@@ -36,22 +39,20 @@ describe("DeviceConfiguration", () => {
     });
   });
 
-  it("displays a spinner if the device has not loaded yet", () => {
+  it("displays a spinner if the device has not loaded yet", async () => {
     state.device.items = [];
     renderWithBrowserRouter(<DeviceConfiguration systemId="abc123" />, {
       state,
-      queryData,
     });
-
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     expect(screen.getByTestId("loading-device")).toBeInTheDocument();
   });
 
-  it("shows the device details by default", () => {
+  it("shows the device details by default", async () => {
     renderWithBrowserRouter(<DeviceConfiguration systemId="abc123" />, {
       state,
-      queryData,
     });
-
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     expect(screen.getByTestId("device-details")).toBeInTheDocument();
     expect(
       screen.queryByRole("form", { name: Label.Form })
@@ -61,9 +62,8 @@ describe("DeviceConfiguration", () => {
   it("can switch to showing the device configuration form", async () => {
     renderWithBrowserRouter(<DeviceConfiguration systemId="abc123" />, {
       state,
-      queryData,
     });
-
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
@@ -79,9 +79,9 @@ describe("DeviceConfiguration", () => {
       <DeviceConfiguration systemId="abc123" />,
       {
         state,
-        queryData,
       }
     );
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
@@ -94,7 +94,7 @@ describe("DeviceConfiguration", () => {
     await userEvent.type(deviceNote, "it's a device");
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: ZoneSelectLabel.Zone }),
-      "twilight"
+      "zone-1"
     );
     // Open the tag selector dropdown.
     await userEvent.click(
@@ -107,7 +107,7 @@ describe("DeviceConfiguration", () => {
       description: "it's a device",
       tags: [1, 2],
       system_id: "abc123",
-      zone: { name: "twilight" },
+      zone: { name: "1" },
     });
     const actualActions = store.getActions();
     await waitFor(() =>

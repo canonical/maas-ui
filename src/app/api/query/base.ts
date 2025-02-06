@@ -1,14 +1,12 @@
 import { useEffect, useCallback, useContext } from "react";
 
 import { usePrevious } from "@canonical/react-components";
-import type { QueryFunction, UseQueryOptions } from "@tanstack/react-query";
+import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
-import type { QueryKey } from "@/app/api/query-client";
 import { WebSocketContext } from "@/app/base/websocket-context";
 import statusSelectors from "@/app/store/status/selectors";
-import type { WebSocketEndpointModel } from "@/websocket-client";
 import { WebSocketMessageType } from "@/websocket-client";
 
 /**
@@ -46,65 +44,47 @@ export const useWebSocket = () => {
   return { subscribe };
 };
 
-const wsToQueryKeyMapping: Partial<Record<WebSocketEndpointModel, string>> = {
-  zone: "zones",
-  // Add more mappings as needed
-} as const;
-
 /**
  * A function to run a query which invalidates the query cache when a
  * websocket message is received, or when the websocket reconnects.
  *
- * @param queryKey The query key to use
- * @param queryFn The query function to run
- * @param options Options for useQuery
+ * @template TQueryFnData The type of the data which the query function will return
+ * @template TError The type of error the query function might throw
+ * @template TData The type of query data
+ * @param options The options for useQuery
  * @returns The return value of useQuery
  */
-export function useWebsocketAwareQuery<
+export const useWebsocketAwareQuery = <
   TQueryFnData = unknown,
   TError = unknown,
   TData = TQueryFnData,
 >(
-  queryKey: QueryKey,
-  queryFn: QueryFunction<TQueryFnData>,
-  options?: Omit<
-    UseQueryOptions<TQueryFnData, TError, TData>,
-    "queryKey" | "queryFn"
-  >
-) {
+  options?: UseQueryOptions<TQueryFnData, TError, TData>
+) => {
   const queryClient = useQueryClient();
   const connectedCount = useSelector(statusSelectors.connectedCount);
   const { subscribe } = useWebSocket();
 
-  const queryModelKey = Array.isArray(queryKey) ? queryKey[0] : "";
   const previousConnectedCount = usePrevious(connectedCount);
 
   useEffect(() => {
-    // connectedCount will change if the websocket reconnects - if this happens, we should invalidate the query
     if (connectedCount !== previousConnectedCount) {
-      queryClient.invalidateQueries({ queryKey });
+      void queryClient.invalidateQueries({ queryKey: options?.queryKey });
     }
-  }, [connectedCount, previousConnectedCount, queryClient, queryKey]);
+  }, [connectedCount, previousConnectedCount, queryClient, options]);
 
   useEffect(() => {
-    // subscribe returns a function to remove the event listener for NOTIFY messages;
-    // This function will be used as the cleanup function for the effect.
-    return subscribe(
-      // This callback function will be called when a NOTIFY message is received
-      ({ name: model }: { action: string; name: WebSocketEndpointModel }) => {
-        const mappedKey = wsToQueryKeyMapping[model];
-        const modelQueryKey = queryKey[0];
+    return subscribe(() => {
+      // This mapped key is the key for the websocket notifications
+      // TODO: replace with a function call to deduce the key/condition using the parameters
+      const mappedKey = "zones";
+      const modelQueryKey = options?.queryKey[0];
 
-        if (mappedKey && mappedKey === modelQueryKey) {
-          queryClient.invalidateQueries({ queryKey });
-        }
+      if (mappedKey && mappedKey === modelQueryKey) {
+        void queryClient.invalidateQueries({ queryKey: options?.queryKey });
       }
-    );
-  }, [queryClient, subscribe, queryModelKey, queryKey]);
+    });
+  }, [queryClient, subscribe, options]);
 
-  return useQuery<TQueryFnData, TError, TData>({
-    queryKey,
-    queryFn,
-    ...options,
-  });
-}
+  return useQuery<TQueryFnData, TError, TData>(options!);
+};

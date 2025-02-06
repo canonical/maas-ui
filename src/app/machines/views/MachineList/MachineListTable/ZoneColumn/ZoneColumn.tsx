@@ -49,7 +49,7 @@ export const ZoneColumn = ({
   const zones = useZones();
   const toggleMenu = useToggleMenu(onToggleMenu || null);
   let zoneLinks;
-  const machineZones = zones.data?.filter(
+  const machineZones = zones.data?.items?.filter(
     (zone) => zone.id !== machine?.zone.id
   );
   if (machine?.actions.includes(NodeActions.SET_ZONE)) {
@@ -96,10 +96,7 @@ export const ZoneColumn = ({
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}
-          <Link
-            className="p-link--soft"
-            to={urls.zones.details({ id: machine.zone.id })}
-          >
+          <Link className="p-link--soft" to={urls.zones.index}>
             {machine.zone.name}
           </Link>
         </span>

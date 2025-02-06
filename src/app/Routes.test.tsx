@@ -97,10 +97,6 @@ const routes: { title: string; path: string }[] = [
     path: urls.zones.index,
   },
   {
-    title: "test-zone",
-    path: urls.zones.details({ id: 1 }),
-  },
-  {
     title: "Network Discovery",
     path: urls.networkDiscovery.index,
   },

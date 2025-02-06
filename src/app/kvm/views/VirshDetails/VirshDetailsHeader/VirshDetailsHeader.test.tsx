@@ -3,7 +3,15 @@ import VirshDetailsHeader from "./VirshDetailsHeader";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(zoneResolvers.getZone.handler());
 
 describe("VirshDetailsHeader", () => {
   let state: RootState;
@@ -67,15 +75,16 @@ describe("VirshDetailsHeader", () => {
     );
   });
 
-  it("displays the pod zone name", () => {
-    const queryData = { zones: [factory.zone({ id: 101, name: "danger" })] };
-    state.pod.items[0].zone = 101;
+  it("displays the pod zone name", async () => {
+    state.pod.items[0].zone = 1;
     renderWithBrowserRouter(
       <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      { route, state, queryData }
+      { route, state }
     );
-    expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
-      "danger"
+    await waitFor(() =>
+      expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
+        "zone-1"
+      )
     );
   });
 });

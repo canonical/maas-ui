@@ -6,20 +6,27 @@ import ComposeForm from "../../ComposeForm";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
   within,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+setupMockServer(zoneResolvers.listZones.handler());
 
-const renderComposeForm = (store: MockStore, pod: Pod) =>
-  renderWithBrowserRouter(
+const renderComposeForm = async (store: MockStore, pod: Pod) => {
+  const view = renderWithProviders(
     <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
     { route: `/kvm/${pod.id}`, store }
   );
+  await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+  return view;
+};
 
 describe("SubnetSelect", () => {
   let initialState: RootState;
@@ -57,9 +64,6 @@ describe("SubnetSelect", () => {
       vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
@@ -83,7 +87,7 @@ describe("SubnetSelect", () => {
     state.space.items = spaces;
     state.subnet.items = subnets;
     const store = mockStore(state);
-    renderComposeForm(store, pod);
+    await renderComposeForm(store, pod);
 
     // Click "Define" button
     await userEvent.click(
@@ -123,7 +127,7 @@ describe("SubnetSelect", () => {
     state.space.items = [space];
     state.subnet.items = [subnetInSpace, subnetNotInSpace];
     const store = mockStore(state);
-    renderComposeForm(store, pod);
+    await renderComposeForm(store, pod);
 
     // Click "Define" button
     await userEvent.click(
@@ -188,7 +192,7 @@ describe("SubnetSelect", () => {
     state.subnet.items = [pxeSubnet, nonPxeSubnet];
     state.vlan.items = [pxeVlan, nonPxeVlan];
     const store = mockStore(state);
-    renderComposeForm(store, pod);
+    await renderComposeForm(store, pod);
 
     // Click "Define" button
     await userEvent.click(

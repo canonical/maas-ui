@@ -2,12 +2,17 @@ import AddMachineForm from "../AddMachineForm";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
   within,
 } from "@/testing/utils";
+
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("AddMachineFormFields", () => {
   let state: RootState;
@@ -59,12 +64,17 @@ describe("AddMachineFormFields", () => {
     });
   });
 
-  it("correctly sets minimum kernel to default", () => {
-    state.general.defaultMinHweKernel.data = "ga-18.04";
+  const renderAddMachineFormFields = async () => {
     renderWithBrowserRouter(
       <AddMachineForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/add", state }
     );
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+  };
+
+  it("correctly sets minimum kernel to default", async () => {
+    state.general.defaultMinHweKernel.data = "ga-18.04";
+    await renderAddMachineFormFields();
 
     expect(
       screen.getByRole("option", {
@@ -87,10 +97,7 @@ describe("AddMachineFormFields", () => {
   });
 
   it("can add extra mac address fields", async () => {
-    renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      { route: "/machines/add", state }
-    );
+    await renderAddMachineFormFields();
 
     expect(
       screen.queryByRole("textbox", { name: "Extra MAC address 1" })
@@ -123,10 +130,7 @@ describe("AddMachineFormFields", () => {
   });
 
   it("can remove extra mac address fields", async () => {
-    renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      { route: "/machines/add", state }
-    );
+    await renderAddMachineFormFields();
 
     await userEvent.click(
       screen.getByRole("button", { name: "Add MAC address" })
@@ -142,10 +146,7 @@ describe("AddMachineFormFields", () => {
   });
 
   it("does not require MAC address field if power_type is 'ipmi'", async () => {
-    renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      { route: "/machines/add", state }
-    );
+    await renderAddMachineFormFields();
 
     expect(screen.getByRole("textbox", { name: "MAC address" })).toBeRequired();
 

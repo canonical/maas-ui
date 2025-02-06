@@ -81,12 +81,6 @@ export const ComposeFormFields = ({
       {!pinningCores && (
         <FormikField
           aria-label="Cores"
-          caution={
-            coresCaution
-              ? `The available cores (${available.cores}) is less than the
-                recommended default (${defaults.cores}).`
-              : undefined
-          }
           help={coresCaution ? undefined : `${availableCoresString} available.`}
           max={`${available.cores}`}
           min="1"
@@ -134,12 +128,6 @@ export const ComposeFormFields = ({
         />
       )}
       <FormikField
-        caution={
-          memoryCaution
-            ? `The available memory (${available.memory}MiB) is less than the
-                recommended default (${defaults.memory}MiB).`
-            : undefined
-        }
         help={memoryCaution ? undefined : `${available.memory}MiB available.`}
         label="RAM (MiB)"
         max={`${available.memory}`}

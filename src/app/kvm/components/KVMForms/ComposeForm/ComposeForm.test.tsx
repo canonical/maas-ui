@@ -9,12 +9,17 @@ import ComposeForm, {
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const queryData = {
-  zones: [factory.zone({ id: 3, name: "danger-zone" })],
-};
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("ComposeForm", () => {
   let state: RootState;
@@ -69,7 +74,7 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store, queryData }
+      { route: "/kvm/1", store }
     );
     const expectedActions = [
       "FETCH_DOMAIN",
@@ -141,8 +146,9 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store, queryData }
+      { route: "/kvm/1", store }
     );
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
     await userEvent.type(
@@ -257,8 +263,9 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store, queryData }
+      { route: "/kvm/1", store }
     );
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
     await userEvent.type(

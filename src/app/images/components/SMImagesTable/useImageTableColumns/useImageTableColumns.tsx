@@ -2,17 +2,16 @@ import { useMemo } from "react";
 
 import { Icon, Spinner } from "@canonical/react-components";
 import type {
+  Column,
   ColumnDef,
-  Row,
   Getter,
   Header,
-  Column,
+  Row,
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import GroupRowActions from "@/app/base/components/GenericTable/GroupRowActions";
-import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
 import TableActions from "@/app/base/components/TableActions";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import type { Image } from "@/app/images/types";
@@ -22,9 +21,9 @@ export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
 export const filterCells = (row: Row<Image>, column: Column<Image>) => {
   if (row.getIsGrouped()) {
-    return ["select", "name", "action"].includes(column.id);
+    return ["group-select", "name", "action"].includes(column.id);
   } else {
-    return column.id !== "name";
+    return !["name"].includes(column.id);
   }
 };
 
@@ -41,27 +40,6 @@ const useImageTableColumns = ({
   return useMemo(
     () =>
       [
-        {
-          id: "select",
-          accessorKey: "id",
-          enableSorting: false,
-          header: ({ table }) => {
-            return <TableCheckbox.All table={table} />;
-          },
-          cell: ({
-            row,
-            getValue,
-          }: {
-            row: Row<Image>;
-            getValue: Getter<Image["name"]>;
-          }) => {
-            return row.getIsGrouped() ? (
-              <TableCheckbox.Group aria-label={getValue()} row={row} />
-            ) : (
-              <TableCheckbox aria-label={getValue()} row={row} />
-            );
-          },
-        },
         {
           id: "name",
           accessorKey: "name",
@@ -93,26 +71,22 @@ const useImageTableColumns = ({
         {
           id: "architecture",
           accessorKey: "architecture",
-          enableSorting: false,
+          enableSorting: true,
           header: () => "Architecture",
         },
         {
           id: "size",
           accessorKey: "size",
-          enableSorting: false,
+          enableSorting: true,
           header: () => "Size",
         },
         {
           id: "canDeployToMemory",
           accessorKey: "canDeployToMemory",
-          enableSorting: false,
+          enableSorting: true,
           header: () => "Deployable in Memory",
-          cell: ({
-            getValue,
-          }: {
-            getValue: Getter<Image["canDeployToMemory"]>;
-          }) =>
-            getValue() ? (
+          cell: ({ row: { original: canDeployToMemory } }) =>
+            canDeployToMemory ? (
               <TooltipButton
                 iconName="task-outstanding"
                 iconProps={{ "aria-label": "supported" }}
@@ -129,11 +103,15 @@ const useImageTableColumns = ({
         {
           id: "status",
           accessorKey: "status",
-          enableSorting: false,
+          enableSorting: true,
           header: () => "Status",
-          cell: ({ row }) => {
+          cell: ({
+            row: {
+              original: { status, lastSynced },
+            },
+          }) => {
             let statusIcon;
-            switch (row.original.status) {
+            switch (status) {
               case "Synced":
                 statusIcon = <Icon aria-label={"synced"} name={"success"} />;
                 break;
@@ -145,8 +123,8 @@ const useImageTableColumns = ({
               <DoubleRow
                 data-testid="resource-status"
                 icon={statusIcon}
-                primary={row.original.status}
-                secondary={row.original.lastSynced ?? ""}
+                primary={status}
+                secondary={lastSynced ?? ""}
               />
             );
           },
@@ -154,13 +132,17 @@ const useImageTableColumns = ({
         {
           id: "lastDeployed",
           accessorKey: "lastDeployed",
-          enableSorting: false,
+          enableSorting: true,
           header: () => "Last deployed",
-          cell: ({ row }) => {
-            return row.original.lastDeployed ? (
+          cell: ({
+            row: {
+              original: { lastDeployed },
+            },
+          }) => {
+            return lastDeployed ? (
               <DoubleRow
-                primary={getTimeDistanceString(row.original.lastDeployed)}
-                secondary={formatUtcDatetime(row.original.lastDeployed)}
+                primary={getTimeDistanceString(lastDeployed)}
+                secondary={formatUtcDatetime(lastDeployed)}
               />
             ) : (
               "—"
@@ -170,7 +152,7 @@ const useImageTableColumns = ({
         {
           id: "machines",
           accessorKey: "machines",
-          enableSorting: false,
+          enableSorting: true,
           header: () => "Machines",
           cell: ({ row }) => {
             return row.original.machines || "—";

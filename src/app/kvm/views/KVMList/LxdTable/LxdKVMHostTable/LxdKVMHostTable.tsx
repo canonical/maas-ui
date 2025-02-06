@@ -2,6 +2,7 @@ import { Icon, MainTable } from "@canonical/react-components";
 import pluralize from "pluralize";
 
 import { useZones } from "@/app/api/query/zones";
+import type { ZoneResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableHeader from "@/app/base/components/TableHeader";
 import { useTableSort } from "@/app/base/hooks";
@@ -17,7 +18,6 @@ import VMsColumn from "@/app/kvm/components/VMsColumn";
 import type { KVMResource, KVMStoragePoolResources } from "@/app/kvm/types";
 import type { Pod, PodMeta } from "@/app/store/pod/types";
 import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
-import type { Zone } from "@/app/store/zone/types";
 import { isComparable } from "@/app/utils";
 
 export enum LxdKVMHostType {
@@ -57,7 +57,7 @@ type SortKey = "hostType" | "name" | "cpu" | "zone" | "ram" | "storage" | "vms";
 const getSortValue = (
   sortKey: SortKey,
   row: LxdKVMHostTableRow,
-  zones?: Zone[]
+  zones?: ZoneResponse[]
 ): string | number | null => {
   const zone = zones?.find((zone) => row.zone === zone.id);
   switch (sortKey) {
@@ -155,12 +155,12 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
   const { currentSort, sortRows, updateSort } = useTableSort<
     LxdKVMHostTableRow,
     SortKey,
-    Zone[]
+    ZoneResponse[]
   >(getSortValue, {
     key: "name",
     direction: SortDirection.DESCENDING,
   });
-  const sortedRows = sortRows(rows, zones.data);
+  const sortedRows = sortRows(rows, zones.data?.items);
   return (
     <MainTable
       className="lxd-table"
