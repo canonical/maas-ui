@@ -11,18 +11,18 @@ on:
 jobs:
   docs:
     name: maas.io/docs links
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
-      - name: Get branch name
-        uses: nelonoel/branch-name@v1.0.1
-      - name: Run Cypress docs tests
-        uses: cypress-io/github-action@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          browser: chrome
-          config: baseUrl=http://maas.io/docs
-          spec: "cypress/e2e/docs-links/**/*.spec.ts"
-          install-command: yarn install
+          node-version-file: '.nvmrc'
+      - name: Install dependencies
+        run: yarn
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run docs links checks
+        run: yarn test-docs-links
       - name: Create issue on failure
         if: failure()
         uses: JasonEtco/create-an-issue@v2
