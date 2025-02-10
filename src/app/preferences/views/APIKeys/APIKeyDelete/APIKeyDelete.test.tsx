@@ -5,7 +5,7 @@ import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 let state: RootState;
-factory.rootState({
+state = factory.rootState({
   token: factory.tokenState({
     items: [
       factory.token({

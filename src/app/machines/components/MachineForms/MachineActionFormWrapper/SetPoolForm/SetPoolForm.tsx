@@ -115,7 +115,7 @@ export const SetPoolForm = ({
       }}
       onSuccess={clearSidePanelContent}
       processingCount={processingCount}
-      selectedCount={machines ? machines.length : selectedCount ?? 0}
+      selectedCount={machines ? machines.length : (selectedCount ?? 0)}
       validationSchema={SetPoolSchema}
       {...actionProps}
     >
