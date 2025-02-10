@@ -97,7 +97,7 @@ export const ReleaseForm = ({
       }}
       onSuccess={clearSidePanelContent}
       processingCount={processingCount}
-      selectedCount={machines ? machines.length : selectedCount ?? 0}
+      selectedCount={machines ? machines.length : (selectedCount ?? 0)}
       validationSchema={ReleaseSchema}
       {...actionProps}
     >

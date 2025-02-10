@@ -38,7 +38,7 @@ export const generateSelectedOnCurrentPage = ({
   let newSelected =
     !selected || "filter" in selected
       ? { groups: [] }
-      : cloneDeep(selected) ?? {};
+      : (cloneDeep(selected) ?? {});
   newSelected.groups = newSelected.groups ?? [];
   newSelected.items = newSelected.items ?? [];
   groups?.forEach((group) => {

@@ -50,13 +50,13 @@ export const DeleteForm = <E,>({
       }}
       processingCount={processingCount}
       savedRedirect={viewingDetails ? redirectURL : undefined}
-      selectedCount={nodes ? nodes.length : selectedCount ?? 0}
+      selectedCount={nodes ? nodes.length : (selectedCount ?? 0)}
       submitAppearance="negative"
     >
       <NodeActionConfirmationText
         action={NodeActions.DELETE}
         modelName={modelName}
-        selectedCount={nodes ? nodes.length : selectedCount ?? 0}
+        selectedCount={nodes ? nodes.length : (selectedCount ?? 0)}
       />
     </ActionForm>
   );

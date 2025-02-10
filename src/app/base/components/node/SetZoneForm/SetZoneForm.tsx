@@ -70,7 +70,7 @@ export const SetZoneForm = <E,>({
       }}
       onSuccess={clearSidePanelContent}
       processingCount={processingCount}
-      selectedCount={nodes ? nodes.length : selectedCount ?? 0}
+      selectedCount={nodes ? nodes.length : (selectedCount ?? 0)}
       validationSchema={SetZoneSchema}
     >
       <Row>

@@ -161,7 +161,7 @@ export const TestForm = <E,>({
       }}
       onSuccess={clearSidePanelContent}
       processingCount={processingCount}
-      selectedCount={nodes ? nodes.length : selectedCount ?? 0}
+      selectedCount={nodes ? nodes.length : (selectedCount ?? 0)}
       validationSchema={TestFormSchema}
     >
       <TestFormFields
