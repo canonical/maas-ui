@@ -14,7 +14,7 @@ const docsUrls = {
   dhcp: "https://maas.io/docs/about-dhcp-in-maas",
   ipmi: "https://maas.io/docs/reference-power-drivers#p-17434-ipmi",
   ipRanges:
-    "https://maas.io/docs/how-to-customise-dhcp#p-9038-edit-delete-or-extend-ip-range",
+    "https://maas.io/docs/how-to-customise-maas-networks#p-9070-create-ips-and-ranges",
   kvmIntroduction: "https://maas.io/docs/how-to-use-lxd-vms",
   networkDiscovery:
     "https://maas.io/docs/how-to-customise-maas-networks#p-9070-manage-network-discovery",
