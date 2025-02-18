@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import DownloadImages from "@/app/images/components/SMImagesTable/DownloadImages/DownloadImages";
+import DownloadImages from "@/app/images/components/ImagesTable/DownloadImages/DownloadImages";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import type { RootState } from "@/app/store/root/types";

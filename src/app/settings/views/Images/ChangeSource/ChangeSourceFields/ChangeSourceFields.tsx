@@ -3,13 +3,14 @@ import React from "react";
 import { Col, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import type { FetchImagesValues } from "../FetchImagesForm";
-
 import FormikField from "@/app/base/components/FormikField";
 import ShowAdvanced from "@/app/base/components/ShowAdvanced";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 
 export enum Labels {
+  AutoSyncImages = "Automatically sync images",
   ChooseSource = "Choose source",
   MaasIo = "maas.io",
   Custom = "Custom",
@@ -20,9 +21,9 @@ export enum Labels {
   HideAdvanced = "Hide advanced...",
 }
 
-const FetchImagesFormFields = (): JSX.Element => {
+const ChangeSourceFields = () => {
   const { handleChange, setFieldValue, values } =
-    useFormikContext<FetchImagesValues>();
+    useFormikContext<ChangeSourceValues>();
   const { keyring_data, keyring_filename, source_type } = values;
 
   return (
@@ -87,9 +88,25 @@ const FetchImagesFormFields = (): JSX.Element => {
             </ShowAdvanced>
           </>
         )}
+        <span className="u-flex--align-baseline">
+          <span>{Labels.AutoSyncImages}</span>
+          <TooltipButton
+            className="u-nudge-right--small"
+            iconName="help"
+            message={`Enables hourly image updates (sync) from the source configured below.`}
+          />
+          <span className="u-nudge-right">
+            <FormikField
+              data-testid="auto-sync-switch"
+              id="auto-sync-switch"
+              name="autoSync"
+              type="checkbox"
+            />
+          </span>
+        </span>
       </Col>
     </Row>
   );
 };
 
-export default FetchImagesFormFields;
+export default ChangeSourceFields;

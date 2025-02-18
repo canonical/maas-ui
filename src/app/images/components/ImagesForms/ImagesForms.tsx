@@ -3,8 +3,8 @@ import { useCallback } from "react";
 import DeleteImageConfirm from "../ImagesTable/DeleteImageConfirm";
 
 import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
-import DeleteImages from "@/app/images/components/SMImagesTable/DeleteImages";
-import DownloadImages from "@/app/images/components/SMImagesTable/DownloadImages";
+import DeleteImages from "@/app/images/components/ImagesTable/DeleteImages";
+import DownloadImages from "@/app/images/components/ImagesTable/DownloadImages";
 import { ImageSidePanelViews } from "@/app/images/constants";
 
 type Props = SidePanelContentTypes & {};

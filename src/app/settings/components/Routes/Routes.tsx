@@ -3,7 +3,6 @@ import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router-dom";
 import PageContent from "@/app/base/components/PageContent";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
-import ChangeSource from "@/app/images/components/SMImagesTable/ChangeSource";
 import Commissioning from "@/app/settings/views/Configuration/Commissioning";
 import Deploy from "@/app/settings/views/Configuration/Deploy";
 import General from "@/app/settings/views/Configuration/General";
@@ -11,6 +10,7 @@ import KernelParameters from "@/app/settings/views/Configuration/KernelParameter
 import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
 import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
 import DhcpList from "@/app/settings/views/Dhcp/DhcpList";
+import ChangeSource from "@/app/settings/views/Images/ChangeSource";
 import ThirdPartyDrivers from "@/app/settings/views/Images/ThirdPartyDrivers";
 import VMWare from "@/app/settings/views/Images/VMWare";
 import Windows from "@/app/settings/views/Images/Windows";

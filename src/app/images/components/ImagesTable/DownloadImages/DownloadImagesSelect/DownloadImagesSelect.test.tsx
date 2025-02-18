@@ -1,13 +1,17 @@
 import { Formik } from "formik";
 
-import UbuntuImageSelect from "./UbuntuImageSelect";
-
+import {
+  getDownloadableImages,
+  groupArchesByRelease,
+  groupImagesByOS,
+} from "@/app/images/components/ImagesTable/DownloadImages/DownloadImages";
+import DownloadImagesSelect from "@/app/images/components/ImagesTable/DownloadImages/DownloadImagesSelect/DownloadImagesSelect";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
-describe("UbuntuImageSelect", () => {
+describe("DownloadImagesSelect", () => {
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState({
@@ -38,23 +42,31 @@ describe("UbuntuImageSelect", () => {
       }),
     ];
     const arches = [factory.bootResourceUbuntuArch()];
+
+    const downloadableImages = getDownloadableImages(
+      [available, deleted],
+      arches,
+      []
+    );
+    const imagesByOS = groupImagesByOS(downloadableImages);
+    const groupedImages = groupArchesByRelease(imagesByOS);
     renderWithMockStore(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <UbuntuImageSelect
-          arches={arches}
-          releases={[available, deleted]}
-          resources={[]}
-        />
+        {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
+          <DownloadImagesSelect
+            groupedImages={groupedImages}
+            setFieldValue={setFieldValue}
+            values={values}
+          />
+        )}
       </Formik>,
       { state }
     );
 
     expect(
-      screen.queryByRole("radio", { name: "20.10" })
+      screen.queryByRole("row", { name: "20.10" })
     ).not.toBeInTheDocument();
-    expect(
-      screen.getByRole("radio", { name: "20.04 LTS" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("row", { name: "20.04 LTS" })).toBeInTheDocument();
   });
 
   it("does not show a checkbox for an architecture delete from the source", () => {
@@ -70,20 +82,35 @@ describe("UbuntuImageSelect", () => {
       }),
     ];
 
+    const downloadableImages = getDownloadableImages(
+      releases,
+      [available, deleted],
+      []
+    );
+    const imagesByOS = groupImagesByOS(downloadableImages);
+    const groupedImages = groupArchesByRelease(imagesByOS);
     renderWithMockStore(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <UbuntuImageSelect
-          arches={[available, deleted]}
-          releases={releases}
-          resources={[]}
-        />
+        {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
+          <DownloadImagesSelect
+            groupedImages={groupedImages}
+            setFieldValue={setFieldValue}
+            values={values}
+          />
+        )}
       </Formik>,
       { state }
     );
 
-    const checkboxes = screen.getAllByRole("checkbox");
+    const checkboxes = screen.getAllByRole("checkbox", {
+      hidden: true,
+    });
 
-    expect(checkboxes).toHaveLength(1);
-    expect(checkboxes[0]).toHaveProperty("id", "arch-available");
+    const labels = checkboxes
+      .map((checkbox) => checkbox.closest("label"))
+      .filter((label) => label?.classList.contains("p-checkbox"));
+
+    expect(labels).toHaveLength(1);
+    expect(labels[0]).toHaveTextContent("available");
   });
 });

@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Button, Icon, Tooltip } from "@canonical/react-components";
+import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
 import urls from "@/app/base/urls";
-import SyncedImages from "@/app/images/views/ImageList/SyncedImages";
+import ImagesTable from "src/app/images/components/ImagesTable";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import { bootResourceActions } from "@/app/store/bootresource";
@@ -31,13 +32,18 @@ const ImagesIntro = (): JSX.Element => {
     };
   }, [dispatch]);
 
+  const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
+
   const hasSources = (ubuntu?.sources || []).length > 0;
   const incomplete = !hasSources || resources.length === 0;
 
   return (
     <IntroSection loading={!ubuntu} windowTitle="Images">
       <IntroCard complete={!incomplete} title="Images">
-        <SyncedImages className="u-no-padding--bottom" />
+        <ImagesTable
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+        />
       </IntroCard>
       <div className="u-align--right">
         <Button element={Link} to={urls.intro.index}>

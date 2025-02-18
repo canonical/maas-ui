@@ -3,7 +3,7 @@ import React from "react";
 import { MultiSelect, type MultiSelectItem } from "@canonical/react-components";
 import { Field } from "formik";
 
-import type { GroupedImages } from "@/app/images/components/SMImagesTable/DownloadImages/DownloadImages";
+import type { GroupedImages } from "@/app/images/components/ImagesTable/DownloadImages/DownloadImages";
 
 type DownloadImagesSelectProps = {
   values: Record<string, MultiSelectItem[]>;
