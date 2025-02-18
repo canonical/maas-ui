@@ -22,6 +22,7 @@ const urls = {
     ubuntu: "/settings/images/ubuntu",
     vmware: "/settings/images/vmware",
     windows: "/settings/images/windows",
+    source: "/settings/images/source",
   },
   licenseKeys: {
     add: "/settings/license-keys/add",

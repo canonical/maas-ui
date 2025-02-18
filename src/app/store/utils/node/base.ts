@@ -194,7 +194,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.ADD_SPECIAL_FILESYSTEM[1]]: "Add special filesystem",
   [SidePanelViews.AddTag[1]]: "Create new tag",
   [SidePanelViews.ADD_VLAN[1]]: "Add VLAN",
-  [SidePanelViews.CHANGE_SOURCE[1]]: "Change source",
   [SidePanelViews.APPLY_STORAGE_LAYOUT[1]]: "Change storage layout",
   [SidePanelViews.CLEAR_ALL_DISCOVERIES[1]]: "Clear all discoveries",
   [SidePanelViews.CREATE_BCACHE[1]]: "Create bcache",

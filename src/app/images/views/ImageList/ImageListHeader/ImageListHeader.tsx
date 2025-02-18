@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
-import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
+import { Button, Icon, Spinner } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -64,10 +64,8 @@ const ImageListHeader = ({
 
   const { setSidePanelContent } = useSidePanel();
   const isDeleteDisabled = Object.keys(selectedRows).length <= 0;
-  const canChangeSource = resources.every((resource) => !resource.downloading);
 
   const sources = ubuntu?.sources || [];
-  const hasSources = sources.length !== 0;
 
   useFetchActions([configActions.fetch]);
 
@@ -151,39 +149,6 @@ const ImageListHeader = ({
             <i className="p-icon--begin-downloading" />
             <span>Select upstream images</span>
           </Button>
-
-          {!canChangeSource ? (
-            <Tooltip
-              message="Cannot change source while images are downloading."
-              position="top-right"
-            >
-              <Button
-                data-testid="change-source-button"
-                disabled={!canChangeSource}
-                onClick={() =>
-                  setSidePanelContent({
-                    view: ImageSidePanelViews.CHANGE_SOURCE,
-                    extras: { hasSources },
-                  })
-                }
-              >
-                Change source
-              </Button>
-            </Tooltip>
-          ) : (
-            <Button
-              data-testid="change-source-button"
-              disabled={!canChangeSource}
-              onClick={() =>
-                setSidePanelContent({
-                  view: ImageSidePanelViews.CHANGE_SOURCE,
-                  extras: { hasSources },
-                })
-              }
-            >
-              Change source
-            </Button>
-          )}
         </MainToolbar.Controls>
       )}
     </MainToolbar>

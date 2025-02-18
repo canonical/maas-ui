@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -40,6 +41,7 @@ export type ChangeSourceValues = {
 
 const ChangeSource = ({ closeForm }: ChangeSourceProps) => {
   const dispatch = useDispatch();
+  const resources = useSelector(bootResourceSelectors.resources);
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const errors = useSelector(bootResourceSelectors.fetchError);
   const saving = useSelector(bootResourceSelectors.fetching);
@@ -50,36 +52,46 @@ const ChangeSource = ({ closeForm }: ChangeSourceProps) => {
   }, []);
   const saved = !saving && previousSaving && !errors;
 
+  const canChangeSource = resources.every((resource) => !resource.downloading);
+
   return (
-    <FormikForm<ChangeSourceValues>
-      allowUnchanged
-      aria-label="Choose source"
-      cleanup={cleanup}
-      errors={errors as APIError}
-      initialValues={{
-        keyring_data: "",
-        keyring_filename: "",
-        source_type: BootResourceSourceType.MAAS_IO,
-        url: "",
-        autoSync: autoImport || false,
-      }}
-      onCancel={closeForm}
-      onSubmit={(values) => {
-        dispatch(cleanup());
-        dispatch(bootResourceActions.fetch(values));
-        dispatch(
-          configActions.update({
-            boot_images_auto_import: values.autoSync,
-          })
-        );
-      }}
-      saved={saved}
-      saving={saving}
-      submitLabel="Save"
-      validationSchema={ChangeSourceSchema}
-    >
-      <ChangeSourceFields />
-    </FormikForm>
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        Source
+      </ContentSection.Title>
+      <ContentSection.Content>
+        <FormikForm<ChangeSourceValues>
+          allowUnchanged
+          aria-label="Choose source"
+          cleanup={cleanup}
+          errors={errors as APIError}
+          initialValues={{
+            keyring_data: "",
+            keyring_filename: "",
+            source_type: BootResourceSourceType.MAAS_IO,
+            url: "",
+            autoSync: autoImport || false,
+          }}
+          onCancel={closeForm}
+          onSubmit={(values) => {
+            dispatch(cleanup());
+            dispatch(bootResourceActions.fetch(values));
+            dispatch(
+              configActions.update({
+                boot_images_auto_import: values.autoSync,
+              })
+            );
+          }}
+          saved={saved}
+          saving={saving}
+          submitDisabled={!canChangeSource}
+          submitLabel="Save"
+          validationSchema={ChangeSourceSchema}
+        >
+          <ChangeSourceFields />
+        </FormikForm>
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

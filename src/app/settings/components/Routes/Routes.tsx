@@ -3,6 +3,7 @@ import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router-dom";
 import PageContent from "@/app/base/components/PageContent";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
+import ChangeSource from "@/app/images/components/SMImagesTable/ChangeSource";
 import Commissioning from "@/app/settings/views/Configuration/Commissioning";
 import Deploy from "@/app/settings/views/Configuration/Deploy";
 import General from "@/app/settings/views/Configuration/General";
@@ -366,6 +367,14 @@ const Routes = (): JSX.Element => {
           </PageContent>
         }
         path={getRelativeRoute(urls.settings.images.ubuntu, base)}
+      />
+      <Route
+        element={
+          <PageContent sidePanelContent={null} sidePanelTitle={null}>
+            <ChangeSource closeForm={null} />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.settings.images.source, base)}
       />
       <Route
         element={

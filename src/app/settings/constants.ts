@@ -48,6 +48,7 @@ export const settingsNavItems: NavItem[] = [
       { path: settingsURLs.images.ubuntu, label: "Ubuntu" },
       { path: settingsURLs.images.windows, label: "Windows" },
       { path: settingsURLs.images.vmware, label: "VMware" },
+      { path: settingsURLs.images.source, label: "Source" },
     ],
   },
   {
