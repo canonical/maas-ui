@@ -3,10 +3,10 @@ import { useCallback } from "react";
 import DeleteImageConfirm from "../ImagesTable/DeleteImageConfirm";
 
 import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
+import ChangeSource from "@/app/images/components/SMImagesTable/ChangeSource";
 import DeleteImages from "@/app/images/components/SMImagesTable/DeleteImages";
 import DownloadImages from "@/app/images/components/SMImagesTable/DownloadImages";
 import { ImageSidePanelViews } from "@/app/images/constants";
-import ChangeSource from "@/app/images/views/ImageList/SyncedImages/ChangeSource";
 
 type Props = SidePanelContentTypes & {};
 
@@ -33,7 +33,6 @@ const ImagesForms = ({
       return (
         <ChangeSource
           closeForm={hasSources ? () => clearSidePanelContent() : null}
-          inCard={false}
         />
       );
     case ImageSidePanelViews.DELETE_IMAGE: {

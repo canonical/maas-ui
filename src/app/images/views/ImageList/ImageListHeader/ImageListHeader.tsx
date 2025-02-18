@@ -5,8 +5,6 @@ import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
-import SwitchField from "@/app/base/components/SwitchField";
-import TooltipButton from "@/app/base/components/TooltipButton";
 import { useFetchActions, useCycled } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { ImageSidePanelViews } from "@/app/images/constants";
@@ -49,7 +47,6 @@ const ImageListHeader = ({
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.resources);
   const polling = useSelector(bootResourceSelectors.polling);
-  const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const configLoaded = useSelector(configSelectors.loaded);
   const configSaving = useSelector(configSelectors.saving);
   const rackImportRunning = useSelector(
@@ -86,31 +83,6 @@ const ImageListHeader = ({
               <Icon className="u-animation--spin" name="spinner" />
             </div>
           )}
-          <SwitchField
-            checked={autoImport || false}
-            className="u-nudge-right"
-            data-testid="auto-sync-switch"
-            id="auto-sync-switch"
-            label={
-              <span>
-                <span>{Labels.AutoSyncImages}</span>
-                <TooltipButton
-                  className="u-nudge-right--small"
-                  iconName="help"
-                  message={`Enables hourly image updates (sync) from the source configured below.`}
-                />
-              </span>
-            }
-            onChange={() => {
-              dispatch(configActions.cleanup());
-              dispatch(
-                configActions.update({
-                  boot_images_auto_import: !autoImport,
-                })
-              );
-            }}
-            wrapperClassName="u-flex--align-center"
-          />
         </div>
       ) : null}
       {polling && !hasPolled ? (
