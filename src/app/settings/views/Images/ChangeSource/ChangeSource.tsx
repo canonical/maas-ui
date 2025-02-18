@@ -28,10 +28,6 @@ const ChangeSourceSchema = Yup.object()
   })
   .defined();
 
-type ChangeSourceProps = {
-  closeForm: (() => void) | null;
-};
-
 export type ChangeSourceValues = {
   keyring_data: string;
   keyring_filename: string;
@@ -40,7 +36,7 @@ export type ChangeSourceValues = {
   autoSync: boolean;
 };
 
-const ChangeSource = ({ closeForm }: ChangeSourceProps) => {
+const ChangeSource = () => {
   const dispatch = useDispatch();
   const resources = useSelector(bootResourceSelectors.resources);
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
@@ -78,7 +74,6 @@ const ChangeSource = ({ closeForm }: ChangeSourceProps) => {
             url: "",
             autoSync: autoImport || false,
           }}
-          onCancel={closeForm}
           onSubmit={(values) => {
             dispatch(cleanup());
             dispatch(bootResourceActions.fetch(values));

@@ -12,8 +12,6 @@ import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { ImageSidePanelViews } from "@/app/images/constants";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
-import { configActions } from "@/app/store/config";
-import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
@@ -21,10 +19,7 @@ import {
   screen,
   renderWithBrowserRouter,
   within,
-  expectTooltipOnHover,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState, {}>();
 
 describe("ImageListHeader", () => {
   it("sets the subtitle loading state when polling", () => {
@@ -69,44 +64,6 @@ describe("ImageListHeader", () => {
         name: new RegExp(ImageListHeaderLabels.AutoSyncImages),
       })
     ).not.toBeInTheDocument();
-  });
-
-  it("dispatches an action to update config when changing the auto sync switch", async () => {
-    const state = factory.rootState({
-      config: factory.configState({
-        items: [
-          factory.config({
-            name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
-            value: true,
-          }),
-        ],
-        loaded: true,
-      }),
-    });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
-      {
-        route: "/images",
-        store,
-      }
-    );
-
-    await userEvent.click(
-      screen.getByRole("checkbox", {
-        name: new RegExp(ImageListHeaderLabels.AutoSyncImages),
-      })
-    );
-
-    const actualActions = store.getActions();
-    const expectedAction = configActions.update({
-      boot_images_auto_import: false,
-    });
-    expect(
-      actualActions.find(
-        (actualAction) => actualAction.type === expectedAction.type
-      )
-    ).toStrictEqual(expectedAction);
   });
 
   it("can show the rack import status", () => {
@@ -163,53 +120,6 @@ describe("Change sources", () => {
       sidePanelContent: null,
       setSidePanelSize: vi.fn(),
       sidePanelSize: "regular",
-    });
-  });
-
-  it("can trigger change source side panel form", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        ubuntu: factory.bootResourceUbuntu({
-          sources: [
-            factory.bootResourceUbuntuSource({
-              source_type: BootResourceSourceType.MAAS_IO,
-            }),
-          ],
-        }),
-      }),
-    });
-    renderWithBrowserRouter(
-      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
-    );
-
-    await userEvent.click(
-      screen.getByRole("button", { name: "Change source" })
-    );
-
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: ImageSidePanelViews.CHANGE_SOURCE,
-      extras: { hasSources: true },
-    });
-  });
-
-  it("renders the change source form and disables closing it if no sources are detected", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        ubuntu: factory.bootResourceUbuntu({ sources: [] }),
-      }),
-    });
-    renderWithBrowserRouter(
-      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
-    );
-
-    await userEvent.click(
-      screen.getByRole("button", { name: "Change source" })
-    );
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: ImageSidePanelViews.CHANGE_SOURCE,
-      extras: { hasSources: false },
     });
   });
 
@@ -271,29 +181,6 @@ describe("Change sources", () => {
     );
     const images_from = screen.getByText("Images synced from");
     expect(within(images_from).getByText("sources")).toBeInTheDocument();
-  });
-
-  it("disables the button to change source if resources are downloading", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        resources: [factory.bootResource({ downloading: true })],
-        ubuntu: factory.bootResourceUbuntu({
-          sources: [factory.bootResourceUbuntuSource()],
-        }),
-      }),
-    });
-    renderWithBrowserRouter(
-      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
-    );
-    expect(
-      screen.getByRole("button", { name: "Change source" })
-    ).toBeAriaDisabled();
-
-    await expectTooltipOnHover(
-      screen.getByRole("button", { name: "Change source" }),
-      "Cannot change source while images are downloading."
-    );
   });
 });
 

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
 import urls from "@/app/base/urls";
-import ImagesTable from "src/app/images/components/ImagesTable";
+import ImagesTable from "@/app/images/components/ImagesTable";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import { bootResourceActions } from "@/app/store/bootresource";

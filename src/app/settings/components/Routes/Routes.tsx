@@ -371,7 +371,7 @@ const Routes = (): JSX.Element => {
       <Route
         element={
           <PageContent sidePanelContent={null} sidePanelTitle={null}>
-            <ChangeSource closeForm={null} />
+            <ChangeSource />
           </PageContent>
         }
         path={getRelativeRoute(urls.settings.images.source, base)}
