@@ -14,10 +14,10 @@ const docsUrls = {
   dhcp: "https://maas.io/docs/about-dhcp-in-maas",
   ipmi: "https://maas.io/docs/reference-power-drivers#p-17434-ipmi",
   ipRanges:
-    "https://maas.io/docs/how-to-customise-maas-networks#p-9070-create-ips-and-ranges",
+    "https://maas.io/docs/about-maas-networking#p-20679-ip-range-management-and-static-ip-assignments",
   kvmIntroduction: "https://maas.io/docs/how-to-use-lxd-vms",
   networkDiscovery:
-    "https://maas.io/docs/how-to-customise-maas-networks#p-9070-manage-network-discovery",
+    "https://maas.io/docs/about-maas-networking#p-20679-network-discovery",
   rackController:
     "https://maas.io/docs/about-controllers#p-13954-rack-controllers",
   sshKeys: "https://maas.io/docs/how-to-manage-user-access#p-9090-add-ssh-keys",
