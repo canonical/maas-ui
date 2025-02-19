@@ -1,35 +1,7 @@
 @mixin ImagesTable {
-  .images-table {
-    .release-col {
-      @include breakpoint-widths(0.25, 0.25, 0.2, 0.2, 0.15, true);
-    }
-
-    .arch-col {
-      @include breakpoint-widths(0.25, 0.2, 0.15, 0.1, 0.1, true);
-    }
-
-    .size-col {
-      @include breakpoint-widths(0, 0, 0, 0, 0.1, true);
-    }
-
-    .status-col {
-      @include breakpoint-widths(0.25, 0.45, 0.3, 0.35, 0.2, true);
-    }
-
-    .actions-col {
-      @include breakpoint-widths(0.25, 0.1, 0.1, 0.1, 0.1, true);
-    }
-
-    .machines-col {
-      @include breakpoint-widths(0, 0, 0.1, 0.1, 0.1, true);
-    }
-
-    .last-deployed-col {
-      @include breakpoint-widths(0, 0, 0.15, 0.2, 0.15, true);
-    }
-
-    .diskless-col {
-      @include breakpoint-widths(0, 0, 0, 0, 0.1, true);
+  .p-generic-table {
+    .status {
+      width: 15rem;
     }
   }
 }

@@ -1,7 +1,7 @@
 import type { Row } from "@tanstack/react-table";
 import { vi } from "vitest";
 
-import useImageTableColumns from "@/app/images/components/SMImagesTable/useImageTableColumns/useImageTableColumns";
+import useImageTableColumns from "@/app/images/components/ImagesTable/useImageTableColumns/useImageTableColumns";
 import type { Image } from "@/app/images/types";
 import { renderHook } from "@/testing/utils";
 

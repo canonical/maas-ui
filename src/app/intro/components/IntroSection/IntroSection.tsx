@@ -19,7 +19,7 @@ type Props = {
   shouldExitIntro?: boolean;
   titleLink?: ReactNode;
   windowTitle?: string;
-} & Omit<PageContentProps, "sidePanelContent" | "sidePanelTitle">;
+} & Partial<PageContentProps>;
 
 const IntroSection = ({
   children,
@@ -29,8 +29,10 @@ const IntroSection = ({
   shouldExitIntro,
   titleLink,
   windowTitle,
+  sidePanelContent = null,
+  sidePanelTitle = null,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const navigate = useNavigate();
   const errorMessage = formatErrors(errors);
   const exitURL = useExitURL();
@@ -44,7 +46,11 @@ const IntroSection = ({
   }, [navigate, exitURL, shouldExitIntro]);
 
   return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null} {...props}>
+    <PageContent
+      sidePanelContent={sidePanelContent}
+      sidePanelTitle={sidePanelTitle}
+      {...props}
+    >
       {errorMessage && (
         <Notification severity="negative" title="Error:">
           {errorMessage}

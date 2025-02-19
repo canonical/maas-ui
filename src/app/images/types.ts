@@ -38,10 +38,6 @@ export type ImageValue = {
 export type ImageSidePanelContent =
   | SidePanelContent<
       ValueOf<typeof ImageSidePanelViews>,
-      { hasSources?: boolean }
-    >
-  | SidePanelContent<
-      ValueOf<typeof ImageSidePanelViews>,
       { bootResource?: BootResource }
     >
   | SidePanelContent<

@@ -10,6 +10,7 @@ import KernelParameters from "@/app/settings/views/Configuration/KernelParameter
 import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
 import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
 import DhcpList from "@/app/settings/views/Dhcp/DhcpList";
+import ChangeSource from "@/app/settings/views/Images/ChangeSource";
 import ThirdPartyDrivers from "@/app/settings/views/Images/ThirdPartyDrivers";
 import VMWare from "@/app/settings/views/Images/VMWare";
 import Windows from "@/app/settings/views/Images/Windows";
@@ -366,6 +367,14 @@ const Routes = (): JSX.Element => {
           </PageContent>
         }
         path={getRelativeRoute(urls.settings.images.ubuntu, base)}
+      />
+      <Route
+        element={
+          <PageContent sidePanelContent={null} sidePanelTitle={null}>
+            <ChangeSource />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.settings.images.source, base)}
       />
       <Route
         element={

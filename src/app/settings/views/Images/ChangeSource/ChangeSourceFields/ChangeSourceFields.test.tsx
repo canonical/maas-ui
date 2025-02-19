@@ -1,13 +1,12 @@
 import { Formik } from "formik";
 
-import FetchImagesFormFields, {
-  Labels as FetchImagesFormFieldsLabels,
-} from "./FetchImagesFormFields";
-
+import ChangeSourceFields, {
+  Labels,
+} from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import { userEvent, render, screen } from "@/testing/utils";
 
-describe("FetchImagesFormFields", () => {
+describe("ChangeSourceFields", () => {
   it("does not show extra fields if maas.io source is selected", async () => {
     render(
       <Formik
@@ -19,20 +18,20 @@ describe("FetchImagesFormFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <FetchImagesFormFields />
+        <ChangeSourceFields />
       </Formik>
     );
     expect(
-      screen.queryByRole("textbox", { name: FetchImagesFormFieldsLabels.Url })
+      screen.queryByRole("textbox", { name: Labels.Url })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringFilename,
+        name: Labels.KeyringFilename,
       })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringData,
+        name: Labels.KeyringData,
       })
     ).not.toBeInTheDocument();
   });
@@ -48,20 +47,20 @@ describe("FetchImagesFormFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <FetchImagesFormFields />
+        <ChangeSourceFields />
       </Formik>
     );
     expect(
-      screen.getByRole("textbox", { name: FetchImagesFormFieldsLabels.Url })
+      screen.getByRole("textbox", { name: Labels.Url })
     ).toBeInTheDocument();
     expect(
       screen.queryByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringFilename,
+        name: Labels.KeyringFilename,
       })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringData,
+        name: Labels.KeyringData,
       })
     ).not.toBeInTheDocument();
   });
@@ -77,20 +76,14 @@ describe("FetchImagesFormFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <FetchImagesFormFields />
+        <ChangeSourceFields />
       </Formik>
     );
     // Switch to maas.io source and back
-    await userEvent.click(
-      screen.getByRole("radio", { name: FetchImagesFormFieldsLabels.MaasIo })
-    );
-    await userEvent.click(
-      screen.getByRole("radio", { name: FetchImagesFormFieldsLabels.Custom })
-    );
+    await userEvent.click(screen.getByRole("radio", { name: Labels.MaasIo }));
+    await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
 
-    expect(
-      screen.getByRole("textbox", { name: FetchImagesFormFieldsLabels.Url })
-    ).toHaveValue("");
+    expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue("");
   });
 
   it(`shows advanced fields when using a custom source and the "Show advanced"
@@ -105,35 +98,35 @@ describe("FetchImagesFormFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <FetchImagesFormFields />
+        <ChangeSourceFields />
       </Formik>
     );
     expect(
       screen.queryByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringFilename,
+        name: Labels.KeyringFilename,
       })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringData,
+        name: Labels.KeyringData,
       })
     ).not.toBeInTheDocument();
 
     // Click the "Show advanced" button
     await userEvent.click(
       screen.getByRole("button", {
-        name: FetchImagesFormFieldsLabels.ShowAdvanced,
+        name: Labels.ShowAdvanced,
       })
     );
 
     expect(
       screen.getByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringFilename,
+        name: Labels.KeyringFilename,
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringData,
+        name: Labels.KeyringData,
       })
     ).toBeInTheDocument();
   });
@@ -149,33 +142,33 @@ describe("FetchImagesFormFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <FetchImagesFormFields />
+        <ChangeSourceFields />
       </Formik>
     );
     // Click the "Hide advanced" button
     await userEvent.click(
       screen.getByRole("button", {
-        name: FetchImagesFormFieldsLabels.HideAdvanced,
+        name: Labels.HideAdvanced,
       })
     );
 
     // Click the "Show advanced" button - advanced fields should've been cleared
     await userEvent.click(
       screen.getByRole("button", {
-        name: FetchImagesFormFieldsLabels.ShowAdvanced,
+        name: Labels.ShowAdvanced,
       })
     );
-    expect(
-      screen.getByRole("textbox", { name: FetchImagesFormFieldsLabels.Url })
-    ).toHaveValue("http://example.com");
+    expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue(
+      "http://example.com"
+    );
     expect(
       screen.getByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringFilename,
+        name: Labels.KeyringFilename,
       })
     ).toHaveValue("");
     expect(
       screen.getByRole("textbox", {
-        name: FetchImagesFormFieldsLabels.KeyringData,
+        name: Labels.KeyringData,
       })
     ).toHaveValue("");
   });
