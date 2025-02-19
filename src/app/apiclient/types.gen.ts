@@ -47,6 +47,53 @@ export type ConflictBodyResponse = {
   kind?: string;
 };
 
+export type DomainRequest = {
+  /**
+   * Name of the domain.
+   */
+  name: string;
+  /**
+   * Class type of the domain
+   */
+  authoritative?: boolean;
+  /**
+   * TTL for the domain.
+   */
+  ttl?: number;
+};
+
+/**
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type DomainResponse = {
+  _links?: BaseHal;
+  _embedded?: {
+    [key: string]: unknown;
+  };
+  authoritative: boolean;
+  ttl?: number;
+  id: number;
+  name: string;
+  kind?: string;
+};
+
+/**
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type DomainsListResponse = {
+  items: Array<DomainResponse>;
+  total: number;
+  next?: string;
+  kind?: string;
+};
+
 /**
  * Base HAL response class that every response object must extend. The response object will look like
  * {
@@ -156,7 +203,7 @@ export type HttpValidationError = {
 /**
  * An enumeration.
  */
-export type HardwareDeviceType = 0 | 1 | 2 | 3 | 4 | 5;
+export type HardwareDeviceTypeEnum = 0 | 1 | 2 | 3 | 4 | 5;
 
 export type IpRangeCreateRequest = {
   /**
@@ -396,7 +443,7 @@ export type PciDeviceResponse = {
     [key: string]: unknown;
   };
   id: number;
-  type: HardwareDeviceType;
+  type: HardwareDeviceTypeEnum;
   vendor_id: string;
   product_id: string;
   vendor_name: string;
@@ -827,7 +874,7 @@ export type UsbDeviceResponse = {
     [key: string]: unknown;
   };
   id: number;
-  type: HardwareDeviceType;
+  type: HardwareDeviceTypeEnum;
   vendor_id: string;
   product_id: string;
   vendor_name: string;
@@ -859,8 +906,10 @@ export type UserRequest = {
   username: string;
   password: string;
   is_superuser: boolean;
+  is_staff: boolean;
+  is_active: boolean;
   first_name: string;
-  last_name?: string;
+  last_name: string;
   email?: string;
 };
 
@@ -1180,6 +1229,96 @@ export type ListEventsResponses = {
 };
 
 export type ListEventsResponse = ListEventsResponses[keyof ListEventsResponses];
+
+export type ListDomainsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    page?: number;
+    size?: number;
+  };
+  url: "/MAAS/a/v3/domains";
+};
+
+export type ListDomainsErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListDomainsError = ListDomainsErrors[keyof ListDomainsErrors];
+
+export type ListDomainsResponses = {
+  /**
+   * Successful Response
+   */
+  200: DomainsListResponse;
+};
+
+export type ListDomainsResponse =
+  ListDomainsResponses[keyof ListDomainsResponses];
+
+export type CreateDomainData = {
+  body: DomainRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/domains";
+};
+
+export type CreateDomainErrors = {
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateDomainError = CreateDomainErrors[keyof CreateDomainErrors];
+
+export type CreateDomainResponses = {
+  /**
+   * Successful Response
+   */
+  201: DomainResponse;
+};
+
+export type CreateDomainResponse =
+  CreateDomainResponses[keyof CreateDomainResponses];
+
+export type GetDomainData = {
+  body?: never;
+  path: {
+    domain_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/domains/{domain_id}";
+};
+
+export type GetDomainErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetDomainError = GetDomainErrors[keyof GetDomainErrors];
+
+export type GetDomainResponses = {
+  /**
+   * Successful Response
+   */
+  200: DomainResponse;
+};
+
+export type GetDomainResponse = GetDomainResponses[keyof GetDomainResponses];
 
 export type ListFabricsData = {
   body?: never;
@@ -3182,3 +3321,7 @@ export type ListZonesWithSummaryResponses = {
 
 export type ListZonesWithSummaryResponse =
   ListZonesWithSummaryResponses[keyof ListZonesWithSummaryResponses];
+
+export type ClientOptions = {
+  baseUrl: "http://maas-ui-demo.internal:5240" | (string & {});
+};
