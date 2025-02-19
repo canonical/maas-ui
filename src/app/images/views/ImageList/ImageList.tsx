@@ -20,7 +20,7 @@ export enum Labels {
   SyncDisabled = "Automatic image updates are disabled. This may mean that images won't be automatically updated and receive the latest package versions and security fixes.",
 }
 
-const ImageList = (): JSX.Element => {
+const ImageList = () => {
   const dispatch = useDispatch();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);

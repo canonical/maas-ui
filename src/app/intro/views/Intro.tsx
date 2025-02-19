@@ -20,7 +20,7 @@ import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
 import { getRelativeRoute } from "@/app/utils";
 
-const Intro = (): JSX.Element => {
+const Intro = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const authLoading = useSelector(authSelectors.loading);
