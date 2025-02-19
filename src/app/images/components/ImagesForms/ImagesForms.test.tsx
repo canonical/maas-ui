@@ -1,11 +1,13 @@
-import { describe } from "vitest";
-
 import ImagesForms from "./ImagesForms";
 
 import { ImageSidePanelViews } from "@/app/images/constants";
 import type { ImageSidePanelContent } from "@/app/images/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import {
+  getByTextContent,
+  renderWithBrowserRouter,
+  screen,
+} from "@/testing/utils";
 
 describe("ImagesForms", () => {
   it("renders DeleteImage form", () => {
@@ -56,6 +58,10 @@ describe("ImagesForms", () => {
       />
     );
 
-    expect(screen.getByTestId("download-images-form")).toBeInTheDocument();
+    expect(
+      getByTextContent(
+        "Select images to be imported and kept in sync daily. Images will be available for deploying to machines managed by MAAS."
+      )
+    ).toBeInTheDocument();
   });
 });

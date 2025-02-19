@@ -202,7 +202,7 @@ const DownloadImages: React.FC = () => {
 
   return (
     <>
-      <p data-testid="download-images-form">
+      <p>
         Select images to be imported and kept in sync daily. Images will be
         available for deploying to machines managed by MAAS.
       </p>
