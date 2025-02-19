@@ -22,6 +22,7 @@ import "./_index.scss";
 type SMImagesTableProps = {
   selectedRows: RowSelectionState;
   setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
+  variant?: "full-height" | "regular";
 };
 
 const getImages = (resources: BootResource[]): Image[] => {
@@ -43,7 +44,11 @@ const getImages = (resources: BootResource[]): Image[] => {
   });
 };
 
-const ImagesTable = ({ selectedRows, setSelectedRows }: SMImagesTableProps) => {
+const ImagesTable = ({
+  selectedRows,
+  setSelectedRows,
+  variant,
+}: SMImagesTableProps) => {
   const resources = useSelector(bootResourceSelectors.resources);
   const images = getImages(resources);
 
@@ -96,6 +101,7 @@ const ImagesTable = ({ selectedRows, setSelectedRows }: SMImagesTableProps) => {
       rowSelection={selectedRows}
       setRowSelection={setSelectedRows}
       sortBy={[{ id: "release", desc: true }]}
+      variant={variant}
     />
   );
 };

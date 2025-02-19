@@ -44,6 +44,7 @@ type GenericTableProps<T extends { id: string | number }> = {
   sortBy?: ColumnSort[];
   rowSelection?: RowSelectionState;
   setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
+  variant?: "full-height" | "regular";
 };
 
 const GenericTable = <T extends { id: string | number }>({
@@ -58,6 +59,7 @@ const GenericTable = <T extends { id: string | number }>({
   sortBy,
   rowSelection,
   setRowSelection,
+  variant = "full-height",
 }: GenericTableProps<T>) => {
   const [grouping, setGrouping] = useState<GroupingState>(groupBy ?? []);
   const [expanded, setExpanded] = useState<ExpandedState>(true);
@@ -161,7 +163,7 @@ const GenericTable = <T extends { id: string | number }>({
   });
 
   return (
-    <DynamicTable className="p-generic-table" variant="full-height">
+    <DynamicTable className="p-generic-table" variant={variant}>
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>

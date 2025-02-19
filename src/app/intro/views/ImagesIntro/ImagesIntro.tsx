@@ -82,6 +82,7 @@ const ImagesIntro = () => {
             <ImagesTable
               selectedRows={selectedRows}
               setSelectedRows={setSelectedRows}
+              variant="regular"
             />
           </>
         )}
