@@ -58,7 +58,10 @@ const ChangeSource = () => {
       </ContentSection.Title>
       <ContentSection.Content>
         {!canChangeSource && (
-          <Notification data-testid="disabled-sync-warning" severity="caution">
+          <Notification
+            data-testid="cannot-change-source-warning"
+            severity="caution"
+          >
             Image import is in progress, cannot change source settings.
           </Notification>
         )}

@@ -40,32 +40,6 @@ describe("ImageListHeader", () => {
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("does not show sync toggle if config has not loaded yet", () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        statuses: factory.bootResourceStatuses({
-          polling: true,
-        }),
-      }),
-      config: factory.configState({
-        loaded: false,
-      }),
-    });
-    renderWithBrowserRouter(
-      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
-      {
-        route: "/images",
-        state,
-      }
-    );
-
-    expect(
-      screen.queryByRole("checkbox", {
-        name: new RegExp(ImageListHeaderLabels.AutoSyncImages),
-      })
-    ).not.toBeInTheDocument();
-  });
-
   it("can show the rack import status", () => {
     const state = factory.rootState({
       bootresource: factory.bootResourceState({

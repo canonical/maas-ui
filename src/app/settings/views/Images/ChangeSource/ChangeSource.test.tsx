@@ -54,5 +54,8 @@ describe("ChangeSource", () => {
     });
     renderWithBrowserRouter(<ChangeSource />, { state });
     expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
+    expect(
+      screen.getByTestId("cannot-change-source-warning")
+    ).toBeInTheDocument();
   });
 });
