@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 
-import DeleteImageConfirm from "../ImagesTable/DeleteImageConfirm";
+import DeleteImageForm from "./DeleteImageForm";
 
 import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
-import DeleteImages from "@/app/images/components/ImagesTable/DeleteImages";
-import DownloadImages from "@/app/images/components/ImagesTable/DownloadImages";
+import DeleteMultipleImagesForm from "@/app/images/components/ImagesForms/DeleteMultipleImagesForm";
+import SelectUpstreamImagesForm from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm";
 import { ImageSidePanelViews } from "@/app/images/constants";
 
 type Props = SidePanelContentTypes & {};
@@ -27,7 +27,7 @@ const ImagesForms = ({ sidePanelContent, setSidePanelContent }: Props) => {
           : null;
       if (!bootResource) return null;
       return (
-        <DeleteImageConfirm
+        <DeleteImageForm
           closeForm={clearSidePanelContent}
           resource={bootResource}
         />
@@ -44,7 +44,7 @@ const ImagesForms = ({ sidePanelContent, setSidePanelContent }: Props) => {
           : null;
       if (!rowSelection) return null;
       return (
-        <DeleteImages
+        <DeleteMultipleImagesForm
           closeForm={clearSidePanelContent}
           rowSelection={rowSelection}
           setRowSelection={setRowSelection}
@@ -52,7 +52,7 @@ const ImagesForms = ({ sidePanelContent, setSidePanelContent }: Props) => {
       );
     }
     case ImageSidePanelViews.DOWNLOAD_IMAGE: {
-      return <DownloadImages />;
+      return <SelectUpstreamImagesForm />;
     }
     default:
       return null;

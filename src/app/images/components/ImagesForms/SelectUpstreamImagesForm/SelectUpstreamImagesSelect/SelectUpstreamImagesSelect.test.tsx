@@ -4,14 +4,14 @@ import {
   getDownloadableImages,
   groupArchesByRelease,
   groupImagesByOS,
-} from "@/app/images/components/ImagesTable/DownloadImages/DownloadImages";
-import DownloadImagesSelect from "@/app/images/components/ImagesTable/DownloadImages/DownloadImagesSelect/DownloadImagesSelect";
+} from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
+import SelectUpstreamImagesSelect from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { screen, userEvent, renderWithMockStore } from "@/testing/utils";
 
-describe("DownloadImagesSelect", () => {
+describe("SelectUpstreamImagesSelect", () => {
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState({
@@ -28,7 +28,7 @@ describe("DownloadImagesSelect", () => {
     });
   });
 
-  it("does not show a radio button for a release deleted from the source", () => {
+  it("does not show a radio button for a release deleted from the source", async () => {
     const [available, deleted] = [
       factory.bootResourceUbuntuRelease({
         name: "available",
@@ -53,7 +53,7 @@ describe("DownloadImagesSelect", () => {
     renderWithMockStore(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
-          <DownloadImagesSelect
+          <SelectUpstreamImagesSelect
             groupedImages={groupedImages}
             setFieldValue={setFieldValue}
             values={values}
@@ -63,13 +63,15 @@ describe("DownloadImagesSelect", () => {
       { state }
     );
 
+    await userEvent.click(screen.getByText("Ubuntu"));
+
     expect(
       screen.queryByRole("row", { name: "20.10" })
     ).not.toBeInTheDocument();
     expect(screen.getByRole("row", { name: "20.04 LTS" })).toBeInTheDocument();
   });
 
-  it("does not show a checkbox for an architecture delete from the source", () => {
+  it("does not show a checkbox for an architecture delete from the source", async () => {
     const releases = [factory.bootResourceUbuntuRelease({ name: "focal" })];
     const [available, deleted] = [
       factory.bootResourceUbuntuArch({
@@ -92,7 +94,7 @@ describe("DownloadImagesSelect", () => {
     renderWithMockStore(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
-          <DownloadImagesSelect
+          <SelectUpstreamImagesSelect
             groupedImages={groupedImages}
             setFieldValue={setFieldValue}
             values={values}
@@ -101,6 +103,8 @@ describe("DownloadImagesSelect", () => {
       </Formik>,
       { state }
     );
+
+    await userEvent.click(screen.getByText("Ubuntu"));
 
     const checkboxes = screen.getAllByRole("checkbox", {
       hidden: true,

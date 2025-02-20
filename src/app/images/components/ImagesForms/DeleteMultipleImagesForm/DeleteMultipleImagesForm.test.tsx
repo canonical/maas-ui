@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import configureStore from "redux-mock-store";
 
-import DeleteImageConfirm from "./DeleteImageConfirm";
+import DeleteMultipleImagesForm from "./DeleteMultipleImagesForm";
 
 import { Labels as TableDeleteConfirmLabels } from "@/app/base/components/TableDeleteConfirm/TableDeleteConfirm";
 import { bootResourceActions } from "@/app/store/bootresource";
@@ -11,20 +11,17 @@ import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
-describe("DeleteImageConfirm", () => {
+describe("DeleteMultipleImagesForm", () => {
   it("calls closeForm on cancel click", async () => {
     const closeForm = vi.fn();
-    const resource = factory.bootResource();
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        resources: [resource],
-      }),
-    });
     renderWithBrowserRouter(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteImageConfirm closeForm={closeForm} resource={resource} />
-      </Formik>,
-      { state }
+        <DeleteMultipleImagesForm
+          closeForm={closeForm}
+          rowSelection={{}}
+          setRowSelection={vi.fn}
+        />
+      </Formik>
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -41,7 +38,11 @@ describe("DeleteImageConfirm", () => {
     const store = mockStore(state);
     const { unmount } = renderWithBrowserRouter(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
+        <DeleteMultipleImagesForm
+          closeForm={vi.fn}
+          rowSelection={{}}
+          setRowSelection={vi.fn}
+        />
       </Formik>,
       { store }
     );
@@ -64,7 +65,11 @@ describe("DeleteImageConfirm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
+        <DeleteMultipleImagesForm
+          closeForm={vi.fn}
+          rowSelection={{ 1: true }}
+          setRowSelection={vi.fn}
+        />
       </Formik>,
       { store }
     );

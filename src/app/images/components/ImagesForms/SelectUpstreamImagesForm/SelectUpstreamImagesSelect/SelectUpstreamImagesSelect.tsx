@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MultiSelect, type MultiSelectItem } from "@canonical/react-components";
 import { Field } from "formik";
 
-import type { GroupedImages } from "@/app/images/components/ImagesTable/DownloadImages/DownloadImages";
+import type { GroupedImages } from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
 import "./_index.scss";
 
 const getValueKey = (distro: string, release: string) =>
@@ -15,7 +15,7 @@ type DownloadImagesSelectProps = {
   groupedImages: GroupedImages;
 };
 
-const DownloadImagesSelect = ({
+const SelectUpstreamImagesSelect = ({
   values,
   setFieldValue,
   groupedImages,
@@ -88,4 +88,4 @@ const DownloadImagesSelect = ({
   );
 };
 
-export default DownloadImagesSelect;
+export default SelectUpstreamImagesSelect;

@@ -18,7 +18,7 @@ export enum Labels {
   AreYouSure = "Are you sure you want to delete this image?",
 }
 
-const DeleteImageConfirm = ({
+const DeleteImageForm = ({
   closeForm,
   resource,
 }: Props): JSX.Element | null => {
@@ -59,4 +59,4 @@ const DeleteImageConfirm = ({
   );
 };
 
-export default DeleteImageConfirm;
+export default DeleteImageForm;

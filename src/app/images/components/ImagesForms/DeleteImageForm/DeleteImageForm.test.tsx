@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import configureStore from "redux-mock-store";
 
-import DeleteImages from "./DeleteImages";
+import DeleteImageForm from "./DeleteImageForm";
 
 import { Labels as TableDeleteConfirmLabels } from "@/app/base/components/TableDeleteConfirm/TableDeleteConfirm";
 import { bootResourceActions } from "@/app/store/bootresource";
@@ -11,17 +11,20 @@ import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
-describe("DeleteImages", () => {
+describe("DeleteImageForm", () => {
   it("calls closeForm on cancel click", async () => {
     const closeForm = vi.fn();
+    const resource = factory.bootResource();
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        resources: [resource],
+      }),
+    });
     renderWithBrowserRouter(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteImages
-          closeForm={closeForm}
-          rowSelection={{}}
-          setRowSelection={vi.fn}
-        />
-      </Formik>
+        <DeleteImageForm closeForm={closeForm} resource={resource} />
+      </Formik>,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -38,11 +41,7 @@ describe("DeleteImages", () => {
     const store = mockStore(state);
     const { unmount } = renderWithBrowserRouter(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteImages
-          closeForm={vi.fn}
-          rowSelection={{}}
-          setRowSelection={vi.fn}
-        />
+        <DeleteImageForm closeForm={vi.fn()} resource={resource} />
       </Formik>,
       { store }
     );
@@ -65,11 +64,7 @@ describe("DeleteImages", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteImages
-          closeForm={vi.fn}
-          rowSelection={{ 1: true }}
-          setRowSelection={vi.fn}
-        />
+        <DeleteImageForm closeForm={vi.fn()} resource={resource} />
       </Formik>,
       { store }
     );

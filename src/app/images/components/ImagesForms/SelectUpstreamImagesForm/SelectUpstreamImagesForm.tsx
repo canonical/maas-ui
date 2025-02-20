@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import type { MultiSelectItem } from "@canonical/react-components";
 import { Notification, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import DownloadImagesSelect from "./DownloadImagesSelect";
+import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -154,7 +154,7 @@ export const groupArchesByRelease = (images: ImagesByOS) => {
   return groupedImages;
 };
 
-const DownloadImages: React.FC = () => {
+const SelectUpstreamImagesForm = () => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const otherImages = useSelector(bootResourceSelectors.otherImages);
@@ -290,7 +290,7 @@ const DownloadImages: React.FC = () => {
           submitLabel="Save and sync"
         >
           {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
-            <DownloadImagesSelect
+            <SelectUpstreamImagesSelect
               groupedImages={groupedImages}
               setFieldValue={setFieldValue}
               values={values}
@@ -302,4 +302,4 @@ const DownloadImages: React.FC = () => {
   );
 };
 
-export default DownloadImages;
+export default SelectUpstreamImagesForm;
