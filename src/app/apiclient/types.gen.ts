@@ -1289,6 +1289,45 @@ export type CreateDomainResponses = {
 export type CreateDomainResponse =
   CreateDomainResponses[keyof CreateDomainResponses];
 
+export type DeleteDomainData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    domain_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/domains/{domain_id}";
+};
+
+export type DeleteDomainErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type DeleteDomainError = DeleteDomainErrors[keyof DeleteDomainErrors];
+
+export type DeleteDomainResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteDomainResponse =
+  DeleteDomainResponses[keyof DeleteDomainResponses];
+
 export type GetDomainData = {
   body?: never;
   path: {

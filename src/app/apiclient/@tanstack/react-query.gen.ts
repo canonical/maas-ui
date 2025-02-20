@@ -15,6 +15,7 @@ import {
   listEvents,
   listDomains,
   createDomain,
+  deleteDomain,
   getDomain,
   listFabrics,
   createFabric,
@@ -91,6 +92,9 @@ import type {
   CreateDomainData,
   CreateDomainError,
   CreateDomainResponse,
+  DeleteDomainData,
+  DeleteDomainError,
+  DeleteDomainResponse,
   GetDomainData,
   ListFabricsData,
   ListFabricsError,
@@ -530,6 +534,26 @@ export const createDomainMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await createDomain({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deleteDomainMutation = (
+  options?: Partial<Options<DeleteDomainData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeleteDomainResponse,
+    DeleteDomainError,
+    Options<DeleteDomainData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteDomain({
         ...options,
         ...localOptions,
         throwOnError: true,

@@ -24,6 +24,9 @@ import type {
   CreateDomainData,
   CreateDomainResponse,
   CreateDomainError,
+  DeleteDomainData,
+  DeleteDomainResponse,
+  DeleteDomainError,
   GetDomainData,
   GetDomainResponse,
   GetDomainError,
@@ -336,6 +339,28 @@ export const createDomain = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
+  });
+};
+
+/**
+ * Delete Domain
+ */
+export const deleteDomain = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteDomainData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteDomainResponse,
+    DeleteDomainError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/domains/{domain_id}",
+    ...options,
   });
 };
 
