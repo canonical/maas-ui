@@ -3360,7 +3360,3 @@ export type ListZonesWithSummaryResponses = {
 
 export type ListZonesWithSummaryResponse =
   ListZonesWithSummaryResponses[keyof ListZonesWithSummaryResponses];
-
-export type ClientOptions = {
-  baseUrl: "http://maas-ui-demo.internal:5240" | (string & {});
-};
