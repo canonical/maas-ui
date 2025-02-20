@@ -635,3 +635,25 @@ export const renderHookWithProviders = <T,>(
     wrapper: (props) => <TestProvider {...props} {...options} />,
   });
 };
+
+/**
+ * Mocks the useQuery hook to return a pending state.
+ */
+export const mockIsPending = () => {
+  vi.doMock("@tanstack/react-query", async () => {
+    const actual: object = await vi.importActual("@tanstack/react-query");
+    return {
+      ...actual,
+      useQuery: vi.fn().mockReturnValueOnce({
+        data: null,
+        isPending: true,
+        failureReason: undefined,
+        isFetched: false,
+      }),
+    };
+  });
+
+  afterEach(() => {
+    vi.doUnmock("@tanstack/react-query");
+  });
+};
