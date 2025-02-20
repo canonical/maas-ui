@@ -1,10 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import SSHKeyList from "./SSHKeyList";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import urls from "@/app/preferences/urls";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
@@ -54,7 +51,6 @@ const mockKeys = {
   total: 5,
 };
 
-const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(
   sshKeyResolvers.listSshKeys.handler(mockKeys)
 );
@@ -65,7 +61,6 @@ const waitForLoading = async () =>
   );
 
 describe("SSHKeyList", () => {
-  let state: RootState;
   const setSidePanelContent = vi.fn();
 
   beforeEach(() => {
@@ -75,52 +70,21 @@ describe("SSHKeyList", () => {
       setSidePanelSize: vi.fn(),
       sidePanelSize: "regular",
     });
-    state = factory.rootState({
-      sshkey: factory.sshKeyState({
-        loading: false,
-        loaded: true,
-        items: [
-          factory.sshKey({
-            id: 1,
-            key: "ssh-rsa aabb",
-            keysource: { protocol: "lp", auth_id: "koalaparty" },
-          }),
-          factory.sshKey({
-            id: 2,
-            key: "ssh-rsa ccdd",
-            keysource: { protocol: "gh", auth_id: "koalaparty" },
-          }),
-          factory.sshKey({
-            id: 3,
-            key: "ssh-rsa eeff",
-            keysource: { protocol: "lp", auth_id: "maaate" },
-          }),
-          factory.sshKey({
-            id: 4,
-            key: "ssh-rsa gghh",
-            keysource: { protocol: "gh", auth_id: "koalaparty" },
-          }),
-          factory.sshKey({ id: 5, key: "ssh-rsa gghh" }),
-        ],
-      }),
-    });
   });
 
   it("displays a loading component if SSH keys are loading", () => {
     mockIsPending();
     renderWithProviders(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
-      state,
     });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   // fix this when error types are fixed in client
   it.skip("can display errors", () => {
-    state.sshkey.errors = "Unable to list SSH keys.";
-    renderWithBrowserRouter(<SSHKeyList />, {
+    // state.sshkey.errors = "Unable to list SSH keys.";
+    renderWithProviders(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
-      state,
     });
     expect(screen.getByText("Unable to list SSH keys.")).toBeInTheDocument();
   });
@@ -128,7 +92,6 @@ describe("SSHKeyList", () => {
   it("can group keys", async () => {
     renderWithProviders(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
-      state,
     });
 
     await waitForLoading();
@@ -149,7 +112,6 @@ describe("SSHKeyList", () => {
   it("displays the full SSH key value", async () => {
     renderWithProviders(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
-      state,
     });
     const keyValue = mockKeys.items[2].key;
 
@@ -162,7 +124,6 @@ describe("SSHKeyList", () => {
   it("can display uploaded keys", async () => {
     renderWithProviders(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
-      state,
     });
 
     await waitForLoading();
@@ -178,7 +139,6 @@ describe("SSHKeyList", () => {
   it("can display imported keys", async () => {
     renderWithProviders(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
-      state,
     });
 
     await waitForLoading();
@@ -197,7 +157,6 @@ describe("SSHKeyList", () => {
   it("can trigger a delete confirmation form", async () => {
     renderWithProviders(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
-      state,
     });
 
     await waitForLoading();
@@ -214,10 +173,8 @@ describe("SSHKeyList", () => {
       sshKeyResolvers.listSshKeys.handler({ items: [], total: 0 })
     );
 
-    const store = mockStore(state);
     renderWithBrowserRouter(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
-      store,
     });
 
     await waitForLoading();
