@@ -168,7 +168,9 @@
 
 // images
 @import "@/app/images/components/ImagesTable";
+@import "@/app/images/components/ImagesTable/DownloadImages";
 @include ImagesTable;
+@include DownloadImages;
 
 // intro
 @import "@/app/intro/views/MaasIntro";
