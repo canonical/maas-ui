@@ -202,10 +202,8 @@ const DownloadImages: React.FC = () => {
 
   return (
     <>
-      <p>
-        Select images to be imported and kept in sync daily. Images will be
-        available for deploying to machines managed by MAAS.
-      </p>
+      Select images to be imported and kept in sync daily. Images will be
+      available for deployment on MAAS managed machines.
       {tooManySources && (
         <Notification data-testid="too-many-sources" severity="caution">
           More than one image source exists. The UI does not support updating
@@ -289,7 +287,7 @@ const DownloadImages: React.FC = () => {
           onSuccess={() => {
             dispatch(bootResourceActions.poll({ continuous: false }));
           }}
-          submitLabel={"Download"}
+          submitLabel="Save and sync"
         >
           {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
             <DownloadImagesSelect
