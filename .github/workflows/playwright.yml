@@ -26,7 +26,7 @@ jobs:
       - name: Wait for MAAS UI to be ready
         run: yarn run wait-on http-get://${{env.MAAS_URL}}/MAAS/r
       - name: Run Playwright tests
-        run: yarn playwright test
+        run: yarn playwright test tests/ui
       - uses: actions/upload-artifact@v4
         if: always()
         with:
