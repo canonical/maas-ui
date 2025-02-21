@@ -12,6 +12,7 @@ import {
   setupMockServer,
   userEvent,
   waitFor,
+  waitForLoading,
   within,
 } from "@/testing/utils";
 
@@ -54,11 +55,6 @@ const mockKeys = {
 const mockServer = setupMockServer(
   sshKeyResolvers.listSshKeys.handler(mockKeys)
 );
-
-const waitForLoading = async () =>
-  await waitFor(() =>
-    expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument()
-  );
 
 describe("SSHKeyList", () => {
   const setSidePanelContent = vi.fn();

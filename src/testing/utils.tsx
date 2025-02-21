@@ -657,3 +657,15 @@ export const mockIsPending = () => {
     vi.doUnmock("@tanstack/react-query");
   });
 };
+
+/**
+ * Waits until the loading text is no longer present in the document.
+ *
+ * @param loadingText The text to query for. Defaults to "Loading".
+ */
+export const waitForLoading = async (loadingText = "Loading") =>
+  await waitFor(() =>
+    expect(
+      screen.queryByText(new RegExp(loadingText, "i"))
+    ).not.toBeInTheDocument()
+  );
