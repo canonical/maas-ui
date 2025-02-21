@@ -6,12 +6,10 @@ import * as factory from "@/testing/factories";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
   mockIsPending,
-  renderWithBrowserRouter,
   renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
-  waitFor,
   waitForLoading,
   within,
 } from "@/testing/utils";
@@ -111,10 +109,10 @@ describe("SSHKeyList", () => {
     });
     const keyValue = mockKeys.items[2].key;
 
-    await waitFor(() => {
-      // verifies that the full value is exposed in the title attribute
-      expect(screen.getByText(keyValue)).toHaveAccessibleName(keyValue);
-    });
+    await waitForLoading();
+
+    // verifies that the full value is exposed in the title attribute
+    expect(screen.getByText(keyValue)).toHaveAccessibleName(keyValue);
   });
 
   it("can display uploaded keys", async () => {
@@ -169,7 +167,7 @@ describe("SSHKeyList", () => {
       sshKeyResolvers.listSshKeys.handler({ items: [], total: 0 })
     );
 
-    renderWithBrowserRouter(<SSHKeyList />, {
+    renderWithProviders(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
     });
 
