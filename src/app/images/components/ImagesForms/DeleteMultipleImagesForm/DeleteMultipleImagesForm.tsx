@@ -19,7 +19,7 @@ type DeleteImagesProps = {
   closeForm: () => void;
 };
 
-const DeleteImages = ({
+const DeleteMultipleImagesForm = ({
   rowSelection,
   setRowSelection,
   closeForm,
@@ -78,4 +78,4 @@ const DeleteImages = ({
   );
 };
 
-export default DeleteImages;
+export default DeleteMultipleImagesForm;

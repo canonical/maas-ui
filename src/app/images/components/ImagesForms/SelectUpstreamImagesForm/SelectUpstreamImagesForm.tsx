@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import type { MultiSelectItem } from "@canonical/react-components";
 import { Notification, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import DownloadImagesSelect from "./DownloadImagesSelect";
+import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -154,7 +154,7 @@ export const groupArchesByRelease = (images: ImagesByOS) => {
   return groupedImages;
 };
 
-const DownloadImages: React.FC = () => {
+const SelectUpstreamImagesForm = () => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const otherImages = useSelector(bootResourceSelectors.otherImages);
@@ -202,10 +202,8 @@ const DownloadImages: React.FC = () => {
 
   return (
     <>
-      <p>
-        Select images to be imported and kept in sync daily. Images will be
-        available for deploying to machines managed by MAAS.
-      </p>
+      Select images to be imported and kept in sync daily. Images will be
+      available for deployment on MAAS managed machines.
       {tooManySources && (
         <Notification data-testid="too-many-sources" severity="caution">
           More than one image source exists. The UI does not support updating
@@ -289,10 +287,10 @@ const DownloadImages: React.FC = () => {
           onSuccess={() => {
             dispatch(bootResourceActions.poll({ continuous: false }));
           }}
-          submitLabel={"Download"}
+          submitLabel="Save and sync"
         >
           {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
-            <DownloadImagesSelect
+            <SelectUpstreamImagesSelect
               groupedImages={groupedImages}
               setFieldValue={setFieldValue}
               values={values}
@@ -304,4 +302,4 @@ const DownloadImages: React.FC = () => {
   );
 };
 
-export default DownloadImages;
+export default SelectUpstreamImagesForm;

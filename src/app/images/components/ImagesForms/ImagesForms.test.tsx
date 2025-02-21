@@ -3,11 +3,7 @@ import ImagesForms from "./ImagesForms";
 import { ImageSidePanelViews } from "@/app/images/constants";
 import type { ImageSidePanelContent } from "@/app/images/types";
 import * as factory from "@/testing/factories";
-import {
-  getByTextContent,
-  renderWithBrowserRouter,
-  screen,
-} from "@/testing/utils";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("ImagesForms", () => {
   it("renders DeleteImage form", () => {
@@ -59,8 +55,8 @@ describe("ImagesForms", () => {
     );
 
     expect(
-      getByTextContent(
-        "Select images to be imported and kept in sync daily. Images will be available for deploying to machines managed by MAAS."
+      screen.getByText(
+        "Select images to be imported and kept in sync daily. Images will be available for deployment on MAAS managed machines."
       )
     ).toBeInTheDocument();
   });

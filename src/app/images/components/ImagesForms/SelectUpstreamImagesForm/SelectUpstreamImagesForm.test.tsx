@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import DownloadImages from "@/app/images/components/ImagesTable/DownloadImages/DownloadImages";
+import SelectUpstreamImagesForm from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import type { RootState } from "@/app/store/root/types";
@@ -17,8 +17,8 @@ import {
 
 const mockStore = configureStore<RootState, {}>();
 
-describe("DownloadImages", () => {
-  it("correctly sets initial values", () => {
+describe("SelectUpstreamImagesForm", () => {
+  it("correctly sets initial values", async () => {
     const ubuntu = factory.bootResourceUbuntu({
       arches: [
         {
@@ -75,9 +75,12 @@ describe("DownloadImages", () => {
       }),
     });
 
-    renderWithBrowserRouter(<DownloadImages />, {
+    renderWithBrowserRouter(<SelectUpstreamImagesForm />, {
       state,
     });
+
+    await userEvent.click(screen.getByText("Ubuntu"));
+    await userEvent.click(screen.getByText("Centos"));
 
     const rowUbuntu = within(
       screen.getByRole("row", { name: "16.04 LTS" })
@@ -154,12 +157,14 @@ describe("DownloadImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <DownloadImages />
+          <SelectUpstreamImagesForm />
         </MemoryRouter>
       </Provider>
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "Download" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save and sync" })
+    );
 
     const expectedUbuntuAction = bootResourceActions.saveUbuntu({
       osystems: [
@@ -201,7 +206,7 @@ describe("DownloadImages", () => {
         },
       }),
     });
-    renderWithBrowserRouter(<DownloadImages />, {
+    renderWithBrowserRouter(<SelectUpstreamImagesForm />, {
       state,
     });
 
