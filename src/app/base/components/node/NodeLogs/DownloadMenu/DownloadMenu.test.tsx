@@ -14,7 +14,12 @@ import {
 } from "@/app/store/scriptresult/types";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  waitFor,
+} from "@/testing/utils";
 
 vi.mock("js-file-download", () => {
   return {
@@ -24,14 +29,12 @@ vi.mock("js-file-download", () => {
 
 describe("DownloadMenu", () => {
   let state: RootState;
-  let userEvt: ReturnType<typeof userEvent.setup>;
   let machine: MachineDetails;
   let controller: ControllerDetails;
 
+  const testDate = new Date(Date.now()).toISOString().split("T")[0];
+
   beforeEach(() => {
-    vi.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
-    // Work around for RTL async events with fake timers.
-    userEvt = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     machine = factory.machineDetails({
       fqdn: "hungry-wombat.aus",
       system_id: "abc123",
@@ -70,7 +73,6 @@ describe("DownloadMenu", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-    vi.useRealTimers();
   });
 
   afterAll(() => {
@@ -79,7 +81,7 @@ describe("DownloadMenu", () => {
 
   it("is disabled if there are no downloads", () => {
     state.scriptresult.logs = {};
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     expect(
@@ -88,11 +90,11 @@ describe("DownloadMenu", () => {
   });
 
   it("does not display a YAML output item when it does not exist", async () => {
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
       screen.queryByRole("button", { name: "Machine output (YAML)" })
     ).not.toBeInTheDocument();
@@ -100,7 +102,7 @@ describe("DownloadMenu", () => {
 
   it("can display a YAML output item", async () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
-    renderWithMockStore(
+    renderWithProviders(
       <FileContext.Provider value={fileContextStore}>
         <DownloadMenu node={machine} />
       </FileContext.Provider>,
@@ -109,36 +111,35 @@ describe("DownloadMenu", () => {
       }
     );
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
       screen.getByRole("button", { name: "Machine output (YAML)" })
     ).toBeInTheDocument();
   });
 
-  it("generates a download when the installation item is clicked", async () => {
+  it("generates a download when the installation item is clicked for a machine yml", async () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
-    vi.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = vi.spyOn(fileDownload, "default");
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
-    await userEvt.click(
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(
       screen.getByRole("button", { name: "Machine output (YAML)" })
     );
     expect(downloadSpy).toHaveBeenCalledWith(
       "test yaml file",
-      "hungry-wombat.aus-machine-output-2021-03-25.yaml"
+      `hungry-wombat.aus-machine-output-${testDate}.yaml`
     );
   });
 
   it("does not display a XML output item when it does not exist", async () => {
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
       screen.queryByRole("button", { name: "Machine output (XML)" })
     ).not.toBeInTheDocument();
@@ -146,7 +147,7 @@ describe("DownloadMenu", () => {
 
   it("can display a XML output item", async () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
-    renderWithMockStore(
+    renderWithProviders(
       <FileContext.Provider value={fileContextStore}>
         <DownloadMenu node={machine} />
       </FileContext.Provider>,
@@ -155,66 +156,68 @@ describe("DownloadMenu", () => {
       }
     );
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
       screen.getByRole("button", { name: "Machine output (XML)" })
     ).toBeInTheDocument();
   });
 
-  it("generates a download when the installation item is clicked for a machine", async () => {
+  it("generates a download when the installation item is clicked for a machine xml", async () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
-    vi.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = vi.spyOn(fileDownload, "default");
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
-    await userEvt.click(
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(
       screen.getByRole("button", { name: "Machine output (XML)" })
     );
-    expect(downloadSpy).toHaveBeenCalledWith(
-      "test xml file",
-      "hungry-wombat.aus-machine-output-2021-03-25.xml"
+    await waitFor(() =>
+      expect(downloadSpy).toHaveBeenCalledWith(
+        "test xml file",
+        `hungry-wombat.aus-machine-output-${testDate}.xml`
+      )
     );
   });
 
   it("generates a download when the installation item is clicked for a controller", async () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
-    vi.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = vi.spyOn(fileDownload, "default");
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
-    await userEvt.click(
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(
       screen.getByRole("button", { name: "Machine output (XML)" })
     );
-    expect(downloadSpy).toHaveBeenCalledWith(
-      "test xml file",
-      "hungry-wombat.aus-machine-output-2021-03-25.xml"
+    await waitFor(() =>
+      expect(downloadSpy).toHaveBeenCalledWith(
+        "test xml file",
+        `hungry-wombat.aus-machine-output-${testDate}.xml`
+      )
     );
   });
 
   it("does not display an installation output item when there is no log", async () => {
     state.scriptresult.logs = {};
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
       screen.queryByRole("button", { name: Label.InstallationOutput })
     ).not.toBeInTheDocument();
   });
 
   it("can display an installation output item", async () => {
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
       screen.getByRole("button", { name: Label.InstallationOutput })
     ).toBeInTheDocument();
@@ -222,26 +225,28 @@ describe("DownloadMenu", () => {
 
   it("generates a download when the installation item is clicked", async () => {
     const downloadSpy = vi.spyOn(fileDownload, "default");
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
-    await userEvt.click(
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(
       screen.getByRole("button", { name: Label.InstallationOutput })
     );
-    expect(downloadSpy).toHaveBeenCalledWith(
-      "installation-output log",
-      "hungry-wombat.aus-installation-output-2021-03-25.log"
+    await waitFor(() =>
+      expect(downloadSpy).toHaveBeenCalledWith(
+        "installation-output log",
+        `hungry-wombat.aus-installation-output-${testDate}.log`
+      )
     );
   });
 
   it("does not display curtin logs item when there is no file", async () => {
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
       screen.queryByRole("button", { name: Label.CurtinLogs })
     ).not.toBeInTheDocument();
@@ -258,11 +263,11 @@ describe("DownloadMenu", () => {
         status: ScriptResultStatus.PASSED,
       })
     );
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
       screen.getByRole("button", { name: Label.CurtinLogs })
     ).toBeInTheDocument();
@@ -279,11 +284,11 @@ describe("DownloadMenu", () => {
         status: ScriptResultStatus.PASSED,
       })
     );
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
       screen.queryByRole("button", { name: Label.CurtinLogs })
     ).not.toBeInTheDocument();
@@ -304,16 +309,20 @@ describe("DownloadMenu", () => {
       "curtin-logs-blob"
     );
     const downloadSpy = vi.spyOn(fileDownload, "default");
-    renderWithMockStore(<DownloadMenu node={machine} />, {
+    renderWithProviders(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
-    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
-    await userEvt.click(screen.getByRole("button", { name: Label.CurtinLogs }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(
+      screen.getByRole("button", { name: Label.CurtinLogs })
+    );
     await Promise.resolve();
-    expect(downloadSpy).toHaveBeenCalledWith(
-      "curtin-logs-blob",
-      "hungry-wombat.aus-curtin-2021-03-25.tar"
+    await waitFor(() =>
+      expect(downloadSpy).toHaveBeenCalledWith(
+        "curtin-logs-blob",
+        `hungry-wombat.aus-curtin-${testDate}.tar`
+      )
     );
   });
 });
