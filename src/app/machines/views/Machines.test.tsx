@@ -21,17 +21,16 @@ import {
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
-  userEvent as userEventCore,
+  renderWithProviders,
+  userEvent,
   within,
   screen,
   render,
   waitFor,
+  renderWithBrowserRouter,
 } from "@/testing/utils";
+
 const mockStore = configureStore<RootState>();
-const userEvent = userEventCore.setup({
-  advanceTimers: vi.runAllTimers,
-});
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
   return {
@@ -184,7 +183,6 @@ describe("Machines", () => {
   });
 
   beforeEach(() => {
-    vi.useFakeTimers();
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = factory.rootState({
       general: factory.generalState({
@@ -263,7 +261,7 @@ describe("Machines", () => {
 
   it("changes the URL when the search text changes", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<Machines />, {
+    renderWithProviders(<Machines />, {
       route: "/machines?q=test+search",
       store,
     });
@@ -280,7 +278,7 @@ describe("Machines", () => {
       .mockReturnValueOnce("123456")
       .mockReturnValueOnce("78910");
     const store = mockStore(state);
-    renderWithBrowserRouter(<Machines />, { route: "/machines", store });
+    renderWithProviders(<Machines />, { route: "/machines", store });
     const expected = machineActions.fetch("123456", {
       group_collapsed: ["failed_testing"],
     });
@@ -326,7 +324,7 @@ describe("Machines", () => {
     });
     const getFetchActions = () =>
       store.getActions().filter((action) => action.type === expected.type);
-    renderWithBrowserRouter(<Machines />, { route: "/machines", store });
+    renderWithProviders(<Machines />, { route: "/machines", store });
 
     const initialFetchActions = getFetchActions();
     await waitFor(() => expect(initialFetchActions).toHaveLength(1));
@@ -342,7 +340,7 @@ describe("Machines", () => {
 
   it("can store the group in local storage", async () => {
     const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(<Machines />, {
+    const { unmount } = renderWithProviders(<Machines />, {
       route: "/machines",
       store,
     });
@@ -354,7 +352,7 @@ describe("Machines", () => {
     // Render another machine list, this time it should restore the value
     // set by the select.
     const store2 = mockStore(state);
-    renderWithBrowserRouter(<Machines />, {
+    renderWithProviders(<Machines />, {
       route: "/machines",
       store: store2,
     });
@@ -366,7 +364,7 @@ describe("Machines", () => {
     localStorage.setItem("grouping", '"invalid_value"');
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
-    renderWithBrowserRouter(<Machines />, { store });
+    renderWithProviders(<Machines />, { store });
     expect(screen.getByRole("combobox", { name: /Group by/ })).toHaveValue(
       DEFAULTS.grouping
     );
@@ -389,7 +387,7 @@ describe("Machines", () => {
       "mocked-nanoid-2": machineList,
     };
     const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(<Machines />, {
+    const { unmount } = renderWithProviders(<Machines />, {
       route: "/machines",
       store,
     });
@@ -412,7 +410,7 @@ describe("Machines", () => {
     // hidden group state.
     unmount();
     const store2 = mockStore(state);
-    renderWithBrowserRouter(<Machines />, {
+    renderWithProviders(<Machines />, {
       route: "/machines",
       store: store2,
     });
@@ -446,7 +444,7 @@ describe("Machines", () => {
   });
 
   it("correctly sets the search text for workload annotation filters", async () => {
-    renderWithBrowserRouter(<Machines />, { route: "/machines", state });
+    renderWithProviders(<Machines />, { route: "/machines", state });
 
     await userEvent.click(screen.getByRole("button", { name: "Filters" }));
     await userEvent.click(screen.getByRole("tab", { name: "Workload" }));

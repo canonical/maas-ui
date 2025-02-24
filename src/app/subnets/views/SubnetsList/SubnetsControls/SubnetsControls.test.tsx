@@ -7,13 +7,13 @@ it("calls handleSearch with a correct value on user input", async () => {
   // setTimeout delay during its execution. Since vi.useFakeTimers() replaces
   // the original timer functions, userEvent waits indefinitely. We overwrite
   // this default delay behaviour by setting it to null during setup.
-  vi.useFakeTimers();
-  const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
   const handleSearch = vi.fn();
   render(<SubnetsControls groupBy="fabric" handleSearch={handleSearch} />);
-  await user.type(screen.getByRole("searchbox", { name: "Search" }), "test");
+  await userEvent.type(
+    screen.getByRole("searchbox", { name: "Search" }),
+    "test"
+  );
 
   await waitFor(() => expect(handleSearch).toHaveBeenCalledTimes(1));
   expect(handleSearch).toHaveBeenCalledWith("test");
-  vi.useRealTimers();
 });
