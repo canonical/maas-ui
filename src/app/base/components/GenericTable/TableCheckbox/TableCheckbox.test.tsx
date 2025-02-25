@@ -71,7 +71,7 @@ describe("TableCheckbox.All", () => {
       ...tableProps,
     };
 
-    // @ts-ignore
+    // @ts-expect-error we're not mocking the entire table object, just the parts we need
     return { ...render(<TableCheckbox.All table={mockTable} />), mockTable };
   };
 
@@ -166,7 +166,7 @@ describe("TableCheckbox", () => {
       getToggleSelectedHandler: vi.fn(),
       ...rowProps,
     };
-    // @ts-ignore
+    // @ts-expect-error we're not mocking the entire row object, just the parts we need
     return { ...render(<TableCheckbox row={mockRow} />), mockRow };
   };
 

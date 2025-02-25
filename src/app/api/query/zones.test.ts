@@ -85,7 +85,7 @@ describe("useCreateZone", () => {
 
   it("should return error if data is missing", async () => {
     const { result } = renderHookWithProviders(() => useCreateZone());
-    // @ts-ignore
+    // @ts-expect-error name is deliberately missing in the `body` here to force an error from useCreateZone
     result.current.mutate({ body: { description: "Missing name" } });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -93,7 +93,7 @@ describe("useCreateZone", () => {
 
   it("should return error if request body is invalid", async () => {
     const { result } = renderHookWithProviders(() => useCreateZone());
-    result.current.mutate({ body: "invalid_string" as any });
+    result.current.mutate({ body: "invalid_string" as never });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
   });
@@ -119,7 +119,7 @@ describe("useUpdateZone", () => {
 
   it("should return error if data is missing", async () => {
     const { result } = renderHookWithProviders(() => useUpdateZone());
-    // @ts-ignore
+    // @ts-expect-error name is deliberately missing in the `body` here to force an error from useUpdateZone
     result.current.mutate({ body: {}, path: { zone_id: 1 } });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -128,7 +128,7 @@ describe("useUpdateZone", () => {
   it("should return error if request body is invalid", async () => {
     const { result } = renderHookWithProviders(() => useUpdateZone());
     result.current.mutate({
-      body: "invalid_string" as any,
+      body: "invalid_string" as never,
       path: { zone_id: 1 },
     });
 

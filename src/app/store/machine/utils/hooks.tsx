@@ -206,8 +206,9 @@ export const useSelectedMachinesActionsDispatch = ({
     !isSingleFilter ? { items: selectedMachines?.items } : null
   );
 
-  // TODO: add strict action type for useSelectedMachinesActionsDispatch https://warthogs.atlassian.net/browse/MAASENG-2121
   const dispatch = useCallback(
+    // TODO: add strict action type for useSelectedMachinesActionsDispatch https://warthogs.atlassian.net/browse/MAASENG-2121
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (action: (...args: any[]) => AnyAction, args?: Record<string, unknown>) => {
       if (groupFilters) {
         groupsDispatch(

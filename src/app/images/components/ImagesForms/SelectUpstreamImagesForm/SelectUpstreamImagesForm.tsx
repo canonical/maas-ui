@@ -5,6 +5,7 @@ import { Notification, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
+import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -289,7 +290,10 @@ const SelectUpstreamImagesForm = () => {
           }}
           submitLabel="Save and sync"
         >
-          {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
+          {({
+            values,
+            setFieldValue,
+          }: Pick<DownloadImagesSelectProps, "values" | "setFieldValue">) => (
             <SelectUpstreamImagesSelect
               groupedImages={groupedImages}
               setFieldValue={setFieldValue}

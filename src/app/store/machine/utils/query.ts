@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// sortObjectKeys is a recursive function that can take any object as input; we don't know the shape of the object, so we need to use `any`
 import type { FetchParams } from "../types";
 
 import { mapSortDirection } from "./common";
