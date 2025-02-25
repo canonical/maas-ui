@@ -2,7 +2,10 @@ import { http, HttpResponse } from "msw";
 
 import { BASE_URL } from "../utils";
 
-import { type ListUserSshkeysResponse } from "@/app/apiclient";
+import type {
+  ListUserSshkeysError,
+  ListUserSshkeysResponse,
+} from "@/app/apiclient";
 import { sshKeyV3 as sshKeyFactory } from "@/testing/factories";
 
 const initialMockSshKeys: ListUserSshkeysResponse = {
@@ -32,6 +35,12 @@ const initialMockSshKeys: ListUserSshkeysResponse = {
   total: 3,
 };
 
+const mockListSshKeysError: ListUserSshkeysError = {
+  message: "Unauthorized",
+  code: 401,
+  kind: "Error", // This will always be 'Error' for every error response
+};
+
 let mockSshKeys = structuredClone(initialMockSshKeys);
 
 const sshKeyResolvers = {
@@ -41,6 +50,11 @@ const sshKeyResolvers = {
       http.get(`${BASE_URL}MAAS/a/v3/users/me/sshkeys`, () => {
         sshKeyResolvers.listSshKeys.resolved = true;
         return HttpResponse.json(data);
+      }),
+    error: (error: ListUserSshkeysError = mockListSshKeysError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users/me/sshkeys`, () => {
+        sshKeyResolvers.listSshKeys.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
       }),
   },
 };

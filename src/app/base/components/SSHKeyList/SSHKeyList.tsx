@@ -65,10 +65,7 @@ const generateKeyCols = (keys: SshKeyResponse[]) => {
   );
 };
 
-export const generateRows = (
-  sshkeys: SshKeyResponse[],
-  navigate: NavigateFunction
-) =>
+const generateRows = (sshkeys: SshKeyResponse[], navigate: NavigateFunction) =>
   groupBySource(sshkeys).map(([id, group]) => {
     const ids: number[] = group.keys.map((key: SshKeyResponse) => key.id);
     return {
@@ -117,10 +114,9 @@ const SSHKeyList = ({ ...tableProps }: Props): JSX.Element => {
 
   return (
     <>
-      {/* TODO: actually pass the failure reason once we have types that support it */}
       {failureReason && (
         <Notification severity="negative" title="Error:">
-          {"An error occurred."}
+          {failureReason.message}
         </Notification>
       )}
       <SettingsTable

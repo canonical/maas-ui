@@ -74,13 +74,17 @@ describe("SSHKeyList", () => {
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
-  // fix this when error types are fixed in client
-  it.skip("can display errors", () => {
-    // state.sshkey.errors = "Unable to list SSH keys.";
+  it("can display errors", async () => {
+    mockServer.use(
+      sshKeyResolvers.listSshKeys.error({ message: "Uh oh!", code: 400 })
+    );
+
     renderWithProviders(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
     });
-    expect(screen.getByText("Unable to list SSH keys.")).toBeInTheDocument();
+
+    await waitForLoading();
+    expect(screen.getByText("Uh oh!")).toBeInTheDocument();
   });
 
   it("can group keys", async () => {
