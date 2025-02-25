@@ -194,7 +194,7 @@ export {
 export { script } from "./script";
 export { service } from "./service";
 export { space } from "./space";
-export { sshKey } from "./sshkey";
+export { sshKey, sshKeyV3 } from "./sshkey";
 export { sslKey } from "./sslkey";
 export { staticRoute } from "./staticroute";
 export {

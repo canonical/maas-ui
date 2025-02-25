@@ -12,6 +12,10 @@ import {
   accessToken,
   login,
   listEvents,
+  listDomains,
+  createDomain,
+  deleteDomain,
+  getDomain,
   listFabrics,
   createFabric,
   deleteFabric,
@@ -82,6 +86,16 @@ import type {
   ListEventsData,
   ListEventsError,
   ListEventsResponse,
+  ListDomainsData,
+  ListDomainsError,
+  ListDomainsResponse,
+  CreateDomainData,
+  CreateDomainError,
+  CreateDomainResponse,
+  DeleteDomainData,
+  DeleteDomainError,
+  DeleteDomainResponse,
+  GetDomainData,
   ListFabricsData,
   ListFabricsError,
   ListFabricsResponse,
@@ -428,6 +442,152 @@ export const listEventsInfiniteOptions = (
       queryKey: listEventsInfiniteQueryKey(options),
     }
   );
+};
+
+export const listDomainsQueryKey = (options?: Options<ListDomainsData>) => [
+  createQueryKey("listDomains", options),
+];
+
+export const listDomainsOptions = (options?: Options<ListDomainsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listDomains({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listDomainsQueryKey(options),
+  });
+};
+
+export const listDomainsInfiniteQueryKey = (
+  options?: Options<ListDomainsData>
+): QueryKey<Options<ListDomainsData>> => [
+  createQueryKey("listDomains", options, true),
+];
+
+export const listDomainsInfiniteOptions = (
+  options?: Options<ListDomainsData>
+) => {
+  return infiniteQueryOptions<
+    ListDomainsResponse,
+    ListDomainsError,
+    InfiniteData<ListDomainsResponse>,
+    QueryKey<Options<ListDomainsData>>,
+    | number
+    | Pick<
+        QueryKey<Options<ListDomainsData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListDomainsData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listDomains({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listDomainsInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createDomainQueryKey = (options: Options<CreateDomainData>) => [
+  createQueryKey("createDomain", options),
+];
+
+export const createDomainOptions = (options: Options<CreateDomainData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createDomain({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createDomainQueryKey(options),
+  });
+};
+
+export const createDomainMutation = (
+  options?: Partial<Options<CreateDomainData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    CreateDomainResponse,
+    CreateDomainError,
+    Options<CreateDomainData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createDomain({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deleteDomainMutation = (
+  options?: Partial<Options<DeleteDomainData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeleteDomainResponse,
+    DeleteDomainError,
+    Options<DeleteDomainData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteDomain({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getDomainQueryKey = (options: Options<GetDomainData>) => [
+  createQueryKey("getDomain", options),
+];
+
+export const getDomainOptions = (options: Options<GetDomainData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getDomain({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getDomainQueryKey(options),
+  });
 };
 
 export const listFabricsQueryKey = (options?: Options<ListFabricsData>) => [
