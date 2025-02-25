@@ -46,7 +46,7 @@ export const useFormikErrors = <V = AnyObject, E = null>(
  * @param allowUnchanged - Whether the form is enabled even when unchanged.
  * @returns Form is disabled.
  */
-export const useFormikFormDisabled = <V extends {}>({
+export const useFormikFormDisabled = <V extends object>({
   allowAllEmpty = false,
   allowUnchanged = false,
 }: {

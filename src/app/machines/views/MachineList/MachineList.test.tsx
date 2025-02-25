@@ -17,7 +17,7 @@ import {
 import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, fireEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");

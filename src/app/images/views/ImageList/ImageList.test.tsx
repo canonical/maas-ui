@@ -7,7 +7,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 describe("ImageList", () => {
   it("stops polling when unmounted", () => {

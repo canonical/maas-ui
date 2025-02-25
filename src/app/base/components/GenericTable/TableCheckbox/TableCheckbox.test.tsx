@@ -58,7 +58,7 @@ const getMockRow = (rowProps: Partial<Row<Image>> = {}) => {
 
 describe("TableCheckbox.All", () => {
   const renderSelectAllCheckbox = (tableProps?: {
-    getSelectedRowModel: Mock<[], { rows: {}[] }>;
+    getSelectedRowModel: Mock<[], { rows: object[] }>;
     getRowCount: Mock<[], number>;
     getGroupedRowModel: Mock<[], { rows: never[] }>;
   }) => {

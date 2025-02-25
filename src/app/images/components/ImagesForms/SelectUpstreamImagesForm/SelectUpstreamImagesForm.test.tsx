@@ -15,7 +15,7 @@ import {
   renderWithBrowserRouter,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 describe("SelectUpstreamImagesForm", () => {
   it("correctly sets initial values", async () => {

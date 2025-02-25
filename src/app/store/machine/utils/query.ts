@@ -23,7 +23,7 @@ export const transformToFetchParams = (
     : null;
 };
 
-export const generateCallId = (options?: {} | null): string => {
+export const generateCallId = (options?: object | null): string => {
   return options ? JSON.stringify(sortObjectKeys(options)) : "{}";
 };
 

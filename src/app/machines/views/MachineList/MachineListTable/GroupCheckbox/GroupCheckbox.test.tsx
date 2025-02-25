@@ -8,7 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 let state: RootState;
 const callId = "123456";

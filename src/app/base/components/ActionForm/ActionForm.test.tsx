@@ -93,7 +93,7 @@ describe("ActionForm", () => {
   });
 
   it("shows correct saving label if selectedCount changes after submit", async () => {
-    const Proxy = ({ selectedCount }: Partial<ActionFormProps<{}>>) => (
+    const Proxy = ({ selectedCount }: Partial<ActionFormProps<object>>) => (
       <ActionForm
         actionName="action"
         initialValues={{}}
@@ -138,7 +138,10 @@ describe("ActionForm", () => {
   });
 
   it("displays a correct action status", () => {
-    const Proxy = ({ actionStatus, errors }: Partial<ActionFormProps<{}>>) => (
+    const Proxy = ({
+      actionStatus,
+      errors,
+    }: Partial<ActionFormProps<object>>) => (
       <ActionForm
         actionName="action"
         actionStatus={actionStatus}
@@ -164,7 +167,7 @@ describe("ActionForm", () => {
 
   it("sets saved status when processingCount drops to 0", () => {
     const onSubmit = vi.fn();
-    const Proxy = ({ processingCount }: Partial<ActionFormProps<{}>>) => (
+    const Proxy = ({ processingCount }: Partial<ActionFormProps<object>>) => (
       <ActionForm
         actionName="action"
         actionStatus="idle"
