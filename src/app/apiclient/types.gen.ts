@@ -196,10 +196,6 @@ export type FabricsListResponse = {
   kind?: string;
 };
 
-export type HttpValidationError = {
-  detail?: Array<ValidationError>;
-};
-
 /**
  * An enumeration.
  */
@@ -952,12 +948,6 @@ export type UsersListResponse = {
   kind?: string;
 };
 
-export type ValidationError = {
-  loc: Array<string | number>;
-  msg: string;
-  type: string;
-};
-
 export type ValidationErrorBodyResponse = {
   code?: number;
   message?: string;
@@ -1158,6 +1148,10 @@ export type AccessTokenErrors = {
    * Unauthorized
    */
   401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
 };
 
 export type AccessTokenError = AccessTokenErrors[keyof AccessTokenErrors];
@@ -1311,9 +1305,9 @@ export type DeleteDomainErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type DeleteDomainError = DeleteDomainErrors[keyof DeleteDomainErrors];
@@ -1440,9 +1434,9 @@ export type DeleteFabricErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type DeleteFabricError = DeleteFabricErrors[keyof DeleteFabricErrors];
@@ -2252,9 +2246,9 @@ export type DeleteSpaceErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type DeleteSpaceError = DeleteSpaceErrors[keyof DeleteSpaceErrors];
@@ -2348,9 +2342,9 @@ export type ListUserSshkeysErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type ListUserSshkeysError =
@@ -2419,9 +2413,13 @@ export type DeleteUserSshkeyErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Validation Error
+   * Precondition Failed
    */
-  422: HttpValidationError;
+  412: PreconditionFailedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
 };
 
 export type DeleteUserSshkeyError =
@@ -2452,9 +2450,9 @@ export type GetUserSshkeyErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type GetUserSshkeyError = GetUserSshkeyErrors[keyof GetUserSshkeyErrors];
@@ -2516,9 +2514,9 @@ export type GetUserSslkeysErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type GetUserSslkeysError =
@@ -2583,9 +2581,9 @@ export type DeleteUserSslkeyErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type DeleteUserSslkeyError =
@@ -2616,9 +2614,9 @@ export type GetUserSslkeyErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type GetUserSslkeyError = GetUserSslkeyErrors[keyof GetUserSslkeyErrors];
@@ -2820,6 +2818,10 @@ export type GetUserInfoErrors = {
    * Unauthorized
    */
   401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
 };
 
 export type GetUserInfoError = GetUserInfoErrors[keyof GetUserInfoErrors];
@@ -3088,9 +3090,9 @@ export type DeleteFabricVlanErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type DeleteFabricVlanError =
@@ -3253,9 +3255,9 @@ export type DeleteZoneErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Validation Error
+   * Unprocessable Entity
    */
-  422: HttpValidationError;
+  422: ValidationErrorBodyResponse;
 };
 
 export type DeleteZoneError = DeleteZoneErrors[keyof DeleteZoneErrors];
