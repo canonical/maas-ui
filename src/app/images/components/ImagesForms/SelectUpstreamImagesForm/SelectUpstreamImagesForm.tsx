@@ -111,7 +111,7 @@ export const getSyncedImages = (
 };
 
 export const groupImagesByOS = (images: DownloadableImage[]) => {
-  let imagesByOS: ImagesByOS = {};
+  const imagesByOS: ImagesByOS = {};
 
   images.forEach((image) => {
     if (!!imagesByOS[image.os]) {
@@ -131,7 +131,7 @@ export const groupImagesByOS = (images: DownloadableImage[]) => {
 };
 
 export const groupArchesByRelease = (images: ImagesByOS) => {
-  let groupedImages: GroupedImages = {};
+  const groupedImages: GroupedImages = {};
 
   Object.keys(images).forEach((distro) => {
     if (!groupedImages[distro]) {

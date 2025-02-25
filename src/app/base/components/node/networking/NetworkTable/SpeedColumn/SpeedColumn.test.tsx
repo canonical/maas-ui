@@ -30,7 +30,7 @@ describe("SpeedColumn", () => {
     });
     state.machine.items = [machine];
     renderWithMockStore(<SpeedColumn nic={nic} node={machine} />, { state });
-    // eslint-disable-next-line testing-library/no-node-access
+
     expect(document.querySelector(".p-icon--disconnected")).toBeInTheDocument();
   });
 
@@ -47,7 +47,7 @@ describe("SpeedColumn", () => {
     });
     state.machine.items = [machine];
     renderWithMockStore(<SpeedColumn nic={nic} node={machine} />, { state });
-    // eslint-disable-next-line testing-library/no-node-access
+
     expect(document.querySelector(".p-icon--warning")).toBeInTheDocument();
   });
 
@@ -62,7 +62,7 @@ describe("SpeedColumn", () => {
     });
     state.machine.items = [machine];
     renderWithMockStore(<SpeedColumn nic={nic} node={machine} />, { state });
-    // eslint-disable-next-line testing-library/no-node-access
+
     expect(
       document.querySelector("[class^='p-icon--']")
     ).not.toBeInTheDocument();

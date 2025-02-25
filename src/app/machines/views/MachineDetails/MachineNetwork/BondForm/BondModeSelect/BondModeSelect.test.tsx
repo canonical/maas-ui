@@ -83,7 +83,7 @@ describe("BondModeSelect", () => {
       },
     ];
 
-    for (var i = 0; i < expectedOptions.length; i++) {
+    for (let i = 0; i < expectedOptions.length; i++) {
       expect(bondModeOptions[i]).toHaveValue(expectedOptions[i].value);
       expect(bondModeOptions[i]).toHaveTextContent(expectedOptions[i].label);
     }

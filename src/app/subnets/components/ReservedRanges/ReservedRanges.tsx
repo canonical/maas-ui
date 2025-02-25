@@ -78,7 +78,7 @@ const generateRows = (
     const comment = getCommentDisplay(ipRange);
     const owner = getOwnerDisplay(ipRange);
     const type = getTypeDisplay(ipRange);
-    let expandedContent: ReactNode | null = null;
+    const expandedContent: ReactNode | null = null;
 
     const columns: MainTableCell[] = [
       {

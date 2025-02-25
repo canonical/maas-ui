@@ -85,8 +85,8 @@ export const getImmutableAndEditableOctets = (
   const startIpOctetList = startIp.split(".");
   const endIpOctetList = endIp.split(".");
 
-  let immutable: string[] = [];
-  let editable: string[] = [];
+  const immutable: string[] = [];
+  const editable: string[] = [];
 
   startIpOctetList.forEach((octet, index) => {
     if (octet === endIpOctetList[index]) {

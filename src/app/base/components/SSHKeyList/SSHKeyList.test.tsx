@@ -136,7 +136,7 @@ describe("SSHKeyList", () => {
       route: "/account/prefs/ssh-keys",
       state,
     });
-    let row = screen.getAllByTestId("sshkey-row")[0];
+    const row = screen.getAllByTestId("sshkey-row")[0];
     expect(row).not.toHaveClass("is-active");
     // Click on the delete button:
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);

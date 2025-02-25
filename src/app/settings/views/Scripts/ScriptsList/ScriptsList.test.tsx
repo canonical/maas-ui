@@ -221,7 +221,7 @@ describe("ScriptsList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = screen.getByRole("row", { name: "commissioning-script" });
+    const row = screen.getByRole("row", { name: "commissioning-script" });
     expect(row).not.toHaveClass("is-active");
     // Click on the delete button:
     await userEvent.click(
