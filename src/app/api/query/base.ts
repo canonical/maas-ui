@@ -5,9 +5,19 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
+import {
+  listUserSshkeysQueryKey,
+  listZonesWithSummaryQueryKey,
+} from "@/app/apiclient/@tanstack/react-query.gen";
 import { WebSocketContext } from "@/app/base/websocket-context";
 import statusSelectors from "@/app/store/status/selectors";
+import type { WebSocketEndpointModel } from "@/websocket-client";
 import { WebSocketMessageType } from "@/websocket-client";
+
+const wsToQueryKeyMapping: Partial<Record<WebSocketEndpointModel, unknown>> = {
+  zone: listZonesWithSummaryQueryKey(),
+  sshkey: listUserSshkeysQueryKey(),
+};
 
 /**
  * Provides a hook to subscribe to NOTIFY messages from the websocket.
@@ -74,10 +84,10 @@ export const useWebsocketAwareQuery = <
   }, [connectedCount, previousConnectedCount, queryClient, options]);
 
   useEffect(() => {
-    return subscribe(() => {
+    return subscribe(({ name: model }: { name: WebSocketEndpointModel }) => {
       // This mapped key is the key for the websocket notifications
       // TODO: replace with a function call to deduce the key/condition using the parameters
-      const mappedKey = "zones";
+      const mappedKey = wsToQueryKeyMapping[model];
       const modelQueryKey = options?.queryKey[0];
 
       if (mappedKey && mappedKey === modelQueryKey) {
