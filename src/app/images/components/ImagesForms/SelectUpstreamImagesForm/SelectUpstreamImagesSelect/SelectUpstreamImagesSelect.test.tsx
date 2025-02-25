@@ -106,9 +106,11 @@ describe("SelectUpstreamImagesSelect", () => {
 
     await userEvent.click(screen.getByText("Ubuntu"));
 
-    const checkboxes = screen.getAllByRole("checkbox", {
-      hidden: true,
-    });
+    const combobox = screen.getByRole("combobox");
+
+    await userEvent.click(combobox);
+
+    const checkboxes = screen.getAllByRole("checkbox");
 
     const labels = checkboxes
       .map((checkbox) => checkbox.closest("label"))
