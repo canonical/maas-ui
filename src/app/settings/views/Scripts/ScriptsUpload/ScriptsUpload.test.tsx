@@ -73,7 +73,7 @@ describe("ScriptsUpload", () => {
 
     await waitFor(() =>
       expect(
-        screen.getByText("foo.sh (2000 bytes) ready for upload.")
+        screen.getByText("./foo.sh (2000 bytes) ready for upload.")
       ).toBeInTheDocument()
     );
   });
