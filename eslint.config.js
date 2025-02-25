@@ -59,7 +59,7 @@ export default tseslint.config(
       "import/resolver": {
         typescript: {
           alias: {
-            "@": "/home/noodl/Repositories/maas-ui/src",
+            "@": path.resolve(__dirname, "src"),
           },
         },
       },
@@ -83,6 +83,10 @@ export default tseslint.config(
   })),
   {
     files: ["src/**/*.ts?(x)"],
+    plugins: {
+      "unused-imports": unusedImports,
+      react,
+    },
 
     languageOptions: {
       ecmaVersion: 2018,
@@ -201,6 +205,13 @@ export default tseslint.config(
 
     rules: {
       "react/no-multi-comp": ["off"],
+    },
+  },
+  {
+    files: ["src/app/apiclient/**/*.[jt]s?(x)"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
     },
   },
   ...compat.extends("plugin:testing-library/react").map((config) => ({
