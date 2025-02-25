@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -544,6 +544,7 @@ type TestProviderProps = {
   queryData?: { queryKey: any; data: Partial<Record<any, any>> | undefined }[];
   store?: MockStoreEnhanced<RootState | unknown>;
   route?: string;
+  history?: MemoryHistory;
 };
 
 /**
@@ -553,6 +554,7 @@ type TestProviderProps = {
  * @param state The app state used for testing
  * @param store The mock store
  * @param route The route for the test
+ * @param history The history object for navigation
  * @constructor
  */
 export const TestProvider = ({
@@ -560,20 +562,27 @@ export const TestProvider = ({
   state = factory.rootState(),
   store,
   route = "/",
+  history = createMemoryHistory({ initialEntries: [route] }),
 }: TestProviderProps) => {
-  window.history.pushState({}, "Test page", route);
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, staleTime: Infinity } },
   });
 
   const mockStore = store ?? configureStore()(state);
 
+  useEffect(() => {
+    const stopListening = history.listen(({ location }) => {
+      window.history.pushState({}, "", location.pathname + location.search);
+    });
+    return () => stopListening();
+  }, [history]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <WebSocketProvider>
         <Provider store={mockStore}>
           <SidePanelContextProvider>
-            <BrowserRouter>{children}</BrowserRouter>
+            <HistoryRouter history={history}>{children}</HistoryRouter>
           </SidePanelContextProvider>
         </Provider>
       </WebSocketProvider>
@@ -589,20 +598,27 @@ export const TestProvider = ({
  */
 export const renderWithProviders = (
   ui: ReactNode,
-  options?: Omit<RenderOptions, "wrapper"> & Partial<TestProviderProps>
+  options?: Omit<RenderOptions, "wrapper"> &
+    Partial<TestProviderProps> & { history?: MemoryHistory }
 ) => {
-  const { state, queryData, store, ...renderOptions } = options ?? {};
-  return render(ui, {
-    wrapper: (props) => (
-      <TestProvider
-        {...props}
-        queryData={queryData}
-        state={state}
-        store={store}
-      />
-    ),
-    ...renderOptions,
-  });
+  const { state, queryData, store, history, ...renderOptions } = options ?? {};
+  const testHistory = history ?? createMemoryHistory();
+
+  return {
+    ...render(ui, {
+      wrapper: (props) => (
+        <TestProvider
+          {...props}
+          history={testHistory}
+          queryData={queryData}
+          state={state}
+          store={store}
+        />
+      ),
+      ...renderOptions,
+    }),
+    history: testHistory,
+  };
 };
 
 /**

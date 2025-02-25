@@ -3,7 +3,6 @@ import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import type { Dispatch } from "redux";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import ScriptsUpload, { Labels as ScriptsUploadLabels } from "./ScriptsUpload";
@@ -19,7 +18,7 @@ import {
   render,
   waitFor,
   fireEvent,
-  renderWithMockStore,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -61,12 +60,9 @@ describe("ScriptsUpload", () => {
   it("accepts files of any mimetype", async () => {
     const files = [createFile("foo.sh", 2000, "")];
 
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ScriptsUpload type="testing" />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<ScriptsUpload type="testing" />, {
+      state,
+    });
 
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
@@ -212,12 +208,10 @@ describe("ScriptsUpload", () => {
     const history = createMemoryHistory({
       initialEntries: ["/"],
     });
-    renderWithMockStore(
-      <Router history={history}>
-        <ScriptsUpload type="commissioning" />
-      </Router>,
-      { state }
-    );
+    renderWithProviders(<ScriptsUpload type="commissioning" />, {
+      state,
+      history,
+    });
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(history.location.pathname).toBe("/settings/scripts/commissioning"); // linting errors occur if you use settingsUrls.scripts
   });
@@ -226,12 +220,7 @@ describe("ScriptsUpload", () => {
     const history = createMemoryHistory({
       initialEntries: ["/"],
     });
-    renderWithMockStore(
-      <Router history={history}>
-        <ScriptsUpload type="testing" />
-      </Router>,
-      { state }
-    );
+    renderWithProviders(<ScriptsUpload type="testing" />, { state, history });
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(history.location.pathname).toBe("/settings/scripts/testing"); // linting errors occur if you use settingsUrls.scripts
   });
