@@ -9,7 +9,7 @@ import SelectUpstreamImagesSelect from "@/app/images/components/ImagesForms/Sele
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, userEvent, renderWithMockStore } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 describe("SelectUpstreamImagesSelect", () => {
   let state: RootState;
@@ -50,7 +50,7 @@ describe("SelectUpstreamImagesSelect", () => {
     );
     const imagesByOS = groupImagesByOS(downloadableImages);
     const groupedImages = groupArchesByRelease(imagesByOS);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
           <SelectUpstreamImagesSelect
@@ -91,7 +91,7 @@ describe("SelectUpstreamImagesSelect", () => {
     );
     const imagesByOS = groupImagesByOS(downloadableImages);
     const groupedImages = groupArchesByRelease(imagesByOS);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
           <SelectUpstreamImagesSelect
