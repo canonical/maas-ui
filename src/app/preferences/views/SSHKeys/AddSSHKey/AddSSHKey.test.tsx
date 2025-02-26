@@ -1,48 +1,43 @@
 import { createMemoryHistory } from "history";
-import { MemoryRouter } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 
 import { AddSSHKey, Label as AddSSHKeyLabels } from "./AddSSHKey";
 
 import urls from "@/app/base/urls";
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
+import {
+  screen,
+  renderWithProviders,
+  userEvent,
+  setupMockServer,
+} from "@/testing/utils";
+
+setupMockServer(sshKeyResolvers.createSshKey.handler());
 
 describe("AddSSHKey", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = factory.rootState({
-      sshkey: factory.sshKeyState({
-        loading: false,
-        loaded: true,
-        items: [],
-      }),
-    });
-  });
-
   it("can render", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={["/"]}>
-        <AddSSHKey />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<AddSSHKey />);
     expect(
       screen.getByRole("form", { name: AddSSHKeyLabels.FormLabel })
     ).toBeInTheDocument();
   });
 
-  it("redirects when the SSH key is saved", () => {
-    state.sshkey.saved = true;
+  it("redirects when the SSH key is saved", async () => {
     const history = createMemoryHistory({ initialEntries: ["/"] });
-    renderWithMockStore(
-      <Router history={history}>
-        <AddSSHKey />
-      </Router>,
-      { state }
+    renderWithProviders(<AddSSHKey />, { history });
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Source" }),
+      "upload"
     );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Public key" }),
+      "ssh-rsa..."
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Import SSH key" })
+    );
+
     expect(history.location.pathname).toBe(urls.preferences.sshKeys.index);
   });
 });

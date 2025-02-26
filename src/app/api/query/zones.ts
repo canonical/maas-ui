@@ -60,9 +60,7 @@ export const useGetZone = (options: Options<GetZoneData>) => {
   );
 };
 
-export const useCreateZone = (
-  mutationOptions?: Partial<Options<CreateZoneData>>
-) => {
+export const useCreateZone = (mutationOptions?: Options<CreateZoneData>) => {
   const queryClient = useQueryClient();
   return useMutation<
     CreateZoneResponse,
@@ -78,9 +76,7 @@ export const useCreateZone = (
   });
 };
 
-export const useUpdateZone = (
-  mutationOptions?: Partial<Options<UpdateZoneData>>
-) => {
+export const useUpdateZone = (mutationOptions?: Options<UpdateZoneData>) => {
   const queryClient = useQueryClient();
   return useMutation<
     UpdateZoneResponse,
@@ -94,9 +90,7 @@ export const useUpdateZone = (
   });
 };
 
-export const useDeleteZone = (
-  mutationOptions?: Partial<Options<DeleteZoneData>>
-) => {
+export const useDeleteZone = (mutationOptions?: Options<DeleteZoneData>) => {
   const queryClient = useQueryClient();
   return useMutation<
     DeleteZoneResponse,

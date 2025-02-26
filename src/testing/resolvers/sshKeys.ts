@@ -3,6 +3,8 @@ import { http, HttpResponse } from "msw";
 import { BASE_URL } from "../utils";
 
 import type {
+  CreateUserSshkeysError,
+  ImportUserSshkeysError,
   ListUserSshkeysError,
   ListUserSshkeysResponse,
 } from "@/app/apiclient";
@@ -41,6 +43,18 @@ const mockListSshKeysError: ListUserSshkeysError = {
   kind: "Error", // This will always be 'Error' for every error response
 };
 
+const mockCreateSshKeysError: CreateUserSshkeysError = {
+  message: "An SSH key with this fingerprint already exists.",
+  code: 409,
+  kind: "Error",
+};
+
+const mockImportSshKeysError: ImportUserSshkeysError = {
+  message: "Internal server error",
+  code: 500,
+  kind: "Error",
+};
+
 let mockSshKeys = structuredClone(initialMockSshKeys);
 
 const sshKeyResolvers = {
@@ -54,6 +68,32 @@ const sshKeyResolvers = {
     error: (error: ListUserSshkeysError = mockListSshKeysError) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/me/sshkeys`, () => {
         sshKeyResolvers.listSshKeys.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  createSshKey: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/users/me/sshkeys`, () => {
+        sshKeyResolvers.createSshKey.resolved = true;
+        return HttpResponse.json({});
+      }),
+    error: (error: CreateUserSshkeysError = mockCreateSshKeysError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/users/me/sshkeys`, () => {
+        sshKeyResolvers.createSshKey.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  importSshKey: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/users/me/sshkeys:import`, () => {
+        sshKeyResolvers.importSshKey.resolved = true;
+        return HttpResponse.json({});
+      }),
+    error: (error: ImportUserSshkeysError = mockImportSshKeysError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/users/me/sshkeys:import`, () => {
+        sshKeyResolvers.importSshKey.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
