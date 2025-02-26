@@ -1,33 +1,22 @@
-import configureStore from "redux-mock-store";
-
 import { SSHKeyForm } from "./SSHKeyForm";
 
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
+import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
   userEvent,
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
+  setupMockServer,
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
+const mockServer = setupMockServer(
+  sshKeyResolvers.createSshKey.handler(),
+  sshKeyResolvers.importSshKey.handler()
+);
 
 describe("SSHKeyForm", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = factory.rootState({
-      sshkey: factory.sshKeyState({
-        loading: false,
-        loaded: true,
-        items: [],
-      }),
-    });
-  });
-
   it("can render", () => {
-    renderWithBrowserRouter(<SSHKeyForm />, { state });
+    renderWithProviders(<SSHKeyForm />);
     expect(
       screen.getByRole("combobox", { name: "Source" })
     ).toBeInTheDocument();
@@ -42,20 +31,8 @@ describe("SSHKeyForm", () => {
     ).toBeInTheDocument();
   });
 
-  it("cleans up when unmounting", async () => {
-    const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(<SSHKeyForm />, { store });
-
-    unmount();
-
-    expect(
-      store.getActions().some((action) => action.type === "sshkey/cleanup")
-    ).toBe(true);
-  });
-
   it("can upload an SSH key", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<SSHKeyForm />, { store });
+    renderWithProviders(<SSHKeyForm />);
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Source" }),
@@ -70,27 +47,13 @@ describe("SSHKeyForm", () => {
       screen.getByRole("button", { name: "Import SSH key" })
     );
 
-    expect(
-      store.getActions().find((action) => action.type === "sshkey/create")
-    ).toStrictEqual({
-      type: "sshkey/create",
-      payload: {
-        params: {
-          auth_id: "",
-          key: "ssh-rsa...",
-          protocol: "upload",
-        },
-      },
-      meta: {
-        model: "sshkey",
-        method: "create",
-      },
+    await waitFor(() => {
+      expect(sshKeyResolvers.createSshKey.resolved).toBeTruthy();
     });
   });
 
   it("can import an SSH key", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<SSHKeyForm />, { store });
+    renderWithProviders(<SSHKeyForm />);
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Source" }),
@@ -106,28 +69,41 @@ describe("SSHKeyForm", () => {
       screen.getByRole("button", { name: "Import SSH key" })
     );
 
-    expect(
-      store.getActions().find((action) => action.type === "sshkey/import")
-    ).toStrictEqual({
-      type: "sshkey/import",
-      payload: {
-        params: {
-          auth_id: "wallaroo",
-          key: "",
-          protocol: "lp",
-        },
-      },
-      meta: {
-        model: "sshkey",
-        method: "import_keys",
-      },
+    await waitFor(() => {
+      expect(sshKeyResolvers.importSshKey.resolved).toBeTruthy();
     });
   });
 
-  it("adds a message when a SSH key is added", async () => {
-    state.sshkey.saved = true;
-    const store = mockStore(state);
-    renderWithBrowserRouter(<SSHKeyForm />, { store });
+  it("can display errors when uploading an SSH key", async () => {
+    mockServer.use(
+      sshKeyResolvers.createSshKey.error({ message: "Uh oh!", code: 406 })
+    );
+    renderWithProviders(<SSHKeyForm />);
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Source" }),
+      "upload"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Public key" }),
+      "ssh-rsa..."
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Import SSH key" })
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("Uh oh!")).toBeInTheDocument();
+    });
+  });
+
+  it("can display errors when importing an SSH key", async () => {
+    mockServer.use(
+      sshKeyResolvers.importSshKey.error({ message: "Uh oh!", code: 406 })
+    );
+    renderWithProviders(<SSHKeyForm />);
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Source" }),
@@ -143,13 +119,8 @@ describe("SSHKeyForm", () => {
       screen.getByRole("button", { name: "Import SSH key" })
     );
 
-    await waitFor(() =>
-      expect(
-        store.getActions().some((action) => action.type === "sshkey/cleanup")
-      ).toBe(true)
-    );
-    expect(
-      store.getActions().some((action) => action.type === "message/add")
-    ).toBe(true);
+    await waitFor(() => {
+      expect(screen.getByText("Uh oh!")).toBeInTheDocument();
+    });
   });
 });
