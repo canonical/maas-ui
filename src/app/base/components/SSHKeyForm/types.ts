@@ -1,7 +1,7 @@
-import type { KeySource, SSHKey } from "@/app/store/sshkey/types";
+import type { SshKeyResponse } from "@/app/apiclient";
 
 export type SSHKeyFormValues = {
-  protocol: KeySource["protocol"];
-  auth_id: KeySource["auth_id"];
-  key: SSHKey["key"];
+  protocol: SshKeyResponse["protocol"];
+  auth_id: SshKeyResponse["auth_id"];
+  key: SshKeyResponse["key"];
 };
