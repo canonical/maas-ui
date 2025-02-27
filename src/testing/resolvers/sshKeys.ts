@@ -9,7 +9,7 @@ import type {
   ListUserSshkeysError,
   ListUserSshkeysResponse,
 } from "@/app/apiclient";
-import { sshKeyV3 as sshKeyFactory } from "@/testing/factories";
+import { sshKey as sshKeyFactory } from "@/testing/factories";
 
 const initialMockSshKeys: ListUserSshkeysResponse = {
   items: [
