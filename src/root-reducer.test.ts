@@ -14,8 +14,12 @@ describe("rootReducer", () => {
       type: "status/logoutSuccess",
     });
 
+    const expectedState = createRootReducer(
+      vi.fn().mockReturnValue(factory.routerState())
+    )(factory.rootState(), { type: "status/logoutSuccess" });
+
     expect(newState.status.authenticating).toBe(false);
-    expect(newState).toMatchSnapshot();
+    expect(newState).toStrictEqual(expectedState);
   });
 
   it("it should clear the state on status/checkAuthenticatedError", () => {
