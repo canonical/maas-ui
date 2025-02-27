@@ -1,32 +1,24 @@
 import { useOnEscapePressed } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { useDeleteSshKey } from "@/app/api/query/sshKeys";
 import type { DeleteUserSshkeyError } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/preferences/urls";
 
 const DeleteSSHKey = () => {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const onClose = () => navigate({ pathname: urls.sshKeys.index });
   useOnEscapePressed(() => onClose());
 
   const deleteSshKey = useDeleteSshKey();
 
-  const { sidePanelContent } = useSidePanel();
-
-  const getIds = () => {
-    const extras = sidePanelContent?.extras;
-    if (extras && "group" in extras && extras.group) {
-      return extras.group.keys.map((key) => key.id);
-    } else {
-      return [];
-    }
-  };
-
-  const ids = getIds();
+  const ids = searchParams
+    .get("ids")
+    ?.split(",")
+    .map((id) => Number(id));
 
   if (!ids || ids?.length === 0) {
     return <h4>SSH key not found</h4>;
