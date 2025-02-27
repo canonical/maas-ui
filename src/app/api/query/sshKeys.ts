@@ -17,9 +17,13 @@ import type {
   ListUserSshkeysData,
   ListUserSshkeysError,
   ListUserSshkeysResponse,
+  DeleteUserSshkeyData,
+  DeleteUserSshkeyResponse,
+  DeleteUserSshkeyError,
 } from "@/app/apiclient";
 import {
   createUserSshkeysMutation,
+  deleteUserSshkeyMutation,
   importUserSshkeysMutation,
   listUserSshkeysOptions,
   listUserSshkeysQueryKey,
@@ -63,6 +67,24 @@ export const useImportSshKeys = (
     Options<ImportUserSshkeysData>
   >({
     ...importUserSshkeysMutation(mutationOptions),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: listUserSshkeysQueryKey(),
+      });
+    },
+  });
+};
+
+export const useDeleteSshKey = (
+  mutationOptions?: Options<DeleteUserSshkeyData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    DeleteUserSshkeyResponse,
+    DeleteUserSshkeyError,
+    Options<DeleteUserSshkeyData>
+  >({
+    ...deleteUserSshkeyMutation(mutationOptions),
     onSuccess: () => {
       void queryClient.invalidateQueries({
         queryKey: listUserSshkeysQueryKey(),
