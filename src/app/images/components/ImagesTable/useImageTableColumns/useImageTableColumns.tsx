@@ -181,7 +181,7 @@ const useImageTableColumns = ({
                     ? isCommissioningImage
                       ? "Cannot delete images of the default commissioning release."
                       : "Cannot delete images that are currently being imported."
-                    : null
+                    : "Deletes this image."
                 }
                 onDelete={() => onDelete(row)}
               />
