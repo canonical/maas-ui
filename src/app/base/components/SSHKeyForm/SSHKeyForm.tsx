@@ -49,7 +49,7 @@ export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
         } else {
           importSshKey.mutate({
             body: {
-              auth_id: values.auth_id,
+              auth_id: values.auth_id as string,
               protocol: values.protocol as SshKeysProtocolType,
             },
           });

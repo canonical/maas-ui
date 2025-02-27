@@ -4,6 +4,7 @@ import { BASE_URL } from "../utils";
 
 import type {
   CreateUserSshkeysError,
+  DeleteUserSshkeyError,
   ImportUserSshkeysError,
   ListUserSshkeysError,
   ListUserSshkeysResponse,
@@ -55,6 +56,12 @@ const mockImportSshKeysError: ImportUserSshkeysError = {
   kind: "Error",
 };
 
+const mockDeleteSshKeyError: DeleteUserSshkeyError = {
+  message: "Not found",
+  code: 404,
+  kind: "Error",
+};
+
 let mockSshKeys = structuredClone(initialMockSshKeys);
 
 const sshKeyResolvers = {
@@ -95,6 +102,19 @@ const sshKeyResolvers = {
       http.post(`${BASE_URL}MAAS/a/v3/users/me/sshkeys:import`, () => {
         sshKeyResolvers.importSshKey.resolved = true;
         return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  deleteSshKey: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/users/me/sshkeys/:id`, () => {
+        sshKeyResolvers.deleteSshKey.resolved = true;
+        return HttpResponse.json({}, { status: 204 });
+      }),
+    error: (error: DeleteUserSshkeyError = mockDeleteSshKeyError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/users/me/sshkeys/:id`, () => {
+        sshKeyResolvers.deleteSshKey.resolved = true;
+        return HttpResponse.json(error, { status: 404 });
       }),
   },
 };
