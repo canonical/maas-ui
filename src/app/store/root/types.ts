@@ -61,7 +61,6 @@ import type {
 } from "@/app/store/scriptresult/types";
 import type { ServiceState, ServiceMeta } from "@/app/store/service/types";
 import type { SpaceState, SpaceMeta } from "@/app/store/space/types";
-import type { SSHKeyState, SSHKeyMeta } from "@/app/store/sshkey/types";
 import type { SSLKeyState, SSLKeyMeta } from "@/app/store/sslkey/types";
 import type {
   StaticRouteState,
@@ -107,7 +106,6 @@ export type RootState = {
   [ScriptMeta.MODEL]: ScriptState;
   [ServiceMeta.MODEL]: ServiceState;
   [SpaceMeta.MODEL]: SpaceState;
-  [SSHKeyMeta.MODEL]: SSHKeyState;
   [SSLKeyMeta.MODEL]: SSLKeyState;
   [StaticRouteMeta.MODEL]: StaticRouteState;
   [StatusMeta.MODEL]: StatusState;
