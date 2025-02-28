@@ -47,7 +47,7 @@ describe("AddVirshFields", () => {
   });
 
   it("does not show power type fields that are scoped to nodes", async () => {
-    const powerTypes = [
+    state.general.powerTypes.data = [
       factory.powerType({
         description: "Virsh (virtual systems)",
         fields: [
@@ -65,7 +65,6 @@ describe("AddVirshFields", () => {
         name: PowerTypeNames.VIRSH,
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
 
     renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       state,
