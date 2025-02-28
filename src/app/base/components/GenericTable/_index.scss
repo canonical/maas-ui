@@ -7,15 +7,12 @@
   }
 
   .group-select,
-  .select {
+  .select,
+  .select-alignment {
     width: 2rem;
   }
 
   th.select {
     display: none;
-  }
-
-  th:not(.release):not(.group-select) {
-    padding-left: 2rem;
   }
 }

@@ -167,8 +167,11 @@ const GenericTable = <T extends { id: string | number }>({
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
-            {headerGroup.headers.filter(filterHeaders).map((header) => (
-              <TableHeader header={header} key={header.id} />
+            {headerGroup.headers.filter(filterHeaders).map((header, index) => (
+              <>
+                <TableHeader header={header} key={header.id} />
+                {index === 2 ? <th className="select-alignment" /> : null}
+              </>
             ))}
           </tr>
         ))}
