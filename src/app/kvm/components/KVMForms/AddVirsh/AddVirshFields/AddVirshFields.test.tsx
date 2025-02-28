@@ -1,6 +1,5 @@
 import AddVirsh from "../AddVirsh";
 
-import { listZonesWithSummaryQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import { ConfigNames } from "@/app/store/config/types";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope } from "@/app/store/general/types";
@@ -18,9 +17,6 @@ setupMockServer(zoneResolvers.listZones.handler());
 
 describe("AddVirshFields", () => {
   let state: RootState;
-  const queryData = [
-    { queryKey: listZonesWithSummaryQueryKey(), data: [factory.zone()] },
-  ];
   beforeEach(() => {
     state = factory.rootState({
       config: factory.configState({
@@ -68,7 +64,6 @@ describe("AddVirshFields", () => {
 
     renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       state,
-      queryData,
       route: "/machines/chassis/add",
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
