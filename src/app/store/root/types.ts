@@ -77,7 +77,6 @@ import type {
   VMClusterMeta,
   VMClusterState,
 } from "@/app/store/vmcluster/types";
-import type { ZoneState, ZoneMeta } from "@/app/store/zone/types";
 
 export type RootState = {
   [BootResourceMeta.MODEL]: BootResourceState;
@@ -117,5 +116,4 @@ export type RootState = {
   [UserMeta.MODEL]: UserState;
   [VLANMeta.MODEL]: VLANState;
   [VMClusterMeta.MODEL]: VMClusterState;
-  [ZoneMeta.MODEL]: ZoneState;
 };

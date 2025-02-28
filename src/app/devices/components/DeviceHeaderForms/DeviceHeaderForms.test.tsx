@@ -5,7 +5,7 @@ import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   waitFor,
   setupMockServer,
 } from "@/testing/utils";
@@ -23,11 +23,8 @@ describe("DeviceHeaderForms", () => {
         items: [factory.subnet({ id: 0, name: "subnet" })],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeviceHeaderForms
         devices={[]}
         setSidePanelContent={vi.fn()}

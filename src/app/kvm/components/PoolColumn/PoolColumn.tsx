@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 
 import { useGetZone } from "@/app/api/query/zones";
+import type { ZoneResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import poolSelectors from "@/app/store/resourcepool/selectors";
 import type {
@@ -8,11 +9,10 @@ import type {
   ResourcePoolMeta,
 } from "@/app/store/resourcepool/types";
 import type { RootState } from "@/app/store/root/types";
-import type { Zone, ZoneMeta } from "@/app/store/zone/types";
 
 type Props = {
   poolId?: ResourcePool[ResourcePoolMeta.PK] | null;
-  zoneId?: Zone[ZoneMeta.PK] | null;
+  zoneId?: ZoneResponse["id"] | null;
 };
 
 const PoolColumn = ({ poolId, zoneId }: Props): JSX.Element | null => {

@@ -46,8 +46,6 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
 } from "@/testing/factories";
 
 export type InitialData = Partial<Record<QueryModel, unknown>>;
@@ -366,9 +364,6 @@ export const getTestState = (): RootState => {
     vlan: vlanStateFactory({
       items: [nonBootVlan, bootVlan],
       loaded: true,
-    }),
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
     }),
   });
 };

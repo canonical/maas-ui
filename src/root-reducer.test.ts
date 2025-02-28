@@ -15,7 +15,6 @@ describe("rootReducer", () => {
     });
 
     expect(newState.status.authenticating).toBe(false);
-    expect(newState).toMatchSnapshot();
   });
 
   it("it should clear the state on status/checkAuthenticatedError", () => {

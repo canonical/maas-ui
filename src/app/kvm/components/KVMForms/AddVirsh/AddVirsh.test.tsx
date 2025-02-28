@@ -9,6 +9,7 @@ import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -46,9 +47,6 @@ describe("AddVirsh", () => {
         items: [factory.resourcePool({ id: 0 })],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
@@ -77,7 +75,7 @@ describe("AddVirsh", () => {
 
   it("displays a spinner if data hasn't loaded yet", () => {
     state.general.powerTypes.loaded = false;
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -87,7 +85,7 @@ describe("AddVirsh", () => {
   it("displays a message if virsh is not supported", async () => {
     state.general.powerTypes.data = [];
     state.general.powerTypes.loaded = true;
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });

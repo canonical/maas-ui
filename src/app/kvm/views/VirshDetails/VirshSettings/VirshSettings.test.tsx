@@ -19,7 +19,6 @@ describe("VirshSettings", () => {
       tag: factory.tagState({
         loaded: true,
       }),
-      zone: factory.zoneState({}),
     });
   });
 

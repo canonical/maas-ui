@@ -1,31 +1,21 @@
 import SetZoneForm from "./SetZoneForm";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
   waitFor,
-  renderWithBrowserRouter,
   setupMockServer,
+  renderWithProviders,
 } from "@/testing/utils";
 
-let state: RootState;
 setupMockServer(zoneResolvers.listZones.handler());
-
-beforeEach(() => {
-  state = factory.rootState({
-    zone: factory.zoneState({
-      genericActions: factory.zoneGenericActions({ fetch: "success" }),
-    }),
-  });
-});
 
 describe("SetZoneForm", () => {
   it("initialises zone value if exactly one node provided", async () => {
     const nodes = [factory.machine({ zone: factory.modelRef({ id: 1 }) })];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SetZoneForm
         clearSidePanelContent={vi.fn()}
         modelName="machine"
@@ -33,8 +23,7 @@ describe("SetZoneForm", () => {
         onSubmit={vi.fn()}
         processingCount={0}
         viewingDetails={false}
-      />,
-      { state }
+      />
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
@@ -46,7 +35,7 @@ describe("SetZoneForm", () => {
       factory.machine({ zone: factory.modelRef({ id: 0 }) }),
       factory.machine({ zone: factory.modelRef({ id: 1 }) }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SetZoneForm
         clearSidePanelContent={vi.fn()}
         modelName="machine"
@@ -54,8 +43,7 @@ describe("SetZoneForm", () => {
         onSubmit={vi.fn()}
         processingCount={0}
         viewingDetails={false}
-      />,
-      { state }
+      />
     );
 
     expect(screen.getByRole("combobox", { name: "Zone" })).toHaveValue("");
@@ -67,7 +55,7 @@ describe("SetZoneForm", () => {
       factory.machine({ system_id: "abc123" }),
       factory.machine({ system_id: "def456" }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SetZoneForm
         clearSidePanelContent={vi.fn()}
         modelName="machine"
@@ -75,8 +63,7 @@ describe("SetZoneForm", () => {
         onSubmit={onSubmit} // Use the actual onSubmit function
         processingCount={0}
         viewingDetails={false}
-      />,
-      { state }
+      />
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 

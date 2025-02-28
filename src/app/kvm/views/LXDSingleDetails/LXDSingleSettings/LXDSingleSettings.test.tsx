@@ -21,7 +21,6 @@ describe("LXDSingleSettings", () => {
       tag: factory.tagState({
         loaded: true,
       }),
-      zone: factory.zoneState({}),
     });
   });
 

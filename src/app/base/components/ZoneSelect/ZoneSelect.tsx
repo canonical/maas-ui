@@ -3,14 +3,14 @@ import type { HTMLProps } from "react";
 import { Select } from "@canonical/react-components";
 
 import { useZones } from "@/app/api/query/zones";
+import type { ZoneResponse } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
-import type { Zone } from "@/app/store/zone/types";
 
 type Props = {
   disabled?: boolean;
   label?: string;
   name: string;
-  valueKey?: keyof Zone;
+  valueKey?: keyof ZoneResponse;
 } & HTMLProps<HTMLSelectElement>;
 
 export enum Label {

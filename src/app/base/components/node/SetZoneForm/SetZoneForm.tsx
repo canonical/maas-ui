@@ -3,20 +3,20 @@ import * as Yup from "yup";
 
 import type { NodeActionFormProps } from "../types";
 
+import type { ZoneResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 import type { Node } from "@/app/store/types/node";
 import { NodeActions } from "@/app/store/types/node";
 import { nodeIsDevice, nodeIsMachine } from "@/app/store/utils";
-import type { Zone } from "@/app/store/zone/types";
 import { capitaliseFirst } from "@/app/utils";
 
 type Props<E = null> = NodeActionFormProps<E> & {
-  onSubmit: (zoneID: Zone["id"]) => void;
+  onSubmit: (zoneID: ZoneResponse["id"]) => void;
 };
 
 export type SetZoneFormValues = {
-  zone: Zone["id"] | "";
+  zone: ZoneResponse["id"] | "";
 };
 
 const getInitialZoneValue = (nodes: Node[]): SetZoneFormValues["zone"] => {

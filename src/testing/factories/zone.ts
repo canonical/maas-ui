@@ -1,14 +1,12 @@
-import { extend, random } from "cooky-cutter";
+import { define, random } from "cooky-cutter";
 
-import { timestampedModel } from "./model";
+import type { ZoneWithSummaryResponse } from "@/app/apiclient";
 
-import type { TimestampedModel } from "@/app/store/types/model";
-import type { Zone } from "@/app/store/zone/types";
-
-export const zone = extend<TimestampedModel, Zone>(timestampedModel, {
+export const zone = define<ZoneWithSummaryResponse>({
   controllers_count: random,
   description: "test description",
   devices_count: random,
   machines_count: random,
   name: (i: number) => `zone-${i}`,
+  id: (i: number) => i,
 });

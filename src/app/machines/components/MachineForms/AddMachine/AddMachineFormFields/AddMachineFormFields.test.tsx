@@ -4,7 +4,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -58,17 +58,14 @@ describe("AddMachineFormFields", () => {
         items: [factory.resourcePool()],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
   const renderAddMachineFormFields = async () => {
-    renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      { route: "/machines/add", state }
-    );
+    renderWithProviders(<AddMachineForm clearSidePanelContent={vi.fn()} />, {
+      route: "/machines/add",
+      state,
+    });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
   };
 

@@ -1,12 +1,12 @@
 import type { Device, DeviceDetails, DeviceNetworkInterface } from "./base";
 import type { DeviceIpAssignment, DeviceMeta } from "./enum";
 
+import type { ZoneResponse } from "@/app/apiclient";
 import type { Controller, ControllerMeta } from "@/app/store/controller/types";
 import type { Domain } from "@/app/store/domain/types";
 import type { Machine, MachineMeta } from "@/app/store/machine/types";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
-import type { Zone } from "@/app/store/zone/types";
 
 export type CreateParams = {
   description?: DeviceDetails["description"];
@@ -26,7 +26,7 @@ export type CreateParams = {
   primary_mac: Device["primary_mac"];
   swap_size?: DeviceDetails["swap_size"];
   zone?: {
-    name: Zone["name"];
+    name: ZoneResponse["name"];
   };
 };
 

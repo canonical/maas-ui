@@ -1,8 +1,8 @@
 import type { Controller, ControllerDetails, ControllerStatus } from "./base";
 import type { ControllerMeta } from "./enum";
 
+import type { ZoneResponse } from "@/app/apiclient";
 import type { PowerParameters } from "@/app/store/types/node";
-import type { Zone } from "@/app/store/zone/types";
 
 export type Action = {
   name: string;
@@ -12,7 +12,7 @@ export type Action = {
 export type CreateParams = {
   description?: Controller["description"];
   domain?: Controller["domain"];
-  zone?: { name: Zone["name"] };
+  zone?: { name: ZoneResponse["name"] };
 };
 
 export type GetSummaryXmlParams = {

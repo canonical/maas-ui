@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { useZones } from "@/app/api/query/zones";
+import type { ZoneResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
 import { useToggleMenu } from "@/app/machines/hooks";
@@ -14,7 +15,6 @@ import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineMeta } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import type { Zone, ZoneMeta } from "@/app/store/zone/types";
 
 type Props = {
   onToggleMenu?: MachineMenuToggleHandler;
@@ -42,7 +42,7 @@ export const ZoneColumn = ({
   systemId,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const [updating, setUpdating] = useState<Zone[ZoneMeta.PK] | null>(null);
+  const [updating, setUpdating] = useState<ZoneResponse["id"] | null>(null);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

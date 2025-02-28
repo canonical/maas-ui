@@ -7,7 +7,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   waitFor,
@@ -17,7 +17,6 @@ setupMockServer(zoneResolvers.listZones.handler());
 
 describe("AddVirshFields", () => {
   let state: RootState;
-  const queryData = { zones: [factory.zone()] };
   beforeEach(() => {
     state = factory.rootState({
       config: factory.configState({
@@ -40,14 +39,11 @@ describe("AddVirshFields", () => {
         items: [factory.resourcePool()],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
   it("does not show power type fields that are scoped to nodes", async () => {
-    const powerTypes = [
+    state.general.powerTypes.data = [
       factory.powerType({
         description: "Virsh (virtual systems)",
         fields: [
@@ -65,11 +61,9 @@ describe("AddVirshFields", () => {
         name: PowerTypeNames.VIRSH,
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
 
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       state,
-      queryData,
       route: "/machines/chassis/add",
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());

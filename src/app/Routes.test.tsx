@@ -144,7 +144,6 @@ describe("Routes", () => {
           }),
         ],
       }),
-      zone: factory.zoneState({}),
     });
     scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
