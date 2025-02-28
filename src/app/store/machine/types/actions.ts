@@ -7,6 +7,7 @@ import type {
 } from "./base";
 import type { MachineMeta } from "./enum";
 
+import type { ZoneResponse } from "@/app/apiclient";
 import type { Prettify } from "@/app/base/types";
 import type { Domain } from "@/app/store/domain/types";
 import type { Fabric } from "@/app/store/fabric/types";
@@ -41,7 +42,6 @@ import type {
   SetZoneParams as NodeSetZoneParams,
   TestParams as NodeTestParams,
 } from "@/app/store/types/node";
-import type { Zone } from "@/app/store/zone/types";
 
 export type Action = {
   name: string;
@@ -158,7 +158,7 @@ export type CreateParams = {
   power_type: Machine["power_type"];
   pxe_mac: Machine["pxe_mac"];
   swap_size?: string;
-  zone?: { name: Zone["name"] };
+  zone?: { name: ZoneResponse["name"] };
 };
 
 export type CreatePartitionParams = {
