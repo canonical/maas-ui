@@ -11,16 +11,7 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-let state: RootState;
 setupMockServer(zoneResolvers.listZones.handler());
-
-beforeEach(() => {
-  state = factory.rootState({
-    zone: factory.zoneState({
-      genericActions: factory.zoneGenericActions({ fetch: "success" }),
-    }),
-  });
-});
 
 describe("SetZoneForm", () => {
   it("initialises zone value if exactly one node provided", async () => {

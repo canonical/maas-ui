@@ -17,7 +17,9 @@ setupMockServer(zoneResolvers.listZones.handler());
 
 describe("AddVirshFields", () => {
   let state: RootState;
-  const queryData = { zones: [factory.zone()] };
+  const queryData = [
+    { queryKey: listZonesWithSummaryQueryKey(), data: [factory.zone()] },
+  ];
   beforeEach(() => {
     state = factory.rootState({
       config: factory.configState({
@@ -39,9 +41,6 @@ describe("AddVirshFields", () => {
       resourcepool: factory.resourcePoolState({
         items: [factory.resourcePool()],
         loaded: true,
-      }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
       }),
     });
   });

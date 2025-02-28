@@ -23,9 +23,6 @@ describe("DeviceHeaderForms", () => {
         items: [factory.subnet({ id: 0, name: "subnet" })],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
     renderWithBrowserRouter(
       <DeviceHeaderForms

@@ -36,9 +36,6 @@ describe("AddDeviceForm", () => {
         ],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
@@ -63,7 +60,6 @@ describe("AddDeviceForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.zone.genericActions.fetch = "idle";
     const store = mockStore(state);
     renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
       store,

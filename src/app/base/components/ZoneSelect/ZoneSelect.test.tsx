@@ -13,7 +13,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 setupMockServer(zoneResolvers.listZones.handler());
 
 describe("ZoneSelect", () => {
@@ -30,18 +29,10 @@ describe("ZoneSelect", () => {
   });
 
   it("disables select if zones have not loaded", () => {
-    const state = factory.rootState({
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "idle" }),
-      }),
-    });
-    const store = mockStore(state);
-
     renderWithMockStore(
       <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
       </Formik>,
-      { store }
     );
 
     expect(

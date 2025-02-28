@@ -46,9 +46,6 @@ describe("AddVirsh", () => {
         items: [factory.resourcePool({ id: 0 })],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 

@@ -58,9 +58,6 @@ describe("AddMachineFormFields", () => {
         items: [factory.resourcePool()],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 

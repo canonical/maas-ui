@@ -434,25 +434,5 @@ exports[`rootReducer > should reset app to initial state on LOGOUT_SUCCESS, exce
       "getting": false,
     },
   },
-  "zone": {
-    "errors": [],
-    "genericActions": {
-      "create": "idle",
-      "fetch": "idle",
-    },
-    "items": [],
-    "modelActions": {
-      "delete": {
-        "error": [],
-        "loading": [],
-        "success": [],
-      },
-      "update": {
-        "error": [],
-        "loading": [],
-        "success": [],
-      },
-    },
-  },
 }
 `;

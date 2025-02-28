@@ -75,9 +75,6 @@ describe("AddMachineForm", () => {
         items: [factory.resourcePool({ name: "swimming" })],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 

@@ -52,9 +52,6 @@ describe("InterfacesTable", () => {
       vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 

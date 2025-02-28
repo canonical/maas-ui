@@ -33,9 +33,6 @@ describe("DeviceConfiguration", () => {
           factory.tag({ id: 2, name: "tag2" }),
         ],
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
