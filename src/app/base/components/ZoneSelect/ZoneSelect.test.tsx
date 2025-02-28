@@ -1,13 +1,10 @@
 import { Formik } from "formik";
-import configureStore from "redux-mock-store";
 
 import ZoneSelect from "./ZoneSelect";
 
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithMockStore,
+  renderWithProviders,
   screen,
   setupMockServer,
   waitFor,
@@ -17,7 +14,7 @@ setupMockServer(zoneResolvers.listZones.handler());
 
 describe("ZoneSelect", () => {
   it("renders a list of all zones", async () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
       </Formik>
@@ -29,10 +26,10 @@ describe("ZoneSelect", () => {
   });
 
   it("disables select if zones have not loaded", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
-      </Formik>,
+      </Formik>
     );
 
     expect(

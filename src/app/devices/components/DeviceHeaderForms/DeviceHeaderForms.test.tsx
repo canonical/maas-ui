@@ -5,7 +5,7 @@ import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   waitFor,
   setupMockServer,
 } from "@/testing/utils";
@@ -24,7 +24,7 @@ describe("DeviceHeaderForms", () => {
         loaded: true,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeviceHeaderForms
         devices={[]}
         setSidePanelContent={vi.fn()}

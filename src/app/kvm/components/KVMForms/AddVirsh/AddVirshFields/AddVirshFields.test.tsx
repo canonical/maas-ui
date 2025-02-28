@@ -1,5 +1,6 @@
 import AddVirsh from "../AddVirsh";
 
+import { listZonesWithSummaryQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import { ConfigNames } from "@/app/store/config/types";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope } from "@/app/store/general/types";
@@ -7,7 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   waitFor,
@@ -66,7 +67,7 @@ describe("AddVirshFields", () => {
     ];
     state.general.powerTypes.data = powerTypes;
 
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       state,
       queryData,
       route: "/machines/chassis/add",
