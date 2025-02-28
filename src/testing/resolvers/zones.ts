@@ -49,10 +49,10 @@ const isValidZoneRequest = (data: any): data is ZoneRequest =>
 const zoneResolvers = {
   listZones: {
     resolved: false,
-    handler: () =>
+    handler: (data: ZonesWithSummaryListResponse = mockZones) =>
       http.get(`${BASE_URL}MAAS/a/v3/zones_with_summary`, () => {
         zoneResolvers.listZones.resolved = true;
-        return HttpResponse.json(mockZones);
+        return HttpResponse.json(data);
       }),
   },
   getZone: {
