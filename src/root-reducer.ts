@@ -31,7 +31,6 @@ import script from "@/app/store/script";
 import scriptresult from "@/app/store/scriptresult";
 import service from "@/app/store/service";
 import space from "@/app/store/space";
-import sshkey from "@/app/store/sshkey";
 import sslkey from "@/app/store/sslkey";
 import staticroute from "@/app/store/staticroute";
 import status from "@/app/store/status";
@@ -74,7 +73,6 @@ const createAppReducer = (routerReducer: Reducer<RouterState, AnyAction>) =>
     script,
     service,
     space,
-    sshkey,
     sslkey,
     staticroute,
     status,

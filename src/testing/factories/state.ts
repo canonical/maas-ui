@@ -84,7 +84,6 @@ import type { ScriptState } from "@/app/store/script/types";
 import type { ScriptResultState } from "@/app/store/scriptresult/types";
 import type { ServiceState } from "@/app/store/service/types";
 import type { SpaceState } from "@/app/store/space/types";
-import type { SSHKeyState } from "@/app/store/sshkey/types";
 import type { SSLKeyState } from "@/app/store/sslkey/types";
 import type { StaticRouteState } from "@/app/store/staticroute/types";
 import type { StatusState } from "@/app/store/status/types";
@@ -356,11 +355,6 @@ export const scriptState = define<ScriptState>({
 export const spaceState = define<SpaceState>({
   ...defaultState,
   active: null,
-  errors: null,
-});
-
-export const sshKeyState = define<SSHKeyState>({
-  ...defaultState,
   errors: null,
 });
 
@@ -670,7 +664,6 @@ export const rootState = define<RootState>({
   script: scriptState,
   service: serviceState,
   space: spaceState,
-  sshkey: sshKeyState,
   sslkey: sslKeyState,
   staticroute: staticRouteState,
   status: statusState,

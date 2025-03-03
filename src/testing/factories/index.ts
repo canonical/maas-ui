@@ -64,7 +64,6 @@ export {
   scriptState,
   serviceState,
   spaceState,
-  sshKeyState,
   sslKeyState,
   staticRouteState,
   statusState,
@@ -189,7 +188,7 @@ export {
 export { script } from "./script";
 export { service } from "./service";
 export { space } from "./space";
-export { sshKey, sshKeyV3 } from "./sshkey";
+export { sshKey } from "./sshkey";
 export { sslKey } from "./sslkey";
 export { staticRoute } from "./staticroute";
 export {

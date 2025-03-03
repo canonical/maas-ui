@@ -16,31 +16,31 @@ import {
 
 const mockKeys = {
   items: [
-    factory.sshKeyV3({
+    factory.sshKey({
       id: 1,
       key: "ssh-rsa aabb",
       protocol: "lp",
       auth_id: "springbokparty",
     }),
-    factory.sshKeyV3({
+    factory.sshKey({
       id: 2,
       key: "ssh-rsa ccdd",
       protocol: "gh",
       auth_id: "springbokparty",
     }),
-    factory.sshKeyV3({
+    factory.sshKey({
       id: 3,
       key: "ssh-rsa eeff",
       protocol: "lp",
       auth_id: "howzit",
     }),
-    factory.sshKeyV3({
+    factory.sshKey({
       id: 4,
       key: "ssh-rsa gghh",
       protocol: "gh",
       auth_id: "springbokparty",
     }),
-    factory.sshKeyV3({
+    factory.sshKey({
       id: 5,
       key: "ssh-rsa gghh",
       protocol: undefined,
