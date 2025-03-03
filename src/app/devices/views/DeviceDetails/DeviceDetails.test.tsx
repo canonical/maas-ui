@@ -20,9 +20,6 @@ describe("DeviceDetails", () => {
         loaded: true,
         loading: false,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 

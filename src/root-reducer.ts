@@ -43,7 +43,6 @@ import { initialState as userInitialState } from "@/app/store/user/slice";
 import type { UserState } from "@/app/store/user/types";
 import vlan from "@/app/store/vlan";
 import vmcluster from "@/app/store/vmcluster";
-import zone from "@/app/store/zone";
 
 const createAppReducer = (routerReducer: Reducer<RouterState, AnyAction>) =>
   combineReducers<RootState>({
@@ -86,7 +85,6 @@ const createAppReducer = (routerReducer: Reducer<RouterState, AnyAction>) =>
     user: reduceReducers(user, auth) as Reducer<UserState>,
     vlan,
     vmcluster,
-    zone,
   });
 
 const createRootReducer =

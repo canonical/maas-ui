@@ -23,7 +23,6 @@ import type { RootState } from "@/app/store/root/types";
 import type { StatusMeta } from "@/app/store/status/types";
 import type { SubnetMeta, SubnetStatus } from "@/app/store/subnet/types";
 import type { VLANMeta, VLANStatus } from "@/app/store/vlan/types";
-import type { ZoneMeta } from "@/app/store/zone/types";
 import { objectHasKey } from "@/app/utils";
 
 export type GenericItemMeta<I> = {
@@ -54,7 +53,6 @@ export type CommonStates = Omit<
   | MsmMeta.MODEL
   | NodeScriptResultMeta.MODEL
   | StatusMeta.MODEL
-  | ZoneMeta.MODEL
 >;
 
 // Get the types of the common models. e.g. "DHCPSnippetState".
@@ -170,10 +168,6 @@ export const updateErrors = <
  * @template R - The type of the model's reducers.
  * @param name - The name of the model that matches the name in MAAS.
  * @param primaryKey - The key used to index a model e.g. "system_id".
- * @param initialState - Any additional initial state that doesn't
- *                       exist on all models.
- * @param reducers - Additional reducers or overrides for
- *                   base reducers.
  * @param setErrors - A function to update eventErrors.
  */
 // Defining the return type here means that all the reducers types get lost.
@@ -390,7 +384,6 @@ export type StatusHandlers<
  * @template I - A model that is used as an array of items on the provided
  *               state e.g. DHCPSnippet
  * @template K - A model key e.g. "id"
- * @param name - The name of the model that matches the name in MAAS.
  * @param primaryKey - The key used to index a model e.g. "id"
  *                            or "system_id".
  * @param handlers - A collection of status handlers.

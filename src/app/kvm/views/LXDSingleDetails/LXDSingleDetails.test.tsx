@@ -32,9 +32,6 @@ describe("LXDSingleDetails", () => {
       tag: factory.tagState({
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 

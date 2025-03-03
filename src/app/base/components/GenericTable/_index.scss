@@ -1,10 +1,18 @@
 .p-generic-table {
-  thead, tbody {
+
+  thead,
+  tbody {
     display: table-row-group;
     width: 100%;
   }
 
-  .group-select, .select {
+  .group-select,
+  .select,
+  .select-alignment {
     width: 2rem;
+  }
+
+  th.select {
+    display: none;
   }
 }
