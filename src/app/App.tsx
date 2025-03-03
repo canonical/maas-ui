@@ -45,7 +45,7 @@ const ConnectionStatus = () => {
     if (connectionError) {
       Sentry.captureMessage(
         `Connection Error: ${connectionError}`,
-        Sentry.Severity.Warning
+        "warning" // Sentry.Severity.Warning is deprecated
       );
     }
   }, [connectionError]);
