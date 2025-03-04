@@ -74,7 +74,7 @@
     "react-dropzone": "14.3.8",
     "react-ga4": "2.1.0",
     "react-redux": "8.1.3",
-    "react-router-dom": "6.29.0",
+    "react-router-dom": "6.30.0",
     "react-storage-hooks": "4.0.1",
     "react-useportal": "1.0.19",
     "reconnecting-websocket": "4.4.0",
@@ -172,12 +172,12 @@
     "webpack": "5.94.0"
   },
   "resolutions": {
-    "node_modules/@types/react-router-dom/@types/react": "18.3.3",
-    "@types/react": "18.3.3",
-    "@types/react-dom": "18.3.0"
+    "node_modules/@types/react-router-dom/@types/react": "18.3.18",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5"
   },
   "peerDependencies": {
-    "@types/react": "18.3.3"
+    "@types/react": "18.3.18"
   },
   "browserslist": {
     "production": [
