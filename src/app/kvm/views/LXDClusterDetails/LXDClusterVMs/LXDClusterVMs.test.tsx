@@ -18,7 +18,7 @@ vi.mock("@reduxjs/toolkit", async () => {
     nanoid: vi.fn(),
   };
 });
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 describe("LXDClusterVMs", () => {
   beforeEach(() => {

@@ -113,7 +113,7 @@ export const selectedToFilters = (
   if ("filter" in selected) {
     return selected.filter;
   }
-  let filter: Record<
+  const filter: Record<
     string,
     FilterGroupOptionType | null | (FilterGroupOptionType | null)[]
   > = {};
@@ -225,7 +225,7 @@ export const isUnconfiguredPowerType = (machine: Machine): boolean => {
 export function getNodeStatusKey(
   value: string
 ): keyof typeof NodeStatus | undefined {
-  for (let key in NodeStatus) {
+  for (const key in NodeStatus) {
     if (NodeStatus[key as keyof typeof NodeStatus] === value) {
       return key as keyof typeof NodeStatus;
     }

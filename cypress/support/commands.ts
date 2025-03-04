@@ -49,7 +49,8 @@ Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.get(".p-contextual-menu__link").contains("Machine").click();
   cy.get("input[name='hostname']").type(hostname);
   cy.get("input[name='pxe_mac']").type(generateMac());
-  cy.get("select[name='power_type']").select("manual").blur();
+  cy.get("select[name='power_type']").select("manual");
+  cy.get("select[name='power_type']").blur();
   cy.findByRole("button", { name: /save machine/i }).click();
   cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`, {
     timeout: LONG_TIMEOUT,
@@ -97,7 +98,8 @@ Cypress.Commands.add("addMachines", (hostnames: string[]) => {
   hostnames.forEach((hostname, index) => {
     cy.get("input[name='hostname']").type(hostname);
     cy.get("input[name='pxe_mac']").type(generateMac());
-    cy.get("select[name='power_type']").select("manual").blur();
+    cy.get("select[name='power_type']").select("manual");
+    cy.get("select[name='power_type']").blur();
     if (index < hostnames.length - 1) {
       cy.findByRole("button", { name: /Save and add another/i }).click();
     } else {

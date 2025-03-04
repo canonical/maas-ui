@@ -25,7 +25,7 @@ import {
   within,
   renderWithBrowserRouter,
 } from "@/testing/utils";
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 enableCallIdMocks();
 

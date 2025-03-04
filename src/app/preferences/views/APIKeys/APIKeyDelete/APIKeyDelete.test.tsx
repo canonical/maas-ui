@@ -1,11 +1,9 @@
 import APIKeyDelete from "./APIKeyDelete";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
-let state: RootState;
-state = factory.rootState({
+const state = factory.rootState({
   token: factory.tokenState({
     items: [
       factory.token({

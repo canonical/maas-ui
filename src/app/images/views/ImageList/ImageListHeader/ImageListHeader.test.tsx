@@ -220,7 +220,7 @@ describe("Select upstream images", () => {
 });
 
 describe("Stop import", () => {
-  const mockStore = configureStore<RootState, {}>();
+  const mockStore = configureStore<RootState>();
 
   it("does not show a button to stop importing ubuntu images if none are downloading", () => {
     const state = factory.rootState({

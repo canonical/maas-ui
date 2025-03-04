@@ -39,7 +39,7 @@ declare global {
   }
 }
 
-Cypress.on("uncaught:exception", (err, _runnable) => {
+Cypress.on("uncaught:exception", (err) => {
   /*
    Prevent cypress tests from failing when visiting maas.io
    due to scripts not being loaded early enough:

@@ -1,8 +1,8 @@
-const { constructURL } = require("./utils");
+import { constructURL } from "./utils";
 
 const TIMEOUT = 5000;
 
-module.exports = async function (context, commands) {
+export default async function (context, commands) {
   await commands.cdp.send("Network.setCookie", {
     domain: context.options.domain,
     name: "skipsetupintro",
@@ -23,4 +23,4 @@ module.exports = async function (context, commands) {
     TIMEOUT
   );
   await commands.wait.byXpath("//a//span[text()='admin']");
-};
+}

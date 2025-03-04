@@ -16,7 +16,7 @@ const CopyButton = ({ value }: Props): JSX.Element => {
       input.current.select();
       try {
         document.execCommand("copy");
-      } catch (err) {
+      } catch {
         // eslint-disable-next-line no-console
         console.error("Copy was unsuccessful");
       }

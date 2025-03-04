@@ -1,4 +1,4 @@
-import React from "react";
+import { createContext } from "react";
 
 // A simple map between unique keys and file strings.
 const files = new Map();
@@ -31,6 +31,6 @@ export const fileContextStore = {
 };
 
 // The context to be used by the React context providers and consumers.
-const FileContext = React.createContext(fileContextStore);
+const FileContext = createContext(fileContextStore);
 
 export default FileContext;

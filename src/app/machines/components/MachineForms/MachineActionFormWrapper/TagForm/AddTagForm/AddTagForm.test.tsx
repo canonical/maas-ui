@@ -17,7 +17,7 @@ vi.mock("@/app/tags/components/AddTagForm", () => ({
   default: (props: Props) => mockBaseAddTagForm(props),
 }));
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 let state: RootState;
 

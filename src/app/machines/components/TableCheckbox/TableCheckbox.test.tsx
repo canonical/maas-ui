@@ -127,13 +127,13 @@ it("can add additional classes to the wrapping element", () => {
     />,
     { state }
   );
-  // eslint-disable-next-line testing-library/no-node-access
+
   expect(document.querySelector(".p-form__group")).toHaveClass("extra-class");
 });
 
 it("can dispatch a generated selected state", async () => {
   const selected = { items: ["abc123", "def456"] };
-  const store = configureStore<RootState, {}>()(state);
+  const store = configureStore<RootState>()(state);
   renderWithMockStore(
     <TableCheckbox
       callId={callId}

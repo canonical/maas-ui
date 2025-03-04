@@ -1,4 +1,4 @@
-import React from "react";
+import { createElement } from "react";
 import type { ReactNode } from "react";
 
 import { Col, Row, Strip } from "@canonical/react-components";
@@ -33,7 +33,7 @@ type HeadingProps = {
 };
 
 const Heading = ({ element, id, className, children }: HeadingProps) =>
-  React.createElement(
+  createElement(
     element,
     {
       id,

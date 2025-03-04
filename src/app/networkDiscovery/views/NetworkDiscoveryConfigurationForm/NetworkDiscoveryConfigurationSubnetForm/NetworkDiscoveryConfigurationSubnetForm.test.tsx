@@ -10,7 +10,7 @@ import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 describe("NetworkDiscoveryConfigurationSubnetForm", () => {
   it("displays a spinner if subnets have not loaded", () => {

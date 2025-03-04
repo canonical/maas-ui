@@ -1,5 +1,5 @@
 import type { ReactNode, AriaAttributes } from "react";
-import React, { useEffect, useId, useRef } from "react";
+import { isValidElement, useEffect, useId, useRef } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import { Form, Notification } from "@canonical/react-components";
@@ -52,7 +52,7 @@ const generateNonFieldError = <V extends object, E = null>(
   errors?: APIError<E>
 ) => {
   if (errors) {
-    if (typeof errors === "string" || React.isValidElement(errors)) {
+    if (typeof errors === "string" || isValidElement(errors)) {
       return errors;
     } else if (typeof errors === "object") {
       if ("message" in errors) {

@@ -9,21 +9,22 @@ import urls from "@/app/base/urls";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 
-export enum Labels {
-  Domain = "Domain",
-  Authoritative = "Authoritative",
-  Hosts = "Hosts",
-  TotalRecords = "Total records",
-  Actions = "Actions",
-  AreYouSure = "Setting this domain as the default will update all existing machines (in Ready state) with the new default domain. Are you sure?",
-  SetDefault = "Set default...",
-  ConfirmSetDefault = "Set default",
-  TableAction = "Table action",
-  ContextualMenu = "Actions",
-  TableLable = "Domains table",
-  EmptyList = "No domains available.",
-  FormTitle = "Set default",
-}
+export const Labels = {
+  Domain: "Domain",
+  Authoritative: "Authoritative",
+  Hosts: "Hosts",
+  TotalRecords: "Total records",
+  Actions: "Actions",
+  AreYouSure:
+    "Setting this domain as the default will update all existing machines (in Ready state) with the new default domain. Are you sure?",
+  SetDefault: "Set default...",
+  ConfirmSetDefault: "Set default",
+  TableAction: "Table action",
+  ContextualMenu: "Actions",
+  TableLable: "Domains table",
+  EmptyList: "No domains available.",
+  FormTitle: "Set default",
+} as const;
 
 const DomainsTable = (): JSX.Element => {
   const dispatch = useDispatch();

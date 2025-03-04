@@ -64,7 +64,7 @@ describe("UsersList", () => {
       </MemoryRouter>,
       { state }
     );
-    let row = screen.getAllByTestId("user-row")[0];
+    const row = screen.getAllByTestId("user-row")[0];
     expect(
       within(row).getByRole("link", { name: /delete/i })
     ).toBeAriaDisabled();
@@ -79,7 +79,7 @@ describe("UsersList", () => {
       </MemoryRouter>,
       { state }
     );
-    let row = screen.getAllByTestId("user-row")[0];
+    const row = screen.getAllByTestId("user-row")[0];
     expect(within(row).getByRole("link", { name: "Edit" })).toHaveAttribute(
       "href",
       "/account/prefs/details"

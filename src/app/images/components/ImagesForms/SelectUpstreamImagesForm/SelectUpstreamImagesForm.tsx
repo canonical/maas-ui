@@ -5,6 +5,7 @@ import { Notification, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
+import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -111,7 +112,7 @@ export const getSyncedImages = (
 };
 
 export const groupImagesByOS = (images: DownloadableImage[]) => {
-  let imagesByOS: ImagesByOS = {};
+  const imagesByOS: ImagesByOS = {};
 
   images.forEach((image) => {
     if (!!imagesByOS[image.os]) {
@@ -131,7 +132,7 @@ export const groupImagesByOS = (images: DownloadableImage[]) => {
 };
 
 export const groupArchesByRelease = (images: ImagesByOS) => {
-  let groupedImages: GroupedImages = {};
+  const groupedImages: GroupedImages = {};
 
   Object.keys(images).forEach((distro) => {
     if (!groupedImages[distro]) {
@@ -289,7 +290,10 @@ const SelectUpstreamImagesForm = () => {
           }}
           submitLabel="Save and sync"
         >
-          {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
+          {({
+            values,
+            setFieldValue,
+          }: Pick<DownloadImagesSelectProps, "values" | "setFieldValue">) => (
             <SelectUpstreamImagesSelect
               groupedImages={groupedImages}
               setFieldValue={setFieldValue}

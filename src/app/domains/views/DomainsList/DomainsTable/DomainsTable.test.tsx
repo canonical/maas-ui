@@ -105,7 +105,7 @@ describe("DomainsTable", () => {
       </Provider>
     );
 
-    let row = screen.getByRole("row", { name: "a" });
+    const row = screen.getByRole("row", { name: "a" });
     // Only one button is rendered within the contextual menu (the button to open it),
     // which is why I'm doing an unlabelled search - adding an aria-label to the button
     // would require a change to the component in canonical/react-components

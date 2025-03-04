@@ -16,7 +16,7 @@ import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 enableCallIdMocks();
 
 let state: RootState;

@@ -17,7 +17,7 @@ import {
   renderWithMockStore,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 describe("MaasIntroSuccess", () => {
   let state: RootState;

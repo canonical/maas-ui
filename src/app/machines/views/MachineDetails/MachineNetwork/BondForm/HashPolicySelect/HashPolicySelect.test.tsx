@@ -74,7 +74,7 @@ describe("HashPolicySelect", () => {
       },
     ];
 
-    for (var i = 0; i < expectedOptions.length; i++) {
+    for (let i = 0; i < expectedOptions.length; i++) {
       expect(hashPolicyOptions[i]).toHaveValue(expectedOptions[i].value);
       expect(hashPolicyOptions[i]).toHaveTextContent(expectedOptions[i].label);
     }

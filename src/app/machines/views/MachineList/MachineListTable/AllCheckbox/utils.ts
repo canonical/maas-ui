@@ -35,7 +35,7 @@ export const generateSelectedOnCurrentPage = ({
   selected: SelectedMachines | null;
   groups: MachineStateListGroup[];
 }) => {
-  let newSelected =
+  const newSelected =
     !selected || "filter" in selected
       ? { groups: [] }
       : (cloneDeep(selected) ?? {});

@@ -5,6 +5,7 @@ import {
   groupArchesByRelease,
   groupImagesByOS,
 } from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
+import type { DownloadImagesSelectProps } from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 import SelectUpstreamImagesSelect from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
@@ -52,7 +53,10 @@ describe("SelectUpstreamImagesSelect", () => {
     const groupedImages = groupArchesByRelease(imagesByOS);
     renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
+        {({
+          values,
+          setFieldValue,
+        }: Pick<DownloadImagesSelectProps, "values" | "setFieldValue">) => (
           <SelectUpstreamImagesSelect
             groupedImages={groupedImages}
             setFieldValue={setFieldValue}
@@ -93,7 +97,10 @@ describe("SelectUpstreamImagesSelect", () => {
     const groupedImages = groupArchesByRelease(imagesByOS);
     renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        {({ values, setFieldValue }: { values: any; setFieldValue: any }) => (
+        {({
+          values,
+          setFieldValue,
+        }: Pick<DownloadImagesSelectProps, "values" | "setFieldValue">) => (
           <SelectUpstreamImagesSelect
             groupedImages={groupedImages}
             setFieldValue={setFieldValue}

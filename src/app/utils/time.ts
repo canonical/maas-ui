@@ -34,7 +34,7 @@ export const formatUtcDatetime = (
       { addSuffix: true }
     )} (UTC)` as const;
     return utcTime;
-  } catch (error) {
+  } catch {
     return "Never";
   }
 };

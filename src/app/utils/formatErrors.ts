@@ -80,6 +80,8 @@ const parseHtmlToText = (htmlContent: string): string | null => {
   return htmlContent;
 };
 
+// `any` is needed here since we do not know the type of the error, and the error formatters expect different types.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ErrorFormatter = (errors: any, errorKey?: string) => FlattenedError;
 
 type ErrorTypeFormat = "string" | "object" | "html";
@@ -90,6 +92,8 @@ const errorTypeFormatters: Record<ErrorTypeFormat, ErrorFormatter> = {
   html: parseHtmlToText,
 };
 
+// `any` is needed here since we do not know the type of the error, and the error formatters expect different types.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ErrorType<E = null, I = any, K extends keyof I = any> =
   | APIError<E>
   | EventError<I, E, K>

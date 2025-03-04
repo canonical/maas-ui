@@ -14,7 +14,7 @@ import {
   renderWithMockStore,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 describe("MachinesFilterOptions", () => {
   let state: RootState;

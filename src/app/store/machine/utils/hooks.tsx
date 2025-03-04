@@ -206,8 +206,9 @@ export const useSelectedMachinesActionsDispatch = ({
     !isSingleFilter ? { items: selectedMachines?.items } : null
   );
 
-  // TODO: add strict action type for useSelectedMachinesActionsDispatch https://warthogs.atlassian.net/browse/MAASENG-2121
   const dispatch = useCallback(
+    // TODO: add strict action type for useSelectedMachinesActionsDispatch https://warthogs.atlassian.net/browse/MAASENG-2121
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (action: (...args: any[]) => AnyAction, args?: Record<string, unknown>) => {
       if (groupFilters) {
         groupsDispatch(
@@ -260,10 +261,10 @@ export const useMachineSelectedCount = (
   selectedCountLoading: boolean;
 } => {
   const { isEnabled } = queryOptions || { isEnabled: true };
-  let selectedState = useSelector(machineSelectors.selected);
+  const selectedState = useSelector(machineSelectors.selected);
   let selectedCount = 0;
   // Shallow clone the selected state so that object can be modified.
-  let selectedMachines = selectedState ? { ...selectedState } : null;
+  const selectedMachines = selectedState ? { ...selectedState } : null;
   // Remove selected items from the filters to send to the API. We can count
   // them client side and filters are combined with AND which we don't want to do when
   // there are selected groups and items (otherwise it will be counting the

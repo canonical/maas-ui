@@ -7,7 +7,7 @@ import { capitaliseFirst } from "@/app/utils";
 export function getNodeStatusKey(
   value: string
 ): keyof typeof NodeStatus | undefined {
-  for (let key in NodeStatus) {
+  for (const key in NodeStatus) {
     if (NodeStatus[key as keyof typeof NodeStatus] === value) {
       return key as keyof typeof NodeStatus;
     }

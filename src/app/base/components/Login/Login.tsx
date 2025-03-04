@@ -29,14 +29,14 @@ export type LoginValues = {
   username: string;
 };
 
-export enum Labels {
-  APILoginForm = "Login",
-  ExternalLoginButton = "Go to login page",
-  NoUsers = "No admin user has been created yet",
-  Password = "Password",
-  Submit = "Login",
-  Username = "Username",
-}
+export const Labels = {
+  APILoginForm: "Login",
+  ExternalLoginButton: "Go to login page",
+  NoUsers: "No admin user has been created yet",
+  Password: "Password",
+  Submit: "Login",
+  Username: "Username",
+} as const;
 
 export enum TestIds {
   NoUsers = "no-users-warning",

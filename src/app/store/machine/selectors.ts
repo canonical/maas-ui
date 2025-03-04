@@ -46,7 +46,7 @@ const activeID = (state: RootState): Machine[MachineMeta.PK] | null =>
  */
 const statuses = (state: RootState): MachineStatuses => state.machine.statuses;
 
-const statusKeys = <T extends {}>(statuses: T): (keyof T)[] =>
+const statusKeys = <T extends object>(statuses: T): (keyof T)[] =>
   Object.keys(statuses) as (keyof T)[];
 
 /**

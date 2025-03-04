@@ -1,6 +1,6 @@
 import type { Row } from "@tanstack/react-table";
-import type { Mock } from "vitest";
 import { describe } from "vitest";
+import type { Mock } from "vitest";
 
 import TableCheckbox from "./TableCheckbox";
 
@@ -58,7 +58,7 @@ const getMockRow = (rowProps: Partial<Row<Image>> = {}) => {
 
 describe("TableCheckbox.All", () => {
   const renderSelectAllCheckbox = (tableProps?: {
-    getSelectedRowModel: Mock<[], { rows: {}[] }>;
+    getSelectedRowModel: Mock<[], { rows: object[] }>;
     getRowCount: Mock<[], number>;
     getGroupedRowModel: Mock<[], { rows: never[] }>;
   }) => {
@@ -71,7 +71,7 @@ describe("TableCheckbox.All", () => {
       ...tableProps,
     };
 
-    // @ts-ignore
+    // @ts-expect-error we're not mocking the entire table object, just the parts we need
     return { ...render(<TableCheckbox.All table={mockTable} />), mockTable };
   };
 
@@ -166,7 +166,7 @@ describe("TableCheckbox", () => {
       getToggleSelectedHandler: vi.fn(),
       ...rowProps,
     };
-    // @ts-ignore
+    // @ts-expect-error we're not mocking the entire row object, just the parts we need
     return { ...render(<TableCheckbox row={mockRow} />), mockRow };
   };
 

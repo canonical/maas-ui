@@ -103,7 +103,7 @@ describe("GenericTable", () => {
     expect(screen.getByText("No data")).toBeInTheDocument();
   });
 
-  it("applies sorting when a sortable header is clicked", () => {
+  it("applies sorting when a sortable header is clicked", async () => {
     render(
       <GenericTable
         columns={columns}
@@ -115,7 +115,7 @@ describe("GenericTable", () => {
       />
     );
 
-    userEvent.click(screen.getByText("Release title"));
+    await userEvent.click(screen.getByText("Release title"));
 
     const rows = screen.getAllByRole("row");
     expect(rows[1]).toHaveTextContent("16.04 LTS");

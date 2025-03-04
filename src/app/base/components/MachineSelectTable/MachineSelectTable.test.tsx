@@ -69,10 +69,10 @@ describe("MachineSelectTable", () => {
       { state }
     );
 
-    let hostnameCol = screen.getByRole("gridcell", {
+    const hostnameCol = screen.getByRole("gridcell", {
       name: Label.Hostname,
     });
-    // eslint-disable-next-line testing-library/no-node-access
+
     expect(hostnameCol.querySelector("strong")).toHaveTextContent("fir");
   });
 

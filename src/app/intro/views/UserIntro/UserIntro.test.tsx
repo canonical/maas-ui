@@ -18,7 +18,7 @@ import {
   waitForLoading,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(sshKeyResolvers.listSshKeys.handler());
 
 describe("UserIntro", () => {

@@ -36,14 +36,14 @@ import type {
 } from "@/app/store/types/model";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 
-export enum NodeType {
-  DEFAULT = 0,
-  MACHINE = 0,
-  DEVICE = 1,
-  RACK_CONTROLLER = 2,
-  REGION_CONTROLLER = 3,
-  REGION_AND_RACK_CONTROLLER = 4,
-}
+export const NodeType = {
+  DEFAULT: 0,
+  MACHINE: 0,
+  DEVICE: 1,
+  RACK_CONTROLLER: 2,
+  REGION_CONTROLLER: 3,
+  REGION_AND_RACK_CONTROLLER: 4,
+} as const;
 
 export enum NodeTypeDisplay {
   DEVICE = "Device",

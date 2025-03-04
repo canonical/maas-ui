@@ -133,7 +133,7 @@ describe("MachineListHeader", () => {
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
 
-    let tagAction = screen.getByTestId("action-link-tag");
+    const tagAction = screen.getByTestId("action-link-tag");
 
     // The new label should appear before being clicked.
     expect(tagAction).toHaveTextContent(/NEW/);

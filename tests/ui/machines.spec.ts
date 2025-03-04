@@ -38,8 +38,8 @@ test("machines list loads", async ({ page }) => {
   );
   await expect(page.getByRole("grid", { name: /Loading/i })).toBeHidden();
   // expect a single machine.list and machine.count request
-  await expect(machineListRequests.length).toBe(1);
-  await expect(machineCountRequests.length).toBe(1);
+  expect(machineListRequests.length).toBe(1);
+  expect(machineCountRequests.length).toBe(1);
   // perform machine search
   await page.getByLabel("Search").locator("visible=true").type("doesnotexist");
   await expect(page.getByRole("grid", { name: /Loading/i })).toBeHidden();
@@ -47,6 +47,6 @@ test("machines list loads", async ({ page }) => {
     page.getByText(/No machines match the search criteria/)
   ).toBeVisible();
   // expect an additional single machine.list request
-  await expect(machineListRequests.length).toBe(2);
-  await expect(machineCountRequests.length).toBe(1);
+  expect(machineListRequests.length).toBe(2);
+  expect(machineCountRequests.length).toBe(1);
 });

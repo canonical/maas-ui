@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-node-access */
 /* eslint-disable testing-library/no-container */
 
 import TableHeader from "./TableHeader";

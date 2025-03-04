@@ -645,7 +645,7 @@ describe("websocket sagas", () => {
     });
     return expectSaga(
       handleUnsubscribe,
-      // @ts-ignore
+      // @ts-expect-error we're not using the action, just the type
       machineActions.cleanupRequest("123456")
     )
       .withState(state)
@@ -670,7 +670,7 @@ describe("websocket sagas", () => {
     });
     return expectSaga(
       handleUnsubscribe,
-      // @ts-ignore
+      // @ts-expect-error we're not using the action, just the type
       machineActions.cleanupRequest("123456")
     )
       .withState(state)
