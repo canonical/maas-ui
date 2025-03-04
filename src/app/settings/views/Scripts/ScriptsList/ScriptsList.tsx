@@ -49,7 +49,7 @@ const generateRows = (
     let uploadedOn: string;
     try {
       uploadedOn = formatUtcDatetime(script.created);
-    } catch (error) {
+    } catch {
       uploadedOn = "Never";
     }
 

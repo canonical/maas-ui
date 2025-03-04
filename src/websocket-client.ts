@@ -4,6 +4,9 @@ import ReconnectingWebSocket from "reconnecting-websocket";
 import type { AnyObject } from "@/app/base/types";
 import { getCookie } from "@/app/utils";
 
+// ESLint complains that this is only used as a type, but several types
+// are derived from this in different ways, so it's cleaner to just have this as is.
+// eslint-disable-next-line unused-imports/no-unused-vars
 const WebSocketEndpoints = {
   bootresource: [
     "delete_image",
