@@ -2100,6 +2100,46 @@ export type CreateResourcePoolResponses = {
 export type CreateResourcePoolResponse =
   CreateResourcePoolResponses[keyof CreateResourcePoolResponses];
 
+export type DeleteResourcePoolData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    resource_pool_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/resource_pools/{resource_pool_id}";
+};
+
+export type DeleteResourcePoolErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteResourcePoolError =
+  DeleteResourcePoolErrors[keyof DeleteResourcePoolErrors];
+
+export type DeleteResourcePoolResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteResourcePoolResponse =
+  DeleteResourcePoolResponses[keyof DeleteResourcePoolResponses];
+
 export type GetResourcePoolData = {
   body?: never;
   path: {

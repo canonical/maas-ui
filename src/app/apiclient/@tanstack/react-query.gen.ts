@@ -38,6 +38,7 @@ import {
   getFabricVlanSubnetReservedIp,
   listResourcePools,
   createResourcePool,
+  deleteResourcePool,
   getResourcePool,
   updateResourcePool,
   listSpaces,
@@ -154,6 +155,9 @@ import type {
   CreateResourcePoolData,
   CreateResourcePoolError,
   CreateResourcePoolResponse,
+  DeleteResourcePoolData,
+  DeleteResourcePoolError,
+  DeleteResourcePoolResponse,
   GetResourcePoolData,
   UpdateResourcePoolData,
   UpdateResourcePoolError,
@@ -1498,6 +1502,26 @@ export const createResourcePoolMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await createResourcePool({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deleteResourcePoolMutation = (
+  options?: Partial<Options<DeleteResourcePoolData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeleteResourcePoolResponse,
+    DeleteResourcePoolError,
+    Options<DeleteResourcePoolData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteResourcePool({
         ...options,
         ...localOptions,
         throwOnError: true,
