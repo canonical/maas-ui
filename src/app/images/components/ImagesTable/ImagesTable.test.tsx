@@ -1,5 +1,5 @@
 import MockDate from "mockdate";
-import timezoneMock from "timezone-mock";
+import { register, unregister } from "timezone-mock";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import ImagesTable from "@/app/images/components/ImagesTable/ImagesTable";
@@ -18,12 +18,12 @@ import {
 describe("ImagesTable", () => {
   beforeEach(() => {
     MockDate.set("Fri, 18 Nov. 2022 10:55:00");
-    timezoneMock.register("Etc/GMT-1");
+    register("Etc/GMT-1");
   });
 
   afterEach(() => {
     MockDate.reset();
-    timezoneMock.unregister();
+    unregister();
   });
 
   let state: RootState;
