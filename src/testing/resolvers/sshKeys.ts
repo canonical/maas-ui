@@ -11,7 +11,7 @@ import type {
 } from "@/app/apiclient";
 import { sshKey as sshKeyFactory } from "@/testing/factories";
 
-const initialMockSshKeys: ListUserSshkeysResponse = {
+const mockSshKeys: ListUserSshkeysResponse = {
   items: [
     sshKeyFactory({
       id: 1,
@@ -61,8 +61,6 @@ const mockDeleteSshKeyError: DeleteUserSshkeyError = {
   code: 404,
   kind: "Error",
 };
-
-let mockSshKeys = structuredClone(initialMockSshKeys);
 
 const sshKeyResolvers = {
   listSshKeys: {
