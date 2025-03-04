@@ -2,29 +2,15 @@ import { Formik } from "formik";
 
 import SSHKeyFormFields from "./SSHKeyFormFields";
 
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("SSHKeyFormFields", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = factory.rootState({
-      sshkey: factory.sshKeyState({
-        loading: false,
-        loaded: true,
-        items: [],
-      }),
-    });
-  });
-
   it("can render", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
       </Formik>,
-      { route: "/", state }
+      { route: "/" }
     );
     expect(
       screen.getByRole("combobox", { name: "Source" })
@@ -38,11 +24,11 @@ describe("SSHKeyFormFields", () => {
   });
 
   it("can show id field", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
       </Formik>,
-      { route: "/", state }
+      { route: "/" }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Source" }),
@@ -54,11 +40,11 @@ describe("SSHKeyFormFields", () => {
   });
 
   it("can show key field", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
       </Formik>,
-      { route: "/", state }
+      { route: "/" }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Source" }),

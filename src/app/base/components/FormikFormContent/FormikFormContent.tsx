@@ -55,6 +55,9 @@ const generateNonFieldError = <V extends object, E = null>(
     if (typeof errors === "string" || React.isValidElement(errors)) {
       return errors;
     } else if (typeof errors === "object") {
+      if ("message" in errors) {
+        return errors.message;
+      }
       let otherErrors: string[] = [];
       // Display any errors for keys that don't match form fields.
       Object.entries(errors).forEach(([key, value]) => {

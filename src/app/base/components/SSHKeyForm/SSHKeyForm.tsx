@@ -1,16 +1,16 @@
-import { useState } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import SSHKeyFormFields from "./SSHKeyFormFields";
 import type { SSHKeyFormValues } from "./types";
 
+import { useCreateSshKeys, useImportSshKeys } from "@/app/api/query/sshKeys";
+import type {
+  CreateUserSshkeysError,
+  ImportUserSshkeysError,
+  SshKeysProtocolType,
+} from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
-import { useAddMessage } from "@/app/base/hooks";
-import { sshkeyActions } from "@/app/store/sshkey";
-import sshkeySelectors from "@/app/store/sshkey/selectors";
 
 const SSHKeySchema = Yup.object().shape({
   protocol: Yup.string().required("Source is required"),
@@ -29,34 +29,34 @@ type Props = {
 } & Partial<FormikFormProps<SSHKeyFormValues>>;
 
 export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const [adding, setAdding] = useState(false);
-  const errors = useSelector(sshkeySelectors.errors);
-  const saved = useSelector(sshkeySelectors.saved);
-  const saving = useSelector(sshkeySelectors.saving);
-
-  useAddMessage(
-    adding && saved,
-    sshkeyActions.cleanup,
-    "SSH key successfully imported.",
-    () => setAdding(false)
-  );
+  const uploadSshKey = useCreateSshKeys();
+  const importSshKey = useImportSshKeys();
 
   return (
-    <FormikForm<SSHKeyFormValues>
-      cleanup={sshkeyActions.cleanup}
-      errors={errors}
+    <FormikForm<
+      SSHKeyFormValues,
+      ImportUserSshkeysError | CreateUserSshkeysError
+    >
+      errors={uploadSshKey.error || importSshKey.error}
       initialValues={{ auth_id: "", protocol: "", key: "" }}
       onSubmit={(values) => {
-        setAdding(true);
         if (values.key && values.key !== "") {
-          dispatch(sshkeyActions.create(values));
+          uploadSshKey.mutate({
+            body: {
+              key: values.key,
+            },
+          });
         } else {
-          dispatch(sshkeyActions.import(values));
+          importSshKey.mutate({
+            body: {
+              auth_id: values.auth_id as string,
+              protocol: values.protocol as SshKeysProtocolType,
+            },
+          });
         }
       }}
-      saved={saved}
-      saving={saving}
+      saved={uploadSshKey.isSuccess || importSshKey.isSuccess}
+      saving={uploadSshKey.isPending || importSshKey.isPending}
       submitLabel="Import SSH key"
       validationSchema={SSHKeySchema}
       {...props}

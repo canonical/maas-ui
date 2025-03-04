@@ -64,7 +64,6 @@ export {
   scriptState,
   serviceState,
   spaceState,
-  sshKeyState,
   sslKeyState,
   staticRouteState,
   statusState,
@@ -84,11 +83,6 @@ export {
   vlanStatuses,
   vmClusterState,
   vmClusterStatuses,
-  zoneError,
-  zoneGenericActions,
-  zoneModelAction,
-  zoneModelActions,
-  zoneState,
 } from "./state";
 export {
   bootResource,

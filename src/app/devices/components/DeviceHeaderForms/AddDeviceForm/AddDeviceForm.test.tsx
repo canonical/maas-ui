@@ -19,11 +19,16 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler({
+    items: [factory.zone({ id: 1, name: "zone-1" })],
+    total: 1,
+  })
+);
 
 describe("AddDeviceForm", () => {
   let state: RootState;
-  const queryData = { zones: [factory.zone({ id: 0, name: "default" })] };
+
   beforeEach(() => {
     state = factory.rootState({
       domain: factory.domainState({
@@ -36,9 +41,6 @@ describe("AddDeviceForm", () => {
         ],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
@@ -47,7 +49,6 @@ describe("AddDeviceForm", () => {
       <AddDeviceForm clearSidePanelContent={vi.fn()} />,
       {
         state,
-        queryData,
       }
     );
 
@@ -63,7 +64,6 @@ describe("AddDeviceForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.zone.genericActions.fetch = "idle";
     const store = mockStore(state);
     renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
       store,
@@ -77,7 +77,6 @@ describe("AddDeviceForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
       store,
-      queryData,
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 

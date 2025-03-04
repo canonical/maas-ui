@@ -3,15 +3,14 @@ import { useState } from "react";
 import { ActionButton, Button, Card, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { useListSshKeys } from "@/app/api/query/sshKeys";
 import SSHKeyForm from "@/app/base/components/SSHKeyForm";
 import SSHKeyList from "@/app/base/components/SSHKeyList";
 import TableConfirm from "@/app/base/components/TableConfirm";
-import { useFetchActions, useCycled } from "@/app/base/hooks";
+import { useCycled } from "@/app/base/hooks";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import authSelectors from "@/app/store/auth/selectors";
-import { sshkeyActions } from "@/app/store/sshkey";
-import sshkeySelectors from "@/app/store/sshkey/selectors";
 import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
 import { formatErrors } from "@/app/utils";
@@ -28,20 +27,19 @@ const UserIntro = (): JSX.Element => {
   const authLoading = useSelector(authSelectors.loading);
   const authUser = useSelector(authSelectors.get);
   const completedUserIntro = useSelector(authSelectors.completedUserIntro);
-  const sshkeys = useSelector(sshkeySelectors.all);
-  const sshkeyLoading = useSelector(sshkeySelectors.loading);
   const markingIntroComplete = useSelector(userSelectors.markingIntroComplete);
   const [markedIntroComplete] = useCycled(!markingIntroComplete);
   const errors = useSelector(userSelectors.markingIntroCompleteErrors);
+  const { data, isPending: sshKeyLoading } = useListSshKeys();
+
+  const sshkeys = data?.items || [];
   const hasSSHKeys = sshkeys.length > 0;
   const errorMessage = formatErrors(errors);
-
-  useFetchActions([sshkeyActions.fetch]);
 
   return (
     <IntroSection
       errors={errors}
-      loading={authLoading || sshkeyLoading}
+      loading={authLoading || sshKeyLoading}
       shouldExitIntro={completedUserIntro || markedIntroComplete}
       windowTitle="User"
     >

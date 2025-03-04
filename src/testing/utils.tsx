@@ -17,7 +17,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
 import type { QueryModel } from "@/app/api/query-client";
-import { client } from "@/app/apiclient";
+import { client } from "@/app/apiclient/sdk.gen";
 import type {
   SidePanelContent,
   SidePanelSize,
@@ -46,8 +46,6 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
 } from "@/testing/factories";
 
 export type InitialData = Partial<Record<QueryModel, unknown>>;
@@ -368,9 +366,6 @@ export const getTestState = (): RootState => {
       items: [nonBootVlan, bootVlan],
       loaded: true,
     }),
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-    }),
   });
 };
 
@@ -634,3 +629,37 @@ export const renderHookWithProviders = <T,>(
     wrapper: (props) => <TestProvider {...props} {...options} />,
   });
 };
+
+/**
+ * Mocks the useQuery hook to return a pending state.
+ */
+export const mockIsPending = () => {
+  vi.doMock("@tanstack/react-query", async () => {
+    const actual: object = await vi.importActual("@tanstack/react-query");
+    return {
+      ...actual,
+      useQuery: vi.fn().mockReturnValueOnce({
+        data: null,
+        isPending: true,
+        failureReason: undefined,
+        isFetched: false,
+      }),
+    };
+  });
+
+  afterEach(() => {
+    vi.doUnmock("@tanstack/react-query");
+  });
+};
+
+/**
+ * Waits until the loading text is no longer present in the document.
+ *
+ * @param loadingText The text to query for. Defaults to "Loading".
+ */
+export const waitForLoading = async (loadingText = "Loading") =>
+  await waitFor(() =>
+    expect(
+      screen.queryByText(new RegExp(loadingText, "i"))
+    ).not.toBeInTheDocument()
+  );

@@ -84,7 +84,6 @@ import type { ScriptState } from "@/app/store/script/types";
 import type { ScriptResultState } from "@/app/store/scriptresult/types";
 import type { ServiceState } from "@/app/store/service/types";
 import type { SpaceState } from "@/app/store/space/types";
-import type { SSHKeyState } from "@/app/store/sshkey/types";
 import type { SSLKeyState } from "@/app/store/sslkey/types";
 import type { StaticRouteState } from "@/app/store/staticroute/types";
 import type { StatusState } from "@/app/store/status/types";
@@ -111,14 +110,6 @@ import type {
 } from "@/app/store/vlan/types";
 import type { VMClusterState } from "@/app/store/vmcluster/types";
 import type { VMClusterStatuses } from "@/app/store/vmcluster/types/base";
-import { ZONE_ACTIONS } from "@/app/store/zone/constants";
-import type {
-  ZoneGenericActions,
-  ZoneModelAction,
-  ZoneModelActions,
-  ZoneState,
-  ZoneStateError,
-} from "@/app/store/zone/types";
 
 const defaultState = {
   errors: () => ({}),
@@ -364,11 +355,6 @@ export const scriptState = define<ScriptState>({
 export const spaceState = define<SpaceState>({
   ...defaultState,
   active: null,
-  errors: null,
-});
-
-export const sshKeyState = define<SSHKeyState>({
-  ...defaultState,
   errors: null,
 });
 
@@ -637,34 +623,6 @@ export const vmClusterState = define<VMClusterState>({
   statuses: vmClusterStatuses,
 });
 
-export const zoneGenericActions = define<ZoneGenericActions>({
-  [ZONE_ACTIONS.create]: ACTION_STATUS.idle,
-  [ZONE_ACTIONS.fetch]: ACTION_STATUS.idle,
-});
-
-export const zoneModelAction = define<ZoneModelAction>({
-  [ACTION_STATUS.error]: () => [],
-  [ACTION_STATUS.loading]: () => [],
-  [ACTION_STATUS.success]: () => [],
-});
-
-export const zoneModelActions = define<ZoneModelActions>({
-  [ZONE_ACTIONS.delete]: zoneModelAction,
-  [ZONE_ACTIONS.update]: zoneModelAction,
-});
-
-export const zoneError = define<ZoneStateError>({
-  action: ZONE_ACTIONS.fetch,
-  error: "There was an error",
-  identifier: null,
-});
-
-export const zoneState = define<ZoneState>({
-  errors: () => [],
-  genericActions: zoneGenericActions,
-  modelActions: zoneModelActions,
-});
-
 export const locationState = define<RouterState["location"]>({
   pathname: "/",
   search: "",
@@ -706,7 +664,6 @@ export const rootState = define<RootState>({
   script: scriptState,
   service: serviceState,
   space: spaceState,
-  sshkey: sshKeyState,
   sslkey: sslKeyState,
   staticroute: staticRouteState,
   status: statusState,
@@ -716,5 +673,4 @@ export const rootState = define<RootState>({
   user: userState,
   vlan: vlanState,
   vmcluster: vmClusterState,
-  zone: zoneState,
 });

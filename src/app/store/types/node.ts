@@ -5,6 +5,7 @@ import type {
   NetworkLinkMode,
 } from "./enum";
 
+import type { ZoneResponse } from "@/app/apiclient";
 import type {
   Controller,
   ControllerDetails,
@@ -34,7 +35,6 @@ import type {
   TimestampedModel,
 } from "@/app/store/types/model";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
-import type { Zone, ZoneMeta } from "@/app/store/zone/types";
 
 export enum NodeType {
   DEFAULT = 0,
@@ -448,7 +448,7 @@ export type ScriptInputParam = {
 };
 
 export type SetZoneParams = BaseNodeActionParams & {
-  zone_id: Zone[ZoneMeta.PK];
+  zone_id: ZoneResponse["id"];
 };
 
 export type TestParams = BaseNodeActionParams & {

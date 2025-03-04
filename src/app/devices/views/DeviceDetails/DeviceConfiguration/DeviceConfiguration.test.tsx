@@ -14,6 +14,7 @@ import {
   waitFor,
   renderWithBrowserRouter,
   setupMockServer,
+  renderWithProviders,
 } from "@/testing/utils";
 
 setupMockServer(zoneResolvers.listZones.handler());
@@ -33,15 +34,12 @@ describe("DeviceConfiguration", () => {
           factory.tag({ id: 2, name: "tag2" }),
         ],
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
   it("displays a spinner if the device has not loaded yet", async () => {
     state.device.items = [];
-    renderWithBrowserRouter(<DeviceConfiguration systemId="abc123" />, {
+    renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
@@ -49,7 +47,7 @@ describe("DeviceConfiguration", () => {
   });
 
   it("shows the device details by default", async () => {
-    renderWithBrowserRouter(<DeviceConfiguration systemId="abc123" />, {
+    renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
@@ -60,7 +58,7 @@ describe("DeviceConfiguration", () => {
   });
 
   it("can switch to showing the device configuration form", async () => {
-    renderWithBrowserRouter(<DeviceConfiguration systemId="abc123" />, {
+    renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());

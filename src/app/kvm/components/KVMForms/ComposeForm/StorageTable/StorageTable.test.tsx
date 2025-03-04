@@ -6,7 +6,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -16,7 +16,7 @@ import {
 setupMockServer(zoneResolvers.listZones.handler());
 
 const generateWrapper = async (state: RootState, pod: Pod) => {
-  renderWithBrowserRouter(
+  renderWithProviders(
     <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
     { state, route: `/kvm/${pod.id}` }
   );
@@ -58,9 +58,6 @@ describe("StorageTable", () => {
       }),
       vlan: factory.vlanState({
         loaded: true,
-      }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
       }),
     });
   });

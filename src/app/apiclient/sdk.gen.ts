@@ -17,6 +17,18 @@ import type {
   ListEventsData,
   ListEventsResponse,
   ListEventsError,
+  ListDomainsData,
+  ListDomainsResponse,
+  ListDomainsError,
+  CreateDomainData,
+  CreateDomainResponse,
+  CreateDomainError,
+  DeleteDomainData,
+  DeleteDomainResponse,
+  DeleteDomainError,
+  GetDomainData,
+  GetDomainResponse,
+  GetDomainError,
   ListFabricsData,
   ListFabricsResponse,
   ListFabricsError,
@@ -263,6 +275,98 @@ export const listEvents = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/events",
+  });
+};
+
+/**
+ * List Domains
+ */
+export const listDomains = <ThrowOnError extends boolean = false>(
+  options?: Options<ListDomainsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListDomainsResponse,
+    ListDomainsError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/domains",
+  });
+};
+
+/**
+ * Create Domain
+ */
+export const createDomain = <ThrowOnError extends boolean = false>(
+  options: Options<CreateDomainData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    CreateDomainResponse,
+    CreateDomainError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/domains",
+  });
+};
+
+/**
+ * Delete Domain
+ */
+export const deleteDomain = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteDomainData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteDomainResponse,
+    DeleteDomainError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/domains/{domain_id}",
+  });
+};
+
+/**
+ * Get Domain
+ */
+export const getDomain = <ThrowOnError extends boolean = false>(
+  options: Options<GetDomainData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    GetDomainResponse,
+    GetDomainError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/domains/{domain_id}",
   });
 };
 

@@ -4,23 +4,22 @@ import { Col, Row } from "@canonical/react-components";
 
 import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
 import FormikForm from "@/app/base/components/FormikForm/FormikForm";
-import type { EmptyObject } from "@/app/base/types";
 
-type Props = {
+type Props<V extends object, E = null> = {
   modelType: string;
   message?: ReactNode;
-} & FormikFormProps<EmptyObject>;
+} & FormikFormProps<V, E>;
 
-const ModelActionForm = ({
+const ModelActionForm = <V extends object, E = null>({
   modelType,
   message,
   submitAppearance = "negative",
   submitLabel = "Delete",
-  initialValues = {},
+  initialValues,
   ...props
-}: Props) => {
+}: Props<V, E>) => {
   return (
-    <FormikForm
+    <FormikForm<V, E>
       initialValues={initialValues}
       submitAppearance={submitAppearance}
       submitLabel={submitLabel}

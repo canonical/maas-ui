@@ -1,35 +1,19 @@
-import { useState } from "react";
-
 import { useOnEscapePressed } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { useDeleteSshKey } from "@/app/api/query/sshKeys";
+import type { DeleteUserSshkeyError } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useAddMessage } from "@/app/base/hooks";
+import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/preferences/urls";
-import { sshkeyActions } from "@/app/store/sshkey";
-import sshkeySelectors from "@/app/store/sshkey/selectors";
-import type { SSHKey, SSHKeyMeta } from "@/app/store/sshkey/types";
 
 const DeleteSSHKey = () => {
-  const [deleting, setDeleting] = useState<SSHKey[SSHKeyMeta.PK][]>([]);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const saved = useSelector(sshkeySelectors.saved);
-  const saving = useSelector(sshkeySelectors.saving);
-  const sshkeys = useSelector(sshkeySelectors.all);
-  const dispatch = useDispatch();
   const onClose = () => navigate({ pathname: urls.sshKeys.index });
   useOnEscapePressed(() => onClose());
-  const sshKeysDeleted =
-    deleting.length > 0 &&
-    !deleting.some((id) => !sshkeys.find((key) => key.id === id));
-  useAddMessage(
-    saved && sshKeysDeleted,
-    sshkeyActions.cleanup,
-    "SSH key removed successfully.",
-    () => setDeleting([])
-  );
+
+  const deleteSshKey = useDeleteSshKey();
 
   const ids = searchParams
     .get("ids")
@@ -41,8 +25,9 @@ const DeleteSSHKey = () => {
   }
 
   return (
-    <ModelActionForm
+    <ModelActionForm<EmptyObject, DeleteUserSshkeyError>
       aria-label="Delete SSH key confirmation"
+      errors={deleteSshKey.error}
       initialValues={{}}
       message={`Are you sure you want to delete ${
         ids.length > 1 ? "these SSH keys" : "this SSH key"
@@ -51,16 +36,12 @@ const DeleteSSHKey = () => {
       onCancel={onClose}
       onSubmit={() => {
         ids.forEach((id) => {
-          dispatch(sshkeyActions.delete(id));
+          deleteSshKey.mutate({ path: { id } });
         });
-        setDeleting(ids);
       }}
-      onSuccess={() => {
-        dispatch(sshkeyActions.cleanup());
-        onClose();
-      }}
-      saved={saved}
-      saving={saving}
+      onSuccess={onClose}
+      saved={deleteSshKey.isSuccess}
+      saving={deleteSshKey.isPending}
     />
   );
 };

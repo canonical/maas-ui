@@ -10,7 +10,7 @@ import SelectUpstreamImagesSelect from "@/app/images/components/ImagesForms/Sele
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, userEvent, renderWithMockStore } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 describe("SelectUpstreamImagesSelect", () => {
   let state: RootState;
@@ -51,7 +51,7 @@ describe("SelectUpstreamImagesSelect", () => {
     );
     const imagesByOS = groupImagesByOS(downloadableImages);
     const groupedImages = groupArchesByRelease(imagesByOS);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         {({
           values,
@@ -95,7 +95,7 @@ describe("SelectUpstreamImagesSelect", () => {
     );
     const imagesByOS = groupImagesByOS(downloadableImages);
     const groupedImages = groupArchesByRelease(imagesByOS);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         {({
           values,
@@ -113,9 +113,11 @@ describe("SelectUpstreamImagesSelect", () => {
 
     await userEvent.click(screen.getByText("Ubuntu"));
 
-    const checkboxes = screen.getAllByRole("checkbox", {
-      hidden: true,
-    });
+    const combobox = screen.getByRole("combobox");
+
+    await userEvent.click(combobox);
+
+    const checkboxes = screen.getAllByRole("checkbox");
 
     const labels = checkboxes
       .map((checkbox) => checkbox.closest("label"))

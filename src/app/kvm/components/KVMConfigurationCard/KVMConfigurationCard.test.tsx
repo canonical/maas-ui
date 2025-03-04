@@ -28,9 +28,6 @@ describe("KVMConfigurationCard", () => {
         items: [factory.resourcePool({ id: 2 })],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
