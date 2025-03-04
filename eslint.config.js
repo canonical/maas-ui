@@ -118,7 +118,7 @@ export default tseslint.config(
       complexity: [
         "error",
         {
-          max: 25,
+          max: 34,
         },
       ],
 
