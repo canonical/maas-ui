@@ -25,5 +25,5 @@
     ]
   },
   "exclude": ["dist", "public", "node_modules"],
-  "include": ["src"]
+  "include": ["src", "vitest.d.ts"]
 }

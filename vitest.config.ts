@@ -8,7 +8,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: ["./src/setupTests.ts"],
+    setupFiles: ["./src/setupTests.ts", "src/testing/customMatchers.ts"],
     exclude: [...configDefaults.exclude, "**/tests/**"],
     clearMocks: true,
     coverage: {

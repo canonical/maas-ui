@@ -283,6 +283,10 @@ export default tseslint.config(
   {
     files: ["tests/**/*.[jt]s?(x)"],
 
+    plugins: {
+      "no-only-tests": noOnlyTests,
+    },
+
     rules: {
       "playwright/no-force-option": "off",
       "no-only-tests/no-only-tests": "error",

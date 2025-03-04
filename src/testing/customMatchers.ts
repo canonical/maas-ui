@@ -1,13 +1,5 @@
 import { expect } from "vitest";
 
-declare global {
-  namespace jest {
-    interface Matchers<R> {
-      toBeAriaDisabled(): R;
-    }
-  }
-}
-
 // `received` is likely an HTML element but this is not guarenteed
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function toBeAriaDisabled(received: any) {
