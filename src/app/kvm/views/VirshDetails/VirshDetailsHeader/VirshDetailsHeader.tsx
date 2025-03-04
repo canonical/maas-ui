@@ -29,6 +29,8 @@ const VirshDetailsHeader = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
+  // id will be of a known pod, so we can safely assume that pod will be defined
+  // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
   const zone = useGetZone({ path: { zone_id: pod?.zone! } });
 
   useFetchActions([podActions.fetch]);
