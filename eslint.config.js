@@ -124,6 +124,13 @@ export default tseslint.config(
 
       "@typescript-eslint/no-unused-vars": "off",
       "unused-imports/no-unused-imports": "error",
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+        },
+      ],
 
       "unused-imports/no-unused-vars": [
         "warn",
@@ -244,10 +251,10 @@ export default tseslint.config(
     compat.extends("plugin:cypress/recommended", "plugin:prettier/recommended")
   ).map((config) => ({
     ...config,
-    files: ["cypress/**/*.spec.[jt]s?(x)"],
+    files: ["cypress/**/*.spec.[jt]s?(x)", "cypress/support/*.ts"],
   })),
   {
-    files: ["cypress/**/*.spec.[jt]s?(x)"],
+    files: ["cypress/**/*.spec.[jt]s?(x)", "cypress/support/*.ts"],
 
     plugins: {
       cypress: fixupPluginRules(cypress),
@@ -258,6 +265,13 @@ export default tseslint.config(
       "no-only-tests/no-only-tests": "error",
       "cypress/no-force": "off",
       "prettier/prettier": "error",
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+        },
+      ],
     },
   },
   ...compat.extends("plugin:playwright/recommended").map((config) => ({
