@@ -6,6 +6,7 @@ import cypress from "eslint-plugin-cypress";
 import noOnlyTests from "eslint-plugin-no-only-tests";
 import prettier from "eslint-plugin-prettier";
 import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
 import unusedImports from "eslint-plugin-unused-imports";
 
 import path from "path";
@@ -23,6 +24,7 @@ const compat = new FlatCompat({
 
 export default tseslint.config(
   tseslint.configs.recommended,
+  reactHooks.configs.recommended,
   ...fixupConfigRules(
     compat.extends(
       "plugin:prettier/recommended",
