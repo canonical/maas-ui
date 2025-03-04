@@ -95,6 +95,9 @@ import type {
   CreateResourcePoolData,
   CreateResourcePoolResponse,
   CreateResourcePoolError,
+  DeleteResourcePoolData,
+  DeleteResourcePoolResponse,
+  DeleteResourcePoolError,
   GetResourcePoolData,
   GetResourcePoolResponse,
   GetResourcePoolError,
@@ -899,6 +902,28 @@ export const createResourcePool = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/resource_pools",
+  });
+};
+
+/**
+ * Delete Resource Pool
+ */
+export const deleteResourcePool = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteResourcePoolData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteResourcePoolResponse,
+    DeleteResourcePoolError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/resource_pools/{resource_pool_id}",
   });
 };
 
