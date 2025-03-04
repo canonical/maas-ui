@@ -1,9 +1,6 @@
 import { useCreatePool, useUpdatePool } from "./pools";
 
-import type {
-  ResourcePoolRequest,
-  UpdateResourcePoolData,
-} from "@/app/apiclient";
+import type { ResourcePoolRequest } from "@/app/apiclient";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   renderHookWithProviders,
