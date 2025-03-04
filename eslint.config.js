@@ -24,7 +24,7 @@ const compat = new FlatCompat({
 
 export default tseslint.config(
   tseslint.configs.recommended,
-  reactHooks.configs.recommended,
+  reactHooks.configs["recommended-latest"],
   ...fixupConfigRules(
     compat.extends(
       "plugin:prettier/recommended",
