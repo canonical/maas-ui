@@ -1,11 +1,10 @@
-import { vi } from "vitest";
-
 import GenericTable from "./GenericTable";
 
 import type { Image } from "@/app/images/types";
 import type { UtcDatetime } from "@/app/store/types/model";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, render } from "@/testing/utils";
+import { vi } from "vitest";
 
 describe("GenericTable", () => {
   const columns = [

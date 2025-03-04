@@ -1,7 +1,6 @@
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import type { Mock } from "vitest";
 
 import { ControllerDetailsTabLabels } from "../../constants";
 
@@ -11,6 +10,7 @@ import urls from "@/app/base/urls";
 import { controllerActions } from "@/app/store/controller";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
+import type { Mock } from "vitest";
 
 const mockStore = configureStore();
 

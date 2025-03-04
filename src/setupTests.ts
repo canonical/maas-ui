@@ -1,7 +1,8 @@
 import "@testing-library/react";
 import "@testing-library/jest-dom";
-import { vi, beforeAll } from "vitest";
 import createFetchMock from "vitest-fetch-mock";
+
+import { vi, beforeAll } from "vitest";
 import "./testing/customMatchers";
 
 const fetchMocker = createFetchMock(vi);

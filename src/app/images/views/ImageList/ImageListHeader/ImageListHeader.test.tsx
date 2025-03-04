@@ -2,7 +2,6 @@ import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import { vi } from "vitest";
 
 import ImageListHeader, {
   Labels as ImageListHeaderLabels,
@@ -20,6 +19,7 @@ import {
   renderWithBrowserRouter,
   within,
 } from "@/testing/utils";
+import { vi } from "vitest";
 
 describe("ImageListHeader", () => {
   it("sets the subtitle loading state when polling", () => {

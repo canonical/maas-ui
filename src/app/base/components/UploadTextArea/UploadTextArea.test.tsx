@@ -1,9 +1,9 @@
 import { Formik } from "formik";
-import type { Mock } from "vitest";
 
 import UploadTextArea from "./UploadTextArea";
 
 import { render, screen, userEvent, waitFor } from "@/testing/utils";
+import type { Mock } from "vitest";
 
 class MockFileReader {
   result: string;

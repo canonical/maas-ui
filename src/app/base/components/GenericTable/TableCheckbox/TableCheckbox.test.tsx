@@ -1,12 +1,12 @@
 import type { Row } from "@tanstack/react-table";
-import type { Mock } from "vitest";
-import { describe } from "vitest";
 
 import TableCheckbox from "./TableCheckbox";
 
 import type { Image } from "@/app/images/types";
 import * as factory from "@/testing/factories";
 import { render, userEvent, screen } from "@/testing/utils";
+import { describe } from "vitest";
+import type { Mock } from "vitest";
 
 const getMockRow = (rowProps: Partial<Row<Image>> = {}) => {
   return Object.assign(

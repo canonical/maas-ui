@@ -1,8 +1,7 @@
-import type { Mock } from "vitest";
-
 import WebSocketClient, { WebSocketMessageType } from "./websocket-client";
 
 import { getCookie } from "@/app/utils";
+import type { Mock } from "vitest";
 
 vi.mock("@/app/utils");
 

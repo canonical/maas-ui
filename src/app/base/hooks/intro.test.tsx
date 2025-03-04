@@ -1,13 +1,13 @@
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import type { Mock } from "vitest";
 
 import { useCompletedIntro, useCompletedUserIntro } from "./intro";
 
 import { ConfigNames } from "@/app/store/config/types";
 import { getCookie } from "@/app/utils";
 import * as factory from "@/testing/factories";
+import type { Mock } from "vitest";
 
 const mockStore = configureStore();
 

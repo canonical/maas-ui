@@ -1,5 +1,3 @@
-import { vi } from "vitest";
-
 import AddZone from "./AddZone";
 
 import { zoneResolvers } from "@/testing/resolvers/zones";
@@ -10,6 +8,7 @@ import {
   renderWithProviders,
   waitFor,
 } from "@/testing/utils";
+import { vi } from "vitest";
 
 setupMockServer(zoneResolvers.createZone.handler());
 

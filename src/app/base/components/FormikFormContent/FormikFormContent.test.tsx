@@ -2,7 +2,6 @@ import { Field, Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import type { Mock } from "vitest";
 import * as Yup from "yup";
 
 import FormikFormContent from "./FormikFormContent";
@@ -19,6 +18,7 @@ import {
   renderWithBrowserRouter,
   renderWithMockStore,
 } from "@/testing/utils";
+import type { Mock } from "vitest";
 
 const mockStore = configureStore<RootState>();
 const mockUseNavigate = vi.fn();

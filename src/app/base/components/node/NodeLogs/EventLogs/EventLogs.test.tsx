@@ -1,7 +1,6 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import type { Mock } from "vitest";
 
 import EventLogs, { Label } from "./EventLogs";
 
@@ -18,6 +17,7 @@ import {
   renderWithMockStore,
   renderWithBrowserRouter,
 } from "@/testing/utils";
+import type { Mock } from "vitest";
 
 const mockStore = configureStore();
 

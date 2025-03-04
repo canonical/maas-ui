@@ -1,5 +1,4 @@
 import configureStore from "redux-mock-store";
-import type { SpyInstance } from "vitest";
 
 import UserIntro, { Labels as UserIntroLabels } from "./UserIntro";
 
@@ -17,6 +16,7 @@ import {
   setupMockServer,
   waitForLoading,
 } from "@/testing/utils";
+import type { SpyInstance } from "vitest";
 
 const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(sshKeyResolvers.listSshKeys.handler());

@@ -1,5 +1,3 @@
-import { vi } from "vitest";
-
 import BulkActions from "./BulkActions";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
@@ -12,6 +10,7 @@ import {
   screen,
   userEvent,
 } from "@/testing/utils";
+import { vi } from "vitest";
 
 describe("BulkActions", () => {
   const setSidePanelContent = vi.fn();

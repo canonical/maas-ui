@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
-import type { Mock } from "vitest";
 
 import DeleteTagForm from "./DeleteTagForm";
 
@@ -17,6 +16,7 @@ import { tagActions } from "@/app/store/tag";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import type { Mock } from "vitest";
 
 const callId = "mocked-nanoid";
 vi.mock("@reduxjs/toolkit", async () => {
