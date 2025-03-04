@@ -30,16 +30,12 @@ describe("useCreatePool", () => {
 
 describe("useUpdatePool", () => {
   it("should update a new pool", async () => {
-    const newPool: UpdateResourcePoolData = {
-      body: {
-        name: "updatedPool",
-        description: "updatedPoolDescription",
-      },
-      path: { resource_pool_id: 1 },
-      url: "/MAAS/a/v3/resource_pools/{resource_pool_id}",
+    const newPool: ResourcePoolRequest = {
+      name: "updatedPool",
+      description: "updatedPoolDescription",
     };
     const { result } = renderHookWithProviders(() => useUpdatePool());
-    result.current.mutate({ ...newPool });
+    result.current.mutate({ body: newPool, path: { resource_pool_id: 1 } });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });
