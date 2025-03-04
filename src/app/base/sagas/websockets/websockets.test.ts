@@ -2,6 +2,7 @@ import { eventChannel } from "redux-saga";
 import { call, put, take } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
+import type { Mock } from "vitest";
 
 import {
   handleFileContextRequest,
@@ -35,7 +36,6 @@ import type {
   WebSocketResponsePing,
   WebSocketResponseResult,
 } from "@/websocket-client";
-import type { Mock } from "vitest";
 
 vi.mock("@/app/utils", async () => {
   const actual: object = await vi.importActual("@/app/utils");

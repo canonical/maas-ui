@@ -1,4 +1,5 @@
 import configureStore from "redux-mock-store";
+import { describe } from "vitest";
 
 import ChangeSource from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 import { configActions } from "@/app/store/config";
@@ -6,7 +7,6 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-import { describe } from "vitest";
 
 const mockStore = configureStore<RootState>();
 

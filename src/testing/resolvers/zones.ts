@@ -1,4 +1,5 @@
 import { http, HttpResponse } from "msw";
+import { afterEach } from "vitest";
 
 import type {
   ZoneRequest,
@@ -6,7 +7,6 @@ import type {
 } from "@/app/apiclient";
 import { zone as zoneFactory } from "@/testing/factories";
 import { BASE_URL } from "@/testing/utils";
-import { afterEach } from "vitest";
 
 const initialMockZones: ZonesWithSummaryListResponse = {
   items: [

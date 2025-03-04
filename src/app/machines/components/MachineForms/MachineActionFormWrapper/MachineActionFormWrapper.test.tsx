@@ -1,5 +1,6 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
@@ -10,7 +11,6 @@ import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
-import type { Mock } from "vitest";
 
 const mockStore = configureStore<RootState>();
 

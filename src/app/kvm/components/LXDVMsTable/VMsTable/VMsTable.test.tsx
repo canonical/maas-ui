@@ -1,4 +1,5 @@
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import VMsTable, { Label } from "./VMsTable";
 
@@ -13,7 +14,6 @@ import {
   userEvent,
   renderWithBrowserRouter,
 } from "@/testing/utils";
-import type { Mock } from "vitest";
 
 const mockStore = configureStore<RootState>();
 

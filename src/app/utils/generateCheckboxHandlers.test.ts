@@ -1,7 +1,7 @@
+import type { Mock } from "vitest";
+
 import { generateCheckboxHandlers } from "./generateCheckboxHandlers";
 import type { CheckboxHandlers } from "./generateCheckboxHandlers";
-
-import type { Mock } from "vitest";
 
 describe("generateCheckboxHandlers", () => {
   let onChange: Mock;

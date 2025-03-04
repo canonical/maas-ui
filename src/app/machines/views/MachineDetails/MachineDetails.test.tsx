@@ -1,5 +1,6 @@
 import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import MachineDetails from "./MachineDetails";
 
@@ -7,7 +8,6 @@ import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-import type { Mock } from "vitest";
 
 const mockStore = configureStore<RootState>();
 

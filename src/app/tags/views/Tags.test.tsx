@@ -1,3 +1,5 @@
+import type { Mock } from "vitest";
+
 import { Label as TagsHeaderLabel } from "../components/TagsHeader/TagsHeader";
 
 import { Label as TagDetailsLabel } from "./TagDetails/TagDetails";
@@ -9,7 +11,6 @@ import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
-import type { Mock } from "vitest";
 
 describe("Tags", () => {
   let scrollToSpy: Mock;

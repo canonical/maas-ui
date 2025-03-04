@@ -1,4 +1,5 @@
 import configureStore from "redux-mock-store";
+import type { Mock, SpyInstance } from "vitest";
 
 import NodeTestsTable from "./NodeTestsTable";
 
@@ -17,7 +18,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-import type { Mock, SpyInstance } from "vitest";
 
 const mockStore = configureStore<RootState>();
 

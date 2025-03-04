@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 
 import MachineListGroupCount from "./MachineListGroupCount";
 
 import { FetchGroupKey } from "@/app/store/machine/types";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 import { FetchNodeStatus } from "@/app/store/types/node";
-import type { MockedFunction } from "vitest";
 
 vi.mock("@/app/store/machine/utils/hooks");
 

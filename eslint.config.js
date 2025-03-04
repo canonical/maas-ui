@@ -274,6 +274,7 @@ export default tseslint.config(
           allowTernary: true,
         },
       ],
+      "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
     },
   },
   ...compat.extends("plugin:playwright/recommended").map((config) => ({

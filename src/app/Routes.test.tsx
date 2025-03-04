@@ -1,3 +1,5 @@
+import type { Mock } from "vitest";
+
 import Routes from "./Routes";
 import type { RootState } from "./store/root/types";
 
@@ -5,7 +7,6 @@ import urls from "@/app/base/urls";
 import { LONG_TIMEOUT } from "@/testing/constants";
 import * as factory from "@/testing/factories";
 import { waitFor, renderWithBrowserRouter } from "@/testing/utils";
-import type { Mock } from "vitest";
 
 const nodeSummaryRoutes: { path: string; name: string }[] = [
   {

@@ -1,6 +1,7 @@
-import * as baseHooks from "@/app/base/hooks/base";
 import { vi } from "vitest";
 import type { SpyInstance } from "vitest";
+
+import * as baseHooks from "@/app/base/hooks/base";
 
 beforeEach(() => {
   vi.spyOn(baseHooks, "useCycled").mockImplementation(

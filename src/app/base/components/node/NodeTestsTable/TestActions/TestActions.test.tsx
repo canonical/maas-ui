@@ -1,3 +1,5 @@
+import type { Mock, SpyInstance } from "vitest";
+
 import TestActions from "./TestActions";
 
 import * as hooks from "@/app/base/hooks/analytics";
@@ -8,7 +10,6 @@ import {
 } from "@/app/store/scriptresult/types";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-import type { Mock, SpyInstance } from "vitest";
 
 const openMenu = async () => {
   await userEvent.click(screen.getByRole("button", { name: "Take action:" }));

@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import type { Mock } from "vitest";
 
 import TagsHeader, { Label } from "./TagsHeader";
 
@@ -7,7 +8,6 @@ import { TagSearchFilter } from "@/app/store/tag/selectors";
 import { TagSidePanelViews } from "@/app/tags/constants";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-import type { Mock } from "vitest";
 
 let scrollToSpy: Mock;
 

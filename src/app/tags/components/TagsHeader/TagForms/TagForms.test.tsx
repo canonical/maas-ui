@@ -1,9 +1,10 @@
+import type { Mock } from "vitest";
+
 import TagForms from "./TagForms";
 
 import { TagSidePanelViews } from "@/app/tags/constants";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
-import type { Mock } from "vitest";
 
 let scrollToSpy: Mock;
 

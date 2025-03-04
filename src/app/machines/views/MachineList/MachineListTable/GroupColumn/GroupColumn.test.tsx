@@ -1,10 +1,11 @@
+import type { MockedFunction } from "vitest";
+
 import GroupColumn from "./GroupColumn";
 
 import { FetchGroupKey } from "@/app/store/machine/types";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen, waitFor } from "@/testing/utils";
-import type { MockedFunction } from "vitest";
 
 vi.mock("@/app/store/machine/utils/hooks");
 

@@ -1,9 +1,9 @@
 import type { Row } from "@tanstack/react-table";
+import { vi } from "vitest";
 
 import useImageTableColumns from "@/app/images/components/ImagesTable/useImageTableColumns/useImageTableColumns";
 import type { Image } from "@/app/images/types";
 import { renderHook } from "@/testing/utils";
-import { vi } from "vitest";
 
 vi.mock("@/context", async () => {
   const actual = await vi.importActual("@/context");

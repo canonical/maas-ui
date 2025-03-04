@@ -1,7 +1,8 @@
+import { it, expect, vi, type Mock } from "vitest";
+
 import { DEFAULT_HEADERS, fetchWithAuth, getFullApiUrl } from "./base";
 
 import { getCookie } from "@/app/utils";
-import { it, expect, vi, type Mock } from "vitest";
 
 vi.mock("@/app/utils", () => ({ getCookie: vi.fn() }));
 
