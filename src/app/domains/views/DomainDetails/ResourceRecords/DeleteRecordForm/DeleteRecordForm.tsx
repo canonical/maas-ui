@@ -17,11 +17,11 @@ type Props = {
   resource: DomainResource;
 };
 
-export enum Labels {
-  FormLabel = "Delete record",
-  SubmitLabel = "Delete record",
-  AreYouSure = "Are you sure you want to delete this record?",
-}
+export const Labels = {
+  FormLabel: "Delete record",
+  SubmitLabel: "Delete record",
+  AreYouSure: "Are you sure you want to delete this record?",
+} as const;
 
 const DeleteRecordForm = ({
   closeForm,

@@ -60,24 +60,24 @@ import { getDHCPStatus } from "@/app/store/vlan/utils";
 import { generateCheckboxHandlers, isComparable } from "@/app/utils";
 import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 
-export enum Label {
-  Actions = "Actions",
-  ActionsMenu = "Interface actions",
-  DHCP = "DHCP",
-  EmptyList = "No interfaces available",
-  Fabric = "Fabric",
-  IP = "IP Address",
-  MAC = "MAC",
-  Name = "Name",
-  NUMA = "NUMA node",
-  PXE = "PXE",
-  Speed = "Link/interface speed",
-  Status = "Status",
-  Subnet = "Subnet",
-  SubnetName = "Name",
-  Type = "Type",
-  VLAN = "VLAN",
-}
+export const Label = {
+  Actions: "Actions",
+  ActionsMenu: "Interface actions",
+  DHCP: "DHCP",
+  EmptyList: "No interfaces available",
+  Fabric: "Fabric",
+  IP: "IP Address",
+  MAC: "MAC",
+  Name: "Name",
+  NUMA: "NUMA node",
+  PXE: "PXE",
+  Speed: "Link/interface speed",
+  Status: "Status",
+  Subnet: "Subnet",
+  SubnetName: "Name",
+  Type: "Type",
+  VLAN: "VLAN",
+} as const;
 
 type NetworkRowSortData = {
   bondOrBridge: NetworkInterface["id"] | null;

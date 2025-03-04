@@ -8,22 +8,22 @@ type Props = {
   node: ControllerDetails | MachineDetails;
 };
 
-export enum Labels {
-  HardwareInfo = "Hardware Information",
-  System = "System",
-  SysVendor = "Vendor",
-  SysProduct = "Product",
-  SysVersion = "Version",
-  Serial = "Serial",
-  Unknown = "Unknown",
-  Mainboard = "Mainboard",
-  MainboardVendor = "Vendor",
-  MainboardProduct = "Product",
-  MainboardFirmware = "Firmware",
-  BiosBootMode = "Boot mode",
-  MainboardVersion = "Version",
-  Date = "Date",
-}
+export const Labels = {
+  HardwareInfo: "Hardware Information",
+  System: "System",
+  SysVendor: "Vendor",
+  SysProduct: "Product",
+  SysVersion: "Version",
+  Serial: "Serial",
+  Unknown: "Unknown",
+  Mainboard: "Mainboard",
+  MainboardVendor: "Vendor",
+  MainboardProduct: "Product",
+  MainboardFirmware: "Firmware",
+  BiosBootMode: "Boot mode",
+  MainboardVersion: "Version",
+  Date: "Date",
+} as const;
 
 const HardwareCard = ({ node }: Props): JSX.Element => {
   return (
