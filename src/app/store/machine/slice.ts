@@ -1,4 +1,4 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { ACTIONS, DEFAULT_STATUSES } from "./constants";
@@ -281,15 +281,25 @@ const machineSlice = createSlice({
     [NodeActions.ABORT]: generateActionParams<BaseMachineActionParams>(
       NodeActions.ABORT
     ),
-    [`${NodeActions.ABORT}Error`]: statusHandlers.abort.error,
-    [`${NodeActions.ABORT}Start`]: statusHandlers.abort.start,
-    [`${NodeActions.ABORT}Success`]: statusHandlers.abort.success,
+    [`${NodeActions.ABORT}Error`]: statusHandlers.abort.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.ABORT}Start`]: statusHandlers.abort.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.ABORT}Success`]: statusHandlers.abort
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     [NodeActions.ACQUIRE]: generateActionParams<BaseMachineActionParams>(
       NodeActions.ACQUIRE
     ),
-    [`${NodeActions.ACQUIRE}Error`]: statusHandlers.acquire.error,
-    [`${NodeActions.ACQUIRE}Start`]: statusHandlers.acquire.start,
-    [`${NodeActions.ACQUIRE}Success`]: statusHandlers.acquire.success,
+    [`${NodeActions.ACQUIRE}Error`]: statusHandlers.acquire
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    [`${NodeActions.ACQUIRE}Start`]: statusHandlers.acquire
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    [`${NodeActions.ACQUIRE}Success`]: statusHandlers.acquire
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     addChassis: {
       prepare: (params: { [x: string]: string }) => ({
         payload: {
@@ -331,9 +341,12 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    applyStorageLayoutError: statusHandlers.applyStorageLayout.error,
-    applyStorageLayoutStart: statusHandlers.applyStorageLayout.start,
-    applyStorageLayoutSuccess: statusHandlers.applyStorageLayout.success,
+    applyStorageLayoutError: statusHandlers.applyStorageLayout
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    applyStorageLayoutStart: statusHandlers.applyStorageLayout
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    applyStorageLayoutSuccess: statusHandlers.applyStorageLayout
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     checkPower: {
       prepare: (system_id: Machine[MachineMeta.PK]) => ({
         meta: {
@@ -348,19 +361,40 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    checkPowerError: statusHandlers.checkPower.error,
-    checkPowerStart: statusHandlers.checkPower.start,
-    checkPowerSuccess: statusHandlers.checkPower.success,
+    checkPowerError: statusHandlers.checkPower.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    checkPowerStart: statusHandlers.checkPower.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    checkPowerSuccess: statusHandlers.checkPower.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     [NodeActions.CLONE]: generateActionParams<CloneParams>(NodeActions.CLONE),
-    cloneError: statusHandlers.clone.error,
-    cloneStart: statusHandlers.clone.start,
-    cloneSuccess: statusHandlers.clone.success,
+    cloneError: statusHandlers.clone.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    cloneStart: statusHandlers.clone.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    cloneSuccess: statusHandlers.clone.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     [NodeActions.COMMISSION]: generateActionParams<CommissionParams>(
       NodeActions.COMMISSION
     ),
-    [`${NodeActions.COMMISSION}Error`]: statusHandlers.commission.error,
-    [`${NodeActions.COMMISSION}Start`]: statusHandlers.commission.start,
-    [`${NodeActions.COMMISSION}Success`]: statusHandlers.commission.success,
+    [`${NodeActions.COMMISSION}Error`]: statusHandlers.commission
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    [`${NodeActions.COMMISSION}Start`]: statusHandlers.commission
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    [`${NodeActions.COMMISSION}Success`]: statusHandlers.commission
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     createBcache: {
       prepare: (params: CreateBcacheParams) => ({
         meta: {
@@ -474,9 +508,18 @@ const machineSlice = createSlice({
         }
       },
     },
-    createBcacheError: statusHandlers.createBcache.error,
-    createBcacheStart: statusHandlers.createBcache.start,
-    createBcacheSuccess: statusHandlers.createBcache.success,
+    createBcacheError: statusHandlers.createBcache.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createBcacheStart: statusHandlers.createBcache.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createBcacheSuccess: statusHandlers.createBcache.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     createBond: {
       prepare: (params: CreateBondParams) => ({
         meta: {
@@ -489,9 +532,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createBondError: statusHandlers.createBond.error,
-    createBondStart: statusHandlers.createBond.start,
-    createBondSuccess: statusHandlers.createBond.success,
+    createBondError: statusHandlers.createBond.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createBondStart: statusHandlers.createBond.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createBondSuccess: statusHandlers.createBond.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     createBridge: {
       prepare: (params: CreateBridgeParams) => ({
         meta: {
@@ -504,9 +556,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createBridgeError: statusHandlers.createBridge.error,
-    createBridgeStart: statusHandlers.createBridge.start,
-    createBridgeSuccess: statusHandlers.createBridge.success,
+    createBridgeError: statusHandlers.createBridge.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createBridgeStart: statusHandlers.createBridge.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createBridgeSuccess: statusHandlers.createBridge.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     createCacheSet: {
       prepare: (params: CreateCacheSetParams) => ({
         meta: {
@@ -523,9 +584,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createCacheSetError: statusHandlers.createCacheSet.error,
-    createCacheSetStart: statusHandlers.createCacheSet.start,
-    createCacheSetSuccess: statusHandlers.createCacheSet.success,
+    createCacheSetError: statusHandlers.createCacheSet.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createCacheSetStart: statusHandlers.createCacheSet.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createCacheSetSuccess: statusHandlers.createCacheSet.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     createLogicalVolume: {
       prepare: (params: CreateLogicalVolumeParams) => ({
         meta: {
@@ -543,9 +613,12 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createLogicalVolumeError: statusHandlers.createLogicalVolume.error,
-    createLogicalVolumeStart: statusHandlers.createLogicalVolume.start,
-    createLogicalVolumeSuccess: statusHandlers.createLogicalVolume.success,
+    createLogicalVolumeError: statusHandlers.createLogicalVolume
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    createLogicalVolumeStart: statusHandlers.createLogicalVolume
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    createLogicalVolumeSuccess: statusHandlers.createLogicalVolume
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     createPartition: {
       prepare: (params: CreatePartitionParams) => ({
         meta: {
@@ -565,9 +638,16 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createPartitionError: statusHandlers.createPartition.error,
-    createPartitionStart: statusHandlers.createPartition.start,
-    createPartitionSuccess: statusHandlers.createPartition.success,
+    createPartitionError: statusHandlers.createPartition.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createPartitionStart: statusHandlers.createPartition.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createPartitionSuccess: statusHandlers.createPartition
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     createPhysical: {
       prepare: (params: CreatePhysicalParams) => ({
         meta: {
@@ -580,9 +660,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createPhysicalError: statusHandlers.createPhysical.error,
-    createPhysicalStart: statusHandlers.createPhysical.start,
-    createPhysicalSuccess: statusHandlers.createPhysical.success,
+    createPhysicalError: statusHandlers.createPhysical.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createPhysicalStart: statusHandlers.createPhysical.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createPhysicalSuccess: statusHandlers.createPhysical.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     createRaid: {
       prepare: (params: CreateRaidParams) => ({
         meta: {
@@ -603,9 +692,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createRaidError: statusHandlers.createRaid.error,
-    createRaidStart: statusHandlers.createRaid.start,
-    createRaidSuccess: statusHandlers.createRaid.success,
+    createRaidError: statusHandlers.createRaid.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createRaidStart: statusHandlers.createRaid.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createRaidSuccess: statusHandlers.createRaid.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     createVlan: {
       prepare: (params: CreateVlanParams) => ({
         meta: {
@@ -618,9 +716,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createVlanError: statusHandlers.createVlan.error,
-    createVlanStart: statusHandlers.createVlan.start,
-    createVlanSuccess: statusHandlers.createVlan.success,
+    createVlanError: statusHandlers.createVlan.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createVlanStart: statusHandlers.createVlan.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    createVlanSuccess: statusHandlers.createVlan.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     createVmfsDatastore: {
       prepare: (params: CreateVmfsDatastoreParams) => ({
         meta: {
@@ -637,9 +744,12 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createVmfsDatastoreError: statusHandlers.createVmfsDatastore.error,
-    createVmfsDatastoreStart: statusHandlers.createVmfsDatastore.start,
-    createVmfsDatastoreSuccess: statusHandlers.createVmfsDatastore.success,
+    createVmfsDatastoreError: statusHandlers.createVmfsDatastore
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    createVmfsDatastoreStart: statusHandlers.createVmfsDatastore
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    createVmfsDatastoreSuccess: statusHandlers.createVmfsDatastore
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     createVolumeGroup: {
       prepare: (params: CreateVolumeGroupParams) => ({
         meta: {
@@ -656,15 +766,25 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createVolumeGroupError: statusHandlers.createVolumeGroup.error,
-    createVolumeGroupStart: statusHandlers.createVolumeGroup.start,
-    createVolumeGroupSuccess: statusHandlers.createVolumeGroup.success,
+    createVolumeGroupError: statusHandlers.createVolumeGroup
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    createVolumeGroupStart: statusHandlers.createVolumeGroup
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    createVolumeGroupSuccess: statusHandlers.createVolumeGroup
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     [NodeActions.DELETE]: generateActionParams<BaseMachineActionParams>(
       NodeActions.DELETE
     ),
-    [`${NodeActions.DELETE}Error`]: statusHandlers.delete.error,
-    [`${NodeActions.DELETE}Start`]: statusHandlers.delete.start,
-    [`${NodeActions.DELETE}Success`]: statusHandlers.delete.success,
+    [`${NodeActions.DELETE}Error`]: statusHandlers.delete.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.DELETE}Start`]: statusHandlers.delete.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.DELETE}Success`]: statusHandlers.delete
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     [`${NodeActions.DELETE}Notify`]: (state: MachineState, action) => {
       const index = state.items.findIndex(
         (item: Machine) => item.system_id === action.payload
@@ -727,9 +847,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deleteCacheSetError: statusHandlers.deleteCacheSet.error,
-    deleteCacheSetStart: statusHandlers.deleteCacheSet.start,
-    deleteCacheSetSuccess: statusHandlers.deleteCacheSet.success,
+    deleteCacheSetError: statusHandlers.deleteCacheSet.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deleteCacheSetStart: statusHandlers.deleteCacheSet.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deleteCacheSetSuccess: statusHandlers.deleteCacheSet.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     deleteDisk: {
       prepare: (params: DeleteDiskParams) => ({
         meta: {
@@ -745,9 +874,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deleteDiskError: statusHandlers.deleteDisk.error,
-    deleteDiskStart: statusHandlers.deleteDisk.start,
-    deleteDiskSuccess: statusHandlers.deleteDisk.success,
+    deleteDiskError: statusHandlers.deleteDisk.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deleteDiskStart: statusHandlers.deleteDisk.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deleteDiskSuccess: statusHandlers.deleteDisk.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     deleteFilesystem: {
       prepare: (params: DeleteFilesystemParams) => ({
         meta: {
@@ -765,9 +903,16 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deleteFilesystemError: statusHandlers.deleteFilesystem.error,
-    deleteFilesystemStart: statusHandlers.deleteFilesystem.start,
-    deleteFilesystemSuccess: statusHandlers.deleteFilesystem.success,
+    deleteFilesystemError: statusHandlers.deleteFilesystem.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deleteFilesystemStart: statusHandlers.deleteFilesystem.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deleteFilesystemSuccess: statusHandlers.deleteFilesystem
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     deleteInterface: {
       prepare: (params: DeleteInterfaceParams) => ({
         meta: {
@@ -783,9 +928,16 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deleteInterfaceError: statusHandlers.deleteInterface.error,
-    deleteInterfaceStart: statusHandlers.deleteInterface.start,
-    deleteInterfaceSuccess: statusHandlers.deleteInterface.success,
+    deleteInterfaceError: statusHandlers.deleteInterface.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deleteInterfaceStart: statusHandlers.deleteInterface.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deleteInterfaceSuccess: statusHandlers.deleteInterface
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     deletePartition: {
       prepare: (params: DeletePartitionParams) => ({
         meta: {
@@ -801,9 +953,16 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deletePartitionError: statusHandlers.deletePartition.error,
-    deletePartitionStart: statusHandlers.deletePartition.start,
-    deletePartitionSuccess: statusHandlers.deletePartition.success,
+    deletePartitionError: statusHandlers.deletePartition.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deletePartitionStart: statusHandlers.deletePartition.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    deletePartitionSuccess: statusHandlers.deletePartition
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     deleteVolumeGroup: {
       prepare: (params: DeleteVolumeGroupParams) => ({
         meta: {
@@ -819,21 +978,40 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deleteVolumeGroupError: statusHandlers.deleteVolumeGroup.error,
-    deleteVolumeGroupStart: statusHandlers.deleteVolumeGroup.start,
-    deleteVolumeGroupSuccess: statusHandlers.deleteVolumeGroup.success,
+    deleteVolumeGroupError: statusHandlers.deleteVolumeGroup
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    deleteVolumeGroupStart: statusHandlers.deleteVolumeGroup
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    deleteVolumeGroupSuccess: statusHandlers.deleteVolumeGroup
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     [NodeActions.DEPLOY]: generateActionParams<DeployParams>(
       NodeActions.DEPLOY
     ),
-    [`${NodeActions.DEPLOY}Error`]: statusHandlers.deploy.error,
-    [`${NodeActions.DEPLOY}Start`]: statusHandlers.deploy.start,
-    [`${NodeActions.DEPLOY}Success`]: statusHandlers.deploy.success,
+    [`${NodeActions.DEPLOY}Error`]: statusHandlers.deploy.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.DEPLOY}Start`]: statusHandlers.deploy.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.DEPLOY}Success`]: statusHandlers.deploy
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     exitRescueMode: generateActionParams<BaseMachineActionParams>(
       NodeActions.EXIT_RESCUE_MODE
     ),
-    exitRescueModeError: statusHandlers.exitRescueMode.error,
-    exitRescueModeStart: statusHandlers.exitRescueMode.start,
-    exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
+    exitRescueModeError: statusHandlers.exitRescueMode.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    exitRescueModeStart: statusHandlers.exitRescueMode.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    exitRescueModeSuccess: statusHandlers.exitRescueMode.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     fetch: {
       prepare: (callId: string, params?: FetchParams | null) => ({
         meta: {
@@ -1262,9 +1440,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    getSummaryXmlError: statusHandlers.getSummaryXml.error,
-    getSummaryXmlStart: statusHandlers.getSummaryXml.start,
-    getSummaryXmlSuccess: statusHandlers.getSummaryXml.success,
+    getSummaryXmlError: statusHandlers.getSummaryXml.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    getSummaryXmlStart: statusHandlers.getSummaryXml.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    getSummaryXmlSuccess: statusHandlers.getSummaryXml.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     getSummaryYaml: {
       prepare: (params: GetSummaryYamlParams) => ({
         meta: {
@@ -1282,9 +1469,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    getSummaryYamlError: statusHandlers.getSummaryYaml.error,
-    getSummaryYamlStart: statusHandlers.getSummaryYaml.start,
-    getSummaryYamlSuccess: statusHandlers.getSummaryYaml.success,
+    getSummaryYamlError: statusHandlers.getSummaryYaml.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    getSummaryYamlStart: statusHandlers.getSummaryYaml.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    getSummaryYamlSuccess: statusHandlers.getSummaryYaml.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     linkSubnet: {
       prepare: (params: LinkSubnetParams) => ({
         meta: {
@@ -1297,25 +1493,61 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    linkSubnetError: statusHandlers.linkSubnet.error,
-    linkSubnetStart: statusHandlers.linkSubnet.start,
-    linkSubnetSuccess: statusHandlers.linkSubnet.success,
+    linkSubnetError: statusHandlers.linkSubnet.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    linkSubnetStart: statusHandlers.linkSubnet.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    linkSubnetSuccess: statusHandlers.linkSubnet.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     [NodeActions.LOCK]: generateActionParams<BaseMachineActionParams>(
       NodeActions.LOCK
     ),
-    [`${NodeActions.LOCK}Error`]: statusHandlers.lock.error,
-    [`${NodeActions.LOCK}Start`]: statusHandlers.lock.start,
-    [`${NodeActions.LOCK}Success`]: statusHandlers.lock.success,
+    [`${NodeActions.LOCK}Error`]: statusHandlers.lock.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.LOCK}Start`]: statusHandlers.lock.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.LOCK}Success`]: statusHandlers.lock.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     markBroken: generateActionParams<MarkBrokenParams>(NodeActions.MARK_BROKEN),
-    markBrokenError: statusHandlers.markBroken.error,
-    markBrokenStart: statusHandlers.markBroken.start,
-    markBrokenSuccess: statusHandlers.markBroken.success,
+    markBrokenError: statusHandlers.markBroken.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    markBrokenStart: statusHandlers.markBroken.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    markBrokenSuccess: statusHandlers.markBroken.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     markFixed: generateActionParams<BaseMachineActionParams>(
       NodeActions.MARK_FIXED
     ),
-    markFixedError: statusHandlers.markFixed.error,
-    markFixedStart: statusHandlers.markFixed.start,
-    markFixedSuccess: statusHandlers.markFixed.success,
+    markFixedError: statusHandlers.markFixed.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    markFixedStart: statusHandlers.markFixed.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    markFixedSuccess: statusHandlers.markFixed.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     mountSpecial: {
       prepare: (params: MountSpecialParams) => ({
         meta: {
@@ -1333,33 +1565,66 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    mountSpecialError: statusHandlers.mountSpecial.error,
-    mountSpecialStart: statusHandlers.mountSpecial.start,
-    mountSpecialSuccess: statusHandlers.mountSpecial.success,
+    mountSpecialError: statusHandlers.mountSpecial.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    mountSpecialStart: statusHandlers.mountSpecial.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    mountSpecialSuccess: statusHandlers.mountSpecial.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     [NodeActions.OFF]: generateActionParams<BaseMachineActionParams>(
       NodeActions.OFF
     ),
-    [`${NodeActions.OFF}Error`]: statusHandlers.off.error,
-    [`${NodeActions.OFF}Start`]: statusHandlers.off.start,
-    [`${NodeActions.OFF}Success`]: statusHandlers.off.success,
+    [`${NodeActions.OFF}Error`]: statusHandlers.off.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.OFF}Start`]: statusHandlers.off.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.OFF}Success`]: statusHandlers.off.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     [NodeActions.ON]: generateActionParams<BaseMachineActionParams>(
       NodeActions.ON
     ),
-    [`${NodeActions.ON}Error`]: statusHandlers.on.error,
-    [`${NodeActions.ON}Start`]: statusHandlers.on.start,
-    [`${NodeActions.ON}Success`]: statusHandlers.on.success,
+    [`${NodeActions.ON}Error`]: statusHandlers.on.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.ON}Start`]: statusHandlers.on.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.ON}Success`]: statusHandlers.on.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     overrideFailedTesting: generateActionParams<OverrideFailedTesting>(
       NodeActions.OVERRIDE_FAILED_TESTING
     ),
-    overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
-    overrideFailedTestingStart: statusHandlers.overrideFailedTesting.start,
-    overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting.success,
+    overrideFailedTestingError: statusHandlers.overrideFailedTesting
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    overrideFailedTestingStart: statusHandlers.overrideFailedTesting
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     [NodeActions.RELEASE]: generateActionParams<ReleaseParams>(
       NodeActions.RELEASE
     ),
-    [`${NodeActions.RELEASE}Error`]: statusHandlers.release.error,
-    [`${NodeActions.RELEASE}Start`]: statusHandlers.release.start,
-    [`${NodeActions.RELEASE}Success`]: statusHandlers.release.success,
+    [`${NodeActions.RELEASE}Error`]: statusHandlers.release
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    [`${NodeActions.RELEASE}Start`]: statusHandlers.release
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    [`${NodeActions.RELEASE}Success`]: statusHandlers.release
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     // TODO: Add actual functionality here once the backend is ready https://warthogs.atlassian.net/browse/MAASENG-4185
     powerCycle: {
       prepare: () => ({ payload: null }),
@@ -1390,9 +1655,18 @@ const machineSlice = createSlice({
     rescueMode: generateActionParams<BaseMachineActionParams>(
       NodeActions.RESCUE_MODE
     ),
-    rescueModeError: statusHandlers.rescueMode.error,
-    rescueModeStart: statusHandlers.rescueMode.start,
-    rescueModeSuccess: statusHandlers.rescueMode.success,
+    rescueModeError: statusHandlers.rescueMode.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    rescueModeStart: statusHandlers.rescueMode.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    rescueModeSuccess: statusHandlers.rescueMode.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     setActive: {
       prepare: (system_id: Machine[MachineMeta.PK] | null) => ({
         meta: {
@@ -1435,13 +1709,31 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    setBootDiskError: statusHandlers.setBootDisk.error,
-    setBootDiskStart: statusHandlers.setBootDisk.start,
-    setBootDiskSuccess: statusHandlers.setBootDisk.success,
+    setBootDiskError: statusHandlers.setBootDisk.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    setBootDiskStart: statusHandlers.setBootDisk.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    setBootDiskSuccess: statusHandlers.setBootDisk.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     setPool: generateActionParams<SetPoolParams>(NodeActions.SET_POOL),
-    setPoolError: statusHandlers.setPool.error,
-    setPoolStart: statusHandlers.setPool.start,
-    setPoolSuccess: statusHandlers.setPool.success,
+    setPoolError: statusHandlers.setPool.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    setPoolStart: statusHandlers.setPool.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    setPoolSuccess: statusHandlers.setPool.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     setSelected: {
       prepare: (selected: SelectedMachines | null) => ({
         payload: selected,
@@ -1454,9 +1746,18 @@ const machineSlice = createSlice({
       },
     },
     setZone: generateActionParams<SetZoneParams>(NodeActions.SET_ZONE),
-    setZoneError: statusHandlers.setZone.error,
-    setZoneStart: statusHandlers.setZone.start,
-    setZoneSuccess: statusHandlers.setZone.success,
+    setZoneError: statusHandlers.setZone.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    setZoneStart: statusHandlers.setZone.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    setZoneSuccess: statusHandlers.setZone.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     softOff: {
       prepare: (params: BaseMachineActionParams) => {
         let actionParams;
@@ -1488,9 +1789,18 @@ const machineSlice = createSlice({
       },
       reducer: () => {},
     },
-    softOffError: statusHandlers.softOff.error,
-    softOffStart: statusHandlers.softOff.start,
-    softOffSuccess: statusHandlers.softOff.success,
+    softOffError: statusHandlers.softOff.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    softOffStart: statusHandlers.softOff.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    softOffSuccess: statusHandlers.softOff.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     suppressScriptResults: {
       prepare: (
         machineID: Machine[MachineMeta.PK],
@@ -1510,19 +1820,44 @@ const machineSlice = createSlice({
       reducer: () => {},
     },
     [NodeActions.TAG]: generateActionParams<TagParams>(NodeActions.TAG),
-    [`${NodeActions.TAG}Error`]: statusHandlers.tag.error,
-    [`${NodeActions.TAG}Start`]: statusHandlers.tag.start,
-    [`${NodeActions.TAG}Success`]: statusHandlers.tag.success,
+    [`${NodeActions.TAG}Error`]: statusHandlers.tag.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.TAG}Start`]: statusHandlers.tag.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.TAG}Success`]: statusHandlers.tag.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     [NodeActions.TEST]: generateActionParams<TestParams>(NodeActions.TEST),
-    [`${NodeActions.TEST}Error`]: statusHandlers.test.error,
-    [`${NodeActions.TEST}Start`]: statusHandlers.test.start,
-    [`${NodeActions.TEST}Success`]: statusHandlers.test.success,
+    [`${NodeActions.TEST}Error`]: statusHandlers.test.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.TEST}Start`]: statusHandlers.test.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.TEST}Success`]: statusHandlers.test.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     [NodeActions.UNLOCK]: generateActionParams<BaseMachineActionParams>(
       NodeActions.UNLOCK
     ),
-    [`${NodeActions.UNLOCK}Error`]: statusHandlers.unlock.error,
-    [`${NodeActions.UNLOCK}Start`]: statusHandlers.unlock.start,
-    [`${NodeActions.UNLOCK}Success`]: statusHandlers.unlock.success,
+    [`${NodeActions.UNLOCK}Error`]: statusHandlers.unlock.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.UNLOCK}Start`]: statusHandlers.unlock.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    [`${NodeActions.UNLOCK}Success`]: statusHandlers.unlock
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     unlinkSubnet: {
       prepare: (params: UnlinkSubnetParams) => ({
         meta: {
@@ -1539,9 +1874,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    unlinkSubnetError: statusHandlers.unlinkSubnet.error,
-    unlinkSubnetStart: statusHandlers.unlinkSubnet.start,
-    unlinkSubnetSuccess: statusHandlers.unlinkSubnet.success,
+    unlinkSubnetError: statusHandlers.unlinkSubnet.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    unlinkSubnetStart: statusHandlers.unlinkSubnet.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    unlinkSubnetSuccess: statusHandlers.unlinkSubnet.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     unmountSpecial: {
       prepare: (params: UnmountSpecialParams) => ({
         meta: {
@@ -1557,9 +1901,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    unmountSpecialError: statusHandlers.unmountSpecial.error,
-    unmountSpecialStart: statusHandlers.unmountSpecial.start,
-    unmountSpecialSuccess: statusHandlers.unmountSpecial.success,
+    unmountSpecialError: statusHandlers.unmountSpecial.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    unmountSpecialStart: statusHandlers.unmountSpecial.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    unmountSpecialSuccess: statusHandlers.unmountSpecial.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     unsuppressScriptResults: {
       prepare: (
         machineID: Machine[MachineMeta.PK],
@@ -1630,9 +1983,18 @@ const machineSlice = createSlice({
       });
     },
     [NodeActions.UNTAG]: generateActionParams<UntagParams>(NodeActions.UNTAG),
-    untagError: statusHandlers.untag.error,
-    untagStart: statusHandlers.untag.start,
-    untagSuccess: statusHandlers.untag.success,
+    untagError: statusHandlers.untag.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    untagStart: statusHandlers.untag.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    untagSuccess: statusHandlers.untag.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     updateDisk: {
       prepare: (params: UpdateDiskParams) => ({
         meta: {
@@ -1650,9 +2012,18 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    updateDiskError: statusHandlers.updateDisk.error,
-    updateDiskStart: statusHandlers.updateDisk.start,
-    updateDiskSuccess: statusHandlers.updateDisk.success,
+    updateDiskError: statusHandlers.updateDisk.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    updateDiskStart: statusHandlers.updateDisk.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    updateDiskSuccess: statusHandlers.updateDisk.success as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
     updateFilesystem: {
       prepare: (params: UpdateFilesystemParams) => ({
         meta: {
@@ -1671,9 +2042,16 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    updateFilesystemError: statusHandlers.updateFilesystem.error,
-    updateFilesystemStart: statusHandlers.updateFilesystem.start,
-    updateFilesystemSuccess: statusHandlers.updateFilesystem.success,
+    updateFilesystemError: statusHandlers.updateFilesystem.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    updateFilesystemStart: statusHandlers.updateFilesystem.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    updateFilesystemSuccess: statusHandlers.updateFilesystem
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     updateInterface: {
       prepare: (
         // This update endpoint is used for updating all interface types so
@@ -1690,9 +2068,16 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    updateInterfaceError: statusHandlers.updateInterface.error,
-    updateInterfaceStart: statusHandlers.updateInterface.start,
-    updateInterfaceSuccess: statusHandlers.updateInterface.success,
+    updateInterfaceError: statusHandlers.updateInterface.error as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    updateInterfaceStart: statusHandlers.updateInterface.start as CaseReducer<
+      MachineState,
+      PayloadAction<any>
+    >,
+    updateInterfaceSuccess: statusHandlers.updateInterface
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
     updateNotify: (
       state: MachineState,
       action: PayloadAction<MachineState["items"][0]>
@@ -1813,9 +2198,12 @@ const machineSlice = createSlice({
       }),
       reducer: () => {},
     },
-    updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
-    updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,
-    updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
+    updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore
+      .error as CaseReducer<MachineState, PayloadAction<any>>,
+    updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore
+      .start as CaseReducer<MachineState, PayloadAction<any>>,
+    updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore
+      .success as CaseReducer<MachineState, PayloadAction<any>>,
   },
   extraReducers: (builder) => {
     // Invalidate all machine queries when the websocket disconnects

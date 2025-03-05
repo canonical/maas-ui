@@ -1,4 +1,4 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import type {
@@ -251,7 +251,10 @@ const controllerSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deleteError: statusHandlers.delete.error,
+    deleteError: statusHandlers.delete.error as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
     deleteNotify: (
       state: ControllerState,
       action: PayloadAction<Controller[ControllerMeta.PK]>
@@ -267,8 +270,14 @@ const controllerSlice = createSlice({
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
     },
-    deleteStart: statusHandlers.delete.start,
-    deleteSuccess: statusHandlers.delete.success,
+    deleteStart: statusHandlers.delete.start as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    deleteSuccess: statusHandlers.delete.success as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
     fetchSuccess: (
       state: ControllerState,
       action: PayloadAction<Controller[]>
@@ -313,9 +322,18 @@ const controllerSlice = createSlice({
       }),
       reducer: () => {},
     },
-    getSummaryXmlError: statusHandlers.getSummaryXml.error,
-    getSummaryXmlStart: statusHandlers.getSummaryXml.start,
-    getSummaryXmlSuccess: statusHandlers.getSummaryXml.success,
+    getSummaryXmlError: statusHandlers.getSummaryXml.error as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    getSummaryXmlStart: statusHandlers.getSummaryXml.start as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    getSummaryXmlSuccess: statusHandlers.getSummaryXml.success as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
     getSummaryYaml: {
       prepare: (params: GetSummaryYamlParams) => ({
         meta: {
@@ -333,9 +351,18 @@ const controllerSlice = createSlice({
       }),
       reducer: () => {},
     },
-    getSummaryYamlError: statusHandlers.getSummaryYaml.error,
-    getSummaryYamlStart: statusHandlers.getSummaryYaml.start,
-    getSummaryYamlSuccess: statusHandlers.getSummaryYaml.success,
+    getSummaryYamlError: statusHandlers.getSummaryYaml.error as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    getSummaryYamlStart: statusHandlers.getSummaryYaml.start as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    getSummaryYamlSuccess: statusHandlers.getSummaryYaml.success as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
     importImages: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
@@ -352,9 +379,18 @@ const controllerSlice = createSlice({
       }),
       reducer: () => {},
     },
-    importImagesError: statusHandlers.importImages.error,
-    importImagesStart: statusHandlers.importImages.start,
-    importImagesSuccess: statusHandlers.importImages.success,
+    importImagesError: statusHandlers.importImages.error as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    importImagesStart: statusHandlers.importImages.start as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    importImagesSuccess: statusHandlers.importImages.success as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
     off: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
@@ -371,9 +407,18 @@ const controllerSlice = createSlice({
       }),
       reducer: () => {},
     },
-    offError: statusHandlers.off.error,
-    offStart: statusHandlers.off.start,
-    offSuccess: statusHandlers.off.success,
+    offError: statusHandlers.off.error as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    offStart: statusHandlers.off.start as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    offSuccess: statusHandlers.off.success as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
     on: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
@@ -390,9 +435,18 @@ const controllerSlice = createSlice({
       }),
       reducer: () => {},
     },
-    onError: statusHandlers.on.error,
-    onStart: statusHandlers.on.start,
-    onSuccess: statusHandlers.on.success,
+    onError: statusHandlers.on.error as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    onStart: statusHandlers.on.start as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    onSuccess: statusHandlers.on.success as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
     overrideFailedTesting: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
@@ -409,9 +463,12 @@ const controllerSlice = createSlice({
       }),
       reducer: () => {},
     },
-    overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
-    overrideFailedTestingStart: statusHandlers.overrideFailedTesting.start,
-    overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting.success,
+    overrideFailedTestingError: statusHandlers.overrideFailedTesting
+      .error as CaseReducer<ControllerState, PayloadAction<any>>,
+    overrideFailedTestingStart: statusHandlers.overrideFailedTesting
+      .start as CaseReducer<ControllerState, PayloadAction<any>>,
+    overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting
+      .success as CaseReducer<ControllerState, PayloadAction<any>>,
     pollCheckImages: {
       prepare: (ids: Controller[ControllerMeta.PK][], pollId: string) => ({
         meta: {
@@ -560,9 +617,18 @@ const controllerSlice = createSlice({
       }),
       reducer: () => {},
     },
-    setZoneError: statusHandlers.setZone.error,
-    setZoneStart: statusHandlers.setZone.start,
-    setZoneSuccess: statusHandlers.setZone.success,
+    setZoneError: statusHandlers.setZone.error as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    setZoneStart: statusHandlers.setZone.start as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    setZoneSuccess: statusHandlers.setZone.success as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
     test: {
       prepare: (params: TestParams) => ({
         meta: {
@@ -583,9 +649,18 @@ const controllerSlice = createSlice({
       }),
       reducer: () => {},
     },
-    testError: statusHandlers.test.error,
-    testStart: statusHandlers.test.start,
-    testSuccess: statusHandlers.test.success,
+    testError: statusHandlers.test.error as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    testStart: statusHandlers.test.start as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
+    testSuccess: statusHandlers.test.success as CaseReducer<
+      ControllerState,
+      PayloadAction<any>
+    >,
   },
 });
 

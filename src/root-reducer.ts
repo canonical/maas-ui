@@ -44,8 +44,8 @@ import type { UserState } from "@/app/store/user/types";
 import vlan from "@/app/store/vlan";
 import vmcluster from "@/app/store/vmcluster";
 
-const createAppReducer = (routerReducer: Reducer<RouterState, AnyAction>) =>
-  combineReducers<RootState>({
+const createAppReducer = (routerReducer: Reducer<RouterState, Action>) =>
+  combineReducers({
     bootresource,
     config,
     controller,

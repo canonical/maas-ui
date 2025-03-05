@@ -1,4 +1,4 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { Subnet } from "../subnet/types";
@@ -73,9 +73,18 @@ const vlanSlice = createSlice({
       }),
       reducer: () => {},
     },
-    configureDHCPError: statusHandlers.configureDHCP.error,
-    configureDHCPStart: statusHandlers.configureDHCP.start,
-    configureDHCPSuccess: statusHandlers.configureDHCP.success,
+    configureDHCPError: statusHandlers.configureDHCP.error as CaseReducer<
+      VLANState,
+      PayloadAction<any>
+    >,
+    configureDHCPStart: statusHandlers.configureDHCP.start as CaseReducer<
+      VLANState,
+      PayloadAction<any>
+    >,
+    configureDHCPSuccess: statusHandlers.configureDHCP.success as CaseReducer<
+      VLANState,
+      PayloadAction<any>
+    >,
     createNotify: (state: VLANState, action: PayloadAction<VLAN>) => {
       // In the event that the server erroneously attempts to create an existing
       // VLAN, due to a race condition etc., ensure we update instead of
