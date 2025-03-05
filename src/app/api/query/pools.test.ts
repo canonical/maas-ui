@@ -1,4 +1,4 @@
-import { useCreatePool, useUpdatePool } from "./pools";
+import { useCreatePool, useDeletePool, useUpdatePool } from "./pools";
 
 import type { ResourcePoolRequest } from "@/app/apiclient";
 import { poolsResolvers } from "@/testing/resolvers/pools";
@@ -36,3 +36,13 @@ describe("useUpdatePool", () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });
+
+describe("useDeletePool", () => {
+  it("should delete a pool", async () => {
+    const { result } = renderHookWithProviders(() => useDeletePool());
+    result.current.mutate({ path: { resource_pool_id: 1 } });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  });
+});
+
+

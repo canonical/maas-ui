@@ -1,11 +1,44 @@
 import PoolDeleteForm from "./PoolDeleteForm";
 
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  screen,
+  renderWithBrowserRouter,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
-it("renders", () => {
-  renderWithBrowserRouter(<PoolDeleteForm id={1} />);
+const mockServer = setupMockServer(poolsResolvers.deletePool.handler());
 
-  expect(
-    screen.getByRole("form", { name: /Confirm pool deletion/i })
-  ).toBeInTheDocument();
+describe("PoolDeleteForm", () => {
+  it("renders", () => {
+    renderWithBrowserRouter(<PoolDeleteForm id={1} />, {
+      route: "/",
+    });
+
+    expect(screen.getByRole("form", { name: "Confirm pool deletion" }));
+  });
+
+  it("can delete a pool", async () => {
+    renderWithBrowserRouter(<PoolDeleteForm id={1} />);
+    await userEvent.click(screen.getByRole("button", { name: /delete/i }));
+
+    await waitFor(() => {
+      expect(poolsResolvers.deletePool.resolved).toBeTruthy();
+    });
+  });
+
+  it("can show errors encountered when deleting a pool", async () => {
+    mockServer.use(
+      poolsResolvers.deletePool.error({ message: "Uh oh!", code: 404 })
+    );
+    renderWithBrowserRouter(<PoolDeleteForm id={1} />);
+
+    await userEvent.click(screen.getByRole("button", { name: /delete/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Uh oh!")).toBeInTheDocument();
+    });
+  });
 });

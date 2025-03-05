@@ -4,6 +4,7 @@ import { BASE_URL } from "../utils";
 
 import type {
   CreateResourcePoolError,
+  DeleteResourcePoolError,
   UpdateResourcePoolError,
 } from "@/app/apiclient";
 
@@ -16,6 +17,12 @@ const mockCreatePoolError: CreateResourcePoolError = {
 const mockUpdatePoolError: UpdateResourcePoolError = {
   message: "Internal server error",
   code: 500,
+  kind: "Error",
+};
+
+const mockDeletePoolError: DeleteResourcePoolError = {
+  message: "Not found",
+  code: 404,
   kind: "Error",
 };
 
@@ -44,6 +51,19 @@ const poolsResolvers = {
       http.put(`${BASE_URL}MAAS/a/v3/resource_pools/:id`, () => {
         poolsResolvers.updatePool.resolved = true;
         return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  deletePool: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/resource_pools/:id`, () => {
+        poolsResolvers.deletePool.resolved = true;
+        return HttpResponse.json({}, { status: 204 });
+      }),
+    error: (error: DeleteResourcePoolError = mockDeletePoolError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/resource_pools/:id`, () => {
+        poolsResolvers.deletePool.resolved = true;
+        return HttpResponse.json(error, { status: 404 });
       }),
   },
 };
