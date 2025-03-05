@@ -126,4 +126,51 @@ describe("SelectUpstreamImagesSelect", () => {
     expect(labels).toHaveLength(1);
     expect(labels[0]).toHaveTextContent("available");
   });
+
+  it("correctly calls setFieldValue", async () => {
+    const releases = [factory.bootResourceUbuntuRelease({ name: "focal" })];
+    const [available, deleted] = [
+      factory.bootResourceUbuntuArch({
+        name: "arch-1",
+        deleted: false,
+      }),
+      factory.bootResourceUbuntuArch({
+        name: "arch-2",
+        deleted: false,
+      }),
+    ];
+
+    const downloadableImages = getDownloadableImages(
+      releases,
+      [available, deleted],
+      []
+    );
+    const imagesByOS = groupImagesByOS(downloadableImages);
+    const groupedImages = groupArchesByRelease(imagesByOS);
+    const mockSetFieldValue = vi.fn();
+    renderWithProviders(
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
+        {({ values }: Pick<DownloadImagesSelectProps, "values">) => (
+          <SelectUpstreamImagesSelect
+            groupedImages={groupedImages}
+            setFieldValue={mockSetFieldValue}
+            values={values}
+          />
+        )}
+      </Formik>,
+      { state }
+    );
+
+    await userEvent.click(screen.getByText("Ubuntu"));
+
+    const combobox = screen.getByRole("combobox");
+
+    await userEvent.click(combobox);
+
+    const checkbox = screen.getAllByRole("checkbox")[0];
+
+    await userEvent.click(checkbox);
+
+    expect(mockSetFieldValue).toHaveBeenCalled();
+  });
 });
