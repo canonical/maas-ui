@@ -100,15 +100,15 @@ const podSlice = createSlice({
     },
     composeError: statusHandlers.compose.error as CaseReducer<
       PodState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     composeStart: statusHandlers.compose.start as CaseReducer<
       PodState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     composeSuccess: statusHandlers.compose.success as CaseReducer<
       PodState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     delete: {
       prepare: (params: DeleteParams) => ({
@@ -124,15 +124,15 @@ const podSlice = createSlice({
     },
     deleteError: statusHandlers.delete.error as CaseReducer<
       PodState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteStart: statusHandlers.delete.start as CaseReducer<
       PodState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteSuccess: statusHandlers.delete.success as CaseReducer<
       PodState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteNotify: (state: PodState, action) => {
       const index = state.items.findIndex(
@@ -298,15 +298,15 @@ const podSlice = createSlice({
     },
     refreshError: statusHandlers.refresh.error as CaseReducer<
       PodState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     refreshStart: statusHandlers.refresh.start as CaseReducer<
       PodState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     refreshSuccess: statusHandlers.refresh.success as CaseReducer<
       PodState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     setActive: {
       prepare: (id: Pod[PodMeta.PK] | null) => ({
