@@ -32,6 +32,18 @@ describe("PoolDeleteForm", () => {
       screen.getByRole("textbox", { name: PoolFormLabels.PoolName }),
       "swimming"
     );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: PoolFormLabels.SubmitLabel })
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("swimming")).toBeInTheDocument();
+    });
+
+    // Now delete the pool
+    renderWithBrowserRouter(<PoolDeleteForm id={1} />);
+
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
     await waitFor(() => {
