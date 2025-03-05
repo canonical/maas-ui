@@ -6,7 +6,9 @@ import {
   groupImagesByOS,
 } from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
 import type { DownloadImagesSelectProps } from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
-import SelectUpstreamImagesSelect from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
+import SelectUpstreamImagesSelect, {
+  getValueKey,
+} from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -171,6 +173,9 @@ describe("SelectUpstreamImagesSelect", () => {
 
     await userEvent.click(checkbox);
 
-    expect(mockSetFieldValue).toHaveBeenCalled();
+    expect(mockSetFieldValue).toHaveBeenCalledWith(
+      getValueKey("Ubuntu", releases[0].title),
+      [groupedImages["Ubuntu"][releases[0].title][0]]
+    );
   });
 });

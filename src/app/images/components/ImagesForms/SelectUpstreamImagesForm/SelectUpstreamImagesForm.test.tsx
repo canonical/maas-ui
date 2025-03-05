@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -10,9 +11,8 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  render,
   within,
-  renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -76,7 +76,7 @@ describe("SelectUpstreamImagesForm", () => {
   const store = mockStore(state);
 
   it("correctly sets initial values", async () => {
-    renderWithBrowserRouter(<SelectUpstreamImagesForm />, {
+    renderWithProviders(<SelectUpstreamImagesForm />, {
       state,
     });
 
@@ -148,7 +148,7 @@ describe("SelectUpstreamImagesForm", () => {
         },
       }),
     });
-    renderWithBrowserRouter(<SelectUpstreamImagesForm />, {
+    renderWithProviders(<SelectUpstreamImagesForm />, {
       state,
     });
 

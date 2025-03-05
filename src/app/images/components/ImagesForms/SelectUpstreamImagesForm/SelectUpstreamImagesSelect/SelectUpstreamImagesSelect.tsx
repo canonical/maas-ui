@@ -12,7 +12,7 @@ import type { GroupedImages } from "@/app/images/components/ImagesForms/SelectUp
 
 import "./_index.scss";
 
-const getValueKey = (distro: string, release: string) =>
+export const getValueKey = (distro: string, release: string) =>
   `${distro}-${release}`.replace(".", "-");
 
 export type DownloadImagesSelectProps = {
