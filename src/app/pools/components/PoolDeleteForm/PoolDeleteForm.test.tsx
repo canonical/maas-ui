@@ -1,3 +1,4 @@
+import { useCreatePool } from "@/app/api/query/pools";
 import PoolDeleteForm from "./PoolDeleteForm";
 
 import { poolsResolvers } from "@/testing/resolvers/pools";
@@ -7,6 +8,7 @@ import {
   setupMockServer,
   userEvent,
   waitFor,
+  renderHookWithProviders,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(poolsResolvers.deletePool.handler());
@@ -22,6 +24,11 @@ describe("PoolDeleteForm", () => {
 
   it("can delete a pool", async () => {
     renderWithBrowserRouter(<PoolDeleteForm id={1} />);
+    const newPool = { name: "testPool", description: "testDescription" };
+    const { result } = renderHookWithProviders(() => useCreatePool());
+    result.current.mutate({ body: newPool });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
     await waitFor(() => {
