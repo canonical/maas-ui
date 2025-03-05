@@ -1,4 +1,4 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { PodType } from "./constants";
@@ -98,9 +98,18 @@ const podSlice = createSlice({
       }),
       reducer: () => {},
     },
-    composeError: statusHandlers.compose.error,
-    composeStart: statusHandlers.compose.start,
-    composeSuccess: statusHandlers.compose.success,
+    composeError: statusHandlers.compose.error as CaseReducer<
+      PodState,
+      PayloadAction<any>
+    >,
+    composeStart: statusHandlers.compose.start as CaseReducer<
+      PodState,
+      PayloadAction<any>
+    >,
+    composeSuccess: statusHandlers.compose.success as CaseReducer<
+      PodState,
+      PayloadAction<any>
+    >,
     delete: {
       prepare: (params: DeleteParams) => ({
         meta: {
@@ -113,9 +122,18 @@ const podSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deleteError: statusHandlers.delete.error,
-    deleteStart: statusHandlers.delete.start,
-    deleteSuccess: statusHandlers.delete.success,
+    deleteError: statusHandlers.delete.error as CaseReducer<
+      PodState,
+      PayloadAction<any>
+    >,
+    deleteStart: statusHandlers.delete.start as CaseReducer<
+      PodState,
+      PayloadAction<any>
+    >,
+    deleteSuccess: statusHandlers.delete.success as CaseReducer<
+      PodState,
+      PayloadAction<any>
+    >,
     deleteNotify: (state: PodState, action) => {
       const index = state.items.findIndex(
         (item: Pod) => item.id === action.payload
@@ -278,9 +296,18 @@ const podSlice = createSlice({
       }),
       reducer: () => {},
     },
-    refreshError: statusHandlers.refresh.error,
-    refreshStart: statusHandlers.refresh.start,
-    refreshSuccess: statusHandlers.refresh.success,
+    refreshError: statusHandlers.refresh.error as CaseReducer<
+      PodState,
+      PayloadAction<any>
+    >,
+    refreshStart: statusHandlers.refresh.start as CaseReducer<
+      PodState,
+      PayloadAction<any>
+    >,
+    refreshSuccess: statusHandlers.refresh.success as CaseReducer<
+      PodState,
+      PayloadAction<any>
+    >,
     setActive: {
       prepare: (id: Pod[PodMeta.PK] | null) => ({
         meta: {

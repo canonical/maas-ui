@@ -1,7 +1,6 @@
-import type { OutputParametricSelector, Selector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 import { createCachedSelector } from "re-reselect";
-import type { ParametricSelector } from "re-reselect";
 
 import type { RootState } from "@/app/store/root/types";
 import type { CommonStates, CommonStateTypes } from "@/app/store/utils";
@@ -36,23 +35,12 @@ type BaseSelectors<
   errors: (state: RootState) => S["errors"];
   // This method is generated using createSelector with parameters so it results
   // in a function of type `OutputParametricSelector`.
-  getById: ParametricSelector<RootState, I[K] | null | undefined, I | null>;
+  getById: (state: RootState, id: I[K] | null | undefined) => I | null;
   loaded: (state: RootState) => S["loaded"];
   loading: (state: RootState) => S["loading"];
   saved: (state: RootState) => S["saved"];
   saving: (state: RootState) => S["saving"];
-  // This method is generated using createSelector with parameters so it results
-  // in a function of type `OutputParametricSelector`.
-  search: OutputParametricSelector<
-    // The provided state.
-    RootState,
-    // The search term.
-    string,
-    // The result (an array of items).
-    I[],
-    // The search computation function.
-    (items: S["items"], term: string) => I[]
-  >;
+  search: (state: RootState, term: string) => I[];
 };
 
 /**

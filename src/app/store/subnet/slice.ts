@@ -1,4 +1,4 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { SubnetMeta } from "./types";
@@ -114,8 +114,14 @@ const subnetSlice = createSlice({
       }),
       reducer: () => {},
     },
-    scanError: statusHandlers.scan.error,
-    scanStart: statusHandlers.scan.start,
+    scanError: statusHandlers.scan.error as CaseReducer<
+      SubnetState,
+      PayloadAction<any>
+    >,
+    scanStart: statusHandlers.scan.start as CaseReducer<
+      SubnetState,
+      PayloadAction<any>
+    >,
     scanSuccess: {
       prepare: ({ item, payload }) => ({
         meta: {

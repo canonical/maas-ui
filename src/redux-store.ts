@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { createBrowserHistory } from "history";
 import { createReduxHistoryContext } from "redux-first-history";
 import createSagaMiddleware from "redux-saga";
@@ -16,19 +16,15 @@ const reducer = createRootReducer(routerReducer);
 
 const sagaMiddleware = createSagaMiddleware();
 const checkMiddleware = import.meta.env.VITE_APP_CHECK_MIDDLEWARE === "true";
-const middleware = [
-  ...getDefaultMiddleware({
-    thunk: false,
-    immutableCheck: checkMiddleware,
-    serializableCheck: checkMiddleware,
-  }),
-  sagaMiddleware,
-  routerMiddleware,
-];
 
 export const store = configureStore({
   reducer,
-  middleware,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: false,
+      immutableCheck: checkMiddleware,
+      serializableCheck: checkMiddleware,
+    }).concat(sagaMiddleware, routerMiddleware),
   devTools: import.meta.env.NODE_ENV !== "production",
 });
 export const history = createReduxHistory(store);
