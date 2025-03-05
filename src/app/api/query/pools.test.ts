@@ -10,7 +10,8 @@ import {
 
 setupMockServer(
   poolsResolvers.createPool.handler(),
-  poolsResolvers.updatePool.handler()
+  poolsResolvers.updatePool.handler(),
+  poolsResolvers.deletePool.handler()
 );
 
 describe("useCreatePool", () => {
