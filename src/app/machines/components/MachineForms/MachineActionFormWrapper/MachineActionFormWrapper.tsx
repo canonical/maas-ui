@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
-import type { AnyAction, Dispatch } from "redux";
+import type { Action, Dispatch } from "redux";
 
 import CloneForm from "./CloneForm";
 import CommissionForm from "./CommissionForm";
@@ -43,7 +43,7 @@ type ContainerProps = Omit<MachineActionFormProps, "processingCount"> & {
 
 type Props = ContainerProps & {
   clearSelectedMachines: () => void;
-  dispatch: Dispatch<AnyAction>;
+  dispatch: Dispatch<Action>;
   dispatchForSelectedMachines: ReturnType<
     typeof useSelectedMachinesActionsDispatch
   >["dispatch"];
@@ -276,7 +276,7 @@ export const MachineActionFormWrapper = ({
   viewingDetails,
 }: ContainerProps): JSX.Element | null => {
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<Action>>();
   const {
     dispatch: dispatchForSelectedMachines,
     actionStatus,

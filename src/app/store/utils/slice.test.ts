@@ -1,4 +1,4 @@
-import type { Slice, PayloadAction } from "@reduxjs/toolkit";
+import type { Slice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { PodMeta } from "@/app/store/pod/types";
@@ -418,9 +418,18 @@ describe("slice", () => {
             modelName: PodMeta.MODEL,
             primaryKey: PodMeta.PK,
           }),
-          refreshStart: statusHandlers.refresh.start,
-          refreshSuccess: statusHandlers.refresh.success,
-          refreshError: statusHandlers.refresh.error,
+          refreshStart: statusHandlers.refresh.start as CaseReducer<
+            PodState,
+            PayloadAction<any>
+          >,
+          refreshSuccess: statusHandlers.refresh.success as CaseReducer<
+            PodState,
+            PayloadAction<any>
+          >,
+          refreshError: statusHandlers.refresh.error as CaseReducer<
+            PodState,
+            PayloadAction<any>
+          >,
         },
       });
     });

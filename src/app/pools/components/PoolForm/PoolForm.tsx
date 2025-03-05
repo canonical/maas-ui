@@ -1,14 +1,10 @@
-import { useState } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { useCreatePool, useUpdatePool } from "@/app/api/query/pools";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { resourcePoolActions } from "@/app/store/resourcepool";
-import poolSelectors from "@/app/store/resourcepool/selectors";
 import type { ResourcePool } from "@/app/store/resourcepool/types";
 
 type Props = {
@@ -35,18 +31,8 @@ const PoolSchema = Yup.object().shape({
 });
 
 export const PoolForm = ({ pool, onClose, ...props }: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const saved = useSelector(poolSelectors.saved);
-  const saving = useSelector(poolSelectors.saving);
-  const errors = useSelector(poolSelectors.errors);
-  const [savingPool, setSaving] = useState<ResourcePool["name"] | null>();
-
-  useAddMessage(
-    saved,
-    resourcePoolActions.cleanup,
-    `${savingPool} ${pool ? "updated" : "added"} successfully.`,
-    () => setSaving(null)
-  );
+  const createPool = useCreatePool();
+  const updatePool = useUpdatePool();
 
   let initialValues: PoolFormValues;
   let title: string;
@@ -68,7 +54,7 @@ export const PoolForm = ({ pool, onClose, ...props }: Props): JSX.Element => {
     <FormikForm
       aria-label={title}
       cleanup={resourcePoolActions.cleanup}
-      errors={errors}
+      errors={updatePool.error || createPool.error}
       initialValues={initialValues}
       onCancel={onClose}
       onSaveAnalytics={{
@@ -77,22 +63,26 @@ export const PoolForm = ({ pool, onClose, ...props }: Props): JSX.Element => {
         label: "Add pool form",
       }}
       onSubmit={(values) => {
-        dispatch(resourcePoolActions.cleanup());
         if (pool) {
-          dispatch(
-            resourcePoolActions.update({
-              ...values,
-              id: pool.id,
-            })
-          );
+          updatePool.mutate({
+            body: {
+              name: values.name,
+              description: values.description,
+            },
+            path: { resource_pool_id: pool.id },
+          });
         } else {
-          dispatch(resourcePoolActions.create(values));
+          createPool.mutate({
+            body: {
+              name: values.name,
+              description: values.description,
+            },
+          });
         }
-        setSaving(values.name);
       }}
-      saved={saved}
+      saved={updatePool.isSuccess || createPool.isSuccess}
       savedRedirect={urls.pools.index}
-      saving={saving}
+      saving={updatePool.isPending || createPool.isPending}
       submitLabel={Labels.SubmitLabel}
       validationSchema={PoolSchema}
       {...props}

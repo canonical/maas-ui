@@ -194,7 +194,7 @@ export const generateCommonReducers = <
     fetch: {
       // Slices that need to pass params to the payload should overwrite this
       // action and reducer.
-      prepare: () => ({
+      prepare: (_unused?: void) => ({
         meta: {
           model: modelName,
           method: "list",
@@ -341,7 +341,7 @@ export const generateCommonReducers = <
       );
       state.items.splice(index, 1);
     },
-    cleanup(state: S, _action: PayloadAction<undefined>) {
+    cleanup(state: S, _action: PayloadAction) {
       state.errors = null;
       if (setErrors) {
         state = setErrors(state, null, null);

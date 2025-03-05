@@ -1,4 +1,4 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { DeviceMeta } from "./types";
@@ -124,9 +124,16 @@ const deviceSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createInterfaceError: statusHandlers.createInterface.error,
-    createInterfaceStart: statusHandlers.createInterface.start,
-    createInterfaceSuccess: statusHandlers.createInterface.success,
+    createInterfaceError: statusHandlers.createInterface.error as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    createInterfaceStart: statusHandlers.createInterface.start as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    createInterfaceSuccess: statusHandlers.createInterface
+      .success as CaseReducer<DeviceState, PayloadAction<any>>,
     createNotify: (state: DeviceState, action: PayloadAction<Device>) => {
       // In the event that the server erroneously attempts to create an existing device,
       // due to a race condition etc., ensure we update instead of creating duplicates.
@@ -153,9 +160,18 @@ const deviceSlice = createSlice({
       }),
       reducer: () => {},
     },
-    createPhysicalError: statusHandlers.createPhysical.error,
-    createPhysicalStart: statusHandlers.createPhysical.start,
-    createPhysicalSuccess: statusHandlers.createPhysical.success,
+    createPhysicalError: statusHandlers.createPhysical.error as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    createPhysicalStart: statusHandlers.createPhysical.start as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    createPhysicalSuccess: statusHandlers.createPhysical.success as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
     fetchSuccess: (state: DeviceState, action: PayloadAction<Device[]>) => {
       action.payload.forEach((newItem: Device) => {
         // Add items that don't already exist in the store. Existing items
@@ -190,7 +206,10 @@ const deviceSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deleteError: statusHandlers.delete.error,
+    deleteError: statusHandlers.delete.error as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
     deleteNotify: (
       state: DeviceState,
       action: PayloadAction<Device[DeviceMeta.PK]>
@@ -205,8 +224,14 @@ const deviceSlice = createSlice({
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
     },
-    deleteStart: statusHandlers.delete.start,
-    deleteSuccess: statusHandlers.delete.success,
+    deleteStart: statusHandlers.delete.start as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    deleteSuccess: statusHandlers.delete.success as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
     deleteInterface: {
       prepare: (params: DeleteInterfaceParams) => ({
         meta: {
@@ -219,9 +244,16 @@ const deviceSlice = createSlice({
       }),
       reducer: () => {},
     },
-    deleteInterfaceError: statusHandlers.deleteInterface.error,
-    deleteInterfaceStart: statusHandlers.deleteInterface.start,
-    deleteInterfaceSuccess: statusHandlers.deleteInterface.success,
+    deleteInterfaceError: statusHandlers.deleteInterface.error as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    deleteInterfaceStart: statusHandlers.deleteInterface.start as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    deleteInterfaceSuccess: statusHandlers.deleteInterface
+      .success as CaseReducer<DeviceState, PayloadAction<any>>,
     ...generateGetReducers({
       modelName: DeviceMeta.MODEL,
       primaryKey: DeviceMeta.PK,
@@ -240,9 +272,18 @@ const deviceSlice = createSlice({
       }),
       reducer: () => {},
     },
-    linkSubnetError: statusHandlers.linkSubnet.error,
-    linkSubnetStart: statusHandlers.linkSubnet.start,
-    linkSubnetSuccess: statusHandlers.linkSubnet.success,
+    linkSubnetError: statusHandlers.linkSubnet.error as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    linkSubnetStart: statusHandlers.linkSubnet.start as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    linkSubnetSuccess: statusHandlers.linkSubnet.success as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
     setActive: {
       prepare: (system_id: Device[DeviceMeta.PK] | null) => ({
         meta: {
@@ -294,9 +335,18 @@ const deviceSlice = createSlice({
       }),
       reducer: () => {},
     },
-    setZoneError: statusHandlers.setZone.error,
-    setZoneStart: statusHandlers.setZone.start,
-    setZoneSuccess: statusHandlers.setZone.success,
+    setZoneError: statusHandlers.setZone.error as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    setZoneStart: statusHandlers.setZone.start as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    setZoneSuccess: statusHandlers.setZone.success as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
     unlinkSubnet: {
       prepare: (params: UnlinkSubnetParams) => ({
         meta: {
@@ -309,9 +359,18 @@ const deviceSlice = createSlice({
       }),
       reducer: () => {},
     },
-    unlinkSubnetError: statusHandlers.unlinkSubnet.error,
-    unlinkSubnetStart: statusHandlers.unlinkSubnet.start,
-    unlinkSubnetSuccess: statusHandlers.unlinkSubnet.success,
+    unlinkSubnetError: statusHandlers.unlinkSubnet.error as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    unlinkSubnetStart: statusHandlers.unlinkSubnet.start as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    unlinkSubnetSuccess: statusHandlers.unlinkSubnet.success as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
     updateInterface: {
       prepare: (
         // This update endpoint is used for updating all interface types so
@@ -328,9 +387,16 @@ const deviceSlice = createSlice({
       }),
       reducer: () => {},
     },
-    updateInterfaceError: statusHandlers.updateInterface.error,
-    updateInterfaceStart: statusHandlers.updateInterface.start,
-    updateInterfaceSuccess: statusHandlers.updateInterface.success,
+    updateInterfaceError: statusHandlers.updateInterface.error as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    updateInterfaceStart: statusHandlers.updateInterface.start as CaseReducer<
+      DeviceState,
+      PayloadAction<any>
+    >,
+    updateInterfaceSuccess: statusHandlers.updateInterface
+      .success as CaseReducer<DeviceState, PayloadAction<any>>,
   },
 });
 

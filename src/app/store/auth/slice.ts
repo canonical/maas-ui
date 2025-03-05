@@ -19,7 +19,7 @@ type Reducers = SliceCaseReducers<UserState> & {
   fetch: WithPrepare;
 };
 
-const authSlice = createSlice<UserState, Reducers>({
+const authSlice = createSlice<UserState, Reducers, "auth", never>({
   name: "auth",
   initialState: {
     auth: {
