@@ -45,6 +45,8 @@ export const NodeType = {
   REGION_AND_RACK_CONTROLLER: 4,
 } as const;
 
+export type NodeType = (typeof NodeType)[keyof typeof NodeType];
+
 export enum NodeTypeDisplay {
   DEVICE = "Device",
   MACHINE = "Machine",

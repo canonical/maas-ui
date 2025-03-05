@@ -41,7 +41,7 @@ export type DeviceDetails = BaseDevice &
     description: string;
     interfaces: DeviceNetworkInterface[];
     locked: boolean;
-    node_type: NodeType.DEVICE;
+    node_type: typeof NodeType.DEVICE;
     on_network: boolean;
     pool: ModelRef | null;
     swap_size: number | null;

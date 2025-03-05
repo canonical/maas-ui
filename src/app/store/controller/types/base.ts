@@ -76,9 +76,9 @@ export type BaseController = BaseNode & {
     | NodeTypeDisplay.REGION_CONTROLLER
     | NodeTypeDisplay.REGION_AND_RACK_CONTROLLER;
   node_type:
-    | NodeType.RACK_CONTROLLER
-    | NodeType.REGION_CONTROLLER
-    | NodeType.REGION_AND_RACK_CONTROLLER;
+    | typeof NodeType.RACK_CONTROLLER
+    | typeof NodeType.REGION_CONTROLLER
+    | typeof NodeType.REGION_AND_RACK_CONTROLLER;
   service_ids: number[];
   vault_configured?: boolean;
   versions: ControllerVersions | null;
