@@ -79,19 +79,16 @@ describe("SelectUpstreamImagesForm", () => {
       state,
     });
 
-    await userEvent.click(screen.getByText("Ubuntu"));
-    await userEvent.click(screen.getByText("Centos"));
-
     const rowUbuntu = within(
-      screen.getByRole("row", { name: "16.04 LTS" })
-    ).getAllByRole("combobox");
+      screen.getByRole("row", { name: "16.04 LTS", hidden: true })
+    ).getAllByRole("combobox", { hidden: true });
 
     expect(rowUbuntu).toHaveLength(1);
     expect(within(rowUbuntu[0]).getByText("amd64, i386")).toBeInTheDocument();
 
     const rowOther = within(
-      screen.getByRole("row", { name: "centos70" })
-    ).getAllByRole("combobox");
+      screen.getByRole("row", { name: "centos70", hidden: true })
+    ).getAllByRole("combobox", { hidden: true });
 
     expect(rowOther).toHaveLength(1);
     expect(within(rowOther[0]).getByText("amd64")).toBeInTheDocument();
