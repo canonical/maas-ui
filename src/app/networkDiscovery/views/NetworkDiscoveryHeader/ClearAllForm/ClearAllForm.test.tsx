@@ -13,7 +13,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 describe("ClearAllForm", () => {
   let state: RootState;

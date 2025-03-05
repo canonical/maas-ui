@@ -126,14 +126,14 @@ const deviceSlice = createSlice({
     },
     createInterfaceError: statusHandlers.createInterface.error as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     createInterfaceStart: statusHandlers.createInterface.start as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     createInterfaceSuccess: statusHandlers.createInterface
-      .success as CaseReducer<DeviceState, PayloadAction<any>>,
+      .success as CaseReducer<DeviceState, PayloadAction<unknown>>,
     createNotify: (state: DeviceState, action: PayloadAction<Device>) => {
       // In the event that the server erroneously attempts to create an existing device,
       // due to a race condition etc., ensure we update instead of creating duplicates.
@@ -162,15 +162,15 @@ const deviceSlice = createSlice({
     },
     createPhysicalError: statusHandlers.createPhysical.error as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     createPhysicalStart: statusHandlers.createPhysical.start as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     createPhysicalSuccess: statusHandlers.createPhysical.success as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     fetchSuccess: (state: DeviceState, action: PayloadAction<Device[]>) => {
       action.payload.forEach((newItem: Device) => {
@@ -208,7 +208,7 @@ const deviceSlice = createSlice({
     },
     deleteError: statusHandlers.delete.error as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteNotify: (
       state: DeviceState,
@@ -226,11 +226,11 @@ const deviceSlice = createSlice({
     },
     deleteStart: statusHandlers.delete.start as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteSuccess: statusHandlers.delete.success as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteInterface: {
       prepare: (params: DeleteInterfaceParams) => ({
@@ -246,14 +246,14 @@ const deviceSlice = createSlice({
     },
     deleteInterfaceError: statusHandlers.deleteInterface.error as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteInterfaceStart: statusHandlers.deleteInterface.start as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteInterfaceSuccess: statusHandlers.deleteInterface
-      .success as CaseReducer<DeviceState, PayloadAction<any>>,
+      .success as CaseReducer<DeviceState, PayloadAction<unknown>>,
     ...generateGetReducers({
       modelName: DeviceMeta.MODEL,
       primaryKey: DeviceMeta.PK,
@@ -274,15 +274,15 @@ const deviceSlice = createSlice({
     },
     linkSubnetError: statusHandlers.linkSubnet.error as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     linkSubnetStart: statusHandlers.linkSubnet.start as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     linkSubnetSuccess: statusHandlers.linkSubnet.success as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     setActive: {
       prepare: (system_id: Device[DeviceMeta.PK] | null) => ({
@@ -337,15 +337,15 @@ const deviceSlice = createSlice({
     },
     setZoneError: statusHandlers.setZone.error as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     setZoneStart: statusHandlers.setZone.start as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     setZoneSuccess: statusHandlers.setZone.success as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     unlinkSubnet: {
       prepare: (params: UnlinkSubnetParams) => ({
@@ -361,15 +361,15 @@ const deviceSlice = createSlice({
     },
     unlinkSubnetError: statusHandlers.unlinkSubnet.error as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     unlinkSubnetStart: statusHandlers.unlinkSubnet.start as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     unlinkSubnetSuccess: statusHandlers.unlinkSubnet.success as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     updateInterface: {
       prepare: (
@@ -389,14 +389,14 @@ const deviceSlice = createSlice({
     },
     updateInterfaceError: statusHandlers.updateInterface.error as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     updateInterfaceStart: statusHandlers.updateInterface.start as CaseReducer<
       DeviceState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     updateInterfaceSuccess: statusHandlers.updateInterface
-      .success as CaseReducer<DeviceState, PayloadAction<any>>,
+      .success as CaseReducer<DeviceState, PayloadAction<unknown>>,
   },
 });
 

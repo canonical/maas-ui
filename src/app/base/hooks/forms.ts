@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, isValidElement } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
@@ -22,7 +22,7 @@ export const useFormikErrors = <V = AnyObject, E = null>(
     if (
       errors &&
       typeof errors === "object" &&
-      !React.isValidElement(errors) &&
+      !isValidElement(errors) &&
       !simpleObjectEquality(errors, previousErrors)
     ) {
       Object.entries(errors).forEach(([field, fieldErrors]) => {
@@ -46,7 +46,7 @@ export const useFormikErrors = <V = AnyObject, E = null>(
  * @param allowUnchanged - Whether the form is enabled even when unchanged.
  * @returns Form is disabled.
  */
-export const useFormikFormDisabled = <V extends {}>({
+export const useFormikFormDisabled = <V extends object>({
   allowAllEmpty = false,
   allowUnchanged = false,
 }: {
@@ -59,7 +59,7 @@ export const useFormikFormDisabled = <V extends {}>({
   const newValues = { ...values };
   let hasErrors = false;
   if (errors) {
-    hasErrors = React.isValidElement(errors) || Object.keys(errors).length > 0;
+    hasErrors = isValidElement(errors) || Object.keys(errors).length > 0;
   }
   if (allowAllEmpty) {
     // If all fields are allowed to be empty then remove the empty fields from

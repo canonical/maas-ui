@@ -213,7 +213,7 @@ describe("LXDHostToolbar", () => {
         </MemoryRouter>
       </Provider>
     );
-    userEvent.click(screen.getByTestId("numa-switch"));
+    await userEvent.click(screen.getByTestId("numa-switch"));
     await waitFor(() => expect(useSendMock).toHaveBeenCalled());
     useSendMock.mockRestore();
   });

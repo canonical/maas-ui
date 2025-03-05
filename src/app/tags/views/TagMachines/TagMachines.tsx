@@ -40,7 +40,7 @@ const TagMachines = (): JSX.Element => {
   const [sortDirection, setSortDirection] = useState<
     ValueOf<typeof SortDirection>
   >(DEFAULTS.sortDirection);
-  let filters: FetchFilters = { status: FetchNodeStatus.DEPLOYED };
+  const filters: FetchFilters = { status: FetchNodeStatus.DEPLOYED };
   if (tag) {
     filters.tags = [tag.name];
   }

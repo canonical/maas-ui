@@ -75,7 +75,7 @@ const InterfaceSchema = Yup.object().shape({
             return isIP(
               formatIpAddress(ip_address, context.parent.subnet_cidr as string)
             );
-          } catch (e) {
+          } catch {
             return false;
           }
         },
@@ -99,11 +99,11 @@ const InterfaceSchema = Yup.object().shape({
                 const addr = ipaddr.parse(ip);
                 const netAddr = ipaddr.parse(networkAddress);
                 return addr.match(netAddr, prefixLength);
-              } catch (e) {
+              } catch {
                 return false;
               }
             }
-          } catch (e) {
+          } catch {
             return false;
           }
         },

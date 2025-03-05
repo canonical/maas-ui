@@ -9,7 +9,7 @@ import "./_index.scss";
 const getValueKey = (distro: string, release: string) =>
   `${distro}-${release}`.replace(".", "-");
 
-type DownloadImagesSelectProps = {
+export type DownloadImagesSelectProps = {
   values: Record<string, MultiSelectItem[]>;
   setFieldValue: (key: string, value: MultiSelectItem) => void;
   groupedImages: GroupedImages;

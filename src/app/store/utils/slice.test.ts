@@ -420,15 +420,15 @@ describe("slice", () => {
           }),
           refreshStart: statusHandlers.refresh.start as CaseReducer<
             PodState,
-            PayloadAction<any>
+            PayloadAction<unknown>
           >,
           refreshSuccess: statusHandlers.refresh.success as CaseReducer<
             PodState,
-            PayloadAction<any>
+            PayloadAction<unknown>
           >,
           refreshError: statusHandlers.refresh.error as CaseReducer<
             PodState,
-            PayloadAction<any>
+            PayloadAction<unknown>
           >,
         },
       });

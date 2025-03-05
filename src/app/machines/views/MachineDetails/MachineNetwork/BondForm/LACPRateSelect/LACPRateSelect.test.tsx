@@ -58,7 +58,7 @@ describe("LACPRateSelect", () => {
       },
     ];
 
-    for (let i in expectedOptions) {
+    for (const i in expectedOptions) {
       expect(lacpRateOptions[i]).toHaveValue(expectedOptions[i].value);
       expect(lacpRateOptions[i]).toHaveTextContent(expectedOptions[i].label);
     }

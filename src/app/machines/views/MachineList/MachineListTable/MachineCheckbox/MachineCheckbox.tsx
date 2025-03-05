@@ -36,7 +36,7 @@ export const getSelectedMachinesRange = ({
   groups?: (FilterGroupOptionType | null)[] | undefined;
   grouping?: FetchGroupKey | null | undefined;
 } => {
-  let newSelected =
+  const newSelected =
     !selected || "filter" in selected ? { items: [] } : cloneDeep(selected);
   newSelected.items = newSelected.items ?? [];
 
@@ -110,7 +110,7 @@ const MachineCheckbox = ({
           });
         }
 
-        let newSelected =
+        const newSelected =
           !selected || "filter" in selected
             ? { items: [] }
             : cloneDeep(selected);

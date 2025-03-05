@@ -1,4 +1,4 @@
-const { constructURL } = require("../utils");
+import { constructURL } from "../utils";
 
 const TIMEOUT = 120000;
 
@@ -44,7 +44,7 @@ const customPageSize = async (context, commands, pageSize) => {
   return commands.measure.stop();
 };
 
-module.exports = async (context, commands) => {
+export default async (context, commands) => {
   await coldCache(context, commands);
   await warmCache(context, commands);
   await customPageSize(context, commands, 10);

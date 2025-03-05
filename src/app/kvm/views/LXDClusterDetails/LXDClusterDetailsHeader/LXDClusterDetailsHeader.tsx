@@ -26,6 +26,9 @@ const LXDClusterDetailsHeader = ({
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
+
+  // clusterId will be of a known cluster, so we can safely assume that cluster will be defined
+  // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
   const zone = useGetZone({ path: { zone_id: cluster?.availability_zone! } });
   const location = useLocation();
   const canRefresh = !!cluster?.hosts.length;

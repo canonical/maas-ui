@@ -5,7 +5,13 @@ import FormikFormContent from "@/app/base/components/FormikFormContent";
 import type { Props as ContentProps } from "@/app/base/components/FormikFormContent/FormikFormContent";
 
 // explicitly disallow null and undefined as they cause Formik to throw an error
-type InputFieldValue = string | string[] | undefined | number | boolean | {};
+type InputFieldValue =
+  | string
+  | string[]
+  | undefined
+  | number
+  | boolean
+  | object;
 export type FormikFormValues = {
   [field: string]: InputFieldValue;
 };

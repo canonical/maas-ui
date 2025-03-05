@@ -131,7 +131,7 @@ const ReservedRangeForm = ({
                 const addr = ipaddr.parse(ip);
                 const netAddr = ipaddr.parse(networkAddress);
                 return addr.match(netAddr, prefixLength);
-              } catch (e) {
+              } catch {
                 return false;
               }
             }
@@ -167,7 +167,7 @@ const ReservedRangeForm = ({
                 const addr = ipaddr.parse(ip);
                 const netAddr = ipaddr.parse(networkAddress);
                 return addr.match(netAddr, prefixLength);
-              } catch (e) {
+              } catch {
                 return false;
               }
             }

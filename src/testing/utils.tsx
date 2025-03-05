@@ -138,7 +138,7 @@ interface WrapperProps {
   parentRoute?: string;
   routePattern?: string;
   state?: RootState;
-  store?: MockStoreEnhanced<RootState | unknown, {}>;
+  store?: MockStoreEnhanced<RootState | unknown, object>;
   queryData?: InitialData;
   sidePanelContent?: SidePanelContent;
   sidePanelSize?: SidePanelSize;
@@ -197,7 +197,7 @@ const WithMockStoreProvider = ({
 };
 
 interface EnhancedRenderResult extends RenderResult {
-  store: MockStoreEnhanced<RootState | unknown, {}>;
+  store: MockStoreEnhanced<RootState | unknown, object>;
 }
 
 export interface WithRouterOptions extends RenderOptions, WrapperProps {
@@ -214,13 +214,14 @@ export const renderWithBrowserRouter = (
   ui: React.ReactNode,
   options?: WithRouterOptions
 ) => {
-  let {
+  const {
     queryData = setupInitialData(),
     state = rootStateFactory(),
-    store = getMockStore(state),
     route = "/",
     ...renderOptions
   } = options || {};
+  let store = getMockStore(state);
+
   window.history.pushState({}, "Test page", route);
 
   const Wrapper = ({ children }: { children: React.ReactNode }) => {
@@ -536,7 +537,6 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
 type TestProviderProps = {
   children: ReactNode;
   state?: Partial<RootState>;
-  queryData?: { queryKey: any; data: Partial<Record<any, any>> | undefined }[];
   store?: MockStoreEnhanced<RootState | unknown>;
   route?: string;
   history?: MemoryHistory;
@@ -596,7 +596,7 @@ export const renderWithProviders = (
   options?: Omit<RenderOptions, "wrapper"> &
     Partial<TestProviderProps> & { history?: MemoryHistory }
 ) => {
-  const { state, queryData, store, history, ...renderOptions } = options ?? {};
+  const { state, store, history, ...renderOptions } = options ?? {};
   const testHistory = history ?? createMemoryHistory();
 
   return {
@@ -605,7 +605,6 @@ export const renderWithProviders = (
         <TestProvider
           {...props}
           history={testHistory}
-          queryData={queryData}
           state={state}
           store={store}
         />

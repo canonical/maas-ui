@@ -33,7 +33,7 @@ export const useWebSocket = () => {
 
   // Listen for NOTIFY messages and run a callback when received
   const subscribe = useCallback(
-    (callback: (msg: any) => void) => {
+    (callback: ({ name }: { name: WebSocketEndpointModel }) => void) => {
       if (!websocketClient.rws) return;
 
       const messageHandler = (messageEvent: MessageEvent) => {

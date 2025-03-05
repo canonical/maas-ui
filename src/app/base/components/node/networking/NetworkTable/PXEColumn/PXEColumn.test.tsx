@@ -30,7 +30,7 @@ describe("PXEColumn", () => {
     });
     state.machine.items = [machine];
     renderWithMockStore(<PXEColumn nic={nic} node={machine} />, { state });
-    // eslint-disable-next-line testing-library/no-node-access
+
     expect(document.querySelector(".p-icon--tick")).toBeInTheDocument();
   });
 
@@ -45,7 +45,7 @@ describe("PXEColumn", () => {
     });
     state.machine.items = [machine];
     renderWithMockStore(<PXEColumn nic={nic} node={machine} />, { state });
-    // eslint-disable-next-line testing-library/no-node-access
+
     expect(document.querySelector(".p-icon--tick")).not.toBeInTheDocument();
   });
 });

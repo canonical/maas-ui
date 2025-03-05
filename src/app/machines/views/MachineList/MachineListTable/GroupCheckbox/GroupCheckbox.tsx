@@ -52,7 +52,7 @@ const GroupCheckbox = ({
       }
       isDisabled={group?.count === 0 || allSelected}
       onGenerateSelected={(checked) => {
-        let newSelected =
+        const newSelected =
           !selected || "filter" in selected
             ? { items: [] }
             : cloneDeep(selected);

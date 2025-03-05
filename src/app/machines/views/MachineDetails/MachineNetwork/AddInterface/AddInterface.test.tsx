@@ -8,7 +8,7 @@ import { NetworkLinkMode } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 const route = urls.machines.index;
 
 describe("AddInterface", () => {

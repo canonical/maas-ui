@@ -24,7 +24,7 @@ vi.mock("@reduxjs/toolkit", async () => {
   };
 });
 const callId = "mocked-nanoid";
-const mockStore = configureStore<RootState, {}>();
+const mockStore = configureStore<RootState>();
 
 describe("VmResources", () => {
   let state: RootState;

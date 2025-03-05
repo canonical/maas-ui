@@ -29,7 +29,7 @@ beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValue("123456");
   vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   global.innerHeight = 500;
-  // eslint-disable-next-line testing-library/no-node-access
+
   html = document.querySelector("html");
   const scrollToSpy: Mock = vi.fn();
   global.scrollTo = scrollToSpy;

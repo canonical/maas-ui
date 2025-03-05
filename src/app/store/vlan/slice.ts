@@ -75,15 +75,15 @@ const vlanSlice = createSlice({
     },
     configureDHCPError: statusHandlers.configureDHCP.error as CaseReducer<
       VLANState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     configureDHCPStart: statusHandlers.configureDHCP.start as CaseReducer<
       VLANState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     configureDHCPSuccess: statusHandlers.configureDHCP.success as CaseReducer<
       VLANState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     createNotify: (state: VLANState, action: PayloadAction<VLAN>) => {
       // In the event that the server erroneously attempts to create an existing

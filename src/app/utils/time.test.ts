@@ -1,5 +1,5 @@
 import MockDate from "mockdate";
-import timezoneMock from "timezone-mock";
+import { register, unregister } from "timezone-mock";
 
 import {
   formatUtcDatetime,
@@ -11,12 +11,12 @@ import type { UtcDatetime } from "@/app/store/types/model";
 
 beforeEach(() => {
   MockDate.set("Fri, 18 Nov. 2022 01:01:00");
-  timezoneMock.register("Etc/GMT+5");
+  register("Etc/GMT+5");
 });
 
 afterEach(() => {
   MockDate.reset();
-  timezoneMock.unregister();
+  unregister();
 });
 
 describe("getTimeDistanceString", () => {
@@ -34,13 +34,13 @@ describe("getTimeDistanceString", () => {
 
 describe("formatUtcDatetime", () => {
   it("returns UTC date time in a correct format", () => {
-    timezoneMock.register("Etc/GMT+0");
+    register("Etc/GMT+0");
     expect(
       formatUtcDatetime("Fri, 18 Nov. 2022 01:00:50" as UtcDatetime)
     ).toEqual("Fri, 18 Nov. 2022 01:00:50 (UTC)");
   });
   it("returns UTC date time in UTC regardless of timezone", () => {
-    timezoneMock.register("Etc/GMT-1");
+    register("Etc/GMT-1");
     expect(
       formatUtcDatetime("Fri, 18 Nov. 2022 03:00:00" as UtcDatetime)
     ).toEqual("Fri, 18 Nov. 2022 03:00:00 (UTC)");

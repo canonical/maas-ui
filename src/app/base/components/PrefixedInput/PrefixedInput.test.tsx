@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-node-access */
 import { render, screen, waitFor } from "@testing-library/react";
 
 import PrefixedInput from "./PrefixedInput";

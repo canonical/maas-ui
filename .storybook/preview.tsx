@@ -1,5 +1,5 @@
 import { RootProviders } from "../src/index";
-import React, { StrictMode } from "react";
+import React from "react";
 
 import type { Preview } from "@storybook/react";
 

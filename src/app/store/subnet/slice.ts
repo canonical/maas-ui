@@ -116,11 +116,11 @@ const subnetSlice = createSlice({
     },
     scanError: statusHandlers.scan.error as CaseReducer<
       SubnetState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     scanStart: statusHandlers.scan.start as CaseReducer<
       SubnetState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     scanSuccess: {
       prepare: ({ item, payload }) => ({

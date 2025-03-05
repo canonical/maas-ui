@@ -40,6 +40,8 @@ const initialMockZones: ZonesWithSummaryListResponse = {
 
 let mockZones = structuredClone(initialMockZones);
 
+// data object could be any shape, this method verifies the shape
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isValidZoneRequest = (data: any): data is ZoneRequest =>
   typeof data === "object" &&
   data !== null &&

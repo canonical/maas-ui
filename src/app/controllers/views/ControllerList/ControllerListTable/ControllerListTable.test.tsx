@@ -104,7 +104,7 @@ describe("ControllerListTable", () => {
       // Change sort to descending version
       await userEvent.click(screen.getByRole("button", { name: "Version" }));
 
-      var rows = screen.getAllByRole("row");
+      let rows = screen.getAllByRole("row");
       expect(rows[1]).toStrictEqual(screen.getByTestId("controller-a"));
       expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
       expect(rows[3]).toStrictEqual(screen.getByTestId("controller-c"));

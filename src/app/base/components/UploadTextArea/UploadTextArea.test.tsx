@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-container */
 import { Formik } from "formik";
 import type { Mock } from "vitest";
 

@@ -253,7 +253,7 @@ const controllerSlice = createSlice({
     },
     deleteError: statusHandlers.delete.error as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteNotify: (
       state: ControllerState,
@@ -272,11 +272,11 @@ const controllerSlice = createSlice({
     },
     deleteStart: statusHandlers.delete.start as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     deleteSuccess: statusHandlers.delete.success as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     fetchSuccess: (
       state: ControllerState,
@@ -324,15 +324,15 @@ const controllerSlice = createSlice({
     },
     getSummaryXmlError: statusHandlers.getSummaryXml.error as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     getSummaryXmlStart: statusHandlers.getSummaryXml.start as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     getSummaryXmlSuccess: statusHandlers.getSummaryXml.success as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     getSummaryYaml: {
       prepare: (params: GetSummaryYamlParams) => ({
@@ -353,15 +353,15 @@ const controllerSlice = createSlice({
     },
     getSummaryYamlError: statusHandlers.getSummaryYaml.error as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     getSummaryYamlStart: statusHandlers.getSummaryYaml.start as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     getSummaryYamlSuccess: statusHandlers.getSummaryYaml.success as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     importImages: {
       prepare: (params: BaseNodeActionParams) => ({
@@ -381,15 +381,15 @@ const controllerSlice = createSlice({
     },
     importImagesError: statusHandlers.importImages.error as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     importImagesStart: statusHandlers.importImages.start as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     importImagesSuccess: statusHandlers.importImages.success as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     off: {
       prepare: (params: BaseNodeActionParams) => ({
@@ -409,15 +409,15 @@ const controllerSlice = createSlice({
     },
     offError: statusHandlers.off.error as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     offStart: statusHandlers.off.start as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     offSuccess: statusHandlers.off.success as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     on: {
       prepare: (params: BaseNodeActionParams) => ({
@@ -437,15 +437,15 @@ const controllerSlice = createSlice({
     },
     onError: statusHandlers.on.error as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     onStart: statusHandlers.on.start as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     onSuccess: statusHandlers.on.success as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     overrideFailedTesting: {
       prepare: (params: BaseNodeActionParams) => ({
@@ -464,11 +464,11 @@ const controllerSlice = createSlice({
       reducer: () => {},
     },
     overrideFailedTestingError: statusHandlers.overrideFailedTesting
-      .error as CaseReducer<ControllerState, PayloadAction<any>>,
+      .error as CaseReducer<ControllerState, PayloadAction<unknown>>,
     overrideFailedTestingStart: statusHandlers.overrideFailedTesting
-      .start as CaseReducer<ControllerState, PayloadAction<any>>,
+      .start as CaseReducer<ControllerState, PayloadAction<unknown>>,
     overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting
-      .success as CaseReducer<ControllerState, PayloadAction<any>>,
+      .success as CaseReducer<ControllerState, PayloadAction<unknown>>,
     pollCheckImages: {
       prepare: (ids: Controller[ControllerMeta.PK][], pollId: string) => ({
         meta: {
@@ -619,15 +619,15 @@ const controllerSlice = createSlice({
     },
     setZoneError: statusHandlers.setZone.error as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     setZoneStart: statusHandlers.setZone.start as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     setZoneSuccess: statusHandlers.setZone.success as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     test: {
       prepare: (params: TestParams) => ({
@@ -651,15 +651,15 @@ const controllerSlice = createSlice({
     },
     testError: statusHandlers.test.error as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     testStart: statusHandlers.test.start as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
     testSuccess: statusHandlers.test.success as CaseReducer<
       ControllerState,
-      PayloadAction<any>
+      PayloadAction<unknown>
     >,
   },
 });

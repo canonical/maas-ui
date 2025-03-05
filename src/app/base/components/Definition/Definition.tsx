@@ -1,4 +1,4 @@
-import React from "react";
+import { Children } from "react";
 
 import { useId } from "@/app/base/hooks/base";
 
@@ -27,9 +27,9 @@ const Definition = ({ label, children, description }: Props): JSX.Element => {
       </p>
       {description ? (
         <p aria-labelledby={id}>{description}</p>
-      ) : React.Children.toArray(children).filter((child) => child !== "")
-          .length > 0 ? (
-        React.Children.map(
+      ) : Children.toArray(children).filter((child) => child !== "").length >
+        0 ? (
+        Children.map(
           children,
           (child, i) =>
             child && (

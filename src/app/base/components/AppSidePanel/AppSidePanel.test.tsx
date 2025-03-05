@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-container */
 import AppSidePanel from "./AppSidePanel";
 
 import { MAAS_UI_ID } from "@/app/constants";
