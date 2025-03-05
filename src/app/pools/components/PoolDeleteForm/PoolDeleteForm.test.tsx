@@ -1,5 +1,6 @@
+import { PoolForm, Labels as PoolFormLabels } from "../PoolForm/PoolForm";
+
 import PoolDeleteForm from "./PoolDeleteForm";
-import { PoolForm, Labels as PoolFormLabels } from "./PoolForm";
 
 import urls from "@/app/base/urls";
 import { poolsResolvers } from "@/testing/resolvers/pools";
