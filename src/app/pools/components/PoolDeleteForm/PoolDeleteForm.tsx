@@ -1,42 +1,29 @@
 import { useOnEscapePressed } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
+import { useDeletePool } from "@/app/api/query/pools";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
-import type { RootState } from "@/app/store/root/types";
 
 const PoolDeleteForm = ({ id }: { id: number }) => {
-  const dispatch = useDispatch();
+  const deletePool = useDeletePool();
   const navigate = useNavigate();
-  const pool = useSelector((state: RootState) =>
-    resourcePoolSelectors.getById(state, id)
-  );
-  const saved = useSelector(resourcePoolSelectors.saved);
-  const saving = useSelector(resourcePoolSelectors.saving);
-  const onCancel = () => navigate({ pathname: urls.pools.index });
-  useOnEscapePressed(() => onCancel());
-  useAddMessage(
-    saved,
-    resourcePoolActions.cleanup,
-    `${pool?.name} removed successfully.`
-  );
+  const onClose = () => navigate({ pathname: urls.pools.index });
+  useOnEscapePressed(() => onClose());
 
   return (
     <ModelActionForm
       aria-label="Confirm pool deletion"
+      errors={deletePool.error}
       initialValues={{}}
       modelType="resource pool"
-      onCancel={onCancel}
+      onCancel={onClose}
       onSubmit={() => {
-        dispatch(resourcePoolActions.delete(id));
+        deletePool.mutate({ path: { resource_pool_id: id } });
       }}
-      saved={saved}
+      saved={deletePool.isSuccess}
       savedRedirect={urls.pools.index}
-      saving={saving}
+      saving={deletePool.isPending}
     />
   );
 };

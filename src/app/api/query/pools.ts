@@ -5,12 +5,16 @@ import type {
   CreateResourcePoolData,
   CreateResourcePoolError,
   CreateResourcePoolResponse,
+  DeleteResourcePoolData,
+  DeleteResourcePoolError,
+  DeleteResourcePoolResponse,
   UpdateResourcePoolData,
   UpdateResourcePoolError,
   UpdateResourcePoolResponse,
 } from "@/app/apiclient";
 import {
   createResourcePoolMutation,
+  deleteResourcePoolMutation,
   listResourcePoolsQueryKey,
   updateResourcePoolMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -43,6 +47,24 @@ export const useUpdatePool = (
     Options<UpdateResourcePoolData>
   >({
     ...updateResourcePoolMutation(mutationOptions),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: listResourcePoolsQueryKey(),
+      });
+    },
+  });
+};
+
+export const useDeletePool = (
+  mutationOptions?: Options<DeleteResourcePoolData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    DeleteResourcePoolResponse,
+    DeleteResourcePoolError,
+    Options<DeleteResourcePoolData>
+  >({
+    ...deleteResourcePoolMutation(mutationOptions),
     onSuccess: () => {
       void queryClient.invalidateQueries({
         queryKey: listResourcePoolsQueryKey(),
