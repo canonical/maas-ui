@@ -44,5 +44,3 @@ describe("useDeletePool", () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });
-
-
