@@ -17,7 +17,8 @@ export default defineConfig({
       reporter: [
         ["text"],
         ["html"],
-        ["cobertura", { file: "../.coverage/cobertura-coverage.xml" }],
+        ["lcov"],
+        ["cobertura", { file: "../coverage/cobertura-coverage.xml" }],
       ],
     },
   },
