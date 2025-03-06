@@ -11,7 +11,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.createZone.handler());
+const mockServer = setupMockServer(zoneResolvers.createZone.handler());
 
 describe("AddZone", () => {
   it("runs closeForm function when the cancel button is clicked", async () => {
@@ -38,5 +38,24 @@ describe("AddZone", () => {
     await userEvent.click(screen.getByRole("button", { name: /Add AZ/i }));
 
     await waitFor(() => expect(zoneResolvers.createZone.resolved).toBeTruthy());
+  });
+
+  it("displays error message when create zone fails", async () => {
+    mockServer.use(
+      zoneResolvers.createZone.error({ code: 400, message: "Uh oh!" })
+    );
+
+    renderWithProviders(<AddZone closeForm={vi.fn()} />);
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /name/i }),
+      "danger-zone"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Add AZ/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
+    });
   });
 });

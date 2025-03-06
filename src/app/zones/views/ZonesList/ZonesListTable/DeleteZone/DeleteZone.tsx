@@ -18,6 +18,7 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
   return (
     <ModelActionForm
       aria-label="Confirm AZ deletion"
+      errors={deleteZone.error}
       initialValues={{}}
       message="Are you sure you want to delete this AZ?"
       modelType="zone"
