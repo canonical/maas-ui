@@ -2,6 +2,9 @@ import { http, HttpResponse } from "msw";
 import { afterEach } from "vitest";
 
 import type {
+  CreateZoneError,
+  DeleteZoneError,
+  UpdateZoneError,
   ZoneRequest,
   ZonesWithSummaryListResponse,
 } from "@/app/apiclient";
@@ -39,6 +42,24 @@ const initialMockZones: ZonesWithSummaryListResponse = {
 };
 
 let mockZones = structuredClone(initialMockZones);
+
+const mockCreateZoneError: CreateZoneError = {
+  message: "Zone already exists",
+  code: 409,
+  kind: "Error",
+};
+
+const mockUpdateZoneError: UpdateZoneError = {
+  message: "Bad request",
+  code: 400,
+  kind: "Error",
+};
+
+const mockDeleteZoneError: DeleteZoneError = {
+  message: "Not found",
+  code: 404,
+  kind: "Error",
+};
 
 // data object could be any shape, this method verifies the shape
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -92,6 +113,11 @@ const zoneResolvers = {
           return HttpResponse.error();
         }
       }),
+    error: (error: CreateZoneError = mockCreateZoneError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/zones`, () => {
+        zoneResolvers.createZone.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
   },
   updateZone: {
     resolved: false,
@@ -118,6 +144,11 @@ const zoneResolvers = {
           }
         }
       ),
+    error: (error: UpdateZoneError = mockUpdateZoneError) =>
+      http.put(`${BASE_URL}MAAS/a/v3/zones/:id`, () => {
+        zoneResolvers.updateZone.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
   },
   deleteZone: {
     resolved: false,
@@ -133,6 +164,11 @@ const zoneResolvers = {
         mockZones.items.splice(index, 1);
         zoneResolvers.deleteZone.resolved = true;
         return HttpResponse.json({ success: true });
+      }),
+    error: (error: DeleteZoneError = mockDeleteZoneError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/zones/:id`, () => {
+        zoneResolvers.deleteZone.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
       }),
   },
 };
