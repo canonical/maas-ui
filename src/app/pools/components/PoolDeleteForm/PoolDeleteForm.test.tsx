@@ -24,30 +24,12 @@ describe("PoolDeleteForm", () => {
   });
 
   it("can delete a pool", async () => {
-    renderWithBrowserRouter(<PoolForm />, {
-      route: urls.pools.add,
-      routePattern: `${urls.pools.index}/*`,
-    });
-    await userEvent.type(
-      screen.getByRole("textbox", { name: PoolFormLabels.PoolName }),
-      "swimming"
-    );
-
-    await userEvent.click(
-      screen.getByRole("button", { name: PoolFormLabels.SubmitLabel })
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText("swimming")).toBeInTheDocument();
-    });
-
-    // Now delete the pool
     renderWithBrowserRouter(<PoolDeleteForm id={1} />);
 
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
     await waitFor(() => {
-      expect(poolsResolvers.deletePool.resolved).toBeTruthy();
+      expect(poolsResolvers.deletePool.resolved).toBe(true);
     });
   });
 
