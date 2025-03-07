@@ -268,7 +268,7 @@ export const DeployFormFields = (): JSX.Element => {
                   possible change after the deployment.`}
                     positionElementClassName="u-display--inline"
                   />{" "}
-                  <ExternalLink to={docsUrls.customisingDeployedMachines}>
+                  <ExternalLink to={docsUrls.hardwareSync}>
                     Hardware sync docs
                   </ExternalLink>
                 </>
