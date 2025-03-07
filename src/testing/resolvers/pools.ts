@@ -63,7 +63,7 @@ const poolsResolvers = {
     error: (error: DeleteResourcePoolError = mockDeletePoolError) =>
       http.delete(`${BASE_URL}MAAS/a/v3/resource_pools/:id`, () => {
         poolsResolvers.deletePool.resolved = true;
-        return HttpResponse.json(error, { status: 404 });
+        return HttpResponse.json(error, { status: error.code });
       }),
   },
 };

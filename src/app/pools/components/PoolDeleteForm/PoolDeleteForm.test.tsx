@@ -7,13 +7,14 @@ import {
   setupMockServer,
   userEvent,
   waitFor,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(poolsResolvers.deletePool.handler());
 
 describe("PoolDeleteForm", () => {
   it("renders", () => {
-    renderWithBrowserRouter(<PoolDeleteForm id={1} />, {
+    renderWithProviders(<PoolDeleteForm id={1} />, {
       route: "/",
     });
 
