@@ -1,8 +1,9 @@
-import { constructURL } from "./utils";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { constructURL } = require("./utils");
 
 const TIMEOUT = 5000;
 
-export default async function (context, commands) {
+module.exports = async function (context, commands) {
   await commands.cdp.send("Network.setCookie", {
     domain: context.options.domain,
     name: "skipsetupintro",
@@ -23,4 +24,4 @@ export default async function (context, commands) {
     TIMEOUT
   );
   await commands.wait.byXpath("//a//span[text()='admin']");
-}
+};
