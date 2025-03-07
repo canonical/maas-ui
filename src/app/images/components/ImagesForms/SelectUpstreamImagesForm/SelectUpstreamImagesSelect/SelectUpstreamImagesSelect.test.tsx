@@ -6,7 +6,9 @@ import {
   groupImagesByOS,
 } from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
 import type { DownloadImagesSelectProps } from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
-import SelectUpstreamImagesSelect from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
+import SelectUpstreamImagesSelect, {
+  getValueKey,
+} from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -125,5 +127,55 @@ describe("SelectUpstreamImagesSelect", () => {
 
     expect(labels).toHaveLength(1);
     expect(labels[0]).toHaveTextContent("available");
+  });
+
+  it("correctly calls setFieldValue", async () => {
+    const releases = [factory.bootResourceUbuntuRelease({ name: "focal" })];
+    const [available, deleted] = [
+      factory.bootResourceUbuntuArch({
+        name: "arch-1",
+        deleted: false,
+      }),
+      factory.bootResourceUbuntuArch({
+        name: "arch-2",
+        deleted: false,
+      }),
+    ];
+
+    const downloadableImages = getDownloadableImages(
+      releases,
+      [available, deleted],
+      []
+    );
+    const imagesByOS = groupImagesByOS(downloadableImages);
+    const groupedImages = groupArchesByRelease(imagesByOS);
+    const mockSetFieldValue = vi.fn();
+    renderWithProviders(
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
+        {({ values }: Pick<DownloadImagesSelectProps, "values">) => (
+          <SelectUpstreamImagesSelect
+            groupedImages={groupedImages}
+            setFieldValue={mockSetFieldValue}
+            values={values}
+          />
+        )}
+      </Formik>,
+      { state }
+    );
+
+    await userEvent.click(screen.getByText("Ubuntu"));
+
+    const combobox = screen.getByRole("combobox");
+
+    await userEvent.click(combobox);
+
+    const checkbox = screen.getAllByRole("checkbox")[0];
+
+    await userEvent.click(checkbox);
+
+    expect(mockSetFieldValue).toHaveBeenCalledWith(
+      getValueKey("Ubuntu", releases[0].title),
+      [groupedImages["Ubuntu"][releases[0].title][0]]
+    );
   });
 });
