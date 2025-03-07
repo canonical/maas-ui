@@ -730,6 +730,11 @@ export type ReservedIpsListResponse = {
   kind?: string;
 };
 
+/**
+ * An enumeration.
+ */
+export type ResourcePoolPermission = "edit" | "delete";
+
 export type ResourcePoolRequest = {
   /**
    * The unique name of the entity.
@@ -759,11 +764,46 @@ export type ResourcePoolResponse = {
 };
 
 /**
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type ResourcePoolWithSummaryResponse = {
+  _links?: BaseHal;
+  _embedded?: {
+    [key: string]: unknown;
+  };
+  id: number;
+  name: string;
+  description: string;
+  kind?: string;
+  machine_total_count: number;
+  machine_ready_count: number;
+  is_default: boolean;
+  permissions: Array<ResourcePoolPermission>;
+};
+
+/**
  * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type ResourcePoolsListResponse = {
   items: Array<ResourcePoolResponse>;
+  total: number;
+  next?: string;
+  kind?: string;
+};
+
+/**
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type ResourcePoolsWithSummaryListResponse = {
+  items: Array<ResourcePoolWithSummaryResponse>;
   total: number;
   next?: string;
   kind?: string;
@@ -2442,6 +2482,36 @@ export type UpdateResourcePoolResponses = {
 export type UpdateResourcePoolResponse =
   UpdateResourcePoolResponses[keyof UpdateResourcePoolResponses];
 
+export type ListResourcePoolsWithSummaryData = {
+  body?: never;
+  path?: never;
+  query?: {
+    page?: number;
+    size?: number;
+  };
+  url: "/MAAS/a/v3/resource_pools_with_summary";
+};
+
+export type ListResourcePoolsWithSummaryErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListResourcePoolsWithSummaryError =
+  ListResourcePoolsWithSummaryErrors[keyof ListResourcePoolsWithSummaryErrors];
+
+export type ListResourcePoolsWithSummaryResponses = {
+  /**
+   * Successful Response
+   */
+  200: ResourcePoolsWithSummaryListResponse;
+};
+
+export type ListResourcePoolsWithSummaryResponse =
+  ListResourcePoolsWithSummaryResponses[keyof ListResourcePoolsWithSummaryResponses];
+
 export type ListSpacesData = {
   body?: never;
   path?: never;
@@ -3638,7 +3708,3 @@ export type ListZonesWithSummaryResponses = {
 
 export type ListZonesWithSummaryResponse =
   ListZonesWithSummaryResponses[keyof ListZonesWithSummaryResponses];
-
-export type ClientOptions = {
-  baseUrl: "http://maas-ui-demo.internal:5240" | (string & {});
-};
