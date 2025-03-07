@@ -2,11 +2,11 @@ import { useMemo } from "react";
 
 import {
   Accordion,
+  FormikField,
   MultiSelect,
   type MultiSelectItem,
 } from "@canonical/react-components";
 import type { Section } from "@canonical/react-components/dist/components/Accordion/Accordion";
-import { Field } from "formik";
 
 import type { GroupedImages } from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
 
@@ -17,7 +17,7 @@ export const getValueKey = (distro: string, release: string) =>
 
 export type DownloadImagesSelectProps = {
   values: Record<string, MultiSelectItem[]>;
-  setFieldValue: (key: string, value: MultiSelectItem) => void;
+  setFieldValue: (key: string, value: MultiSelectItem[]) => void;
   groupedImages: GroupedImages;
 };
 
@@ -44,11 +44,11 @@ const SelectUpstreamImagesSelect = ({
                   <tr key={release}>
                     <td>{release}</td>
                     <td>
-                      <Field
-                        as={MultiSelect}
+                      <FormikField
+                        component={MultiSelect}
                         items={groupedImages[distro][release]}
                         name={getValueKey(distro, release)}
-                        onItemsUpdate={(items: MultiSelectItem) =>
+                        onItemsUpdate={(items: MultiSelectItem[]) =>
                           setFieldValue(getValueKey(distro, release), items)
                         }
                         placeholder="Select architectures"
