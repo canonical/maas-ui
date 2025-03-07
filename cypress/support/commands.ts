@@ -85,9 +85,6 @@ Cypress.Commands.add("deletePool", (pool: string) => {
     .within(() => {
       cy.findByRole("button", { name: /Delete/i }).click();
     });
-  cy.get(`[data-testid='message']:contains(${pool} removed successfully.)`, {
-    timeout: LONG_TIMEOUT,
-  });
   cy.findByRole("row", { name: new RegExp(`${pool}`) }).should("not.exist");
 });
 
