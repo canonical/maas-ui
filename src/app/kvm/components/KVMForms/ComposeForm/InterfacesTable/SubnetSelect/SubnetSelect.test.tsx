@@ -89,6 +89,10 @@ describe("SubnetSelect", () => {
     const store = mockStore(state);
     await renderComposeForm(store, pod);
 
+    await waitFor(() =>
+      screen.getByRole("button", { name: "Define (optional)" })
+    );
+
     // Click "Define" button
     await userEvent.click(
       screen.getByRole("button", { name: "Define (optional)" })

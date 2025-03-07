@@ -89,6 +89,9 @@ describe("PoolSelect", () => {
     const store = mockStore(state);
     await renderComposeForm(store, pod);
 
+    await waitFor(() =>
+      expect(screen.getByRole("spinbutton", { name: "Size (GB)" }))
+    );
     // Open PoolSelect dropdown and change disk size to 5GB
     const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });
     await userEvent.clear(diskSizeInput);

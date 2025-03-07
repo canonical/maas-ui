@@ -12,9 +12,7 @@ const mockOptions = {} as UseQueryOptions;
 
 beforeEach(() => {
   vi.resetAllMocks();
-  const mockQueryClient: Partial<reactQuery.QueryClient> = {
-    invalidateQueries: vi.fn(),
-  };
+  const mockQueryClient: Partial<reactQuery.QueryClient> = {};
   vi.mocked(reactQuery.useQueryClient).mockReturnValue(
     mockQueryClient as reactQuery.QueryClient
   );
