@@ -82,8 +82,10 @@ describe("ComposeFormFields", () => {
     // Total = (1 + 2 + 3) * 3 = 18
     // Available = 18 - 3 = 15
 
-    expect(screen.getByText("15 cores available.")).toHaveClass(
-      "p-form-help-text"
+    await waitFor(() =>
+      expect(screen.getByText("15 cores available.")).toHaveClass(
+        "p-form-help-text"
+      )
     );
   });
 
