@@ -9,7 +9,7 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-setupMockServer(
+const mockServer = setupMockServer(
   zoneResolvers.getZone.handler(),
   zoneResolvers.updateZone.handler()
 );
@@ -29,7 +29,7 @@ describe("EditZone", () => {
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("calls actions.update on save click", async () => {
+  it("updates a zone on save click", async () => {
     renderWithProviders(<EditZone closeForm={vi.fn()} id={testZoneId} />);
 
     await waitFor(() =>
@@ -53,5 +53,27 @@ describe("EditZone", () => {
     await userEvent.click(screen.getByRole("button", { name: /Update AZ/i }));
 
     await waitFor(() => expect(zoneResolvers.updateZone.resolved).toBeTruthy());
+  });
+
+  it("displays error message when update zone fails", async () => {
+    mockServer.use(
+      zoneResolvers.updateZone.error({ code: 400, message: "Uh oh!" }),
+      zoneResolvers.getZone.handler()
+    );
+
+    renderWithProviders(<EditZone closeForm={vi.fn()} id={testZoneId} />);
+
+    await waitFor(() =>
+      expect(screen.getByLabelText("Name")).toBeInTheDocument()
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /name/i }),
+      "test"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Update AZ/i }));
+
+    await waitFor(() => expect(screen.getByText("Uh oh!")).toBeInTheDocument());
   });
 });

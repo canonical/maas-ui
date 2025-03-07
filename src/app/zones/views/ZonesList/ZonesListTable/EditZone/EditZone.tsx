@@ -2,6 +2,7 @@ import { Row, Col, Textarea } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useGetZone, useUpdateZone } from "@/app/api/query/zones";
+import type { UpdateZoneError } from "@/app/apiclient";
 import { getZoneQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -24,8 +25,9 @@ const EditZone = ({ id, closeForm }: Props): JSX.Element | null => {
 
   if (zone) {
     return (
-      <FormikForm<CreateZoneValues>
+      <FormikForm<CreateZoneValues, UpdateZoneError>
         aria-label="Edit AZ"
+        errors={editZone.error}
         initialValues={{
           description: zone.description,
           name: zone.name,

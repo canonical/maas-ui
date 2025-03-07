@@ -1,6 +1,7 @@
 import { Row, Col, Textarea } from "@canonical/react-components";
 
 import { useCreateZone } from "@/app/api/query/zones";
+import type { CreateZoneError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 
@@ -17,8 +18,9 @@ const AddZone = ({ closeForm }: Props): JSX.Element => {
   const createZone = useCreateZone();
 
   return (
-    <FormikForm<CreateZoneValues>
+    <FormikForm<CreateZoneValues, CreateZoneError>
       aria-label="Add AZ"
+      errors={createZone.error}
       initialValues={{
         description: "",
         name: "",
