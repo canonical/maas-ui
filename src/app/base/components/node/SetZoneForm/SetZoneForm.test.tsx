@@ -27,7 +27,9 @@ describe("SetZoneForm", () => {
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
-    expect(screen.getByRole("combobox", { name: "Zone" })).toHaveValue("1");
+    await waitFor(() =>
+      expect(screen.getByRole("combobox", { name: "Zone" })).toHaveValue("1")
+    );
   });
 
   it("does not initialise zone value if more than one node provided", () => {

@@ -70,6 +70,7 @@ describe("InterfacesTable", () => {
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
+    await waitFor(() => screen.getByRole("button", { name: /define/i }));
     const button = screen.getByRole("button", { name: /define/i });
     expect(button).toBeAriaDisabled();
 
