@@ -1,4 +1,5 @@
-import { constructURL } from "../utils";
+/* eslint-disable @typescript-eslint/no-require-imports */
+const { constructURL } = require("./utils");
 
 const TIMEOUT = 120000;
 
@@ -44,7 +45,7 @@ const customPageSize = async (context, commands, pageSize) => {
   return commands.measure.stop();
 };
 
-export default async (context, commands) => {
+module.exports = async (context, commands) => {
   await coldCache(context, commands);
   await warmCache(context, commands);
   await customPageSize(context, commands, 10);
