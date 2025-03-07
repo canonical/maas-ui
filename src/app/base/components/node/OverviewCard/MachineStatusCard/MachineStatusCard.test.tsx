@@ -172,10 +172,7 @@ describe("MachineStatusCard", () => {
       name: "Hardware sync docs",
     });
     expect(hardwareSyncDocs).toBeInTheDocument();
-    expect(hardwareSyncDocs).toHaveAttribute(
-      "href",
-      docsUrls.customisingDeployedMachines
-    );
+    expect(hardwareSyncDocs).toHaveAttribute("href", docsUrls.hardwareSync);
   });
 
   it("displays deployed hardware sync interval in a correct format", async () => {
