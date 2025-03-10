@@ -18,7 +18,7 @@ type Props = {
   objectName?: string | null;
 };
 
-const AuthenticationCard = ({ hostId, objectName }: Props): JSX.Element => {
+const AuthenticationCard = ({ hostId, objectName }: Props) => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );

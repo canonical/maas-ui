@@ -35,7 +35,7 @@ const generateDropdownContent = (
   disk: DiskField,
   requests: RequestMap,
   selectPool: SelectPool
-): JSX.Element => {
+) => {
   const sortedPools = getSortedPoolsArray(
     pod.resources.storage_pools,
     pod.default_storage_pool
@@ -185,11 +185,7 @@ const generateDropdownContent = (
   );
 };
 
-export const PoolSelect = ({
-  disk,
-  hostId,
-  selectPool,
-}: Props): JSX.Element => {
+export const PoolSelect = ({ disk, hostId, selectPool }: Props) => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   ) as PodDetails;

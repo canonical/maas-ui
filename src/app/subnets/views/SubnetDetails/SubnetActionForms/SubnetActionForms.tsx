@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import DeleteSubnet from "./components/DeleteSubnet";
 import EditBootArchitectures from "./components/EditBootArchitectures";
 import MapSubnet from "./components/MapSubnet";
@@ -17,7 +19,7 @@ import type {
 
 const FormComponents: Record<
   SubnetAction,
-  ({ activeForm, setSidePanelContent }: SubnetActionProps) => JSX.Element | null
+  ({ activeForm, setSidePanelContent }: SubnetActionProps) => ReactNode | null
 > = {
   [SubnetActionTypes.MapSubnet]: MapSubnet,
   [SubnetActionTypes.EditBootArchitectures]: EditBootArchitectures,
@@ -38,7 +40,7 @@ const SubnetActionForms = ({
   setSidePanelContent,
   staticRouteId,
   reservedIpId,
-}: SubnetActionProps): JSX.Element => {
+}: SubnetActionProps) => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
   return (

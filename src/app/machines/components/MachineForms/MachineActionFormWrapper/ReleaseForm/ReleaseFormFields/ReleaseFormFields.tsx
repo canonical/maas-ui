@@ -5,7 +5,7 @@ import type { ReleaseFormValues } from "../ReleaseForm";
 
 import FormikField from "@/app/base/components/FormikField";
 
-export const ReleaseFormFields = (): JSX.Element => {
+export const ReleaseFormFields = () => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<ReleaseFormValues>();
 

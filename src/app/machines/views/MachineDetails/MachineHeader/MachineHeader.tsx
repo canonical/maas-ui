@@ -33,10 +33,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const MachineHeader = ({
-  setSidePanelContent,
-  systemId,
-}: Props): JSX.Element => {
+const MachineHeader = ({ setSidePanelContent, systemId }: Props) => {
   const [editingName, setEditingName] = useState(false);
   const dispatch = useDispatch();
   const { pathname } = useLocation();

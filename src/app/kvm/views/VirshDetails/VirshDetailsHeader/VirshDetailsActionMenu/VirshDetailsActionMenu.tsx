@@ -9,10 +9,7 @@ type Props = {
   setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const PodDetailsActionMenu = ({
-  hostId,
-  setSidePanelContent,
-}: Props): JSX.Element => {
+const PodDetailsActionMenu = ({ hostId, setSidePanelContent }: Props) => {
   return (
     <ContextualMenu
       data-testid="action-dropdown"

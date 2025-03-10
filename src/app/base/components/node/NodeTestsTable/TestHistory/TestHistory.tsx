@@ -17,7 +17,7 @@ type Props = {
   scriptResult: ScriptResult;
 };
 
-const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
+const TestHistory = ({ close, scriptResult }: Props) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useSelector((state: RootState) =>

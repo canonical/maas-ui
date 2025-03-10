@@ -20,7 +20,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-export const FilesystemFields = ({ systemId }: Props): JSX.Element | null => {
+export const FilesystemFields = ({ systemId }: Props) => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

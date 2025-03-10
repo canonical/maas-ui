@@ -24,7 +24,7 @@ const LXDClusterHostsActionBar = ({
   setCurrentPage,
   setSearchFilter,
   hosts,
-}: Props): JSX.Element | null => {
+}: Props) => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );

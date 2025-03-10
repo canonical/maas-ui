@@ -26,7 +26,7 @@ const EditableSection = ({
   canEdit = true,
   renderContent,
   ...titledSectionProps
-}: Props): JSX.Element => {
+}: Props) => {
   const [editing, setEditing] = useState(false);
   const showEditButton = canEdit && !editing;
 

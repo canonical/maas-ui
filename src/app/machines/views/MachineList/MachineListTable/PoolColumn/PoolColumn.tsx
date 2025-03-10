@@ -24,10 +24,7 @@ type Props = {
   systemId: Machine[MachineMeta.PK];
 };
 
-export const PoolColumn = ({
-  onToggleMenu,
-  systemId,
-}: Props): JSX.Element | null => {
+export const PoolColumn = ({ onToggleMenu, systemId }: Props) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState<
     ResourcePool[ResourcePoolMeta.PK] | null

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { StrictMode } from "react";
 
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -19,7 +20,7 @@ import "./scss/index.scss";
 
 const queryClient = createQueryClient();
 
-export const RootProviders = ({ children }: { children: JSX.Element }) => {
+export const RootProviders = ({ children }: { children: ReactNode }) => {
   return (
     <Provider store={store}>
       <WebSocketProvider>
@@ -43,7 +44,7 @@ export const RootProviders = ({ children }: { children: JSX.Element }) => {
   );
 };
 
-const AppRoot = (): JSX.Element => {
+const AppRoot = () => {
   return (
     <StrictMode>
       <RootProviders>

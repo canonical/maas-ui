@@ -6,7 +6,7 @@ type Props = {
   id: DHCPSnippet["id"];
 };
 
-const EditDHCP = ({ close, id }: Props): JSX.Element | null => {
+const EditDHCP = ({ close, id }: Props) => {
   return (
     <div className="u-flex--grow">
       <DhcpForm

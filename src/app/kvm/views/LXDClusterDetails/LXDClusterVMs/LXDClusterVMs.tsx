@@ -29,7 +29,7 @@ const LXDClusterVMs = ({
   searchFilter,
   setSidePanelContent,
   setSearchFilter,
-}: Props): JSX.Element | null => {
+}: Props) => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );

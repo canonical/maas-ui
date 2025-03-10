@@ -20,7 +20,7 @@ const SpaceSummaryForm = ({
 }: {
   space: Space;
   handleDismiss: () => void;
-}): JSX.Element => {
+}) => {
   const spaceErrors = useSelector(spaceSelectors.errors);
   const saving = useSelector(spaceSelectors.saving);
   const saved = useSelector(spaceSelectors.saved);

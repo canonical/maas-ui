@@ -21,7 +21,7 @@ const IntroCard = ({
   title,
   titleLink,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   let icon = "success-grey";
   if (hasErrors) {
     icon = "error";

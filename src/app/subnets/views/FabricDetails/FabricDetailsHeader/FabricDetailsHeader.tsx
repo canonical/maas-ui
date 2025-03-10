@@ -13,10 +13,7 @@ type Props = {
   setSidePanelContent: SetSidePanelContent;
 };
 
-const FabricDetailsHeader = ({
-  fabric,
-  setSidePanelContent,
-}: Props): JSX.Element => {
+const FabricDetailsHeader = ({ fabric, setSidePanelContent }: Props) => {
   const isAdmin = useSelector(authSelectors.isAdmin);
 
   return (

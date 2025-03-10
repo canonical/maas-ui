@@ -23,7 +23,7 @@ export const AppSideNavItem = ({
   icon,
   path,
   setIsCollapsed,
-}: Props): JSX.Element => {
+}: Props) => {
   const id = useId();
   return (
     <Navigation.Item

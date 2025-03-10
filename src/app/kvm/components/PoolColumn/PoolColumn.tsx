@@ -15,7 +15,7 @@ type Props = {
   zoneId?: ZoneResponse["id"] | null;
 };
 
-const PoolColumn = ({ poolId, zoneId }: Props): JSX.Element | null => {
+const PoolColumn = ({ poolId, zoneId }: Props) => {
   const pool = useSelector((state: RootState) =>
     poolSelectors.getById(state, poolId)
   );

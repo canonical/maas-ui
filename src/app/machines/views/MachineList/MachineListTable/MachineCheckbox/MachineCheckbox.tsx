@@ -78,7 +78,7 @@ const MachineCheckbox = ({
   groupValue,
   systemId,
   machines,
-}: Props): JSX.Element => {
+}: Props) => {
   const selected = useSelector(machineSelectors.selected);
   const allSelected = !!selected && "filter" in selected;
   // Whether the group this machine appears in is selected.

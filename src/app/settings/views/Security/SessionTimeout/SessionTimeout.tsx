@@ -54,7 +54,7 @@ const SessionTimeoutSchema = Yup.object().shape({
     ),
 });
 
-const SessionTimeout = (): JSX.Element => {
+const SessionTimeout = () => {
   useWindowTitle("Session timeout");
   const dispatch = useDispatch();
   const configLoading = useSelector(configSelectors.loading);

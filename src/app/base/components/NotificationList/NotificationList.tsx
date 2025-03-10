@@ -59,7 +59,7 @@ export const useNotifications = () => {
   return notifications;
 };
 
-const NotificationList = (): JSX.Element => {
+const NotificationList = () => {
   const notifications = useNotifications();
   const messages = useSelector(messageSelectors.all);
   const messageCount = useSelector(messageSelectors.count);

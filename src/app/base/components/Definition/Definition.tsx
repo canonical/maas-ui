@@ -18,7 +18,7 @@ type DescriptionProps =
 
 type Props = CommonProps & DescriptionProps;
 
-const Definition = ({ label, children, description }: Props): JSX.Element => {
+const Definition = ({ label, children, description }: Props) => {
   const id = useId();
   return (
     <div>

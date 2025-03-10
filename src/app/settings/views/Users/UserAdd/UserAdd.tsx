@@ -5,7 +5,7 @@ import UserForm from "../UserForm";
 
 import statusSelectors from "@/app/store/status/selectors";
 
-export const UserAdd = (): JSX.Element => {
+export const UserAdd = () => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
 
   if (externalAuthURL) {

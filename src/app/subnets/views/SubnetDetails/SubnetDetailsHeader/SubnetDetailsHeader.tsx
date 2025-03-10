@@ -16,7 +16,7 @@ type Props = {
   subnet: Subnet;
 };
 
-const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
+const SubnetDetailsHeader = ({ subnet }: Props) => {
   const { setSidePanelContent } = useSidePanel();
   const { pathname } = useLocation();
   const urlBase = `/subnet/${subnet.id}`;

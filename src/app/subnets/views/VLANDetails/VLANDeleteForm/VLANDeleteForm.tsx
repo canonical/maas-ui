@@ -18,10 +18,7 @@ import { isId } from "@/app/utils";
 const VLANDeleteForm = ({
   setSidePanelContent,
   vlanId,
-}: Pick<
-  VLANActionFormProps,
-  "setSidePanelContent" | "vlanId"
->): JSX.Element | null => {
+}: Pick<VLANActionFormProps, "setSidePanelContent" | "vlanId">) => {
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, vlanId)

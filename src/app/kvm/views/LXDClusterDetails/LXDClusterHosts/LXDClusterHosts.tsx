@@ -28,10 +28,7 @@ export enum Label {
   Title = "LXD cluster hosts",
 }
 
-const LXDClusterHosts = ({
-  clusterId,
-  setSidePanelContent,
-}: Props): JSX.Element => {
+const LXDClusterHosts = ({ clusterId, setSidePanelContent }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const cluster = useSelector((state: RootState) =>

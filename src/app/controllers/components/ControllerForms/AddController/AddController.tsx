@@ -14,9 +14,7 @@ type Props = {
   clearSidePanelContent: ClearSidePanelContent;
 };
 
-export const AddController = ({
-  clearSidePanelContent,
-}: Props): JSX.Element => {
+export const AddController = ({ clearSidePanelContent }: Props) => {
   const maasUrl = useSelector(configSelectors.maasUrl);
   const rpcSharedSecret = useSelector(configSelectors.rpcSharedSecret);
   const minorVersion = useSelector(versionSelectors.minor);

@@ -12,7 +12,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-export const EditDiskFields = ({ disk, systemId }: Props): JSX.Element => {
+export const EditDiskFields = ({ disk, systemId }: Props) => {
   return (
     <Row>
       <Col size={12}>

@@ -18,7 +18,7 @@ export const SpaceSelect = ({
   label = "Space",
   disabled,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const spaces = useSelector(spaceSelectors.all);
   const spacesLoaded = useSelector(spaceSelectors.loaded);
 

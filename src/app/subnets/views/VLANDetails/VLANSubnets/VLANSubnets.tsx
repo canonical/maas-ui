@@ -11,7 +11,7 @@ type Props = {
   id: VLAN[VLANMeta.PK] | null;
 };
 
-const VLANSubnets = ({ id }: Props): JSX.Element | null => {
+const VLANSubnets = ({ id }: Props) => {
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getByVLAN(state, id)
   );

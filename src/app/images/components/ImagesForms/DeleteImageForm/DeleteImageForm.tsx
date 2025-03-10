@@ -18,10 +18,7 @@ export enum Labels {
   AreYouSure = "Are you sure you want to delete this image?",
 }
 
-const DeleteImageForm = ({
-  closeForm,
-  resource,
-}: Props): JSX.Element | null => {
+const DeleteImageForm = ({ closeForm, resource }: Props) => {
   const dispatch = useDispatch();
   const saving = useSelector(bootResourceSelectors.deletingImage);
   const previousSaving = usePrevious(saving);

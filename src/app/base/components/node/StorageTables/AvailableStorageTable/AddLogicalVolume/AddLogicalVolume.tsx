@@ -89,11 +89,7 @@ const generateSchema = (availableSize: number) =>
     unit: Yup.string().required(),
   });
 
-export const AddLogicalVolume = ({
-  closeExpanded,
-  disk,
-  systemId,
-}: Props): JSX.Element | null => {
+export const AddLogicalVolume = ({ closeExpanded, disk, systemId }: Props) => {
   const dispatch = useDispatch();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,

@@ -19,10 +19,7 @@ export enum Labels {
   LicenseKey = "License key",
 }
 
-export const LicenseKeyFormFields = ({
-  osystems,
-  releases,
-}: Props): JSX.Element => {
+export const LicenseKeyFormFields = ({ osystems, releases }: Props) => {
   const formikProps = useFormikContext<LicenseKeyFormValues>();
   const distroSeriesOptions = releases[formikProps.values.osystem];
 

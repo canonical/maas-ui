@@ -80,7 +80,7 @@ const generateRows = (rows: ResourcePool[]) =>
     };
   });
 
-const Pools = (): JSX.Element => {
+const Pools = () => {
   useWindowTitle("Pools");
   const dispatch = useDispatch();
 

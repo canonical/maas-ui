@@ -116,7 +116,7 @@ const generateActionMenus = (
   showCount?: boolean,
   singleNode?: boolean
 ) => {
-  return actionGroups.reduce<JSX.Element[]>((menus, group) => {
+  return actionGroups.reduce<ReactNode[]>((menus, group) => {
     const groupLinks = group.actions.reduce<ActionLink[]>(
       (groupLinks, action) => {
         if (excludeActions.includes(action)) {
@@ -225,7 +225,7 @@ export const NodeActionMenuGroup = ({
   onActionClick,
   showCount,
   singleNode = false,
-}: Props): JSX.Element => {
+}: Props) => {
   const menus = generateActionMenus(
     alwaysShowLifecycle,
     excludeActions,

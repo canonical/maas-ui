@@ -32,10 +32,7 @@ const filterNames = new Map([
   ["zone", "Zone"],
 ]);
 
-const DeviceFilterAccordion = ({
-  searchText,
-  setSearchText,
-}: Props): JSX.Element => {
+const DeviceFilterAccordion = ({ searchText, setSearchText }: Props) => {
   const devices = useSelector(deviceSelectors.all);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
   const tags = useSelector(tagSelectors.all);

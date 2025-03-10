@@ -17,11 +17,7 @@ type Props = {
   preselected: ScriptsDisplay[];
   scripts: Script[];
 };
-export const TestFormFields = ({
-  modelName,
-  preselected,
-  scripts,
-}: Props): JSX.Element => {
+export const TestFormFields = ({ modelName, preselected, scripts }: Props) => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<FormValues>();
   const urlScriptsSelected = values.scripts.filter((script) =>

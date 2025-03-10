@@ -63,10 +63,7 @@ const filterNames = new Map<FilterGroupKey, string>([
   [FilterGroupKey.Zone, Label.Zone],
 ]);
 
-const MachinesFilterAccordion = ({
-  searchText,
-  setSearchText,
-}: Props): JSX.Element => {
+const MachinesFilterAccordion = ({ searchText, setSearchText }: Props) => {
   const dispatch = useDispatch();
   const filtersLoaded = useSelector(machineSelectors.filtersLoaded);
   const [expandedSection, setExpandedSection] = useState<string>();

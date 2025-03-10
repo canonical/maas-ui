@@ -33,7 +33,7 @@ export const UploadTextArea = <V extends AnyObject>({
   maxSize = MAX_SIZE_BYTES,
   name,
   ...textAreaProps
-}: Props<V>): JSX.Element => {
+}: Props<V>) => {
   const id = useId();
   const [fileErrors, setFileErrors] = useState<string | null>(null);
   const { handleChange, setFieldTouched, setFieldValue } =

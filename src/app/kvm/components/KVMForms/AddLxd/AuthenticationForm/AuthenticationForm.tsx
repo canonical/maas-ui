@@ -39,7 +39,7 @@ export const AuthenticationForm = ({
   newPodValues,
   setNewPodValues,
   setStep,
-}: Props): JSX.Element => {
+}: Props) => {
   const dispatch = useDispatch();
   const errors = useSelector(podSelectors.errors);
   const projects = useSelector((state: RootState) =>

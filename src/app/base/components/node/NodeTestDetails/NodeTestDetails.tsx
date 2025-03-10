@@ -22,7 +22,7 @@ type Props = {
   getReturnPath: (id: string) => string;
 };
 
-const NodeTestDetails = ({ getReturnPath }: Props): JSX.Element | null => {
+const NodeTestDetails = ({ getReturnPath }: Props) => {
   const [fetched, setFetched] = useState(false);
   const dispatch = useDispatch();
   const id = useGetURLId("system_id");

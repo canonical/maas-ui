@@ -10,11 +10,7 @@ type Props = {
   overCommit?: number;
 };
 
-const CPUPopover = ({
-  children,
-  cores,
-  overCommit = 1,
-}: Props): JSX.Element => {
+const CPUPopover = ({ children, cores, overCommit = 1 }: Props) => {
   const coresWithOver = resourceWithOverCommit(cores, overCommit);
   const hostCores =
     cores.allocated_other + cores.allocated_tracked + cores.free;

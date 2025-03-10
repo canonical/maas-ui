@@ -67,7 +67,7 @@ export const CommissionForm = ({
   searchFilter,
   viewingDetails,
   selectedMachines,
-}: Props): JSX.Element => {
+}: Props) => {
   const id = useGetURLId(MachineMeta.PK);
   const { machine } = useFetchMachine(id);
   const dispatch = useDispatch();

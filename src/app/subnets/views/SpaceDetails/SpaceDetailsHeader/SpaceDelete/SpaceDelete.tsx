@@ -14,10 +14,7 @@ type SpaceDeleteProps = {
   space: Space;
 };
 
-export const SpaceDelete = ({
-  handleClose,
-  space,
-}: SpaceDeleteProps): JSX.Element => {
+export const SpaceDelete = ({ handleClose, space }: SpaceDeleteProps) => {
   const canBeDeleted = getCanBeDeleted(space);
   const dispatch = useDispatch();
   const errors = useSelector(spaceSelectors.errors);

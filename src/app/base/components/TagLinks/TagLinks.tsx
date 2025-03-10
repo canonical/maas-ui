@@ -10,10 +10,7 @@ type Props<T extends string | Tag> = {
 const getTagName = <T extends string | Tag>(tag: T) =>
   typeof tag === "string" ? tag : tag.name;
 
-const TagLinks = <T extends string | Tag>({
-  getLinkURL,
-  tags,
-}: Props<T>): JSX.Element => {
+const TagLinks = <T extends string | Tag>({ getLinkURL, tags }: Props<T>) => {
   const sortedTags = [...tags].sort((a, b) =>
     getTagName(a).localeCompare(getTagName(b))
   );

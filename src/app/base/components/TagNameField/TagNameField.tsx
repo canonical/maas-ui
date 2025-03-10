@@ -17,7 +17,7 @@ const TagNameField = <V extends AnyObject = AnyObject>({
   name = "tags",
   tagList,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const { initialValues } = useFormikContext<V>();
   let initial: string[] = [];
   if (name in initialValues && Array.isArray(initialValues[name])) {

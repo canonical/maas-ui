@@ -16,12 +16,12 @@ type Props = {
   id: Machine["system_id"];
 };
 
-const WorkloadCard = ({ id }: Props): JSX.Element => {
+const WorkloadCard = ({ id }: Props) => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
   const sendAnalytics = useSendAnalytics();
-  let content: JSX.Element;
+  let content;
 
   if (isMachineDetails(machine)) {
     const workloads = Object.entries(machine.workload_annotations || {}).sort(

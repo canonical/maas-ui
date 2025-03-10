@@ -68,7 +68,7 @@ type Props = {
   editing?: boolean;
 };
 
-const RecordFields = ({ editing }: Props): JSX.Element => {
+const RecordFields = ({ editing }: Props) => {
   const { values } = useFormikContext<{ rrtype: RecordType }>();
 
   return (

@@ -17,7 +17,7 @@ type Props = {
   systemId: Controller[ControllerMeta.PK];
 };
 
-const ControllerCommissioning = ({ systemId }: Props): JSX.Element | null => {
+const ControllerCommissioning = ({ systemId }: Props) => {
   const dispatch = useDispatch();
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)

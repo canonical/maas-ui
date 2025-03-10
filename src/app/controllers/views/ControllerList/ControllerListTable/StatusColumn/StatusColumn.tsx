@@ -12,7 +12,7 @@ type Props = {
   systemId: Controller[ControllerMeta.PK];
 };
 
-export const StatusColumn = ({ systemId }: Props): JSX.Element | null => {
+export const StatusColumn = ({ systemId }: Props) => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

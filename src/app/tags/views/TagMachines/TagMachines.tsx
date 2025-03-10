@@ -27,7 +27,7 @@ export enum Label {
 
 const PAGE_SIZE = DEFAULTS.pageSize;
 
-const TagMachines = (): JSX.Element => {
+const TagMachines = () => {
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)

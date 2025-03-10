@@ -21,7 +21,7 @@ export const ResourcePoolSelect = ({
   name,
   valueKey = "name",
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
 

@@ -35,7 +35,7 @@ const LXDClusterHostVMs = ({
   searchFilter,
   setSidePanelContent,
   setSearchFilter,
-}: Props): JSX.Element => {
+}: Props) => {
   const navigate = useNavigate();
   const hostId = useGetURLId(PodMeta.PK, "hostId");
   const cluster = useSelector((state: RootState) =>

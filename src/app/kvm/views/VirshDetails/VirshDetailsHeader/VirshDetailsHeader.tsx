@@ -21,10 +21,7 @@ type Props = {
   setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const VirshDetailsHeader = ({
-  id,
-  setSidePanelContent,
-}: Props): JSX.Element => {
+const VirshDetailsHeader = ({ id, setSidePanelContent }: Props) => {
   const location = useLocation();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)

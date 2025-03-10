@@ -27,7 +27,7 @@ export const NodeActionFormWrapper = ({
   onUpdateSelected,
   processingCount,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props) => {
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const [actionStarted] = useCycled(processingCount !== 0);
   const actionableNodeIDs = nodes.reduce<Node["system_id"][]>(

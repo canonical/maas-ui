@@ -290,10 +290,7 @@ const normaliseRowData = (
   };
 };
 
-const AvailableStorageTable = ({
-  canEditStorage,
-  node,
-}: Props): JSX.Element => {
+const AvailableStorageTable = ({ canEditStorage, node }: Props) => {
   const [selected, setSelected] = useState<(Disk | Partition)[]>([]);
   const isMachine = nodeIsMachine(node);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();

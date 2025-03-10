@@ -25,7 +25,7 @@ const TableActionsDropdown = <A extends string>({
   actions,
   disabled = false,
   onActionClick,
-}: Props<A>): JSX.Element => {
+}: Props<A>) => {
   const actionLinks = actions.reduce<TableActionsLink[]>((links, action) => {
     if (!(action.show === false)) {
       // Show actions that do not explicitly set show to false.

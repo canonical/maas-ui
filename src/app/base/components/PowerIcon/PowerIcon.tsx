@@ -30,12 +30,7 @@ const getIconName = (powerState: PowerState, showSpinner?: boolean): string => {
   }
 };
 
-const PowerIcon = ({
-  children,
-  className,
-  powerState,
-  showSpinner,
-}: Props): JSX.Element => {
+const PowerIcon = ({ children, className, powerState, showSpinner }: Props) => {
   const iconClass = classNames(className, {
     "is-inline": Boolean(children),
     "u-animation--spin": showSpinner,

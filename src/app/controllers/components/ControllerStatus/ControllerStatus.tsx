@@ -17,7 +17,7 @@ type Props = {
 const countStatus = (services: Service[], status: ServiceStatus) =>
   services.filter((service) => service.status === status).length;
 
-export const ControllerStatus = ({ systemId }: Props): JSX.Element | null => {
+export const ControllerStatus = ({ systemId }: Props) => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

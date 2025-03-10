@@ -10,11 +10,7 @@ type Props = {
   storage: KVMResource;
 };
 
-const StorageColumn = ({
-  defaultPoolId,
-  pools,
-  storage,
-}: Props): JSX.Element | null => {
+const StorageColumn = ({ defaultPoolId, pools, storage }: Props) => {
   return (
     <StoragePopover defaultPoolId={defaultPoolId} pools={pools}>
       <KVMResourceMeter

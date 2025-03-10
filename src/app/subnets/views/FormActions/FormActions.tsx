@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import AddFabric from "./components/AddFabric";
 import AddSpace from "./components/AddSpace";
 import AddSubnet from "./components/AddSubnet";
@@ -9,7 +11,7 @@ import type { SubnetForm } from "@/app/subnets/types";
 
 const FormComponents: Record<
   SubnetForm,
-  ({ activeForm, setActiveForm }: FormActionProps) => JSX.Element | null
+  ({ activeForm, setActiveForm }: FormActionProps) => ReactNode | null
 > = {
   [SubnetForms.Fabric]: AddFabric,
   [SubnetForms.VLAN]: AddVlan,
@@ -22,10 +24,7 @@ export interface FormActionProps {
   setActiveForm: SetSidePanelContent;
 }
 
-const FormActions = ({
-  activeForm,
-  setActiveForm,
-}: FormActionProps): JSX.Element => {
+const FormActions = ({ activeForm, setActiveForm }: FormActionProps) => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
   return (

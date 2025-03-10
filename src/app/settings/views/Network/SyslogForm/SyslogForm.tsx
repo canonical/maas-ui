@@ -15,7 +15,7 @@ const SyslogSchema = Yup.object().shape({
   remote_syslog: Yup.string(),
 });
 
-const SyslogForm = (): JSX.Element => {
+const SyslogForm = () => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

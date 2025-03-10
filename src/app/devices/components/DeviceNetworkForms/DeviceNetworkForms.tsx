@@ -15,7 +15,7 @@ const DeviceNetworkForms = ({
   systemId,
   sidePanelContent,
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props) => {
   const clearSidePanelContent = useCallback(
     () => setSidePanelContent(null),
     [setSidePanelContent]

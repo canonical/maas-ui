@@ -5,7 +5,7 @@ type Props = {
   vms: number;
 };
 
-const VMsColumn = ({ version, vms }: Props): JSX.Element | null => {
+const VMsColumn = ({ version, vms }: Props) => {
   return (
     <DoubleRow
       primary={<span data-testid="machines-count">{vms}</span>}

@@ -23,11 +23,7 @@ const hasTestsRun = (testStatus: TestStatus) =>
     testStatus.failed >
   0;
 
-const TestResults = ({
-  machine,
-  hardwareType,
-  setSidePanelContent,
-}: Props): JSX.Element | null => {
+const TestResults = ({ machine, hardwareType, setSidePanelContent }: Props) => {
   const sendAnalytics = useSendAnalytics();
 
   const testsTabUrl = `/machine/${machine.system_id}/testing`;

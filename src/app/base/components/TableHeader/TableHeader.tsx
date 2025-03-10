@@ -20,7 +20,7 @@ const TableHeader = ({
   currentSort,
   onClick,
   sortKey,
-}: Props): JSX.Element => {
+}: Props) => {
   if (!onClick) {
     return <div className={className}>{children}</div>;
   }

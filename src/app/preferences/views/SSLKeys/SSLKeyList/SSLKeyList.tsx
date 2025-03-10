@@ -43,7 +43,7 @@ const generateRows = (sslkeys: SSLKey[]) =>
     };
   });
 
-const SSLKeyList = (): JSX.Element => {
+const SSLKeyList = () => {
   const sslkeyErrors = useSelector(sslkeySelectors.errors);
   const sslkeyLoading = useSelector(sslkeySelectors.loading);
   const sslkeyLoaded = useSelector(sslkeySelectors.loaded);

@@ -27,11 +27,7 @@ type Props = {
   setSearchText: (searchText: string) => void;
 };
 
-const MachinesFilterOptions = ({
-  group,
-  searchText,
-  setSearchText,
-}: Props): JSX.Element => {
+const MachinesFilterOptions = ({ group, searchText, setSearchText }: Props) => {
   const dispatch = useDispatch();
 
   const filterOptions = useSelector((state: RootState) =>

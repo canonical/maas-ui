@@ -47,12 +47,7 @@ const InterfaceSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-const AddAliasOrVlan = ({
-  close,
-  nic,
-  interfaceType,
-  systemId,
-}: Props): JSX.Element | null => {
+const AddAliasOrVlan = ({ close, nic, interfaceType, systemId }: Props) => {
   const [secondarySubmit, setSecondarySubmit] = useState(false);
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>

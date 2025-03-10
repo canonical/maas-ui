@@ -54,10 +54,7 @@ const isSpare = (
     ? spareBlockDeviceIds.includes(storageDevice.id)
     : sparePartitionIds.includes(storageDevice.id);
 
-export const CreateRaidFields = ({
-  storageDevices,
-  systemId,
-}: Props): JSX.Element => {
+export const CreateRaidFields = ({ storageDevices, systemId }: Props) => {
   const { handleChange, initialValues, setFieldValue, values } =
     useFormikContext<CreateRaidValues>();
   const {

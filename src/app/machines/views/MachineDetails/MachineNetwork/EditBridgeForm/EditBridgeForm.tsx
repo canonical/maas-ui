@@ -48,12 +48,7 @@ type Props = {
   systemId: MachineDetails["system_id"];
 };
 
-const EditBridgeForm = ({
-  close,
-  link,
-  nic,
-  systemId,
-}: Props): JSX.Element | null => {
+const EditBridgeForm = ({ close, link, nic, systemId }: Props) => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

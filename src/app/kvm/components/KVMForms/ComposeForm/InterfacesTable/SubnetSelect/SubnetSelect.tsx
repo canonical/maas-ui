@@ -1,4 +1,4 @@
-import type { MouseEventHandler } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 
 import { ContextualMenu, useId } from "@canonical/react-components";
 import classNames from "classnames";
@@ -32,7 +32,7 @@ type Props = {
 export type MenuLink =
   | string
   | {
-      children: JSX.Element;
+      children: ReactNode;
       className: string;
       onClick: MouseEventHandler;
     };
@@ -86,12 +86,7 @@ const generateLinks = (
     };
   });
 
-export const SubnetSelect = ({
-  hostId,
-  iface,
-  index,
-  selectSubnet,
-}: Props): JSX.Element => {
+export const SubnetSelect = ({ hostId, iface, index, selectSubnet }: Props) => {
   const id = useId();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)

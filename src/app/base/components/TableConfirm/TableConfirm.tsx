@@ -40,7 +40,7 @@ const TableConfirm = ({
   onConfirm,
   onSuccess,
   sidebar = true,
-}: Props): JSX.Element => {
+}: Props) => {
   useCycled(finished, () => {
     onSuccess && onSuccess();
     onClose();

@@ -21,7 +21,7 @@ export enum Label {
   Title = "Virsh settings",
 }
 
-const VirshSettings = ({ id }: Props): JSX.Element | null => {
+const VirshSettings = ({ id }: Props) => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

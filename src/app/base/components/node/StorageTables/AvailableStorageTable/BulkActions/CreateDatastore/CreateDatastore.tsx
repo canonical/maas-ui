@@ -58,11 +58,7 @@ const CreateDatastoreSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
 });
 
-export const CreateDatastore = ({
-  closeForm,
-  selected,
-  systemId,
-}: Props): JSX.Element | null => {
+export const CreateDatastore = ({ closeForm, selected, systemId }: Props) => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

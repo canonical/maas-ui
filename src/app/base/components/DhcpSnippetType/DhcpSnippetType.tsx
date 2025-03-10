@@ -18,11 +18,7 @@ const dhcpTypeLabels = {
   iprange: "IP Range",
 };
 
-const DhcpSnippetType = ({
-  nodeId,
-  subnetId,
-  ipRangeId,
-}: Props): JSX.Element | null => {
+const DhcpSnippetType = ({ nodeId, subnetId, ipRangeId }: Props) => {
   const { loading, loaded, type } = useDhcpTarget(
     nodeId || null,
     subnetId,

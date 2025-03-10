@@ -4,6 +4,6 @@ export enum Labels {
   Title = "My preferences",
 }
 
-const Preferences = (): JSX.Element => <Routes />;
+const Preferences = () => <Routes />;
 
 export default Preferences;

@@ -53,7 +53,7 @@ const generateRow = (event: EventRecord): EventRow => {
   };
 };
 
-const EventLogsTable = ({ events }: Props): JSX.Element => {
+const EventLogsTable = ({ events }: Props) => {
   const rows = events?.map((event) => generateRow(event));
 
   return (

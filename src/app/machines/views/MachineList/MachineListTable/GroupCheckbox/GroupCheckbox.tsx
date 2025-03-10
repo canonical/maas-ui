@@ -16,12 +16,7 @@ type Props = {
   groupName: MachineStateListGroup["name"];
 };
 
-const GroupCheckbox = ({
-  callId,
-  group,
-  grouping,
-  groupName,
-}: Props): JSX.Element | null => {
+const GroupCheckbox = ({ callId, group, grouping, groupName }: Props) => {
   const selected = useSelector(machineSelectors.selected);
   const allSelected = !!selected && "filter" in selected;
   if (!group) {

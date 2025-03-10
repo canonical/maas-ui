@@ -1,6 +1,9 @@
 import type { ReactNode, MouseEventHandler } from "react";
+import React from "react";
 
 import classNames from "classnames";
+
+import IntrinsicElements = React.JSX.IntrinsicElements;
 
 export type Props = {
   checked?: boolean;
@@ -9,7 +12,7 @@ export type Props = {
   name?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   label?: ReactNode;
-} & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
+} & React.PropsWithoutRef<IntrinsicElements["input"]>;
 
 export enum ColorValues {
   Default = "default",
@@ -32,7 +35,7 @@ const ThemedRadioButton = ({
   onClick,
   value,
   ...inputProps
-}: Props): JSX.Element => {
+}: Props) => {
   return (
     <label className={classNames(className, "general-form__radio--themed")}>
       <input

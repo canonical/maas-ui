@@ -32,7 +32,7 @@ import {
 } from "@/app/subnets/views/SubnetDetails/constants";
 import { getRelativeRoute, isId } from "@/app/utils";
 
-const SubnetDetails = (): JSX.Element => {
+const SubnetDetails = () => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const dispatch = useDispatch();
   const id = useGetURLId(SubnetMeta.PK);

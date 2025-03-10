@@ -6,7 +6,7 @@ type Props = {
   item: ListItem;
 };
 
-const LabelledListItem = ({ item }: Props): JSX.Element => {
+const LabelledListItem = ({ item }: Props) => {
   const id = useId();
   return (
     <>

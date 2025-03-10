@@ -13,10 +13,7 @@ type AddFabricValues = {
   description: string;
 };
 
-const AddFabric = ({
-  activeForm,
-  setActiveForm,
-}: FormActionProps): JSX.Element => {
+const AddFabric = ({ activeForm, setActiveForm }: FormActionProps) => {
   const dispatch = useDispatch();
   const isSaving = useSelector(fabricSelectors.saving);
   const isSaved = useSelector(fabricSelectors.saved);

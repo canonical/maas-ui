@@ -53,7 +53,7 @@ export const DeployForm = ({
   selectedCount,
   selectedMachines,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props) => {
   const dispatch = useDispatch();
   const {
     dispatch: dispatchForSelectedMachines,

@@ -24,7 +24,7 @@ type Props = {
 export const UpdateDatastoreFields = ({
   datastores,
   storageDevices,
-}: Props): JSX.Element => {
+}: Props) => {
   const { values } = useFormikContext<UpdateDatastoreValues>();
   const selectedDatastore = datastores.find(
     (datastore) => datastore.id === Number(values.datastore)

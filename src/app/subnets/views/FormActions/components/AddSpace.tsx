@@ -12,10 +12,7 @@ type AddSpaceValues = {
   name: string;
 };
 
-const AddSpace = ({
-  activeForm,
-  setActiveForm,
-}: FormActionProps): JSX.Element => {
+const AddSpace = ({ activeForm, setActiveForm }: FormActionProps) => {
   const dispatch = useDispatch();
   const isSaving = useSelector(spaceSelectors.saving);
   const isSaved = useSelector(spaceSelectors.saved);

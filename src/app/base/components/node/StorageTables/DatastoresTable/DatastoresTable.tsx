@@ -25,7 +25,7 @@ type Props = {
   node: ControllerDetails | MachineDetails;
 };
 
-const DatastoresTable = ({ canEditStorage, node }: Props): JSX.Element => {
+const DatastoresTable = ({ canEditStorage, node }: Props) => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const isMachine = nodeIsMachine(node);

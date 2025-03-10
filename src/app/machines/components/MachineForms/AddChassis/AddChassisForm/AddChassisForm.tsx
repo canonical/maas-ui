@@ -29,9 +29,7 @@ type Props = {
   clearSidePanelContent: ClearSidePanelContent;
 };
 
-export const AddChassisForm = ({
-  clearSidePanelContent,
-}: Props): JSX.Element => {
+export const AddChassisForm = ({ clearSidePanelContent }: Props) => {
   const dispatch = useDispatch();
   const chassisPowerTypes = useSelector(powerTypesSelectors.canProbe);
   const domains = useSelector(domainSelectors.all);

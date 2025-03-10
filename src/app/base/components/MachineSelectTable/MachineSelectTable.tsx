@@ -128,7 +128,7 @@ export const MachineSelectTable = ({
   onMachineClick,
   searchText,
   setSearchText,
-}: Props): JSX.Element => {
+}: Props) => {
   const tags = useSelector(tagSelectors.all);
   const loadingMachines = useSelector(machineSelectors.loading);
 

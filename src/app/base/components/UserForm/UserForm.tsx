@@ -89,7 +89,7 @@ export const UserForm = ({
   onUpdateFields,
   user,
   ...formProps
-}: Props): JSX.Element => {
+}: Props) => {
   const editing = !!user;
   const [passwordVisible, setPasswordVisible] = useState(!editing);
   const saving = useSelector(userSelectors.saving);

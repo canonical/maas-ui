@@ -11,7 +11,7 @@ type Props = {
   systemId: Controller[ControllerMeta.PK];
 };
 
-const ControllerVLANs = ({ systemId }: Props): JSX.Element => {
+const ControllerVLANs = ({ systemId }: Props) => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

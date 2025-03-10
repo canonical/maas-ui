@@ -31,9 +31,7 @@ export enum Label {
   Title = "Controller configuration",
 }
 
-const ControllerConfigurationForm = ({
-  systemId,
-}: Props): JSX.Element | null => {
+const ControllerConfigurationForm = ({ systemId }: Props) => {
   const dispatch = useDispatch();
   const node = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)

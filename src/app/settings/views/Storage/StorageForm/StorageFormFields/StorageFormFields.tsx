@@ -9,7 +9,7 @@ import configSelectors from "@/app/store/config/selectors";
 import { StorageLayout } from "@/app/store/types/enum";
 import { isVMWareLayout } from "@/app/store/utils";
 
-const StorageFormFields = (): JSX.Element => {
+const StorageFormFields = () => {
   const { values } = useFormikContext<StorageFormValues>();
   const storageLayoutOptions =
     useSelector(configSelectors.storageLayoutOptions) || [];

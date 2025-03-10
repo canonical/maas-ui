@@ -19,10 +19,7 @@ export enum Label {
   Title = "LXD cluster settings",
 }
 
-const LXDClusterSettings = ({
-  clusterId,
-  setSidePanelContent,
-}: Props): JSX.Element => {
+const LXDClusterSettings = ({ clusterId, setSidePanelContent }: Props) => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );

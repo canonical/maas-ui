@@ -24,7 +24,7 @@ export const AddLxdSteps = {
   SELECT_PROJECT: "Project selection",
 } as const;
 
-export const AddLxd = ({ clearSidePanelContent }: Props): JSX.Element => {
+export const AddLxd = ({ clearSidePanelContent }: Props) => {
   const dispatch = useDispatch();
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useZones();

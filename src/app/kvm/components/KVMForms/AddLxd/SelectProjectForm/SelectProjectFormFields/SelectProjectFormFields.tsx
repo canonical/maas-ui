@@ -22,9 +22,7 @@ type Props = {
   newPodValues: NewPodValues;
 };
 
-export const SelectProjectFormFields = ({
-  newPodValues,
-}: Props): JSX.Element => {
+export const SelectProjectFormFields = ({ newPodValues }: Props) => {
   const podsInServer = useSelector((state: RootState) =>
     podSelectors.getByLxdServer(state, newPodValues.power_address)
   );

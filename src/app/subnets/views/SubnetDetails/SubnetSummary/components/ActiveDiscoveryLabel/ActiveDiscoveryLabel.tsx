@@ -1,6 +1,6 @@
 import TooltipButton from "@/app/base/components/TooltipButton";
 
-const ActiveDiscoveryLabel = (): JSX.Element => (
+const ActiveDiscoveryLabel = () => (
   <>
     Active discovery{" "}
     <TooltipButton

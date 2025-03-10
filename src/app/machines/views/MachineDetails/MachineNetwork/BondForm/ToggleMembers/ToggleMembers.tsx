@@ -16,7 +16,7 @@ export const ToggleMembers = ({
   selected,
   setEditingMembers,
   validNics,
-}: Props): JSX.Element => {
+}: Props) => {
   const sendAnalytics = useSendAnalytics();
   let editTooltip: string | null = null;
   let editDisabled = false;

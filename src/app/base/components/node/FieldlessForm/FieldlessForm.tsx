@@ -36,7 +36,7 @@ export const FieldlessForm = <E,>({
   processingCount,
   selectedCount,
   viewingDetails,
-}: FieldlessFormProps<E>): JSX.Element => {
+}: FieldlessFormProps<E>) => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });

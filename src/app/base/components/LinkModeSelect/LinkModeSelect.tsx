@@ -39,7 +39,7 @@ export const LinkModeSelect = ({
   name,
   subnet,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const availableModes = getAvailableLinkModes(interfaceType, subnet);
   const modeOptions = availableModes.map((mode) => ({
     label: LINK_MODE_DISPLAY[mode],

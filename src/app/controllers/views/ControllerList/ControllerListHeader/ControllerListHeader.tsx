@@ -24,7 +24,7 @@ const ControllerListHeader = ({
   searchFilter,
   setSidePanelContent,
   setSearchFilter,
-}: Props): JSX.Element => {
+}: Props) => {
   const controllers = useSelector(controllerSelectors.all);
   const controllersLoaded = useSelector(controllerSelectors.loaded);
   const selectedControllers = useSelector(controllerSelectors.selected);

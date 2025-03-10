@@ -19,10 +19,7 @@ type Props = {
   setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const LXDClusterDetailsHeader = ({
-  clusterId,
-  setSidePanelContent,
-}: Props): JSX.Element => {
+const LXDClusterDetailsHeader = ({ clusterId, setSidePanelContent }: Props) => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );

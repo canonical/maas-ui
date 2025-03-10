@@ -19,7 +19,7 @@ const ShowAdvanced = ({
   initialIsShown,
   onAfterShow,
   onAfterHide,
-}: Props): JSX.Element => {
+}: Props) => {
   const [isAdvancedShown, setIsAdvancedShown] = useState(
     initialIsShown || false
   );

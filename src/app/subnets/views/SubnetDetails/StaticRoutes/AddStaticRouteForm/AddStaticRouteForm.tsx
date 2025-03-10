@@ -41,10 +41,7 @@ export type Props = {
   subnetId: Subnet[SubnetMeta.PK];
   setSidePanelContent: SetSidePanelContent;
 };
-const AddStaticRouteForm = ({
-  subnetId,
-  setSidePanelContent,
-}: Props): JSX.Element | null => {
+const AddStaticRouteForm = ({ subnetId, setSidePanelContent }: Props) => {
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
   const saving = useSelector(staticRouteSelectors.saving);
   const saved = useSelector(staticRouteSelectors.saved);

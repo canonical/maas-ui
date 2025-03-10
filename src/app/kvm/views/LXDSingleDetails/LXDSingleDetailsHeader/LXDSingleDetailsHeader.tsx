@@ -20,10 +20,7 @@ type Props = {
   setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const LXDSingleDetailsHeader = ({
-  id,
-  setSidePanelContent,
-}: Props): JSX.Element => {
+const LXDSingleDetailsHeader = ({ id, setSidePanelContent }: Props) => {
   const location = useLocation();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)

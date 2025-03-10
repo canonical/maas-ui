@@ -14,7 +14,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const NameColumn = ({ callId, systemId }: Props): JSX.Element => {
+const NameColumn = ({ callId, systemId }: Props) => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

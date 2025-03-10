@@ -27,7 +27,7 @@ const Schema = Yup.object().shape({
 export const EditBootArchitectures = ({
   subnetId,
   setSidePanelContent,
-}: Omit<SubnetActionProps, "activeForm">): JSX.Element | null => {
+}: Omit<SubnetActionProps, "activeForm">) => {
   const dispatch = useDispatch();
   const architecturesLoading = useSelector(
     knownBootArchitecturesSelectors.loading

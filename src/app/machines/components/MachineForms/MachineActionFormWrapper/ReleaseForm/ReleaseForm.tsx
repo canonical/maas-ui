@@ -38,7 +38,7 @@ export const ReleaseForm = ({
   selectedCount,
   selectedMachines,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props) => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });

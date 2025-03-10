@@ -74,7 +74,7 @@ const NodeActionWarning = ({
   nodeType,
   selectedCount,
   onUpdateSelected,
-}: Props): JSX.Element => {
+}: Props) => {
   return (
     <p data-testid="node-action-warning">
       <i className="p-icon--warning" />

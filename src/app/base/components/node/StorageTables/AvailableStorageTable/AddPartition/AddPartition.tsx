@@ -84,11 +84,7 @@ const generateSchema = (availableSize: number) =>
     unit: Yup.string().required(),
   });
 
-export const AddPartition = ({
-  closeExpanded,
-  disk,
-  systemId,
-}: Props): JSX.Element | null => {
+export const AddPartition = ({ closeExpanded, disk, systemId }: Props) => {
   const dispatch = useDispatch();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,

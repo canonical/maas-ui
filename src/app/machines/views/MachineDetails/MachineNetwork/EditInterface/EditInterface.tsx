@@ -36,7 +36,7 @@ const EditInterface = ({
   selected,
   setSelected,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props) => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

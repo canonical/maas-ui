@@ -207,7 +207,7 @@ const ControllerListTable = ({
   loading = false,
   onSelectedChange,
   selectedIDs,
-}: Props): JSX.Element => {
+}: Props) => {
   const { currentSort, sortRows, updateSort } = useTableSort<
     Controller,
     SortKey

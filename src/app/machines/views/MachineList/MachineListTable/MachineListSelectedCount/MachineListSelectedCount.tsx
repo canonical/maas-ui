@@ -15,7 +15,7 @@ export const MachineListSelectedCount = ({
   filter,
   machineCount,
   selectedCount,
-}: Props): JSX.Element => {
+}: Props) => {
   const dispatch = useDispatch();
 
   return (

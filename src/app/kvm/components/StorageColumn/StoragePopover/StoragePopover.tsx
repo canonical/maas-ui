@@ -15,11 +15,7 @@ type Props = {
   pools: KVMStoragePoolResources;
 };
 
-const StoragePopover = ({
-  children,
-  defaultPoolId,
-  pools,
-}: Props): JSX.Element => {
+const StoragePopover = ({ children, defaultPoolId, pools }: Props) => {
   const sortedPools = getSortedPoolsArray(pools, defaultPoolId);
   const showOthers = sortedPools.some(([, pool]) => pool.allocated_other !== 0);
   return (

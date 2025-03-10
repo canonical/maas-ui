@@ -20,7 +20,7 @@ type PropTypes = {
   user?: UserFormProps["user"];
 };
 
-export const UserForm = ({ user }: PropTypes): JSX.Element => {
+export const UserForm = ({ user }: PropTypes) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const saved = useSelector(userSelectors.saved);

@@ -55,12 +55,7 @@ type Props = {
   setSelected: SetSelected;
 };
 
-const AddBridgeForm = ({
-  close,
-  selected,
-  systemId,
-  setSelected,
-}: Props): JSX.Element | null => {
+const AddBridgeForm = ({ close, selected, systemId, setSelected }: Props) => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

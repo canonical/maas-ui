@@ -53,7 +53,7 @@ const formatSyncInterval = (syncInterval: Seconds) =>
     })
   );
 
-const MachineStatusCard = ({ machine }: Props): JSX.Element => {
+const MachineStatusCard = ({ machine }: Props) => {
   const formattedOS = useFormattedOS(machine);
   const machineTags = useSelector((state: RootState) =>
     tagSelectors.getByIDs(state, machine.tags)
