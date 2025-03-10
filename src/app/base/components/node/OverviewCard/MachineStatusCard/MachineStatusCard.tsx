@@ -118,7 +118,7 @@ const MachineStatusCard = ({ machine }: Props): JSX.Element => {
                     More about this in the{" "}
                     <ExternalLink
                       className="is-on-dark"
-                      to={docsUrls.customisingDeployedMachines}
+                      to={docsUrls.hardwareSync}
                     >
                       Hardware sync docs
                     </ExternalLink>
