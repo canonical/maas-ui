@@ -68,9 +68,11 @@ describe("AddVirshFields", () => {
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
-    expect(
-      screen.getByRole("textbox", { name: /test-powerfield-label-1/i })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: /test-powerfield-label-1/i })
+      ).toBeInTheDocument()
+    );
     expect(
       screen.queryByRole("textbox", { name: /test-powerfield-label-2/i })
     ).not.toBeInTheDocument();

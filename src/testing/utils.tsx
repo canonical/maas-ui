@@ -17,7 +17,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
 import type { QueryModel } from "@/app/api/query-client";
-import { client } from "@/app/apiclient/sdk.gen";
+import { client } from "@/app/apiclient/client.gen";
 import type {
   SidePanelContent,
   SidePanelSize,

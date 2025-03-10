@@ -73,12 +73,14 @@ describe("AddMachineFormFields", () => {
     state.general.defaultMinHweKernel.data = "ga-18.04";
     await renderAddMachineFormFields();
 
-    expect(
-      screen.getByRole("option", {
-        name: "bionic (ga-18.04)",
-        selected: true,
-      })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("option", {
+          name: "bionic (ga-18.04)",
+          selected: true,
+        })
+      ).toBeInTheDocument()
+    );
     expect(
       screen.getByRole("option", {
         name: "xenial (ga-16.04)",

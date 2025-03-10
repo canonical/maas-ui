@@ -47,14 +47,16 @@ describe("KVMConfigurationCardFields", () => {
     expect(screen.getByRole("textbox", { name: "KVM host type" })).toHaveValue(
       "Virsh"
     );
-    expect(
-      (
-        within(screen.getByRole("combobox", { name: "Zone" })).getByRole(
-          "option",
-          { name: "zone-1" }
-        ) as HTMLOptionElement
-      ).selected
-    ).toBe(true);
+    await waitFor(() =>
+      expect(
+        (
+          within(screen.getByRole("combobox", { name: "Zone" })).getByRole(
+            "option",
+            { name: "zone-1" }
+          ) as HTMLOptionElement
+        ).selected
+      ).toBe(true)
+    );
     expect(
       (
         within(

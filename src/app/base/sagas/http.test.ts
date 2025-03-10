@@ -102,6 +102,7 @@ describe("Auth API", () => {
         password: "gum%tree",
       });
       expect(fetch).toHaveBeenCalled();
+      // @ts-expect-error since the previous expect passed, the indexing is safe to be considered defined
       expect(fetchMock.mock.calls[0][1]?.body?.toString()).toBe(
         "username=ko%26ala&password=gum%25tree"
       );
