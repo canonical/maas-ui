@@ -5,11 +5,7 @@ import PoolColumn from "./PoolColumn";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
-import {
-  renderWithBrowserRouter,
-  setupMockServer,
-  waitFor,
-} from "@/testing/utils";
+import { renderWithProviders, setupMockServer, waitFor } from "@/testing/utils";
 
 setupMockServer(zoneResolvers.getZone.handler());
 
@@ -38,7 +34,7 @@ describe("PoolColumn", () => {
   });
 
   it("can display the pod's resource pool and zone", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PoolColumn
         poolId={state.pod.items[0].pool}
         zoneId={state.pod.items[0].zone}
