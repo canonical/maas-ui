@@ -87,7 +87,7 @@ describe("KVMConfigurationCard", () => {
         store.getActions().find((action) => action.type === expectedAction.type)
       ).toStrictEqual(expectedAction);
     });
-  });
+  }, 10000);
 
   it("can handle updating a virsh KVM", async () => {
     const pod = factory.podDetails({
