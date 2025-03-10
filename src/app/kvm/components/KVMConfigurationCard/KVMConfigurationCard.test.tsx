@@ -48,6 +48,10 @@ describe("KVMConfigurationCard", () => {
 
     await waitFor(() => screen.getByRole("combobox", { name: "Zone" }));
 
+    await userEvent.click(screen.getByRole("combobox", { name: "Zone" }));
+
+    expect(screen.getByText("zone-3")).toBeInTheDocument();
+
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
       "3"

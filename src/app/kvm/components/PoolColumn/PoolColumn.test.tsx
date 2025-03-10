@@ -42,7 +42,11 @@ describe("PoolColumn", () => {
       { state }
     );
     await waitFor(() => expect(zoneResolvers.getZone.resolved).toBeTruthy());
-    expect(screen.getByTestId("pool")).toHaveTextContent("swimming-pool");
-    expect(screen.getByTestId("zone")).toHaveTextContent("zone-1");
+    await waitFor(() =>
+      expect(screen.getByTestId("pool")).toHaveTextContent("swimming-pool")
+    );
+    await waitFor(() =>
+      expect(screen.getByTestId("zone")).toHaveTextContent("zone-1")
+    );
   });
 });
