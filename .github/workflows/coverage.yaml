@@ -2,6 +2,9 @@ name: Test coverage and TiCS Report
 on:
   schedule:  # uses last commit on default branch (main)
     - cron: "30 0 * * 6" # At 0:30 on Saturday
+  push:
+    branches:
+      - "tics-debug-*"
   # temporarily disabling client mode due to quota
   # pull_request:
   #   types: [opened, synchronize, reopened]
