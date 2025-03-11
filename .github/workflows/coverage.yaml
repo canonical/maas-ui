@@ -4,7 +4,7 @@ on:
     - cron: "30 0 * * 6" # At 0:30 on Saturday
   push:
     branches:
-      - "tics-debug"
+      - "tics-debug-*"
   # temporarily disabling client mode due to quota
   # pull_request:
   #   types: [opened, synchronize, reopened]
