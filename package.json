@@ -98,7 +98,7 @@
     "@hey-api/openapi-ts": "0.64.10",
     "@percy/cli": "1.30.7",
     "@percy/cypress": "3.1.4",
-    "@playwright/test": "1.51.0",
+    "@playwright/test": "1.45.0",
     "@storybook/addon-a11y": "7.6.20",
     "@storybook/addon-essentials": "7.6.20",
     "@storybook/addon-interactions": "7.6.20",
