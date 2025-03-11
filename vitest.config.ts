@@ -18,7 +18,7 @@ export default defineConfig({
         ["text"],
         ["html"],
         ["lcov"],
-        ["cobertura", { file: "../coverage/cobertura-coverage.xml" }],
+        ["cobertura", { file: "../.coverage/cobertura-coverage.xml" }],
       ],
     },
   },
