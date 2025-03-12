@@ -18,7 +18,6 @@ import type {
   UpdateResourcePoolError,
   UpdateResourcePoolResponse,
 } from "@/app/apiclient";
-
 import {
   createResourcePoolMutation,
   deleteResourcePoolMutation,
