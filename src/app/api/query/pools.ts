@@ -1,8 +1,8 @@
 import type { Options } from "@hey-api/client-fetch";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useWebsocketAwareQuery } from "./base";
 
+import { useWebsocketAwareQuery } from "./base";
 import type {
   CreateResourcePoolData,
   CreateResourcePoolError,
