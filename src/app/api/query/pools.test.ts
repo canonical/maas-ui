@@ -1,4 +1,9 @@
-import { useCreatePool, useDeletePool, useListPools, useUpdatePool } from "./pools";
+import {
+  useCreatePool,
+  useDeletePool,
+  useListPools,
+  useUpdatePool,
+} from "./pools";
 
 import type { ResourcePoolRequest } from "@/app/apiclient";
 import { mockPools, poolsResolvers } from "@/testing/resolvers/pools";

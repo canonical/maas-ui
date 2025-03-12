@@ -1,5 +1,11 @@
 import type { Options } from "@hey-api/client-fetch";
-import { useMutation, useQueryClient, UseQueryOptions } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  UseQueryOptions,
+} from "@tanstack/react-query";
+
+import { useWebsocketAwareQuery } from "./base";
 
 import type {
   CreateResourcePoolData,
@@ -8,8 +14,6 @@ import type {
   DeleteResourcePoolData,
   DeleteResourcePoolError,
   DeleteResourcePoolResponse,
-  ListResourcePoolsError,
-  ListResourcePoolsResponse,
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryError,
   ListResourcePoolsWithSummaryResponse,
@@ -17,6 +21,7 @@ import type {
   UpdateResourcePoolError,
   UpdateResourcePoolResponse,
 } from "@/app/apiclient";
+
 import {
   createResourcePoolMutation,
   deleteResourcePoolMutation,
@@ -24,9 +29,11 @@ import {
   listResourcePoolsWithSummaryOptions,
   updateResourcePoolMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
-import { useWebsocketAwareQuery } from "./base";
 
-export const useListPools = (options?: Options<ListResourcePoolsWithSummaryData>) => {
+
+export const useListPools = (
+  options?: Options<ListResourcePoolsWithSummaryData>
+) => {
   return useWebsocketAwareQuery(
     listResourcePoolsWithSummaryOptions(options) as UseQueryOptions<
       ListResourcePoolsWithSummaryData,

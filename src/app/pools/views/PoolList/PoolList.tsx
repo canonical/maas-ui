@@ -7,13 +7,13 @@ import {
 } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
+import { useListPools } from "@/app/api/query/pools";
+import { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { formatErrors } from "@/app/utils";
-import { useListPools } from "@/app/api/query/pools";
-import { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
 
 export enum Label {
   Title = "Pool list",
@@ -91,8 +91,7 @@ const Pools = (): JSX.Element => {
         <Row>
           <Col size={12}>
             <Notification
-              severity="negative"
-            >
+              severity="negative">
               {errorMessage}
             </Notification>
           </Col>
