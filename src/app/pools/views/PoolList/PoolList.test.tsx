@@ -2,46 +2,39 @@ import { MemoryRouter } from "react-router-dom";
 
 import PoolList from "./PoolList";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   screen,
   within,
   renderWithMockStore,
   renderWithBrowserRouter,
+  mockIsPending,
+  renderWithProviders,
 } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import { setupServer } from "msw/lib/node";
+
+const mockServer = setupServer(poolsResolvers.listPools.handler());
 
 describe("PoolList", () => {
-  let state: RootState;
 
-  beforeEach(() => {
-    state = factory.rootState({
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [factory.resourcePool({ name: "default" })],
-      }),
-    });
-  });
-
-  it("displays a loading component if pools are loading", () => {
-    state.resourcepool.loading = true;
+  it("displays a loading component if pools are loading", async () => {
+    mockIsPending();
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
       </MemoryRouter>,
-      { state }
     );
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("disables the edit button without permissions", () => {
-    state.resourcepool.items = [factory.resourcePool({ permissions: [] })];
-    renderWithMockStore(
+  it("disables the edit button without permissions", async () => {
+    mockServer.use(poolsResolvers.listPools.handler({items: [factory.resourcePool({ permissions: [] })], total:1}));
+    renderWithProviders(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
       </MemoryRouter>,
-      { state }
     );
 
     expect(screen.getByRole("link", { name: "Edit" })).toHaveClass(
@@ -49,15 +42,13 @@ describe("PoolList", () => {
     );
   });
 
-  it("enables the edit button with correct permissions", () => {
-    state.resourcepool.items = [
-      factory.resourcePool({ permissions: ["edit"] }),
-    ];
-    renderWithMockStore(
+  it("enables the edit button with correct permissions", async () => {
+    mockServer.use(poolsResolvers.listPools.handler({items: [factory.resourcePool({ permissions: ['edit'] })], total:1}));
+
+    renderWithProviders(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
       </MemoryRouter>,
-      { state }
     );
 
     expect(screen.getByRole("link", { name: "Edit" })).not.toHaveClass(
@@ -66,21 +57,19 @@ describe("PoolList", () => {
   });
 
   it("displays a link to delete confirmation", async () => {
-    state.resourcepool.items = [
-      factory.resourcePool({
-        id: 0,
-        name: "squambo",
-        description: "a pool",
-        is_default: false,
-        machine_total_count: 0,
-        permissions: ["delete"],
-      }),
-    ];
-    renderWithMockStore(
+    mockServer.use(poolsResolvers.listPools.handler({items: [factory.resourcePool({
+      id: 0,
+      name: "squambo",
+      description: "a pool",
+      is_default: false,
+      machine_total_count: 0,
+      permissions: ["delete"],
+    })], total:1}));
+
+    renderWithProviders(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
       </MemoryRouter>,
-      { state }
     );
 
     const row = screen.getByRole("row", { name: "squambo" });
@@ -92,65 +81,60 @@ describe("PoolList", () => {
     ).toBeInTheDocument();
   });
 
-  it("disables the delete button for default pools", () => {
-    state.resourcepool.items = [
-      factory.resourcePool({
-        id: 0,
-        name: "default",
-        description: "default",
-        is_default: true,
-        permissions: ["edit", "delete"],
-      }),
-    ];
-    renderWithMockStore(
+  it("disables the delete button for default pools", async () => {
+    mockServer.use(poolsResolvers.listPools.handler({items: [factory.resourcePool({
+      id: 0,
+      name: "default",
+      description: "default",
+      is_default: true,
+      permissions: ["edit", "delete"],
+    })], total:1}));
+
+    renderWithProviders(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
       </MemoryRouter>,
-      { state }
     );
     expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
   });
 
-  it("disables the delete button for pools that contain machines", () => {
-    state.resourcepool.items = [
-      factory.resourcePool({
-        id: 0,
-        name: "machines",
-        description: "has machines",
-        is_default: false,
-        permissions: ["edit", "delete"],
-        machine_total_count: 1,
-      }),
-    ];
-    renderWithMockStore(
+  it("disables the delete button for pools that contain machines", async () => {
+    mockServer.use(poolsResolvers.listPools.handler({items: [factory.resourcePool({
+      id: 0,
+      name: "machines",
+      description: "has machines",
+      is_default: false,
+      permissions: ["edit", "delete"],
+      machine_total_count: 1,
+    })], total:1}));
+
+    renderWithProviders(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
       </MemoryRouter>,
-      { state }
     );
     expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
   });
 
-  it("does not show a machine link for empty pools", () => {
-    state.resourcepool.items[0].machine_total_count = 0;
-    renderWithMockStore(
+  it("does not show a machine link for empty pools", async () => {
+    mockServer.use(poolsResolvers.listPools.handler({items: [factory.resourcePool({ machine_total_count:0 })], total:1}));
+
+    renderWithProviders(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
       </MemoryRouter>,
-      { state }
     );
     const row = screen.getByRole("row", { name: "default" });
     expect(within(row).getByText("Empty pool")).toBeInTheDocument();
   });
 
-  it("can show a machine link for non-empty pools", () => {
-    state.resourcepool.items[0].machine_total_count = 5;
-    state.resourcepool.items[0].machine_ready_count = 1;
-    renderWithMockStore(
+  it("can show a machine link for non-empty pools", async () => {
+    mockServer.use(poolsResolvers.listPools.handler({items: [factory.resourcePool({ machine_total_count:5, machine_ready_count:1 })], total:1}));
+
+    renderWithProviders(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
       </MemoryRouter>,
-      { state }
     );
     const link = within(screen.getByRole("row", { name: "default" })).getByRole(
       "link",
@@ -160,20 +144,20 @@ describe("PoolList", () => {
     expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
   });
 
-  it("displays state errors in a notification", () => {
-    state.resourcepool.errors = "Pools are not for swimming.";
-    renderWithMockStore(
+  it("displays state errors in a notification", async () => {
+    mockServer.use(poolsResolvers.listPools.error({message: "Pools are not for swimming."}));
+
+    renderWithProviders(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
       </MemoryRouter>,
-      { state }
     );
     expect(screen.getByText("Pools are not for swimming.")).toBeInTheDocument();
   });
 
-  it("displays a message when rendering an empty list", () => {
-    state.resourcepool.items = [];
-    renderWithBrowserRouter(<PoolList />, { state, route: "/pools" });
+  it("displays a message when rendering an empty list", async () => {
+    mockServer.use(poolsResolvers.listPools.handler({items: [], total:1}));
+    renderWithBrowserRouter(<PoolList />, { route: "/pools" });
 
     expect(screen.getByText("No pools available.")).toBeInTheDocument();
   });
