@@ -69,12 +69,12 @@ const poolsResolvers = {
   listPools: {
     resolved: false,
     handler: (data: ListResourcePoolsResponse = mockPools) =>
-      http.get(`${BASE_URL}MAAS/a/v3/resource_pools`, () => {
+      http.get(`${BASE_URL}MAAS/a/v3/resource_pools_with_summary`, () => {
         poolsResolvers.listPools.resolved = true;
         return HttpResponse.json(data);
       }),
     error: (error: ListResourcePoolsError = mockListPoolsError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/resource_pools`, () => {
+      http.get(`${BASE_URL}MAAS/a/v3/resource_pools_with_summary`, () => {
         poolsResolvers.listPools.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),

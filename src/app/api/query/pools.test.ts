@@ -24,7 +24,7 @@ describe("useListPools", () => {
   it("should return resource pools data", async () => {
     const { result } = renderHookWithProviders(() => useListPools());
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.items).toEqual(mockPools);
+    expect(result.current.data?.items).toEqual(mockPools.items);
   });
 });
 
