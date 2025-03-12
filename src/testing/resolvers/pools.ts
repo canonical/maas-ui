@@ -1,7 +1,5 @@
 import { http, HttpResponse } from "msw";
-
 import { resourcePool } from "../factories";
-
 import { BASE_URL } from "../utils";
 
 import type {
@@ -11,7 +9,6 @@ import type {
   ListResourcePoolsResponse,
   UpdateResourcePoolError,
 } from "@/app/apiclient";
-
 
 const mockPools: ListResourcePoolsResponse = {
   items: [

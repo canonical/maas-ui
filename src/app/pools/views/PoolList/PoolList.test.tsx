@@ -1,13 +1,10 @@
 import { setupServer } from "msw/lib/node";
-
 import { MemoryRouter } from "react-router-dom";
 
 import PoolList from "./PoolList";
 
 import * as factory from "@/testing/factories";
-
 import { poolsResolvers } from "@/testing/resolvers/pools";
-
 import {
   screen,
   within,
