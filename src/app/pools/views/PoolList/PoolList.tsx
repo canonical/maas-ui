@@ -83,7 +83,7 @@ const Pools = (): JSX.Element => {
 
   const listPools = useListPools();
   const errorMessage = formatErrors(listPools.error);
-  const listPoolsResources = listPools.data?.items || [];
+  const resourcePools = listPools.data?.items || [];
 
   return (
     <div aria-label={Label.Title}>
@@ -97,7 +97,7 @@ const Pools = (): JSX.Element => {
       <Row>
         <Col size={12}>
           <div>
-            {listPools.isLoading && (
+            {listPools.isPending && (
               <div className="u-align--center">
                 <Spinner text="Loading..." />
               </div>
@@ -127,7 +127,7 @@ const Pools = (): JSX.Element => {
                   },
                 ]}
                 paginate={50}
-                rows={generateRows(listPoolsResources)}
+                rows={generateRows(resourcePools)}
                 sortable
               />
             )}

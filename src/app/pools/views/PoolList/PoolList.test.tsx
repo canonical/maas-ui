@@ -203,7 +203,7 @@ describe("PoolList", () => {
   });
 
   it("displays a message when rendering an empty list", async () => {
-    mockServer.use(poolsResolvers.listPools.handler({ items: [], total: 1 }));
+    mockServer.use(poolsResolvers.listPools.handler({ items: [], total: 0 }));
     renderWithBrowserRouter(<PoolList />, { route: "/pools" });
 
     expect(screen.getByText("No pools available.")).toBeInTheDocument();
