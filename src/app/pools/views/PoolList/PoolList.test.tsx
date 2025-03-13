@@ -183,7 +183,7 @@ describe("PoolList", () => {
 
   it("displays state errors in a notification", async () => {
     mockServer.use(
-      poolsResolvers.listPools.error({ 
+      poolsResolvers.listPools.error({
         message: "Pools are not for swimming.",
         code: 401,
       })
