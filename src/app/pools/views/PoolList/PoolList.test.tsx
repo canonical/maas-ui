@@ -12,6 +12,7 @@ import {
   mockIsPending,
   renderWithProviders,
   setupMockServer,
+  waitFor,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(poolsResolvers.listPools.handler());
@@ -25,7 +26,9 @@ describe("PoolList", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+    });
   });
 
   it("disables the edit button without permissions", async () => {
@@ -41,9 +44,11 @@ describe("PoolList", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("link", { name: "Edit" })).toHaveClass(
-      "is-disabled"
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("link", { name: "Edit" })).toHaveClass(
+        "is-disabled"
+      );
+    });
   });
 
   it("enables the edit button with correct permissions", async () => {
@@ -60,9 +65,11 @@ describe("PoolList", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("link", { name: "Edit" })).not.toHaveClass(
-      "is-disabled"
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("link", { name: "Edit" })).not.toHaveClass(
+        "is-disabled"
+      );
+    });
   });
 
   it("displays a link to delete confirmation", async () => {
@@ -90,11 +97,13 @@ describe("PoolList", () => {
 
     const row = screen.getByRole("row", { name: "squambo" });
 
-    expect(row).not.toHaveClass("is-active");
+    await waitFor(() => {
+      expect(row).not.toHaveClass("is-active");
 
-    expect(
-      within(row).getByRole("link", { name: "Delete" })
-    ).toBeInTheDocument();
+      expect(
+        within(row).getByRole("link", { name: "Delete" })
+      ).toBeInTheDocument();
+    });
   });
 
   it("disables the delete button for default pools", async () => {
@@ -118,7 +127,10 @@ describe("PoolList", () => {
         <PoolList />
       </MemoryRouter>
     );
-    expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
+    
+    await waitFor(() => {
+      expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
+    });
   });
 
   it("disables the delete button for pools that contain machines", async () => {
@@ -143,7 +155,10 @@ describe("PoolList", () => {
         <PoolList />
       </MemoryRouter>
     );
-    expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
+
+    await waitFor(() => {
+      expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
+    });
   });
 
   it("does not show a machine link for empty pools", async () => {
@@ -160,7 +175,9 @@ describe("PoolList", () => {
       </MemoryRouter>
     );
     const row = screen.getByRole("row", { name: "default" });
-    expect(within(row).getByText("Empty pool")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(within(row).getByText("Empty pool")).toBeInTheDocument();
+    });
   });
 
   it("can show a machine link for non-empty pools", async () => {
@@ -185,8 +202,11 @@ describe("PoolList", () => {
       "link",
       { name: "1 of 5 ready" }
     );
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
+
+    await waitFor(() => {
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
+    });
   });
 
   it("displays state errors in a notification", async () => {
@@ -199,13 +219,18 @@ describe("PoolList", () => {
         <PoolList />
       </MemoryRouter>
     );
-    expect(screen.getByText("Pools are not for swimming.")).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.getByText("Pools are not for swimming.")).toBeInTheDocument();
+    });
   });
 
   it("displays a message when rendering an empty list", async () => {
     mockServer.use(poolsResolvers.listPools.handler({ items: [], total: 0 }));
     renderWithBrowserRouter(<PoolList />, { route: "/pools" });
 
-    expect(screen.getByText("No pools available.")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("No pools available.")).toBeInTheDocument();
+    });
   });
 });
