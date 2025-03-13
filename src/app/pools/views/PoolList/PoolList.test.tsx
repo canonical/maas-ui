@@ -77,11 +77,11 @@ describe("PoolList", () => {
 
     renderWithProviders(<PoolList />);
 
-    const row = screen.getByRole("row", { name: "squambo" });
-
     await waitFor(() => {
-      expect(row).not.toHaveClass("is-active");
+      expect(screen.getByRole("row", { name: "squambo" })).toBeInTheDocument();
     });
+    const row = screen.getByRole("row", { name: "squambo" });
+    expect(row).not.toHaveClass("is-active");
 
     await waitFor(() => {
       expect(
@@ -140,16 +140,19 @@ describe("PoolList", () => {
   it("does not show a machine link for empty pools", async () => {
     mockServer.use(
       poolsResolvers.listPools.handler({
-        items: [factory.resourcePool({ machine_total_count: 0 })],
+        items: [
+          factory.resourcePool({ name: "default", machine_total_count: 0 }),
+        ],
         total: 1,
       })
     );
 
     renderWithProviders(<PoolList />);
-    const row = screen.getByRole("row", { name: "default" });
     await waitFor(() => {
-      expect(within(row).getByText("Empty pool")).toBeInTheDocument();
+      expect(screen.getByRole("row", { name: "default" })).toBeInTheDocument();
     });
+    const row = screen.getByRole("row", { name: "default" });
+    expect(within(row).getByText("Empty pool")).toBeInTheDocument();
   });
 
   it("can show a machine link for non-empty pools", async () => {
@@ -157,6 +160,7 @@ describe("PoolList", () => {
       poolsResolvers.listPools.handler({
         items: [
           factory.resourcePool({
+            name: "default",
             machine_total_count: 5,
             machine_ready_count: 1,
           }),
@@ -166,25 +170,30 @@ describe("PoolList", () => {
     );
 
     renderWithProviders(<PoolList />);
+    await waitFor(() => {
+      expect(screen.getByRole("row", { name: "default" })).toBeInTheDocument();
+    });
     const link = within(screen.getByRole("row", { name: "default" })).getByRole(
       "link",
       { name: "1 of 5 ready" }
     );
-
-    await waitFor(() => {
-      expect(link).toBeInTheDocument();
-    });
-    await waitFor(() => {
-      expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
-    });
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
   });
 
   it("displays state errors in a notification", async () => {
     mockServer.use(
-      poolsResolvers.listPools.error({ message: "Pools are not for swimming." })
+      poolsResolvers.listPools.error({ 
+        message: "Pools are not for swimming.",
+        code: 401,
+      })
     );
 
     renderWithProviders(<PoolList />);
+
+    await waitFor(() => {
+      expect(poolsResolvers.listPools.resolved).toBeTruthy();
+    });
 
     await waitFor(() => {
       expect(

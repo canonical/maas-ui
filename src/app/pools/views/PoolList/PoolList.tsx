@@ -13,7 +13,6 @@ import TableActions from "@/app/base/components/TableActions";
 import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { FilterMachines } from "@/app/store/machine/utils";
-import { formatErrors } from "@/app/utils";
 
 export enum Label {
   Title = "Pool list",
@@ -82,15 +81,16 @@ const Pools = (): JSX.Element => {
   useWindowTitle("Pools");
 
   const listPools = useListPools();
-  const errorMessage = formatErrors(listPools.error);
   const resourcePools = listPools.data?.items || [];
 
   return (
     <div aria-label={Label.Title}>
-      {errorMessage ? (
+      {listPools.isError ? (
         <Row>
           <Col size={12}>
-            <Notification severity="negative">{errorMessage}</Notification>
+            <Notification severity="negative">
+              {listPools.error.message}
+            </Notification>
           </Col>
         </Row>
       ) : null}
