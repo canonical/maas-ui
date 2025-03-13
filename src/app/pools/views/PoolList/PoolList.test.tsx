@@ -18,9 +18,7 @@ const mockServer = setupMockServer(poolsResolvers.listPools.handler());
 describe("PoolList", () => {
   it("displays a loading component if pools are loading", async () => {
     mockIsPending();
-    renderWithMockStore(
-        <PoolList />
-    );
+    renderWithMockStore(<PoolList />);
 
     await waitFor(() => {
       expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -34,9 +32,7 @@ describe("PoolList", () => {
         total: 1,
       })
     );
-    renderWithProviders(
-        <PoolList />
-    );
+    renderWithProviders(<PoolList />);
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "Edit" })).toHaveClass(
@@ -53,9 +49,7 @@ describe("PoolList", () => {
       })
     );
 
-    renderWithProviders(
-        <PoolList />
-    );
+    renderWithProviders(<PoolList />);
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "Edit" })).not.toHaveClass(
@@ -81,9 +75,7 @@ describe("PoolList", () => {
       })
     );
 
-    renderWithProviders(
-        <PoolList />
-    );
+    renderWithProviders(<PoolList />);
 
     const row = screen.getByRole("row", { name: "squambo" });
 
@@ -114,9 +106,7 @@ describe("PoolList", () => {
       })
     );
 
-    renderWithProviders(
-        <PoolList />
-    );
+    renderWithProviders(<PoolList />);
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
@@ -140,9 +130,7 @@ describe("PoolList", () => {
       })
     );
 
-    renderWithProviders(
-        <PoolList />
-    );
+    renderWithProviders(<PoolList />);
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
@@ -157,9 +145,7 @@ describe("PoolList", () => {
       })
     );
 
-    renderWithProviders(
-        <PoolList />
-    );
+    renderWithProviders(<PoolList />);
     const row = screen.getByRole("row", { name: "default" });
     await waitFor(() => {
       expect(within(row).getByText("Empty pool")).toBeInTheDocument();
@@ -179,9 +165,7 @@ describe("PoolList", () => {
       })
     );
 
-    renderWithProviders(
-        <PoolList />
-    );
+    renderWithProviders(<PoolList />);
     const link = within(screen.getByRole("row", { name: "default" })).getByRole(
       "link",
       { name: "1 of 5 ready" }
@@ -200,9 +184,7 @@ describe("PoolList", () => {
       poolsResolvers.listPools.error({ message: "Pools are not for swimming." })
     );
 
-    renderWithProviders(
-        <PoolList />
-    );
+    renderWithProviders(<PoolList />);
 
     await waitFor(() => {
       expect(
