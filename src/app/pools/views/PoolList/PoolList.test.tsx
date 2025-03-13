@@ -1,4 +1,3 @@
-import { setupServer } from "msw/lib/node";
 import { MemoryRouter } from "react-router-dom";
 
 import PoolList from "./PoolList";
@@ -12,9 +11,10 @@ import {
   renderWithBrowserRouter,
   mockIsPending,
   renderWithProviders,
+  setupMockServer,
 } from "@/testing/utils";
 
-const mockServer = setupServer(poolsResolvers.listPools.handler());
+const mockServer = setupMockServer(poolsResolvers.listPools.handler());
 
 describe("PoolList", () => {
   it("displays a loading component if pools are loading", async () => {
