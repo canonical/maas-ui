@@ -1,5 +1,3 @@
-import { MemoryRouter } from "react-router-dom";
-
 import PoolList from "./PoolList";
 
 import * as factory from "@/testing/factories";
@@ -21,9 +19,7 @@ describe("PoolList", () => {
   it("displays a loading component if pools are loading", async () => {
     mockIsPending();
     renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
-      </MemoryRouter>
     );
 
     await waitFor(() => {
@@ -39,9 +35,7 @@ describe("PoolList", () => {
       })
     );
     renderWithProviders(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
-      </MemoryRouter>
     );
 
     await waitFor(() => {
@@ -60,9 +54,7 @@ describe("PoolList", () => {
     );
 
     renderWithProviders(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
-      </MemoryRouter>
     );
 
     await waitFor(() => {
@@ -90,9 +82,7 @@ describe("PoolList", () => {
     );
 
     renderWithProviders(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
-      </MemoryRouter>
     );
 
     const row = screen.getByRole("row", { name: "squambo" });
@@ -125,9 +115,7 @@ describe("PoolList", () => {
     );
 
     renderWithProviders(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
-      </MemoryRouter>
     );
 
     await waitFor(() => {
@@ -153,9 +141,7 @@ describe("PoolList", () => {
     );
 
     renderWithProviders(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
-      </MemoryRouter>
     );
 
     await waitFor(() => {
@@ -172,9 +158,7 @@ describe("PoolList", () => {
     );
 
     renderWithProviders(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
-      </MemoryRouter>
     );
     const row = screen.getByRole("row", { name: "default" });
     await waitFor(() => {
@@ -196,9 +180,7 @@ describe("PoolList", () => {
     );
 
     renderWithProviders(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
-      </MemoryRouter>
     );
     const link = within(screen.getByRole("row", { name: "default" })).getByRole(
       "link",
@@ -219,9 +201,7 @@ describe("PoolList", () => {
     );
 
     renderWithProviders(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <PoolList />
-      </MemoryRouter>
     );
 
     await waitFor(() => {
