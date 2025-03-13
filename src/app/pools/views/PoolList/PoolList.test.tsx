@@ -99,7 +99,9 @@ describe("PoolList", () => {
 
     await waitFor(() => {
       expect(row).not.toHaveClass("is-active");
+    });
 
+    await waitFor(() => {
       expect(
         within(row).getByRole("link", { name: "Delete" })
       ).toBeInTheDocument();
@@ -127,7 +129,7 @@ describe("PoolList", () => {
         <PoolList />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
     });
@@ -205,6 +207,8 @@ describe("PoolList", () => {
 
     await waitFor(() => {
       expect(link).toBeInTheDocument();
+    });
+    await waitFor(() => {
       expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
     });
   });
@@ -221,7 +225,9 @@ describe("PoolList", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("Pools are not for swimming.")).toBeInTheDocument();
+      expect(
+        screen.getByText("Pools are not for swimming.")
+      ).toBeInTheDocument();
     });
   });
 
