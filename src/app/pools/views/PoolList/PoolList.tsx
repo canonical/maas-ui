@@ -5,23 +5,20 @@ import {
   Notification,
   Row,
 } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { useListPools } from "@/app/api/query/pools";
+import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { FilterMachines } from "@/app/store/machine/utils";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
-import type { ResourcePool } from "@/app/store/resourcepool/types";
-import { formatErrors } from "@/app/utils";
 
 export enum Label {
   Title = "Pool list",
 }
 
-const getMachinesLabel = (row: ResourcePool) => {
+const getMachinesLabel = (row: ResourcePoolWithSummaryResponse) => {
   if (row.machine_total_count === 0) {
     return "Empty pool";
   }
@@ -35,7 +32,7 @@ const getMachinesLabel = (row: ResourcePool) => {
   );
 };
 
-const generateRows = (rows: ResourcePool[]) =>
+const generateRows = (rows: ResourcePoolWithSummaryResponse[]) =>
   rows.map((row) => {
     return {
       "aria-label": row.name,
@@ -82,27 +79,17 @@ const generateRows = (rows: ResourcePool[]) =>
 
 const Pools = (): JSX.Element => {
   useWindowTitle("Pools");
-  const dispatch = useDispatch();
 
-  const poolsLoaded = useSelector(resourcePoolSelectors.loaded);
-  const poolsLoading = useSelector(resourcePoolSelectors.loading);
-  const errors = useSelector(resourcePoolSelectors.errors);
-  const errorMessage = formatErrors(errors);
-
-  useFetchActions([resourcePoolActions.fetch]);
-
-  const resourcePools = useSelector(resourcePoolSelectors.all);
+  const listPools = useListPools();
+  const resourcePools = listPools.data?.items || [];
 
   return (
     <div aria-label={Label.Title}>
-      {errorMessage ? (
+      {listPools.isError ? (
         <Row>
           <Col size={12}>
-            <Notification
-              onDismiss={() => dispatch(resourcePoolActions.cleanup())}
-              severity="negative"
-            >
-              {errorMessage}
+            <Notification severity="negative">
+              {listPools.error.message}
             </Notification>
           </Col>
         </Row>
@@ -110,12 +97,12 @@ const Pools = (): JSX.Element => {
       <Row>
         <Col size={12}>
           <div>
-            {poolsLoading && (
+            {listPools.isPending && (
               <div className="u-align--center">
                 <Spinner text="Loading..." />
               </div>
             )}
-            {poolsLoaded && (
+            {listPools.isSuccess && (
               <MainTable
                 className="p-table-expanding--light"
                 defaultSortDirection="ascending"
