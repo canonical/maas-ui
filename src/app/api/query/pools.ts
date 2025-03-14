@@ -1,5 +1,8 @@
 import type { Options } from "@hey-api/client-fetch";
+import type { UseQueryOptions } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { useWebsocketAwareQuery } from "./base";
 
 import type {
   CreateResourcePoolData,
@@ -8,6 +11,9 @@ import type {
   DeleteResourcePoolData,
   DeleteResourcePoolError,
   DeleteResourcePoolResponse,
+  ListResourcePoolsWithSummaryData,
+  ListResourcePoolsWithSummaryError,
+  ListResourcePoolsWithSummaryResponse,
   UpdateResourcePoolData,
   UpdateResourcePoolError,
   UpdateResourcePoolResponse,
@@ -15,9 +21,22 @@ import type {
 import {
   createResourcePoolMutation,
   deleteResourcePoolMutation,
-  listResourcePoolsQueryKey,
+  listResourcePoolsWithSummaryOptions,
+  listResourcePoolsWithSummaryQueryKey,
   updateResourcePoolMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
+
+export const useListPools = (
+  options?: Options<ListResourcePoolsWithSummaryData>
+) => {
+  return useWebsocketAwareQuery(
+    listResourcePoolsWithSummaryOptions(options) as UseQueryOptions<
+      ListResourcePoolsWithSummaryData,
+      ListResourcePoolsWithSummaryError,
+      ListResourcePoolsWithSummaryResponse
+    >
+  );
+};
 
 export const useCreatePool = (
   mutationOptions?: Options<CreateResourcePoolData>
@@ -31,7 +50,7 @@ export const useCreatePool = (
     ...createResourcePoolMutation(mutationOptions),
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: listResourcePoolsQueryKey(),
+        queryKey: listResourcePoolsWithSummaryQueryKey(),
       });
     },
   });
@@ -49,7 +68,7 @@ export const useUpdatePool = (
     ...updateResourcePoolMutation(mutationOptions),
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: listResourcePoolsQueryKey(),
+        queryKey: listResourcePoolsWithSummaryQueryKey(),
       });
     },
   });
@@ -67,7 +86,7 @@ export const useDeletePool = (
     ...deleteResourcePoolMutation(mutationOptions),
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: listResourcePoolsQueryKey(),
+        queryKey: listResourcePoolsWithSummaryQueryKey(),
       });
     },
   });

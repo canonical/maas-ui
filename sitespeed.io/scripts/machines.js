@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const { constructURL } = require("./utils");
+const { constructURL } = require("../utils");
 
 const TIMEOUT = 120000;
 
