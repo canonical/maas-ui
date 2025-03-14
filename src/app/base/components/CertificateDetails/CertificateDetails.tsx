@@ -22,7 +22,7 @@ const CertificateDetails = ({
   certificate,
   eventCategory,
   metadata,
-}: Props): JSX.Element => {
+}: Props) => {
   const sendAnalytics = useSendAnalytics();
 
   return (

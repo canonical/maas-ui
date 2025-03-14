@@ -29,11 +29,7 @@ const groupOptions = [
   },
 ];
 
-const PageSizeSelect = ({
-  pageSize,
-  paginate,
-  setPageSize,
-}: Props): JSX.Element => {
+const PageSizeSelect = ({ pageSize, paginate, setPageSize }: Props) => {
   return (
     <Select
       aria-label={Labels.ItemsPerPage}

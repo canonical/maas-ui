@@ -28,7 +28,7 @@ const Schema = Yup.object().shape({
   description: Yup.string(),
 });
 
-const EditFabric = ({ close, id }: Props): JSX.Element | null => {
+const EditFabric = ({ close, id }: Props) => {
   const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)

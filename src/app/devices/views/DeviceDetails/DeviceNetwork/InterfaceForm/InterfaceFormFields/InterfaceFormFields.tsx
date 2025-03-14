@@ -16,7 +16,7 @@ type Props = {
   showTitles?: boolean;
 };
 
-const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
+const InterfaceFormFields = ({ showTitles = false }: Props) => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<InterfaceFormValues>();
   const showSubnetField = values.ip_assignment === DeviceIpAssignment.STATIC;

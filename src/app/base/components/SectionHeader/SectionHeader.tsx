@@ -5,13 +5,15 @@ import type { ClassName } from "@canonical/react-components";
 import { List, Spinner, Tabs } from "@canonical/react-components";
 import type { TabLink } from "@canonical/react-components/dist/components/Tabs/Tabs";
 import classNames from "classnames";
+import { JSX } from "react/jsx-runtime";
 import type { LinkProps } from "react-router-dom";
 
+import IntrinsicElements = JSX.IntrinsicElements;
 import type { DataTestElement } from "@/app/base/types";
 
 export type Props<P = LinkProps> = {
-  actionMenuGroup?: JSX.Element | null;
-  buttons?: JSX.Element[] | null;
+  actionMenuGroup?: ReactNode | null;
+  buttons?: ReactNode[] | null;
   className?: ClassName;
   renderButtons?: () => ReactNode;
   headerSize?: "wide";
@@ -22,7 +24,7 @@ export type Props<P = LinkProps> = {
   tabLinks?: DataTestElement<TabLink<P>>[];
   title?: ReactNode;
   titleClassName?: string;
-  titleElement?: keyof JSX.IntrinsicElements;
+  titleElement?: keyof IntrinsicElements;
 };
 
 const generateSubtitle = (
@@ -74,7 +76,7 @@ const SectionHeader = <P,>({
   titleClassName,
   titleElement = "h1",
   ...props
-}: Props<P>): JSX.Element | null => {
+}: Props<P>) => {
   return (
     <div className={classNames("section-header", className)} {...props}>
       <MainToolbar>

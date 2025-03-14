@@ -13,11 +13,7 @@ export type Props = {
 
 export const MAIN_CONTENT_SECTION_ID = "main-content-section";
 
-const MainContentSection = ({
-  children,
-  header,
-  ...props
-}: Props): JSX.Element => {
+const MainContentSection = ({ children, header, ...props }: Props) => {
   return (
     <div {...props} id={MAIN_CONTENT_SECTION_ID}>
       <div>

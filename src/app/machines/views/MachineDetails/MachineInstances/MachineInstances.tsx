@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Spinner, Row, Col, MainTable } from "@canonical/react-components";
@@ -19,7 +20,7 @@ import type {
 
 type InterfaceRow = {
   key: string;
-  columns: { content: JSX.Element }[];
+  columns: { content: ReactNode }[];
 };
 
 const formatRowData = (
@@ -83,7 +84,7 @@ const generateRows = (devices: NodeDeviceRef[]) => {
   return formattedDevices;
 };
 
-const MachineInstances = (): JSX.Element => {
+const MachineInstances = () => {
   const navigate = useNavigate();
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>

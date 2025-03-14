@@ -17,7 +17,7 @@ export const LACPRateSelect = ({
   defaultOption = { label: "Select LACP rate", value: "" },
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const lacpRates = useSelector(bondOptionsSelectors.lacpRates);
   const loaded = useSelector(bondOptionsSelectors.loaded);
   const options: Option[] =

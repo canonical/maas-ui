@@ -19,7 +19,7 @@ const DnsSchema = Yup.object().shape({
   dns_trusted_acl: Yup.string(),
 });
 
-const DnsForm = (): JSX.Element => {
+const DnsForm = () => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

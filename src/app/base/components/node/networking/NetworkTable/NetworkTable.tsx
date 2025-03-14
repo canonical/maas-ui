@@ -442,12 +442,7 @@ type WithoutActionProps = BaseProps & {
 
 type Props = ActionProps | WithoutActionProps;
 
-const NetworkTable = ({
-  node,
-  selected,
-  setExpanded,
-  setSelected,
-}: Props): JSX.Element => {
+const NetworkTable = ({ node, selected, setExpanded, setSelected }: Props) => {
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);

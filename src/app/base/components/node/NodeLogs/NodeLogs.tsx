@@ -24,7 +24,7 @@ type Props = {
   };
 };
 
-const NodeLogs = ({ node, urls }: Props): JSX.Element => {
+const NodeLogs = ({ node, urls }: Props) => {
   const { pathname } = useLocation();
 
   const showingOutput = pathname.startsWith(

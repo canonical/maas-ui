@@ -9,10 +9,7 @@ import { isId } from "@/app/utils";
 
 type Props = SidePanelContentTypes & {};
 
-const DomainForm = ({
-  sidePanelContent,
-  setSidePanelContent,
-}: Props): JSX.Element | null => {
+const DomainForm = ({ sidePanelContent, setSidePanelContent }: Props) => {
   const clearSidePanelContent = useCallback(
     () => setSidePanelContent(null),
     [setSidePanelContent]

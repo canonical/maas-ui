@@ -16,7 +16,7 @@ const VfResources = ({
   dynamicLayout = false,
   interfaces,
   showAggregated = false,
-}: Props): JSX.Element => {
+}: Props) => {
   let content: ReactNode;
   if (showAggregated) {
     const [allocatedVFs, freeVFs, otherVFs] = interfaces.reduce<

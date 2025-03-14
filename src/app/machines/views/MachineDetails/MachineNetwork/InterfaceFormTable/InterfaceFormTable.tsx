@@ -105,7 +105,7 @@ const InterfaceFormTable = ({
   selectedEditable,
   setSelected,
   systemId,
-}: Props): JSX.Element => {
+}: Props) => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

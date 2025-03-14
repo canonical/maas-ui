@@ -21,11 +21,7 @@ type Props = {
   severity: NotificationProps["severity"];
 };
 
-const NotificationGroupNotification = ({
-  className,
-  id,
-  severity,
-}: Props): JSX.Element | null => {
+const NotificationGroupNotification = ({ className, id, severity }: Props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAdmin = useSelector(authSelectors.isAdmin);

@@ -18,7 +18,7 @@ const DomainListHeader = ({
   setSidePanelContent,
 }: {
   setSidePanelContent: SetSidePanelContent;
-}): JSX.Element => {
+}) => {
   const domainCount = useSelector(domainSelectors.count);
   const domainsLoaded = useSelector(domainSelectors.loaded);
 

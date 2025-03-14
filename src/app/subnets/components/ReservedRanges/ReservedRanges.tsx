@@ -156,11 +156,7 @@ const generateRows = (
     };
   });
 
-const ReservedRanges = ({
-  hasVLANSubnets,
-  subnetId,
-  vlanId,
-}: Props): JSX.Element | null => {
+const ReservedRanges = ({ hasVLANSubnets, subnetId, vlanId }: Props) => {
   const [isAddingDynamic, setIsAddingDynamic] = useState(false);
   const { setSidePanelContent } = useSidePanel();
   const isSubnet = isId(subnetId);

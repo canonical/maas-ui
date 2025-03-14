@@ -43,11 +43,7 @@ const useCloseSidePanelOnEscPressed = (): void => {
   useOnEscapePressed(() => setSidePanelContent(null));
 };
 
-const AppSidePanelContent = ({
-  title,
-  size,
-  content,
-}: AppSidePanelProps): JSX.Element => {
+const AppSidePanelContent = ({ title, size, content }: AppSidePanelProps) => {
   return (
     <aside
       aria-label={title ?? undefined}
@@ -76,7 +72,7 @@ const AppSidePanelContent = ({
   );
 };
 
-const AppSidePanel = (props: Omit<AppSidePanelProps, "size">): JSX.Element => {
+const AppSidePanel = (props: Omit<AppSidePanelProps, "size">) => {
   useCloseSidePanelOnEscPressed();
   useCloseSidePanelOnRouteChange();
   useResetSidePanelOnUnmount();

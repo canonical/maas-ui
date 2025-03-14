@@ -22,11 +22,7 @@ type Props = {
   onCollapse?: () => void;
 };
 
-const ScriptDetails = ({
-  id,
-  isCollapsible,
-  onCollapse,
-}: Props): JSX.Element => {
+const ScriptDetails = ({ id, isCollapsible, onCollapse }: Props) => {
   const dispatch = useDispatch();
   const loading = useSelector(scriptSelectors.loading);
   const scriptKey = useRef(nanoid());

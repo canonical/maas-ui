@@ -30,7 +30,7 @@ export const NodeConfigurationSchema: SchemaOf<NodeConfigurationValues> =
     })
     .defined();
 
-const NodeConfigurationFields = (): JSX.Element => {
+const NodeConfigurationFields = () => {
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
   const { setFieldValue, values } = useFormikContext<NodeConfigurationValues>();
   const selectedTags = useSelector((state: RootState) =>

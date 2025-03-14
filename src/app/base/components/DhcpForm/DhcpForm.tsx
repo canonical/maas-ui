@@ -55,7 +55,7 @@ export const DhcpForm = ({
   id,
   onSave,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const dispatch = useDispatch();
   const [savingDhcp, setSaving] = useState<DHCPSnippet["name"] | null>();
   const dhcpSnippet = useSelector((state: RootState) =>

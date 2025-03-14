@@ -27,7 +27,7 @@ export const LXDPowerFields = <V extends AnyObject>({
   fields,
   initialShouldGenerateCert = true,
   powerParametersValueName = "power_parameters",
-}: Props): JSX.Element => {
+}: Props) => {
   const [shouldGenerateCert, setShouldGenerateCert] = useState(
     initialShouldGenerateCert
   );

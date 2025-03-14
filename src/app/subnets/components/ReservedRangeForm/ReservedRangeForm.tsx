@@ -56,7 +56,7 @@ const ReservedRangeForm = ({
   setSidePanelContent,
   subnetId,
   ...props
-}: Props): JSX.Element | null => {
+}: Props) => {
   const dispatch = useDispatch();
   const { sidePanelContent } = useSidePanel();
   let computedIpRangeId = ipRangeId;

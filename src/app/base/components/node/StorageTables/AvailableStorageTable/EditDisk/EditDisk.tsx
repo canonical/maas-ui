@@ -34,11 +34,7 @@ const EditDiskSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-export const EditDisk = ({
-  closeExpanded,
-  disk,
-  systemId,
-}: Props): JSX.Element => {
+export const EditDisk = ({ closeExpanded, disk, systemId }: Props) => {
   const dispatch = useDispatch();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,

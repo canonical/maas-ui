@@ -7,7 +7,7 @@ type Props = {
   node: MachineDetails | ControllerDetails;
 };
 
-const NodePowerParameters = ({ node }: Props): JSX.Element => {
+const NodePowerParameters = ({ node }: Props) => {
   return (
     <div data-testid="node-power-parameters">
       <NodePowerNotifications node={node} />

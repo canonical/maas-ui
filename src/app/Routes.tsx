@@ -1,8 +1,10 @@
 import { lazy } from "react";
 
-import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
+import App from "@/app/App";
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";
+import SidePanelContextProvider from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
 
@@ -37,206 +39,223 @@ const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
 const Tags = lazy(() => import("@/app/tags/views/Tags"));
 const ZonesList = lazy(() => import("@/app/zones/views/ZonesList"));
 
-const Routes = (): JSX.Element => (
-  <ReactRouterRoutes>
-    <Route
-      element={<Navigate replace to={urls.machines.index} />}
-      path={urls.index}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <Machines />
-        </ErrorBoundary>
-      }
-      path={urls.machines.index}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <ZonesList />
-        </ErrorBoundary>
-      }
-      path={`${urls.zones.index}`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <NetworkDiscovery />
-        </ErrorBoundary>
-      }
-      path={`${urls.networkDiscovery.index}/*`}
-    />
-    <Route
-      element={<Navigate replace to={urls.networkDiscovery.index} />}
-      path={urls.networkDiscovery.legacyIndex}
-    />
-    <Route
-      element={<Navigate replace to={urls.networkDiscovery.configuration} />}
-      path={urls.networkDiscovery.legacyConfiguration}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <DeviceList />
-        </ErrorBoundary>
-      }
-      path={`${urls.devices.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <DeviceDetails />
-        </ErrorBoundary>
-      }
-      path={`${urls.devices.device.index(null)}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <DomainsList />
-        </ErrorBoundary>
-      }
-      path={`${urls.domains.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <DomainDetails />
-        </ErrorBoundary>
-      }
-      path={`${urls.domains.details(null)}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <Tags />
-        </ErrorBoundary>
-      }
-      path={`${urls.tags.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <Tags />
-        </ErrorBoundary>
-      }
-      path={`${urls.tags.tag.index(null)}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <SpaceDetails />
-        </ErrorBoundary>
-      }
-      path={`${urls.subnets.space.index(null)}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <Settings />
-        </ErrorBoundary>
-      }
-      path={`${urls.settings.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <Intro />
-        </ErrorBoundary>
-      }
-      path={`${urls.intro.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <ImageList />
-        </ErrorBoundary>
-      }
-      path={`${urls.images.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <Preferences />
-        </ErrorBoundary>
-      }
-      path={`${urls.preferences.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <MachineDetails />
-        </ErrorBoundary>
-      }
-      path={`${urls.machines.machine.index(null)}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <FabricDetails />
-        </ErrorBoundary>
-      }
-      path={`${urls.subnets.fabric.index(null)}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <ControllerDetails />
-        </ErrorBoundary>
-      }
-      path={`${urls.controllers.controller.index(null)}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <ControllerList />
-        </ErrorBoundary>
-      }
-      path={`${urls.controllers.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <KVM />
-        </ErrorBoundary>
-      }
-      path={`${urls.kvm.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <Pools />
-        </ErrorBoundary>
-      }
-      path={`${urls.pools.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <SubnetsList />
-        </ErrorBoundary>
-      }
-      path={`${urls.subnets.index}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <SubnetDetails />
-        </ErrorBoundary>
-      }
-      path={`${urls.subnets.subnet.index(null)}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
-          <VLANDetails />
-        </ErrorBoundary>
-      }
-      path={`${urls.subnets.vlan.index(null)}/*`}
-    />
-    <Route element={<NotFound includeSection />} path="*" />
-  </ReactRouterRoutes>
+export const router = createBrowserRouter(
+  [
+    {
+      element: (
+        <SidePanelContextProvider>
+          <App />
+        </SidePanelContextProvider>
+      ),
+      children: [
+        {
+          path: urls.index,
+          element: <Navigate replace to={urls.machines.index} />,
+        },
+        {
+          path: urls.machines.index,
+          element: (
+            <ErrorBoundary>
+              <Machines />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.zones.index}`,
+          element: (
+            <ErrorBoundary>
+              <ZonesList />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.networkDiscovery.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <NetworkDiscovery />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: urls.networkDiscovery.legacyIndex,
+          element: <Navigate replace to={urls.networkDiscovery.index} />,
+        },
+        {
+          path: urls.networkDiscovery.legacyConfiguration,
+          element: (
+            <Navigate replace to={urls.networkDiscovery.configuration} />
+          ),
+        },
+        {
+          path: `${urls.devices.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <DeviceList />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.devices.device.index(null)}/*`,
+          element: (
+            <ErrorBoundary>
+              <DeviceDetails />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.domains.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <DomainsList />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.domains.details(null)}/*`,
+          element: (
+            <ErrorBoundary>
+              <DomainDetails />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.tags.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <Tags />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.tags.tag.index(null)}/*`,
+          element: (
+            <ErrorBoundary>
+              <Tags />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.subnets.space.index(null)}/*`,
+          element: (
+            <ErrorBoundary>
+              <SpaceDetails />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.settings.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <Settings />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.intro.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <Intro />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.images.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <ImageList />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.preferences.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <Preferences />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.machines.machine.index(null)}/*`,
+          element: (
+            <ErrorBoundary>
+              <MachineDetails />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.subnets.fabric.index(null)}/*`,
+          element: (
+            <ErrorBoundary>
+              <FabricDetails />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.controllers.controller.index(null)}/*`,
+          element: (
+            <ErrorBoundary>
+              <ControllerDetails />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.controllers.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <ControllerList />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.kvm.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <KVM />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.pools.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <Pools />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.subnets.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <SubnetsList />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.subnets.subnet.index(null)}/*`,
+          element: (
+            <ErrorBoundary>
+              <SubnetDetails />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.subnets.vlan.index(null)}/*`,
+          element: (
+            <ErrorBoundary>
+              <VLANDetails />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: "*",
+          element: <NotFound includeSection />,
+        },
+      ],
+    },
+  ],
+  {
+    basename: `${import.meta.env.VITE_APP_BASENAME}${import.meta.env.VITE_APP_VITE_BASENAME}`,
+  }
 );
 
-export default Routes;
+export default router;

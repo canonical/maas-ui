@@ -25,7 +25,7 @@ const KernelParametersSchema = Yup.object()
   })
   .defined();
 
-const KernelParametersForm = (): JSX.Element => {
+const KernelParametersForm = () => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

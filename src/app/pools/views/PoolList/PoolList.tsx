@@ -77,7 +77,7 @@ const generateRows = (rows: ResourcePoolWithSummaryResponse[]) =>
     };
   });
 
-const Pools = (): JSX.Element => {
+const Pools = () => {
   useWindowTitle("Pools");
 
   const listPools = useListPools();

@@ -19,7 +19,7 @@ export const AuthenticationFormFields = ({
   generatedCertificate,
   setUseCertificate,
   useCertificate,
-}: Props): JSX.Element => {
+}: Props) => {
   const { setFieldTouched, setFieldValue } =
     useFormikContext<AuthenticationFormValues>();
 

@@ -15,11 +15,7 @@ type Props = {
   setIsEditing: (editingName: boolean) => void;
 };
 
-const ControllerName = ({
-  id,
-  isEditing,
-  setIsEditing,
-}: Props): JSX.Element => {
+const ControllerName = ({ id, isEditing, setIsEditing }: Props) => {
   const dispatch = useDispatch();
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, id)

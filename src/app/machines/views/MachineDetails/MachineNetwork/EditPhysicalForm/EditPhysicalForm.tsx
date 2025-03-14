@@ -111,12 +111,7 @@ const InterfaceSchema = Yup.object().shape({
   }),
 });
 
-const EditPhysicalForm = ({
-  close,
-  linkId,
-  nicId,
-  systemId,
-}: Props): JSX.Element | null => {
+const EditPhysicalForm = ({ close, linkId, nicId, systemId }: Props) => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

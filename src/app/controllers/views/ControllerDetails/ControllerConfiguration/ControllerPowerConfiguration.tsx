@@ -43,7 +43,7 @@ export enum Label {
   Title = "Power configuration",
 }
 
-const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
+const ControllerPowerConfiguration = ({ systemId }: Props) => {
   const dispatch = useDispatch();
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)

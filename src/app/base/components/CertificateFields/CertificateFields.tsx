@@ -21,7 +21,7 @@ export const CertificateFields = ({
   onShouldGenerateCert,
   privateKeyFieldName = "key",
   shouldGenerateCert,
-}: Props): JSX.Element => {
+}: Props) => {
   return (
     <>
       <p>Certificate</p>

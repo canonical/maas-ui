@@ -36,7 +36,7 @@ export const CredentialsForm = ({
   setNewPodValues,
   setStep,
   setSubmissionErrors,
-}: Props): JSX.Element => {
+}: Props) => {
   const dispatch = useDispatch();
   const projects = useSelector((state: RootState) =>
     podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)

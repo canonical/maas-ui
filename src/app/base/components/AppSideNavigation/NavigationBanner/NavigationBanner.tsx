@@ -5,11 +5,7 @@ import { isSelected } from "../utils";
 
 import urls from "@/app/base/urls";
 
-const NavigationBanner = ({
-  children,
-}: {
-  children?: React.ReactNode;
-}): JSX.Element => {
+const NavigationBanner = ({ children }: { children?: React.ReactNode }) => {
   const location = useLocation();
 
   const homepageLink = { url: urls.machines.index, label: "Homepage" };

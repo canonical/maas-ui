@@ -24,7 +24,7 @@ const LXDSingleVMs = ({
   searchFilter,
   setSidePanelContent,
   setSearchFilter,
-}: Props): JSX.Element => {
+}: Props) => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

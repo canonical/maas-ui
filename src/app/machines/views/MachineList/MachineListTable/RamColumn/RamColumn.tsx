@@ -11,7 +11,7 @@ import type { RootState } from "@/app/store/root/types";
 
 type Props = { systemId: Machine["system_id"] };
 
-export const RamColumn = ({ systemId }: Props): JSX.Element | null => {
+export const RamColumn = ({ systemId }: Props) => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

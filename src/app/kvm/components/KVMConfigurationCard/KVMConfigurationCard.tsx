@@ -50,11 +50,7 @@ export enum Label {
   Title = "KVM configuration",
 }
 
-const KVMConfigurationCard = ({
-  pod,
-  zoneDisabled,
-  ...formProps
-}: Props): JSX.Element => {
+const KVMConfigurationCard = ({ pod, zoneDisabled, ...formProps }: Props) => {
   const dispatch = useDispatch();
   const podErrors = useSelector(podSelectors.errors);
   const podSaved = useSelector(podSelectors.saved);

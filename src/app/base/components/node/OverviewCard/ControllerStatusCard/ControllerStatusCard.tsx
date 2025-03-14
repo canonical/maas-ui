@@ -97,7 +97,7 @@ const getVersionDisplay = (versions: ControllerVersions) => {
   );
 };
 
-const ControllerStatusCard = ({ controller }: Props): JSX.Element => {
+const ControllerStatusCard = ({ controller }: Props) => {
   const dispatch = useDispatch();
   const pollId = useRef(nanoid());
   const status = useSelector((state: RootState) =>

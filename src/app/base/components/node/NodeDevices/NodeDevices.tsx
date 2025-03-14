@@ -126,11 +126,7 @@ const generateGroup = (
   });
 };
 
-const NodeDevices = ({
-  bus,
-  node,
-  setSidePanelContent,
-}: Props): JSX.Element => {
+const NodeDevices = ({ bus, node, setSidePanelContent }: Props) => {
   const dispatch = useDispatch();
   const nodeDevices = useSelector((state: RootState) =>
     nodeDeviceSelectors.getByNodeId(state, node.id)

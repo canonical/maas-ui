@@ -13,10 +13,7 @@ type Props = {
   hostIds: Pod["id"][];
 };
 
-const RefreshForm = ({
-  clearSidePanelContent,
-  hostIds,
-}: Props): JSX.Element | null => {
+const RefreshForm = ({ clearSidePanelContent, hostIds }: Props) => {
   const dispatch = useDispatch();
   const errors = useSelector(podSelectors.errors);
   const refreshing = useSelector(podSelectors.refreshing);

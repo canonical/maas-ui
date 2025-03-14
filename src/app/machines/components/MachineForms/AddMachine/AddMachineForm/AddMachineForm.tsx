@@ -39,9 +39,7 @@ type Props = {
   clearSidePanelContent: ClearSidePanelContent;
 };
 
-export const AddMachineForm = ({
-  clearSidePanelContent,
-}: Props): JSX.Element => {
+export const AddMachineForm = ({ clearSidePanelContent }: Props) => {
   const dispatch = useDispatch();
   const architectures = useSelector(architecturesSelectors.get);
   const architecturesLoaded = useSelector(architecturesSelectors.loaded);

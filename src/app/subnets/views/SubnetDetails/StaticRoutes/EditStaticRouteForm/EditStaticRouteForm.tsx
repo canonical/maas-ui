@@ -42,10 +42,7 @@ export type Props = {
   staticRouteId?: StaticRoute[StaticRouteMeta.PK];
   setSidePanelContent: SetSidePanelContent;
 };
-const EditStaticRouteForm = ({
-  staticRouteId,
-  setSidePanelContent,
-}: Props): JSX.Element | null => {
+const EditStaticRouteForm = ({ staticRouteId, setSidePanelContent }: Props) => {
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
   const saving = useSelector(staticRouteSelectors.saving);
   const saved = useSelector(staticRouteSelectors.saved);

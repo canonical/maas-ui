@@ -22,7 +22,7 @@ const FabricTable = ({
 }: {
   data: SubnetsTableRow[];
   emptyMsg: string;
-}): JSX.Element => {
+}) => {
   const { pageData, ...paginationProps } = usePagination(data);
   const headers = useMemo(
     () => [

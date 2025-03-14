@@ -15,11 +15,7 @@ type Props = {
   tags: Tag["name"][];
 };
 
-const NodesTagsLink = ({
-  count,
-  nodeType,
-  tags,
-}: Props): JSX.Element | null => {
+const NodesTagsLink = ({ count, nodeType, tags }: Props) => {
   const { pathname } = useLocation();
 
   let url: string | null = null;

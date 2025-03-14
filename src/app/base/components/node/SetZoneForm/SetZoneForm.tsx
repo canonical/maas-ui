@@ -44,7 +44,7 @@ export const SetZoneForm = <E,>({
   processingCount,
   viewingDetails,
   selectedCount,
-}: Props<E>): JSX.Element => {
+}: Props<E>) => {
   return (
     <ActionForm<SetZoneFormValues, E>
       actionName={NodeActions.SET_ZONE}

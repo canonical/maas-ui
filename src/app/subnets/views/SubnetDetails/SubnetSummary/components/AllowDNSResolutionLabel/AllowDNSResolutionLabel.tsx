@@ -5,7 +5,7 @@ type Props = {
   allowDNS: Subnet["allow_dns"];
 };
 
-const AllowDNSResolutionLabel = ({ allowDNS }: Props): JSX.Element => (
+const AllowDNSResolutionLabel = ({ allowDNS }: Props) => (
   <>
     Allow DNS resolution{" "}
     <TooltipButton

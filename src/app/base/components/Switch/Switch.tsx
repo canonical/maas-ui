@@ -1,14 +1,18 @@
 import type { ReactNode } from "react";
+import React from "react";
 
 import classNames from "classnames";
+import { JSX } from "react/jsx-runtime";
+
+import IntrinsicElements = JSX.IntrinsicElements;
 
 export type Props = {
   className?: string;
   label?: ReactNode;
   // TODO: Investigate why this won't work with React.HTMLProps<HTMLInputElement>.
-} & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
+} & React.PropsWithoutRef<IntrinsicElements["input"]>;
 
-const Switch = ({ className, label, ...inputProps }: Props): JSX.Element => {
+const Switch = ({ className, label, ...inputProps }: Props) => {
   return (
     <label className={classNames(className, "p-switch")}>
       {label}

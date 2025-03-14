@@ -107,10 +107,7 @@ const addSubnetSchema = Yup.object()
   })
   .defined();
 
-const AddSubnet = ({
-  activeForm,
-  setActiveForm,
-}: FormActionProps): JSX.Element => {
+const AddSubnet = ({ activeForm, setActiveForm }: FormActionProps) => {
   const dispatch = useDispatch();
   const isSaving = useSelector(subnetSelectors.saving);
   const isSaved = useSelector(subnetSelectors.saved);

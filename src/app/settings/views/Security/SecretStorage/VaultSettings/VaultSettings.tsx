@@ -24,7 +24,7 @@ export enum Labels {
   SecretMigrationInstructions = "Incomplete Vault integration, migrate secrets on one region controller to complete setup.",
 }
 
-const VaultSettings = (): JSX.Element => {
+const VaultSettings = () => {
   const controllersLoading = useSelector(controllerSelectors.loading);
   const vaultEnabledLoading = useSelector(vaultEnabledSelectors.loading);
   const vaultEnabled = useSelector((state: RootState) =>

@@ -21,7 +21,7 @@ type Props = {
   vlan: VLAN;
 };
 
-const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
+const ConfigureDHCPFields = ({ vlan }: Props) => {
   const {
     handleChange,
     setFieldValue,

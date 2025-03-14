@@ -17,7 +17,7 @@ export enum Labels {
   LoadingControllers = "Loading controllers",
 }
 
-const ControllerLink = ({ systemId }: Props): JSX.Element | null => {
+const ControllerLink = ({ systemId }: Props) => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

@@ -22,7 +22,7 @@ type Props = {
   setSidePanelContent: MachineSetSidePanelContent;
 };
 
-const MachineNetwork = ({ id, setSidePanelContent }: Props): JSX.Element => {
+const MachineNetwork = ({ id, setSidePanelContent }: Props) => {
   const [selected, setSelected] = useState<Selected[]>([]);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)

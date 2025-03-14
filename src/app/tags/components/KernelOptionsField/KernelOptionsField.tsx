@@ -36,7 +36,7 @@ export const KernelOptionsField = ({
   deployedMachinesCount: suppliedDeployedMachinesCount,
   generateDeployedMessage = generateDeployedMessageForExisting,
   id,
-}: Props): JSX.Element => {
+}: Props) => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );

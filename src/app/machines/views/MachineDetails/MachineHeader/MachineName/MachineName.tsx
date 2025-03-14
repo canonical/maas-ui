@@ -15,11 +15,7 @@ type Props = {
   setEditingName: (editingName: boolean) => void;
 };
 
-const MachineName = ({
-  editingName,
-  id,
-  setEditingName,
-}: Props): JSX.Element => {
+const MachineName = ({ editingName, id, setEditingName }: Props) => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)

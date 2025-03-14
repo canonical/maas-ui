@@ -52,7 +52,7 @@ const InterfaceSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
+const AddInterface = ({ close, systemId }: Props) => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

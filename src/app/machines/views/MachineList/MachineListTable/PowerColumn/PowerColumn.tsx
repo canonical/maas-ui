@@ -21,10 +21,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-export const PowerColumn = ({
-  onToggleMenu,
-  systemId,
-}: Props): JSX.Element | null => {
+export const PowerColumn = ({ onToggleMenu, systemId }: Props) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState<PowerState | null>(null);
   const machine = useSelector((state: RootState) =>

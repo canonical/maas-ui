@@ -31,7 +31,7 @@ const LXDHostVMs = ({
   setSearchFilter,
   setSidePanelContent,
   ...wrapperProps
-}: Props): JSX.Element => {
+}: Props) => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );

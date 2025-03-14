@@ -12,9 +12,7 @@ import type { RootState } from "@/app/store/root/types";
 
 type Props = { setSidePanelContent: MachineSetSidePanelContent };
 
-const MachinePCIDevices = ({
-  setSidePanelContent,
-}: Props): JSX.Element | null => {
+const MachinePCIDevices = ({ setSidePanelContent }: Props) => {
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)

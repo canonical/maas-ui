@@ -12,7 +12,7 @@ export type Props = {
   overCommit?: number;
 };
 
-const RAMColumn = ({ memory, overCommit = 1 }: Props): JSX.Element | null => {
+const RAMColumn = ({ memory, overCommit = 1 }: Props) => {
   const { general, hugepages } = memory;
   const generalOver = resourceWithOverCommit(general, overCommit);
   const allocated = generalOver.allocated_tracked + hugepages.allocated_tracked;

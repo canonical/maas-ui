@@ -52,7 +52,7 @@ export const SettingsTable = ({
   tableClassName,
   title,
   ...tableProps
-}: Props): JSX.Element => {
+}: Props) => {
   return (
     <div className="settings-table">
       <MainToolbar>

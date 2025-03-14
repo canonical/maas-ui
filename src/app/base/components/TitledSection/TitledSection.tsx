@@ -52,7 +52,7 @@ const TitledSection = ({
   shallow = true,
   title,
   ...stripProps
-}: Props): JSX.Element => {
+}: Props) => {
   const id = useId();
   const heading = (
     <Heading className={headingClassName} element={headingElement} id={id}>

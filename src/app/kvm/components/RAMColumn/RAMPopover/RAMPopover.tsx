@@ -14,11 +14,7 @@ type Props = {
   overCommit?: number;
 };
 
-const RAMPopover = ({
-  children,
-  memory,
-  overCommit = 1,
-}: Props): JSX.Element => {
+const RAMPopover = ({ children, memory, overCommit = 1 }: Props) => {
   const { general, hugepages } = memory;
   const hostGeneral =
     general.allocated_other + general.allocated_tracked + general.free;

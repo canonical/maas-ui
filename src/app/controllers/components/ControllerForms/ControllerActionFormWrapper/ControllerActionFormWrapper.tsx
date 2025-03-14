@@ -49,7 +49,7 @@ export const ControllerActionFormWrapper = ({
   hardwareType,
   controllers,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props) => {
   const dispatch = useDispatch();
   const actionStatus = ACTIONS.find(({ name }) => name === action)?.status;
   const processingControllers = useSelector(

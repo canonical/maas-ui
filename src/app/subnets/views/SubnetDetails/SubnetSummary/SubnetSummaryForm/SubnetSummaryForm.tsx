@@ -32,10 +32,7 @@ type Props = {
   id: Subnet[SubnetMeta.PK];
 };
 
-const SubnetSummaryForm = ({
-  handleDismiss,
-  id,
-}: Props): JSX.Element | null => {
+const SubnetSummaryForm = ({ handleDismiss, id }: Props) => {
   const dispatch = useDispatch();
   const subnetErrors = useSelector(subnetSelectors.errors);
   const saving = useSelector(subnetSelectors.saving);

@@ -97,7 +97,7 @@ export const SecondaryNavigation = ({
   isOpen?: boolean;
   items: NavItem[];
   title: string;
-}): JSX.Element => {
+}) => {
   const { theme } = useThemeContext();
 
   return (

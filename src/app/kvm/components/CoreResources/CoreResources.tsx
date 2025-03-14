@@ -10,12 +10,7 @@ export type Props = {
   other?: number;
 };
 
-const CoreResources = ({
-  allocated,
-  dynamicLayout,
-  free,
-  other,
-}: Props): JSX.Element => {
+const CoreResources = ({ allocated, dynamicLayout, free, other }: Props) => {
   const allocatedIsArray = Array.isArray(allocated);
   const freeIsArray = Array.isArray(free);
   const showPinnedSection = allocatedIsArray && freeIsArray;

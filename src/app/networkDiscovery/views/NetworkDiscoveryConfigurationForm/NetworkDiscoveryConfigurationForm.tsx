@@ -7,7 +7,7 @@ export enum Label {
   Title = "Dashboard configuration",
 }
 
-const NetworkDiscoveryConfigurationForm = (): JSX.Element => {
+const NetworkDiscoveryConfigurationForm = () => {
   useWindowTitle(Label.Title);
 
   return (

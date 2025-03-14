@@ -10,12 +10,7 @@ type Props = {
   onOpen: () => void;
 };
 
-const ColumnToggle = ({
-  isExpanded,
-  label,
-  onClose,
-  onOpen,
-}: Props): JSX.Element => {
+const ColumnToggle = ({ isExpanded, label, onClose, onOpen }: Props) => {
   const buttonNode = useRef<HTMLButtonElement | null>(null);
   return (
     <Button

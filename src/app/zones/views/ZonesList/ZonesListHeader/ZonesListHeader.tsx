@@ -12,7 +12,7 @@ const ZonesListHeader = ({
   setSidePanelContent,
 }: {
   setSidePanelContent: SetSidePanelContent;
-}): JSX.Element => {
+}) => {
   const zonesCount = useZoneCount();
 
   return (

@@ -9,7 +9,7 @@ const NodeActionConfirmationText = ({
   selectedCount: number;
   action: NodeActions;
   modelName: string;
-}): JSX.Element => (
+}) => (
   <>
     <p>
       Are you sure you want to{" "}

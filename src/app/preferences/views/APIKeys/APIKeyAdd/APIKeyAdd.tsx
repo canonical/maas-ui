@@ -1,6 +1,6 @@
 import APIKeyForm from "../APIKeyForm";
 
-export const APIKeyAdd = (): JSX.Element => {
+export const APIKeyAdd = () => {
   return <APIKeyForm />;
 };
 

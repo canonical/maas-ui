@@ -25,7 +25,7 @@ const TagField = <V extends AnyObject = AnyObject>({
   name,
   tags,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const { setFieldValue } = useFormikContext<V>();
 
   return (

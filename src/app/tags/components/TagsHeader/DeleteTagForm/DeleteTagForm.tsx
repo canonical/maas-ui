@@ -21,11 +21,7 @@ type Props = {
   onClose: () => void;
 };
 
-export const DeleteTagForm = ({
-  fromDetails = false,
-  id,
-  onClose,
-}: Props): JSX.Element | null => {
+export const DeleteTagForm = ({ fromDetails = false, id, onClose }: Props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const saved = useSelector(tagSelectors.saved);

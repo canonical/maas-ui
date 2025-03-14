@@ -18,9 +18,7 @@ type Props = {
   zoneDisabled?: boolean;
 };
 
-const KVMConfigurationCardFields = ({
-  zoneDisabled = false,
-}: Props): JSX.Element => {
+const KVMConfigurationCardFields = ({ zoneDisabled = false }: Props) => {
   const tags = useSelector(tagSelectors.all);
   const { setFieldValue, values } = useFormikContext<KVMConfigurationValues>();
 

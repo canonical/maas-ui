@@ -7,10 +7,7 @@ import TagUpdate from "@/app/tags/views/TagUpdate";
 
 type Props = SidePanelContentTypes;
 
-export const TagForms = ({
-  sidePanelContent,
-  setSidePanelContent,
-}: Props): JSX.Element | null => {
+export const TagForms = ({ sidePanelContent, setSidePanelContent }: Props) => {
   const id =
     sidePanelContent?.extras && "id" in sidePanelContent?.extras
       ? sidePanelContent.extras.id

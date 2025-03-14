@@ -27,10 +27,7 @@ export enum Label {
   Title = "LXD settings",
 }
 
-const LXDSingleSettings = ({
-  id,
-  setSidePanelContent,
-}: Props): JSX.Element | null => {
+const LXDSingleSettings = ({ id, setSidePanelContent }: Props) => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

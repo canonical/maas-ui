@@ -31,7 +31,7 @@ const LXDHostToolbar = ({
   showBasic,
   title,
   viewByNuma,
-}: Props): JSX.Element | null => {
+}: Props) => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );

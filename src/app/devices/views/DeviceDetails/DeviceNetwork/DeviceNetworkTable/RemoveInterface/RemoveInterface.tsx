@@ -21,11 +21,7 @@ type Props = {
   systemId: Device[DeviceMeta.PK];
 };
 
-const RemoveInterface = ({
-  closeForm,
-  nicId,
-  systemId,
-}: Props): JSX.Element => {
+const RemoveInterface = ({ closeForm, nicId, systemId }: Props) => {
   const dispatch = useDispatch();
   const deletingInterface = useSelector((state: RootState) =>
     deviceSelectors.getStatusForDevice(state, systemId, "deletingInterface")

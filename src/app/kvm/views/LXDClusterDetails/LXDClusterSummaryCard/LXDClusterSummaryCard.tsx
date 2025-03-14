@@ -17,10 +17,7 @@ type Props = {
   showStorage?: boolean;
 };
 
-const LXDClusterSummaryCard = ({
-  clusterId,
-  showStorage = true,
-}: Props): JSX.Element | null => {
+const LXDClusterSummaryCard = ({ clusterId, showStorage = true }: Props) => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );

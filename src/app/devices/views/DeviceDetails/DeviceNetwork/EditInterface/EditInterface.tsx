@@ -26,12 +26,7 @@ type Props = {
   systemId: Device[DeviceMeta.PK];
 };
 
-const EditInterface = ({
-  closeForm,
-  nicId,
-  linkId,
-  systemId,
-}: Props): JSX.Element => {
+const EditInterface = ({ closeForm, nicId, linkId, systemId }: Props) => {
   const dispatch = useDispatch();
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)

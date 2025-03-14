@@ -156,7 +156,7 @@ const TagTable = ({
   setCurrentPage,
   tags,
   ...tableProps
-}: Props): JSX.Element => {
+}: Props) => {
   const { currentSort, sortRows, updateSort } = useTableSort<Tag, SortKey>(
     getSortValue,
     {

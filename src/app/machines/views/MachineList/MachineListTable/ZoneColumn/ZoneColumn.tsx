@@ -37,10 +37,7 @@ const getSpaces = (machine: Machine) => {
   );
 };
 
-export const ZoneColumn = ({
-  onToggleMenu,
-  systemId,
-}: Props): JSX.Element | null => {
+export const ZoneColumn = ({ onToggleMenu, systemId }: Props) => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState<ZoneResponse["id"] | null>(null);
   const machine = useSelector((state: RootState) =>

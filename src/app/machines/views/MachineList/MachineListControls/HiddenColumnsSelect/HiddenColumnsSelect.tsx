@@ -13,10 +13,7 @@ type Props = {
   hiddenColumns: string[];
 } & Pick<MachineListControlsProps, "setHiddenColumns">;
 
-const HiddenColumnsSelect = ({
-  hiddenColumns,
-  setHiddenColumns,
-}: Props): JSX.Element => {
+const HiddenColumnsSelect = ({ hiddenColumns, setHiddenColumns }: Props) => {
   const sendAnalytics = useSendAnalytics();
   const selectedColumnsLength = columnToggles.length - hiddenColumns.length;
   const someColumnsChecked =

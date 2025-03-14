@@ -14,7 +14,7 @@ export enum Labels {
   Loading = "Loading...",
 }
 
-const KernelParameters = (): JSX.Element => {
+const KernelParameters = () => {
   const loaded = useSelector(configSelectors.loaded);
   const loading = useSelector(configSelectors.loading);
   const dispatch = useDispatch();

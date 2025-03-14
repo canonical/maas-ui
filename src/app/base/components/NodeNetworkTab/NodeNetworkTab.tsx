@@ -46,7 +46,7 @@ const NodeNetworkTab = ({
   expandedForm,
   interfaceTable,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   if (expanded && expandedForm) {
     const form = expandedForm(expanded, setExpanded);

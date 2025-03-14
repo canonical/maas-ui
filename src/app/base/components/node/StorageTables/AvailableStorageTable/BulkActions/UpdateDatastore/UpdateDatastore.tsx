@@ -28,11 +28,7 @@ const UpdateDatastoreSchema = Yup.object().shape({
   datastore: Yup.number().required("Datastore is required"),
 });
 
-export const UpdateDatastore = ({
-  closeForm,
-  selected,
-  systemId,
-}: Props): JSX.Element | null => {
+export const UpdateDatastore = ({ closeForm, selected, systemId }: Props) => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

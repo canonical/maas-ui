@@ -34,11 +34,7 @@ const DeleteFormSchema = Yup.object().shape({
   decompose: Yup.boolean(),
 });
 
-const DeleteForm = ({
-  clearSidePanelContent,
-  clusterId,
-  hostId,
-}: Props): JSX.Element | null => {
+const DeleteForm = ({ clearSidePanelContent, clusterId, hostId }: Props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pod = useSelector((state: RootState) =>

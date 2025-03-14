@@ -26,7 +26,7 @@ type Props = {
   severity: NotificationProps["severity"];
 };
 
-const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
+const NotificationGroup = ({ notifications, severity }: Props) => {
   const dispatch = useDispatch();
   const [groupOpen, setGroupOpen] = useState(false);
 

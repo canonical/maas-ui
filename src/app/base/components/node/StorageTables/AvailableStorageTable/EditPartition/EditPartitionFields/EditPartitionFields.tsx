@@ -11,10 +11,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-export const EditPartitionFields = ({
-  partition,
-  systemId,
-}: Props): JSX.Element => {
+export const EditPartitionFields = ({ partition, systemId }: Props) => {
   return (
     <Row>
       <Col size={12}>

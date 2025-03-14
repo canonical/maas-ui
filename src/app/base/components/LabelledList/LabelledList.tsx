@@ -15,7 +15,7 @@ type Props = {
   items: ListItem[];
 };
 
-const LabelledList = ({ className, items, ...props }: Props): JSX.Element => {
+const LabelledList = ({ className, items, ...props }: Props) => {
   return (
     <List
       {...props}

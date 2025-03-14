@@ -143,7 +143,7 @@ const DeviceListTable = ({
   loading = false,
   onSelectedChange,
   selectedIDs,
-}: Props): JSX.Element => {
+}: Props) => {
   const { currentSort, sortRows, updateSort } = useTableSort<Device, SortKey>(
     getSortValue,
     {

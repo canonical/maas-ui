@@ -63,7 +63,7 @@ export const generateClusterRows = (
         : null,
   }));
 
-const LxdTable = (): JSX.Element | null => {
+const LxdTable = () => {
   const singleHosts = useSelector(podSelectors.lxdSingleHosts);
   const singleHostsLoading = useSelector(podSelectors.loading);
   const singleHostsLoaded = useSelector(podSelectors.loaded);

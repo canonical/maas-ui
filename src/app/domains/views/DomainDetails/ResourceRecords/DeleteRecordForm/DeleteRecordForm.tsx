@@ -23,11 +23,7 @@ export const Labels = {
   AreYouSure: "Are you sure you want to delete this record?",
 } as const;
 
-const DeleteRecordForm = ({
-  closeForm,
-  id,
-  resource,
-}: Props): JSX.Element | null => {
+const DeleteRecordForm = ({ closeForm, id, resource }: Props) => {
   const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)

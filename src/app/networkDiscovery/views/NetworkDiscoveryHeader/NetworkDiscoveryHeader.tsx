@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
@@ -20,14 +22,14 @@ const NetworkDiscoveryHeader = ({
   setSidePanelContent,
 }: {
   setSidePanelContent: SetSidePanelContent;
-}): JSX.Element => {
+}) => {
   const location = useLocation();
 
   const discoveries = useSelector(discoverySelectors.all);
 
   useFetchActions([discoveryActions.fetch]);
 
-  const buttons: JSX.Element[] = [
+  const buttons: ReactNode[] = [
     <Button
       data-testid="clear-all"
       disabled={discoveries.length === 0}

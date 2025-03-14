@@ -25,7 +25,7 @@ export const MinimumKernelSelect = ({
   label = Labels.Select,
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props) => {
   const hweKernels = useSelector(hweKernelsSelectors.get);
   const hweKernelsLoaded = useSelector(hweKernelsSelectors.loaded);
 

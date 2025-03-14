@@ -21,7 +21,7 @@ const UpdateCertificateFields = ({
   generatedCertificate,
   shouldGenerateCert,
   setShouldGenerateCert,
-}: Props): JSX.Element => {
+}: Props) => {
   const [usePassword, setUsePassword] = useState(false);
   const { resetForm } = useFormikContext<UpdateCertificateValues>();
 

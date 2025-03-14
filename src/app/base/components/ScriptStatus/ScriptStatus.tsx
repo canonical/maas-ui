@@ -50,7 +50,7 @@ const ScriptStatus = ({
   status,
   tooltipMessage,
   tooltipPosition,
-}: Props): JSX.Element => {
+}: Props) => {
   const iconName = getIconName(status);
 
   if (tooltipMessage) {

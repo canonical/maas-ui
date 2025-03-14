@@ -24,7 +24,7 @@ const DeviceListHeader = ({
   searchFilter,
   setSidePanelContent,
   setSearchFilter,
-}: Props): JSX.Element => {
+}: Props) => {
   const devices = useSelector(deviceSelectors.all);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
   const selectedDevices = useSelector(deviceSelectors.selected);

@@ -12,7 +12,7 @@ type Props = {
   systemId: Controller[ControllerMeta.PK];
 };
 
-const ControllerStorage = ({ systemId }: Props): JSX.Element => {
+const ControllerStorage = ({ systemId }: Props) => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

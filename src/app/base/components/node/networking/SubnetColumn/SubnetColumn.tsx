@@ -28,7 +28,7 @@ type Props = {
   node: Node;
 };
 
-const SubnetColumn = ({ link, nic, node }: Props): JSX.Element | null => {
+const SubnetColumn = ({ link, nic, node }: Props) => {
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);

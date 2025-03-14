@@ -135,10 +135,7 @@ const normaliseRowData = (
   };
 };
 
-const FilesystemsTable = ({
-  canEditStorage,
-  node,
-}: Props): JSX.Element | null => {
+const FilesystemsTable = ({ canEditStorage, node }: Props) => {
   const isMachine = nodeIsMachine(node);
   const { setSidePanelContent } = useSidePanel();
 

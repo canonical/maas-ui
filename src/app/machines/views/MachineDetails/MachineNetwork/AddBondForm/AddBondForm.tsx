@@ -77,12 +77,7 @@ const InterfaceSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-const AddBondForm = ({
-  close,
-  selected,
-  setSelected,
-  systemId,
-}: Props): JSX.Element | null => {
+const AddBondForm = ({ close, selected, setSelected, systemId }: Props) => {
   const [editingMembers, setEditingMembers] = useState(false);
   const [bondVLAN, setBondVLAN] = useState<NetworkInterface["vlan_id"] | null>(
     null

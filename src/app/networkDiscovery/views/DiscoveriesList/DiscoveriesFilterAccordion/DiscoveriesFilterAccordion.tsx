@@ -25,10 +25,7 @@ const filterNames = new Map([
   ["vlan", "VLAN"],
 ]);
 
-const DiscoveriesFilterAccordion = ({
-  searchText,
-  setSearchText,
-}: Props): JSX.Element => {
+const DiscoveriesFilterAccordion = ({ searchText, setSearchText }: Props) => {
   const discoveries = useSelector(discoverySelectors.all);
   const loaded = useSelector(discoverySelectors.loaded);
 

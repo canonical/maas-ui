@@ -66,11 +66,7 @@ const CreateRaidSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-export const CreateRaid = ({
-  closeForm,
-  selected,
-  systemId,
-}: Props): JSX.Element | null => {
+export const CreateRaid = ({ closeForm, selected, systemId }: Props) => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

@@ -12,10 +12,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-export const AddPartitionFields = ({
-  partitionName,
-  systemId,
-}: Props): JSX.Element => {
+export const AddPartitionFields = ({ partitionName, systemId }: Props) => {
   const { handleChange, setFieldTouched, setFieldValue } =
     useFormikContext<AddPartitionValues>();
 

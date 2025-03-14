@@ -44,7 +44,7 @@ const NodeName = ({
   setEditingName,
   saved,
   saving,
-}: Props): JSX.Element => {
+}: Props) => {
   const [hostnameError, setHostnameError] = useState<
     FormikErrors<FormValues>["hostname"] | null
   >(null);

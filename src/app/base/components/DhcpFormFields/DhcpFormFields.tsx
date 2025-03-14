@@ -75,7 +75,7 @@ export enum Labels {
   Value = "DHCP snippet",
 }
 
-export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
+export const DhcpFormFields = ({ editing }: Props) => {
   const formikProps = useFormikContext<DHCPFormValues>();
   const subnets = useSelector(subnetSelectors.all);
   const controllers = useSelector(controllerSelectors.all);

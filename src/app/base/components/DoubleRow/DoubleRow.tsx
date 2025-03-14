@@ -49,7 +49,7 @@ const DoubleRow = <L,>({
   secondaryAriaLabel,
   secondaryClassName,
   secondaryTitle,
-}: Props<L>): JSX.Element => {
+}: Props<L>) => {
   const parent = useRef(null);
   const hasIcon = icon || iconSpace;
 

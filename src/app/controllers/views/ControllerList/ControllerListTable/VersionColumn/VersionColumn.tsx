@@ -10,7 +10,7 @@ type Props = {
   systemId: Controller[ControllerMeta.PK];
 };
 
-export const VersionColumn = ({ systemId }: Props): JSX.Element | null => {
+export const VersionColumn = ({ systemId }: Props) => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

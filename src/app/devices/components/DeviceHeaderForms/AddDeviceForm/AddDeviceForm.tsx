@@ -119,9 +119,7 @@ const AddDeviceSchema = Yup.object().shape({
   zone: Yup.string().required("Zone required"),
 });
 
-export const AddDeviceForm = ({
-  clearSidePanelContent,
-}: Props): JSX.Element => {
+export const AddDeviceForm = ({ clearSidePanelContent }: Props) => {
   const dispatch = useDispatch();
   const devicesSaved = useSelector(deviceSelectors.saved);
   const devicesSaving = useSelector(deviceSelectors.saving);

@@ -16,7 +16,7 @@ type Props = Required<Pick<SectionHeaderProps, "title">> & {
   setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const KVMListHeader = ({ setSidePanelContent, title }: Props): JSX.Element => {
+const KVMListHeader = ({ setSidePanelContent, title }: Props) => {
   const location = useLocation();
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);

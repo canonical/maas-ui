@@ -65,7 +65,7 @@ const ActionForm = <V extends object, E = null>({
   submitLabel,
   actionStatus,
   ...formikFormProps
-}: ActionFormProps<V, E>): JSX.Element | null => {
+}: ActionFormProps<V, E>) => {
   const [selectedOnSubmit, setSelectedOnSubmit] = useState(selectedCount);
   const processingComplete = useProcessing({
     hasErrors: !!errors,

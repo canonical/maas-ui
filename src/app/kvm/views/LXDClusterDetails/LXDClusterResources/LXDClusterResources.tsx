@@ -17,7 +17,7 @@ export enum Label {
   Title = "LXD cluster resources",
 }
 
-const LXDClusterResources = ({ clusterId }: Props): JSX.Element => {
+const LXDClusterResources = ({ clusterId }: Props) => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );

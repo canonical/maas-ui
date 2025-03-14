@@ -115,10 +115,7 @@ const actions: MachineMenuAction[] = [
   NodeActions.UNLOCK,
 ];
 
-export const StatusColumn = ({
-  onToggleMenu,
-  systemId,
-}: Props): JSX.Element | null => {
+export const StatusColumn = ({ onToggleMenu, systemId }: Props) => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

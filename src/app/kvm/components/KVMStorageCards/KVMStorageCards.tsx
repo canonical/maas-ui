@@ -16,10 +16,7 @@ type Props = {
   pools: KVMStoragePoolResources;
 };
 
-const KVMStorageCards = ({
-  defaultPoolId,
-  pools,
-}: Props): JSX.Element | null => {
+const KVMStorageCards = ({ defaultPoolId, pools }: Props) => {
   const [expanded, setExpanded] = useState(false);
   const sendAnalytics = useSendAnalytics();
 

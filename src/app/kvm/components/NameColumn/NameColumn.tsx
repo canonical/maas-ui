@@ -8,7 +8,7 @@ type Props = {
   url: string;
 };
 
-const NameColumn = ({ name, secondary, url }: Props): JSX.Element | null => {
+const NameColumn = ({ name, secondary, url }: Props) => {
   return (
     <DoubleRow
       primary={

@@ -59,7 +59,7 @@ export const CreateBcache = ({
   closeExpanded,
   storageDevice,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props) => {
   const dispatch = useDispatch();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,

@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { Card, List, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
@@ -18,12 +20,12 @@ export enum Labels {
   NumaList = "Numa nodes list",
 }
 
-const NumaCard = ({ id }: Props): JSX.Element => {
+const NumaCard = ({ id }: Props) => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
   let numaNodeString = "NUMA node";
-  let content: JSX.Element | null;
+  let content: ReactNode | null;
 
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will

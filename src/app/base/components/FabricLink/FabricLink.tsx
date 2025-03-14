@@ -18,7 +18,7 @@ export enum Labels {
   Loading = "Loading fabrics",
 }
 
-const FabricLink = ({ id }: Props): JSX.Element => {
+const FabricLink = ({ id }: Props) => {
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)
   );

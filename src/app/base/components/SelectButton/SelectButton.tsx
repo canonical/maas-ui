@@ -2,11 +2,7 @@ import type { ButtonProps } from "@canonical/react-components";
 import { Button, Icon } from "@canonical/react-components";
 import classNames from "classnames";
 
-const SelectButton = ({
-  children,
-  className,
-  ...props
-}: ButtonProps): JSX.Element => (
+const SelectButton = ({ children, className, ...props }: ButtonProps) => (
   <Button
     {...props}
     className={classNames("p-button--select", className)}

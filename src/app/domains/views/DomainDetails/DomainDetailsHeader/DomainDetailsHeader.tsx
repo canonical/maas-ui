@@ -35,10 +35,7 @@ export enum Labels {
   DeleteDomain = "Delete domain",
 }
 
-const DomainDetailsHeader = ({
-  id,
-  setSidePanelContent,
-}: Props): JSX.Element | null => {
+const DomainDetailsHeader = ({ id, setSidePanelContent }: Props) => {
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
   );

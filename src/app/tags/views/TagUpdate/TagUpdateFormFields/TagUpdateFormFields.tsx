@@ -18,7 +18,7 @@ type Props = {
   id: Tag[TagMeta.PK];
 };
 
-export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
+export const TagUpdateFormFields = ({ id }: Props) => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
