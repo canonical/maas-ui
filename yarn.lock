@@ -12611,6 +12611,11 @@ reduce-reducers@1.0.4:
   resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-1.0.4.tgz#fb77e751a9eb0201760ac5a605ca8c9c2d0537f8"
   integrity sha512-Mb2WZ2bJF597exiqX7owBzrqJ74DHLK3yOQjCyPAaNifRncE8OD0wFIuoMhXxTnHK07+8zZ2SJEKy/qtiyR7vw==
 
+redux-first-history@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/redux-first-history/-/redux-first-history-5.2.0.tgz#2cd9d84652a1cb7e485ebe9b2dc348ac8c88fedf"
+  integrity sha512-7kLqtSXGPZIgvEhl3B+3wRvzePvvZggpVqg+jpR2ZVqu2ESGj9DF6hMHpoEP7bGHqddljjKYjnRmtSetYEiG2Q==
+
 redux-mock-store@1.5.5:
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.5.5.tgz#ec3676663c081c4ca5a6a14f1ac193b56c3220eb"
