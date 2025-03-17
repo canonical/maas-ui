@@ -20,7 +20,7 @@ import { isId } from "@/app/utils";
 
 /**
  * Group items by key
- * @param results a node results list
+ * @param items
  * @param key
  */
 const groupByKey = <I,>(items: I[], key: keyof I): { [x: string]: I[] } =>

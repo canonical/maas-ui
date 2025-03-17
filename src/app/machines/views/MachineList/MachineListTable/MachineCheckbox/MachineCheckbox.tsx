@@ -61,9 +61,7 @@ export const getSelectedMachinesRange = ({
   if (startIndex > -1 && endIndex > -1) {
     // loop through the machine list, add the ids that have not been added already
     for (let i = startIndex; i <= endIndex; i++) {
-      if (newSelected.items.includes(machines[i].system_id)) {
-        continue;
-      } else {
+      if (!newSelected.items.includes(machines[i].system_id)) {
         newSelected.items.push(machines[i].system_id);
       }
     }

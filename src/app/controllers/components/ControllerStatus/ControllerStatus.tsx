@@ -33,7 +33,7 @@ export const ControllerStatus = ({
   if (!controller || !services?.length) {
     return null;
   }
-  let icon: string | null = null;
+  let icon: string | null;
   let message: string | null = null;
   const dead = countStatus(services, ServiceStatus.DEAD);
   const degraded = countStatus(services, ServiceStatus.DEGRADED);

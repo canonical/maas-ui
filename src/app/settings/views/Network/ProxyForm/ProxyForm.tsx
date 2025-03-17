@@ -14,6 +14,7 @@ import { useWindowTitle } from "@/app/base/hooks";
 import { UrlSchema } from "@/app/base/validation";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
+import type { ConfigValues } from "@/app/store/config/types";
 
 const ProxySchema = Yup.object().shape({
   proxyType: Yup.string().required(),
@@ -67,7 +68,7 @@ const ProxyForm = (): React.ReactElement => {
             onSubmit={(values, { resetForm }) => {
               const { httpProxy, proxyType } = values;
 
-              let formattedValues = {};
+              let formattedValues: { [name: string]: ConfigValues };
               switch (proxyType) {
                 case "builtInProxy":
                   formattedValues = {

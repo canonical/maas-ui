@@ -17,7 +17,7 @@ export const ReleaseFormFields = (): React.ReactElement => {
           name="enableErase"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             handleChange(e);
-            if (e.target.checked === false) {
+            if (!e.target.checked) {
               setFieldValue("quickErase", false);
               setFieldValue("secureErase", false);
             }

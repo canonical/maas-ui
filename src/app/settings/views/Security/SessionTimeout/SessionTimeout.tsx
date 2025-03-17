@@ -45,11 +45,7 @@ const SessionTimeoutSchema = Yup.object().shape({
           return false;
         }
 
-        if (sessionLengthInSeconds <= 1209600) {
-          return true;
-        } else {
-          return false;
-        }
+        return sessionLengthInSeconds <= 1209600;
       }
     ),
 });

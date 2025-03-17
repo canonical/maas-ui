@@ -72,7 +72,7 @@ const groupInterfaces = (interfaces: NetworkInterface[]): InterfaceGroup[] => {
 
   // Sort groups by vendor, then product, then firmware version. Unknown vendors
   // should appear last.
-  const sortedGroups = interfaceGroups.sort((a, b) => {
+  return interfaceGroups.sort((a, b) => {
     const vendorA = a.vendor;
     const vendorB = b.vendor;
     const productA = a.product;
@@ -97,8 +97,6 @@ const groupInterfaces = (interfaces: NetworkInterface[]): InterfaceGroup[] => {
     }
     return vendorA > vendorB ? 1 : -1;
   });
-
-  return sortedGroups;
 };
 
 const NodeSummaryNetworkCard = ({

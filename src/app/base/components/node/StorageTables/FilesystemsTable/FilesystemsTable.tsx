@@ -57,9 +57,10 @@ const headers = [
  * @param rowId - the row ID of the filesystem.
  * @param fs - the filesystem to normalise.
  * @param storageDevice - the storage device the filesystem belongs to.
- * @param expanded - the currently expanded row and content.
- * @param setExpanded - function to set the expanded table row and content.
+ * @param canEditStorage
  * @param isMachine - whether the node is a machine or not.
+ * @param node
+ * @param setSidePanelContent
  * @returns normalised row data
  */
 const normaliseRowData = (

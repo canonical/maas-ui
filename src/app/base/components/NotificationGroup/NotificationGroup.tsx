@@ -41,7 +41,7 @@ const NotificationGroup = ({
           notifications.length
         )}`;
 
-  const dismissable = notifications.some(({ dismissable }) => !!dismissable);
+  const dismissable = notifications.some(({ dismissable }) => dismissable);
 
   return (
     <div className="p-notification-group">

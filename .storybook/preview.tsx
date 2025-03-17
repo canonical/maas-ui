@@ -1,4 +1,4 @@
-import { Root } from "../src/index";
+import { Root } from "../src";
 
 import type { Preview } from "@storybook/react";
 

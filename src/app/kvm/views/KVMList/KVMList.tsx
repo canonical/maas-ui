@@ -54,7 +54,7 @@ const KVMList = (): React.ReactElement => {
     }
   }, [navigate, showingLXD, showingVirsh]);
 
-  let content: ReactNode = null;
+  let content: ReactNode;
   if (podsLoading || vmclustersLoading) {
     content = <Spinner text="Loading..." />;
   } else if (showingLXD && hasLXDs) {

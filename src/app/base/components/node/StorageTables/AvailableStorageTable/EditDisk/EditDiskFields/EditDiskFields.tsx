@@ -42,7 +42,7 @@ export const EditDiskFields = ({
         />
       </Col>
       <Col size={12}>
-        {disk.is_boot === false && <FilesystemFields systemId={systemId} />}
+        {!disk.is_boot && <FilesystemFields systemId={systemId} />}
         <TagNameField />
       </Col>
     </Row>

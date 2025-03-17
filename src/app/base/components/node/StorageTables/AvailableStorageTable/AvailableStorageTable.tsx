@@ -104,6 +104,7 @@ const isSelected = (
 /**
  * Normalise rendered row data so that both disks and partitions can be displayed.
  * @param systemId - the system_id of the machine
+ * @param isMachine
  * @param storageDevice - the disk or partition to normalise.
  * @param actionsDisabled - whether actions should be disabled.
  * @param selected - the currently selected storage devices.

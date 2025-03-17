@@ -22,7 +22,7 @@ const TLSEnabledFields = (): React.ReactElement => {
       <div className="p-slider--inline">
         <FormikField<typeof Slider>
           component={Slider}
-          disabled={values.notificationEnabled === false}
+          disabled={!values.notificationEnabled}
           help={
             <>
               <span>{TLSExpiryNotificationInterval.MIN}</span>

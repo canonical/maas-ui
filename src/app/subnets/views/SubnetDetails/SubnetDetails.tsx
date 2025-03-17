@@ -50,11 +50,10 @@ const SubnetDetails = (): React.ReactElement => {
       dispatch(staticRouteActions.fetch());
     }
 
-    const unsetActiveSubnetAndCleanup = () => {
+    return () => {
       dispatch(subnetActions.setActive(null));
       dispatch(subnetActions.cleanup());
     };
-    return unsetActiveSubnetAndCleanup;
   }, [dispatch, id, isValidID]);
 
   if (subnetsLoading) {

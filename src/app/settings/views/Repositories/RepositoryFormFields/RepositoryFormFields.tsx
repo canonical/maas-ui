@@ -44,7 +44,7 @@ const generateCheckboxGroup = (
       label={field}
       name={key}
       onChange={() => {
-        let newFields = [];
+        let newFields: string[];
         if (values.includes(field)) {
           newFields = values.filter((oldField) => oldField !== field);
         } else {

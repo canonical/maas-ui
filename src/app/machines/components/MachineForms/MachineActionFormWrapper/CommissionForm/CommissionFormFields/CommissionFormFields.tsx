@@ -53,9 +53,7 @@ export const CommissionFormFields = ({
           disabled={
             values.commissioningScripts.length === commissioningScripts.length
           }
-          disabledTags={commissioningScripts.filter(
-            (script) => script.default === true
-          )}
+          disabledTags={commissioningScripts.filter((script) => script.default)}
           initialSelected={preselectedCommissioning}
           label="Commissioning scripts"
           name="commissioningScripts"

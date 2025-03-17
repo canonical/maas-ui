@@ -40,11 +40,10 @@ const FabricDetails = (): React.ReactElement => {
       dispatch(subnetActions.fetch());
     }
 
-    const unsetActiveFabricAndCleanup = () => {
+    return () => {
       dispatch(fabricActions.setActive(null));
       dispatch(fabricActions.cleanup());
     };
-    return unsetActiveFabricAndCleanup;
   }, [dispatch, id, isValidID]);
 
   if (!fabric) {

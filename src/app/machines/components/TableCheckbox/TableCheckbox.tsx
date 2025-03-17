@@ -59,7 +59,7 @@ const TableCheckbox = ({
       ) => {
         // prevent default text range selection when 'shift' key is pressed
         window.getSelection()?.removeAllRanges();
-        const isRange = !!event.nativeEvent.shiftKey;
+        const isRange = event.nativeEvent.shiftKey;
         dispatch(
           machineActions.setSelected(
             onGenerateSelected(event.target.checked, isRange)

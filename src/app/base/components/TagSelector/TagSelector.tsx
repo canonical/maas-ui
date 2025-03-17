@@ -270,7 +270,7 @@ export const TagSelector = ({
             name={TAG_SELECTOR_INPUT_NAME}
             onChange={(e) => setFilter(e.target.value)}
             onFocus={() => setDropdownOpen(true)}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
                 if (allowNewTags) {

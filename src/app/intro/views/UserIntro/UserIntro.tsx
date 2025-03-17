@@ -44,7 +44,7 @@ const UserIntro = (): React.ReactElement => {
       windowTitle="User"
     >
       <IntroCard
-        complete={!!hasSSHKeys}
+        complete={hasSSHKeys}
         data-testid="sshkey-card"
         hasErrors={!!errorMessage}
         title={<>SSH keys for {authUser?.username}</>}

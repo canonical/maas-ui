@@ -8,9 +8,9 @@ import VLANDetailsHeader from "./VLANDetailsHeader";
 import VLANSubnets from "./VLANSubnets";
 import VLANSummary from "./VLANSummary";
 import {
-  VLANActionTypes,
-  type VLANActionType,
   vlanActionLabels,
+  type VLANActionType,
+  VLANActionTypes,
 } from "./constants";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
@@ -47,11 +47,10 @@ const VLANDetails = (): React.ReactElement => {
       dispatch(vlanActions.setActive(id));
     }
 
-    const unsetActiveVLANAndCleanup = () => {
+    return () => {
       dispatch(vlanActions.setActive(null));
       dispatch(vlanActions.cleanup());
     };
-    return unsetActiveVLANAndCleanup;
   }, [dispatch, id]);
 
   if (!vlan) {

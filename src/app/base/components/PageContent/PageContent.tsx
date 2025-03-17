@@ -50,7 +50,7 @@ const PageContent = ({
             className={classNames("l-main__nav", `is-maas-${theme}--accent`)}
           >
             <SecondaryNavigation
-              isOpen={!!isSecondaryNavVisible}
+              isOpen={isSecondaryNavVisible}
               items={
                 isSettingsPage
                   ? settingsNavItems
