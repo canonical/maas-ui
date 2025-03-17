@@ -4,38 +4,42 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import packageInfo from "../package.json";
 
 import App from "./app/App";
 import { createQueryClient } from "./app/api/query-client";
 import SidePanelContextProvider from "./app/base/side-panel-context";
-import { store, history } from "./redux-store";
+import { store } from "./redux-store";
 import * as serviceWorker from "./serviceWorker";
 
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import "./scss/index.scss";
 
-const queryClient = createQueryClient();
+export const Root = ({ children }: { children: React.ReactElement }) => {
+  const queryClient = createQueryClient();
+  const router = createBrowserRouter(
+    [
+      {
+        path: "*",
+        element: (
+          <SidePanelContextProvider>{children}</SidePanelContextProvider>
+        ),
+      },
+    ],
+    {
+      basename: `${import.meta.env.VITE_APP_BASENAME}${
+        import.meta.env.VITE_APP_VITE_BASENAME
+      }`,
+    }
+  );
 
-export const RootProviders = ({
-  children,
-}: {
-  children: React.ReactElement;
-}) => {
   return (
     <Provider store={store}>
       <WebSocketProvider>
         <QueryClientProvider client={queryClient}>
-          <Router
-            basename={`${import.meta.env.VITE_APP_BASENAME}${
-              import.meta.env.VITE_APP_VITE_BASENAME
-            }`}
-            history={history}
-          >
-            <SidePanelContextProvider>{children}</SidePanelContextProvider>
-          </Router>
+          <RouterProvider router={router} />
           <ReactQueryDevtools
             initialIsOpen={
               import.meta.env.VITE_APP_REACT_QUERY_DEVTOOLS === "true"
@@ -50,9 +54,9 @@ export const RootProviders = ({
 const AppRoot = (): React.ReactElement => {
   return (
     <StrictMode>
-      <RootProviders>
+      <Root>
         <App />
-      </RootProviders>
+      </Root>
     </StrictMode>
   );
 };

@@ -1,5 +1,4 @@
-import { RootProviders } from "../src/index";
-import React from "react";
+import { Root } from "../src/index";
 
 import type { Preview } from "@storybook/react";
 
@@ -20,9 +19,9 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <RootProviders>
+      <Root>
         <Story />
-      </RootProviders>
+      </Root>
     ),
   ],
 };
