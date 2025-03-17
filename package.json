@@ -178,14 +178,6 @@
     "wait-on": "7.2.0",
     "webpack": "5.98.0"
   },
-  "resolutions": {
-    "node_modules/@types/react-router-dom/@types/react": "18.3.18",
-    "@types/react": "18.3.18",
-    "@types/react-dom": "18.3.5"
-  },
-  "peerDependencies": {
-    "@types/react": "18.3.18"
-  },
   "browserslist": {
     "production": [
       "last 1 chrome version",
