@@ -34,7 +34,7 @@ const APIKeyEditSchema = Yup.object().shape({
   name: Yup.string().required("API key name is required"),
 });
 
-export const APIKeyForm = ({ token }: Props): JSX.Element => {
+export const APIKeyForm = ({ token }: Props): React.ReactElement => {
   const editing = !!token;
   const dispatch = useDispatch();
   const navigate = useNavigate();

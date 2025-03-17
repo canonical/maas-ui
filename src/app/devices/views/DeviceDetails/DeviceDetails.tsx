@@ -23,7 +23,7 @@ import { tagActions } from "@/app/store/tag";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { isId, getRelativeRoute } from "@/app/utils";
 
-const DeviceDetails = (): JSX.Element => {
+const DeviceDetails = (): React.ReactElement => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const dispatch = useDispatch();
   const id = useGetURLId(DeviceMeta.PK);

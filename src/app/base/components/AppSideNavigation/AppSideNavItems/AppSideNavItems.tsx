@@ -91,7 +91,7 @@ export const AppSideNavItems = ({
   setIsCollapsed,
   showLinks,
   vaultIncomplete,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <>
       {showLinks ? (

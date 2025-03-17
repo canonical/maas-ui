@@ -24,7 +24,7 @@ export enum Labels {
   FormLabel = "Subnet mapping form",
 }
 
-const NetworkDiscoveryConfigurationSubnetForm = (): JSX.Element => {
+const NetworkDiscoveryConfigurationSubnetForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const subnets = useSelector(subnetSelectors.all);
   const fabrics = useSelector(fabricSelectors.all);
@@ -38,7 +38,7 @@ const NetworkDiscoveryConfigurationSubnetForm = (): JSX.Element => {
   useFetchActions([subnetActions.fetch, fabricActions.fetch]);
 
   const loaded = subnetsLoaded && fabricsLoaded;
-  let content: JSX.Element = <Spinner text={Labels.Loading} />;
+  let content: React.ReactElement = <Spinner text={Labels.Loading} />;
 
   if (loaded) {
     const sortedSubnets = [...subnets].sort(simpleSortByKey("cidr"));

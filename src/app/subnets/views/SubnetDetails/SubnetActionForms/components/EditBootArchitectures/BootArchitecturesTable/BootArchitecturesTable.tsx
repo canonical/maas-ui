@@ -17,7 +17,7 @@ export enum Headers {
   Protocol = "Protocol",
 }
 
-export const BootArchitecturesTable = (): JSX.Element => {
+export const BootArchitecturesTable = (): React.ReactElement => {
   const {
     setFieldValue,
     values: { disabled_boot_architectures },

@@ -138,7 +138,7 @@ const normaliseRowData = (
 const FilesystemsTable = ({
   canEditStorage,
   node,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const isMachine = nodeIsMachine(node);
   const { setSidePanelContent } = useSidePanel();
 

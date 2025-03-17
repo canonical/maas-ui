@@ -21,7 +21,7 @@ export const TestFormFields = ({
   modelName,
   preselected,
   scripts,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<FormValues>();
   const urlScriptsSelected = values.scripts.filter((script) =>

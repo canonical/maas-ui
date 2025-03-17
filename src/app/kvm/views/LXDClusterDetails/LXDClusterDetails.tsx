@@ -38,7 +38,7 @@ export enum Label {
   Title = "LXD cluster details",
 }
 
-const LXDClusterDetails = (): JSX.Element => {
+const LXDClusterDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();

@@ -9,7 +9,7 @@ import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { tlsCertificate as tlsCertificateSelectors } from "@/app/store/general/selectors";
 
-const SecurityProtocols = (): JSX.Element => {
+const SecurityProtocols = (): React.ReactElement => {
   const tlsCertificate = useSelector(tlsCertificateSelectors.get);
   const tlsCertificateLoaded = useSelector(tlsCertificateSelectors.loaded);
   useWindowTitle("Security protocols");

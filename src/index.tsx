@@ -19,7 +19,11 @@ import "./scss/index.scss";
 
 const queryClient = createQueryClient();
 
-export const RootProviders = ({ children }: { children: JSX.Element }) => {
+export const RootProviders = ({
+  children,
+}: {
+  children: React.ReactElement;
+}) => {
   return (
     <Provider store={store}>
       <WebSocketProvider>
@@ -43,7 +47,7 @@ export const RootProviders = ({ children }: { children: JSX.Element }) => {
   );
 };
 
-const AppRoot = (): JSX.Element => {
+const AppRoot = (): React.ReactElement => {
   return (
     <StrictMode>
       <RootProviders>

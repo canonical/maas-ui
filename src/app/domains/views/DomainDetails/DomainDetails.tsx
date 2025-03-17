@@ -22,7 +22,7 @@ import { DomainMeta } from "@/app/store/domain/types";
 import type { RootState } from "@/app/store/root/types";
 import { isId } from "@/app/utils";
 
-const DomainDetails = (): JSX.Element => {
+const DomainDetails = (): React.ReactElement => {
   const id = useGetURLId(DomainMeta.PK);
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, Number(id))

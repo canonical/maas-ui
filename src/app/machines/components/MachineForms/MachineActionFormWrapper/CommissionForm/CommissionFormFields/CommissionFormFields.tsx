@@ -22,7 +22,7 @@ export const CommissionFormFields = ({
   preselectedCommissioning,
   commissioningScripts,
   testingScripts,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<CommissionFormValues>();
   const urlScriptsSelected = values.testingScripts.filter((script) =>

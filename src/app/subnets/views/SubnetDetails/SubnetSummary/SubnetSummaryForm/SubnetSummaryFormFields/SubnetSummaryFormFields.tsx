@@ -18,7 +18,7 @@ import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
-const SubnetSummaryFormFields = (): JSX.Element => {
+const SubnetSummaryFormFields = (): React.ReactElement => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<SubnetSummaryFormValues>();
   const fabrics = useSelector(fabricSelectors.all);

@@ -8,7 +8,7 @@ import VirshDetails from "./VirshDetails";
 import urls from "@/app/base/urls";
 import { getRelativeRoute } from "@/app/utils";
 
-const KVM = (): JSX.Element => {
+const KVM = (): React.ReactElement => {
   const base = urls.kvm.index;
   return (
     <Routes>

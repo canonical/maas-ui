@@ -30,7 +30,7 @@ const groupByKey = <I,>(items: I[], key: keyof I): { [x: string]: I[] } =>
     return obj;
   }, Object.create(null));
 
-const MachineTests = (): JSX.Element => {
+const MachineTests = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
 

@@ -5,7 +5,7 @@ type LocationState = {
   from?: string;
 };
 
-const SettingsBackLink = (): JSX.Element | null => {
+const SettingsBackLink = (): React.ReactElement | null => {
   const location = useLocation();
   const state = location.state as LocationState;
   if (!state?.from) {

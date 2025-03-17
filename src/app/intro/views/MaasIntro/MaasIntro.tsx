@@ -41,7 +41,7 @@ export const MaasIntroSchema = Yup.object()
   })
   .defined();
 
-const MaasIntro = (): JSX.Element => {
+const MaasIntro = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const authLoading = useSelector(authSelectors.loading);

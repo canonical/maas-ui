@@ -21,7 +21,7 @@ type Props = {
   saved: MachineState["saved"];
 };
 
-export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
+export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {
   const [extraMACs, setExtraMACs] = useState<string[]>([]);
 
   const formikProps = useFormikContext<AddMachineValues>();

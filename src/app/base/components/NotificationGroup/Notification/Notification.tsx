@@ -25,7 +25,7 @@ const NotificationGroupNotification = ({
   className,
   id,
   severity,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAdmin = useSelector(authSelectors.isAdmin);

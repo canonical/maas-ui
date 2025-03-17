@@ -11,7 +11,7 @@ import statusSelectors from "@/app/store/status/selectors";
 import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
 
-export const UserEdit = (): JSX.Element => {
+export const UserEdit = (): React.ReactElement => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
 
   useFetchActions([userActions.fetch]);

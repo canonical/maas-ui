@@ -12,7 +12,7 @@ type Props = {
   systemId: Device[DeviceMeta.PK];
 };
 
-const OwnerColumn = ({ systemId }: Props): JSX.Element => {
+const OwnerColumn = ({ systemId }: Props): React.ReactElement => {
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );

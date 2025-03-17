@@ -23,7 +23,7 @@ type Props = {
 const LXDSingleDetailsHeader = ({
   id,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const location = useLocation();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)

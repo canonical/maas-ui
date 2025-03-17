@@ -28,7 +28,7 @@ import ReservedRanges from "@/app/subnets/components/ReservedRanges";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
-const VLANDetails = (): JSX.Element => {
+const VLANDetails = (): React.ReactElement => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const dispatch = useDispatch();
   const id = useGetURLId(VLANMeta.PK);

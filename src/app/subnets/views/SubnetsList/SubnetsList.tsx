@@ -21,7 +21,7 @@ import {
 import { SubnetSidePanelViews } from "@/app/subnets/types";
 import FormActions from "@/app/subnets/views/FormActions";
 
-const SubnetsList = (): JSX.Element => {
+const SubnetsList = (): React.ReactElement => {
   useWindowTitle("Subnets");
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const query = useQuery();

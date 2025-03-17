@@ -33,7 +33,7 @@ const KVMDetailsHeader = ({
   tabLinks,
   title,
   titleBlocks,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const location = useLocation();
   const pathname = location.pathname;
   const previousPathname = usePrevious(pathname);

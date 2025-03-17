@@ -106,7 +106,7 @@ export const AppSideNavigation = ({
   </>
 );
 
-const AppSideNavigationContainer = (): JSX.Element => {
+const AppSideNavigationContainer = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();

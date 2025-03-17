@@ -30,7 +30,7 @@ const TestActions = ({
   resultType,
   scriptResult,
   setExpanded,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const sendAnalytics = useSendAnalytics();
   const canViewDetails = !scriptResultInProgress(scriptResult.status);
   const hasMetrics = scriptResult.results.length > 0;

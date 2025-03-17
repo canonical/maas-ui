@@ -20,7 +20,7 @@ export const SpaceCellContents = ({
   value,
 }: PropsWithChildren<{
   value: SubnetsTableColumn;
-}>): JSX.Element => {
+}>): React.ReactElement => {
   const [isWarningOpen, setIsWarningOpen] = useState(false);
   return (
     <>
@@ -60,7 +60,7 @@ export const CellContents = ({
   value,
 }: {
   value: SubnetsTableColumn;
-}): JSX.Element => (
+}): React.ReactElement => (
   <>
     <span
       className={value.isVisuallyHidden ? "subnets-table__visually-hidden" : ""}

@@ -18,7 +18,7 @@ import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
-const DeviceList = (): JSX.Element => {
+const DeviceList = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();

@@ -34,7 +34,7 @@ const LicenseKeySchema = Yup.object().shape({
   license_key: Yup.string().required("A license key is required"),
 });
 
-export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
+export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [savingLicenseKey, setSaving] = useState<string | null>(null);

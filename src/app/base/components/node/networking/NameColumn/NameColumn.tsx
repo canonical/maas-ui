@@ -31,7 +31,7 @@ const NameColumn = ({
   node,
   selected,
   showCheckbox,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
   if (link && !nic) {
     [nic] = getLinkInterface(node, link);

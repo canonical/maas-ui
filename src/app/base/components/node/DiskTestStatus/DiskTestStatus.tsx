@@ -3,7 +3,7 @@ import type { Disk } from "@/app/store/types/node";
 
 type Props = { testStatus: Disk["test_status"] };
 
-const DiskTestStatus = ({ testStatus }: Props): JSX.Element => {
+const DiskTestStatus = ({ testStatus }: Props): React.ReactElement => {
   switch (testStatus) {
     case ScriptResultStatus.PENDING:
       return <i aria-label="pending" className="p-icon--pending"></i>;

@@ -180,7 +180,10 @@ type Props = {
   hostId: Pod["id"];
 };
 
-const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
+const ComposeForm = ({
+  clearSidePanelContent,
+  hostId,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)

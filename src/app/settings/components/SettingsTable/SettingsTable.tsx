@@ -52,7 +52,7 @@ export const SettingsTable = ({
   tableClassName,
   title,
   ...tableProps
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <div className="settings-table">
       <MainToolbar>

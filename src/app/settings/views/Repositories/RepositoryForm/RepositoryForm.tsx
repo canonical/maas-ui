@@ -55,7 +55,10 @@ const RepositorySchema = Yup.object().shape({
   url: Yup.string().required("URL field required."),
 });
 
-export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
+export const RepositoryForm = ({
+  type,
+  repository,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [savedRepo, setSavedRepo] = useState<string | null>(null);

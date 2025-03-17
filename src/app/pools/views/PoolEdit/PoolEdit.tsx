@@ -15,7 +15,7 @@ export enum Label {
   Title = "Edit pool form",
 }
 
-export const PoolEdit = (): JSX.Element => {
+export const PoolEdit = (): React.ReactElement => {
   const id = useGetURLId(ResourcePoolMeta.PK);
   const loading = useSelector(poolSelectors.loading);
   const navigate = useNavigate();

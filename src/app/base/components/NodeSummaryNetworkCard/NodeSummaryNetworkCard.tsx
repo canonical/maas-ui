@@ -106,7 +106,7 @@ const NodeSummaryNetworkCard = ({
   interfaces,
   networkURL,
   node,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
@@ -118,7 +118,7 @@ const NodeSummaryNetworkCard = ({
     subnetActions.fetch,
   ]);
 
-  let content: JSX.Element;
+  let content: React.ReactElement;
 
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will

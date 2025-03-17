@@ -22,7 +22,7 @@ type Props = {
 const LXDClusterDetailsHeader = ({
   clusterId,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );

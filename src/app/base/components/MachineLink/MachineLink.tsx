@@ -13,7 +13,7 @@ export enum Labels {
   Loading = "Loading machines",
 }
 
-const MachineLink = ({ systemId }: Props): JSX.Element | null => {
+const MachineLink = ({ systemId }: Props): React.ReactElement | null => {
   const { machine, loading } = useFetchMachine(systemId);
 
   if (loading) {

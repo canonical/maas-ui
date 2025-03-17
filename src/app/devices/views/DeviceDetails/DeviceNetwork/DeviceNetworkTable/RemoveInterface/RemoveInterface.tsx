@@ -25,7 +25,7 @@ const RemoveInterface = ({
   closeForm,
   nicId,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const deletingInterface = useSelector((state: RootState) =>
     deviceSelectors.getStatusForDevice(state, systemId, "deletingInterface")

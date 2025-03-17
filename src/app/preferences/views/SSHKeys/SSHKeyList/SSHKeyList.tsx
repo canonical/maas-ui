@@ -9,7 +9,7 @@ export enum Label {
   Title = "SSH keys",
 }
 
-const SSHKeyList = (): JSX.Element => {
+const SSHKeyList = (): React.ReactElement => {
   useWindowTitle(Label.Title);
   return (
     <>

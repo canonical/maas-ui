@@ -38,7 +38,11 @@ const EditRecordSchema: SchemaOf<EditRecordValues> = Yup.object()
   })
   .defined();
 
-const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
+const EditRecordForm = ({
+  closeForm,
+  id,
+  resource,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);

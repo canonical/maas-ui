@@ -38,7 +38,7 @@ const AddTagFormSchema = Yup.object().shape({
     .required("Name is required."),
 });
 
-export const AddTagForm = ({ onClose }: Props): JSX.Element => {
+export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [savedName, setSavedName] = useState<Tag["name"] | null>(null);

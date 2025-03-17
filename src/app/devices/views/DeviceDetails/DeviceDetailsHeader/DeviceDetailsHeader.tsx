@@ -24,7 +24,7 @@ type Props = {
 const DeviceDetailsHeader = ({
   setSidePanelContent,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [editingName, setEditingName] = useState(false);
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)

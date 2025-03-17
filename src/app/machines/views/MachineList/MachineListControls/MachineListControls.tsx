@@ -44,7 +44,7 @@ const MachineListControls = ({
   hiddenColumns,
   setHiddenColumns,
   setSidePanelContent,
-}: MachineListControlsProps): JSX.Element => {
+}: MachineListControlsProps): React.ReactElement => {
   const [searchText, setSearchText] = useState(filter);
   const hasSelection = useHasSelection();
   const dispatch = useDispatch();

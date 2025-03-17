@@ -22,7 +22,7 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute } from "@/app/utils";
 
-const Tags = (): JSX.Element => {
+const Tags = (): React.ReactElement => {
   const detailsMatch = useMatch(urls.tags.tag.index(null));
   const isDetails = !!detailsMatch;
   const { sidePanelContent, setSidePanelContent } = useSidePanel();

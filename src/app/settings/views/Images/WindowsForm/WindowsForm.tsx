@@ -15,7 +15,7 @@ export enum Labels {
   KMSHostLabel = "Windows KMS activation host",
 }
 
-const WindowsForm = (): JSX.Element => {
+const WindowsForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

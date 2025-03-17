@@ -21,7 +21,7 @@ export enum Labels {
   AreYouSure = "Are you sure you want to skip your user setup? You will still be able to manage your SSH keys in your user preferences.",
 }
 
-const UserIntro = (): JSX.Element => {
+const UserIntro = (): React.ReactElement => {
   const dispatch = useDispatch();
   const [showSkip, setShowSkip] = useState(false);
   const authLoading = useSelector(authSelectors.loading);

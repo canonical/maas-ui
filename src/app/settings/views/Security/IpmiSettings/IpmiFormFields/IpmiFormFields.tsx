@@ -12,7 +12,7 @@ export enum Labels {
   OperatorRadio = "Operator",
 }
 
-const IpmiFormFields = (): JSX.Element => {
+const IpmiFormFields = (): React.ReactElement => {
   return (
     <>
       <FormikField

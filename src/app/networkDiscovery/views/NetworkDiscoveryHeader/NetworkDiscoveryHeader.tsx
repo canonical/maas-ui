@@ -20,14 +20,14 @@ const NetworkDiscoveryHeader = ({
   setSidePanelContent,
 }: {
   setSidePanelContent: SetSidePanelContent;
-}): JSX.Element => {
+}): React.ReactElement => {
   const location = useLocation();
 
   const discoveries = useSelector(discoverySelectors.all);
 
   useFetchActions([discoveryActions.fetch]);
 
-  const buttons: JSX.Element[] = [
+  const buttons: React.ReactElement[] = [
     <Button
       data-testid="clear-all"
       disabled={discoveries.length === 0}

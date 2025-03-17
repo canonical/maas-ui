@@ -7,7 +7,7 @@ type Props = {
   metadata: CertificateMetadataType;
 };
 
-const CertificateMetadata = ({ metadata }: Props): JSX.Element => {
+const CertificateMetadata = ({ metadata }: Props): React.ReactElement => {
   return (
     <Card className="certificate-metadata">
       <LabelledList

@@ -17,7 +17,7 @@ export enum Labels {
   LoadingDevices = "Loading devices",
 }
 
-const DeviceLink = ({ systemId }: Props): JSX.Element | null => {
+const DeviceLink = ({ systemId }: Props): React.ReactElement | null => {
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );

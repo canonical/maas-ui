@@ -13,7 +13,7 @@ export enum Labels {
   FinishSetup = "Finish setup",
 }
 
-const MaasIntroSuccess = (): JSX.Element => {
+const MaasIntroSuccess = (): React.ReactElement => {
   const dispatch = useDispatch();
   const authUser = useSelector(authSelectors.get);
   const exitURL = useExitURL();

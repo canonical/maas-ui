@@ -29,7 +29,7 @@ type Props = {
 const ControllerDetailsHeader = ({
   systemId,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

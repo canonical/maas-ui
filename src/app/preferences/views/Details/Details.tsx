@@ -16,7 +16,7 @@ export enum Label {
   Title = "Details",
 }
 
-export const Details = (): JSX.Element => {
+export const Details = (): React.ReactElement => {
   const dispatch = useDispatch();
   const authUser = useSelector(authSelectors.get);
   const usersSaved = useSelector(userSelectors.saved);

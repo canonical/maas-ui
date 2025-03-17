@@ -39,7 +39,7 @@ const TableCheckbox = ({
   isDisabled,
   onGenerateSelected,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const machineCount = useSelector((state: RootState) =>
     machineSelectors.listCount(state, callId)

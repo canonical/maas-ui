@@ -5,7 +5,7 @@ type Props = {
   allowProxy: Subnet["allow_proxy"];
 };
 
-const ProxyAccessLabel = ({ allowProxy }: Props): JSX.Element => (
+const ProxyAccessLabel = ({ allowProxy }: Props): React.ReactElement => (
   <>
     Proxy access{" "}
     <TooltipButton

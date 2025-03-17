@@ -25,7 +25,7 @@ export enum Label {
   Title = "KVM list",
 }
 
-const KVMList = (): JSX.Element => {
+const KVMList = (): React.ReactElement => {
   const navigate = useNavigate();
   const location = useLocation();
   const podsLoading = useSelector(podSelectors.loading);

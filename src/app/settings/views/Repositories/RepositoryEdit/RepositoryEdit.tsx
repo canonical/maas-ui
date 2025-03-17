@@ -11,7 +11,7 @@ import repositorySelectors from "@/app/store/packagerepository/selectors";
 import { ResourcePoolMeta } from "@/app/store/resourcepool/types";
 import type { RootState } from "@/app/store/root/types";
 
-export const RepositoryEdit = (): JSX.Element => {
+export const RepositoryEdit = (): React.ReactElement => {
   useFetchActions([repositoryActions.fetch]);
   const id = useGetURLId(ResourcePoolMeta.PK);
   const { type } = useParams<{

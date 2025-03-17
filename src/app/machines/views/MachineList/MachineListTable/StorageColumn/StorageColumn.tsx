@@ -12,7 +12,9 @@ type Props = {
   systemId: Machine[MachineMeta.PK];
 };
 
-export const StorageColumn = ({ systemId }: Props): JSX.Element | null => {
+export const StorageColumn = ({
+  systemId,
+}: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

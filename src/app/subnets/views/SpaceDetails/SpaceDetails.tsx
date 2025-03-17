@@ -21,7 +21,7 @@ import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
-const SpaceDetails = (): JSX.Element => {
+const SpaceDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(SpaceMeta.PK);
   const space = useSelector((state: RootState) =>

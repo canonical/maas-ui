@@ -66,7 +66,7 @@ const generateCheckboxGroup = (
   );
 };
 
-const RepositoryFormFields = ({ type }: Props): JSX.Element => {
+const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
   const { setFieldTouched, setFieldValue, values } =
     useFormikContext<RepositoryFormValues>();
   const componentsToDisable = useSelector(componentsToDisableSelectors.get);

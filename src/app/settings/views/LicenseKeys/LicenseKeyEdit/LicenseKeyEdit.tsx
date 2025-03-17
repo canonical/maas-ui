@@ -15,7 +15,7 @@ export enum Labels {
   KeyNotFound = "License key not found",
 }
 
-export const LicenseKeyEdit = (): JSX.Element => {
+export const LicenseKeyEdit = (): React.ReactElement => {
   const { osystem, distro_series } = useParams<{
     osystem?: LicenseKeys["osystem"];
     distro_series?: LicenseKeys["distro_series"];

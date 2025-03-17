@@ -18,7 +18,7 @@ import { resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import { getRelativeRoute } from "@/app/utils";
 
-const Pools = (): JSX.Element => {
+const Pools = (): React.ReactElement => {
   const base = urls.pools.index;
 
   const { machineCount } = useFetchMachineCount();

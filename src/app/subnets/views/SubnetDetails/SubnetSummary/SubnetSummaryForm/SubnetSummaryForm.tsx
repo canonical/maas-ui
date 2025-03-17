@@ -35,7 +35,7 @@ type Props = {
 const SubnetSummaryForm = ({
   handleDismiss,
   id,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const subnetErrors = useSelector(subnetSelectors.errors);
   const saving = useSelector(subnetSelectors.saving);

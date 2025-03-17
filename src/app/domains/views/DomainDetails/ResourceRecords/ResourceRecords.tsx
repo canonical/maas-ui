@@ -44,7 +44,7 @@ type Props = {
 const generateRowId = (resource: DomainResource, i: number) =>
   `${resource.dnsresource_id}-${i}`;
 
-const ResourceRecords = ({ id }: Props): JSX.Element | null => {
+const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, id)
   );

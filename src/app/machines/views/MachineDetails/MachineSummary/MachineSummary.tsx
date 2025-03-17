@@ -26,7 +26,7 @@ type Props = {
   setSidePanelContent: MachineSetSidePanelContent;
 };
 
-const MachineSummary = ({ setSidePanelContent }: Props): JSX.Element => {
+const MachineSummary = ({ setSidePanelContent }: Props): React.ReactElement => {
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)

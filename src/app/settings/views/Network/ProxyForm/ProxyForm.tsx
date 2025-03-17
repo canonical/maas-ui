@@ -23,7 +23,7 @@ const ProxySchema = Yup.object().shape({
   }),
 });
 
-const ProxyForm = (): JSX.Element => {
+const ProxyForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

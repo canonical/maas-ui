@@ -9,7 +9,7 @@ import FormikField from "@/app/base/components/FormikField";
 import docsUrls from "@/app/base/docsUrls";
 import { TLSExpiryNotificationInterval } from "@/app/store/config/types";
 
-const TLSEnabledFields = (): JSX.Element => {
+const TLSEnabledFields = (): React.ReactElement => {
   const { setFieldValue, values } = useFormikContext<TLSEnabledValues>();
 
   return (

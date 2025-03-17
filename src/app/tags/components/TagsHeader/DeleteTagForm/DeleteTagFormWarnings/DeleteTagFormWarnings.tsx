@@ -29,7 +29,9 @@ const generateDeployedMessage = (count: number) =>
     ? `There is ${count} deployed machine with this tag and it will not be affected until it is redeployed.`
     : `There are ${count} deployed machines with this tag and they will not be affected until they are redeployed.`;
 
-export const DeleteTagFormWarnings = ({ id }: Props): JSX.Element | null => {
+export const DeleteTagFormWarnings = ({
+  id,
+}: Props): React.ReactElement | null => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );

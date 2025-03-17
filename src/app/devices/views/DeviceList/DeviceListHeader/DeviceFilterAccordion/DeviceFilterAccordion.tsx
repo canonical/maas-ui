@@ -35,7 +35,7 @@ const filterNames = new Map([
 const DeviceFilterAccordion = ({
   searchText,
   setSearchText,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const devices = useSelector(deviceSelectors.all);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
   const tags = useSelector(tagSelectors.all);

@@ -107,7 +107,7 @@ const generateRows = (sshkeys: SshKeyResponse[], navigate: NavigateFunction) =>
     };
   });
 
-const SSHKeyList = ({ ...tableProps }: Props): JSX.Element => {
+const SSHKeyList = ({ ...tableProps }: Props): React.ReactElement => {
   const { data, failureReason, isPending, isFetched } = useListSshKeys();
   const navigate = useNavigate();
   const sshkeys = data?.items ?? [];

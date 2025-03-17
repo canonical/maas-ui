@@ -45,7 +45,7 @@ export const CloneStorageTable = ({
   loadingMachineDetails = false,
   machine,
   selected,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   let rows: MainTableRow[] = [];
 
   if (loadingMachineDetails) {

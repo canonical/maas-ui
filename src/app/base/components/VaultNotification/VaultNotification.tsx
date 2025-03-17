@@ -6,7 +6,7 @@ import controllerSelectors from "@/app/store/controller/selectors";
 import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-const VaultNotification = (): JSX.Element | null => {
+const VaultNotification = (): React.ReactElement | null => {
   const { unconfiguredControllers, configuredControllers } = useSelector(
     (state: RootState) =>
       controllerSelectors.getVaultConfiguredControllers(state)

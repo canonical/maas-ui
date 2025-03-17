@@ -99,7 +99,7 @@ const FormikFormContent = <V extends object, E = null>({
   "aria-label": ariaLabel,
   buttonsBehavior = "coupled",
   ...buttonsProps
-}: Props<V, E>): JSX.Element => {
+}: Props<V, E>): React.ReactElement => {
   const formikContext = useFormikContext<V>();
   if (import.meta.env.NODE_ENV === "development") {
     withFormikDevtools(formikContext);
