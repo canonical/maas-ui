@@ -1,6 +1,5 @@
 import { ContextualMenu } from "@canonical/react-components";
-import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context";

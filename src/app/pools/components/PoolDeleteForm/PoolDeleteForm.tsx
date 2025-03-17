@@ -1,5 +1,5 @@
 import { useOnEscapePressed } from "@canonical/react-components";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 import { useDeletePool } from "@/app/api/query/pools";
 import ModelActionForm from "@/app/base/components/ModelActionForm";

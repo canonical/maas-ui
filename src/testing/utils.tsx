@@ -11,7 +11,14 @@ import { produce } from "immer";
 import type { RequestHandler } from "msw";
 import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import type { Router } from "react-router";
+import {
+  createBrowserRouter,
+  BrowserRouter,
+  Route,
+  RouterProvider,
+  Routes,
+} from "react-router-dom";
 import { HistoryRouter } from "redux-first-history/rr6";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
@@ -539,6 +546,7 @@ type TestProviderProps = {
   state?: Partial<RootState>;
   store?: MockStoreEnhanced<RootState | unknown>;
   route?: string;
+  router?: typeof Router;
   history?: MemoryHistory;
 };
 
@@ -549,6 +557,7 @@ type TestProviderProps = {
  * @param state The app state used for testing
  * @param store The mock store
  * @param route The route for the test
+ * @param router
  * @param history The history object for navigation
  * @constructor
  */
@@ -557,11 +566,22 @@ export const TestProvider = ({
   state = factory.rootState(),
   store,
   route = "/",
+  router,
   history = createMemoryHistory({ initialEntries: [route] }),
 }: TestProviderProps) => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, staleTime: Infinity } },
   });
+  const mockRouter =
+    router ??
+    createBrowserRouter([
+      {
+        path: "*",
+        element: (
+          <SidePanelContextProvider>{children}</SidePanelContextProvider>
+        ),
+      },
+    ]);
 
   const mockStore = store ?? configureStore()(state);
 
@@ -576,9 +596,7 @@ export const TestProvider = ({
     <QueryClientProvider client={queryClient}>
       <WebSocketProvider>
         <Provider store={mockStore}>
-          <SidePanelContextProvider>
-            <HistoryRouter history={history}>{children}</HistoryRouter>
-          </SidePanelContextProvider>
+          <RouterProvider router={mockRouter} />
         </Provider>
       </WebSocketProvider>
     </QueryClientProvider>
