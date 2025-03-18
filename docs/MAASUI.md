@@ -101,6 +101,34 @@ Many of the Vanilla components have React implementations which you can find in 
 
 If you need a vanilla component that does not already exist, first implement it in MAAS-UI and then propose it to the react-components repo.
 
+### TanStack Query
+
+We use [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview) for our API functions used to interact with the backend. React Query acts as our data fetching and posting tool, allowing for a single-form communication structure for all endpoints, and providing a query cache. The query cache serves to alleviate the load of numerous API calls by storing the responses and only requesting new data if said cache is marked as stale.
+
+In addition to TanStack Query, we also use [Hey API](https://heyapi.dev) as our codegen for creating the aforementioned API functions from an OpenAPI spec document. Hey API's generated files, contained in \`[app/apiclient](https://github.com/canonical/maas-ui/tree/main/src/app/apiclient)\`, allow us to accurately update our data types and API calls according to the most recent specification provided. The generated SDK functions are wrapped by custom query functions found in \`[app/api/query](https://github.com/canonical/maas-ui/tree/main/src/app/api/query)\`, manually written to correspond to each endpoint. It is these SDK-wrapping functions that are used across the codebase, alongside the generated types, to communicate with the back-end.
+
+#### Typical Query Function
+
+A typical query function is simply a call to its corresponding SDK function with provided types and exposed options, wrapped in a custom web socket hook we use to allow for invalidating the query cache through messages pushed by the back-end. In the case where the query affects the data being displayed, the query function also invalidates the cache upon success to execute a fetch of the newly modified data.
+
+```ts
+export const useCreateZone = (mutationOptions?: Options<CreateZoneData>) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    CreateZoneResponse,
+    CreateZoneError,
+    Options<CreateZoneData>
+  >({
+    ...createZoneMutation(mutationOptions),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: listZonesQueryKey(),
+      });
+    },
+  });
+};
+```
+
 ### Redux
 
 We use [Redux](https://redux.js.org/introduction/getting-started) as our state-management tool. To put it briefly, Redux is responsible for storing all the app-wide state (in the “store”) and provides a predictable methodology for changing that state. The normal flow is this: an action is dispatched, and as a consequence, some state is changed via a reducer function. Actions can be dispatched directly by the user from the UI, or elsewhere (e.g. a server).
@@ -124,7 +152,7 @@ A typical slice contains:
 - An `items` property for storing the list of all items of a particular model
 - Associated `loading`, `loaded`, and `errors` properties
 
-```ts
+```
 controller: {
   items: Controller[],
   loading: boolean,
@@ -143,7 +171,7 @@ The state slice for the `machine` model includes additional properties: `lists`,
 - Filters supported by the server are stored in `machine.filters`
 - `machine.lists` contains machine IDs for each request, referencing data in `machine.items`
 
-```ts
+```
 machine: {
   items: Machine[];
   lists: { [query: string]: Machine["system_id"][] };
@@ -251,7 +279,7 @@ The attribute can be applied to any component or element:
 Which can then be used within a test:
 
 ```javascript
-expect(wrapper.find("[data-testid='content']").text()).toBe(“Content”);
+expect(wrapper.find("[data-testid='content']").text()).toBe("Content");
 ```
 
 #### Model factories
