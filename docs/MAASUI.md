@@ -131,6 +131,8 @@ export const useCreateZone = (mutationOptions?: Options<CreateZoneData>) => {
 
 ### Redux
 
+> NOTE: MAAS-UI will be completely migrating to TanStack Query for its API structure, and phase out the use of Redux. This transition is being carried out by migrating each endpoint separately, and removing the migrated types from the Redux store.
+
 We use [Redux](https://redux.js.org/introduction/getting-started) as our state-management tool. To put it briefly, Redux is responsible for storing all the app-wide state (in the “store”) and provides a predictable methodology for changing that state. The normal flow is this: an action is dispatched, and as a consequence, some state is changed via a reducer function. Actions can be dispatched directly by the user from the UI, or elsewhere (e.g. a server).
 
 ![redux](https://user-images.githubusercontent.com/47540149/214085476-46535bee-cc9d-407e-a569-90014ab7f7b2.png)
