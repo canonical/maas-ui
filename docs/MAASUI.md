@@ -62,7 +62,7 @@ When developing new features or extending existing ones, consider the following:
 
 The high-level interactions between the React side of the frontend and the API are illustrated below.
 
-![code-structure](https://user-images.githubusercontent.com/47540149/214085014-a48a1645-afb0-434b-b5e9-07ae798c571a.png)
+![code-structure](https://github.com/user-attachments/assets/d7abb957-f5f7-453d-9dab-a1ff749a222d)
 
 ## React
 
