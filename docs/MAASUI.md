@@ -62,6 +62,8 @@ When developing new features or extending existing ones, consider the following:
 
 The high-level interactions between the React side of the frontend and the API are illustrated below.
 
+> NOTE: MAAS-UI currently utilises both REST and web socket API through TanStack Query and Redux, respectively.
+
 ![code-structure](https://github.com/user-attachments/assets/d7abb957-f5f7-453d-9dab-a1ff749a222d)
 
 ## React
@@ -105,7 +107,7 @@ If you need a vanilla component that does not already exist, first implement it 
 
 We use [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview) for our API functions used to interact with the backend. React Query acts as our data fetching and posting tool, allowing for a single-form communication structure for all endpoints, and providing a query cache. The query cache serves to alleviate the load of numerous API calls by storing the responses and only requesting new data if said cache is marked as stale.
 
-In addition to TanStack Query, we also use [Hey API](https://heyapi.dev) as our codegen for creating the aforementioned API functions from an OpenAPI spec document. Hey API's generated files, contained in \`[app/apiclient](https://github.com/canonical/maas-ui/tree/main/src/app/apiclient)\`, allow us to accurately update our data types and API calls according to the most recent specification provided. The generated SDK functions are wrapped by custom query functions found in \`[app/api/query](https://github.com/canonical/maas-ui/tree/main/src/app/api/query)\`, manually written to correspond to each endpoint. It is these SDK-wrapping functions that are used across the codebase, alongside the generated types, to communicate with the back-end.
+In addition to TanStack Query, we also use [Hey API](https://heyapi.dev) as our codegen for creating the aforementioned API functions from an OpenAPI spec document. Hey API's generated files, contained in \`[app/apiclient](https://github.com/canonical/maas-ui/tree/main/src/app/apiclient)\`, allow us to accurately update our data types and API calls according to the most recent specification provided. The generated SDK functions are wrapped by custom query functions found in \`[app/api/query](https://github.com/canonical/maas-ui/tree/main/src/app/api/query)\`, manually written to correspond to each endpoint.
 
 #### Typical Query Function
 
