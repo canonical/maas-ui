@@ -1,5 +1,8 @@
+@use "sass:map";
+@use "sass:math";
+
 @mixin TableMenu {
-  $icon-size: map-get($icon-sizes, default);
+  $icon-size: map.get($icon-sizes, default);
   $icon-space: $icon-size + $sph--small + $sph--large;
 
   .p-table-menu--hasIcon .p-contextual-menu__non-interactive {
@@ -26,7 +29,7 @@
   }
 
   .p-table-menu__icon-space {
-    $icon-space: map-get($icon-sizes, default);
+    $icon-space: map.get($icon-sizes, default);
     display: inline-block;
     width: $icon-space;
   }

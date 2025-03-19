@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "sass:map";
+@use "sass:string";
+
 @mixin maas-utilities {
   %display-flex {
     display: flex !important;
@@ -205,7 +209,7 @@
   }
 
   .u-text--default-size {
-    font-size: map-get($base-font-sizes, base) !important;
+    font-size: map.get($base-font-sizes, base) !important;
     font-weight: $font-weight-regular-text !important;
   }
 
@@ -218,7 +222,7 @@
   }
 
   .u-text--monospace {
-    font-family: unquote($font-monospace) !important;
+    font-family: string.unquote($font-monospace) !important;
   }
 
   .u-no-line-height {
@@ -263,7 +267,7 @@
 
   @each $name, $color in $nav-theme-colors {
     .is-maas-#{$name}--accent {
-      background-color: lighten($color, 5%) !important;
+      background-color: color.scale($color, $lightness: 5%) !important;
     }
   }
 }

@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin NumaCard {
 
   .numa-card {
@@ -23,7 +25,7 @@
     @extend %vf-button-base;
     background-position: right center;
     background-repeat: no-repeat;
-    background-size: map-get($icon-sizes, default);
+    background-size: map.get($icon-sizes, default);
     border: 0;
     margin: 0;
     padding: 0 #{$sp-unit * 5} 0 0;
