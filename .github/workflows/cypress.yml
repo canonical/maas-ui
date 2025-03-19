@@ -6,7 +6,7 @@ on:
       - "3.*"
       - "*cypress*"
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   cypress:
@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        groups: ['no-users', 'with-users']
+        groups: [ 'no-users', 'with-users' ]
     env:
       MAAS_URL: http://localhost:5240
       MAAS_UI_URL: http://localhost:8400
@@ -33,6 +33,10 @@ jobs:
           runTests: false
           install-command: yarn install
           build: yarn build
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
       - name: Create MAAS admin
         if: matrix.groups == 'with-users'
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
