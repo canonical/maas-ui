@@ -178,6 +178,9 @@
     "wait-on": "7.2.0",
     "webpack": "5.98.0"
   },
+  "resolutions": {
+    "string-width": "4.2.3"
+  },
   "browserslist": {
     "production": [
       "last 1 chrome version",
