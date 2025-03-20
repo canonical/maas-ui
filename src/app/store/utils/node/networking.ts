@@ -590,7 +590,7 @@ export const getInterfaceIPAddressOrMode = (
   vlans: VLAN[],
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
-): NetworkLink["ip_address"] | DiscoveredIP["ip_address"] | string | null => {
+): NetworkLink["ip_address"] | DiscoveredIP["ip_address"] | null => {
   const ipAddress = getInterfaceIPAddress(node, fabrics, vlans, nic, link);
   const discovered = getInterfaceDiscovered(node, nic, link);
   if (link && !nic) {
