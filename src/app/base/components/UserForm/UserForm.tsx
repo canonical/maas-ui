@@ -35,13 +35,13 @@ export type UserValues = {
   username: User["username"];
 };
 
-export type Props = {
+export type Props = Partial<FormikFormProps<UserValues>> & {
   includeCurrentPassword?: boolean;
   includeUserType?: boolean;
   onSave: (values: UserValues) => void;
   onUpdateFields?: (values: UserValues) => void;
   user?: User | null;
-} & Partial<FormikFormProps<UserValues>>;
+};
 
 const schemaFields = {
   email: Yup.string()

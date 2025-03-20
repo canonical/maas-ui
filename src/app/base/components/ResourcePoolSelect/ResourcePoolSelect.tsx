@@ -6,12 +6,12 @@ import { Select } from "@canonical/react-components";
 import { usePools } from "@/app/api/query/pools";
 import FormikField from "@/app/base/components/FormikField";
 
-type Props = {
+type Props = HTMLProps<HTMLSelectElement> & {
   disabled?: boolean;
   label?: string;
   name: string;
-  valueKey?: "name" | "id";
-} & HTMLProps<HTMLSelectElement>;
+  valueKey?: "id" | "name";
+};
 
 export const ResourcePoolSelect = ({
   disabled = false,

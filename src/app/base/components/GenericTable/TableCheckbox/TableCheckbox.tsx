@@ -1,10 +1,10 @@
 import type { CheckboxInputProps } from "@canonical/react-components";
 import type { Row, Table } from "@tanstack/react-table";
 
-type TableCheckboxProps<T> = {
+type TableCheckboxProps<T> = Partial<CheckboxInputProps> & {
   row?: Row<T>;
   table?: Table<T>;
-} & Partial<CheckboxInputProps>;
+};
 
 const TableAllCheckbox = <T,>({ table, ...props }: TableCheckboxProps<T>) => {
   if (!table) {

@@ -289,7 +289,7 @@ const SelectUpstreamImagesForm = () => {
           {({
             values,
             setFieldValue,
-          }: Pick<DownloadImagesSelectProps, "values" | "setFieldValue">) => (
+          }: Pick<DownloadImagesSelectProps, "setFieldValue" | "values">) => (
             <SelectUpstreamImagesSelect
               groupedImages={groupedImages}
               setFieldValue={setFieldValue}

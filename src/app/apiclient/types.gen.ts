@@ -223,11 +223,11 @@ export type EventResponse = {
  */
 export type EventTypeLevelEnum =
   | "AUDIT"
+  | "CRITICAL"
   | "DEBUG"
-  | "INFO"
-  | "WARNING"
   | "ERROR"
-  | "CRITICAL";
+  | "INFO"
+  | "WARNING";
 
 export type EventTypeResponse = {
   name: string;
@@ -380,7 +380,7 @@ export type IpRangeUpdateRequest = {
 /**
  * The vocabulary of possible types to link a `Subnet` to a `Interface`.
  */
-export type InterfaceLinkType = "auto" | "dhcp" | "static" | "link_up";
+export type InterfaceLinkType = "auto" | "dhcp" | "link_up" | "static";
 
 /**
  * Base class for offset-paginated responses.
@@ -422,12 +422,12 @@ export type InterfaceResponse = {
  * The vocabulary of possible types for `Interface`.
  */
 export type InterfaceType =
-  | "physical"
+  | "alias"
   | "bond"
   | "bridge"
-  | "vlan"
-  | "alias"
-  | "unknown";
+  | "physical"
+  | "unknown"
+  | "vlan";
 
 export type LinkResponse = {
   id: number;
@@ -636,7 +636,7 @@ export type PreconditionFailedBodyResponse = {
 /**
  * The vocabulary of a `Subnet`'s possible reverse DNS modes.
  */
-export type RdnsMode = 2 | 0 | 1;
+export type RdnsMode = 0 | 1 | 2;
 
 export type ReservedIpCreateRequest = {
   /**
@@ -701,7 +701,7 @@ export type ReservedIpsListResponse = {
 /**
  * An enumeration.
  */
-export type ResourcePoolPermission = "edit" | "delete";
+export type ResourcePoolPermission = "delete" | "edit";
 
 export type ResourcePoolRequest = {
   /**
@@ -938,7 +938,7 @@ export type SshKeysListResponse = {
 /**
  * An enumeration.
  */
-export type SshKeysProtocolType = "lp" | "gh";
+export type SshKeysProtocolType = "gh" | "lp";
 
 export type SubnetRequest = {
   /**

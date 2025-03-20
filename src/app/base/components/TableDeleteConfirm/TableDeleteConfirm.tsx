@@ -1,7 +1,10 @@
 import TableConfirm from "@/app/base/components/TableConfirm";
 import type { Props as TableConfirmProps } from "@/app/base/components/TableConfirm/TableConfirm";
 
-type Props = {
+type Props = Pick<
+  TableConfirmProps,
+  "errors" | "onClose" | "onConfirm" | "onSuccess" | "sidebar"
+> & {
   deleted: TableConfirmProps["finished"];
   deleting: TableConfirmProps["inProgress"];
   message?: string;
@@ -10,10 +13,7 @@ type Props = {
   onClose: TableConfirmProps["onClose"];
   onConfirm: TableConfirmProps["onConfirm"];
   sidebar?: TableConfirmProps["sidebar"];
-} & Pick<
-  TableConfirmProps,
-  "errors" | "onClose" | "onConfirm" | "onSuccess" | "sidebar"
->;
+};
 
 export enum Labels {
   ConfirmLabel = "Delete",

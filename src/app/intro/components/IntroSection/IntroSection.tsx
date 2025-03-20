@@ -11,7 +11,7 @@ import type { APIError } from "@/app/base/types";
 import { useExitURL } from "@/app/intro/hooks";
 import { formatErrors } from "@/app/utils";
 
-type Props = {
+type Props = Partial<PageContentProps> & {
   children: ReactNode;
   complete?: boolean;
   errors?: APIError;
@@ -19,7 +19,7 @@ type Props = {
   shouldExitIntro?: boolean;
   titleLink?: ReactNode;
   windowTitle?: string;
-} & Partial<PageContentProps>;
+};
 
 const IntroSection = ({
   children,

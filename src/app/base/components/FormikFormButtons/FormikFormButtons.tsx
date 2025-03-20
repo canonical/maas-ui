@@ -24,7 +24,7 @@ export type Props<V> = {
   savingLabel?: string | null;
   secondarySubmit?: FormikContextFunc<V> | null;
   secondarySubmitDisabled?: boolean;
-  secondarySubmitLabel?: string | FormikContextFunc<V, string> | null;
+  secondarySubmitLabel?: FormikContextFunc<V, string> | string | null;
   secondarySubmitTooltip?: string | null;
   submitAppearance?: ActionButtonProps["appearance"];
   submitDisabled?: boolean;

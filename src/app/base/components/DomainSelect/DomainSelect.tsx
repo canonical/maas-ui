@@ -7,12 +7,12 @@ import { useFetchActions } from "@/app/base/hooks";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 
-type Props = {
+type Props = FormikFieldProps & {
   disabled?: boolean;
   label?: string | null;
   name: string;
-  valueKey?: "name" | "id";
-} & FormikFieldProps;
+  valueKey?: "id" | "name";
+};
 
 export enum Labels {
   DefaultLabel = "Domain",

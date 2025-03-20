@@ -15,7 +15,7 @@ type APIFilters = Record<string, (number | string)[]>;
 
 type SearchMappingFunc = (filter: FilterValue[]) => APIFilters | null;
 
-type SearchAPIMappings = Record<string, string | SearchMappingFunc>;
+type SearchAPIMappings = Record<string, SearchMappingFunc | string>;
 
 /**
  * Generates a function to map a list of numbers to the highest value. This is

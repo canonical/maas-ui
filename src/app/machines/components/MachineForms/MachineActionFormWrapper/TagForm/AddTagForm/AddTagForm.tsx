@@ -3,13 +3,13 @@ import { useFetchDeployedMachineCount } from "@/app/store/machine/utils/hooks";
 import type { Tag } from "@/app/store/tag/types";
 import BaseAddTagForm from "@/app/tags/components/AddTagForm";
 
-export type Props = {
+export type Props = Partial<MachineActionFormProps> & {
   name: string | null;
   onTagCreated: (tag: Tag) => void;
   viewingDetails?: boolean;
   viewingMachineConfig?: boolean;
   onCancel?: () => void;
-} & Partial<MachineActionFormProps>;
+};
 
 export const AddTagForm = ({
   selectedMachines,

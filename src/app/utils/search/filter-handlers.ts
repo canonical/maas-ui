@@ -1,4 +1,4 @@
-export type FilterValue = string | number;
+export type FilterValue = number | string;
 
 export type Filters = Record<string, FilterValue[]>;
 

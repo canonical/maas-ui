@@ -21,6 +21,6 @@ export type TagStateList = {
 
 export type TagStateLists = Record<string, TagStateList>;
 
-export type TagState = {
+export type TagState = GenericState<Tag, APIError> & {
   lists: TagStateLists;
-} & GenericState<Tag, APIError>;
+};

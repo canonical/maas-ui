@@ -4,7 +4,7 @@ import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 
 type Props = {
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
 };
 
 const NodePowerParameters = ({ node }: Props): React.ReactElement => {

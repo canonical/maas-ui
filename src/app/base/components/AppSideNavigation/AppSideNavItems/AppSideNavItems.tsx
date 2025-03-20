@@ -30,10 +30,9 @@ const AppSideNavItemGroup = ({
   vaultIncomplete,
   path,
   setIsCollapsed,
-}: { group: NavGroup } & Pick<
-  Props,
-  "isAdmin" | "vaultIncomplete" | "path" | "setIsCollapsed"
->) => {
+}: Pick<Props, "isAdmin" | "path" | "setIsCollapsed" | "vaultIncomplete"> & {
+  group: NavGroup;
+}) => {
   const id = useId();
   const hasActiveChild = useMemo(() => {
     for (const navLink of group.navLinks) {
