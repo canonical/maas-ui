@@ -191,12 +191,15 @@ export const mergeGroupUpdates = ({
     updatedCollapsedGroups.length > 0 &&
     updatedExpandedGroups.length > 0
   ) {
-    const initialCollapsedGroups = initialGroups.reduce((acc, curr) => {
-      if (curr.collapsed && curr.name) {
-        acc.push(curr.name);
-      }
-      return acc;
-    }, [] as string[]);
+    const initialCollapsedGroups = initialGroups.reduce<string[]>(
+      (acc, curr) => {
+        if (curr.collapsed && curr.name) {
+          acc.push(curr.name);
+        }
+        return acc;
+      },
+      []
+    );
     const filteredUpdatedCollapsedGroups = updatedCollapsedGroups?.filter(
       (group) =>
         !!group.collapsed &&
