@@ -1,7 +1,7 @@
 import ConfigureDHCP from "../ConfigureDHCP";
 import EditVLAN from "../EditVLAN";
 
-import { type SetSidePanelContent } from "@/app/base/side-panel-context";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import ReservedRangeDeleteForm from "@/app/subnets/components/ReservedRangeDeleteForm";
