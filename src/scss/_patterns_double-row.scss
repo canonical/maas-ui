@@ -1,5 +1,8 @@
+@use "sass:map";
+@use "sass:math";
+
 @mixin maas-double-row {
-  $icon-space: map-get($icon-sizes, default);
+  $icon-space: map.get($icon-sizes, default);
 
   .p-double-row--with-icon,
   .p-double-row {

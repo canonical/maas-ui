@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @mixin BootArchitecturesTable {
   .boot-architectures-table {
     .name-col {
@@ -28,7 +30,7 @@
       background-color: $color-light;
 
       &.is-selected {
-        background-color: transparentize($color-link, 0.85);
+        background-color: color.scale($color-link, $alpha: -85%);
       }
     }
   }

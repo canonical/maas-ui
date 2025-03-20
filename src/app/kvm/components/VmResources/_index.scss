@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin VmResources {
   .vm-resources {
     padding: $sph--large;
@@ -9,7 +11,7 @@
     padding: $spv--x-small $sph--small;
     // Subtract small screen gutter width and card inner padding to center dropdown.
     width: calc(
-      100vw - #{(map-get($grid-gutter-widths, small) + $sph--large) * 2}
+      100vw - #{(map.get($grid-gutter-widths, small) + $sph--large) * 2}
     );
 
     .fqdn-col,
@@ -25,7 +27,7 @@
 
     @media only screen and (min-width: $breakpoint-small) {
       width: calc(
-        100vw - #{(map-get($grid-gutter-widths, default) + $sph--large) * 2}
+        100vw - #{(map.get($grid-gutter-widths, default) + $sph--large) * 2}
       );
 
       .power-col {
