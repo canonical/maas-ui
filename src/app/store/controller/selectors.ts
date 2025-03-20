@@ -62,20 +62,18 @@ const processing = (state: RootState): Controller[ControllerMeta.PK][] =>
   );
 
 // Create a selector for each controller status.
-export const statusSelectors = ACTIONS.reduce(
-  (selectors, { status }) => {
-    selectors[status] = createSelector(
-      [defaultSelectors.all, statuses],
-      (controllers: Controller[], statuses: ControllerStatuses) =>
-        controllers.filter(
-          ({ system_id }) =>
-            statuses[system_id][status as keyof ControllerStatus]
-        )
-    );
-    return selectors;
-  },
-  {} as Record<string, Selector<RootState, Controller[]>>
-);
+export const statusSelectors = ACTIONS.reduce<
+  Record<string, Selector<RootState, Controller[]>>
+>((selectors, { status }) => {
+  selectors[status] = createSelector(
+    [defaultSelectors.all, statuses],
+    (controllers: Controller[], statuses: ControllerStatuses) =>
+      controllers.filter(
+        ({ system_id }) => statuses[system_id][status as keyof ControllerStatus]
+      )
+  );
+  return selectors;
+}, {});
 
 /**
  * Get the statuses for a controller.
