@@ -61,7 +61,7 @@ const parseObjectError = (
 };
 
 const parseHtmlToText = (htmlContent: string): string | null => {
-  const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  const bodyMatch = /<body[^>]*>([\s\S]*?)<\/body>/i.exec(htmlContent);
 
   if (bodyMatch) {
     const bodyContent = bodyMatch[1];
