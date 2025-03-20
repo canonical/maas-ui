@@ -74,7 +74,7 @@ export const statusSelectors = ACTIONS.reduce(
     );
     return selectors;
   },
-  {} as { [x: string]: Selector<RootState, Controller[]> }
+  {} as Record<string, Selector<RootState, Controller[]>>
 );
 
 /**

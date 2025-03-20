@@ -11,9 +11,7 @@
  */
 export type AaaaRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   ipv6address: string;
   kind?: string;
 };
@@ -29,9 +27,7 @@ export type AaaaRecordResponse = {
  */
 export type ARecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   ipv4address: string;
   kind?: string;
 };
@@ -87,9 +83,7 @@ export type BodyLogin = {
  */
 export type CnameRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   cname: string;
   kind?: string;
 };
@@ -151,9 +145,7 @@ export type DomainResourceRecordSetListResponse = {
  */
 export type DomainResourceRecordSetResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   name: string;
   node_id?: number;
   ttl?: number;
@@ -180,9 +172,7 @@ export type DomainResourceRecordSetResponse = {
  */
 export type DomainResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   authoritative: boolean;
   ttl?: number;
   id: number;
@@ -212,9 +202,7 @@ export type DomainsListResponse = {
  */
 export type EventResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   created: string;
   updated: string;
@@ -281,9 +269,7 @@ export type FabricRequest = {
  */
 export type FabricResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name?: string;
   description?: string;
@@ -353,9 +339,7 @@ export type IpRangeListResponse = {
  */
 export type IpRangeResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   type: IpRangeType;
   start_ip: string;
@@ -420,9 +404,7 @@ export type InterfaceListResponse = {
  */
 export type InterfaceResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   type: InterfaceType;
@@ -464,9 +446,7 @@ export type LinkResponse = {
  */
 export type MxRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   exchange: string;
   preference: number;
   kind?: string;
@@ -483,9 +463,7 @@ export type MxRecordResponse = {
  */
 export type MachineResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   system_id: string;
   description: string;
@@ -526,9 +504,7 @@ export type MachinesListResponse = {
  */
 export type NsRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   nsdname: string;
   kind?: string;
 };
@@ -579,9 +555,7 @@ export type NotFoundBodyResponse = {
  */
 export type PciDeviceResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   type: HardwareDeviceTypeEnum;
   vendor_id: string;
@@ -617,13 +591,9 @@ export type PciDevicesListResponse = {
  */
 export type PowerDriverResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   power_type: PowerTypeEnum;
-  power_parameters: {
-    [key: string]: unknown;
-  };
+  power_parameters: Record<string, unknown>;
   kind?: string;
 };
 
@@ -694,9 +664,7 @@ export type ReservedIpCreateRequest = {
  */
 export type ReservedIpResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   ip: string;
   mac_address: string;
@@ -754,9 +722,7 @@ export type ResourcePoolRequest = {
  */
 export type ResourcePoolResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   description: string;
@@ -774,9 +740,7 @@ export type ResourcePoolResponse = {
  */
 export type ResourcePoolWithSummaryResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   description: string;
@@ -820,9 +784,7 @@ export type ResourcePoolsWithSummaryListResponse = {
  */
 export type SrvRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   port: number;
   priority: number;
   target: string;
@@ -841,9 +803,7 @@ export type SrvRecordResponse = {
  */
 export type SshfpRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   algorithm: number;
   fingerprint_type: number;
   fingerprint: string;
@@ -879,9 +839,7 @@ export type SslKeyRequest = {
  */
 export type SslKeyResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   key: string;
   kind?: string;
@@ -909,9 +867,7 @@ export type SpaceRequest = {
  */
 export type SpaceResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name?: string;
   description?: string;
@@ -960,9 +916,7 @@ export type SshKeyManualUploadRequest = {
  */
 export type SshKeyResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   key: string;
   protocol?: SshKeysProtocolType;
@@ -1044,9 +998,7 @@ export type SubnetRequest = {
  */
 export type SubnetResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name?: string;
   description?: string;
@@ -1084,9 +1036,7 @@ export type SubnetsListResponse = {
  */
 export type TxtRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   data: string;
   kind?: string;
 };
@@ -1109,9 +1059,7 @@ export type UnauthorizedBodyResponse = {
  */
 export type UsbDeviceResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   type: HardwareDeviceTypeEnum;
   vendor_id: string;
@@ -1163,9 +1111,7 @@ export type UserRequest = {
  */
 export type UserResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   username: string;
   password: string;
@@ -1232,9 +1178,7 @@ export type VlanCreateRequest = {
  */
 export type VlanResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   vid: number;
   name?: string;
@@ -1325,9 +1269,7 @@ export type ZoneRequest = {
  */
 export type ZoneResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   description: string;
@@ -1345,9 +1287,7 @@ export type ZoneResponse = {
  */
 export type ZoneWithSummaryResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   description: string;

@@ -24,15 +24,11 @@ import {
 
 import "./_index.scss";
 
-export type GroupedImages = {
-  [key: string]: ReleasesWithArches;
-};
+export type GroupedImages = Record<string, ReleasesWithArches>;
 
-type ReleasesWithArches = {
-  [key: string]: MultiSelectItem[];
-};
+type ReleasesWithArches = Record<string, MultiSelectItem[]>;
 
-type ImagesByOS = { [key: string]: DownloadableImage[] };
+type ImagesByOS = Record<string, DownloadableImage[]>;
 
 type DownloadableImage = {
   id: string;

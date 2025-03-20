@@ -14,12 +14,10 @@ type ExtraData = {
   tags: Tag[];
 };
 
-type SearchMappings = {
-  [x: string]: (
-    device: Device,
-    extraData?: ExtraData
-  ) => FilterValue | FilterValue[] | null;
-};
+type SearchMappings = Record<
+  string,
+  (device: Device, extraData?: ExtraData) => FilterValue | FilterValue[] | null
+>;
 
 // Helpers that convert the pseudo field on the device to an actual value.
 const searchMappings: SearchMappings = {

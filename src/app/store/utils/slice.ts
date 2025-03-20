@@ -404,8 +404,8 @@ export const generateStatusHandlers = <
     action: PayloadAction<S["errors"]>,
     event: string
   ) => Draft<S>
-): { [x: string]: SliceCaseReducers<S> } =>
-  handlers.reduce<{ [x: string]: SliceCaseReducers<S> }>(
+): Record<string, SliceCaseReducers<S>> =>
+  handlers.reduce<Record<string, SliceCaseReducers<S>>>(
     (collection, status) => {
       collection[status.status] = {
         // The handler for when the action has started.

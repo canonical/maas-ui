@@ -153,13 +153,9 @@ export type MachineActionsState = {
 
 export type OSInfoOsKernelEntry = [string, string];
 
-export type OSInfoOS = {
-  [x: string]: [string, string][];
-};
+export type OSInfoOS = Record<string, [string, string][]>;
 
-export type OSInfoKernels = {
-  [x: string]: OSInfoOS;
-};
+export type OSInfoKernels = Record<string, OSInfoOS>;
 
 export type OSInfoOSystem = [string, string];
 

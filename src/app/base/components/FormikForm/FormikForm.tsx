@@ -12,9 +12,7 @@ type InputFieldValue =
   | number
   | boolean
   | object;
-export type FormikFormValues = {
-  [field: string]: InputFieldValue;
-};
+export type FormikFormValues = Record<string, InputFieldValue>;
 
 export type Props<V extends object, E = null> = ContentProps<V, E> &
   FormikConfig<V> & { initialValues: FormikFormValues };

@@ -94,7 +94,7 @@ export const AddChassisForm = ({
             label: "Add chassis form",
           }}
           onSubmit={(values) => {
-            const params: { [x: string]: string } = {
+            const params: Record<string, string> = {
               chassis_type: values.power_type,
               domain: values.domain,
             };

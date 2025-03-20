@@ -78,11 +78,7 @@ export type CommonActionFormProps<E = null> = {
   viewingDetails: boolean;
 };
 
-type UsabillaConfig =
-  | string
-  | {
-      [x: string]: unknown;
-    };
+type UsabillaConfig = string | Record<string, unknown>;
 
 export type UsabillaLive = (type: string, config?: UsabillaConfig) => void;
 

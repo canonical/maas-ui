@@ -416,9 +416,7 @@ export type NodeNumaNode = Model & {
 // Power parameters are dynamic and depend on the power type of the node.
 export type PowerParameter = string | number | string[];
 
-export type PowerParameters = {
-  [x: string]: PowerParameter;
-};
+export type PowerParameters = Record<string, PowerParameter>;
 
 export type SupportedFilesystem = {
   key: Filesystem["fstype"];
@@ -431,7 +429,7 @@ export type NodeVlan = Model & {
   name: string;
 };
 
-export type WorkloadAnnotations = { [x: string]: string };
+export type WorkloadAnnotations = Record<string, string>;
 
 export type BaseNodeActionParams = {
   system_id: Node["system_id"];
@@ -445,9 +443,7 @@ export type LinkParams = {
   subnet?: Subnet["id"];
 };
 
-export type ScriptInputParam = {
-  [x: string]: { url: string };
-};
+export type ScriptInputParam = Record<string, { url: string }>;
 
 export type SetZoneParams = BaseNodeActionParams & {
   zone_id: ZoneResponse["id"];

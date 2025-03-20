@@ -23,7 +23,7 @@ import { isId } from "@/app/utils";
  * @param items
  * @param key
  */
-const groupByKey = <I,>(items: I[], key: keyof I): { [x: string]: I[] } =>
+const groupByKey = <I,>(items: I[], key: keyof I): Record<string, I[]> =>
   items.reduce((obj, item) => {
     obj[item[key]] = obj[item[key]] || [];
     obj[item[key]].push(item);

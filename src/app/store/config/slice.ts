@@ -38,9 +38,9 @@ const statusSlice = createSlice({
       state.items = action.payload;
     },
     update: {
-      prepare: <V extends ConfigValues>(values: {
-        [name: string]: Config<V>["value"];
-      }) => {
+      prepare: <V extends ConfigValues>(
+        values: Record<string, Config<V>["value"]>
+      ) => {
         const params = {
           items: values,
         };

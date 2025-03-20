@@ -61,8 +61,10 @@ const processing = (state: RootState): Machine[MachineMeta.PK][] =>
     )
   );
 
-export const statusSelectors: { [x: string]: Selector<RootState, Machine[]> } =
-  {};
+export const statusSelectors: Record<
+  string,
+  Selector<RootState, Machine[]>
+> = {};
 
 // Create a selector for each machine status.
 ACTIONS.forEach(({ status }) => {
