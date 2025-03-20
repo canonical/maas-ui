@@ -111,7 +111,7 @@ describe("MachineHeader", () => {
   });
 
   it("displays power status when checking power", () => {
-    state.machine.statuses["abc123"] = factory.machineStatus({
+    state.machine.statuses.abc123 = factory.machineStatus({
       checkingPower: true,
     });
 

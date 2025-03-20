@@ -175,7 +175,7 @@ describe("SelectUpstreamImagesSelect", () => {
 
     expect(mockSetFieldValue).toHaveBeenCalledWith(
       getValueKey("Ubuntu", releases[0].title),
-      [groupedImages["Ubuntu"][releases[0].title][0]]
+      [groupedImages.Ubuntu[releases[0].title][0]]
     );
   });
 });
