@@ -80,10 +80,10 @@ export const useSubnetsTableSearch = (
 };
 
 export function usePagination<D>(
-  data: Array<D>,
+  data: D[],
   itemsPerPage = SUBNETS_TABLE_ITEMS_PER_PAGE
 ): {
-  pageData: Array<D>;
+  pageData: D[];
   currentPage: number;
   paginate: (pageNumber: number) => void;
   itemsPerPage: number;

@@ -262,7 +262,7 @@ export enum FetchSortDirection {
   Descending = "descending",
 }
 
-type ArrayOrValue<T> = { [P in keyof T]: T[P] | Array<T[P]> };
+type ArrayOrValue<T> = { [P in keyof T]: T[P] | T[P][] };
 
 type Filters = {
   [FilterGroupKey.AgentName]: string;
