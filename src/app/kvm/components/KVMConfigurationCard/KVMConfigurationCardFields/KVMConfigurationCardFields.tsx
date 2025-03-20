@@ -65,7 +65,7 @@ const KVMConfigurationCardFields = ({
           max={10}
           min={0.1}
           name="cpu_over_commit_ratio"
-          onChange={(e: React.FormEvent<HTMLInputElement>) =>
+          onChange={async (e: React.FormEvent<HTMLInputElement>) =>
             setFieldValue(
               "cpu_over_commit_ratio",
               Number(e.currentTarget.value)
@@ -82,7 +82,7 @@ const KVMConfigurationCardFields = ({
           max={10}
           min={0.1}
           name="memory_over_commit_ratio"
-          onChange={(e: React.FormEvent<HTMLInputElement>) =>
+          onChange={async (e: React.FormEvent<HTMLInputElement>) =>
             setFieldValue(
               "memory_over_commit_ratio",
               Number(e.currentTarget.value)

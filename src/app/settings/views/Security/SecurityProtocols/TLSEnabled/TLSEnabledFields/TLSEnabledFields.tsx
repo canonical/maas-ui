@@ -33,7 +33,7 @@ const TLSEnabledFields = (): React.ReactElement => {
           max={TLSExpiryNotificationInterval.MAX}
           min={TLSExpiryNotificationInterval.MIN}
           name="notificationInterval"
-          onChange={(e) =>
+          onChange={async (e) =>
             setFieldValue("notificationInterval", e.target.value)
           }
           showInput
