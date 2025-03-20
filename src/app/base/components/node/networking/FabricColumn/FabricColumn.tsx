@@ -21,7 +21,11 @@ type Props = {
   node: Node;
 };
 
-const FabricColumn = ({ link, nic, node }: Props): JSX.Element | null => {
+const FabricColumn = ({
+  link,
+  nic,
+  node,
+}: Props): React.ReactElement | null => {
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const fabrics = useSelector(fabricSelectors.all);
   const vlan = useSelector((state: RootState) =>

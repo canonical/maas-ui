@@ -21,7 +21,7 @@ const StorageResources = ({
   free,
   other = 0,
   pools,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const freeStorage = formatBytes({ value: free, unit: "B" });
   const totalStorage = formatBytes({
     value: allocated + other + free,

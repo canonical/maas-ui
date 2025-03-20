@@ -165,7 +165,7 @@ const generateTitle = (services: Service[]) => {
   );
 };
 
-const ServicesCard = ({ controller }: Props): JSX.Element => {
+const ServicesCard = ({ controller }: Props): React.ReactElement => {
   const services = useSelector((state: RootState) =>
     serviceSelectors.getByIDs(state, controller.service_ids)
   );

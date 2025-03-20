@@ -9,7 +9,10 @@ type Props = {
   pools: KVMStoragePoolResources;
 };
 
-const StorageMeter = ({ defaultPoolId, pools }: Props): JSX.Element | null => {
+const StorageMeter = ({
+  defaultPoolId,
+  pools,
+}: Props): React.ReactElement | null => {
   const sortedPools = getSortedPoolsArray(pools);
   // This component is only meant to show the data for a single pool, so if
   // there are any more return null.

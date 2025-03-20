@@ -26,7 +26,7 @@ export const ListDisplayCount = ({
   pageSize: number;
   currentPage: number;
   type: string;
-}): JSX.Element => {
+}): React.ReactElement => {
   return (
     <strong className="machine-list--display-count">
       Showing {getCurrentPageDisplayedCount(count, pageSize, currentPage)} out

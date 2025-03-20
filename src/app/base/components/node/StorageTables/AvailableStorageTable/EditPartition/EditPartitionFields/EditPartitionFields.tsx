@@ -14,7 +14,7 @@ type Props = {
 export const EditPartitionFields = ({
   partition,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <Row>
       <Col size={12}>

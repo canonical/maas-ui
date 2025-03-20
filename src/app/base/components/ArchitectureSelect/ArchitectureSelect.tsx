@@ -23,7 +23,7 @@ export const ArchitectureSelect = ({
   label = Labels.DefaultLabel,
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const architectures = useSelector(architecturesSelectors.get);
   const architecturesLoaded = useSelector(architecturesSelectors.loaded);
 

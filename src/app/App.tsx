@@ -68,7 +68,7 @@ const ConnectionStatus = () => {
   ) : null;
 };
 
-export const App = (): JSX.Element => {
+export const App = (): React.ReactElement => {
   const dispatch = useDispatch();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);

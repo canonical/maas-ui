@@ -28,7 +28,7 @@ const filterNames = new Map([
 const DiscoveriesFilterAccordion = ({
   searchText,
   setSearchText,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const discoveries = useSelector(discoverySelectors.all);
   const loaded = useSelector(discoverySelectors.loaded);
 

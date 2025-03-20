@@ -34,7 +34,7 @@ export const SourceMachineSelect = ({
   loadingMachineDetails = false,
   onMachineClick,
   selectedMachine = null,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [searchText, setSearchText] = useState("");
   const [debouncedText, setDebouncedText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);

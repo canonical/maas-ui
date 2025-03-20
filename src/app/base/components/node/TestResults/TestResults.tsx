@@ -27,7 +27,7 @@ const TestResults = ({
   machine,
   hardwareType,
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const sendAnalytics = useSendAnalytics();
 
   const testsTabUrl = `/machine/${machine.system_id}/testing`;

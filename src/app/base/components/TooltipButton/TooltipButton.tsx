@@ -26,7 +26,7 @@ const TooltipButton = ({
   iconProps,
   message,
   ...tooltipProps
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <Tooltip
       message={

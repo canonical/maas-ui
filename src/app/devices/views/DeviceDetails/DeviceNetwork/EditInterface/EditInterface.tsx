@@ -31,7 +31,7 @@ const EditInterface = ({
   nicId,
   linkId,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)

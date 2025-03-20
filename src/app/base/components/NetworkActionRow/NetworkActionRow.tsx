@@ -38,7 +38,7 @@ const NetworkActionRow = ({
   rightContent,
   selected,
   setSelected,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
   const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const { pathname } = useLocation();

@@ -15,7 +15,7 @@ const MachineSelectBox = ({
   pageSize?: number;
   onSelect: (machine: Machine | null) => void;
   filters?: FetchFilters;
-}): JSX.Element => {
+}): React.ReactElement => {
   const [searchText, setSearchText] = useState("");
   const [debouncedText, setDebouncedText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);

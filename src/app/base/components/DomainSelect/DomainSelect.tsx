@@ -24,7 +24,7 @@ export const DomainSelect = ({
   name,
   valueKey = "name",
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
 

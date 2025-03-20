@@ -28,7 +28,7 @@ export enum Label {
   Title = "LXD cluster host settings",
 }
 
-const LXDClusterHostSettings = ({ clusterId }: Props): JSX.Element => {
+const LXDClusterHostSettings = ({ clusterId }: Props): React.ReactElement => {
   const navigate = useNavigate();
   const hostId = useGetURLId(PodMeta.PK, "hostId");
   const cluster = useSelector((state: RootState) =>

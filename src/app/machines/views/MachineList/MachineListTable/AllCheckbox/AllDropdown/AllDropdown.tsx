@@ -19,7 +19,7 @@ export enum AllDropdownLabel {
   SelectAllMachinesOnThisPage = "Select all machines on this page",
 }
 
-const AllDropdown = ({ callId, filter }: Props): JSX.Element => {
+const AllDropdown = ({ callId, filter }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const selected = useSelector(machineSelectors.selected);
   const groups = useSelector((state: RootState) =>

@@ -34,7 +34,7 @@ const NumaCardDetails = ({
   machineId,
   numaNode,
   showExpanded = false,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [isExpanded, setIsExpanded] = useState(showExpanded);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, machineId)

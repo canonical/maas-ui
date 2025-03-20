@@ -14,7 +14,10 @@ type Props = {
   setSidePanelContent?: MachineSetSidePanelContent;
 };
 
-const StorageCard = ({ node, setSidePanelContent }: Props): JSX.Element => (
+const StorageCard = ({
+  node,
+  setSidePanelContent,
+}: Props): React.ReactElement => (
   <>
     <div className="overview-card__storage">
       <strong className="p-muted-heading u-flex--between u-no-margin--bottom u-no-padding--top">

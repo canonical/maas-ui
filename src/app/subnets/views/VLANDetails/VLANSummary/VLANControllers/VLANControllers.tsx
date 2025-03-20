@@ -26,7 +26,7 @@ const getRackIDs = (vlan: VLAN | null) => {
   return rackIDs;
 };
 
-const VLANControllers = ({ id }: Props): JSX.Element | null => {
+const VLANControllers = ({ id }: Props): React.ReactElement | null => {
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );

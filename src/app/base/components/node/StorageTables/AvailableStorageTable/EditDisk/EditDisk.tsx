@@ -38,7 +38,7 @@ export const EditDisk = ({
   closeExpanded,
   disk,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,

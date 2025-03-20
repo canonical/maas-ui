@@ -30,7 +30,7 @@ export type CreateDomainValues = {
   ttl?: Domain["ttl"] | ""; // allow empty string for Formik initial values
 };
 
-const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
+const DomainListHeaderForm = ({ closeForm }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);

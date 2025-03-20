@@ -5,7 +5,7 @@ import { SearchBox as BaseSearchBox } from "@canonical/react-components";
 
 import { useGlobalKeyShortcut } from "@/app/base/hooks/base";
 
-const SearchBox = (props: SearchBoxProps): JSX.Element => {
+const SearchBox = (props: SearchBoxProps): React.ReactElement => {
   const searchBoxRef = useRef<HTMLInputElement>(null);
 
   useGlobalKeyShortcut("/", (e) => {

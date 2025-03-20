@@ -126,7 +126,7 @@ const generateRows = (
     };
   });
 
-const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
+const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const [expandedId, setExpandedId] = useState<Script["id"] | null>(null);
   const [expandedType, setExpandedType] = useState<"delete" | "details" | null>(

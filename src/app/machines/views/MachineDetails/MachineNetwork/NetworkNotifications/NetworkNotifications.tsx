@@ -11,7 +11,7 @@ type Props = {
   id: Machine["system_id"];
 };
 
-const NetworkNotifications = ({ id }: Props): JSX.Element | null => {
+const NetworkNotifications = ({ id }: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );

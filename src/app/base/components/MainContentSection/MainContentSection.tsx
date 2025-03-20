@@ -17,7 +17,7 @@ const MainContentSection = ({
   children,
   header,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <div {...props} id={MAIN_CONTENT_SECTION_ID}>
       <div>

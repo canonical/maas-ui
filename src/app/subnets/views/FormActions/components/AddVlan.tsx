@@ -44,7 +44,7 @@ const vlanSchema = Yup.object()
 const AddVlan = ({
   activeForm,
   setActiveForm,
-}: FormActionProps): JSX.Element => {
+}: FormActionProps): React.ReactElement => {
   const dispatch = useDispatch();
   const isSaving = useSelector(vlanSelectors.saving);
   const isSaved = useSelector(vlanSelectors.saved);

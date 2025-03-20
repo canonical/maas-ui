@@ -29,7 +29,7 @@ type Props = {
   node: MachineDetails | Device;
 };
 
-const NetworkCardTable = ({ interfaces, node }: Props): JSX.Element => {
+const NetworkCardTable = ({ interfaces, node }: Props): React.ReactElement => {
   const fabrics = useSelector(fabricSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
   const subnets = useSelector(subnetSelectors.all);

@@ -16,7 +16,7 @@ import { NodeActions } from "@/app/store/types/node";
 
 type Props = { systemId: MachineDetails["system_id"] };
 
-const TagForm = ({ systemId }: Props): JSX.Element | null => {
+const TagForm = ({ systemId }: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

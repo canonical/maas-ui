@@ -101,7 +101,7 @@ const generateRows = (kvms: Pod[]) =>
     ],
   }));
 
-const VirshTable = (): JSX.Element => {
+const VirshTable = (): React.ReactElement => {
   const virshKvms = useSelector(podSelectors.virsh);
   const pools = useSelector(poolSelectors.all);
   const { currentSort, sortRows, updateSort } = useTableSort<

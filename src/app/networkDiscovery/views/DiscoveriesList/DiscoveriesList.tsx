@@ -127,7 +127,7 @@ const generateRows = (
     };
   });
 
-const DiscoveriesList = (): JSX.Element => {
+const DiscoveriesList = (): React.ReactElement => {
   const [searchString, setSearchString] = useState("");
   const discoveries = useSelector((state: RootState) =>
     discoverySelectors.search(state, searchString)

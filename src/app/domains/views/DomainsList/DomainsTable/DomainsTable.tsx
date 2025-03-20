@@ -26,7 +26,7 @@ export const Labels = {
   FormTitle: "Set default",
 } as const;
 
-const DomainsTable = (): JSX.Element => {
+const DomainsTable = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { setSidePanelContent } = useSidePanel();
   const domains = useSelector(domainSelectors.all);

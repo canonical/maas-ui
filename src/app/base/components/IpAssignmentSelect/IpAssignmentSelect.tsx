@@ -18,7 +18,7 @@ export const IpAssignmentSelect = ({
   includeStatic = true,
   label = Labels.Select,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <FormikField
       component={Select}

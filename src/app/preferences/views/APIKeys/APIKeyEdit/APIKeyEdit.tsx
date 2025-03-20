@@ -14,7 +14,7 @@ export enum Label {
   NotFound = "API key not found",
 }
 
-export const APIKeyEdit = (): JSX.Element => {
+export const APIKeyEdit = (): React.ReactElement => {
   useFetchActions([tokenActions.fetch]);
 
   const id = useGetURLId(TokenMeta.PK);

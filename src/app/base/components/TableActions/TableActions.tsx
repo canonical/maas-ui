@@ -31,7 +31,7 @@ const TableActions = ({
   onClear,
   onDelete,
   onEdit,
-}: Props): JSX.Element => (
+}: Props): React.ReactElement => (
   <div>
     {copyValue && <CopyButton value={copyValue} />}
     {(editPath || onEdit) && (

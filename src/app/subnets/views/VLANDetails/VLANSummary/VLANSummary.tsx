@@ -17,7 +17,7 @@ type Props = {
   id: VLAN[VLANMeta.PK] | null;
 };
 
-const VLANSummary = ({ id }: Props): JSX.Element | null => {
+const VLANSummary = ({ id }: Props): React.ReactElement | null => {
   const isAdmin = useSelector(authSelectors.isAdmin);
   const { setSidePanelContent } = useSidePanel();
   const vlan = useSelector((state: RootState) =>

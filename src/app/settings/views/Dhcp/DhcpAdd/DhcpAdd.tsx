@@ -1,6 +1,6 @@
 import DhcpForm from "../DhcpForm";
 
-export const DhcpAdd = (): JSX.Element => {
+export const DhcpAdd = (): React.ReactElement => {
   return <DhcpForm />;
 };
 

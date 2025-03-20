@@ -132,7 +132,7 @@ export const CloneResults = ({
   setSearchFilter,
   sourceMachine,
   viewingDetails,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { pathname } = useLocation();
   const [destinationCount, setDestinationCount] = useState(0);
   const cloneErrors = useSelector((state: RootState) =>

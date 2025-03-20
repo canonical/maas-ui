@@ -50,7 +50,7 @@ const getDefinitionError = (
   return errors.definition;
 };
 
-export const DefinitionField = ({ id }: Props): JSX.Element => {
+export const DefinitionField = ({ id }: Props): React.ReactElement => {
   const { errors, values } = useFormikContext<CreateParams | UpdateParams>();
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)

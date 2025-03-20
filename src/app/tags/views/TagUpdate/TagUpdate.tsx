@@ -37,7 +37,7 @@ const UpdateAutoTagFormSchema = Yup.object().shape({
   name: Yup.string().required("Name is required."),
 });
 
-const TagUpdate = ({ id, onClose }: Props): JSX.Element => {
+const TagUpdate = ({ id, onClose }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)

@@ -14,7 +14,7 @@ type Props = {
   id?: Space[SpaceMeta.PK] | null;
 };
 
-const SpaceLink = ({ id }: Props): JSX.Element => {
+const SpaceLink = ({ id }: Props): React.ReactElement => {
   const space = useSelector((state: RootState) =>
     spaceSelectors.getById(state, id)
   );

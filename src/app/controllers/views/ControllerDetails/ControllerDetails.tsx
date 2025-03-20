@@ -29,7 +29,7 @@ import type { RootState } from "@/app/store/root/types";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute, isId } from "@/app/utils";
 
-const ControllerDetails = (): JSX.Element => {
+const ControllerDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(ControllerMeta.PK);
   const controller = useSelector((state: RootState) =>

@@ -9,7 +9,7 @@ const SubnetsControls = ({
 }: Pick<SubnetGroupByProps, "groupBy"> & {
   searchText?: string;
   handleSearch: (text: string) => void;
-}): JSX.Element => {
+}): React.ReactElement => {
   const [searchText, setSearchText] = useState(initialSearchText);
 
   return (

@@ -31,7 +31,7 @@ type Props = {
 
 export const AddChassisForm = ({
   clearSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const chassisPowerTypes = useSelector(powerTypesSelectors.canProbe);
   const domains = useSelector(domainSelectors.all);

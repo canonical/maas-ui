@@ -44,7 +44,7 @@ const generateCheckboxGroup = (
       label={field}
       name={key}
       onChange={() => {
-        let newFields = [];
+        let newFields: string[];
         if (values.includes(field)) {
           newFields = values.filter((oldField) => oldField !== field);
         } else {
@@ -66,7 +66,7 @@ const generateCheckboxGroup = (
   );
 };
 
-const RepositoryFormFields = ({ type }: Props): JSX.Element => {
+const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
   const { setFieldTouched, setFieldValue, values } =
     useFormikContext<RepositoryFormValues>();
   const componentsToDisable = useSelector(componentsToDisableSelectors.get);

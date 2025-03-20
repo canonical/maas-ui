@@ -13,7 +13,7 @@ type Props = {
   nic?: NetworkInterface | null;
 };
 
-const DHCPColumn = ({ nic }: Props): JSX.Element | null => {
+const DHCPColumn = ({ nic }: Props): React.ReactElement | null => {
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const fabrics = useSelector(fabricSelectors.all);
   const vlan = useSelector((state: RootState) =>

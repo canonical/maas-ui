@@ -19,7 +19,7 @@ const NodesTagsLink = ({
   count,
   nodeType,
   tags,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { pathname } = useLocation();
 
   let url: string | null = null;

@@ -37,7 +37,7 @@ export enum Label {
   Toggle = "Download",
 }
 
-export const DownloadMenu = ({ node }: Props): JSX.Element | null => {
+export const DownloadMenu = ({ node }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const installationResults = useSelector((state: RootState) =>
     scriptResultSelectors.getInstallationByNodeId(state, node.system_id)

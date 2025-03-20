@@ -14,7 +14,7 @@ const CPUPopover = ({
   children,
   cores,
   overCommit = 1,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const coresWithOver = resourceWithOverCommit(cores, overCommit);
   const hostCores =
     cores.allocated_other + cores.allocated_tracked + cores.free;

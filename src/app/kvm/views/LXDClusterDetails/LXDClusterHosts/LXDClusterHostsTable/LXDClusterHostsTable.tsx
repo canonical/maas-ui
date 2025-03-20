@@ -175,7 +175,7 @@ const LXDClusterHostsTable = ({
   hosts,
   searchFilter,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const location = useLocation();
   const pools = useSelector(poolSelectors.all);
   const podsLoaded = useSelector(podSelectors.loaded);

@@ -34,7 +34,7 @@ const GroupCheckbox = <S,>({
   inputLabel,
   selectedItems,
   ...props
-}: Props<S>): JSX.Element => {
+}: Props<S>): React.ReactElement => {
   const id = useRef(nanoid());
   const allSelected = checkAllSelected
     ? checkAllSelected(items, selectedItems)

@@ -29,7 +29,7 @@ export const SubnetSelect = ({
   name,
   vlan,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   let subnets: Subnet[] = useSelector(subnetSelectors.all);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
 

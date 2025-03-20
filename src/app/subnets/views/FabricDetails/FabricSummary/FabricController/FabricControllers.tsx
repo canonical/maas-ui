@@ -16,7 +16,7 @@ type Props = {
   id: Fabric[FabricMeta.PK];
 };
 
-const FabricControllers = ({ id }: Props): JSX.Element => {
+const FabricControllers = ({ id }: Props): React.ReactElement => {
   const controllers = useSelector((state: RootState) =>
     controllerSelectors.getByFabricId(state, id)
   );

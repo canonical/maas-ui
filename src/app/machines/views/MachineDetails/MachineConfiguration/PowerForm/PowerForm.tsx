@@ -36,7 +36,7 @@ export type PowerFormValues = {
 
 type Props = { systemId: Machine["system_id"] };
 
-const PowerForm = ({ systemId }: Props): JSX.Element | null => {
+const PowerForm = ({ systemId }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

@@ -8,7 +8,7 @@ import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import type { Fabric } from "@/app/store/fabric/types";
 
-const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
+const FabricSummary = ({ fabric }: { fabric: Fabric }): React.ReactElement => {
   return (
     <EditableSection
       hasSidebarTitle

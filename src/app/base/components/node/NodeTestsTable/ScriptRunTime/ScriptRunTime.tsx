@@ -31,9 +31,9 @@ const getElapsedTime = (starttime: ScriptResult["starttime"]) => {
   return elapsed.join(", ");
 };
 
-const ScriptRunTime = ({ scriptResult }: Props): JSX.Element | null => {
+const ScriptRunTime = ({ scriptResult }: Props): React.ReactElement | null => {
   const [elapsedTime, setElapsedTime] = useState("");
-  const timerId = useRef<NodeJS.Timeout>();
+  const timerId = useRef<NodeJS.Timeout>(null);
   const isInstalling = scriptResult.status === ScriptResultStatus.INSTALLING;
   const isPending = scriptResult.status === ScriptResultStatus.PENDING;
   const isRunning = scriptResult.status === ScriptResultStatus.RUNNING;

@@ -15,7 +15,7 @@ type Props = {
   subnetIds: Subnet[SubnetMeta.PK][];
 };
 
-const DHCPSnippets = ({ modelName, subnetIds }: Props): JSX.Element => {
+const DHCPSnippets = ({ modelName, subnetIds }: Props): React.ReactElement => {
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getByIds(state, subnetIds)
   );

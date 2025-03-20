@@ -88,7 +88,7 @@ export const AddPartition = ({
   closeExpanded,
   disk,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,

@@ -19,7 +19,7 @@ import AddSSLKey from "@/app/preferences/views/SSLKeys/AddSSLKey";
 import SSLKeyList from "@/app/preferences/views/SSLKeys/SSLKeyList";
 import { getRelativeRoute } from "@/app/utils";
 
-const Routes = (): JSX.Element => {
+const Routes = (): React.ReactElement => {
   const base = urls.preferences.index;
   return (
     <ReactRouterRoutes>

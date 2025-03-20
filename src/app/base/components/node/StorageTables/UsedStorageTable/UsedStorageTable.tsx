@@ -122,7 +122,7 @@ const normaliseColumns = (
   ];
 };
 
-const UsedStorageTable = ({ node }: Props): JSX.Element | null => {
+const UsedStorageTable = ({ node }: Props): React.ReactElement | null => {
   const rows: MainTableRow[] = [];
 
   node.disks.forEach((disk) => {

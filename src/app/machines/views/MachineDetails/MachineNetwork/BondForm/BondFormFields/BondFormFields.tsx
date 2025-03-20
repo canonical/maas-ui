@@ -48,7 +48,10 @@ const getMacOptions = (machine: MachineDetails, selected: Selected[]) =>
     return options;
   }, []);
 
-const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
+const BondFormFields = ({
+  selected,
+  systemId,
+}: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

@@ -40,7 +40,7 @@ const ArrowPagination = ({
   setCurrentPage,
   showPageBounds = false,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const onFirstPage = currentPage === 1;
   const onLastPage =
     itemCount === 0 || currentPage === Math.ceil(itemCount / pageSize);

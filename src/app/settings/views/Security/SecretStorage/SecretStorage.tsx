@@ -8,7 +8,7 @@ import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";
 
-const SecretStorage = (): JSX.Element => {
+const SecretStorage = (): React.ReactElement => {
   const vaultEnabledLoaded = useSelector(vaultEnabledSelectors.loaded);
   useWindowTitle("Secret storage");
 

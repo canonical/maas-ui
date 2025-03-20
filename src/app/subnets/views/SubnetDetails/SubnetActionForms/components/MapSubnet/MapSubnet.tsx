@@ -16,7 +16,7 @@ import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types"
 export const MapSubnet = ({
   subnetId,
   setSidePanelContent,
-}: Omit<SubnetActionProps, "activeForm">): JSX.Element | null => {
+}: Omit<SubnetActionProps, "activeForm">): React.ReactElement | null => {
   const dispatch = useDispatch();
   const cleanup = useCallback(() => subnetActions.cleanup(), []);
   const subnet = useSelector((state: RootState) =>

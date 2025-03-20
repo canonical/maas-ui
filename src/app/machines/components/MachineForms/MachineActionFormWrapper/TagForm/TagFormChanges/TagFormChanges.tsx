@@ -120,7 +120,7 @@ export const TagFormChanges = ({
   selectedCount,
   newTags,
   toggleTagDetails,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const tagIdsAndCounts = getTagCounts(tags);
   const tagIds = tagIdsAndCounts ? Array.from(tagIdsAndCounts?.keys()) : [];

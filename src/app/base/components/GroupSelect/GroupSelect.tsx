@@ -17,7 +17,7 @@ const GroupSelect = <T extends string>({
   groupOptions,
   name,
   className,
-}: Props<T>): JSX.Element => {
+}: Props<T>): React.ReactElement => {
   return (
     <Select
       aria-label="Group by"

@@ -20,7 +20,7 @@ const DeviceHeaderForms = ({
   sidePanelContent,
   setSidePanelContent,
   viewingDetails = false,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const clearSidePanelContent = useCallback(
     () => setSidePanelContent(null),
     [setSidePanelContent]

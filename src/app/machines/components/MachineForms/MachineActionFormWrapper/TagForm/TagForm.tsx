@@ -46,7 +46,7 @@ export const TagForm = ({
   selectedMachines,
   viewingDetails,
   viewingMachineConfig = false,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });

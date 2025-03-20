@@ -8,7 +8,7 @@ export enum Label {
   Title = "Add pool form",
 }
 
-export const PoolAdd = (): JSX.Element => {
+export const PoolAdd = (): React.ReactElement => {
   const navigate = useNavigate();
   const onCancel = () => navigate({ pathname: urls.pools.index });
   useOnEscapePressed(() => onCancel());

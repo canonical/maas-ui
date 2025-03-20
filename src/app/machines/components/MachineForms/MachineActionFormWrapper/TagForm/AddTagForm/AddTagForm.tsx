@@ -19,7 +19,7 @@ export const AddTagForm = ({
   viewingDetails,
   viewingMachineConfig,
   onCancel,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   let location = "list";
   if (viewingMachineConfig) {
     location = "configuration";

@@ -18,7 +18,7 @@ import type { RootState } from "@/app/store/root/types";
 
 type Props = { id: Pod["id"] };
 
-const KVMResourcesCard = ({ id }: Props): JSX.Element => {
+const KVMResourcesCard = ({ id }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

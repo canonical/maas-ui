@@ -1,7 +1,4 @@
 import { createMemoryHistory } from "history";
-import { Provider } from "react-redux";
-import { Route, Routes } from "react-router";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import { SpaceDetailsSidePanelViews } from "../constants";
@@ -10,7 +7,7 @@ import SpaceDetailsHeader from "./SpaceDetailsHeader";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { render, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const renderTestCase = (
   space = factory.space({
@@ -31,27 +28,17 @@ const renderTestCase = (
   const setSidePanelContent = vi.fn();
   const store = configureStore()(state);
   return {
-    history,
     store,
     setSidePanelContent,
-    ...render(
-      <Provider store={store}>
-        <Router history={history}>
-          <Routes>
-            <Route
-              element={
-                <SpaceDetailsHeader
-                  setSidePanelContent={setSidePanelContent}
-                  sidePanelContent={null}
-                  space={space}
-                />
-              }
-              path={urls.subnets.space.index({ id: space.id })}
-            />
-          </Routes>
-        </Router>
-      </Provider>
+    ...renderWithProviders(
+      <SpaceDetailsHeader
+        setSidePanelContent={setSidePanelContent}
+        sidePanelContent={null}
+        space={space}
+      />,
+      { store }
     ),
+    history,
   };
 };
 

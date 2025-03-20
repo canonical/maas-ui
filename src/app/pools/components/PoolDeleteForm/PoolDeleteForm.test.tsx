@@ -3,11 +3,10 @@ import PoolDeleteForm from "./PoolDeleteForm";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   setupMockServer,
   userEvent,
   waitFor,
-  renderWithProviders,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(poolsResolvers.deletePool.handler());
@@ -22,7 +21,7 @@ describe("PoolDeleteForm", () => {
   });
 
   it("can delete a pool", async () => {
-    renderWithBrowserRouter(<PoolDeleteForm id={1} />);
+    renderWithProviders(<PoolDeleteForm id={1} />);
 
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
@@ -35,7 +34,7 @@ describe("PoolDeleteForm", () => {
     mockServer.use(
       poolsResolvers.deletePool.error({ message: "Uh oh!", code: 404 })
     );
-    renderWithBrowserRouter(<PoolDeleteForm id={1} />);
+    renderWithProviders(<PoolDeleteForm id={1} />);
 
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 

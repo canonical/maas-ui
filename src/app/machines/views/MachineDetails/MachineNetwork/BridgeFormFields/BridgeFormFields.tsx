@@ -15,7 +15,9 @@ type Props = {
   typeDisabled?: boolean;
 };
 
-const BridgeFormFields = ({ typeDisabled }: Props): JSX.Element | null => {
+const BridgeFormFields = ({
+  typeDisabled,
+}: Props): React.ReactElement | null => {
   const { setFieldValue, values } = useFormikContext<BridgeFormValues>();
 
   return (

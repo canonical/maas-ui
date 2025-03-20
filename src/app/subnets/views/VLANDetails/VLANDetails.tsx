@@ -8,9 +8,9 @@ import VLANDetailsHeader from "./VLANDetailsHeader";
 import VLANSubnets from "./VLANSubnets";
 import VLANSummary from "./VLANSummary";
 import {
-  VLANActionTypes,
-  type VLANActionType,
   vlanActionLabels,
+  type VLANActionType,
+  VLANActionTypes,
 } from "./constants";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
@@ -28,7 +28,7 @@ import ReservedRanges from "@/app/subnets/components/ReservedRanges";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
-const VLANDetails = (): JSX.Element => {
+const VLANDetails = (): React.ReactElement => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const dispatch = useDispatch();
   const id = useGetURLId(VLANMeta.PK);
@@ -47,11 +47,10 @@ const VLANDetails = (): JSX.Element => {
       dispatch(vlanActions.setActive(id));
     }
 
-    const unsetActiveVLANAndCleanup = () => {
+    return () => {
       dispatch(vlanActions.setActive(null));
       dispatch(vlanActions.cleanup());
     };
-    return unsetActiveVLANAndCleanup;
   }, [dispatch, id]);
 
   if (!vlan) {

@@ -24,7 +24,7 @@ export enum Label {
   Update = "Last update",
 }
 
-const TagDetails = (): JSX.Element => {
+const TagDetails = (): React.ReactElement => {
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)

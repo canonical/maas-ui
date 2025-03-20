@@ -37,7 +37,7 @@ const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
 const Tags = lazy(() => import("@/app/tags/views/Tags"));
 const ZonesList = lazy(() => import("@/app/zones/views/ZonesList"));
 
-const Routes = (): JSX.Element => (
+const Routes = (): React.ReactElement => (
   <ReactRouterRoutes>
     <Route
       element={<Navigate replace to={urls.machines.index} />}

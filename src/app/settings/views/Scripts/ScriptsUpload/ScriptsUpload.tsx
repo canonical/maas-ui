@@ -25,7 +25,7 @@ export enum Labels {
   SubmitButton = "Upload script",
 }
 
-const ScriptsUpload = ({ type }: Props): JSX.Element => {
+const ScriptsUpload = ({ type }: Props): React.ReactElement => {
   const MAX_SIZE_BYTES = 2000000; // 2MB
   const hasErrors = useSelector(scriptSelectors.hasErrors);
   const errors = useSelector(scriptSelectors.errors);

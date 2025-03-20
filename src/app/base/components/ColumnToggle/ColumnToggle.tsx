@@ -15,7 +15,7 @@ const ColumnToggle = ({
   label,
   onClose,
   onOpen,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const buttonNode = useRef<HTMLButtonElement | null>(null);
   return (
     <Button

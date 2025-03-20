@@ -6,7 +6,10 @@ import { formatMacAddress } from "@/app/utils";
 
 type Props = FormikFieldProps;
 
-export const MacAddressField = ({ name, ...props }: Props): JSX.Element => {
+export const MacAddressField = ({
+  name,
+  ...props
+}: Props): React.ReactElement => {
   const formikProps = useFormikContext();
   const { setFieldValue } = formikProps;
 

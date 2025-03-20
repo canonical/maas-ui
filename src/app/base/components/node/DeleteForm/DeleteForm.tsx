@@ -25,7 +25,7 @@ export const DeleteForm = <E,>({
   redirectURL,
   viewingDetails,
   actionStatus,
-}: Props<E>): JSX.Element => {
+}: Props<E>): React.ReactElement => {
   return (
     <ActionForm<EmptyObject, E>
       actionName={NodeActions.DELETE}

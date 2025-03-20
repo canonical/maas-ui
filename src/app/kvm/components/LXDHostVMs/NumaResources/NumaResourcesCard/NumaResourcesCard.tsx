@@ -19,7 +19,7 @@ export const TRUNCATION_POINT = 4;
 
 type Props = { numaId: PodNuma["node_id"]; podId: Pod["id"] };
 
-const NumaResourcesCard = ({ numaId, podId }: Props): JSX.Element => {
+const NumaResourcesCard = ({ numaId, podId }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, podId)
   );

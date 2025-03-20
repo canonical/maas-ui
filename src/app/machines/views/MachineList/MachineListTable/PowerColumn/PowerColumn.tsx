@@ -24,7 +24,7 @@ type Props = {
 export const PowerColumn = ({
   onToggleMenu,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState<PowerState | null>(null);
   const machine = useSelector((state: RootState) =>

@@ -17,7 +17,10 @@ import type {
 
 const FormComponents: Record<
   SubnetAction,
-  ({ activeForm, setSidePanelContent }: SubnetActionProps) => JSX.Element | null
+  ({
+    activeForm,
+    setSidePanelContent,
+  }: SubnetActionProps) => React.ReactElement | null
 > = {
   [SubnetActionTypes.MapSubnet]: MapSubnet,
   [SubnetActionTypes.EditBootArchitectures]: EditBootArchitectures,
@@ -38,7 +41,7 @@ const SubnetActionForms = ({
   setSidePanelContent,
   staticRouteId,
   reservedIpId,
-}: SubnetActionProps): JSX.Element => {
+}: SubnetActionProps): React.ReactElement => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
   return (
