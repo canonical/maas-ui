@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
         scss: {
           api: "modern",
           quietDeps: true,
-          silenceDeprecations: ["import"],
+          silenceDeprecations: ["import", "global-builtin"],
         },
       },
     },
