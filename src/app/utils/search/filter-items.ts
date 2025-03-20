@@ -75,7 +75,7 @@ export default class FilterItems<
       if (exact) {
         return value.toLowerCase() === lowerTerm;
       } else {
-        return value.toLowerCase().indexOf(lowerTerm) >= 0;
+        return value.toLowerCase().includes(lowerTerm);
       }
     } else {
       return false;

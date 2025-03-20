@@ -274,7 +274,7 @@ export default tseslint.config(
       // "@typescript-eslint/prefer-enum-initializers": "error",
       // "@typescript-eslint/prefer-find": "error",
       // "@typescript-eslint/prefer-for-of": "error",
-      // "@typescript-eslint/prefer-includes": "error",
+      "@typescript-eslint/prefer-includes": "error",
       // "@typescript-eslint/prefer-literal-enum-member": "error",
       // "@typescript-eslint/prefer-nullish-coalescing": "error",
       // "@typescript-eslint/prefer-optional-chain": "error",
