@@ -247,7 +247,7 @@ export default tseslint.config(
       "@typescript-eslint/no-duplicate-type-constituents": "error",
       // "@typescript-eslint/no-dynamic-delete": "error",
       // "@typescript-eslint/no-empty-function": "error",
-      // "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-explicit-any": "error",
       // "@typescript-eslint/no-floating-promises": "error",
       // "@typescript-eslint/no-for-in-array": "error",
       // "@typescript-eslint/no-import-type-side-effects": "error",
