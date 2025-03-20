@@ -282,7 +282,7 @@ export default tseslint.config(
       "@typescript-eslint/prefer-reduce-type-parameter": "error",
       "@typescript-eslint/prefer-regexp-exec": "error",
       // "@typescript-eslint/prefer-ts-expect-error": "error",
-      // "@typescript-eslint/promise-function-async": "error",
+      "@typescript-eslint/promise-function-async": "error",
       // "@typescript-eslint/require-array-sort-compare": "error",
       // "@typescript-eslint/restrict-plus-operands": "error",
       // "@typescript-eslint/restrict-template-expressions": "error",

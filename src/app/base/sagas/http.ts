@@ -44,7 +44,7 @@ const handleErrors = (response: Response) => {
   return response;
 };
 
-const handlePromise = (response: Response) => {
+const handlePromise = async (response: Response) => {
   const contentType = response.headers.get("Content-Type");
   if (contentType?.includes("application/json")) {
     return Promise.all([response.ok, response.json()]);
@@ -53,7 +53,7 @@ const handlePromise = (response: Response) => {
   }
 };
 
-const scriptresultsDownload = (
+const scriptresultsDownload = async (
   systemId: SimpleNode["system_id"],
   scriptSetId: string,
   filters?: ScriptResultNames | string,
@@ -71,7 +71,7 @@ const scriptresultsDownload = (
     headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken || "" },
   })
     .then(handleErrors)
-    .then<string | Blob>((response) => {
+    .then<string | Blob>(async (response) => {
       if (filetype === "tar.xz") {
         return response.blob();
       }
@@ -81,8 +81,8 @@ const scriptresultsDownload = (
 
 export const api = {
   auth: {
-    checkAuthenticated: (): Promise<string> => {
-      return fetch(LOGIN_API).then((response) => {
+    checkAuthenticated: async (): Promise<string> => {
+      return fetch(LOGIN_API).then(async (response) => {
         const status = response.status.toString();
         if (status.startsWith("5")) {
           // If a 5xx error is returned then the API server is down for
@@ -96,7 +96,7 @@ export const api = {
         return response.json();
       });
     },
-    externalLogin: (): Promise<XMLHttpRequest["response"]> => {
+    externalLogin: async (): Promise<XMLHttpRequest["response"]> => {
       return new Promise((resolve, reject) => {
         import("@/bakery").then(({ default: bakery }) =>
           bakery.get(
@@ -114,7 +114,7 @@ export const api = {
         );
       });
     },
-    login: (credentials: LoginCredentials): Promise<void> => {
+    login: async (credentials: LoginCredentials): Promise<void> => {
       const params = {
         username: credentials.username,
         password: credentials.password,
@@ -138,7 +138,7 @@ export const api = {
           }
         });
     },
-    logout: (csrftoken: CSRFToken): Promise<void> => {
+    logout: async (csrftoken: CSRFToken): Promise<void> => {
       localStorage.clear();
       return fetch(LOGOUT_API, {
         headers: { "X-CSRFToken": csrftoken },
@@ -150,7 +150,7 @@ export const api = {
     },
   },
   licenseKeys: {
-    create: (
+    create: async (
       key: LicenseKeys,
       csrftoken: CSRFToken
     ): Promise<Response["body"]> => {
@@ -168,7 +168,7 @@ export const api = {
           return body;
         });
     },
-    update: (
+    update: async (
       key: LicenseKeys,
       csrftoken: CSRFToken
     ): Promise<Response["body"]> => {
@@ -186,7 +186,7 @@ export const api = {
           return body;
         });
     },
-    delete: (
+    delete: async (
       osystem: LicenseKeys["osystem"],
       distro_series: LicenseKeys["distro_series"],
       csrftoken: CSRFToken
@@ -196,16 +196,16 @@ export const api = {
         method: "DELETE",
       }).then(handleErrors);
     },
-    fetch: (csrftoken: CSRFToken): Promise<Response["json"]> => {
+    fetch: async (csrftoken: CSRFToken): Promise<Response["json"]> => {
       return fetch(`${LICENSE_KEYS_API}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
       })
         .then(handleErrors)
-        .then((response) => response.json());
+        .then(async (response) => response.json());
     },
   },
   machines: {
-    addChassis: (
+    addChassis: async (
       params: Record<string, string>,
       csrftoken: CSRFToken
     ): Promise<Response["body"] | void> => {
@@ -228,7 +228,7 @@ export const api = {
   },
   scriptresults: {
     download: scriptresultsDownload,
-    getCurtinLogsTar: (
+    getCurtinLogsTar: async (
       systemId: SimpleNode["system_id"]
     ): Promise<Blob | string> =>
       scriptresultsDownload(
@@ -238,14 +238,14 @@ export const api = {
       ),
   },
   scripts: {
-    fetch: (csrftoken: CSRFToken): Promise<Response["json"]> => {
+    fetch: async (csrftoken: CSRFToken): Promise<Response["json"]> => {
       return fetch(`${SCRIPTS_API}?include_script=true`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
       })
         .then(handleErrors)
-        .then((response) => response.json());
+        .then(async (response) => response.json());
     },
-    delete: (
+    delete: async (
       name: Script["name"],
       csrftoken: CSRFToken
     ): Promise<Response | void> => {
@@ -254,7 +254,7 @@ export const api = {
         method: "DELETE",
       }).then(handleErrors);
     },
-    upload: (
+    upload: async (
       script: UploadScript,
       csrftoken: CSRFToken
     ): Promise<Response["body"] | void> => {
@@ -273,12 +273,12 @@ export const api = {
     },
   },
   zones: {
-    fetch: (csrftoken: CSRFToken): Promise<Response["json"]> => {
+    fetch: async (csrftoken: CSRFToken): Promise<Response["json"]> => {
       return fetch(`${ZONES_LIST_API}`, {
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
       })
         .then(handleErrors)
-        .then((response) => response.json());
+        .then(async (response) => response.json());
     },
   },
 };

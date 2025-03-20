@@ -7,35 +7,47 @@ import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
 
 const ControllerDetails = lazy(
-  () => import("@/app/controllers/views/ControllerDetails")
+  async () => import("@/app/controllers/views/ControllerDetails")
 );
 const ControllerList = lazy(
-  () => import("@/app/controllers/views/ControllerList")
+  async () => import("@/app/controllers/views/ControllerList")
 );
-const DeviceDetails = lazy(() => import("@/app/devices/views/DeviceDetails"));
-const DeviceList = lazy(() => import("@/app/devices/views/DeviceList"));
-const DomainDetails = lazy(() => import("@/app/domains/views/DomainDetails"));
-const DomainsList = lazy(() => import("@/app/domains/views/DomainsList"));
-const ImageList = lazy(() => import("@/app/images/views/ImageList"));
-const Intro = lazy(() => import("@/app/intro/views/Intro"));
-const KVM = lazy(() => import("@/app/kvm/views/KVM"));
+const DeviceDetails = lazy(
+  async () => import("@/app/devices/views/DeviceDetails")
+);
+const DeviceList = lazy(async () => import("@/app/devices/views/DeviceList"));
+const DomainDetails = lazy(
+  async () => import("@/app/domains/views/DomainDetails")
+);
+const DomainsList = lazy(async () => import("@/app/domains/views/DomainsList"));
+const ImageList = lazy(async () => import("@/app/images/views/ImageList"));
+const Intro = lazy(async () => import("@/app/intro/views/Intro"));
+const KVM = lazy(async () => import("@/app/kvm/views/KVM"));
 const MachineDetails = lazy(
-  () => import("@/app/machines/views/MachineDetails")
+  async () => import("@/app/machines/views/MachineDetails")
 );
-const Machines = lazy(() => import("@/app/machines/views/Machines"));
+const Machines = lazy(async () => import("@/app/machines/views/Machines"));
 const NetworkDiscovery = lazy(
-  () => import("@/app/networkDiscovery/views/NetworkDiscovery")
+  async () => import("@/app/networkDiscovery/views/NetworkDiscovery")
 );
-const Pools = lazy(() => import("@/app/pools/views/Pools"));
-const Preferences = lazy(() => import("@/app/preferences/views/Preferences"));
-const Settings = lazy(() => import("@/app/settings/views/Settings"));
-const FabricDetails = lazy(() => import("@/app/subnets/views/FabricDetails"));
-const SpaceDetails = lazy(() => import("@/app/subnets/views/SpaceDetails"));
-const SubnetDetails = lazy(() => import("@/app/subnets/views/SubnetDetails"));
-const SubnetsList = lazy(() => import("@/app/subnets/views/SubnetsList"));
-const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
-const Tags = lazy(() => import("@/app/tags/views/Tags"));
-const ZonesList = lazy(() => import("@/app/zones/views/ZonesList"));
+const Pools = lazy(async () => import("@/app/pools/views/Pools"));
+const Preferences = lazy(
+  async () => import("@/app/preferences/views/Preferences")
+);
+const Settings = lazy(async () => import("@/app/settings/views/Settings"));
+const FabricDetails = lazy(
+  async () => import("@/app/subnets/views/FabricDetails")
+);
+const SpaceDetails = lazy(
+  async () => import("@/app/subnets/views/SpaceDetails")
+);
+const SubnetDetails = lazy(
+  async () => import("@/app/subnets/views/SubnetDetails")
+);
+const SubnetsList = lazy(async () => import("@/app/subnets/views/SubnetsList"));
+const VLANDetails = lazy(async () => import("@/app/subnets/views/VLANDetails"));
+const Tags = lazy(async () => import("@/app/tags/views/Tags"));
+const ZonesList = lazy(async () => import("@/app/zones/views/ZonesList"));
 
 const Routes = (): JSX.Element => (
   <ReactRouterRoutes>

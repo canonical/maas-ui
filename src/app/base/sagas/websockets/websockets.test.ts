@@ -65,7 +65,7 @@ describe("websocket sagas", () => {
     vi.resetModules();
   });
 
-  it("connects to a WebSocket", () => {
+  it("connects to a WebSocket", async () => {
     return expectSaga(watchWebSockets, socketClient)
       .provide([[call(createConnection, socketClient), {}]])
       .take("status/websocketConnect")
@@ -78,7 +78,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("raises an error if no csrftoken exists", () => {
+  it("raises an error if no csrftoken exists", async () => {
     const error = new Error(
       "No csrftoken found, please ensure you are logged into MAAS."
     );
@@ -99,7 +99,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("sends a websocket ping message to keep the connection alive", () => {
+  it("sends a websocket ping message to keep the connection alive", async () => {
     return expectSaga(watchWebSockets, socketClient)
       .dispatch({
         type: "status/websocketConnected",
@@ -116,7 +116,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("stops pinging the websocket when disconnected", () => {
+  it("stops pinging the websocket when disconnected", async () => {
     return expectSaga(watchWebSockets, socketClient)
       .dispatch({
         type: "status/websocketDisconnected",
@@ -132,7 +132,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can create a WebSocket connection", () => {
+  it("can create a WebSocket connection", async () => {
     expect.assertions(1);
     const socket = createConnection(socketClient);
     if (socketClient.rws?.onopen) {
@@ -241,7 +241,7 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can store a next action when sending a WebSocket message", () => {
+  it("can store a next action when sending a WebSocket message", async () => {
     const action = {
       type: "machine/action",
       meta: {
@@ -434,7 +434,7 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can dispatch a next action", () => {
+  it("can dispatch a next action", async () => {
     const response: WebSocketResponseResult = {
       rtype: WebSocketResponseType.SUCCESS,
       type: WebSocketMessageType.RESPONSE,
@@ -565,7 +565,7 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can store a file context action when sending a WebSocket message", () => {
+  it("can store a file context action when sending a WebSocket message", async () => {
     const action = {
       type: "controller/get_summary_xml",
       meta: {
@@ -629,7 +629,7 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can unsubscribe from unused machines", () => {
+  it("can unsubscribe from unused machines", async () => {
     const state = factory.rootState({
       machine: factory.machineState({
         lists: {
@@ -654,7 +654,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("removes request when machines are in use", () => {
+  it("removes request when machines are in use", async () => {
     const state = factory.rootState({
       machine: factory.machineState({
         lists: {
@@ -679,7 +679,7 @@ describe("websocket sagas", () => {
   });
 
   describe("polling", () => {
-    it("can start polling", () => {
+    it("can start polling", async () => {
       const action = {
         type: "testAction",
         meta: {
@@ -699,7 +699,7 @@ describe("websocket sagas", () => {
         .run();
     });
 
-    it("can stop polling", () => {
+    it("can stop polling", async () => {
       const action = {
         type: "testAction",
         meta: {
@@ -728,7 +728,7 @@ describe("websocket sagas", () => {
         .run();
     });
 
-    it("can start polling with an id", () => {
+    it("can start polling with an id", async () => {
       const action = {
         type: "testAction",
         meta: {
@@ -749,7 +749,7 @@ describe("websocket sagas", () => {
         .run();
     });
 
-    it("can stop polling with an id", () => {
+    it("can stop polling with an id", async () => {
       const action = {
         type: "testAction",
         meta: {

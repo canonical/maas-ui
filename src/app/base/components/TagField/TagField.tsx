@@ -34,7 +34,7 @@ const TagField = <V extends AnyObject = AnyObject>({
       component={TagSelector}
       label={Label.Input}
       name={name}
-      onTagsUpdate={(tags: TagSelectorTag[]) =>
+      onTagsUpdate={async (tags: TagSelectorTag[]) =>
         setFieldValue(
           name,
           tags.map((tag) => tag[storedValue])

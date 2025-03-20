@@ -30,7 +30,7 @@ describe("Auth API", () => {
   });
 
   describe("check authenticated", () => {
-    it("returns a SUCCESS action", () => {
+    it("returns a SUCCESS action", async () => {
       const payload = { authenticated: true };
       return expectSaga(checkAuthenticatedSaga)
         .provide([[matchers.call.fn(api.auth.checkAuthenticated), payload]])
@@ -42,7 +42,7 @@ describe("Auth API", () => {
         .run();
     });
 
-    it("handles errors", () => {
+    it("handles errors", async () => {
       const error = new Error("kerblam!");
       return expectSaga(checkAuthenticatedSaga)
         .provide([
@@ -59,7 +59,7 @@ describe("Auth API", () => {
   });
 
   describe("login", () => {
-    it("returns a SUCCESS action", () => {
+    it("returns a SUCCESS action", async () => {
       const payload = {
         username: "koala",
         password: "gumtree",
@@ -76,7 +76,7 @@ describe("Auth API", () => {
         .run();
     });
 
-    it("handles errors", () => {
+    it("handles errors", async () => {
       const payload = {
         username: "koala",
         password: "gumtree",
@@ -110,7 +110,7 @@ describe("Auth API", () => {
   });
 
   describe("externalLogin", () => {
-    it("returns a SUCCESS action", () => {
+    it("returns a SUCCESS action", async () => {
       return expectSaga(externalLoginSaga)
         .provide([[matchers.call.fn(api.auth.externalLogin), null]])
         .put({ type: "status/externalLoginStart" })
@@ -119,7 +119,7 @@ describe("Auth API", () => {
         .run();
     });
 
-    it("handles errors", () => {
+    it("handles errors", async () => {
       const error = new Error("Unable to log in");
       return expectSaga(externalLoginSaga)
         .provide([
@@ -136,7 +136,7 @@ describe("Auth API", () => {
   });
 
   describe("logout", () => {
-    it("returns a SUCCESS action", () => {
+    it("returns a SUCCESS action", async () => {
       return expectSaga(logoutSaga)
         .provide([
           [matchers.call.fn(getCookie), "csrf-token"],
@@ -148,7 +148,7 @@ describe("Auth API", () => {
         .run();
     });
 
-    it("handles errors", () => {
+    it("handles errors", async () => {
       const error = new Error("Username not provided");
       return expectSaga(logoutSaga)
         .provide([
@@ -168,7 +168,7 @@ describe("Auth API", () => {
 
 describe("Scripts API", () => {
   describe("upload scripts", () => {
-    it("returns a SUCCESS action", () => {
+    it("returns a SUCCESS action", async () => {
       const script = {
         name: "script-1",
         type: ScriptType.COMMISSIONING,
@@ -188,7 +188,7 @@ describe("Scripts API", () => {
         .run();
     });
 
-    it("handles errors", () => {
+    it("handles errors", async () => {
       const script = {
         name: "script-1",
         type: ScriptType.COMMISSIONING,
@@ -217,7 +217,7 @@ describe("Scripts API", () => {
 
 describe("License Key API", () => {
   describe("fetch license keys", () => {
-    it("returns a SUCCESS action", () => {
+    it("returns a SUCCESS action", async () => {
       const payload = [{ osystem: "windows", distro_series: "2012" }];
       return expectSaga(fetchLicenseKeysSaga)
         .provide([
@@ -231,7 +231,7 @@ describe("License Key API", () => {
   });
 
   describe("update license keys", () => {
-    it("returns a SUCCESS action", () => {
+    it("returns a SUCCESS action", async () => {
       const payload = {
         id: 1,
         osystem: "windows",
@@ -255,7 +255,7 @@ describe("License Key API", () => {
   });
 
   describe("delete license keys", () => {
-    it("returns a SUCCESS action", () => {
+    it("returns a SUCCESS action", async () => {
       const payload = { osystem: "windows", distro_series: "2012" };
       const action = {
         type: "licensekeys/delete",
@@ -275,7 +275,7 @@ describe("License Key API", () => {
 
 describe("Machines API", () => {
   describe("add machine chassis", () => {
-    it("returns a success action", () => {
+    it("returns a success action", async () => {
       const payload = {
         params: {
           chassis_type: "powerkvm",
@@ -296,7 +296,7 @@ describe("Machines API", () => {
         .run();
     });
 
-    it("handles errors", () => {
+    it("handles errors", async () => {
       const payload = {
         params: {
           hostname: "qemu+ssh://virsh@127.0.0.1/system",

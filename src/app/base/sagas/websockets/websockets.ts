@@ -110,7 +110,7 @@ export function* handlePingMessage({
 /**
  * Create a WebSocket connection via the client.
  */
-export function createConnection(
+export async function createConnection(
   websocketClient: WebSocketClient
 ): Promise<WebSocketClient> {
   // As the socket automatically tries to reconnect we don't reject this
