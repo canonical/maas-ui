@@ -41,18 +41,19 @@ type ContainerProps = Omit<MachineActionFormProps, "processingCount"> & {
   viewingDetails: boolean;
 };
 
-type Props = ContainerProps & {
-  clearSelectedMachines: () => void;
-  dispatch: Dispatch<Action>;
-  dispatchForSelectedMachines: ReturnType<
-    typeof useSelectedMachinesActionsDispatch
-  >["dispatch"];
-  filter: ReturnType<typeof selectedToFilters>;
-  onRenderRef: ReturnType<typeof useScrollOnRender<HTMLDivElement>>;
-} & Omit<
+type Props = ContainerProps &
+  Omit<
     ReturnType<typeof useSelectedMachinesActionsDispatch>,
     "failedSystemIds" | "successCount"
-  >;
+  > & {
+    clearSelectedMachines: () => void;
+    dispatch: Dispatch<Action>;
+    dispatchForSelectedMachines: ReturnType<
+      typeof useSelectedMachinesActionsDispatch
+    >["dispatch"];
+    filter: ReturnType<typeof selectedToFilters>;
+    onRenderRef: ReturnType<typeof useScrollOnRender<HTMLDivElement>>;
+  };
 
 export const MachineActionForm = ({
   action,

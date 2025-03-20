@@ -21,7 +21,7 @@ const GroupColumn = ({
   filter,
 }: Pick<
   GroupRowsProps,
-  "hiddenGroups" | "setHiddenGroups" | "showActions" | "callId" | "filter"
+  "callId" | "filter" | "hiddenGroups" | "setHiddenGroups" | "showActions"
 > & {
   grouping: NonNullable<GroupRowsProps["grouping"]>;
   group: MachineStateListGroup;

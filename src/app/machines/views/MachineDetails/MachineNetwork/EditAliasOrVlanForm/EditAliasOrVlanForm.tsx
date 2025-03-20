@@ -47,9 +47,9 @@ type Props = {
   systemId: MachineDetails["system_id"];
 };
 
-export type EditAliasOrVlanValues = {
+export type EditAliasOrVlanValues = NetworkValues & {
   tags?: NetworkInterface["tags"];
-} & NetworkValues;
+};
 
 const AliasOrVlanSchema = Yup.object().shape({
   ...networkFieldsSchema,

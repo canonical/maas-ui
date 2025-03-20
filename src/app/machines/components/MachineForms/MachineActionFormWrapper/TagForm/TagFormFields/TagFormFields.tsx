@@ -25,7 +25,7 @@ import { getTagCounts } from "@/app/store/tag/utils";
 const hasKernelOptions = (tags: Tag[], tag: TagSelectorTag) =>
   !!tags.find(({ id }) => tag.id === id)?.kernel_opts;
 
-type Props = {
+type Props = Pick<MachineActionFormProps, "searchFilter"> & {
   machines: Machine[];
   newTags: Tag[TagMeta.PK][];
   setNewTags: (tags: Tag[TagMeta.PK][]) => void;
@@ -35,9 +35,9 @@ type Props = {
   selectedMachines?: SelectedMachines | null;
   selectedCount?: number | null;
   toggleTagDetails: (tag: Tag | null) => void;
-} & Pick<MachineActionFormProps, "searchFilter"> & {
-    setSecondaryContent: Dispatch<SetStateAction<TagFormSecondaryContent>>;
-  };
+} & {
+  setSecondaryContent: Dispatch<SetStateAction<TagFormSecondaryContent>>;
+};
 
 export enum Label {
   AddTag = "Create a new tag",

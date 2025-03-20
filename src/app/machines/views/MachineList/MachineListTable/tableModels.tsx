@@ -62,7 +62,7 @@ export const generateRow = ({
   showActions,
   classes,
 }: {
-  key: string | number;
+  key: number | string;
   content: RowContent;
   hiddenColumns: NonNullable<MachineListTableProps["hiddenColumns"]>;
   showActions: GenerateRowParams["showActions"];

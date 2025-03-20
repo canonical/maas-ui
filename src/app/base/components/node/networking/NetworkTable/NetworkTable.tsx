@@ -112,7 +112,7 @@ const generateColumnData = (
   isABondOrBridgeParent: boolean,
   link: NetworkLink | null,
   nic: NetworkInterface,
-  node: MachineDetails | ControllerDetails,
+  node: ControllerDetails | MachineDetails,
   selected: Props["selected"],
   setExpanded?: SetExpanded,
   setSelected?: Props["setSelected"]
@@ -199,7 +199,7 @@ const generateRow = (
   fabricsLoaded: boolean,
   isAllNetworkingDisabled: boolean,
   link: NetworkLink | null,
-  node: MachineDetails | ControllerDetails,
+  node: ControllerDetails | MachineDetails,
   nic: NetworkInterface | null,
   selected: Props["selected"],
   subnets: Subnet[],
@@ -282,7 +282,7 @@ const generateRows = (
   fabrics: Fabric[],
   fabricsLoaded: boolean,
   isAllNetworkingDisabled: boolean,
-  node: MachineDetails | ControllerDetails,
+  node: ControllerDetails | MachineDetails,
   selected: Props["selected"],
   subnets: Subnet[],
   vlans: VLAN[],
@@ -345,8 +345,8 @@ const getChild = (row: NetworkRow, rows: NetworkRow[]): NetworkRow | null => {
 };
 
 const compareValues = (
-  rowAValue: string | number | null,
-  rowBValue: string | number | null,
+  rowAValue: number | string | null,
+  rowBValue: number | string | null,
   direction: ValueOf<typeof SortDirection>
 ) => {
   if (!rowAValue && !rowBValue) {
@@ -425,7 +425,7 @@ export const generateUniqueId = ({ linkId, nicId }: Selected): string =>
   `${nicId || ""}-${linkId || ""}`;
 
 type BaseProps = {
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
 };
 
 type ActionProps = BaseProps & {

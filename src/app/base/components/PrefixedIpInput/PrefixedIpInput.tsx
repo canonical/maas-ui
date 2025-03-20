@@ -14,7 +14,7 @@ import {
 
 type Props = Omit<
   PrefixedInputProps,
-  "maxLength" | "placeholder" | "name" | "immutableText"
+  "immutableText" | "maxLength" | "name" | "placeholder"
 > & {
   cidr: Subnet["cidr"];
   name: string;

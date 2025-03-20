@@ -14,7 +14,7 @@ type Props = {
   defaultPoolId?: Pod["default_storage_pool"];
   pools: KVMStoragePoolResources;
 };
-type CardSize = "small" | "medium" | "large";
+type CardSize = "large" | "medium" | "small";
 
 const MIN_ASPECT_RATIO = 0.65;
 const SMALL_CARD_HEIGHT = 50;

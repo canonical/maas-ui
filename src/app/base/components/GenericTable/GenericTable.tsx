@@ -32,7 +32,7 @@ import TableHeader from "@/app/base/components/GenericTable/TableHeader";
 
 import "./_index.scss";
 
-type GenericTableProps<T extends { id: string | number }> = {
+type GenericTableProps<T extends { id: number | string }> = {
   canSelect?: boolean;
   columns: ColumnDef<T, Partial<T>>[];
   data: T[];
@@ -47,7 +47,7 @@ type GenericTableProps<T extends { id: string | number }> = {
   variant?: "full-height" | "regular";
 };
 
-const GenericTable = <T extends { id: string | number }>({
+const GenericTable = <T extends { id: number | string }>({
   canSelect = false,
   columns,
   data,

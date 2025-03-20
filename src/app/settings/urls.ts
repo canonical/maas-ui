@@ -42,10 +42,10 @@ const urls = {
   },
   repositories: {
     index: "/settings/repositories",
-    add: argPath<{ type: "repository" | "ppa" }>(
+    add: argPath<{ type: "ppa" | "repository" }>(
       "/settings/repositories/add/:type"
     ),
-    edit: argPath<{ id: PackageRepository["id"]; type: "repository" | "ppa" }>(
+    edit: argPath<{ id: PackageRepository["id"]; type: "ppa" | "repository" }>(
       "/settings/repositories/edit/:type/:id"
     ),
   },

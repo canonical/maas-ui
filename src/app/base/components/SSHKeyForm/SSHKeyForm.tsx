@@ -24,9 +24,9 @@ const SSHKeySchema = Yup.object().shape({
   }),
 });
 
-type Props = {
+type Props = Partial<FormikFormProps<SSHKeyFormValues>> & {
   cols?: number;
-} & Partial<FormikFormProps<SSHKeyFormValues>>;
+};
 
 export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
   const uploadSshKey = useCreateSshKeys();
@@ -35,7 +35,7 @@ export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
   return (
     <FormikForm<
       SSHKeyFormValues,
-      ImportUserSshkeysError | CreateUserSshkeysError
+      CreateUserSshkeysError | ImportUserSshkeysError
     >
       errors={uploadSshKey.error || importSshKey.error}
       initialValues={{ auth_id: "", protocol: "", key: "" }}

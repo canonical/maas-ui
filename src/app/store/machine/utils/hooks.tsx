@@ -451,7 +451,7 @@ export const useFetchMachineCount = (
 export const useFetchDeployedMachineCount = ({
   selectedMachines,
   searchFilter,
-}: Pick<MachineActionFormProps, "selectedMachines" | "searchFilter">): {
+}: Pick<MachineActionFormProps, "searchFilter" | "selectedMachines">): {
   machineCount: number;
 } => {
   const searchFilters = searchFilter

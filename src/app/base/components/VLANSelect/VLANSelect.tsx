@@ -18,7 +18,7 @@ import { isId } from "@/app/utils";
 
 type Option = NonNullable<SelectProps["options"]>[0];
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: Option | null;
   fabric?: VLAN["fabric"];
   generateName?: (vlan: VLAN) => string;
@@ -26,7 +26,7 @@ type Props = {
   showSpinnerOnLoad?: boolean;
   setDefaultValueFromFabric?: boolean;
   vlans?: VLAN[] | null;
-} & FormikFieldProps;
+};
 
 export enum Label {
   Select = "VLAN",

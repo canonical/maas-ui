@@ -16,7 +16,7 @@ type GenerateURL = (
 ) => string;
 
 type Props = {
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
   urls: {
     events: GenerateURL;
     index: GenerateURL;

@@ -78,7 +78,7 @@ const generateSubnetRow = ({
 }: {
   label?: string;
   content: FabricRowContent;
-  key: string | number;
+  key: number | string;
   classes?: string;
 }) => {
   const columns = [
@@ -162,7 +162,7 @@ export const generateSubnetGroupRows = ({
   groups: FabricTableRow[] | SpaceTableRow[];
   columnLength: number;
   groupMap: Record<
-    string | number,
+    number | string,
     {
       count: number;
     }

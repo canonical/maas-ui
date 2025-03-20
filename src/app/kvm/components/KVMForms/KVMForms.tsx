@@ -31,11 +31,11 @@ const getFormComponent = ({
   selectedCount,
   searchFilter,
   setSearchFilter,
-}: {
+}: Props & {
   clearSidePanelContent: ClearSidePanelContent;
   selectedMachines: SelectedMachines | null;
   selectedCount: number;
-} & Props) => {
+}) => {
   if (!sidePanelContent) {
     return null;
   }

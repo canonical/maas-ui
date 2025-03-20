@@ -8,12 +8,12 @@ import { useFetchActions } from "@/app/base/hooks";
 import { resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 
-type Props = {
+type Props = HTMLProps<HTMLSelectElement> & {
   disabled?: boolean;
   label?: string;
   name: string;
-  valueKey?: "name" | "id";
-} & HTMLProps<HTMLSelectElement>;
+  valueKey?: "id" | "name";
+};
 
 export const ResourcePoolSelect = ({
   disabled = false,

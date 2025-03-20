@@ -73,12 +73,12 @@ export type BaseController = BaseNode & {
   link_type: NodeLinkType.CONTROLLER;
   node_type_display:
     | NodeTypeDisplay.RACK_CONTROLLER
-    | NodeTypeDisplay.REGION_CONTROLLER
-    | NodeTypeDisplay.REGION_AND_RACK_CONTROLLER;
+    | NodeTypeDisplay.REGION_AND_RACK_CONTROLLER
+    | NodeTypeDisplay.REGION_CONTROLLER;
   node_type:
     | typeof NodeType.RACK_CONTROLLER
-    | typeof NodeType.REGION_CONTROLLER
-    | typeof NodeType.REGION_AND_RACK_CONTROLLER;
+    | typeof NodeType.REGION_AND_RACK_CONTROLLER
+    | typeof NodeType.REGION_CONTROLLER;
   service_ids: number[];
   vault_configured?: boolean;
   versions: ControllerVersions | null;
@@ -171,10 +171,10 @@ export type ImageSyncStatuses = Record<
   ImageSyncStatus
 >;
 
-export type ControllerState = {
+export type ControllerState = GenericState<Controller, APIError> & {
   active: Controller[ControllerMeta.PK] | null;
   eventErrors: EventError<Controller, APIError, ControllerMeta.PK>[];
   imageSyncStatuses: ImageSyncStatuses;
   selected: Controller[ControllerMeta.PK][];
   statuses: ControllerStatuses;
-} & GenericState<Controller, APIError>;
+};

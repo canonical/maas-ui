@@ -115,7 +115,7 @@ export const selectedToFilters = (
   }
   const filter: Record<
     string,
-    FilterGroupOptionType | null | (FilterGroupOptionType | null)[]
+    (FilterGroupOptionType | null)[] | FilterGroupOptionType | null
   > = {};
   // Map items to the id filter.
   if ("items" in selected && selected.items?.length) {

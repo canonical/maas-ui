@@ -388,7 +388,7 @@ export const getInterfaceTypeText = (
     return null;
   }
   const child = getBondOrBridgeChild(node, nic, link);
-  let interfaceType: NetworkInterfaceTypes | BridgeType.OVS | null = null;
+  let interfaceType: BridgeType.OVS | NetworkInterfaceTypes | null = null;
   if (
     (nic.type === NetworkInterfaceTypes.BRIDGE &&
       nic.params?.bridge_type === BridgeType.OVS) ||
@@ -553,7 +553,7 @@ export const getInterfaceIPAddress = (
   vlans: VLAN[],
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
-): NetworkLink["ip_address"] | DiscoveredIP["ip_address"] | null => {
+): DiscoveredIP["ip_address"] | NetworkLink["ip_address"] | null => {
   if (!isNodeDetails(node)) {
     return null;
   }
@@ -590,7 +590,7 @@ export const getInterfaceIPAddressOrMode = (
   vlans: VLAN[],
   nic?: NetworkInterface | null,
   link?: NetworkLink | null
-): NetworkLink["ip_address"] | DiscoveredIP["ip_address"] | null => {
+): DiscoveredIP["ip_address"] | NetworkLink["ip_address"] | null => {
   const ipAddress = getInterfaceIPAddress(node, fabrics, vlans, nic, link);
   const discovered = getInterfaceDiscovered(node, nic, link);
   if (link && !nic) {

@@ -79,7 +79,7 @@ export type CommissionParams = BaseMachineActionParams & {
   testing_scripts?: Script["name"][] | [ScriptName.NONE];
 };
 
-export type CreateBcacheParams = {
+export type CreateBcacheParams = OptionalFilesystemParams & {
   blockId?: number;
   cacheMode: string;
   cacheSetId: number;
@@ -87,9 +87,9 @@ export type CreateBcacheParams = {
   partitionId?: number;
   systemId: Machine[MachineMeta.PK];
   tags?: string[];
-} & OptionalFilesystemParams;
+};
 
-export type CreateBondParams = {
+export type CreateBondParams = LinkParams & {
   bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
   bond_lacp_rate?: NetworkInterfaceParams["bond_lacp_rate"];
   bond_miimon?: NetworkInterfaceParams["bond_miimon"];
@@ -106,9 +106,9 @@ export type CreateBondParams = {
   system_id: Machine[MachineMeta.PK];
   tags?: NetworkInterface["tags"];
   vlan?: NetworkInterface["vlan_id"];
-} & LinkParams;
+};
 
-export type CreateBridgeParams = {
+export type CreateBridgeParams = LinkParams & {
   bridge_fd?: NetworkInterfaceParams["bridge_fd"];
   bridge_stp?: NetworkInterfaceParams["bridge_stp"];
   bridge_type: NetworkInterfaceParams["bridge_type"];
@@ -121,7 +121,7 @@ export type CreateBridgeParams = {
   system_id: Machine[MachineMeta.PK];
   tags?: NetworkInterface["tags"];
   vlan?: NetworkInterface["vlan_id"];
-} & LinkParams;
+};
 
 export type CreateCacheSetParams = {
   blockId?: number;
@@ -129,13 +129,13 @@ export type CreateCacheSetParams = {
   systemId: Machine[MachineMeta.PK];
 };
 
-export type CreateLogicalVolumeParams = {
+export type CreateLogicalVolumeParams = OptionalFilesystemParams & {
   name: string;
   size: number;
   systemId: Machine[MachineMeta.PK];
   tags?: string[];
   volumeGroupId: number;
-} & OptionalFilesystemParams;
+};
 
 export type CreateParams = {
   architecture?: Machine["architecture"];
@@ -161,16 +161,16 @@ export type CreateParams = {
   zone?: { name: ZoneResponse["name"] };
 };
 
-export type CreatePartitionParams = {
+export type CreatePartitionParams = OptionalFilesystemParams & {
   blockId: number;
   partitionSize: number;
   systemId: Machine[MachineMeta.PK];
-} & OptionalFilesystemParams;
+};
 
-export type CreatePhysicalParams = {
+export type CreatePhysicalParams = LinkParams & {
   enabled?: NetworkInterface["enabled"];
   interface_speed?: NetworkInterface["interface_speed"];
-  ip_assignment?: "external" | "dynamic" | "static";
+  ip_assignment?: "dynamic" | "external" | "static";
   link_connected?: NetworkInterface["link_connected"];
   link_speed?: NetworkInterface["link_speed"];
   mac_address: NetworkInterface["mac_address"];
@@ -179,9 +179,9 @@ export type CreatePhysicalParams = {
   system_id: Machine[MachineMeta.PK];
   tags?: NetworkInterface["tags"];
   vlan?: NetworkInterface["vlan_id"];
-} & LinkParams;
+};
 
-export type CreateRaidParams = {
+export type CreateRaidParams = OptionalFilesystemParams & {
   blockDeviceIds?: number[];
   level: DiskTypes;
   name: string;
@@ -190,9 +190,9 @@ export type CreateRaidParams = {
   sparePartitionIds?: number[];
   systemId: Machine[MachineMeta.PK];
   tags?: string[];
-} & OptionalFilesystemParams;
+};
 
-export type CreateVlanParams = {
+export type CreateVlanParams = LinkParams & {
   interface_speed?: NetworkInterface["interface_speed"];
   link_connected?: NetworkInterface["link_connected"];
   link_speed?: NetworkInterface["link_speed"];
@@ -200,7 +200,7 @@ export type CreateVlanParams = {
   system_id: Machine[MachineMeta.PK];
   tags?: NetworkInterface["tags"];
   vlan?: NetworkInterface["vlan_id"];
-} & LinkParams;
+};
 
 export type CreateVmfsDatastoreParams = {
   blockDeviceIds?: number[];
@@ -323,7 +323,7 @@ type ExcludeFilters = {
 };
 
 export type FetchFilters = Partial<
-  ArrayOrValue<Filters> & ArrayOrValue<ExcludeFilters>
+  ArrayOrValue<ExcludeFilters> & ArrayOrValue<Filters>
 >;
 
 export enum FetchGroupKey {
@@ -543,19 +543,19 @@ export type UntagParams = BaseMachineActionParams & {
   tags: Tag[TagMeta.PK][];
 };
 
-export type UpdateDiskParams = {
+export type UpdateDiskParams = OptionalFilesystemParams & {
   blockId: number;
   name?: string;
   systemId: Machine[MachineMeta.PK];
   tags?: string[];
-} & OptionalFilesystemParams;
+};
 
-export type UpdateFilesystemParams = {
+export type UpdateFilesystemParams = OptionalFilesystemParams & {
   blockId?: number;
   partitionId?: number;
   systemId: Machine[MachineMeta.PK];
   tags?: string[];
-} & OptionalFilesystemParams;
+};
 
 export type UpdateParams = Partial<CreateParams> & {
   [MachineMeta.PK]: Machine[MachineMeta.PK];

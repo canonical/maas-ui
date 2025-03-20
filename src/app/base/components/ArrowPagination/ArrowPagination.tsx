@@ -2,14 +2,14 @@ import type { HTMLProps } from "react";
 
 import { Button, Icon, Spinner } from "@canonical/react-components";
 
-type Props = {
+type Props = HTMLProps<HTMLElement> & {
   currentPage: number;
   itemCount: number;
   loading?: boolean;
   pageSize: number;
   setCurrentPage: (page: number) => void;
   showPageBounds?: boolean;
-} & HTMLProps<HTMLElement>;
+};
 
 const getBounds = (
   itemCount: number,

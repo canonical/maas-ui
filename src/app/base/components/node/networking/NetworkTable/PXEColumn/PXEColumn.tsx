@@ -8,7 +8,7 @@ import { isBootInterface } from "@/app/store/utils";
 type Props = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
 };
 
 export enum Label {

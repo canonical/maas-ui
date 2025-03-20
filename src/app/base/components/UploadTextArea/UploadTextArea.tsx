@@ -11,11 +11,7 @@ import FormikField from "@/app/base/components/FormikField";
 import { useId } from "@/app/base/hooks/base";
 import type { AnyObject } from "@/app/base/types";
 
-type Props<V> = {
-  label: string;
-  maxSize?: number;
-  name: keyof V;
-} & Omit<
+type Props<V> = Omit<
   TextareaProps,
   | "aria-labelledby"
   | "autoCapitalize"
@@ -24,7 +20,11 @@ type Props<V> = {
   | "label"
   | "onChange"
   | "spellCheck"
->;
+> & {
+  label: string;
+  maxSize?: number;
+  name: keyof V;
+};
 
 const MAX_SIZE_BYTES = 2000000;
 

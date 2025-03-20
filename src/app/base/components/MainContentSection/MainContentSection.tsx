@@ -4,12 +4,12 @@ import { Col, Row } from "@canonical/react-components";
 
 import NotificationList from "@/app/base/components/NotificationList";
 
-export type Props = {
+export type Props = HTMLProps<HTMLDivElement> & {
   children?: ReactNode;
   header?: ReactNode;
   sidebar?: ReactNode;
   isNotificationListHidden?: boolean;
-} & HTMLProps<HTMLDivElement>;
+};
 
 export const MAIN_CONTENT_SECTION_ID = "main-content-section";
 

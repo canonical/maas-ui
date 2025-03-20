@@ -71,7 +71,7 @@ const scriptresultsDownload = async (
     headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken || "" },
   })
     .then(handleErrors)
-    .then<string | Blob>(async (response) => {
+    .then<Blob | string>(async (response) => {
       if (filetype === "tar.xz") {
         return response.blob();
       }

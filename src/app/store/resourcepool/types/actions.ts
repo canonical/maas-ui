@@ -23,8 +23,8 @@ type CreateWithMachineIdsParams = {
 };
 
 export type CreateWithMachinesParams =
-  | CreateWithMachineIdsParams
-  | CreateWithFilterParams;
+  | CreateWithFilterParams
+  | CreateWithMachineIdsParams;
 
 export type UpdateParams = CreateParams & {
   [ResourcePoolMeta.PK]: ResourcePool[ResourcePoolMeta.PK];

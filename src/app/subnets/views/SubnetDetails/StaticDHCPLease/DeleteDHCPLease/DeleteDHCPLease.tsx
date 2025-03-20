@@ -7,7 +7,7 @@ import { reservedIpActions } from "@/app/store/reservedip";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = Pick<SubnetActionProps, "setSidePanelContent" | "reservedIpId">;
+type Props = Pick<SubnetActionProps, "reservedIpId" | "setSidePanelContent">;
 const DeleteDHCPLease = ({ setSidePanelContent, reservedIpId }: Props) => {
   const dispatch = useDispatch();
   const errors = useSelector(reservedIpSelectors.errors);

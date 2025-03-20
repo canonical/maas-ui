@@ -24,7 +24,7 @@ type ActionGroup = {
 
 type ActionLink = DataTestElement<ButtonProps>;
 
-type Props = {
+type Props = Pick<ContextualMenuDropdownProps, "constrainPanelWidth"> & {
   alwaysShowLifecycle?: boolean;
   className?: string;
   disabledTooltipPosition?: "left" | "top-left";
@@ -40,7 +40,7 @@ type Props = {
   toggleAppearance?: ValueOf<typeof ButtonAppearance>;
   toggleClassName?: string | null;
   toggleLabel?: string;
-} & Pick<ContextualMenuDropdownProps, "constrainPanelWidth">;
+};
 
 const actionGroups: ActionGroup[] = [
   {

@@ -32,7 +32,7 @@ export type LxdKVMHostTableRow = {
   defaultPoolID?: Pod["default_storage_pool"];
   hostType: LxdKVMHostType;
   hostsCount?: number;
-  key: string | number;
+  key: number | string;
   memory: RAMColumnProps["memory"];
   memoryOverCommit?: number;
   name: string;
@@ -52,13 +52,13 @@ type Props = {
   rows: LxdKVMHostTableRow[];
 };
 
-type SortKey = "hostType" | "name" | "cpu" | "zone" | "ram" | "storage" | "vms";
+type SortKey = "cpu" | "hostType" | "name" | "ram" | "storage" | "vms" | "zone";
 
 const getSortValue = (
   sortKey: SortKey,
   row: LxdKVMHostTableRow,
   zones?: ZoneResponse[]
-): string | number | null => {
+): number | string | null => {
   const zone = zones?.find((zone) => row.zone === zone.id);
   switch (sortKey) {
     case "zone":

@@ -30,7 +30,7 @@ const MAX_COMMENT_LENGTH = 255;
 
 type Props = Pick<
   SubnetActionProps,
-  "subnetId" | "setSidePanelContent" | "reservedIpId"
+  "reservedIpId" | "setSidePanelContent" | "subnetId"
 >;
 
 type FormValues = {

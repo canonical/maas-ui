@@ -2,14 +2,14 @@ import type { ReactNode, MouseEventHandler } from "react";
 
 import classNames from "classnames";
 
-export type Props = {
+export type Props = React.PropsWithoutRef<JSX.IntrinsicElements["input"]> & {
   checked?: boolean;
   className?: string;
   color?: ColorValues;
   name?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   label?: ReactNode;
-} & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
+};
 
 export enum ColorValues {
   Default = "default",

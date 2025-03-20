@@ -23,7 +23,7 @@ import { toFormikNumber } from "@/app/utils";
 
 export type EditStaticRouteValues = Pick<
   StaticRoute,
-  "source" | "destination" | "metric" | "gateway_ip"
+  "destination" | "gateway_ip" | "metric" | "source"
 >;
 
 export enum EditStaticRouteFormLabels {

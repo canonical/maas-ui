@@ -286,7 +286,7 @@ export default tseslint.config(
       // "@typescript-eslint/require-array-sort-compare": "error",
       "@typescript-eslint/restrict-plus-operands": "error",
       // "@typescript-eslint/restrict-template-expressions": "error",
-      // "@typescript-eslint/sort-type-constituents": "error",
+      "@typescript-eslint/sort-type-constituents": "error",
       // "@typescript-eslint/strict-boolean-expressions": "error",
       // "@typescript-eslint/switch-exhaustiveness-check": "error",
     },

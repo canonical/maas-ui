@@ -12,7 +12,7 @@ import type { Node } from "@/app/store/types/node";
 import type { GenericState } from "@/app/store/types/state";
 import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
 
-export type PodActions = "compose" | "remove" | "refresh";
+export type PodActions = "compose" | "refresh" | "remove";
 
 export type PodStoragePool = {
   available: number;
@@ -165,8 +165,8 @@ export type PodProject = {
 
 export type PodProjects = Record<string, PodProject[]>;
 
-export type PodState = {
+export type PodState = GenericState<Pod, APIError> & {
   active: number | null;
   projects: PodProjects;
   statuses: PodStatuses;
-} & GenericState<Pod, APIError>;
+};
