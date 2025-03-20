@@ -232,7 +232,7 @@ export default tseslint.config(
       // "@typescript-eslint/consistent-return": "error",
       // "@typescript-eslint/consistent-type-definitions": "error",
       // "@typescript-eslint/consistent-type-exports": "error",
-      // "@typescript-eslint/dot-notation": "error",
+      "@typescript-eslint/dot-notation": "error",
       // "@typescript-eslint/explicit-function-return-type": "error",
       // "@typescript-eslint/explicit-member-accessibility": "error",
       // "@typescript-eslint/explicit-module-boundary-types": "error",

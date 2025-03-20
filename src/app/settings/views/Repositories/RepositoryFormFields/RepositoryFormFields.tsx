@@ -155,7 +155,7 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
           Labels.Arches,
           setFieldTouched,
           setFieldValue,
-          values["arches"]
+          values.arches
         )}
         {values.default && (
           <>
@@ -166,7 +166,7 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
               Labels.DisabledPockets,
               setFieldTouched,
               setFieldValue,
-              values["disabled_pockets"]
+              values.disabled_pockets
             )}
             <p className="u-no-margin--bottom">{Labels.DisabledComponents}</p>
             {generateCheckboxGroup(
@@ -175,7 +175,7 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
               Labels.DisabledComponents,
               setFieldTouched,
               setFieldValue,
-              values["disabled_components"]
+              values.disabled_components
             )}
           </>
         )}
