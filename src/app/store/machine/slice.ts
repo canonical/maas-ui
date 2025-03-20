@@ -301,7 +301,7 @@ const machineSlice = createSlice({
     [`${NodeActions.ACQUIRE}Success`]: statusHandlers.acquire
       .success as CaseReducer<MachineState, PayloadAction<unknown>>,
     addChassis: {
-      prepare: (params: { [x: string]: string }) => ({
+      prepare: (params: Record<string, string>) => ({
         payload: {
           params,
         },

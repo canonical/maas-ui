@@ -11,7 +11,7 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { Pod, PodDetails } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 
-type RequestMap = { [location: string]: number };
+type RequestMap = Record<string, number>;
 
 type SelectPool = (poolName?: string) => void;
 

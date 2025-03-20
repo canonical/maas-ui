@@ -163,9 +163,7 @@ export type PodProject = {
   name: string;
 };
 
-export type PodProjects = {
-  [x: string]: PodProject[];
-};
+export type PodProjects = Record<string, PodProject[]>;
 
 export type PodState = {
   active: number | null;

@@ -1,8 +1,6 @@
 export type FilterValue = string | number;
 
-export type Filters = {
-  [x: string]: FilterValue[];
-};
+export type Filters = Record<string, FilterValue[]>;
 
 export type PrefixedFilter = {
   filter: string;
@@ -287,7 +285,7 @@ export default class FilterHandlers {
   filtersToQueryString = (filters: Filters): string => {
     // Shallow copy the object, this should be good enough for the manipulation
     // we do below.
-    const copiedFilters: { [x: string]: string } = {};
+    const copiedFilters: Record<string, string> = {};
     // Remove empty filters.
     Object.keys(filters).forEach((filter) => {
       // Remove in:selected in in:!selected from the URL as we don't also persist

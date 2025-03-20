@@ -228,7 +228,7 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/array-type": "error",
       // "@typescript-eslint/class-methods-use-this": "error",
-      // "@typescript-eslint/consistent-indexed-object-style": "error",
+      "@typescript-eslint/consistent-indexed-object-style": "error",
       // "@typescript-eslint/consistent-return": "error",
       // "@typescript-eslint/consistent-type-definitions": "error",
       // "@typescript-eslint/consistent-type-exports": "error",
