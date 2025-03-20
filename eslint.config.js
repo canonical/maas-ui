@@ -284,7 +284,7 @@ export default tseslint.config(
       // "@typescript-eslint/prefer-ts-expect-error": "error",
       "@typescript-eslint/promise-function-async": "error",
       // "@typescript-eslint/require-array-sort-compare": "error",
-      // "@typescript-eslint/restrict-plus-operands": "error",
+      "@typescript-eslint/restrict-plus-operands": "error",
       // "@typescript-eslint/restrict-template-expressions": "error",
       // "@typescript-eslint/sort-type-constituents": "error",
       // "@typescript-eslint/strict-boolean-expressions": "error",
