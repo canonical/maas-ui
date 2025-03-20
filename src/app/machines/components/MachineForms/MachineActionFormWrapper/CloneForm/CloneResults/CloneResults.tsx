@@ -78,8 +78,8 @@ const getSystemId = (error: CloneError["destinations"][0]) => {
     // how the Django forms work. For this case we extract the system_id from
     // the error message manually.
     return (
-      error.message.match(
-        /Machine [0-9]+ is invalid: Select a valid choice\. (.{6}) is not one of the available choices\./
+      /Machine [0-9]+ is invalid: Select a valid choice\. (.{6}) is not one of the available choices\./.exec(
+        error.message
       )?.[1] || ""
     );
   }

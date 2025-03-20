@@ -7,7 +7,7 @@ import { formatBytes } from "@canonical/maas-react-components";
 export const sizeStringToNumber = (sizeString = ""): number | null => {
   try {
     const regex = /(?<value>\d+(\.\d+)?)(?:\s+?)(?<unit>[a-zA-Z]+)/;
-    const groups = sizeString.match(regex)?.groups;
+    const groups = regex.exec(sizeString)?.groups;
     if (groups) {
       return formatBytes(
         { value: Number(groups.value), unit: groups.unit },
