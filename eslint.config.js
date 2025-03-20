@@ -259,7 +259,7 @@ export default tseslint.config(
       // "@typescript-eslint/no-shadow": "error",
       // "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
       // "@typescript-eslint/no-unnecessary-condition": "error",
-      // "@typescript-eslint/no-unnecessary-type-arguments": "error",
+      "@typescript-eslint/no-unnecessary-type-arguments": "error",
       // "@typescript-eslint/no-unnecessary-type-assertion": "error",
       // "@typescript-eslint/no-unsafe-argument": "error",
       // "@typescript-eslint/no-unsafe-assignment": "error",
