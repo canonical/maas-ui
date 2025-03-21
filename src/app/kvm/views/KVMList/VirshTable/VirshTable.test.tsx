@@ -2,6 +2,7 @@ import VirshTable from "./VirshTable";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { mockPools } from "@/testing/resolvers/pools";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("VirshTable", () => {
@@ -76,19 +77,9 @@ describe("VirshTable", () => {
   });
 
   it("can sort by pod resource pool", async () => {
-    const pools = [
-      factory.resourcePool({
-        id: 1,
-        name: "first-pool",
-      }),
-      factory.resourcePool({
-        id: 2,
-        name: "second-pool",
-      }),
-    ];
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
-    firstPod.pool = pools[0].id;
-    secondPod.pool = pools[1].id;
+    firstPod.pool = mockPools.items[0].id;
+    secondPod.pool = mockPools.items[1].id;
     renderWithBrowserRouter(<VirshTable />, {
       route: "/kvm",
       state,

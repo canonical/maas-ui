@@ -182,7 +182,6 @@ const LXDClusterHostsTable = ({
   const pools = usePools();
   const podsLoaded = useSelector(podSelectors.loaded);
   const loaded = !pools.isPending && podsLoaded;
-  console.log(!pools.isPending, podsLoaded);
   const { currentSort, sortRows, updateSort } = useTableSort<
     Pod,
     SortKey,

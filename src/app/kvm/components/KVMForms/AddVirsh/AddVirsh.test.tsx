@@ -85,8 +85,11 @@ describe("AddVirsh", () => {
       route: "/kvm/add",
       state,
     });
+    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
-    expect(screen.getByTestId("virsh-unsupported")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByTestId("virsh-unsupported")).toBeInTheDocument()
+    );
   });
 
   it("can handle saving a virsh KVM", async () => {

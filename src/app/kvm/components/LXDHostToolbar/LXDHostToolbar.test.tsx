@@ -30,7 +30,7 @@ describe("LXDHostToolbar", () => {
         items: [
           factory.pod({
             id: 1,
-            pool: 2,
+            pool: 1,
             type: PodType.LXD,
           }),
         ],

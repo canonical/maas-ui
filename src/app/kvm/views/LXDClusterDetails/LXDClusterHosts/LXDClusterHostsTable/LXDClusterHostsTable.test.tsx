@@ -25,7 +25,7 @@ describe("LXDClusterHostsTable", () => {
       cluster: 1,
       id: 22,
       name: "cluster-host",
-      pool: 333,
+      pool: 1,
       type: PodType.LXD,
     });
     state = factory.rootState({
@@ -58,7 +58,7 @@ describe("LXDClusterHostsTable", () => {
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
-  it("can link to a host's VMs tab", () => {
+  it("can link to a host's VMs tab", async () => {
     renderWithBrowserRouter(
       <LXDClusterHostsTable
         clusterId={1}
@@ -70,13 +70,15 @@ describe("LXDClusterHostsTable", () => {
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
 
-    expect(screen.getByRole("link", { name: host.name })).toHaveAttribute(
-      "href",
-      urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 22 })
+    await waitFor(() =>
+      expect(screen.getByRole("link", { name: host.name })).toHaveAttribute(
+        "href",
+        urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 22 })
+      )
     );
   });
 
-  it("can show the name of the host's pool", () => {
+  it("can show the name of the host's pool", async () => {
     renderWithBrowserRouter(
       <LXDClusterHostsTable
         clusterId={1}
@@ -87,8 +89,10 @@ describe("LXDClusterHostsTable", () => {
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
-
-    expect(screen.getByTestId("host-pool-name")).toHaveTextContent("swimming");
+    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByTestId("host-pool-name")).toHaveTextContent("swimming")
+    );
   });
 
   it("can open the compose VM form for a host", async () => {
@@ -103,11 +107,14 @@ describe("LXDClusterHostsTable", () => {
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
+    await waitFor(() => screen.getByTestId("vm-host-compose"));
     await userEvent.click(screen.getByTestId("vm-host-compose"));
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMSidePanelViews.COMPOSE_VM,
-      extras: { hostId: 22 },
-    });
+    await waitFor(() =>
+      expect(setSidePanelContent).toHaveBeenCalledWith({
+        view: KVMSidePanelViews.COMPOSE_VM,
+        extras: { hostId: 22 },
+      })
+    );
   });
 
   it("can link to a host's settings page", async () => {
@@ -122,12 +129,14 @@ describe("LXDClusterHostsTable", () => {
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
     await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
-    expect(screen.getByTestId("vm-host-settings")).toHaveAttribute(
-      "href",
-      urls.kvm.lxd.cluster.host.edit({
-        clusterId: 1,
-        hostId: 22,
-      })
+    await waitFor(() =>
+      expect(screen.getByTestId("vm-host-settings")).toHaveAttribute(
+        "href",
+        urls.kvm.lxd.cluster.host.edit({
+          clusterId: 1,
+          hostId: 22,
+        })
+      )
     );
   });
 

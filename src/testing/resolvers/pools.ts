@@ -96,7 +96,7 @@ const poolsResolvers = {
     handler: () =>
       http.post(`${BASE_URL}MAAS/a/v3/resource_pools`, () => {
         poolsResolvers.createPool.resolved = true;
-        return HttpResponse.json({});
+        return HttpResponse.json({ id: 1 });
       }),
     error: (error: CreateResourcePoolError = mockCreatePoolError) =>
       http.post(`${BASE_URL}MAAS/a/v3/resource_pools`, () => {

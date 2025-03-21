@@ -7,6 +7,7 @@ import SetPoolFormFields from "./SetPoolFormFields";
 import type { SetPoolFormValues } from "./types";
 
 import { useCreatePool, usePools } from "@/app/api/query/pools";
+import type { ResourcePoolResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
 import type { APIError } from "@/app/base/types";
 import type { MachineActionFormProps } from "@/app/machines/types";
@@ -61,7 +62,7 @@ export const SetPoolForm = ({
       cleanup={machineActions.cleanup}
       errors={errorsToShow}
       initialValues={initialValues}
-      loaded={resourcePools.isSuccess}
+      loaded={!resourcePools.isPending}
       modelName="machine"
       onCancel={clearSidePanelContent}
       onSaveAnalytics={{
@@ -71,16 +72,15 @@ export const SetPoolForm = ({
       }}
       onSubmit={async (values) => {
         dispatch(machineActions.cleanup());
+        let pool = resourcePools.data?.items.find(
+          (pool) => pool.name === values.name
+        ) as ResourcePoolResponse;
         if (values.poolSelection === "create") {
-          createPool.mutate({
+          pool = await createPool.mutateAsync({
             body: { name: values.name, description: values.description },
           });
-          await resourcePools.refetch();
         }
 
-        const pool = resourcePools.data?.items.find(
-          (p) => p.name === values.name
-        );
         if (!pool) return;
 
         selectedMachines

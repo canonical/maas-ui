@@ -39,7 +39,6 @@ export const PoolColumn = ({
   const machinePools = resourcePools?.items.filter(
     (pool) => pool.id !== machine?.pool.id
   );
-  console.log(machinePools);
   if (machine?.actions.includes(NodeActions.SET_POOL)) {
     if (machinePools?.length !== 0) {
       poolLinks = machinePools?.map((pool) => ({

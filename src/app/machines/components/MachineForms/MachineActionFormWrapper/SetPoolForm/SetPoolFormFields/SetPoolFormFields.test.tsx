@@ -2,7 +2,16 @@ import SetPoolForm from "../SetPoolForm";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(poolsResolvers.listPools.handler());
 
 describe("SetPoolFormFields", () => {
   let state: RootState;
@@ -35,6 +44,9 @@ describe("SetPoolFormFields", () => {
       { route, state }
     );
 
+    await waitFor(() =>
+      expect(screen.getByLabelText("Create pool")).toBeInTheDocument()
+    );
     await userEvent.click(screen.getByLabelText("Create pool"));
     expect(
       screen.queryByRole("combobox", { name: "Resource pool" })
@@ -54,6 +66,9 @@ describe("SetPoolFormFields", () => {
         viewingDetails={false}
       />,
       { route, state }
+    );
+    await waitFor(() =>
+      expect(screen.getByLabelText("Create pool")).toBeInTheDocument()
     );
     await userEvent.click(screen.getByLabelText("Create pool"));
     expect(screen.getByLabelText("Name")).toBeInTheDocument();

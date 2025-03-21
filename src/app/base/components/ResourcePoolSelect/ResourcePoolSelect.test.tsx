@@ -1,41 +1,30 @@
 import { Formik } from "formik";
-import configureStore from "redux-mock-store";
 
 import ResourcePoolSelect from "./ResourcePoolSelect";
 
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { mockPools, poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  renderWithMockStore,
+  screen,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
+setupMockServer(poolsResolvers.listPools.handler());
 
 describe("ResourcePoolSelect", () => {
-  it("renders a list of all resource pools in state", () => {
+  it("renders a list of all resource pools in state", async () => {
     renderWithMockStore(
       <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
       </Formik>
     );
 
-    const pools = screen.getAllByRole("option", { name: /Pool [1-2]/i });
-    expect(pools).toHaveLength(2);
-    expect(pools[0]).toHaveTextContent("Pool 1");
-    expect(pools[1]).toHaveTextContent("Pool 2");
-  });
+    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
 
-  it("dispatches action to fetch resource pools on load", () => {
-    const state = factory.rootState();
-    const store = mockStore(state);
-    renderWithMockStore(
-      <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
-        <ResourcePoolSelect name="pool" />
-      </Formik>,
-      { store }
-    );
-
-    expect(
-      store.getActions().some((action) => action.type === "resourcepool/fetch")
-    ).toBe(true);
+    const pools = screen.getAllByRole("option");
+    expect(pools).toHaveLength(mockPools.items.length + 1);
+    expect(pools[1]).toHaveTextContent("swimming");
   });
 
   it("disables select if resource pools have not loaded", () => {

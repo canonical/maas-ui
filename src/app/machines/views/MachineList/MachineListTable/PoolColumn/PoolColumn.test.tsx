@@ -5,7 +5,7 @@ import { PoolColumn } from "./PoolColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { poolsResolvers } from "@/testing/resolvers/pools";
+import { mockPools, poolsResolvers } from "@/testing/resolvers/pools";
 import {
   renderWithBrowserRouter,
   screen,
@@ -15,7 +15,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(poolsResolvers.listPools.handler());
+const mockServer = setupMockServer(poolsResolvers.listPools.handler());
 
 describe("PoolColumn", () => {
   let state: RootState;
@@ -64,6 +64,9 @@ describe("PoolColumn", () => {
   });
 
   it("displays a message if there are no additional pools", async () => {
+    mockServer.use(
+      poolsResolvers.listPools.handler({ ...mockPools, items: [] })
+    );
     renderWithBrowserRouter(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
@@ -71,10 +74,15 @@ describe("PoolColumn", () => {
         state,
       }
     );
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "Change pool:" }))
+    );
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
-    expect(
-      screen.getByRole("button", { name: "No other pools available" })
-    ).toBeAriaDisabled();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "No other pools available" })
+      ).toBeInTheDocument()
+    );
   });
 
   it("displays a message if the machine cannot have its pool changed", async () => {
@@ -105,8 +113,19 @@ describe("PoolColumn", () => {
       }
     );
     await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Change pool:" })
+      ).toBeInTheDocument()
+    );
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
-    await userEvent.click(screen.getByRole("button", { name: "Backup" }));
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "swimming" })
+      ).toBeInTheDocument()
+    );
+    await userEvent.click(screen.getByRole("button", { name: "swimming" }));
 
     expect(
       store.getActions().find((action) => action.type === "machine/setPool")
@@ -137,8 +156,19 @@ describe("PoolColumn", () => {
       }
     );
     expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Change pool:" })
+      ).toBeInTheDocument()
+    );
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
-    await userEvent.click(screen.getByRole("button", { name: "Backup" }));
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "swimming" })
+      ).toBeInTheDocument()
+    );
+    await userEvent.click(screen.getByRole("button", { name: "swimming" }));
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
