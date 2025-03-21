@@ -1,7 +1,9 @@
 import {
   useCreatePool,
   useDeletePool,
-  useListPools,
+  useGetPool,
+  usePoolCount,
+  usePools,
   useUpdatePool,
 } from "./pools";
 
@@ -13,18 +15,36 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(
+const mockServer = setupMockServer(
   poolsResolvers.listPools.handler(),
+  poolsResolvers.getPool.handler(),
   poolsResolvers.createPool.handler(),
   poolsResolvers.updatePool.handler(),
   poolsResolvers.deletePool.handler()
 );
 
-describe("useListPools", () => {
+describe("usePools", () => {
   it("should return resource pools data", async () => {
-    const { result } = renderHookWithProviders(() => useListPools());
+    const { result } = renderHookWithProviders(() => usePools());
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data?.items).toEqual(mockPools.items);
+  });
+});
+
+describe("usePoolCount", () => {
+  it("should return correct count", async () => {
+    const { result } = renderHookWithProviders(() => usePoolCount());
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBe(3);
+  });
+
+  it("should return 0 when no zones exist", async () => {
+    mockServer.use(
+      poolsResolvers.listPools.handler({ ...mockPools, items: [] })
+    );
+    const { result } = renderHookWithProviders(() => usePoolCount());
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBe(0);
   });
 });
 
@@ -37,6 +57,24 @@ describe("useCreatePool", () => {
     const { result } = renderHookWithProviders(() => useCreatePool());
     result.current.mutate({ body: newPool });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  });
+});
+
+describe("useGetPool", () => {
+  it("should return the correct zone", async () => {
+    const expectedPool = mockPools.items[0];
+    const { result } = renderHookWithProviders(() =>
+      useGetPool({ path: { resource_pool_id: expectedPool.id } })
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(expectedPool);
+  });
+
+  it("should return error if zone does not exist", async () => {
+    const { result } = renderHookWithProviders(() =>
+      useGetPool({ path: { resource_pool_id: 99 } })
+    );
+    await waitFor(() => expect(result.current.isError).toBe(true));
   });
 });
 
