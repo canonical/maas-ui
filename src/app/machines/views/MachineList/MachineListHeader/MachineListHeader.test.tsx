@@ -42,10 +42,6 @@ describe("MachineListHeader", () => {
           def456: factory.machineStatus({}),
         },
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [factory.resourcePool()],
-      }),
     });
   });
 
@@ -72,7 +68,7 @@ describe("MachineListHeader", () => {
       { state, route: urls.machines.index }
     );
     expect(screen.getByTestId("main-toolbar-heading")).toHaveTextContent(
-      "2 machines in 1 pool"
+      "2 machines in 0 pools"
     );
   });
 

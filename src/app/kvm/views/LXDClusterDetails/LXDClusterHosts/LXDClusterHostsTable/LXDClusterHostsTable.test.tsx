@@ -6,7 +6,16 @@ import { PodType } from "@/app/store/pod/constants";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(poolsResolvers.listPools.handler());
 
 describe("LXDClusterHostsTable", () => {
   let state: RootState;
@@ -24,10 +33,6 @@ describe("LXDClusterHostsTable", () => {
         items: [host],
         loaded: true,
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ id: 333, name: "swimming" })],
-        loaded: true,
-      }),
       vmcluster: factory.vmClusterState({
         items: [
           factory.vmCluster({
@@ -40,7 +45,6 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("shows a spinner if pods or pools haven't loaded yet", () => {
-    state.resourcepool.loaded = false;
     renderWithBrowserRouter(
       <LXDClusterHostsTable
         clusterId={1}
@@ -106,7 +110,7 @@ describe("LXDClusterHostsTable", () => {
     });
   });
 
-  it("can link to a host's settings page", () => {
+  it("can link to a host's settings page", async () => {
     renderWithBrowserRouter(
       <LXDClusterHostsTable
         clusterId={1}
@@ -117,6 +121,7 @@ describe("LXDClusterHostsTable", () => {
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
+    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
     expect(screen.getByTestId("vm-host-settings")).toHaveAttribute(
       "href",
       urls.kvm.lxd.cluster.host.edit({

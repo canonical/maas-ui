@@ -5,9 +5,16 @@ import SetPoolForm from "./SetPoolForm";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  userEvent,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+setupMockServer(poolsResolvers.listPools.handler());
 
 describe("SetPoolForm", () => {
   let state: RootState;
@@ -31,32 +38,7 @@ describe("SetPoolForm", () => {
           def456: factory.machineStatus({ settingPool: false }),
         },
       }),
-      resourcepool: factory.resourcePoolState({
-        errors: {},
-        items: [
-          factory.resourcePool({ id: 0, name: "default" }),
-          factory.resourcePool({ id: 1, name: "pool-1" }),
-        ],
-        loaded: true,
-      }),
     });
-  });
-
-  it("dispatches action to fetch pools on load", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <SetPoolForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
-    );
-
-    expect(
-      store.getActions().some((action) => action.type === "resourcepool/fetch")
-    ).toBe(true);
   });
 
   it("correctly dispatches actions to set pools of given machines", async () => {

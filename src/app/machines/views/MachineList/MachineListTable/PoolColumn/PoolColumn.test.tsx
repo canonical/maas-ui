@@ -5,9 +5,17 @@ import { PoolColumn } from "./PoolColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+setupMockServer(poolsResolvers.listPools.handler());
 
 describe("PoolColumn", () => {
   let state: RootState;
@@ -21,19 +29,6 @@ describe("PoolColumn", () => {
             pool: factory.modelRef({ id: 0, name: "default" }),
             description: "Firmware old",
             actions: [NodeActions.SET_POOL],
-          }),
-        ],
-      }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [
-          factory.resourcePool({
-            id: 0,
-            name: "default",
-          }),
-          factory.resourcePool({
-            id: 1,
-            name: "Backup",
           }),
         ],
       }),
@@ -69,13 +64,6 @@ describe("PoolColumn", () => {
   });
 
   it("displays a message if there are no additional pools", async () => {
-    state.resourcepool.items = [
-      factory.resourcePool({
-        id: 0,
-        name: "default",
-      }),
-    ];
-
     renderWithBrowserRouter(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
@@ -116,6 +104,7 @@ describe("PoolColumn", () => {
         store,
       }
     );
+    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
     await userEvent.click(screen.getByRole("button", { name: "Backup" }));
 

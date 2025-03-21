@@ -9,6 +9,7 @@ import ComposeForm, {
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
@@ -19,7 +20,10 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("ComposeForm", () => {
   let state: RootState;
@@ -45,15 +49,6 @@ describe("ComposeForm", () => {
         items: [factory.podDetails({ id: 1, name: "blablabla" })],
         loaded: true,
         statuses: { 1: factory.podStatus() },
-      }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [
-          factory.resourcePool({
-            id: 2,
-            name: "olympic",
-          }),
-        ],
       }),
       space: factory.spaceState({
         loaded: true,

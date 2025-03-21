@@ -3,6 +3,7 @@ import KVMConfigurationCard from "../KVMConfigurationCard";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
@@ -12,17 +13,16 @@ import {
   within,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("KVMConfigurationCardFields", () => {
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState({
       pod: factory.podState({ items: [], loaded: true }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [factory.resourcePool({ id: 1, name: "pool-1" })],
-      }),
     });
   });
 
@@ -61,7 +61,7 @@ describe("KVMConfigurationCardFields", () => {
       (
         within(
           screen.getByRole("combobox", { name: "Resource pool" })
-        ).getByRole("option", { name: "pool-1" }) as HTMLOptionElement
+        ).getByRole("option", { name: "swimming" }) as HTMLOptionElement
       ).selected
     ).toBe(true);
     expect(
@@ -103,7 +103,7 @@ describe("KVMConfigurationCardFields", () => {
       (
         within(
           screen.getByRole("combobox", { name: "Resource pool" })
-        ).getByRole("option", { name: "pool-1" }) as HTMLOptionElement
+        ).getByRole("option", { name: "swimming" }) as HTMLOptionElement
       ).selected
     ).toBe(true);
     expect(

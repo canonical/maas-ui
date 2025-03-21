@@ -22,14 +22,6 @@ describe("PoolColumn", () => {
           }),
         ],
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [
-          factory.resourcePool({
-            id: 1,
-            name: "swimming-pool",
-          }),
-        ],
-      }),
     });
   });
 

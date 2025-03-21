@@ -4,10 +4,7 @@ import * as matchers from "redux-saga-test-plan/matchers";
 import WebSocketClient from "../../../websocket-client";
 
 import {
-  createPoolWithMachines,
   deleteDomainRecord,
-  generateMachineFilterPoolActionCreators,
-  generateMachinePoolActionCreators,
   generateNextDeleteRecordAction,
   generateNextUpdateRecordAction,
   updateDomainRecord,
@@ -15,61 +12,11 @@ import {
 
 import { domainActions } from "@/app/store/domain";
 import { RecordType } from "@/app/store/domain/types";
-import { resourcePoolActions } from "@/app/store/resourcepool";
 import * as factory from "@/testing/factories";
 
 vi.mock("../../../websocket-client");
 
 describe("websocket sagas", () => {
-  it("can send a message to create a pool then attach machines", () => {
-    const socketClient = new WebSocketClient();
-    const sendMessage = vi.fn();
-    const actionCreators = [vi.fn()];
-    const pool = { name: "pool1", description: "a pool" };
-    const action = {
-      type: "resourcepoo/createWithMachines",
-      payload: { params: { machineIDs: ["machine1"], pool } },
-      meta: {},
-    };
-    return expectSaga(createPoolWithMachines, socketClient, sendMessage, action)
-      .provide([
-        [matchers.call.fn(generateMachinePoolActionCreators), actionCreators],
-      ])
-      .call(
-        sendMessage,
-        socketClient,
-        resourcePoolActions.create(pool),
-        actionCreators
-      )
-      .run();
-  });
-
-  it("can send a message to create a pool then attach machines using filter", () => {
-    const socketClient = new WebSocketClient();
-    const sendMessage = vi.fn();
-    const actionCreators = [vi.fn()];
-    const pool = { name: "pool1", description: "a pool" };
-    const action = {
-      type: "resourcepoo/createWithMachines",
-      payload: { params: { filter: { id: ["abcd123"] }, pool } },
-      meta: {},
-    };
-    return expectSaga(createPoolWithMachines, socketClient, sendMessage, action)
-      .provide([
-        [
-          matchers.call.fn(generateMachineFilterPoolActionCreators),
-          actionCreators,
-        ],
-      ])
-      .call(
-        sendMessage,
-        socketClient,
-        resourcePoolActions.create(pool),
-        actionCreators
-      )
-      .run();
-  });
-
   it("can send a message to update an address record then update the DNS resource", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();

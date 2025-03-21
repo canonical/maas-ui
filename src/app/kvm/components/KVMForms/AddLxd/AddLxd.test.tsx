@@ -7,6 +7,7 @@ import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
@@ -17,7 +18,11 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(zoneResolvers.listZones.handler());
+
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("AddLxd", () => {
   let state: RootState;
@@ -45,10 +50,6 @@ describe("AddLxd", () => {
         }),
       }),
       pod: factory.podState({
-        loaded: true,
-      }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ id: 0 })],
         loaded: true,
       }),
     });
@@ -92,7 +93,7 @@ describe("AddLxd", () => {
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Resource pool" }),
-      "0"
+      "1"
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
@@ -145,7 +146,7 @@ describe("AddLxd", () => {
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Resource pool" }),
-      "0"
+      "1"
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
@@ -210,7 +211,7 @@ describe("AddLxd", () => {
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Resource pool" }),
-      "0"
+      "1"
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),

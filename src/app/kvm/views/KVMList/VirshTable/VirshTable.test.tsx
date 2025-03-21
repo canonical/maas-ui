@@ -23,13 +23,6 @@ describe("VirshTable", () => {
     ];
     state = factory.rootState({
       pod: factory.podState({ items: pods, loaded: true }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [
-          factory.resourcePool({ id: pods[0].pool }),
-          factory.resourcePool({ id: pods[1].pool }),
-        ],
-      }),
     });
   });
 
@@ -93,7 +86,6 @@ describe("VirshTable", () => {
         name: "second-pool",
       }),
     ];
-    state.resourcepool.items = pools;
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
     firstPod.pool = pools[0].id;
     secondPod.pool = pools[1].id;

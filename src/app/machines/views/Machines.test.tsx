@@ -1,6 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { MachineSidePanelViews } from "../constants";
@@ -25,7 +23,6 @@ import {
   userEvent,
   within,
   screen,
-  render,
   waitFor,
   renderWithBrowserRouter,
 } from "@/testing/utils";
@@ -243,17 +240,10 @@ describe("Machines", () => {
 
   it("can set the search from the URL", () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <Machines />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<Machines />, {
+      route: "/machines?q=test+search",
+      store,
+    });
     expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue(
       "test search"
     );

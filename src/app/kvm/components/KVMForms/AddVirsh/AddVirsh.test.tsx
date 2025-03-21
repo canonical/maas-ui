@@ -3,9 +3,9 @@ import AddVirsh from "./AddVirsh";
 import { ConfigNames } from "@/app/store/config/types";
 import { generalActions } from "@/app/store/general";
 import { PodType } from "@/app/store/pod/constants";
-import { resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
@@ -16,7 +16,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("AddVirsh", () => {
   let state: RootState;
@@ -43,10 +46,6 @@ describe("AddVirsh", () => {
       pod: factory.podState({
         loaded: true,
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ id: 0 })],
-        loaded: true,
-      }),
     });
   });
 
@@ -59,10 +58,7 @@ describe("AddVirsh", () => {
       }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
-    const expectedActions = [
-      generalActions.fetchPowerTypes(),
-      resourcePoolActions.fetch(),
-    ];
+    const expectedActions = [generalActions.fetchPowerTypes()];
     const actualActions = store.getActions();
     expectedActions.forEach((expectedAction) => {
       expect(
@@ -112,7 +108,7 @@ describe("AddVirsh", () => {
     );
     await userEvent.selectOptions(
       await screen.findByRole("combobox", { name: /Resource pool/i }),
-      "0"
+      "1"
     );
     await userEvent.selectOptions(screen.getByLabelText(/Zone/i), "1");
 
@@ -131,7 +127,7 @@ describe("AddVirsh", () => {
       payload: {
         params: {
           name: "my-favourite-kvm",
-          pool: 0,
+          pool: 1,
           power_address: "auto",
           power_pass: "auto",
           type: PodType.VIRSH,

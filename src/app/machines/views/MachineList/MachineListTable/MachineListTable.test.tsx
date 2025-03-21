@@ -189,19 +189,6 @@ describe("MachineListTable", () => {
           }),
         },
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [
-          factory.resourcePool({
-            id: 0,
-            name: "default",
-          }),
-          factory.resourcePool({
-            id: 1,
-            name: "Backup",
-          }),
-        ],
-      }),
     });
   });
 

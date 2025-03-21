@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import LXDHostToolbar from "./LXDHostToolbar";
@@ -10,9 +8,18 @@ import { ConfigNames } from "@/app/store/config/types";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { waitFor, render, screen, within, userEvent } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  waitFor,
+  screen,
+  within,
+  userEvent,
+  renderWithProviders,
+  setupMockServer,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
+setupMockServer(poolsResolvers.getPool.handler());
 
 describe("LXDHostToolbar", () => {
   let state: RootState;
@@ -28,30 +35,19 @@ describe("LXDHostToolbar", () => {
           }),
         ],
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ id: 2, name: "swimming" })],
-      }),
     });
   });
 
   it("shows a spinner if pools haven't loaded yet", () => {
-    state.resourcepool.items = [];
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
-          ]}
-        >
-          <LXDHostToolbar
-            hostId={1}
-            setSidePanelContent={vi.fn()}
-            setViewByNuma={vi.fn()}
-            viewByNuma={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LXDHostToolbar
+        hostId={1}
+        setSidePanelContent={vi.fn()}
+        setViewByNuma={vi.fn()}
+        viewByNuma={false}
+      />,
+      { store }
     );
 
     expect(
@@ -59,52 +55,35 @@ describe("LXDHostToolbar", () => {
     ).toBeInTheDocument();
   });
 
-  it("can show the host's pool's name", () => {
+  it("can show the host's pool's name", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
-          ]}
-        >
-          <LXDHostToolbar
-            hostId={1}
-            setSidePanelContent={vi.fn()}
-            setViewByNuma={vi.fn()}
-            viewByNuma={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LXDHostToolbar
+        hostId={1}
+        setSidePanelContent={vi.fn()}
+        setViewByNuma={vi.fn()}
+        viewByNuma={false}
+      />,
+      { store }
     );
+    await waitFor(() => {
+      expect(poolsResolvers.getPool.resolved).toBeTruthy();
+    });
 
     expect(screen.getByTestId("pod-pool").textContent).toEqual("swimming");
   });
 
   it("can link to a host's settings page if in cluster view", () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: urls.kvm.lxd.cluster.vms.host({
-                clusterId: 2,
-                hostId: 1,
-              }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <LXDHostToolbar
-            clusterId={2}
-            hostId={1}
-            setSidePanelContent={vi.fn()}
-            setViewByNuma={vi.fn()}
-            viewByNuma={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LXDHostToolbar
+        clusterId={2}
+        hostId={1}
+        setSidePanelContent={vi.fn()}
+        setViewByNuma={vi.fn()}
+        viewByNuma={false}
+      />,
+      { store }
     );
 
     expect(
@@ -116,21 +95,14 @@ describe("LXDHostToolbar", () => {
 
   it("does not show a link to host's settings page if in single host view", () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
-          ]}
-        >
-          <LXDHostToolbar
-            hostId={1}
-            setSidePanelContent={vi.fn()}
-            setViewByNuma={vi.fn()}
-            viewByNuma={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LXDHostToolbar
+        hostId={1}
+        setSidePanelContent={vi.fn()}
+        setViewByNuma={vi.fn()}
+        viewByNuma={false}
+      />,
+      { store }
     );
 
     expect(screen.queryByTestId("settings-link")).not.toBeInTheDocument();
@@ -138,21 +110,14 @@ describe("LXDHostToolbar", () => {
 
   it("shows tags in single host view", () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
-          ]}
-        >
-          <LXDHostToolbar
-            hostId={1}
-            setSidePanelContent={vi.fn()}
-            setViewByNuma={vi.fn()}
-            viewByNuma={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LXDHostToolbar
+        hostId={1}
+        setSidePanelContent={vi.fn()}
+        setViewByNuma={vi.fn()}
+        viewByNuma={false}
+      />,
+      { store }
     );
 
     expect(screen.getByTestId("pod-tags")).toBeInTheDocument();
@@ -163,17 +128,14 @@ describe("LXDHostToolbar", () => {
       numa: [factory.podNuma()],
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <LXDHostToolbar
-            hostId={1}
-            setSidePanelContent={vi.fn()}
-            setViewByNuma={vi.fn()}
-            viewByNuma={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LXDHostToolbar
+        hostId={1}
+        setSidePanelContent={vi.fn()}
+        setViewByNuma={vi.fn()}
+        viewByNuma={false}
+      />,
+      { store }
     );
     await waitFor(() =>
       expect(screen.getByTestId("numa-switch")).toBeInTheDocument()
@@ -201,17 +163,14 @@ describe("LXDHostToolbar", () => {
     });
     const useSendMock = vi.spyOn(hooks, "useSendAnalytics");
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <LXDHostToolbar
-            hostId={1}
-            setSidePanelContent={vi.fn()}
-            setViewByNuma={vi.fn()}
-            viewByNuma={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LXDHostToolbar
+        hostId={1}
+        setSidePanelContent={vi.fn()}
+        setViewByNuma={vi.fn()}
+        viewByNuma={false}
+      />,
+      { store }
     );
     await userEvent.click(screen.getByTestId("numa-switch"));
     await waitFor(() => expect(useSendMock).toHaveBeenCalled());
@@ -220,17 +179,8 @@ describe("LXDHostToolbar", () => {
 
   it("can display a basic set of data", () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
-          ]}
-        >
-          <LXDHostToolbar hostId={1} showBasic />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<LXDHostToolbar hostId={1} showBasic />, { store });
+
     expect(screen.getByTestId("toolbar-title")).toBeInTheDocument();
     expect(screen.getByTestId("lxd-version")).toBeInTheDocument();
     expect(screen.queryByTestId("settings-link")).toBeNull();

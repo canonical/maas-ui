@@ -15,9 +15,6 @@ describe("LXDSingleSettings", () => {
         items: [factory.podDetails({ id: 1, name: "pod1" })],
         loaded: true,
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-      }),
       tag: factory.tagState({
         loaded: true,
       }),
@@ -45,7 +42,6 @@ describe("LXDSingleSettings", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.resourcepool.loaded = false;
     renderWithBrowserRouter(
       <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />,
       { state }

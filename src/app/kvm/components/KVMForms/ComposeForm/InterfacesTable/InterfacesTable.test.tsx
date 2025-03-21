@@ -40,9 +40,6 @@ describe("InterfacesTable", () => {
         loaded: true,
         statuses: { [pod.id]: factory.podStatus() },
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-      }),
       space: factory.spaceState({
         loaded: true,
       }),

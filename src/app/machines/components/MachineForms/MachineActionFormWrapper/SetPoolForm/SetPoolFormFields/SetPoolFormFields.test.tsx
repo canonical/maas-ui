@@ -21,13 +21,6 @@ describe("SetPoolFormFields", () => {
           def456: factory.machineStatus({ settingPool: false }),
         },
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [
-          factory.resourcePool({ id: 0, name: "default" }),
-          factory.resourcePool({ id: 1, name: "pool-1" }),
-        ],
-      }),
     });
   });
 

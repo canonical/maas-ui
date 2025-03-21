@@ -18,11 +18,7 @@ describe("KVMList", () => {
       route: "/kvm",
       store,
     });
-    const expectedActions = [
-      "pod/fetch",
-      "resourcepool/fetch",
-      "vmcluster/fetch",
-    ];
+    const expectedActions = ["pod/fetch", "vmcluster/fetch"];
     const actualActions = store.getActions();
     expect(
       expectedActions.every((expectedAction) =>

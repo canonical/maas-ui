@@ -46,9 +46,6 @@ describe("ComposeFormFields", () => {
         loaded: true,
         statuses: { 1: factory.podStatus() },
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-      }),
       space: factory.spaceState({
         loaded: true,
       }),

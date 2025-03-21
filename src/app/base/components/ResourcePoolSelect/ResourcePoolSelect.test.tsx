@@ -11,20 +11,10 @@ const mockStore = configureStore<RootState>();
 
 describe("ResourcePoolSelect", () => {
   it("renders a list of all resource pools in state", () => {
-    const state = factory.rootState({
-      resourcepool: factory.resourcePoolState({
-        items: [
-          factory.resourcePool({ id: 101, name: "Pool 1" }),
-          factory.resourcePool({ id: 202, name: "Pool 2" }),
-        ],
-        loaded: true,
-      }),
-    });
     renderWithMockStore(
       <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
-      </Formik>,
-      { state }
+      </Formik>
     );
 
     const pools = screen.getAllByRole("option", { name: /Pool [1-2]/i });
@@ -49,16 +39,10 @@ describe("ResourcePoolSelect", () => {
   });
 
   it("disables select if resource pools have not loaded", () => {
-    const state = factory.rootState({
-      resourcepool: factory.resourcePoolState({
-        loaded: false,
-      }),
-    });
     renderWithMockStore(
       <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
-      </Formik>,
-      { state }
+      </Formik>
     );
 
     expect(screen.getByRole("combobox")).toBeDisabled();

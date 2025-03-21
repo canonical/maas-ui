@@ -5,6 +5,7 @@ import { MachineSidePanelViews } from "@/app/machines/constants";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   getByTextContent,
@@ -14,7 +15,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("KVMForms", () => {
   let state: RootState;
@@ -42,9 +46,6 @@ describe("KVMForms", () => {
           1: factory.podStatus(),
           2: factory.podStatus(),
         },
-      }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
       }),
       space: factory.spaceState({
         loaded: true,
