@@ -79,6 +79,18 @@ const poolsResolvers = {
         return HttpResponse.json(error, { status: error.code });
       }),
   },
+  getPool: {
+    resolved: false,
+    handler: () =>
+      http.get(`${BASE_URL}MAAS/a/v3/resource_pools/:id`, ({ params }) => {
+        const id = Number(params.id);
+        if (!id) return HttpResponse.error();
+
+        const pool = mockPools.items.find((pool) => pool.id === id);
+        poolsResolvers.getPool.resolved = true;
+        return pool ? HttpResponse.json(pool) : HttpResponse.error();
+      }),
+  },
   createPool: {
     resolved: false,
     handler: () =>

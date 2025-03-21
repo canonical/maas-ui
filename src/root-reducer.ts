@@ -25,7 +25,6 @@ import notification from "@/app/store/notification";
 import packagerepository from "@/app/store/packagerepository";
 import pod from "@/app/store/pod";
 import reservedip from "@/app/store/reservedip";
-import resourcepool from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
 import script from "@/app/store/script";
 import scriptresult from "@/app/store/scriptresult";
@@ -67,7 +66,6 @@ const createAppReducer = (routerReducer: Reducer<RouterState, Action>) =>
     packagerepository,
     pod,
     reservedip,
-    resourcepool,
     router: routerReducer,
     scriptresult,
     script,

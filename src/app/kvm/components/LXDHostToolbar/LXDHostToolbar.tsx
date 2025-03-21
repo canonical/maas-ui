@@ -2,14 +2,13 @@ import { Icon, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
 
+import { useGetPool } from "@/app/api/query/pools";
 import Switch from "@/app/base/components/Switch";
-import { useFetchActions, useSendAnalytics } from "@/app/base/hooks";
+import { useSendAnalytics } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import type { RootState } from "@/app/store/root/types";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 
@@ -35,13 +34,9 @@ const LXDHostToolbar = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
-  const pool = useSelector((state: RootState) =>
-    resourcePoolSelectors.getById(state, pod?.pool)
-  );
+  const { data: pool } = useGetPool({ path: { resource_pool_id: pod!.pool } });
   const sendAnalytics = useSendAnalytics();
   const location = useLocation();
-
-  useFetchActions([resourcePoolActions.fetch]);
 
   if (!pod) {
     return null;

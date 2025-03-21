@@ -39,7 +39,6 @@ import {
   podStatus as podStatusFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   spaceState as spaceStateFactory,
   subnet as subnetFactory,
@@ -351,9 +350,6 @@ export const getTestState = (): RootState => {
       items: [pod],
       loaded: true,
       statuses: { [pod.id]: podStatusFactory() },
-    }),
-    resourcepool: resourcePoolStateFactory({
-      loaded: true,
     }),
     space: spaceStateFactory({
       loaded: true,

@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import SetPoolFormFields from "./SetPoolFormFields";
 import type { SetPoolFormValues } from "./types";
 
+import { useCreatePool, usePools } from "@/app/api/query/pools";
 import ActionForm from "@/app/base/components/ActionForm";
-import { useFetchActions } from "@/app/base/hooks";
+import type { APIError } from "@/app/base/types";
 import type { MachineActionFormProps } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
 import type { MachineEventErrors } from "@/app/store/machine/types";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import { NodeActions } from "@/app/store/types/node";
 
 type Props = MachineActionFormProps;
@@ -42,18 +41,16 @@ export const SetPoolForm = ({
     description: "",
     name: "",
   });
-  const poolErrors = useSelector(resourcePoolSelectors.errors);
-  const resourcePools = useSelector(resourcePoolSelectors.all);
-  const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
+  const resourcePools = usePools();
+  const createPool = useCreatePool();
   const errorsToShow =
-    Object.keys(errors || {}).length > 0 ? errors : poolErrors;
-
-  useFetchActions([resourcePoolActions.fetch]);
+    Object.keys(errors || {}).length > 0
+      ? errors
+      : (resourcePools.error as APIError);
 
   useEffect(
     () => () => {
       dispatch(machineActions.cleanup());
-      dispatch(resourcePoolActions.cleanup());
     },
     [dispatch]
   );
@@ -64,7 +61,7 @@ export const SetPoolForm = ({
       cleanup={machineActions.cleanup}
       errors={errorsToShow}
       initialValues={initialValues}
-      loaded={resourcePoolsLoaded}
+      loaded={resourcePools.isSuccess}
       modelName="machine"
       onCancel={clearSidePanelContent}
       onSaveAnalytics={{
@@ -72,43 +69,33 @@ export const SetPoolForm = ({
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
         label: "Set pool",
       }}
-      onSubmit={(values) => {
+      onSubmit={async (values) => {
         dispatch(machineActions.cleanup());
         if (values.poolSelection === "create") {
-          if (selectedMachines) {
-            dispatchForSelectedMachines(
-              resourcePoolActions.createWithMachines,
-              {
-                pool: values,
-              }
-            );
-          } else {
-            dispatch(
-              resourcePoolActions.createWithMachines({
-                machineIDs: machines?.map(({ system_id }) => system_id) || [],
-                pool: values,
-              })
-            );
-          }
-        } else {
-          const pool = resourcePools.find((pool) => pool.name === values.name);
-          if (pool) {
-            if (selectedMachines) {
-              dispatchForSelectedMachines(machineActions.setPool, {
-                pool_id: pool.id,
-              });
-            } else {
-              machines?.forEach((machine) => {
-                dispatch(
-                  machineActions.setPool({
-                    pool_id: pool.id,
-                    system_id: machine.system_id,
-                  })
-                );
-              });
-            }
-          }
+          createPool.mutate({
+            body: { name: values.name, description: values.description },
+          });
+          await resourcePools.refetch();
         }
+
+        const pool = resourcePools.data?.items.find(
+          (p) => p.name === values.name
+        );
+        if (!pool) return;
+
+        selectedMachines
+          ? dispatchForSelectedMachines(machineActions.setPool, {
+              pool_id: pool.id,
+            })
+          : machines?.forEach((machine) =>
+              dispatch(
+                machineActions.setPool({
+                  pool_id: pool.id,
+                  system_id: machine.system_id,
+                })
+              )
+            );
+
         // Store the values in case there are errors and the form needs to be
         // displayed again.
         setInitialValues(values);
