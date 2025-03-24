@@ -9,7 +9,7 @@ import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   getByTextContent,
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   waitFor,
@@ -64,7 +64,7 @@ describe("KVMForms", () => {
   });
 
   it("does not render if sidePanelContent is not defined", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <KVMForms setSidePanelContent={vi.fn()} sidePanelContent={null} />,
       { state }
     );
@@ -74,7 +74,7 @@ describe("KVMForms", () => {
   });
 
   it("renders AddLxd if Add LXD host side panel content provided", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <KVMForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: KVMSidePanelViews.ADD_LXD_HOST }}
@@ -99,7 +99,7 @@ describe("KVMForms", () => {
   });
 
   it("renders AddVirsh if Add Virsh host side panel content provided", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <KVMForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: KVMSidePanelViews.ADD_VIRSH_HOST }}
@@ -123,7 +123,7 @@ describe("KVMForms", () => {
   });
 
   it("renders ComposeForm if Compose side panel content and host id provided", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <KVMForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={{
@@ -154,7 +154,7 @@ describe("KVMForms", () => {
   });
 
   it("renders DeleteForm if delete side panel content and host id provided", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <KVMForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={{
@@ -183,7 +183,7 @@ describe("KVMForms", () => {
   });
 
   it("renders DeleteForm if delete side panel content and cluster id provided", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <KVMForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={{
@@ -211,7 +211,7 @@ describe("KVMForms", () => {
   });
 
   it("renders RefreshForm if refresh side panel content and host ids provided", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <KVMForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={{
@@ -234,7 +234,7 @@ describe("KVMForms", () => {
 
   it("renders machine action forms if a machine action is selected", () => {
     state.machine.selected = { items: ["abc123"] };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <KVMForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: MachineSidePanelViews.DELETE_MACHINE }}
@@ -251,7 +251,7 @@ describe("KVMForms", () => {
 
   it("renders machine action forms with selected machine count", () => {
     state.machine.selected = { items: ["abc123", "def456"] };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <KVMForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: MachineSidePanelViews.DELETE_MACHINE }}

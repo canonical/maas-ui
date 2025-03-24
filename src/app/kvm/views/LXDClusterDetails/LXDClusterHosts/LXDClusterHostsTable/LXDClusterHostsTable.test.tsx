@@ -8,7 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -45,7 +45,7 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("shows a spinner if pods or pools haven't loaded yet", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -59,7 +59,7 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("can link to a host's VMs tab", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -79,7 +79,7 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("can show the name of the host's pool", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -97,7 +97,7 @@ describe("LXDClusterHostsTable", () => {
 
   it("can open the compose VM form for a host", async () => {
     const setSidePanelContent = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -118,7 +118,7 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("can link to a host's settings page", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -141,7 +141,7 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("displays a message if there are no search results", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}

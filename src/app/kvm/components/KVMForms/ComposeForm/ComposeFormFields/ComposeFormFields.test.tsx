@@ -12,7 +12,7 @@ import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   renderWithMockStore,
   userEvent,
   fireEvent,
@@ -70,7 +70,7 @@ describe("ComposeFormFields", () => {
     });
     pod.cpu_over_commit_ratio = 3;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
@@ -106,7 +106,7 @@ describe("ComposeFormFields", () => {
     });
     pod.memory_over_commit_ratio = 2;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
@@ -157,7 +157,7 @@ describe("ComposeFormFields", () => {
       }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
@@ -371,7 +371,7 @@ describe("ComposeFormFields", () => {
   it("can detect duplicate core indices", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
@@ -399,7 +399,7 @@ describe("ComposeFormFields", () => {
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
@@ -420,7 +420,7 @@ describe("ComposeFormFields", () => {
       cores: factory.podResource({ free: 1 }),
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", state }
     );
@@ -462,7 +462,7 @@ describe("ComposeFormFields", () => {
       ],
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );

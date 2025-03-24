@@ -7,7 +7,7 @@ import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { mockPools, poolsResolvers } from "@/testing/resolvers/pools";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -38,7 +38,7 @@ describe("PoolColumn", () => {
   it("displays pool", () => {
     state.machine.items[0].pool = factory.modelRef({ name: "pool-1" });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
@@ -52,7 +52,7 @@ describe("PoolColumn", () => {
   it("displays description", () => {
     state.machine.items[0].description = "decomissioned";
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
@@ -67,7 +67,7 @@ describe("PoolColumn", () => {
     mockServer.use(
       poolsResolvers.listPools.handler({ ...mockPools, items: [] })
     );
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
@@ -88,7 +88,7 @@ describe("PoolColumn", () => {
   it("displays a message if the machine cannot have its pool changed", async () => {
     state.machine.items[0].actions = [];
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
@@ -105,7 +105,7 @@ describe("PoolColumn", () => {
 
   it("can change pools", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
@@ -148,7 +148,7 @@ describe("PoolColumn", () => {
   });
 
   it("shows a spinner when changing pools", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
@@ -173,7 +173,7 @@ describe("PoolColumn", () => {
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {
-    renderWithBrowserRouter(<PoolColumn systemId="abc123" />, {
+    renderWithProviders(<PoolColumn systemId="abc123" />, {
       route: "/machines",
       state,
     });

@@ -6,7 +6,11 @@ import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import {
+  renderWithBrowserRouter,
+  renderWithProviders,
+  screen,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -14,7 +18,7 @@ describe("KVMList", () => {
   it("correctly fetches the necessary data", () => {
     const state = factory.rootState();
     const store = mockStore(state);
-    renderWithBrowserRouter(<KVMList />, {
+    renderWithProviders(<KVMList />, {
       route: "/kvm",
       store,
     });
@@ -34,7 +38,7 @@ describe("KVMList", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<KVMList />, {
+    renderWithProviders(<KVMList />, {
       route: urls.kvm.lxd.index,
       store,
     });
@@ -49,7 +53,7 @@ describe("KVMList", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<KVMList />, {
+    renderWithProviders(<KVMList />, {
       route: urls.kvm.lxd.index,
       store,
     });
@@ -64,7 +68,7 @@ describe("KVMList", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<KVMList />, {
+    renderWithProviders(<KVMList />, {
       route: urls.kvm.virsh.index,
       store,
     });
@@ -95,7 +99,7 @@ describe("KVMList", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<KVMList />, {
+    renderWithProviders(<KVMList />, {
       route: urls.kvm.lxd.index,
       store,
     });
@@ -120,7 +124,7 @@ describe("KVMList", () => {
         items: [],
       }),
     });
-    renderWithBrowserRouter(<KVMList />, {
+    renderWithProviders(<KVMList />, {
       route: urls.kvm.virsh.index,
       state,
     });
@@ -145,7 +149,7 @@ describe("KVMList", () => {
         loading: true,
       }),
     });
-    renderWithBrowserRouter(<KVMList />, {
+    renderWithProviders(<KVMList />, {
       route: urls.kvm.index,
       state,
     });

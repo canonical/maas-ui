@@ -5,7 +5,7 @@ import * as factory from "@/testing/factories";
 import { mockPools, poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -23,12 +23,6 @@ describe("VirshTable", () => {
     factory.pod({ pool: 1, zone: 1 }),
     factory.pod({ pool: 2, zone: 2 }),
   ];
-  const queryData = {
-    zones: [
-      factory.zone({ id: pods[0].zone }),
-      factory.zone({ id: pods[1].zone }),
-    ],
-  };
   beforeEach(() => {
     pods = [
       factory.pod({ pool: 1, zone: 1 }),
@@ -40,10 +34,9 @@ describe("VirshTable", () => {
   });
 
   it("shows pods sorted by descending name by default", () => {
-    renderWithBrowserRouter(<VirshTable />, {
+    renderWithProviders(<VirshTable />, {
       route: "/kvm",
       state,
-      queryData,
     });
     expect(
       screen.getByRole("button", { name: "Name (descending)" })
@@ -53,10 +46,9 @@ describe("VirshTable", () => {
   it("can sort by parameters of the pods themselves", async () => {
     state.pod.items[0].resources.vm_count.tracked = 1;
     state.pod.items[1].resources.vm_count.tracked = 2;
-    renderWithBrowserRouter(<VirshTable />, {
+    renderWithProviders(<VirshTable />, {
       route: "/kvm",
       state,
-      queryData,
     });
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
     const getName = (rowNumber: number) =>
@@ -92,10 +84,9 @@ describe("VirshTable", () => {
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
     firstPod.pool = mockPools.items[0].id;
     secondPod.pool = mockPools.items[1].id;
-    renderWithBrowserRouter(<VirshTable />, {
+    renderWithProviders(<VirshTable />, {
       route: "/kvm",
       state,
-      queryData,
     });
 
     const getName = (rowNumber: number) =>
@@ -122,10 +113,9 @@ describe("VirshTable", () => {
 
   it("displays a message when empty", () => {
     state.pod.items = [];
-    renderWithBrowserRouter(<VirshTable />, {
+    renderWithProviders(<VirshTable />, {
       route: "/kvm",
       state,
-      queryData,
     });
 
     expect(screen.getByText("No pods available.")).toBeInTheDocument();

@@ -8,18 +8,16 @@ import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   fireEvent,
+  renderWithBrowserRouter,
 } from "@/testing/utils";
 
 describe("SelectProjectForm", () => {
   let state: RootState;
   let newPodValues: NewPodValues;
-  const queryData = {
-    zones: [factory.zone()],
-  };
   beforeEach(() => {
     state = factory.rootState({
       pod: factory.podState({
@@ -42,7 +40,7 @@ describe("SelectProjectForm", () => {
     state.pod.projects = {
       "192.168.1.1": [project],
     };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SelectProjectForm
         clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
@@ -62,14 +60,14 @@ describe("SelectProjectForm", () => {
     state.pod.projects = {
       "192.168.1.1": [project],
     };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SelectProjectForm
         clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", state, queryData }
+      { route: "/kvm/add", state }
     );
 
     const nameInput = screen.getByRole("textbox", {
@@ -96,7 +94,7 @@ describe("SelectProjectForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", state, queryData }
+      { route: "/kvm/add", state }
     );
 
     const nameInput = screen.getByRole("textbox", {
@@ -139,7 +137,7 @@ describe("SelectProjectForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", state, queryData }
+      { route: "/kvm/add", state }
     );
 
     await userEvent.click(
@@ -173,14 +171,14 @@ describe("SelectProjectForm", () => {
     const setStep = vi.fn();
     const setSubmissionErrors = vi.fn();
     state.pod.errors = "it didn't work";
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SelectProjectForm
         clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={setStep}
         setSubmissionErrors={setSubmissionErrors}
       />,
-      { route: "/kvm/add", state, queryData }
+      { route: "/kvm/add", state }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);

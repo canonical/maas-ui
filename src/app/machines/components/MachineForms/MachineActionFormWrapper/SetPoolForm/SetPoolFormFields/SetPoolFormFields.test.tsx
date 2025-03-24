@@ -4,7 +4,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -34,7 +34,7 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows a select if select pool radio chosen", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SetPoolForm
         clearSidePanelContent={vi.fn()}
         machines={[]}
@@ -58,7 +58,7 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows inputs for creating a pool if create pool radio chosen", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SetPoolForm
         clearSidePanelContent={vi.fn()}
         machines={[]}
