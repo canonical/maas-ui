@@ -28,7 +28,8 @@ const docsUrls = {
   tagsXpathExpressions: "https://www.w3schools.com/xml/XPath_intro.asp",
   vaultIntegration:
     "https://maas.io/docs/how-to-enhance-maas-security#p-9102-manage-vault",
-  windowsImages: "https://maas.io/docs/how-to-build-custom-images",
+  windowsImages:
+    "https://maas.io/docs/how-to-build-custom-images#p-17423-build-windows-images",
 } as const;
 
 export default docsUrls;
