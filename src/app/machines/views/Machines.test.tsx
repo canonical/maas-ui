@@ -18,6 +18,7 @@ import {
   FetchNodeStatus,
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   renderWithProviders,
   userEvent,
@@ -25,9 +26,11 @@ import {
   screen,
   waitFor,
   renderWithBrowserRouter,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+setupMockServer(poolsResolvers.listPools.handler());
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
   return {
@@ -238,14 +241,16 @@ describe("Machines", () => {
     vi.useRealTimers();
   });
 
-  it("can set the search from the URL", () => {
+  it("can set the search from the URL", async () => {
     const store = mockStore(state);
     renderWithProviders(<Machines />, {
       route: "/machines?q=test+search",
       store,
     });
-    expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue(
-      "test search"
+    await waitFor(() =>
+      expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue(
+        "test search"
+      )
     );
   });
 

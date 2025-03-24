@@ -140,7 +140,11 @@ describe("ComposeForm", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "VM name" })
+      ).toBeInTheDocument()
+    );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
     await userEvent.type(
@@ -257,7 +261,11 @@ describe("ComposeForm", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "VM name" })
+      ).toBeInTheDocument()
+    );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
     await userEvent.type(

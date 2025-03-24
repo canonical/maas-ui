@@ -67,10 +67,8 @@ describe("LXDHostToolbar", () => {
       { store }
     );
     await waitFor(() => {
-      expect(poolsResolvers.getPool.resolved).toBeTruthy();
+      expect(screen.getByTestId("pod-pool").textContent).toEqual("swimming");
     });
-
-    expect(screen.getByTestId("pod-pool").textContent).toEqual("swimming");
   });
 
   it("can link to a host's settings page if in cluster view", () => {

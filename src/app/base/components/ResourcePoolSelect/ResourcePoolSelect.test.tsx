@@ -4,7 +4,7 @@ import ResourcePoolSelect from "./ResourcePoolSelect";
 
 import { mockPools, poolsResolvers } from "@/testing/resolvers/pools";
 import {
-  renderWithMockStore,
+  renderWithProviders,
   screen,
   setupMockServer,
   waitFor,
@@ -14,7 +14,7 @@ setupMockServer(poolsResolvers.listPools.handler());
 
 describe("ResourcePoolSelect", () => {
   it("renders a list of all resource pools in state", async () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
       </Formik>
@@ -28,7 +28,7 @@ describe("ResourcePoolSelect", () => {
   });
 
   it("disables select if resource pools have not loaded", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
       </Formik>

@@ -592,22 +592,21 @@ export const renderWithProviders = (
   options?: Omit<RenderOptions, "wrapper"> &
     Partial<TestProviderProps> & { history?: MemoryHistory }
 ) => {
-  const { state, store, history, ...renderOptions } = options ?? {};
-  const testHistory = history ?? createMemoryHistory();
+  const { state, store, history, route, ...renderOptions } = options ?? {};
 
   return {
     ...render(ui, {
       wrapper: (props) => (
         <TestProvider
           {...props}
-          history={testHistory}
+          history={history}
+          route={route}
           state={state}
           store={store}
         />
       ),
       ...renderOptions,
     }),
-    history: testHistory,
   };
 };
 

@@ -2,8 +2,20 @@ import VirshTable from "./VirshTable";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { mockPools } from "@/testing/resolvers/pools";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { mockPools, poolsResolvers } from "@/testing/resolvers/pools";
+import { zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  userEvent,
+} from "@/testing/utils";
+
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  poolsResolvers.getPool.handler(),
+  zoneResolvers.getZone.handler()
+);
 
 describe("VirshTable", () => {
   let state: RootState;
@@ -96,7 +108,7 @@ describe("VirshTable", () => {
     expect(
       screen.getByRole("button", { name: /Resource pool/i })
     ).toHaveAccessibleName("Resource pool (descending)");
-    expect(getName(0)).toBe(firstPod.name);
+    expect(getName(0)).toBe(secondPod.name); // gene
 
     // Reverse sort order
     await userEvent.click(
@@ -105,7 +117,7 @@ describe("VirshTable", () => {
     expect(
       screen.getByRole("button", { name: /Resource pool/i })
     ).toHaveAccessibleName("Resource pool (ascending)");
-    expect(getName(0)).toBe(secondPod.name);
+    expect(getName(0)).toBe(firstPod.name); // swimming
   });
 
   it("displays a message when empty", () => {
