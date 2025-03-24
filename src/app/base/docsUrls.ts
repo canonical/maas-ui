@@ -1,11 +1,11 @@
 const docsUrls = {
   aboutNativeTLS:
-    "https://maas.io/docs/how-to-enhance-maas-security#p-9102-use-tls-termination-maas-33",
+    "https://maas.io/docs/how-to-enhance-maas-security#p-9102-configure-tls-33",
   addMachines:
     "https://maas.io/docs/how-to-manage-machines#p-9078-add-configure-machines",
   addNodesViaChassis: "https://maas.io/docs/how-to-manage-machines",
   autoRenewTLSCert:
-    "https://maas.io/docs/how-to-enhance-maas-security#p-9102-use-tls-termination-maas-33",
+    "https://maas.io/docs/how-to-enhance-maas-security#p-9102-renew-certificates",
   cloudInit: "https://maas.io/docs/how-to-use-cloud-init-with-maas",
   configurationJourney:
     "https://maas.io/docs/how-to-install-maas#p-9034-maas-ui-setup",
