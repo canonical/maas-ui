@@ -74,11 +74,9 @@ describe("AddLxd", () => {
 
   it(`shows the authentication form if the user has generated a certificate for
     the LXD KVM host`, async () => {
-    const certificate = factory.generatedCertificate({
+    state.general.generatedCertificate.data = factory.generatedCertificate({
       CN: "my-favourite-kvm@host",
     });
-
-    state.general.generatedCertificate.data = certificate;
 
     renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
