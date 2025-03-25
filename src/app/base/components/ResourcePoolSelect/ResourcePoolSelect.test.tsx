@@ -23,7 +23,7 @@ describe("ResourcePoolSelect", () => {
     await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
 
     const pools = screen.getAllByRole("option");
-    expect(pools).toHaveLength(mockPools.items.length + 1);
+    await waitFor(() => expect(pools).toHaveLength(mockPools.items.length + 1));
     expect(pools[1]).toHaveTextContent("swimming");
   });
 
