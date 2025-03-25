@@ -155,7 +155,7 @@ describe("MachineListHeader", () => {
         ],
       }),
     };
-    const { rerender } = renderWithProviders(
+    renderWithProviders(
       <MachineListHeader
         grouping={null}
         searchFilter=""
@@ -177,8 +177,6 @@ describe("MachineListHeader", () => {
 
     await userEvent.click(tagAction);
 
-    // Render the header again
-    rerender();
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
     // The new label should now be hidden.

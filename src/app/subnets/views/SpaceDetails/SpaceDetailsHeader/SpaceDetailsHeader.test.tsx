@@ -28,7 +28,6 @@ const renderTestCase = (
   const setSidePanelContent = vi.fn();
   const store = configureStore()(state);
   return {
-    store,
     setSidePanelContent,
     ...renderWithProviders(
       <SpaceDetailsHeader

@@ -13,9 +13,7 @@ const mockServer = setupMockServer(poolsResolvers.deletePool.handler());
 
 describe("PoolDeleteForm", () => {
   it("renders", () => {
-    renderWithProviders(<PoolDeleteForm id={1} />, {
-      route: "/",
-    });
+    renderWithProviders(<PoolDeleteForm id={1} />);
 
     expect(screen.getByRole("form", { name: "Confirm pool deletion" }));
   });

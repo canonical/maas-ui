@@ -41,7 +41,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
@@ -55,7 +55,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
@@ -70,7 +70,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
@@ -91,7 +91,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
@@ -108,7 +108,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         store,
       }
     );
@@ -151,7 +151,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
@@ -174,7 +174,7 @@ describe("PoolColumn", () => {
 
   it("does not render table menu if onToggleMenu not provided", () => {
     renderWithProviders(<PoolColumn systemId="abc123" />, {
-      route: "/machines",
+      initialEntries: ["/machines"],
       state,
     });
 

@@ -72,7 +72,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Allocated = 1 + 2 = 3
@@ -108,7 +108,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Allocated = (1000 + 2000) + (4000 + 5000) = 12000
@@ -159,7 +159,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     expect(
@@ -373,7 +373,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Switch to pinning cores
@@ -401,7 +401,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Switch to pinning cores
@@ -422,7 +422,7 @@ describe("ComposeFormFields", () => {
     state.pod.items[0].cpu_over_commit_ratio = 1;
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", state }
+      { initialEntries: ["/kvm/1"], state }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Switch to pinning cores
@@ -464,7 +464,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Switch to pinning cores

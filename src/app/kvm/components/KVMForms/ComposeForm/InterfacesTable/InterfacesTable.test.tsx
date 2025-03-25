@@ -63,7 +63,7 @@ describe("InterfacesTable", () => {
 
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
@@ -93,7 +93,7 @@ describe("InterfacesTable", () => {
     state.vlan.items = [vlan];
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     const button = screen.getByRole("button", { name: /define/i });
@@ -118,7 +118,7 @@ describe("InterfacesTable", () => {
 
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     expect(
@@ -139,7 +139,7 @@ describe("InterfacesTable", () => {
 
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Undefined interface row displays by default
@@ -180,7 +180,7 @@ describe("InterfacesTable", () => {
     state.vlan.items = [vlan];
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Click "Define" button to open interfaces table.
@@ -219,7 +219,7 @@ describe("InterfacesTable", () => {
     state.vlan.items = [nonBootVlan, bootVlan];
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Click "Define" button to open interfaces table.

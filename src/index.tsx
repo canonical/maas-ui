@@ -4,36 +4,20 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 
 import packageInfo from "../package.json";
 
-import App from "./app/App";
 import { createQueryClient } from "./app/api/query-client";
-import SidePanelContextProvider from "./app/base/side-panel-context";
 import { store } from "./redux-store";
 import * as serviceWorker from "./serviceWorker";
 
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import "./scss/index.scss";
+import { router } from "@/router";
 
-export const Root = ({ children }: { children: React.ReactElement }) => {
+export const Root = () => {
   const queryClient = createQueryClient();
-  const router = createBrowserRouter(
-    [
-      {
-        path: "*",
-        element: (
-          <SidePanelContextProvider>{children}</SidePanelContextProvider>
-        ),
-      },
-    ],
-    {
-      basename: `${import.meta.env.VITE_APP_BASENAME}${
-        import.meta.env.VITE_APP_VITE_BASENAME
-      }`,
-    }
-  );
 
   return (
     <Provider store={store}>
@@ -54,9 +38,7 @@ export const Root = ({ children }: { children: React.ReactElement }) => {
 const AppRoot = (): React.ReactElement => {
   return (
     <StrictMode>
-      <Root>
-        <App />
-      </Root>
+      <Root />
     </StrictMode>
   );
 };
