@@ -11,7 +11,7 @@ import { Label as AddSSLKeyLabel } from "@/app/preferences/views/SSLKeys/AddSSLK
 import { Label as SSLKeyListLabel } from "@/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 let state: RootState;
 
@@ -69,20 +69,18 @@ describe("Routes", () => {
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<Routes />, {
-        route: path,
-        routePattern: `${urls.preferences.index}/*`,
+      renderWithProviders(<Routes />, {
+        initialEntries: [path],
         state,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
 
-  it("redirects to details", () => {
-    renderWithBrowserRouter(<Routes />, {
-      route: urls.preferences.index,
-      routePattern: `${urls.preferences.index}/*`,
+  it("redirects to details", async () => {
+    const { router } = renderWithProviders(<Routes />, {
+      initialEntries: [urls.preferences.index],
     });
-    expect(window.location.pathname).toBe(urls.preferences.details);
+    expect(router.state.location.pathname).toBe(urls.preferences.details);
   });
 });

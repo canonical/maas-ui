@@ -337,7 +337,9 @@ describe("Machines", () => {
 
   it("can store the group in local storage", async () => {
     const store = mockStore(state);
-    const { unmount } = renderWithProviders(<Machines />, {
+    const {
+      result: { unmount },
+    } = renderWithProviders(<Machines />, {
       initialEntries: ["/machines"],
       store,
     });
@@ -384,7 +386,9 @@ describe("Machines", () => {
       "mocked-nanoid-2": machineList,
     };
     const store = mockStore(state);
-    const { unmount } = renderWithProviders(<Machines />, {
+    const {
+      result: { unmount },
+    } = renderWithProviders(<Machines />, {
       initialEntries: ["/machines"],
       store,
     });

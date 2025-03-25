@@ -178,17 +178,7 @@ describe("MachineListHeader", () => {
     await userEvent.click(tagAction);
 
     // Render the header again
-    rerender(
-      <MachineListHeader
-        grouping={null}
-        searchFilter=""
-        setGrouping={vi.fn()}
-        setHiddenColumns={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />
-    );
+    rerender();
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
     // The new label should now be hidden.
