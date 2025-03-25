@@ -65,7 +65,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     expect(screen.getByTestId("main-toolbar-heading")).toHaveTextContent(
       "2 machines in 0 pools"
@@ -84,7 +84,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     expect(
       screen.queryByRole("button", { name: "Add hardware" })
@@ -100,7 +100,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     expect(
       screen.getByRole("button", { name: "Add hardware" })
@@ -124,7 +124,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
@@ -165,7 +165,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));

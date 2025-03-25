@@ -19,7 +19,7 @@ describe("KVMList", () => {
     const state = factory.rootState();
     const store = mockStore(state);
     renderWithProviders(<KVMList />, {
-      route: "/kvm",
+      initialEntries: ["/kvm"],
       store,
     });
     const expectedActions = ["pod/fetch", "vmcluster/fetch"];
@@ -39,7 +39,7 @@ describe("KVMList", () => {
     });
     const store = mockStore(state);
     renderWithProviders(<KVMList />, {
-      route: urls.kvm.lxd.index,
+      initialEntries: [urls.kvm.lxd.index],
       store,
     });
 
@@ -54,7 +54,7 @@ describe("KVMList", () => {
     });
     const store = mockStore(state);
     renderWithProviders(<KVMList />, {
-      route: urls.kvm.lxd.index,
+      initialEntries: [urls.kvm.lxd.index],
       store,
     });
 
@@ -69,7 +69,7 @@ describe("KVMList", () => {
     });
     const store = mockStore(state);
     renderWithProviders(<KVMList />, {
-      route: urls.kvm.virsh.index,
+      initialEntries: [urls.kvm.virsh.index],
       store,
     });
 
@@ -100,7 +100,7 @@ describe("KVMList", () => {
     });
     const store = mockStore(state);
     renderWithProviders(<KVMList />, {
-      route: urls.kvm.lxd.index,
+      initialEntries: [urls.kvm.lxd.index],
       store,
     });
 
@@ -125,7 +125,7 @@ describe("KVMList", () => {
       }),
     });
     renderWithProviders(<KVMList />, {
-      route: urls.kvm.virsh.index,
+      initialEntries: [urls.kvm.virsh.index],
       state,
     });
 
@@ -150,7 +150,7 @@ describe("KVMList", () => {
       }),
     });
     renderWithProviders(<KVMList />, {
-      route: urls.kvm.index,
+      initialEntries: [urls.kvm.index],
       state,
     });
 

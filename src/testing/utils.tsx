@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -11,10 +11,10 @@ import { produce } from "immer";
 import type { RequestHandler } from "msw";
 import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
-import type { Router } from "react-router";
 import {
-  createBrowserRouter,
   BrowserRouter,
+  createMemoryRouter,
+  Outlet,
   Route,
   RouterProvider,
   Routes,
@@ -537,66 +537,81 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
   return mockServer;
 };
 
-type TestProviderProps = {
-  children: ReactNode;
-  state?: Partial<RootState>;
-  store?: MockStoreEnhanced<RootState | unknown>;
-  route?: string;
-  router?: typeof Router;
-  history?: MemoryHistory;
-};
+const TestProvider = ({
+  client,
+  router,
+  store,
+}: {
+  client: QueryClient;
+  router: any;
+  store: MockStoreEnhanced<RootState | unknown>;
+}) => (
+  <QueryClientProvider client={client}>
+    <WebSocketProvider>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </WebSocketProvider>
+  </QueryClientProvider>
+);
 
 /**
- * The wrapper component for all test-relevant providers.
+ * Function that returns test-wrapped UI and exposes router, store, and state.
  *
- * @param children The test components to be wrapped
- * @param state The app state used for testing
- * @param store The mock store
- * @param route The route for the test
- * @param router
- * @param history The history object for navigation
- * @constructor
+ * @param children The test component(s) to be wrapped
+ * @param client
+ * @param state The initial app state for testing (optional)
+ * @param store The mock store (optional)
+ * @param initialEntries The initial route history for testing (optional)
+ * @returns { ui, router, store }
  */
-export const TestProvider = ({
+export const createTestProviders = ({
   children,
-  state = factory.rootState(),
+  client,
+  state = {},
   store,
-  route = "/",
-  router,
-  history = createMemoryHistory({ initialEntries: [route] }),
-}: TestProviderProps) => {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
-  });
-  const mockRouter =
-    router ??
-    createBrowserRouter([
+  initialEntries = ["/"],
+}: {
+  children: ReactNode;
+  client?: QueryClient;
+  state?: Partial<RootState>;
+  store?: MockStoreEnhanced<RootState | unknown>;
+  initialEntries?: string[];
+}): {
+  ui: ReactNode;
+  router: any;
+  store: MockStoreEnhanced<RootState | unknown>;
+} => {
+  const queryClient =
+    client ??
+    new QueryClient({
+      defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+    });
+
+  const router = createMemoryRouter(
+    [
       {
         path: "*",
         element: (
           <SidePanelContextProvider>{children}</SidePanelContextProvider>
         ),
       },
-    ]);
-
-  const mockStore = store ?? configureStore()(state);
-
-  useEffect(() => {
-    const stopListening = history.listen(({ location }) => {
-      window.history.pushState({}, "", location.pathname + location.search);
-    });
-    return () => stopListening();
-  }, [history]);
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <WebSocketProvider>
-        <Provider store={mockStore}>
-          <RouterProvider router={mockRouter} />
-        </Provider>
-      </WebSocketProvider>
-    </QueryClientProvider>
+    ],
+    { initialEntries }
   );
+
+  const mockStore =
+    store ??
+    configureStore()({
+      ...factory.rootState(),
+      ...state,
+    });
+
+  return {
+    ui: <TestProvider client={queryClient} router={router} store={mockStore} />,
+    router,
+    store: mockStore,
+  };
 };
 
 /**
@@ -604,27 +619,34 @@ export const TestProvider = ({
  *
  * @param ui The component to be rendered
  * @param options The rendering options
+ * @returns { ui, router, store, state }
  */
 export const renderWithProviders = (
   ui: ReactNode,
   options?: Omit<RenderOptions, "wrapper"> &
-    Partial<TestProviderProps> & { history?: MemoryHistory }
-) => {
-  const { state, store, history, route, ...renderOptions } = options ?? {};
+    Partial<{
+      state?: Partial<RootState>;
+      store?: MockStoreEnhanced<RootState | unknown>;
+      initialEntries?: string[];
+    }>
+): {
+  renderResult: RenderResult;
+  router: any;
+  store: MockStoreEnhanced<RootState | unknown>;
+} => {
+  const {
+    ui: wrappedUi,
+    router,
+    store,
+  } = createTestProviders({
+    children: ui,
+    ...options,
+  });
 
   return {
-    ...render(ui, {
-      wrapper: (props) => (
-        <TestProvider
-          {...props}
-          history={history}
-          route={route}
-          state={state}
-          store={store}
-        />
-      ),
-      ...renderOptions,
-    }),
+    renderResult: render(wrappedUi, options),
+    router,
+    store,
   };
 };
 
@@ -632,14 +654,28 @@ export const renderWithProviders = (
  * A function for rendering a hook with all test-relevant providers.
  *
  * @param hook The hook to be rendered
- * @param options The rendering options
  */
-export const renderHookWithProviders = <T,>(
-  hook: () => T,
-  options?: Partial<TestProviderProps>
-) => {
+export const renderHookWithProviders = <T,>(hook: () => T) => {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+  });
+
   return renderHook(hook, {
-    wrapper: (props) => <TestProvider {...props} {...options} />,
+    wrapper: (props) => (
+      <TestProvider
+        client={queryClient}
+        router={createMemoryRouter([
+          {
+            path: "*",
+            element: <Outlet />,
+          },
+        ])}
+        store={configureStore()({
+          ...factory.rootState(),
+        })}
+        {...props}
+      />
+    ),
   });
 };
 
