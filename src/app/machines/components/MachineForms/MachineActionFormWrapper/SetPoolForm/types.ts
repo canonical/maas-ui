@@ -1,7 +1,7 @@
-import type { ResourcePool } from "@/app/store/resourcepool/types";
+import type { ResourcePoolResponse } from "@/app/apiclient";
 
 export type SetPoolFormValues = {
-  description: ResourcePool["description"];
-  name: ResourcePool["name"];
+  description: ResourcePoolResponse["description"];
+  name: ResourcePoolResponse["name"];
   poolSelection: "create" | "select";
 };

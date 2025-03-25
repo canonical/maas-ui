@@ -7,6 +7,7 @@ import * as Yup from "yup";
 
 import AddVirshFields from "./AddVirshFields";
 
+import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions, useAddMessage } from "@/app/base/hooks";
@@ -23,8 +24,6 @@ import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
@@ -48,15 +47,15 @@ export const AddVirsh = ({
   const podErrors = useSelector(podSelectors.errors);
   const powerTypes = useSelector(powerTypesSelectors.get);
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
-  const resourcePools = useSelector(resourcePoolSelectors.all);
-  const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
+  const resourcePools = usePools();
   const zones = useZones();
   const [savingPod, setSavingPod] = useState<string | null>(null);
   const cleanup = useCallback(() => podActions.cleanup(), []);
   const initialPowerParameters = useInitialPowerParameters();
-  const loaded = powerTypesLoaded && resourcePoolsLoaded && !zones.isPending;
+  const loaded =
+    powerTypesLoaded && !resourcePools.isPending && !zones.isPending;
 
-  useFetchActions([generalActions.fetchPowerTypes, resourcePoolActions.fetch]);
+  useFetchActions([generalActions.fetchPowerTypes]);
 
   useAddMessage(
     podSaved,
@@ -97,10 +96,12 @@ export const AddVirsh = ({
       errors={podErrors}
       initialValues={{
         name: "",
-        pool: resourcePools.length ? resourcePools[0].id : "",
+        pool: resourcePools.data?.items.length
+          ? resourcePools.data.items[0].id
+          : "",
         power_parameters: initialPowerParameters,
         type: PodType.VIRSH,
-        zone: zones.data?.items?.length ? zones.data?.items[0].id : "",
+        zone: zones.data?.items?.length ? zones.data.items[0].id : "",
       }}
       onCancel={clearSidePanelContent}
       onSaveAnalytics={{

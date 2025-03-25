@@ -4,6 +4,8 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { usePools } from "@/app/api/query/pools";
+import type { ResourcePoolResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
 import { useToggleMenu } from "@/app/machines/hooks";
@@ -11,11 +13,6 @@ import type { MachineMenuToggleHandler } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineMeta } from "@/app/store/machine/types";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
-import type {
-  ResourcePool,
-  ResourcePoolMeta,
-} from "@/app/store/resourcepool/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 
@@ -29,22 +26,22 @@ export const PoolColumn = ({
   systemId,
 }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
-  const [updating, setUpdating] = useState<
-    ResourcePool[ResourcePoolMeta.PK] | null
-  >(null);
+  const [updating, setUpdating] = useState<ResourcePoolResponse["id"] | null>(
+    null
+  );
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const resourcePools = useSelector(resourcePoolSelectors.all);
+  const { data: resourcePools } = usePools();
   const toggleMenu = useToggleMenu(onToggleMenu || null);
 
   let poolLinks;
-  const machinePools = resourcePools.filter(
+  const machinePools = resourcePools?.items.filter(
     (pool) => pool.id !== machine?.pool.id
   );
   if (machine?.actions.includes(NodeActions.SET_POOL)) {
-    if (machinePools.length !== 0) {
-      poolLinks = machinePools.map((pool) => ({
+    if (machinePools?.length !== 0) {
+      poolLinks = machinePools?.map((pool) => ({
         children: pool.name,
         "data-testid": "change-pool-link",
         onClick: () => {

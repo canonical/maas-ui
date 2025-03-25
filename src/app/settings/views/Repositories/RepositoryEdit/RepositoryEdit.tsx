@@ -8,12 +8,11 @@ import { useFetchActions } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import { repositoryActions } from "@/app/store/packagerepository";
 import repositorySelectors from "@/app/store/packagerepository/selectors";
-import { ResourcePoolMeta } from "@/app/store/resourcepool/types";
 import type { RootState } from "@/app/store/root/types";
 
 export const RepositoryEdit = (): React.ReactElement => {
   useFetchActions([repositoryActions.fetch]);
-  const id = useGetURLId(ResourcePoolMeta.PK);
+  const id = useGetURLId("id");
   const { type } = useParams<{
     type: "ppa" | "repository";
   }>();

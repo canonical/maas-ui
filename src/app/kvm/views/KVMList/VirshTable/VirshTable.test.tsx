@@ -2,7 +2,20 @@ import VirshTable from "./VirshTable";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { mockPools, poolsResolvers } from "@/testing/resolvers/pools";
+import { zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+} from "@/testing/utils";
+
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  poolsResolvers.getPool.handler(),
+  zoneResolvers.getZone.handler()
+);
 
 describe("VirshTable", () => {
   let state: RootState;
@@ -10,12 +23,6 @@ describe("VirshTable", () => {
     factory.pod({ pool: 1, zone: 1 }),
     factory.pod({ pool: 2, zone: 2 }),
   ];
-  const queryData = {
-    zones: [
-      factory.zone({ id: pods[0].zone }),
-      factory.zone({ id: pods[1].zone }),
-    ],
-  };
   beforeEach(() => {
     pods = [
       factory.pod({ pool: 1, zone: 1 }),
@@ -23,21 +30,13 @@ describe("VirshTable", () => {
     ];
     state = factory.rootState({
       pod: factory.podState({ items: pods, loaded: true }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [
-          factory.resourcePool({ id: pods[0].pool }),
-          factory.resourcePool({ id: pods[1].pool }),
-        ],
-      }),
     });
   });
 
   it("shows pods sorted by descending name by default", () => {
-    renderWithBrowserRouter(<VirshTable />, {
+    renderWithProviders(<VirshTable />, {
       route: "/kvm",
       state,
-      queryData,
     });
     expect(
       screen.getByRole("button", { name: "Name (descending)" })
@@ -47,10 +46,9 @@ describe("VirshTable", () => {
   it("can sort by parameters of the pods themselves", async () => {
     state.pod.items[0].resources.vm_count.tracked = 1;
     state.pod.items[1].resources.vm_count.tracked = 2;
-    renderWithBrowserRouter(<VirshTable />, {
+    renderWithProviders(<VirshTable />, {
       route: "/kvm",
       state,
-      queryData,
     });
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
     const getName = (rowNumber: number) =>
@@ -83,24 +81,12 @@ describe("VirshTable", () => {
   });
 
   it("can sort by pod resource pool", async () => {
-    const pools = [
-      factory.resourcePool({
-        id: 1,
-        name: "first-pool",
-      }),
-      factory.resourcePool({
-        id: 2,
-        name: "second-pool",
-      }),
-    ];
-    state.resourcepool.items = pools;
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
-    firstPod.pool = pools[0].id;
-    secondPod.pool = pools[1].id;
-    renderWithBrowserRouter(<VirshTable />, {
+    firstPod.pool = mockPools.items[0].id;
+    secondPod.pool = mockPools.items[1].id;
+    renderWithProviders(<VirshTable />, {
       route: "/kvm",
       state,
-      queryData,
     });
 
     const getName = (rowNumber: number) =>
@@ -113,7 +99,7 @@ describe("VirshTable", () => {
     expect(
       screen.getByRole("button", { name: /Resource pool/i })
     ).toHaveAccessibleName("Resource pool (descending)");
-    expect(getName(0)).toBe(firstPod.name);
+    expect(getName(0)).toBe(secondPod.name); // gene
 
     // Reverse sort order
     await userEvent.click(
@@ -122,15 +108,14 @@ describe("VirshTable", () => {
     expect(
       screen.getByRole("button", { name: /Resource pool/i })
     ).toHaveAccessibleName("Resource pool (ascending)");
-    expect(getName(0)).toBe(secondPod.name);
+    expect(getName(0)).toBe(firstPod.name); // swimming
   });
 
   it("displays a message when empty", () => {
     state.pod.items = [];
-    renderWithBrowserRouter(<VirshTable />, {
+    renderWithProviders(<VirshTable />, {
       route: "/kvm",
       state,
-      queryData,
     });
 
     expect(screen.getByText("No pods available.")).toBeInTheDocument();

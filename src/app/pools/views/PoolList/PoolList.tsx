@@ -7,7 +7,7 @@ import {
 } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
-import { useListPools } from "@/app/api/query/pools";
+import { usePools } from "@/app/api/query/pools";
 import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useWindowTitle } from "@/app/base/hooks";
@@ -80,7 +80,7 @@ const generateRows = (rows: ResourcePoolWithSummaryResponse[]) =>
 const Pools = (): React.ReactElement => {
   useWindowTitle("Pools");
 
-  const listPools = useListPools();
+  const listPools = usePools();
   const resourcePools = listPools.data?.items || [];
 
   return (

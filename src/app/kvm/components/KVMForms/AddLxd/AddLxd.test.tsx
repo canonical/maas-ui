@@ -7,9 +7,10 @@ import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -17,7 +18,11 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(zoneResolvers.listZones.handler());
+
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("AddLxd", () => {
   let state: RootState;
@@ -47,15 +52,11 @@ describe("AddLxd", () => {
       pod: factory.podState({
         loaded: true,
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ id: 0 })],
-        loaded: true,
-      }),
     });
   });
 
   it("shows the credentials form by default", () => {
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -73,13 +74,11 @@ describe("AddLxd", () => {
 
   it(`shows the authentication form if the user has generated a certificate for
     the LXD KVM host`, async () => {
-    const certificate = factory.generatedCertificate({
+    state.general.generatedCertificate.data = factory.generatedCertificate({
       CN: "my-favourite-kvm@host",
     });
 
-    state.general.generatedCertificate.data = certificate;
-
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -92,7 +91,7 @@ describe("AddLxd", () => {
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Resource pool" }),
-      "0"
+      "1"
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
@@ -132,7 +131,7 @@ describe("AddLxd", () => {
       "192.168.1.1": [factory.podProject()],
     };
 
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -145,7 +144,7 @@ describe("AddLxd", () => {
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Resource pool" }),
-      "0"
+      "1"
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
@@ -173,7 +172,7 @@ describe("AddLxd", () => {
   it("clears projects and runs cleanup on unmount", () => {
     const store = mockStore(state);
 
-    const { unmount } = renderWithBrowserRouter(
+    const { unmount } = renderWithProviders(
       <AddLxd clearSidePanelContent={vi.fn()} />,
       { route: "/kvm/add", store }
     );
@@ -197,7 +196,7 @@ describe("AddLxd", () => {
     state.pod.projects = {
       "192.168.1.1": [factory.podProject()],
     };
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -210,7 +209,7 @@ describe("AddLxd", () => {
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Resource pool" }),
-      "0"
+      "1"
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),

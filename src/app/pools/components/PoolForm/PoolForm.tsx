@@ -1,20 +1,19 @@
 import * as Yup from "yup";
 
 import { useCreatePool, useUpdatePool } from "@/app/api/query/pools";
+import type { ResourcePoolResponse } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import urls from "@/app/base/urls";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import type { ResourcePool } from "@/app/store/resourcepool/types";
 
 type Props = {
-  pool?: ResourcePool | null;
+  pool?: ResourcePoolResponse | null;
   onClose?: () => void;
 };
 
 type PoolFormValues = {
-  description: ResourcePool["description"];
-  name: ResourcePool["name"];
+  description: ResourcePoolResponse["description"];
+  name: ResourcePoolResponse["name"];
 };
 
 export enum Labels {
@@ -57,7 +56,6 @@ export const PoolForm = ({
   return (
     <FormikForm
       aria-label={title}
-      cleanup={resourcePoolActions.cleanup}
       errors={updatePool.error || createPool.error}
       initialValues={initialValues}
       onCancel={onClose}

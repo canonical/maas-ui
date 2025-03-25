@@ -4,6 +4,7 @@ import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
@@ -15,17 +16,16 @@ import {
 } from "@/testing/utils";
 
 let state: RootState;
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("KVMConfigurationCard", () => {
   beforeEach(() => {
     state = factory.rootState({
       pod: factory.podState({
         items: [factory.podDetails({ id: 1, name: "pod1" })],
-        loaded: true,
-      }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ id: 2 })],
         loaded: true,
       }),
     });

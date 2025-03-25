@@ -15,7 +15,7 @@ import {
   userEvent,
   screen,
   within,
-  renderWithBrowserRouter,
+  renderWithProviders,
   renderWithMockStore,
 } from "@/testing/utils";
 
@@ -189,19 +189,6 @@ describe("MachineListTable", () => {
           }),
         },
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [
-          factory.resourcePool({
-            id: 0,
-            name: "default",
-          }),
-          factory.resourcePool({
-            id: 1,
-            name: "Backup",
-          }),
-        ],
-      }),
     });
   });
 
@@ -258,7 +245,7 @@ describe("MachineListTable", () => {
       },
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -294,7 +281,7 @@ describe("MachineListTable", () => {
       },
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -319,7 +306,7 @@ describe("MachineListTable", () => {
   });
 
   it("includes groups", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -353,7 +340,7 @@ describe("MachineListTable", () => {
   });
 
   it("does not display a group header if the table is ungrouped", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -380,7 +367,7 @@ describe("MachineListTable", () => {
   });
 
   it("can change machines to display PXE MAC instead of FQDN", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -427,7 +414,7 @@ describe("MachineListTable", () => {
     state.user = factory.userState({
       items: [user],
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -467,7 +454,7 @@ describe("MachineListTable", () => {
   it("updates sort on header click", async () => {
     const setSortDirection = vi.fn();
     const setSortKey = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -499,7 +486,7 @@ describe("MachineListTable", () => {
   it("clears the sort when the same header is clicked and is ascending", async () => {
     const setSortDirection = vi.fn();
     const setSortKey = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -531,7 +518,7 @@ describe("MachineListTable", () => {
   it("updates the sort when the same header is clicked and is descending", async () => {
     const setSortDirection = vi.fn();
     const setSortKey = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -563,7 +550,7 @@ describe("MachineListTable", () => {
   it("updates the sort when the same header is clicked and direction is not set", async () => {
     const setSortDirection = vi.fn();
     const setSortKey = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -595,7 +582,7 @@ describe("MachineListTable", () => {
   it("updates the sort when a different header is clicked", async () => {
     const setSortDirection = vi.fn();
     const setSortKey = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -626,7 +613,7 @@ describe("MachineListTable", () => {
 
   it("displays correct selected string in group header", () => {
     machines[1].status_code = NodeStatusCode.DEPLOYED;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -655,7 +642,7 @@ describe("MachineListTable", () => {
   });
 
   it("does not show checkboxes if showActions is false", () => {
-    const { rerender } = renderWithBrowserRouter(
+    const { rerender } = renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -697,7 +684,7 @@ describe("MachineListTable", () => {
 
   describe("hiddenColumns", () => {
     it("can hide columns", () => {
-      const { rerender } = renderWithBrowserRouter(
+      const { rerender } = renderWithProviders(
         <MachineListTable
           callId={callId}
           currentPage={1}
@@ -749,7 +736,7 @@ describe("MachineListTable", () => {
     });
 
     it("still displays fqdn if showActions is true", () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineListTable
           callId={callId}
           currentPage={1}
@@ -775,7 +762,7 @@ describe("MachineListTable", () => {
     });
 
     it("hides fqdn if if showActions is false", () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineListTable
           callId={callId}
           currentPage={1}

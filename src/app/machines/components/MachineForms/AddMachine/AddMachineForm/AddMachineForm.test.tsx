@@ -4,6 +4,7 @@ import { PowerFieldType } from "@/app/store/general/types";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
@@ -13,7 +14,10 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 let state: RootState;
 const queryData = { zones: [factory.zone({ id: 1, name: "twilight" })] };
@@ -71,10 +75,6 @@ describe("AddMachineForm", () => {
           loaded: true,
         }),
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ name: "swimming" })],
-        loaded: true,
-      }),
     });
   });
 
@@ -103,7 +103,6 @@ describe("AddMachineForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.resourcepool.loaded = false;
     renderWithBrowserRouter(
       <AddMachineForm clearSidePanelContent={vi.fn()} />,
       {

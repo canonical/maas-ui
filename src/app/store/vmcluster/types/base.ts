@@ -1,13 +1,9 @@
 import type { VMClusterMeta } from "./enum";
 
-import type { ZoneResponse } from "@/app/apiclient";
+import type { ResourcePoolResponse, ZoneResponse } from "@/app/apiclient";
 import type { APIError } from "@/app/base/types";
 import type { Machine } from "@/app/store/machine/types";
 import type { Pod, PodPowerParameters } from "@/app/store/pod/types";
-import type {
-  ResourcePool,
-  ResourcePoolMeta,
-} from "@/app/store/resourcepool/types";
 import type { Model } from "@/app/store/types/model";
 import type { GenericState } from "@/app/store/types/state";
 
@@ -49,7 +45,7 @@ export type VMHost = Model & {
   availability_zone: ZoneResponse["name"];
   name: Pod["name"];
   project: PodPowerParameters["project"];
-  resource_pool: ResourcePool["name"];
+  resource_pool: ResourcePoolResponse["name"];
   tags: Pod["tags"];
 };
 
@@ -68,7 +64,7 @@ export type VMCluster = Model & {
   hosts: VMHost[];
   name: string;
   project: string;
-  resource_pool: ResourcePool[ResourcePoolMeta.PK] | "";
+  resource_pool: ResourcePoolResponse["id"] | "";
   total_resources: VMClusterResources;
   updated_at: string;
   version: string | "";

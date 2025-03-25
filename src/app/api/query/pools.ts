@@ -11,6 +11,9 @@ import type {
   DeleteResourcePoolData,
   DeleteResourcePoolError,
   DeleteResourcePoolResponse,
+  GetResourcePoolData,
+  GetResourcePoolError,
+  GetResourcePoolResponse,
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryError,
   ListResourcePoolsWithSummaryResponse,
@@ -21,12 +24,13 @@ import type {
 import {
   createResourcePoolMutation,
   deleteResourcePoolMutation,
+  getResourcePoolOptions,
   listResourcePoolsWithSummaryOptions,
   listResourcePoolsWithSummaryQueryKey,
   updateResourcePoolMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
-export const useListPools = (
+export const usePools = (
   options?: Options<ListResourcePoolsWithSummaryData>
 ) => {
   return useWebsocketAwareQuery(
@@ -34,6 +38,29 @@ export const useListPools = (
       ListResourcePoolsWithSummaryData,
       ListResourcePoolsWithSummaryError,
       ListResourcePoolsWithSummaryResponse
+    >
+  );
+};
+
+export const usePoolCount = (
+  options?: Options<ListResourcePoolsWithSummaryData>
+) => {
+  return useWebsocketAwareQuery({
+    ...listResourcePoolsWithSummaryOptions(options),
+    select: (data) => data?.items.length ?? 0,
+  } as UseQueryOptions<
+    ListResourcePoolsWithSummaryResponse,
+    ListResourcePoolsWithSummaryResponse,
+    number
+  >);
+};
+
+export const useGetPool = (options: Options<GetResourcePoolData>) => {
+  return useWebsocketAwareQuery(
+    getResourcePoolOptions(options) as UseQueryOptions<
+      GetResourcePoolResponse,
+      GetResourcePoolError,
+      GetResourcePoolResponse
     >
   );
 };

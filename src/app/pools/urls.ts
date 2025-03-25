@@ -1,10 +1,10 @@
-import type { ResourcePool } from "@/app/store/resourcepool/types";
+import type { ResourcePoolResponse } from "@/app/apiclient";
 import { argPath } from "@/app/utils";
 
 const urls = {
   add: "/pools/add",
-  edit: argPath<{ id: ResourcePool["id"] }>("/pools/:id/edit"),
-  delete: argPath<{ id: ResourcePool["id"] }>("/pools/:id/delete"),
+  edit: argPath<{ id: ResourcePoolResponse["id"] }>("/pools/:id/edit"),
+  delete: argPath<{ id: ResourcePoolResponse["id"] }>("/pools/:id/delete"),
   index: "/pools",
 };
 

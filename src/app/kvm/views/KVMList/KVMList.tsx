@@ -17,7 +17,6 @@ import KVMForms from "@/app/kvm/components/KVMForms";
 import { getFormTitle } from "@/app/kvm/utils";
 import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
-import { resourcePoolActions } from "@/app/store/resourcepool";
 import { vmClusterActions } from "@/app/store/vmcluster";
 import vmclusterSelectors from "@/app/store/vmcluster/selectors";
 
@@ -41,11 +40,7 @@ const KVMList = (): React.ReactElement => {
   const title = showingLXD ? "LXD" : showingVirsh ? "Virsh" : "KVM";
   useWindowTitle(title);
 
-  useFetchActions([
-    podActions.fetch,
-    resourcePoolActions.fetch,
-    vmClusterActions.fetch,
-  ]);
+  useFetchActions([podActions.fetch, vmClusterActions.fetch]);
 
   // Redirect to the appropriate tab when arriving at /kvm.
   useEffect(() => {

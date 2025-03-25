@@ -21,6 +21,7 @@ import { getSidePanelTitle } from "@/app/store/utils/node/base";
 const Machines = (): React.ReactElement => {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location);
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
   // The filter state is initialised from the URL.
   const [searchFilter, setFilter] = useState(

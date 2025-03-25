@@ -1,18 +1,16 @@
 import { useCallback } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import MachineListControls from "../MachineListControls";
 import type { useResponsiveColumns } from "../hooks";
 
-import { useFetchActions } from "@/app/base/hooks";
+import { usePoolCount } from "@/app/api/query/pools";
 import type { SetSearchFilter } from "@/app/base/types";
 import type { MachineSetSidePanelContent } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
 import type { FetchGroupKey } from "@/app/store/machine/types";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 
 type Props = {
   grouping: FetchGroupKey | null;
@@ -39,9 +37,7 @@ export const MachineListHeader = ({
   // Get the count of all machines
   const { machineCount: allMachineCount } = useFetchMachineCount();
 
-  useFetchActions([resourcePoolActions.fetch]);
-
-  const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
+  const resourcePoolsCount = usePoolCount();
 
   const handleSetSearchFilter = useCallback(
     (filter: string) => {
@@ -61,7 +57,7 @@ export const MachineListHeader = ({
       grouping={grouping}
       hiddenColumns={hiddenColumns}
       machineCount={allMachineCount}
-      resourcePoolsCount={resourcePoolsCount}
+      resourcePoolsCount={resourcePoolsCount.data ?? 0}
       setFilter={handleSetSearchFilter}
       setGrouping={setGrouping}
       setHiddenColumns={setHiddenColumns}
