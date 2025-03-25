@@ -54,10 +54,6 @@ describe("AddMachineFormFields", () => {
           loaded: true,
         }),
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool()],
-        loaded: true,
-      }),
     });
   });
 

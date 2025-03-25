@@ -13,9 +13,6 @@ describe("VirshSettings", () => {
         items: [factory.podDetails({ id: 1, name: "pod1" })],
         loaded: true,
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-      }),
       tag: factory.tagState({
         loaded: true,
       }),
@@ -42,8 +39,6 @@ describe("VirshSettings", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.resourcepool.loaded = false;
-
     renderWithBrowserRouter(<VirshSettings id={1} />, { state });
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
   });

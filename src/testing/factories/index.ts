@@ -57,7 +57,6 @@ export {
   podStatuses,
   powerTypesState,
   reservedIpState,
-  resourcePoolState,
   rootState,
   routerState,
   scriptResultState,

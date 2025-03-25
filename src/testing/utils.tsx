@@ -39,7 +39,6 @@ import {
   podStatus as podStatusFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   spaceState as spaceStateFactory,
   subnet as subnetFactory,
@@ -352,9 +351,6 @@ export const getTestState = (): RootState => {
       loaded: true,
       statuses: { [pod.id]: podStatusFactory() },
     }),
-    resourcepool: resourcePoolStateFactory({
-      loaded: true,
-    }),
     space: spaceStateFactory({
       loaded: true,
     }),
@@ -596,22 +592,21 @@ export const renderWithProviders = (
   options?: Omit<RenderOptions, "wrapper"> &
     Partial<TestProviderProps> & { history?: MemoryHistory }
 ) => {
-  const { state, store, history, ...renderOptions } = options ?? {};
-  const testHistory = history ?? createMemoryHistory();
+  const { state, store, history, route, ...renderOptions } = options ?? {};
 
   return {
     ...render(ui, {
       wrapper: (props) => (
         <TestProvider
           {...props}
-          history={testHistory}
+          history={history}
+          route={route}
           state={state}
           store={store}
         />
       ),
       ...renderOptions,
     }),
-    history: testHistory,
   };
 };
 

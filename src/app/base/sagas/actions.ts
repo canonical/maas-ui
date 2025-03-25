@@ -15,14 +15,6 @@ import type {
   UpdateRecordParams,
 } from "@/app/store/domain/types";
 import { isAddressRecord } from "@/app/store/domain/utils";
-import { machineActions } from "@/app/store/machine";
-import type { FetchFilters, Machine } from "@/app/store/machine/types";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import type {
-  CreateWithMachinesParams,
-  ResourcePool,
-} from "@/app/store/resourcepool/types";
-import type { GenericMeta } from "@/app/store/utils/slice";
 
 export type NextActionCreator<R = unknown> = (
   result: WebSocketResponseResult<R>["result"]
@@ -42,80 +34,6 @@ export type MessageHandler<P = WebSocketActionParams> = {
     action: WebSocketAction<P>
   ) => void;
 };
-
-/**
- * Generate functions that will use the response to create the dispatchable
- * action to set the pool for each machine.
- * @param machineIDs - A list of machine ids.
- * @returns The list of action creator functions.
- */
-export const generateMachinePoolActionCreators = (
-  machineIDs: Machine["system_id"][]
-): NextActionCreator<ResourcePool>[] =>
-  machineIDs.map(
-    (machineID) => (result: ResourcePool) =>
-      machineActions.setPool({
-        pool_id: result.id,
-        system_id: machineID,
-      })
-  );
-
-export const generateMachineFilterPoolActionCreators = (
-  filter: FetchFilters,
-  callId?: string
-): NextActionCreator<ResourcePool>[] => [
-  (result: ResourcePool) =>
-    machineActions.setPool(
-      {
-        filter,
-        pool_id: result.id,
-      },
-      callId
-    ),
-];
-
-/**
- * Handle creating a pool and then attaching machines to that pool.
- * @param socketClient - The websocket client instance.
- * @param sendMessage - The saga that handles sending websocket messages.
- * @param action - The redux action with pool and machine data.
- */
-export function* createPoolWithMachines(
-  socketClient: WebSocketClient,
-  sendMessage: SendMessage<ResourcePool>,
-  {
-    payload,
-    meta,
-  }: PayloadAction<
-    {
-      params: CreateWithMachinesParams;
-    },
-    string,
-    GenericMeta
-  >
-): SagaGenerator<void> {
-  const { pool } = payload.params;
-
-  const actionCreators =
-    "filter" in payload.params
-      ? yield* call(
-          generateMachineFilterPoolActionCreators,
-          payload.params.filter,
-          meta?.callId
-        )
-      : yield* call(
-          generateMachinePoolActionCreators,
-          payload.params.machineIDs
-        );
-
-  // Send the initial action via the websocket.
-  yield* call(
-    sendMessage,
-    socketClient,
-    resourcePoolActions.create(pool),
-    actionCreators
-  );
-}
 
 /**
  * Generate action to call after the initial DNS resource update action is
@@ -251,16 +169,7 @@ const updateDomainRecordHandler = {
   method: updateDomainRecord,
 };
 
-const createPoolWithMachinesHandler = {
-  action: "resourcepool/createWithMachines",
-  method: createPoolWithMachines,
-};
-
 // Sagas to be handled by the websocket channel.
-const handlers = [
-  deleteRecordHandler,
-  updateDomainRecordHandler,
-  createPoolWithMachinesHandler,
-];
+const handlers = [deleteRecordHandler, updateDomainRecordHandler];
 
 export default handlers;

@@ -78,7 +78,6 @@ import type { PackageRepositoryState } from "@/app/store/packagerepository/types
 import { DEFAULT_STATUSES as DEFAULT_POD_STATUSES } from "@/app/store/pod/slice";
 import type { PodState, PodStatus, PodStatuses } from "@/app/store/pod/types";
 import type { ReservedIpState } from "@/app/store/reservedip/types";
-import type { ResourcePoolState } from "@/app/store/resourcepool/types";
 import type { RootState } from "@/app/store/root/types";
 import type { ScriptState } from "@/app/store/script/types";
 import type { ScriptResultState } from "@/app/store/scriptresult/types";
@@ -541,10 +540,6 @@ export const reservedIpState = define<ReservedIpState>({
   errors: null,
 });
 
-export const resourcePoolState = define<ResourcePoolState>({
-  ...defaultState,
-});
-
 export const scriptResultState = define<ScriptResultState>({
   ...defaultState,
   history: () => ({}),
@@ -658,7 +653,6 @@ export const rootState = define<RootState>({
   packagerepository: packageRepositoryState,
   pod: podState,
   reservedip: reservedIpState,
-  resourcepool: resourcePoolState,
   router: routerState,
   scriptresult: scriptResultState,
   script: scriptState,
