@@ -25,7 +25,7 @@ type SMImagesTableProps = {
   variant?: "full-height" | "regular";
 };
 
-const getImages = (resources: BootResource[]): Image[] => {
+export const getImages = (resources: BootResource[]): Image[] => {
   return resources.map((resource) => {
     const { os } = splitResourceName(resource.name);
     return {
