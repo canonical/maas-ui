@@ -107,7 +107,7 @@ const generateRows = (sshkeys: SshKeyResponse[], navigate: NavigateFunction) =>
     };
   });
 
-const SSHKeyList = ({ ...tableProps }: Props): JSX.Element => {
+const BaseSSHKeyList = ({ ...tableProps }: Props): JSX.Element => {
   const { data, failureReason, isPending, isFetched } = useListSshKeys();
   const navigate = useNavigate();
   const sshkeys = data?.items ?? [];
@@ -146,4 +146,4 @@ const SSHKeyList = ({ ...tableProps }: Props): JSX.Element => {
   );
 };
 
-export default SSHKeyList;
+export default BaseSSHKeyList;

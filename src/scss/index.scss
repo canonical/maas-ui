@@ -110,7 +110,6 @@
 @import "@/app/base/components/SecondaryNavigation";
 @import "@/app/base/components/SectionHeader";
 @import "@/app/base/components/SelectButton";
-@import "@/app/base/components/SSHKeyList";
 @import "@/app/base/components/ShowAdvanced";
 @import "@/app/base/components/TableMenu";
 @import "@/app/base/components/TagSelector";
@@ -145,7 +144,6 @@
 @include SecondaryNavigation;
 @include SectionHeader;
 @include SelectButton;
-@include SSHKeyList;
 @include ShowAdvanced;
 @include TableMenu;
 @include TagSelector;
