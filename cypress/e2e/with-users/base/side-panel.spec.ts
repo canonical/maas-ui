@@ -21,6 +21,8 @@ context("Side panel", () => {
     cy.findByTestId("app-side-panel").should("be.visible");
     cy.findByRole("heading", { name: "Add device" }).should("be.visible");
     cy.visit(generateMAASURL("/machines"));
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(5000);
     cy.findByTestId("app-side-panel").should("not.be.visible");
     cy.waitForPageToLoad();
     cy.visit(generateMAASURL("/controllers"));
