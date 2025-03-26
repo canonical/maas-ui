@@ -11,7 +11,10 @@ import type { APIError } from "@/app/base/types";
 import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
-import { BootResourceSourceType } from "@/app/store/bootresource/types";
+import {
+  BootResourceSourceType,
+  type BootResourceUbuntuSource,
+} from "@/app/store/bootresource/types";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 
@@ -39,6 +42,7 @@ export type ChangeSourceValues = {
 const ChangeSource = () => {
   const dispatch = useDispatch();
   const resources = useSelector(bootResourceSelectors.resources);
+  const sources = useSelector(bootResourceSelectors.ubuntu);
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const errors = useSelector(bootResourceSelectors.fetchError);
   const saving = useSelector(bootResourceSelectors.fetching);
@@ -50,6 +54,16 @@ const ChangeSource = () => {
   const saved = !saving && previousSaving && !errors;
 
   const canChangeSource = resources.every((resource) => !resource.downloading);
+  const source: BootResourceUbuntuSource =
+    sources !== null &&
+    sources.sources[0].source_type === BootResourceSourceType.CUSTOM
+      ? sources.sources[0]
+      : {
+          keyring_data: "",
+          keyring_filename: "",
+          source_type: BootResourceSourceType.MAAS_IO,
+          url: "",
+        };
 
   return (
     <ContentSection variant="narrow">
@@ -71,10 +85,7 @@ const ChangeSource = () => {
           cleanup={cleanup}
           errors={errors as APIError}
           initialValues={{
-            keyring_data: "",
-            keyring_filename: "",
-            source_type: BootResourceSourceType.MAAS_IO,
-            url: "",
+            ...source,
             autoSync: autoImport || false,
           }}
           onSubmit={(values) => {
@@ -85,6 +96,16 @@ const ChangeSource = () => {
                 boot_images_auto_import: values.autoSync,
               })
             );
+            dispatch(
+              bootResourceActions.saveUbuntu({
+                keyring_data: values.keyring_data,
+                keyring_filename: values.keyring_filename,
+                source_type: values.source_type,
+                url: values.url,
+                osystems: [],
+              })
+            );
+            dispatch(bootResourceActions.saveUbuntuSuccess());
           }}
           saved={saved}
           saving={saving}
