@@ -12,6 +12,7 @@ import { createQueryClient } from "./app/api/query-client";
 import { store } from "./redux-store";
 import * as serviceWorker from "./serviceWorker";
 
+import SidePanelContextProvider from "@/app/base/side-panel-context";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import "./scss/index.scss";
 import { router } from "@/router";
@@ -23,7 +24,9 @@ export const Root = () => {
     <Provider store={store}>
       <WebSocketProvider>
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
+          <SidePanelContextProvider>
+            <RouterProvider router={router} />
+          </SidePanelContextProvider>
           <ReactQueryDevtools
             initialIsOpen={
               import.meta.env.VITE_APP_REACT_QUERY_DEVTOOLS === "true"

@@ -9,7 +9,6 @@ context("Pools list", () => {
   it("renders a heading", () => {
     cy.findByRole("heading", {
       name: /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i,
-      timeout: 20000,
     }).should("exist");
     cy.findByLabelText(/Pool list/i);
   });

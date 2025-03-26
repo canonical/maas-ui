@@ -5,7 +5,6 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "@/app/App";
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";
 import PageContent from "@/app/base/components/PageContent";
-import SidePanelContextProvider from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
 import APIKeyAdd from "@/app/preferences/views/APIKeys/APIKeyAdd";
@@ -56,11 +55,7 @@ export const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: (
-        <SidePanelContextProvider>
-          <App />
-        </SidePanelContextProvider>
-      ),
+      element: <App />,
       children: [
         {
           path: urls.index,

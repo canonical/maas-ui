@@ -26,8 +26,8 @@ const Pools = (): React.ReactElement => {
   const PoolsHeader = () => (
     <MainToolbar>
       <MainToolbar.Title>
-        <Link to={urls.machines.index}>{machineCount} machines </Link>
-        in {count} {pluralize("pool", count)}
+        <Link to={urls.machines.index}>{machineCount} machines</Link>
+        {` in ${count} ${pluralize("pool", count)}`}
       </MainToolbar.Title>
       <MainToolbar.Controls>
         <Button data-testid="add-pool" element={Link} to={urls.pools.add}>
