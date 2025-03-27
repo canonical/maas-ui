@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Button, Notification } from "@canonical/react-components";
 import type { NavigateFunction } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -107,7 +109,7 @@ const generateRows = (sshkeys: SshKeyResponse[], navigate: NavigateFunction) =>
     };
   });
 
-const BaseSSHKeyList = ({ ...tableProps }: Props): JSX.Element => {
+const BaseSSHKeyList = ({ ...tableProps }: Props): ReactElement => {
   const { data, failureReason, isPending, isFetched } = useListSshKeys();
   const navigate = useNavigate();
   const sshkeys = data?.items ?? [];
