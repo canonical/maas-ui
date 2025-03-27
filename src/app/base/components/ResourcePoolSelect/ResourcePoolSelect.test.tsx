@@ -22,9 +22,13 @@ describe("ResourcePoolSelect", () => {
 
     await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
 
+    await waitFor(() =>
+      expect(
+        screen.getByRole("option", { name: "swimming" })
+      ).toBeInTheDocument()
+    );
     const pools = screen.getAllByRole("option");
     expect(pools).toHaveLength(mockPools.items.length + 1);
-    expect(pools[1]).toHaveTextContent("swimming");
   });
 
   it("disables select if resource pools have not loaded", () => {
