@@ -22,9 +22,7 @@ describe("PoolsTable", () => {
         total: 1,
       })
     );
-    renderWithProviders(
-      <PoolsTable selectedRows={{}} setSelectedRows={vi.fn} />
-    );
+    renderWithProviders(<PoolsTable />);
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "Edit" })).toHaveClass(
@@ -41,9 +39,7 @@ describe("PoolsTable", () => {
       })
     );
 
-    renderWithProviders(
-      <PoolsTable selectedRows={{}} setSelectedRows={vi.fn} />
-    );
+    renderWithProviders(<PoolsTable />);
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "Edit" })).not.toHaveClass(
@@ -68,9 +64,7 @@ describe("PoolsTable", () => {
       })
     );
 
-    renderWithProviders(
-      <PoolsTable selectedRows={{}} setSelectedRows={vi.fn} />
-    );
+    renderWithProviders(<PoolsTable />);
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
@@ -94,9 +88,7 @@ describe("PoolsTable", () => {
       })
     );
 
-    renderWithProviders(
-      <PoolsTable selectedRows={{}} setSelectedRows={vi.fn} />
-    );
+    renderWithProviders(<PoolsTable />);
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();

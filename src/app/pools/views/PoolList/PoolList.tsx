@@ -1,8 +1,4 @@
-import { useState } from "react";
-
 import { Col, Spinner, Notification, Row } from "@canonical/react-components";
-import type { RowSelectionState } from "@tanstack/react-table";
-// import { Link } from "react-router-dom";
 
 import PoolsTable from "../../components/PoolsTable/PoolsTable";
 
@@ -17,7 +13,6 @@ const Pools = (): JSX.Element => {
   useWindowTitle("Pools");
 
   const listPools = usePools();
-  const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
 
   return (
     <div aria-label={Label.Title}>
@@ -38,12 +33,7 @@ const Pools = (): JSX.Element => {
                 <Spinner text="Loading..." />
               </div>
             )}
-            {listPools.isSuccess && (
-              <PoolsTable
-                selectedRows={selectedRows}
-                setSelectedRows={setSelectedRows}
-              />
-            )}
+            {listPools.isSuccess && <PoolsTable />}
           </div>
         </Col>
       </Row>
