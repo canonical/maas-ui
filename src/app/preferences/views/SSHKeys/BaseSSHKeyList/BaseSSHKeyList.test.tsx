@@ -1,4 +1,4 @@
-import SSHKeyList from "./SSHKeyList";
+import SSHKeyList from "./BaseSSHKeyList";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import urls from "@/app/preferences/urls";
