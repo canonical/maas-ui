@@ -24,7 +24,7 @@ export enum Label {
   Title = "KVM list",
 }
 
-const KVMList = (): JSX.Element => {
+const KVMList = (): React.ReactElement => {
   const navigate = useNavigate();
   const location = useLocation();
   const podsLoading = useSelector(podSelectors.loading);
@@ -49,7 +49,7 @@ const KVMList = (): JSX.Element => {
     }
   }, [navigate, showingLXD, showingVirsh]);
 
-  let content: ReactNode = null;
+  let content: ReactNode;
   if (podsLoading || vmclustersLoading) {
     content = <Spinner text="Loading..." />;
   } else if (showingLXD && hasLXDs) {

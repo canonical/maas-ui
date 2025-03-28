@@ -18,7 +18,7 @@ import { selectedToFilters, FilterMachines } from "@/app/store/machine/utils";
 import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
-const Machines = (): JSX.Element => {
+const Machines = (): React.ReactElement => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentFilters = FilterMachines.queryStringToFilters(location.search);

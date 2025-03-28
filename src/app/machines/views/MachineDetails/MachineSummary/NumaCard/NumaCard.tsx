@@ -18,12 +18,12 @@ export enum Labels {
   NumaList = "Numa nodes list",
 }
 
-const NumaCard = ({ id }: Props): JSX.Element => {
+const NumaCard = ({ id }: Props): React.ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
   let numaNodeString = "NUMA node";
-  let content: JSX.Element | null;
+  let content: React.ReactElement | null;
 
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will

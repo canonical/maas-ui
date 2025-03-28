@@ -36,7 +36,10 @@ export const updateCardSize = (
   }
 };
 
-const StorageCards = ({ defaultPoolId, pools }: Props): JSX.Element | null => {
+const StorageCards = ({
+  defaultPoolId,
+  pools,
+}: Props): React.ReactElement | null => {
   const [cardSize, setCardSize] = useState<CardSize>("small");
   const el = useRef<HTMLDivElement>(null);
   const sortedPools = getSortedPoolsArray(pools, defaultPoolId);

@@ -1,4 +1,5 @@
 import type { HTMLProps } from "react";
+import React from "react";
 
 import { Select } from "@canonical/react-components";
 
@@ -18,7 +19,7 @@ export const ResourcePoolSelect = ({
   name,
   valueKey = "name",
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const listPools = usePools();
   const resourcePools = listPools.data?.items || [];
 

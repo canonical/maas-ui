@@ -9,7 +9,7 @@ type Props = {
   scriptResult: ScriptResult;
 };
 
-const TestMetrics = ({ close, scriptResult }: Props): JSX.Element => {
+const TestMetrics = ({ close, scriptResult }: Props): React.ReactElement => {
   const metrics = scriptResult.results;
   let content: ReactNode;
 

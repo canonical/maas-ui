@@ -52,7 +52,7 @@ const AddAliasOrVlan = ({
   nic,
   interfaceType,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const [secondarySubmit, setSecondarySubmit] = useState(false);
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>

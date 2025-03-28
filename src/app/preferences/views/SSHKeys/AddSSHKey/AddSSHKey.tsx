@@ -9,7 +9,7 @@ export enum Label {
   FormLabel = "Add SSH key form",
 }
 
-export const AddSSHKey = (): JSX.Element => {
+export const AddSSHKey = (): React.ReactElement => {
   const navigate = useNavigate();
   const onCancel = () => navigate({ pathname: urls.preferences.sshKeys.index });
   useOnEscapePressed(() => onCancel());

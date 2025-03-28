@@ -10,7 +10,7 @@ type Props = SidePanelContentTypes;
 export const TagForms = ({
   sidePanelContent,
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const id =
     sidePanelContent?.extras && "id" in sidePanelContent?.extras
       ? sidePanelContent.extras.id

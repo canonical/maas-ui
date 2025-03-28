@@ -10,7 +10,7 @@ export enum Labels {
   Incomplete = "This MAAS has not be configured. Ask an admin to log in and finish the configuration.",
 }
 
-const IncompleteCard = (): JSX.Element => {
+const IncompleteCard = (): React.ReactElement => {
   return (
     <IntroSection>
       <IntroCard

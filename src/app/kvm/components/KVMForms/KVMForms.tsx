@@ -112,7 +112,7 @@ const KVMForms = ({
   setSidePanelContent,
   searchFilter,
   setSearchFilter,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const selectedMachines = useSelector(machineSelectors.selected);
   const { selectedCount } = useMachineSelectedCount(
     searchFilter ? FilterMachines.parseFetchFilters(searchFilter) : null

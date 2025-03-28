@@ -20,7 +20,7 @@ const KVMResourceMeter = ({
   other = 0,
   segmented = false,
   unit = null,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const total = allocated + free + other;
   const { value: formattedTotal, unit: formattedUnit } = unit
     ? formatBytes({ value: total, unit }, { binary: binaryUnit, decimals: 1 })

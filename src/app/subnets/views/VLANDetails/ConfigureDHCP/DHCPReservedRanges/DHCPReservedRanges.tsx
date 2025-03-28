@@ -131,7 +131,7 @@ const generateFormRow = (
   ];
 };
 
-const DHCPReservedRanges = ({ id }: Props): JSX.Element | null => {
+const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<ConfigureDHCPValues>();
 

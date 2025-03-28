@@ -8,7 +8,7 @@ type Props = {
   statistics: SubnetStatistics;
 };
 
-const SubnetUtilisation = ({ statistics }: Props): JSX.Element => {
+const SubnetUtilisation = ({ statistics }: Props): React.ReactElement => {
   return (
     <TitledSection title="Utilisation">
       <Row>

@@ -26,7 +26,7 @@ const ScriptDetails = ({
   id,
   isCollapsible,
   onCollapse,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const loading = useSelector(scriptSelectors.loading);
   const scriptKey = useRef(nanoid());

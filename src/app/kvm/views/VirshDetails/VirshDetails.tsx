@@ -24,7 +24,7 @@ export enum Label {
   Title = "Virsh details",
 }
 
-const VirshDetails = (): JSX.Element => {
+const VirshDetails = (): React.ReactElement => {
   const navigate = useNavigate();
   const id = useGetURLId(PodMeta.PK);
 

@@ -92,7 +92,7 @@ const generateRows = (
     };
   });
 
-const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
+const StaticRoutes = ({ subnetId }: Props): React.ReactElement | null => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const staticRoutes = useSelector(staticRouteSelectors.all).filter(

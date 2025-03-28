@@ -19,7 +19,9 @@ export enum Label {
   Loading = "Loading LXD host",
 }
 
-const LXDClusterDetailsRedirect = ({ clusterId }: Props): JSX.Element => {
+const LXDClusterDetailsRedirect = ({
+  clusterId,
+}: Props): React.ReactElement => {
   const hostId = useGetURLId(PodMeta.PK, "hostId");
   const host = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)

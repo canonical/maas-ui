@@ -29,7 +29,11 @@ const PoolSchema = Yup.object().shape({
   description: Yup.string(),
 });
 
-export const PoolForm = ({ pool, onClose, ...props }: Props): JSX.Element => {
+export const PoolForm = ({
+  pool,
+  onClose,
+  ...props
+}: Props): React.ReactElement => {
   const createPool = useCreatePool();
   const updatePool = useUpdatePool();
 

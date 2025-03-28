@@ -44,7 +44,7 @@ export const TagsHeader = ({
   setSidePanelContent,
   onDelete,
   onUpdate,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)

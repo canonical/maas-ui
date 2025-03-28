@@ -11,7 +11,7 @@ import machineSelectors from "@/app/store/machine/selectors";
 import { MachineMeta } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
-const MachineConfiguration = (): JSX.Element => {
+const MachineConfiguration = (): React.ReactElement => {
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)

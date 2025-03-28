@@ -25,7 +25,7 @@ export const DeleteTagForm = ({
   fromDetails = false,
   id,
   onClose,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const saved = useSelector(tagSelectors.saved);

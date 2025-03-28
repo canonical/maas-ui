@@ -58,7 +58,7 @@ export const DoughnutChart = ({
   segmentWidth,
   segments,
   size,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [tooltipMessage, setTooltipMessage] = useState<
     Segment["tooltip"] | null
   >(null);

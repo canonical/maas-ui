@@ -14,7 +14,7 @@ export type CreateZoneValues = {
   name: string;
 };
 
-const AddZone = ({ closeForm }: Props): JSX.Element => {
+const AddZone = ({ closeForm }: Props): React.ReactElement => {
   const createZone = useCreateZone();
 
   return (

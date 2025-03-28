@@ -53,7 +53,7 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
@@ -67,7 +67,7 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
 
     await waitFor(() =>
@@ -87,7 +87,7 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
     await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
     await waitFor(() =>
@@ -105,7 +105,7 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={setSidePanelContent}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
     await waitFor(() => screen.getByTestId("vm-host-compose"));
     await userEvent.click(screen.getByTestId("vm-host-compose"));
@@ -126,7 +126,7 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
     await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
     await waitFor(() =>
@@ -149,7 +149,7 @@ describe("LXDClusterHostsTable", () => {
         searchFilter="nothing"
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
 
     expect(screen.getByTestId("no-hosts")).toBeInTheDocument();

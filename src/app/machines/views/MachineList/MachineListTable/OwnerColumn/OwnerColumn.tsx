@@ -28,7 +28,7 @@ export const OwnerColumn = ({
   onToggleMenu,
   systemId,
   showFullName,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [updating, setUpdating] = useState<Machine["status"] | null>(null);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

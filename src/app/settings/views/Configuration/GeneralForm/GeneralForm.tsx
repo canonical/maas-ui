@@ -41,7 +41,7 @@ type GeneralFormValues = {
   release_notifications: boolean;
 };
 
-const GeneralForm = (): JSX.Element => {
+const GeneralForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const maasName = useSelector(configSelectors.maasName);
   const maasTheme = useSelector(configSelectors.theme);

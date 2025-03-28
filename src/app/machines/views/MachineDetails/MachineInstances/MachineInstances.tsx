@@ -19,7 +19,7 @@ import type {
 
 type InterfaceRow = {
   key: string;
-  columns: { content: JSX.Element }[];
+  columns: { content: React.ReactElement }[];
 };
 
 const formatRowData = (
@@ -83,7 +83,7 @@ const generateRows = (devices: NodeDeviceRef[]) => {
   return formattedDevices;
 };
 
-const MachineInstances = (): JSX.Element => {
+const MachineInstances = (): React.ReactElement => {
   const navigate = useNavigate();
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>

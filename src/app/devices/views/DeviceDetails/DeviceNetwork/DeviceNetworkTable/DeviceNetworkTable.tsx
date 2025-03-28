@@ -194,7 +194,7 @@ const generateRows = (
   return rows;
 };
 
-const DeviceNetworkTable = ({ systemId }: Props): JSX.Element => {
+const DeviceNetworkTable = ({ systemId }: Props): React.ReactElement => {
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );

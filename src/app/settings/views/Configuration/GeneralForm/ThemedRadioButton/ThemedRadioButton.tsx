@@ -1,6 +1,7 @@
 import type { ReactNode, MouseEventHandler } from "react";
 
 import classNames from "classnames";
+import type { JSX } from "react/jsx-runtime";
 
 export type Props = {
   checked?: boolean;
@@ -32,7 +33,7 @@ const ThemedRadioButton = ({
   onClick,
   value,
   ...inputProps
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <label className={classNames(className, "general-form__radio--themed")}>
       <input

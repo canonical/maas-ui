@@ -34,7 +34,7 @@ export const HashPolicySelect = ({
   defaultOption = { label: "Select XMIT hash policy", value: "" },
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const xmitHashPolicies = useSelector(bondOptionsSelectors.xmitHashPolicies);
   const loaded = useSelector(bondOptionsSelectors.loaded);
   const { values } = useFormikContext<BondFormValues>();

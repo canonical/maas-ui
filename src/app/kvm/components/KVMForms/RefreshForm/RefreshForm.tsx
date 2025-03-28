@@ -16,7 +16,7 @@ type Props = {
 const RefreshForm = ({
   clearSidePanelContent,
   hostIds,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const errors = useSelector(podSelectors.errors);
   const refreshing = useSelector(podSelectors.refreshing);

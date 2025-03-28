@@ -8,7 +8,7 @@ type Props = {
   zoneId?: ZoneResponse["id"] | null;
 };
 
-const PoolColumn = ({ poolId, zoneId }: Props): JSX.Element | null => {
+const PoolColumn = ({ poolId, zoneId }: Props): React.ReactElement | null => {
   const { data: pool } = useGetPool({ path: { resource_pool_id: poolId! } });
   const { data: zone } = useGetZone({ path: { zone_id: zoneId! } });
 

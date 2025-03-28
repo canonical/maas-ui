@@ -15,7 +15,7 @@ type Props = {
 export const AddPartitionFields = ({
   partitionName,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { handleChange, setFieldTouched, setFieldValue } =
     useFormikContext<AddPartitionValues>();
 

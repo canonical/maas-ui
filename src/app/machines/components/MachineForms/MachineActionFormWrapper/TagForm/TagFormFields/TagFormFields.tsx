@@ -52,7 +52,7 @@ export const TagFormFields = ({
   setSecondaryContent,
   selectedCount,
   toggleTagDetails,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const selectedTags = useSelectedTags("added");
   const { setFormikState } = useFormikContext<TagFormValues>();
   const { tags, loading: tagsLoading } = useFetchTagsForSelected({

@@ -19,7 +19,7 @@ const StoragePopover = ({
   children,
   defaultPoolId,
   pools,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const sortedPools = getSortedPoolsArray(pools, defaultPoolId);
   const showOthers = sortedPools.some(([, pool]) => pool.allocated_other !== 0);
   return (

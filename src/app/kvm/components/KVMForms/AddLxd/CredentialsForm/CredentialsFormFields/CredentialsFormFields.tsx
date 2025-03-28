@@ -20,7 +20,7 @@ type Props = {
 export const CredentialsFormFields = ({
   setShouldGenerateCert,
   shouldGenerateCert,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const lxdAddresses = useSelector(podSelectors.groupByLxdServer).map(
     (group) => group.address
   );

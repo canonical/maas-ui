@@ -21,7 +21,10 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const BulkActions = ({ selected, systemId }: Props): JSX.Element | null => {
+const BulkActions = ({
+  selected,
+  systemId,
+}: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

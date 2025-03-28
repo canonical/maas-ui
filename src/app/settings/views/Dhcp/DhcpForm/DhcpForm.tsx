@@ -11,7 +11,7 @@ type Props = {
   dhcpSnippet?: DHCPSnippet;
 };
 
-export const DhcpForm = ({ dhcpSnippet }: Props): JSX.Element => {
+export const DhcpForm = ({ dhcpSnippet }: Props): React.ReactElement => {
   const navigate = useNavigate();
   const [name, setName] = useState<DHCPFormValues["name"]>();
   const editing = !!dhcpSnippet;

@@ -41,7 +41,7 @@ type Props = {
   id: Domain["id"];
 };
 
-const DomainSummary = ({ id }: Props): JSX.Element | null => {
+const DomainSummary = ({ id }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const isAdmin = useSelector(authSelectors.isAdmin);
   const domain = useSelector((state: RootState) =>

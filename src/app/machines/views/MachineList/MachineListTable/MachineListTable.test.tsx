@@ -641,8 +641,8 @@ describe("MachineListTable", () => {
     ).toBeInTheDocument();
   });
 
-  it("does not show checkboxes if showActions is false", () => {
-    const { rerender } = renderWithProviders(
+  it("shows the correct number of checkboxes", () => {
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -661,8 +661,10 @@ describe("MachineListTable", () => {
       { state }
     );
     expect(screen.getAllByRole("checkbox").length).toBe(4);
+  });
 
-    rerender(
+  it("does not show checkboxes if showActions is false", () => {
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -683,8 +685,8 @@ describe("MachineListTable", () => {
   });
 
   describe("hiddenColumns", () => {
-    it("can hide columns", () => {
-      const { rerender } = renderWithProviders(
+    it("can render columns", () => {
+      renderWithProviders(
         <MachineListTable
           callId={callId}
           currentPage={1}
@@ -708,8 +710,10 @@ describe("MachineListTable", () => {
       expect(
         screen.getByRole("columnheader", { name: /zone/i })
       ).toBeInTheDocument();
+    });
 
-      rerender(
+    it("can hide columns", () => {
+      renderWithProviders(
         <MachineListTable
           callId={callId}
           currentPage={1}
@@ -724,7 +728,8 @@ describe("MachineListTable", () => {
           sortDirection="none"
           sortKey={null}
           totalPages={1}
-        />
+        />,
+        { state }
       );
 
       expect(

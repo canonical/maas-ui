@@ -38,7 +38,7 @@ import UserEdit from "@/app/settings/views/Users/UserEdit";
 import UsersList from "@/app/settings/views/Users/UsersList";
 import { getRelativeRoute } from "@/app/utils";
 
-const Routes = (): JSX.Element => {
+const Routes = (): React.ReactElement => {
   const base = urls.settings.index;
   return (
     <ReactRouterRoutes>

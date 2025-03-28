@@ -13,7 +13,7 @@ type Props = {
   id: Tag[TagMeta.PK];
 };
 
-const AppliedTo = ({ id }: Props): JSX.Element | null => {
+const AppliedTo = ({ id }: Props): React.ReactElement | null => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );

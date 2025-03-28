@@ -19,7 +19,10 @@ type Props = {
   hostId: Pod["id"];
 };
 
-export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
+export const StorageTable = ({
+  defaultDisk,
+  hostId,
+}: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );

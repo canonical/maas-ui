@@ -35,7 +35,7 @@ describe("VirshTable", () => {
 
   it("shows pods sorted by descending name by default", () => {
     renderWithProviders(<VirshTable />, {
-      route: "/kvm",
+      initialEntries: ["/kvm"],
       state,
     });
     expect(
@@ -47,7 +47,7 @@ describe("VirshTable", () => {
     state.pod.items[0].resources.vm_count.tracked = 1;
     state.pod.items[1].resources.vm_count.tracked = 2;
     renderWithProviders(<VirshTable />, {
-      route: "/kvm",
+      initialEntries: ["/kvm"],
       state,
     });
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
@@ -85,7 +85,7 @@ describe("VirshTable", () => {
     firstPod.pool = mockPools.items[0].id;
     secondPod.pool = mockPools.items[1].id;
     renderWithProviders(<VirshTable />, {
-      route: "/kvm",
+      initialEntries: ["/kvm"],
       state,
     });
 
@@ -114,7 +114,7 @@ describe("VirshTable", () => {
   it("displays a message when empty", () => {
     state.pod.items = [];
     renderWithProviders(<VirshTable />, {
-      route: "/kvm",
+      initialEntries: ["/kvm"],
       state,
     });
 

@@ -20,7 +20,7 @@ type Props = {
   systemId: Device[DeviceMeta.PK];
 };
 
-const AddInterface = ({ closeForm, systemId }: Props): JSX.Element => {
+const AddInterface = ({ closeForm, systemId }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)

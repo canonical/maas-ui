@@ -23,7 +23,7 @@ const ModelNotFound = ({
   linkText,
   linkURL,
   modelName,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const message = isId(id)
     ? `Unable to find a ${modelName} with id "${id}".`
     : `Unable to find this ${modelName}.`;

@@ -12,7 +12,7 @@ type Props = {
 const PodDetailsActionMenu = ({
   hostId,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <ContextualMenu
       data-testid="action-dropdown"

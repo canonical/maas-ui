@@ -33,7 +33,7 @@ const SSLKeySchema = Yup.object().shape({
   key: Yup.string().required("SSL key is required"),
 });
 
-export const AddSSLKey = (): JSX.Element => {
+export const AddSSLKey = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const saving = useSelector(sslkeySelectors.saving);

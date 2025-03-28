@@ -32,7 +32,7 @@ const PageContent = ({
   sidePanelContent,
   sidePanelTitle,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { pathname } = useLocation();
   const isSettingsPage = matchPath("settings/*", pathname);
   const isPreferencesPage = matchPath("account/prefs/*", pathname);
@@ -50,7 +50,7 @@ const PageContent = ({
             className={classNames("l-main__nav", `is-maas-${theme}--accent`)}
           >
             <SecondaryNavigation
-              isOpen={!!isSecondaryNavVisible}
+              isOpen={isSecondaryNavVisible}
               items={
                 isSettingsPage
                   ? settingsNavItems

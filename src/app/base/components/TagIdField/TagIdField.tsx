@@ -28,7 +28,7 @@ const TagIdField = <V extends AnyObject = AnyObject>({
   name = "tags",
   tagList,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { initialValues } = useFormikContext<V>();
   let initial: Tag[TagMeta.PK][] = [];
   if (name in initialValues && Array.isArray(initialValues[name])) {

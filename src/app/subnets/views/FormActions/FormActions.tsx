@@ -9,7 +9,7 @@ import type { SubnetForm } from "@/app/subnets/types";
 
 const FormComponents: Record<
   SubnetForm,
-  ({ activeForm, setActiveForm }: FormActionProps) => JSX.Element | null
+  ({ activeForm, setActiveForm }: FormActionProps) => React.ReactElement | null
 > = {
   [SubnetForms.Fabric]: AddFabric,
   [SubnetForms.VLAN]: AddVlan,
@@ -25,7 +25,7 @@ export interface FormActionProps {
 const FormActions = ({
   activeForm,
   setActiveForm,
-}: FormActionProps): JSX.Element => {
+}: FormActionProps): React.ReactElement => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
   return (

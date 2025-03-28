@@ -12,7 +12,10 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-export const EditDiskFields = ({ disk, systemId }: Props): JSX.Element => {
+export const EditDiskFields = ({
+  disk,
+  systemId,
+}: Props): React.ReactElement => {
   return (
     <Row>
       <Col size={12}>
@@ -39,7 +42,7 @@ export const EditDiskFields = ({ disk, systemId }: Props): JSX.Element => {
         />
       </Col>
       <Col size={12}>
-        {disk.is_boot === false && <FilesystemFields systemId={systemId} />}
+        {!disk.is_boot && <FilesystemFields systemId={systemId} />}
         <TagNameField />
       </Col>
     </Row>

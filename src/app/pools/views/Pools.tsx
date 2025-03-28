@@ -15,7 +15,7 @@ import PoolEdit from "@/app/pools/views/PoolEdit";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 import { getRelativeRoute } from "@/app/utils";
 
-const Pools = (): JSX.Element => {
+const Pools = (): React.ReactElement => {
   const base = urls.pools.index;
 
   const { machineCount } = useFetchMachineCount();
@@ -26,8 +26,8 @@ const Pools = (): JSX.Element => {
   const PoolsHeader = () => (
     <MainToolbar>
       <MainToolbar.Title>
-        <Link to={urls.machines.index}>{machineCount} machines </Link>
-        in {count} {pluralize("pool", count)}
+        <Link to={urls.machines.index}>{machineCount} machines</Link>
+        {` in ${count} ${pluralize("pool", count)}`}
       </MainToolbar.Title>
       <MainToolbar.Controls>
         <Button data-testid="add-pool" element={Link} to={urls.pools.add}>

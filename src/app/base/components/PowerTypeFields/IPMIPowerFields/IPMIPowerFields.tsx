@@ -22,7 +22,7 @@ export const NONE_WORKAROUND_VALUE = "";
 export const IPMIPowerFields = <V extends AnyObject>({
   fields,
   powerParametersValueName = "power_parameters",
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { setFieldValue, values } = useFormikContext<V>();
   const workaroundsFieldName = `${powerParametersValueName}.${WORKAROUNDS_FIELD_NAME}`;
   const workaroundsFieldValue = (

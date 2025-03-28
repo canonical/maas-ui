@@ -12,7 +12,7 @@ export enum Label {
   Title = "Edit pool form",
 }
 
-export const PoolEdit = (): JSX.Element => {
+export const PoolEdit = (): React.ReactElement => {
   const id = useGetURLId("id");
   const navigate = useNavigate();
   const onCancel = () => navigate({ pathname: urls.pools.index });

@@ -78,7 +78,7 @@ const NetworkFields = ({
   interfaceType,
   vlanDisabled,
   vlans,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const fabrics: Fabric[] = useSelector(fabricSelectors.all);
   const subnets: Subnet[] = useSelector(subnetSelectors.all);
   const { handleChange, setFieldValue, values } =

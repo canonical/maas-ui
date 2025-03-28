@@ -9,8 +9,7 @@ describe("SSHKeyFormFields", () => {
     renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
-      </Formik>,
-      { route: "/" }
+      </Formik>
     );
     expect(
       screen.getByRole("combobox", { name: "Source" })
@@ -27,8 +26,7 @@ describe("SSHKeyFormFields", () => {
     renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
-      </Formik>,
-      { route: "/" }
+      </Formik>
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Source" }),
@@ -43,8 +41,7 @@ describe("SSHKeyFormFields", () => {
     renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
-      </Formik>,
-      { route: "/" }
+      </Formik>
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Source" }),

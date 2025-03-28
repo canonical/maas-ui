@@ -15,7 +15,7 @@ const CoreResources = ({
   dynamicLayout,
   free,
   other,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const allocatedIsArray = Array.isArray(allocated);
   const freeIsArray = Array.isArray(free);
   const showPinnedSection = allocatedIsArray && freeIsArray;

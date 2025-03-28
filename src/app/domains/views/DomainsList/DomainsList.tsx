@@ -11,7 +11,7 @@ import DomainForm from "@/app/domains/components/DomainForm";
 import domainsSelectors from "@/app/store/domain/selectors";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
-const DomainsList = (): JSX.Element => {
+const DomainsList = (): React.ReactElement => {
   const domains = useSelector(domainsSelectors.all);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 

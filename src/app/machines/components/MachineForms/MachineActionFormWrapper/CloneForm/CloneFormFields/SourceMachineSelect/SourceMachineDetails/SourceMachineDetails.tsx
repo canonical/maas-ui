@@ -21,7 +21,9 @@ export enum Labels {
   Domain = "Domain",
 }
 
-export const SourceMachineDetails = ({ machine }: Props): JSX.Element => {
+export const SourceMachineDetails = ({
+  machine,
+}: Props): React.ReactElement => {
   // Placeholder content is displayed until the machine has loaded.
   let content = {
     architecture: "Architecture",

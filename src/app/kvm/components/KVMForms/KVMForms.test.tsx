@@ -256,7 +256,7 @@ describe("KVMForms", () => {
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: MachineSidePanelViews.DELETE_MACHINE }}
       />,
-      { state, route: "/kvm" }
+      { state, initialEntries: ["/kvm"] }
     );
 
     expect(

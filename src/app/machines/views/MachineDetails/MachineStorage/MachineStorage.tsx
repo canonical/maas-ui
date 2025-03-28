@@ -16,7 +16,7 @@ import { isMachineDetails, useCanEditStorage } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { isId } from "@/app/utils";
 
-const MachineStorage = (): JSX.Element => {
+const MachineStorage = (): React.ReactElement => {
   const id = useGetURLId(MachineMeta.PK);
   const sendAnalytics = useSendAnalytics();
   const machine = useSelector((state: RootState) =>

@@ -51,7 +51,7 @@ const DiscoveryAddFormFields = ({
   discovery,
   setDevice,
   setDeviceType,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const devices = useSelector(deviceSelectors.all);
   const domains = useSelector(domainSelectors.all);
   const subnet = useSelector((state: RootState) =>

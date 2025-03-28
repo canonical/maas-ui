@@ -54,7 +54,7 @@ const KVMConfigurationCard = ({
   pod,
   zoneDisabled,
   ...formProps
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const podErrors = useSelector(podSelectors.errors);
   const podSaved = useSelector(podSelectors.saved);

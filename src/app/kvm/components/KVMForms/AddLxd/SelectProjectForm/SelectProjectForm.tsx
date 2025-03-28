@@ -34,7 +34,7 @@ export const SelectProjectForm = ({
   newPodValues,
   setStep,
   setSubmissionErrors,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const errors = useSelector(podSelectors.errors);
   const saved = useSelector(podSelectors.saved);

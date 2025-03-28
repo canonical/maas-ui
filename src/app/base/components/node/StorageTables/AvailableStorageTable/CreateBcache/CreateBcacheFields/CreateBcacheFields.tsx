@@ -19,7 +19,7 @@ export const CreateBcacheFields = ({
   cacheSets,
   storageDevice,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <Row>
       <Col size={12}>

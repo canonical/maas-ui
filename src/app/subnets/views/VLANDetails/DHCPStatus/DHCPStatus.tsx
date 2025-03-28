@@ -54,7 +54,7 @@ const getDHCPStatus = (vlan: VLAN, vlans: VLAN[], fabrics: Fabric[]) => {
   return "Disabled";
 };
 
-const DHCPStatus = ({ id }: Props): JSX.Element | null => {
+const DHCPStatus = ({ id }: Props): React.ReactElement | null => {
   const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoading = useSelector(fabricSelectors.loading);

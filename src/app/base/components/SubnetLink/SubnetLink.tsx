@@ -14,7 +14,7 @@ type Props = {
   id?: Subnet[SubnetMeta.PK] | null;
 };
 
-const SubnetLink = ({ id }: Props): JSX.Element => {
+const SubnetLink = ({ id }: Props): React.ReactElement => {
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, id)
   );

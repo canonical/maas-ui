@@ -28,7 +28,7 @@ const TableMenu = <L,>({
   position = "left",
   positionNode,
   "aria-label": ariaLabel,
-}: Props<L>): JSX.Element => {
+}: Props<L>): React.ReactElement => {
   const linksWithTitle = useMemo(
     () => [
       ...(title ? [title] : []),

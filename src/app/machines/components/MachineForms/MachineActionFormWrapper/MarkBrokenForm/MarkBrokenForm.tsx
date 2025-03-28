@@ -31,7 +31,7 @@ export const MarkBrokenForm = ({
   selectedCount,
   selectedMachines,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });

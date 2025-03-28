@@ -22,7 +22,7 @@ export enum Label {
 const LXDClusterSettings = ({
   clusterId,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );

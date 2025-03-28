@@ -1,12 +1,10 @@
-import { Routes, useLocation } from "react-router";
-import { Route } from "react-router-dom";
-
 import DeviceList from "./DeviceList";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -27,26 +25,15 @@ describe("DeviceList", () => {
   });
 
   it("changes the URL when the search text changes", async () => {
-    let search: string | null = null;
-    const FetchRoute = () => {
-      const location = useLocation();
-      search = location.search;
-      return null;
-    };
-    renderWithBrowserRouter(
-      <>
-        <DeviceList />
-        <Routes>
-          <Route element={<FetchRoute />} path="*" />
-        </Routes>
-      </>,
-      { route: "/machines?q=test+search", state }
-    );
+    const { router } = renderWithProviders(<DeviceList />, {
+      initialEntries: ["/machines?q=test+search"],
+      state,
+    });
     await userEvent.clear(screen.getByRole("searchbox"));
     await userEvent.type(screen.getByRole("searchbox"), "hostname:foo");
 
     await waitFor(() => {
-      expect(search).toBe("?hostname=foo");
+      expect(router.state.location.search).toBe("?hostname=foo");
     });
   });
 });

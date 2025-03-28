@@ -38,7 +38,7 @@ const DeleteForm = ({
   clearSidePanelContent,
   clusterId,
   hostId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pod = useSelector((state: RootState) =>

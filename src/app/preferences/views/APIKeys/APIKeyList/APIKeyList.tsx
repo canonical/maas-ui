@@ -45,7 +45,7 @@ const generateRows = (tokens: Token[]) =>
     };
   });
 
-const APIKeyList = (): JSX.Element => {
+const APIKeyList = (): React.ReactElement => {
   const errors = useSelector(tokenSelectors.errors);
   const loading = useSelector(tokenSelectors.loading);
   const loaded = useSelector(tokenSelectors.loaded);

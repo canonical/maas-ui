@@ -6,7 +6,7 @@ type Props = {
   value: string;
 };
 
-const CopyButton = ({ value }: Props): JSX.Element => {
+const CopyButton = ({ value }: Props): React.ReactElement => {
   const input = useRef<HTMLInputElement>(null);
   const handleClick = () => {
     if (input.current !== null) {

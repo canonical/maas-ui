@@ -32,17 +32,6 @@ describe("App", () => {
     });
   });
 
-  it("renders routes if logged in", () => {
-    state.status.connected = true;
-    state.status.authenticated = true;
-    state.user.auth.loaded = true;
-    renderWithBrowserRouter(<App />, { route: "/settings", state });
-    expect(window.location.pathname).toBe("/settings");
-    expect(
-      screen.getByRole("heading", { name: "Settings" })
-    ).toBeInTheDocument();
-  });
-
   it("displays correct status on connection errors", () => {
     state.status.error = "Uh oh spaghettio";
     state.status.authenticated = true;

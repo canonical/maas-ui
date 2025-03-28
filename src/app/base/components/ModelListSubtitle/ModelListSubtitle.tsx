@@ -38,7 +38,7 @@ export const ModelListSubtitle = ({
   filterSelected,
   modelName,
   selected = 0,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const subtitleString = getSubtitleString(available, modelName, selected);
   const showFilterButton = selected && selected !== available && filterSelected;
 

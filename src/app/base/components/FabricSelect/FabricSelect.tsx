@@ -23,7 +23,7 @@ export const FabricSelect = ({
   label = Label.Select,
   disabled,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);

@@ -137,7 +137,7 @@ const DHCPTable = ({
   subnets,
   ipRanges,
   modelName,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const [expanded, setExpanded] = useState<DHCPSnippet["id"] | null>(null);
   const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
   const subnetIds = subnets?.map(({ id }) => id) || null;

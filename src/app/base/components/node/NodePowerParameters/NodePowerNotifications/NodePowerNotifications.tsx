@@ -12,7 +12,7 @@ type Props = {
   node: MachineDetails | ControllerDetails;
 };
 
-const NodePowerNotifications = ({ node }: Props): JSX.Element => {
+const NodePowerNotifications = ({ node }: Props): React.ReactElement => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const isRackControllerConnected = useIsRackControllerConnected();
   const powerType = getPowerTypeFromName(powerTypes, node.power_type);

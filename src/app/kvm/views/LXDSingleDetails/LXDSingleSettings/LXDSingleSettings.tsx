@@ -29,7 +29,7 @@ export enum Label {
 const LXDSingleSettings = ({
   id,
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

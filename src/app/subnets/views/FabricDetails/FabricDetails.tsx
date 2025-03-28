@@ -22,7 +22,7 @@ import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
-const FabricDetails = (): JSX.Element => {
+const FabricDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(FabricMeta.PK);
   const fabric = useSelector((state: RootState) =>
@@ -40,11 +40,10 @@ const FabricDetails = (): JSX.Element => {
       dispatch(subnetActions.fetch());
     }
 
-    const unsetActiveFabricAndCleanup = () => {
+    return () => {
       dispatch(fabricActions.setActive(null));
       dispatch(fabricActions.cleanup());
     };
-    return unsetActiveFabricAndCleanup;
   }, [dispatch, id, isValidID]);
 
   if (!fabric) {

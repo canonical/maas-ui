@@ -32,7 +32,7 @@ import { tagActions } from "@/app/store/tag";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute, isId } from "@/app/utils";
 
-const MachineDetails = (): JSX.Element => {
+const MachineDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();

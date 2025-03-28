@@ -67,7 +67,7 @@ const generateOutput = (
   }
 };
 
-const InstallationOutput = ({ node }: Props): JSX.Element => {
+const InstallationOutput = ({ node }: Props): React.ReactElement => {
   const loading = useSelector((state: RootState) =>
     scriptResultSelectors.loading(state)
   );

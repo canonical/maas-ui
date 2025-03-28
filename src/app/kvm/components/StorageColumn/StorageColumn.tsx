@@ -14,7 +14,7 @@ const StorageColumn = ({
   defaultPoolId,
   pools,
   storage,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   return (
     <StoragePopover defaultPoolId={defaultPoolId} pools={pools}>
       <KVMResourceMeter

@@ -31,7 +31,7 @@ export const OverrideTestForm = ({
   selectedCount,
   selectedMachines,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const sendAnalytics = useSendAnalytics();
   const isSingleMachine = selectedCount === 1;
   const dispatch = useDispatch();

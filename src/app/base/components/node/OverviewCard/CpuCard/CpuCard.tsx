@@ -30,7 +30,7 @@ const getCPUSubtext = (node: Props["node"]) => {
   return text;
 };
 
-const CpuCard = ({ node, setSidePanelContent }: Props): JSX.Element => (
+const CpuCard = ({ node, setSidePanelContent }: Props): React.ReactElement => (
   <>
     <div className="overview-card__cpu">
       <div className="u-flex--between">

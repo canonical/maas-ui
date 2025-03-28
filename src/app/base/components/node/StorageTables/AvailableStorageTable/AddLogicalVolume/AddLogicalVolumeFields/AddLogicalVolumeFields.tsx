@@ -12,7 +12,9 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-export const AddLogicalVolumeFields = ({ systemId }: Props): JSX.Element => {
+export const AddLogicalVolumeFields = ({
+  systemId,
+}: Props): React.ReactElement => {
   const { handleChange, setFieldTouched, setFieldValue } =
     useFormikContext<AddLogicalVolumeValues>();
 

@@ -38,7 +38,7 @@ const StorageDeviceActions = ({
   storageDevice,
   onActionClick,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

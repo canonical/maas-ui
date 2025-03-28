@@ -28,7 +28,7 @@ type Props = {
   cols?: number;
 } & Partial<FormikFormProps<SSHKeyFormValues>>;
 
-export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
+export const SSHKeyForm = ({ cols, ...props }: Props): React.ReactElement => {
   const uploadSshKey = useCreateSshKeys();
   const importSshKey = useImportSshKeys();
 

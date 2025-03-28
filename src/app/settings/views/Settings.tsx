@@ -7,7 +7,7 @@ import Routes from "@/app/settings/components/Routes";
 import authSelectors from "@/app/store/auth/selectors";
 import { configActions } from "@/app/store/config";
 
-const Settings = (): JSX.Element => {
+const Settings = (): React.ReactElement => {
   const isAdmin = useSelector(authSelectors.isAdmin);
 
   useFetchActions([configActions.fetch]);

@@ -33,7 +33,7 @@ export enum Label {
 
 const ControllerConfigurationForm = ({
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const node = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)

@@ -8,7 +8,7 @@ type Props = {
   service: Service;
 };
 
-const ServiceStatus = ({ service }: Props): JSX.Element => {
+const ServiceStatus = ({ service }: Props): React.ReactElement => {
   const iconName =
     service.status === ServiceStatusType.RUNNING
       ? "success"

@@ -24,7 +24,7 @@ type Props = {
 export const PoolColumn = ({
   onToggleMenu,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState<ResourcePoolResponse["id"] | null>(
     null

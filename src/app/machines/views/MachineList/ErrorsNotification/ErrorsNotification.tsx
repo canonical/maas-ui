@@ -11,7 +11,7 @@ const ErrorsNotification = ({
 }: {
   errors: APIError;
   onAfterDismiss?: () => void;
-}): JSX.Element | null => {
+}): React.ReactElement | null => {
   const [isOpen, setIsOpen] = useState(true);
   const previousErrors = usePrevious(errors);
   const handleDismiss = () => {

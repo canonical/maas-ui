@@ -14,7 +14,7 @@ export enum Labels {
   Loading = "Loading...",
 }
 
-const VMWare = (): JSX.Element => {
+const VMWare = (): React.ReactElement => {
   const loaded = useSelector(configSelectors.loaded);
   const loading = useSelector(configSelectors.loading);
   const dispatch = useDispatch();

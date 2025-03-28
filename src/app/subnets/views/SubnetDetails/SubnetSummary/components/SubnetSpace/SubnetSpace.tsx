@@ -8,7 +8,7 @@ type Props = {
   spaceId?: Space[SpaceMeta.PK] | null;
 };
 
-const SubnetSpace = ({ spaceId }: Props): JSX.Element | null => {
+const SubnetSpace = ({ spaceId }: Props): React.ReactElement | null => {
   return (
     <Definition label="Space">
       <>

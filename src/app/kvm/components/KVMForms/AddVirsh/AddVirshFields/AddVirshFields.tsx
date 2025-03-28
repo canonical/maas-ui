@@ -8,7 +8,7 @@ import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 import { PowerFieldScope } from "@/app/store/general/types";
 
-export const AddVirshKvmFields = (): JSX.Element => {
+export const AddVirshKvmFields = (): React.ReactElement => {
   return (
     <Row>
       <Col size={12}>

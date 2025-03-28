@@ -44,7 +44,7 @@ const getParameterDescription = (
 const PowerParameterDefinition = ({
   field,
   powerParameter,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const description = getParameterDescription(field, powerParameter);
   return (
     <Definition

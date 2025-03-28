@@ -13,7 +13,7 @@ export enum Labels {
   HttpProxy = "APT \u0026 HTTP/HTTPS proxy server",
 }
 
-const ConnectivityCard = (): JSX.Element => {
+const ConnectivityCard = (): React.ReactElement => {
   const { errors } = useFormikContext<MaasIntroValues>();
   const showErrorIcon =
     errors.httpProxy ||

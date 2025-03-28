@@ -130,7 +130,7 @@ const NodeDevices = ({
   bus,
   node,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const nodeDevices = useSelector((state: RootState) =>
     nodeDeviceSelectors.getByNodeId(state, node.id)

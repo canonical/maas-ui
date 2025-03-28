@@ -13,7 +13,7 @@ type Props = {
   node: Node;
 };
 
-const TypeColumn = ({ link, nic, node }: Props): JSX.Element | null => {
+const TypeColumn = ({ link, nic, node }: Props): React.ReactElement | null => {
   const numaNodes = getInterfaceNumaNodes(node, nic, link);
   const interfaceTypeDisplay = getInterfaceTypeText(node, nic, link, true);
 

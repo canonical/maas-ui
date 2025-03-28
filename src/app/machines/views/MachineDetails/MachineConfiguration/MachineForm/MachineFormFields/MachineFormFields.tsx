@@ -6,7 +6,7 @@ import MinimumKernelSelect from "@/app/base/components/MinimumKernelSelect";
 import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 
-const MachineFormFields = (): JSX.Element => {
+const MachineFormFields = (): React.ReactElement => {
   return (
     <Row>
       <Col size={6}>

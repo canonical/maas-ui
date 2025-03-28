@@ -13,7 +13,7 @@ export enum Labels {
   Name = "Region name",
 }
 
-const NameCard = (): JSX.Element => {
+const NameCard = (): React.ReactElement => {
   const { errors } = useFormikContext<MaasIntroValues>();
 
   return (

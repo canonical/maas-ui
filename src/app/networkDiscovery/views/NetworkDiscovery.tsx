@@ -23,7 +23,7 @@ export enum Label {
   Permissions = "You do not have permission to view this page.",
 }
 
-const NetworkDiscovery = (): JSX.Element => {
+const NetworkDiscovery = (): React.ReactElement => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();

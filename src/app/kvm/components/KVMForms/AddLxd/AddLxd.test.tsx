@@ -57,7 +57,7 @@ describe("AddLxd", () => {
 
   it("shows the credentials form by default", () => {
     renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
 
@@ -79,7 +79,7 @@ describe("AddLxd", () => {
     });
 
     renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
@@ -132,7 +132,7 @@ describe("AddLxd", () => {
     };
 
     renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
@@ -172,10 +172,12 @@ describe("AddLxd", () => {
   it("clears projects and runs cleanup on unmount", () => {
     const store = mockStore(state);
 
-    const { unmount } = renderWithProviders(
-      <AddLxd clearSidePanelContent={vi.fn()} />,
-      { route: "/kvm/add", store }
-    );
+    const {
+      result: { unmount },
+    } = renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
+      initialEntries: ["/kvm/add"],
+      store,
+    });
 
     unmount();
 
@@ -197,7 +199,7 @@ describe("AddLxd", () => {
       "192.168.1.1": [factory.podProject()],
     };
     renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());

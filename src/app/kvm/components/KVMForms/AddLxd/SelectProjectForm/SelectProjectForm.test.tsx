@@ -12,7 +12,6 @@ import {
   screen,
   userEvent,
   fireEvent,
-  renderWithBrowserRouter,
 } from "@/testing/utils";
 
 describe("SelectProjectForm", () => {
@@ -47,7 +46,7 @@ describe("SelectProjectForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", state }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     expect(screen.getByTestId("lxd-host-details")).toHaveTextContent(
@@ -67,7 +66,7 @@ describe("SelectProjectForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", state }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     const nameInput = screen.getByRole("textbox", {
@@ -87,14 +86,14 @@ describe("SelectProjectForm", () => {
       "192.168.1.1": [project],
     };
 
-    const { store } = renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <SelectProjectForm
         clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", state }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     const nameInput = screen.getByRole("textbox", {
@@ -130,14 +129,14 @@ describe("SelectProjectForm", () => {
       "192.168.1.1": [project],
     };
 
-    const { store } = renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <SelectProjectForm
         clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", state }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     await userEvent.click(
@@ -178,7 +177,7 @@ describe("SelectProjectForm", () => {
         setStep={setStep}
         setSubmissionErrors={setSubmissionErrors}
       />,
-      { route: "/kvm/add", state }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);

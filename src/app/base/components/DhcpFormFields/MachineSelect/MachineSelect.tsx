@@ -37,7 +37,7 @@ export const MachineSelect = ({
   defaultOption = Labels.ChooseMachine,
   value,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { setFieldValue } = useFormikContext();
 
   const [isOpen, setIsOpen] = useState(false);

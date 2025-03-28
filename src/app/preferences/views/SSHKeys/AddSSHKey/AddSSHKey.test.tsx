@@ -1,5 +1,3 @@
-import { createMemoryHistory } from "history";
-
 import { AddSSHKey, Label as AddSSHKeyLabels } from "./AddSSHKey";
 
 import urls from "@/app/base/urls";
@@ -22,8 +20,7 @@ describe("AddSSHKey", () => {
   });
 
   it("redirects when the SSH key is saved", async () => {
-    const history = createMemoryHistory({ initialEntries: ["/"] });
-    renderWithProviders(<AddSSHKey />, { history });
+    const { router } = renderWithProviders(<AddSSHKey />);
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Source" }),
@@ -38,6 +35,6 @@ describe("AddSSHKey", () => {
       screen.getByRole("button", { name: "Import SSH key" })
     );
 
-    expect(history.location.pathname).toBe(urls.preferences.sshKeys.index);
+    expect(router.state.location.pathname).toBe(urls.preferences.sshKeys.index);
   });
 });

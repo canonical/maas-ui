@@ -17,7 +17,10 @@ type Props = {
   setSidePanelContent?: MachineSetSidePanelContent;
 };
 
-const OverviewCard = ({ node, setSidePanelContent }: Props): JSX.Element => {
+const OverviewCard = ({
+  node,
+  setSidePanelContent,
+}: Props): React.ReactElement => {
   const isMachine = nodeIsMachine(node);
   return (
     <Card className="u-no-padding">

@@ -31,7 +31,7 @@ const VMsActionBar = ({
   setSearchFilter,
   setSidePanelContent,
   vmCount,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const sendAnalytics = useSendAnalytics();
   const hasSelection = useHasSelection();
   const vmActionsDisabled = !hasSelection;

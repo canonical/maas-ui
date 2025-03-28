@@ -38,7 +38,7 @@ const TLSEnabledSchema = Yup.object()
   })
   .defined();
 
-const TLSEnabled = (): JSX.Element | null => {
+const TLSEnabled = (): React.ReactElement | null => {
   const dispatch = useDispatch();
   const notificationEnabled = useSelector(
     configSelectors.tlsCertExpirationNotificationEnabled
