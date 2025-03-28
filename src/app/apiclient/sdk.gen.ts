@@ -24,15 +24,18 @@ import type {
   CreateDomainData,
   CreateDomainResponse,
   CreateDomainError,
+  GetDomainRrsetsData,
+  GetDomainRrsetsResponse,
+  GetDomainRrsetsError,
+  CreateDomainRrsetsData,
+  CreateDomainRrsetsResponse,
+  CreateDomainRrsetsError,
   DeleteDomainData,
   DeleteDomainResponse,
   DeleteDomainError,
   GetDomainData,
   GetDomainResponse,
   GetDomainError,
-  GetDomainRrsetsData,
-  GetDomainRrsetsResponse,
-  GetDomainRrsetsError,
   ListFabricsData,
   ListFabricsResponse,
   ListFabricsError,
@@ -153,6 +156,9 @@ import type {
   GetUserSslkeyData,
   GetUserSslkeyResponse,
   GetUserSslkeyError,
+  GetUserSslkeysWithSummaryData,
+  GetUserSslkeysWithSummaryResponse,
+  GetUserSslkeysWithSummaryError,
   ListFabricVlanSubnetsData,
   ListFabricVlanSubnetsResponse,
   ListFabricVlanSubnetsError,
@@ -186,6 +192,9 @@ import type {
   UpdateUserData,
   UpdateUserResponse,
   UpdateUserError,
+  ListUsersWithSummaryData,
+  ListUsersWithSummaryResponse,
+  ListUsersWithSummaryError,
   ListFabricVlansData,
   ListFabricVlansResponse,
   ListFabricVlansError,
@@ -352,6 +361,54 @@ export const createDomain = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Get Domain Rrsets
+ */
+export const getDomainRrsets = <ThrowOnError extends boolean = false>(
+  options: Options<GetDomainRrsetsData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetDomainRrsetsResponse,
+    GetDomainRrsetsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
+    ...options,
+  });
+};
+
+/**
+ * Create Domain Rrsets
+ */
+export const createDomainRrsets = <ThrowOnError extends boolean = false>(
+  options: Options<CreateDomainRrsetsData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateDomainRrsetsResponse,
+    CreateDomainRrsetsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
  * Delete Domain
  */
 export const deleteDomain = <ThrowOnError extends boolean = false>(
@@ -391,28 +448,6 @@ export const getDomain = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/domains/{domain_id}",
-    ...options,
-  });
-};
-
-/**
- * Get Domain Rrsets
- */
-export const getDomainRrsets = <ThrowOnError extends boolean = false>(
-  options: Options<GetDomainRrsetsData, ThrowOnError>
-) => {
-  return (options.client ?? _heyApiClient).get<
-    GetDomainRrsetsResponse,
-    GetDomainRrsetsError,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
     ...options,
   });
 };
@@ -1373,6 +1408,29 @@ export const getUserSslkey = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List sslkeys with a summary. ONLY FOR INTERNAL USAGE.
+ * List sslkeys with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
+export const getUserSslkeysWithSummary = <ThrowOnError extends boolean = false>(
+  options?: Options<GetUserSslkeysWithSummaryData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetUserSslkeysWithSummaryResponse,
+    GetUserSslkeysWithSummaryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sslkeys_with_summary",
+    ...options,
+  });
+};
+
+/**
  * List Fabric Vlan Subnets
  */
 export const listFabricVlanSubnets = <ThrowOnError extends boolean = false>(
@@ -1627,6 +1685,29 @@ export const updateUser = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
+  });
+};
+
+/**
+ * List users with a summary. ONLY FOR INTERNAL USAGE.
+ * List users with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
+export const listUsersWithSummary = <ThrowOnError extends boolean = false>(
+  options?: Options<ListUsersWithSummaryData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListUsersWithSummaryResponse,
+    ListUsersWithSummaryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users_with_summary",
+    ...options,
   });
 };
 

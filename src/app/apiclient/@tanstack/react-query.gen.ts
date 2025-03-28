@@ -15,9 +15,10 @@ import {
   listEvents,
   listDomains,
   createDomain,
+  getDomainRrsets,
+  createDomainRrsets,
   deleteDomain,
   getDomain,
-  getDomainRrsets,
   listFabrics,
   createFabric,
   deleteFabric,
@@ -58,6 +59,7 @@ import {
   createUserSslkey,
   deleteUserSslkey,
   getUserSslkey,
+  getUserSslkeysWithSummary,
   listFabricVlanSubnets,
   createFabricVlanSubnet,
   deleteFabricVlanSubnet,
@@ -69,6 +71,7 @@ import {
   deleteUser,
   getUser,
   updateUser,
+  listUsersWithSummary,
   listFabricVlans,
   createFabricVlan,
   deleteFabricVlan,
@@ -95,11 +98,14 @@ import type {
   CreateDomainData,
   CreateDomainError,
   CreateDomainResponse,
+  GetDomainRrsetsData,
+  CreateDomainRrsetsData,
+  CreateDomainRrsetsError,
+  CreateDomainRrsetsResponse,
   DeleteDomainData,
   DeleteDomainError,
   DeleteDomainResponse,
   GetDomainData,
-  GetDomainRrsetsData,
   ListFabricsData,
   ListFabricsError,
   ListFabricsResponse,
@@ -204,6 +210,9 @@ import type {
   DeleteUserSslkeyError,
   DeleteUserSslkeyResponse,
   GetUserSslkeyData,
+  GetUserSslkeysWithSummaryData,
+  GetUserSslkeysWithSummaryError,
+  GetUserSslkeysWithSummaryResponse,
   ListFabricVlanSubnetsData,
   ListFabricVlanSubnetsError,
   ListFabricVlanSubnetsResponse,
@@ -231,6 +240,9 @@ import type {
   UpdateUserData,
   UpdateUserError,
   UpdateUserResponse,
+  ListUsersWithSummaryData,
+  ListUsersWithSummaryError,
+  ListUsersWithSummaryResponse,
   ListFabricVlansData,
   ListFabricVlansError,
   ListFabricVlansResponse,
@@ -554,6 +566,68 @@ export const createDomainMutation = (
   return mutationOptions;
 };
 
+export const getDomainRrsetsQueryKey = (
+  options: Options<GetDomainRrsetsData>
+) => createQueryKey("getDomainRrsets", options);
+
+export const getDomainRrsetsOptions = (
+  options: Options<GetDomainRrsetsData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getDomainRrsets({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getDomainRrsetsQueryKey(options),
+  });
+};
+
+export const createDomainRrsetsQueryKey = (
+  options: Options<CreateDomainRrsetsData>
+) => createQueryKey("createDomainRrsets", options);
+
+export const createDomainRrsetsOptions = (
+  options: Options<CreateDomainRrsetsData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createDomainRrsets({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createDomainRrsetsQueryKey(options),
+  });
+};
+
+export const createDomainRrsetsMutation = (
+  options?: Partial<Options<CreateDomainRrsetsData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    CreateDomainRrsetsResponse,
+    CreateDomainRrsetsError,
+    Options<CreateDomainRrsetsData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createDomainRrsets({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const deleteDomainMutation = (
   options?: Partial<Options<DeleteDomainData>>
 ) => {
@@ -589,27 +663,6 @@ export const getDomainOptions = (options: Options<GetDomainData>) => {
       return data;
     },
     queryKey: getDomainQueryKey(options),
-  });
-};
-
-export const getDomainRrsetsQueryKey = (
-  options: Options<GetDomainRrsetsData>
-) => createQueryKey("getDomainRrsets", options);
-
-export const getDomainRrsetsOptions = (
-  options: Options<GetDomainRrsetsData>
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getDomainRrsets({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getDomainRrsetsQueryKey(options),
   });
 };
 
@@ -2146,6 +2199,75 @@ export const getUserSslkeyOptions = (options: Options<GetUserSslkeyData>) => {
   });
 };
 
+export const getUserSslkeysWithSummaryQueryKey = (
+  options?: Options<GetUserSslkeysWithSummaryData>
+) => createQueryKey("getUserSslkeysWithSummary", options);
+
+export const getUserSslkeysWithSummaryOptions = (
+  options?: Options<GetUserSslkeysWithSummaryData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getUserSslkeysWithSummary({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getUserSslkeysWithSummaryQueryKey(options),
+  });
+};
+
+export const getUserSslkeysWithSummaryInfiniteQueryKey = (
+  options?: Options<GetUserSslkeysWithSummaryData>
+): QueryKey<Options<GetUserSslkeysWithSummaryData>> =>
+  createQueryKey("getUserSslkeysWithSummary", options, true);
+
+export const getUserSslkeysWithSummaryInfiniteOptions = (
+  options?: Options<GetUserSslkeysWithSummaryData>
+) => {
+  return infiniteQueryOptions<
+    GetUserSslkeysWithSummaryResponse,
+    GetUserSslkeysWithSummaryError,
+    InfiniteData<GetUserSslkeysWithSummaryResponse>,
+    QueryKey<Options<GetUserSslkeysWithSummaryData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetUserSslkeysWithSummaryData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetUserSslkeysWithSummaryData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getUserSslkeysWithSummary({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getUserSslkeysWithSummaryInfiniteQueryKey(options),
+    }
+  );
+};
+
 export const listFabricVlanSubnetsQueryKey = (
   options: Options<ListFabricVlanSubnetsData>
 ) => createQueryKey("listFabricVlanSubnets", options);
@@ -2493,6 +2615,75 @@ export const updateUserMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const listUsersWithSummaryQueryKey = (
+  options?: Options<ListUsersWithSummaryData>
+) => createQueryKey("listUsersWithSummary", options);
+
+export const listUsersWithSummaryOptions = (
+  options?: Options<ListUsersWithSummaryData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listUsersWithSummary({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listUsersWithSummaryQueryKey(options),
+  });
+};
+
+export const listUsersWithSummaryInfiniteQueryKey = (
+  options?: Options<ListUsersWithSummaryData>
+): QueryKey<Options<ListUsersWithSummaryData>> =>
+  createQueryKey("listUsersWithSummary", options, true);
+
+export const listUsersWithSummaryInfiniteOptions = (
+  options?: Options<ListUsersWithSummaryData>
+) => {
+  return infiniteQueryOptions<
+    ListUsersWithSummaryResponse,
+    ListUsersWithSummaryError,
+    InfiniteData<ListUsersWithSummaryResponse>,
+    QueryKey<Options<ListUsersWithSummaryData>>,
+    | number
+    | Pick<
+        QueryKey<Options<ListUsersWithSummaryData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListUsersWithSummaryData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listUsersWithSummary({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listUsersWithSummaryInfiniteQueryKey(options),
+    }
+  );
 };
 
 export const listFabricVlansQueryKey = (
