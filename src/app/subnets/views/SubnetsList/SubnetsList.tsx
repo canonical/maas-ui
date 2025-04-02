@@ -54,10 +54,11 @@ const SubnetsList = (): React.ReactElement => {
   const hasValidGroupBy = groupBy && ["fabric", "space"].includes(groupBy);
 
   useEffect(() => {
+    setSidePanelContent(null);
     if (!hasValidGroupBy) {
       setGroupBy("fabric");
     }
-  }, [groupBy, setGroupBy, hasValidGroupBy]);
+  }, [groupBy, setGroupBy, hasValidGroupBy, setSidePanelContent]);
 
   const [, name] = sidePanelContent?.view || [];
   const activeForm =

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { useSelector } from "react-redux";
 
 import DomainListHeader from "./DomainListHeader";
@@ -17,6 +19,10 @@ const DomainsList = (): React.ReactElement => {
 
   useWindowTitle("DNS");
   useZones();
+
+  useEffect(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   return (
     <PageContent

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
@@ -8,6 +10,7 @@ import PoolList from "./PoolList";
 
 import { usePoolCount } from "@/app/api/query/pools";
 import PageContent from "@/app/base/components/PageContent";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
 import PoolAdd from "@/app/pools/views/PoolAdd";
@@ -17,11 +20,15 @@ import { getRelativeRoute } from "@/app/utils";
 
 const Pools = (): React.ReactElement => {
   const base = urls.pools.index;
-
+  const { setSidePanelContent } = useSidePanel();
   const { machineCount } = useFetchMachineCount();
 
   const resourcePoolsCount = usePoolCount();
   const count = resourcePoolsCount?.data ?? resourcePoolsCount.data;
+
+  useEffect(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   const PoolsHeader = () => (
     <MainToolbar>

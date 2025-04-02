@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
@@ -27,6 +29,10 @@ const NetworkDiscovery = (): React.ReactElement => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
+
+  useEffect(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   if (!isAdmin) {
     return (

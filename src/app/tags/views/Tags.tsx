@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 import { Route, Routes, useMatch } from "react-router-dom";
@@ -46,6 +46,10 @@ const Tags = (): React.ReactElement => {
     tagSelectors.search(state, searchText, filter)
   );
   const tableId = useId();
+
+  useEffect(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   return (
     <PageContent
