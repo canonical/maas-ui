@@ -8,7 +8,7 @@ import userEvent from "@testing-library/user-event";
 import type { MemoryHistory, MemoryHistoryOptions } from "history";
 import { createMemoryHistory } from "history";
 import { produce } from "immer";
-import type { RequestHandler } from "msw";
+import type { HttpHandler, RequestHandler } from "msw";
 import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -17,6 +17,13 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
 import type { QueryModel } from "@/app/api/query-client";
+import type {
+  BadRequestBodyResponse,
+  ConflictBodyResponse,
+  NotFoundBodyResponse,
+  UnauthorizedBodyResponse,
+  ValidationErrorBodyResponse,
+} from "@/app/apiclient";
 import { client } from "@/app/apiclient/client.gen";
 import type {
   SidePanelContent,
@@ -68,10 +75,6 @@ export const setupQueryClient = (queryData?: InitialData) => {
   return queryClient;
 };
 
-const createBaseState = () => factory.rootState();
-
-export const setupInitialState = (state?: Partial<RootState>) =>
-  structuredClone({ ...createBaseState(), ...state });
 export const setupInitialData = (queryData?: InitialData) =>
   queryData ?? createInitialData();
 
@@ -435,21 +438,6 @@ export const renderHookWithMockStore = (
   };
 };
 
-export const renderHookWithQueryClient = (hook: Hook) => {
-  const queryClient = setupQueryClient();
-  return renderHook(hook, {
-    wrapper: ({ children }) => (
-      <WebSocketProvider>
-        <QueryClientProvider client={queryClient}>
-          <Provider store={configureStore()(rootStateFactory())}>
-            {children}
-          </Provider>
-        </QueryClientProvider>
-      </WebSocketProvider>
-    ),
-  });
-};
-
 export const waitFor = vi.waitFor;
 export {
   act,
@@ -658,3 +646,53 @@ export const waitForLoading = async (loadingText = "Loading") =>
       screen.queryByText(new RegExp(loadingText, "i"))
     ).not.toBeInTheDocument()
   );
+
+/**
+ * Resolver type for MSW testing resolvers
+ */
+export interface Resolver<T, E> {
+  [key: string]: {
+    resolved: boolean;
+    handler: (data?: {
+      items: Array<T>;
+      total: number;
+      next?: string;
+      kind?: string;
+    }) => HttpHandler;
+    error: (error: E) => HttpHandler;
+  };
+}
+
+/**
+ * Base errors to be used for Resolver default error returns
+ */
+export const mockErrors = {
+  listError: {
+    message: "Unauthorized",
+    code: 401,
+    kind: "Error",
+  } as UnauthorizedBodyResponse | ValidationErrorBodyResponse,
+  getError: {
+    message: "Not found",
+    code: 404,
+    kind: "Error",
+  } as NotFoundBodyResponse | ValidationErrorBodyResponse,
+  createError: {
+    message: "Already exists",
+    code: 409,
+    kind: "Error",
+  } as ConflictBodyResponse | ValidationErrorBodyResponse,
+  updateError: {
+    message: "Invalid",
+    code: 422,
+    kind: "Error",
+  } as NotFoundBodyResponse | ValidationErrorBodyResponse,
+  deleteError: {
+    message: "Bad request",
+    code: 400,
+    kind: "Error",
+  } as
+    | BadRequestBodyResponse
+    | NotFoundBodyResponse
+    | ValidationErrorBodyResponse,
+};

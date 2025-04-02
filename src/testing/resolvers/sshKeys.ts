@@ -1,13 +1,19 @@
 import { http, HttpResponse } from "msw";
 
-import { BASE_URL } from "../utils";
+import type { Resolver } from "../utils";
+import { BASE_URL, mockErrors } from "../utils";
 
 import type {
+  ConflictBodyResponse,
   CreateUserSshkeysError,
   DeleteUserSshkeyError,
   ImportUserSshkeysError,
   ListUserSshkeysError,
   ListUserSshkeysResponse,
+  PreconditionFailedBodyResponse,
+  SshKeyResponse,
+  UnauthorizedBodyResponse,
+  ValidationErrorBodyResponse,
 } from "@/app/apiclient";
 import { sshKey as sshKeyFactory } from "@/testing/factories";
 
@@ -38,31 +44,19 @@ const mockSshKeys: ListUserSshkeysResponse = {
   total: 3,
 };
 
-const mockListSshKeysError: ListUserSshkeysError = {
-  message: "Unauthorized",
-  code: 401,
-  kind: "Error", // This will always be 'Error' for every error response
-};
-
-const mockCreateSshKeysError: CreateUserSshkeysError = {
-  message: "An SSH key with this fingerprint already exists.",
-  code: 409,
-  kind: "Error",
-};
-
 const mockImportSshKeysError: ImportUserSshkeysError = {
   message: "Internal server error",
   code: 500,
   kind: "Error",
 };
 
-const mockDeleteSshKeyError: DeleteUserSshkeyError = {
-  message: "Not found",
-  code: 404,
-  kind: "Error",
-};
-
-const sshKeyResolvers = {
+const sshKeyResolvers: Resolver<
+  SshKeyResponse,
+  | ConflictBodyResponse
+  | UnauthorizedBodyResponse
+  | PreconditionFailedBodyResponse
+  | ValidationErrorBodyResponse
+> = {
   listSshKeys: {
     resolved: false,
     handler: (data: ListUserSshkeysResponse = mockSshKeys) =>
@@ -70,7 +64,7 @@ const sshKeyResolvers = {
         sshKeyResolvers.listSshKeys.resolved = true;
         return HttpResponse.json(data);
       }),
-    error: (error: ListUserSshkeysError = mockListSshKeysError) =>
+    error: (error: ListUserSshkeysError = mockErrors.listError) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/me/sshkeys`, () => {
         sshKeyResolvers.listSshKeys.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -83,7 +77,7 @@ const sshKeyResolvers = {
         sshKeyResolvers.createSshKey.resolved = true;
         return HttpResponse.json({});
       }),
-    error: (error: CreateUserSshkeysError = mockCreateSshKeysError) =>
+    error: (error: CreateUserSshkeysError = mockErrors.createError) =>
       http.post(`${BASE_URL}MAAS/a/v3/users/me/sshkeys`, () => {
         sshKeyResolvers.createSshKey.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -109,10 +103,10 @@ const sshKeyResolvers = {
         sshKeyResolvers.deleteSshKey.resolved = true;
         return HttpResponse.json({}, { status: 204 });
       }),
-    error: (error: DeleteUserSshkeyError = mockDeleteSshKeyError) =>
+    error: (error: DeleteUserSshkeyError = mockErrors.deleteError) =>
       http.delete(`${BASE_URL}MAAS/a/v3/users/me/sshkeys/:id`, () => {
         sshKeyResolvers.deleteSshKey.resolved = true;
-        return HttpResponse.json(error, { status: 404 });
+        return HttpResponse.json(error, { status: error.code });
       }),
   },
 };

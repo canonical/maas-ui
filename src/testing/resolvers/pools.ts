@@ -1,14 +1,21 @@
 import { http, HttpResponse } from "msw";
 
 import { resourcePool } from "../factories";
-import { BASE_URL } from "../utils";
+import type { Resolver } from "../utils";
+import { mockErrors, BASE_URL } from "../utils";
 
 import type {
+  BadRequestBodyResponse,
+  ConflictBodyResponse,
   CreateResourcePoolError,
   DeleteResourcePoolError,
+  GetUserError,
   ListResourcePoolsError,
   ListResourcePoolsResponse,
+  NotFoundBodyResponse,
+  ResourcePoolWithSummaryResponse,
   UpdateResourcePoolError,
+  ValidationErrorBodyResponse,
 } from "@/app/apiclient";
 
 const mockPools: ListResourcePoolsResponse = {
@@ -41,31 +48,13 @@ const mockPools: ListResourcePoolsResponse = {
   total: 3,
 };
 
-const mockListPoolsError: ListResourcePoolsError = {
-  message: "Unauthorized",
-  code: 401,
-  kind: "Error", // This will always be 'Error' for every error response
-};
-
-const mockCreatePoolError: CreateResourcePoolError = {
-  message: "A pool with this name already exists.",
-  code: 409,
-  kind: "Error",
-};
-
-const mockUpdatePoolError: UpdateResourcePoolError = {
-  message: "Internal server error",
-  code: 500,
-  kind: "Error",
-};
-
-const mockDeletePoolError: DeleteResourcePoolError = {
-  message: "Not found",
-  code: 404,
-  kind: "Error",
-};
-
-const poolsResolvers = {
+const poolsResolvers: Resolver<
+  ResourcePoolWithSummaryResponse,
+  | ConflictBodyResponse
+  | BadRequestBodyResponse
+  | NotFoundBodyResponse
+  | ValidationErrorBodyResponse
+> = {
   listPools: {
     resolved: false,
     handler: (data: ListResourcePoolsResponse = mockPools) =>
@@ -73,7 +62,7 @@ const poolsResolvers = {
         poolsResolvers.listPools.resolved = true;
         return HttpResponse.json(data);
       }),
-    error: (error: ListResourcePoolsError = mockListPoolsError) =>
+    error: (error: ListResourcePoolsError = mockErrors.listError) =>
       http.get(`${BASE_URL}MAAS/a/v3/resource_pools_with_summary`, () => {
         poolsResolvers.listPools.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -90,6 +79,11 @@ const poolsResolvers = {
         poolsResolvers.getPool.resolved = true;
         return pool ? HttpResponse.json(pool) : HttpResponse.error();
       }),
+    error: (error: GetUserError = mockErrors.getError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users/:id`, () => {
+        poolsResolvers.getPool.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
   },
   createPool: {
     resolved: false,
@@ -98,7 +92,7 @@ const poolsResolvers = {
         poolsResolvers.createPool.resolved = true;
         return HttpResponse.json({ id: 1 });
       }),
-    error: (error: CreateResourcePoolError = mockCreatePoolError) =>
+    error: (error: CreateResourcePoolError = mockErrors.createError) =>
       http.post(`${BASE_URL}MAAS/a/v3/resource_pools`, () => {
         poolsResolvers.createPool.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -111,7 +105,7 @@ const poolsResolvers = {
         poolsResolvers.updatePool.resolved = true;
         return HttpResponse.json({});
       }),
-    error: (error: UpdateResourcePoolError = mockUpdatePoolError) =>
+    error: (error: UpdateResourcePoolError = mockErrors.updateError) =>
       http.put(`${BASE_URL}MAAS/a/v3/resource_pools/:id`, () => {
         poolsResolvers.updatePool.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -124,7 +118,7 @@ const poolsResolvers = {
         poolsResolvers.deletePool.resolved = true;
         return HttpResponse.json({}, { status: 204 });
       }),
-    error: (error: DeleteResourcePoolError = mockDeletePoolError) =>
+    error: (error: DeleteResourcePoolError = mockErrors.deleteError) =>
       http.delete(`${BASE_URL}MAAS/a/v3/resource_pools/:id`, () => {
         poolsResolvers.deletePool.resolved = true;
         return HttpResponse.json(error, { status: error.code });

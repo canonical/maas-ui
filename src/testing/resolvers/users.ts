@@ -1,15 +1,22 @@
 import { http, HttpResponse } from "msw";
 
 import type {
+  BadRequestBodyResponse,
+  ConflictBodyResponse,
   CreateUserError,
   DeleteUserError,
   GetUserError,
   ListUsersWithSummaryError,
   ListUsersWithSummaryResponse,
+  NotFoundBodyResponse,
+  PreconditionFailedBodyResponse,
   UpdateUserError,
+  UserWithSummaryResponse,
+  ValidationErrorBodyResponse,
 } from "@/app/apiclient";
 import { user } from "@/testing/factories";
-import { BASE_URL } from "@/testing/utils";
+import type { Resolver } from "@/testing/utils";
+import { mockErrors, BASE_URL } from "@/testing/utils";
 
 const mockUsers: ListUsersWithSummaryResponse = {
   items: [
@@ -32,25 +39,14 @@ const mockUsers: ListUsersWithSummaryResponse = {
   total: 3,
 };
 
-const mockListUsersError: ListUsersWithSummaryError = {
-  message: "Unauthorized",
-  code: 401,
-  kind: "Error",
-};
-
-const mockGetUserError: DeleteUserError = {
-  message: "Not found",
-  code: 404,
-  kind: "Error",
-};
-
-const mockCreateUserError: CreateUserError = {
-  message: "A user with this username already exists.",
-  code: 409,
-  kind: "Error",
-};
-
-const userResolvers = {
+const userResolvers: Resolver<
+  UserWithSummaryResponse,
+  | ConflictBodyResponse
+  | BadRequestBodyResponse
+  | NotFoundBodyResponse
+  | PreconditionFailedBodyResponse
+  | ValidationErrorBodyResponse
+> = {
   listUsers: {
     resolved: false,
     handler: (data: ListUsersWithSummaryResponse = mockUsers) =>
@@ -58,7 +54,7 @@ const userResolvers = {
         userResolvers.listUsers.resolved = true;
         return HttpResponse.json(data);
       }),
-    error: (error: ListUsersWithSummaryError = mockListUsersError) =>
+    error: (error: ListUsersWithSummaryError = mockErrors.listError) =>
       http.get(`${BASE_URL}MAAS/a/v3/users_with_summary`, () => {
         userResolvers.listUsers.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -75,7 +71,7 @@ const userResolvers = {
         userResolvers.getUser.resolved = true;
         return user ? HttpResponse.json(user) : HttpResponse.error();
       }),
-    error: (error: GetUserError = mockGetUserError) =>
+    error: (error: GetUserError = mockErrors.getError) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/:id`, () => {
         userResolvers.getUser.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -88,7 +84,7 @@ const userResolvers = {
         userResolvers.createUser.resolved = true;
         return HttpResponse.json({ id: 1 });
       }),
-    error: (error: CreateUserError = mockCreateUserError) =>
+    error: (error: CreateUserError = mockErrors.createError) =>
       http.post(`${BASE_URL}MAAS/a/v3/users`, () => {
         userResolvers.createUser.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -101,7 +97,7 @@ const userResolvers = {
         userResolvers.updateUser.resolved = true;
         return HttpResponse.json({});
       }),
-    error: (error: UpdateUserError = mockGetUserError) =>
+    error: (error: UpdateUserError = mockErrors.updateError) =>
       http.put(`${BASE_URL}MAAS/a/v3/users/:id`, () => {
         userResolvers.updateUser.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -114,7 +110,7 @@ const userResolvers = {
         userResolvers.deleteUser.resolved = true;
         return HttpResponse.json({}, { status: 204 });
       }),
-    error: (error: DeleteUserError = mockGetUserError) =>
+    error: (error: DeleteUserError = mockErrors.deleteError) =>
       http.delete(`${BASE_URL}MAAS/a/v3/users/:id`, () => {
         userResolvers.deleteUser.resolved = true;
         return HttpResponse.json(error, { status: error.code });
