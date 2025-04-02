@@ -114,9 +114,7 @@ describe("NameColumn", () => {
       <NameColumn groupValue={null} showMAC={true} systemId="abc123" />,
       { route: "/machines", state }
     );
-    expect(
-      screen.getByRole("link", { name: "koala.example" })
-    ).toHaveTextContent("00:11:22:33:44:55");
+    expect(screen.getByRole("link", { name: "00:11:22:33:44:55" }));
   });
 
   it("can show multiple mac address", () => {

@@ -106,7 +106,11 @@ describe("KVMConfigurationCard", () => {
         state,
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByRole("combobox", { name: "Zone" })).toBeInTheDocument()
+    );
+
+    await userEvent.click(screen.getByRole("combobox", { name: "Zone" }));
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),

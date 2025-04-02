@@ -151,7 +151,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "Machine name" })
+      ).toBeInTheDocument()
+    );
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Machine name" }),
@@ -216,7 +220,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "MAC address" })
+      ).toBeInTheDocument()
+    );
 
     // Choose initial power type and fill in fields.
     await userEvent.type(
@@ -272,7 +280,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("combobox", { name: "Power type" })
+      ).toBeInTheDocument()
+    );
 
     // Submit the form with two extra macs, where one is an empty string
     await userEvent.selectOptions(
