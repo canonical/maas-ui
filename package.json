@@ -130,7 +130,7 @@
     "@types/redux-saga": "0.10.5",
     "@typescript-eslint/parser": "8.26.0",
     "@vitest/coverage-istanbul": "1.6.1",
-    "@welldone-software/why-did-you-render": "8.0.3",
+    "@welldone-software/why-did-you-render": "10.0.1",
     "address": "2.0.3",
     "babel-plugin-named-exports-order": "0.0.2",
     "colors": "1.4.0",
