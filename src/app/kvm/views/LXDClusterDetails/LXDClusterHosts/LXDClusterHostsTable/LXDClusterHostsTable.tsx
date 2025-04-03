@@ -47,7 +47,7 @@ const getSortValue = (
   sortKey: SortKey,
   pod: Pod,
   pools?: ResourcePoolResponse[]
-): string | number | null => {
+): number | string | null => {
   const { cores, memory, storage, vm_count } = pod.resources;
   const pool = pools?.find((pool) => pod.pool === pool.id);
   switch (sortKey) {
