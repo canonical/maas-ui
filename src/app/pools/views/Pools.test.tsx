@@ -5,21 +5,17 @@ import Pools from "./Pools";
 
 import urls from "@/app/base/urls";
 import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  screen,
+  renderWithBrowserRouter,
+  waitFor,
+  setupMockServer,
+} from "@/testing/utils";
+
+setupMockServer(poolsResolvers.listPools.handler());
 
 describe("Pools", () => {
-  let state: RootState;
-  beforeEach(() => {
-    state = factory.rootState({
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [factory.resourcePool({ id: 1 })],
-      }),
-    });
-  });
-
   [
     {
       label: PoolListLabel.Title,
@@ -38,13 +34,14 @@ describe("Pools", () => {
       path: `${urls.pools.index}/not/a/path`,
     },
   ].forEach(({ label, path }) => {
-    it(`Displays: ${label} at: ${path}`, () => {
+    it(`Displays: ${label} at: ${path}`, async () => {
       renderWithBrowserRouter(<Pools />, {
         route: path,
         routePattern: `${urls.pools.index}/*`,
-        state,
       });
-      expect(screen.getByLabelText(label)).toBeInTheDocument();
+      await waitFor(() =>
+        expect(screen.getByLabelText(label)).toBeInTheDocument()
+      );
     });
   });
 });

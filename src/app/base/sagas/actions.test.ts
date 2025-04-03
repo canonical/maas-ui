@@ -4,10 +4,7 @@ import * as matchers from "redux-saga-test-plan/matchers";
 import WebSocketClient from "../../../websocket-client";
 
 import {
-  createPoolWithMachines,
   deleteDomainRecord,
-  generateMachineFilterPoolActionCreators,
-  generateMachinePoolActionCreators,
   generateNextDeleteRecordAction,
   generateNextUpdateRecordAction,
   updateDomainRecord,
@@ -15,62 +12,12 @@ import {
 
 import { domainActions } from "@/app/store/domain";
 import { RecordType } from "@/app/store/domain/types";
-import { resourcePoolActions } from "@/app/store/resourcepool";
 import * as factory from "@/testing/factories";
 
 vi.mock("../../../websocket-client");
 
 describe("websocket sagas", () => {
-  it("can send a message to create a pool then attach machines", async () => {
-    const socketClient = new WebSocketClient();
-    const sendMessage = vi.fn();
-    const actionCreators = [vi.fn()];
-    const pool = { name: "pool1", description: "a pool" };
-    const action = {
-      type: "resourcepoo/createWithMachines",
-      payload: { params: { machineIDs: ["machine1"], pool } },
-      meta: {},
-    };
-    return expectSaga(createPoolWithMachines, socketClient, sendMessage, action)
-      .provide([
-        [matchers.call.fn(generateMachinePoolActionCreators), actionCreators],
-      ])
-      .call(
-        sendMessage,
-        socketClient,
-        resourcePoolActions.create(pool),
-        actionCreators
-      )
-      .run();
-  });
-
-  it("can send a message to create a pool then attach machines using filter", async () => {
-    const socketClient = new WebSocketClient();
-    const sendMessage = vi.fn();
-    const actionCreators = [vi.fn()];
-    const pool = { name: "pool1", description: "a pool" };
-    const action = {
-      type: "resourcepoo/createWithMachines",
-      payload: { params: { filter: { id: ["abcd123"] }, pool } },
-      meta: {},
-    };
-    return expectSaga(createPoolWithMachines, socketClient, sendMessage, action)
-      .provide([
-        [
-          matchers.call.fn(generateMachineFilterPoolActionCreators),
-          actionCreators,
-        ],
-      ])
-      .call(
-        sendMessage,
-        socketClient,
-        resourcePoolActions.create(pool),
-        actionCreators
-      )
-      .run();
-  });
-
-  it("can send a message to update an address record then update the DNS resource", async () => {
+  it("can send a message to update an address record then update the DNS resource", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
@@ -109,7 +56,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can send a message to update a DNS resource for 'A record' when rrdata is unchanged", async () => {
+  it("can send a message to update a DNS resource for 'A record' when rrdata is unchanged", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
@@ -145,7 +92,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can send a message to update a non-address record then update the DNS resource", async () => {
+  it("can send a message to update a non-address record then update the DNS resource", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
@@ -183,7 +130,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can send a message to delete an address record then delete the DNS resource", async () => {
+  it("can send a message to delete an address record then delete the DNS resource", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
@@ -217,7 +164,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can send a message to delete a non-address record then delete the DNS resource", async () => {
+  it("can send a message to delete a non-address record then delete the DNS resource", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];

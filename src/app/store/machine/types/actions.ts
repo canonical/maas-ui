@@ -7,16 +7,12 @@ import type {
 } from "./base";
 import type { MachineMeta } from "./enum";
 
-import type { ZoneResponse } from "@/app/apiclient";
+import type { ResourcePoolResponse, ZoneResponse } from "@/app/apiclient";
 import type { Prettify } from "@/app/base/types";
 import type { Domain } from "@/app/store/domain/types";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import type { Pod } from "@/app/store/pod/types";
-import type {
-  ResourcePool,
-  ResourcePoolMeta,
-} from "@/app/store/resourcepool/types";
 import type { Script, ScriptName } from "@/app/store/script/types";
 import type { Space } from "@/app/store/space/types";
 import type { Subnet } from "@/app/store/subnet/types";
@@ -153,7 +149,7 @@ export type CreateParams = {
   memory?: Machine["memory"];
   min_hwe_kernel?: string;
   osystem?: Machine["osystem"];
-  pool?: { name: ResourcePool["name"] };
+  pool?: { name: ResourcePoolResponse["name"] };
   power_parameters: PowerParameters;
   power_type: Machine["power_type"];
   pxe_mac: Machine["pxe_mac"];
@@ -289,7 +285,7 @@ type Filters = {
   [FilterGroupKey.Parent]: Node["system_id"];
   [FilterGroupKey.Pod]: ModelRef["name"];
   [FilterGroupKey.PodType]: Pod["type"];
-  [FilterGroupKey.Pool]: ResourcePool["name"];
+  [FilterGroupKey.Pool]: ResourcePoolResponse["name"];
   [FilterGroupKey.Spaces]: Space["name"];
   [FilterGroupKey.Status]: FetchNodeStatus;
   [FilterGroupKey.Subnets]: Subnet["name"];
@@ -515,7 +511,7 @@ export type SetBootDiskParams = {
 };
 
 export type SetPoolParams = BaseMachineActionParams & {
-  pool_id: ResourcePool[ResourcePoolMeta.PK];
+  pool_id: ResourcePoolResponse["id"];
 };
 
 export type SetZoneParams = BaseMachineActionParams &

@@ -1,6 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { MachineSidePanelViews } from "../constants";
@@ -20,17 +18,19 @@ import {
   FetchNodeStatus,
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   renderWithProviders,
   userEvent,
   within,
   screen,
-  render,
   waitFor,
   renderWithBrowserRouter,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+setupMockServer(poolsResolvers.listPools.handler());
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
   return {
@@ -241,21 +241,16 @@ describe("Machines", () => {
     vi.useRealTimers();
   });
 
-  it("can set the search from the URL", () => {
+  it("can set the search from the URL", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <Machines />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue(
-      "test search"
+    renderWithProviders(<Machines />, {
+      route: "/machines?q=test+search",
+      store,
+    });
+    await waitFor(() =>
+      expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue(
+        "test search"
+      )
     );
   });
 

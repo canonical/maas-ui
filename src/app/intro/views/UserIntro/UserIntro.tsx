@@ -4,12 +4,12 @@ import { ActionButton, Button, Card, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useListSshKeys } from "@/app/api/query/sshKeys";
-import SSHKeyForm from "@/app/base/components/SSHKeyForm";
-import SSHKeyList from "@/app/base/components/SSHKeyList";
 import TableConfirm from "@/app/base/components/TableConfirm";
 import { useCycled } from "@/app/base/hooks";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
+import SSHKeyList from "@/app/preferences/views/SSHKeys/BaseSSHKeyList";
+import SSHKeyForm from "@/app/preferences/views/SSHKeys/SSHKeyForm";
 import authSelectors from "@/app/store/auth/selectors";
 import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";

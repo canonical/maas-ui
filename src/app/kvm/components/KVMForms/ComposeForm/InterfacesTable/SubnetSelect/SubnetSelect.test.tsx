@@ -6,6 +6,7 @@ import ComposeForm from "../../ComposeForm";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
@@ -17,7 +18,10 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  poolsResolvers.listPools.handler()
+);
 
 const renderComposeForm = async (store: MockStore, pod: Pod) => {
   const view = renderWithProviders(
@@ -51,9 +55,6 @@ describe("SubnetSelect", () => {
         items: [pod],
         loaded: true,
         statuses: { [pod.id]: factory.podStatus() },
-      }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
       }),
       space: factory.spaceState({
         loaded: true,
@@ -133,6 +134,11 @@ describe("SubnetSelect", () => {
     const store = mockStore(state);
     await renderComposeForm(store, pod);
 
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Define (optional)" })
+      ).toBeInTheDocument()
+    );
     // Click "Define" button
     await userEvent.click(
       screen.getByRole("button", { name: "Define (optional)" })
@@ -197,6 +203,12 @@ describe("SubnetSelect", () => {
     state.vlan.items = [pxeVlan, nonPxeVlan];
     const store = mockStore(state);
     await renderComposeForm(store, pod);
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Define (optional)" })
+      ).toBeInTheDocument()
+    );
 
     // Click "Define" button
     await userEvent.click(

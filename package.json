@@ -182,7 +182,8 @@
   "resolutions": {
     "node_modules/@types/react-router-dom/@types/react": "18.3.18",
     "@types/react": "18.3.18",
-    "@types/react-dom": "18.3.5"
+    "@types/react-dom": "18.3.5",
+    "string-width": "4.2.3"
   },
   "peerDependencies": {
     "@types/react": "18.3.18"

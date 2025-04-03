@@ -13,7 +13,9 @@ import ComposeFormFields from "./ComposeFormFields";
 import InterfacesTable from "./InterfacesTable";
 import StorageTable from "./StorageTable";
 
+import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
+import type { ResourcePoolResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { hostnameValidation, RANGE_REGEX } from "@/app/base/validation";
@@ -34,9 +36,6 @@ import {
   isPodDetails,
   resourceWithOverCommit,
 } from "@/app/store/pod/utils";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
-import type { ResourcePool } from "@/app/store/resourcepool/types";
 import type { RootState } from "@/app/store/root/types";
 import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
@@ -180,6 +179,7 @@ type Props = {
   hostId: Pod["id"];
 };
 
+// eslint-disable-next-line complexity
 const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
@@ -190,8 +190,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
-  const pools = useSelector(resourcePoolSelectors.all);
-  const poolsLoaded = useSelector(resourcePoolSelectors.loaded);
+  const pools = usePools();
   const powerTypes = useSelector(powerTypesSelectors.get);
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const spaces = useSelector(spaceSelectors.all);
@@ -210,7 +209,6 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
     dispatch(fabricActions.fetch());
     dispatch(generalActions.fetchPowerTypes());
     dispatch(podActions.get(hostId));
-    dispatch(resourcePoolActions.fetch());
     dispatch(spaceActions.fetch());
     dispatch(subnetActions.fetch());
     dispatch(vlanActions.fetch());
@@ -218,7 +216,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
   const loaded =
     domainsLoaded &&
     fabricsLoaded &&
-    poolsLoaded &&
+    !pools.isPending &&
     powerTypesLoaded &&
     spacesLoaded &&
     subnetsLoaded &&
@@ -251,7 +249,10 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
       pinnedCores: getCoreIndices(pod, "free"),
       storage:
         pod.storage_pools?.reduce<
-          Record<ResourcePool["name"], ReturnType<typeof formatBytes>["value"]>
+          Record<
+            ResourcePoolResponse["name"],
+            ReturnType<typeof formatBytes>["value"]
+          >
         >((available, pool) => {
           available[pool.name] = formatBytes(
             { value: pool.available, unit: "B" },
@@ -456,7 +457,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
           interfaces: [],
           memory: defaults.memory,
           pinnedCores: "",
-          pool: `${pools[0]?.id}` || "",
+          pool: `${pools.data?.items[0]?.id}` || "",
           zone: `${zones.data?.items[0]?.id}` || "",
         }}
         modelName="machine"

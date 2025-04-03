@@ -7,7 +7,7 @@ import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
+import { screen, renderWithProviders, userEvent } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -42,10 +42,6 @@ describe("MachineListHeader", () => {
           def456: factory.machineStatus({}),
         },
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [factory.resourcePool()],
-      }),
     });
   });
 
@@ -59,7 +55,7 @@ describe("MachineListHeader", () => {
       count: 2,
       loaded: true,
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListHeader
         grouping={null}
         searchFilter=""
@@ -72,13 +68,13 @@ describe("MachineListHeader", () => {
       { state, route: urls.machines.index }
     );
     expect(screen.getByTestId("main-toolbar-heading")).toHaveTextContent(
-      "2 machines in 1 pool"
+      "2 machines in 0 pools"
     );
   });
 
   it("hides the add hardware menu when machines are selected", () => {
     state.machine.selected = { items: ["abc123"] };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListHeader
         grouping={null}
         searchFilter=""
@@ -94,7 +90,7 @@ describe("MachineListHeader", () => {
       screen.queryByRole("button", { name: "Add hardware" })
     ).not.toBeInTheDocument();
     state.machine.selected.items = [];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListHeader
         grouping={null}
         searchFilter=""
@@ -118,7 +114,7 @@ describe("MachineListHeader", () => {
     state.machine.items = [
       factory.machine({ system_id: "abc123", actions: [NodeActions.TAG] }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListHeader
         grouping={null}
         searchFilter=""
@@ -159,7 +155,7 @@ describe("MachineListHeader", () => {
         ],
       }),
     };
-    const { rerender } = renderWithBrowserRouter(
+    const { rerender } = renderWithProviders(
       <MachineListHeader
         grouping={null}
         searchFilter=""

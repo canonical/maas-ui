@@ -5,6 +5,7 @@ import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
@@ -13,7 +14,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("AddVirshFields", () => {
   let state: RootState;
@@ -34,10 +38,6 @@ describe("AddVirshFields", () => {
         loading: false,
         saved: false,
         saving: false,
-      }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool()],
-        loaded: true,
       }),
     });
   });

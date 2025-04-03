@@ -4,6 +4,7 @@ import { PowerFieldType } from "@/app/store/general/types";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
@@ -13,7 +14,10 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 let state: RootState;
 const queryData = { zones: [factory.zone({ id: 1, name: "twilight" })] };
@@ -71,10 +75,6 @@ describe("AddMachineForm", () => {
           loaded: true,
         }),
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ name: "swimming" })],
-        loaded: true,
-      }),
     });
   });
 
@@ -103,7 +103,6 @@ describe("AddMachineForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.resourcepool.loaded = false;
     renderWithBrowserRouter(
       <AddMachineForm clearSidePanelContent={vi.fn()} />,
       {
@@ -152,7 +151,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "Machine name" })
+      ).toBeInTheDocument()
+    );
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Machine name" }),
@@ -217,7 +220,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "MAC address" })
+      ).toBeInTheDocument()
+    );
 
     // Choose initial power type and fill in fields.
     await userEvent.type(
@@ -273,7 +280,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("combobox", { name: "Power type" })
+      ).toBeInTheDocument()
+    );
 
     // Submit the form with two extra macs, where one is an empty string
     await userEvent.selectOptions(

@@ -3,6 +3,7 @@ import ComposeForm from "../ComposeForm";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
@@ -14,7 +15,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  poolsResolvers.listPools.handler()
+);
 
 describe("InterfacesTable", () => {
   let initialState: RootState;
@@ -39,9 +43,6 @@ describe("InterfacesTable", () => {
         items: [pod],
         loaded: true,
         statuses: { [pod.id]: factory.podStatus() },
-      }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
       }),
       space: factory.spaceState({
         loaded: true,
@@ -98,7 +99,11 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: /define/i })
+      ).toBeInTheDocument()
+    );
     const button = screen.getByRole("button", { name: /define/i });
     expect(button).toBeAriaDisabled();
     await expectTooltipOnHover(
@@ -123,7 +128,11 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: /define/i })
+      ).toBeInTheDocument()
+    );
     expect(
       screen.queryByRole("button", { name: /define/i })
     ).toBeAriaDisabled();
@@ -144,7 +153,9 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByTestId("undefined-interface")).toBeInTheDocument()
+    );
     // Undefined interface row displays by default
     expect(screen.getByTestId("undefined-interface")).toBeInTheDocument();
     expect(screen.queryByTestId("interface")).not.toBeInTheDocument();
@@ -185,7 +196,11 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: /Define/i })
+      ).toBeInTheDocument()
+    );
     // Click "Define" button to open interfaces table.
     await userEvent.click(screen.getByRole("button", { name: /Define/i }));
     // Open the menu:
@@ -224,7 +239,11 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: /Define/i })
+      ).toBeInTheDocument()
+    );
     // Click "Define" button to open interfaces table.
     // It should be prepopulated with the first available PXE network details.
     await userEvent.click(screen.getByRole("button", { name: /Define/i }));

@@ -31,10 +31,6 @@ describe("AuthenticationForm", () => {
       pod: factory.podState({
         loaded: true,
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool()],
-        loaded: true,
-      }),
     });
     newPodValues = {
       certificate: "",

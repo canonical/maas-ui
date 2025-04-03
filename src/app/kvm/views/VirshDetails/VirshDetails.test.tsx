@@ -25,9 +25,6 @@ describe("VirshDetails", () => {
         items: [factory.podDetails({ id: 1, type: PodType.VIRSH })],
         loaded: true,
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-      }),
       tag: factory.tagState({
         loaded: true,
       }),
