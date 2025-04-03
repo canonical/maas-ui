@@ -87,6 +87,31 @@ describe("GenericTable", () => {
     expect(screen.getByText("18.04 LTS")).toBeInTheDocument();
   });
 
+  it("can change pages", async () => {
+    const setPagination = vi.fn();
+    render(
+      <GenericTable
+        columns={columns}
+        data={[]}
+        filterCells={mockFilterCells}
+        filterHeaders={mockFilterHeaders}
+        noData={<span>No data</span>}
+        pagination={{ page: 1, size: 1, total: 2 }}
+        rowSelection={{}}
+        setPagination={setPagination}
+        setRowSelection={vi.fn}
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Next page" })
+    ).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: "Next page" }));
+
+    expect(setPagination).toHaveBeenCalled();
+  });
+
   it('displays "No data" when the data array is empty', () => {
     render(
       <GenericTable
