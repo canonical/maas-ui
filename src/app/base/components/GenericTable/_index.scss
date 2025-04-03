@@ -1,5 +1,4 @@
 .p-generic-table {
-
   thead,
   tbody {
     display: table-row-group;
@@ -15,4 +14,8 @@
   th.select {
     display: none;
   }
+}
+
+.p-pagination {
+  z-index: 2;
 }
