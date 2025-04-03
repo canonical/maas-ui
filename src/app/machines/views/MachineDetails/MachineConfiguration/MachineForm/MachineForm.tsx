@@ -69,7 +69,9 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
               pool: machine.pool?.name || "",
               zone: machine.zone?.name || "",
             }}
-            onCancel={() => setEditing(false)}
+            onCancel={() => {
+              setEditing(false);
+            }}
             onSaveAnalytics={{
               action: "Configure machine",
               category: "Machine details",
@@ -89,7 +91,9 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
               };
               dispatch(machineActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
+            onSuccess={() => {
+              setEditing(false);
+            }}
             saved={saved}
             saving={saving}
             submitLabel="Save changes"

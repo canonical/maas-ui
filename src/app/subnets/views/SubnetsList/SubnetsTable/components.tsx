@@ -35,7 +35,9 @@ export const SpaceCellContents = ({
             aria-label="No space - press to see more information"
             dense
             hasIcon
-            onClick={() => setIsWarningOpen(!isWarningOpen)}
+            onClick={() => {
+              setIsWarningOpen(!isWarningOpen);
+            }}
           >
             <i className="p-icon--warning"></i> <span>No space</span>
           </Button>

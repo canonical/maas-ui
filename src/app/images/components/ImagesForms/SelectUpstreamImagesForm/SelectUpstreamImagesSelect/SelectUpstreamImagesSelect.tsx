@@ -48,9 +48,9 @@ const SelectUpstreamImagesSelect = ({
                         component={MultiSelect}
                         items={groupedImages[distro][release]}
                         name={getValueKey(distro, release)}
-                        onItemsUpdate={(items: MultiSelectItem[]) =>
-                          setFieldValue(getValueKey(distro, release), items)
-                        }
+                        onItemsUpdate={(items: MultiSelectItem[]) => {
+                          setFieldValue(getValueKey(distro, release), items);
+                        }}
                         placeholder="Select architectures"
                         selectedItems={values[getValueKey(distro, release)]}
                         variant="condensed"

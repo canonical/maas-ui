@@ -216,7 +216,7 @@ it("redirects on save", async () => {
       </Router>
     </Provider>
   );
-  await waitFor(() =>
-    expect(history.location.pathname).toEqual(urls.subnets.index)
-  );
+  await waitFor(() => {
+    expect(history.location.pathname).toEqual(urls.subnets.index);
+  });
 });

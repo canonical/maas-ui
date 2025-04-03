@@ -247,11 +247,11 @@ describe("Machines", () => {
       route: "/machines?q=test+search",
       store,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue(
         "test search"
-      )
-    );
+      );
+    });
   });
 
   it("changes the URL when the search text changes", async () => {
@@ -265,7 +265,9 @@ describe("Machines", () => {
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    await waitFor(() => expect(window.location.search).toBe("?status=new"));
+    await waitFor(() => {
+      expect(window.location.search).toBe("?status=new");
+    });
   });
 
   it("can hide groups", async () => {
@@ -280,14 +282,18 @@ describe("Machines", () => {
     const getFetchActions = () =>
       store.getActions().filter((action) => action.type === expected.type);
     const initialFetchActions = getFetchActions();
-    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
+    await waitFor(() => {
+      expect(initialFetchActions).toHaveLength(1);
+    });
     // Click the button to toggle the group.
     await userEvent.click(
       within(
         screen.getByRole("row", { name: "Failed testing machines group" })
       ).getByRole("button", { name: Label.HideGroup })
     );
-    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    await waitFor(() => {
+      expect(getFetchActions()).toHaveLength(2);
+    });
     const finalFetchAction = getFetchActions()[1];
     expect(finalFetchAction.payload.params.group_collapsed).toStrictEqual([
       "failed_testing",
@@ -322,13 +328,17 @@ describe("Machines", () => {
     renderWithProviders(<Machines />, { route: "/machines", store });
 
     const initialFetchActions = getFetchActions();
-    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
+    await waitFor(() => {
+      expect(initialFetchActions).toHaveLength(1);
+    });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /Group by/i }),
       screen.getByRole("option", { name: "Group by owner" })
     );
-    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    await waitFor(() => {
+      expect(getFetchActions()).toHaveLength(2);
+    });
     const finalFetchAction = getFetchActions()[1];
     expect(finalFetchAction.payload.params.group_key).toBe(FetchGroupKey.Owner);
   });

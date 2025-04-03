@@ -65,7 +65,9 @@ const generateRepositoryRows = (
                 repo.default ? "Default repos cannot be deleted." : null
               }
               editPath={settingsURLs.repositories.edit({ id: repo.id, type })}
-              onDelete={() => setExpandedId(repo.id)}
+              onDelete={() => {
+                setExpandedId(repo.id);
+              }}
             />
           ),
           className: "u-align--right",
@@ -79,7 +81,9 @@ const generateRepositoryRows = (
           deleting={saving}
           modelName={repo.name}
           modelType="repository"
-          onClose={() => setExpandedId(null)}
+          onClose={() => {
+            setExpandedId(null);
+          }}
           onConfirm={() => {
             dispatch(repositoryActions.delete(repo.id));
             setDeletedRepo(repo.name);
@@ -118,7 +122,9 @@ export const RepositoriesList = (): JSX.Element => {
     saved,
     repositoryActions.cleanup,
     `${deletedRepo} removed successfully.`,
-    () => setDeletedRepo(null)
+    () => {
+      setDeletedRepo(null);
+    }
   );
 
   // Fetch repositories on load

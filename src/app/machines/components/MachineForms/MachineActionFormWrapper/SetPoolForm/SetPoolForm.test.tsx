@@ -57,13 +57,13 @@ describe("SetPoolForm", () => {
       { route: "/machines", store }
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("combobox", {
           name: "Resource pool",
         })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     const poolSelection = screen.getByRole("combobox", {
       name: "Resource pool",
@@ -125,11 +125,11 @@ describe("SetPoolForm", () => {
       { route: "/machines", store }
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("radio", { name: "Create pool" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     await userEvent.click(screen.getByRole("radio", { name: "Create pool" }));
 

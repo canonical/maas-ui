@@ -62,10 +62,9 @@ export const MachineForms = ({
   setSearchFilter,
   viewingDetails = false,
 }: Props): JSX.Element | null => {
-  const clearSidePanelContent = useCallback(
-    () => setSidePanelContent(null),
-    [setSidePanelContent]
-  );
+  const clearSidePanelContent = useCallback(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   if (!sidePanelContent) {
     return null;

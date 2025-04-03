@@ -31,13 +31,13 @@ const CertificateDetails = ({
       <p>
         <ExternalLink
           data-testid="read-more-link"
-          onClick={() =>
+          onClick={() => {
             sendAnalytics(
               eventCategory,
               "Click link to LXD authentication discourse",
               "Read more about authentication"
-            )
-          }
+            );
+          }}
           to="https://discourse.maas.io/t/lxd-authentication/4856"
         >
           {Labels.ReadMore}

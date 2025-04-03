@@ -50,7 +50,13 @@ const UpdateCertificateFields = ({
               type="password"
             />
             {!usePassword && (
-              <Button onClick={() => setUsePassword(true)}>Add</Button>
+              <Button
+                onClick={() => {
+                  setUsePassword(true);
+                }}
+              >
+                Add
+              </Button>
             )}
           </div>
         ) : (

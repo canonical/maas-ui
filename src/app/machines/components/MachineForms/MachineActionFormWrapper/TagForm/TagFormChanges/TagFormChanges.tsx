@@ -96,7 +96,9 @@ const generateRows = (
             : undefined
         }
         machineCount={machineCount}
-        onClick={() => toggleTagDetails(tag)}
+        onClick={() => {
+          toggleTagDetails(tag);
+        }}
         tag={tag}
         tagIdsAndCounts={tagIdsAndCounts}
       />

@@ -102,7 +102,7 @@ it("dispatches a correct action on edit static route form submit", async () => {
     screen.getByLabelText(Labels.Destination),
     `${newDestinationSubnet.id}`
   );
-  await await userEvent.click(
+  await userEvent.click(
     screen.getByRole("button", {
       name: "Save",
     })
@@ -118,11 +118,11 @@ it("dispatches a correct action on edit static route form submit", async () => {
     }),
   ];
   const actualActions = store.getActions();
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       actualActions.filter(
         (action) => action.type === staticRouteActions.update.type
       )
-    ).toStrictEqual(expectedActions)
-  );
+    ).toStrictEqual(expectedActions);
+  });
 });

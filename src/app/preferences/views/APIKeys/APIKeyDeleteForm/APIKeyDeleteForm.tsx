@@ -20,7 +20,9 @@ const APIKeyDeleteForm = ({ id }: { id: number }) => {
       aria-label="Delete API Key"
       initialValues={{}}
       modelType="API key"
-      onCancel={() => navigate({ pathname: urls.preferences.apiKeys.index })}
+      onCancel={() => {
+        navigate({ pathname: urls.preferences.apiKeys.index });
+      }}
       onSubmit={() => {
         dispatch(tokenActions.delete(id));
       }}

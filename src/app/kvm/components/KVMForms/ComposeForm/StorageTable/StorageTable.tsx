@@ -128,7 +128,9 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
                   <Button
                     data-testid="remove-disk"
                     disabled={!!composingPods.length}
-                    onClick={() => removeDisk(disk.id)}
+                    onClick={() => {
+                      removeDisk(disk.id);
+                    }}
                     type="button"
                   >
                     Remove

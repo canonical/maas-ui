@@ -151,7 +151,9 @@ const getTakeActionLinks = (
             "data-testid": `action-link-${action}`,
             // When nodes are not provided actions should always be enabled.
             disabled: nodes ? count === 0 : false,
-            onClick: () => onActionClick(action),
+            onClick: () => {
+              onActionClick(action);
+            },
           });
         }
         return groupLinks;

@@ -68,7 +68,9 @@ const AddVlan = ({
         fabric: "",
         space: "",
       }}
-      onCancel={() => setActiveForm(null)}
+      onCancel={() => {
+        setActiveForm(null);
+      }}
       onSaveAnalytics={{
         action: "Add VLAN",
         category: "Subnets form actions",
@@ -85,7 +87,9 @@ const AddVlan = ({
           })
         );
       }}
-      onSuccess={() => setActiveForm(null)}
+      onSuccess={() => {
+        setActiveForm(null);
+      }}
       saved={isSaved}
       saving={isSaving}
       submitLabel={`Add ${activeForm}`}

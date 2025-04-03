@@ -44,9 +44,9 @@ describe("SetPoolFormFields", () => {
       { route, state }
     );
 
-    await waitFor(() =>
-      expect(screen.getByLabelText("Create pool")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByLabelText("Create pool")).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByLabelText("Create pool"));
     expect(
       screen.queryByRole("combobox", { name: "Resource pool" })
@@ -67,9 +67,9 @@ describe("SetPoolFormFields", () => {
       />,
       { route, state }
     );
-    await waitFor(() =>
-      expect(screen.getByLabelText("Create pool")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByLabelText("Create pool")).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByLabelText("Create pool"));
     expect(screen.getByLabelText("Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Description")).toBeInTheDocument();

@@ -33,7 +33,9 @@ const SegmentedControl = <V,>({
               buttonClassName
             )}
             key={button.label}
-            onClick={() => onSelect(button.value)}
+            onClick={() => {
+              onSelect(button.value);
+            }}
             role="tab"
             type="button"
           >

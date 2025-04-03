@@ -71,7 +71,9 @@ const EditFabric = ({ close, id }: Props): JSX.Element | null => {
           })
         );
       }}
-      onSuccess={() => close()}
+      onSuccess={() => {
+        close();
+      }}
       resetOnSave
       saved={saved}
       saving={saving}

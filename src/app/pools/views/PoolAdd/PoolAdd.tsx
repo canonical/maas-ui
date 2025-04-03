@@ -10,8 +10,12 @@ export enum Label {
 
 export const PoolAdd = (): JSX.Element => {
   const navigate = useNavigate();
-  const onCancel = () => navigate({ pathname: urls.pools.index });
-  useOnEscapePressed(() => onCancel());
+  const onCancel = () => {
+    navigate({ pathname: urls.pools.index });
+  };
+  useOnEscapePressed(() => {
+    onCancel();
+  });
   return <PoolForm aria-label={Label.Title} onClose={onCancel} />;
 };
 

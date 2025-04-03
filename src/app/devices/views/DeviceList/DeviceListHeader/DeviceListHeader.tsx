@@ -43,7 +43,9 @@ const DeviceListHeader = ({
       {devicesLoaded ? (
         <ModelListSubtitle
           available={devices.length}
-          filterSelected={() => setSearchFilter("in:(Selected)")}
+          filterSelected={() => {
+            setSearchFilter("in:(Selected)");
+          }}
           modelName="device"
           selected={selectedDevices.length}
         />
@@ -58,16 +60,18 @@ const DeviceListHeader = ({
           />
         </Col>
         <DebounceSearchBox
-          onDebounced={(debouncedText) => setSearchFilter(debouncedText)}
+          onDebounced={(debouncedText) => {
+            setSearchFilter(debouncedText);
+          }}
           searchText={searchText}
           setSearchText={setSearchText}
         />
         <Button
           data-testid="add-device-button"
           disabled={selectedDevices.length > 0}
-          onClick={() =>
-            setSidePanelContent({ view: DeviceSidePanelViews.ADD_DEVICE })
-          }
+          onClick={() => {
+            setSidePanelContent({ view: DeviceSidePanelViews.ADD_DEVICE });
+          }}
         >
           Add device
         </Button>

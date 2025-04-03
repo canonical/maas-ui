@@ -16,8 +16,12 @@ const DeleteSSLKey = () => {
   const dispatch = useDispatch();
   const saved = useSelector(sslkeySelectors.saved);
   const saving = useSelector(sslkeySelectors.saving);
-  const onClose = () => navigate({ pathname: urls.sslKeys.index });
-  useOnEscapePressed(() => onClose());
+  const onClose = () => {
+    navigate({ pathname: urls.sslKeys.index });
+  };
+  useOnEscapePressed(() => {
+    onClose();
+  });
   useAddMessage(saved, sslkeyActions.cleanup, "SSL key removed successfully.");
 
   if (!isId(id)) {

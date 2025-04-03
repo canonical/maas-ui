@@ -65,18 +65,18 @@ it("can open and close the Edit fabric summary form", async () => {
   await userEvent.click(
     within(fabricSummary).getAllByRole("button", { name: "Edit" })[0]
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("form", { name: "Edit fabric summary" })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
 
   await userEvent.click(
     within(fabricSummary).getByRole("button", { name: "Cancel" })
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.queryByRole("form", { name: "Edit fabric summary" })
-    ).not.toBeInTheDocument()
-  );
+    ).not.toBeInTheDocument();
+  });
 });

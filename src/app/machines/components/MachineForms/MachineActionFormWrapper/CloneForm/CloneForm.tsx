@@ -117,7 +117,9 @@ export const CloneForm = ({
           });
         }
       }}
-      onSuccess={() => setShowResults(true)}
+      onSuccess={() => {
+        setShowResults(true);
+      }}
       processingCount={processingCount}
       selectedCount={selectedCount}
       validationSchema={CloneFormSchema}

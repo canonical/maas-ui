@@ -38,7 +38,9 @@ const RowCheckbox = <I,>({
       id={id.current}
       label={inputLabel}
       labelClassName="u-no-margin--bottom u-no-padding--top"
-      onChange={() => handleRowCheckbox(item, items)}
+      onChange={() => {
+        handleRowCheckbox(item, items);
+      }}
       type="checkbox"
       wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
       {...props}

@@ -82,7 +82,9 @@ const generateLinks = (
         </>
       ),
       className: "kvm-subnet-select__subnet",
-      onClick: () => selectSubnet(subnet.id),
+      onClick: () => {
+        selectSubnet(subnet.id);
+      },
     };
   });
 

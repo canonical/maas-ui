@@ -45,7 +45,9 @@ const SubnetSummary = ({ id }: Props): JSX.Element | null => {
       renderContent={(editing, setEditing) =>
         editing ? (
           <SubnetSummaryForm
-            handleDismiss={() => setEditing(false)}
+            handleDismiss={() => {
+              setEditing(false);
+            }}
             id={subnet.id}
           />
         ) : (

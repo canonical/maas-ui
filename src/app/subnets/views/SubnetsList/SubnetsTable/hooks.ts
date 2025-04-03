@@ -92,7 +92,9 @@ export function usePagination<D>(
   const totalItems = data.length;
   const [pageIndex, setPageIndex] = useState(0);
   const startIndex = pageIndex * itemsPerPage;
-  const paginate = (pageNumber: number) => setPageIndex(pageNumber - 1);
+  const paginate = (pageNumber: number) => {
+    setPageIndex(pageNumber - 1);
+  };
 
   useEffect(() => {
     // go to the last available page if the current page is out of bounds

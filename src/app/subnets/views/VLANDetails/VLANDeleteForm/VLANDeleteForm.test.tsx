@@ -98,13 +98,13 @@ it("deletes the VLAN when confirmed", async () => {
 
   const expectedActions = [vlanActions.delete(vlan.id)];
   const actualActions = store.getActions();
-  await waitFor(() =>
+  await waitFor(() => {
     expectedActions.forEach((expectedAction) => {
       expect(
         actualActions.find(
           (actualAction) => actualAction.type === expectedAction.type
         )
       ).toStrictEqual(expectedAction);
-    })
-  );
+    });
+  });
 });

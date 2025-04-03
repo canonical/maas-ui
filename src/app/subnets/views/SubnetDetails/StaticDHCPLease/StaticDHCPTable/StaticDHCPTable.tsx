@@ -58,18 +58,18 @@ const generateRows = (
         </td>
         <td>
           <TableActions
-            onDelete={() =>
+            onDelete={() => {
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews.DeleteDHCPLease,
                 extras: { reservedIpId: reservedIp.id },
-              })
-            }
-            onEdit={() =>
+              });
+            }}
+            onEdit={() => {
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews.ReserveDHCPLease,
                 extras: { reservedIpId: reservedIp.id },
-              })
-            }
+              });
+            }}
           />
         </td>
       </tr>

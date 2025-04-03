@@ -81,10 +81,10 @@ describe("VirshDetailsHeader", () => {
       <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       { route, state }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
         "zone-1"
-      )
-    );
+      );
+    });
   });
 });

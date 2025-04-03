@@ -176,7 +176,9 @@ const UsersList = (): JSX.Element => {
                 <TableHeader
                   currentSort={currentSort}
                   data-testid="email-header"
-                  onClick={() => updateSort("email")}
+                  onClick={() => {
+                    updateSort("email");
+                  }}
                   sortKey="email"
                 >
                   Email
@@ -188,7 +190,9 @@ const UsersList = (): JSX.Element => {
                 <TableHeader
                   currentSort={currentSort}
                   data-testid="machines-count-header"
-                  onClick={() => updateSort("machines_count")}
+                  onClick={() => {
+                    updateSort("machines_count");
+                  }}
                   sortKey="machines_count"
                 >
                   Machines

@@ -137,7 +137,9 @@ export const AppSideNavItems = ({
                 <Button
                   appearance="link"
                   className="p-side-navigation__button p-side-navigation__link"
-                  onClick={() => logout()}
+                  onClick={() => {
+                    logout();
+                  }}
                 >
                   <span className="p-side-navigation__label">Log out</span>
                 </Button>

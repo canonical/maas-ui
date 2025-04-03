@@ -90,24 +90,26 @@ const generateRows = (
                 {
                   children: Labels.AddDiscovery,
                   "data-testid": "add-discovery-link",
-                  onClick: () =>
+                  onClick: () => {
                     setSidePanelContent({
                       view: NetworkDiscoverySidePanelViews.ADD_DISCOVERY,
                       extras: {
                         discovery,
                       },
-                    }),
+                    });
+                  },
                 },
                 {
                   children: "Delete discovery...",
                   "data-testid": "delete-discovery-link",
-                  onClick: () =>
+                  onClick: () => {
                     setSidePanelContent({
                       view: NetworkDiscoverySidePanelViews.DELETE_DISCOVERY,
                       extras: {
                         discovery,
                       },
-                    }),
+                    });
+                  },
                 },
               ]}
               toggleAppearance="base"

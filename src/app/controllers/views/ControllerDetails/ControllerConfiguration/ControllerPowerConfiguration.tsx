@@ -110,7 +110,9 @@ const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
               powerType: controller.power_type,
               powerParameters: initialPowerParameters,
             }}
-            onCancel={() => setEditing(false)}
+            onCancel={() => {
+              setEditing(false);
+            }}
             onSaveAnalytics={{
               action: "Configure power",
               category: "Controller details",
@@ -127,7 +129,9 @@ const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
               };
               dispatch(controllerActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
+            onSuccess={() => {
+              setEditing(false);
+            }}
             onValuesChanged={(values) => {
               const powerType = getPowerTypeFromName(
                 powerTypes,

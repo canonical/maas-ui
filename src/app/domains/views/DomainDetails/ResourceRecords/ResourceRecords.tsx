@@ -151,19 +151,21 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
               links={[
                 {
                   children: "Edit record...",
-                  onClick: () =>
+                  onClick: () => {
                     setExpanded({
                       content: RecordActions.EDIT,
                       id: rowId,
-                    }),
+                    });
+                  },
                 },
                 {
                   children: "Remove record...",
-                  onClick: () =>
+                  onClick: () => {
                     setExpanded({
                       content: RecordActions.DELETE,
                       id: rowId,
-                    }),
+                    });
+                  },
                 },
               ]}
               toggleAppearance="base"
@@ -188,14 +190,18 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
             <>
               {expanded?.content === RecordActions.EDIT && (
                 <EditRecordForm
-                  closeForm={() => setExpanded(null)}
+                  closeForm={() => {
+                    setExpanded(null);
+                  }}
                   id={id}
                   resource={resource}
                 />
               )}
               {expanded?.content === RecordActions.DELETE && (
                 <DeleteRecordForm
-                  closeForm={() => setExpanded(null)}
+                  closeForm={() => {
+                    setExpanded(null);
+                  }}
                   id={id}
                   resource={resource}
                 />

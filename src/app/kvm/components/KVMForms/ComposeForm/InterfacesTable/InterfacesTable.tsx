@@ -215,7 +215,9 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
                 <Button
                   data-testid="delete-interface"
                   disabled={!!composingPods.length}
-                  onClick={() => removeInterface(iface.id)}
+                  onClick={() => {
+                    removeInterface(iface.id);
+                  }}
                   type="button"
                 >
                   Delete

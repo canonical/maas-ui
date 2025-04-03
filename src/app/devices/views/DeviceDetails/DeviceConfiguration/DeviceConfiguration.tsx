@@ -70,7 +70,9 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
               tags: device.tags,
               zone: device.zone?.name || "",
             }}
-            onCancel={() => setEditing(false)}
+            onCancel={() => {
+              setEditing(false);
+            }}
             onSaveAnalytics={{
               action: "Configure device",
               category: "Device details",
@@ -85,7 +87,9 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
               };
               dispatch(deviceActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
+            onSuccess={() => {
+              setEditing(false);
+            }}
             saved={deviceSaved}
             saving={deviceSaving}
             submitLabel={Label.Submit}

@@ -47,13 +47,13 @@ it("dispatches an update action on submit", async () => {
     within(spaceSummaryForm).getByRole("button", { name: "Save" })
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(store.getActions()).toStrictEqual([
       spaceActions.update({
         id: space.id,
         name: "new name",
         description: "new description",
       }),
-    ])
-  );
+    ]);
+  });
 });

@@ -8,8 +8,12 @@ import urls from "@/app/base/urls";
 const PoolDeleteForm = ({ id }: { id: number }) => {
   const deletePool = useDeletePool();
   const navigate = useNavigate();
-  const onClose = () => navigate({ pathname: urls.pools.index });
-  useOnEscapePressed(() => onClose());
+  const onClose = () => {
+    navigate({ pathname: urls.pools.index });
+  };
+  useOnEscapePressed(() => {
+    onClose();
+  });
 
   return (
     <ModelActionForm

@@ -98,7 +98,9 @@ const UserIntro = (): JSX.Element => {
                 {Labels.AreYouSure}
               </>
             }
-            onClose={() => setShowSkip(false)}
+            onClose={() => {
+              setShowSkip(false);
+            }}
             onConfirm={() => {
               dispatch(userActions.markIntroComplete());
             }}

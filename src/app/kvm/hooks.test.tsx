@@ -29,9 +29,14 @@ describe("kvm hooks", () => {
       const state = factory.rootState();
       const store = mockStore(state);
       const podId = 1;
-      renderHook(() => useActivePod(podId), {
-        wrapper: generateWrapper(store),
-      });
+      renderHook(
+        () => {
+          useActivePod(podId);
+        },
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
 
       const expectedActions = [
         podActions.get(podId),
@@ -51,9 +56,14 @@ describe("kvm hooks", () => {
       const state = factory.rootState();
       const store = mockStore(state);
       const podId = 1;
-      const { unmount } = renderHook(() => useActivePod(podId), {
-        wrapper: generateWrapper(store),
-      });
+      const { unmount } = renderHook(
+        () => {
+          useActivePod(podId);
+        },
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
       unmount();
 
       const expectedAction = podActions.setActive(null);
@@ -68,9 +78,14 @@ describe("kvm hooks", () => {
     it("does not dispatch actions if null id provided", () => {
       const state = factory.rootState();
       const store = mockStore(state);
-      renderHook(() => useActivePod(null), {
-        wrapper: generateWrapper(store),
-      });
+      renderHook(
+        () => {
+          useActivePod(null);
+        },
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
 
       expect(store.getActions()).toStrictEqual([]);
     });

@@ -123,7 +123,9 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
     // Choose the "manual" power type which has no power fields, and fill in other
     // required fields.
     await waitFor(() => {
@@ -137,9 +139,11 @@ describe("AddMachineForm", () => {
       screen.getByRole("textbox", { name: "MAC address" }),
       "11:11:11:11:11:11"
     );
-    await waitFor(() =>
-      expect(screen.getByRole("button", { name: "Save machine" })).toBeEnabled()
-    );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Save machine" })
+      ).toBeEnabled();
+    });
   });
 
   it("can handle saving a machine", async () => {
@@ -151,11 +155,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "Machine name" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Machine name" }),
@@ -220,11 +224,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "MAC address" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     // Choose initial power type and fill in fields.
     await userEvent.type(
@@ -280,11 +284,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("combobox", { name: "Power type" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     // Submit the form with two extra macs, where one is an empty string
     await userEvent.selectOptions(

@@ -161,10 +161,15 @@ describe("Routes", () => {
         queryData,
         routePattern: "/*",
       });
-      await waitFor(() => expect(document.title).toBe(`${title} | MAAS`), {
-        // Wait for pages with redirects
-        timeout: LONG_TIMEOUT,
-      });
+      await waitFor(
+        () => {
+          expect(document.title).toBe(`${title} | MAAS`);
+        },
+        {
+          // Wait for pages with redirects
+          timeout: LONG_TIMEOUT,
+        }
+      );
     });
   });
 
@@ -174,9 +179,9 @@ describe("Routes", () => {
         route: path,
         state,
       });
-      await waitFor(() =>
-        expect(window.location.pathname).toBe(`${path}/summary`)
-      );
+      await waitFor(() => {
+        expect(window.location.pathname).toBe(`${path}/summary`);
+      });
     });
   });
 
@@ -194,10 +199,11 @@ describe("Routes", () => {
       state,
     });
     await waitFor(
-      () =>
+      () => {
         expect(window.location.pathname).toBe(
           urls.settings.configuration.general
-        ),
+        );
+      },
       {
         timeout: LONG_TIMEOUT,
       }
@@ -210,7 +216,9 @@ describe("Routes", () => {
       state,
     });
     await waitFor(
-      () => expect(window.location.pathname).toBe(urls.preferences.details),
+      () => {
+        expect(window.location.pathname).toBe(urls.preferences.details);
+      },
       {
         // Wait for pages with redirects
         timeout: LONG_TIMEOUT,

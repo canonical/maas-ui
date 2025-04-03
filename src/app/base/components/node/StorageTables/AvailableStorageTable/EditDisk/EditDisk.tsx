@@ -44,7 +44,9 @@ export const EditDisk = ({
     systemId,
     "updatingDisk",
     "updateDisk",
-    () => closeExpanded()
+    () => {
+      closeExpanded();
+    }
   );
 
   return (

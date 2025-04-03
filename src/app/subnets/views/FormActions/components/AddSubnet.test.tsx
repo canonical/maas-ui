@@ -50,9 +50,9 @@ it("correctly dispatches subnet cleanup and create actions on form submit", asyn
   await userEvent.type(screen.getByRole("textbox", { name: /CIDR/ }), cidr);
   await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
 
-  await waitFor(() =>
-    expect(screen.getByRole("combobox", { name: "VLAN" })).toBeInTheDocument()
-  );
+  await waitFor(() => {
+    expect(screen.getByRole("combobox", { name: "VLAN" })).toBeInTheDocument();
+  });
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Fabric" }),
     fabric.name
@@ -65,7 +65,7 @@ it("correctly dispatches subnet cleanup and create actions on form submit", asyn
 
   await userEvent.click(screen.getByRole("button", { name: /Add Subnet/ }));
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(store.getActions()).toStrictEqual([
       subnetActions.cleanup(),
       subnetActions.create({
@@ -76,6 +76,6 @@ it("correctly dispatches subnet cleanup and create actions on form submit", asyn
         gateway_ip: "",
         vlan: vlan2.id,
       }),
-    ])
-  );
+    ]);
+  });
 });

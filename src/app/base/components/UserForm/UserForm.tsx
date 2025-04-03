@@ -184,7 +184,9 @@ export const UserForm = ({
             appearance="link"
             className="u-no-margin--bottom"
             data-testid="toggle-passwords"
-            onClick={() => setPasswordVisible(!passwordVisible)}
+            onClick={() => {
+              setPasswordVisible(!passwordVisible);
+            }}
             type="button"
           >
             {Labels.ChangePassword}

@@ -42,7 +42,9 @@ const ActionConfirm = ({
     systemId,
     statusKey,
     eventName,
-    () => closeExpanded()
+    () => {
+      closeExpanded();
+    }
   );
   const formattedErrors = formatErrors(errors);
 

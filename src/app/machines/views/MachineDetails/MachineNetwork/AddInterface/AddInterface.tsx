@@ -63,7 +63,9 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
     systemId,
     "creatingPhysical",
     "createPhysical",
-    () => close()
+    () => {
+      close();
+    }
   );
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
 

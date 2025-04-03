@@ -67,11 +67,11 @@ it("dispatches an action to delete a tag", async () => {
   );
   await userEvent.click(screen.getByRole("button", { name: "Delete" }));
   const expected = tagActions.delete(1);
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       store.getActions().find((action) => action.type === expected.type)
-    ).toStrictEqual(expected)
-  );
+    ).toStrictEqual(expected);
+  });
 });
 
 it("dispatches an action to add a notification when tag successfully deleted", async () => {

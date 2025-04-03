@@ -202,9 +202,9 @@ describe("DhcpFormFields", () => {
     await userEvent.click(
       screen.getByRole("button", { name: /Choose machine/ })
     );
-    await waitFor(() =>
-      expect(screen.getByRole("grid")).toHaveAttribute("aria-busy", "false")
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("grid")).toHaveAttribute("aria-busy", "false");
+    });
     await userEvent.click(
       within(screen.getByRole("grid")).getByText(machine.hostname)
     );

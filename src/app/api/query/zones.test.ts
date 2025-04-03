@@ -25,7 +25,9 @@ const mockServer = setupMockServer(
 describe("useZones", () => {
   it("should return zones data", async () => {
     const { result } = renderHookWithProviders(() => useZones());
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toEqual(mockZones);
   });
 });
@@ -33,7 +35,9 @@ describe("useZones", () => {
 describe("useZoneCount", () => {
   it("should return correct count", async () => {
     const { result } = renderHookWithProviders(() => useZoneCount());
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toBe(3);
   });
 
@@ -42,7 +46,9 @@ describe("useZoneCount", () => {
       zoneResolvers.listZones.handler({ ...mockZones, items: [] })
     );
     const { result } = renderHookWithProviders(() => useZoneCount());
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toBe(0);
   });
 });
@@ -53,7 +59,9 @@ describe("useGetZone", () => {
     const { result } = renderHookWithProviders(() =>
       useGetZone({ path: { zone_id: expectedZone.id } })
     );
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toEqual(expectedZone);
   });
 
@@ -61,7 +69,9 @@ describe("useGetZone", () => {
     const { result } = renderHookWithProviders(() =>
       useGetZone({ path: { zone_id: 99 } })
     );
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
   });
 });
 
@@ -74,10 +84,14 @@ describe("useCreateZone", () => {
     const { result } = renderHookWithProviders(() => useCreateZone());
     result.current.mutate({ body: newZone });
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
 
     const { result: listResult } = renderHookWithProviders(() => useZones());
-    await waitFor(() => expect(listResult.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(listResult.current.isSuccess).toBe(true);
+    });
   });
 
   it("should return error if data is missing", async () => {
@@ -85,14 +99,18 @@ describe("useCreateZone", () => {
     // @ts-expect-error name is deliberately missing in the `body` here to force an error from useCreateZone
     result.current.mutate({ body: { description: "Missing name" } });
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
   });
 
   it("should return error if request body is invalid", async () => {
     const { result } = renderHookWithProviders(() => useCreateZone());
     result.current.mutate({ body: "invalid_string" as never });
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
   });
 });
 
@@ -105,10 +123,14 @@ describe("useUpdateZone", () => {
       path: { zone_id: updatedZone.id },
     });
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
 
     const { result: listResult } = renderHookWithProviders(() => useZones());
-    await waitFor(() => expect(listResult.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(listResult.current.isSuccess).toBe(true);
+    });
   });
 
   it("should return error if data is missing", async () => {
@@ -116,7 +138,9 @@ describe("useUpdateZone", () => {
     // @ts-expect-error name is deliberately missing in the `body` here to force an error from useUpdateZone
     result.current.mutate({ body: {}, path: { zone_id: 1 } });
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
   });
 
   it("should return error if request body is invalid", async () => {
@@ -126,7 +150,9 @@ describe("useUpdateZone", () => {
       path: { zone_id: 1 },
     });
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
   });
 });
 
@@ -136,16 +162,22 @@ describe("useDeleteZone", () => {
     const { result } = renderHookWithProviders(() => useDeleteZone());
     result.current.mutate({ path: { zone_id: zoneToDelete.id } });
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
 
     const { result: listResult } = renderHookWithProviders(() => useZones());
-    await waitFor(() => expect(listResult.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(listResult.current.isSuccess).toBe(true);
+    });
   });
 
   it("should return error if zone does not exist", async () => {
     const { result } = renderHookWithProviders(() => useDeleteZone());
     result.current.mutate({ path: { zone_id: 99 } });
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
   });
 });

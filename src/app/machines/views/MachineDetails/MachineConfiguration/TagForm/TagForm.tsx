@@ -44,7 +44,9 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
       renderContent={(editing, setEditing) =>
         editing ? (
           <TagActionForm
-            clearSidePanelContent={() => setEditing(false)}
+            clearSidePanelContent={() => {
+              setEditing(false);
+            }}
             errors={errors}
             processingCount={taggingMachines.length}
             selectedCount={1}

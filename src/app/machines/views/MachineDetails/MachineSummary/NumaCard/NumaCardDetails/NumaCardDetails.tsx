@@ -69,7 +69,9 @@ const NumaCardDetails = ({
           className={classNames("numa-card__button", {
             "is-open": isExpanded,
           })}
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={() => {
+            setIsExpanded(!isExpanded);
+          }}
         >
           Node {numaNode.index}
         </button>

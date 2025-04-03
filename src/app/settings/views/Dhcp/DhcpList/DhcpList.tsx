@@ -210,7 +210,9 @@ const DhcpList = (): JSX.Element => {
     saved && !!deletingName,
     dhcpsnippetActions.cleanup,
     `${deletingName} removed successfully.`,
-    () => setDeleting(null)
+    () => {
+      setDeleting(null);
+    }
   );
 
   const hideExpanded = () => {

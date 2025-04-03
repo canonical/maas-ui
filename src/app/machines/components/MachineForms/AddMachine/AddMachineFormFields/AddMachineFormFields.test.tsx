@@ -66,21 +66,23 @@ describe("AddMachineFormFields", () => {
       route: "/machines/add",
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
   };
 
   it("correctly sets minimum kernel to default", async () => {
     state.general.defaultMinHweKernel.data = "ga-18.04";
     await renderAddMachineFormFields();
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("option", {
           name: "bionic (ga-18.04)",
           selected: true,
         })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     expect(
       screen.getByRole("option", {
         name: "xenial (ga-16.04)",
@@ -105,11 +107,11 @@ describe("AddMachineFormFields", () => {
       screen.queryByRole("textbox", { name: "Extra MAC address 2" })
     ).not.toBeInTheDocument();
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Add MAC address" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     await userEvent.click(
       screen.getByRole("button", { name: "Add MAC address" })
@@ -137,11 +139,11 @@ describe("AddMachineFormFields", () => {
   it("can remove extra mac address fields", async () => {
     await renderAddMachineFormFields();
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Add MAC address" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     await userEvent.click(
       screen.getByRole("button", { name: "Add MAC address" })
@@ -159,11 +161,11 @@ describe("AddMachineFormFields", () => {
   it("does not require MAC address field if power_type is 'ipmi'", async () => {
     await renderAddMachineFormFields();
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "MAC address" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     expect(screen.getByRole("textbox", { name: "MAC address" })).toBeRequired();
 
     await userEvent.selectOptions(

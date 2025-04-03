@@ -39,8 +39,12 @@ export const AddSSLKey = (): JSX.Element => {
   const saving = useSelector(sslkeySelectors.saving);
   const saved = useSelector(sslkeySelectors.saved);
   const errors = useSelector(sslkeySelectors.errors);
-  const onCancel = () => navigate({ pathname: urls.preferences.sslKeys.index });
-  useOnEscapePressed(() => onCancel());
+  const onCancel = () => {
+    navigate({ pathname: urls.preferences.sslKeys.index });
+  };
+  useOnEscapePressed(() => {
+    onCancel();
+  });
 
   useAddMessage(saved, sslkeyActions.cleanup, "SSL key successfully added.");
 

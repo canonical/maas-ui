@@ -41,8 +41,12 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
   const errors = useSelector(tokenSelectors.errors);
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
-  const onCancel = () => navigate({ pathname: urls.preferences.apiKeys.index });
-  useOnEscapePressed(() => onCancel());
+  const onCancel = () => {
+    navigate({ pathname: urls.preferences.apiKeys.index });
+  };
+  useOnEscapePressed(() => {
+    onCancel();
+  });
 
   useAddMessage(
     saved,

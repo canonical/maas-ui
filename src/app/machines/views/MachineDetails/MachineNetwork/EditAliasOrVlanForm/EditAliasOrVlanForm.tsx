@@ -81,7 +81,9 @@ const EditAliasOrVlanForm = ({
     systemId,
     "updatingInterface",
     "updateInterface",
-    () => close()
+    () => {
+      close();
+    }
   );
 
   useFetchActions([

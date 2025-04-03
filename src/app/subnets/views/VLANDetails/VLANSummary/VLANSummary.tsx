@@ -33,9 +33,9 @@ const VLANSummary = ({ id }: Props): JSX.Element | null => {
       buttons={
         isAdmin && (
           <Button
-            onClick={() =>
-              setSidePanelContent({ view: SidePanelViews.EditVLAN })
-            }
+            onClick={() => {
+              setSidePanelContent({ view: SidePanelViews.EditVLAN });
+            }}
           >
             Edit
           </Button>

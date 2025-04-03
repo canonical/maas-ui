@@ -20,11 +20,11 @@ const SpaceDetailsHeader = ({
       buttons={[
         <Button
           disabled={!!sidePanelContent}
-          onClick={() =>
+          onClick={() => {
             setSidePanelContent({
               view: SpaceDetailsSidePanelViews.DELETE_SPACE,
-            })
-          }
+            });
+          }}
         >
           Delete space
         </Button>,

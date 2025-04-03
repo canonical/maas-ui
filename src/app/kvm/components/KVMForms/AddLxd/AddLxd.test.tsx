@@ -82,7 +82,9 @@ describe("AddLxd", () => {
       route: "/kvm/add",
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
     // Submit credentials form
     await userEvent.type(
@@ -103,11 +105,11 @@ describe("AddLxd", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("listitem", { name: "Credentials" }).firstChild
-      ).not.toHaveClass("stepper__title--is-active")
-    );
+      ).not.toHaveClass("stepper__title--is-active");
+    });
     expect(
       screen.getByRole("listitem", { name: "Authentication" }).firstChild
     ).toHaveClass("stepper__title--is-active");
@@ -135,7 +137,9 @@ describe("AddLxd", () => {
       route: "/kvm/add",
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
     // Submit credentials form
     await userEvent.type(
@@ -156,11 +160,11 @@ describe("AddLxd", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("listitem", { name: "Credentials" }).firstChild
-      ).not.toHaveClass("stepper__title--is-active")
-    );
+      ).not.toHaveClass("stepper__title--is-active");
+    });
     expect(
       screen.getByRole("listitem", { name: "Authentication" }).firstChild
     ).not.toHaveClass("stepper__title--is-active");
@@ -200,7 +204,9 @@ describe("AddLxd", () => {
       route: "/kvm/add",
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
     // Submit credentials form
     await userEvent.type(

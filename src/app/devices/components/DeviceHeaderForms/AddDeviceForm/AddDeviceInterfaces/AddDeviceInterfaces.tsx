@@ -86,7 +86,12 @@ const AddDeviceInterfaceFields = ({
       ) : null}
       {!deleteDisabled ? (
         <div className="u-align--right">
-          <Button onClick={() => removeInterface(iface.id)} type="button">
+          <Button
+            onClick={() => {
+              removeInterface(iface.id);
+            }}
+            type="button"
+          >
             Delete
           </Button>
         </div>
@@ -141,7 +146,9 @@ export const AddDeviceInterfaces = (): JSX.Element => {
       <Button
         data-testid="add-interface"
         hasIcon
-        onClick={() => addInterface()}
+        onClick={() => {
+          addInterface();
+        }}
         type="button"
       >
         <Icon name="plus" />

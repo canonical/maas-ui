@@ -29,7 +29,9 @@ const AddFabric = ({
       cleanup={fabricActions.cleanup}
       errors={errors}
       initialValues={{ name: "", description: "" }}
-      onCancel={() => setActiveForm(null)}
+      onCancel={() => {
+        setActiveForm(null);
+      }}
       onSaveAnalytics={{
         action: "Add fabric",
         category: "Subnets form actions",
@@ -39,7 +41,9 @@ const AddFabric = ({
         dispatch(fabricActions.cleanup());
         dispatch(fabricActions.create({ name, description }));
       }}
-      onSuccess={() => setActiveForm(null)}
+      onSuccess={() => {
+        setActiveForm(null);
+      }}
       saved={isSaved}
       saving={isSaving}
       submitLabel={`Add ${activeForm}`}

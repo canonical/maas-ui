@@ -147,7 +147,9 @@ const MaasIntro = (): JSX.Element => {
                   {Labels.AreYouSure}
                 </>
               }
-              onClose={() => setShowSkip(false)}
+              onClose={() => {
+                setShowSkip(false);
+              }}
               onConfirm={() => {
                 dispatch(configActions.update({ completed_intro: true }));
                 if (!authUser?.completed_intro) {

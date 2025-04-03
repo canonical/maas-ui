@@ -50,14 +50,15 @@ const ChangeStorageLayoutMenu = ({ systemId }: Props) => {
         links={storageLayoutOptions.map((group) =>
           group.map((option) => ({
             children: option.label,
-            onClick: () =>
+            onClick: () => {
               setSidePanelContent({
                 view: MachineSidePanelViews.APPLY_STORAGE_LAYOUT,
                 extras: {
                   systemId,
                   selectedLayout: option,
                 },
-              }),
+              });
+            },
           }))
         )}
         position="right"

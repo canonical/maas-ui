@@ -34,7 +34,9 @@ const UserDeleteForm = ({ user }: UserDeleteProps) => {
     <FormikForm<EmptyObject>
       aria-label="Delete user"
       initialValues={{}}
-      onCancel={() => navigate({ pathname: settingsURLs.users.index })}
+      onCancel={() => {
+        navigate({ pathname: settingsURLs.users.index });
+      }}
       onSubmit={() => {
         dispatch(userActions.delete(user.id));
         setDeletedUser(user.username);

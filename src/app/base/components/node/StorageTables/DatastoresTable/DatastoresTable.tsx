@@ -29,7 +29,9 @@ const DatastoresTable = ({ canEditStorage, node }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const isMachine = nodeIsMachine(node);
-  const closeExpanded = () => setExpanded(null);
+  const closeExpanded = () => {
+    setExpanded(null);
+  };
 
   const headers = [
     { content: "Name" },
@@ -66,9 +68,9 @@ const DatastoresTable = ({ canEditStorage, node }: Props): JSX.Element => {
                         },
                       ]}
                       disabled={!canEditStorage}
-                      onActionClick={(action: DatastoreAction) =>
-                        setExpanded({ content: action, id: rowId })
-                      }
+                      onActionClick={(action: DatastoreAction) => {
+                        setExpanded({ content: action, id: rowId });
+                      }}
                     />
                   ),
                   className: "u-align--right",

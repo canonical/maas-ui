@@ -180,7 +180,9 @@ const generateActionMenus = (
             "data-testid": `action-link-${action}`,
             // When nodes are not provided actions should always be enabled.
             disabled: nodes ? count === 0 : false,
-            onClick: () => onActionClick(action),
+            onClick: () => {
+              onActionClick(action);
+            },
           });
         }
         return groupLinks;
@@ -272,7 +274,11 @@ export const NodeActionMenuGroup = ({
           </span>
         )}
       <span className="p-action-button--wrapper">
-        <Button onClick={() => onActionClick(NodeActions.DELETE)}>
+        <Button
+          onClick={() => {
+            onActionClick(NodeActions.DELETE);
+          }}
+        >
           <Icon name="delete" />
           {Labels.Delete}
         </Button>

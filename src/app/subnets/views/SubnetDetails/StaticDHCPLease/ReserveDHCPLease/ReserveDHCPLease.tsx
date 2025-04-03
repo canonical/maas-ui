@@ -110,7 +110,9 @@ const ReserveDHCPLease = ({
     }
   };
 
-  const onClose = () => setSidePanelContent(null);
+  const onClose = () => {
+    setSidePanelContent(null);
+  };
 
   const ReserveDHCPLeaseSchema = Yup.object().shape({
     ip_address: Yup.string()

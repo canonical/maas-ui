@@ -10,8 +10,12 @@ import urls from "@/app/preferences/urls";
 const DeleteSSHKey = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const onClose = () => navigate({ pathname: urls.sshKeys.index });
-  useOnEscapePressed(() => onClose());
+  const onClose = () => {
+    navigate({ pathname: urls.sshKeys.index });
+  };
+  useOnEscapePressed(() => {
+    onClose();
+  });
 
   const deleteSshKey = useDeleteSshKey();
 

@@ -344,9 +344,9 @@ describe("GlobalSideNav", () => {
       </Provider>
     );
     history.push(urls.intro.images);
-    await waitFor(() =>
-      expect(history.location.pathname).toBe(urls.intro.images)
-    );
+    await waitFor(() => {
+      expect(history.location.pathname).toBe(urls.intro.images);
+    });
   });
 
   it("displays 'Virsh' link if user has Virsh KVM hosts", () => {

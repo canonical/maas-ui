@@ -70,12 +70,12 @@ describe("LXDClusterHostsTable", () => {
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(screen.getByRole("link", { name: host.name })).toHaveAttribute(
         "href",
         urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 22 })
-      )
-    );
+      );
+    });
   });
 
   it("can show the name of the host's pool", async () => {
@@ -89,10 +89,14 @@ describe("LXDClusterHostsTable", () => {
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
-    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
-    await waitFor(() =>
-      expect(screen.getByTestId("host-pool-name")).toHaveTextContent("swimming")
-    );
+    await waitFor(() => {
+      expect(poolsResolvers.listPools.resolved).toBeTruthy();
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("host-pool-name")).toHaveTextContent(
+        "swimming"
+      );
+    });
   });
 
   it("can open the compose VM form for a host", async () => {
@@ -109,12 +113,12 @@ describe("LXDClusterHostsTable", () => {
     );
     await waitFor(() => screen.getByTestId("vm-host-compose"));
     await userEvent.click(screen.getByTestId("vm-host-compose"));
-    await waitFor(() =>
+    await waitFor(() => {
       expect(setSidePanelContent).toHaveBeenCalledWith({
         view: KVMSidePanelViews.COMPOSE_VM,
         extras: { hostId: 22 },
-      })
-    );
+      });
+    });
   });
 
   it("can link to a host's settings page", async () => {
@@ -128,16 +132,18 @@ describe("LXDClusterHostsTable", () => {
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
-    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
-    await waitFor(() =>
+    await waitFor(() => {
+      expect(poolsResolvers.listPools.resolved).toBeTruthy();
+    });
+    await waitFor(() => {
       expect(screen.getByTestId("vm-host-settings")).toHaveAttribute(
         "href",
         urls.kvm.lxd.cluster.host.edit({
           clusterId: 1,
           hostId: 22,
         })
-      )
-    );
+      );
+    });
   });
 
   it("displays a message if there are no search results", () => {

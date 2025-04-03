@@ -160,7 +160,9 @@ const GeneralForm = (): JSX.Element => {
               component={ThemedRadioButton}
               label={color.label}
               name="theme"
-              onClick={() => setTheme(color.value)}
+              onClick={() => {
+                setTheme(color.value);
+              }}
             />
           </Col>
         ))}

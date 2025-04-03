@@ -97,7 +97,9 @@ const generateDropdownContent = (
             data-testid={`kvm-pool-select-${name}`}
             disabled={free < 0}
             key={`${disk.id}-${name}`}
-            onClick={() => selectPool(name)}
+            onClick={() => {
+              selectPool(name);
+            }}
             type="button"
           >
             <div className="kvm-pool-select__row">

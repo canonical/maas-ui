@@ -29,7 +29,9 @@ const VLANActionForms = ({
   subnetId,
   vlanId,
 }: VLANActionFormProps) => {
-  const clearSidePanelContent = () => setSidePanelContent(null);
+  const clearSidePanelContent = () => {
+    setSidePanelContent(null);
+  };
 
   switch (activeForm) {
     case VLANActionTypes.ConfigureDHCP: {

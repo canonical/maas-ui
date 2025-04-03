@@ -31,8 +31,9 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
             SubnetActionTypes.DeleteSubnet,
           ].map((view) => ({
             children: subnetActionLabels[view],
-            onClick: () =>
-              setSidePanelContent({ view: SubnetDetailsSidePanelViews[view] }),
+            onClick: () => {
+              setSidePanelContent({ view: SubnetDetailsSidePanelViews[view] });
+            },
           }))}
           position="right"
           toggleAppearance="positive"

@@ -32,12 +32,14 @@ describe("DeviceHeaderForms", () => {
       />,
       { state }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("form", { name: "Add device" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 });
