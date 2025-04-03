@@ -69,8 +69,6 @@ const MaasIntro = (): JSX.Element => {
   };
   const loading = authLoading || configLoading || reposLoading;
   const saving = configSaving || reposSaving;
-  const saved = configSaved;
-
   return (
     <IntroSection loading={loading}>
       <>
@@ -120,7 +118,7 @@ const MaasIntro = (): JSX.Element => {
               );
             }
           }}
-          saved={saved}
+          saved={configSaved}
           savedRedirect={urls.intro.images}
           saving={saving}
           secondarySubmit={() => {

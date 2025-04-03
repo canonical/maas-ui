@@ -39,12 +39,11 @@ const SpaceDetails = (): JSX.Element => {
       dispatch(spaceActions.setActive(id));
     }
 
-    const unsetActiveSpaceAndCleanup = () => {
+    return () => {
       dispatch(spaceActions.setActive(null));
       dispatch(spaceActions.cleanup());
       setSidePanelContent(null);
     };
-    return unsetActiveSpaceAndCleanup;
   }, [dispatch, id, isValidID, setSidePanelContent]);
 
   if (!space) {

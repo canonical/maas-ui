@@ -34,7 +34,7 @@ const createFile = (
 };
 
 const getFileUploadInput = (container: HTMLElement) => {
-  return container.querySelector("input[type='file'") as HTMLElement;
+  return container.querySelector("input[type='file']") as HTMLElement;
 };
 
 describe("UploadTextArea", () => {
