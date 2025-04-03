@@ -1,7 +1,10 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import type { Dispatch, ReactNode, SetStateAction, ChangeEvent } from "react";
+import { Fragment, useMemo, useState } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 
-import { DynamicTable, Pagination } from "@canonical/maas-react-components";
+import {
+  DynamicTable,
+  PaginationContainer,
+} from "@canonical/maas-react-components";
 import type {
   Column,
   Row,
@@ -24,7 +27,6 @@ import classNames from "classnames";
 
 import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
 import TableHeader from "@/app/base/components/GenericTable/TableHeader";
-import { DEFAULT_DEBOUNCE_INTERVAL } from "@/app/machines/views/MachineList/MachineListTable/MachineListPagination/MachineListPagination";
 import PageSizeSelect from "@/app/machines/views/MachineList/MachineListTable/PageSizeSelect";
 
 import "./_index.scss";
@@ -64,24 +66,9 @@ const GenericTable = <T extends { id: string | number }>({
   setRowSelection,
   variant = "full-height",
 }: GenericTableProps<T>) => {
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
   const [grouping, setGrouping] = useState<GroupingState>(groupBy ?? []);
   const [expanded, setExpanded] = useState<ExpandedState>(true);
   const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);
-
-  const [currentPage, setCurrentPage] = useState<number | undefined>(
-    pagination?.page
-  );
-  const [paginationError, setPaginationError] = useState<string>("");
-
-  useEffect(() => {
-    return () => {
-      if (intervalRef.current) {
-        clearTimeout(intervalRef.current);
-      }
-    };
-  }, []);
 
   if (canSelect) {
     columns = [
@@ -192,50 +179,12 @@ const GenericTable = <T extends { id: string | number }>({
     <>
       {pagination && setPagination != undefined ? (
         <span className="u-flex--end">
-          <Pagination
-            className="u-nudge-left--x-large"
-            currentPage={currentPage}
-            error={paginationError}
-            onInputBlur={() => {
-              setCurrentPage(pagination?.page);
-              setPaginationError("");
-            }}
-            onInputChange={function (e: ChangeEvent<HTMLInputElement>): void {
-              if (e.target.value) {
-                setCurrentPage(e.target.valueAsNumber);
-                if (intervalRef.current) {
-                  clearTimeout(intervalRef.current);
-                }
-                intervalRef.current = setTimeout(() => {
-                  if (
-                    e.target.valueAsNumber > totalPages ||
-                    e.target.valueAsNumber < 1
-                  ) {
-                    setPaginationError(
-                      `"${e.target.valueAsNumber}" is not a valid page number.`
-                    );
-                  } else {
-                    setPaginationError("");
-                    setPagination((prevState) => {
-                      return { ...prevState, page: e.target.valueAsNumber };
-                    });
-                  }
-                }, DEFAULT_DEBOUNCE_INTERVAL);
-              } else {
-                setCurrentPage(undefined);
-                setPaginationError("Enter a page number.");
-              }
-            }}
-            onNextClick={function (): void {
-              setCurrentPage((prevState) => Number(prevState) + 1);
+          <PaginationContainer
+            currentPage={pagination.page}
+            disabled={false}
+            paginate={function (page: number): void {
               setPagination((prevState) => {
-                return { ...prevState, page: prevState.page + 1 };
-              });
-            }}
-            onPreviousClick={function (): void {
-              setCurrentPage((prevState) => Number(prevState) - 1);
-              setPagination((prevState) => {
-                return { ...prevState, page: prevState.page - 1 };
+                return { ...prevState, page };
               });
             }}
             totalPages={totalPages}
@@ -243,7 +192,6 @@ const GenericTable = <T extends { id: string | number }>({
           <PageSizeSelect
             pageSize={pagination.size}
             paginate={function (page: number): void {
-              setCurrentPage(page);
               setPagination((prevState) => {
                 return { ...prevState, page };
               });
