@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import type { Dispatch, ReactNode, SetStateAction, ChangeEvent } from "react";
 
 import { DynamicTable, Pagination } from "@canonical/maas-react-components";
@@ -263,16 +263,22 @@ const GenericTable = <T extends { id: string | number }>({
               {headerGroup.headers
                 .filter(filterHeaders)
                 .map((header, index) => (
-                  <>
-                    <TableHeader header={header} key={header.id} />
+                  <Fragment key={header.id}>
+                    <TableHeader header={header} />
                     {index === 2 ? <th className="select-alignment" /> : null}
-                  </>
+                  </Fragment>
                 ))}
             </tr>
           ))}
         </thead>
         {table.getRowModel().rows.length < 1 ? (
-          noData
+          <tbody>
+            <tr>
+              <td colSpan={columns.length} style={{ textAlign: "center" }}>
+                {noData}
+              </td>
+            </tr>
+          </tbody>
         ) : (
           <DynamicTable.Body>
             {table.getRowModel().rows.map((row) => {
