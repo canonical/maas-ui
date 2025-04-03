@@ -39,9 +39,7 @@ describe("usePoolCount", () => {
   });
 
   it("should return 0 when no zones exist", async () => {
-    mockServer.use(
-      poolsResolvers.listPools.handler({ ...mockPools, items: [] })
-    );
+    mockServer.use(poolsResolvers.listPools.handler({ items: [], total: 0 }));
     const { result } = renderHookWithProviders(() => usePoolCount());
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBe(0);
