@@ -152,7 +152,9 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
     saved,
     scriptActions.cleanup,
     `${deletingScript} removed successfully.`,
-    () => setDeleting(null)
+    () => {
+      setDeleting(null);
+    }
   );
 
   useAddMessage(

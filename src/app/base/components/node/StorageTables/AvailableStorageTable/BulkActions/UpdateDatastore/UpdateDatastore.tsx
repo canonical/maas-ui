@@ -41,7 +41,9 @@ export const UpdateDatastore = ({
     systemId,
     "updatingVmfsDatastore",
     "updateVmfsDatastore",
-    () => closeForm()
+    () => {
+      closeForm();
+    }
   );
 
   if (isMachineDetails(machine)) {

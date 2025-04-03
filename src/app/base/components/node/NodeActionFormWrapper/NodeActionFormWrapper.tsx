@@ -56,7 +56,9 @@ export const NodeActionFormWrapper = ({
         <NodeActionWarning
           action={action}
           nodeType={nodeType}
-          onUpdateSelected={() => onUpdateSelected(actionableNodeIDs)}
+          onUpdateSelected={() => {
+            onUpdateSelected(actionableNodeIDs);
+          }}
           selectedCount={nodes.length - actionableNodeIDs.length}
         />
       ) : (

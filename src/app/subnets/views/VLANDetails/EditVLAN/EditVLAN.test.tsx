@@ -113,11 +113,11 @@ describe("EditVLAN", () => {
       space: vlan.space,
       vid: vlan.vid,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         store.getActions().find((action) => action.type === expected.type)
-      ).toStrictEqual(expected)
-    );
+      ).toStrictEqual(expected);
+    });
   });
 
   it("allows the space to be unset", async () => {
@@ -136,13 +136,13 @@ describe("EditVLAN", () => {
       screen.getByRole("combobox", { name: "Space" }),
       ""
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         within(screen.getByRole("combobox", { name: "Space" })).getByRole(
           "option",
           { name: "No space" }
         )
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 });

@@ -14,7 +14,12 @@ const FabricSummary = ({ fabric }: { fabric: Fabric }): React.ReactElement => {
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (
-          <EditFabric close={() => setEditing(false)} id={fabric.id} />
+          <EditFabric
+            close={() => {
+              setEditing(false);
+            }}
+            id={fabric.id}
+          />
         ) : (
           <Row>
             <Col size={6}>

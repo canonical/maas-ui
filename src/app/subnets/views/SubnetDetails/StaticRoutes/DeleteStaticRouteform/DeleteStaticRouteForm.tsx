@@ -30,7 +30,9 @@ const DeleteStaticRouteForm = ({
       aria-label="Confirm static route deletion"
       initialValues={{}}
       modelType="static route"
-      onCancel={() => setSidePanelContent(null)}
+      onCancel={() => {
+        setSidePanelContent(null);
+      }}
       onSubmit={() => {
         dispatch(staticRouteActions.delete(staticRouteId));
       }}

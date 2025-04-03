@@ -28,7 +28,9 @@ const ReservedRangeDeleteForm = ({
       initialValues={{}}
       message="Ensure all in-use IP addresses are registered in MAAS before releasing this range to avoid potential collisions. Are you sure you want to remove this IP range?"
       modelType="IP range"
-      onCancel={() => setSidePanelContent(null)}
+      onCancel={() => {
+        setSidePanelContent(null);
+      }}
       onSubmit={() => {
         dispatch(ipRangeActions.delete(ipRangeId));
       }}

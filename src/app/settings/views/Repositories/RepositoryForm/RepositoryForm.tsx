@@ -83,7 +83,9 @@ export const RepositoryForm = ({
     repositoriesSaved,
     repositoryActions.cleanup,
     `${savedRepo} ${repository ? "updated" : "added"} successfully.`,
-    () => setSavedRepo(null)
+    () => {
+      setSavedRepo(null);
+    }
   );
 
   // Fetch data if not all loaded.
@@ -142,9 +144,9 @@ export const RepositoryForm = ({
             cleanup={repositoryActions.cleanup}
             errors={errors}
             initialValues={initialValues}
-            onCancel={() =>
-              navigate({ pathname: settingsURLs.repositories.index })
-            }
+            onCancel={() => {
+              navigate({ pathname: settingsURLs.repositories.index });
+            }}
             onSaveAnalytics={{
               action: "Saved",
               category: "Package repos settings",

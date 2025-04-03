@@ -10,10 +10,9 @@ import { ImageSidePanelViews } from "@/app/images/constants";
 type Props = SidePanelContentTypes & {};
 
 const ImagesForms = ({ sidePanelContent, setSidePanelContent }: Props) => {
-  const clearSidePanelContent = useCallback(
-    () => setSidePanelContent(null),
-    [setSidePanelContent]
-  );
+  const clearSidePanelContent = useCallback(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   if (!sidePanelContent) {
     return null;

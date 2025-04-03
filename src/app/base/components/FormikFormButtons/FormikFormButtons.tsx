@@ -91,7 +91,9 @@ export const FormikFormButtons = <V,>({
         }
         onClick={
           secondarySubmit
-            ? () => secondarySubmit(values, formikContext)
+            ? () => {
+                secondarySubmit(values, formikContext);
+              }
             : undefined
         }
         type="button"
@@ -140,7 +142,11 @@ export const FormikFormButtons = <V,>({
             data-testid={TestIds.CancelButton}
             disabled={cancelDisabled}
             onClick={
-              onCancel ? () => onCancel(values, formikContext) : undefined
+              onCancel
+                ? () => {
+                    onCancel(values, formikContext);
+                  }
+                : undefined
             }
             type="button"
           >

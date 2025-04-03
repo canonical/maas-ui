@@ -78,11 +78,11 @@ it("dispatches an action to create a tag", async () => {
     name: "name1",
   });
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       store.getActions().find((action) => action.type === expected.type)
-    ).toStrictEqual(expected)
-  );
+    ).toStrictEqual(expected);
+  });
 });
 
 it("redirects to the newly created tag on save", async () => {
@@ -272,7 +272,7 @@ it("shows an error if tag name is invalid", async () => {
 
   await userEvent.tab();
 
-  await waitFor(() =>
-    expect(nameInput).toHaveAccessibleErrorMessage(Label.NameValidation)
-  );
+  await waitFor(() => {
+    expect(nameInput).toHaveAccessibleErrorMessage(Label.NameValidation);
+  });
 });

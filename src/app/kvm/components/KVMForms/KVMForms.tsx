@@ -118,10 +118,9 @@ const KVMForms = ({
     searchFilter ? FilterMachines.parseFetchFilters(searchFilter) : null
   );
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
-  const clearSidePanelContent = useCallback(
-    () => setSidePanelContent(null),
-    [setSidePanelContent]
-  );
+  const clearSidePanelContent = useCallback(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   if (!sidePanelContent) {
     return null;

@@ -96,7 +96,9 @@ const ImagesIntro = () => {
           data-testid="images-intro-continue"
           disabled={incomplete}
           hasIcon
-          onClick={() => navigate({ pathname: urls.intro.success })}
+          onClick={() => {
+            navigate({ pathname: urls.intro.success });
+          }}
         >
           Continue
           {incomplete && (

@@ -18,7 +18,9 @@ const DeleteDHCPLease = ({ setSidePanelContent, reservedIpId }: Props) => {
     reservedIpSelectors.getById(state, reservedIpId)
   );
 
-  const handleClose = () => setSidePanelContent(null);
+  const handleClose = () => {
+    setSidePanelContent(null);
+  };
 
   return (
     <ModelActionForm

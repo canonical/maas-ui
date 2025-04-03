@@ -123,7 +123,9 @@ const AddBondForm = ({
     systemId,
     "creatingBond",
     "createBond",
-    () => handleClose()
+    () => {
+      handleClose();
+    }
   );
 
   useFetchActions([

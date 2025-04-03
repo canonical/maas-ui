@@ -79,7 +79,9 @@ export const CreateRaid = ({
     systemId,
     "creatingRaid",
     "createRaid",
-    () => closeForm()
+    () => {
+      closeForm();
+    }
   );
   const [initialBlockDevices, initialPartitions] =
     splitDiskPartitionIds(selected);

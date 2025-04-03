@@ -83,7 +83,9 @@ const AddBridgeForm = ({
     systemId,
     "creatingBridge",
     "createBridge",
-    () => handleClose()
+    () => {
+      handleClose();
+    }
   );
 
   useFetchActions([vlanActions.fetch]);

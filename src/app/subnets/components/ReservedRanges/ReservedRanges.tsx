@@ -111,7 +111,7 @@ const generateRows = (
         className: "actions-col u-align--right",
         content: (
           <TableActions
-            onDelete={() =>
+            onDelete={() => {
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews[
                   SubnetActionTypes.DeleteReservedRange
@@ -119,9 +119,9 @@ const generateRows = (
                 extras: {
                   ipRangeId: ipRange.id,
                 },
-              })
-            }
-            onEdit={() =>
+              });
+            }}
+            onEdit={() => {
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews[
                   SubnetActionTypes.ReserveRange
@@ -129,8 +129,8 @@ const generateRows = (
                 extras: {
                   ipRangeId: ipRange.id,
                 },
-              })
-            }
+              });
+            }}
           />
         ),
       },

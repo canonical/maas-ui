@@ -21,7 +21,11 @@ export const useToggleMenu = (
   onToggleMenu: ((open: boolean) => void) | null
 ): ((open: boolean) => void) => {
   return useCallback(
-    (open) => onToggleMenu && onToggleMenu(open),
+    (open) => {
+      if (onToggleMenu) {
+        onToggleMenu(open);
+      }
+    },
     [onToggleMenu]
   );
 };

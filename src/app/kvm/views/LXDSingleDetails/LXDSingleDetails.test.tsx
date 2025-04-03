@@ -58,7 +58,9 @@ describe("LXDSingleDetails", () => {
       state,
       routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
     expect(
       screen.getByLabelText(LXDSingleSettingsLabel.Title)
     ).toBeInTheDocument();

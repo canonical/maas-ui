@@ -139,11 +139,11 @@ const ImageListHeader = ({
           <Button
             disabled={canStopImport || stoppingImport}
             hasIcon
-            onClick={() =>
+            onClick={() => {
               setSidePanelContent({
                 view: ImageSidePanelViews.DOWNLOAD_IMAGE,
-              })
-            }
+              });
+            }}
             type="button"
           >
             <i className="p-icon--begin-downloading" />

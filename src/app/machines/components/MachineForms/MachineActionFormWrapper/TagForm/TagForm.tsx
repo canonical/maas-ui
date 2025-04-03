@@ -95,7 +95,9 @@ export const TagForm = ({
           <AddTagForm
             machines={machines}
             name={newTagName}
-            onCancel={() => setSecondaryContent(null)}
+            onCancel={() => {
+              setSecondaryContent(null);
+            }}
             onTagCreated={(tag) => {
               setNewTagName(null);
               setNewTags([...newTags, tag.id]);

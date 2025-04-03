@@ -74,7 +74,9 @@ const MachineListControls = ({
               />
             </Col>
             <DebounceSearchBox
-              onDebounced={(debouncedText) => setFilter(debouncedText)}
+              onDebounced={(debouncedText) => {
+                setFilter(debouncedText);
+              }}
               searchText={searchText}
               setSearchText={setSearchText}
             />

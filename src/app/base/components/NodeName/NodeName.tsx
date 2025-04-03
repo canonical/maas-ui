@@ -70,7 +70,9 @@ const NodeName = ({
       <Button
         appearance="base"
         className="node-name--editable"
-        onClick={() => setEditingName(true)}
+        onClick={() => {
+          setEditingName(true);
+        }}
       >
         {node.fqdn}
       </Button>
@@ -93,7 +95,9 @@ const NodeName = ({
         hostname: node.hostname,
       }}
       inline
-      onCancel={() => setEditingName(false)}
+      onCancel={() => {
+        setEditingName(false);
+      }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Node details header",

@@ -39,7 +39,9 @@ export const MapSubnet = ({
     );
   }
 
-  const closeForm = () => setSidePanelContent(null);
+  const closeForm = () => {
+    setSidePanelContent(null);
+  };
   const isIPv4 = subnet.version === 4;
   return (
     <FormikForm<EmptyObject>

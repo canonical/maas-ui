@@ -30,13 +30,13 @@ const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps) => {
         <MainToolbar.Controls>
           <Button
             appearance="positive"
-            onClick={() =>
+            onClick={() => {
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews[
                   SubnetActionTypes.ReserveDHCPLease
                 ],
-              })
-            }
+              });
+            }}
           >
             Reserve static DHCP lease
           </Button>

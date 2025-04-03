@@ -85,7 +85,9 @@ const generateRows = (
       },
     ],
     "data-testid": "machine-select-row",
-    onClick: () => onRowClick(machine),
+    onClick: () => {
+      onRowClick(machine);
+    },
     onKeyPress: (e: KeyboardEvent<HTMLTableRowElement>) => {
       if (e.key === "Enter") {
         e.preventDefault();

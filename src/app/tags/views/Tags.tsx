@@ -26,18 +26,20 @@ const Tags = (): React.ReactElement => {
   const detailsMatch = useMatch(urls.tags.tag.index(null));
   const isDetails = !!detailsMatch;
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
-  const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) =>
+  const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) => {
     setSidePanelContent({
       view: TagSidePanelViews.DeleteTag,
       extras: { fromDetails, id },
     });
-  const onUpdate = (id: Tag[TagMeta.PK]) =>
+  };
+  const onUpdate = (id: Tag[TagMeta.PK]) => {
     setSidePanelContent({
       view: TagSidePanelViews.UpdateTag,
       extras: {
         id,
       },
     });
+  };
   const base = urls.tags.tag.index(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(TagSearchFilter.All);

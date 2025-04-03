@@ -38,7 +38,9 @@ export const AddSpecialFilesystem = ({
     machine.system_id,
     "mountingSpecial",
     "mountSpecial",
-    () => closeForm()
+    () => {
+      closeForm();
+    }
   );
 
   const fsOptions = machine.supported_filesystems

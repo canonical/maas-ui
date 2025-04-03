@@ -19,7 +19,9 @@ export const DeleteSubnet = ({
   const errors = useSelector(subnetSelectors.errors);
   const saving = useSelector(subnetSelectors.saving);
   const saved = useSelector(subnetSelectors.saved);
-  const handleClose = () => setSidePanelContent(null);
+  const handleClose = () => {
+    setSidePanelContent(null);
+  };
   const canBeDeleted = useCanBeDeleted(subnetId);
   const dhcpEnabled = useIsDHCPEnabled(subnetId);
 

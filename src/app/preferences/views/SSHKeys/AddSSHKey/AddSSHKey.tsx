@@ -11,8 +11,12 @@ export enum Label {
 
 export const AddSSHKey = (): React.ReactElement => {
   const navigate = useNavigate();
-  const onCancel = () => navigate({ pathname: urls.preferences.sshKeys.index });
-  useOnEscapePressed(() => onCancel());
+  const onCancel = () => {
+    navigate({ pathname: urls.preferences.sshKeys.index });
+  };
+  useOnEscapePressed(() => {
+    onCancel();
+  });
 
   return (
     <SSHKeyForm

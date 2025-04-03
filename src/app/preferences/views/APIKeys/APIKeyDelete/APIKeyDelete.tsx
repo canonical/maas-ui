@@ -9,8 +9,12 @@ import { isId } from "@/app/utils";
 const APIKeyDelete = () => {
   const id = useGetURLId("id");
   const navigate = useNavigate();
-  const onCancel = () => navigate({ pathname: urls.preferences.apiKeys.index });
-  useOnEscapePressed(() => onCancel());
+  const onCancel = () => {
+    navigate({ pathname: urls.preferences.apiKeys.index });
+  };
+  useOnEscapePressed(() => {
+    onCancel();
+  });
 
   if (!isId(id)) {
     return <h4>API Key not found</h4>;

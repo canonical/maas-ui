@@ -167,11 +167,11 @@ describe("ReservedRangeForm", () => {
       subnet: subnet.id,
       type: IPRangeType.Reserved,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         store.getActions().find((action) => action.type === expected.type)
-      ).toStrictEqual(expected)
-    );
+      ).toStrictEqual(expected);
+    });
   });
 
   it("dispatches an action to update a reserved range", async () => {
@@ -199,11 +199,11 @@ describe("ReservedRangeForm", () => {
       id: ipRange.id,
       start_ip: "10.10.0.20",
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         store.getActions().find((action) => action.type === expected.type)
-      ).toStrictEqual(expected)
-    );
+      ).toStrictEqual(expected);
+    });
   });
 
   it("resets the comment when updating a dynamic range", async () => {

@@ -210,9 +210,9 @@ it("can remove manual tags", async () => {
   );
   // Get the tag's new row.
   const updatedRow = screen.getByRole("row", { name: tagName });
-  await waitFor(() =>
-    expect(updatedRow).toHaveAttribute("data-testid", RowType.Removed)
-  );
+  await waitFor(() => {
+    expect(updatedRow).toHaveAttribute("data-testid", RowType.Removed);
+  });
 });
 
 it("displays removed tags", () => {

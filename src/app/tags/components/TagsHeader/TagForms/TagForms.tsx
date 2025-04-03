@@ -22,7 +22,13 @@ export const TagForms = ({
 
   switch (sidePanelContent?.view) {
     case TagSidePanelViews.AddTag:
-      return <AddTagForm onClose={() => setSidePanelContent(null)} />;
+      return (
+        <AddTagForm
+          onClose={() => {
+            setSidePanelContent(null);
+          }}
+        />
+      );
     case TagSidePanelViews.DeleteTag: {
       if (id) {
         return (
@@ -32,7 +38,9 @@ export const TagForms = ({
             // Set a key so that if a different tag is click on while the form
             // is open then it renders the form again and scrolls to the top.
             key={id}
-            onClose={() => setSidePanelContent(null)}
+            onClose={() => {
+              setSidePanelContent(null);
+            }}
           />
         );
       }
@@ -40,7 +48,14 @@ export const TagForms = ({
     }
     case TagSidePanelViews.UpdateTag: {
       if (!id) return null;
-      return <TagUpdate id={id} onClose={() => setSidePanelContent(null)} />;
+      return (
+        <TagUpdate
+          id={id}
+          onClose={() => {
+            setSidePanelContent(null);
+          }}
+        />
+      );
     }
     default:
       return null;

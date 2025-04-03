@@ -55,7 +55,9 @@ export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
     saved,
     licenseKeysActions.cleanup,
     `${savingLicenseKey} ${editing ? "updated" : "added"} successfully.`,
-    () => setSaving(null)
+    () => {
+      setSaving(null);
+    }
   );
 
   useEffect(() => {
@@ -83,9 +85,9 @@ export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
               : releases[osystems[0][0]][0].value,
             license_key: licenseKey ? licenseKey.license_key : "",
           }}
-          onCancel={() =>
-            navigate({ pathname: settingsURLs.licenseKeys.index })
-          }
+          onCancel={() => {
+            navigate({ pathname: settingsURLs.licenseKeys.index });
+          }}
           onSaveAnalytics={{
             action: "Saved",
             category: "License keys settings",

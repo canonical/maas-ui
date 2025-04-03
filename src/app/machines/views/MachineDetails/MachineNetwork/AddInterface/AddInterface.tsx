@@ -66,7 +66,9 @@ const AddInterface = ({
     systemId,
     "creatingPhysical",
     "createPhysical",
-    () => close()
+    () => {
+      close();
+    }
   );
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
 

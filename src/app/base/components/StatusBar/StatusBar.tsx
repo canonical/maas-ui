@@ -176,7 +176,9 @@ Site Manager as its upstream image source."
               <Button
                 appearance="link"
                 className="u-no-margin u-no-padding"
-                onClick={() => window.usabilla_live("click")}
+                onClick={() => {
+                  window.usabilla_live("click");
+                }}
               >
                 Give feedback
               </Button>

@@ -50,7 +50,9 @@ export const EditBootArchitectures = ({
     );
   }
 
-  const closeForm = () => setSidePanelContent(null);
+  const closeForm = () => {
+    setSidePanelContent(null);
+  };
   return (
     <FormikForm<FormValues>
       cleanup={cleanup}

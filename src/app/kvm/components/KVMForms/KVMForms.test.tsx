@@ -106,9 +106,9 @@ describe("KVMForms", () => {
       />,
       { state }
     );
-    await waitFor(() =>
-      expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
+    });
     expect(screen.getByRole("combobox", { name: "Zone" })).toBeInTheDocument();
     expect(
       screen.getByRole("combobox", { name: "Resource pool" })
@@ -133,11 +133,11 @@ describe("KVMForms", () => {
       />,
       { state }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "VM name" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     expect(screen.getByText("Cores")).toBeInTheDocument();
     expect(
       screen.getByRole("spinbutton", { name: "RAM (MiB)" })

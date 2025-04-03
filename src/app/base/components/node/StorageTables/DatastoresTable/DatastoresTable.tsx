@@ -32,7 +32,9 @@ const DatastoresTable = ({
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const isMachine = nodeIsMachine(node);
-  const closeExpanded = () => setExpanded(null);
+  const closeExpanded = () => {
+    setExpanded(null);
+  };
 
   const headers = [
     { content: "Name" },
@@ -69,9 +71,9 @@ const DatastoresTable = ({
                         },
                       ]}
                       disabled={!canEditStorage}
-                      onActionClick={(action: DatastoreAction) =>
-                        setExpanded({ content: action, id: rowId })
-                      }
+                      onActionClick={(action: DatastoreAction) => {
+                        setExpanded({ content: action, id: rowId });
+                      }}
                     />
                   ),
                   className: "u-align--right",

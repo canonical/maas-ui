@@ -36,9 +36,9 @@ const DomainListHeader = ({
         <Button
           data-testid="add-domain"
           key="add-domain"
-          onClick={() =>
-            setSidePanelContent({ view: DomainListSidePanelViews.ADD_DOMAIN })
-          }
+          onClick={() => {
+            setSidePanelContent({ view: DomainListSidePanelViews.ADD_DOMAIN });
+          }}
         >
           {Labels.AddDomains}
         </Button>

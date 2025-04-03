@@ -89,11 +89,11 @@ const VMsActionBar = ({
               data-testid="delete-vm"
               disabled={vmActionsDisabled}
               hasIcon
-              onClick={() =>
+              onClick={() => {
                 setSidePanelContent({
                   view: MachineSidePanelViews.DELETE_MACHINE,
-                })
-              }
+                });
+              }}
             >
               <Icon name="delete" />
               <span>Delete VM</span>

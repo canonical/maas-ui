@@ -81,7 +81,9 @@ export const DhcpForm = ({
     saved && !errors,
     dhcpsnippetActions.cleanup,
     `${savingDhcp} ${editing ? "updated" : "added"} successfully.`,
-    () => setSaving(null)
+    () => {
+      setSaving(null);
+    }
   );
 
   useFetchActions([
@@ -160,7 +162,11 @@ export const DhcpForm = ({
         }
         setSaving(params.name);
       }}
-      onSuccess={() => onSave && onSave()}
+      onSuccess={() => {
+        if (onSave) {
+          onSave();
+        }
+      }}
       saved={saved}
       saving={saving}
       submitLabel={Labels.Submit}

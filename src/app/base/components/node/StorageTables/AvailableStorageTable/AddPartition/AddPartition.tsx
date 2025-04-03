@@ -94,7 +94,9 @@ export const AddPartition = ({
     systemId,
     "creatingPartition",
     "createPartition",
-    () => closeExpanded()
+    () => {
+      closeExpanded();
+    }
   );
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

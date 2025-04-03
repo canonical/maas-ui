@@ -183,7 +183,9 @@ const useImageTableColumns = ({
                       : "Cannot delete images that are currently being imported."
                     : "Deletes this image."
                 }
-                onDelete={() => onDelete(row)}
+                onDelete={() => {
+                  onDelete(row);
+                }}
               />
             );
           },

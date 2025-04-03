@@ -14,6 +14,8 @@ it("calls handleSearch with a correct value on user input", async () => {
     "test"
   );
 
-  await waitFor(() => expect(handleSearch).toHaveBeenCalledTimes(1));
+  await waitFor(() => {
+    expect(handleSearch).toHaveBeenCalledTimes(1);
+  });
   expect(handleSearch).toHaveBeenCalledWith("test");
 });
