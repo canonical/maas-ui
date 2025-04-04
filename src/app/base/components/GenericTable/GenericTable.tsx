@@ -25,8 +25,8 @@ import {
 } from "@tanstack/react-table";
 import classNames from "classnames";
 
+import ColumnHeader from "@/app/base/components/GenericTable/ColumnHeader";
 import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
-import TableHeader from "@/app/base/components/GenericTable/TableHeader";
 import PageSizeSelect from "@/app/machines/views/MachineList/MachineListTable/PageSizeSelect";
 
 import "./_index.scss";
@@ -212,7 +212,7 @@ const GenericTable = <T extends { id: string | number }>({
                 .filter(filterHeaders)
                 .map((header, index) => (
                   <Fragment key={header.id}>
-                    <TableHeader header={header} />
+                    <ColumnHeader header={header} />
                     {index === 2 ? <th className="select-alignment" /> : null}
                   </Fragment>
                 ))}
