@@ -38,8 +38,8 @@ const usePoolsTableColumns = () => {
           header: "Name",
         },
         {
-          id: "machines",
-          accessorKey: "machine_total_count",
+          id: "machine_ready_count",
+          accessorKey: "machine_ready_count",
           enableSorting: true,
           header: "Machines",
           cell: ({ row }) => {
