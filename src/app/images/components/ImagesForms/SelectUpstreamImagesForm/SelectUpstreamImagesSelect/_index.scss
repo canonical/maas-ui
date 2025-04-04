@@ -37,3 +37,11 @@
 .multi-select__dropdown {
   margin-top: 20px;
 }
+
+.multi-select__condensed-text {
+  margin-right: 1.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 250px;
+}
