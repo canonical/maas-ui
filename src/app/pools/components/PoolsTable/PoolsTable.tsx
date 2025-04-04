@@ -6,7 +6,7 @@ import usePagination from "@/app/base/hooks/usePagination/usePagination";
 
 const PoolsTable = () => {
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
-    usePagination(50);
+    usePagination();
 
   const pools = usePools({
     query: { page: debouncedPage, size },

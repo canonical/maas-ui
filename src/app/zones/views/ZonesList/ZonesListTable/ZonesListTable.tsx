@@ -16,7 +16,7 @@ import "./_index.scss";
 const ZonesListTable: React.FC = () => {
   const { setSidePanelContent } = useSidePanel();
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
-    usePagination(50);
+    usePagination();
   const zones = useZones({
     query: { page: debouncedPage, size },
   });
