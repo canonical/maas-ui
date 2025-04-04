@@ -1,10 +1,7 @@
 import { Fragment, useMemo, useState } from "react";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 
-import {
-  DynamicTable,
-  PaginationContainer,
-} from "@canonical/maas-react-components";
+import { DynamicTable } from "@canonical/maas-react-components";
 import type {
   Column,
   Row,
@@ -26,8 +23,9 @@ import {
 import classNames from "classnames";
 
 import ColumnHeader from "@/app/base/components/GenericTable/ColumnHeader";
+import type { PaginationBarProps } from "@/app/base/components/GenericTable/PaginationBar/PaginationBar";
+import PaginationBar from "@/app/base/components/GenericTable/PaginationBar/PaginationBar";
 import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
-import PageSizeSelect from "@/app/machines/views/MachineList/MachineListTable/PageSizeSelect";
 
 import "./_index.scss";
 
@@ -39,10 +37,7 @@ type GenericTableProps<T extends { id: string | number }> = {
   filterHeaders?: (header: Header<T, unknown>) => boolean;
   groupBy?: string[];
   noData?: ReactNode;
-  pagination?: { page: number; size: number; total: number };
-  setPagination?: Dispatch<
-    SetStateAction<{ page: number; size: number; total: number }>
-  >;
+  pagination?: PaginationBarProps;
   pinGroup?: { value: string; isTop: boolean }[];
   sortBy?: ColumnSort[];
   rowSelection?: RowSelectionState;
@@ -59,7 +54,6 @@ const GenericTable = <T extends { id: string | number }>({
   groupBy,
   noData,
   pagination,
-  setPagination,
   pinGroup,
   sortBy,
   rowSelection,
@@ -96,14 +90,6 @@ const GenericTable = <T extends { id: string | number }>({
         ...columns,
       ];
     }
-  }
-
-  let totalPages = 0;
-  if (pagination) {
-    totalPages =
-      (pagination.total - (pagination.total % pagination.size)) /
-        pagination.size +
-      (pagination.total % pagination.size > 0 ? 1 : 0);
   }
 
   data = useMemo(() => {
@@ -177,32 +163,16 @@ const GenericTable = <T extends { id: string | number }>({
 
   return (
     <>
-      {pagination && setPagination != undefined ? (
-        <span className="u-flex--end">
-          <PaginationContainer
-            currentPage={pagination.page}
-            disabled={false}
-            paginate={function (page: number): void {
-              setPagination((prevState) => {
-                return { ...prevState, page };
-              });
-            }}
-            totalPages={totalPages}
-          />
-          <PageSizeSelect
-            pageSize={pagination.size}
-            paginate={function (page: number): void {
-              setPagination((prevState) => {
-                return { ...prevState, page };
-              });
-            }}
-            setPageSize={function (pageSize: number): void {
-              setPagination((prevState) => {
-                return { ...prevState, size: pageSize };
-              });
-            }}
-          />
-        </span>
+      {pagination ? (
+        <PaginationBar
+          currentPage={pagination.currentPage}
+          dataContext={pagination.dataContext}
+          handlePageSizeChange={pagination.handlePageSizeChange}
+          isPending={pagination.isPending}
+          itemsPerPage={pagination.itemsPerPage}
+          setCurrentPage={pagination.setCurrentPage}
+          totalItems={pagination.totalItems}
+        />
       ) : null}
       <DynamicTable className="p-generic-table" variant={variant}>
         <thead>

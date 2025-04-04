@@ -2,6 +2,7 @@ import { vi } from "vitest";
 
 import GenericTable from "./GenericTable";
 
+import type { PaginationBarProps } from "@/app/base/components/GenericTable/PaginationBar/PaginationBar";
 import type { Image } from "@/app/images/types";
 import type { UtcDatetime } from "@/app/store/types/model";
 import * as factory from "@/testing/factories";
@@ -89,6 +90,15 @@ describe("GenericTable", () => {
 
   it("can change pages", async () => {
     const setPagination = vi.fn();
+    const pagination: PaginationBarProps = {
+      currentPage: 1,
+      dataContext: "",
+      handlePageSizeChange: vi.fn,
+      isPending: false,
+      itemsPerPage: 10,
+      setCurrentPage: setPagination,
+      totalItems: 100,
+    };
     render(
       <GenericTable
         columns={columns}
@@ -96,9 +106,8 @@ describe("GenericTable", () => {
         filterCells={mockFilterCells}
         filterHeaders={mockFilterHeaders}
         noData={<span>No data</span>}
-        pagination={{ page: 1, size: 1, total: 2 }}
+        pagination={pagination}
         rowSelection={{}}
-        setPagination={setPagination}
         setRowSelection={vi.fn}
       />
     );
