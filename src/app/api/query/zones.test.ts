@@ -38,9 +38,7 @@ describe("useZoneCount", () => {
   });
 
   it("should return 0 when no zones exist", async () => {
-    mockServer.use(
-      zoneResolvers.listZones.handler({ ...mockZones, items: [] })
-    );
+    mockServer.use(zoneResolvers.listZones.handler({ items: [], total: 0 }));
     const { result } = renderHookWithProviders(() => useZoneCount());
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBe(0);
