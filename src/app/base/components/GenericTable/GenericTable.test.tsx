@@ -2,6 +2,7 @@ import { vi } from "vitest";
 
 import GenericTable from "./GenericTable";
 
+import type { PaginationBarProps } from "@/app/base/components/GenericTable/PaginationBar/PaginationBar";
 import type { Image } from "@/app/images/types";
 import type { UtcDatetime } from "@/app/store/types/model";
 import * as factory from "@/testing/factories";
@@ -85,6 +86,39 @@ describe("GenericTable", () => {
 
     expect(screen.getByText("16.04 LTS")).toBeInTheDocument();
     expect(screen.getByText("18.04 LTS")).toBeInTheDocument();
+  });
+
+  it("can change pages", async () => {
+    const setPagination = vi.fn();
+    const pagination: PaginationBarProps = {
+      currentPage: 1,
+      dataContext: "",
+      handlePageSizeChange: vi.fn,
+      isPending: false,
+      itemsPerPage: 10,
+      setCurrentPage: setPagination,
+      totalItems: 100,
+    };
+    render(
+      <GenericTable
+        columns={columns}
+        data={[]}
+        filterCells={mockFilterCells}
+        filterHeaders={mockFilterHeaders}
+        noData={<span>No data</span>}
+        pagination={pagination}
+        rowSelection={{}}
+        setRowSelection={vi.fn}
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Next page" })
+    ).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: "Next page" }));
+
+    expect(setPagination).toHaveBeenCalled();
   });
 
   it('displays "No data" when the data array is empty', () => {

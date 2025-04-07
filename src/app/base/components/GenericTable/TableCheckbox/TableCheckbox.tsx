@@ -16,7 +16,7 @@ const TableAllCheckbox = <T,>({ table, ...props }: TableCheckboxProps<T>) => {
     checked = "false";
   } else if (
     table.getSelectedRowModel().rows.length <
-    table.getRowCount() - table.getGroupedRowModel().rows.length
+    table.getCoreRowModel().rows.length
   ) {
     checked = "mixed";
   } else {

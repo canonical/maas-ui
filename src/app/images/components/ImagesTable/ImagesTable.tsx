@@ -94,7 +94,7 @@ const ImagesTable = ({
           </TableCaption.Description>
         </TableCaption>
       }
-      pin={[
+      pinGroup={[
         { value: "Ubuntu", isTop: true },
         { value: "Other", isTop: false },
       ]}

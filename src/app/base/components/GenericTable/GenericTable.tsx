@@ -1,10 +1,5 @@
-import {
-  type Dispatch,
-  type ReactNode,
-  type SetStateAction,
-  useMemo,
-  useState,
-} from "react";
+import { Fragment, useMemo, useState } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 
 import { DynamicTable } from "@canonical/maas-react-components";
 import type {
@@ -27,8 +22,10 @@ import {
 } from "@tanstack/react-table";
 import classNames from "classnames";
 
+import ColumnHeader from "@/app/base/components/GenericTable/ColumnHeader";
+import type { PaginationBarProps } from "@/app/base/components/GenericTable/PaginationBar/PaginationBar";
+import PaginationBar from "@/app/base/components/GenericTable/PaginationBar/PaginationBar";
 import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
-import TableHeader from "@/app/base/components/GenericTable/TableHeader";
 
 import "./_index.scss";
 
@@ -40,7 +37,8 @@ type GenericTableProps<T extends { id: number | string }> = {
   filterHeaders?: (header: Header<T, unknown>) => boolean;
   groupBy?: string[];
   noData?: ReactNode;
-  pin?: { value: string; isTop: boolean }[];
+  pagination?: PaginationBarProps;
+  pinGroup?: { value: string; isTop: boolean }[];
   sortBy?: ColumnSort[];
   rowSelection?: RowSelectionState;
   setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
@@ -55,7 +53,8 @@ const GenericTable = <T extends { id: number | string }>({
   filterHeaders = () => true,
   groupBy,
   noData,
-  pin,
+  pagination,
+  pinGroup,
   sortBy,
   rowSelection,
   setRowSelection,
@@ -95,8 +94,8 @@ const GenericTable = <T extends { id: number | string }>({
 
   data = useMemo(() => {
     return [...data].sort((a, b) => {
-      if (pin && pin.length > 0 && grouping.length > 0) {
-        for (const { value, isTop } of pin) {
+      if (pinGroup && pinGroup.length > 0 && grouping.length > 0) {
+        for (const { value, isTop } of pinGroup) {
           const groupId = grouping[0];
           const aValue = a[groupId as keyof typeof a];
           const bValue = b[groupId as keyof typeof b];
@@ -133,7 +132,7 @@ const GenericTable = <T extends { id: number | string }>({
       }
       return 0;
     });
-  }, [data, sorting, grouping, pin]);
+  }, [data, sorting, grouping, pinGroup]);
 
   const table = useReactTable<T>({
     data,
@@ -163,53 +162,74 @@ const GenericTable = <T extends { id: number | string }>({
   });
 
   return (
-    <DynamicTable className="p-generic-table" variant={variant}>
-      <thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.filter(filterHeaders).map((header, index) => (
-              <>
-                <TableHeader header={header} key={header.id} />
-                {index === 2 ? <th className="select-alignment" /> : null}
-              </>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      {table.getRowModel().rows.length < 1 ? (
-        noData
-      ) : (
-        <DynamicTable.Body>
-          {table.getRowModel().rows.map((row) => {
-            const { getIsGrouped, id, getVisibleCells } = row;
-            const isIndividualRow = !getIsGrouped();
-            return (
-              <tr
-                className={classNames({
-                  "individual-row": isIndividualRow,
-                  "group-row": !isIndividualRow,
-                })}
-                key={id}
-              >
-                {getVisibleCells()
-                  .filter((cell) => filterCells(row, cell.column))
-                  .map((cell) => {
-                    const { column, id: cellId } = cell;
-                    return (
-                      <td
-                        className={classNames(`${cell.column.id}`)}
-                        key={cellId}
-                      >
-                        {flexRender(column.columnDef.cell, cell.getContext())}
-                      </td>
-                    );
+    <>
+      {pagination ? (
+        <PaginationBar
+          currentPage={pagination.currentPage}
+          dataContext={pagination.dataContext}
+          handlePageSizeChange={pagination.handlePageSizeChange}
+          isPending={pagination.isPending}
+          itemsPerPage={pagination.itemsPerPage}
+          setCurrentPage={pagination.setCurrentPage}
+          totalItems={pagination.totalItems}
+        />
+      ) : null}
+      <DynamicTable className="p-generic-table" variant={variant}>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers
+                .filter(filterHeaders)
+                .map((header, index) => (
+                  <Fragment key={header.id}>
+                    <ColumnHeader header={header} />
+                    {index === 2 ? <th className="select-alignment" /> : null}
+                  </Fragment>
+                ))}
+            </tr>
+          ))}
+        </thead>
+        {table.getRowModel().rows.length < 1 ? (
+          <tbody>
+            <tr>
+              <td colSpan={columns.length} style={{ textAlign: "center" }}>
+                {noData}
+              </td>
+            </tr>
+          </tbody>
+        ) : (
+          <DynamicTable.Body>
+            {table.getRowModel().rows.map((row) => {
+              const { getIsGrouped, id, getVisibleCells } = row;
+              const isIndividualRow = !getIsGrouped();
+              return (
+                <tr
+                  className={classNames({
+                    "individual-row": isIndividualRow,
+                    "group-row": !isIndividualRow,
                   })}
-              </tr>
-            );
-          })}
-        </DynamicTable.Body>
-      )}
-    </DynamicTable>
+                  key={id}
+                >
+                  {getVisibleCells()
+                    .filter((cell) => filterCells(row, cell.column))
+                    .map((cell) => {
+                      const { column, id: cellId } = cell;
+                      return (
+                        <td
+                          className={classNames(`${cell.column.id}`)}
+                          key={cellId}
+                        >
+                          {flexRender(column.columnDef.cell, cell.getContext())}
+                        </td>
+                      );
+                    })}
+                </tr>
+              );
+            })}
+          </DynamicTable.Body>
+        )}
+      </DynamicTable>
+    </>
   );
 };
 
