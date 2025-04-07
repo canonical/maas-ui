@@ -460,7 +460,7 @@ const ComposeForm = ({
           interfaces: [],
           memory: defaults.memory,
           pinnedCores: "",
-          pool: `${zones.data?.items[0]?.id}` || "",
+          pool: `${pools.data?.items[0]?.id}` || "",
           zone: `${zones.data?.items[0]?.id}` || "",
         }}
         modelName="machine"

@@ -133,7 +133,11 @@ describe("ZoneColumn", () => {
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { initialEntries: ["/machines"], state }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Change AZ:" })
+      ).toBeInTheDocument()
+    );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
     const changeZoneLinks = await screen.findAllByTestId("change-zone-link");
     await userEvent.click(changeZoneLinks[0]);

@@ -42,7 +42,9 @@ describe("DeviceConfiguration", () => {
     renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByTestId("loading-device")).toBeInTheDocument()
+    );
     expect(screen.getByTestId("loading-device")).toBeInTheDocument();
   });
 
@@ -50,7 +52,9 @@ describe("DeviceConfiguration", () => {
     renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByTestId("device-details")).toBeInTheDocument()
+    );
     expect(screen.getByTestId("device-details")).toBeInTheDocument();
     expect(
       screen.queryByRole("form", { name: Label.Form })
@@ -61,7 +65,13 @@ describe("DeviceConfiguration", () => {
     renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getAllByRole("button", {
+          name: EditableSectionLabels.EditButton,
+        })[0]
+      ).toBeInTheDocument()
+    );
     await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
@@ -79,7 +89,13 @@ describe("DeviceConfiguration", () => {
         state,
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getAllByRole("button", {
+          name: EditableSectionLabels.EditButton,
+        })[0]
+      ).toBeInTheDocument()
+    );
     await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
