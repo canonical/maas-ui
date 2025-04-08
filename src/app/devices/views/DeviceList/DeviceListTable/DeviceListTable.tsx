@@ -1,5 +1,5 @@
 import { MainTable } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import OwnerColumn from "./OwnerColumn";
 

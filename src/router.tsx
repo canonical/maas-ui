@@ -1,6 +1,6 @@
 import { lazy } from "react";
 
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router";
 
 import App from "@/app/App";
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";

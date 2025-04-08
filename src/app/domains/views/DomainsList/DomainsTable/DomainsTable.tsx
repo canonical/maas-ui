@@ -1,6 +1,6 @@
 import { MainTable, ContextualMenu } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { DomainListSidePanelViews } from "../constants";
 

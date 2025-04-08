@@ -1,7 +1,7 @@
 import { ExternalLink } from "@canonical/maas-react-components";
 import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 import LabelledList from "@/app/base/components/LabelledList";
 import TooltipButton from "@/app/base/components/TooltipButton";

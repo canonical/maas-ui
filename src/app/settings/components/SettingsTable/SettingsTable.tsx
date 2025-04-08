@@ -8,7 +8,7 @@ import {
 } from "@canonical/react-components";
 import type { MainTableProps } from "@canonical/react-components";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import SearchBox from "@/app/base/components/SearchBox";
 

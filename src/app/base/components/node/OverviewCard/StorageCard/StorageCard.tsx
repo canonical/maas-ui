@@ -1,5 +1,5 @@
 import pluralize from "pluralize";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import TestResults from "@/app/base/components/node/TestResults";
 import { HardwareType } from "@/app/base/enum";

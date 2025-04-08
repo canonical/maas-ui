@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import type { ClassName } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import classNames from "classnames";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
 import SectionHeader from "@/app/base/components/SectionHeader";

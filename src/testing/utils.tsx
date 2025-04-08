@@ -11,14 +11,14 @@ import { produce } from "immer";
 import type { RequestHandler } from "msw";
 import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
-import type { DataRouter } from "react-router-dom";
+import type { DataRouter } from "react-router";
 import {
   BrowserRouter,
   createMemoryRouter,
   Route,
   RouterProvider,
   Routes,
-} from "react-router-dom";
+} from "react-router";
 import { HistoryRouter } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";

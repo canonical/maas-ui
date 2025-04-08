@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { Tag } from "@/app/store/tag/types";
 

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router";
 
 import DeviceConfiguration from "./DeviceConfiguration";
 import DeviceDetailsHeader from "./DeviceDetailsHeader";

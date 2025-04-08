@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router";
 
 import VirshDetailsHeader from "./VirshDetailsHeader";
 import VirshResources from "./VirshResources";

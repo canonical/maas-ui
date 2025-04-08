@@ -1,6 +1,6 @@
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import controllerSelectors from "@/app/store/controller/selectors";
 import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";

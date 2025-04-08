@@ -10,7 +10,7 @@ import {
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import type { ColumnWithLooseAccessor } from "react-table";
 
 import TagChip from "../TagChip";

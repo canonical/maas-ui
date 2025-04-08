@@ -1,5 +1,5 @@
 import { Tabs } from "@canonical/react-components";
-import { Route, useLocation, Link, Routes } from "react-router-dom";
+import { Route, useLocation, Link, Routes } from "react-router";
 
 import DownloadMenu from "./DownloadMenu";
 import EventLogs from "./EventLogs";

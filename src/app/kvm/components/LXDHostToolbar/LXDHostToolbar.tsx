@@ -1,6 +1,6 @@
 import { Icon, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import { useGetPool } from "@/app/api/query/pools";
 import Switch from "@/app/base/components/Switch";

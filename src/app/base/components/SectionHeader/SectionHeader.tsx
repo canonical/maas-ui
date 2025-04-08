@@ -6,7 +6,7 @@ import { List, Spinner, Tabs } from "@canonical/react-components";
 import type { TabLink } from "@canonical/react-components/dist/components/Tabs/Tabs";
 import classNames from "classnames";
 import type { JSX } from "react/jsx-runtime";
-import type { LinkProps } from "react-router-dom";
+import type { LinkProps } from "react-router";
 
 import type { DataTestElement } from "@/app/base/types";
 

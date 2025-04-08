@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import { Navigate, useLocation, Route, Routes } from "react-router-dom";
+import { Navigate, useLocation, Route, Routes } from "react-router";
 
 import MachineCommissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";

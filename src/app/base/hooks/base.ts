@@ -4,7 +4,7 @@ import { NotificationSeverity } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import type { KeyboardShortcut } from "../constants";
 

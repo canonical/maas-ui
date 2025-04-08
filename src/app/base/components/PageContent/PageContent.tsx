@@ -2,7 +2,7 @@ import type { HTMLProps, ReactNode } from "react";
 
 import classNames from "classnames";
 import { useSelector } from "react-redux";
-import { matchPath, useLocation } from "react-router-dom";
+import { matchPath, useLocation } from "react-router";
 
 import AppSidePanel from "../AppSidePanel";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";

@@ -3,7 +3,7 @@ import { Fragment } from "react";
 
 import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import NetworkCardTable from "./NetworkCardTable";
 

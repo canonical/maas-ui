@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router";
 
 import NetworkForm from "../components/NetworkForm";
 

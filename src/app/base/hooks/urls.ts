@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router";
 
 import { parseNumberId } from "@/app/utils";
 

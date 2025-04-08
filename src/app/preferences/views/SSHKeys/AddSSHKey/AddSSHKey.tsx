@@ -1,5 +1,5 @@
 import { useOnEscapePressed } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import urls from "@/app/base/urls";
 import SSHKeyForm from "@/app/preferences/views/SSHKeys/SSHKeyForm";

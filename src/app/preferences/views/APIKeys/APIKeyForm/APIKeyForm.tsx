@@ -1,6 +1,6 @@
 import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";

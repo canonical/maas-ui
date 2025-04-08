@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Button, Icon, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import { useGetZone } from "@/app/api/query/zones";
 import urls from "@/app/base/urls";

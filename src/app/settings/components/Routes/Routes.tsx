@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router-dom";
+import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router";
 
 import PageContent from "@/app/base/components/PageContent";
 import urls from "@/app/base/urls";

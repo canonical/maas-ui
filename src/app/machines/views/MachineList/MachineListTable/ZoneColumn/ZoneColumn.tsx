@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react";
 
 import { Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { useZones } from "@/app/api/query/zones";
 import type { ZoneResponse } from "@/app/apiclient";

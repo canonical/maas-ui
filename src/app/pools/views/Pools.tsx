@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router";
 
 import PoolDelete from "./PoolDelete";
 import PoolList from "./PoolList";

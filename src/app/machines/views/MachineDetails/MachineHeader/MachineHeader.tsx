@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import MachineName from "./MachineName";
 

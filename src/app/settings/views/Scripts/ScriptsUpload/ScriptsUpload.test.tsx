@@ -1,6 +1,6 @@
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import type { Dispatch } from "redux";
 import configureStore from "redux-mock-store";
 

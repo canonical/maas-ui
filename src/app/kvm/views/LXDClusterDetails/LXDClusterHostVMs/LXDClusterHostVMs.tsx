@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";

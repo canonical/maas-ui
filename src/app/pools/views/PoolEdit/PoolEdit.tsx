@@ -1,5 +1,5 @@
 import { Spinner, useOnEscapePressed } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import { useGetPool } from "@/app/api/query/pools";
 import ModelNotFound from "@/app/base/components/ModelNotFound";

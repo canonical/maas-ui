@@ -1,7 +1,7 @@
 import { Notification } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import urls from "@/app/base/urls";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";

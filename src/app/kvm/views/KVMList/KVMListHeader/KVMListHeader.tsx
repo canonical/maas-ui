@@ -1,7 +1,7 @@
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";

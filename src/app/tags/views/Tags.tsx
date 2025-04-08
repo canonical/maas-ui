@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { Route, Routes, useMatch } from "react-router-dom";
+import { Route, Routes, useMatch } from "react-router";
 
 import TagsHeader from "../components/TagsHeader";
 import TagForms from "../components/TagsHeader/TagForms";

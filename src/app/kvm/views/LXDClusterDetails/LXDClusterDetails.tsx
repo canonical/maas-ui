@@ -7,7 +7,7 @@ import {
   Routes,
   useLocation,
   useNavigate,
-} from "react-router-dom";
+} from "react-router";
 
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 import LXDClusterDetailsRedirect from "./LXDClusterDetailsRedirect";

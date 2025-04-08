@@ -1,7 +1,7 @@
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import { NetworkDiscoverySidePanelViews } from "../constants";
 

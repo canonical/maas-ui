@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useGetURLId } from "@/app/base/hooks/urls";

@@ -1,6 +1,6 @@
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";

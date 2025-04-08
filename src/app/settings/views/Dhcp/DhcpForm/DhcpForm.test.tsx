@@ -1,5 +1,5 @@
 import { createMemoryHistory } from "history";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 
 import { DhcpForm } from "./DhcpForm";

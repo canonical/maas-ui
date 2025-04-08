@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import BaseUserForm from "@/app/base/components/UserForm";
 import type { Props as UserFormProps } from "@/app/base/components/UserForm/UserForm";

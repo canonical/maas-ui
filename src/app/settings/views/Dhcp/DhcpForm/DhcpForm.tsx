@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import BaseDhcpForm from "@/app/base/components/DhcpForm";
 import type { DHCPFormValues } from "@/app/base/components/DhcpForm/types";

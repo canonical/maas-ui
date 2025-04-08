@@ -1,5 +1,5 @@
 import { Navigation } from "@canonical/maas-react-components";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 import { isSelected } from "../utils";
 
