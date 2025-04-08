@@ -8,7 +8,7 @@ on:
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
     env:
@@ -29,7 +29,7 @@ jobs:
         with:
           url: "http://${{env.MAAS_DOMAIN}}:5240/MAAS/r/"
           responseCode: 200
-          timeout: 200000
+          timeout: 1000000
           interval: 500
       - name: Login MAAS admin
         run: |
