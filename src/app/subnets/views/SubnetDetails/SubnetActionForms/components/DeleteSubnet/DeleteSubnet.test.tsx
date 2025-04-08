@@ -1,7 +1,3 @@
-import { createMemoryHistory } from "history";
-import { Provider } from "react-redux";
-import { Route, Routes } from "react-router";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import DeleteSubnet from "./DeleteSubnet";
@@ -11,7 +7,6 @@ import { subnetActions } from "@/app/store/subnet";
 import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
 import {
-  render,
   renderWithProviders,
   screen,
   userEvent,
@@ -150,49 +145,28 @@ it("dispatches a delete action on submit", async () => {
 });
 
 it("redirects on save", async () => {
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const state = getRootState();
   state.vlan.items[0].dhcp_on = false;
-  let store = configureStore()(state);
-  const { rerender } = render(
-    <Provider store={store}>
-      <Router history={history}>
-        <Routes>
-          <Route
-            element={
-              <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-            }
-            path={urls.subnets.subnet.index({ id: subnetId })}
-          />
-        </Routes>
-      </Router>
-    </Provider>
-  );
 
-  expect(history.location.pathname).toEqual(
-    urls.subnets.subnet.index({ id: subnetId })
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    {
+      state,
+      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+    }
   );
 
   state.subnet.saved = true;
-  store = configureStore()(state);
 
-  rerender(
-    <Provider store={store}>
-      <Router history={history}>
-        <Routes>
-          <Route
-            element={
-              <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-            }
-            path={urls.subnets.subnet.index({ id: subnetId })}
-          />
-        </Routes>
-      </Router>
-    </Provider>
+  const { router } = renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    {
+      state,
+      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+    }
   );
-  await waitFor(() =>
-    expect(history.location.pathname).toEqual(urls.subnets.index)
-  );
+
+  await waitFor(() => {
+    expect(router.state.location.pathname).toEqual(urls.subnets.index);
+  });
 });

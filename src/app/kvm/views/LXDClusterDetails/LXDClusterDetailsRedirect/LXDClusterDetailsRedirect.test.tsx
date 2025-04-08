@@ -1,3 +1,4 @@
+import { Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 
 import LXDClusterDetailsRedirect, { Label } from "./LXDClusterDetailsRedirect";
@@ -49,7 +50,12 @@ it("displays a message if the host is not found", () => {
 it("redirects to the config form", async () => {
   const store = configureStore()(state);
   const { router } = renderWithProviders(
-    <LXDClusterDetailsRedirect clusterId={1} />,
+    <Routes>
+      <Route
+        element={<LXDClusterDetailsRedirect clusterId={1} />}
+        path={urls.kvm.lxd.cluster.host.index(null)}
+      />
+    </Routes>,
     {
       store,
       initialEntries: [

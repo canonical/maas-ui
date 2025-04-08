@@ -14,7 +14,9 @@ describe("SettingsBackLink", () => {
 
   it("links back to previous state when provided", () => {
     renderWithProviders(<SettingsBackLink />, {
-      initialEntries: ["/kvm/lxd/cluster/20/hosts", "/settings"],
+      initialEntries: [
+        { pathname: "/settings", state: { from: "/kvm/lxd/cluster/20/hosts" } },
+      ],
     });
 
     const link = screen.getByRole("link");

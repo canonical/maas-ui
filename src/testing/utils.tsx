@@ -11,7 +11,7 @@ import { produce } from "immer";
 import type { RequestHandler } from "msw";
 import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
-import type { DataRouter } from "react-router";
+import type { DataRouter, InitialEntry } from "react-router";
 import {
   BrowserRouter,
   createMemoryRouter,
@@ -550,7 +550,7 @@ export const renderWithProviders = (
     Partial<{
       state?: Partial<RootState>;
       store?: MockStoreEnhanced<RootState | unknown>;
-      initialEntries?: string[];
+      initialEntries?: InitialEntry[];
     }>
 ): {
   result: RenderResult;

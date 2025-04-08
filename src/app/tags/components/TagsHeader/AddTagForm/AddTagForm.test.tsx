@@ -87,7 +87,10 @@ it("dispatches an action to create a tag", async () => {
 
 it("redirects to the newly created tag on save", async () => {
   const onClose = vi.fn();
-
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1" })],
+    saved: true,
+  });
   const { router } = renderWithProviders(<AddTagForm onClose={onClose} />, {
     state,
     initialEntries: [urls.tags.index],
@@ -100,10 +103,6 @@ it("redirects to the newly created tag on save", async () => {
   );
 
   mockFormikFormSaved();
-  state.tag = factory.tagState({
-    items: [factory.tag({ id: 8, name: "tag1" })],
-    saved: true,
-  });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   await waitFor(() => {

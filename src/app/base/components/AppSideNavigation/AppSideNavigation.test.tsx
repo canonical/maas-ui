@@ -331,7 +331,10 @@ describe("GlobalSideNav", () => {
     ];
 
     const store = mockStore(state);
-    const { router } = renderWithProviders(<AppSideNavigation />, { store });
+    const { router } = renderWithProviders(<AppSideNavigation />, {
+      store,
+      initialEntries: [urls.intro.images],
+    });
     await waitFor(() =>
       expect(router.state.location.pathname).toBe(urls.intro.images)
     );
