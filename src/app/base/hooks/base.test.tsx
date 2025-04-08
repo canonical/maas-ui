@@ -23,7 +23,7 @@ const mockUseLocationValue = {
   state: null,
 };
 vi.mock("react-router-dom", () => ({
-  ...vi.importActual("react-router-dom"),
+  ...vi.importActual("react-router"),
   useLocation: () => mockUseLocationValue,
 }));
 
