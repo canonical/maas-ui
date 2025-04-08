@@ -28,7 +28,7 @@ export const realTimeQueryOptions = {
   cacheTime: 60 * 1000, // 1 minute
 } as const;
 
-export const createQueryClient = () =>
+export const createQueryClient = (): QueryClient =>
   new QueryClient({
     defaultOptions: {
       queries: defaultQueryOptions,

@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, ReactElement } from "react";
 import { useMemo } from "react";
 
 import { PaginationContainer } from "@canonical/maas-react-components";
@@ -25,7 +25,7 @@ const PaginationBar = ({
   dataContext,
   setCurrentPage,
   isPending,
-}: PaginationBarProps) => {
+}: PaginationBarProps): ReactElement => {
   const pageCounts = useMemo(() => pageSizes, []);
   const pageOptions = useMemo(
     () =>

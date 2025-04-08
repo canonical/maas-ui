@@ -1,9 +1,15 @@
+import type { ReactElement } from "react";
+
 import type { FieldlessFormProps } from "../FieldlessForm/FieldlessForm";
 import FieldlessForm from "../FieldlessForm/FieldlessForm";
 
 import { NodeActions } from "@/app/store/types/node";
 
-const PowerOffForm = ({ action, actions, ...props }: FieldlessFormProps) => {
+const PowerOffForm = ({
+  action,
+  actions,
+  ...props
+}: FieldlessFormProps): ReactElement => {
   const helperText =
     action === NodeActions.OFF ? (
       <p>

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import ConfigureDHCP from "../ConfigureDHCP";
 import EditVLAN from "../EditVLAN";
 
@@ -28,7 +30,7 @@ const VLANActionForms = ({
   setSidePanelContent,
   subnetId,
   vlanId,
-}: VLANActionFormProps) => {
+}: VLANActionFormProps): ReactElement | null => {
   const clearSidePanelContent = () => {
     setSidePanelContent(null);
   };

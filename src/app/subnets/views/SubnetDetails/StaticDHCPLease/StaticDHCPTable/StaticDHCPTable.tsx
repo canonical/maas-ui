@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
 import { Link } from "react-router";
 
@@ -81,7 +83,7 @@ type Props = {
   loading: boolean;
 };
 
-const StaticDHCPTable = ({ reservedIps, loading }: Props) => {
+const StaticDHCPTable = ({ reservedIps, loading }: Props): ReactElement => {
   const { setSidePanelContent } = useSidePanel();
   return (
     <DynamicTable

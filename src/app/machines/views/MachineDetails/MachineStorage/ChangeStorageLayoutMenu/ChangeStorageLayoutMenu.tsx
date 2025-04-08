@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { ContextualMenu } from "@canonical/react-components";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -41,7 +43,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const ChangeStorageLayoutMenu = ({ systemId }: Props) => {
+const ChangeStorageLayoutMenu = ({ systemId }: Props): ReactElement => {
   const { setSidePanelContent } = useSidePanel();
   return (
     <div className="u-align--right">

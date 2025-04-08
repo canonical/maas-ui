@@ -55,6 +55,12 @@ export const filterColumns = (
   );
 };
 
+type RowReturnType = {
+  key: number | string;
+  className: string;
+  columns: TableColumn[];
+};
+
 export const generateRow = ({
   key,
   content,
@@ -67,7 +73,7 @@ export const generateRow = ({
   hiddenColumns: NonNullable<MachineListTableProps["hiddenColumns"]>;
   showActions: GenerateRowParams["showActions"];
   classes?: string;
-}) => {
+}): RowReturnType => {
   const columns = [
     {
       "aria-label": columnLabels[MachineColumns.FQDN],
@@ -153,7 +159,7 @@ export const generateRow = ({
 export const generateSkeletonRows = (
   hiddenColumns: NonNullable<MachineListTableProps["hiddenColumns"]>,
   showActions: GenerateRowParams["showActions"]
-) => {
+): RowReturnType[] => {
   return Array.from(Array(5)).map((_, i) => {
     const content = {
       [MachineColumns.FQDN]: (
@@ -238,7 +244,7 @@ export const generateRows = ({
   showActions,
   showMAC,
   showFullName,
-}: GenerateRowParams) => {
+}: GenerateRowParams): RowReturnType[] => {
   const getMenuHandler: GetMachineMenuToggleHandler = (...args) =>
     showActions ? getToggleHandler(...args) : () => undefined;
 
@@ -327,7 +333,7 @@ export const generateGroupRows = ({
   hiddenColumns,
   filter,
   ...rowProps
-}: GroupRowsProps) => {
+}: GroupRowsProps): MainTableRow[] => {
   let rows: MainTableRow[] = [];
 
   groups?.forEach((group) => {

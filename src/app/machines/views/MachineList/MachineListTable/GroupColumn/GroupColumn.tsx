@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Button } from "@canonical/react-components";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
@@ -25,7 +27,7 @@ const GroupColumn = ({
 > & {
   grouping: NonNullable<GroupRowsProps["grouping"]>;
   group: MachineStateListGroup;
-}) => {
+}): ReactElement => {
   const { collapsed, count, name, value } = group;
   return (
     <>

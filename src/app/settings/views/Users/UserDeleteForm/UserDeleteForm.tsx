@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { Col, Row } from "@canonical/react-components";
@@ -16,7 +17,7 @@ type UserDeleteProps = {
   user: User;
 };
 
-const UserDeleteForm = ({ user }: UserDeleteProps) => {
+const UserDeleteForm = ({ user }: UserDeleteProps): ReactElement => {
   const [deletedUser, setDeletedUser] = useState<User["username"] | null>(null);
   const navigate = useNavigate();
   const saved = useSelector(userSelectors.saved);

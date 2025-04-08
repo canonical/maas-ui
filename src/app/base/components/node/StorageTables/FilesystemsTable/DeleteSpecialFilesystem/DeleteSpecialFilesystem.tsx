@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -11,7 +13,11 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const DeleteSpecialFilesystem = ({ close, systemId, mountPoint }: Props) => {
+const DeleteSpecialFilesystem = ({
+  close,
+  systemId,
+  mountPoint,
+}: Props): ReactElement => {
   const dispatch = useDispatch();
 
   return (

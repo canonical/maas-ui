@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -43,7 +44,7 @@ const ReserveDHCPLease = ({
   subnetId,
   setSidePanelContent,
   reservedIpId,
-}: Props) => {
+}: Props): ReactElement | null => {
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, subnetId)
   );

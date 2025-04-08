@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import type { CheckboxInputProps } from "@canonical/react-components";
 import type { Row, Table } from "@tanstack/react-table";
 
@@ -83,7 +85,10 @@ const TableGroupCheckbox = <T,>({ row, ...props }: TableCheckboxProps<T>) => {
   );
 };
 
-const TableCheckbox = <T,>({ row, ...props }: TableCheckboxProps<T>) => {
+const TableCheckbox = <T,>({
+  row,
+  ...props
+}: TableCheckboxProps<T>): ReactElement | null => {
   if (!row) {
     return null;
   }

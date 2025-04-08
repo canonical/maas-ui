@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
+import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -30,7 +31,7 @@ const MarkConnectedForm = ({
   nic,
   link,
   connectionState,
-}: Props) => {
+}: Props): ReactElement | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

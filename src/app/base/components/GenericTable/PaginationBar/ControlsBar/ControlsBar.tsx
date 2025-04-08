@@ -1,6 +1,6 @@
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactElement } from "react";
 
-const ControlsBar = ({ children }: PropsWithChildren<object>) => {
+const ControlsBar = ({ children }: PropsWithChildren<object>): ReactElement => {
   return (
     <section className="controls-bar u-flex u-flex--justify-between u-flex--wrap">
       <div className="p-form p-form--inline">{children}</div>

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -8,7 +10,7 @@ import type { VLANActionFormProps } from "@/app/subnets/views/VLANDetails/VLANAc
 
 const ReservedRangeDeleteForm = ({
   setSidePanelContent,
-}: Pick<VLANActionFormProps, "setSidePanelContent">) => {
+}: Pick<VLANActionFormProps, "setSidePanelContent">): ReactElement => {
   const dispatch = useDispatch();
   const { sidePanelContent } = useSidePanel();
   const saved = useSelector(ipRangeSelectors.saved);
