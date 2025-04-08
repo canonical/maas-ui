@@ -10,11 +10,11 @@ import urls from "@/app/base/urls";
 import { subnetActions } from "@/app/store/subnet";
 import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
-import { render, screen, within, waitFor, userEvent } from "@/testing/utils";
+import { render, screen, userEvent, waitFor, within } from "@/testing/utils";
 
 const subnetId = 1;
 const getRootState = () => {
-  const state = factory.rootState({
+  return factory.rootState({
     subnet: factory.subnetState({
       items: [
         factory.subnetDetails({
@@ -36,7 +36,6 @@ const getRootState = () => {
       loaded: true,
     }),
   });
-  return state;
 };
 
 it("displays a correct error message for a subnet with IPs obtained through DHCP", () => {

@@ -21,9 +21,7 @@ context("Side panel", () => {
     cy.findByTestId("app-side-panel").should("be.visible");
     cy.findByRole("heading", { name: "Add device" }).should("be.visible");
     cy.visit(generateMAASURL("/machines"));
-    cy.findByTestId("app-side-panel", { timeout: 20000 }).should(
-      "not.be.visible"
-    );
+    cy.findByTestId("app-side-panel").should("not.be.visible");
     cy.waitForPageToLoad();
     cy.visit(generateMAASURL("/controllers"));
     cy.findByRole("button", { name: "Add rack controller" }).click();

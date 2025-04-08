@@ -57,10 +57,10 @@ const headers = [
  * @param rowId - the row ID of the filesystem.
  * @param fs - the filesystem to normalise.
  * @param storageDevice - the storage device the filesystem belongs to.
- * @param canEditStorage
+ * @param canEditStorage - the boolean for whether storage is editable.
  * @param isMachine - whether the node is a machine or not.
- * @param node
- * @param setSidePanelContent
+ * @param node - the node that the file system is on.
+ * @param setSidePanelContent - the context setter for the side panel.
  * @returns normalised row data
  */
 const normaliseRowData = (
