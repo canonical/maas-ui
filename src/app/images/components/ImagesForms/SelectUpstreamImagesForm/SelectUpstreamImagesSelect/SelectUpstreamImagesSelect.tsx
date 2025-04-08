@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useMemo } from "react";
 
 import {
@@ -12,7 +13,7 @@ import type { GroupedImages } from "@/app/images/components/ImagesForms/SelectUp
 
 import "./_index.scss";
 
-export const getValueKey = (distro: string, release: string) =>
+export const getValueKey = (distro: string, release: string): string =>
   `${distro}-${release}`.replace(".", "-");
 
 export type DownloadImagesSelectProps = {
@@ -25,7 +26,7 @@ const SelectUpstreamImagesSelect = ({
   values,
   setFieldValue,
   groupedImages,
-}: DownloadImagesSelectProps) => {
+}: DownloadImagesSelectProps): ReactElement => {
   const accordionSections = useMemo(
     () =>
       Object.keys(groupedImages).map((distro) => {

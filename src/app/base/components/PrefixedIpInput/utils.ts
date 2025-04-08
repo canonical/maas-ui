@@ -12,7 +12,10 @@ import {
  * @param cidr The subnet's CIDR notation
  * @returns The formatted IP address
  */
-export const formatIpAddress = (ip: string | undefined, cidr: string) => {
+export const formatIpAddress = (
+  ip: string | undefined,
+  cidr: string
+): string => {
   const [startIp, endIp] = getIpRangeFromCidr(cidr);
   const [immutableOctets, _] = getImmutableAndEditableOctets(startIp, endIp);
   const networkAddress = cidr.split("/")[0];

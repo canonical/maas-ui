@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useOnEscapePressed } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +12,7 @@ import { sslkeyActions } from "@/app/store/sslkey";
 import sslkeySelectors from "@/app/store/sslkey/selectors";
 import { isId } from "@/app/utils";
 
-const DeleteSSLKey = () => {
+const DeleteSSLKey = (): ReactElement => {
   const id = useGetURLId("id");
   const navigate = useNavigate();
   const dispatch = useDispatch();

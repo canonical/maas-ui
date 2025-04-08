@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useMemo } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
@@ -53,7 +54,7 @@ export const AppSideNavigation = ({
   showLinks,
   theme,
   vaultIncomplete,
-}: SideNavigationProps) => (
+}: SideNavigationProps): ReactElement => (
   <>
     <NavigationBar className={`is-maas-${theme}`}>
       <Navigation.Header>

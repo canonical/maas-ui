@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import type { MultiSelectItem } from "@canonical/react-components";
@@ -107,7 +108,7 @@ export const getSyncedImages = (
     );
 };
 
-export const groupImagesByOS = (images: DownloadableImage[]) => {
+export const groupImagesByOS = (images: DownloadableImage[]): ImagesByOS => {
   const imagesByOS: ImagesByOS = {};
 
   images.forEach((image) => {
@@ -127,7 +128,7 @@ export const groupImagesByOS = (images: DownloadableImage[]) => {
   return imagesByOS;
 };
 
-export const groupArchesByRelease = (images: ImagesByOS) => {
+export const groupArchesByRelease = (images: ImagesByOS): GroupedImages => {
   const groupedImages: GroupedImages = {};
 
   Object.keys(images).forEach((distro) => {
@@ -151,7 +152,7 @@ export const groupArchesByRelease = (images: ImagesByOS) => {
   return groupedImages;
 };
 
-const SelectUpstreamImagesForm = () => {
+const SelectUpstreamImagesForm = (): ReactElement => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const otherImages = useSelector(bootResourceSelectors.otherImages);

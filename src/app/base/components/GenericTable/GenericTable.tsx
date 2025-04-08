@@ -1,5 +1,5 @@
 import { Fragment, useMemo, useState } from "react";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { Dispatch, ReactNode, SetStateAction, ReactElement } from "react";
 
 import { DynamicTable } from "@canonical/maas-react-components";
 import type {
@@ -59,7 +59,7 @@ const GenericTable = <T extends { id: number | string }>({
   rowSelection,
   setRowSelection,
   variant = "full-height",
-}: GenericTableProps<T>) => {
+}: GenericTableProps<T>): ReactElement => {
   const [grouping, setGrouping] = useState<GroupingState>(groupBy ?? []);
   const [expanded, setExpanded] = useState<ExpandedState>(true);
   const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);

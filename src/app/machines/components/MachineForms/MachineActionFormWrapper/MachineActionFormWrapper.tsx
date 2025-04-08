@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Spinner } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 import type { Action, Dispatch } from "redux";
@@ -73,7 +75,7 @@ export const MachineActionForm = ({
   selectedMachines,
   setSearchFilter,
   viewingDetails,
-}: Props) => {
+}: Props): ReactElement => {
   const commonMachineFormProps = {
     searchFilter,
     clearSidePanelContent,

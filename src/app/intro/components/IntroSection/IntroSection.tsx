@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Notification, Spinner } from "@canonical/react-components";
@@ -32,7 +32,7 @@ const IntroSection = ({
   sidePanelContent = null,
   sidePanelTitle = null,
   ...props
-}: Props) => {
+}: Props): ReactElement => {
   const navigate = useNavigate();
   const errorMessage = formatErrors(errors);
   const exitURL = useExitURL();

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useOnEscapePressed } from "@canonical/react-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -7,7 +9,7 @@ import ModelActionForm from "@/app/base/components/ModelActionForm";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/preferences/urls";
 
-const DeleteSSHKey = () => {
+const DeleteSSHKey = (): ReactElement => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const onClose = () => {

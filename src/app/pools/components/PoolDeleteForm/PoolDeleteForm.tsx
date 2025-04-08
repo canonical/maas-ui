@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useOnEscapePressed } from "@canonical/react-components";
 import { useNavigate } from "react-router";
 
@@ -5,7 +7,7 @@ import { useDeletePool } from "@/app/api/query/pools";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import urls from "@/app/base/urls";
 
-const PoolDeleteForm = ({ id }: { id: number }) => {
+const PoolDeleteForm = ({ id }: { id: number }): ReactElement => {
   const deletePool = useDeletePool();
   const navigate = useNavigate();
   const onClose = () => {

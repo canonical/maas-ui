@@ -1,4 +1,5 @@
-import { type Dispatch, type SetStateAction, useCallback } from "react";
+import type { ReactElement, Dispatch, SetStateAction } from "react";
+import { useCallback } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Icon, Spinner } from "@canonical/react-components";
@@ -42,7 +43,7 @@ const getImageSyncText = (sources: BootResourceUbuntuSource[]) => {
 const ImageListHeader = ({
   selectedRows,
   setSelectedRows,
-}: ImageListHeaderProps) => {
+}: ImageListHeaderProps): ReactElement => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.resources);
