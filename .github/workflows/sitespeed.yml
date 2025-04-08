@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - "3.*"
+      - "sitespeed-debug-*"
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
@@ -26,7 +27,7 @@ jobs:
       - name: Wait for MAAS
         uses: nev7n/wait_for_response@v1
         with:
-          url: "http://${{env.MAAS_DOMAIN}}:5240/MAAS/r"
+          url: "http://${{env.MAAS_DOMAIN}}:5240/MAAS/r/"
           responseCode: 200
           timeout: 200000
           interval: 500
