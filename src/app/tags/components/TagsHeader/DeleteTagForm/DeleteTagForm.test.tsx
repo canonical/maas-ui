@@ -1,9 +1,7 @@
 import { NotificationSeverity } from "@canonical/react-components";
 import * as reduxToolkit from "@reduxjs/toolkit";
-import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -16,7 +14,13 @@ import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const callId = "mocked-nanoid";
 vi.mock("@reduxjs/toolkit", async () => {
@@ -146,26 +150,14 @@ it("can return to the list on cancel", async () => {
       name: "tag1",
     }),
   ];
-  const path = urls.tags.tag.machines({ id: 1 });
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: path }],
-  });
   const onClose = vi.fn();
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <Routes>
-          <Route
-            element={<DeleteTagForm id={1} onClose={onClose} />}
-            path={path}
-          />
-        </Routes>
-      </Router>
-    </Provider>
+  const { router } = renderWithProviders(
+    <DeleteTagForm id={1} onClose={onClose} />,
+    { store, initialEntries: [urls.tags.tag.machines({ id: 1 })] }
   );
   await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(history.location.pathname).toBe(urls.tags.index);
+  expect(router.state.location.pathname).toBe(urls.tags.index);
   expect(onClose).toBeCalled();
 });
 
@@ -184,28 +176,19 @@ it("can return to the details on cancel", async () => {
       loaded: true,
     }),
   };
-  const path = urls.tags.tag.machines({ id: 1 });
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: path }],
-  });
   const onClose = vi.fn();
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <Routes>
-          <Route
-            element={<DeleteTagForm fromDetails id={1} onClose={onClose} />}
-            path={path}
-          />
-        </Routes>
-      </Router>
-    </Provider>
+  const { router } = renderWithProviders(
+    <DeleteTagForm fromDetails id={1} onClose={onClose} />,
+    {
+      store,
+      initialEntries: [urls.tags.tag.machines({ id: 1 })],
+    }
   );
   await userEvent.click(
     screen.getByRole("link", { name: "Show the deployed machine" })
   );
   await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
+  expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
   expect(onClose).toBeCalled();
 });

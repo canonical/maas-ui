@@ -1,7 +1,3 @@
-import { createMemoryHistory } from "history";
-import { Provider } from "react-redux";
-import { Route, Routes } from "react-router";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import LXDClusterDetailsRedirect, { Label } from "./LXDClusterDetailsRedirect";
@@ -11,10 +7,10 @@ import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  render,
   screen,
   waitFor,
   renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
 
 let state: RootState;
@@ -51,28 +47,18 @@ it("displays a message if the host is not found", () => {
 });
 
 it("redirects to the config form", async () => {
-  const history = createMemoryHistory({
-    initialEntries: [
-      {
-        pathname: urls.kvm.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }),
-      },
-    ],
-  });
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <Routes>
-          <Route
-            element={<LXDClusterDetailsRedirect clusterId={1} />}
-            path={urls.kvm.lxd.cluster.host.index(null)}
-          />
-        </Routes>
-      </Router>
-    </Provider>
+  const { router } = renderWithProviders(
+    <LXDClusterDetailsRedirect clusterId={1} />,
+    {
+      store,
+      initialEntries: [
+        urls.kvm.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }),
+      ],
+    }
   );
   await waitFor(() =>
-    expect(history.location.pathname).toEqual(
+    expect(router.state.location.pathname).toEqual(
       urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 })
     )
   );

@@ -1,7 +1,5 @@
-import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import { AddSSLKey, Label as AddSSLKeyLabels } from "./AddSSLKey";
@@ -14,6 +12,7 @@ import {
   screen,
   render,
   renderWithMockStore,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -60,14 +59,8 @@ describe("AddSSLKey", () => {
 
   it("redirects when the SSL key is saved", () => {
     state.sslkey.saved = true;
-    const history = createMemoryHistory({ initialEntries: ["/"] });
-    renderWithMockStore(
-      <Router history={history}>
-        <AddSSLKey />
-      </Router>,
-      { state }
-    );
-    expect(history.location.pathname).toBe(urls.preferences.sslKeys.index);
+    const { router } = renderWithProviders(<AddSSLKey />, { state });
+    expect(router.state.location.pathname).toBe(urls.preferences.sslKeys.index);
   });
 
   it("can create a SSL key", async () => {

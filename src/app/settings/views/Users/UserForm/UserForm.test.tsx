@@ -1,7 +1,5 @@
-import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import { UserForm, Labels as UserFormLabels } from "./UserForm";
@@ -16,6 +14,7 @@ import {
   screen,
   render,
   renderWithMockStore,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -67,17 +66,9 @@ describe("UserForm", () => {
 
   it("redirects when the user is saved", () => {
     state.user.saved = true;
-    const history = createMemoryHistory({
-      initialEntries: ["/"],
-    });
 
-    renderWithMockStore(
-      <Router history={history}>
-        <UserForm user={user} />
-      </Router>,
-      { state }
-    );
-    expect(history.location.pathname).toBe(settingsURLs.users.index);
+    const { router } = renderWithProviders(<UserForm user={user} />, { state });
+    expect(router.state.location.pathname).toBe(settingsURLs.users.index);
   });
 
   it("can update a user", async () => {

@@ -1,7 +1,5 @@
-import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFormFields";
@@ -14,7 +12,13 @@ import {
 import settingsURLs from "@/app/settings/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, render, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  render,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -112,17 +116,10 @@ describe("LicenseKeyForm", () => {
   it("redirects when the snippet is saved", () => {
     state.licensekeys.saved = true;
     const store = mockStore(state);
-    const history = createMemoryHistory({
-      initialEntries: ["/"],
-    });
-    render(
-      <Provider store={store}>
-        <Router history={history}>
-          <LicenseKeyForm />
-        </Router>
-      </Provider>
+    const { router } = renderWithProviders(<LicenseKeyForm />, { store });
+    expect(router.state.location.pathname).toEqual(
+      settingsURLs.licenseKeys.index
     );
-    expect(history.location.pathname).toEqual(settingsURLs.licenseKeys.index);
   });
 
   it("can add a key", async () => {

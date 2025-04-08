@@ -18,12 +18,13 @@ import {
   screen,
   renderWithBrowserRouter,
   renderWithMockStore,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 const mockUseNavigate = vi.fn();
-vi.mock("react-router-dom", async () => {
-  const actual: object = await vi.importActual("react-router-dom");
+vi.mock("react-router", async () => {
+  const actual: object = await vi.importActual("react-router");
   return {
     ...actual,
     useNavigate: () => mockUseNavigate,
@@ -215,7 +216,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can redirect when saved", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent saved={true} savedRedirect="/success">
           Content

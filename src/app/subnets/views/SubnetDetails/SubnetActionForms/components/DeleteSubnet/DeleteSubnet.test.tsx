@@ -10,7 +10,14 @@ import urls from "@/app/base/urls";
 import { subnetActions } from "@/app/store/subnet";
 import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
-import { render, screen, userEvent, waitFor, within } from "@/testing/utils";
+import {
+  render,
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
+  within,
+} from "@/testing/utils";
 
 const subnetId = 1;
 const getRootState = () => {
@@ -47,16 +54,10 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
       vlan: 1,
     }),
   ];
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
   const deleteSubnetSection = screen.getByRole("region", {
     name: /Delete subnet?/,
@@ -72,16 +73,10 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
 it("displays a message if DHCP is disabled on the VLAN", () => {
   const state = getRootState();
   state.vlan.items[0].dhcp_on = false;
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
   const deleteSubnetSection = screen.getByRole("region", {
     name: /Delete subnet?/,
@@ -97,16 +92,10 @@ it("displays a message if DHCP is disabled on the VLAN", () => {
 it("does not display a message if DHCP is enabled on the VLAN", () => {
   const state = getRootState();
   state.vlan.items[0].dhcp_on = true;
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
   const deleteSubnetSection = screen.getByRole("region", {
     name: /Delete subnet?/,
@@ -120,19 +109,13 @@ it("does not display a message if DHCP is enabled on the VLAN", () => {
 });
 
 it("dispatches an action to load vlans and subnets if not loaded", () => {
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const state = getRootState();
   state.vlan.loaded = false;
   state.subnet.loaded = false;
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
   const expectedActions = [vlanActions.fetch(), subnetActions.fetch()];
   const actualActions = store.getActions();
@@ -146,18 +129,12 @@ it("dispatches an action to load vlans and subnets if not loaded", () => {
 });
 
 it("dispatches a delete action on submit", async () => {
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const state = getRootState();
   state.vlan.items[0].dhcp_on = false;
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
 
   expect(

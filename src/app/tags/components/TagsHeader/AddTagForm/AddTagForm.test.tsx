@@ -18,7 +18,7 @@ import {
   render,
   screen,
   waitFor,
-  renderWithHistoryRouter,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -87,16 +87,13 @@ it("dispatches an action to create a tag", async () => {
 
 it("redirects to the newly created tag on save", async () => {
   const onClose = vi.fn();
-  const initialEntries = [{ pathname: urls.tags.index }];
-  const { history } = renderWithHistoryRouter(
-    <AddTagForm onClose={onClose} />,
-    {
-      state,
-      initialEntries,
-    }
-  );
 
-  expect(history.location.pathname).toBe(urls.tags.index);
+  const { router } = renderWithProviders(<AddTagForm onClose={onClose} />, {
+    state,
+    initialEntries: [urls.tags.index],
+  });
+
+  expect(router.state.location.pathname).toBe(urls.tags.index);
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"
@@ -110,7 +107,7 @@ it("redirects to the newly created tag on save", async () => {
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   await waitFor(() => {
-    expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 8 }));
+    expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 8 }));
   });
   expect(onClose).toHaveBeenCalled();
 });
