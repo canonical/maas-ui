@@ -24,22 +24,6 @@ jobs:
           maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-1000.dump
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
-      - name: Ping MAAS
-        run: |
-          URL="http://${{env.MAAS_DOMAIN}}:5240/MAAS/r/"
-          echo "Waiting for $URL to respond..."
-          for i in {1..30}; do
-          if curl --silent --fail "$URL"; then
-          echo "✅ Backend is up!"
-          break
-          fi
-          echo "⏳ Attempt $i: Backend not ready yet. Retrying in 2s..."
-          sleep 2
-          done
-          if ! curl --silent --fail "$URL"; then
-          echo "❌ Backend did not respond in time."
-          exit 1
-          fi
       - name: Login MAAS admin
         run: |
           # Retry admin login up to 5 times with 10s intervals to account for delays in MAAS becoming fully operational
