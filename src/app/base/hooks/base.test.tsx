@@ -22,7 +22,7 @@ const mockUseLocationValue = {
   hash: "",
   state: null,
 };
-vi.mock("react-router-dom", () => ({
+vi.mock("react-router", () => ({
   ...vi.importActual("react-router"),
   useLocation: () => mockUseLocationValue,
 }));
