@@ -44,6 +44,17 @@ jobs:
           path: coverage
           retention-days: 1
 
+      - name: Generate file list from .ticsignore
+        run: |
+            find src -type f > tics.all.gen.txt
+            ignore_files_command="find src -path \"*\" -type f \( $(grep -vE '^\s*#|^\s*$' .ticsignore | grep -v '/$' | sed -E 's|^(.*)|-name \"\1\"|' | tr '\n' '\0' | sed -Ez 's|\0| -o |g; s| -o $||') \)"
+            ignore_dirs_command="find src -type f \( $(grep -vE '^\s*#|^\s*$' .ticsignore | grep '/$' | sed -E 's|^(.*)|-path \"*/\1*\"|' | tr '\n' '\0' | sed -Ez 's|\0| -o |g; s| -o $||') \)"
+            eval "$ignore_files_command" > tics.ignored.files.gen.txt
+            eval "$ignore_dirs_command" > tics.ignored.dirs.gen.txt
+            cat tics.ignored.files.gen.txt tics.ignored.dirs.gen.txt | sort -u > tics.ignored.gen.txt
+            grep -vFf tics.ignored.gen.txt tics.all.gen.txt > tics.gen.txt
+            rm tics.*.gen.txt
+
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
         with:
@@ -60,6 +71,7 @@ jobs:
           installTics: true
           tmpdir: /tmp/tics
           branchdir: ${{ github.workspace }}
+          filelist: tics.gen.txt
 
       - name: Upload TICS Report
         uses: actions/upload-artifact@v4
