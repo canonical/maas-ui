@@ -95,7 +95,7 @@ const generateRepositoryRows = (
     };
   });
 
-export const RepositoriesList = (): JSX.Element => {
+export const RepositoriesList = (): React.ReactElement => {
   const [expandedId, setExpandedId] = useState<
     PackageRepository[PackageRepositoryMeta.PK] | null
   >(null);

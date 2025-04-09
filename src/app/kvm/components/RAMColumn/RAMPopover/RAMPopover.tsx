@@ -18,7 +18,7 @@ const RAMPopover = ({
   children,
   memory,
   overCommit = 1,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { general, hugepages } = memory;
   const hostGeneral =
     general.allocated_other + general.allocated_tracked + general.free;

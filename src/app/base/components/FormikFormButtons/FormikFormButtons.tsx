@@ -69,7 +69,7 @@ export const FormikFormButtons = <V,>({
   submitDisabled,
   submitLabel = "Save",
   buttonsBehavior = "coupled",
-}: Props<V>): JSX.Element => {
+}: Props<V>): React.ReactElement => {
   const formikContext = useFormikContext<V>();
   const { values } = formikContext;
   const showSecondarySubmit = Boolean(secondarySubmit && secondarySubmitLabel);

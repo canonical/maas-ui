@@ -1,7 +1,3 @@
-import { createMemoryHistory } from "history";
-import { Provider } from "react-redux";
-import { Route, Routes } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import DeleteSubnet from "./DeleteSubnet";
@@ -10,11 +6,17 @@ import urls from "@/app/base/urls";
 import { subnetActions } from "@/app/store/subnet";
 import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
-import { render, screen, within, waitFor, userEvent } from "@/testing/utils";
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
+  within,
+} from "@/testing/utils";
 
 const subnetId = 1;
 const getRootState = () => {
-  const state = factory.rootState({
+  return factory.rootState({
     subnet: factory.subnetState({
       items: [
         factory.subnetDetails({
@@ -36,7 +38,6 @@ const getRootState = () => {
       loaded: true,
     }),
   });
-  return state;
 };
 
 it("displays a correct error message for a subnet with IPs obtained through DHCP", () => {
@@ -48,16 +49,10 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
       vlan: 1,
     }),
   ];
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
   const deleteSubnetSection = screen.getByRole("region", {
     name: /Delete subnet?/,
@@ -73,16 +68,10 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
 it("displays a message if DHCP is disabled on the VLAN", () => {
   const state = getRootState();
   state.vlan.items[0].dhcp_on = false;
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
   const deleteSubnetSection = screen.getByRole("region", {
     name: /Delete subnet?/,
@@ -98,16 +87,10 @@ it("displays a message if DHCP is disabled on the VLAN", () => {
 it("does not display a message if DHCP is enabled on the VLAN", () => {
   const state = getRootState();
   state.vlan.items[0].dhcp_on = true;
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
   const deleteSubnetSection = screen.getByRole("region", {
     name: /Delete subnet?/,
@@ -121,19 +104,13 @@ it("does not display a message if DHCP is enabled on the VLAN", () => {
 });
 
 it("dispatches an action to load vlans and subnets if not loaded", () => {
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const state = getRootState();
   state.vlan.loaded = false;
   state.subnet.loaded = false;
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
   const expectedActions = [vlanActions.fetch(), subnetActions.fetch()];
   const actualActions = store.getActions();
@@ -147,18 +124,12 @@ it("dispatches an action to load vlans and subnets if not loaded", () => {
 });
 
 it("dispatches a delete action on submit", async () => {
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const state = getRootState();
   state.vlan.items[0].dhcp_on = false;
   const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    { store, initialEntries: [urls.subnets.subnet.index({ id: subnetId })] }
   );
 
   expect(
@@ -174,49 +145,28 @@ it("dispatches a delete action on submit", async () => {
 });
 
 it("redirects on save", async () => {
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.subnets.subnet.index({ id: subnetId }) }],
-  });
   const state = getRootState();
   state.vlan.items[0].dhcp_on = false;
-  let store = configureStore()(state);
-  const { rerender } = render(
-    <Provider store={store}>
-      <Router history={history}>
-        <Routes>
-          <Route
-            element={
-              <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-            }
-            path={urls.subnets.subnet.index({ id: subnetId })}
-          />
-        </Routes>
-      </Router>
-    </Provider>
-  );
 
-  expect(history.location.pathname).toEqual(
-    urls.subnets.subnet.index({ id: subnetId })
+  renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    {
+      state,
+      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+    }
   );
 
   state.subnet.saved = true;
-  store = configureStore()(state);
 
-  rerender(
-    <Provider store={store}>
-      <Router history={history}>
-        <Routes>
-          <Route
-            element={
-              <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
-            }
-            path={urls.subnets.subnet.index({ id: subnetId })}
-          />
-        </Routes>
-      </Router>
-    </Provider>
+  const { router } = renderWithProviders(
+    <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />,
+    {
+      state,
+      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+    }
   );
-  await waitFor(() =>
-    expect(history.location.pathname).toEqual(urls.subnets.index)
-  );
+
+  await waitFor(() => {
+    expect(router.state.location.pathname).toEqual(urls.subnets.index);
+  });
 });

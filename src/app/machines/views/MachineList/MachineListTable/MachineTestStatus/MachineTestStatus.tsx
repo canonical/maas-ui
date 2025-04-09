@@ -13,7 +13,7 @@ const MachineTestStatus = ({
   children,
   status,
   tooltipPosition = "top-right",
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   switch (status) {
     case TestStatusStatus.PASSED:
       // We only want to show icons for tests that have not passed.

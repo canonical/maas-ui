@@ -23,7 +23,7 @@ const MachineListGroupCount = ({
   filter: FetchFilters | null;
   group: MachineStateListGroup["value"];
   grouping: FetchGroupKey | null;
-}): JSX.Element => {
+}): React.ReactElement => {
   const groupFilters = selectedToFilters({
     groups: [group],
     grouping,

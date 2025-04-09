@@ -46,7 +46,7 @@ const NetworkTableActions = ({
   systemId,
   selected,
   setSelected,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

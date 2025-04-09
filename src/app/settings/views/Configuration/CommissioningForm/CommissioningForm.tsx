@@ -21,7 +21,7 @@ export type CommissioningFormValues = {
   default_min_hwe_kernel: string;
 };
 
-const CommissioningForm = (): JSX.Element => {
+const CommissioningForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);

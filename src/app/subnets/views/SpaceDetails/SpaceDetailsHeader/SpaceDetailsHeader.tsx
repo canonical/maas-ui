@@ -14,7 +14,7 @@ const SpaceDetailsHeader = ({
   space,
   setSidePanelContent,
   sidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <SectionHeader
       buttons={[

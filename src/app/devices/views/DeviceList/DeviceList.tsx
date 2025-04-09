@@ -1,8 +1,7 @@
 import { useCallback, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 
 import DeviceListHeader from "./DeviceListHeader";
 import DeviceListTable from "./DeviceListTable";
@@ -18,7 +17,7 @@ import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
-const DeviceList = (): JSX.Element => {
+const DeviceList = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();

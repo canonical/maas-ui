@@ -54,7 +54,7 @@ describe("SetPoolForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { initialEntries: ["/machines"], store }
     );
 
     await waitFor(() =>
@@ -122,7 +122,7 @@ describe("SetPoolForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { initialEntries: ["/machines"], store }
     );
 
     await waitFor(() =>

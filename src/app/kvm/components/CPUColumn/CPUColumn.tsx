@@ -9,7 +9,10 @@ type Props = {
   overCommit?: number;
 };
 
-const CPUColumn = ({ cores, overCommit = 1 }: Props): JSX.Element | null => {
+const CPUColumn = ({
+  cores,
+  overCommit = 1,
+}: Props): React.ReactElement | null => {
   const coresWithOver = resourceWithOverCommit(cores, overCommit);
   return (
     <CPUPopover cores={cores} overCommit={overCommit}>

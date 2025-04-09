@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { usePools } from "@/app/api/query/pools";
 import type { ResourcePoolResponse } from "@/app/apiclient";
@@ -24,7 +24,7 @@ type Props = {
 export const PoolColumn = ({
   onToggleMenu,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const [updating, setUpdating] = useState<ResourcePoolResponse["id"] | null>(
     null

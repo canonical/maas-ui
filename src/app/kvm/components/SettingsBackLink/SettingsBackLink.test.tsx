@@ -1,35 +1,25 @@
-import { render, screen } from "@testing-library/react";
-import { createMemoryHistory } from "history";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
+import { screen } from "@testing-library/react";
 
 import SettingsBackLink from "./SettingsBackLink";
 
+import { renderWithProviders } from "@/testing/utils";
+
 describe("SettingsBackLink", () => {
   it("does not render is no from is provided", () => {
-    const history = createMemoryHistory();
-    render(
-      <Router history={history}>
-        <SettingsBackLink />
-      </Router>
-    );
+    renderWithProviders(<SettingsBackLink />);
 
     const link = screen.queryByText(/Settings/i);
     expect(link).not.toBeInTheDocument();
   });
 
   it("links back to previous state when provided", () => {
-    const expectedReturnURL = "/kvm/lxd/cluster/20/hosts";
-    const locationState = { from: expectedReturnURL };
-    const history = createMemoryHistory();
-    history.push(`/MAAS/r${expectedReturnURL}`, locationState);
-
-    render(
-      <Router history={history}>
-        <SettingsBackLink />
-      </Router>
-    );
+    renderWithProviders(<SettingsBackLink />, {
+      initialEntries: [
+        { pathname: "/settings", state: { from: "/kvm/lxd/cluster/20/hosts" } },
+      ],
+    });
 
     const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", `${expectedReturnURL}`);
+    expect(link).toHaveAttribute("href", "/kvm/lxd/cluster/20/hosts");
   });
 });

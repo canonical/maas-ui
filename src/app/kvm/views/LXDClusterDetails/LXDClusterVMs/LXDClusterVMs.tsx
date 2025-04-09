@@ -1,6 +1,6 @@
 import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
@@ -29,7 +29,7 @@ const LXDClusterVMs = ({
   searchFilter,
   setSidePanelContent,
   setSearchFilter,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );

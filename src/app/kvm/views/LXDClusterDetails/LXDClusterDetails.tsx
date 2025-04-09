@@ -7,7 +7,7 @@ import {
   Routes,
   useLocation,
   useNavigate,
-} from "react-router-dom";
+} from "react-router";
 
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 import LXDClusterDetailsRedirect from "./LXDClusterDetailsRedirect";
@@ -38,7 +38,7 @@ export enum Label {
   Title = "LXD cluster details",
 }
 
-const LXDClusterDetails = (): JSX.Element => {
+const LXDClusterDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();

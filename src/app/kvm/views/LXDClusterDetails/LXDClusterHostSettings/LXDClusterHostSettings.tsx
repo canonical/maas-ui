@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
@@ -28,7 +28,7 @@ export enum Label {
   Title = "LXD cluster host settings",
 }
 
-const LXDClusterHostSettings = ({ clusterId }: Props): JSX.Element => {
+const LXDClusterHostSettings = ({ clusterId }: Props): React.ReactElement => {
   const navigate = useNavigate();
   const hostId = useGetURLId(PodMeta.PK, "hostId");
   const cluster = useSelector((state: RootState) =>

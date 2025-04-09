@@ -9,7 +9,7 @@ import {
 } from "@canonical/react-components";
 import type { Location } from "history";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import { usePools } from "@/app/api/query/pools";
 import type {
@@ -177,7 +177,7 @@ const LXDClusterHostsTable = ({
   hosts,
   searchFilter,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const location = useLocation();
   const pools = usePools();
   const podsLoaded = useSelector(podSelectors.loaded);

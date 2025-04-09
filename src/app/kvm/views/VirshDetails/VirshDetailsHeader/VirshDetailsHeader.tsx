@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import VirshDetailsActionMenu from "./VirshDetailsActionMenu";
 
@@ -24,7 +24,7 @@ type Props = {
 const VirshDetailsHeader = ({
   id,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const location = useLocation();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)

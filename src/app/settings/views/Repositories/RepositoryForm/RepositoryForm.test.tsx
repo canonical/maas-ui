@@ -1,7 +1,5 @@
-import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
@@ -15,7 +13,7 @@ import {
   userEvent,
   screen,
   render,
-  renderWithMockStore,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -177,16 +175,13 @@ describe("RepositoryForm", () => {
 
   it("redirects when the repository is saved", () => {
     state.packagerepository.saved = true;
-    const history = createMemoryHistory({
-      initialEntries: ["/"],
-    });
-    renderWithMockStore(
-      <Router history={history}>
-        <RepositoryForm type="repository" />
-      </Router>,
+    const { router } = renderWithProviders(
+      <RepositoryForm type="repository" />,
       { state }
     );
-    expect(history.location.pathname).toBe(settingsURLs.repositories.index);
+    expect(router.state.location.pathname).toBe(
+      settingsURLs.repositories.index
+    );
   });
 
   it("can update a repository", async () => {

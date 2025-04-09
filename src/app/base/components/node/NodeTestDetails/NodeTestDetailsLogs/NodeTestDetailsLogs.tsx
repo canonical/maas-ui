@@ -9,7 +9,7 @@ type Props = {
   log: ScriptResultData;
 };
 
-const NodeTestDetailsLogs = ({ log }: Props): JSX.Element => {
+const NodeTestDetailsLogs = ({ log }: Props): React.ReactElement => {
   const [activeTab, setActiveTab] =
     useState<keyof ScriptResultData>("combined");
 

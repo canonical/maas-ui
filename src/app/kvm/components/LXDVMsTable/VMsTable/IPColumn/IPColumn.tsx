@@ -11,7 +11,7 @@ type Props = {
   version: 4 | 6;
 };
 
-const IPColumn = ({ systemId, version }: Props): JSX.Element => {
+const IPColumn = ({ systemId, version }: Props): React.ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

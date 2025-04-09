@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import type { ConfigureDHCPValues } from "../ConfigureDHCP";

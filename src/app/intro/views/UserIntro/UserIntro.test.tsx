@@ -41,7 +41,7 @@ describe("UserIntro", () => {
 
   it("displays a green tick icon when there are ssh keys", async () => {
     renderWithProviders(<UserIntro />, {
-      route: "/intro/user",
+      initialEntries: ["/intro/user"],
       state,
     });
 
@@ -57,7 +57,7 @@ describe("UserIntro", () => {
       sshKeyResolvers.listSshKeys.handler({ items: [], total: 0 })
     );
     renderWithProviders(<UserIntro />, {
-      route: "/intro/user",
+      initialEntries: ["/intro/user"],
       state,
     });
 
@@ -73,11 +73,11 @@ describe("UserIntro", () => {
         user: factory.user({ completed_intro: true }),
       }),
     });
-    renderWithProviders(<UserIntro />, {
-      route: "/intro/user",
+    const { router } = renderWithProviders(<UserIntro />, {
+      initialEntries: ["/intro/user"],
       state,
     });
-    expect(window.location.pathname).toBe(urls.machines.index);
+    expect(router.state.location.pathname).toBe(urls.machines.index);
   });
 
   it("disables the continue button if there are no ssh keys", async () => {
@@ -85,7 +85,7 @@ describe("UserIntro", () => {
       sshKeyResolvers.listSshKeys.handler({ items: [], total: 0 })
     );
     renderWithProviders(<UserIntro />, {
-      route: "/intro/user",
+      initialEntries: ["/intro/user"],
       state,
     });
 
@@ -101,7 +101,7 @@ describe("UserIntro", () => {
       sshKeyResolvers.listSshKeys.handler({ items: [], total: 0 })
     );
     renderWithProviders(<UserIntro />, {
-      route: "/intro/user",
+      initialEntries: ["/intro/user"],
       state,
     });
 
@@ -113,7 +113,7 @@ describe("UserIntro", () => {
 
   it("shows the SSH list if there are ssh keys", async () => {
     renderWithProviders(<UserIntro />, {
-      route: "/intro/user",
+      initialEntries: ["/intro/user"],
       state,
     });
 
@@ -125,7 +125,7 @@ describe("UserIntro", () => {
   it("marks the intro as completed when clicking the continue button", async () => {
     const store = mockStore(state);
     renderWithProviders(<UserIntro />, {
-      route: "/intro/user",
+      initialEntries: ["/intro/user"],
       store,
     });
 
@@ -145,7 +145,7 @@ describe("UserIntro", () => {
       eventErrors: [factory.userEventError()],
     });
     renderWithProviders(<UserIntro />, {
-      route: "/intro/user",
+      initialEntries: ["/intro/user"],
       state,
     });
     expect(screen.getByText("Error:")).toBeInTheDocument();
@@ -157,16 +157,19 @@ describe("UserIntro", () => {
     // Mock the markedIntroComplete state to simulate the markingIntroComplete
     // state having gone from true to false.
     markedIntroCompleteMock.mockImplementationOnce(() => [true, () => null]);
-    renderWithProviders(<UserIntro />, {
-      route: "/intro/user",
+    const { router } = renderWithProviders(<UserIntro />, {
+      initialEntries: ["/intro/user"],
       state,
     });
-    expect(window.location.pathname).toBe(urls.machines.index);
+    expect(router.state.location.pathname).toBe(urls.machines.index);
   });
 
   it("can skip the user setup", async () => {
     const store = mockStore(state);
-    renderWithProviders(<UserIntro />, { store, route: "/intro/user" });
+    renderWithProviders(<UserIntro />, {
+      initialEntries: ["/intro/user"],
+      store,
+    });
     await waitForLoading();
 
     // Open the skip confirmation.

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
@@ -25,7 +25,7 @@ export const DeleteTagForm = ({
   fromDetails = false,
   id,
   onClose,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const saved = useSelector(tagSelectors.saved);

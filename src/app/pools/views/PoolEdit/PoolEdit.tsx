@@ -1,5 +1,5 @@
 import { Spinner, useOnEscapePressed } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import { useGetPool } from "@/app/api/query/pools";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
@@ -12,7 +12,7 @@ export enum Label {
   Title = "Edit pool form",
 }
 
-export const PoolEdit = (): JSX.Element => {
+export const PoolEdit = (): React.ReactElement => {
   const id = useGetURLId("id");
   const navigate = useNavigate();
   const onCancel = () => navigate({ pathname: urls.pools.index });

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Spinner } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import urls from "@/app/base/urls";
 import { useDhcpTarget } from "@/app/settings/hooks";
@@ -12,7 +12,7 @@ type Props = {
   subnetId?: DHCPSnippet["subnet"];
 };
 
-const DhcpTarget = ({ nodeId, subnetId }: Props): JSX.Element | null => {
+const DhcpTarget = ({ nodeId, subnetId }: Props): React.ReactElement | null => {
   const { loading, loaded, target, type } = useDhcpTarget(
     nodeId || null,
     subnetId

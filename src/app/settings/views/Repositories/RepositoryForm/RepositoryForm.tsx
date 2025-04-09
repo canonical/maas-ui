@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import RepositoryFormFields from "../RepositoryFormFields";
@@ -55,7 +55,10 @@ const RepositorySchema = Yup.object().shape({
   url: Yup.string().required("URL field required."),
 });
 
-export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
+export const RepositoryForm = ({
+  type,
+  repository,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [savedRepo, setSavedRepo] = useState<string | null>(null);

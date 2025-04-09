@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { Tag } from "@/app/store/tag/types";
 
@@ -13,7 +13,7 @@ const getTagName = <T extends string | Tag>(tag: T) =>
 const TagLinks = <T extends string | Tag>({
   getLinkURL,
   tags,
-}: Props<T>): JSX.Element => {
+}: Props<T>): React.ReactElement => {
   const sortedTags = [...tags].sort((a, b) =>
     getTagName(a).localeCompare(getTagName(b))
   );

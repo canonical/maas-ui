@@ -25,7 +25,10 @@ type Props = {
   node: ControllerDetails | MachineDetails;
 };
 
-const CacheSetsTable = ({ canEditStorage, node }: Props): JSX.Element => {
+const CacheSetsTable = ({
+  canEditStorage,
+  node,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const closeExpanded = () => setExpanded(null);

@@ -18,7 +18,7 @@ const DeploySchema = Yup.object().shape({
   ),
 });
 
-const DeployForm = (): JSX.Element => {
+const DeployForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

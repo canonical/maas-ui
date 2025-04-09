@@ -33,7 +33,7 @@ const MachineListPagination = ({
   machinesLoading,
   totalPages,
   ...props
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [pageNumber, setPageNumber] = useState<number | undefined>(
     props.currentPage

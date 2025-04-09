@@ -17,7 +17,7 @@ export const BondModeSelect = ({
   defaultOption = { label: "Select bond mode", value: "" },
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const bondModes = useSelector(bondOptionsSelectors.modes);
   const loaded = useSelector(bondOptionsSelectors.loaded);
   const options: Option[] =

@@ -1,7 +1,5 @@
-import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import TagTable, { Label, TestId } from "./TagTable";
@@ -11,7 +9,13 @@ import type { RootState } from "@/app/store/root/types";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within } from "@/testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 vi.mock("../constants", () => ({
   __esModule: true,
@@ -504,33 +508,19 @@ it("returns to the first page if the filter changes", () => {
 });
 
 it("can trigger the tag edit sidepanel", async () => {
-  const path = urls.tags.tag.machines({ id: 1 });
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: path }],
-  });
   const store = mockStore(state);
   const onUpdate = vi.fn();
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <Routes>
-          <Route
-            element={
-              <TagTable
-                currentPage={1}
-                filter={TagSearchFilter.All}
-                onDelete={vi.fn()}
-                onUpdate={onUpdate}
-                searchText=""
-                setCurrentPage={vi.fn()}
-                tags={tags}
-              />
-            }
-            path={path}
-          />
-        </Routes>
-      </Router>
-    </Provider>
+  renderWithProviders(
+    <TagTable
+      currentPage={1}
+      filter={TagSearchFilter.All}
+      onDelete={vi.fn()}
+      onUpdate={onUpdate}
+      searchText=""
+      setCurrentPage={vi.fn()}
+      tags={tags}
+    />,
+    { store, initialEntries: [urls.tags.tag.machines({ id: 1 })] }
   );
   await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
   expect(onUpdate).toHaveBeenCalled();

@@ -11,7 +11,7 @@ type Props = {
 export const AddHardwareMenu = ({
   disabled = false,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <ContextualMenu
       className="is-maas-select"

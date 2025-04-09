@@ -5,7 +5,7 @@ import type { ReleaseFormValues } from "../ReleaseForm";
 
 import FormikField from "@/app/base/components/FormikField";
 
-export const ReleaseFormFields = (): JSX.Element => {
+export const ReleaseFormFields = (): React.ReactElement => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<ReleaseFormValues>();
 
@@ -17,7 +17,7 @@ export const ReleaseFormFields = (): JSX.Element => {
           name="enableErase"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             handleChange(e);
-            if (e.target.checked === false) {
+            if (!e.target.checked) {
               setFieldValue("quickErase", false);
               setFieldValue("secureErase", false);
             }

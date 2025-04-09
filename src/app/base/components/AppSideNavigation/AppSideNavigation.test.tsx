@@ -1,7 +1,5 @@
-import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
+import { BrowserRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import AppSideNavigation from "./AppSideNavigation";
@@ -18,11 +16,12 @@ import {
   waitFor,
   within,
   renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockUseNavigate = vi.fn();
-vi.mock("react-router-dom", async () => {
-  const actual: object = await vi.importActual("react-router-dom");
+vi.mock("react-router", async () => {
+  const actual: object = await vi.importActual("react-router");
   return {
     ...actual,
     useNavigate: () => mockUseNavigate,
@@ -305,8 +304,8 @@ describe("GlobalSideNav", () => {
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
     ];
     state.user.auth.user = factory.user({ completed_intro: true });
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/machines",
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/machines"],
       state,
     });
 
@@ -318,8 +317,8 @@ describe("GlobalSideNav", () => {
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
     ];
     state.user.auth.user = factory.user({ completed_intro: false });
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/machines",
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/machines"],
       state,
     });
 
@@ -330,22 +329,14 @@ describe("GlobalSideNav", () => {
     state.config.items = [
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
     ];
-    const history = createMemoryHistory({
-      initialEntries: [{ pathname: "/" }],
-    });
+
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Router history={history}>
-          <Routes>
-            <Route element={<AppSideNavigation />} path="*" />
-          </Routes>
-        </Router>
-      </Provider>
-    );
-    history.push(urls.intro.images);
+    const { router } = renderWithProviders(<AppSideNavigation />, {
+      store,
+      initialEntries: [urls.intro.images],
+    });
     await waitFor(() =>
-      expect(history.location.pathname).toBe(urls.intro.images)
+      expect(router.state.location.pathname).toBe(urls.intro.images)
     );
   });
 

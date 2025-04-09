@@ -1,8 +1,7 @@
 import { useState } from "react";
 
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import DeviceName from "./DeviceName";
 
@@ -24,7 +23,7 @@ type Props = {
 const DeviceDetailsHeader = ({
   setSidePanelContent,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [editingName, setEditingName] = useState(false);
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)

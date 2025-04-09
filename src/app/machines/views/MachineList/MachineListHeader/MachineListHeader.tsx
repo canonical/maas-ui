@@ -32,7 +32,7 @@ export const MachineListHeader = ({
   searchFilter,
   setSearchFilter,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   // Get the count of all machines
   const { machineCount: allMachineCount } = useFetchMachineCount();

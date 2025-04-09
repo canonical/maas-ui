@@ -8,7 +8,7 @@ import FormikField from "@/app/base/components/FormikField";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import docsUrls from "@/app/base/docsUrls";
 
-export const SSHKeyFormFields = (): JSX.Element => {
+export const SSHKeyFormFields = (): React.ReactElement => {
   const { values } = useFormikContext<SSHKeyFormValues>();
   const { protocol } = values;
   const uploadSelected = protocol === "upload";

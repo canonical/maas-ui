@@ -19,7 +19,7 @@ const NetworkDiscoverySchema = Yup.object().shape({
   network_discovery: Yup.string().required(),
 });
 
-const NetworkDiscoveryForm = (): JSX.Element => {
+const NetworkDiscoveryForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

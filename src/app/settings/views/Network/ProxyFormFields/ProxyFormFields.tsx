@@ -4,7 +4,7 @@ import type { ProxyFormValues } from "../ProxyForm/types";
 
 import FormikField from "@/app/base/components/FormikField";
 
-const ProxyFormFields = (): JSX.Element => {
+const ProxyFormFields = (): React.ReactElement => {
   const { values } = useFormikContext<ProxyFormValues>();
 
   return (

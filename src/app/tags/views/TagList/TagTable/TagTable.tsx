@@ -7,7 +7,7 @@ import type {
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Icon, MainTable, Strip } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { TAGS_PER_PAGE } from "../constants";
 
@@ -156,7 +156,7 @@ const TagTable = ({
   setCurrentPage,
   tags,
   ...tableProps
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { currentSort, sortRows, updateSort } = useTableSort<Tag, SortKey>(
     getSortValue,
     {

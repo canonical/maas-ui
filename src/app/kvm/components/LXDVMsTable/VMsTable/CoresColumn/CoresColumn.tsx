@@ -6,7 +6,10 @@ type Props = {
   unpinnedCores: number;
 };
 
-const CoresColumn = ({ pinnedCores, unpinnedCores }: Props): JSX.Element => {
+const CoresColumn = ({
+  pinnedCores,
+  unpinnedCores,
+}: Props): React.ReactElement => {
   const pinnedRanges = getRanges(pinnedCores).join(", ");
   const primaryText = pinnedRanges || `Any ${unpinnedCores}`;
   const secondaryText = pinnedRanges && "pinned";
