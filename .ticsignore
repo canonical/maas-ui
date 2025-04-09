@@ -1,0 +1,6 @@
+apiclient/
+
+*.test.tsx
+*.gen.ts
+
+*.scss
