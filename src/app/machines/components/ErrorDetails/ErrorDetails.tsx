@@ -29,7 +29,7 @@ const ErrorDetailsList = ({
   failureDetails,
 }: {
   failureDetails: NonNullable<ActionState["failureDetails"]>;
-}): JSX.Element => {
+}): React.ReactElement => {
   return (
     <>
       {Object.keys(failureDetails).length > 0

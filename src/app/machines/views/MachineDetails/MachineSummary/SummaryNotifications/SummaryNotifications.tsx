@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import {
   useFetchActions,
@@ -42,7 +42,7 @@ const formatEventText = (event: NodeEvent) => {
   return text.join(" - ");
 };
 
-const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
+const SummaryNotifications = ({ id }: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );

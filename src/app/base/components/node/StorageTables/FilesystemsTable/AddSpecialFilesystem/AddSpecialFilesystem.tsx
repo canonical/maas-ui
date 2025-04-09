@@ -32,7 +32,7 @@ type Props = {
 export const AddSpecialFilesystem = ({
   closeForm,
   machine,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const { errors, saved, saving } = useMachineDetailsForm(
     machine.system_id,

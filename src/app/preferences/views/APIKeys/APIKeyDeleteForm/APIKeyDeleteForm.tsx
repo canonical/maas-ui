@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage } from "@/app/base/hooks";

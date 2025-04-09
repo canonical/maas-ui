@@ -24,7 +24,7 @@ export const ActionFormWrapper = ({
   clearSidePanelContent,
   devices,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const deleting = useSelector(deviceSelectors.deleting);
   const settingZone = useSelector(deviceSelectors.settingZone);

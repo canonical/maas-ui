@@ -42,7 +42,7 @@ type UpdateTags = (newSelectedTags: Tag[], clearFilter?: boolean) => void;
  * @param match - Substring to highlight.
  * @returns JSX with emphasised text.
  */
-const highlightMatch = (text: string, match: string): JSX.Element => {
+const highlightMatch = (text: string, match: string): React.ReactElement => {
   const textArray = text.split(match);
   return (
     <span>
@@ -78,7 +78,7 @@ const generateDropdownItems = ({
   tags: Tag[];
   updateTags: UpdateTags;
   generateDropdownEntry: Props["generateDropdownEntry"];
-}): JSX.Element[] => {
+}): React.ReactElement[] => {
   const dropdownItems = [];
   if (
     allowNewTags &&
@@ -206,7 +206,7 @@ export const TagSelector = ({
   tags = [],
   disabledTags = [],
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const wrapperRef = useClickOutside<HTMLDivElement>(() => {
     setDropdownOpen(false);
   });
@@ -280,7 +280,7 @@ export const TagSelector = ({
             onFocus={() => {
               setDropdownOpen(true);
             }}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
                 if (allowNewTags) {

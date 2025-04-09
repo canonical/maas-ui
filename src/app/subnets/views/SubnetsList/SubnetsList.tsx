@@ -2,7 +2,7 @@ import { useEffect, useCallback } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import SubnetsControls from "./SubnetsControls";
 import SubnetsTable from "./SubnetsTable";
@@ -21,7 +21,7 @@ import {
 import { SubnetSidePanelViews } from "@/app/subnets/types";
 import FormActions from "@/app/subnets/views/FormActions";
 
-const SubnetsList = (): JSX.Element => {
+const SubnetsList = (): React.ReactElement => {
   useWindowTitle("Subnets");
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const query = useQuery();
@@ -56,10 +56,11 @@ const SubnetsList = (): JSX.Element => {
   const hasValidGroupBy = groupBy && ["fabric", "space"].includes(groupBy);
 
   useEffect(() => {
+    setSidePanelContent(null);
     if (!hasValidGroupBy) {
       setGroupBy("fabric");
     }
-  }, [groupBy, setGroupBy, hasValidGroupBy]);
+  }, [groupBy, setGroupBy, hasValidGroupBy, setSidePanelContent]);
 
   const [, name] = sidePanelContent?.view || [];
   const activeForm =

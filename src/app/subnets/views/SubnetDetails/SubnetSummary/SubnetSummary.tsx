@@ -25,7 +25,7 @@ type Props = {
   id: Subnet[SubnetMeta.PK] | null;
 };
 
-const SubnetSummary = ({ id }: Props): JSX.Element | null => {
+const SubnetSummary = ({ id }: Props): React.ReactElement | null => {
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, id)
   );

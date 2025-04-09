@@ -1,5 +1,5 @@
 import { MainTable } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import OwnerColumn from "./OwnerColumn";
 
@@ -143,7 +143,7 @@ const DeviceListTable = ({
   loading = false,
   onSelectedChange,
   selectedIDs,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { currentSort, sortRows, updateSort } = useTableSort<Device, SortKey>(
     getSortValue,
     {

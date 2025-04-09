@@ -7,7 +7,7 @@ import {
   Routes,
   useLocation,
   useNavigate,
-} from "react-router-dom";
+} from "react-router";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 import LXDSingleResources from "./LXDSingleResources";
@@ -33,7 +33,7 @@ export enum Label {
   Title = "LXD details",
 }
 
-const LXDSingleDetails = (): JSX.Element => {
+const LXDSingleDetails = (): React.ReactElement => {
   const navigate = useNavigate();
   const location = useLocation();
   const id = useGetURLId(PodMeta.PK);

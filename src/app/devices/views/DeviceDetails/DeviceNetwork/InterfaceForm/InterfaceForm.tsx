@@ -84,7 +84,7 @@ const InterfaceForm = ({
   onSubmit,
   systemId,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);

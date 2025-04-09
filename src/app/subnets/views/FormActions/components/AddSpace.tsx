@@ -15,7 +15,7 @@ type AddSpaceValues = {
 const AddSpace = ({
   activeForm,
   setActiveForm,
-}: FormActionProps): JSX.Element => {
+}: FormActionProps): React.ReactElement => {
   const dispatch = useDispatch();
   const isSaving = useSelector(spaceSelectors.saving);
   const isSaved = useSelector(spaceSelectors.saved);

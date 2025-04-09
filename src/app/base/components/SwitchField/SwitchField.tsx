@@ -34,7 +34,7 @@ const SwitchField = ({
   success,
   wrapperClassName,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <Field
       caution={caution}

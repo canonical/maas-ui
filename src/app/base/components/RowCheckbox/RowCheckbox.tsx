@@ -27,7 +27,7 @@ const RowCheckbox = <I,>({
   items,
   inputLabel,
   ...props
-}: Props<I>): JSX.Element => {
+}: Props<I>): React.ReactElement => {
   const id = useRef(nanoid());
   return (
     <Input

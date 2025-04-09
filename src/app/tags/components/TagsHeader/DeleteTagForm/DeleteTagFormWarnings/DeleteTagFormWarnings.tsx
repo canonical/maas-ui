@@ -1,7 +1,7 @@
 import { Notification } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import urls from "@/app/base/urls";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
@@ -29,7 +29,9 @@ const generateDeployedMessage = (count: number) =>
     ? `There is ${count} deployed machine with this tag and it will not be affected until it is redeployed.`
     : `There are ${count} deployed machines with this tag and they will not be affected until they are redeployed.`;
 
-export const DeleteTagFormWarnings = ({ id }: Props): JSX.Element | null => {
+export const DeleteTagFormWarnings = ({
+  id,
+}: Props): React.ReactElement | null => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );

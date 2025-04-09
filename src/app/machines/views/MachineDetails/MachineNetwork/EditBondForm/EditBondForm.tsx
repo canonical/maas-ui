@@ -84,7 +84,7 @@ const EditBondForm = ({
   selected,
   setSelected,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const [editingMembers, setEditingMembers] = useState(false);
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>

@@ -180,7 +180,7 @@ const generateRows = (
     };
   });
 
-const DhcpList = (): JSX.Element => {
+const DhcpList = (): React.ReactElement => {
   const [expandedId, setExpandedId] = useState<
     DHCPSnippet[DHCPSnippetMeta.PK] | null
   >(null);

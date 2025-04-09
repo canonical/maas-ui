@@ -1,7 +1,7 @@
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import { NetworkDiscoverySidePanelViews } from "../constants";
 
@@ -20,14 +20,14 @@ const NetworkDiscoveryHeader = ({
   setSidePanelContent,
 }: {
   setSidePanelContent: SetSidePanelContent;
-}): JSX.Element => {
+}): React.ReactElement => {
   const location = useLocation();
 
   const discoveries = useSelector(discoverySelectors.all);
 
   useFetchActions([discoveryActions.fetch]);
 
-  const buttons: JSX.Element[] = [
+  const buttons: React.ReactElement[] = [
     <Button
       data-testid="clear-all"
       disabled={discoveries.length === 0}

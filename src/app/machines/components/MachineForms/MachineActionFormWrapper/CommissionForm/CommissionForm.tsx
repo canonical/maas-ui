@@ -1,6 +1,6 @@
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import * as Yup from "yup";
 
 import CommissionFormFields from "./CommissionFormFields";
@@ -65,7 +65,7 @@ export const CommissionForm = ({
   searchFilter,
   viewingDetails,
   selectedMachines,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const id = useGetURLId(MachineMeta.PK);
   const { machine } = useFetchMachine(id);
   const dispatch = useDispatch();

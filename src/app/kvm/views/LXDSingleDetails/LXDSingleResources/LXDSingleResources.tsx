@@ -16,7 +16,7 @@ export enum Label {
   Title = "LXD resources",
 }
 
-const LXDSingleResources = ({ id }: Props): JSX.Element => {
+const LXDSingleResources = ({ id }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

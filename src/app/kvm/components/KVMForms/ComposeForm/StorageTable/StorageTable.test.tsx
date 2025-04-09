@@ -22,7 +22,7 @@ setupMockServer(
 const generateWrapper = async (state: RootState, pod: Pod) => {
   renderWithProviders(
     <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-    { state, route: `/kvm/${pod.id}` }
+    { state, initialEntries: [`/kvm/${pod.id}`] }
   );
   await waitFor(() => {
     expect(zoneResolvers.listZones.resolved).toBeTruthy();

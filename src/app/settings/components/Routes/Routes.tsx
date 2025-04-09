@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router-dom";
+import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router";
 
 import PageContent from "@/app/base/components/PageContent";
 import urls from "@/app/base/urls";
@@ -38,7 +38,7 @@ import UserEdit from "@/app/settings/views/Users/UserEdit";
 import UsersList from "@/app/settings/views/Users/UsersList";
 import { getRelativeRoute } from "@/app/utils";
 
-const Routes = (): JSX.Element => {
+const Routes = (): React.ReactElement => {
   const base = urls.settings.index;
   return (
     <ReactRouterRoutes>

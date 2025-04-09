@@ -17,7 +17,9 @@ type Props = {
 const countStatus = (services: Service[], status: ServiceStatus) =>
   services.filter((service) => service.status === status).length;
 
-export const ControllerStatus = ({ systemId }: Props): JSX.Element | null => {
+export const ControllerStatus = ({
+  systemId,
+}: Props): React.ReactElement | null => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );
@@ -31,7 +33,7 @@ export const ControllerStatus = ({ systemId }: Props): JSX.Element | null => {
   if (!controller || !services?.length) {
     return null;
   }
-  let icon: string | null = null;
+  let icon: string | null;
   let message: string | null = null;
   const dead = countStatus(services, ServiceStatus.DEAD);
   const degraded = countStatus(services, ServiceStatus.DEGRADED);

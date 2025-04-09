@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Card, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import ConnectivityCard from "./ConnectivityCard";
@@ -41,7 +41,7 @@ export const MaasIntroSchema = Yup.object()
   })
   .defined();
 
-const MaasIntro = (): JSX.Element => {
+const MaasIntro = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const authLoading = useSelector(authSelectors.loading);

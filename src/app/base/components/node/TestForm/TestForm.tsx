@@ -59,7 +59,7 @@ export const TestForm = <E,>({
   selectedMachines,
   selectedCount,
   viewingDetails,
-}: Props<E>): JSX.Element => {
+}: Props<E>): React.ReactElement => {
   const dispatch = useDispatch();
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);

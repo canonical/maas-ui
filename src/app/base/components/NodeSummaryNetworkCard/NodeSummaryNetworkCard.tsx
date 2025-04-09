@@ -3,7 +3,7 @@ import { Fragment } from "react";
 
 import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import NetworkCardTable from "./NetworkCardTable";
 
@@ -72,7 +72,7 @@ const groupInterfaces = (interfaces: NetworkInterface[]): InterfaceGroup[] => {
 
   // Sort groups by vendor, then product, then firmware version. Unknown vendors
   // should appear last.
-  const sortedGroups = interfaceGroups.sort((a, b) => {
+  return interfaceGroups.sort((a, b) => {
     const vendorA = a.vendor;
     const vendorB = b.vendor;
     const productA = a.product;
@@ -97,8 +97,6 @@ const groupInterfaces = (interfaces: NetworkInterface[]): InterfaceGroup[] => {
     }
     return vendorA > vendorB ? 1 : -1;
   });
-
-  return sortedGroups;
 };
 
 const NodeSummaryNetworkCard = ({
@@ -106,7 +104,7 @@ const NodeSummaryNetworkCard = ({
   interfaces,
   networkURL,
   node,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
@@ -118,7 +116,7 @@ const NodeSummaryNetworkCard = ({
     subnetActions.fetch,
   ]);
 
-  let content: JSX.Element;
+  let content: React.ReactElement;
 
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will

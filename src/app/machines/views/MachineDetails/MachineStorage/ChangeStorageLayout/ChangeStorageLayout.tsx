@@ -20,7 +20,7 @@ export const ChangeStorageLayout = ({
   systemId,
   clearSidePanelContent,
   selectedLayout,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,

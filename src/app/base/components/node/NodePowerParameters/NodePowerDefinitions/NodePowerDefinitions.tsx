@@ -58,7 +58,7 @@ const NodePowerDefinitions = ({
   node,
 }: {
   node: ControllerDetails | MachineDetails;
-}): JSX.Element => {
+}): React.ReactElement => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const powerType = getPowerTypeFromName(powerTypes, node.power_type);
   const fieldScopes = nodeIsMachine(node)

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Col, Row, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import NodeTestDetailsLogs from "./NodeTestDetailsLogs";
 
@@ -22,7 +22,9 @@ type Props = {
   getReturnPath: (id: string) => string;
 };
 
-const NodeTestDetails = ({ getReturnPath }: Props): JSX.Element | null => {
+const NodeTestDetails = ({
+  getReturnPath,
+}: Props): React.ReactElement | null => {
   const [fetched, setFetched] = useState(false);
   const dispatch = useDispatch();
   const id = useGetURLId("system_id");

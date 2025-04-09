@@ -7,7 +7,7 @@ import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
 import { withFormikDevtools } from "formik-devtools-extension";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import type { AnyAction } from "redux";
 
 import type { FormikFormButtonsProps } from "@/app/base/components/FormikFormButtons";
@@ -99,7 +99,7 @@ const FormikFormContent = <V extends object, E = null>({
   "aria-label": ariaLabel,
   buttonsBehavior = "coupled",
   ...buttonsProps
-}: Props<V, E>): JSX.Element => {
+}: Props<V, E>): React.ReactElement => {
   const formikContext = useFormikContext<V>();
   if (import.meta.env.NODE_ENV === "development") {
     withFormikDevtools(formikContext);

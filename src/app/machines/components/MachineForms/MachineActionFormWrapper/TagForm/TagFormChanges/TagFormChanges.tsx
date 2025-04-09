@@ -10,7 +10,7 @@ import {
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import type { ColumnWithLooseAccessor } from "react-table";
 
 import TagChip from "../TagChip";
@@ -122,7 +122,7 @@ export const TagFormChanges = ({
   selectedCount,
   newTags,
   toggleTagDetails,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const tagIdsAndCounts = getTagCounts(tags);
   const tagIds = tagIdsAndCounts ? Array.from(tagIdsAndCounts?.keys()) : [];

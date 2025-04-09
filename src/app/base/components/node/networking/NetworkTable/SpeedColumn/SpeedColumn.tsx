@@ -19,7 +19,7 @@ type Props = {
   node: ControllerDetails | MachineDetails;
 };
 
-const SpeedColumn = ({ link, nic, node }: Props): JSX.Element | null => {
+const SpeedColumn = ({ link, nic, node }: Props): React.ReactElement | null => {
   if (link && !nic) {
     [nic] = getLinkInterface(node, link);
   }

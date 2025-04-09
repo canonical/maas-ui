@@ -244,7 +244,7 @@ describe("Machines", () => {
   it("can set the search from the URL", async () => {
     const store = mockStore(state);
     renderWithProviders(<Machines />, {
-      route: "/machines?q=test+search",
+      initialEntries: ["/machines?q=test+search"],
       store,
     });
     await waitFor(() => {
@@ -256,8 +256,8 @@ describe("Machines", () => {
 
   it("changes the URL when the search text changes", async () => {
     const store = mockStore(state);
-    renderWithProviders(<Machines />, {
-      route: "/machines?q=test+search",
+    const { router } = renderWithProviders(<Machines />, {
+      initialEntries: ["/machines?q=test+search"],
       store,
     });
     await userEvent.clear(screen.getByRole("searchbox", { name: "Search" }));
@@ -265,9 +265,9 @@ describe("Machines", () => {
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    await waitFor(() => {
-      expect(window.location.search).toBe("?status=new");
-    });
+    await waitFor(() =>
+      expect(router.state.location.search).toBe("?status=new")
+    );
   });
 
   it("can hide groups", async () => {
@@ -275,7 +275,7 @@ describe("Machines", () => {
       .mockReturnValueOnce("123456")
       .mockReturnValueOnce("78910");
     const store = mockStore(state);
-    renderWithProviders(<Machines />, { route: "/machines", store });
+    renderWithProviders(<Machines />, { initialEntries: ["/machines"], store });
     const expected = machineActions.fetch("123456", {
       group_collapsed: ["failed_testing"],
     });
@@ -325,7 +325,7 @@ describe("Machines", () => {
     });
     const getFetchActions = () =>
       store.getActions().filter((action) => action.type === expected.type);
-    renderWithProviders(<Machines />, { route: "/machines", store });
+    renderWithProviders(<Machines />, { initialEntries: ["/machines"], store });
 
     const initialFetchActions = getFetchActions();
     await waitFor(() => {
@@ -345,8 +345,10 @@ describe("Machines", () => {
 
   it("can store the group in local storage", async () => {
     const store = mockStore(state);
-    const { unmount } = renderWithProviders(<Machines />, {
-      route: "/machines",
+    const {
+      result: { unmount },
+    } = renderWithProviders(<Machines />, {
+      initialEntries: ["/machines"],
       store,
     });
     await userEvent.selectOptions(
@@ -358,7 +360,7 @@ describe("Machines", () => {
     // set by the select.
     const store2 = mockStore(state);
     renderWithProviders(<Machines />, {
-      route: "/machines",
+      initialEntries: ["/machines"],
       store: store2,
     });
 
@@ -392,8 +394,10 @@ describe("Machines", () => {
       "mocked-nanoid-2": machineList,
     };
     const store = mockStore(state);
-    const { unmount } = renderWithProviders(<Machines />, {
-      route: "/machines",
+    const {
+      result: { unmount },
+    } = renderWithProviders(<Machines />, {
+      initialEntries: ["/machines"],
       store,
     });
     const expected = machineActions.fetch("123456", {
@@ -416,7 +420,7 @@ describe("Machines", () => {
     unmount();
     const store2 = mockStore(state);
     renderWithProviders(<Machines />, {
-      route: "/machines",
+      initialEntries: ["/machines"],
       store: store2,
     });
     const expected2 = machineActions.fetch("123456", {
@@ -449,7 +453,7 @@ describe("Machines", () => {
   });
 
   it("correctly sets the search text for workload annotation filters", async () => {
-    renderWithProviders(<Machines />, { route: "/machines", state });
+    renderWithProviders(<Machines />, { initialEntries: ["/machines"], state });
 
     await userEvent.click(screen.getByRole("button", { name: "Filters" }));
     await userEvent.click(screen.getByRole("tab", { name: "Workload" }));

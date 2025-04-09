@@ -14,7 +14,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  zoneResolvers.getZone.handler()
+);
 
 describe("VirshDetails", () => {
   let state: RootState;

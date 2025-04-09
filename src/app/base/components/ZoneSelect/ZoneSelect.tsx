@@ -22,7 +22,7 @@ export const ZoneSelect = ({
   label = Label.Zone,
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const zones = useZones();
 
   return (

@@ -121,7 +121,7 @@ const AddDeviceSchema = Yup.object().shape({
 
 export const AddDeviceForm = ({
   clearSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const devicesSaved = useSelector(deviceSelectors.saved);
   const devicesSaving = useSelector(deviceSelectors.saving);

@@ -8,7 +8,6 @@ import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -50,10 +49,10 @@ describe("AddVirsh", () => {
   });
 
   it("fetches the necessary data on load", async () => {
-    const { store } = renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <AddVirsh clearSidePanelContent={vi.fn()} />,
       {
-        route: "/kvm/add",
+        initialEntries: ["/kvm/add"],
         state,
       }
     );
@@ -74,7 +73,7 @@ describe("AddVirsh", () => {
   it("displays a spinner if data hasn't loaded yet", () => {
     state.general.powerTypes.loaded = false;
     renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -84,7 +83,7 @@ describe("AddVirsh", () => {
     state.general.powerTypes.data = [];
     state.general.powerTypes.loaded = true;
     renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
     await waitFor(() => {
@@ -99,10 +98,10 @@ describe("AddVirsh", () => {
   });
 
   it("can handle saving a virsh KVM", async () => {
-    const { store } = renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <AddVirsh clearSidePanelContent={vi.fn()} />,
       {
-        route: "/kvm/add",
+        initialEntries: ["/kvm/add"],
         state,
       }
     );

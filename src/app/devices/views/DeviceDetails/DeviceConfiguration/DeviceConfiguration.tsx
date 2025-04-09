@@ -29,7 +29,7 @@ export enum Label {
   Submit = "Save changes",
 }
 
-const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
+const DeviceConfiguration = ({ systemId }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)

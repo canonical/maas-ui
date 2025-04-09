@@ -50,7 +50,7 @@ type Props = {
   node: ControllerDetails | MachineDetails;
 };
 
-const IPColumn = ({ link, nic, node }: Props): JSX.Element | null => {
+const IPColumn = ({ link, nic, node }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const [scriptResultsRequested, setScriptResultsRequested] = useState(false);
   const fabrics = useSelector(fabricSelectors.all);

@@ -6,7 +6,7 @@ import {
 } from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
@@ -33,7 +33,7 @@ const SSLKeySchema = Yup.object().shape({
   key: Yup.string().required("SSL key is required"),
 });
 
-export const AddSSLKey = (): JSX.Element => {
+export const AddSSLKey = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const saving = useSelector(sslkeySelectors.saving);

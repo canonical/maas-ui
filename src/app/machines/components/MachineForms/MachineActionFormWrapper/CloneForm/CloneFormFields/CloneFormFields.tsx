@@ -29,7 +29,7 @@ type Props = {
 export const CloneFormFields = ({
   selectedMachine,
   setSelectedMachine,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { setFieldValue, values } = useFormikContext<CloneFormValues>();
 
   const machineInState = useSelector((state: RootState) =>

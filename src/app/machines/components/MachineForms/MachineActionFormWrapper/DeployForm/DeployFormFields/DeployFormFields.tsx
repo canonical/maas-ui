@@ -12,7 +12,7 @@ import {
 import classNames from "classnames";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { DeployFormValues } from "../DeployForm";
 
@@ -31,7 +31,7 @@ import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import { timeSpanToMinutes } from "@/app/utils";
 
-export const DeployFormFields = (): JSX.Element => {
+export const DeployFormFields = (): React.ReactElement => {
   const [deployVmHost, setDeployVmHost] = useState(false);
   const [userDataVisible, setUserDataVisible] = useState(false);
   const formikProps = useFormikContext<DeployFormValues>();

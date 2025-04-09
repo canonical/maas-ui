@@ -67,7 +67,7 @@ describe("InterfacesTable", () => {
 
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
@@ -99,7 +99,7 @@ describe("InterfacesTable", () => {
     state.vlan.items = [vlan];
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => {
       expect(
@@ -128,7 +128,7 @@ describe("InterfacesTable", () => {
 
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => {
       expect(
@@ -153,7 +153,7 @@ describe("InterfacesTable", () => {
 
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => {
       expect(screen.getByTestId("undefined-interface")).toBeInTheDocument();
@@ -196,7 +196,7 @@ describe("InterfacesTable", () => {
     state.vlan.items = [vlan];
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => {
       expect(
@@ -239,7 +239,7 @@ describe("InterfacesTable", () => {
     state.vlan.items = [nonBootVlan, bootVlan];
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
     );
     await waitFor(() => {
       expect(

@@ -83,7 +83,7 @@ const generateRows = (
     };
   });
 
-const LicenseKeyList = (): JSX.Element => {
+const LicenseKeyList = (): React.ReactElement => {
   const dispatch = useDispatch();
   const [expandedId, setExpandedId] = useState<
     LicenseKeys["license_key"] | null

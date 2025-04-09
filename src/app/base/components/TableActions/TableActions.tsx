@@ -1,5 +1,5 @@
 import { Button, Tooltip } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import CopyButton from "@/app/base/components/CopyButton";
 
@@ -31,7 +31,7 @@ const TableActions = ({
   onClear,
   onDelete,
   onEdit,
-}: Props): JSX.Element => (
+}: Props): React.ReactElement => (
   <div>
     {copyValue && <CopyButton value={copyValue} />}
     {(editPath || onEdit) && (

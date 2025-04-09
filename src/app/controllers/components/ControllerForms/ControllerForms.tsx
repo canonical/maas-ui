@@ -18,10 +18,11 @@ const ControllerForms = ({
   sidePanelContent,
   setSidePanelContent,
   viewingDetails = false,
-}: Props): JSX.Element | null => {
-  const clearSidePanelContent = useCallback(() => {
-    setSidePanelContent(null);
-  }, [setSidePanelContent]);
+}: Props): React.ReactElement | null => {
+  const clearSidePanelContent = useCallback(
+    () => setSidePanelContent(null),
+    [setSidePanelContent]
+  );
 
   if (!sidePanelContent) {
     return null;

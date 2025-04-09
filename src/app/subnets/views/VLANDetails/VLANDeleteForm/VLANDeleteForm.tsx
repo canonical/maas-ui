@@ -21,7 +21,7 @@ const VLANDeleteForm = ({
 }: Pick<
   VLANActionFormProps,
   "setSidePanelContent" | "vlanId"
->): JSX.Element | null => {
+>): React.ReactElement | null => {
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, vlanId)

@@ -11,7 +11,10 @@ import {
   useWindowTitle,
 } from "./base";
 
-import { renderHookWithMockStore } from "@/testing/utils";
+import {
+  renderHookWithMockStore,
+  renderHookWithProviders,
+} from "@/testing/utils";
 
 const mockUseLocationValue = {
   pathname: "/original-pathname",
@@ -19,8 +22,8 @@ const mockUseLocationValue = {
   hash: "",
   state: null,
 };
-vi.mock("react-router-dom", () => ({
-  ...vi.importActual("react-router-dom"),
+vi.mock("react-router", () => ({
+  ...vi.importActual("react-router"),
   useLocation: () => mockUseLocationValue,
 }));
 
@@ -169,7 +172,7 @@ describe("useCycled", () => {
     resetCycle();
     await waitFor(() => {
       [hasCycled, resetCycle] = result.current;
-      expect(hasCycled).toBe(false);
+      return expect(hasCycled).toBe(false);
     });
     // The onCycle function should not get called when it resets.
     expect(onCycled).toHaveBeenCalledTimes(1);
@@ -192,7 +195,7 @@ describe("useCycled", () => {
     rerender({ state: false });
     await waitFor(() => {
       [hasCycled, resetCycle] = result.current;
-      expect(hasCycled).toBe(false);
+      return expect(hasCycled).toBe(false);
     });
     // Cycle the value back to true:
     rerender({ state: true });
@@ -271,9 +274,7 @@ describe("useScrollToTop", () => {
   it("scrolls to the top of the page on pathname change", () => {
     const scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
-    const { rerender } = renderHook(() => {
-      useScrollToTop();
-    });
+    const { rerender } = renderHook(() => useScrollToTop());
 
     expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
     expect(scrollToSpy).toHaveBeenCalledTimes(1);
@@ -287,14 +288,10 @@ describe("useScrollToTop", () => {
   it("does not scroll to the top of the page if pathname stays the same", () => {
     const scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
-    const { rerender } = renderHook(() => {
-      useScrollToTop();
-    });
+    renderHookWithProviders(() => useScrollToTop());
 
     expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
     expect(scrollToSpy).toHaveBeenCalledTimes(1);
-
-    rerender();
 
     expect(scrollToSpy).toHaveBeenCalledTimes(1);
   });

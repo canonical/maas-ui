@@ -65,7 +65,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     expect(screen.getByTestId("main-toolbar-heading")).toHaveTextContent(
       "2 machines in 0 pools"
@@ -84,7 +84,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     expect(
       screen.queryByRole("button", { name: "Add hardware" })
@@ -100,7 +100,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     expect(
       screen.getByRole("button", { name: "Add hardware" })
@@ -124,7 +124,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
@@ -155,7 +155,7 @@ describe("MachineListHeader", () => {
         ],
       }),
     };
-    const { rerender } = renderWithProviders(
+    renderWithProviders(
       <MachineListHeader
         grouping={null}
         searchFilter=""
@@ -165,7 +165,7 @@ describe("MachineListHeader", () => {
         setSearchFilter={vi.fn()}
         setSidePanelContent={vi.fn()}
       />,
-      { state, route: urls.machines.index }
+      { state, initialEntries: [urls.machines.index] }
     );
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
@@ -177,18 +177,6 @@ describe("MachineListHeader", () => {
 
     await userEvent.click(tagAction);
 
-    // Render the header again
-    rerender(
-      <MachineListHeader
-        grouping={null}
-        searchFilter=""
-        setGrouping={vi.fn()}
-        setHiddenColumns={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />
-    );
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
     // The new label should now be hidden.

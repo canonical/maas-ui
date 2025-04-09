@@ -32,12 +32,13 @@ const ImageList = (): ReactElement => {
   useWindowTitle("Images");
 
   useEffect(() => {
+    setSidePanelContent(null);
     dispatch(bootResourceActions.poll({ continuous: true }));
     dispatch(configActions.fetch());
     return () => {
       dispatch(bootResourceActions.pollStop());
     };
-  }, [dispatch]);
+  }, [dispatch, setSidePanelContent]);
 
   return (
     <PageContent

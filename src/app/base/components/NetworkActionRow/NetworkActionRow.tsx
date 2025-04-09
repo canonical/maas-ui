@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import { ExpandedState } from "../NodeNetworkTab/NodeNetworkTab";
 
@@ -38,7 +38,7 @@ const NetworkActionRow = ({
   rightContent,
   selected,
   setSelected,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
   const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const { pathname } = useLocation();

@@ -38,7 +38,9 @@ export type AddVirshValues = {
   zone: number | string;
 };
 
-export const AddVirsh = ({ clearSidePanelContent }: Props): JSX.Element => {
+export const AddVirsh = ({
+  clearSidePanelContent,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);

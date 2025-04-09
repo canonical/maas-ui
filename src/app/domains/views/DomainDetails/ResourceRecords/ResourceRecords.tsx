@@ -10,7 +10,7 @@ import {
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import DeleteRecordForm from "./DeleteRecordForm";
 import EditRecordForm from "./EditRecordForm";
@@ -44,7 +44,7 @@ type Props = {
 const generateRowId = (resource: DomainResource, i: number) =>
   `${resource.dnsresource_id}-${i}`;
 
-const ResourceRecords = ({ id }: Props): JSX.Element | null => {
+const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, id)
   );

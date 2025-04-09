@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
@@ -14,7 +14,7 @@ type Props = {
   id?: Space[SpaceMeta.PK] | null;
 };
 
-const SpaceLink = ({ id }: Props): JSX.Element => {
+const SpaceLink = ({ id }: Props): React.ReactElement => {
   const space = useSelector((state: RootState) =>
     spaceSelectors.getById(state, id)
   );

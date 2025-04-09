@@ -61,7 +61,7 @@ export const MachineListTable = ({
   setSortDirection,
   setSortKey,
   ...props
-}: MachineListTableProps): JSX.Element => {
+}: MachineListTableProps): React.ReactElement => {
   const parsedFilter = useMemo(
     () => FilterMachines.parseFetchFilters(filter),
     [filter]

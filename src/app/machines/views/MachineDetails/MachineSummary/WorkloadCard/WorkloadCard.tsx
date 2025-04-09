@@ -1,7 +1,7 @@
 import { ExternalLink } from "@canonical/maas-react-components";
 import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 import LabelledList from "@/app/base/components/LabelledList";
 import TooltipButton from "@/app/base/components/TooltipButton";
@@ -16,12 +16,12 @@ type Props = {
   id: Machine["system_id"];
 };
 
-const WorkloadCard = ({ id }: Props): JSX.Element => {
+const WorkloadCard = ({ id }: Props): React.ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
   const sendAnalytics = useSendAnalytics();
-  let content: JSX.Element;
+  let content: React.ReactElement;
 
   if (isMachineDetails(machine)) {
     const workloads = Object.entries(machine.workload_annotations || {}).sort(

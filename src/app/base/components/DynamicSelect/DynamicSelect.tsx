@@ -53,7 +53,7 @@ export const DynamicSelect = <V extends FormValues = FormValues>({
   options,
   name,
   ...props
-}: Props<V>): JSX.Element => {
+}: Props<V>): React.ReactElement => {
   const { setFieldValue, values } = useFormikContext<V>();
   const currentValue = makeString(values[name]);
   const previousValue = usePrevious(currentValue, false);

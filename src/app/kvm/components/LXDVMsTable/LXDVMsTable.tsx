@@ -40,7 +40,7 @@ const LXDVMsTable = ({
   searchFilter,
   setSearchFilter,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState<FetchGroupKey | null>(

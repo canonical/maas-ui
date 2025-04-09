@@ -1,7 +1,7 @@
 import { Icon, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import {
   useFetchActions,
@@ -39,7 +39,7 @@ export enum Labels {
   KernelCrashDump = "Kernel crash dump",
 }
 
-const DetailsCard = ({ node }: Props): JSX.Element => {
+const DetailsCard = ({ node }: Props): React.ReactElement => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const tagsLoaded = useSelector(tagSelectors.loaded);
   const machineTags = useSelector((state: RootState) =>

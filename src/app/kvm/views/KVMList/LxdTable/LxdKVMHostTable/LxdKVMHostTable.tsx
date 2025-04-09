@@ -150,7 +150,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
     };
   });
 
-const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
+const LxdKVMHostTable = ({ rows }: Props): React.ReactElement => {
   const zones = useZones();
   const { currentSort, sortRows, updateSort } = useTableSort<
     LxdKVMHostTableRow,

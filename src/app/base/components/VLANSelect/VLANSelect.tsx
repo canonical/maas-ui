@@ -43,7 +43,7 @@ export const VLANSelect = ({
   vlans,
   disabled,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   let vlanList: VLAN[] = useSelector(vlanSelectors.all);
   const vlansLoaded = useSelector(vlanSelectors.loaded);

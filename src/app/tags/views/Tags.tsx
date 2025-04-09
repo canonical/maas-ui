@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { Route, Routes, useMatch } from "react-router-dom";
+import { Route, Routes, useMatch } from "react-router";
 
 import TagsHeader from "../components/TagsHeader";
 import TagForms from "../components/TagsHeader/TagForms";
@@ -22,7 +22,7 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute } from "@/app/utils";
 
-const Tags = (): JSX.Element => {
+const Tags = (): React.ReactElement => {
   const detailsMatch = useMatch(urls.tags.tag.index(null));
   const isDetails = !!detailsMatch;
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
@@ -48,6 +48,10 @@ const Tags = (): JSX.Element => {
     tagSelectors.search(state, searchText, filter)
   );
   const tableId = useId();
+
+  useEffect(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   return (
     <PageContent

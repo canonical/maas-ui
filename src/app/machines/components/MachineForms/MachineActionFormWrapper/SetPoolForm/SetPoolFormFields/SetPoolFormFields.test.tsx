@@ -15,7 +15,7 @@ setupMockServer(poolsResolvers.listPools.handler());
 
 describe("SetPoolFormFields", () => {
   let state: RootState;
-  const route = "/machines";
+  const route = ["/machines"];
   beforeEach(() => {
     state = factory.rootState({
       machine: factory.machineState({
@@ -41,7 +41,7 @@ describe("SetPoolFormFields", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { route, state }
+      { initialEntries: route, state }
     );
 
     await waitFor(() => {
@@ -65,7 +65,7 @@ describe("SetPoolFormFields", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { route, state }
+      { initialEntries: route, state }
     );
     await waitFor(() => {
       expect(screen.getByLabelText("Create pool")).toBeInTheDocument();

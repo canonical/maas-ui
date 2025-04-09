@@ -277,7 +277,7 @@ export const MachineActionFormWrapper = ({
   selectedMachines,
   setSearchFilter,
   viewingDetails,
-}: ContainerProps): JSX.Element | null => {
+}: ContainerProps): React.ReactElement | null => {
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const dispatch = useDispatch<Dispatch<Action>>();
   const {

@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 import { useOnEscapePressed } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage, useGetURLId } from "@/app/base/hooks";

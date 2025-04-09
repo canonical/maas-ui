@@ -4,7 +4,7 @@ import DomainSelect from "@/app/base/components/DomainSelect";
 import PowerTypeFields from "@/app/base/components/PowerTypeFields";
 import { PowerFieldScope } from "@/app/store/general/types";
 
-export const AddChassisFormFields = (): JSX.Element => {
+export const AddChassisFormFields = (): React.ReactElement => {
   return (
     <>
       <Row>

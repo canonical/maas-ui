@@ -7,7 +7,7 @@ const MacAddressDisplay = ({
 }: {
   children: React.ReactNode;
   className?: string;
-}): JSX.Element => (
+}): React.ReactElement => (
   <span {...rest} className={classNames("u-text--monospace", className)}>
     {children}
   </span>

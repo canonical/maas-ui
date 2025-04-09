@@ -66,7 +66,7 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     const expectedActions = [
       "FETCH_DOMAIN",
@@ -89,7 +89,7 @@ describe("ComposeForm", () => {
     state.domain.loaded = false;
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", state }
+      { initialEntries: ["/kvm/1"], state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -138,7 +138,7 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => {
       expect(
@@ -259,7 +259,7 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => {
       expect(

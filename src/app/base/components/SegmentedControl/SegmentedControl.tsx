@@ -21,7 +21,7 @@ const SegmentedControl = <V,>({
   options,
   selected,
   ...props
-}: Props<V>): JSX.Element => {
+}: Props<V>): React.ReactElement => {
   return (
     <div className={classNames("p-segmented-control", className)} {...props}>
       <div className="p-segmented-control__list" role="tablist">

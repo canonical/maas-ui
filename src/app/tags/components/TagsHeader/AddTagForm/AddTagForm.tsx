@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
@@ -38,7 +38,7 @@ const AddTagFormSchema = Yup.object().shape({
     .required("Name is required."),
 });
 
-export const AddTagForm = ({ onClose }: Props): JSX.Element => {
+export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [savedName, setSavedName] = useState<Tag["name"] | null>(null);

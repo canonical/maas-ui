@@ -160,7 +160,7 @@ const ReservedRanges = ({
   hasVLANSubnets,
   subnetId,
   vlanId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const [isAddingDynamic, setIsAddingDynamic] = useState(false);
   const { setSidePanelContent } = useSidePanel();
   const isSubnet = isId(subnetId);

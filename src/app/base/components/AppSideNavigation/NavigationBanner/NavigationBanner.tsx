@@ -1,5 +1,5 @@
 import { Navigation } from "@canonical/maas-react-components";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 import { isSelected } from "../utils";
 
@@ -9,7 +9,7 @@ const NavigationBanner = ({
   children,
 }: {
   children?: React.ReactNode;
-}): JSX.Element => {
+}): React.ReactElement => {
   const location = useLocation();
 
   const homepageLink = { url: urls.machines.index, label: "Homepage" };

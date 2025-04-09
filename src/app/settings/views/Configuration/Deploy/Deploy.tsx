@@ -11,7 +11,7 @@ import configSelectors from "@/app/store/config/selectors";
 import { generalActions } from "@/app/store/general";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 
-const Deploy = (): JSX.Element => {
+const Deploy = (): React.ReactElement => {
   const configLoaded = useSelector(configSelectors.loaded);
   const configLoading = useSelector(configSelectors.loading);
   const osInfoLoaded = useSelector(osInfoSelectors.loaded);

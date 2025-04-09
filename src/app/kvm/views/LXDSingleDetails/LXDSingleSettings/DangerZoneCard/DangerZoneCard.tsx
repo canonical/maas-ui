@@ -20,7 +20,7 @@ const DangerZoneCard = ({
   hostId,
   message,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <FormCard highlighted={false} sidebar={false} title="Danger zone">
       <Row>

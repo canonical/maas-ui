@@ -64,7 +64,7 @@ describe("AddVirshFields", () => {
 
     renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       state,
-      route: "/machines/chassis/add",
+      initialEntries: ["/machines/chassis/add"],
     });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();

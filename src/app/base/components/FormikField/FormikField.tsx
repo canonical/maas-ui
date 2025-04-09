@@ -25,7 +25,7 @@ const FormikField = <C extends ComponentType | ElementType = typeof Input>({
   value,
   label,
   ...props
-}: Props<C>): JSX.Element => {
+}: Props<C>): React.ReactElement => {
   const id = useId();
   const [field, meta] = useField({ name, type: props.type, value });
   return (

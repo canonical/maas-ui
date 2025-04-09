@@ -1,5 +1,5 @@
 import type { ColumnDef, Row } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { ZoneWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";

@@ -26,7 +26,7 @@ const TableDeleteConfirm = ({
   modelName,
   modelType,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <TableConfirm
       confirmAppearance="negative"

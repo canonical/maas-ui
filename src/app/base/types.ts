@@ -61,7 +61,7 @@ export type EmptyObject = Record<string, never>;
 
 export type APIError<E = null> =
   | E
-  | JSX.Element
+  | React.ReactElement
   | Record<string | "__all__", string[] | string>
   | string[]
   | string

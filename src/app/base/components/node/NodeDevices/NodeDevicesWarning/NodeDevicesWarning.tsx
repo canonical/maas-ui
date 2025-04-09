@@ -21,7 +21,7 @@ const NodeDevicesWarning = ({
   node,
   nodeDevices,
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const isMachine = nodeIsMachine(node);
   const busDisplay = bus === NodeDeviceBus.PCIE ? "PCI" : "USB";
   const canBeCommissioned =

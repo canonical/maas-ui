@@ -5,10 +5,10 @@ import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
+import { Outlet } from "react-router";
 
 import packageInfo from "../../package.json";
 
-import Routes from "./Routes";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
@@ -68,7 +68,7 @@ const ConnectionStatus = () => {
   ) : null;
 };
 
-export const App = (): JSX.Element => {
+export const App = (): React.ReactElement => {
   const dispatch = useDispatch();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
@@ -155,7 +155,7 @@ export const App = (): JSX.Element => {
   } else if (isLoaded) {
     content = (
       <FileContext.Provider value={fileContextStore}>
-        <Routes />
+        <Outlet />
       </FileContext.Provider>
     );
   }

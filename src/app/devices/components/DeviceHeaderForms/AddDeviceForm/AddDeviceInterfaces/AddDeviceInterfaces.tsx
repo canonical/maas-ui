@@ -100,7 +100,7 @@ const AddDeviceInterfaceFields = ({
   );
 };
 
-export const AddDeviceInterfaces = (): JSX.Element => {
+export const AddDeviceInterfaces = (): React.ReactElement => {
   const currentId = useRef<number>(0);
   const {
     setFieldValue,

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router";
 
 import ControllerCommissioning from "./ControllerCommissioning";
 import ControllerConfiguration from "./ControllerConfiguration";
@@ -29,7 +29,7 @@ import type { RootState } from "@/app/store/root/types";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute, isId } from "@/app/utils";
 
-const ControllerDetails = (): JSX.Element => {
+const ControllerDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(ControllerMeta.PK);
   const controller = useSelector((state: RootState) =>

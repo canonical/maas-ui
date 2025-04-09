@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Spinner, Row, Col, MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
@@ -19,7 +19,7 @@ import type {
 
 type InterfaceRow = {
   key: string;
-  columns: { content: JSX.Element }[];
+  columns: { content: React.ReactElement }[];
 };
 
 const formatRowData = (
@@ -83,7 +83,7 @@ const generateRows = (devices: NodeDeviceRef[]) => {
   return formattedDevices;
 };
 
-const MachineInstances = (): JSX.Element => {
+const MachineInstances = (): React.ReactElement => {
   const navigate = useNavigate();
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>

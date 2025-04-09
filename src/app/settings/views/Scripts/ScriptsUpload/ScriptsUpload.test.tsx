@@ -1,7 +1,6 @@
-import { createMemoryHistory } from "history";
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import type { Dispatch } from "redux";
 import configureStore from "redux-mock-store";
 
@@ -205,23 +204,23 @@ describe("ScriptsUpload", () => {
   });
 
   it("can cancel and return to the commissioning list", async () => {
-    const history = createMemoryHistory({
-      initialEntries: ["/"],
-    });
-    renderWithProviders(<ScriptsUpload type="commissioning" />, {
-      state,
-      history,
-    });
+    const { router } = renderWithProviders(
+      <ScriptsUpload type="commissioning" />,
+      {
+        state,
+      }
+    );
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(history.location.pathname).toBe("/settings/scripts/commissioning"); // linting errors occur if you use settingsUrls.scripts
+    expect(router.state.location.pathname).toBe(
+      "/settings/scripts/commissioning"
+    ); // linting errors occur if you use settingsUrls.scripts
   });
 
   it("can cancel and return to the testing list", async () => {
-    const history = createMemoryHistory({
-      initialEntries: ["/"],
+    const { router } = renderWithProviders(<ScriptsUpload type="testing" />, {
+      state,
     });
-    renderWithProviders(<ScriptsUpload type="testing" />, { state, history });
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(history.location.pathname).toBe("/settings/scripts/testing"); // linting errors occur if you use settingsUrls.scripts
+    expect(router.state.location.pathname).toBe("/settings/scripts/testing"); // linting errors occur if you use settingsUrls.scripts
   });
 });

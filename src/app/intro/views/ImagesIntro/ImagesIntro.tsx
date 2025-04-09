@@ -9,7 +9,7 @@ import {
 } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";

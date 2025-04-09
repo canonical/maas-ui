@@ -26,7 +26,7 @@ const ActionBar = ({
   searchFilter,
   setCurrentPage,
   ...props
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   return (
     <div className="action-bar" {...props}>
       {actions && <div className="action-bar__actions">{actions}</div>}

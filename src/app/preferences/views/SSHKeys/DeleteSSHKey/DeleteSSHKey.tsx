@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 
 import { useOnEscapePressed } from "@canonical/react-components";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router";
 
 import { useDeleteSshKey } from "@/app/api/query/sshKeys";
 import type { DeleteUserSshkeyError } from "@/app/apiclient";

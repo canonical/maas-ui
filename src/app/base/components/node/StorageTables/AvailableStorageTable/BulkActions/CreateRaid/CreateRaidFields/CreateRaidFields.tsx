@@ -57,7 +57,7 @@ const isSpare = (
 export const CreateRaidFields = ({
   storageDevices,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { handleChange, initialValues, setFieldValue, values } =
     useFormikContext<CreateRaidValues>();
   const {
