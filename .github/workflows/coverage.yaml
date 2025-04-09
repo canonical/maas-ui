@@ -33,17 +33,6 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
 
-      - name: Run tests with coverage
-        run: yarn test-coverage
-
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage
-          retention-days: 1
-
       - name: Generate file list from .ticsignore
         # Creates ignored file and directory lists specified by .ticsignore,
         # and subtracts them from the list of all the files in the project.
@@ -67,6 +56,17 @@ jobs:
           cat tics.ignored.files.gen.txt tics.ignored.dirs.gen.txt | sort -u > tics.ignored.gen.txt
           grep -vFf tics.ignored.gen.txt tics.all.gen.txt > tics.gen.txt
           rm tics.*.gen.txt
+
+      - name: Run tests with coverage
+        run: yarn test-coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+          retention-days: 1
 
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
