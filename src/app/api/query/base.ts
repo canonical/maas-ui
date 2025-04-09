@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useContext } from "react";
 
 import { usePrevious } from "@canonical/react-components";
-import type { UseQueryOptions } from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
@@ -70,7 +70,7 @@ export const useWebsocketAwareQuery = <
   TData = TQueryFnData,
 >(
   options?: UseQueryOptions<TQueryFnData, TError, TData>
-) => {
+): UseQueryResult<TData, TError> => {
   const queryClient = useQueryClient();
   const connectedCount = useSelector(statusSelectors.connectedCount);
   const { subscribe } = useWebSocket();
