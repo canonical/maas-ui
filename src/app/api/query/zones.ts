@@ -1,5 +1,9 @@
 import type { Options } from "@hey-api/client-fetch";
-import type { UseQueryOptions } from "@tanstack/react-query";
+import type {
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
@@ -19,6 +23,8 @@ import type {
   UpdateZoneData,
   UpdateZoneError,
   UpdateZoneResponse,
+  ValidationErrorBodyResponse,
+  ZonesWithSummaryListResponse,
 } from "@/app/apiclient";
 import {
   createZoneMutation,
@@ -29,7 +35,12 @@ import {
   updateZoneMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
-export const useZones = (options?: Options<ListZonesWithSummaryData>) => {
+export const useZones = (
+  options?: Options<ListZonesWithSummaryData>
+): UseQueryResult<
+  ZonesWithSummaryListResponse,
+  ValidationErrorBodyResponse
+> => {
   return useWebsocketAwareQuery(
     listZonesWithSummaryOptions(options) as UseQueryOptions<
       ListZonesWithSummaryResponse,
@@ -39,18 +50,22 @@ export const useZones = (options?: Options<ListZonesWithSummaryData>) => {
   );
 };
 
-export const useZoneCount = (options?: Options<ListZonesWithSummaryData>) => {
+export const useZoneCount = (
+  options?: Options<ListZonesWithSummaryData>
+): UseQueryResult<number, ValidationErrorBodyResponse> => {
   return useWebsocketAwareQuery({
     ...listZonesWithSummaryOptions(options),
     select: (data) => data?.total ?? 0,
   } as UseQueryOptions<
     ListZonesWithSummaryResponse,
-    ListZonesWithSummaryResponse,
+    ListZonesWithSummaryError,
     number
   >);
 };
 
-export const useGetZone = (options: Options<GetZoneData>) => {
+export const useGetZone = (
+  options: Options<GetZoneData>
+): UseQueryResult<GetZoneResponse, GetZoneError> => {
   return useWebsocketAwareQuery(
     getZoneOptions(options) as UseQueryOptions<
       GetZoneResponse,
@@ -60,7 +75,13 @@ export const useGetZone = (options: Options<GetZoneData>) => {
   );
 };
 
-export const useCreateZone = (mutationOptions?: Options<CreateZoneData>) => {
+export const useCreateZone = (
+  mutationOptions?: Options<CreateZoneData>
+): UseMutationResult<
+  CreateZoneResponse,
+  CreateZoneError,
+  Options<CreateZoneData>
+> => {
   const queryClient = useQueryClient();
   return useMutation<
     CreateZoneResponse,
@@ -76,7 +97,13 @@ export const useCreateZone = (mutationOptions?: Options<CreateZoneData>) => {
   });
 };
 
-export const useUpdateZone = (mutationOptions?: Options<UpdateZoneData>) => {
+export const useUpdateZone = (
+  mutationOptions?: Options<UpdateZoneData>
+): UseMutationResult<
+  UpdateZoneResponse,
+  UpdateZoneError,
+  Options<UpdateZoneData>
+> => {
   const queryClient = useQueryClient();
   return useMutation<
     UpdateZoneResponse,
@@ -90,7 +117,13 @@ export const useUpdateZone = (mutationOptions?: Options<UpdateZoneData>) => {
   });
 };
 
-export const useDeleteZone = (mutationOptions?: Options<DeleteZoneData>) => {
+export const useDeleteZone = (
+  mutationOptions?: Options<DeleteZoneData>
+): UseMutationResult<
+  DeleteZoneResponse,
+  DeleteZoneError,
+  Options<DeleteZoneData>
+> => {
   const queryClient = useQueryClient();
   return useMutation<
     DeleteZoneResponse,

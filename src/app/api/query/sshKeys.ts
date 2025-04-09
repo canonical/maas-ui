@@ -1,8 +1,10 @@
 import type { Options } from "@hey-api/client-fetch";
 import {
   useMutation,
+  type UseMutationResult,
   useQueryClient,
   type UseQueryOptions,
+  type UseQueryResult,
 } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "./base";
@@ -20,6 +22,8 @@ import type {
   DeleteUserSshkeyData,
   DeleteUserSshkeyResponse,
   DeleteUserSshkeyError,
+  ValidationErrorBodyResponse,
+  SshKeysListResponse,
 } from "@/app/apiclient";
 import {
   createUserSshkeysMutation,
@@ -29,7 +33,9 @@ import {
   listUserSshkeysQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
-export const useListSshKeys = (options?: Options<ListUserSshkeysData>) => {
+export const useListSshKeys = (
+  options?: Options<ListUserSshkeysData>
+): UseQueryResult<SshKeysListResponse, ValidationErrorBodyResponse> => {
   return useWebsocketAwareQuery(
     listUserSshkeysOptions(options) as UseQueryOptions<
       ListUserSshkeysData,
@@ -41,7 +47,11 @@ export const useListSshKeys = (options?: Options<ListUserSshkeysData>) => {
 
 export const useCreateSshKeys = (
   mutationOptions?: Options<CreateUserSshkeysData>
-) => {
+): UseMutationResult<
+  CreateUserSshkeysResponse,
+  CreateUserSshkeysError,
+  Options<CreateUserSshkeysData>
+> => {
   const queryClient = useQueryClient();
   return useMutation<
     CreateUserSshkeysResponse,
@@ -59,7 +69,11 @@ export const useCreateSshKeys = (
 
 export const useImportSshKeys = (
   mutationOptions?: Options<ImportUserSshkeysData>
-) => {
+): UseMutationResult<
+  SshKeysListResponse,
+  ImportUserSshkeysError,
+  Options<ImportUserSshkeysData>
+> => {
   const queryClient = useQueryClient();
   return useMutation<
     ImportUserSshkeysResponse,
@@ -77,7 +91,11 @@ export const useImportSshKeys = (
 
 export const useDeleteSshKey = (
   mutationOptions?: Options<DeleteUserSshkeyData>
-) => {
+): UseMutationResult<
+  DeleteUserSshkeyResponse,
+  DeleteUserSshkeyError,
+  Options<DeleteUserSshkeyData>
+> => {
   const queryClient = useQueryClient();
   return useMutation<
     DeleteUserSshkeyResponse,

@@ -45,6 +45,9 @@ jobs:
           retention-days: 1
 
       - name: Generate file list from .ticsignore
+        # Creates ignored file and directory lists specified by .ticsignore,
+        # and subtracts them from the list of all the files in the project.
+        # This list of remaining files are then passed to TiCS as 'filelist'.
         run: |
           find src -type f > tics.all.gen.txt
           ignore_files_command="find src -path \"*\" -type f \( $(grep -vE '^\s*#|^\s*$' .ticsignore | sed -E 's|^(.*)|-name \"\1\"|' | tr -d '\n' | sed -E 's|(.)-name|\1 -o -name|g') \)"
