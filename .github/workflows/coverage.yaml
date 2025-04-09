@@ -56,6 +56,7 @@ jobs:
           cat tics.ignored.files.gen.txt tics.ignored.dirs.gen.txt | sort -u > tics.ignored.gen.txt
           grep -vFf tics.ignored.gen.txt tics.all.gen.txt > tics.gen.txt
           rm tics.*.gen.txt
+          cat tics.gen.txt
 
       - name: Run tests with coverage
         run: yarn test-coverage
