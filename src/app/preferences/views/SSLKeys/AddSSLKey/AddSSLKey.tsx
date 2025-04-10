@@ -11,9 +11,7 @@ import * as Yup from "yup";
 import { useCreateSslKeys } from "@/app/api/query/sslKeys";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { sslkeyActions } from "@/app/store/sslkey";
 
 export enum Label {
   Title = "Add SSL key",
@@ -37,12 +35,6 @@ export const AddSSLKey = (): React.ReactElement => {
   const uploadSslKey = useCreateSslKeys();
   const onCancel = () => navigate({ pathname: urls.preferences.sslKeys.index });
   useOnEscapePressed(() => onCancel());
-
-  useAddMessage(
-    uploadSslKey.isSuccess,
-    sslkeyActions.cleanup,
-    "SSL key successfully added."
-  );
 
   return (
     <FormikForm
