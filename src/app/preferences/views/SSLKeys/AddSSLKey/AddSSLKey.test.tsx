@@ -25,7 +25,6 @@ describe("AddSSLKey", () => {
       screen.getByRole("textbox", { name: AddSSLKeyLabels.KeyField }),
       "--- begin cert ---..."
     );
-    screen.debug();
     await userEvent.click(
       screen.getByRole("button", { name: AddSSLKeyLabels.SubmitLabel })
     );
