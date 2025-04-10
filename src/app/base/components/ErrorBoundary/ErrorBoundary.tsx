@@ -47,7 +47,7 @@ class ErrorBoundary extends Component<Props, State> {
     }
   }
 
-  render() {
+  async render() {
     if (this.state.hasError) {
       return (
         <Notification severity="negative" title="Error:">

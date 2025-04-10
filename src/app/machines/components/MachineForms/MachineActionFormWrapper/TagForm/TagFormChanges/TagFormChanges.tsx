@@ -147,7 +147,7 @@ export const TagFormChanges = ({
         accessor: Column.Label,
         // The data for this column is supplied inside a children prop so that
         // the data can also return the appropriate rowspan (used in getCellProps).
-        Cell: ({ value }: { value: LabelCol }) => value.children || null,
+        Cell: async ({ value }: { value: LabelCol }) => value.children || null,
         className: "label-col",
         Header: "Tag changes",
       },
