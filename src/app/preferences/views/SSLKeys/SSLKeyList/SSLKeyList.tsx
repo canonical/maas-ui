@@ -1,28 +1,26 @@
 import { Notification } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 
+import { useGetSslKeys } from "@/app/api/query/sslKeys";
+import type { SslKeyResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
-import { sslkeyActions } from "@/app/store/sslkey";
-import sslkeySelectors from "@/app/store/sslkey/selectors";
-import type { SSLKey } from "@/app/store/sslkey/types";
 
 export enum Label {
   Title = "SSL keys",
   DeleteConfirm = "Confirm or cancel deletion of SSL key",
 }
 
-const generateRows = (sslkeys: SSLKey[]) =>
-  sslkeys.map(({ id, display, key }) => {
+const generateRows = (sslkeys: SslKeyResponse[]) =>
+  sslkeys!.map(({ id, key }) => {
     return {
       "aria-label": key,
       className: "p-table__row is-active",
       columns: [
         {
           className: "u-truncate",
-          content: <span title={display}></span>,
+          content: <span title={key}>{key}</span>,
           role: "rowheader",
         },
         {
@@ -38,26 +36,27 @@ const generateRows = (sslkeys: SSLKey[]) =>
       "data-testid": "sslkey-row",
       key: id,
       sortData: {
-        key: display,
+        key: key,
       },
     };
   });
 
 const SSLKeyList = (): React.ReactElement => {
-  const sslkeyErrors = useSelector(sslkeySelectors.errors);
-  const sslkeyLoading = useSelector(sslkeySelectors.loading);
-  const sslkeyLoaded = useSelector(sslkeySelectors.loaded);
-  const sslkeys = useSelector(sslkeySelectors.all);
+  const {
+    data,
+    failureReason: sslkeyErrors,
+    isPending: sslkeyLoading,
+    isFetched: sslkeyLoaded,
+  } = useGetSslKeys();
 
   useWindowTitle(Label.Title);
-
-  useFetchActions([sslkeyActions.fetch]);
+  const sslkeys = data?.items ?? [];
 
   return (
     <>
-      {sslkeyErrors && typeof sslkeyErrors === "string" && (
+      {sslkeyErrors && (
         <Notification severity="negative" title="Error:">
-          {sslkeyErrors}
+          {sslkeyErrors.message}
         </Notification>
       )}
       <SettingsTable
