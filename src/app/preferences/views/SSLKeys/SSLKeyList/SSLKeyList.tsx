@@ -20,7 +20,7 @@ const generateRows = (sslkeys: SslKeyResponse[]) =>
       columns: [
         {
           className: "u-truncate",
-          content: <span title={key}></span>,
+          content: <span title={key}>{key}</span>,
           role: "rowheader",
         },
         {
