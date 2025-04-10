@@ -41,7 +41,7 @@ const generateRows = (sslkeys: SslKeyResponse[]) =>
     };
   });
 
-const SSLKeyList = (): JSX.Element => {
+const SSLKeyList = (): React.ReactElement => {
   const {
     data,
     failureReason: sslkeyErrors,
