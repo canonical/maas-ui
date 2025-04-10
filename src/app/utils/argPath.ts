@@ -1,6 +1,4 @@
-type Args = {
-  [x: string]: number | string;
-};
+type Args = Record<string, number | string>;
 
 /**
  * Creates a function to transform a react-router style URL into a full path.

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -10,7 +12,7 @@ type Props = {
   onClose: () => void;
 };
 
-const DiscoveryDeleteForm = ({ discovery, onClose }: Props) => {
+const DiscoveryDeleteForm = ({ discovery, onClose }: Props): ReactElement => {
   const dispatch = useDispatch();
   const saving = useSelector(discoverySelectors.saving);
   const saved = useSelector(discoverySelectors.saved);

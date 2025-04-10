@@ -146,7 +146,9 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
       <Row>
         <FormikForm
           initialValues={{}}
-          onCancel={() => navigate({ pathname: listLocation })}
+          onCancel={() => {
+            navigate({ pathname: listLocation });
+          }}
           onSubmit={() => {
             dispatch(scriptActions.cleanup());
             if (script?.script) {

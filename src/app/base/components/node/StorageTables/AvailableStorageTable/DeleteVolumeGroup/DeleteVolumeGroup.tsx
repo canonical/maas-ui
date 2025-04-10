@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -11,7 +13,11 @@ type Props = {
   diskId: Disk["id"];
 };
 
-const DeleteVolumeGroup = ({ systemId, diskId, close }: Props) => {
+const DeleteVolumeGroup = ({
+  systemId,
+  diskId,
+  close,
+}: Props): ReactElement => {
   const dispatch = useDispatch();
   return (
     <ModelActionForm

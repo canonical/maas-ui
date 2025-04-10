@@ -1,10 +1,12 @@
+import type { ReactElement } from "react";
+
 import usePoolsTableColumns from "./usePoolsTableColumns/usePoolsTableColumns";
 
 import { usePools } from "@/app/api/query/pools";
 import GenericTable from "@/app/base/components/GenericTable";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 
-const PoolsTable = () => {
+const PoolsTable = (): ReactElement => {
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
 

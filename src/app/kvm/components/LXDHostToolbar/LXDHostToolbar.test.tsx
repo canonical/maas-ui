@@ -135,9 +135,9 @@ describe("LXDHostToolbar", () => {
       />,
       { store }
     );
-    await waitFor(() =>
-      expect(screen.getByTestId("numa-switch")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByTestId("numa-switch")).toBeInTheDocument();
+    });
   });
 
   it("can send an analytics event when toggling NUMA node view if analytics enabled", async () => {
@@ -171,7 +171,9 @@ describe("LXDHostToolbar", () => {
       { store }
     );
     await userEvent.click(screen.getByTestId("numa-switch"));
-    await waitFor(() => expect(useSendMock).toHaveBeenCalled());
+    await waitFor(() => {
+      expect(useSendMock).toHaveBeenCalled();
+    });
     useSendMock.mockRestore();
   });
 

@@ -35,7 +35,9 @@ export const SpaceCellContents = ({
             aria-label="No space - press to see more information"
             dense
             hasIcon
-            onClick={() => setIsWarningOpen(!isWarningOpen)}
+            onClick={() => {
+              setIsWarningOpen(!isWarningOpen);
+            }}
           >
             <i className="p-icon--warning"></i> <span>No space</span>
           </Button>
@@ -78,7 +80,7 @@ const generateSubnetRow = ({
 }: {
   label?: string;
   content: FabricRowContent;
-  key: string | number;
+  key: number | string;
   classes?: string;
 }) => {
   const columns = [
@@ -162,7 +164,7 @@ export const generateSubnetGroupRows = ({
   groups: FabricTableRow[] | SpaceTableRow[];
   columnLength: number;
   groupMap: Record<
-    string | number,
+    number | string,
     {
       count: number;
     }

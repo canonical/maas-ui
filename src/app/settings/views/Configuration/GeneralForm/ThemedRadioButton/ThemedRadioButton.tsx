@@ -3,14 +3,14 @@ import type { ReactNode, MouseEventHandler } from "react";
 import classNames from "classnames";
 import type { JSX } from "react/jsx-runtime";
 
-export type Props = {
+export type Props = React.PropsWithoutRef<JSX.IntrinsicElements["input"]> & {
   checked?: boolean;
   className?: string;
   color?: ColorValues;
   name?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   label?: ReactNode;
-} & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
+};
 
 export enum ColorValues {
   Default = "default",

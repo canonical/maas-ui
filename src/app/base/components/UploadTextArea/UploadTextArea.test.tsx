@@ -34,7 +34,7 @@ const createFile = (
 };
 
 const getFileUploadInput = (container: HTMLElement) => {
-  return container.querySelector("input[type='file'") as HTMLElement;
+  return container.querySelector("input[type='file']") as HTMLElement;
 };
 
 describe("UploadTextArea", () => {
@@ -55,7 +55,9 @@ describe("UploadTextArea", () => {
       </Formik>
     );
     await userEvent.upload(getFileUploadInput(container), files);
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).toBeNull();
+    });
   });
 
   it("displays an error if a file is larger than max size", async () => {
@@ -66,11 +68,11 @@ describe("UploadTextArea", () => {
       </Formik>
     );
     await userEvent.upload(getFileUploadInput(container), files);
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByText(/File cannot be larger than 1MB./i)
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 
   it("can populate the textarea from the file", async () => {
@@ -81,9 +83,9 @@ describe("UploadTextArea", () => {
       </Formik>
     );
     await userEvent.upload(getFileUploadInput(container), files);
-    await waitFor(() =>
-      expect(screen.getByRole("textbox")).toHaveValue("test file content")
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("textbox")).toHaveValue("test file content");
+    });
   });
 
   it("clears errors on textarea change", async () => {
@@ -95,15 +97,17 @@ describe("UploadTextArea", () => {
     );
     // Create a max size error
     await userEvent.upload(getFileUploadInput(container), files);
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByText(/File cannot be larger than 1MB./i)
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     // Clear error by changing textarea
     const textarea = screen.getByRole("textbox");
     await userEvent.type(textarea, "new-value");
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).toBeNull();
+    });
   });
 });

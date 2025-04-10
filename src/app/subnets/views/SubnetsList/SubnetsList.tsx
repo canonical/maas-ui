@@ -29,25 +29,27 @@ const SubnetsList = (): React.ReactElement => {
   const groupBy = query.get(SubnetsUrlParams.By);
   const searchText = query.get(SubnetsUrlParams.Q) || "";
   const setGroupBy = useCallback(
-    (group: GroupByKey | null) =>
+    (group: GroupByKey | null) => {
       navigate(
         {
           pathname: "/networks",
           search: `?${SubnetsUrlParams.By}=${group}&${SubnetsUrlParams.Q}=${searchText}`,
         },
         { replace: true }
-      ),
+      );
+    },
     [navigate, searchText]
   );
   const setSearchText = useCallback(
-    (searchText: string) =>
+    (searchText: string) => {
       navigate(
         {
           pathname: "/networks",
           search: `?${SubnetsUrlParams.By}=${groupBy}&${SubnetsUrlParams.Q}=${searchText}`,
         },
         { replace: true }
-      ),
+      );
+    },
     [navigate, groupBy]
   );
 
@@ -95,7 +97,9 @@ const SubnetsList = (): React.ReactElement => {
                 const [, name] = view;
                 return {
                   children: name,
-                  onClick: () => setSidePanelContent({ view }),
+                  onClick: () => {
+                    setSidePanelContent({ view });
+                  },
                 };
               })}
               position="right"

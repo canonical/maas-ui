@@ -33,7 +33,9 @@ export const UserForm = ({ user }: PropTypes): React.ReactElement => {
     saved,
     userActions.cleanup,
     `${savingUser} ${editing ? "updated" : "added"} successfully.`,
-    () => setSaving(null)
+    () => {
+      setSaving(null);
+    }
   );
 
   return (
@@ -41,7 +43,9 @@ export const UserForm = ({ user }: PropTypes): React.ReactElement => {
       aria-label={title}
       cleanup={userActions.cleanup}
       includeUserType
-      onCancel={() => navigate(-1)}
+      onCancel={() => {
+        navigate(-1);
+      }}
       onSave={(values) => {
         const params = {
           email: values.email,

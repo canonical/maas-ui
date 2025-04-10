@@ -14,7 +14,7 @@ import { getNodeActionTitle } from "@/app/store/utils";
 import { capitaliseFirst, kebabToCamelCase } from "@/app/utils";
 
 export type FieldlessFormProps<E = null> = NodeActionFormProps<E> & {
-  actions: typeof machineActions | typeof controllerActions;
+  actions: typeof controllerActions | typeof machineActions;
   action: NodeActions;
   buttonsHelpClassName?: string;
   buttonsHelp?: ReactNode;

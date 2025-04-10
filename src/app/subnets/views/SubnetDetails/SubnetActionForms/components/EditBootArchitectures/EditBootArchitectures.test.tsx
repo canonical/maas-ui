@@ -99,9 +99,9 @@ it("can update the arches to disable", async () => {
   await userEvent.click(within(nameCells[0]).getByRole("checkbox"));
   await userEvent.click(within(nameCells[1]).getByRole("checkbox"));
 
-  await waitFor(() =>
-    expect(within(nameCells[0]).getByRole("checkbox")).toBeChecked()
-  );
+  await waitFor(() => {
+    expect(within(nameCells[0]).getByRole("checkbox")).toBeChecked();
+  });
   expect(within(nameCells[1]).getByRole("checkbox")).not.toBeChecked();
 });
 

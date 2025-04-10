@@ -31,7 +31,9 @@ const CacheSetsTable = ({
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
-  const closeExpanded = () => setExpanded(null);
+  const closeExpanded = () => {
+    setExpanded(null);
+  };
   const isMachine = nodeIsMachine(node);
 
   const headers = [
@@ -68,9 +70,9 @@ const CacheSetsTable = ({
                         },
                       ]}
                       disabled={!canEditStorage}
-                      onActionClick={(action: CacheSetAction) =>
-                        setExpanded({ content: action, id: rowId })
-                      }
+                      onActionClick={(action: CacheSetAction) => {
+                        setExpanded({ content: action, id: rowId });
+                      }}
                     />
                   ),
                 },

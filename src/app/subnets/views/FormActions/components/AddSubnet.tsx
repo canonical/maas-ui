@@ -129,7 +129,9 @@ const AddSubnet = ({
         dns_servers: "",
         fabric: "",
       }}
-      onCancel={() => setActiveForm(null)}
+      onCancel={() => {
+        setActiveForm(null);
+      }}
       onSaveAnalytics={{
         action: "Add Subnet",
         category: "Subnets form actions",
@@ -148,7 +150,9 @@ const AddSubnet = ({
           })
         );
       }}
-      onSuccess={() => setActiveForm(null)}
+      onSuccess={() => {
+        setActiveForm(null);
+      }}
       saved={isSaved}
       saving={isSaving}
       submitLabel={`Add ${activeForm}`}

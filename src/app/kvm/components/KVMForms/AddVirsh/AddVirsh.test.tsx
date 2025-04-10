@@ -56,7 +56,9 @@ describe("AddVirsh", () => {
         state,
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
     const expectedActions = [generalActions.fetchPowerTypes()];
     const actualActions = store.getActions();
     expectedActions.forEach((expectedAction) => {
@@ -84,11 +86,15 @@ describe("AddVirsh", () => {
       initialEntries: ["/kvm/add"],
       state,
     });
-    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
-    await waitFor(() =>
-      expect(screen.getByTestId("virsh-unsupported")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(poolsResolvers.listPools.resolved).toBeTruthy();
+    });
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("virsh-unsupported")).toBeInTheDocument();
+    });
   });
 
   it("can handle saving a virsh KVM", async () => {
@@ -99,7 +105,9 @@ describe("AddVirsh", () => {
         state,
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
     await waitFor(() => {
       expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();

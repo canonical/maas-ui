@@ -14,14 +14,17 @@ import type { RootState } from "@/app/store/root/types";
 /**
  * Create a callback for toggling the menu
  * @param onToggleMenu - The function to toggle the menu.
- * @param systemId - The machine id.
  * @returns The toggle callback.
  */
 export const useToggleMenu = (
   onToggleMenu: ((open: boolean) => void) | null
 ): ((open: boolean) => void) => {
   return useCallback(
-    (open) => onToggleMenu && onToggleMenu(open),
+    (open) => {
+      if (onToggleMenu) {
+        onToggleMenu(open);
+      }
+    },
     [onToggleMenu]
   );
 };
@@ -30,7 +33,7 @@ export const useToggleMenu = (
  * Get the error, saved and saving state for a single machine performing a
  * single action.
  * @param systemId - system_id of the machine to check.
- * @param statusName - name of the relevant machine status e.g. "updatingDisk".
+ * @param statusKey
  * @param eventName - name of the machine event to filter errors by e.g. "updateDisk".
  * @param onSaved - function to execute when form successfully saved.
  * @returns object with errors, saved and saving state for machine performing

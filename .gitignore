@@ -48,3 +48,6 @@ coverage/
 
 # openapi-ts error logs
 openapi-ts-error-*.log
+
+# tics file list
+tics.gen.txt

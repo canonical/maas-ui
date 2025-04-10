@@ -35,7 +35,8 @@ const connecting = (state: RootState): boolean => state.status.connecting;
  * @param {RootState} state - The redux state.
  * @returns {StatusState["connecting"]} TheStatusState connecting status.
  */
-const connectedCount = (state: RootState) => state.status.connectedCount;
+const connectedCount = (state: RootState): number =>
+  state.status.connectedCount;
 
 /**
  * Status errors.

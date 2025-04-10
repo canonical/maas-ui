@@ -6,13 +6,16 @@ import classNames from "classnames";
 
 import SearchBox from "@/app/base/components/SearchBox";
 
-type Props = {
+type Props = Omit<
+  SearchBoxProps,
+  "externallyControlled" | "onChange" | "ref" | "value"
+> & {
   debounceInterval?: number;
   onDebounced: (debouncedText: string) => void;
   searchText: string;
   setSearchText: (searchText: string) => void;
   onChange?: SearchBoxProps["onChange"];
-} & Omit<SearchBoxProps, "externallyControlled" | "onChange" | "value" | "ref">;
+};
 
 export const DEFAULT_DEBOUNCE_INTERVAL = 500;
 

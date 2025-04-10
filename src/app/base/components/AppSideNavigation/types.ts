@@ -1,6 +1,6 @@
 export type NavItem = {
   adminOnly?: boolean;
-  highlight?: string | string[];
+  highlight?: string[] | string;
   label: string;
   url: string;
 };

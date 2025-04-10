@@ -39,23 +39,7 @@ export type MachineSidePanelContent =
   | SidePanelContent<
       ValueOf<typeof MachineSidePanelViews>,
       {
-        systemId?: Machine["system_id"];
-        selectedLayout?: StorageLayoutOption;
-      }
-    >
-  | SidePanelContent<
-      ValueOf<typeof MachineSidePanelViews>,
-      {
-        systemId?: Machine["system_id"];
-        selected: Selected[];
-        setSelected: SetSelected;
-      }
-    >
-  | SidePanelContent<
-      ValueOf<typeof MachineSidePanelViews>,
-      {
-        systemId?: Machine["system_id"];
-        nic?: NetworkInterface;
+        node: MachineDetails;
       }
     >
   | SidePanelContent<
@@ -68,7 +52,9 @@ export type MachineSidePanelContent =
   | SidePanelContent<
       ValueOf<typeof MachineSidePanelViews>,
       {
-        node: MachineDetails;
+        systemId?: Machine["system_id"];
+        disk?: Disk;
+        partition?: Partition;
       }
     >
   | SidePanelContent<
@@ -77,6 +63,20 @@ export type MachineSidePanelContent =
         systemId?: Machine["system_id"];
         link?: NetworkLink | null;
         nic?: NetworkInterface | null;
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        mountPoint: Filesystem["mount_point"];
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        nic?: NetworkInterface;
       }
     >
   | SidePanelContent<
@@ -93,8 +93,15 @@ export type MachineSidePanelContent =
       ValueOf<typeof MachineSidePanelViews>,
       {
         systemId?: Machine["system_id"];
-        disk?: Disk;
-        partition?: Partition;
+        selected: Selected[];
+        setSelected: SetSelected;
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        selectedLayout?: StorageLayoutOption;
       }
     >
   | SidePanelContent<
@@ -102,13 +109,6 @@ export type MachineSidePanelContent =
       {
         systemId?: Machine["system_id"];
         storageDevice: Disk | Partition | null;
-      }
-    >
-  | SidePanelContent<
-      ValueOf<typeof MachineSidePanelViews>,
-      {
-        systemId?: Machine["system_id"];
-        mountPoint: Filesystem["mount_point"];
       }
     >;
 
@@ -124,11 +124,8 @@ export type MachineActionVariableProps = {
   selectedCountLoading?: boolean;
 };
 
-export type MachineActionFormProps = Omit<
-  CommonActionFormProps<MachineEventErrors>,
-  "processingCount"
-> &
-  MachineActionVariableProps;
+export type MachineActionFormProps = MachineActionVariableProps &
+  Omit<CommonActionFormProps<MachineEventErrors>, "processingCount">;
 
 export type MachineMenuToggleHandler = (open: boolean) => void;
 export type GetMachineMenuToggleHandler = (

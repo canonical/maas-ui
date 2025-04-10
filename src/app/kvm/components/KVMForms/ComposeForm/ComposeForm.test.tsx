@@ -140,11 +140,11 @@ describe("ComposeForm", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { initialEntries: ["/kvm/1"], store }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "VM name" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
     await userEvent.type(
@@ -261,11 +261,11 @@ describe("ComposeForm", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { initialEntries: ["/kvm/1"], store }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "VM name" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
     await userEvent.type(

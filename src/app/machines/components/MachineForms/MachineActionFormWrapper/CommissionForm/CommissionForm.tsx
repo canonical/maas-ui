@@ -52,9 +52,7 @@ const CommissionFormSchema = Yup.object().shape({
   ),
 });
 
-type ScriptInput = {
-  [x: string]: { url: string };
-};
+type ScriptInput = Record<string, { url: string }>;
 
 type Props = MachineActionFormProps;
 

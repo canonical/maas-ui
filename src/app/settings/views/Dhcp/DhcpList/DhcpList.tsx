@@ -64,8 +64,8 @@ const generateRows = (
   dhcpsnippets: DHCPSnippet[],
   expandedId: DHCPSnippet[DHCPSnippetMeta.PK] | null,
   setExpandedId: (expandedId: DHCPSnippet[DHCPSnippetMeta.PK] | null) => void,
-  expandedType: "details" | "delete" | null,
-  setExpandedType: (expandedType: "details" | "delete" | null) => void,
+  expandedType: "delete" | "details" | null,
+  setExpandedType: (expandedType: "delete" | "details" | null) => void,
   controllers: Controller[],
   devices: Device[],
   machines: Machine[],
@@ -184,7 +184,7 @@ const DhcpList = (): React.ReactElement => {
   const [expandedId, setExpandedId] = useState<
     DHCPSnippet[DHCPSnippetMeta.PK] | null
   >(null);
-  const [expandedType, setExpandedType] = useState<"details" | "delete" | null>(
+  const [expandedType, setExpandedType] = useState<"delete" | "details" | null>(
     null
   );
   const [searchText, setSearchText] = useState("");
@@ -210,7 +210,9 @@ const DhcpList = (): React.ReactElement => {
     saved && !!deletingName,
     dhcpsnippetActions.cleanup,
     `${deletingName} removed successfully.`,
-    () => setDeleting(null)
+    () => {
+      setDeleting(null);
+    }
   );
 
   const hideExpanded = () => {

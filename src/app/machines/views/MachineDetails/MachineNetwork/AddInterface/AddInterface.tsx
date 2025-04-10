@@ -37,11 +37,11 @@ type Props = {
   systemId: MachineDetails["system_id"];
 };
 
-export type AddInterfaceValues = {
+export type AddInterfaceValues = NetworkValues & {
   mac_address: NetworkInterface["mac_address"];
   name?: NetworkInterface["name"];
   tags?: NetworkInterface["tags"];
-} & NetworkValues;
+};
 
 const InterfaceSchema = Yup.object().shape({
   ...networkFieldsSchema,
@@ -66,7 +66,9 @@ const AddInterface = ({
     systemId,
     "creatingPhysical",
     "createPhysical",
-    () => close()
+    () => {
+      close();
+    }
   );
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
 

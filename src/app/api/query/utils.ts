@@ -4,7 +4,7 @@
  * @returns {function(T[] | undefined): number} A function that takes an array of items and returns the count of items.
  */
 export const selectItemsCount = <T>() => {
-  return (data: T[] | undefined) => data?.length ?? 0;
+  return (data: T[] | undefined): number => data?.length ?? 0;
 };
 
 /**
@@ -16,5 +16,5 @@ export const selectItemsCount = <T>() => {
 export const selectById = <T extends { id: number | null }>(
   id: number | null
 ) => {
-  return (data: T[]) => data.find((item) => item.id === id) || null;
+  return (data: T[]): T | null => data.find((item) => item.id === id) || null;
 };

@@ -211,9 +211,9 @@ export const CreateRaidFields = ({
                             id={id}
                             label=" "
                             labelClassName="is-inline-label"
-                            onChange={() =>
-                              handleSpareCheckbox(storageDevice, isSpareDevice)
-                            }
+                            onChange={() => {
+                              handleSpareCheckbox(storageDevice, isSpareDevice);
+                            }}
                             type="checkbox"
                           />
                         </td>

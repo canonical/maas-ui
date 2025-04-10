@@ -13,7 +13,9 @@ const SpaceSummary = ({ space }: { space: Space }): React.ReactElement => {
       renderContent={(editing, setEditing) =>
         editing ? (
           <SpaceSummaryForm
-            handleDismiss={() => setEditing(false)}
+            handleDismiss={() => {
+              setEditing(false);
+            }}
             space={space}
           />
         ) : (

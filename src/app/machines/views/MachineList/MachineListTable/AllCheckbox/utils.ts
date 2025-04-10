@@ -34,7 +34,7 @@ export const generateSelectedOnCurrentPage = ({
 }: {
   selected: SelectedMachines | null;
   groups: MachineStateListGroup[];
-}) => {
+}): SelectedMachines => {
   const newSelected =
     !selected || "filter" in selected
       ? { groups: [] }

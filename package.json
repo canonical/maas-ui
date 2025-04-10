@@ -23,6 +23,7 @@
     "cypress-run": "yarn cypress run",
     "generate-api-client": "openapi-ts",
     "lint": "npmPkgJsonLint . && eslint src cypress && tsc --project tsconfig.json --noEmit && tsc --project cypress/tsconfig.json --noEmit",
+    "lint-fix": "npmPkgJsonLint . && eslint src cypress --fix && tsc --project tsconfig.json --noEmit && tsc --project cypress/tsconfig.json --noEmit",
     "link-components": "yarn link \"@canonical/react-components\" && yarn link \"react\" && yarn install",
     "percy": "./cypress/percy.sh",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",

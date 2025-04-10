@@ -121,50 +121,49 @@ export const columnLabels: Record<MachineColumns, string> = {
   storage: "Storage",
 };
 
-export const groupOptions: Array<{ value: FetchGroupKey | ""; label: string }> =
-  [
-    {
-      value: "",
-      label: "No grouping",
-    },
-    {
-      value: FetchGroupKey.Status,
-      label: "Group by status",
-    },
-    {
-      value: FetchGroupKey.Owner,
-      label: "Group by owner",
-    },
-    {
-      value: FetchGroupKey.Pool,
-      label: "Group by resource pool",
-    },
-    {
-      value: FetchGroupKey.Architecture,
-      label: "Group by architecture",
-    },
-    {
-      value: FetchGroupKey.Domain,
-      label: "Group by domain",
-    },
-    {
-      value: FetchGroupKey.Parent,
-      label: "Group by parent",
-    },
-    {
-      value: FetchGroupKey.Pod,
-      label: "Group by KVM",
-    },
-    {
-      value: FetchGroupKey.PodType,
-      label: "Group by KVM type",
-    },
-    {
-      value: FetchGroupKey.PowerState,
-      label: "Group by power state",
-    },
-    {
-      value: FetchGroupKey.Zone,
-      label: "Group by zone",
-    },
-  ];
+export const groupOptions: { value: FetchGroupKey | ""; label: string }[] = [
+  {
+    value: "",
+    label: "No grouping",
+  },
+  {
+    value: FetchGroupKey.Status,
+    label: "Group by status",
+  },
+  {
+    value: FetchGroupKey.Owner,
+    label: "Group by owner",
+  },
+  {
+    value: FetchGroupKey.Pool,
+    label: "Group by resource pool",
+  },
+  {
+    value: FetchGroupKey.Architecture,
+    label: "Group by architecture",
+  },
+  {
+    value: FetchGroupKey.Domain,
+    label: "Group by domain",
+  },
+  {
+    value: FetchGroupKey.Parent,
+    label: "Group by parent",
+  },
+  {
+    value: FetchGroupKey.Pod,
+    label: "Group by KVM",
+  },
+  {
+    value: FetchGroupKey.PodType,
+    label: "Group by KVM type",
+  },
+  {
+    value: FetchGroupKey.PowerState,
+    label: "Group by power state",
+  },
+  {
+    value: FetchGroupKey.Zone,
+    label: "Group by zone",
+  },
+];

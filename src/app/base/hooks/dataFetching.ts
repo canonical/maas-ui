@@ -10,7 +10,7 @@ import statusSelectors from "@/app/store/status/selectors";
  * reconnects.
  * @param {Array<() => AnyAction>} actions - The actions to run.
  */
-export const useFetchActions = (actions: (() => AnyAction)[]) => {
+export const useFetchActions = (actions: (() => AnyAction)[]): void => {
   const dispatch = useDispatch();
   const connectedCount = useSelector(statusSelectors.connectedCount);
 

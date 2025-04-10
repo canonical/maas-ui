@@ -108,9 +108,9 @@ it("displays available tags in the dropdown", async () => {
   );
   await userEvent.click(screen.getByRole("textbox", { name: Label.TagInput }));
   expect(screen.getAllByRole("option")).toHaveLength(1);
-  await waitFor(() =>
-    expect(screen.getByRole("option", { name: "tag2" })).toBeInTheDocument()
-  );
+  await waitFor(() => {
+    expect(screen.getByRole("option", { name: "tag2" })).toBeInTheDocument();
+  });
 });
 
 it("displays the tags to be added", () => {
@@ -178,9 +178,9 @@ it("updates the new tags after creating a tag", async () => {
   ).not.toBeInTheDocument();
   rerender(<Form tags={[newTag.id]} />);
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(changes).getByRole("button", { name: /new-tag/i })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
 });

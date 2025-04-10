@@ -15,7 +15,7 @@ type WithPrepare = {
 };
 
 type Reducers = SliceCaseReducers<UserState> & {
-  cleanup: CaseReducer<UserState, PayloadAction<void>>;
+  cleanup: CaseReducer<UserState, PayloadAction>;
   fetch: WithPrepare;
 };
 

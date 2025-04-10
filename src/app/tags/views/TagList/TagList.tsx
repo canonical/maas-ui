@@ -54,8 +54,12 @@ const TagList = ({
             onInputChange={(e) => {
               setCurrentPage(Number(e.target.value));
             }}
-            onNextClick={() => setCurrentPage(currentPage + 1)}
-            onPreviousClick={() => setCurrentPage(currentPage - 1)}
+            onNextClick={() => {
+              setCurrentPage(currentPage + 1);
+            }}
+            onPreviousClick={() => {
+              setCurrentPage(currentPage - 1);
+            }}
             totalPages={Math.ceil(tags.length / pageSize)}
           />
         </span>

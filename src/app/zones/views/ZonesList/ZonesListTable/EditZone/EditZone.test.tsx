@@ -21,9 +21,11 @@ describe("EditZone", () => {
     const closeForm = vi.fn();
     renderWithProviders(<EditZone closeForm={closeForm} id={testZoneId} />);
 
-    await waitFor(() =>
-      expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Cancel" })
+      ).toBeInTheDocument();
+    });
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(closeForm).toHaveBeenCalled();
@@ -32,9 +34,9 @@ describe("EditZone", () => {
   it("updates a zone on save click", async () => {
     renderWithProviders(<EditZone closeForm={vi.fn()} id={testZoneId} />);
 
-    await waitFor(() =>
-      expect(screen.getByLabelText("Name")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByLabelText("Name")).toBeInTheDocument();
+    });
 
     await userEvent.clear(screen.getByLabelText("Name"));
 
@@ -52,7 +54,9 @@ describe("EditZone", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /Update AZ/i }));
 
-    await waitFor(() => expect(zoneResolvers.updateZone.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.updateZone.resolved).toBeTruthy();
+    });
   });
 
   it("displays error message when update zone fails", async () => {
@@ -63,9 +67,9 @@ describe("EditZone", () => {
 
     renderWithProviders(<EditZone closeForm={vi.fn()} id={testZoneId} />);
 
-    await waitFor(() =>
-      expect(screen.getByLabelText("Name")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByLabelText("Name")).toBeInTheDocument();
+    });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /name/i }),
@@ -74,6 +78,8 @@ describe("EditZone", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /Update AZ/i }));
 
-    await waitFor(() => expect(screen.getByText("Uh oh!")).toBeInTheDocument());
+    await waitFor(() => {
+      expect(screen.getByText("Uh oh!")).toBeInTheDocument();
+    });
   });
 });

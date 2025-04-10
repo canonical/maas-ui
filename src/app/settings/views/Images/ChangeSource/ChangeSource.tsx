@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
@@ -36,7 +37,7 @@ export type ChangeSourceValues = {
   autoSync: boolean;
 };
 
-const ChangeSource = () => {
+const ChangeSource = (): ReactElement => {
   const dispatch = useDispatch();
   const resources = useSelector(bootResourceSelectors.resources);
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);

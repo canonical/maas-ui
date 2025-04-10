@@ -1,4 +1,4 @@
-export type TableStatus = "loading" | "filtered" | "default";
+export type TableStatus = "default" | "filtered" | "loading";
 
 export const getTableStatus = ({
   isLoading,

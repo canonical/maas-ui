@@ -20,13 +20,15 @@ export const AddHardwareMenu = ({
       links={[
         {
           children: "Machine",
-          onClick: () =>
-            setSidePanelContent({ view: MachineSidePanelViews.ADD_MACHINE }),
+          onClick: () => {
+            setSidePanelContent({ view: MachineSidePanelViews.ADD_MACHINE });
+          },
         },
         {
           children: "Chassis",
-          onClick: () =>
-            setSidePanelContent({ view: MachineSidePanelViews.ADD_CHASSIS }),
+          onClick: () => {
+            setSidePanelContent({ view: MachineSidePanelViews.ADD_CHASSIS });
+          },
         },
       ]}
       position="right"

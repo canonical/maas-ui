@@ -38,9 +38,9 @@ const statusSlice = createSlice({
       state.items = action.payload;
     },
     update: {
-      prepare: <V extends ConfigValues>(values: {
-        [name: string]: Config<V>["value"];
-      }) => {
+      prepare: <V extends ConfigValues>(
+        values: Record<string, Config<V>["value"]>
+      ) => {
         const params = {
           items: values,
         };
@@ -76,12 +76,9 @@ const statusSlice = createSlice({
       state: ConfigState,
       action: PayloadAction<Config<ConfigValues>>
     ) => {
-      for (const i in state.items) {
-        if (state.items[i].name === action.payload.name) {
-          state.items[i] = action.payload;
-          break;
-        }
-      }
+      state.items = state.items.map((item) =>
+        item.name === action.payload?.name ? action.payload : item
+      );
     },
     cleanup: (state: ConfigState) => {
       state.errors = null;

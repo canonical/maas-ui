@@ -44,5 +44,7 @@ it("adjusts input padding", async () => {
   );
   const inputElement = screen.getByRole("textbox", { name: "Limited input" });
 
-  await waitFor(() => expect(inputElement).toHaveStyle("padding-left: 100px"));
+  await waitFor(() => {
+    expect(inputElement).toHaveStyle("padding-left: 100px");
+  });
 });

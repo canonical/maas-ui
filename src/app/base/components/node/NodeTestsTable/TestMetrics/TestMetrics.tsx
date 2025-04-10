@@ -37,7 +37,12 @@ const TestMetrics = ({ close, scriptResult }: Props): React.ReactElement => {
     <>
       {content}
       <div className="u-align--right u-nudge-left--small">
-        <Button className="u-no-margin--bottom" onClick={() => close()}>
+        <Button
+          className="u-no-margin--bottom"
+          onClick={() => {
+            close();
+          }}
+        >
           Close
         </Button>
       </div>

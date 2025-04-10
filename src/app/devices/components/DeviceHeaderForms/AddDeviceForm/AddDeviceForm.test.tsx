@@ -78,11 +78,11 @@ describe("AddDeviceForm", () => {
     renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
       store,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "Device name" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Device name" }),
@@ -189,10 +189,10 @@ describe("AddDeviceForm", () => {
       zone: { name: "1" },
     });
     const actualActions = store.getActions();
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         actualActions.find((action) => action.type === expectedAction.type)
-      ).toStrictEqual(expectedAction)
-    );
+      ).toStrictEqual(expectedAction);
+    });
   });
 });

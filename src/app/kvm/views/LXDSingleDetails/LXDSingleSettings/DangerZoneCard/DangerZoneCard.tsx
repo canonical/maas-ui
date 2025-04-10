@@ -29,12 +29,12 @@ const DangerZoneCard = ({
           <Button
             className="u-no-margin--bottom"
             data-testid="remove-kvm"
-            onClick={() =>
+            onClick={() => {
               setSidePanelContent({
                 view: KVMSidePanelViews.DELETE_KVM,
                 extras: { clusterId, hostId },
-              })
-            }
+              });
+            }}
           >
             {!!clusterId || clusterId === 0
               ? "Remove cluster"

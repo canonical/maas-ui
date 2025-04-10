@@ -78,11 +78,11 @@ describe("PoolColumn", () => {
       expect(screen.getByRole("button", { name: "Change pool:" }))
     );
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "No other pools available" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 
   it("displays a message if the machine cannot have its pool changed", async () => {
@@ -112,19 +112,21 @@ describe("PoolColumn", () => {
         store,
       }
     );
-    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
-    await waitFor(() =>
+    await waitFor(() => {
+      expect(poolsResolvers.listPools.resolved).toBeTruthy();
+    });
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Change pool:" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "swimming" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByRole("button", { name: "swimming" }));
 
     expect(
@@ -156,18 +158,18 @@ describe("PoolColumn", () => {
       }
     );
     expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Change pool:" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "swimming" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByRole("button", { name: "swimming" }));
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });

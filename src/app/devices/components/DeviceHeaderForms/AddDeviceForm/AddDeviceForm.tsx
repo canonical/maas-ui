@@ -141,7 +141,9 @@ export const AddDeviceForm = ({
     devicesSaved,
     deviceActions.cleanup,
     `${savingDevice} added successfully.`,
-    () => setSavingDevice(null)
+    () => {
+      setSavingDevice(null);
+    }
   );
 
   const loaded = domainsLoaded && subnetsLoaded && !zones.isPending;

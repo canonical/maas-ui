@@ -24,7 +24,7 @@ import type { Subnet } from "@/app/store/subnet/types";
 
 type Option = { label: string; value: string };
 
-type ModelType = Subnet | Controller | Machine | Device | IPRange;
+type ModelType = Controller | Device | IPRange | Machine | Subnet;
 
 type Props = {
   editing: boolean;

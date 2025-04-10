@@ -12,7 +12,7 @@ export const parseUtcDatetime = (utcTimeString: UtcDatetime): Date =>
     new Date()
   );
 
-export const getTimeDistanceString = (utcTimeString: UtcDatetime) =>
+export const getTimeDistanceString = (utcTimeString: UtcDatetime): string =>
   formatDistance(parseUtcDatetime(utcTimeString), new Date(), {
     addSuffix: true,
   });

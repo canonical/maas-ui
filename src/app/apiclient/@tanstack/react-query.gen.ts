@@ -415,11 +415,11 @@ export const listEventsInfiniteOptions = (
     ListEventsError,
     InfiniteData<ListEventsResponse>,
     QueryKey<Options<ListEventsData>>,
-    | number
     | Pick<
         QueryKey<Options<ListEventsData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -481,11 +481,11 @@ export const listDomainsInfiniteOptions = (
     ListDomainsError,
     InfiniteData<ListDomainsResponse>,
     QueryKey<Options<ListDomainsData>>,
-    | number
     | Pick<
         QueryKey<Options<ListDomainsData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -644,11 +644,11 @@ export const listFabricsInfiniteOptions = (
     ListFabricsError,
     InfiniteData<ListFabricsResponse>,
     QueryKey<Options<ListFabricsData>>,
-    | number
     | Pick<
         QueryKey<Options<ListFabricsData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -806,11 +806,11 @@ export const listInterfacesInfiniteOptions = (
     ListInterfacesError,
     InfiniteData<ListInterfacesResponse>,
     QueryKey<Options<ListInterfacesData>>,
-    | number
     | Pick<
         QueryKey<Options<ListInterfacesData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -875,11 +875,11 @@ export const listFabricVlanSubnetIprangeInfiniteOptions = (
     ListFabricVlanSubnetIprangeError,
     InfiniteData<ListFabricVlanSubnetIprangeResponse>,
     QueryKey<Options<ListFabricVlanSubnetIprangeData>>,
-    | number
     | Pick<
         QueryKey<Options<ListFabricVlanSubnetIprangeData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -1067,11 +1067,11 @@ export const listMachinePciDevicesInfiniteOptions = (
     ListMachinePciDevicesError,
     InfiniteData<ListMachinePciDevicesResponse>,
     QueryKey<Options<ListMachinePciDevicesData>>,
-    | number
     | Pick<
         QueryKey<Options<ListMachinePciDevicesData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -1136,11 +1136,11 @@ export const listMachineUsbDevicesInfiniteOptions = (
     ListMachineUsbDevicesError,
     InfiniteData<ListMachineUsbDevicesResponse>,
     QueryKey<Options<ListMachineUsbDevicesData>>,
-    | number
     | Pick<
         QueryKey<Options<ListMachineUsbDevicesData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -1202,11 +1202,11 @@ export const listMachinesInfiniteOptions = (
     ListMachinesError,
     InfiniteData<ListMachinesResponse>,
     QueryKey<Options<ListMachinesData>>,
-    | number
     | Pick<
         QueryKey<Options<ListMachinesData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -1271,11 +1271,11 @@ export const listFabricVlanSubnetReservedIpsInfiniteOptions = (
     ListFabricVlanSubnetReservedIpsError,
     InfiniteData<ListFabricVlanSubnetReservedIpsResponse>,
     QueryKey<Options<ListFabricVlanSubnetReservedIpsData>>,
-    | number
     | Pick<
         QueryKey<Options<ListFabricVlanSubnetReservedIpsData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -1442,11 +1442,11 @@ export const listResourcePoolsInfiniteOptions = (
     ListResourcePoolsError,
     InfiniteData<ListResourcePoolsResponse>,
     QueryKey<Options<ListResourcePoolsData>>,
-    | number
     | Pick<
         QueryKey<Options<ListResourcePoolsData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -1613,11 +1613,11 @@ export const listResourcePoolsWithSummaryInfiniteOptions = (
     ListResourcePoolsWithSummaryError,
     InfiniteData<ListResourcePoolsWithSummaryResponse>,
     QueryKey<Options<ListResourcePoolsWithSummaryData>>,
-    | number
     | Pick<
         QueryKey<Options<ListResourcePoolsWithSummaryData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -1679,11 +1679,11 @@ export const listSpacesInfiniteOptions = (
     ListSpacesError,
     InfiniteData<ListSpacesResponse>,
     QueryKey<Options<ListSpacesData>>,
-    | number
     | Pick<
         QueryKey<Options<ListSpacesData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -1844,11 +1844,11 @@ export const listUserSshkeysInfiniteOptions = (
     ListUserSshkeysError,
     InfiniteData<ListUserSshkeysResponse>,
     QueryKey<Options<ListUserSshkeysData>>,
-    | number
     | Pick<
         QueryKey<Options<ListUserSshkeysData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -2032,11 +2032,11 @@ export const getUserSslkeysInfiniteOptions = (
     GetUserSslkeysError,
     InfiniteData<GetUserSslkeysResponse>,
     QueryKey<Options<GetUserSslkeysData>>,
-    | number
     | Pick<
         QueryKey<Options<GetUserSslkeysData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -2180,11 +2180,11 @@ export const listFabricVlanSubnetsInfiniteOptions = (
     ListFabricVlanSubnetsError,
     InfiniteData<ListFabricVlanSubnetsResponse>,
     QueryKey<Options<ListFabricVlanSubnetsData>>,
-    | number
     | Pick<
         QueryKey<Options<ListFabricVlanSubnetsData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -2364,11 +2364,11 @@ export const listUsersInfiniteOptions = (options?: Options<ListUsersData>) => {
     ListUsersError,
     InfiniteData<ListUsersResponse>,
     QueryKey<Options<ListUsersData>>,
-    | number
     | Pick<
         QueryKey<Options<ListUsersData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -2529,11 +2529,11 @@ export const listFabricVlansInfiniteOptions = (
     ListFabricVlansError,
     InfiniteData<ListFabricVlansResponse>,
     QueryKey<Options<ListFabricVlansData>>,
-    | number
     | Pick<
         QueryKey<Options<ListFabricVlansData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -2692,11 +2692,11 @@ export const listZonesInfiniteOptions = (options?: Options<ListZonesData>) => {
     ListZonesError,
     InfiniteData<ListZonesResponse>,
     QueryKey<Options<ListZonesData>>,
-    | number
     | Pick<
         QueryKey<Options<ListZonesData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -2857,11 +2857,11 @@ export const listZonesWithSummaryInfiniteOptions = (
     ListZonesWithSummaryError,
     InfiniteData<ListZonesWithSummaryResponse>,
     QueryKey<Options<ListZonesWithSummaryData>>,
-    | number
     | Pick<
         QueryKey<Options<ListZonesWithSummaryData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {

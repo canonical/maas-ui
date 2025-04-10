@@ -314,7 +314,9 @@ const VMsTable = ({
                   <TableHeader
                     currentSort={currentSort}
                     data-testid="name-header"
-                    onClick={() => updateSort(FetchGroupKey.Hostname)}
+                    onClick={() => {
+                      updateSort(FetchGroupKey.Hostname);
+                    }}
                     sortKey={FetchGroupKey.Hostname}
                   >
                     VM name
@@ -329,7 +331,9 @@ const VMsTable = ({
               <TableHeader
                 className="p-double-row__header-spacer"
                 currentSort={currentSort}
-                onClick={() => updateSort(FetchGroupKey.Status)}
+                onClick={() => {
+                  updateSort(FetchGroupKey.Status);
+                }}
                 sortKey={FetchGroupKey.Status}
               >
                 Status
@@ -370,7 +374,9 @@ const VMsTable = ({
               <>
                 <TableHeader
                   currentSort={currentSort}
-                  onClick={() => updateSort(FetchGroupKey.Memory)}
+                  onClick={() => {
+                    updateSort(FetchGroupKey.Memory);
+                  }}
                   sortKey={FetchGroupKey.Memory}
                 >
                   RAM
@@ -385,7 +391,9 @@ const VMsTable = ({
               <>
                 <TableHeader
                   currentSort={currentSort}
-                  onClick={() => updateSort(FetchGroupKey.Pool)}
+                  onClick={() => {
+                    updateSort(FetchGroupKey.Pool);
+                  }}
                   sortKey={FetchGroupKey.Pool}
                 >
                   Pool

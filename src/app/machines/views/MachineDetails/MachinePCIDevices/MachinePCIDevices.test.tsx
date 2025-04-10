@@ -31,10 +31,10 @@ describe("MachinePCIDevices", () => {
     );
 
     const expectedAction = nodeDeviceActions.getByNodeId("abc123");
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         store.getActions().find((action) => action.type === expectedAction.type)
-      ).toStrictEqual(expectedAction)
-    );
+      ).toStrictEqual(expectedAction);
+    });
   });
 });

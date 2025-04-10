@@ -66,11 +66,11 @@ describe("ScriptsUpload", () => {
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByText("./foo.sh (2000 bytes) ready for upload.")
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 
   it("displays an error if a file larger than 2MB is uploaded", async () => {
@@ -88,7 +88,7 @@ describe("ScriptsUpload", () => {
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
 
-    expect(store.getActions()[0]["payload"]["message"]).toEqual(
+    expect(store.getActions()[0].payload.message).toEqual(
       "foo.sh: File is larger than 2000000 bytes"
     );
   });
@@ -112,7 +112,7 @@ describe("ScriptsUpload", () => {
     // necessary to use a fireEvent instead of userEvent, since userEvent doesn't support "drag n drop" multiple file upload
     fireEvent.drop(upload, { target: { files } });
     await waitFor(() => {
-      expect(store.getActions()[0]["payload"]["message"]).toEqual(
+      expect(store.getActions()[0].payload.message).toEqual(
         "Only a single file may be uploaded."
       );
     });

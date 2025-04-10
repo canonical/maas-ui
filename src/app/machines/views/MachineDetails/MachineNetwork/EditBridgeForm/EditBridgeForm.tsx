@@ -67,7 +67,9 @@ const EditBridgeForm = ({
     systemId,
     "updatingInterface",
     "updateInterface",
-    () => close()
+    () => {
+      close();
+    }
   );
 
   useFetchActions([vlanActions.fetch]);

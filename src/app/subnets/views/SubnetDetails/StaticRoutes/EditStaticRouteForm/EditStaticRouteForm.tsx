@@ -23,7 +23,7 @@ import { toFormikNumber } from "@/app/utils";
 
 export type EditStaticRouteValues = Pick<
   StaticRoute,
-  "source" | "destination" | "metric" | "gateway_ip"
+  "destination" | "gateway_ip" | "metric" | "source"
 >;
 
 export enum EditStaticRouteFormLabels {
@@ -50,7 +50,9 @@ const EditStaticRouteForm = ({
   const saving = useSelector(staticRouteSelectors.saving);
   const saved = useSelector(staticRouteSelectors.saved);
   const dispatch = useDispatch();
-  const handleClose = () => setSidePanelContent(null);
+  const handleClose = () => {
+    setSidePanelContent(null);
+  };
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const loading = staticRoutesLoading || subnetsLoading;

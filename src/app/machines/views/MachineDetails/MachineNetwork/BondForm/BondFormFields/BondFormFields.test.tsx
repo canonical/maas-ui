@@ -161,11 +161,11 @@ describe("BondFormFields", () => {
       "Downdelay (ms)",
     ];
 
-    monitoringFieldNames.forEach((field) =>
+    monitoringFieldNames.forEach((field) => {
       expect(
         screen.queryByRole("textbox", { name: field })
-      ).not.toBeInTheDocument()
-    );
+      ).not.toBeInTheDocument();
+    });
   });
 
   it("displays the monitoring fields when link monitoring is set", async () => {
@@ -187,9 +187,9 @@ describe("BondFormFields", () => {
       "Downdelay (ms)",
     ];
 
-    monitoringFieldNames.forEach((field) =>
-      expect(screen.getByRole("textbox", { name: field })).toBeInTheDocument()
-    );
+    monitoringFieldNames.forEach((field) => {
+      expect(screen.getByRole("textbox", { name: field })).toBeInTheDocument();
+    });
   });
 
   it("sets the mac address field when the nic field changes", async () => {

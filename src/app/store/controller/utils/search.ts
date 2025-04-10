@@ -13,12 +13,13 @@ type ExtraData = {
   tags: Tag[];
 };
 
-type SearchMappings = {
-  [x: string]: (
+type SearchMappings = Record<
+  string,
+  (
     controller: Controller,
     extraData?: ExtraData
-  ) => FilterValue | FilterValue[] | null;
-};
+  ) => FilterValue | FilterValue[] | null
+>;
 
 // Helpers that convert the pseudo field on the controller to an actual value.
 const searchMappings: SearchMappings = {

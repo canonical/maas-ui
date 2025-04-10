@@ -24,8 +24,8 @@ export const useDhcpTarget = (
 ): {
   loading: boolean;
   loaded: boolean;
-  target: Subnet | Machine | Device | Controller | null;
-  type: "iprange" | "subnet" | "controller" | "device" | "machine" | null;
+  target: Controller | Device | Machine | Subnet | null;
+  type: "controller" | "device" | "iprange" | "machine" | "subnet" | null;
 } => {
   const iprange = useSelector((state: RootState) =>
     ipRangeSelectors.getById(state, ipRangeId)

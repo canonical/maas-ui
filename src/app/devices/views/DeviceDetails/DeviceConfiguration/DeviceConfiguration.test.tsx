@@ -42,9 +42,9 @@ describe("DeviceConfiguration", () => {
     renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
-    await waitFor(() =>
-      expect(screen.getByTestId("loading-device")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByTestId("loading-device")).toBeInTheDocument();
+    });
     expect(screen.getByTestId("loading-device")).toBeInTheDocument();
   });
 
@@ -52,9 +52,9 @@ describe("DeviceConfiguration", () => {
     renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
-    await waitFor(() =>
-      expect(screen.getByTestId("device-details")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByTestId("device-details")).toBeInTheDocument();
+    });
     expect(screen.getByTestId("device-details")).toBeInTheDocument();
     expect(
       screen.queryByRole("form", { name: Label.Form })
@@ -65,13 +65,13 @@ describe("DeviceConfiguration", () => {
     renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getAllByRole("button", {
           name: EditableSectionLabels.EditButton,
         })[0]
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
@@ -89,13 +89,13 @@ describe("DeviceConfiguration", () => {
         state,
       }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getAllByRole("button", {
           name: EditableSectionLabels.EditButton,
         })[0]
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
@@ -124,10 +124,10 @@ describe("DeviceConfiguration", () => {
       zone: { name: "1" },
     });
     const actualActions = store.getActions();
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         actualActions.find((action) => action.type === expectedAction.type)
-      ).toStrictEqual(expectedAction)
-    );
+      ).toStrictEqual(expectedAction);
+    });
   });
 });

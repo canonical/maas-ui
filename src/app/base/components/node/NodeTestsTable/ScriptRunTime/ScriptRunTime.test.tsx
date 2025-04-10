@@ -77,9 +77,9 @@ describe("ScriptRunTime", () => {
     render(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00/i)).toBeInTheDocument();
     vi.advanceTimersByTime(1000);
-    await waitFor(() =>
-      expect(screen.getByText(/0:05:01/i)).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByText(/0:05:01/i)).toBeInTheDocument();
+    });
   });
 
   it("only shows the time if less than a day has elapsed", () => {

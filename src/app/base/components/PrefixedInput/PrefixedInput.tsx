@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useLayoutEffect, useRef } from "react";
 
 import type { InputProps } from "@canonical/react-components";
@@ -8,7 +9,10 @@ export type PrefixedInputProps = Omit<InputProps, "type"> & {
   immutableText: string;
 };
 
-const PrefixedInput = ({ immutableText, ...props }: PrefixedInputProps) => {
+const PrefixedInput = ({
+  immutableText,
+  ...props
+}: PrefixedInputProps): ReactElement => {
   const prefixTextRef = useRef<HTMLDivElement>(null);
   const inputWrapperRef = useRef<HTMLDivElement>(null);
 

@@ -97,7 +97,9 @@ const PowerForm = ({ systemId }: Props): React.ReactElement | null => {
               powerType: machine.power_type ?? "",
               powerParameters: initialPowerParameters,
             }}
-            onCancel={() => setEditing(false)}
+            onCancel={() => {
+              setEditing(false);
+            }}
             onSaveAnalytics={{
               action: "Configure power",
               category: "Machine details",
@@ -117,7 +119,9 @@ const PowerForm = ({ systemId }: Props): React.ReactElement | null => {
               };
               dispatch(machineActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
+            onSuccess={() => {
+              setEditing(false);
+            }}
             onValuesChanged={(values) => {
               const powerType = getPowerTypeFromName(
                 powerTypes,

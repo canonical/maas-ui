@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Spinner } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 import type { Action, Dispatch } from "redux";
@@ -41,18 +43,19 @@ type ContainerProps = Omit<MachineActionFormProps, "processingCount"> & {
   viewingDetails: boolean;
 };
 
-type Props = ContainerProps & {
-  clearSelectedMachines: () => void;
-  dispatch: Dispatch<Action>;
-  dispatchForSelectedMachines: ReturnType<
-    typeof useSelectedMachinesActionsDispatch
-  >["dispatch"];
-  filter: ReturnType<typeof selectedToFilters>;
-  onRenderRef: ReturnType<typeof useScrollOnRender<HTMLDivElement>>;
-} & Omit<
+type Props = ContainerProps &
+  Omit<
     ReturnType<typeof useSelectedMachinesActionsDispatch>,
     "failedSystemIds" | "successCount"
-  >;
+  > & {
+    clearSelectedMachines: () => void;
+    dispatch: Dispatch<Action>;
+    dispatchForSelectedMachines: ReturnType<
+      typeof useSelectedMachinesActionsDispatch
+    >["dispatch"];
+    filter: ReturnType<typeof selectedToFilters>;
+    onRenderRef: ReturnType<typeof useScrollOnRender<HTMLDivElement>>;
+  };
 
 export const MachineActionForm = ({
   action,
@@ -72,7 +75,7 @@ export const MachineActionForm = ({
   selectedMachines,
   setSearchFilter,
   viewingDetails,
-}: Props) => {
+}: Props): ReactElement => {
   const commonMachineFormProps = {
     searchFilter,
     clearSidePanelContent,

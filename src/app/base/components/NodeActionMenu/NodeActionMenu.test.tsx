@@ -6,10 +6,11 @@ import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within } from "@/testing/utils";
 
 describe("NodeActionMenu", () => {
-  const openMenu = async () =>
+  const openMenu = async () => {
     await userEvent.click(
       screen.getByRole("button", { name: Label.TakeAction })
     );
+  };
 
   const getActionButton = (action: NodeActions) =>
     screen.getByRole("button", {

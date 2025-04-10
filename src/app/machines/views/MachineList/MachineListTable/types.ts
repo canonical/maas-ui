@@ -37,14 +37,14 @@ export type MachineListTableProps = {
   setSortKey: (sortKey: FetchGroupKey | null) => void;
 };
 
-export type GroupRowsProps = {
+export type GroupRowsProps = Omit<GenerateRowParams, "groupValue"> & {
   callId?: string | null;
   grouping?: FetchGroupKey | null;
   groups: MachineStateListGroup[] | null;
   hiddenGroups: NonNullable<MachineListTableProps["hiddenGroups"]>;
   setHiddenGroups: MachineListTableProps["setHiddenGroups"];
   filter: FetchFilters | null;
-} & Omit<GenerateRowParams, "groupValue">;
+};
 
 export type TableColumn = MainTableCell & { key: string };
 

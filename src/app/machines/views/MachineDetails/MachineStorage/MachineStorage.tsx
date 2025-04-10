@@ -36,13 +36,13 @@ const MachineStorage = (): React.ReactElement => {
             Learn more about deploying{" "}
             <ExternalLink
               data-testid="docs-footer-link"
-              onClick={() =>
+              onClick={() => {
                 sendAnalytics(
                   "Machine storage",
                   "Click link to MAAS docs",
                   "Windows"
-                )
-              }
+                );
+              }}
               to={docsUrls.windowsImages}
             >
               Windows

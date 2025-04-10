@@ -106,7 +106,9 @@ const MachinesFilterAccordion = ({
         className="filter-accordion__dropdown"
         expanded={expandedSection}
         externallyControlled
-        onExpandedChange={(id, _title) => setExpandedSection(id)}
+        onExpandedChange={(id, _title) => {
+          setExpandedSection(id);
+        }}
         sections={sections}
       />
     </ContextualMenu>

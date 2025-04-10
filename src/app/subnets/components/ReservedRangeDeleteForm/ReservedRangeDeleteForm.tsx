@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -8,7 +10,7 @@ import type { VLANActionFormProps } from "@/app/subnets/views/VLANDetails/VLANAc
 
 const ReservedRangeDeleteForm = ({
   setSidePanelContent,
-}: Pick<VLANActionFormProps, "setSidePanelContent">) => {
+}: Pick<VLANActionFormProps, "setSidePanelContent">): ReactElement => {
   const dispatch = useDispatch();
   const { sidePanelContent } = useSidePanel();
   const saved = useSelector(ipRangeSelectors.saved);
@@ -28,7 +30,9 @@ const ReservedRangeDeleteForm = ({
       initialValues={{}}
       message="Ensure all in-use IP addresses are registered in MAAS before releasing this range to avoid potential collisions. Are you sure you want to remove this IP range?"
       modelType="IP range"
-      onCancel={() => setSidePanelContent(null)}
+      onCancel={() => {
+        setSidePanelContent(null);
+      }}
       onSubmit={() => {
         dispatch(ipRangeActions.delete(ipRangeId));
       }}

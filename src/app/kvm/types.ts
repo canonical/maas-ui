@@ -19,16 +19,16 @@ import type {
 type HeaderViews = typeof KVMSidePanelViews;
 
 export type KVMSidePanelContent =
-  | SidePanelContent<HeaderViews["COMPOSE_VM"], { hostId?: Pod["id"] }>
+  | MachineSidePanelContent
+  | SidePanelContent<
+      HeaderViews["ADD_LXD_HOST"] | HeaderViews["ADD_VIRSH_HOST"]
+    >
   | SidePanelContent<
       HeaderViews["DELETE_KVM"],
       { clusterId?: VMCluster[VMClusterMeta.PK]; hostId?: Pod["id"] }
     >
-  | SidePanelContent<
-      HeaderViews["ADD_LXD_HOST"] | HeaderViews["ADD_VIRSH_HOST"]
-    >
-  | SidePanelContent<HeaderViews["REFRESH_KVM"], { hostIds?: Pod["id"][] }>
-  | MachineSidePanelContent;
+  | SidePanelContent<HeaderViews["COMPOSE_VM"], { hostId?: Pod["id"] }>
+  | SidePanelContent<HeaderViews["REFRESH_KVM"], { hostIds?: Pod["id"][] }>;
 
 export type KVMSetSidePanelContent = SetSidePanelContent<KVMSidePanelContent>;
 

@@ -22,7 +22,10 @@ type FilterValues = Map<FilterValue, number>;
 // A mapping between filters and the available values and counts.
 type FilterSections = Map<FilterKey, FilterValues>;
 
-export type Props<I, PK extends keyof I> = {
+export type Props<I, PK extends keyof I> = Pick<
+  AriaAttributes,
+  "aria-label"
+> & {
   disabled?: boolean;
   filterNames: Map<FilterKey, string>;
   filterOrder: FilterKey[];
@@ -35,7 +38,7 @@ export type Props<I, PK extends keyof I> = {
   items: I[];
   onUpdateFilterString: (filterString: string) => void;
   toggleFilter: FilterItems<I, PK>["toggleFilter"];
-} & Pick<AriaAttributes, "aria-label">;
+};
 
 // An accordion section.
 type Section = {
@@ -203,7 +206,9 @@ const FilterAccordion = <I, PK extends keyof I>({
         className="filter-accordion__dropdown"
         expanded={expandedSection}
         externallyControlled
-        onExpandedChange={(id, _title) => setExpandedSection(id)}
+        onExpandedChange={(id, _title) => {
+          setExpandedSection(id);
+        }}
         sections={sections}
       />
     </ContextualMenu>

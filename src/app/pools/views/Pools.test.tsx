@@ -39,9 +39,9 @@ describe("Pools", () => {
         route: path,
         routePattern: `${urls.pools.index}/*`,
       });
-      await waitFor(() =>
-        expect(screen.getByLabelText(label)).toBeInTheDocument()
-      );
+      await waitFor(() => {
+        expect(screen.getByLabelText(label)).toBeInTheDocument();
+      });
     });
   });
 });

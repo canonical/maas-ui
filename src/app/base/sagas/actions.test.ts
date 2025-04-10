@@ -17,7 +17,7 @@ import * as factory from "@/testing/factories";
 vi.mock("../../../websocket-client");
 
 describe("websocket sagas", () => {
-  it("can send a message to update an address record then update the DNS resource", () => {
+  it("can send a message to update an address record then update the DNS resource", async () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
@@ -56,7 +56,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can send a message to update a DNS resource for 'A record' when rrdata is unchanged", () => {
+  it("can send a message to update a DNS resource for 'A record' when rrdata is unchanged", async () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
@@ -92,7 +92,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can send a message to update a non-address record then update the DNS resource", () => {
+  it("can send a message to update a non-address record then update the DNS resource", async () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
@@ -130,7 +130,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can send a message to delete an address record then delete the DNS resource", () => {
+  it("can send a message to delete an address record then delete the DNS resource", async () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
@@ -164,7 +164,7 @@ describe("websocket sagas", () => {
       .run();
   });
 
-  it("can send a message to delete a non-address record then delete the DNS resource", () => {
+  it("can send a message to delete a non-address record then delete the DNS resource", async () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];

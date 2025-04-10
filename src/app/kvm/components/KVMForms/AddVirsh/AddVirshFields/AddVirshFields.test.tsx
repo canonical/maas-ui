@@ -66,13 +66,15 @@ describe("AddVirshFields", () => {
       state,
       initialEntries: ["/machines/chassis/add"],
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: /test-powerfield-label-1/i })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     expect(
       screen.queryByRole("textbox", { name: /test-powerfield-label-2/i })
     ).not.toBeInTheDocument();

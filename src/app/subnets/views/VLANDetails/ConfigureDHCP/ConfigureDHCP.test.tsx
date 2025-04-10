@@ -137,11 +137,11 @@ it("shows an error if no rack controllers are connected to the VLAN", async () =
   ).toBeInTheDocument();
 
   // Wait for Formik validateOnMount to run.
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("button", { name: "Configure DHCP" })
-    ).toBeDisabled()
-  );
+    ).toBeDisabled();
+  });
 });
 
 it(`shows an error if the subnet selected for reserving a dynamic range has no
@@ -245,11 +245,11 @@ it("can configure DHCP with rack controllers", async () => {
     screen.getByRole("combobox", { name: "Subnet" }),
     getSubnetDisplay(subnet)
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("textbox", { name: "Start IP address" })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
   await userEvent.clear(
     screen.getByRole("textbox", { name: "Start IP address" })
   );
@@ -269,11 +269,11 @@ it("can configure DHCP with rack controllers", async () => {
     screen.getByRole("textbox", { name: "Gateway IP" }),
     "192.168.1.6"
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("button", { name: "Configure DHCP" })
-    ).not.toBeDisabled()
-  );
+    ).not.toBeDisabled();
+  });
 
   await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
   const expectedAction = vlanActions.configureDHCP({
@@ -370,7 +370,7 @@ it("can configure relayed DHCP", async () => {
     const actualAction = store
       .getActions()
       .find((action) => action.type === expectedAction.type);
-    return expect(actualAction).toStrictEqual(expectedAction);
+    expect(actualAction).toStrictEqual(expectedAction);
   });
 });
 
@@ -406,11 +406,11 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
     getSubnetDisplay(subnet)
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("textbox", { name: "Start IP address" })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
   await userEvent.clear(
     screen.getByRole("textbox", { name: "Start IP address" })
   );
@@ -430,11 +430,11 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
     screen.getByRole("textbox", { name: "Gateway IP" }),
     "192.168.1.6"
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("button", { name: "Configure DHCP" })
-    ).not.toBeDisabled()
-  );
+    ).not.toBeDisabled();
+  });
   await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
 
   const expectedAction = vlanActions.configureDHCP({

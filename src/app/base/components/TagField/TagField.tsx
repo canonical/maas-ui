@@ -9,12 +9,12 @@ import type {
 } from "@/app/base/components/TagSelector/TagSelector";
 import type { AnyObject } from "@/app/base/types";
 
-export type Props = {
-  storedValue?: "name" | "id";
-  name: string;
-  tags: TagSelectorProps["tags"];
-} & Omit<Partial<FormikFieldProps>, "name"> &
-  Omit<Partial<TagSelectorProps>, "tags">;
+export type Props = Omit<Partial<FormikFieldProps>, "name"> &
+  Omit<Partial<TagSelectorProps>, "tags"> & {
+    storedValue?: "id" | "name";
+    name: string;
+    tags: TagSelectorProps["tags"];
+  };
 
 export enum Label {
   Input = "Tags",
@@ -34,7 +34,7 @@ const TagField = <V extends AnyObject = AnyObject>({
       component={TagSelector}
       label={Label.Input}
       name={name}
-      onTagsUpdate={(tags: TagSelectorTag[]) =>
+      onTagsUpdate={async (tags: TagSelectorTag[]) =>
         setFieldValue(
           name,
           tags.map((tag) => tag[storedValue])

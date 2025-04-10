@@ -86,11 +86,11 @@ describe("LXDSingleDetailsHeader", () => {
       { route: "/kvm/1/resources", state }
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
         "zone-1"
-      )
-    );
+      );
+    });
   });
 
   it("can open the refresh host form", async () => {

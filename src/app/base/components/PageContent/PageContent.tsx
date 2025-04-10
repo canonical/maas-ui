@@ -15,7 +15,7 @@ import { preferencesNavItems } from "@/app/preferences/constants";
 import { settingsNavItems } from "@/app/settings/constants";
 import status from "@/app/store/status/selectors";
 
-export type Props = {
+export type Props = HTMLProps<HTMLDivElement> & {
   children?: ReactNode;
   header?: ReactNode;
   sidebar?: ReactNode;
@@ -23,7 +23,7 @@ export type Props = {
   sidePanelContent: AppSidePanelProps["content"];
   sidePanelSize?: AppSidePanelProps["size"];
   sidePanelTitle: AppSidePanelProps["title"];
-} & HTMLProps<HTMLDivElement>;
+};
 
 const PageContent = ({
   children,

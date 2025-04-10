@@ -24,7 +24,9 @@ describe("DebounceSearchBox", () => {
     await userEvent.clear(searchBox);
     await userEvent.type(searchBox, "new-value");
 
-    await waitFor(() => expect(onDebounced).toHaveBeenCalledWith("new-value"));
+    await waitFor(() => {
+      expect(onDebounced).toHaveBeenCalledWith("new-value");
+    });
   });
 
   it(`does not run onDebounced fn when the search text changes via props, even

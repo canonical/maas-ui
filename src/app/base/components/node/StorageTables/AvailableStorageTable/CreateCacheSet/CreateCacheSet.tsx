@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -12,7 +14,12 @@ type Props = {
   partitionId?: Partition["id"];
 };
 
-const CreateCacheSet = ({ systemId, diskId, partitionId, close }: Props) => {
+const CreateCacheSet = ({
+  systemId,
+  diskId,
+  partitionId,
+  close,
+}: Props): ReactElement => {
   const dispatch = useDispatch();
   const isDiskCacheSet = !!diskId;
   return (

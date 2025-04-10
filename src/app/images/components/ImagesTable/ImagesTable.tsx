@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import { TableCaption } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
@@ -48,7 +48,7 @@ const ImagesTable = ({
   selectedRows,
   setSelectedRows,
   variant,
-}: SMImagesTableProps) => {
+}: SMImagesTableProps): ReactElement => {
   const resources = useSelector(bootResourceSelectors.resources);
   const images = getImages(resources);
 

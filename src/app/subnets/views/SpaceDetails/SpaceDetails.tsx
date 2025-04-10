@@ -75,7 +75,9 @@ const SpaceDetails = (): React.ReactElement => {
   ) {
     content = (
       <SpaceDelete
-        handleClose={() => setSidePanelContent(null)}
+        handleClose={() => {
+          setSidePanelContent(null);
+        }}
         space={space}
       />
     );

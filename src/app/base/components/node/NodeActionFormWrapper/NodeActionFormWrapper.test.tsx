@@ -133,6 +133,8 @@ describe("NodeActionFormWrapper", () => {
     // Update with no nodes selected - clear header content should be called.
     rerender(<Proxy nodes={[]} />);
 
-    await waitFor(() => expect(clearSidePanelContent).toHaveBeenCalled());
+    await waitFor(() => {
+      expect(clearSidePanelContent).toHaveBeenCalled();
+    });
   });
 });

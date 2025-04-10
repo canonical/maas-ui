@@ -87,12 +87,12 @@ const generateRows = (sshkeys: SshKeyResponse[], navigate: NavigateFunction) =>
               appearance="base"
               className="is-dense u-table-cell-padding-overlap"
               hasIcon
-              onClick={() =>
+              onClick={() => {
                 navigate({
                   pathname: urls.sshKeys.delete,
                   search: `?ids=${ids.join()}`,
-                })
-              }
+                });
+              }}
             >
               <i className="p-icon--delete">Delete</i>
             </Button>

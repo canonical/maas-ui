@@ -11,10 +11,10 @@ import { generalActions } from "@/app/store/general";
 import { bondOptions as bondOptionsSelectors } from "@/app/store/general/selectors";
 import { BondMode, BondXmitHashPolicy } from "@/app/store/general/types";
 
-type Props = {
+type Props = FormikFieldProps & {
   bondMode?: BondMode | null;
   defaultOption?: { label: string; value: string } | null;
-} & FormikFieldProps;
+};
 
 type Option = { label: string; value: string };
 

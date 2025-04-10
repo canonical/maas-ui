@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
@@ -7,7 +9,7 @@ import urls from "@/app/base/urls";
 import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 
-const APIKeyDeleteForm = ({ id }: { id: number }) => {
+const APIKeyDeleteForm = ({ id }: { id: number }): ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const saved = useSelector(tokenSelectors.saved);
@@ -20,7 +22,9 @@ const APIKeyDeleteForm = ({ id }: { id: number }) => {
       aria-label="Delete API Key"
       initialValues={{}}
       modelType="API key"
-      onCancel={() => navigate({ pathname: urls.preferences.apiKeys.index })}
+      onCancel={() => {
+        navigate({ pathname: urls.preferences.apiKeys.index });
+      }}
       onSubmit={() => {
         dispatch(tokenActions.delete(id));
       }}

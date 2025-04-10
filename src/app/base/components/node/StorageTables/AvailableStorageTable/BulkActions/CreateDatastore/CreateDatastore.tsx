@@ -71,7 +71,9 @@ export const CreateDatastore = ({
     systemId,
     "creatingVmfsDatastore",
     "createVmfsDatastore",
-    () => closeForm()
+    () => {
+      closeForm();
+    }
   );
   const totalSize = selected.reduce((sum, device) => (sum += device.size), 0);
 

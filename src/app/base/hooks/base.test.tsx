@@ -29,13 +29,17 @@ vi.mock("react-router", () => ({
 
 describe("useWindowTitle", () => {
   it("sets the window title", () => {
-    const { rerender } = renderHookWithMockStore(() => useWindowTitle("Test"));
+    const { rerender } = renderHookWithMockStore(() => {
+      useWindowTitle("Test");
+    });
     expect(document.title).toBe("Test | MAAS");
     rerender();
     expect(document.title).toBe("Test | MAAS");
   });
   it("keeps the window title unchanged on unmount", () => {
-    const { unmount } = renderHookWithMockStore(() => useWindowTitle("Test"));
+    const { unmount } = renderHookWithMockStore(() => {
+      useWindowTitle("Test");
+    });
     expect(document.title).toBe("Test | MAAS");
     unmount();
     expect(document.title).toBe("Test | MAAS");

@@ -58,10 +58,10 @@ describe("LACPRateSelect", () => {
       },
     ];
 
-    for (const i in expectedOptions) {
-      expect(lacpRateOptions[i]).toHaveValue(expectedOptions[i].value);
-      expect(lacpRateOptions[i]).toHaveTextContent(expectedOptions[i].label);
-    }
+    expectedOptions.forEach((expectedOption, i) => {
+      expect(lacpRateOptions[i]).toHaveValue(expectedOption.value);
+      expect(lacpRateOptions[i]).toHaveTextContent(expectedOption.label);
+    });
   });
 
   it("can display a default option", () => {

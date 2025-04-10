@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -12,7 +14,7 @@ type Props = {
   disk: Disk;
 };
 
-const DeleteDisk = ({ systemId, disk, close }: Props) => {
+const DeleteDisk = ({ systemId, disk, close }: Props): ReactElement => {
   const dispatch = useDispatch();
   const diskType = formatType(disk, true);
   return (

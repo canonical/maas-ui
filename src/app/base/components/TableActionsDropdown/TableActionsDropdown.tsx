@@ -32,7 +32,9 @@ const TableActionsDropdown = <A extends string>({
       links.push({
         children: action.label,
         "data-testid": action.type,
-        onClick: () => onActionClick(action.type, action?.view),
+        onClick: () => {
+          onActionClick(action.type, action?.view);
+        },
       });
     }
     return links;

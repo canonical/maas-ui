@@ -7,9 +7,9 @@ import { useFetchActions } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { bondOptions as bondOptionsSelectors } from "@/app/store/general/selectors";
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: Option | null;
-} & FormikFieldProps;
+};
 
 type Option = { label: string; value: string };
 

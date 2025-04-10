@@ -36,7 +36,9 @@ const EditableSection = ({
         showEditButton ? (
           <Button
             className="u-no-margin--bottom"
-            onClick={() => setEditing(true)}
+            onClick={() => {
+              setEditing(true);
+            }}
           >
             {Labels.EditButton}
           </Button>

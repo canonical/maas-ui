@@ -37,7 +37,9 @@ describe("AddZone", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /Add AZ/i }));
 
-    await waitFor(() => expect(zoneResolvers.createZone.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.createZone.resolved).toBeTruthy();
+    });
   });
 
   it("displays error message when create zone fails", async () => {

@@ -11,9 +11,7 @@
  */
 export type AaaaRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   ipv6address: string;
   kind?: string;
 };
@@ -29,9 +27,7 @@ export type AaaaRecordResponse = {
  */
 export type ARecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   ipv4address: string;
   kind?: string;
 };
@@ -48,7 +44,7 @@ export type AccessTokenResponse = {
 export type BadRequestBodyResponse = {
   code?: number;
   message?: string;
-  details?: Array<BaseExceptionDetail>;
+  details?: BaseExceptionDetail[];
   kind?: string;
 };
 
@@ -87,9 +83,7 @@ export type BodyLogin = {
  */
 export type CnameRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   cname: string;
   kind?: string;
 };
@@ -97,7 +91,7 @@ export type CnameRecordResponse = {
 export type ConflictBodyResponse = {
   code?: number;
   message?: string;
-  details?: Array<BaseExceptionDetail>;
+  details?: BaseExceptionDetail[];
   kind?: string;
 };
 
@@ -134,7 +128,7 @@ export type DomainRequest = {
  * Derived classes should overwrite the items property
  */
 export type DomainResourceRecordSetListResponse = {
-  items: Array<DomainResourceRecordSetResponse>;
+  items: DomainResourceRecordSetResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -151,21 +145,19 @@ export type DomainResourceRecordSetListResponse = {
  */
 export type DomainResourceRecordSetResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   name: string;
   node_id?: number;
   ttl?: number;
   rrtype: DnsResourceTypeEnum;
-  a_records?: Array<ARecordResponse>;
-  aaaa_records?: Array<AaaaRecordResponse>;
-  cname_records?: Array<CnameRecordResponse>;
-  mx_records?: Array<MxRecordResponse>;
-  ns_records?: Array<NsRecordResponse>;
-  sshfp_records?: Array<SshfpRecordResponse>;
-  srv_records?: Array<SrvRecordResponse>;
-  txt_records?: Array<TxtRecordResponse>;
+  a_records?: ARecordResponse[];
+  aaaa_records?: AaaaRecordResponse[];
+  cname_records?: CnameRecordResponse[];
+  mx_records?: MxRecordResponse[];
+  ns_records?: NsRecordResponse[];
+  sshfp_records?: SshfpRecordResponse[];
+  srv_records?: SrvRecordResponse[];
+  txt_records?: TxtRecordResponse[];
   kind?: string;
 };
 
@@ -180,9 +172,7 @@ export type DomainResourceRecordSetResponse = {
  */
 export type DomainResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   authoritative: boolean;
   ttl?: number;
   id: number;
@@ -195,7 +185,7 @@ export type DomainResponse = {
  * Derived classes should overwrite the items property
  */
 export type DomainsListResponse = {
-  items: Array<DomainResponse>;
+  items: DomainResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -212,9 +202,7 @@ export type DomainsListResponse = {
  */
 export type EventResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   created: string;
   updated: string;
@@ -235,11 +223,11 @@ export type EventResponse = {
  */
 export type EventTypeLevelEnum =
   | "AUDIT"
+  | "CRITICAL"
   | "DEBUG"
-  | "INFO"
-  | "WARNING"
   | "ERROR"
-  | "CRITICAL";
+  | "INFO"
+  | "WARNING";
 
 export type EventTypeResponse = {
   name: string;
@@ -252,7 +240,7 @@ export type EventTypeResponse = {
  * Derived classes should overwrite the items property
  */
 export type EventsListResponse = {
-  items: Array<EventResponse>;
+  items: EventResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -281,9 +269,7 @@ export type FabricRequest = {
  */
 export type FabricResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name?: string;
   description?: string;
@@ -297,7 +283,7 @@ export type FabricResponse = {
  * Derived classes should overwrite the items property
  */
 export type FabricsListResponse = {
-  items: Array<FabricResponse>;
+  items: FabricResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -336,7 +322,7 @@ export type IpRangeCreateRequest = {
  * Derived classes should overwrite the items property
  */
 export type IpRangeListResponse = {
-  items: Array<IpRangeResponse>;
+  items: IpRangeResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -353,9 +339,7 @@ export type IpRangeListResponse = {
  */
 export type IpRangeResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   type: IpRangeType;
   start_ip: string;
@@ -396,14 +380,14 @@ export type IpRangeUpdateRequest = {
 /**
  * The vocabulary of possible types to link a `Subnet` to a `Interface`.
  */
-export type InterfaceLinkType = "auto" | "dhcp" | "static" | "link_up";
+export type InterfaceLinkType = "auto" | "dhcp" | "link_up" | "static";
 
 /**
  * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type InterfaceListResponse = {
-  items: Array<InterfaceResponse>;
+  items: InterfaceResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -420,9 +404,7 @@ export type InterfaceListResponse = {
  */
 export type InterfaceResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   type: InterfaceType;
@@ -432,7 +414,7 @@ export type InterfaceResponse = {
   enabled?: boolean;
   link_speed?: number;
   sriov_max_vf?: number;
-  links?: Array<LinkResponse>;
+  links?: LinkResponse[];
   kind?: string;
 };
 
@@ -440,12 +422,12 @@ export type InterfaceResponse = {
  * The vocabulary of possible types for `Interface`.
  */
 export type InterfaceType =
-  | "physical"
+  | "alias"
   | "bond"
   | "bridge"
-  | "vlan"
-  | "alias"
-  | "unknown";
+  | "physical"
+  | "unknown"
+  | "vlan";
 
 export type LinkResponse = {
   id: number;
@@ -464,9 +446,7 @@ export type LinkResponse = {
  */
 export type MxRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   exchange: string;
   preference: number;
   kind?: string;
@@ -483,9 +463,7 @@ export type MxRecordResponse = {
  */
 export type MachineResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   system_id: string;
   description: string;
@@ -509,7 +487,7 @@ export type MachineResponse = {
  * Derived classes should overwrite the items property
  */
 export type MachinesListResponse = {
-  items: Array<MachineResponse>;
+  items: MachineResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -526,9 +504,7 @@ export type MachinesListResponse = {
  */
 export type NsRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   nsdname: string;
   kind?: string;
 };
@@ -564,7 +540,7 @@ export type NodeStatus =
 export type NotFoundBodyResponse = {
   code?: number;
   message?: string;
-  details?: Array<BaseExceptionDetail>;
+  details?: BaseExceptionDetail[];
   kind?: string;
 };
 
@@ -579,9 +555,7 @@ export type NotFoundBodyResponse = {
  */
 export type PciDeviceResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   type: HardwareDeviceTypeEnum;
   vendor_id: string;
@@ -600,7 +574,7 @@ export type PciDeviceResponse = {
  * Derived classes should overwrite the items property
  */
 export type PciDevicesListResponse = {
-  items: Array<PciDeviceResponse>;
+  items: PciDeviceResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -617,13 +591,9 @@ export type PciDevicesListResponse = {
  */
 export type PowerDriverResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   power_type: PowerTypeEnum;
-  power_parameters: {
-    [key: string]: unknown;
-  };
+  power_parameters: Record<string, unknown>;
   kind?: string;
 };
 
@@ -659,14 +629,14 @@ export type PowerTypeEnum =
 export type PreconditionFailedBodyResponse = {
   code?: number;
   message?: string;
-  details?: Array<BaseExceptionDetail>;
+  details?: BaseExceptionDetail[];
   kind?: string;
 };
 
 /**
  * The vocabulary of a `Subnet`'s possible reverse DNS modes.
  */
-export type RdnsMode = 2 | 0 | 1;
+export type RdnsMode = 0 | 1 | 2;
 
 export type ReservedIpCreateRequest = {
   /**
@@ -694,9 +664,7 @@ export type ReservedIpCreateRequest = {
  */
 export type ReservedIpResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   ip: string;
   mac_address: string;
@@ -724,7 +692,7 @@ export type ReservedIpUpdateRequest = {
  * Derived classes should overwrite the items property
  */
 export type ReservedIpsListResponse = {
-  items: Array<ReservedIpResponse>;
+  items: ReservedIpResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -733,7 +701,7 @@ export type ReservedIpsListResponse = {
 /**
  * An enumeration.
  */
-export type ResourcePoolPermission = "edit" | "delete";
+export type ResourcePoolPermission = "delete" | "edit";
 
 export type ResourcePoolRequest = {
   /**
@@ -754,9 +722,7 @@ export type ResourcePoolRequest = {
  */
 export type ResourcePoolResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   description: string;
@@ -774,9 +740,7 @@ export type ResourcePoolResponse = {
  */
 export type ResourcePoolWithSummaryResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   description: string;
@@ -784,7 +748,7 @@ export type ResourcePoolWithSummaryResponse = {
   machine_total_count: number;
   machine_ready_count: number;
   is_default: boolean;
-  permissions: Array<ResourcePoolPermission>;
+  permissions: ResourcePoolPermission[];
 };
 
 /**
@@ -792,7 +756,7 @@ export type ResourcePoolWithSummaryResponse = {
  * Derived classes should overwrite the items property
  */
 export type ResourcePoolsListResponse = {
-  items: Array<ResourcePoolResponse>;
+  items: ResourcePoolResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -803,7 +767,7 @@ export type ResourcePoolsListResponse = {
  * Derived classes should overwrite the items property
  */
 export type ResourcePoolsWithSummaryListResponse = {
-  items: Array<ResourcePoolWithSummaryResponse>;
+  items: ResourcePoolWithSummaryResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -820,9 +784,7 @@ export type ResourcePoolsWithSummaryListResponse = {
  */
 export type SrvRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   port: number;
   priority: number;
   target: string;
@@ -841,9 +803,7 @@ export type SrvRecordResponse = {
  */
 export type SshfpRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   algorithm: number;
   fingerprint_type: number;
   fingerprint: string;
@@ -855,7 +815,7 @@ export type SshfpRecordResponse = {
  * Derived classes should overwrite the items property
  */
 export type SslKeyListResponse = {
-  items: Array<SslKeyResponse>;
+  items: SslKeyResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -879,9 +839,7 @@ export type SslKeyRequest = {
  */
 export type SslKeyResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   key: string;
   kind?: string;
@@ -909,9 +867,7 @@ export type SpaceRequest = {
  */
 export type SpaceResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name?: string;
   description?: string;
@@ -925,7 +881,7 @@ export type SpaceResponse = {
  * Derived classes should overwrite the items property
  */
 export type SpacesListResponse = {
-  items: Array<SpaceResponse>;
+  items: SpaceResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -960,9 +916,7 @@ export type SshKeyManualUploadRequest = {
  */
 export type SshKeyResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   key: string;
   protocol?: SshKeysProtocolType;
@@ -975,7 +929,7 @@ export type SshKeyResponse = {
  * Derived classes should overwrite the items property
  */
 export type SshKeysListResponse = {
-  items: Array<SshKeyResponse>;
+  items: SshKeyResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -984,7 +938,7 @@ export type SshKeysListResponse = {
 /**
  * An enumeration.
  */
-export type SshKeysProtocolType = "lp" | "gh";
+export type SshKeysProtocolType = "gh" | "lp";
 
 export type SubnetRequest = {
   /**
@@ -1010,7 +964,7 @@ export type SubnetRequest = {
   /**
    * List of DNS servers for the subnet.
    */
-  dns_servers?: Array<string>;
+  dns_servers?: string[];
   /**
    * Configure MAAS DNS to allow DNS resolution in this subnet.
    */
@@ -1030,7 +984,7 @@ export type SubnetRequest = {
   /**
    * List of disabled boot architectures for this subnet.
    */
-  disabled_boot_architectures?: Array<string>;
+  disabled_boot_architectures?: string[];
 };
 
 /**
@@ -1044,21 +998,19 @@ export type SubnetRequest = {
  */
 export type SubnetResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name?: string;
   description?: string;
   cidr: string;
   rdns_mode: RdnsMode;
   gateway_ip?: string;
-  dns_servers?: Array<string>;
+  dns_servers?: string[];
   allow_dns: boolean;
   allow_proxy: boolean;
   active_discovery: boolean;
   managed: boolean;
-  disabled_boot_architectures: Array<string>;
+  disabled_boot_architectures: string[];
   kind?: string;
 };
 
@@ -1067,7 +1019,7 @@ export type SubnetResponse = {
  * Derived classes should overwrite the items property
  */
 export type SubnetsListResponse = {
-  items: Array<SubnetResponse>;
+  items: SubnetResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -1084,9 +1036,7 @@ export type SubnetsListResponse = {
  */
 export type TxtRecordResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   data: string;
   kind?: string;
 };
@@ -1094,7 +1044,7 @@ export type TxtRecordResponse = {
 export type UnauthorizedBodyResponse = {
   code?: number;
   message?: string;
-  details?: Array<BaseExceptionDetail>;
+  details?: BaseExceptionDetail[];
   kind?: string;
 };
 
@@ -1109,9 +1059,7 @@ export type UnauthorizedBodyResponse = {
  */
 export type UsbDeviceResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   type: HardwareDeviceTypeEnum;
   vendor_id: string;
@@ -1129,7 +1077,7 @@ export type UsbDeviceResponse = {
  * Derived classes should overwrite the items property
  */
 export type UsbDevicesListResponse = {
-  items: Array<UsbDeviceResponse>;
+  items: UsbDeviceResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -1163,9 +1111,7 @@ export type UserRequest = {
  */
 export type UserResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   username: string;
   password: string;
@@ -1185,7 +1131,7 @@ export type UserResponse = {
  * Derived classes should overwrite the items property
  */
 export type UsersListResponse = {
-  items: Array<UserResponse>;
+  items: UserResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -1194,7 +1140,7 @@ export type UsersListResponse = {
 export type ValidationErrorBodyResponse = {
   code?: number;
   message?: string;
-  details?: Array<BaseExceptionDetail>;
+  details?: BaseExceptionDetail[];
   kind?: string;
 };
 
@@ -1232,9 +1178,7 @@ export type VlanCreateRequest = {
  */
 export type VlanResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   vid: number;
   name?: string;
@@ -1297,7 +1241,7 @@ export type VlanUpdateRequest = {
  * Derived classes should overwrite the items property
  */
 export type VlansListResponse = {
-  items: Array<VlanResponse>;
+  items: VlanResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -1325,9 +1269,7 @@ export type ZoneRequest = {
  */
 export type ZoneResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   description: string;
@@ -1345,9 +1287,7 @@ export type ZoneResponse = {
  */
 export type ZoneWithSummaryResponse = {
   _links?: BaseHal;
-  _embedded?: {
-    [key: string]: unknown;
-  };
+  _embedded?: Record<string, unknown>;
   id: number;
   name: string;
   description: string;
@@ -1362,7 +1302,7 @@ export type ZoneWithSummaryResponse = {
  * Derived classes should overwrite the items property
  */
 export type ZonesListResponse = {
-  items: Array<ZoneResponse>;
+  items: ZoneResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -1373,7 +1313,7 @@ export type ZonesListResponse = {
  * Derived classes should overwrite the items property
  */
 export type ZonesWithSummaryListResponse = {
-  items: Array<ZoneWithSummaryResponse>;
+  items: ZoneWithSummaryResponse[];
   total: number;
   next?: string;
   kind?: string;
@@ -1444,7 +1384,7 @@ export type ListEventsData = {
   query?: {
     page?: number;
     size?: number;
-    system_id?: Array<string>;
+    system_id?: string[];
   };
   url: "/MAAS/a/v3/events";
 };
@@ -3527,7 +3467,7 @@ export type ListZonesData = {
   query?: {
     page?: number;
     size?: number;
-    id?: Array<number>;
+    id?: number[];
   };
   url: "/MAAS/a/v3/zones";
 };

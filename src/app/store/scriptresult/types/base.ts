@@ -80,9 +80,7 @@ export type ScriptResult = PartialScriptResult & {
   tags: string;
 };
 
-export type ScriptResultHistory = {
-  [x: number]: PartialScriptResult[];
-};
+export type ScriptResultHistory = Record<number, PartialScriptResult[]>;
 
 export type ScriptResultData = {
   combined?: string;

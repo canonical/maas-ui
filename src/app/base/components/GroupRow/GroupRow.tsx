@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import pluralize from "pluralize";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
@@ -13,7 +15,11 @@ type GroupRowProps = {
   count: number;
 };
 
-const GroupRow = ({ itemName, groupName, count }: GroupRowProps) => {
+const GroupRow = ({
+  itemName,
+  groupName,
+  count,
+}: GroupRowProps): ReactElement => {
   return (
     <>
       <DoubleRow

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -10,7 +12,7 @@ type Props = {
   id: Domain[DomainMeta.PK];
   onClose: () => void;
 };
-const SetDefaultForm = ({ id, onClose }: Props) => {
+const SetDefaultForm = ({ id, onClose }: Props): ReactElement => {
   const dispatch = useDispatch();
   const errors = useSelector(domainSelectors.errors);
   const saving = useSelector(domainSelectors.saving);

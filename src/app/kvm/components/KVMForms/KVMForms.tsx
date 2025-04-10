@@ -31,11 +31,11 @@ const getFormComponent = ({
   selectedCount,
   searchFilter,
   setSearchFilter,
-}: {
+}: Props & {
   clearSidePanelContent: ClearSidePanelContent;
   selectedMachines: SelectedMachines | null;
   selectedCount: number;
-} & Props) => {
+}) => {
   if (!sidePanelContent) {
     return null;
   }
@@ -118,10 +118,9 @@ const KVMForms = ({
     searchFilter ? FilterMachines.parseFetchFilters(searchFilter) : null
   );
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
-  const clearSidePanelContent = useCallback(
-    () => setSidePanelContent(null),
-    [setSidePanelContent]
-  );
+  const clearSidePanelContent = useCallback(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   if (!sidePanelContent) {
     return null;

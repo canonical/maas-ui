@@ -40,13 +40,13 @@ const KVMListHeader = ({
           appearance="positive"
           data-testid="add-kvm"
           key="add-kvm"
-          onClick={() =>
+          onClick={() => {
             setSidePanelContent({
               view: lxdTabActive
                 ? KVMSidePanelViews.ADD_LXD_HOST
                 : KVMSidePanelViews.ADD_VIRSH_HOST,
-            })
-          }
+            });
+          }}
         >
           Add {lxdTabActive ? "LXD" : "Virsh"} host
         </Button>

@@ -26,11 +26,11 @@ const FabricDetailsHeader = ({
           ? [
               <Button
                 appearance="neutral"
-                onClick={() =>
+                onClick={() => {
                   setSidePanelContent({
                     view: FabricDetailsSidePanelViews.DELETE_FABRIC,
-                  })
-                }
+                  });
+                }}
               >
                 Delete fabric
               </Button>,

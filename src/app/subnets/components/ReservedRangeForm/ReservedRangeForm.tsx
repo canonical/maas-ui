@@ -81,7 +81,9 @@ const ReservedRangeForm = ({
 
   const isEditing = isId(computedIpRangeId);
   const showDynamicComment = isEditing && ipRange?.type === IPRangeType.Dynamic;
-  const onClose = () => setSidePanelContent(null);
+  const onClose = () => {
+    setSidePanelContent(null);
+  };
   let computedCreateType = createType;
   if (!createType) {
     computedCreateType =
@@ -264,7 +266,9 @@ const ReservedRangeForm = ({
           );
         }
       }}
-      onSuccess={() => onClose()}
+      onSuccess={() => {
+        onClose();
+      }}
       resetOnSave
       saved={saved}
       saving={saving}

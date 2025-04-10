@@ -80,10 +80,10 @@ export const useSubnetsTableSearch = (
 };
 
 export function usePagination<D>(
-  data: Array<D>,
+  data: D[],
   itemsPerPage = SUBNETS_TABLE_ITEMS_PER_PAGE
 ): {
-  pageData: Array<D>;
+  pageData: D[];
   currentPage: number;
   paginate: (pageNumber: number) => void;
   itemsPerPage: number;
@@ -92,7 +92,9 @@ export function usePagination<D>(
   const totalItems = data.length;
   const [pageIndex, setPageIndex] = useState(0);
   const startIndex = pageIndex * itemsPerPage;
-  const paginate = (pageNumber: number) => setPageIndex(pageNumber - 1);
+  const paginate = (pageNumber: number) => {
+    setPageIndex(pageNumber - 1);
+  };
 
   useEffect(() => {
     // go to the last available page if the current page is out of bounds

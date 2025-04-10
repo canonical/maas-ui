@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { useStorageState } from "react-storage-hooks";
@@ -17,7 +18,7 @@ const MachineActionMenu = ({
 }: {
   hasSelection: ReturnType<typeof useHasSelection>;
   setSidePanelContent: MachineSetSidePanelContent;
-}) => {
+}): ReactElement => {
   const sendAnalytics = useSendAnalytics();
   const [tagsSeen, setTagsSeen] = useStorageState(
     localStorage,

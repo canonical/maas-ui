@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -30,7 +31,7 @@ const MAX_COMMENT_LENGTH = 255;
 
 type Props = Pick<
   SubnetActionProps,
-  "subnetId" | "setSidePanelContent" | "reservedIpId"
+  "reservedIpId" | "setSidePanelContent" | "subnetId"
 >;
 
 type FormValues = {
@@ -43,7 +44,7 @@ const ReserveDHCPLease = ({
   subnetId,
   setSidePanelContent,
   reservedIpId,
-}: Props) => {
+}: Props): ReactElement | null => {
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, subnetId)
   );
@@ -110,7 +111,9 @@ const ReserveDHCPLease = ({
     }
   };
 
-  const onClose = () => setSidePanelContent(null);
+  const onClose = () => {
+    setSidePanelContent(null);
+  };
 
   const ReserveDHCPLeaseSchema = Yup.object().shape({
     ip_address: Yup.string()

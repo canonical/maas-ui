@@ -395,12 +395,9 @@ describe("slice", () => {
             status: "refresh",
             statusKey: "refreshing",
             success: (state, action) => {
-              for (const i in state.items) {
-                if (state.items[i].id === action.payload?.id) {
-                  state.items[i] = action.payload;
-                  return;
-                }
-              }
+              state.items = state.items.map((item) =>
+                item.id === action.payload?.id ? action.payload : item
+              );
             },
           },
         ]

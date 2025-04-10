@@ -21,7 +21,7 @@ export type OSInfoOption = {
   value: string;
 };
 
-export type OSInfoOptions = { [x: string]: OSInfoOption[] };
+export type OSInfoOptions = Record<string, OSInfoOption[]>;
 
 /**
  * Returns kernels data.

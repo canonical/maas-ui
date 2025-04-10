@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { Notification } from "@canonical/react-components";
@@ -20,7 +21,7 @@ export enum Labels {
   SyncDisabled = "Automatic image updates are disabled. This may mean that images won't be automatically updated and receive the latest package versions and security fixes.",
 }
 
-const ImageList = () => {
+const ImageList = (): ReactElement => {
   const dispatch = useDispatch();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);

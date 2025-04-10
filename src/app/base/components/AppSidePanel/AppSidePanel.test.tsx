@@ -9,7 +9,7 @@ it("displays side panel as a child of #maas-ui DOM node", async () => {
   renderWithBrowserRouter(<AppSidePanel title="side panel title" />, {
     container: document.body.appendChild(mainContainer),
   });
-  await expect(
+  expect(
     within(document.getElementById("maas-ui") as HTMLElement).getByText(
       "side panel title"
     )

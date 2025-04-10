@@ -103,8 +103,12 @@ const useZonesTableColumns = ({
             deleteTooltip={
               !canBeDeleted ? "Cannot delete the default zone." : null
             }
-            onDelete={() => onDelete(row)}
-            onEdit={() => onEdit(row)}
+            onDelete={() => {
+              onDelete(row);
+            }}
+            onEdit={() => {
+              onEdit(row);
+            }}
           />
         );
       },

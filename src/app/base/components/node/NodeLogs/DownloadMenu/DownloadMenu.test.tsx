@@ -173,12 +173,12 @@ describe("DownloadMenu", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Machine output (XML)" })
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(downloadSpy).toHaveBeenCalledWith(
         "test xml file",
         `hungry-wombat.aus-machine-output-${testDate}.xml`
-      )
-    );
+      );
+    });
   });
 
   it("generates a download when the installation item is clicked for a controller", async () => {
@@ -192,12 +192,12 @@ describe("DownloadMenu", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Machine output (XML)" })
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(downloadSpy).toHaveBeenCalledWith(
         "test xml file",
         `hungry-wombat.aus-machine-output-${testDate}.xml`
-      )
-    );
+      );
+    });
   });
 
   it("does not display an installation output item when there is no log", async () => {
@@ -233,12 +233,12 @@ describe("DownloadMenu", () => {
     await userEvent.click(
       screen.getByRole("button", { name: Label.InstallationOutput })
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(downloadSpy).toHaveBeenCalledWith(
         "installation-output log",
         `hungry-wombat.aus-installation-output-${testDate}.log`
-      )
-    );
+      );
+    });
   });
 
   it("does not display curtin logs item when there is no file", async () => {
@@ -318,11 +318,11 @@ describe("DownloadMenu", () => {
       screen.getByRole("button", { name: Label.CurtinLogs })
     );
     await Promise.resolve();
-    await waitFor(() =>
+    await waitFor(() => {
       expect(downloadSpy).toHaveBeenCalledWith(
         "curtin-logs-blob",
         `hungry-wombat.aus-curtin-${testDate}.tar`
-      )
-    );
+      );
+    });
   });
 });

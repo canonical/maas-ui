@@ -53,29 +53,29 @@ import {
 } from "@/app/zones/constants";
 
 export type SidePanelContent =
-  | MachineSidePanelContent
   | ControllerSidePanelContent
   | DeviceSidePanelContent
-  | KVMSidePanelContent
-  | TagSidePanelContent
-  | ZoneSidePanelContent
-  | SubnetSidePanelContent
   | DomainDetailsSidePanelContent
   | DomainListSidePanelContent
-  | NetworkDiscoverySidePanelContent
-  | VLANDetailsSidePanelContent
   | FabricDetailsSidePanelContent
   | ImageSidePanelContent
+  | KVMSidePanelContent
+  | MachineSidePanelContent
+  | NetworkDiscoverySidePanelContent
   | PreferenceSidePanelContent
-  | SubnetDetailsSidePanelContent
   | SpaceDetailsSidePanelContent
+  | SubnetDetailsSidePanelContent
+  | SubnetSidePanelContent
+  | TagSidePanelContent
+  | VLANDetailsSidePanelContent
+  | ZoneSidePanelContent
   | null;
 
 export type SetSidePanelContent<T = SidePanelContent> = (
   sidePanelContent: T | null
 ) => void;
 
-export type SidePanelSize = "narrow" | "regular" | "large" | "wide";
+export type SidePanelSize = "large" | "narrow" | "regular" | "wide";
 export type SidePanelContextType<T = SidePanelContent> = {
   sidePanelContent: T | null;
   sidePanelSize: SidePanelSize;
@@ -127,8 +127,8 @@ const useSidePanelContext = (): SidePanelContextType =>
 const useSetSidePanelContext = (): SetSidePanelContextType =>
   useContext(SetSidePanelContext);
 
-export const useSidePanel = (): SidePanelContextType &
-  SetSidePanelContextType => {
+export const useSidePanel = (): SetSidePanelContextType &
+  SidePanelContextType => {
   const { sidePanelSize, sidePanelContent } = useSidePanelContext();
   const { setSidePanelContent, setSidePanelSize } = useSetSidePanelContext();
   const setSidePanelContentWithSizeReset = useCallback(

@@ -37,12 +37,14 @@ describe("PoolColumn", () => {
       />,
       { state }
     );
-    await waitFor(() => expect(screen.getByTestId("pool")).toBeInTheDocument());
-    await waitFor(() =>
-      expect(screen.getByTestId("pool")).toHaveTextContent("swimming")
-    );
-    await waitFor(() =>
-      expect(screen.getByTestId("zone")).toHaveTextContent("zone-1")
-    );
+    await waitFor(() => {
+      expect(screen.getByTestId("pool")).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("pool")).toHaveTextContent("swimming");
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("zone")).toHaveTextContent("zone-1");
+    });
   });
 });

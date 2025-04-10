@@ -79,13 +79,13 @@ describe("MachineSelectBox", () => {
       ...expectedActionParams,
     });
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         store
           .getActions()
           .filter((action) => action.type === expectedAction.type).length
-      ).toEqual(2)
-    );
+      ).toEqual(2);
+    });
     const machineFetchActions = store
       .getActions()
       .filter((action) => action.type === expectedAction.type);

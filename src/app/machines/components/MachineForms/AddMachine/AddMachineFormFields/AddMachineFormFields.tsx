@@ -91,7 +91,9 @@ export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {
           className="u-no-margin--bottom"
           data-testid="add-extra-mac"
           hasIcon
-          onClick={() => setExtraMACs([...extraMACs, ""])}
+          onClick={() => {
+            setExtraMACs([...extraMACs, ""]);
+          }}
           type="button"
         >
           <i className="p-icon--plus" />

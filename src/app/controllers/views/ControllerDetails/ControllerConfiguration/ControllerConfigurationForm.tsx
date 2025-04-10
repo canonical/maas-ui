@@ -69,7 +69,9 @@ const ControllerConfigurationForm = ({
               tags: node.tags,
               zone: node.zone?.name || "",
             }}
-            onCancel={() => setEditing(false)}
+            onCancel={() => {
+              setEditing(false);
+            }}
             onSaveAnalytics={{
               action: "Configure controller",
               category: "Controller details",
@@ -84,7 +86,9 @@ const ControllerConfigurationForm = ({
               };
               dispatch(controllerActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
+            onSuccess={() => {
+              setEditing(false);
+            }}
             saved={saved}
             saving={saving}
             submitLabel="Save changes"

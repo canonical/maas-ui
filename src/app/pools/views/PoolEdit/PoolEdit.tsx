@@ -15,8 +15,12 @@ export enum Label {
 export const PoolEdit = (): React.ReactElement => {
   const id = useGetURLId("id");
   const navigate = useNavigate();
-  const onCancel = () => navigate({ pathname: urls.pools.index });
-  useOnEscapePressed(() => onCancel());
+  const onCancel = () => {
+    navigate({ pathname: urls.pools.index });
+  };
+  useOnEscapePressed(() => {
+    onCancel();
+  });
   const pool = useGetPool({ path: { resource_pool_id: id! } });
 
   if (pool.isPending) {

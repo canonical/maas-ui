@@ -14,8 +14,8 @@ import {
 } from "@/testing/utils";
 
 const expectDisabledButtonWithTooltip = async (
-  buttonLabel: string | RegExp,
-  tooltipLabel: string | RegExp
+  buttonLabel: RegExp | string,
+  tooltipLabel: RegExp | string
 ) => {
   const button = screen.getByRole("button", {
     name: buttonLabel,

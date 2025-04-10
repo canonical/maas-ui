@@ -186,11 +186,11 @@ describe("ControllerConfiguration", () => {
     });
     const actualActions = store.getActions();
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         actualActions.find((action) => action.type === expectedAction.type)
-      ).toStrictEqual(expectedAction)
-    );
+      ).toStrictEqual(expectedAction);
+    });
   });
 
   it("displays an alert on edit when controller manages more than 1 node", async () => {
@@ -207,10 +207,10 @@ describe("ControllerConfiguration", () => {
         name: EditableSectionLabels.EditButton,
       })[2]
     );
-    await expect(
+    expect(
       screen.getByText(/This power controller manages 2 other nodes/)
     ).toBeInTheDocument();
-    await expect(
+    expect(
       screen.getByText(
         /Changing the IP address or outlet delay will affect all these nodes./
       )

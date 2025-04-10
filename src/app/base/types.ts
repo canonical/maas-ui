@@ -60,12 +60,12 @@ export type AnyObject = Record<string, unknown>;
 export type EmptyObject = Record<string, never>;
 
 export type APIError<E = null> =
+  | E
   | React.ReactElement
-  | string
+  | Record<string | "__all__", string[] | string>
   | string[]
-  | Record<"__all__" | string, string | string[]>
-  | null
-  | E;
+  | string
+  | null;
 
 // TypeScript doesn't currently allow passing data-* attributes (e.g. when
 // passing data-testid attributes to generic components):
@@ -78,11 +78,7 @@ export type CommonActionFormProps<E = null> = {
   viewingDetails: boolean;
 };
 
-type UsabillaConfig =
-  | string
-  | {
-      [x: string]: unknown;
-    };
+type UsabillaConfig = Record<string, unknown> | string;
 
 export type UsabillaLive = (type: string, config?: UsabillaConfig) => void;
 

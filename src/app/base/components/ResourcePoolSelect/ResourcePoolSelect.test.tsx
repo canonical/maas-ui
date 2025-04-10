@@ -20,13 +20,15 @@ describe("ResourcePoolSelect", () => {
       </Formik>
     );
 
-    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(poolsResolvers.listPools.resolved).toBeTruthy();
+    });
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("option", { name: "swimming" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     const pools = screen.getAllByRole("option");
     expect(pools).toHaveLength(mockPools.items.length + 1);
   });

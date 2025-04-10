@@ -1,4 +1,5 @@
-import { type Dispatch, type SetStateAction, useEffect } from "react";
+import type { ReactElement, Dispatch, SetStateAction } from "react";
+import { useEffect } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import type { RowSelectionState } from "@tanstack/react-table";
@@ -23,7 +24,7 @@ const DeleteMultipleImagesForm = ({
   rowSelection,
   setRowSelection,
   closeForm,
-}: DeleteImagesProps) => {
+}: DeleteImagesProps): ReactElement => {
   const dispatch = useDispatch();
   const saving = useSelector(bootResourceSelectors.deletingImage);
   const previousSaving = usePrevious(saving);

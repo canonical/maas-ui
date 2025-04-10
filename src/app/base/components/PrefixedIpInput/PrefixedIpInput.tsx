@@ -1,4 +1,4 @@
-import type { ClipboardEvent } from "react";
+import type { ClipboardEvent, ReactElement } from "react";
 
 import { useFormikContext } from "formik";
 import { isIPv4 } from "is-ip";
@@ -14,13 +14,18 @@ import {
 
 type Props = Omit<
   PrefixedInputProps,
-  "maxLength" | "placeholder" | "name" | "immutableText"
+  "immutableText" | "maxLength" | "name" | "placeholder"
 > & {
   cidr: Subnet["cidr"];
   name: string;
 };
 
-const PrefixedIpInput = ({ cidr, name, help, ...props }: Props) => {
+const PrefixedIpInput = ({
+  cidr,
+  name,
+  help,
+  ...props
+}: Props): ReactElement => {
   const [networkAddress] = cidr.split("/");
   const ipv6Prefix = networkAddress.substring(
     0,

@@ -25,9 +25,9 @@ import type { SubnetMeta, SubnetStatus } from "@/app/store/subnet/types";
 import type { VLANMeta, VLANStatus } from "@/app/store/vlan/types";
 import { objectHasKey } from "@/app/utils";
 
-export type GenericItemMeta<I> = {
+export type GenericItemMeta<I> = GenericMeta & {
   item: I;
-} & GenericMeta;
+};
 
 export type GenericMeta = {
   callId?: string;
@@ -45,7 +45,6 @@ export type GenericMeta = {
 // - 'status' is not an API model.
 export type CommonStates = Omit<
   RootState,
-  | "router"
   | BootResourceMeta.MODEL
   | ConfigMeta.MODEL
   | GeneralMeta.MODEL
@@ -53,6 +52,7 @@ export type CommonStates = Omit<
   | MsmMeta.MODEL
   | NodeScriptResultMeta.MODEL
   | StatusMeta.MODEL
+  | "router"
 >;
 
 // Get the types of the common models. e.g. "DHCPSnippetState".
@@ -375,7 +375,7 @@ export type StatusHandlers<
   // The handler for when the action has started.
   start?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
   // The handler for when the action has successfully completed.
-  success?: CaseReducer<S, PayloadAction<I | A, string, GenericItemMeta<I>>>;
+  success?: CaseReducer<S, PayloadAction<A | I, string, GenericItemMeta<I>>>;
 };
 
 /**
@@ -404,8 +404,8 @@ export const generateStatusHandlers = <
     action: PayloadAction<S["errors"]>,
     event: string
   ) => Draft<S>
-): { [x: string]: SliceCaseReducers<S> } =>
-  handlers.reduce<{ [x: string]: SliceCaseReducers<S> }>(
+): Record<string, SliceCaseReducers<S>> =>
+  handlers.reduce<Record<string, SliceCaseReducers<S>>>(
     (collection, status) => {
       collection[status.status] = {
         // The handler for when the action has started.
@@ -442,7 +442,7 @@ export const generateStatusHandlers = <
           }),
           reducer: (
             state: Draft<S>,
-            action: PayloadAction<I | A, string, GenericItemMeta<I>>
+            action: PayloadAction<A | I, string, GenericItemMeta<I>>
           ) => {
             // Call the reducer handler if supplied.
             status.success && status.success(state, action);
@@ -494,7 +494,7 @@ export const generateStatusHandlers = <
   );
 
 export const generateGetReducers = <
-  S extends CommonStateTypes | StatusStateTypes | EventErrorStateTypes,
+  S extends CommonStateTypes | EventErrorStateTypes | StatusStateTypes,
   T extends S["items"][0],
   K extends keyof T,
 >({

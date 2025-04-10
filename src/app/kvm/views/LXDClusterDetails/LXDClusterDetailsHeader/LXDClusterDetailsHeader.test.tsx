@@ -76,11 +76,11 @@ describe("LXDClusterDetailsHeader", () => {
       { route: urls.kvm.lxd.cluster.index({ clusterId: 1 }), state }
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
         "zone-1"
-      )
-    );
+      );
+    });
   });
 
   it("displays the cluster's project", () => {

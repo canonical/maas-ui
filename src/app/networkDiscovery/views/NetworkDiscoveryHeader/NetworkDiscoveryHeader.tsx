@@ -32,11 +32,11 @@ const NetworkDiscoveryHeader = ({
       data-testid="clear-all"
       disabled={discoveries.length === 0}
       key="clear-all"
-      onClick={() =>
+      onClick={() => {
         setSidePanelContent({
           view: NetworkDiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES,
-        })
-      }
+        });
+      }}
     >
       {Labels.ClearAll}
     </Button>,

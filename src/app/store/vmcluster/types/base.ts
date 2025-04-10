@@ -81,8 +81,8 @@ export type VMClusterStatuses = {
   getting: boolean;
 };
 
-export type VMClusterState = {
+export type VMClusterState = GenericState<VMCluster, APIError> & {
   eventErrors: VMClusterEventError[];
   physicalClusters: VMCluster[VMClusterMeta.PK][][];
   statuses: VMClusterStatuses;
-} & GenericState<VMCluster, APIError>;
+};

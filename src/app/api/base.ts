@@ -10,7 +10,7 @@ export const DEFAULT_HEADERS = {
   Accept: "application/json",
 };
 
-export const handleErrors = (response: Response) => {
+export const handleErrors = (response: Response): Response => {
   if (!response.ok) {
     throw Error(response.statusText);
   }

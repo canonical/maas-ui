@@ -18,7 +18,7 @@ import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
   node: ControllerDetails | MachineDetails;
-  resultType: ScriptResultType.TESTING | ScriptResultType.COMMISSIONING;
+  resultType: ScriptResultType.COMMISSIONING | ScriptResultType.TESTING;
   scriptResult: ScriptResult;
   setExpanded: SetExpanded;
 };

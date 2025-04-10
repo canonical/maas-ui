@@ -56,9 +56,9 @@ describe("MachinesFilterAccordion", () => {
       <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { store }
     );
-    await waitFor(() =>
-      expect(store.getActions()).toEqual([machineActions.filterGroups()])
-    );
+    await waitFor(() => {
+      expect(store.getActions()).toEqual([machineActions.filterGroups()]);
+    });
   });
 
   it("can display options", async () => {

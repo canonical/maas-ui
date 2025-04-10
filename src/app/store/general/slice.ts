@@ -34,7 +34,7 @@ const generateErrorReducer =
   (key: keyof GeneralState) =>
   (
     state: GeneralState,
-    action: PayloadAction<GeneralState[typeof key]["errors"], string>
+    action: PayloadAction<GeneralState[typeof key]["errors"]>
   ) => {
     state[key].errors = action.payload;
     state[key].loading = false;

@@ -85,13 +85,13 @@ it("deletes the fabric when confirmed", async () => {
 
   const expectedActions = [fabricActions.delete(fabric.id)];
   const actualActions = store.getActions();
-  await waitFor(() =>
+  await waitFor(() => {
     expectedActions.forEach((expectedAction) => {
       expect(
         actualActions.find(
           (actualAction) => actualAction.type === expectedAction.type
         )
       ).toStrictEqual(expectedAction);
-    })
-  );
+    });
+  });
 });

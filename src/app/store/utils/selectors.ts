@@ -76,8 +76,7 @@ export const generateBaseSelectors = <
   const saving = (state: RootState) => state[name].saving;
   const search = createSelector(
     [all, (_state: RootState, term: string) => term],
-    (items, term) =>
-      (items as Array<I>).filter((item) => searchFunction(item, term))
+    (items, term) => (items as I[]).filter((item) => searchFunction(item, term))
   );
   const getById = createCachedSelector(
     [all, (_state: RootState, id: I[K] | null | undefined) => id],
@@ -86,7 +85,7 @@ export const generateBaseSelectors = <
       if (id === null || id === undefined) {
         return null;
       }
-      return (items as Array<I>).find((item) => item[indexKey] === id) || null;
+      return (items as I[]).find((item) => item[indexKey] === id) || null;
     }
   )((_state, id) => id || "");
 

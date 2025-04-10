@@ -13,11 +13,11 @@ import { simpleSortByKey } from "@/app/utils";
 
 type Option = NonNullable<SelectProps["options"]>[0];
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: Option | null;
   filterFunction?: (subnet: Subnet) => boolean;
   vlan?: Subnet["vlan"];
-} & FormikFieldProps;
+};
 
 export enum Label {
   Select = "Subnet",

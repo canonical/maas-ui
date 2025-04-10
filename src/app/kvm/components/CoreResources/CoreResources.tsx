@@ -4,9 +4,9 @@ import KVMResourceMeter from "@/app/kvm/components/KVMResourceMeter";
 import { getRanges } from "@/app/utils";
 
 export type Props = {
-  allocated: number | number[];
+  allocated: number[] | number;
   dynamicLayout?: boolean;
-  free: number | number[];
+  free: number[] | number;
   other?: number;
 };
 

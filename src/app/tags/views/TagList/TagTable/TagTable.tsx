@@ -99,7 +99,9 @@ const generateRows = (
               onDelete={() => {
                 onDelete(tag[TagMeta.PK]);
               }}
-              onEdit={() => onUpdate(tag[TagMeta.PK])}
+              onEdit={() => {
+                onUpdate(tag[TagMeta.PK]);
+              }}
             />
           ),
           className: "u-align--right",
@@ -187,7 +189,9 @@ const TagTable = ({
             content: (
               <TableHeader
                 currentSort={currentSort}
-                onClick={() => updateSort("name")}
+                onClick={() => {
+                  updateSort("name");
+                }}
                 sortKey="name"
               >
                 {Label.Name}
@@ -198,7 +202,9 @@ const TagTable = ({
             content: (
               <TableHeader
                 currentSort={currentSort}
-                onClick={() => updateSort("updated")}
+                onClick={() => {
+                  updateSort("updated");
+                }}
                 sortKey="updated"
               >
                 {Label.Updated}

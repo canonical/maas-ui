@@ -7,12 +7,12 @@ type Segment<V> = {
   value: V;
 };
 
-type Props<V> = {
+type Props<V> = Omit<HTMLAttributes<HTMLDivElement>, "onSelect"> & {
   onSelect: (selected: V) => void;
   buttonClassName?: string;
   options: Segment<V>[];
   selected: V;
-} & Omit<HTMLAttributes<HTMLDivElement>, "onSelect">;
+};
 
 const SegmentedControl = <V,>({
   className,
@@ -33,7 +33,9 @@ const SegmentedControl = <V,>({
               buttonClassName
             )}
             key={button.label}
-            onClick={() => onSelect(button.value)}
+            onClick={() => {
+              onSelect(button.value);
+            }}
             role="tab"
             type="button"
           >

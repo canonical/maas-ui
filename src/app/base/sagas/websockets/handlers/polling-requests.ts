@@ -12,7 +12,7 @@ type PollRequestId = string;
 export const pollingRequests = new Set<PollRequestId>();
 
 export const pollRequestId = (
-  action: WebSocketAction | AnyAction
+  action: AnyAction | WebSocketAction
 ): PollRequestId => {
   const endpoint = `${action.meta?.model}.${action.meta?.method}`;
   const id = action.meta?.pollId;

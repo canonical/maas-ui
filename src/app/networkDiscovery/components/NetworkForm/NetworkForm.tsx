@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
@@ -8,11 +9,13 @@ import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/views/con
 
 type Props = SidePanelContentTypes & {};
 
-const NetworkForm = ({ sidePanelContent, setSidePanelContent }: Props) => {
-  const clearSidePanelContent = useCallback(
-    () => setSidePanelContent(null),
-    [setSidePanelContent]
-  );
+const NetworkForm = ({
+  sidePanelContent,
+  setSidePanelContent,
+}: Props): ReactElement | null => {
+  const clearSidePanelContent = useCallback(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   if (!sidePanelContent) return null;
   const discovery =

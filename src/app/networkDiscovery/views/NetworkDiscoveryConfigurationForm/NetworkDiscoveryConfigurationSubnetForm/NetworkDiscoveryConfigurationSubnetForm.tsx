@@ -15,9 +15,7 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
 import { simpleSortByKey } from "@/app/utils";
 
-type SubnetDiscoveryValues = {
-  [x: number]: Subnet["active_discovery"];
-};
+type SubnetDiscoveryValues = Record<number, Subnet["active_discovery"]>;
 
 export enum Labels {
   Loading = "Loading...",

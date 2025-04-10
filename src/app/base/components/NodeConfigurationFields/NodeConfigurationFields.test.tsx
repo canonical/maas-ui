@@ -60,11 +60,11 @@ it("can open a create tag form", async () => {
     screen.getByRole("textbox", { name: TagFieldLabel.Input }),
     "name1{enter}"
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("dialog", { name: Label.AddTag })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
 });
 
 it("does not display automatic tags on the list", async () => {
@@ -118,7 +118,9 @@ it("updates the new tags after creating a tag", async () => {
     screen.getByRole("button", { name: AddTagFormLabel.Submit })
   );
   rerender(<Form tags={[newTag.id]} />);
-  await waitFor(() =>
-    expect(screen.getByRole("button", { name: /new-tag/i })).toBeInTheDocument()
-  );
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: /new-tag/i })
+    ).toBeInTheDocument();
+  });
 });

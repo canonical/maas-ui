@@ -173,12 +173,12 @@ const generateSelectedItems = (
           dense
           disabled={isDisabled}
           hasIcon
-          onClick={() =>
+          onClick={() => {
             updateTags(
               selectedTags.filter((item) => item !== tag),
               false
-            )
-          }
+            );
+          }}
           type="button"
         >
           <span>{tag.name}</span>
@@ -207,9 +207,9 @@ export const TagSelector = ({
   disabledTags = [],
   ...props
 }: Props): React.ReactElement => {
-  const wrapperRef = useClickOutside<HTMLDivElement>(() =>
-    setDropdownOpen(false)
-  );
+  const wrapperRef = useClickOutside<HTMLDivElement>(() => {
+    setDropdownOpen(false);
+  });
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [internalSelectedTags, setInternalSelectedTags] =
     useState(initialSelected);
@@ -249,7 +249,13 @@ export const TagSelector = ({
         help={help}
         label={
           label ? (
-            <span onClick={() => setDropdownOpen(true)}>{label}</span>
+            <span
+              onClick={() => {
+                setDropdownOpen(true);
+              }}
+            >
+              {label}
+            </span>
           ) : undefined
         }
         {...props}
@@ -268,8 +274,12 @@ export const TagSelector = ({
             })}
             disabled={disabled}
             name={TAG_SELECTOR_INPUT_NAME}
-            onChange={(e) => setFilter(e.target.value)}
-            onFocus={() => setDropdownOpen(true)}
+            onChange={(e) => {
+              setFilter(e.target.value);
+            }}
+            onFocus={() => {
+              setDropdownOpen(true);
+            }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();

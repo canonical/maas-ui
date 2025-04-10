@@ -51,11 +51,11 @@ export type SubnetGroupByProps = {
 };
 
 export type SortDataKey =
+  | "cidr"
   | "fabricId"
   | "fabricName"
-  | "vlanId"
   | "spaceName"
-  | "cidr";
+  | "vlanId";
 
 export type SubnetsTableRow = Record<SubnetsColumns, SubnetsTableColumn> & {
   sortData: SortData;

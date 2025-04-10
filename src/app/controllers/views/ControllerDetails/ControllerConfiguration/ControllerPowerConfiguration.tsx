@@ -112,7 +112,9 @@ const ControllerPowerConfiguration = ({
               powerType: controller.power_type,
               powerParameters: initialPowerParameters,
             }}
-            onCancel={() => setEditing(false)}
+            onCancel={() => {
+              setEditing(false);
+            }}
             onSaveAnalytics={{
               action: "Configure power",
               category: "Controller details",
@@ -129,7 +131,9 @@ const ControllerPowerConfiguration = ({
               };
               dispatch(controllerActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
+            onSuccess={() => {
+              setEditing(false);
+            }}
             onValuesChanged={(values) => {
               const powerType = getPowerTypeFromName(
                 powerTypes,

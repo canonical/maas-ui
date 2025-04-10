@@ -137,7 +137,7 @@ describe("DeployFormFields", () => {
       const action = store
         .getActions()
         .find((action) => action.type === "config/update");
-      return expect(action.payload.params.items).toEqual(
+      expect(action.payload.params.items).toEqual(
         expect.objectContaining({
           hardware_sync_interval: "30m",
         })
@@ -161,10 +161,10 @@ describe("DeployFormFields", () => {
     await userEvent.clear(hardwareSyncInput);
     await userEvent.type(hardwareSyncInput, "0");
     await userEvent.tab();
-    await waitFor(() =>
+    await waitFor(() => {
       expect(hardwareSyncInput).toHaveAccessibleErrorMessage(
         /Hardware sync interval must be at least 1 minute/
-      )
-    );
+      );
+    });
   });
 });

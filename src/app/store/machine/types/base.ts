@@ -67,8 +67,8 @@ export type BaseMachine = Omit<
 // MachineDetails returned from the server when using "machine.get", and is
 // used in the machine details pages.
 export type MachineDetails = BaseMachine &
-  TimestampFields &
-  HardwareSyncFields & {
+  HardwareSyncFields &
+  TimestampFields & {
     bios_boot_method: string;
     bmc: number;
     boot_disk: Disk | null;
@@ -233,7 +233,7 @@ type MachineQuery = {
   refetchedAt: number | null;
 };
 
-export type MachineStateList = {
+export type MachineStateList = MachineQuery & {
   count: number | null;
   cur_page: number | null;
   errors: APIError;
@@ -242,7 +242,7 @@ export type MachineStateList = {
   loading: boolean;
   stale: boolean;
   num_pages: number | null;
-} & MachineQuery;
+};
 
 export type MachineStateLists = Record<string, MachineStateList>;
 
@@ -319,33 +319,33 @@ export type FilterGroup = {
   dynamic: boolean;
   for_grouping: boolean;
 } & (
-  | { options: FilterGroupOption<boolean>[] | null; type: FilterGroupType.Bool }
-  | {
-      options: FilterGroupOption<string>[] | null;
-      type:
-        | FilterGroupType.Dict
-        | FilterGroupType.StringList
-        | FilterGroupType.String;
-    }
   | {
       options: FilterGroupOption<number>[] | null;
       type:
         | FilterGroupType.Float
-        | FilterGroupType.Int
         | FilterGroupType.FloatList
+        | FilterGroupType.Int
         | FilterGroupType.IntList;
     }
+  | {
+      options: FilterGroupOption<string>[] | null;
+      type:
+        | FilterGroupType.Dict
+        | FilterGroupType.String
+        | FilterGroupType.StringList;
+    }
+  | { options: FilterGroupOption<boolean>[] | null; type: FilterGroupType.Bool }
 );
 
 export type MachineEventErrors = CloneError;
 
-export type MachineStateCount = {
+export type MachineStateCount = MachineQuery & {
   count: number | null;
   errors: APIError;
   loaded: boolean;
   loading: boolean;
   stale: boolean;
-} & MachineQuery;
+};
 
 export type MachineStateCounts = Record<string, MachineStateCount>;
 
@@ -359,7 +359,7 @@ export type SelectedMachines =
 
 export type MachineStateActions = Record<string, ActionState>;
 
-export type MachineState = {
+export type MachineState = GenericState<Machine, APIError> & {
   actions: MachineStateActions;
   active: Machine[MachineMeta.PK] | null;
   counts: MachineStateCounts;
@@ -375,7 +375,7 @@ export type MachineState = {
   lists: MachineStateLists;
   selected: SelectedMachines | null;
   statuses: MachineStatuses;
-} & GenericState<Machine, APIError>;
+};
 
 export type StorageLayoutOption = {
   label: string;

@@ -40,8 +40,8 @@ function sortObjectKeys(obj: any): any {
 
   return Object.keys(obj)
     .sort()
-    .reduce((result, key) => {
+    .reduce<any>((result, key) => {
       result[key] = sortObjectKeys(obj[key]);
       return result;
-    }, {} as any);
+    }, {});
 }

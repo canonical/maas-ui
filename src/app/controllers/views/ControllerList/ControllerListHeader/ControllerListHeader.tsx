@@ -44,7 +44,9 @@ const ControllerListHeader = ({
       {controllersLoaded ? (
         <ModelListSubtitle
           available={controllers.length}
-          filterSelected={() => setSearchFilter("in:(Selected)")}
+          filterSelected={() => {
+            setSearchFilter("in:(Selected)");
+          }}
           modelName="controller"
           selected={selectedControllers.length}
         />
@@ -53,18 +55,20 @@ const ControllerListHeader = ({
       )}
       <MainToolbar.Controls>
         <DebounceSearchBox
-          onDebounced={(debouncedText) => setSearchFilter(debouncedText)}
+          onDebounced={(debouncedText) => {
+            setSearchFilter(debouncedText);
+          }}
           searchText={searchText}
           setSearchText={setSearchText}
         />
         <Button
           data-testid="add-controller-button"
           disabled={selectedControllers.length > 0}
-          onClick={() =>
+          onClick={() => {
             setSidePanelContent({
               view: ControllerSidePanelViews.ADD_CONTROLLER,
-            })
-          }
+            });
+          }}
         >
           Add rack controller
         </Button>

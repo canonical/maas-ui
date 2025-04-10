@@ -17,9 +17,9 @@ afterEach(() => {
 });
 
 it("runs the actions once on mount and doesn't run again on rerender", async () => {
-  const { rerender } = await renderHookWithMockStore(() =>
-    useFetchActions([mockAction])
-  );
+  const { rerender } = await renderHookWithMockStore(() => {
+    useFetchActions([mockAction]);
+  });
 
   expect(mockDispatch).toHaveBeenCalledTimes(1);
   expect(mockAction).toHaveBeenCalledTimes(1);

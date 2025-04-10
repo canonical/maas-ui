@@ -68,7 +68,7 @@ const ProxyForm = (): React.ReactElement => {
             onSubmit={(values, { resetForm }) => {
               const { httpProxy, proxyType } = values;
 
-              let formattedValues: { [name: string]: ConfigValues };
+              let formattedValues: Record<string, ConfigValues>;
               switch (proxyType) {
                 case "builtInProxy":
                   formattedValues = {

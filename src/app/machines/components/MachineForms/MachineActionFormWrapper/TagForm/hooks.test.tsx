@@ -122,9 +122,9 @@ describe("useFetchTags", () => {
         </Provider>
       ),
     });
-    await waitFor(() =>
-      expect(result.current.callId).toStrictEqual("mock-call-id")
-    );
+    await waitFor(() => {
+      expect(result.current.callId).toStrictEqual("mock-call-id");
+    });
     const expectedAction = tagActions.removeRequest(
       result.current.callId as string
     );

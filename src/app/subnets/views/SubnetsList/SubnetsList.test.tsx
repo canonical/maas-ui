@@ -32,9 +32,9 @@ it("displays loading text", async () => {
 
   expect(screen.getAllByRole("grid")).toHaveLength(1);
   await userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
-  await waitFor(() =>
-    expect(screen.getByText(/Loading.../)).toBeInTheDocument()
-  );
+  await waitFor(() => {
+    expect(screen.getByText(/Loading.../)).toBeInTheDocument();
+  });
 });
 
 it("displays correct text when there are no results for the search criteria", async () => {
@@ -48,11 +48,11 @@ it("displays correct text when there are no results for the search criteria", as
 
   await userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(screen.getByRole("grid")).getByText(/No results/)
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
 });
 
 it("sets the options from the URL on load", async () => {
@@ -62,19 +62,19 @@ it("sets the options from the URL on load", async () => {
     route: urls.indexWithParams({ by: "space", q: "fabric-1" }),
   });
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("combobox", {
         name: /group by/i,
       })
-    ).toHaveValue("space")
-  );
+    ).toHaveValue("space");
+  });
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(screen.getByRole<HTMLInputElement>("searchbox").value).toBe(
       "fabric-1"
-    )
-  );
+    );
+  });
 });
 
 it("updates the URL on search", async () => {
@@ -88,7 +88,9 @@ it("updates the URL on search", async () => {
 
   await userEvent.type(screen.getByRole("searchbox"), "test-fabric");
 
-  await waitFor(() => expect(getUrlParam("q")).toEqual("test-fabric"));
+  await waitFor(() => {
+    expect(getUrlParam("q")).toEqual("test-fabric");
+  });
 });
 
 it("updates the URL 'by' param once a new group by option is selected", async () => {
@@ -106,5 +108,7 @@ it("updates the URL 'by' param once a new group by option is selected", async ()
 
   await userEvent.selectOptions(selectBox, "space");
 
-  await waitFor(() => expect(getUrlParam("by")).toEqual("space"));
+  await waitFor(() => {
+    expect(getUrlParam("by")).toEqual("space");
+  });
 });
