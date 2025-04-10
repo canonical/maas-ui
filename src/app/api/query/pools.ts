@@ -90,8 +90,8 @@ export const useCreatePool = (
     Options<CreateResourcePoolData>
   >({
     ...createResourcePoolMutation(mutationOptions),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
+    onSuccess: async () => {
+      return queryClient.invalidateQueries({
         queryKey: listResourcePoolsWithSummaryQueryKey(),
       });
     },
@@ -112,8 +112,8 @@ export const useUpdatePool = (
     Options<UpdateResourcePoolData>
   >({
     ...updateResourcePoolMutation(mutationOptions),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
+    onSuccess: async () => {
+      return queryClient.invalidateQueries({
         queryKey: listResourcePoolsWithSummaryQueryKey(),
       });
     },
@@ -134,8 +134,8 @@ export const useDeletePool = (
     Options<DeleteResourcePoolData>
   >({
     ...deleteResourcePoolMutation(mutationOptions),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
+    onSuccess: async () => {
+      return queryClient.invalidateQueries({
         queryKey: listResourcePoolsWithSummaryQueryKey(),
       });
     },
