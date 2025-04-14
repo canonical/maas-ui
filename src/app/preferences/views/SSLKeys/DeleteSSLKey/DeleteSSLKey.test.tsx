@@ -24,7 +24,7 @@ describe("DeleteSSLKey", () => {
     ).toBeInTheDocument();
   });
 
-  it.skip("can delete an SSL key", async () => {
+  it("can delete an SSL key", async () => {
     renderWithBrowserRouter(<DeleteSSLKey />, {
       route: "/account/prefs/ssl-keys/1/delete",
       routePattern: "/account/prefs/ssl-keys/:id/delete",
