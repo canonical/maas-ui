@@ -11,12 +11,16 @@ import type {
   CreateUserSslkeyData,
   CreateUserSslkeyError,
   CreateUserSslkeyResponse,
+  DeleteUserSslkeyData,
+  DeleteUserSslkeyError,
+  DeleteUserSslkeyResponse,
   GetUserSslkeysData,
   GetUserSslkeysError,
   GetUserSslkeysResponse,
 } from "@/app/apiclient";
 import {
   createUserSslkeyMutation,
+  deleteUserSslkeyMutation,
   getUserSslkeysOptions,
   getUserSslkeysQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -41,6 +45,24 @@ export const useCreateSslKeys = (
     Options<CreateUserSslkeyData>
   >({
     ...createUserSslkeyMutation(mutationOptions),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: getUserSslkeysQueryKey(),
+      });
+    },
+  });
+};
+
+export const useDeleteSslKey = (
+  mutationOptions?: Options<DeleteUserSslkeyData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    DeleteUserSslkeyResponse,
+    DeleteUserSslkeyError,
+    Options<DeleteUserSslkeyData>
+  >({
+    ...deleteUserSslkeyMutation(mutationOptions),
     onSuccess: () => {
       void queryClient.invalidateQueries({
         queryKey: getUserSslkeysQueryKey(),

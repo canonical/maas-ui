@@ -6,6 +6,7 @@ import { BASE_URL } from "../utils";
 
 import type {
   CreateUserSslkeyError,
+  DeleteUserSslkeyError,
   GetUserSslkeysError,
   GetUserSslkeysResponse,
 } from "@/app/apiclient";
@@ -43,6 +44,12 @@ const mockCreateSslKeysError: CreateUserSslkeyError = {
   kind: "Error",
 };
 
+const mockDeleteSslKeyError: DeleteUserSslkeyError = {
+  message: "Not found",
+  code: 404,
+  kind: "Error",
+};
+
 const sslKeyResolvers = {
   getSslKeys: {
     resolved: false,
@@ -68,6 +75,19 @@ const sslKeyResolvers = {
       http.post(`${BASE_URL}MAAS/a/v3/users/me/sslkeys`, () => {
         sslKeyResolvers.createSslKey.resolved = true;
         return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  deleteSslKey: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/users/me/sslkeys/:id`, () => {
+        sslKeyResolvers.deleteSslKey.resolved = true;
+        return HttpResponse.json({}, { status: 204 });
+      }),
+    error: (error: DeleteUserSslkeyError = mockDeleteSslKeyError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/users/me/sslkeys/:id`, () => {
+        sslKeyResolvers.deleteSslKey.resolved = true;
+        return HttpResponse.json(error, { status: 404 });
       }),
   },
 };
