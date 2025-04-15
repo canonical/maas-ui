@@ -1,7 +1,8 @@
 .p-generic-table {
   thead,
   tbody {
-    display: table-row-group;
+    display: block;
+    overflow: hidden auto;
     width: 100%;
   }
 
