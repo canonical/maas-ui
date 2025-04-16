@@ -1,50 +1,117 @@
+@import "vanilla-framework";
+
 .p-generic-table {
-  thead,
-  tbody {
-    display: block;
-    overflow: hidden auto;
-    width: 100%;
+  .controls-bar {
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    align-items: center;
+    padding: 0.5rem 0;
+    margin-top: 1rem;
+
+    .p-form--inline {
+      width: 100%;
+    }
+
+    .controls-bar__left {
+      margin: 0;
+      padding: 0;
+    }
+
+    .controls-bar__right {
+      width: 100%;
+      margin-left: auto;
+      margin-right: 0;
+
+      .p-pagination {
+        z-index: 2;
+        padding-right: 2rem;
+      }
+
+      @media screen and (min-width: 620px) {
+        width: auto;
+      }
+    }
   }
 
-  .group-select,
-  .select,
-  .select-alignment {
-    width: 2rem;
-  }
+  .p-generic-table__table {
+    margin-bottom: 0;
 
-  th.select {
-    display: none;
-  }
-}
+    // Hide "Loading" visually but keep it accessible to screenreaders
+    &__loading {
+      position: absolute !important;
+      height: 1px !important;
+      width: 1px !important;
+      overflow: hidden !important;
+      clip: rect(1px, 1px, 1px, 1px) !important;
+      white-space: nowrap !important;
+    }
 
-.p-pagination {
-  z-index: 2;
-  padding-right: 2rem;
-}
+    thead,
+    tbody {
+      display: block;
+      overflow: hidden auto;
+    }
 
-.controls-bar {
-  border-top: 1px solid #d9d9d9;
-  border-bottom: 1px solid #d9d9d9;
-  align-items: center;
-  padding: 0.5rem 0;
-  margin-top: 1rem;
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background-color: white;
+    }
 
-  .p-form--inline {
-    width: 100%;
-  }
+    &.is-full-height {
+      thead {
+        scrollbar-gutter: stable;
+      }
+    }
 
-  .controls-bar__left {
-    margin: 0;
-    padding: 0;
-  }
+    thead tr,
+    tbody tr {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+    }
 
-  .controls-bar__right {
-    width: 100%;
-    margin-left: auto;
-    margin-right: 0;
+    tbody {
+      height: auto;
+      min-height: auto;
+    }
 
-    @media screen and (min-width: 620px) {
-      width: auto;
+    &:not([aria-busy="true"]) tbody:not([aria-busy="true"]) {
+      tr:hover,
+      tr:focus-within {
+        @include vf-transition($property: #{background}, $duration: fast);
+
+        background-color: $colors--light-theme--background-hover;
+      }
+    }
+
+    thead th:last-child,
+    tbody td:last-child {
+      text-align: right;
+    }
+
+    thead th button {
+      padding-top: 0;
+      margin-bottom: 0;
+    }
+
+    thead,
+    tbody {
+      display: block;
+      overflow: hidden auto;
+      width: 100%;
+    }
+
+    .group-select,
+    .select,
+    .select-alignment {
+      width: 2rem;
+    }
+
+    th.select {
+      display: none;
     }
   }
 }
+

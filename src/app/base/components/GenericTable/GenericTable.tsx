@@ -1,7 +1,14 @@
-import { Fragment, useMemo, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 
-import { DynamicTable } from "@canonical/maas-react-components";
 import type {
   Column,
   Row,
@@ -30,6 +37,7 @@ import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
 import "./_index.scss";
 
 type GenericTableProps<T extends { id: string | number }> = {
+  className?: string;
   canSelect?: boolean;
   columns: ColumnDef<T, Partial<T>>[];
   data: T[];
@@ -46,6 +54,7 @@ type GenericTableProps<T extends { id: string | number }> = {
 };
 
 const GenericTable = <T extends { id: string | number }>({
+  className,
   canSelect = false,
   columns,
   data,
@@ -60,9 +69,41 @@ const GenericTable = <T extends { id: string | number }>({
   setRowSelection,
   variant = "full-height",
 }: GenericTableProps<T>) => {
+  const tableBodyRef = useRef<HTMLTableSectionElement>(null);
+  const [offset, setOffset] = useState<number | null>(null);
+
   const [grouping, setGrouping] = useState<GroupingState>(groupBy ?? []);
   const [expanded, setExpanded] = useState<ExpandedState>(true);
   const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);
+
+  const handleResize = useCallback(() => {
+    // TODO: Replace with BREAKPOINTS.small when upstreaming to maas-react-components
+    if (window.innerWidth > 620) {
+      const top = tableBodyRef.current?.getBoundingClientRect().top;
+      if (top) setOffset(top + 1);
+    } else {
+      setOffset(null);
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    handleResize();
+  }, [handleResize]);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [handleResize]);
+
+  const dynamicStyle = useMemo(() => {
+    if (variant === "full-height" && offset) {
+      return {
+        height: `calc(100vh - ${offset}px)`,
+        minHeight: `calc(100vh - ${offset}px)`,
+      };
+    }
+    return {};
+  }, [variant, offset]);
 
   if (canSelect) {
     columns = [
@@ -162,7 +203,7 @@ const GenericTable = <T extends { id: string | number }>({
   });
 
   return (
-    <>
+    <div className="p-generic-table">
       {pagination ? (
         <PaginationBar
           currentPage={pagination.currentPage}
@@ -174,7 +215,11 @@ const GenericTable = <T extends { id: string | number }>({
           totalItems={pagination.totalItems}
         />
       ) : null}
-      <DynamicTable className="p-generic-table" variant={variant}>
+      <table
+        className={classNames("p-generic-table__table", className, {
+          "is-full-height": variant === "full-height",
+        })}
+      >
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -198,7 +243,7 @@ const GenericTable = <T extends { id: string | number }>({
             </tr>
           </tbody>
         ) : (
-          <DynamicTable.Body>
+          <tbody ref={tableBodyRef} style={dynamicStyle}>
             {table.getRowModel().rows.map((row) => {
               const { getIsGrouped, id, getVisibleCells } = row;
               const isIndividualRow = !getIsGrouped();
@@ -226,10 +271,10 @@ const GenericTable = <T extends { id: string | number }>({
                 </tr>
               );
             })}
-          </DynamicTable.Body>
+          </tbody>
         )}
-      </DynamicTable>
-    </>
+      </table>
+    </div>
   );
 };
 
