@@ -11,16 +11,21 @@ import type { UtcDatetime } from "@/app/store/types/model";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, render } from "@/testing/utils";
 
-// Mock the ResizeObserver
-class ResizeObserverMock {
-  observe = vi.fn();
-  unobserve = vi.fn();
-  disconnect = vi.fn();
-}
-
-global.ResizeObserver = ResizeObserverMock as never;
-
 describe("GenericTable", () => {
+  // Set up ResizeObserver mock before each test
+  beforeEach(() => {
+    // Mock the ResizeObserver
+    global.ResizeObserver = vi.fn().mockImplementation(() => ({
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+    }));
+
+    // Mock window event listeners
+    window.addEventListener = vi.fn();
+    window.removeEventListener = vi.fn();
+  });
+
   const columns: ColumnDef<Image, Partial<Image>>[] = [
     {
       id: "release",
@@ -269,7 +274,7 @@ describe("GenericTable", () => {
         data={data}
         filterCells={mockFilterCells}
         filterHeaders={mockFilterHeaders}
-        groupBy={["name"]}
+        groupBy={["release"]}
         isLoading={false}
         rowSelection={{}}
         setRowSelection={vi.fn()}
@@ -418,8 +423,14 @@ describe("GenericTable", () => {
     // Verify the table renders correctly with the containerRef
     expect(screen.getByRole("grid")).toBeInTheDocument();
 
-    // The ResizeObserver should have been called
-    expect(ResizeObserverMock.prototype.observe).toHaveBeenCalled();
+    // Check that ResizeObserver was created
+    expect(global.ResizeObserver).toHaveBeenCalled();
+
+    // Check that event listeners were added
+    expect(window.addEventListener).toHaveBeenCalledWith(
+      "resize",
+      expect.any(Function)
+    );
   });
 
   it("applies filter functions for cells and headers", () => {
@@ -452,5 +463,9 @@ describe("GenericTable", () => {
     // Other columns should still be visible
     expect(screen.getByText("Release title")).toBeInTheDocument();
     expect(screen.getByText("Architecture")).toBeInTheDocument();
+
+    // Verify filter functions were called
+    expect(customFilterCells).toHaveBeenCalled();
+    expect(customFilterHeaders).toHaveBeenCalled();
   });
 });
