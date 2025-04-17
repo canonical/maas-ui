@@ -1,23 +1,26 @@
 @import "vanilla-framework";
 
+// Generic Table main component
 .p-generic-table {
+  // Pagination and controls section
   .controls-bar {
-    border-top: 1px solid #d9d9d9;
-    border-bottom: 1px solid #d9d9d9;
+    display: flex;
     align-items: center;
     padding: 0.5rem 0;
     margin-top: 1rem;
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
 
     .p-form--inline {
       width: 100%;
     }
 
-    .controls-bar__left {
+    &__left {
       margin: 0;
       padding: 0;
     }
 
-    .controls-bar__right {
+    &__right {
       width: 100%;
       margin-left: auto;
       margin-right: 0;
@@ -33,28 +36,45 @@
     }
   }
 
+  // Table structure and layout
   .p-generic-table__table {
     margin-bottom: 0;
 
+    // Common styles for thead and tbody
     thead,
     tbody {
       display: block;
-      overflow: hidden auto;
+      overflow: auto;
+      width: 100%;
     }
 
+    // Header styling
     thead {
       position: sticky;
       top: 0;
       z-index: 1;
       background-color: white;
+
+      th {
+        button {
+          padding-top: 0;
+          margin-bottom: 0;
+        }
+
+        &:last-child {
+          text-align: right;
+        }
+      }
     }
 
-    &.is-full-height {
+    // Full-height variant
+    &.p-generic-table__is-full-height {
       thead {
         scrollbar-gutter: stable;
       }
     }
 
+    // Row layout
     thead tr,
     tbody tr {
       display: table;
@@ -62,51 +82,42 @@
       width: 100%;
     }
 
+    // Body styling
     tbody {
       height: auto;
       min-height: auto;
+
+      td:last-child {
+        text-align: right;
+      }
     }
 
+    // Row hover effects
     &:not([aria-busy="true"]) tbody:not([aria-busy="true"]) {
       tr:hover,
       tr:focus-within {
-        @include vf-transition($property: #{background}, $duration: fast);
-
+        @include vf-transition($property: background, $duration: fast);
         background-color: $colors--light-theme--background-hover;
       }
     }
 
-    thead th:last-child,
-    tbody td:last-child {
-      text-align: right;
-    }
-
-    thead th button {
-      padding-top: 0;
-      margin-bottom: 0;
-    }
-
-    thead,
-    tbody {
-      display: block;
-      overflow: hidden auto;
-      width: 100%;
-    }
-
-    .group-select,
-    .select,
-    .select-alignment {
+    // Selection column styling
+    .p-generic-table__group-select,
+    .p-generic-table__select,
+    .p-generic-table__select-alignment {
       width: 2rem;
     }
 
-    th.select, &:not(.is-selectable)>* .select-alignment {
+    // Hide selection columns when not selectable
+    th.p-generic-table__select,
+    &:not(.p-generic-table__is-selectable) > * .p-generic-table__select-alignment {
       display: none;
     }
 
+    // Empty state
     td.p-generic-table__no-data {
       padding: 2rem;
       text-align: center !important;
     }
   }
 }
-

@@ -102,7 +102,7 @@ const GenericTable = <T extends { id: string | number }>({
 
     const selectionColumns = [
       {
-        id: "select",
+        id: "p-generic-table__select",
         accessorKey: "id",
         enableSorting: false,
         header: "",
@@ -115,7 +115,7 @@ const GenericTable = <T extends { id: string | number }>({
     if (groupBy) {
       return [
         {
-          id: "group-select",
+          id: "p-generic-table__group-select",
           accessorKey: "id",
           enableSorting: false,
           header: ({ table }: HeaderContext<T, Partial<T>>) => (
@@ -236,13 +236,20 @@ const GenericTable = <T extends { id: string | number }>({
       return (
         <tr
           className={classNames({
-            "individual-row": isIndividualRow,
-            "group-row": !isIndividualRow,
+            "p-generic-table__individual-row": isIndividualRow,
+            "p-generic-table__group-row": !isIndividualRow,
           })}
           key={id}
         >
           {getVisibleCells()
-            .filter((cell) => filterCells(row, cell.column))
+            .filter((cell) => {
+              if (
+                !isIndividualRow &&
+                cell.column.id === "p-generic-table__group-select"
+              )
+                return true;
+              return filterCells(row, cell.column);
+            })
             .map((cell) => (
               <td className={classNames(`${cell.column.id}`)} key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -269,8 +276,8 @@ const GenericTable = <T extends { id: string | number }>({
 
       <table
         className={classNames("p-generic-table__table", {
-          "is-full-height": variant === "full-height",
-          "is-selectable": canSelect,
+          "p-generic-table__is-full-height": variant === "full-height",
+          "p-generic-table__is-selectable": canSelect,
         })}
       >
         <thead>
@@ -281,7 +288,9 @@ const GenericTable = <T extends { id: string | number }>({
                 .map((header, index) => (
                   <Fragment key={header.id}>
                     <ColumnHeader header={header} />
-                    {index === 2 ? <th className="select-alignment" /> : null}
+                    {index === 2 ? (
+                      <th className="p-generic-table__select-alignment" />
+                    ) : null}
                   </Fragment>
                 ))}
             </tr>
