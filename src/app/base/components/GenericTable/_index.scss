@@ -109,7 +109,7 @@
       width: 2rem;
     }
 
-    th.select {
+    th.select, &:not(.is-selectable)>* .select-alignment {
       display: none;
     }
   }

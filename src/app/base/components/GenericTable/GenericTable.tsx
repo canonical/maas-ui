@@ -1,12 +1,4 @@
-import {
-  Fragment,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 
 import type {
@@ -69,41 +61,32 @@ const GenericTable = <T extends { id: string | number }>({
   setRowSelection,
   variant = "full-height",
 }: GenericTableProps<T>) => {
-  const tableBodyRef = useRef<HTMLTableSectionElement>(null);
-  const [offset, setOffset] = useState<number | null>(null);
+  const tableRef = useRef<HTMLTableSectionElement>(null);
+  const [maxHeight, setMaxHeight] = useState("auto");
 
   const [grouping, setGrouping] = useState<GroupingState>(groupBy ?? []);
   const [expanded, setExpanded] = useState<ExpandedState>(true);
   const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);
 
-  const handleResize = useCallback(() => {
-    // TODO: Replace with BREAKPOINTS.small when upstreaming to maas-react-components
-    if (window.innerWidth > 620) {
-      const top = tableBodyRef.current?.getBoundingClientRect().top;
-      if (top) setOffset(top + 1);
-    } else {
-      setOffset(null);
-    }
-  }, []);
-
-  useLayoutEffect(() => {
-    handleResize();
-  }, [handleResize]);
-
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [handleResize]);
+    const updateHeight = () => {
+      const wrapper = tableRef.current;
+      const main = document.querySelector("main");
 
-  const dynamicStyle = useMemo(() => {
-    if (variant === "full-height" && offset) {
-      return {
-        height: `calc(100vh - ${offset}px)`,
-        minHeight: `calc(100vh - ${offset}px)`,
-      };
-    }
-    return {};
-  }, [variant, offset]);
+      if (!wrapper || !main) return;
+
+      const mainRect = main.getBoundingClientRect();
+      const wrapperRect = wrapper.getBoundingClientRect();
+
+      const availableHeight = mainRect.bottom - wrapperRect.top;
+      setMaxHeight(`${availableHeight}px`);
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
 
   if (canSelect) {
     columns = [
@@ -203,7 +186,7 @@ const GenericTable = <T extends { id: string | number }>({
   });
 
   return (
-    <div className="p-generic-table">
+    <div className={classNames("p-generic-table", className)}>
       {pagination ? (
         <PaginationBar
           currentPage={pagination.currentPage}
@@ -216,8 +199,9 @@ const GenericTable = <T extends { id: string | number }>({
         />
       ) : null}
       <table
-        className={classNames("p-generic-table__table", className, {
+        className={classNames("p-generic-table__table", {
           "is-full-height": variant === "full-height",
+          "is-selectable": canSelect,
         })}
       >
         <thead>
@@ -234,17 +218,21 @@ const GenericTable = <T extends { id: string | number }>({
             </tr>
           ))}
         </thead>
-        {table.getRowModel().rows.length < 1 ? (
-          <tbody>
+        <tbody
+          ref={tableRef}
+          style={{
+            overflowY: "auto",
+            maxHeight,
+          }}
+        >
+          {table.getRowModel().rows.length < 1 ? (
             <tr>
               <td colSpan={columns.length} style={{ textAlign: "center" }}>
                 {noData}
               </td>
             </tr>
-          </tbody>
-        ) : (
-          <tbody ref={tableBodyRef} style={dynamicStyle}>
-            {table.getRowModel().rows.map((row) => {
+          ) : (
+            table.getRowModel().rows.map((row) => {
               const { getIsGrouped, id, getVisibleCells } = row;
               const isIndividualRow = !getIsGrouped();
               return (
@@ -270,9 +258,9 @@ const GenericTable = <T extends { id: string | number }>({
                     })}
                 </tr>
               );
-            })}
-          </tbody>
-        )}
+            })
+          )}
+        </tbody>
       </table>
     </div>
   );
