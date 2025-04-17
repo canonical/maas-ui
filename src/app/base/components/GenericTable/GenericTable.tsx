@@ -12,6 +12,8 @@ import type {
   SortingState,
   Header,
   RowSelectionState,
+  CellContext,
+  HeaderContext,
 } from "@tanstack/react-table";
 import {
   flexRender,
@@ -50,8 +52,8 @@ type GenericTableProps<T extends { id: string | number }> = {
 const GenericTable = <T extends { id: string | number }>({
   className,
   canSelect = false,
-  columns,
-  data,
+  columns: initialColumns,
+  data: initialData,
   filterCells = () => true,
   filterHeaders = () => true,
   groupBy,
@@ -71,6 +73,7 @@ const GenericTable = <T extends { id: string | number }>({
   const [expanded, setExpanded] = useState<ExpandedState>(true);
   const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);
 
+  // Update table height based on available space
   useEffect(() => {
     const updateHeight = () => {
       const wrapper = tableRef.current;
@@ -91,37 +94,48 @@ const GenericTable = <T extends { id: string | number }>({
     return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
-  if (canSelect && !isLoading) {
-    columns = [
+  // Add selection columns if needed
+  const columns = useMemo(() => {
+    if (!canSelect || isLoading) {
+      return initialColumns;
+    }
+
+    const selectionColumns = [
       {
         id: "select",
         accessorKey: "id",
         enableSorting: false,
         header: "",
-        cell: ({ row }) =>
+        cell: ({ row }: CellContext<T, Partial<T>>) =>
           !row.getIsGrouped() ? <TableCheckbox row={row} /> : null,
       },
-      ...columns,
+      ...initialColumns,
     ];
 
     if (groupBy) {
-      columns = [
+      return [
         {
           id: "group-select",
           accessorKey: "id",
           enableSorting: false,
-          header: ({ table }) => <TableCheckbox.All table={table} />,
-          cell: ({ row }) =>
+          header: ({ table }: HeaderContext<T, Partial<T>>) => (
+            <TableCheckbox.All table={table} />
+          ),
+          cell: ({ row }: CellContext<T, Partial<T>>) =>
             row.getIsGrouped() ? <TableCheckbox.Group row={row} /> : null,
         },
-        ...columns,
+        ...selectionColumns,
       ];
     }
-  }
 
-  data = useMemo(() => {
-    return [...data].sort((a, b) => {
-      if (pinGroup && pinGroup.length > 0 && grouping.length > 0) {
+    return selectionColumns;
+  }, [canSelect, initialColumns, isLoading, groupBy]);
+
+  // Sort data based on pinning, grouping, and sorting preferences
+  const sortedData = useMemo(() => {
+    return [...initialData].sort((a, b) => {
+      // Handle pinned groups
+      if (pinGroup?.length && grouping.length) {
         for (const { value, isTop } of pinGroup) {
           const groupId = grouping[0];
           const aValue = a[groupId as keyof typeof a];
@@ -136,6 +150,7 @@ const GenericTable = <T extends { id: string | number }>({
         }
       }
 
+      // Sort by group values
       for (const groupId of grouping) {
         const aGroupValue = a[groupId as keyof typeof a];
         const bGroupValue = b[groupId as keyof typeof b];
@@ -147,6 +162,7 @@ const GenericTable = <T extends { id: string | number }>({
         }
       }
 
+      // Sort by column sorting
       for (const { id, desc } of sorting) {
         const aValue = a[id as keyof typeof a];
         const bValue = b[id as keyof typeof b];
@@ -157,12 +173,14 @@ const GenericTable = <T extends { id: string | number }>({
           return desc ? -1 : 1;
         }
       }
+
       return 0;
     });
-  }, [data, sorting, grouping, pinGroup]);
+  }, [initialData, sorting, grouping, pinGroup]);
 
+  // Configure table
   const table = useReactTable<T>({
-    data,
+    data: sortedData,
     columns,
     state: {
       grouping,
@@ -188,9 +206,56 @@ const GenericTable = <T extends { id: string | number }>({
     getRowId: (originalRow) => originalRow.id.toString(),
   });
 
+  // Render loading placeholder rows
+  const renderLoadingRows = () => {
+    return Array.from({ length: 10 }, (_, index) => (
+      <tr aria-hidden="true" key={index}>
+        {columns.map((column, columnIndex) => (
+          <td className={column.id} key={columnIndex}>
+            <Placeholder isPending text="XXXxxxx.xxxxxxxxx" />
+          </td>
+        ))}
+      </tr>
+    ));
+  };
+
+  // Render data rows
+  const renderDataRows = () => {
+    if (table.getRowModel().rows.length < 1) {
+      return (
+        <tr>
+          <td className="p-generic-table__no-data">{noData}</td>
+        </tr>
+      );
+    }
+
+    return table.getRowModel().rows.map((row) => {
+      const { getIsGrouped, id, getVisibleCells } = row;
+      const isIndividualRow = !getIsGrouped();
+
+      return (
+        <tr
+          className={classNames({
+            "individual-row": isIndividualRow,
+            "group-row": !isIndividualRow,
+          })}
+          key={id}
+        >
+          {getVisibleCells()
+            .filter((cell) => filterCells(row, cell.column))
+            .map((cell) => (
+              <td className={classNames(`${cell.column.id}`)} key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </td>
+            ))}
+        </tr>
+      );
+    });
+  };
+
   return (
     <div className={classNames("p-generic-table", className)}>
-      {pagination ? (
+      {pagination && (
         <PaginationBar
           currentPage={pagination.currentPage}
           dataContext={pagination.dataContext}
@@ -200,7 +265,8 @@ const GenericTable = <T extends { id: string | number }>({
           setCurrentPage={pagination.setCurrentPage}
           totalItems={pagination.totalItems}
         />
-      ) : null}
+      )}
+
       <table
         className={classNames("p-generic-table__table", {
           "is-full-height": variant === "full-height",
@@ -221,6 +287,7 @@ const GenericTable = <T extends { id: string | number }>({
             </tr>
           ))}
         </thead>
+
         <tbody
           ref={tableRef}
           style={{
@@ -228,53 +295,7 @@ const GenericTable = <T extends { id: string | number }>({
             maxHeight,
           }}
         >
-          {isLoading ? (
-            Array.from({ length: 10 }, (_, index) => {
-              return (
-                <tr aria-hidden="true" key={index}>
-                  {columns.map((column, columnIndex) => {
-                    return (
-                      <td className={column.id} key={columnIndex}>
-                        <Placeholder isPending text="XXXxxxx.xxxxxxxxx" />
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })
-          ) : table.getRowModel().rows.length < 1 ? (
-            <tr>
-              <td className="p-generic-table__no-data">{noData}</td>
-            </tr>
-          ) : (
-            table.getRowModel().rows.map((row) => {
-              const { getIsGrouped, id, getVisibleCells } = row;
-              const isIndividualRow = !getIsGrouped();
-              return (
-                <tr
-                  className={classNames({
-                    "individual-row": isIndividualRow,
-                    "group-row": !isIndividualRow,
-                  })}
-                  key={id}
-                >
-                  {getVisibleCells()
-                    .filter((cell) => filterCells(row, cell.column))
-                    .map((cell) => {
-                      const { column, id: cellId } = cell;
-                      return (
-                        <td
-                          className={classNames(`${cell.column.id}`)}
-                          key={cellId}
-                        >
-                          {flexRender(column.columnDef.cell, cell.getContext())}
-                        </td>
-                      );
-                    })}
-                </tr>
-              );
-            })
-          )}
+          {isLoading ? renderLoadingRows() : renderDataRows()}
         </tbody>
       </table>
     </div>
