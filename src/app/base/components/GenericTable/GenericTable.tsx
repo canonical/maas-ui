@@ -91,7 +91,7 @@ const GenericTable = <T extends { id: string | number }>({
     return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
-  if (canSelect) {
+  if (canSelect && !isLoading) {
     columns = [
       {
         id: "select",
@@ -234,13 +234,7 @@ const GenericTable = <T extends { id: string | number }>({
                 <tr aria-hidden="true" key={index}>
                   {columns.map((column, columnIndex) => {
                     return (
-                      <td
-                        className={classNames(
-                          column.id,
-                          "u-text-overflow-clip"
-                        )}
-                        key={columnIndex}
-                      >
+                      <td className={column.id} key={columnIndex}>
                         <Placeholder isPending text="XXXxxxx.xxxxxxxxx" />
                       </td>
                     );
@@ -249,7 +243,9 @@ const GenericTable = <T extends { id: string | number }>({
               );
             })
           ) : table.getRowModel().rows.length < 1 ? (
-            <tr>{noData}</tr>
+            <tr>
+              <td className="p-generic-table__no-data">{noData}</td>
+            </tr>
           ) : (
             table.getRowModel().rows.map((row) => {
               const { getIsGrouped, id, getVisibleCells } = row;

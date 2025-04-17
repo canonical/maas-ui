@@ -36,16 +36,6 @@
   .p-generic-table__table {
     margin-bottom: 0;
 
-    // Hide "Loading" visually but keep it accessible to screenreaders
-    &__loading {
-      position: absolute !important;
-      height: 1px !important;
-      width: 1px !important;
-      overflow: hidden !important;
-      clip: rect(1px, 1px, 1px, 1px) !important;
-      white-space: nowrap !important;
-    }
-
     thead,
     tbody {
       display: block;
@@ -111,6 +101,11 @@
 
     th.select, &:not(.is-selectable)>* .select-alignment {
       display: none;
+    }
+
+    td.p-generic-table__no-data {
+      padding: 2rem;
+      text-align: center !important;
     }
   }
 }
