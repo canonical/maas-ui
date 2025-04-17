@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 
+import { Placeholder } from "@canonical/maas-react-components";
 import type {
   Column,
   Row,
@@ -36,6 +37,7 @@ type GenericTableProps<T extends { id: string | number }> = {
   filterCells?: (row: Row<T>, column: Column<T>) => boolean;
   filterHeaders?: (header: Header<T, unknown>) => boolean;
   groupBy?: string[];
+  isLoading: boolean;
   noData?: ReactNode;
   pagination?: PaginationBarProps;
   pinGroup?: { value: string; isTop: boolean }[];
@@ -53,6 +55,7 @@ const GenericTable = <T extends { id: string | number }>({
   filterCells = () => true,
   filterHeaders = () => true,
   groupBy,
+  isLoading,
   noData,
   pagination,
   pinGroup,
@@ -225,12 +228,28 @@ const GenericTable = <T extends { id: string | number }>({
             maxHeight,
           }}
         >
-          {table.getRowModel().rows.length < 1 ? (
-            <tr>
-              <td colSpan={columns.length} style={{ textAlign: "center" }}>
-                {noData}
-              </td>
-            </tr>
+          {isLoading ? (
+            Array.from({ length: 10 }, (_, index) => {
+              return (
+                <tr aria-hidden="true" key={index}>
+                  {columns.map((column, columnIndex) => {
+                    return (
+                      <td
+                        className={classNames(
+                          column.id,
+                          "u-text-overflow-clip"
+                        )}
+                        key={columnIndex}
+                      >
+                        <Placeholder isPending text="XXXxxxx.xxxxxxxxx" />
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })
+          ) : table.getRowModel().rows.length < 1 ? (
+            <tr>{noData}</tr>
           ) : (
             table.getRowModel().rows.map((row) => {
               const { getIsGrouped, id, getVisibleCells } = row;
