@@ -1,5 +1,11 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import type { Dispatch, ReactNode, SetStateAction, RefObject } from "react";
+import type {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  RefObject,
+  ReactElement,
+} from "react";
 
 import { Placeholder } from "@canonical/maas-react-components";
 import type {
@@ -35,7 +41,7 @@ type GenericTableProps<T extends { id: string | number }> = {
   className?: string;
   canSelect?: boolean;
   columns: ColumnDef<T, Partial<T>>[];
-  containerRef?: RefObject<HTMLElement>;
+  containerRef?: RefObject<HTMLElement | null>;
   data: T[];
   filterCells?: (row: Row<T>, column: Column<T>) => boolean;
   filterHeaders?: (header: Header<T, unknown>) => boolean;
@@ -50,6 +56,53 @@ type GenericTableProps<T extends { id: string | number }> = {
   variant?: "full-height" | "regular";
 };
 
+/**
+ * GenericTable - A flexible and feature-rich table component for React applications
+ *
+ * A highly customizable table component that supports sorting, grouping, selection,
+ * auto-sizing, and pagination. Built on top of TanStack Table with enhanced features
+ * for enterprise applications.
+ *
+ * @template T - The data type for table rows, must include an 'id' property
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS class for the table wrapper
+ * @param {boolean} [props.canSelect=false] - Enable row selection with checkboxes
+ * @param {ColumnDef<T, Partial<T>>[]} props.columns - Column definitions
+ * @param {RefObject<HTMLElement | null>} [props.containerRef] - Reference to container for size calculations
+ * @param {T[]} props.data - Table data array
+ * @param {Function} [props.filterCells] - Function to filter which cells should be displayed
+ * @param {Function} [props.filterHeaders] - Function to filter which headers should be displayed
+ * @param {string[]} [props.groupBy] - Column IDs to group rows by
+ * @param {boolean} props.isLoading - Loading state to display placeholder content
+ * @param {ReactNode} [props.noData] - Content to display when no data is available
+ * @param {PaginationBarProps} [props.pagination] - Pagination configuration
+ * @param {{ value: string; isTop: boolean }[]} [props.pinGroup] - Group pinning configuration
+ * @param {ColumnSort[]} [props.sortBy] - Initial sort configuration
+ * @param {RowSelectionState} [props.rowSelection] - Selected rows state
+ * @param {Dispatch<SetStateAction<RowSelectionState>>} [props.setRowSelection] - Selection state setter
+ * @param {"full-height" | "regular"} [props.variant="full-height"] - Table layout variant
+ *
+ * @returns {ReactElement} - The rendered table component
+ *
+ * @example
+ * <GenericTable
+ *   columns={columns}
+ *   data={products}
+ *   isLoading={isLoading}
+ *   canSelect={true}
+ *   groupBy={["category"]}
+ *   rowSelection={selectedRows}
+ *   setRowSelection={setSelectedRows}
+ *   pagination={{
+ *     currentPage: page,
+ *     setCurrentPage: setPage,
+ *     itemsPerPage: pageSize,
+ *     totalItems: totalCount,
+ *     handlePageSizeChange: handlePageSizeChange
+ *   }}
+ * />
+ */
 const GenericTable = <T extends { id: string | number }>({
   className,
   canSelect = false,
@@ -67,7 +120,7 @@ const GenericTable = <T extends { id: string | number }>({
   rowSelection,
   setRowSelection,
   variant = "full-height",
-}: GenericTableProps<T>) => {
+}: GenericTableProps<T>): ReactElement => {
   const tableRef = useRef<HTMLTableSectionElement>(null);
   const [maxHeight, setMaxHeight] = useState("auto");
 
@@ -303,7 +356,10 @@ const GenericTable = <T extends { id: string | number }>({
   };
 
   return (
-    <div className={classNames("p-generic-table", className)}>
+    <div
+      className={classNames("p-generic-table", className)}
+      data-testid="p-generic-table"
+    >
       {pagination && (
         <PaginationBar
           currentPage={pagination.currentPage}
