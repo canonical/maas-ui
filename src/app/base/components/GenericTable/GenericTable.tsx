@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { Dispatch, ReactNode, SetStateAction, RefObject } from "react";
 
 import { Placeholder } from "@canonical/maas-react-components";
 import type {
@@ -35,6 +35,7 @@ type GenericTableProps<T extends { id: string | number }> = {
   className?: string;
   canSelect?: boolean;
   columns: ColumnDef<T, Partial<T>>[];
+  containerRef?: RefObject<HTMLElement>;
   data: T[];
   filterCells?: (row: Row<T>, column: Column<T>) => boolean;
   filterHeaders?: (header: Header<T, unknown>) => boolean;
@@ -53,6 +54,7 @@ const GenericTable = <T extends { id: string | number }>({
   className,
   canSelect = false,
   columns: initialColumns,
+  containerRef,
   data: initialData,
   filterCells = () => true,
   filterHeaders = () => true,
@@ -77,22 +79,31 @@ const GenericTable = <T extends { id: string | number }>({
   useEffect(() => {
     const updateHeight = () => {
       const wrapper = tableRef.current;
-      const main = document.querySelector("main");
+      if (!wrapper) return;
 
-      if (!wrapper || !main) return;
+      // Use provided containerRef if available, fallback to main
+      const container = containerRef?.current || document.querySelector("main");
+      if (!container) return;
 
-      const mainRect = main.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
       const wrapperRect = wrapper.getBoundingClientRect();
 
-      const availableHeight = mainRect.bottom - wrapperRect.top;
+      const availableHeight = containerRect.bottom - wrapperRect.top;
       setMaxHeight(`${availableHeight}px`);
     };
 
     updateHeight();
-    window.addEventListener("resize", updateHeight);
 
-    return () => window.removeEventListener("resize", updateHeight);
-  }, []);
+    const resizeObserver = new ResizeObserver(updateHeight);
+    const wrapper = tableRef.current;
+    if (wrapper) resizeObserver.observe(wrapper);
+
+    window.addEventListener("resize", updateHeight);
+    return () => {
+      window.removeEventListener("resize", updateHeight);
+      if (wrapper) resizeObserver.unobserve(wrapper);
+    };
+  }, [containerRef]);
 
   // Add selection columns if needed
   const columns = useMemo(() => {
@@ -131,15 +142,37 @@ const GenericTable = <T extends { id: string | number }>({
     return selectionColumns;
   }, [canSelect, initialColumns, isLoading, groupBy]);
 
-  // Sort data based on pinning, grouping, and sorting preferences
-  const sortedData = useMemo(() => {
+  // Memoize grouped data
+  const groupedData = useMemo(() => {
+    if (!grouping.length) return initialData;
+
     return [...initialData].sort((a, b) => {
+      // Sort by group values
+      for (const groupId of grouping) {
+        const aGroupValue = a[groupId as keyof typeof a] ?? null;
+        const bGroupValue = b[groupId as keyof typeof b] ?? null;
+
+        if (aGroupValue === null) return 1;
+        if (bGroupValue === null) return -1;
+
+        if (aGroupValue < bGroupValue) return -1;
+        if (aGroupValue > bGroupValue) return 1;
+      }
+      return 0;
+    });
+  }, [initialData, grouping]);
+
+  // Sort data based on pinning and sorting preferences
+  const sortedData = useMemo(() => {
+    if (!groupedData.length) return [];
+
+    return [...groupedData].sort((a, b) => {
       // Handle pinned groups
       if (pinGroup?.length && grouping.length) {
         for (const { value, isTop } of pinGroup) {
           const groupId = grouping[0];
-          const aValue = a[groupId as keyof typeof a];
-          const bValue = b[groupId as keyof typeof b];
+          const aValue = a[groupId as keyof typeof a] ?? null;
+          const bValue = b[groupId as keyof typeof b] ?? null;
 
           if (aValue === value && bValue !== value) {
             return isTop ? -1 : 1;
@@ -150,22 +183,16 @@ const GenericTable = <T extends { id: string | number }>({
         }
       }
 
-      // Sort by group values
-      for (const groupId of grouping) {
-        const aGroupValue = a[groupId as keyof typeof a];
-        const bGroupValue = b[groupId as keyof typeof b];
-        if (aGroupValue < bGroupValue) {
-          return -1;
-        }
-        if (aGroupValue > bGroupValue) {
-          return 1;
-        }
-      }
-
       // Sort by column sorting
       for (const { id, desc } of sorting) {
-        const aValue = a[id as keyof typeof a];
-        const bValue = b[id as keyof typeof b];
+        const aValue = a[id as keyof typeof a] ?? null;
+        const bValue = b[id as keyof typeof b] ?? null;
+
+        // Handle null values
+        if (aValue === null && bValue === null) return 0;
+        if (aValue === null) return desc ? -1 : 1;
+        if (bValue === null) return desc ? 1 : -1;
+
         if (aValue < bValue) {
           return desc ? 1 : -1;
         }
@@ -176,7 +203,7 @@ const GenericTable = <T extends { id: string | number }>({
 
       return 0;
     });
-  }, [initialData, sorting, grouping, pinGroup]);
+  }, [groupedData, sorting, pinGroup, grouping]);
 
   // Configure table
   const table = useReactTable<T>({
@@ -224,7 +251,13 @@ const GenericTable = <T extends { id: string | number }>({
     if (table.getRowModel().rows.length < 1) {
       return (
         <tr>
-          <td className="p-generic-table__no-data">{noData}</td>
+          <td
+            className="p-generic-table__no-data"
+            colSpan={columns.length}
+            role="cell"
+          >
+            {noData}
+          </td>
         </tr>
       );
     }
@@ -232,14 +265,19 @@ const GenericTable = <T extends { id: string | number }>({
     return table.getRowModel().rows.map((row) => {
       const { getIsGrouped, id, getVisibleCells } = row;
       const isIndividualRow = !getIsGrouped();
+      const isSelected =
+        rowSelection !== undefined && Object.keys(rowSelection!).includes(id);
 
       return (
         <tr
+          aria-rowindex={parseInt(id.replace(/\D/g, "") || "0", 10) + 1}
+          aria-selected={isSelected}
           className={classNames({
             "p-generic-table__individual-row": isIndividualRow,
             "p-generic-table__group-row": !isIndividualRow,
           })}
           key={id}
+          role="row"
         >
           {getVisibleCells()
             .filter((cell) => {
@@ -251,7 +289,11 @@ const GenericTable = <T extends { id: string | number }>({
               return filterCells(row, cell.column);
             })
             .map((cell) => (
-              <td className={classNames(`${cell.column.id}`)} key={cell.id}>
+              <td
+                className={classNames(`${cell.column.id}`)}
+                key={cell.id}
+                role="cell"
+              >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             ))}
@@ -275,21 +317,28 @@ const GenericTable = <T extends { id: string | number }>({
       )}
 
       <table
+        aria-busy={isLoading}
+        aria-describedby="generic-table-description"
+        aria-rowcount={sortedData.length + 1} // +1 for header row
         className={classNames("p-generic-table__table", {
           "p-generic-table__is-full-height": variant === "full-height",
           "p-generic-table__is-selectable": canSelect,
         })}
+        role="grid"
       >
-        <thead>
+        <thead role="rowgroup">
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            <tr key={headerGroup.id} role="row">
               {headerGroup.headers
                 .filter(filterHeaders)
                 .map((header, index) => (
                   <Fragment key={header.id}>
                     <ColumnHeader header={header} />
                     {index === 2 ? (
-                      <th className="p-generic-table__select-alignment" />
+                      <th
+                        className="p-generic-table__select-alignment"
+                        role="columnheader"
+                      />
                     ) : null}
                   </Fragment>
                 ))}
@@ -299,6 +348,7 @@ const GenericTable = <T extends { id: string | number }>({
 
         <tbody
           ref={tableRef}
+          role="rowgroup"
           style={{
             overflowY: "auto",
             maxHeight,
