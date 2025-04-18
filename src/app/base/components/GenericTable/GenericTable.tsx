@@ -7,7 +7,7 @@ import type {
   ReactElement,
 } from "react";
 
-import { Placeholder } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import type {
   Column,
   Row,
@@ -288,15 +288,17 @@ const GenericTable = <T extends { id: string | number }>({
 
   // Render loading placeholder rows
   const renderLoadingRows = () => {
-    return Array.from({ length: 10 }, (_, index) => (
-      <tr aria-hidden="true" key={index}>
-        {columns.map((column, columnIndex) => (
-          <td className={column.id} key={columnIndex}>
-            <Placeholder isPending text="XXXxxxx.xxxxxxxxx" />
-          </td>
-        ))}
+    return (
+      <tr>
+        <td
+          className="p-generic-table__loading"
+          colSpan={columns.length}
+          role="cell"
+        >
+          <Spinner text="Loading..." />
+        </td>
       </tr>
-    ));
+    );
   };
 
   // Render data rows

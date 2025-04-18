@@ -114,8 +114,8 @@
       display: none;
     }
 
-    // Empty state
-    td.p-generic-table__no-data {
+    // Empty and loading states
+    td.p-generic-table__no-data, td.p-generic-table__loading {
       padding: 2rem;
       text-align: center !important;
     }
