@@ -198,8 +198,7 @@ describe("GenericTable", () => {
     expect(table).toHaveAttribute("aria-busy", "true");
 
     // Should render placeholders
-    const placeholders = screen.getAllByText("XXXxxxx.xxxxxxxxx");
-    expect(placeholders.length).toBeGreaterThan(0);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("supports row selection when canSelect is true", async () => {
