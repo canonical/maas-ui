@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type {
   Dispatch,
   ReactNode,
@@ -129,7 +129,7 @@ const GenericTable = <T extends { id: string | number }>({
   const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);
 
   // Update table height based on available space
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updateHeight = () => {
       const wrapper = tableRef.current;
       if (!wrapper) return;
