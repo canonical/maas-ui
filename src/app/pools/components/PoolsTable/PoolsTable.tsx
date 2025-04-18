@@ -16,6 +16,7 @@ const PoolsTable = () => {
     <GenericTable
       columns={usePoolsTableColumns()}
       data={pools.data?.items ?? []}
+      isLoading={pools.isPending}
       noData="No pools found."
       pagination={{
         currentPage: page,
