@@ -185,6 +185,9 @@ describe("AddMachineForm", () => {
       screen.getByRole("textbox", { name: "MAC address" }),
       "11:11:11:11:11:11"
     );
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Register as DPU" })
+    );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Power type" }),
       "manual"
@@ -196,13 +199,13 @@ describe("AddMachineForm", () => {
       domain: { name: "maas" },
       extra_macs: [],
       hostname: "mean-bean",
+      is_dpu: true,
       min_hwe_kernel: "ga-16.04",
       pool: { name: "swimming" },
       power_parameters: {},
       power_type: "manual",
       pxe_mac: "11:11:11:11:11:11",
       zone: { name: "1" },
-      // TODO: Add `is_dpu` field to params https://warthogs.atlassian.net/browse/MAASENG-4186
     });
     await waitFor(() => {
       expect(
@@ -253,6 +256,7 @@ describe("AddMachineForm", () => {
       domain: { name: "maas" },
       extra_macs: [],
       hostname: "",
+      is_dpu: false,
       min_hwe_kernel: "ga-16.04",
       pool: { name: "swimming" },
       // Create action should not include power_address parameter since it does
@@ -313,6 +317,7 @@ describe("AddMachineForm", () => {
       domain: { name: "maas" },
       // There should only be one extra MAC defined.
       extra_macs: ["22:22:22:22:22:22"],
+      is_dpu: false,
       hostname: "",
       min_hwe_kernel: "ga-16.04",
       pool: { name: "swimming" },
