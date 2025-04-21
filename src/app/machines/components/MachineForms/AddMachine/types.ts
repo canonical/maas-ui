@@ -6,6 +6,7 @@ export type AddMachineValues = {
   domain: string;
   extra_macs: string[];
   hostname: string;
+  is_dpu: boolean;
   min_hwe_kernel: string;
   pool: string;
   power_parameters: PowerParameters;

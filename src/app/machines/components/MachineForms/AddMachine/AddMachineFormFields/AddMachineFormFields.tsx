@@ -99,9 +99,7 @@ export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {
         </Button>
       </div>
       <PowerTypeFields />
-      {import.meta.env.VITE_APP_DPU_PROVISIONING === "true" && (
-        <FormikField label="Register as DPU" name="is_dpu" type="checkbox" />
-      )}
+      <FormikField label="Register as DPU" name="is_dpu" type="checkbox" />
     </>
   );
 };
