@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 import LicenseKeyForm from "../LicenseKeyForm";
 
@@ -15,7 +15,7 @@ export enum Labels {
   KeyNotFound = "License key not found",
 }
 
-export const LicenseKeyEdit = (): JSX.Element => {
+export const LicenseKeyEdit = (): React.ReactElement => {
   const { osystem, distro_series } = useParams<{
     osystem?: LicenseKeys["osystem"];
     distro_series?: LicenseKeys["distro_series"];

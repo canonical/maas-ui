@@ -94,7 +94,7 @@ const getSortValue = (sortKey: SortKey, user: User) => {
   return isComparable(value) ? value : null;
 };
 
-const UsersList = (): JSX.Element => {
+const UsersList = (): React.ReactElement => {
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
   const users = useSelector((state: RootState) =>

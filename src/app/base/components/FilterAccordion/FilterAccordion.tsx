@@ -117,7 +117,7 @@ const FilterAccordion = <I, PK extends keyof I>({
   items,
   onUpdateFilterString,
   toggleFilter,
-}: Props<I, PK>): JSX.Element => {
+}: Props<I, PK>): React.ReactElement => {
   const currentFilters = getCurrentFilters(filterString);
   const [expandedSection, setExpandedSection] = useState<string>();
   const sections = useMemo(() => {

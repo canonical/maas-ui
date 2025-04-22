@@ -1,6 +1,3 @@
-import { createMemoryHistory } from "history";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
-
 import IntroSection from "./IntroSection";
 
 import urls from "@/app/base/urls";
@@ -9,7 +6,7 @@ import * as factory from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
-  renderWithMockStore,
+  renderWithProviders,
 } from "@/testing/utils";
 
 describe("IntroSection", () => {
@@ -38,16 +35,11 @@ describe("IntroSection", () => {
         user: factory.user({ completed_intro: true }),
       }),
     });
-    const history = createMemoryHistory({
-      initialEntries: [{ pathname: "/intro/user", key: "testKey" }],
-    });
-    renderWithMockStore(
-      <Router history={history}>
-        <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
-      </Router>,
-      { state }
+    const { router } = renderWithProviders(
+      <IntroSection shouldExitIntro={true}>Intro content</IntroSection>,
+      { state, initialEntries: ["/intro/user"] }
     );
-    expect(history.location.pathname).toBe(urls.machines.index);
+    expect(router.state.location.pathname).toBe(urls.machines.index);
   });
 
   it("redirects to the machine list for admins", () => {

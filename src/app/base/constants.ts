@@ -44,3 +44,5 @@ export const COLOURS = {
 // global keyboard shortcuts
 export const KEYBOARD_SHORTCUTS = ["[", "/"] as const;
 export type KeyboardShortcut = (typeof KEYBOARD_SHORTCUTS)[number];
+
+export const DEFAULT_PAGE_SIZE = 50;

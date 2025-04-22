@@ -37,7 +37,7 @@ const Messages = ({ messages }: { messages: Message[] }) => {
 export const useNotifications = () => {
   useFetchActions([notificationActions.fetch]);
 
-  const notifications = {
+  return {
     warnings: {
       items: useSelector(notificationSelectors.warnings),
       severity: NotificationSeverity.CAUTION,
@@ -55,11 +55,9 @@ export const useNotifications = () => {
       severity: NotificationSeverity.INFORMATION,
     },
   };
-
-  return notifications;
 };
 
-const NotificationList = (): JSX.Element => {
+const NotificationList = (): React.ReactElement => {
   const notifications = useNotifications();
   const messages = useSelector(messageSelectors.all);
   const messageCount = useSelector(messageSelectors.count);

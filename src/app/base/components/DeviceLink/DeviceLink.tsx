@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
@@ -17,7 +17,7 @@ export enum Labels {
   LoadingDevices = "Loading devices",
 }
 
-const DeviceLink = ({ systemId }: Props): JSX.Element | null => {
+const DeviceLink = ({ systemId }: Props): React.ReactElement | null => {
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );

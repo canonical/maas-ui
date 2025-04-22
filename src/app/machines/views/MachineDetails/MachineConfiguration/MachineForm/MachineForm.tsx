@@ -37,7 +37,7 @@ const MachineFormSchema: SchemaOf<MachineFormValues> = Yup.object()
   })
   .defined();
 
-const MachineForm = ({ systemId }: Props): JSX.Element | null => {
+const MachineForm = ({ systemId }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

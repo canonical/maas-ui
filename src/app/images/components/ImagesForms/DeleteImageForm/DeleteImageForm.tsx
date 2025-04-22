@@ -21,7 +21,7 @@ export enum Labels {
 const DeleteImageForm = ({
   closeForm,
   resource,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const saving = useSelector(bootResourceSelectors.deletingImage);
   const previousSaving = usePrevious(saving);

@@ -33,7 +33,7 @@ const PageSizeSelect = ({
   pageSize,
   paginate,
   setPageSize,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <Select
       aria-label={Labels.ItemsPerPage}

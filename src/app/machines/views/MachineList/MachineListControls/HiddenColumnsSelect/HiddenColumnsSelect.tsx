@@ -16,7 +16,7 @@ type Props = {
 const HiddenColumnsSelect = ({
   hiddenColumns,
   setHiddenColumns,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const sendAnalytics = useSendAnalytics();
   const selectedColumnsLength = columnToggles.length - hiddenColumns.length;
   const someColumnsChecked =

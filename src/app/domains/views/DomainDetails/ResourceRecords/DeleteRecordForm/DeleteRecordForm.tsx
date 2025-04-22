@@ -27,7 +27,7 @@ const DeleteRecordForm = ({
   closeForm,
   id,
   resource,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)

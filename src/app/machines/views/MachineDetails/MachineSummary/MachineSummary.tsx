@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import NumaCard from "./NumaCard";
 import TestResults from "./TestResults";
@@ -26,7 +26,7 @@ type Props = {
   setSidePanelContent: MachineSetSidePanelContent;
 };
 
-const MachineSummary = ({ setSidePanelContent }: Props): JSX.Element => {
+const MachineSummary = ({ setSidePanelContent }: Props): React.ReactElement => {
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)

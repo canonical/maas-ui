@@ -76,7 +76,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Allocated = 1 + 2 = 3
@@ -112,7 +112,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() =>
       expect(screen.getByText("15000MiB available.")).toBeInTheDocument()
@@ -165,7 +165,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() =>
       expect(
@@ -385,7 +385,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() =>
       expect(
@@ -417,7 +417,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() =>
       expect(
@@ -442,7 +442,7 @@ describe("ComposeFormFields", () => {
     state.pod.items[0].cpu_over_commit_ratio = 1;
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", state }
+      { initialEntries: ["/kvm/1"], state }
     );
     await waitFor(() =>
       expect(
@@ -488,7 +488,7 @@ describe("ComposeFormFields", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() =>
       expect(

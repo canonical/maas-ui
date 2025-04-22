@@ -1,5 +1,5 @@
 import type { ColumnDef, Row } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { ZoneWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
@@ -45,7 +45,7 @@ const useZonesTableColumns = ({
       header: "Description",
     },
     {
-      id: "machines",
+      id: "machines_count",
       accessorKey: "machines_count",
       enableSorting: true,
       header: "Machines",
@@ -61,7 +61,7 @@ const useZonesTableColumns = ({
       },
     },
     {
-      id: "devices",
+      id: "devices_count",
       accessorKey: "devices_count",
       enableSorting: true,
       header: "Devices",
@@ -77,7 +77,7 @@ const useZonesTableColumns = ({
       },
     },
     {
-      id: "controllers",
+      id: "controllers_count",
       accessorKey: "controllers_count",
       enableSorting: true,
       header: "Controllers",

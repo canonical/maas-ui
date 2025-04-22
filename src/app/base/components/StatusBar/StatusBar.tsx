@@ -85,7 +85,7 @@ const getSyncStatusString = (syncStatus: UtcDatetime) => {
   }
 };
 
-export const StatusBar = (): JSX.Element | null => {
+export const StatusBar = (): React.ReactElement | null => {
   const activeController = useSelector(controllerSelectors.active);
   const activeMachine = useSelector(machineSelectors.active);
   const version = useSelector(versionSelectors.get);

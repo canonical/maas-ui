@@ -7,7 +7,9 @@ type Props = {
   selectedCount: number;
 };
 
-export const MarkBrokenFormFields = ({ selectedCount }: Props): JSX.Element => (
+export const MarkBrokenFormFields = ({
+  selectedCount,
+}: Props): React.ReactElement => (
   <>
     <Row>
       <Col size={12}>

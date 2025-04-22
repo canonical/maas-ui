@@ -25,7 +25,7 @@ export const AddAliasOrVlanFields = ({
   nic,
   interfaceType,
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

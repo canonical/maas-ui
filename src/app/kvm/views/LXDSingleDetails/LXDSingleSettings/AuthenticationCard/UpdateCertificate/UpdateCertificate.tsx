@@ -31,7 +31,7 @@ const UpdateCertificate = ({
   hasCertificateData,
   objectName,
   pod,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const generatedCertificate = useSelector(generatedCertificateSelectors.get);
   const generatingCertificate = useSelector(

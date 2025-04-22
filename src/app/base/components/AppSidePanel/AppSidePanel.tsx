@@ -47,7 +47,7 @@ const AppSidePanelContent = ({
   title,
   size,
   content,
-}: AppSidePanelProps): JSX.Element => {
+}: AppSidePanelProps): React.ReactElement => {
   return (
     <aside
       aria-label={title ?? undefined}
@@ -76,7 +76,9 @@ const AppSidePanelContent = ({
   );
 };
 
-const AppSidePanel = (props: Omit<AppSidePanelProps, "size">): JSX.Element => {
+const AppSidePanel = (
+  props: Omit<AppSidePanelProps, "size">
+): React.ReactElement => {
   useCloseSidePanelOnEscPressed();
   useCloseSidePanelOnRouteChange();
   useResetSidePanelOnUnmount();

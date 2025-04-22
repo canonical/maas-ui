@@ -31,7 +31,7 @@ const MachinesFilterOptions = ({
   group,
   searchText,
   setSearchText,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
 
   const filterOptions = useSelector((state: RootState) =>

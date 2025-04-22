@@ -27,7 +27,7 @@ const DebounceSearchBox = ({
   searchText,
   setSearchText,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [debouncing, setDebouncing] = useState(false);
 

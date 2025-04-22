@@ -35,7 +35,7 @@ const MachineList = ({
   headerFormOpen,
   searchFilter,
   setHiddenGroups,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   useWindowTitle("Machines");
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);

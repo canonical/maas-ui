@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
@@ -14,7 +14,7 @@ type Props = {
   id?: VLAN[VLANMeta.PK] | null;
 };
 
-const VLANLink = ({ id }: Props): JSX.Element => {
+const VLANLink = ({ id }: Props): React.ReactElement => {
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );

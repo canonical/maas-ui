@@ -1,6 +1,6 @@
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";
@@ -31,7 +31,7 @@ export const OverrideTestForm = ({
   selectedCount,
   selectedMachines,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const sendAnalytics = useSendAnalytics();
   const isSingleMachine = selectedCount === 1;
   const dispatch = useDispatch();

@@ -46,7 +46,7 @@ const Popover = ({
   className,
   content,
   position = "right",
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const positionStyle = getPositionStyle(buttonRef, position);

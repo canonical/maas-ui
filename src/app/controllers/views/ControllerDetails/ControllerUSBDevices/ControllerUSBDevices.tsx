@@ -13,7 +13,7 @@ type Props = {
   systemId: Controller[ControllerMeta.PK];
 };
 
-const ControllerUSBDevices = ({ systemId }: Props): JSX.Element => {
+const ControllerUSBDevices = ({ systemId }: Props): React.ReactElement => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

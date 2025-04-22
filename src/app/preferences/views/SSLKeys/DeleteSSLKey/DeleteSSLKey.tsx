@@ -1,24 +1,21 @@
 import { useOnEscapePressed } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
+import { useDeleteSslKey } from "@/app/api/query/sslKeys";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useAddMessage, useGetURLId } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks";
 import urls from "@/app/preferences/urls";
 import { Label } from "@/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList";
-import { sslkeyActions } from "@/app/store/sslkey";
-import sslkeySelectors from "@/app/store/sslkey/selectors";
 import { isId } from "@/app/utils";
 
 const DeleteSSLKey = () => {
   const id = useGetURLId("id");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const saved = useSelector(sslkeySelectors.saved);
-  const saving = useSelector(sslkeySelectors.saving);
+  const deleteSSLKey = useDeleteSslKey();
+  const saved = deleteSSLKey.isSuccess;
+  const saving = deleteSSLKey.isPending;
   const onClose = () => navigate({ pathname: urls.sslKeys.index });
   useOnEscapePressed(() => onClose());
-  useAddMessage(saved, sslkeyActions.cleanup, "SSL key removed successfully.");
 
   if (!isId(id)) {
     return <h4>SSL key not found</h4>;
@@ -30,9 +27,7 @@ const DeleteSSLKey = () => {
       initialValues={{}}
       modelType="SSL key"
       onCancel={onClose}
-      onSubmit={() => {
-        dispatch(sslkeyActions.delete(id));
-      }}
+      onSubmit={() => deleteSSLKey.mutate({ path: { sslkey_id: id } })}
       saved={saved}
       savedRedirect={urls.sslKeys.index}
       saving={saving}

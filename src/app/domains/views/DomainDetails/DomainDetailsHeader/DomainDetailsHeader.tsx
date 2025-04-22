@@ -38,7 +38,7 @@ export enum Labels {
 const DomainDetailsHeader = ({
   id,
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
   );

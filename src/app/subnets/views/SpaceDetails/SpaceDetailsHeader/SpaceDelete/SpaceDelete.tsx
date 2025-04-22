@@ -17,7 +17,7 @@ type SpaceDeleteProps = {
 export const SpaceDelete = ({
   handleClose,
   space,
-}: SpaceDeleteProps): JSX.Element => {
+}: SpaceDeleteProps): React.ReactElement => {
   const canBeDeleted = getCanBeDeleted(space);
   const dispatch = useDispatch();
   const errors = useSelector(spaceSelectors.errors);

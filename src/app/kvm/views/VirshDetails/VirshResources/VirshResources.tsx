@@ -16,7 +16,7 @@ export enum Label {
   Title = "Virsh resources",
 }
 
-const VirshResources = ({ id }: Props): JSX.Element => {
+const VirshResources = ({ id }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

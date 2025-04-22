@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
@@ -28,7 +28,11 @@ type Props = {
   node: Node;
 };
 
-const SubnetColumn = ({ link, nic, node }: Props): JSX.Element | null => {
+const SubnetColumn = ({
+  link,
+  nic,
+  node,
+}: Props): React.ReactElement | null => {
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);

@@ -1,123 +1,36 @@
-import { createMemoryHistory } from "history";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
-import configureStore from "redux-mock-store";
-
 import { AddSSLKey, Label as AddSSLKeyLabels } from "./AddSSLKey";
 
-import urls from "@/app/base/urls";
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
+import { sslKeyResolvers } from "@/testing/resolvers/sslKeys";
 import {
   userEvent,
   screen,
-  render,
-  renderWithMockStore,
+  renderWithProviders,
+  setupMockServer,
+  waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
+setupMockServer(sslKeyResolvers.createSslKey.handler());
 
 describe("AddSSLKey", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = factory.rootState({
-      sslkey: factory.sslKeyState({
-        loading: false,
-        loaded: true,
-        items: [],
-      }),
-    });
-  });
-
   it("can render", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={["/"]}>
-        <AddSSLKey />
-      </MemoryRouter>,
-      { state }
-    );
-    expect(screen.getByRole("form", { name: AddSSLKeyLabels.FormLabel }));
-  });
-
-  it("cleans up when unmounting", async () => {
-    const store = mockStore(state);
-    const { unmount } = render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <AddSSLKey />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    unmount();
-
+    renderWithProviders(<AddSSLKey />);
     expect(
-      store.getActions().some((action) => action.type === "sslkey/cleanup")
-    ).toBe(true);
-  });
-
-  it("redirects when the SSL key is saved", () => {
-    state.sslkey.saved = true;
-    const history = createMemoryHistory({ initialEntries: ["/"] });
-    renderWithMockStore(
-      <Router history={history}>
-        <AddSSLKey />
-      </Router>,
-      { state }
-    );
-    expect(history.location.pathname).toBe(urls.preferences.sslKeys.index);
+      screen.getByRole("form", { name: AddSSLKeyLabels.FormLabel })
+    ).toBeInTheDocument();
   });
 
   it("can create a SSL key", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <AddSSLKey />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<AddSSLKey />);
     await userEvent.type(
       screen.getByRole("textbox", { name: AddSSLKeyLabels.KeyField }),
       "--- begin cert ---..."
     );
-
     await userEvent.click(
       screen.getByRole("button", { name: AddSSLKeyLabels.SubmitLabel })
     );
 
-    expect(
-      store.getActions().find((action) => action.type === "sslkey/create")
-    ).toStrictEqual({
-      type: "sslkey/create",
-      payload: {
-        params: {
-          key: "--- begin cert ---...",
-        },
-      },
-      meta: {
-        model: "sslkey",
-        method: "create",
-      },
+    await waitFor(() => {
+      expect(sslKeyResolvers.createSslKey.resolved).toBeTruthy();
     });
-  });
-
-  it("adds a message when a SSL key is added", () => {
-    state.sslkey.saved = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <AddSSLKey />
-        </MemoryRouter>
-      </Provider>
-    );
-    const actions = store.getActions();
-    expect(actions.some((action) => action.type === "sslkey/cleanup")).toBe(
-      true
-    );
-    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 });

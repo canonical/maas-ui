@@ -21,7 +21,7 @@ import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
-const SpaceDetails = (): JSX.Element => {
+const SpaceDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(SpaceMeta.PK);
   const space = useSelector((state: RootState) =>
@@ -39,12 +39,11 @@ const SpaceDetails = (): JSX.Element => {
       dispatch(spaceActions.setActive(id));
     }
 
-    const unsetActiveSpaceAndCleanup = () => {
+    return () => {
       dispatch(spaceActions.setActive(null));
       dispatch(spaceActions.cleanup());
       setSidePanelContent(null);
     };
-    return unsetActiveSpaceAndCleanup;
   }, [dispatch, id, isValidID, setSidePanelContent]);
 
   if (!space) {

@@ -63,7 +63,7 @@ describe("AddMachineFormFields", () => {
 
   const renderAddMachineFormFields = async () => {
     renderWithProviders(<AddMachineForm clearSidePanelContent={vi.fn()} />, {
-      route: "/machines/add",
+      initialEntries: ["/machines/add"],
       state,
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());

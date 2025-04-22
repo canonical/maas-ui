@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import classNames from "classnames";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
@@ -130,7 +130,7 @@ const NodeDevices = ({
   bus,
   node,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const nodeDevices = useSelector((state: RootState) =>
     nodeDeviceSelectors.getByNodeId(state, node.id)

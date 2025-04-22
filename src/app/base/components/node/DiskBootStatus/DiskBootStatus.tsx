@@ -5,7 +5,7 @@ import type { Disk } from "@/app/store/types/node";
 
 type Props = { disk: Disk };
 
-const DiskBootStatus = ({ disk }: Props): JSX.Element => {
+const DiskBootStatus = ({ disk }: Props): React.ReactElement => {
   if (disk.type === DiskTypes.PHYSICAL) {
     return disk.is_boot ? (
       <Icon aria-label="Boot disk" name="tick" />

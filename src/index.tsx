@@ -4,34 +4,29 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
+import { RouterProvider } from "react-router";
 
 import packageInfo from "../package.json";
 
-import App from "./app/App";
 import { createQueryClient } from "./app/api/query-client";
-import SidePanelContextProvider from "./app/base/side-panel-context";
-import { store, history } from "./redux-store";
+import { store } from "./redux-store";
 import * as serviceWorker from "./serviceWorker";
 
+import SidePanelContextProvider from "@/app/base/side-panel-context";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import "./scss/index.scss";
+import { router } from "@/router";
 
-const queryClient = createQueryClient();
+export const Root = () => {
+  const queryClient = createQueryClient();
 
-export const RootProviders = ({ children }: { children: JSX.Element }) => {
   return (
     <Provider store={store}>
       <WebSocketProvider>
         <QueryClientProvider client={queryClient}>
-          <Router
-            basename={`${import.meta.env.VITE_APP_BASENAME}${
-              import.meta.env.VITE_APP_VITE_BASENAME
-            }`}
-            history={history}
-          >
-            <SidePanelContextProvider>{children}</SidePanelContextProvider>
-          </Router>
+          <SidePanelContextProvider>
+            <RouterProvider router={router} />
+          </SidePanelContextProvider>
           <ReactQueryDevtools
             initialIsOpen={
               import.meta.env.VITE_APP_REACT_QUERY_DEVTOOLS === "true"
@@ -43,12 +38,10 @@ export const RootProviders = ({ children }: { children: JSX.Element }) => {
   );
 };
 
-const AppRoot = (): JSX.Element => {
+const AppRoot = (): React.ReactElement => {
   return (
     <StrictMode>
-      <RootProviders>
-        <App />
-      </RootProviders>
+      <Root />
     </StrictMode>
   );
 };

@@ -11,7 +11,10 @@ import {
   useWindowTitle,
 } from "./base";
 
-import { renderHookWithMockStore } from "@/testing/utils";
+import {
+  renderHookWithMockStore,
+  renderHookWithProviders,
+} from "@/testing/utils";
 
 const mockUseLocationValue = {
   pathname: "/original-pathname",
@@ -19,8 +22,8 @@ const mockUseLocationValue = {
   hash: "",
   state: null,
 };
-vi.mock("react-router-dom", () => ({
-  ...vi.importActual("react-router-dom"),
+vi.mock("react-router", () => ({
+  ...vi.importActual("react-router"),
   useLocation: () => mockUseLocationValue,
 }));
 
@@ -281,12 +284,10 @@ describe("useScrollToTop", () => {
   it("does not scroll to the top of the page if pathname stays the same", () => {
     const scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
-    const { rerender } = renderHook(() => useScrollToTop());
+    renderHookWithProviders(() => useScrollToTop());
 
     expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
     expect(scrollToSpy).toHaveBeenCalledTimes(1);
-
-    rerender();
 
     expect(scrollToSpy).toHaveBeenCalledTimes(1);
   });

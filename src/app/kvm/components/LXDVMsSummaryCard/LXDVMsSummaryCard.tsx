@@ -14,7 +14,7 @@ type Props = {
   id: Pod["id"];
 };
 
-const LXDVMsSummaryCard = ({ id }: Props): JSX.Element => {
+const LXDVMsSummaryCard = ({ id }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

@@ -16,7 +16,7 @@ const NtpSchema = Yup.object().shape({
   ntp_servers: Yup.string(),
 });
 
-const NtpForm = (): JSX.Element => {
+const NtpForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

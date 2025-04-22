@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Col, Spinner, Notification, Row } from "@canonical/react-components";
 
 import PoolsTable from "../../components/PoolsTable/PoolsTable";
@@ -9,7 +11,7 @@ export enum Label {
   Title = "Pool list",
 }
 
-const Pools = (): JSX.Element => {
+const Pools = (): ReactElement => {
   useWindowTitle("Pools");
 
   const listPools = usePools();

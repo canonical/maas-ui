@@ -5,7 +5,7 @@ const MachineHostname = ({
   systemId,
 }: {
   systemId: Machine["system_id"];
-}): JSX.Element => {
+}): React.ReactElement => {
   const { machine } = useFetchMachine(systemId);
   return <span>{machine?.hostname || systemId}</span>;
 };
