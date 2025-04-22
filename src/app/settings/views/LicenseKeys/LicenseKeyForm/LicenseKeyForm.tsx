@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import LicenseKeyFormFields from "../LicenseKeyFormFields";
@@ -34,7 +34,7 @@ const LicenseKeySchema = Yup.object().shape({
   license_key: Yup.string().required("A license key is required"),
 });
 
-export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
+export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [savingLicenseKey, setSaving] = useState<string | null>(null);

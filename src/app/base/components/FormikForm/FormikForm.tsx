@@ -53,7 +53,7 @@ const FormikForm = <V extends object, E = null>({
   "aria-label": ariaLabel,
   buttonsBehavior = "coupled",
   ...formikProps
-}: Props<V, E>): JSX.Element => {
+}: Props<V, E>): React.ReactElement => {
   return (
     <Formik<V> {...formikProps}>
       <FormikFormContent<V, E>

@@ -44,7 +44,7 @@ export const AddTagForm = ({
   name,
   onTagCreated,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const [savedName, setSavedName] = useState<Tag["name"] | null>(null);
   const saved = useSelector(tagSelectors.saved);

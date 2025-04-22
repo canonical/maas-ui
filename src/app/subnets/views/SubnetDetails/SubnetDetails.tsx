@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router";
 
 import StaticDHCPLease from "./StaticDHCPLease";
 import StaticRoutes from "./StaticRoutes";
@@ -32,7 +32,7 @@ import {
 } from "@/app/subnets/views/SubnetDetails/constants";
 import { getRelativeRoute, isId } from "@/app/utils";
 
-const SubnetDetails = (): JSX.Element => {
+const SubnetDetails = (): React.ReactElement => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const dispatch = useDispatch();
   const id = useGetURLId(SubnetMeta.PK);
@@ -50,11 +50,10 @@ const SubnetDetails = (): JSX.Element => {
       dispatch(staticRouteActions.fetch());
     }
 
-    const unsetActiveSubnetAndCleanup = () => {
+    return () => {
       dispatch(subnetActions.setActive(null));
       dispatch(subnetActions.cleanup());
     };
-    return unsetActiveSubnetAndCleanup;
   }, [dispatch, id, isValidID]);
 
   if (subnetsLoading) {

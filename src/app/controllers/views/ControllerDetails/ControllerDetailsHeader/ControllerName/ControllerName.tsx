@@ -19,7 +19,7 @@ const ControllerName = ({
   id,
   isEditing,
   setIsEditing,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, id)

@@ -12,7 +12,7 @@ const Placeholder = ({
   children,
   className,
   loading = true,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const delay = Math.floor(Math.random() * 750);
   if (loading) {
     return (

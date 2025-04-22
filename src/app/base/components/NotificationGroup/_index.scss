@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin NotificationGroup {
   .p-notification-group {
     // When the notification group is expanded, we override the usual spacing
@@ -29,7 +31,7 @@
         background-color: $color-mid-light;
         content: "";
         height: 1px;
-        left: 2 * $sph--large + map-get($icon-sizes, default);
+        left: 2 * $sph--large + map.get($icon-sizes, default);
         position: absolute;
         right: 0;
         top: 0;

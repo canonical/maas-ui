@@ -10,7 +10,7 @@ import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
 import { DHCPSnippetMeta } from "@/app/store/dhcpsnippet/types";
 import type { RootState } from "@/app/store/root/types";
 
-export const DhcpEdit = (): JSX.Element => {
+export const DhcpEdit = (): React.ReactElement => {
   const id = useGetURLId(DHCPSnippetMeta.PK);
   const loading = useSelector(dhcpsnippetSelectors.loading);
   const dhcpsnippet = useSelector((state: RootState) =>

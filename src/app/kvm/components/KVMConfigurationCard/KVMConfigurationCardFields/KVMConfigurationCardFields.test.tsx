@@ -3,6 +3,7 @@ import KVMConfigurationCard from "../KVMConfigurationCard";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
@@ -10,19 +11,19 @@ import {
   setupMockServer,
   waitFor,
   within,
+  userEvent,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("KVMConfigurationCardFields", () => {
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState({
       pod: factory.podState({ items: [], loaded: true }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [factory.resourcePool({ id: 1, name: "pool-1" })],
-      }),
     });
   });
 
@@ -61,7 +62,7 @@ describe("KVMConfigurationCardFields", () => {
       (
         within(
           screen.getByRole("combobox", { name: "Resource pool" })
-        ).getByRole("option", { name: "pool-1" }) as HTMLOptionElement
+        ).getByRole("option", { name: "swimming" }) as HTMLOptionElement
       ).selected
     ).toBe(true);
     expect(
@@ -87,10 +88,13 @@ describe("KVMConfigurationCardFields", () => {
       route: "/kvm/1/edit",
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByRole("combobox", { name: "Zone" })).toBeInTheDocument()
+    );
     expect(screen.getByRole("textbox", { name: "KVM host type" })).toHaveValue(
       "LXD"
     );
+    await userEvent.click(screen.getByRole("combobox", { name: "Zone" }));
     expect(
       (
         within(screen.getByRole("combobox", { name: "Zone" })).getByRole(
@@ -103,7 +107,7 @@ describe("KVMConfigurationCardFields", () => {
       (
         within(
           screen.getByRole("combobox", { name: "Resource pool" })
-        ).getByRole("option", { name: "pool-1" }) as HTMLOptionElement
+        ).getByRole("option", { name: "swimming" }) as HTMLOptionElement
       ).selected
     ).toBe(true);
     expect(

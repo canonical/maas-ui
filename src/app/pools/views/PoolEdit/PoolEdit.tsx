@@ -1,34 +1,28 @@
 import { Spinner, useOnEscapePressed } from "@canonical/react-components";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
+import { useGetPool } from "@/app/api/query/pools";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import urls from "@/app/base/urls";
 import PoolForm from "@/app/pools/components/PoolForm";
 import poolURLs from "@/app/pools/urls";
-import poolSelectors from "@/app/store/resourcepool/selectors";
-import { ResourcePoolMeta } from "@/app/store/resourcepool/types";
-import type { RootState } from "@/app/store/root/types";
 
 export enum Label {
   Title = "Edit pool form",
 }
 
-export const PoolEdit = (): JSX.Element => {
-  const id = useGetURLId(ResourcePoolMeta.PK);
-  const loading = useSelector(poolSelectors.loading);
+export const PoolEdit = (): React.ReactElement => {
+  const id = useGetURLId("id");
   const navigate = useNavigate();
   const onCancel = () => navigate({ pathname: urls.pools.index });
   useOnEscapePressed(() => onCancel());
-  const pool = useSelector((state: RootState) =>
-    poolSelectors.getById(state, id)
-  );
+  const pool = useGetPool({ path: { resource_pool_id: id! } });
 
-  if (loading) {
+  if (pool.isPending) {
     return <Spinner text="Loading..." />;
   }
-  if (!loading && !pool) {
+  if (pool.isError) {
     return (
       <ModelNotFound
         id={id}
@@ -37,7 +31,9 @@ export const PoolEdit = (): JSX.Element => {
       />
     );
   }
-  return <PoolForm aria-label={Label.Title} onClose={onCancel} pool={pool} />;
+  return (
+    <PoolForm aria-label={Label.Title} onClose={onCancel} pool={pool.data} />
+  );
 };
 
 export default PoolEdit;

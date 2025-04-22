@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useGetURLId } from "@/app/base/hooks/urls";
@@ -19,7 +19,9 @@ export enum Label {
   Loading = "Loading LXD host",
 }
 
-const LXDClusterDetailsRedirect = ({ clusterId }: Props): JSX.Element => {
+const LXDClusterDetailsRedirect = ({
+  clusterId,
+}: Props): React.ReactElement => {
   const hostId = useGetURLId(PodMeta.PK, "hostId");
   const host = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)

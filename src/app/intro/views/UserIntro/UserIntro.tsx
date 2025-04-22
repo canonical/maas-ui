@@ -4,12 +4,12 @@ import { ActionButton, Button, Card, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useListSshKeys } from "@/app/api/query/sshKeys";
-import SSHKeyForm from "@/app/base/components/SSHKeyForm";
-import SSHKeyList from "@/app/base/components/SSHKeyList";
 import TableConfirm from "@/app/base/components/TableConfirm";
 import { useCycled } from "@/app/base/hooks";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
+import SSHKeyList from "@/app/preferences/views/SSHKeys/BaseSSHKeyList";
+import SSHKeyForm from "@/app/preferences/views/SSHKeys/SSHKeyForm";
 import authSelectors from "@/app/store/auth/selectors";
 import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
@@ -21,7 +21,7 @@ export enum Labels {
   AreYouSure = "Are you sure you want to skip your user setup? You will still be able to manage your SSH keys in your user preferences.",
 }
 
-const UserIntro = (): JSX.Element => {
+const UserIntro = (): React.ReactElement => {
   const dispatch = useDispatch();
   const [showSkip, setShowSkip] = useState(false);
   const authLoading = useSelector(authSelectors.loading);
@@ -44,7 +44,7 @@ const UserIntro = (): JSX.Element => {
       windowTitle="User"
     >
       <IntroCard
-        complete={!!hasSSHKeys}
+        complete={hasSSHKeys}
         data-testid="sshkey-card"
         hasErrors={!!errorMessage}
         title={<>SSH keys for {authUser?.username}</>}

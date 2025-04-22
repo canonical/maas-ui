@@ -14,7 +14,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  zoneResolvers.getZone.handler()
+);
 
 describe("VirshDetails", () => {
   let state: RootState;
@@ -23,9 +26,6 @@ describe("VirshDetails", () => {
     state = factory.rootState({
       pod: factory.podState({
         items: [factory.podDetails({ id: 1, type: PodType.VIRSH })],
-        loaded: true,
-      }),
-      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
       tag: factory.tagState({

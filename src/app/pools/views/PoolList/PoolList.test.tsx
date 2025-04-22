@@ -1,180 +1,133 @@
-import { MemoryRouter } from "react-router-dom";
-
 import PoolList from "./PoolList";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   screen,
-  within,
   renderWithMockStore,
   renderWithBrowserRouter,
+  mockIsPending,
+  renderWithProviders,
+  setupMockServer,
+  waitFor,
+  within,
 } from "@/testing/utils";
 
-describe("PoolList", () => {
-  let state: RootState;
+const mockServer = setupMockServer(poolsResolvers.listPools.handler());
 
-  beforeEach(() => {
-    state = factory.rootState({
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [factory.resourcePool({ name: "default" })],
-      }),
+describe("PoolList", () => {
+  it("displays a loading component if pools are loading", async () => {
+    mockIsPending();
+    renderWithMockStore(<PoolList />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+    });
+  });
+  it("displays a link to delete confirmation", async () => {
+    mockServer.use(
+      poolsResolvers.listPools.handler({
+        items: [
+          factory.resourcePool({
+            id: 0,
+            name: "squambo",
+            description: "a pool",
+            is_default: false,
+            machine_total_count: 0,
+            permissions: ["delete"],
+          }),
+        ],
+        total: 1,
+      })
+    );
+
+    renderWithProviders(<PoolList />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("cell", { name: "squambo" })).toBeInTheDocument();
+    });
+    const cell = screen.getByRole("cell", { name: "squambo" });
+    const row = cell.closest("tr")!;
+    expect(row).not.toHaveClass("is-active");
+
+    await waitFor(() => {
+      expect(
+        within(row).getByRole("link", { name: "Delete" })
+      ).toBeInTheDocument();
     });
   });
 
-  it("displays a loading component if pools are loading", () => {
-    state.resourcepool.loading = true;
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <PoolList />
-      </MemoryRouter>,
-      { state }
+  it("does not show a machine link for empty pools", async () => {
+    mockServer.use(
+      poolsResolvers.listPools.handler({
+        items: [
+          factory.resourcePool({ name: "default", machine_total_count: 0 }),
+        ],
+        total: 1,
+      })
     );
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
-
-  it("disables the edit button without permissions", () => {
-    state.resourcepool.items = [factory.resourcePool({ permissions: [] })];
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <PoolList />
-      </MemoryRouter>,
-      { state }
-    );
-
-    expect(screen.getByRole("link", { name: "Edit" })).toHaveClass(
-      "is-disabled"
-    );
-  });
-
-  it("enables the edit button with correct permissions", () => {
-    state.resourcepool.items = [
-      factory.resourcePool({ permissions: ["edit"] }),
-    ];
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <PoolList />
-      </MemoryRouter>,
-      { state }
-    );
-
-    expect(screen.getByRole("link", { name: "Edit" })).not.toHaveClass(
-      "is-disabled"
-    );
-  });
-
-  it("displays a link to delete confirmation", async () => {
-    state.resourcepool.items = [
-      factory.resourcePool({
-        id: 0,
-        name: "squambo",
-        description: "a pool",
-        is_default: false,
-        machine_total_count: 0,
-        permissions: ["delete"],
-      }),
-    ];
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <PoolList />
-      </MemoryRouter>,
-      { state }
-    );
-
-    const row = screen.getByRole("row", { name: "squambo" });
-
-    expect(row).not.toHaveClass("is-active");
-
-    expect(
-      within(row).getByRole("link", { name: "Delete" })
-    ).toBeInTheDocument();
-  });
-
-  it("disables the delete button for default pools", () => {
-    state.resourcepool.items = [
-      factory.resourcePool({
-        id: 0,
-        name: "default",
-        description: "default",
-        is_default: true,
-        permissions: ["edit", "delete"],
-      }),
-    ];
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <PoolList />
-      </MemoryRouter>,
-      { state }
-    );
-    expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
-  });
-
-  it("disables the delete button for pools that contain machines", () => {
-    state.resourcepool.items = [
-      factory.resourcePool({
-        id: 0,
-        name: "machines",
-        description: "has machines",
-        is_default: false,
-        permissions: ["edit", "delete"],
-        machine_total_count: 1,
-      }),
-    ];
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <PoolList />
-      </MemoryRouter>,
-      { state }
-    );
-    expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
-  });
-
-  it("does not show a machine link for empty pools", () => {
-    state.resourcepool.items[0].machine_total_count = 0;
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <PoolList />
-      </MemoryRouter>,
-      { state }
-    );
-    const row = screen.getByRole("row", { name: "default" });
+    renderWithProviders(<PoolList />);
+    await waitFor(() => {
+      expect(screen.getByRole("cell", { name: "default" })).toBeInTheDocument();
+    });
+    const cell = screen.getByRole("cell", { name: "default" });
+    const row = cell.closest("tr")!;
     expect(within(row).getByText("Empty pool")).toBeInTheDocument();
   });
 
-  it("can show a machine link for non-empty pools", () => {
-    state.resourcepool.items[0].machine_total_count = 5;
-    state.resourcepool.items[0].machine_ready_count = 1;
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <PoolList />
-      </MemoryRouter>,
-      { state }
+  it("can show a machine link for non-empty pools", async () => {
+    mockServer.use(
+      poolsResolvers.listPools.handler({
+        items: [
+          factory.resourcePool({
+            name: "default",
+            machine_total_count: 5,
+            machine_ready_count: 1,
+          }),
+        ],
+        total: 1,
+      })
     );
-    const link = within(screen.getByRole("row", { name: "default" })).getByRole(
-      "link",
-      { name: "1 of 5 ready" }
-    );
+
+    renderWithProviders(<PoolList />);
+    await waitFor(() => {
+      expect(screen.getByRole("cell", { name: "default" })).toBeInTheDocument();
+    });
+    const link = within(
+      screen.getByRole("cell", { name: "default" }).closest("tr")!
+    ).getByRole("link", { name: "1 of 5 ready" });
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
   });
 
-  it("displays state errors in a notification", () => {
-    state.resourcepool.errors = "Pools are not for swimming.";
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <PoolList />
-      </MemoryRouter>,
-      { state }
+  it("displays state errors in a notification", async () => {
+    mockServer.use(
+      poolsResolvers.listPools.error({
+        message: "Pools are not for swimming.",
+        code: 401,
+      })
     );
-    expect(screen.getByText("Pools are not for swimming.")).toBeInTheDocument();
+
+    renderWithProviders(<PoolList />);
+
+    await waitFor(() => {
+      expect(poolsResolvers.listPools.resolved).toBeTruthy();
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Pools are not for swimming.")
+      ).toBeInTheDocument();
+    });
   });
 
-  it("displays a message when rendering an empty list", () => {
-    state.resourcepool.items = [];
-    renderWithBrowserRouter(<PoolList />, { state, route: "/pools" });
+  it("displays a message when rendering an empty list", async () => {
+    mockServer.use(poolsResolvers.listPools.handler({ items: [], total: 0 }));
+    renderWithBrowserRouter(<PoolList />, { route: "/pools" });
 
-    expect(screen.getByText("No pools available.")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("No pools found.")).toBeInTheDocument();
+    });
   });
 });

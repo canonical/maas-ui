@@ -6,7 +6,7 @@ const SelectButton = ({
   children,
   className,
   ...props
-}: ButtonProps): JSX.Element => (
+}: ButtonProps): React.ReactElement => (
   <Button
     {...props}
     className={classNames("p-button--select", className)}

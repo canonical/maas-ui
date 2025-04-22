@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect } from "react";
+import type { ReactNode } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -11,10 +11,17 @@ import { produce } from "immer";
 import type { RequestHandler } from "msw";
 import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import type { DataRouter, InitialEntry } from "react-router";
+import {
+  BrowserRouter,
+  createMemoryRouter,
+  Route,
+  RouterProvider,
+  Routes,
+} from "react-router";
 import { HistoryRouter } from "redux-first-history/rr6";
-import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
+import type { MockStoreEnhanced } from "redux-mock-store";
 
 import type { QueryModel } from "@/app/api/query-client";
 import { client } from "@/app/apiclient/client.gen";
@@ -39,7 +46,6 @@ import {
   podStatus as podStatusFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   spaceState as spaceStateFactory,
   subnet as subnetFactory,
@@ -352,9 +358,6 @@ export const getTestState = (): RootState => {
       loaded: true,
       statuses: { [pod.id]: podStatusFactory() },
     }),
-    resourcepool: resourcePoolStateFactory({
-      loaded: true,
-    }),
     space: spaceStateFactory({
       loaded: true,
     }),
@@ -534,84 +537,60 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
   return mockServer;
 };
 
-type TestProviderProps = {
-  children: ReactNode;
-  state?: Partial<RootState>;
-  store?: MockStoreEnhanced<RootState | unknown>;
-  route?: string;
-  history?: MemoryHistory;
-};
-
-/**
- * The wrapper component for all test-relevant providers.
- *
- * @param children The test components to be wrapped
- * @param state The app state used for testing
- * @param store The mock store
- * @param route The route for the test
- * @param history The history object for navigation
- * @constructor
- */
-export const TestProvider = ({
-  children,
-  state = factory.rootState(),
-  store,
-  route = "/",
-  history = createMemoryHistory({ initialEntries: [route] }),
-}: TestProviderProps) => {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
-  });
-
-  const mockStore = store ?? configureStore()(state);
-
-  useEffect(() => {
-    const stopListening = history.listen(({ location }) => {
-      window.history.pushState({}, "", location.pathname + location.search);
-    });
-    return () => stopListening();
-  }, [history]);
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <WebSocketProvider>
-        <Provider store={mockStore}>
-          <SidePanelContextProvider>
-            <HistoryRouter history={history}>{children}</HistoryRouter>
-          </SidePanelContextProvider>
-        </Provider>
-      </WebSocketProvider>
-    </QueryClientProvider>
-  );
-};
-
 /**
  * A function for rendering a component with all test-relevant providers.
  *
  * @param ui The component to be rendered
  * @param options The rendering options
+ * @returns { result, router, store }
  */
 export const renderWithProviders = (
   ui: ReactNode,
   options?: Omit<RenderOptions, "wrapper"> &
-    Partial<TestProviderProps> & { history?: MemoryHistory }
-) => {
-  const { state, store, history, ...renderOptions } = options ?? {};
-  const testHistory = history ?? createMemoryHistory();
+    Partial<{
+      state?: Partial<RootState>;
+      store?: MockStoreEnhanced<RootState | unknown>;
+      initialEntries?: InitialEntry[];
+    }>
+): {
+  result: RenderResult;
+  router: DataRouter;
+  store: MockStoreEnhanced<RootState | unknown>;
+} => {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+  });
+
+  const router = createMemoryRouter(
+    [
+      {
+        path: "*",
+        element: <SidePanelContextProvider>{ui}</SidePanelContextProvider>,
+      },
+    ],
+    { initialEntries: options?.initialEntries || ["/"] }
+  );
+
+  const store =
+    options?.store ??
+    configureStore()({
+      ...factory.rootState(),
+      ...options?.state,
+    });
 
   return {
-    ...render(ui, {
-      wrapper: (props) => (
-        <TestProvider
-          {...props}
-          history={testHistory}
-          state={state}
-          store={store}
-        />
-      ),
-      ...renderOptions,
-    }),
-    history: testHistory,
+    result: render(
+      <QueryClientProvider client={queryClient}>
+        <WebSocketProvider>
+          <Provider store={store}>
+            <RouterProvider router={router} />
+          </Provider>
+        </WebSocketProvider>
+      </QueryClientProvider>,
+      options
+    ),
+    router,
+    store,
   };
 };
 
@@ -619,15 +598,43 @@ export const renderWithProviders = (
  * A function for rendering a hook with all test-relevant providers.
  *
  * @param hook The hook to be rendered
- * @param options The rendering options
+ * @param options
+ * @returns { rerender, result, unmount, store }
  */
 export const renderHookWithProviders = <T,>(
   hook: () => T,
-  options?: Partial<TestProviderProps>
-) => {
-  return renderHook(hook, {
-    wrapper: (props) => <TestProvider {...props} {...options} />,
+  options?: Partial<{
+    state: Partial<RootState>;
+    store: MockStoreEnhanced<RootState | unknown>;
+    initialEntries: string[];
+  }>
+): {
+  result: { current: T };
+  store: MockStoreEnhanced<RootState | unknown>;
+} => {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
   });
+
+  const store =
+    options?.store ??
+    configureStore()({
+      ...factory.rootState(),
+      ...options?.state,
+    });
+
+  return {
+    result: renderHook(hook, {
+      wrapper: ({ children }) => (
+        <QueryClientProvider client={queryClient}>
+          <WebSocketProvider>
+            <Provider store={store}>{children}</Provider>
+          </WebSocketProvider>
+        </QueryClientProvider>
+      ),
+    }).result,
+    store,
+  };
 };
 
 /**

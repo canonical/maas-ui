@@ -1,37 +1,40 @@
+import { useEffect } from "react";
+
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useSelector } from "react-redux";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router";
 
 import PoolDelete from "./PoolDelete";
 import PoolList from "./PoolList";
 
+import { usePoolCount } from "@/app/api/query/pools";
 import PageContent from "@/app/base/components/PageContent";
-import { useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
 import PoolAdd from "@/app/pools/views/PoolAdd";
 import PoolEdit from "@/app/pools/views/PoolEdit";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import { getRelativeRoute } from "@/app/utils";
 
-const Pools = (): JSX.Element => {
+const Pools = (): React.ReactElement => {
   const base = urls.pools.index;
-
+  const { setSidePanelContent } = useSidePanel();
   const { machineCount } = useFetchMachineCount();
 
-  useFetchActions([resourcePoolActions.fetch]);
+  const resourcePoolsCount = usePoolCount();
+  const count = resourcePoolsCount?.data ?? resourcePoolsCount.data;
 
-  const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
+  useEffect(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   const PoolsHeader = () => (
     <MainToolbar>
       <MainToolbar.Title>
-        <Link to={urls.machines.index}>{machineCount} machines </Link>
-        in {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
+        <Link to={urls.machines.index}>{machineCount} machines</Link>
+        {` in ${count} ${pluralize("pool", count)}`}
       </MainToolbar.Title>
       <MainToolbar.Controls>
         <Button data-testid="add-pool" element={Link} to={urls.pools.add}>

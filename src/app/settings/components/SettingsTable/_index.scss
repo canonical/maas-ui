@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @mixin SettingsTable {
   .settings-table {
     display: grid;
@@ -26,8 +28,8 @@
     &::after {
       background: linear-gradient(
         to top,
-        transparentize($color-mid-light, 0.85),
-        transparentize($color-mid-light, 0.85) 1px,
+        color.scale($color-mid-light, $alpha: -85%),
+        color.scale($color-mid-light, $alpha: -85%) 1px,
         transparent 1px,
         transparent
       );

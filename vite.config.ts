@@ -18,6 +18,15 @@ export default defineConfig(({ mode }) => {
   return {
     envDir: "./",
     base: "/",
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: "modern",
+          quietDeps: true,
+          silenceDeprecations: ["import", "global-builtin"],
+        },
+      },
+    },
     define: {
       "process.env": env,
     },

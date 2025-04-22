@@ -27,7 +27,7 @@ const CertificateDownload = ({
   certificate,
   filename,
   isGenerated = false,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <>
       {isGenerated ? (

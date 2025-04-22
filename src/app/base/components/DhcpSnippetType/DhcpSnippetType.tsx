@@ -22,7 +22,7 @@ const DhcpSnippetType = ({
   nodeId,
   subnetId,
   ipRangeId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { loading, loaded, type } = useDhcpTarget(
     nodeId || null,
     subnetId,

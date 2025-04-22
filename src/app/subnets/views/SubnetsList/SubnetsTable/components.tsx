@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { SubnetsColumns } from "./constants";
 import type {
@@ -20,7 +20,7 @@ export const SpaceCellContents = ({
   value,
 }: PropsWithChildren<{
   value: SubnetsTableColumn;
-}>): JSX.Element => {
+}>): React.ReactElement => {
   const [isWarningOpen, setIsWarningOpen] = useState(false);
   return (
     <>
@@ -60,7 +60,7 @@ export const CellContents = ({
   value,
 }: {
   value: SubnetsTableColumn;
-}): JSX.Element => (
+}): React.ReactElement => (
   <>
     <span
       className={value.isVisuallyHidden ? "subnets-table__visually-hidden" : ""}

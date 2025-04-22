@@ -21,7 +21,7 @@ export enum Labels {
   DatacenterLabel = "VMware vCenter datacenter",
 }
 
-const VMWareForm = (): JSX.Element => {
+const VMWareForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
   const errors = useSelector(configSelectors.errors);

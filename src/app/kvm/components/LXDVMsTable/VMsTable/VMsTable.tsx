@@ -258,7 +258,7 @@ const VMsTable = ({
   sortKey,
   vms,
   pods,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const tags = useSelector(tagSelectors.all);
   const currentSort = {
     direction: sortDirection,

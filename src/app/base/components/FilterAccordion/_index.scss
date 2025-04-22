@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin FilterAccordion {
   [class^="p-button"].has-icon.filter-accordion__toggle,
   .filter-accordion__item,
@@ -55,7 +57,7 @@
       background-position-x: $sph--large;
       background-position-y: center;
       background-repeat: no-repeat;
-      background-size: map-get($icon-sizes, default);
+      background-size: map.get($icon-sizes, default);
       font-weight: 400;
     }
   }

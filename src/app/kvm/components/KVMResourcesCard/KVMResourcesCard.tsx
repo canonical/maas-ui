@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import CoreResources from "../CoreResources";
 import RamResources from "../RamResources";
@@ -18,7 +18,7 @@ import type { RootState } from "@/app/store/root/types";
 
 type Props = { id: Pod["id"] };
 
-const KVMResourcesCard = ({ id }: Props): JSX.Element => {
+const KVMResourcesCard = ({ id }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

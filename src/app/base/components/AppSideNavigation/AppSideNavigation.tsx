@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation, useMatch } from "react-router-dom";
+import { useNavigate, useLocation, useMatch } from "react-router";
 import { useStorageState } from "react-storage-hooks";
 
 import AppSideNavItems from "./AppSideNavItems";
@@ -106,7 +106,7 @@ export const AppSideNavigation = ({
   </>
 );
 
-const AppSideNavigationContainer = (): JSX.Element => {
+const AppSideNavigationContainer = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();

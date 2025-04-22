@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin maas-forms {
   // Adds an "X" close button to the right of an input. Used in Add Machine form
   // for removing extra MAC addresses.
@@ -15,7 +17,7 @@
   // Align icon size with form validation font size
   .p-form-validation__message [class*="p-icon--"] {
     @extend %icon;
-    @include vf-icon-size(#{map-get($font-sizes, small)}rem);
+    @include vf-icon-size(#{map.get($font-sizes, small)}rem);
   }
 
   // Add class to checkbox so that label does not change opacity when disabled
@@ -48,7 +50,7 @@
   // small. Used for displaying very long strings, e.g. certificates.
   .p-textarea--readonly {
     color: $color-dark !important;
-    font-size: #{map-get($font-sizes, small)}rem;
+    font-size: #{map.get($font-sizes, small)}rem;
   }
 
   // Override checkbox labels when the text should not appear as

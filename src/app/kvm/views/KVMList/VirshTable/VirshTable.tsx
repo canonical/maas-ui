@@ -1,6 +1,8 @@
 import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import { usePools } from "@/app/api/query/pools";
+import type { ResourcePoolResponse } from "@/app/apiclient";
 import TableHeader from "@/app/base/components/TableHeader";
 import { useTableSort } from "@/app/base/hooks";
 import { SortDirection } from "@/app/base/types";
@@ -14,13 +16,15 @@ import TagsColumn from "@/app/kvm/components/TagsColumn";
 import VMsColumn from "@/app/kvm/components/VMsColumn";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
-import poolSelectors from "@/app/store/resourcepool/selectors";
-import type { ResourcePool } from "@/app/store/resourcepool/types";
 import { isComparable } from "@/app/utils";
 
 type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
 
-const getSortValue = (sortKey: SortKey, kvm: Pod, pools?: ResourcePool[]) => {
+const getSortValue = (
+  sortKey: SortKey,
+  kvm: Pod,
+  pools?: ResourcePoolResponse[]
+) => {
   const { resources } = kvm;
   const { cores, memory, storage, vm_count } = resources;
   const kvmPool = pools?.find((pool) => kvm.pool === pool.id);
@@ -101,18 +105,18 @@ const generateRows = (kvms: Pod[]) =>
     ],
   }));
 
-const VirshTable = (): JSX.Element => {
+const VirshTable = (): React.ReactElement => {
   const virshKvms = useSelector(podSelectors.virsh);
-  const pools = useSelector(poolSelectors.all);
+  const pools = usePools();
   const { currentSort, sortRows, updateSort } = useTableSort<
     Pod,
     SortKey,
-    ResourcePool[]
+    ResourcePoolResponse[]
   >(getSortValue, {
     key: "name",
     direction: SortDirection.DESCENDING,
   });
-  const sortedKVMs = sortRows(virshKvms, pools);
+  const sortedKVMs = sortRows(virshKvms, pools.data?.items);
 
   return (
     <MainTable

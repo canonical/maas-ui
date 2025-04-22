@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import { useZones } from "@/app/api/query/zones";
 import GenericTable from "@/app/base/components/GenericTable";
+import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import authSelectors from "@/app/store/auth/selectors";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
@@ -14,7 +15,11 @@ import "./_index.scss";
 
 const ZonesListTable: React.FC = () => {
   const { setSidePanelContent } = useSidePanel();
-  const zones = useZones();
+  const { page, debouncedPage, size, handlePageSizeChange, setPage } =
+    usePagination();
+  const zones = useZones({
+    query: { page: debouncedPage, size },
+  });
 
   const isAdmin = useSelector(authSelectors.isAdmin);
   const columns = useZonesTableColumns({
@@ -41,7 +46,18 @@ const ZonesListTable: React.FC = () => {
     <GenericTable
       columns={columns}
       data={zones.data?.items ?? []}
+      isLoading={zones.isPending}
       noData={<TableCaption>No zones available.</TableCaption>}
+      pagination={{
+        currentPage: page,
+        dataContext: "zones",
+        handlePageSizeChange: handlePageSizeChange,
+        isPending: zones.isPending,
+        itemsPerPage: size,
+        setCurrentPage: setPage,
+        totalItems: zones.data?.total ?? 0,
+      }}
+      sortBy={[{ id: "machines_count", desc: true }]}
     />
   );
 };

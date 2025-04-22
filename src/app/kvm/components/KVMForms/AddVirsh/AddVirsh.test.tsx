@@ -3,12 +3,11 @@ import AddVirsh from "./AddVirsh";
 import { ConfigNames } from "@/app/store/config/types";
 import { generalActions } from "@/app/store/general";
 import { PodType } from "@/app/store/pod/constants";
-import { resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -16,7 +15,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("AddVirsh", () => {
   let state: RootState;
@@ -43,26 +45,19 @@ describe("AddVirsh", () => {
       pod: factory.podState({
         loaded: true,
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ id: 0 })],
-        loaded: true,
-      }),
     });
   });
 
   it("fetches the necessary data on load", async () => {
-    const { store } = renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <AddVirsh clearSidePanelContent={vi.fn()} />,
       {
-        route: "/kvm/add",
+        initialEntries: ["/kvm/add"],
         state,
       }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
-    const expectedActions = [
-      generalActions.fetchPowerTypes(),
-      resourcePoolActions.fetch(),
-    ];
+    const expectedActions = [generalActions.fetchPowerTypes()];
     const actualActions = store.getActions();
     expectedActions.forEach((expectedAction) => {
       expect(
@@ -76,7 +71,7 @@ describe("AddVirsh", () => {
   it("displays a spinner if data hasn't loaded yet", () => {
     state.general.powerTypes.loaded = false;
     renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -86,18 +81,21 @@ describe("AddVirsh", () => {
     state.general.powerTypes.data = [];
     state.general.powerTypes.loaded = true;
     renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
+    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
-    expect(screen.getByTestId("virsh-unsupported")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByTestId("virsh-unsupported")).toBeInTheDocument()
+    );
   });
 
   it("can handle saving a virsh KVM", async () => {
-    const { store } = renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <AddVirsh clearSidePanelContent={vi.fn()} />,
       {
-        route: "/kvm/add",
+        initialEntries: ["/kvm/add"],
         state,
       }
     );
@@ -112,7 +110,7 @@ describe("AddVirsh", () => {
     );
     await userEvent.selectOptions(
       await screen.findByRole("combobox", { name: /Resource pool/i }),
-      "0"
+      "1"
     );
     await userEvent.selectOptions(screen.getByLabelText(/Zone/i), "1");
 
@@ -131,7 +129,7 @@ describe("AddVirsh", () => {
       payload: {
         params: {
           name: "my-favourite-kvm",
-          pool: 0,
+          pool: 1,
           power_address: "auto",
           power_pass: "auto",
           type: PodType.VIRSH,

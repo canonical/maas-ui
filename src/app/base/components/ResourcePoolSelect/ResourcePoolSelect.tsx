@@ -1,12 +1,10 @@
 import type { HTMLProps } from "react";
+import React from "react";
 
 import { Select } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 
+import { usePools } from "@/app/api/query/pools";
 import FormikField from "@/app/base/components/FormikField";
-import { useFetchActions } from "@/app/base/hooks";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 
 type Props = {
   disabled?: boolean;
@@ -21,16 +19,14 @@ export const ResourcePoolSelect = ({
   name,
   valueKey = "name",
   ...props
-}: Props): JSX.Element => {
-  const resourcePools = useSelector(resourcePoolSelectors.all);
-  const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
-
-  useFetchActions([resourcePoolActions.fetch]);
+}: Props): React.ReactElement => {
+  const listPools = usePools();
+  const resourcePools = listPools.data?.items || [];
 
   return (
     <FormikField
       component={Select}
-      disabled={!resourcePoolsLoaded || disabled}
+      disabled={!listPools.isSuccess || disabled}
       label={label}
       name={name}
       options={[

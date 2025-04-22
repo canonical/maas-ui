@@ -38,7 +38,7 @@ type Props = {
   scriptResults: ScriptResult[];
 };
 
-const NodeTestsTable = ({ node, scriptResults }: Props): JSX.Element => {
+const NodeTestsTable = ({ node, scriptResults }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
   const [expanded, setExpanded] = useState<Expanded | null>(null);

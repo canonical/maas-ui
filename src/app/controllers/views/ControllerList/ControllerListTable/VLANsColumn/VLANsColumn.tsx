@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
@@ -30,7 +30,7 @@ const getVlanCount = (controller: Controller) => {
   return (vlansHA?.false || 0) + (vlansHA?.true || 0);
 };
 
-export const VLANsColumn = ({ systemId }: Props): JSX.Element | null => {
+export const VLANsColumn = ({ systemId }: Props): React.ReactElement | null => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

@@ -19,7 +19,7 @@ const MachineName = ({
   editingName,
   id,
   setEditingName,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)

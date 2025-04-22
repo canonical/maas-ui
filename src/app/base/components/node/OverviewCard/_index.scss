@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin OverviewCard {
   .overview-card {
     @extend %base-grid;
@@ -135,7 +137,7 @@
       .overview-card__memory {
         @include pseudo-border(top);
         &::before {
-          right: -#{map-get($grid-gutter-widths, default)};
+          right: -#{map.get($grid-gutter-widths, default)};
         }
         margin-left: $sph--large;
         padding-left: 0;

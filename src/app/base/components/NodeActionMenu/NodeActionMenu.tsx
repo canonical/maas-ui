@@ -183,7 +183,7 @@ export const NodeActionMenu = ({
   toggleClassName,
   toggleLabel = Label.TakeAction,
   constrainPanelWidth,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <Tooltip
       message={

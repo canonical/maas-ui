@@ -16,7 +16,7 @@ type AddFabricValues = {
 const AddFabric = ({
   activeForm,
   setActiveForm,
-}: FormActionProps): JSX.Element => {
+}: FormActionProps): React.ReactElement => {
   const dispatch = useDispatch();
   const isSaving = useSelector(fabricSelectors.saving);
   const isSaved = useSelector(fabricSelectors.saved);

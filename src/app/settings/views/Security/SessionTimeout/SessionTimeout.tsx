@@ -45,16 +45,12 @@ const SessionTimeoutSchema = Yup.object().shape({
           return false;
         }
 
-        if (sessionLengthInSeconds <= 1209600) {
-          return true;
-        } else {
-          return false;
-        }
+        return sessionLengthInSeconds <= 1209600;
       }
     ),
 });
 
-const SessionTimeout = (): JSX.Element => {
+const SessionTimeout = (): React.ReactElement => {
   useWindowTitle("Session timeout");
   const dispatch = useDispatch();
   const configLoading = useSelector(configSelectors.loading);

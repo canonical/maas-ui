@@ -78,7 +78,11 @@ describe("AddDeviceForm", () => {
     renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
       store,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "Device name" })
+      ).toBeInTheDocument()
+    );
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Device name" }),

@@ -28,7 +28,6 @@ import { generalActions } from "@/app/store/general";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
-import { resourcePoolActions } from "@/app/store/resourcepool";
 import { tagActions } from "@/app/store/tag";
 import { userActions } from "@/app/store/user";
 import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
@@ -62,7 +61,7 @@ export const MachineListTable = ({
   setSortDirection,
   setSortKey,
   ...props
-}: MachineListTableProps): JSX.Element => {
+}: MachineListTableProps): React.ReactElement => {
   const parsedFilter = useMemo(
     () => FilterMachines.parseFetchFilters(filter),
     [filter]
@@ -98,7 +97,6 @@ export const MachineListTable = ({
     generalActions.fetchOsInfo,
     generalActions.fetchPowerTypes,
     generalActions.fetchVersion,
-    resourcePoolActions.fetch,
     tagActions.fetch,
     userActions.fetch,
   ]);

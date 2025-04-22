@@ -9,10 +9,15 @@ import {
 } from "@canonical/react-components";
 import type { Location } from "history";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
+import { usePools } from "@/app/api/query/pools";
+import type {
+  ResourcePoolResponse,
+  ResourcePoolWithSummaryResponse,
+} from "@/app/apiclient";
 import TableHeader from "@/app/base/components/TableHeader";
-import { useFetchActions, useTableSort } from "@/app/base/hooks";
+import { useTableSort } from "@/app/base/hooks";
 import { SortDirection } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import CPUColumn from "@/app/kvm/components/CPUColumn";
@@ -25,9 +30,6 @@ import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import poolSelectors from "@/app/store/resourcepool/selectors";
-import type { ResourcePool } from "@/app/store/resourcepool/types";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 import { isComparable } from "@/app/utils";
 
@@ -44,7 +46,7 @@ type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
 const getSortValue = (
   sortKey: SortKey,
   pod: Pod,
-  pools?: ResourcePool[]
+  pools?: ResourcePoolResponse[]
 ): string | number | null => {
   const { cores, memory, storage, vm_count } = pod.resources;
   const pool = pools?.find((pool) => pod.pool === pool.id);
@@ -69,7 +71,7 @@ const getSortValue = (
 const generateRows = (
   clusterId: VMCluster["id"],
   clusterHosts: Pod[],
-  pools: ResourcePool[],
+  pools: ResourcePoolWithSummaryResponse[],
   setSidePanelContent: KVMSetSidePanelContent,
   location: Location
 ) =>
@@ -175,27 +177,24 @@ const LXDClusterHostsTable = ({
   hosts,
   searchFilter,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const location = useLocation();
-  const pools = useSelector(poolSelectors.all);
+  const pools = usePools();
   const podsLoaded = useSelector(podSelectors.loaded);
-  const poolsLoaded = useSelector(poolSelectors.loaded);
-  const loaded = poolsLoaded && podsLoaded;
+  const loaded = !pools.isPending && podsLoaded;
   const { currentSort, sortRows, updateSort } = useTableSort<
     Pod,
     SortKey,
-    ResourcePool[]
+    ResourcePoolResponse[]
   >(getSortValue, {
     key: "name",
     direction: SortDirection.DESCENDING,
   });
-  const sortedClusterHosts = sortRows(hosts, pools);
+  const sortedClusterHosts = sortRows(hosts, pools.data?.items);
   const paginatedClusterHosts = sortedClusterHosts.slice(
     (currentPage - 1) * VMS_PER_PAGE,
     currentPage * VMS_PER_PAGE
   );
-
-  useFetchActions([resourcePoolActions.fetch]);
 
   return (
     <>
@@ -302,7 +301,7 @@ const LXDClusterHostsTable = ({
                 ? generateRows(
                     clusterId,
                     paginatedClusterHosts,
-                    pools,
+                    pools.data!.items,
                     setSidePanelContent,
                     location
                   )

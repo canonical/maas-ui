@@ -1,6 +1,6 @@
 import TooltipButton from "@/app/base/components/TooltipButton";
 
-const ManagedAllocationLabel = (): JSX.Element => (
+const ManagedAllocationLabel = (): React.ReactElement => (
   <>
     Managed allocation{" "}
     <TooltipButton

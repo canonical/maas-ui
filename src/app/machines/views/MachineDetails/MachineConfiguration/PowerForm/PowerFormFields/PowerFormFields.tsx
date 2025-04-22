@@ -11,7 +11,7 @@ type Props = {
   machine: MachineDetails;
 };
 
-const PowerFormFields = ({ machine }: Props): JSX.Element => {
+const PowerFormFields = ({ machine }: Props): React.ReactElement => {
   const isMachineInPod = Boolean(machine.pod);
   const fieldScopes = getMachineFieldScopes(machine);
 

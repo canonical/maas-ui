@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import type { Location } from "react-router-dom";
-import { Link, matchPath, useLocation } from "react-router-dom";
+import type { Location } from "react-router";
+import { Link, matchPath, useLocation } from "react-router";
 
 import { useThemeContext } from "@/app/base/theme-context";
 
@@ -97,7 +97,7 @@ export const SecondaryNavigation = ({
   isOpen?: boolean;
   items: NavItem[];
   title: string;
-}): JSX.Element => {
+}): React.ReactElement => {
   const { theme } = useThemeContext();
 
   return (

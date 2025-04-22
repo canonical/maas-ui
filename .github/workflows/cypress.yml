@@ -6,7 +6,7 @@ on:
       - "3.*"
       - "*cypress*"
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   cypress:
@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        groups: ['no-users', 'with-users']
+        groups: [ 'no-users', 'with-users' ]
     env:
       MAAS_URL: http://localhost:5240
       MAAS_UI_URL: http://localhost:8400
@@ -27,6 +27,10 @@ jobs:
         uses: canonical/setup-maas@main
         with:
           maas-url: ${{ env.MAAS_URL }}/MAAS
+      - name: Use Node.js from .nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
       - name: Install Cypress
         uses: cypress-io/github-action@v4
         with:

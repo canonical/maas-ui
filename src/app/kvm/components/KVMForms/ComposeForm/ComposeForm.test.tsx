@@ -9,6 +9,7 @@ import ComposeForm, {
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
@@ -19,7 +20,10 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("ComposeForm", () => {
   let state: RootState;
@@ -46,15 +50,6 @@ describe("ComposeForm", () => {
         loaded: true,
         statuses: { 1: factory.podStatus() },
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [
-          factory.resourcePool({
-            id: 2,
-            name: "olympic",
-          }),
-        ],
-      }),
       space: factory.spaceState({
         loaded: true,
       }),
@@ -71,7 +66,7 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     const expectedActions = [
       "FETCH_DOMAIN",
@@ -94,7 +89,7 @@ describe("ComposeForm", () => {
     state.domain.loaded = false;
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", state }
+      { initialEntries: ["/kvm/1"], state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -143,9 +138,13 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "VM name" })
+      ).toBeInTheDocument()
+    );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
     await userEvent.type(
@@ -260,9 +259,13 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "VM name" })
+      ).toBeInTheDocument()
+    );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
     await userEvent.type(

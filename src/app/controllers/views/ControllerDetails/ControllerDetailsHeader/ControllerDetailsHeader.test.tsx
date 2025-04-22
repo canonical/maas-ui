@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ControllerDetailsHeader from "./ControllerDetailsHeader";
@@ -8,7 +6,7 @@ import type { ControllerActions } from "@/app/store/controller/types";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -19,15 +17,9 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerDetailsHeader
-          setSidePanelContent={vi.fn()}
-          systemId="abc123"
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <ControllerDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
+    { store }
   );
 
   expect(
@@ -43,15 +35,12 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerDetailsHeader
-          setSidePanelContent={vi.fn()}
-          systemId={controller.system_id}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <ControllerDetailsHeader
+      setSidePanelContent={vi.fn()}
+      systemId={controller.system_id}
+    />,
+    { store }
   );
 
   expect(
@@ -67,15 +56,12 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerDetailsHeader
-          setSidePanelContent={vi.fn()}
-          systemId={controllerDetails.system_id}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <ControllerDetailsHeader
+      setSidePanelContent={vi.fn()}
+      systemId={controllerDetails.system_id}
+    />,
+    { store }
   );
 
   expect(
@@ -98,15 +84,12 @@ it("displays actions in take action menu", async () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerDetailsHeader
-          setSidePanelContent={vi.fn()}
-          systemId={controllerDetails.system_id}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <ControllerDetailsHeader
+      setSidePanelContent={vi.fn()}
+      systemId={controllerDetails.system_id}
+    />,
+    { store }
   );
 
   const actionLabels = actions.map(getNodeActionTitle);

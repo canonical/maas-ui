@@ -9,10 +9,11 @@ import { DriverType } from "@/app/store/general/types";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   renderWithMockStore,
   userEvent,
   fireEvent,
@@ -22,7 +23,10 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  poolsResolvers.listPools.handler()
+);
 
 describe("ComposeFormFields", () => {
   let initialState: RootState;
@@ -45,9 +49,6 @@ describe("ComposeFormFields", () => {
         items: [factory.podDetails({ id: 1, type: "lxd" })],
         loaded: true,
         statuses: { 1: factory.podStatus() },
-      }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
       }),
       space: factory.spaceState({
         loaded: true,
@@ -73,9 +74,9 @@ describe("ComposeFormFields", () => {
     });
     pod.cpu_over_commit_ratio = 3;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     // Allocated = 1 + 2 = 3
@@ -109,11 +110,13 @@ describe("ComposeFormFields", () => {
     });
     pod.memory_over_commit_ratio = 2;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByText("15000MiB available.")).toBeInTheDocument()
+    );
     // Allocated = (1000 + 2000) + (4000 + 5000) = 12000
     // Hugepages do not take overcommit into account, so
     // Total = ((1000 + 2000 + 3000) * 2) + (4000 + 5000 + 6000) = 12000 + 15000 = 27000
@@ -160,11 +163,17 @@ describe("ComposeFormFields", () => {
       }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          /The available cores \(1\) is less than the recommended default \(2\)/i
+        )
+      ).toBeInTheDocument()
+    );
     expect(
       screen.getByText(
         /The available cores \(1\) is less than the recommended default \(2\)/i
@@ -374,11 +383,15 @@ describe("ComposeFormFields", () => {
   it("can detect duplicate core indices", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+      ).toBeInTheDocument()
+    );
     // Switch to pinning cores
     await userEvent.click(
       screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
@@ -402,11 +415,15 @@ describe("ComposeFormFields", () => {
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+      ).toBeInTheDocument()
+    );
     // Switch to pinning cores
     await userEvent.click(
       screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
@@ -423,11 +440,15 @@ describe("ComposeFormFields", () => {
       cores: factory.podResource({ free: 1 }),
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", state }
+      { initialEntries: ["/kvm/1"], state }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+      ).toBeInTheDocument()
+    );
     // Switch to pinning cores
     await userEvent.click(
       screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
@@ -465,11 +486,15 @@ describe("ComposeFormFields", () => {
       ],
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { initialEntries: ["/kvm/1"], store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+      ).toBeInTheDocument()
+    );
     // Switch to pinning cores
     await userEvent.click(
       screen.getByRole("radio", { name: "Pin VM to specific core(s)" })

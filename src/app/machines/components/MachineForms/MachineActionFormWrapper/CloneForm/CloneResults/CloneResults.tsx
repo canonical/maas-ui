@@ -11,7 +11,7 @@ import {
 } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import type { APIError, SetSearchFilter } from "@/app/base/types";
 import urls from "@/app/base/urls";
@@ -132,7 +132,7 @@ export const CloneResults = ({
   setSearchFilter,
   sourceMachine,
   viewingDetails,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { pathname } = useLocation();
   const [destinationCount, setDestinationCount] = useState(0);
   const cloneErrors = useSelector((state: RootState) =>

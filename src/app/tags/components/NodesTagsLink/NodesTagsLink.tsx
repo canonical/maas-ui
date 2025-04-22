@@ -1,5 +1,5 @@
 import pluralize from "pluralize";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 import urls from "@/app/base/urls";
 import { ControllerMeta } from "@/app/store/controller/types";
@@ -19,7 +19,7 @@ const NodesTagsLink = ({
   count,
   nodeType,
   tags,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { pathname } = useLocation();
 
   let url: string | null = null;

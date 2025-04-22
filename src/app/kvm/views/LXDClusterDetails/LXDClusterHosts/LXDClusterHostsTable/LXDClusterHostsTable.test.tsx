@@ -6,7 +6,16 @@ import { PodType } from "@/app/store/pod/constants";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(poolsResolvers.listPools.handler());
 
 describe("LXDClusterHostsTable", () => {
   let state: RootState;
@@ -16,16 +25,12 @@ describe("LXDClusterHostsTable", () => {
       cluster: 1,
       id: 22,
       name: "cluster-host",
-      pool: 333,
+      pool: 1,
       type: PodType.LXD,
     });
     state = factory.rootState({
       pod: factory.podState({
         items: [host],
-        loaded: true,
-      }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool({ id: 333, name: "swimming" })],
         loaded: true,
       }),
       vmcluster: factory.vmClusterState({
@@ -40,8 +45,7 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("shows a spinner if pods or pools haven't loaded yet", () => {
-    state.resourcepool.loaded = false;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -49,13 +53,13 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
-  it("can link to a host's VMs tab", () => {
-    renderWithBrowserRouter(
+  it("can link to a host's VMs tab", async () => {
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -63,17 +67,19 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
 
-    expect(screen.getByRole("link", { name: host.name })).toHaveAttribute(
-      "href",
-      urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 22 })
+    await waitFor(() =>
+      expect(screen.getByRole("link", { name: host.name })).toHaveAttribute(
+        "href",
+        urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 22 })
+      )
     );
   });
 
-  it("can show the name of the host's pool", () => {
-    renderWithBrowserRouter(
+  it("can show the name of the host's pool", async () => {
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -81,15 +87,17 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
-
-    expect(screen.getByTestId("host-pool-name")).toHaveTextContent("swimming");
+    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByTestId("host-pool-name")).toHaveTextContent("swimming")
+    );
   });
 
   it("can open the compose VM form for a host", async () => {
     const setSidePanelContent = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -97,17 +105,20 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={setSidePanelContent}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
+    await waitFor(() => screen.getByTestId("vm-host-compose"));
     await userEvent.click(screen.getByTestId("vm-host-compose"));
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMSidePanelViews.COMPOSE_VM,
-      extras: { hostId: 22 },
-    });
+    await waitFor(() =>
+      expect(setSidePanelContent).toHaveBeenCalledWith({
+        view: KVMSidePanelViews.COMPOSE_VM,
+        extras: { hostId: 22 },
+      })
+    );
   });
 
-  it("can link to a host's settings page", () => {
-    renderWithBrowserRouter(
+  it("can link to a host's settings page", async () => {
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -115,19 +126,22 @@ describe("LXDClusterHostsTable", () => {
         searchFilter=""
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
-    expect(screen.getByTestId("vm-host-settings")).toHaveAttribute(
-      "href",
-      urls.kvm.lxd.cluster.host.edit({
-        clusterId: 1,
-        hostId: 22,
-      })
+    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByTestId("vm-host-settings")).toHaveAttribute(
+        "href",
+        urls.kvm.lxd.cluster.host.edit({
+          clusterId: 1,
+          hostId: 22,
+        })
+      )
     );
   });
 
   it("displays a message if there are no search results", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
@@ -135,7 +149,7 @@ describe("LXDClusterHostsTable", () => {
         searchFilter="nothing"
         setSidePanelContent={vi.fn()}
       />,
-      { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
 
     expect(screen.getByTestId("no-hosts")).toBeInTheDocument();

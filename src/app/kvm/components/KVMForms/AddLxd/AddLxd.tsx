@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 
 import { Stepper } from "@canonical/maas-react-components";
 import { Notification } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import AuthenticationForm from "./AuthenticationForm";
 import CredentialsForm from "./CredentialsForm";
 import SelectProjectForm from "./SelectProjectForm";
 import type { AddLxdStepValues, NewPodValues } from "./types";
 
+import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { podActions } from "@/app/store/pod";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;
@@ -24,9 +24,11 @@ export const AddLxdSteps = {
   SELECT_PROJECT: "Project selection",
 } as const;
 
-export const AddLxd = ({ clearSidePanelContent }: Props): JSX.Element => {
+export const AddLxd = ({
+  clearSidePanelContent,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const resourcePools = useSelector(resourcePoolSelectors.all);
+  const resourcePools = usePools();
   const zones = useZones();
   const [step, setStep] = useState<AddLxdStepValues>(AddLxdSteps.CREDENTIALS);
   const stepIndex = Object.values(AddLxdSteps).indexOf(step);
@@ -36,7 +38,9 @@ export const AddLxd = ({ clearSidePanelContent }: Props): JSX.Element => {
     key: "",
     name: "",
     password: "",
-    pool: resourcePools.length ? `${resourcePools[0].id}` : "",
+    pool: resourcePools.data?.items?.length
+      ? `${resourcePools.data?.items[0].id}`
+      : "",
     power_address: "",
     zone: zones.data?.items?.length ? `${zones.data?.items[0].id}` : "",
   });

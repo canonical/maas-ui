@@ -50,10 +50,6 @@ import type {
 import type { PodState, PodMeta } from "@/app/store/pod/types";
 import type { ReservedIpState } from "@/app/store/reservedip/types";
 import type { ReservedIpMeta } from "@/app/store/reservedip/types/enum";
-import type {
-  ResourcePoolState,
-  ResourcePoolMeta,
-} from "@/app/store/resourcepool/types";
 import type { ScriptState, ScriptMeta } from "@/app/store/script/types";
 import type {
   ScriptResultState,
@@ -99,7 +95,6 @@ export type RootState = {
   [PackageRepositoryMeta.MODEL]: PackageRepositoryState;
   [PodMeta.MODEL]: PodState;
   [ReservedIpMeta.MODEL]: ReservedIpState;
-  [ResourcePoolMeta.MODEL]: ResourcePoolState;
   router: RouterState;
   [ScriptResultMeta.MODEL]: ScriptResultState;
   [ScriptMeta.MODEL]: ScriptState;

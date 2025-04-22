@@ -7,7 +7,9 @@ setupMockServer(sshKeyResolvers.listSshKeys.handler());
 
 describe("SSHKeyList", () => {
   it("renders", () => {
-    renderWithProviders(<SSHKeyList />, { route: "/account/prefs/ssh-keys" });
+    renderWithProviders(<SSHKeyList />, {
+      initialEntries: ["/account/prefs/ssh-keys"],
+    });
 
     expect(
       screen.getByRole("grid", { name: SSHKeyListLabels.Title })

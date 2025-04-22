@@ -18,7 +18,7 @@ export const TagChip = ({
   tag,
   tagIdsAndCounts,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const tagCount = tagIdsAndCounts?.get(tag.id);
   return (
     <Chip

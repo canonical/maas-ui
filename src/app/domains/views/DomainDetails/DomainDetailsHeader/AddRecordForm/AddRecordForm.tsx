@@ -41,7 +41,7 @@ const CreateRecordSchema: SchemaOf<CreateRecordValues> = Yup.object()
   })
   .defined();
 
-const AddRecordForm = ({ closeForm, id }: Props): JSX.Element => {
+const AddRecordForm = ({ closeForm, id }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);

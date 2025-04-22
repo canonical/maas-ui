@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import ZonesListHeader from "./ZonesListHeader";
 import ZonesListTable from "./ZonesListTable";
@@ -25,6 +25,10 @@ const ZonesList: React.FC = () => {
     // the hooks from causing a list update, this line forces it
     void zonesCount.refetch();
   };
+
+  useEffect(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   let content = null;
 

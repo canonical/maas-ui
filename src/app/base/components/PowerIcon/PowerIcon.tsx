@@ -35,7 +35,7 @@ const PowerIcon = ({
   className,
   powerState,
   showSpinner,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const iconClass = classNames(className, {
     "is-inline": Boolean(children),
     "u-animation--spin": showSpinner,

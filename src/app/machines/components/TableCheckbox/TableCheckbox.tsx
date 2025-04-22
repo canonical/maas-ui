@@ -39,7 +39,7 @@ const TableCheckbox = ({
   isDisabled,
   onGenerateSelected,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const machineCount = useSelector((state: RootState) =>
     machineSelectors.listCount(state, callId)
@@ -59,7 +59,7 @@ const TableCheckbox = ({
       ) => {
         // prevent default text range selection when 'shift' key is pressed
         window.getSelection()?.removeAllRanges();
-        const isRange = !!event.nativeEvent.shiftKey;
+        const isRange = event.nativeEvent.shiftKey;
         dispatch(
           machineActions.setSelected(
             onGenerateSelected(event.target.checked, isRange)

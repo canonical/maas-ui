@@ -4,10 +4,14 @@ import PoolColumn from "./PoolColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import { renderWithProviders, setupMockServer, waitFor } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.getZone.handler());
+setupMockServer(
+  poolsResolvers.getPool.handler(),
+  zoneResolvers.getZone.handler()
+);
 
 describe("PoolColumn", () => {
   let state: RootState;
@@ -22,14 +26,6 @@ describe("PoolColumn", () => {
           }),
         ],
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [
-          factory.resourcePool({
-            id: 1,
-            name: "swimming-pool",
-          }),
-        ],
-      }),
     });
   });
 
@@ -41,9 +37,9 @@ describe("PoolColumn", () => {
       />,
       { state }
     );
-    await waitFor(() => expect(zoneResolvers.getZone.resolved).toBeTruthy());
+    await waitFor(() => expect(screen.getByTestId("pool")).toBeInTheDocument());
     await waitFor(() =>
-      expect(screen.getByTestId("pool")).toHaveTextContent("swimming-pool")
+      expect(screen.getByTestId("pool")).toHaveTextContent("swimming")
     );
     await waitFor(() =>
       expect(screen.getByTestId("zone")).toHaveTextContent("zone-1")

@@ -117,7 +117,10 @@ const DiscoveryAddSchema = Yup.object().shape({
   type: Yup.string(),
 });
 
-const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
+const DiscoveryAddForm = ({
+  discovery,
+  onClose,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const [redirect, setRedirect] = useState<string | null>(null);
   const initialDeviceType = DeviceType.DEVICE;

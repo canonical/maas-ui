@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import AddMachineFormFields from "../AddMachineFormFields";
 import type { AddMachineValues } from "../types";
 
+import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
@@ -32,8 +33,6 @@ import {
 } from "@/app/store/general/utils";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
-import { resourcePoolActions } from "@/app/store/resourcepool";
-import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;
@@ -41,7 +40,7 @@ type Props = {
 
 export const AddMachineForm = ({
   clearSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const architectures = useSelector(architecturesSelectors.get);
   const architecturesLoaded = useSelector(architecturesSelectors.loaded);
@@ -57,8 +56,7 @@ export const AddMachineForm = ({
   const machineErrors = useSelector(machineSelectors.errors);
   const powerTypes = useSelector(powerTypesSelectors.get);
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
-  const resourcePools = useSelector(resourcePoolSelectors.all);
-  const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
+  const resourcePools = usePools();
   const zones = useZones();
 
   const [powerType, setPowerType] = useState<PowerType | null>(null);
@@ -72,7 +70,6 @@ export const AddMachineForm = ({
     generalActions.fetchDefaultMinHweKernel,
     generalActions.fetchHweKernels,
     generalActions.fetchPowerTypes,
-    resourcePoolActions.fetch,
   ]);
 
   useAddMessage(
@@ -111,7 +108,7 @@ export const AddMachineForm = ({
     domainsLoaded &&
     hweKernelsLoaded &&
     powerTypesLoaded &&
-    resourcePoolsLoaded &&
+    !resourcePools.isPending &&
     !zones.isPending;
 
   return (
@@ -138,7 +135,10 @@ export const AddMachineForm = ({
             extra_macs: [],
             hostname: "",
             min_hwe_kernel: defaultMinHweKernel || "",
-            pool: (resourcePools.length && resourcePools[0].name) || "",
+            pool:
+              (resourcePools?.data?.items?.length &&
+                resourcePools?.data.items[0].name) ||
+              "",
             power_parameters: initialPowerParameters,
             power_type: "",
             pxe_mac: "",

@@ -21,7 +21,7 @@ const GroupCheckbox = ({
   group,
   grouping,
   groupName,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const selected = useSelector(machineSelectors.selected);
   const allSelected = !!selected && "filter" in selected;
   if (!group) {

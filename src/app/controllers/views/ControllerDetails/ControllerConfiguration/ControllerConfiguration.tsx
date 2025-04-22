@@ -13,7 +13,7 @@ type Props = {
   systemId: Controller[ControllerMeta.PK];
 };
 
-const ControllerConfiguration = ({ systemId }: Props): JSX.Element => {
+const ControllerConfiguration = ({ systemId }: Props): React.ReactElement => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

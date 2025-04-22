@@ -9,7 +9,7 @@ type TableHeaderProps<T> = {
   header: Header<T, unknown>;
 };
 
-const TableHeader = <T,>({ header }: TableHeaderProps<T>) => {
+const ColumnHeader = <T,>({ header }: TableHeaderProps<T>) => {
   return (
     <th className={classNames(`${header.column.id}`)} key={header.id}>
       {header.column.getCanSort() ? (
@@ -29,4 +29,4 @@ const TableHeader = <T,>({ header }: TableHeaderProps<T>) => {
   );
 };
 
-export default TableHeader;
+export default ColumnHeader;

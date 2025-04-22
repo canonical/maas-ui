@@ -1,96 +1,77 @@
-import { MemoryRouter } from "react-router-dom";
-
 import SSLKeyList, { Label as SSLKeyListLabels } from "./SSLKeyList";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { sslKeyResolvers } from "@/testing/resolvers/sslKeys";
 import {
   screen,
-  renderWithMockStore,
-  renderWithBrowserRouter,
+  setupMockServer,
+  mockIsPending,
+  waitForLoading,
+  renderWithProviders,
 } from "@/testing/utils";
 
+const mockKeys = {
+  items: [
+    factory.sslKey({
+      id: 1,
+      key: "ssh-rsa aabb",
+    }),
+    factory.sslKey({
+      id: 2,
+      key: "ssh-rsa ccdd",
+    }),
+    factory.sslKey({
+      id: 3,
+      key: "ssh-rsa eeff",
+    }),
+    factory.sslKey({
+      id: 4,
+      key: "ssh-rsa gghh",
+    }),
+    factory.sslKey({
+      id: 5,
+      key: "ssh-rsa gghh",
+    }),
+  ],
+  total: 5,
+};
+
+const mockServer = setupMockServer(
+  sslKeyResolvers.getSslKeys.handler(mockKeys)
+);
+
 describe("SSLKeyList", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = factory.rootState({
-      sslkey: factory.sslKeyState({
-        loading: false,
-        loaded: true,
-        items: [
-          factory.sslKey({
-            id: 1,
-            key: "ssh-rsa aabb",
-          }),
-          factory.sslKey({
-            id: 2,
-            key: "ssh-rsa ccdd",
-          }),
-          factory.sslKey({
-            id: 3,
-            key: "ssh-rsa eeff",
-          }),
-          factory.sslKey({
-            id: 4,
-            key: "ssh-rsa gghh",
-          }),
-          factory.sslKey({ id: 5, key: "ssh-rsa gghh" }),
-        ],
-      }),
-    });
-  });
-
   it("displays a loading component if machines are loading", () => {
-    state.sslkey.loading = true;
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[
-          { pathname: "/account/prefs/ssl-keys", key: "testKey" },
-        ]}
-      >
-        <SSLKeyList />
-      </MemoryRouter>,
-      { state }
-    );
+    mockIsPending();
+    renderWithProviders(<SSLKeyList />);
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
-  it("can display errors", () => {
-    state.sslkey.errors = "Unable to list SSL keys.";
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[
-          { pathname: "/account/prefs/ssl-keys", key: "testKey" },
-        ]}
-      >
-        <SSLKeyList />
-      </MemoryRouter>,
-      { state }
+  it("can display errors", async () => {
+    mockServer.use(
+      sslKeyResolvers.getSslKeys.error({
+        message: "Unable to list SSL keys",
+        code: 400,
+      })
     );
-    expect(screen.getByText("Unable to list SSL keys.")).toBeInTheDocument();
+    renderWithProviders(<SSLKeyList />);
+    await waitForLoading();
+    expect(screen.getByText("Unable to list SSL keys")).toBeInTheDocument();
   });
 
   it("can render the table", () => {
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[
-          { pathname: "/account/prefs/ssl-keys", key: "testKey" },
-        ]}
-      >
-        <SSLKeyList />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<SSLKeyList />);
     expect(screen.getByRole("grid", { name: SSLKeyListLabels.Title }));
   });
 
   it("displays an empty state message", () => {
-    state.sslkey.items = [];
-    renderWithBrowserRouter(<SSLKeyList />, {
-      state,
-      route: "/account/prefs/ssl-keys",
-    });
+    mockServer.use(
+      sslKeyResolvers.getSslKeys.handler({
+        items: [],
+        total: 0,
+      })
+    );
+    renderWithProviders(<SSLKeyList />);
 
     expect(screen.getByText("No SSL keys available.")).toBeInTheDocument();
   });

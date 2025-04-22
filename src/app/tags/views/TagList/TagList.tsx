@@ -31,7 +31,7 @@ const TagList = ({
   tableId,
   onDelete,
   onUpdate,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   useWindowTitle("Tags");
   const pageSize = 50;
 

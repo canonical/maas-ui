@@ -1,4 +1,4 @@
-import SSHKeyList from "./SSHKeyList";
+import SSHKeyList from "./BaseSSHKeyList";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import urls from "@/app/preferences/urls";
@@ -69,7 +69,7 @@ describe("SSHKeyList", () => {
   it("displays a loading component if SSH keys are loading", () => {
     mockIsPending();
     renderWithProviders(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
+      initialEntries: ["/account/prefs/ssh-keys"],
     });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
@@ -80,7 +80,7 @@ describe("SSHKeyList", () => {
     );
 
     renderWithProviders(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
+      initialEntries: ["/account/prefs/ssh-keys"],
     });
 
     await waitForLoading();
@@ -89,7 +89,7 @@ describe("SSHKeyList", () => {
 
   it("can group keys", async () => {
     renderWithProviders(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
+      initialEntries: ["/account/prefs/ssh-keys"],
     });
 
     await waitForLoading();
@@ -109,7 +109,7 @@ describe("SSHKeyList", () => {
 
   it("displays the full SSH key value", async () => {
     renderWithProviders(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
+      initialEntries: ["/account/prefs/ssh-keys"],
     });
     const keyValue = mockKeys.items[2].key;
 
@@ -121,7 +121,7 @@ describe("SSHKeyList", () => {
 
   it("can display uploaded keys", async () => {
     renderWithProviders(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
+      initialEntries: ["/account/prefs/ssh-keys"],
     });
 
     await waitForLoading();
@@ -136,7 +136,7 @@ describe("SSHKeyList", () => {
 
   it("can display imported keys", async () => {
     renderWithProviders(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
+      initialEntries: ["/account/prefs/ssh-keys"],
     });
 
     await waitForLoading();
@@ -153,8 +153,8 @@ describe("SSHKeyList", () => {
   });
 
   it("can trigger a delete confirmation form", async () => {
-    renderWithProviders(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
+    const { router } = renderWithProviders(<SSHKeyList />, {
+      initialEntries: ["/account/prefs/ssh-keys"],
     });
 
     await waitForLoading();
@@ -163,7 +163,7 @@ describe("SSHKeyList", () => {
     expect(row).not.toHaveClass("is-active");
     // Click on the delete button:
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    expect(window.location.pathname).toBe(urls.sshKeys.delete);
+    expect(router.state.location.pathname).toBe(urls.sshKeys.delete);
   });
 
   it("displays a message if there are no SSH keys", async () => {
@@ -172,7 +172,7 @@ describe("SSHKeyList", () => {
     );
 
     renderWithProviders(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
+      initialEntries: ["/account/prefs/ssh-keys"],
     });
 
     await waitForLoading();

@@ -16,7 +16,7 @@ export const TRUNCATION_POINT = 4;
 
 type Props = { id: Pod["id"] };
 
-const NumaResources = ({ id }: Props): JSX.Element => {
+const NumaResources = ({ id }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

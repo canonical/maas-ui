@@ -1,5 +1,5 @@
 import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import TableActions from "@/app/base/components/TableActions";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";

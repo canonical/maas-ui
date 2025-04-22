@@ -1,5 +1,5 @@
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { HardwareType } from "@/app/base/enum";
 import { useSendAnalytics } from "@/app/base/hooks";
@@ -27,7 +27,7 @@ const TestResults = ({
   machine,
   hardwareType,
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const sendAnalytics = useSendAnalytics();
 
   const testsTabUrl = `/machine/${machine.system_id}/testing`;

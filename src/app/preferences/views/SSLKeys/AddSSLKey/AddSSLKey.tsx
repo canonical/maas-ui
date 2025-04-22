@@ -5,16 +5,13 @@ import {
   useOnEscapePressed,
 } from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
+import { useCreateSslKeys } from "@/app/api/query/sslKeys";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { sslkeyActions } from "@/app/store/sslkey";
-import sslkeySelectors from "@/app/store/sslkey/selectors";
 
 export enum Label {
   Title = "Add SSL key",
@@ -33,22 +30,16 @@ const SSLKeySchema = Yup.object().shape({
   key: Yup.string().required("SSL key is required"),
 });
 
-export const AddSSLKey = (): JSX.Element => {
-  const dispatch = useDispatch();
+export const AddSSLKey = (): React.ReactElement => {
   const navigate = useNavigate();
-  const saving = useSelector(sslkeySelectors.saving);
-  const saved = useSelector(sslkeySelectors.saved);
-  const errors = useSelector(sslkeySelectors.errors);
+  const uploadSslKey = useCreateSslKeys();
   const onCancel = () => navigate({ pathname: urls.preferences.sslKeys.index });
   useOnEscapePressed(() => onCancel());
-
-  useAddMessage(saved, sslkeyActions.cleanup, "SSL key successfully added.");
 
   return (
     <FormikForm
       aria-label={Label.FormLabel}
-      cleanup={sslkeyActions.cleanup}
-      errors={errors}
+      errors={uploadSslKey.error}
       initialValues={{ key: "" }}
       onCancel={onCancel}
       onSaveAnalytics={{
@@ -57,11 +48,17 @@ export const AddSSLKey = (): JSX.Element => {
         label: "Add SSL key form",
       }}
       onSubmit={(values) => {
-        dispatch(sslkeyActions.create(values));
+        if (values.key && values.key !== "") {
+          uploadSslKey.mutate({
+            body: {
+              key: values.key,
+            },
+          });
+        }
       }}
-      saved={saved}
+      saved={uploadSslKey.isSuccess}
       savedRedirect={urls.preferences.sslKeys.index}
-      saving={saving}
+      saving={uploadSslKey.isPending}
       submitLabel={Label.SubmitLabel}
       validationSchema={SSLKeySchema}
     >

@@ -2,11 +2,20 @@ import SetPoolForm from "../SetPoolForm";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(poolsResolvers.listPools.handler());
 
 describe("SetPoolFormFields", () => {
   let state: RootState;
-  const route = "/machines";
+  const route = ["/machines"];
   beforeEach(() => {
     state = factory.rootState({
       machine: factory.machineState({
@@ -21,27 +30,23 @@ describe("SetPoolFormFields", () => {
           def456: factory.machineStatus({ settingPool: false }),
         },
       }),
-      resourcepool: factory.resourcePoolState({
-        loaded: true,
-        items: [
-          factory.resourcePool({ id: 0, name: "default" }),
-          factory.resourcePool({ id: 1, name: "pool-1" }),
-        ],
-      }),
     });
   });
 
   it("shows a select if select pool radio chosen", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SetPoolForm
         clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route, state }
+      { initialEntries: route, state }
     );
 
+    await waitFor(() =>
+      expect(screen.getByLabelText("Create pool")).toBeInTheDocument()
+    );
     await userEvent.click(screen.getByLabelText("Create pool"));
     expect(
       screen.queryByRole("combobox", { name: "Resource pool" })
@@ -53,14 +58,17 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows inputs for creating a pool if create pool radio chosen", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SetPoolForm
         clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route, state }
+      { initialEntries: route, state }
+    );
+    await waitFor(() =>
+      expect(screen.getByLabelText("Create pool")).toBeInTheDocument()
     );
     await userEvent.click(screen.getByLabelText("Create pool"));
     expect(screen.getByLabelText("Name")).toBeInTheDocument();

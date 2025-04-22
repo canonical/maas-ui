@@ -2,6 +2,7 @@ import AddMachineForm from "../AddMachineForm";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
@@ -12,7 +13,10 @@ import {
   within,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  poolsResolvers.listPools.handler()
+);
 
 describe("AddMachineFormFields", () => {
   let state: RootState;
@@ -54,16 +58,12 @@ describe("AddMachineFormFields", () => {
           loaded: true,
         }),
       }),
-      resourcepool: factory.resourcePoolState({
-        items: [factory.resourcePool()],
-        loaded: true,
-      }),
     });
   });
 
   const renderAddMachineFormFields = async () => {
     renderWithProviders(<AddMachineForm clearSidePanelContent={vi.fn()} />, {
-      route: "/machines/add",
+      initialEntries: ["/machines/add"],
       state,
     });
     await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
@@ -105,6 +105,12 @@ describe("AddMachineFormFields", () => {
       screen.queryByRole("textbox", { name: "Extra MAC address 2" })
     ).not.toBeInTheDocument();
 
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Add MAC address" })
+      ).toBeInTheDocument()
+    );
+
     await userEvent.click(
       screen.getByRole("button", { name: "Add MAC address" })
     );
@@ -131,6 +137,12 @@ describe("AddMachineFormFields", () => {
   it("can remove extra mac address fields", async () => {
     await renderAddMachineFormFields();
 
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Add MAC address" })
+      ).toBeInTheDocument()
+    );
+
     await userEvent.click(
       screen.getByRole("button", { name: "Add MAC address" })
     );
@@ -147,6 +159,11 @@ describe("AddMachineFormFields", () => {
   it("does not require MAC address field if power_type is 'ipmi'", async () => {
     await renderAddMachineFormFields();
 
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "MAC address" })
+      ).toBeInTheDocument()
+    );
     expect(screen.getByRole("textbox", { name: "MAC address" })).toBeRequired();
 
     await userEvent.selectOptions(

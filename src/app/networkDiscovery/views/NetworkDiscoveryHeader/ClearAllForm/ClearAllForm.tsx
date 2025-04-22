@@ -24,14 +24,14 @@ type Props = {
   closeForm: () => void;
 };
 
-const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
+const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const errors = useSelector(discoverySelectors.errors);
   const saved = useSelector(discoverySelectors.saved);
   const saving = useSelector(discoverySelectors.saving);
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const cleanup = useCallback(() => discoveryActions.cleanup(), []);
-  let content: JSX.Element;
+  let content: React.ReactElement;
   if (networkDiscovery === NetworkDiscovery.ENABLED) {
     content = (
       <>

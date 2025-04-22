@@ -16,7 +16,7 @@ export enum Labels {
   Loading = "Loading...",
 }
 
-const Commissioning = (): JSX.Element => {
+const Commissioning = (): React.ReactElement => {
   const configLoaded = useSelector(configSelectors.loaded);
   const configLoading = useSelector(configSelectors.loading);
   const osInfoLoaded = useSelector(osInfoSelectors.loaded);
