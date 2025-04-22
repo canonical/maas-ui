@@ -94,6 +94,7 @@ export type MachineDetails = BaseMachine &
     installation_status: number;
     interface_test_status: TestStatus;
     interfaces: NetworkInterface[];
+    is_dpu: boolean;
     license_key: string;
     link_speeds: number[];
     memory_test_status: TestStatus;

@@ -109,12 +109,12 @@ describe("MachineForm", () => {
       architecture: machine.architecture,
       description: "New note",
       extra_macs: machine.extra_macs,
+      is_dpu: machine.is_dpu,
       min_hwe_kernel: machine.min_hwe_kernel,
       pool: { name: machine.pool.name },
       pxe_mac: machine.pxe_mac,
       system_id: machine.system_id,
       zone: { name: machine.zone.name },
-      // TODO: add "is_dpu" here https://warthogs.atlassian.net/browse/MAASENG-4190
     });
     const actualActions = store.getActions();
     await waitFor(() => {

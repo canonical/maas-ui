@@ -145,6 +145,7 @@ export type CreateParams = {
   hostname?: Machine["hostname"];
   hwe_kernel?: string;
   install_rackd?: boolean;
+  is_dpu?: boolean;
   license_key?: LicenseKeys["license_key"];
   memory?: Machine["memory"];
   min_hwe_kernel?: string;

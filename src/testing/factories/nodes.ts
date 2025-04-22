@@ -391,6 +391,7 @@ export const machineDetails = extend<BaseMachine, MachineDetails>(machine, {
   cpu_speed: 1000,
   swap_size: null,
   updated: () => timestamp("Fri, 23 Oct. 2020 05:24:41"),
+  is_dpu: false,
 });
 
 export const controller = extend<BaseNode, Controller>(node, {
