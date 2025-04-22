@@ -46,6 +46,7 @@ const ZonesListTable: React.FC = () => {
     <GenericTable
       columns={columns}
       data={zones.data?.items ?? []}
+      isLoading={zones.isPending}
       noData={<TableCaption>No zones available.</TableCaption>}
       pagination={{
         currentPage: page,

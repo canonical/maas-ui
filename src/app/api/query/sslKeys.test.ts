@@ -1,4 +1,4 @@
-import { useCreateSslKeys, useGetSslKeys } from "./sslKeys";
+import { useCreateSslKeys, useDeleteSslKey, useGetSslKeys } from "./sslKeys";
 
 import type { SslKeyRequest } from "@/app/apiclient";
 import { mockSslKeys, sslKeyResolvers } from "@/testing/resolvers/sslKeys";
@@ -10,7 +10,8 @@ import {
 
 setupMockServer(
   sslKeyResolvers.getSslKeys.handler(),
-  sslKeyResolvers.createSslKey.handler()
+  sslKeyResolvers.createSslKey.handler(),
+  sslKeyResolvers.deleteSslKey.handler()
 );
 
 describe("useGetSslKeys", () => {
@@ -28,6 +29,14 @@ describe("useCreateSslKeys", () => {
     };
     const { result } = renderHookWithProviders(() => useCreateSslKeys());
     result.current.mutate({ body: newSslKey });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  });
+});
+
+describe("useDeleteSslKey", () => {
+  it("should delete an SSL key", async () => {
+    const { result } = renderHookWithProviders(() => useDeleteSslKey());
+    result.current.mutate({ path: { sslkey_id: 1 } });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });

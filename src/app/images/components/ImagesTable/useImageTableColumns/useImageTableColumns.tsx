@@ -21,7 +21,7 @@ export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
 export const filterCells = (row: Row<Image>, column: Column<Image>) => {
   if (row.getIsGrouped()) {
-    return ["group-select", "name", "action"].includes(column.id);
+    return ["name", "action"].includes(column.id);
   } else {
     return !["name"].includes(column.id);
   }
