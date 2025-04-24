@@ -15,7 +15,7 @@ export type PaginationBarProps = {
   setCurrentPage: (page: number) => void;
   isPending: boolean;
 };
-export const pageSizes: Array<number> = [20, 30, 50, 100];
+export const pageSizes: number[] = [20, 30, 50, 100];
 
 const PaginationBar = ({
   currentPage,
