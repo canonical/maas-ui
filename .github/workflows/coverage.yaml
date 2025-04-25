@@ -5,8 +5,8 @@ on:
   push:
     branches:
       - "tics-debug-*"
-  pull_request:
-    types: [ opened, synchronize, reopened ]
+#  pull_request:
+#    types: [ opened, synchronize, reopened ]
 
 jobs:
   test-coverage-tics:
