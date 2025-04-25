@@ -10,71 +10,100 @@ on:
   #   types: [opened, synchronize, reopened]
 
 jobs:
-  test-coverage-tics:
-    name: Run tests with coverage and generate TiCS report
-    runs-on: [self-hosted, linux, amd64, tiobe, jammy]
-    timeout-minutes: 720
+  test-coverage:
+    name: Run tests with coverage
+    runs-on: [ self-hosted, linux, amd64, tiobe, jammy ]
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-
-      - name: Restore node_modules from cache
-        id: yarn-cache
-        uses: actions/cache@v4
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Setup Node.js from .nvmrc
         uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
+          cache: 'yarn'
 
-      - name: Install packages if cache is outdated
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: CYPRESS_INSTALL_BINARY=0 yarn install
+      # More aggressive caching strategy
+      - name: Restore test cache
+        uses: actions/cache@v4
+        id: test-cache
+        with:
+          path: |
+            coverage
+            .nyc_output
+            **/node_modules/.cache
+          key: ${{ runner.os }}-test-coverage-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-test-coverage-
+
+      - name: Install packages
+        run: CYPRESS_INSTALL_BINARY=0 yarn install --frozen-lockfile
 
       - name: Run tests with coverage
         run: yarn test-coverage
 
       - name: Upload coverage report
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage
           retention-days: 1
 
-      - name: Generate file list from .ticsignore
-        # Creates ignored file and directory lists specified by .ticsignore,
-        # and subtracts them from the list of all the files in the project.
-        # This list of remaining files are then passed to TiCS as 'filelist'.
+  tics-analysis:
+    name: TICS Analysis
+    runs-on: [ self-hosted, linux, amd64, tiobe, jammy ]
+    needs: test-coverage
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Important for TICS to analyze history
+
+      # Cache TICS installation to avoid reinstalling
+      - name: Cache TICS installation
+        uses: actions/cache@v4
+        id: tics-cache
+        with:
+          path: /tmp/tics-installation
+          key: ${{ runner.os }}-tics-installation-${{ hashFiles('**/.tics') }}
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+
+      # Determine analysis mode
+      - name: Set TICS analysis mode
+        id: tics-mode
         run: |
-          find src -type f > tics.all.gen.txt
-          ignore_files_command="find src -path \"*\" -type f \( $(grep -vE '^\s*#|^\s*$' .ticsignore | sed -E 's|^(.*)|-name \"\1\"|' | tr -d '\n' | sed -E 's|(.)-name|\1 -o -name|g') \)"
-          ignore_dirs_command="find src -type f \( $(grep -vE '^\s*#|^\s*$' .ticsignore | grep '/$' | sed -E 's|^(.*)|-path \"*/\1*\"|' | tr -d '\n' | sed -E 's|(.)-path|\1 -o -path|g') \)"
-          eval "$ignore_files_command" > tics.ignored.files.gen.txt
-          eval "$ignore_dirs_command" > tics.ignored.dirs.gen.txt
-          cat tics.ignored.files.gen.txt tics.ignored.dirs.gen.txt | sort -u > tics.ignored.gen.txt
-          grep -vFf tics.ignored.gen.txt tics.all.gen.txt > tics.gen.txt
-          rm tics.*.gen.txt
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "mode=client" >> $GITHUB_OUTPUT
+            echo "analyze_selection=changed_files_only" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "schedule" ]]; then
+            echo "mode=qserver" >> $GITHUB_OUTPUT
+            echo "analyze_selection=full" >> $GITHUB_OUTPUT
+          else
+            echo "mode=qserver" >> $GITHUB_OUTPUT
+            echo "analyze_selection=changed_files_only" >> $GITHUB_OUTPUT
+          fi
 
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
+        env:
+          # Add environment variables to optimize TICS performance
+          TICS_ANALYZE_SELECTION: ${{ steps.tics-mode.outputs.analyze_selection }}
+          TICS_NUM_THREADS: 4  # Adjust based on your runner's capabilities
         with:
-          # Use 'qserver' mode for weekly runs and on push to ci-tics-main to
-          #    generate reference points
-          # Use 'client' mode for runs on PRs. Client is a quality gate comparing
-          #    changed files to the reference points and can fail if quality degrades
-          # See:
-          # https://github.com/tiobe/tics-github-action?tab=readme-ov-file#tics-github-action
-          mode: ${{ github.event_name == 'pull_request' && 'client' || 'qserver' }}
+          mode: ${{ steps.tics-mode.outputs.mode }}
           project: maas-ui
           viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
           ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
-          installTics: true
+          installTics: ${{ steps.tics-cache.outputs.cache-hit != 'true' }}
           tmpdir: /tmp/tics
           branchdir: ${{ github.workspace }}
-          filelist: tics.gen.txt
+          # Add TICS-specific performance options if available
+          # ticsOptions: "-performance-mode=high -max-cpu=4"
 
       - name: Upload TICS Report
         uses: actions/upload-artifact@v4
@@ -85,15 +114,9 @@ jobs:
 
   publish-coverage-report:
     name: Publish Coverage Report
-    # if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    needs: test-coverage-tics
-    continue-on-error: true
-
-    permissions:
-      id-token: write
-      pages: write
-
+    if: github.ref == 'refs/heads/main' || github.event_name == 'schedule'
+    runs-on: [ self-hosted, linux, amd64, tiobe, jammy ]
+    needs: tics-analysis
     steps:
       - uses: actions/checkout@v4
 
