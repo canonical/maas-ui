@@ -12,7 +12,7 @@ on:
 jobs:
   test-coverage-tics:
     name: Run tests with coverage and generate TiCS report
-    runs-on: ubuntu-22.04-16core
+    runs-on: [self-hosted, linux, amd64, tiobe, jammy]
     timeout-minutes: 720
     steps:
       - uses: actions/checkout@v4
