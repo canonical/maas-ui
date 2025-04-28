@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - "tics-debug-*"
+#  We cannot run the TiCS job on pull requests because TiCS
+#  requires us to use secret tokens, and that cannot be done
+#  on PRs from forked repositories.
 #  pull_request:
 #    types: [ opened, synchronize, reopened ]
 
