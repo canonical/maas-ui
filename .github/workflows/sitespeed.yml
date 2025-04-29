@@ -48,6 +48,15 @@ jobs:
         run: while [ $(maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
       - name: Run sitespeed.io tests
         run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
+      - name: Collect MAAS logs
+        if: failure()
+        shell: bash
+        run: journalctl -u snap.maas.pebble.service --since="1 hour ago" > cypress/maas_logs.txt
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: maas_logs
+          path: sitespeed.io/maas_logs.txt
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
