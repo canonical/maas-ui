@@ -30,7 +30,7 @@ jobs:
         with:
           url: "http://${{env.MAAS_DOMAIN}}:5240/MAAS/r"
           responseCode: 200
-          timeout: 200000
+          timeout: 30000
           interval: 500
       - name: Login MAAS admin
         run: |
@@ -53,7 +53,7 @@ jobs:
       - name: Collect MAAS logs
         if: failure()
         shell: bash
-        run: journalctl -u snap.maas.pebble.service --since="1 hour ago" > cypress/maas_logs.txt
+        run: journalctl -u snap.maas.pebble.service --since="1 hour ago" > sitespeed.io/maas_logs.txt
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
