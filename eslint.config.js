@@ -225,6 +225,10 @@ export default tseslint.config(
       },
     },
 
+    // The commented-out rules below are checked for code quality by TiCS.
+    // Currently, these rules have errors that are challenging to fix;
+    // therefore, they should only be enabled after all corresponding errors
+    // are resolved.
     rules: {
       "@typescript-eslint/array-type": "error",
       // "@typescript-eslint/class-methods-use-this": "error",
