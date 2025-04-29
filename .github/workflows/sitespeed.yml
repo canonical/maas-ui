@@ -23,7 +23,7 @@ jobs:
         with:
           maas-url: ${{ env.MAAS_URL }}/MAAS
           use-maasdb-dump: true
-          maasdb-dump-url: https://github.com/motrilense/maas-ui-testing/blob/update-maas_db_dump/db/maasdb-24.04-master-1000.dump
+          maasdb-dump-url: https://github.com/motrilense/maas-ui-testing/raw/update-maas_db_dump/db/maasdb-24.04-master-1000.dump
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Wait for MAAS
