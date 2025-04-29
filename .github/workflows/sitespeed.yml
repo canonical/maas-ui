@@ -4,6 +4,8 @@ on:
     branches:
       - main
       - "3.*"
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
