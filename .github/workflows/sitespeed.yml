@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@main
       - name: Setup MAAS
         uses: canonical/setup-maas@main
-        channel: 3.6/latest
+        channel: 3.6/latest 
         with:
           maas-url: ${{ env.MAAS_URL }}/MAAS
           use-maasdb-dump: true
