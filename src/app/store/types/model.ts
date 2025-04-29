@@ -4,7 +4,7 @@ export type Model = {
 
 // Expected format: "Thu, 15 Aug. 2019 06:21:39" or ""
 export type UtcDatetime = string & { readonly __brand: unique symbol };
-export type UtcDatetimeDisplay = `${string} (UTC)` | "Never";
+export type UtcDatetimeDisplay = "Never" | `${string} (UTC)`;
 export type TimestampFields = {
   created: UtcDatetime;
   updated: UtcDatetime;

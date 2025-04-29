@@ -63,7 +63,9 @@ const UpdateCertificate = ({
   if (hasCertificateData) {
     // Pods created after MAAS 3.1.0 will already have certificate data, so
     // can close the form on cancel.
-    onCancel = () => closeForm();
+    onCancel = () => {
+      closeForm();
+    };
   } else if (generatedCertificate) {
     // Otherwise, if a certificate has already been generated, take the user
     // back to the generate certificate step on cancel.

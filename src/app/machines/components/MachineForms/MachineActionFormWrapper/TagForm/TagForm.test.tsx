@@ -354,11 +354,11 @@ it("can open a create tag form", async () => {
     screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput }),
     "name1{enter}"
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("form", { name: AddTagFormLabel.Form })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
 });
 
 it("updates the new tags after creating a tag", async () => {
@@ -397,9 +397,9 @@ it("updates the new tags after creating a tag", async () => {
   const changes = screen.getByRole("table", {
     name: TagFormChangesLabel.Table,
   });
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(changes).getByRole("button", { name: /new-tag/i })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
 });

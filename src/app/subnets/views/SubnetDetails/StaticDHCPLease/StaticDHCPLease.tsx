@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
@@ -16,7 +18,7 @@ type StaticDHCPLeaseProps = {
   subnetId: Subnet[SubnetMeta.PK];
 };
 
-const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps) => {
+const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps): ReactElement => {
   const { setSidePanelContent } = useSidePanel();
   const staticDHCPLeases = useReservedIps(subnetId);
   const loading = useSelector((state: RootState) =>
@@ -30,13 +32,13 @@ const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps) => {
         <MainToolbar.Controls>
           <Button
             appearance="positive"
-            onClick={() =>
+            onClick={() => {
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews[
                   SubnetActionTypes.ReserveDHCPLease
                 ],
-              })
-            }
+              });
+            }}
           >
             Reserve static DHCP lease
           </Button>

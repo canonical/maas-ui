@@ -13,7 +13,7 @@ import { MOBILE_VIEW_MAX_WIDTH } from "@/app/constants";
 
 type Props = {
   navLink: NavItem;
-  icon?: string | ReactNode;
+  icon?: ReactNode | string;
   path: string;
   setIsCollapsed: SideNavigationProps["setIsCollapsed"];
 };

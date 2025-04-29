@@ -58,7 +58,7 @@ describe("SelectUpstreamImagesSelect", () => {
         {({
           values,
           setFieldValue,
-        }: Pick<DownloadImagesSelectProps, "values" | "setFieldValue">) => (
+        }: Pick<DownloadImagesSelectProps, "setFieldValue" | "values">) => (
           <SelectUpstreamImagesSelect
             groupedImages={groupedImages}
             setFieldValue={setFieldValue}
@@ -102,7 +102,7 @@ describe("SelectUpstreamImagesSelect", () => {
         {({
           values,
           setFieldValue,
-        }: Pick<DownloadImagesSelectProps, "values" | "setFieldValue">) => (
+        }: Pick<DownloadImagesSelectProps, "setFieldValue" | "values">) => (
           <SelectUpstreamImagesSelect
             groupedImages={groupedImages}
             setFieldValue={setFieldValue}
@@ -175,7 +175,7 @@ describe("SelectUpstreamImagesSelect", () => {
 
     expect(mockSetFieldValue).toHaveBeenCalledWith(
       getValueKey("Ubuntu", releases[0].title),
-      [groupedImages["Ubuntu"][releases[0].title][0]]
+      [groupedImages.Ubuntu[releases[0].title][0]]
     );
   });
 });

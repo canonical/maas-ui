@@ -74,7 +74,9 @@ const NotificationGroup = ({
                 appearance="link"
                 className="u-no-margin--bottom"
                 inline
-                onClick={() => dismissAll(notifications, dispatch)}
+                onClick={() => {
+                  dismissAll(notifications, dispatch);
+                }}
               >
                 Dismiss all
               </Button>

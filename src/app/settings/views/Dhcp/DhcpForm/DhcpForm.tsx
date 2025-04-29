@@ -22,7 +22,9 @@ export const DhcpForm = ({ dhcpSnippet }: Props): React.ReactElement => {
       analyticsCategory="DHCP snippet settings"
       aria-label={title}
       id={dhcpSnippet?.id}
-      onCancel={() => navigate({ pathname: settingsURLs.dhcp.index })}
+      onCancel={() => {
+        navigate({ pathname: settingsURLs.dhcp.index });
+      }}
       onValuesChanged={(values) => {
         setName(values.name);
       }}

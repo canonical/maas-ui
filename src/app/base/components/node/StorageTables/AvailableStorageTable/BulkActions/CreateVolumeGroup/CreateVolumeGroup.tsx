@@ -65,7 +65,9 @@ export const CreateVolumeGroup = ({
     systemId,
     "creatingVolumeGroup",
     "createVolumeGroup",
-    () => closeForm()
+    () => {
+      closeForm();
+    }
   );
   const totalSize = selected.reduce((sum, device) => (sum += device.size), 0);
 

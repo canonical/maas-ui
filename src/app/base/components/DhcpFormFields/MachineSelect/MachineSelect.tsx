@@ -43,7 +43,12 @@ export const MachineSelect = ({
   const [isOpen, setIsOpen] = useState(false);
   const labelId = useId();
   const selectId = useId();
-  const handleClose = useCallback(() => () => setIsOpen(false), []);
+  const handleClose = useCallback(
+    () => () => {
+      setIsOpen(false);
+    },
+    []
+  );
   const handleSelect = (machine: Machine | null) => {
     handleClose();
     setFieldValue(name, machine?.system_id || null);

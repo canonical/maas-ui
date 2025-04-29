@@ -137,7 +137,9 @@ const EditPhysicalForm = ({
     systemId,
     "updatingInterface",
     "updateInterface",
-    () => close()
+    () => {
+      close();
+    }
   );
 
   useFetchActions([

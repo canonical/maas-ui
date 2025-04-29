@@ -102,7 +102,9 @@ const EditVLAN = ({
           })
         );
       }}
-      onSuccess={() => close()}
+      onSuccess={() => {
+        close();
+      }}
       resetOnSave
       saved={saved}
       saving={saving}

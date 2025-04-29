@@ -71,12 +71,12 @@ const LXDHostVMs = ({
                 unpinnedCores: resources?.unpinned_cores || 0,
               };
             }}
-            onAddVMClick={() =>
+            onAddVMClick={() => {
               setSidePanelContent({
                 view: KVMSidePanelViews.COMPOSE_VM,
                 extras: { hostId },
-              })
-            }
+              });
+            }}
             pods={[pod.name]}
             searchFilter={searchFilter}
             setSearchFilter={setSearchFilter}

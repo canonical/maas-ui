@@ -59,7 +59,9 @@ describe("MachineListControls", () => {
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    await waitFor(() => expect(setFilter).toHaveBeenCalledWith("status:new"));
+    await waitFor(() => {
+      expect(setFilter).toHaveBeenCalledWith("status:new");
+    });
   });
 
   it("shows search bar, filter accordion, and grouping select when no machines are selected", () => {

@@ -34,6 +34,6 @@ export type DomainDetails = BaseDomain & {
 
 export type Domain = BaseDomain | DomainDetails;
 
-export type DomainState = {
+export type DomainState = GenericState<Domain, APIError> & {
   active: number | null;
-} & GenericState<Domain, APIError>;
+};

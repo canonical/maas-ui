@@ -32,10 +32,10 @@ type Props = {
 
 export type AddVirshValues = {
   name: string;
-  pool: string | number;
+  pool: number | string;
   power_parameters: PowerParameters;
   type: Pod["type"];
-  zone: string | number;
+  zone: number | string;
 };
 
 export const AddVirsh = ({

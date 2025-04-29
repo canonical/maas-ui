@@ -83,13 +83,13 @@ const WorkloadCard = ({ id }: Props): React.ReactElement => {
             </span>
           </div>
           <ExternalLink
-            onClick={() =>
+            onClick={() => {
               sendAnalytics(
                 "Machine summary",
                 "Click link to workload annotation docs",
                 "Read more"
-              )
-            }
+              );
+            }}
             to="https://discourse.maas.io/t/machine-workload-annotations/4237"
           >
             Read more

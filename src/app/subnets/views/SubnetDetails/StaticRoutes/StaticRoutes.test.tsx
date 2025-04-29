@@ -84,13 +84,13 @@ it("has a button to open the static route form", async () => {
       </MemoryRouter>
     </Provider>
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("button", {
         name: AddStaticRouteFormLabels.AddStaticRoute,
       })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
 });
 
 it("has a button to open the edit static route form", async () => {

@@ -99,7 +99,9 @@ export const AddLogicalVolume = ({
     systemId,
     "creatingLogicalVolume",
     "createLogicalVolume",
-    () => closeExpanded()
+    () => {
+      closeExpanded();
+    }
   );
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

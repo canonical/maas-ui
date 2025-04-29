@@ -58,9 +58,9 @@ const VLANDetailsHeader = ({ id }: Props): React.ReactElement => {
       <Button
         data-testid="delete-vlan"
         key="delete-vlan"
-        onClick={() =>
-          setSidePanelContent({ view: VLANDetailsSidePanelViews.DeleteVLAN })
-        }
+        onClick={() => {
+          setSidePanelContent({ view: VLANDetailsSidePanelViews.DeleteVLAN });
+        }}
       >
         Delete VLAN
       </Button>

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import type { Meta } from "@storybook/react";
 
 import { AppSideNavigation } from "./AppSideNavigation";
@@ -13,7 +15,7 @@ const meta: Meta<typeof AppSideNavigation> = {
     layout: "fullscreen",
   },
   decorators: [
-    (Story) => (
+    (Story): ReactElement => (
       <div className="l-application">
         <Story />
       </div>
@@ -28,8 +30,8 @@ const args = {
   isAdmin: true,
   isAuthenticated: true,
   isCollapsed: true,
-  setIsCollapsed: () => {},
-  logout: () => {},
+  setIsCollapsed: (): void => {},
+  logout: (): void => {},
   path: "/",
   showLinks: true,
   theme: "default",

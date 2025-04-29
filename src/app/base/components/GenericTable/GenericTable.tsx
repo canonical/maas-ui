@@ -37,7 +37,7 @@ import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
 
 import "./_index.scss";
 
-type GenericTableProps<T extends { id: string | number }> = {
+type GenericTableProps<T extends { id: number | string }> = {
   className?: string;
   canSelect?: boolean;
   columns: ColumnDef<T, Partial<T>>[];
@@ -103,7 +103,7 @@ type GenericTableProps<T extends { id: string | number }> = {
  *   }}
  * />
  */
-const GenericTable = <T extends { id: string | number }>({
+const GenericTable = <T extends { id: number | string }>({
   className,
   canSelect = false,
   columns: initialColumns,

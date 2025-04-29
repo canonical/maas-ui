@@ -221,7 +221,9 @@ const ConfigureDHCP = ({ closeForm, id }: Props): React.ReactElement | null => {
             }
             dispatch(vlanActions.configureDHCP(params));
           }}
-          onSuccess={() => closeForm()}
+          onSuccess={() => {
+            closeForm();
+          }}
           saved={saved}
           saving={configuringDHCP}
           submitLabel="Configure DHCP"

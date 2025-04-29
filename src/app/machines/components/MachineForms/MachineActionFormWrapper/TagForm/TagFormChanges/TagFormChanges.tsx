@@ -26,11 +26,11 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { getTagCounts } from "@/app/store/tag/utils";
 import { toFormikNumber } from "@/app/utils";
 
-type Props = {
+type Props = Pick<MachineActionFormProps, "selectedCount"> & {
   tags: Tag[];
   newTags: Tag[TagMeta.PK][];
   toggleTagDetails: (tag: Tag | null) => void;
-} & Pick<MachineActionFormProps, "selectedCount">;
+};
 
 export enum Label {
   Added = "To be added",
@@ -96,7 +96,9 @@ const generateRows = (
             : undefined
         }
         machineCount={machineCount}
-        onClick={() => toggleTagDetails(tag)}
+        onClick={() => {
+          toggleTagDetails(tag);
+        }}
         tag={tag}
         tagIdsAndCounts={tagIdsAndCounts}
       />

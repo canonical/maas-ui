@@ -63,11 +63,11 @@ const NodeDevicesWarning = ({
           <Button
             appearance="positive"
             data-testid="commission-machine"
-            onClick={() =>
+            onClick={() => {
               setSidePanelContent({
                 view: MachineSidePanelViews.COMMISSION_MACHINE,
-              })
-            }
+              });
+            }}
           >
             Commission
           </Button>

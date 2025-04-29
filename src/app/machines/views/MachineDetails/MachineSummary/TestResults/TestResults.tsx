@@ -58,13 +58,13 @@ const TestResults = ({
         {testStatus.passed ? (
           <li className="p-inline-list__item">
             <Link
-              onClick={() =>
+              onClick={() => {
                 sendAnalytics(
                   "Machine details",
                   `${capitaliseFirst(scriptType)} tests passed link`,
                   "Machine summary tab"
-                )
-              }
+                );
+              }}
               to={testsTabUrl}
             >
               <Icon name={ICONS.success} />
@@ -78,13 +78,13 @@ const TestResults = ({
         {testStatus.pending + testStatus.running > 0 ? (
           <li className="p-inline-list__item">
             <Link
-              onClick={() =>
+              onClick={() => {
                 sendAnalytics(
                   "Machine details",
                   `${capitaliseFirst(scriptType)} tests running link`,
                   "Machine summary tab"
-                )
-              }
+                );
+              }}
               to={testsTabUrl}
             >
               <Icon name={"pending"} />
@@ -98,13 +98,13 @@ const TestResults = ({
         {testStatus.failed > 0 ? (
           <li className="p-inline-list__item">
             <Link
-              onClick={() =>
+              onClick={() => {
                 sendAnalytics(
                   "Machine details",
                   `${capitaliseFirst(scriptType)} tests failed`,
                   "Machine summary tab"
-                )
-              }
+                );
+              }}
               to={testsTabUrl}
             >
               <Icon name={ICONS.error} />
@@ -118,13 +118,13 @@ const TestResults = ({
         {hasTestsRun(testStatus) ? (
           <li className="p-inline-list__item">
             <Link
-              onClick={() =>
+              onClick={() => {
                 sendAnalytics(
                   "Machine details",
                   `View ${scriptType} tests results`,
                   "Machine summary tab"
-                )
-              }
+                );
+              }}
               to={testsTabUrl}
             >
               View results&nbsp;&rsaquo;

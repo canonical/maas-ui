@@ -1,14 +1,14 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { Col, Row } from "@canonical/react-components";
 
 import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
 import FormikForm from "@/app/base/components/FormikForm/FormikForm";
 
-type Props<V extends object, E = null> = {
+type Props<V extends object, E = null> = FormikFormProps<V, E> & {
   modelType: string;
   message?: ReactNode;
-} & FormikFormProps<V, E>;
+};
 
 const ModelActionForm = <V extends object, E = null>({
   modelType,
@@ -17,7 +17,7 @@ const ModelActionForm = <V extends object, E = null>({
   submitLabel = "Delete",
   initialValues,
   ...props
-}: Props<V, E>) => {
+}: Props<V, E>): ReactElement => {
   return (
     <FormikForm<V, E>
       initialValues={initialValues}

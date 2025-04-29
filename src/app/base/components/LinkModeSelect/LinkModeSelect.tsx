@@ -4,11 +4,11 @@ import type { Subnet } from "@/app/store/subnet/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import { LINK_MODE_DISPLAY } from "@/app/store/utils";
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: { label: string; value: string } | null;
   interfaceType: NetworkInterfaceTypes;
   subnet?: Subnet["id"] | null;
-} & FormikFieldProps;
+};
 
 export enum Label {
   DefaultOption = "Select IP mode",

@@ -7,7 +7,7 @@ import type { Subnet } from "../store/subnet/types";
  * @param cidr The CIDR notation of the subnet
  * @returns The first and last valid IP addresses as two strings in a list.
  */
-export const getIpRangeFromCidr = (cidr: Subnet["cidr"]) => {
+export const getIpRangeFromCidr = (cidr: Subnet["cidr"]): string[] => {
   // https://gist.github.com/binarymax/6114792
 
   // Get start IP and number of valid addresses
@@ -61,7 +61,7 @@ const convertIpToUint32 = (ip: string) => {
  * @param cidr The subnet's CIDR notation e.g. 192.168.0.0/24
  * @returns True if the IP is in the subnet, false otherwise
  */
-export const isIpInSubnet = (ip: string, cidr: Subnet["cidr"]) => {
+export const isIpInSubnet = (ip: string, cidr: Subnet["cidr"]): boolean => {
   const [startIP, endIP] = getIpRangeFromCidr(cidr);
 
   const ipUint32 = convertIpToUint32(ip);
@@ -81,7 +81,7 @@ export const isIpInSubnet = (ip: string, cidr: Subnet["cidr"]) => {
 export const getImmutableAndEditableOctets = (
   startIp: string,
   endIp: string
-) => {
+): string[] => {
   const startIpOctetList = startIp.split(".");
   const endIpOctetList = endIp.split(".");
 

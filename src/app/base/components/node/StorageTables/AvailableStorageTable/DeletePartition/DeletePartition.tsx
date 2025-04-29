@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -11,7 +13,11 @@ type Props = {
   partitionId: Partition["id"];
 };
 
-const DeletePartition = ({ systemId, partitionId, close }: Props) => {
+const DeletePartition = ({
+  systemId,
+  partitionId,
+  close,
+}: Props): ReactElement => {
   const dispatch = useDispatch();
   return (
     <ModelActionForm

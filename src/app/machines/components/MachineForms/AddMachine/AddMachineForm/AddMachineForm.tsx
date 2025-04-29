@@ -76,7 +76,9 @@ export const AddMachineForm = ({
     machineSaved,
     machineActions.cleanup,
     `${savingMachine} added successfully.`,
-    () => setSavingMachine(null)
+    () => {
+      setSavingMachine(null);
+    }
   );
 
   const initialPowerParameters = useInitialPowerParameters();

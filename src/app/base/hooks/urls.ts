@@ -22,7 +22,7 @@ export function useGetURLId<P extends RouteParams, K extends keyof P>(
 export function useGetURLId<P extends RouteParams, K extends keyof P>(
   pk: "id" | "system_id",
   key?: K
-): string | number | null {
+): number | string | null {
   const { [key || "id"]: id } = useParams<P>();
   if (pk === "system_id") {
     return id || null;

@@ -42,7 +42,9 @@ const AuthenticationCard = ({
     if (showUpdateCertificate || !hasCertificateData) {
       content = (
         <UpdateCertificate
-          closeForm={() => setShowUpdateCertificate(false)}
+          closeForm={() => {
+            setShowUpdateCertificate(false);
+          }}
           hasCertificateData={hasCertificateData}
           objectName={objectName}
           pod={pod}
@@ -63,7 +65,9 @@ const AuthenticationCard = ({
             <Button
               className="u-no-margin--bottom"
               data-testid="show-update-certificate"
-              onClick={() => setShowUpdateCertificate(true)}
+              onClick={() => {
+                setShowUpdateCertificate(true);
+              }}
             >
               <span className="u-nudge-left--small">
                 <Icon name="change-version" />

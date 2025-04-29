@@ -25,11 +25,13 @@ describe("SetZoneForm", () => {
         viewingDetails={false}
       />
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
-    await waitFor(() =>
-      expect(screen.getByRole("combobox", { name: "Zone" })).toHaveValue("1")
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("combobox", { name: "Zone" })).toHaveValue("1");
+    });
   });
 
   it("does not initialise zone value if more than one node provided", () => {
@@ -67,9 +69,11 @@ describe("SetZoneForm", () => {
         viewingDetails={false}
       />
     );
-    await waitFor(() =>
-      expect(screen.getByRole("combobox", { name: "Zone" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Zone" })
+      ).toBeInTheDocument();
+    });
 
     await userEvent.click(screen.getByRole("combobox", { name: "Zone" }));
 

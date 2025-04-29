@@ -19,9 +19,9 @@ describe("UpdateCertificateFields", () => {
         />
       </Formik>
     );
-    await waitFor(() =>
-      expect(screen.getByLabelText(Labels.Generate)).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByLabelText(Labels.Generate)).toBeInTheDocument();
+    });
     expect(screen.queryByTestId("certificate-data")).not.toBeInTheDocument();
   });
 

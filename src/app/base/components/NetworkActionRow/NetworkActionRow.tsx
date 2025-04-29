@@ -56,13 +56,15 @@ const NetworkActionRow = ({
   const handleButtonClick = (state: ExpandedState) => {
     const expandedStateMap: Partial<Record<ExpandedState, () => void>> = {
       [ExpandedState.ADD_PHYSICAL]: isMachinesPage
-        ? () =>
+        ? () => {
             setSidePanelContent({
               view: MachineSidePanelViews.ADD_INTERFACE,
               extras: { systemId: node.system_id },
-            })
-        : () =>
-            setSidePanelContent({ view: DeviceSidePanelViews.ADD_INTERFACE }),
+            });
+          }
+        : () => {
+            setSidePanelContent({ view: DeviceSidePanelViews.ADD_INTERFACE });
+          },
       [ExpandedState.ADD_BOND]: () => {
         setSidePanelContent({
           view: MachineSidePanelViews.ADD_BOND,

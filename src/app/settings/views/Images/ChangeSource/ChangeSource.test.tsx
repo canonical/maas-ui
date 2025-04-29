@@ -30,7 +30,9 @@ describe("ChangeSource", () => {
 
     await userEvent
       .click(screen.getByTestId("auto-sync-switch"))
-      .then(async () => await userEvent.click(screen.getByText("Save")));
+      .then(async () => {
+        await userEvent.click(screen.getByText("Save"));
+      });
 
     const actualActions = store.getActions();
     const expectedAction = configActions.update({

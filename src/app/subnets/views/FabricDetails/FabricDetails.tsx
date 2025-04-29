@@ -75,7 +75,9 @@ const FabricDetails = (): React.ReactElement => {
   ) {
     content = (
       <FabricDeleteForm
-        closeForm={() => setSidePanelContent(null)}
+        closeForm={() => {
+          setSidePanelContent(null);
+        }}
         id={fabric.id}
       />
     );

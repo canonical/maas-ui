@@ -65,7 +65,9 @@ export const CreateBcache = ({
     systemId,
     "creatingBcache",
     "createBcache",
-    () => closeExpanded()
+    () => {
+      closeExpanded();
+    }
   );
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

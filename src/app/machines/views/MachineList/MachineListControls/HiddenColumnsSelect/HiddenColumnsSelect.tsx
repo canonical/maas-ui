@@ -9,9 +9,9 @@ import type { MachineListControlsProps } from "../MachineListControls";
 import { useSendAnalytics } from "@/app/base/hooks";
 import { columnLabels, columnToggles } from "@/app/machines/constants";
 
-type Props = {
+type Props = Pick<MachineListControlsProps, "setHiddenColumns"> & {
   hiddenColumns: string[];
-} & Pick<MachineListControlsProps, "setHiddenColumns">;
+};
 
 const HiddenColumnsSelect = ({
   hiddenColumns,

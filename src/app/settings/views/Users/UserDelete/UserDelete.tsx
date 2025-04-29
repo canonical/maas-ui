@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useSelector } from "react-redux";
 
 import { useGetURLId } from "@/app/base/hooks";
@@ -6,7 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import userSelectors from "@/app/store/user/selectors";
 import { UserMeta } from "@/app/store/user/types";
 
-const UserDelete = () => {
+const UserDelete = (): ReactElement => {
   const id = useGetURLId(UserMeta.PK);
   const user = useSelector((state: RootState) =>
     userSelectors.getById(state, id)

@@ -110,7 +110,9 @@ const EditBondForm = ({
     systemId,
     "updatingInterface",
     "updateInterface",
-    () => closeForm()
+    () => {
+      closeForm();
+    }
   );
 
   useFetchActions([

@@ -30,7 +30,7 @@ const getValueFromName = <V extends ConfigValues>(
 
 type Option = {
   label: string;
-  value: string | number;
+  value: number | string;
 };
 
 /**

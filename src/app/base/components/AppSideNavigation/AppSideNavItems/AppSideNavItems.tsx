@@ -30,10 +30,9 @@ const AppSideNavItemGroup = ({
   vaultIncomplete,
   path,
   setIsCollapsed,
-}: { group: NavGroup } & Pick<
-  Props,
-  "isAdmin" | "vaultIncomplete" | "path" | "setIsCollapsed"
->) => {
+}: Pick<Props, "isAdmin" | "path" | "setIsCollapsed" | "vaultIncomplete"> & {
+  group: NavGroup;
+}) => {
   const id = useId();
   const hasActiveChild = useMemo(() => {
     for (const navLink of group.navLinks) {
@@ -138,7 +137,9 @@ export const AppSideNavItems = ({
                 <Button
                   appearance="link"
                   className="p-side-navigation__button p-side-navigation__link"
-                  onClick={() => logout()}
+                  onClick={() => {
+                    logout();
+                  }}
                 >
                   <span className="p-side-navigation__label">Log out</span>
                 </Button>

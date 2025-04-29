@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import type { SubnetActionProps } from "../../types";
@@ -7,8 +9,11 @@ import { reservedIpActions } from "@/app/store/reservedip";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = Pick<SubnetActionProps, "setSidePanelContent" | "reservedIpId">;
-const DeleteDHCPLease = ({ setSidePanelContent, reservedIpId }: Props) => {
+type Props = Pick<SubnetActionProps, "reservedIpId" | "setSidePanelContent">;
+const DeleteDHCPLease = ({
+  setSidePanelContent,
+  reservedIpId,
+}: Props): ReactElement => {
   const dispatch = useDispatch();
   const errors = useSelector(reservedIpSelectors.errors);
   const saving = useSelector(reservedIpSelectors.saving);
@@ -18,7 +23,9 @@ const DeleteDHCPLease = ({ setSidePanelContent, reservedIpId }: Props) => {
     reservedIpSelectors.getById(state, reservedIpId)
   );
 
-  const handleClose = () => setSidePanelContent(null);
+  const handleClose = () => {
+    setSidePanelContent(null);
+  };
 
   return (
     <ModelActionForm

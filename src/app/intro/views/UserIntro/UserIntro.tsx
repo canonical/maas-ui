@@ -98,7 +98,9 @@ const UserIntro = (): React.ReactElement => {
                 {Labels.AreYouSure}
               </>
             }
-            onClose={() => setShowSkip(false)}
+            onClose={() => {
+              setShowSkip(false);
+            }}
             onConfirm={() => {
               dispatch(userActions.markIntroComplete());
             }}

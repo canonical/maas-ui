@@ -42,7 +42,9 @@ const NodeTestsTable = ({ node, scriptResults }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
-  const closeExpanded = () => setExpanded(null);
+  const closeExpanded = () => {
+    setExpanded(null);
+  };
   const containsTesting = scriptResults.some(
     (result) => result.result_type === ScriptResultType.TESTING
   );

@@ -61,13 +61,20 @@ export const TagsHeader = ({
       <MainToolbar.Controls>
         {isDetails && tag ? (
           <>
-            <Button hasIcon onClick={() => onUpdate(tag[TagMeta.PK])}>
+            <Button
+              hasIcon
+              onClick={() => {
+                onUpdate(tag[TagMeta.PK]);
+              }}
+            >
               <Icon name="edit" /> <span>{Label.EditButton}</span>
             </Button>
             <Button
               appearance="negative"
               hasIcon
-              onClick={() => onDelete(tag[TagMeta.PK], true)}
+              onClick={() => {
+                onDelete(tag[TagMeta.PK], true);
+              }}
             >
               <Icon className="is-light" name="delete" />{" "}
               <span>{Label.DeleteButton}</span>
@@ -103,9 +110,9 @@ export const TagsHeader = ({
         )}
         <Button
           appearance="positive"
-          onClick={() =>
-            setSidePanelContent({ view: TagSidePanelViews.AddTag })
-          }
+          onClick={() => {
+            setSidePanelContent({ view: TagSidePanelViews.AddTag });
+          }}
         >
           {Label.CreateButton}
         </Button>

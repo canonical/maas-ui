@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { Button, Icon, Link } from "@canonical/react-components";
 import { useSelector } from "react-redux";
@@ -176,7 +176,9 @@ Site Manager as its upstream image source."
               <Button
                 appearance="link"
                 className="u-no-margin u-no-padding"
-                onClick={() => window.usabilla_live("click")}
+                onClick={() => {
+                  window.usabilla_live("click");
+                }}
               >
                 Give feedback
               </Button>

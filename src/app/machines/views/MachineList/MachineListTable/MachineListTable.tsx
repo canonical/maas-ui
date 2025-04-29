@@ -119,8 +119,9 @@ export const MachineListTable = ({
     },
     [sendAnalytics]
   );
-  const getToggleHandler = (columnName: string) => (open: boolean) =>
+  const getToggleHandler = (columnName: string) => (open: boolean) => {
     toggleHandler(columnName, open);
+  };
 
   const rowProps = {
     callId,
@@ -184,7 +185,9 @@ export const MachineListTable = ({
           className="p-double-row__header-spacer"
           currentSort={currentSort}
           data-testid="power-header"
-          onClick={() => updateSort(FetchGroupKey.PowerState)}
+          onClick={() => {
+            updateSort(FetchGroupKey.PowerState);
+          }}
           sortKey={FetchGroupKey.PowerState}
         >
           {columnLabels[MachineColumns.POWER]}
@@ -200,7 +203,9 @@ export const MachineListTable = ({
           className="p-double-row__header-spacer"
           currentSort={currentSort}
           data-testid="status-header"
-          onClick={() => updateSort(FetchGroupKey.Status)}
+          onClick={() => {
+            updateSort(FetchGroupKey.Status);
+          }}
           sortKey={FetchGroupKey.Status}
         >
           {columnLabels[MachineColumns.STATUS]}
@@ -252,7 +257,9 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="pool-header"
-            onClick={() => updateSort(FetchGroupKey.Pool)}
+            onClick={() => {
+              updateSort(FetchGroupKey.Pool);
+            }}
             sortKey={FetchGroupKey.Pool}
           >
             {columnLabels[MachineColumns.POOL]}
@@ -270,7 +277,9 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="zone-header"
-            onClick={() => updateSort(FetchGroupKey.Zone)}
+            onClick={() => {
+              updateSort(FetchGroupKey.Zone);
+            }}
             sortKey={FetchGroupKey.Zone}
           >
             {columnLabels[MachineColumns.ZONE]}
@@ -306,7 +315,9 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="cores-header"
-            onClick={() => updateSort(FetchGroupKey.CpuCount)}
+            onClick={() => {
+              updateSort(FetchGroupKey.CpuCount);
+            }}
             sortKey={FetchGroupKey.CpuCount}
           >
             {columnLabels[MachineColumns.CPU]}
@@ -323,7 +334,9 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="memory-header"
-          onClick={() => updateSort(FetchGroupKey.Memory)}
+          onClick={() => {
+            updateSort(FetchGroupKey.Memory);
+          }}
           sortKey={FetchGroupKey.Memory}
         >
           {columnLabels[MachineColumns.MEMORY]}
@@ -338,7 +351,9 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="disks-header"
-          onClick={() => updateSort(FetchGroupKey.PhysicalDiskCount)}
+          onClick={() => {
+            updateSort(FetchGroupKey.PhysicalDiskCount);
+          }}
           sortKey={FetchGroupKey.PhysicalDiskCount}
         >
           {columnLabels[MachineColumns.DISKS]}
@@ -353,7 +368,9 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="storage-header"
-          onClick={() => updateSort(FetchGroupKey.TotalStorage)}
+          onClick={() => {
+            updateSort(FetchGroupKey.TotalStorage);
+          }}
           sortKey={FetchGroupKey.TotalStorage}
         >
           {columnLabels[MachineColumns.STORAGE]}

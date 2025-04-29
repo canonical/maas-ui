@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -11,7 +13,7 @@ type Props = {
   diskId: Disk["id"];
 };
 
-const SetBootDisk = ({ systemId, diskId, close }: Props) => {
+const SetBootDisk = ({ systemId, diskId, close }: Props): ReactElement => {
   const dispatch = useDispatch();
   return (
     <ModelActionForm

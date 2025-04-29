@@ -158,14 +158,14 @@ it(`renders a subnet select field and prepopulated fields for a reserved range
     subnet.id.toString()
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(screen.getByRole("gridcell", { name: Headers.Subnet })).getByRole(
         "combobox",
         { name: "Subnet" }
       )
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
   expect(
     within(screen.getByRole("gridcell", { name: Headers.StartIP })).getByRole(
       "textbox",

@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import {
@@ -28,7 +29,7 @@ export enum Labels {
   CantContinue = "At least one image and source must be configured to continue.",
 }
 
-const ImagesIntro = () => {
+const ImagesIntro = (): ReactElement => {
   const dispatch = useDispatch();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const navigate = useNavigate();
@@ -96,7 +97,9 @@ const ImagesIntro = () => {
           data-testid="images-intro-continue"
           disabled={incomplete}
           hasIcon
-          onClick={() => navigate({ pathname: urls.intro.success })}
+          onClick={() => {
+            navigate({ pathname: urls.intro.success });
+          }}
         >
           Continue
           {incomplete && (

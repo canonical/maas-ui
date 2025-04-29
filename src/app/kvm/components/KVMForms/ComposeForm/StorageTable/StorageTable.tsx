@@ -131,7 +131,9 @@ export const StorageTable = ({
                   <Button
                     data-testid="remove-disk"
                     disabled={!!composingPods.length}
-                    onClick={() => removeDisk(disk.id)}
+                    onClick={() => {
+                      removeDisk(disk.id);
+                    }}
                     type="button"
                   >
                     Remove

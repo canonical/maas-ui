@@ -97,9 +97,9 @@ it("can dispatch an action to update the subnet", async () => {
   });
   const actualActions = store.getActions();
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction)
-  );
+    ).toStrictEqual(expectedAction);
+  });
 });

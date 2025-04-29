@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -12,7 +14,11 @@ type Props = {
   storageDevice: Disk | Partition;
 };
 
-const UnmountFilesystem = ({ close, systemId, storageDevice }: Props) => {
+const UnmountFilesystem = ({
+  close,
+  systemId,
+  storageDevice,
+}: Props): ReactElement => {
   const dispatch = useDispatch();
   const deviceIsDisk = isDisk(storageDevice);
   const storageFs = storageDevice.filesystem;

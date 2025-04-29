@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { useOnEscapePressed } from "@canonical/react-components";
 import { useNavigate } from "react-router";
 
@@ -8,7 +10,7 @@ import urls from "@/app/preferences/urls";
 import { Label } from "@/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList";
 import { isId } from "@/app/utils";
 
-const DeleteSSLKey = () => {
+const DeleteSSLKey = (): ReactElement => {
   const id = useGetURLId("id");
   const navigate = useNavigate();
   const deleteSSLKey = useDeleteSslKey();

@@ -520,7 +520,7 @@ export const usesStorage = (fstype: Filesystem["fstype"] | null): boolean => {
  */
 export const getNextStorageName = (
   disks: Disk[] | null,
-  prefix: "vg" | "md" | "bcache" | "datastore"
+  prefix: "bcache" | "datastore" | "md" | "vg"
 ): string | null => {
   if (!disks) {
     return null;

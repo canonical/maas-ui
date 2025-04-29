@@ -71,7 +71,7 @@ export type CertificateMetadata = {
   fingerprint: string;
 };
 
-export type ComponentToDisable = "restricted" | "universe" | "multiverse";
+export type ComponentToDisable = "multiverse" | "restricted" | "universe";
 
 export type ComponentsToDisableState = {
   errors: APIError;
@@ -109,9 +109,9 @@ export type HWEKernelsState = {
 
 export type KnownArchitecture =
   | "amd64"
-  | "i386"
-  | "armhf"
   | "arm64"
+  | "armhf"
+  | "i386"
   | "ppc64el"
   | "s390x";
 
@@ -153,13 +153,9 @@ export type MachineActionsState = {
 
 export type OSInfoOsKernelEntry = [string, string];
 
-export type OSInfoOS = {
-  [x: string]: [string, string][];
-};
+export type OSInfoOS = Record<string, [string, string][]>;
 
-export type OSInfoKernels = {
-  [x: string]: OSInfoOS;
-};
+export type OSInfoKernels = Record<string, OSInfoOS>;
 
 export type OSInfoOSystem = [string, string];
 
@@ -180,7 +176,7 @@ export type OSInfoState = {
   loading: boolean;
 };
 
-export type PocketToDisable = "updates" | "security" | "backports";
+export type PocketToDisable = "backports" | "security" | "updates";
 
 export type PocketsToDisableState = {
   errors: APIError;
@@ -193,7 +189,7 @@ export type Choice = [string, string];
 
 export type PowerField = {
   choices: Choice[];
-  default: number | string | string[];
+  default: string[] | number | string;
   field_type: PowerFieldType;
   label: string;
   name: string;
@@ -224,8 +220,8 @@ export type PowerTypesState = {
   loading: boolean;
 };
 
-export type TLSCertificate = Omit<CertificateData, "private_key"> &
-  CertificateMetadata;
+export type TLSCertificate = CertificateMetadata &
+  Omit<CertificateData, "private_key">;
 
 export type TLSCertificateState = {
   errors: APIError;

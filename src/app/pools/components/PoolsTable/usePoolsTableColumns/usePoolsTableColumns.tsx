@@ -27,7 +27,7 @@ export type PoolsColumnDef = ColumnDef<
   Partial<ResourcePoolWithSummaryResponse>
 >;
 
-const usePoolsTableColumns = () => {
+const usePoolsTableColumns = (): PoolsColumnDef[] => {
   return useMemo(
     () =>
       [

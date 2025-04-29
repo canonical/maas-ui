@@ -148,9 +148,9 @@ describe("TableCheckbox.Group", () => {
     });
 
     await userEvent.click(screen.getByRole("checkbox"));
-    subRows.forEach((subRow: Row<Image>) =>
-      expect(subRow.toggleSelected).toHaveBeenCalledWith(true)
-    );
+    subRows.forEach((subRow: Row<Image>) => {
+      expect(subRow.toggleSelected).toHaveBeenCalledWith(true);
+    });
   });
 });
 

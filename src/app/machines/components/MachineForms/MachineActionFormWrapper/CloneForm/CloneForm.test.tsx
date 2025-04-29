@@ -185,9 +185,9 @@ describe("CloneForm", () => {
       />
     );
 
-    await waitFor(() =>
-      expect(screen.getByText("Cloning complete")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByText("Cloning complete")).toBeInTheDocument();
+    });
   });
 
   it("can dispatch an action to clone to the given machines", async () => {

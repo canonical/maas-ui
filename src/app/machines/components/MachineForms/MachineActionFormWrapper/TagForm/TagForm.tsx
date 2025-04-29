@@ -54,12 +54,12 @@ export const TagForm = ({
   const [newTags, setNewTags] = useState<Tag[TagMeta.PK][]>([]);
   const filter = selectedToFilters(selectedMachines || null);
 
-  let formErrors: Record<string, string | string[]> | null = null;
+  let formErrors: Record<string, string[] | string> | null = null;
   if (errors && typeof errors === "object" && "name" in errors) {
     formErrors = {
       ...errors,
       added: errors.name,
-    } as Record<string, string | string[]>;
+    } as Record<string, string[] | string>;
     delete formErrors.name;
   }
 
@@ -95,7 +95,9 @@ export const TagForm = ({
           <AddTagForm
             machines={machines}
             name={newTagName}
-            onCancel={() => setSecondaryContent(null)}
+            onCancel={() => {
+              setSecondaryContent(null);
+            }}
             onTagCreated={(tag) => {
               setNewTagName(null);
               setNewTags([...newTags, tag.id]);

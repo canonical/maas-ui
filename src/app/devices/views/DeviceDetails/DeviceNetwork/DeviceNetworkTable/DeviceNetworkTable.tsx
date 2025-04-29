@@ -117,19 +117,21 @@ const generateRow = (
             links={[
               {
                 children: `Edit ${typeDisplay}`,
-                onClick: () =>
+                onClick: () => {
                   setSidePanelContent({
                     view: DeviceSidePanelViews.EDIT_INTERFACE,
                     extras: { linkId: link?.id, nicId: nic?.id },
-                  }),
+                  });
+                },
               },
               {
                 children: `Remove ${typeDisplay}`,
-                onClick: () =>
+                onClick: () => {
                   setSidePanelContent({
                     view: DeviceSidePanelViews.REMOVE_INTERFACE,
                     extras: { linkId: link?.id, nicId: nic?.id },
-                  }),
+                  });
+                },
               },
             ]}
             position="right"
@@ -243,7 +245,9 @@ const DeviceNetworkTable = ({ systemId }: Props): React.ReactElement => {
           content: (
             <TableHeader
               currentSort={currentSort}
-              onClick={() => updateSort("mac_address")}
+              onClick={() => {
+                updateSort("mac_address");
+              }}
               sortKey="mac_address"
             >
               Mac
@@ -254,7 +258,9 @@ const DeviceNetworkTable = ({ systemId }: Props): React.ReactElement => {
           content: (
             <TableHeader
               currentSort={currentSort}
-              onClick={() => updateSort("subnet")}
+              onClick={() => {
+                updateSort("subnet");
+              }}
               sortKey="subnet"
             >
               Subnet
@@ -265,7 +271,9 @@ const DeviceNetworkTable = ({ systemId }: Props): React.ReactElement => {
           content: (
             <TableHeader
               currentSort={currentSort}
-              onClick={() => updateSort("ip_address")}
+              onClick={() => {
+                updateSort("ip_address");
+              }}
               sortKey="ip_address"
             >
               IP Address
@@ -276,7 +284,9 @@ const DeviceNetworkTable = ({ systemId }: Props): React.ReactElement => {
           content: (
             <TableHeader
               currentSort={currentSort}
-              onClick={() => updateSort("ip_mode")}
+              onClick={() => {
+                updateSort("ip_mode");
+              }}
               sortKey="ip_mode"
             >
               IP assignment
