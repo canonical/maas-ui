@@ -1,4 +1,4 @@
-import type { SSLKey, SSLKeyMeta } from "../store/sslkey/types";
+import type { SslKeyResponse } from "../apiclient";
 
 import type { Token } from "@/app/store/token/types";
 import { argPath } from "@/app/utils";
@@ -19,7 +19,7 @@ const urls = {
   },
   sslKeys: {
     add: "/account/prefs/ssl-keys/add",
-    delete: argPath<{ id: SSLKey[SSLKeyMeta.PK] }>(
+    delete: argPath<{ id: SslKeyResponse["id"] }>(
       "/account/prefs/ssl-keys/:id/delete"
     ),
     index: "/account/prefs/ssl-keys",
