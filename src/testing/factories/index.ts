@@ -63,7 +63,6 @@ export {
   scriptState,
   serviceState,
   spaceState,
-  sslKeyState,
   staticRouteState,
   statusState,
   subnetEventError,

@@ -1,7 +1,5 @@
-import { random } from "cooky-cutter";
 import { http, HttpResponse } from "msw";
 
-import { sslKey } from "../factories";
 import { BASE_URL } from "../utils";
 
 import type {
@@ -10,23 +8,21 @@ import type {
   GetUserSslkeysError,
   GetUserSslkeysResponse,
 } from "@/app/apiclient";
+import { sslKey } from "@/testing/factories";
 
 const mockSslKeys: GetUserSslkeysResponse = {
   items: [
     sslKey({
       id: 1,
       key: "test key",
-      user: random,
     }),
     sslKey({
       id: 2,
       key: "test key 2",
-      user: random,
     }),
     sslKey({
       id: 3,
       key: "test key 3",
-      user: random,
     }),
   ],
   total: 3,

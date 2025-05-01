@@ -1,12 +1,9 @@
-import { extend, random } from "cooky-cutter";
+import { define, random } from "cooky-cutter";
 
-import { timestampedModel } from "./model";
+import type { SslKeyResponse } from "@/app/apiclient";
 
-import type { SSLKey } from "@/app/store/sslkey/types";
-import type { TimestampedModel } from "@/app/store/types/model";
-
-export const sslKey = extend<TimestampedModel, SSLKey>(timestampedModel, {
-  display: (i: number) => `test key display ${i}`,
+export const sslKey = define<SslKeyResponse>({
+  id: random,
   key: (i: number) => `test key ${i}`,
-  user: random,
+  kind: "",
 });

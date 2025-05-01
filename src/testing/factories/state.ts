@@ -83,7 +83,6 @@ import type { ScriptState } from "@/app/store/script/types";
 import type { ScriptResultState } from "@/app/store/scriptresult/types";
 import type { ServiceState } from "@/app/store/service/types";
 import type { SpaceState } from "@/app/store/space/types";
-import type { SSLKeyState } from "@/app/store/sslkey/types";
 import type { StaticRouteState } from "@/app/store/staticroute/types";
 import type { StatusState } from "@/app/store/status/types";
 import { DEFAULT_STATUSES as DEFAULT_SUBNET_STATUSES } from "@/app/store/subnet/slice";
@@ -354,11 +353,6 @@ export const scriptState = define<ScriptState>({
 export const spaceState = define<SpaceState>({
   ...defaultState,
   active: null,
-  errors: null,
-});
-
-export const sslKeyState = define<SSLKeyState>({
-  ...defaultState,
   errors: null,
 });
 
@@ -658,7 +652,6 @@ export const rootState = define<RootState>({
   script: scriptState,
   service: serviceState,
   space: spaceState,
-  sslkey: sslKeyState,
   staticroute: staticRouteState,
   status: statusState,
   subnet: subnetState,
