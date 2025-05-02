@@ -12,6 +12,7 @@ import MacAddressField from "@/app/base/components/MacAddressField";
 import MinimumKernelSelect from "@/app/base/components/MinimumKernelSelect";
 import PowerTypeFields from "@/app/base/components/PowerTypeFields";
 import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
+import TooltipButton from "@/app/base/components/TooltipButton";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import type { MachineState } from "@/app/store/machine/types";
@@ -101,7 +102,21 @@ export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {
         </Button>
       </div>
       <PowerTypeFields />
-      <FormikField label="Register as DPU" name="is_dpu" type="checkbox" />
+      <FormikField
+        label={
+          <>
+            Register as DPU{" "}
+            <TooltipButton
+              iconName="help"
+              message="This option registers the machine as a DPU which will affect how MAAS handles the lifecycle of the machine."
+              position="btm-left"
+              positionElementClassName="u-display--inline"
+            />
+          </>
+        }
+        name="is_dpu"
+        type="checkbox"
+      />
     </>
   );
 };

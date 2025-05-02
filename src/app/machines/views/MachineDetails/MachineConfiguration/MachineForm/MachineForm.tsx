@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { Icon, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
@@ -117,8 +117,8 @@ const MachineForm = ({ systemId }: Props): React.ReactElement | null => {
             <Definition description={machine.zone.name} label="Zone" />
             <Definition description={machine.pool.name} label="Resource pool" />
             <Definition
-              children={<Icon name={machine.is_dpu ? "success" : "error"} />}
-              label={"DPU"}
+              children={machine.is_dpu ? "True" : "False"}
+              label={"Registered as DPU"}
             />
             <Definition description={machine.description} label="Note" />
           </div>
