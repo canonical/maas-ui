@@ -4114,10 +4114,10 @@
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-19.0.3.tgz#0804dfd279a165d5a0ad8b53a5b9e65f338050a4"
   integrity sha512-0Knk+HJiMP/qOZgMyNFamlIjw9OFCsyC2ZbigmEEyXXixgre6IQpm/4V+r3qH4GC1JPvRJKInw+on2rV6YZLeA==
 
-"@types/react-dom@19.1.2":
-  version "19.1.2"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-19.1.2.tgz#bd1fe3b8c28a3a2e942f85314dcfb71f531a242f"
-  integrity sha512-XGJkWF41Qq305SKWEILa1O8vzhb3aOo3ogBlSmiqNko/WmRb6QIaweuZCXjKygVDXpzXb5wyxKTSOsmkuqj+Qw==
+"@types/react-dom@19.1.3":
+  version "19.1.3"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-19.1.3.tgz#3f0c60804441bf34d19f8dd0d44405c0c0e21bfa"
+  integrity sha512-rJXC08OG0h3W6wDMFxQrZF00Kq6qQvw0djHRdzl3U5DnIERz0MRce3WVc7IS6JYBwtaP/DwYtRRjVlvivNveKg==
 
 "@types/react-redux@7.1.34":
   version "7.1.34"
@@ -10730,10 +10730,10 @@ react-remove-scroll@2.5.5:
     use-callback-ref "^1.3.0"
     use-sidecar "^1.1.2"
 
-react-router@7.5.2:
-  version "7.5.2"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-7.5.2.tgz#889137b9ce91dadc06eb40997f57f08199845973"
-  integrity sha512-9Rw8r199klMnlGZ8VAsV/I8WrIF6IyJ90JQUdboupx1cdkgYqwnrYjH+I/nY/7cA1X5zia4mDJqH36npP7sxGQ==
+react-router@7.5.3:
+  version "7.5.3"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-7.5.3.tgz#9e5420832af8c3690740c1797d4fa54613fea06d"
+  integrity sha512-3iUDM4/fZCQ89SXlDa+Ph3MevBrozBAI655OAfWQlTm9nBR0IKlrmNwFow5lPHttbwvITZfkeeeZFP6zt3F7pw==
   dependencies:
     cookie "^1.0.1"
     set-cookie-parser "^2.6.0"
