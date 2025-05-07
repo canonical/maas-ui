@@ -190,7 +190,7 @@ describe("AddMachineForm", () => {
       "11:11:11:11:11:11"
     );
     await userEvent.click(
-      screen.getByRole("checkbox", { name: "Register as DPU" })
+      screen.getByRole("checkbox", { name: /Register as DPU/i })
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Power type" }),
