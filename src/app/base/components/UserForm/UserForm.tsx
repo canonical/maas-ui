@@ -35,13 +35,13 @@ export type UserValues = {
   username: User["username"];
 };
 
-export type Props = {
+export type Props = Partial<FormikFormProps<UserValues>> & {
   includeCurrentPassword?: boolean;
   includeUserType?: boolean;
   onSave: (values: UserValues) => void;
   onUpdateFields?: (values: UserValues) => void;
   user?: User | null;
-} & Partial<FormikFormProps<UserValues>>;
+};
 
 const schemaFields = {
   email: Yup.string()
@@ -89,7 +89,7 @@ export const UserForm = ({
   onUpdateFields,
   user,
   ...formProps
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const editing = !!user;
   const [passwordVisible, setPasswordVisible] = useState(!editing);
   const saving = useSelector(userSelectors.saving);
@@ -184,7 +184,9 @@ export const UserForm = ({
             appearance="link"
             className="u-no-margin--bottom"
             data-testid="toggle-passwords"
-            onClick={() => setPasswordVisible(!passwordVisible)}
+            onClick={() => {
+              setPasswordVisible(!passwordVisible);
+            }}
             type="button"
           >
             {Labels.ChangePassword}

@@ -32,7 +32,7 @@ type Props = {
 export type MenuLink =
   | string
   | {
-      children: JSX.Element;
+      children: React.ReactElement;
       className: string;
       onClick: MouseEventHandler;
     };
@@ -82,7 +82,9 @@ const generateLinks = (
         </>
       ),
       className: "kvm-subnet-select__subnet",
-      onClick: () => selectSubnet(subnet.id),
+      onClick: () => {
+        selectSubnet(subnet.id);
+      },
     };
   });
 
@@ -91,7 +93,7 @@ export const SubnetSelect = ({
   iface,
   index,
   selectSubnet,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const id = useId();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)

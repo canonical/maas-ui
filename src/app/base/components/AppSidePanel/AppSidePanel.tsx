@@ -19,7 +19,9 @@ const useCloseSidePanelOnRouteChange = (): void => {
 
   // close side panel on route change
   useEffect(() => {
-    const unlisten = history.listen(() => setSidePanelContent(null));
+    const unlisten = history.listen(() => {
+      setSidePanelContent(null);
+    });
 
     return () => {
       unlisten();
@@ -40,14 +42,16 @@ const useResetSidePanelOnUnmount = (): void => {
 
 const useCloseSidePanelOnEscPressed = (): void => {
   const { setSidePanelContent } = useSidePanel();
-  useOnEscapePressed(() => setSidePanelContent(null));
+  useOnEscapePressed(() => {
+    setSidePanelContent(null);
+  });
 };
 
 const AppSidePanelContent = ({
   title,
   size,
   content,
-}: AppSidePanelProps): JSX.Element => {
+}: AppSidePanelProps): React.ReactElement => {
   return (
     <aside
       aria-label={title ?? undefined}
@@ -76,7 +80,9 @@ const AppSidePanelContent = ({
   );
 };
 
-const AppSidePanel = (props: Omit<AppSidePanelProps, "size">): JSX.Element => {
+const AppSidePanel = (
+  props: Omit<AppSidePanelProps, "size">
+): React.ReactElement => {
   useCloseSidePanelOnEscPressed();
   useCloseSidePanelOnRouteChange();
   useResetSidePanelOnUnmount();

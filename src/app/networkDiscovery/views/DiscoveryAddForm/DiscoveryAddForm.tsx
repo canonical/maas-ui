@@ -117,7 +117,10 @@ const DiscoveryAddSchema = Yup.object().shape({
   type: Yup.string(),
 });
 
-const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
+const DiscoveryAddForm = ({
+  discovery,
+  onClose,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const [redirect, setRedirect] = useState<string | null>(null);
   const initialDeviceType = DeviceType.DEVICE;
@@ -175,8 +178,8 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
   // When creating an interface the error will get returned for "name" but this
   // form uses "hostname" for the field name.
   if (errors && typeof errors === "object" && "name" in errors) {
-    errors = { ...errors, hostname: errors["name"] };
-    delete errors["name"];
+    errors = { ...errors, hostname: errors.name };
+    delete errors.name;
   }
 
   return (

@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import type { ConfigureDHCPValues } from "../ConfigureDHCP";
@@ -158,14 +158,14 @@ it(`renders a subnet select field and prepopulated fields for a reserved range
     subnet.id.toString()
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(screen.getByRole("gridcell", { name: Headers.Subnet })).getByRole(
         "combobox",
         { name: "Subnet" }
       )
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
   expect(
     within(screen.getByRole("gridcell", { name: Headers.StartIP })).getByRole(
       "textbox",

@@ -14,7 +14,7 @@ type Props = { setSidePanelContent: MachineSetSidePanelContent };
 
 const MachinePCIDevices = ({
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)

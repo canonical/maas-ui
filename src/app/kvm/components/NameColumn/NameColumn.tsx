@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 
@@ -8,7 +8,11 @@ type Props = {
   url: string;
 };
 
-const NameColumn = ({ name, secondary, url }: Props): JSX.Element | null => {
+const NameColumn = ({
+  name,
+  secondary,
+  url,
+}: Props): React.ReactElement | null => {
   return (
     <DoubleRow
       primary={

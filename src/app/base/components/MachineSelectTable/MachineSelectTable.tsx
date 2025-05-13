@@ -85,7 +85,9 @@ const generateRows = (
       },
     ],
     "data-testid": "machine-select-row",
-    onClick: () => onRowClick(machine),
+    onClick: () => {
+      onRowClick(machine);
+    },
     onKeyPress: (e: KeyboardEvent<HTMLTableRowElement>) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -128,7 +130,7 @@ export const MachineSelectTable = ({
   onMachineClick,
   searchText,
   setSearchText,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const tags = useSelector(tagSelectors.all);
   const loadingMachines = useSelector(machineSelectors.loading);
 

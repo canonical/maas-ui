@@ -20,7 +20,7 @@ type Props = {
   systemId: Device[DeviceMeta.PK];
 };
 
-const DeviceNetwork = ({ systemId }: Props): JSX.Element => {
+const DeviceNetwork = ({ systemId }: Props): React.ReactElement => {
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );

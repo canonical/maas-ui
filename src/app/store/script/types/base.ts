@@ -4,9 +4,7 @@ import type { AnyObject, APIError } from "@/app/base/types";
 import type { TimestampedModel } from "@/app/store/types/model";
 import type { GenericState } from "@/app/store/types/state";
 
-export type ScriptsPackages = {
-  [x: string]: string[];
-};
+export type ScriptsPackages = Record<string, string[]>;
 
 // Data from a Django JSONObjectField that could have any validly parsed JSON structure.
 export type ScriptsParameters = AnyObject;

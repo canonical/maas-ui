@@ -8,11 +8,11 @@ import { useFetchActions } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { hweKernels as hweKernelsSelectors } from "@/app/store/general/selectors";
 
-type Props = {
+type Props = HTMLProps<HTMLSelectElement> & {
   disabled?: boolean;
   label?: string;
   name: string;
-} & HTMLProps<HTMLSelectElement>;
+};
 
 export enum Labels {
   DefaultOption = "Select minimum kernel",
@@ -25,7 +25,7 @@ export const MinimumKernelSelect = ({
   label = Labels.Select,
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const hweKernels = useSelector(hweKernelsSelectors.get);
   const hweKernelsLoaded = useSelector(hweKernelsSelectors.loaded);
 

@@ -13,11 +13,11 @@ import { simpleSortByKey } from "@/app/utils";
 
 type Option = NonNullable<SelectProps["options"]>[0];
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: Option | null;
   filterFunction?: (subnet: Subnet) => boolean;
   vlan?: Subnet["vlan"];
-} & FormikFieldProps;
+};
 
 export enum Label {
   Select = "Subnet",
@@ -29,7 +29,7 @@ export const SubnetSelect = ({
   name,
   vlan,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   let subnets: Subnet[] = useSelector(subnetSelectors.all);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
 

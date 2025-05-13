@@ -1,87 +1,20 @@
-import {
-  Col,
-  Spinner,
-  MainTable,
-  Notification,
-  Row,
-} from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import type { ReactElement } from "react";
+
+import { Col, Spinner, Notification, Row } from "@canonical/react-components";
+
+import PoolsTable from "../../components/PoolsTable/PoolsTable";
 
 import { usePools } from "@/app/api/query/pools";
-import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
-import TableActions from "@/app/base/components/TableActions";
 import { useWindowTitle } from "@/app/base/hooks";
-import urls from "@/app/base/urls";
-import { FilterMachines } from "@/app/store/machine/utils";
 
 export enum Label {
   Title = "Pool list",
 }
 
-const getMachinesLabel = (row: ResourcePoolWithSummaryResponse) => {
-  if (row.machine_total_count === 0) {
-    return "Empty pool";
-  }
-  const filters = FilterMachines.filtersToQueryString({
-    pool: [`=${row.name}`],
-  });
-  return (
-    <Link to={`${urls.machines.index}${filters}`}>
-      {`${row.machine_ready_count} of ${row.machine_total_count} ready`}
-    </Link>
-  );
-};
-
-const generateRows = (rows: ResourcePoolWithSummaryResponse[]) =>
-  rows.map((row) => {
-    return {
-      "aria-label": row.name,
-      columns: [
-        {
-          content: row.name,
-        },
-        {
-          content: getMachinesLabel(row),
-        },
-        {
-          content: row.description,
-        },
-        {
-          content: (
-            <TableActions
-              deleteDisabled={
-                !row.permissions.includes("delete") ||
-                row.is_default ||
-                row.machine_total_count > 0
-              }
-              deletePath={urls.pools.delete({ id: row.id })}
-              deleteTooltip={
-                (row.is_default && "The default pool may not be deleted.") ||
-                (row.machine_total_count > 0 &&
-                  "Cannot delete a pool that contains machines.") ||
-                null
-              }
-              editDisabled={!row.permissions.includes("edit")}
-              editPath={urls.pools.edit({ id: row.id })}
-            />
-          ),
-          className: "u-align--right",
-        },
-      ],
-      key: row.name,
-      sortData: {
-        name: row.name,
-        machines: row.machine_total_count,
-        description: row.description,
-      },
-    };
-  });
-
-const Pools = (): JSX.Element => {
+const Pools = (): ReactElement => {
   useWindowTitle("Pools");
 
   const listPools = usePools();
-  const resourcePools = listPools.data?.items || [];
 
   return (
     <div aria-label={Label.Title}>
@@ -102,35 +35,7 @@ const Pools = (): JSX.Element => {
                 <Spinner text="Loading..." />
               </div>
             )}
-            {listPools.isSuccess && (
-              <MainTable
-                className="p-table-expanding--light"
-                defaultSortDirection="ascending"
-                emptyStateMsg="No pools available."
-                expanding={true}
-                headers={[
-                  {
-                    content: "Name",
-                    sortKey: "name",
-                  },
-                  {
-                    content: "Machines",
-                    sortKey: "machines",
-                  },
-                  {
-                    content: "Description",
-                    sortKey: "description",
-                  },
-                  {
-                    content: "Actions",
-                    className: "u-align--right",
-                  },
-                ]}
-                paginate={50}
-                rows={generateRows(resourcePools)}
-                sortable
-              />
-            )}
+            {listPools.isSuccess && <PoolsTable />}
           </div>
         </Col>
       </Row>

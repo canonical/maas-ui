@@ -4,13 +4,13 @@ import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   screen,
-  within,
   renderWithMockStore,
   renderWithBrowserRouter,
   mockIsPending,
   renderWithProviders,
   setupMockServer,
   waitFor,
+  within,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(poolsResolvers.listPools.handler());
@@ -24,40 +24,6 @@ describe("PoolList", () => {
       expect(screen.getByText("Loading...")).toBeInTheDocument();
     });
   });
-
-  it("disables the edit button without permissions", async () => {
-    mockServer.use(
-      poolsResolvers.listPools.handler({
-        items: [factory.resourcePool({ permissions: [] })],
-        total: 1,
-      })
-    );
-    renderWithProviders(<PoolList />);
-
-    await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Edit" })).toHaveClass(
-        "is-disabled"
-      );
-    });
-  });
-
-  it("enables the edit button with correct permissions", async () => {
-    mockServer.use(
-      poolsResolvers.listPools.handler({
-        items: [factory.resourcePool({ permissions: ["edit"] })],
-        total: 1,
-      })
-    );
-
-    renderWithProviders(<PoolList />);
-
-    await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Edit" })).not.toHaveClass(
-        "is-disabled"
-      );
-    });
-  });
-
   it("displays a link to delete confirmation", async () => {
     mockServer.use(
       poolsResolvers.listPools.handler({
@@ -78,62 +44,16 @@ describe("PoolList", () => {
     renderWithProviders(<PoolList />);
 
     await waitFor(() => {
-      expect(screen.getByRole("row", { name: "squambo" })).toBeInTheDocument();
+      expect(screen.getByRole("cell", { name: "squambo" })).toBeInTheDocument();
     });
-    const row = screen.getByRole("row", { name: "squambo" });
+    const cell = screen.getByRole("cell", { name: "squambo" });
+    const row = cell.closest("tr")!;
     expect(row).not.toHaveClass("is-active");
 
     await waitFor(() => {
       expect(
         within(row).getByRole("link", { name: "Delete" })
       ).toBeInTheDocument();
-    });
-  });
-
-  it("disables the delete button for default pools", async () => {
-    mockServer.use(
-      poolsResolvers.listPools.handler({
-        items: [
-          factory.resourcePool({
-            id: 0,
-            name: "default",
-            description: "default",
-            is_default: true,
-            permissions: ["edit", "delete"],
-          }),
-        ],
-        total: 1,
-      })
-    );
-
-    renderWithProviders(<PoolList />);
-
-    await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
-    });
-  });
-
-  it("disables the delete button for pools that contain machines", async () => {
-    mockServer.use(
-      poolsResolvers.listPools.handler({
-        items: [
-          factory.resourcePool({
-            id: 0,
-            name: "machines",
-            description: "has machines",
-            is_default: false,
-            permissions: ["edit", "delete"],
-            machine_total_count: 1,
-          }),
-        ],
-        total: 1,
-      })
-    );
-
-    renderWithProviders(<PoolList />);
-
-    await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
     });
   });
 
@@ -149,9 +69,10 @@ describe("PoolList", () => {
 
     renderWithProviders(<PoolList />);
     await waitFor(() => {
-      expect(screen.getByRole("row", { name: "default" })).toBeInTheDocument();
+      expect(screen.getByRole("cell", { name: "default" })).toBeInTheDocument();
     });
-    const row = screen.getByRole("row", { name: "default" });
+    const cell = screen.getByRole("cell", { name: "default" });
+    const row = cell.closest("tr")!;
     expect(within(row).getByText("Empty pool")).toBeInTheDocument();
   });
 
@@ -171,12 +92,11 @@ describe("PoolList", () => {
 
     renderWithProviders(<PoolList />);
     await waitFor(() => {
-      expect(screen.getByRole("row", { name: "default" })).toBeInTheDocument();
+      expect(screen.getByRole("cell", { name: "default" })).toBeInTheDocument();
     });
-    const link = within(screen.getByRole("row", { name: "default" })).getByRole(
-      "link",
-      { name: "1 of 5 ready" }
-    );
+    const link = within(
+      screen.getByRole("cell", { name: "default" }).closest("tr")!
+    ).getByRole("link", { name: "1 of 5 ready" });
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
   });
@@ -207,7 +127,7 @@ describe("PoolList", () => {
     renderWithBrowserRouter(<PoolList />, { route: "/pools" });
 
     await waitFor(() => {
-      expect(screen.getByText("No pools available.")).toBeInTheDocument();
+      expect(screen.getByText("No pools found.")).toBeInTheDocument();
     });
   });
 });

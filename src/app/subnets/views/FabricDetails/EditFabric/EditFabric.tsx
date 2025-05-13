@@ -28,7 +28,7 @@ const Schema = Yup.object().shape({
   description: Yup.string(),
 });
 
-const EditFabric = ({ close, id }: Props): JSX.Element | null => {
+const EditFabric = ({ close, id }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)
@@ -71,7 +71,9 @@ const EditFabric = ({ close, id }: Props): JSX.Element | null => {
           })
         );
       }}
-      onSuccess={() => close()}
+      onSuccess={() => {
+        close();
+      }}
       resetOnSave
       saved={saved}
       saving={saving}

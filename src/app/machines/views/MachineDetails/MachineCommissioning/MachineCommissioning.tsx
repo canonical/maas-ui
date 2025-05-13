@@ -16,7 +16,7 @@ import scriptResultSelectors from "@/app/store/scriptresult/selectors";
 import { TestStatusStatus } from "@/app/store/types/node";
 import { isId } from "@/app/utils";
 
-const MachineCommissioning = (): JSX.Element => {
+const MachineCommissioning = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>

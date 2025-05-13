@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ExternalLink } from "@canonical/maas-react-components";
 import { List, MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import TitledSection from "../TitledSection";
 
@@ -137,7 +137,7 @@ const DHCPTable = ({
   subnets,
   ipRanges,
   modelName,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const [expanded, setExpanded] = useState<DHCPSnippet["id"] | null>(null);
   const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
   const subnetIds = subnets?.map(({ id }) => id) || null;

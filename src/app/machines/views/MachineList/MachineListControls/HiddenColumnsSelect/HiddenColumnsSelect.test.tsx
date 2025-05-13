@@ -4,7 +4,7 @@ import { columnToggles } from "@/app/machines/constants";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 it("calls setHiddenColumns correctly on click of a checkbox", async () => {
-  const hiddenColumns: Array<""> = [];
+  const hiddenColumns: ""[] = [];
   const setHiddenColumns = vi.fn();
   renderWithMockStore(
     <HiddenColumnsSelect

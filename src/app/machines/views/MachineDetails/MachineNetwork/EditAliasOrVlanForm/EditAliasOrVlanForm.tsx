@@ -47,9 +47,9 @@ type Props = {
   systemId: MachineDetails["system_id"];
 };
 
-export type EditAliasOrVlanValues = {
+export type EditAliasOrVlanValues = NetworkValues & {
   tags?: NetworkInterface["tags"];
-} & NetworkValues;
+};
 
 const AliasOrVlanSchema = Yup.object().shape({
   ...networkFieldsSchema,
@@ -62,7 +62,7 @@ const EditAliasOrVlanForm = ({
   link,
   nic,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -81,7 +81,9 @@ const EditAliasOrVlanForm = ({
     systemId,
     "updatingInterface",
     "updateInterface",
-    () => close()
+    () => {
+      close();
+    }
   );
 
   useFetchActions([

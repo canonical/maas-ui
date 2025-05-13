@@ -37,7 +37,7 @@ it("updates to use the fabric's default VLAN on fabric change", async () => {
     fabrics[1].id.toString()
   );
 
-  await waitFor(() =>
-    expect(screen.getByRole("combobox", { name: "VLAN" })).toHaveValue("5")
-  );
+  await waitFor(() => {
+    expect(screen.getByRole("combobox", { name: "VLAN" })).toHaveValue("5");
+  });
 });

@@ -116,7 +116,7 @@ const generateActionMenus = (
   showCount?: boolean,
   singleNode?: boolean
 ) => {
-  return actionGroups.reduce<JSX.Element[]>((menus, group) => {
+  return actionGroups.reduce<React.ReactElement[]>((menus, group) => {
     const groupLinks = group.actions.reduce<ActionLink[]>(
       (groupLinks, action) => {
         if (excludeActions.includes(action)) {
@@ -180,7 +180,9 @@ const generateActionMenus = (
             "data-testid": `action-link-${action}`,
             // When nodes are not provided actions should always be enabled.
             disabled: nodes ? count === 0 : false,
-            onClick: () => onActionClick(action),
+            onClick: () => {
+              onActionClick(action);
+            },
           });
         }
         return groupLinks;
@@ -225,7 +227,7 @@ export const NodeActionMenuGroup = ({
   onActionClick,
   showCount,
   singleNode = false,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const menus = generateActionMenus(
     alwaysShowLifecycle,
     excludeActions,
@@ -272,7 +274,11 @@ export const NodeActionMenuGroup = ({
           </span>
         )}
       <span className="p-action-button--wrapper">
-        <Button onClick={() => onActionClick(NodeActions.DELETE)}>
+        <Button
+          onClick={() => {
+            onActionClick(NodeActions.DELETE);
+          }}
+        >
           <Icon name="delete" />
           {Labels.Delete}
         </Button>

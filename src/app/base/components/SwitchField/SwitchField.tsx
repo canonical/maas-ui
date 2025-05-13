@@ -6,7 +6,7 @@ import classNames from "classnames";
 import type { SwitchProps } from "../Switch";
 import Switch from "../Switch";
 
-export type Props = {
+export type Props = SwitchProps & {
   caution?: string;
   className?: string;
   error?: string;
@@ -19,7 +19,7 @@ export type Props = {
   success?: string;
   type?: string;
   wrapperClassName?: string;
-} & SwitchProps;
+};
 
 const SwitchField = ({
   caution,
@@ -34,7 +34,7 @@ const SwitchField = ({
   success,
   wrapperClassName,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <Field
       caution={caution}

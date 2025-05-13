@@ -85,7 +85,7 @@ const generateRows = (subnet: Subnet | null) => {
   });
 };
 
-const SubnetUsedIPs = ({ subnetId }: Props): JSX.Element => {
+const SubnetUsedIPs = ({ subnetId }: Props): React.ReactElement => {
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, subnetId)
   );

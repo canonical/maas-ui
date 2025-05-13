@@ -1,6 +1,5 @@
 import { ContextualMenu } from "@canonical/react-components";
-import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -16,7 +15,7 @@ type Props = {
   subnet: Subnet;
 };
 
-const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
+const SubnetDetailsHeader = ({ subnet }: Props): React.ReactElement => {
   const { setSidePanelContent } = useSidePanel();
   const { pathname } = useLocation();
   const urlBase = `/subnet/${subnet.id}`;
@@ -31,8 +30,9 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
             SubnetActionTypes.DeleteSubnet,
           ].map((view) => ({
             children: subnetActionLabels[view],
-            onClick: () =>
-              setSidePanelContent({ view: SubnetDetailsSidePanelViews[view] }),
+            onClick: () => {
+              setSidePanelContent({ view: SubnetDetailsSidePanelViews[view] });
+            },
           }))}
           position="right"
           toggleAppearance="positive"

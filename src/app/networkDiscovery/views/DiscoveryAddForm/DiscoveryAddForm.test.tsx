@@ -274,7 +274,7 @@ describe("DiscoveryAddForm", () => {
       screen.getByRole("button", { name: DiscoveryAddFormLabels.SubmitLabel })
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         store
           .getActions()
@@ -289,8 +289,8 @@ describe("DiscoveryAddForm", () => {
           subnet: "9",
           vlan: 8,
         })
-      )
-    );
+      );
+    });
   });
 
   it("displays a success message when a hostname is provided", async () => {

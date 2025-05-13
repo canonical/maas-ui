@@ -34,7 +34,7 @@ const GroupCheckbox = <S,>({
   inputLabel,
   selectedItems,
   ...props
-}: Props<S>): JSX.Element => {
+}: Props<S>): React.ReactElement => {
   const id = useRef(nanoid());
   const allSelected = checkAllSelected
     ? checkAllSelected(items, selectedItems)
@@ -52,7 +52,9 @@ const GroupCheckbox = <S,>({
       id={id.current}
       label={inputLabel ? inputLabel : " "}
       labelClassName="u-no-margin--bottom u-no-padding--top"
-      onChange={() => handleGroupCheckbox(items, selectedItems)}
+      onChange={() => {
+        handleGroupCheckbox(items, selectedItems);
+      }}
       type="checkbox"
       wrapperClassName={classNames("u-no-margin--bottom u-nudge--checkbox", {
         "u-align-header-checkbox": !inRow,

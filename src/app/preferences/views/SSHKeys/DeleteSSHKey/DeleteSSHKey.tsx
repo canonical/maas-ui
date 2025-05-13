@@ -1,5 +1,7 @@
+import type { ReactElement } from "react";
+
 import { useOnEscapePressed } from "@canonical/react-components";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router";
 
 import { useDeleteSshKey } from "@/app/api/query/sshKeys";
 import type { DeleteUserSshkeyError } from "@/app/apiclient";
@@ -7,11 +9,15 @@ import ModelActionForm from "@/app/base/components/ModelActionForm";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/preferences/urls";
 
-const DeleteSSHKey = () => {
+const DeleteSSHKey = (): ReactElement => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const onClose = () => navigate({ pathname: urls.sshKeys.index });
-  useOnEscapePressed(() => onClose());
+  const onClose = () => {
+    navigate({ pathname: urls.sshKeys.index });
+  };
+  useOnEscapePressed(() => {
+    onClose();
+  });
 
   const deleteSshKey = useDeleteSshKey();
 

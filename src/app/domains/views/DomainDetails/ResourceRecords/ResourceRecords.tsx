@@ -10,7 +10,7 @@ import {
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import DeleteRecordForm from "./DeleteRecordForm";
 import EditRecordForm from "./EditRecordForm";
@@ -44,7 +44,7 @@ type Props = {
 const generateRowId = (resource: DomainResource, i: number) =>
   `${resource.dnsresource_id}-${i}`;
 
-const ResourceRecords = ({ id }: Props): JSX.Element | null => {
+const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, id)
   );
@@ -151,19 +151,21 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
               links={[
                 {
                   children: "Edit record...",
-                  onClick: () =>
+                  onClick: () => {
                     setExpanded({
                       content: RecordActions.EDIT,
                       id: rowId,
-                    }),
+                    });
+                  },
                 },
                 {
                   children: "Remove record...",
-                  onClick: () =>
+                  onClick: () => {
                     setExpanded({
                       content: RecordActions.DELETE,
                       id: rowId,
-                    }),
+                    });
+                  },
                 },
               ]}
               toggleAppearance="base"
@@ -188,14 +190,18 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
             <>
               {expanded?.content === RecordActions.EDIT && (
                 <EditRecordForm
-                  closeForm={() => setExpanded(null)}
+                  closeForm={() => {
+                    setExpanded(null);
+                  }}
                   id={id}
                   resource={resource}
                 />
               )}
               {expanded?.content === RecordActions.DELETE && (
                 <DeleteRecordForm
-                  closeForm={() => setExpanded(null)}
+                  closeForm={() => {
+                    setExpanded(null);
+                  }}
                   id={id}
                   resource={resource}
                 />

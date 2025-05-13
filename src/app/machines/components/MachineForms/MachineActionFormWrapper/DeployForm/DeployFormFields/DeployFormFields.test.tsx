@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import DeployForm from "../DeployForm";
@@ -191,11 +191,11 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue(
         "ga-18.04"
-      )
-    );
+      );
+    });
   });
 
   it("correctly sets minimum kernel to default when not in default release", async () => {
@@ -221,9 +221,9 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    await waitFor(() =>
-      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("")
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("");
+    });
   });
 
   it("disables KVM host checkbox if not Ubuntu 18.04 or 20.04", async () => {
@@ -253,11 +253,11 @@ describe("DeployFormFields", () => {
       'Ubuntu 18.04 LTS "Bionic Beaver"'
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
-      ).toBeEnabled()
-    );
+      ).toBeEnabled();
+    });
   });
 
   it("enables KVM host checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
@@ -297,11 +297,11 @@ describe("DeployFormFields", () => {
       screen.getByRole("combobox", { name: "Release" }),
       "bionic"
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
-      ).not.toBeDisabled()
-    );
+      ).not.toBeDisabled();
+    });
   });
 
   it("shows KVM host type options when the KVM host checkbox is checked", async () => {
@@ -333,9 +333,9 @@ describe("DeployFormFields", () => {
     await userEvent.click(
       screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
     );
-    await waitFor(() =>
-      expect(screen.getByRole("radio", { name: /LXD/ })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("radio", { name: /LXD/ })).toBeInTheDocument();
+    });
     expect(screen.getByRole("radio", { name: /libvirt/ })).toBeInTheDocument();
   });
 
@@ -448,11 +448,11 @@ describe("DeployFormFields", () => {
     await userEvent.click(
       screen.getByRole("checkbox", { name: /Cloud-init user-data/ })
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByPlaceholderText(/Paste or drop script here/)
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 
   it("clears kernel selection on OS/release change when default is in different release", async () => {
@@ -489,9 +489,9 @@ describe("DeployFormFields", () => {
       'Ubuntu 20.04 LTS "Focal Fossa"'
     );
     // Previous kernel selection should be cleared.
-    await waitFor(() =>
-      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("")
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("");
+    });
   });
 
   it("resets kernel selection to default on OS/release change when has same release", async () => {
@@ -522,20 +522,20 @@ describe("DeployFormFields", () => {
       screen.getByRole("combobox", { name: "Release" }),
       'Ubuntu 20.04 LTS "Focal Fossa"'
     );
-    await waitFor(() =>
-      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("")
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("");
+    });
     // Change release to the one that contains the default.
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Release" }),
       'Ubuntu 18.04 LTS "Bionic Beaver"'
     );
     // The default kernel should now be selected.
-    await waitFor(() =>
+    await waitFor(() => {
       expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue(
         "ga-18.04"
-      )
-    );
+      );
+    });
   });
 
   it("displays 'periodically sync hardware' checkbox with global setting and additional tooltip information", async () => {
@@ -627,9 +627,7 @@ describe("DeployFormFields", () => {
       const action = store
         .getActions()
         .find((action) => action.type === "machine/deploy");
-      return expect(
-        action?.payload?.params?.extra?.enable_hw_sync
-      ).toBeUndefined();
+      expect(action?.payload?.params?.extra?.enable_hw_sync).toBeUndefined();
     });
   });
 
@@ -656,19 +654,17 @@ describe("DeployFormFields", () => {
     await userEvent.click(
       screen.getByRole("button", { name: /Deploy machine/ })
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
-      ).toBeChecked()
-    );
+      ).toBeChecked();
+    });
 
     await waitFor(() => {
       const action = store
         .getActions()
         .find((action) => action.type === "machine/deploy");
-      return expect(action?.payload?.params?.extra?.enable_hw_sync).toEqual(
-        true
-      );
+      expect(action?.payload?.params?.extra?.enable_hw_sync).toEqual(true);
     });
   });
 

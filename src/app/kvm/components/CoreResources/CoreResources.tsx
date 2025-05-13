@@ -4,9 +4,9 @@ import KVMResourceMeter from "@/app/kvm/components/KVMResourceMeter";
 import { getRanges } from "@/app/utils";
 
 export type Props = {
-  allocated: number | number[];
+  allocated: number[] | number;
   dynamicLayout?: boolean;
-  free: number | number[];
+  free: number[] | number;
   other?: number;
 };
 
@@ -15,7 +15,7 @@ const CoreResources = ({
   dynamicLayout,
   free,
   other,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const allocatedIsArray = Array.isArray(allocated);
   const freeIsArray = Array.isArray(free);
   const showPinnedSection = allocatedIsArray && freeIsArray;

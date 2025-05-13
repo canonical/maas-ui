@@ -14,17 +14,17 @@ const SpaceDetailsHeader = ({
   space,
   setSidePanelContent,
   sidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <SectionHeader
       buttons={[
         <Button
           disabled={!!sidePanelContent}
-          onClick={() =>
+          onClick={() => {
             setSidePanelContent({
               view: SpaceDetailsSidePanelViews.DELETE_SPACE,
-            })
-          }
+            });
+          }}
         >
           Delete space
         </Button>,

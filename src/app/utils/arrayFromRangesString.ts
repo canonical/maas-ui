@@ -13,7 +13,7 @@ export const arrayFromRangesString = (
   const splitRanges = rangeString.replace(/\s/g, "").split(",");
 
   for (const substring of splitRanges) {
-    if (substring.match(/^(\d{1,3}-\d{1,3})$/)) {
+    if (/^(\d{1,3}-\d{1,3})$/.exec(substring)) {
       // If the substring is of the form "1-5", add each number in the range.
       const [start, end] = substring
         .split("-")
@@ -22,7 +22,7 @@ export const arrayFromRangesString = (
       for (let i = start; i <= end; i++) {
         rangeArray.push(i);
       }
-    } else if (substring.match(/^\d{1,3}$/)) {
+    } else if (/^\d{1,3}$/.exec(substring)) {
       // Otherwise, if the substring is just a single number, add it to the range.
       rangeArray.push(Number(substring));
     } else {

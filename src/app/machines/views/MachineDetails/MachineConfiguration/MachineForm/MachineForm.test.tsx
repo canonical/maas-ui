@@ -9,15 +9,12 @@ import {
   userEvent,
   screen,
   waitFor,
-  renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
 describe("MachineForm", () => {
   let state: ReturnType<typeof factory.rootState>;
-  const queryData = {
-    zones: [factory.zone()],
-  };
 
   beforeEach(() => {
     state = factory.rootState({
@@ -42,10 +39,9 @@ describe("MachineForm", () => {
 
   it("is not editable if machine does not have edit permission", () => {
     state.machine.items[0].permissions = [];
-    renderWithBrowserRouter(<MachineForm systemId="abc123" />, {
+    renderWithProviders(<MachineForm systemId="abc123" />, {
       state,
-      queryData,
-      route: "/machine/abc123",
+      initialEntries: ["/machine/abc123"],
     });
 
     expect(
@@ -55,10 +51,9 @@ describe("MachineForm", () => {
 
   it("is editable if machine has edit permission", () => {
     state.machine.items[0].permissions = ["edit"];
-    renderWithBrowserRouter(<MachineForm systemId="abc123" />, {
+    renderWithProviders(<MachineForm systemId="abc123" />, {
       state,
-      queryData,
-      route: "/machine/abc123",
+      initialEntries: ["/machine/abc123"],
     });
 
     expect(
@@ -67,10 +62,9 @@ describe("MachineForm", () => {
   });
 
   it("renders read-only text fields until edit button is pressed", async () => {
-    renderWithBrowserRouter(<MachineForm systemId="abc123" />, {
+    renderWithProviders(<MachineForm systemId="abc123" />, {
       state,
-      queryData,
-      route: "/machine/abc123",
+      initialEntries: ["/machine/abc123"],
     });
 
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
@@ -82,6 +76,36 @@ describe("MachineForm", () => {
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
+  it("displays 'True' if the machine is a DPU", () => {
+    const machine = factory.machineDetails({
+      is_dpu: true,
+      system_id: "abc123",
+    });
+    state.machine.items = [machine];
+
+    renderWithProviders(<MachineForm systemId="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
+
+    expect(screen.getByText("True")).toBeInTheDocument();
+  });
+
+  it("displays 'False' if the machine is not a DPU", () => {
+    const machine = factory.machineDetails({
+      is_dpu: false,
+      system_id: "abc123",
+    });
+    state.machine.items = [machine];
+
+    renderWithProviders(<MachineForm systemId="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
+
+    expect(screen.getByText("False")).toBeInTheDocument();
+  });
+
   it("correctly dispatches an action to update a machine", async () => {
     const machine = factory.machineDetails({
       architecture: "amd64",
@@ -91,10 +115,9 @@ describe("MachineForm", () => {
     state.machine.items = [machine];
     const store = mockStore(state);
 
-    renderWithBrowserRouter(<MachineForm systemId="abc123" />, {
+    renderWithProviders(<MachineForm systemId="abc123" />, {
       store,
-      queryData,
-      route: "/machine/abc123",
+      initialEntries: ["/machine/abc123"],
     });
 
     await userEvent.click(
@@ -109,12 +132,12 @@ describe("MachineForm", () => {
       architecture: machine.architecture,
       description: "New note",
       extra_macs: machine.extra_macs,
+      is_dpu: machine.is_dpu,
       min_hwe_kernel: machine.min_hwe_kernel,
       pool: { name: machine.pool.name },
       pxe_mac: machine.pxe_mac,
       system_id: machine.system_id,
       zone: { name: machine.zone.name },
-      // TODO: add "is_dpu" here https://warthogs.atlassian.net/browse/MAASENG-4190
     });
     const actualActions = store.getActions();
     await waitFor(() => {

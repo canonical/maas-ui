@@ -16,7 +16,7 @@ import { getMachineFieldScopes } from "@/app/store/machine/utils";
 import { nodeIsMachine } from "@/app/store/utils";
 
 const generatePowerParameters = (
-  node: MachineDetails | ControllerDetails,
+  node: ControllerDetails | MachineDetails,
   fields: PowerField[]
 ) => {
   const { certificate, power_parameters } = node;
@@ -57,8 +57,8 @@ const generatePowerParameters = (
 const NodePowerDefinitions = ({
   node,
 }: {
-  node: MachineDetails | ControllerDetails;
-}): JSX.Element => {
+  node: ControllerDetails | MachineDetails;
+}): React.ReactElement => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const powerType = getPowerTypeFromName(powerTypes, node.power_type);
   const fieldScopes = nodeIsMachine(node)

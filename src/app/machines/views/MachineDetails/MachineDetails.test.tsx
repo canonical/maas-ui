@@ -110,11 +110,11 @@ describe("MachineDetails", () => {
         state,
         routePattern: `${urls.machines.machine.index(null)}/*`,
       });
-      await waitFor(() =>
+      await waitFor(() => {
         expect(document.title).toBe(
           `${state.machine.items[0].fqdn} ${title} | MAAS`
-        )
-      );
+        );
+      });
     });
   });
 

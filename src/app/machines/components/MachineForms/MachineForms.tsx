@@ -44,10 +44,11 @@ import EditInterface from "@/app/machines/views/MachineDetails/MachineNetwork/Ed
 import ChangeStorageLayout from "@/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 
-type Props = SidePanelContentTypes & {
-  setSearchFilter?: SetSearchFilter;
-  viewingDetails?: boolean;
-} & MachineActionVariableProps;
+type Props = MachineActionVariableProps &
+  SidePanelContentTypes & {
+    setSearchFilter?: SetSearchFilter;
+    viewingDetails?: boolean;
+  };
 
 /* eslint-disable complexity */
 export const MachineForms = ({
@@ -60,7 +61,7 @@ export const MachineForms = ({
   selectedMachines,
   setSearchFilter,
   viewingDetails = false,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const clearSidePanelContent = useCallback(
     () => setSidePanelContent(null),
     [setSidePanelContent]

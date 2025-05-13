@@ -6,7 +6,7 @@ import MinimumKernelSelect from "@/app/base/components/MinimumKernelSelect";
 import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 
-const MachineFormFields = (): JSX.Element => {
+const MachineFormFields = (): React.ReactElement => {
   return (
     <Row>
       <Col size={6}>
@@ -14,10 +14,7 @@ const MachineFormFields = (): JSX.Element => {
         <MinimumKernelSelect name="minHweKernel" />
         <ZoneSelect name="zone" />
         <ResourcePoolSelect name="pool" />
-        {/* TODO: Remove feature flag https://warthogs.atlassian.net/browse/MAASENG-4186 */}
-        {import.meta.env.VITE_APP_DPU_PROVISIONING === "true" && (
-          <FormikField label="Register as DPU" name="is_dpu" type="checkbox" />
-        )}
+        <FormikField label="Register as DPU" name="is_dpu" type="checkbox" />
         <FormikField component={Textarea} label="Note" name="description" />
       </Col>
     </Row>

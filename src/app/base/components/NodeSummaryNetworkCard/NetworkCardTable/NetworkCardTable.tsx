@@ -26,10 +26,10 @@ import { formatSpeedUnits } from "@/app/utils";
 
 type Props = {
   interfaces: NetworkInterface[];
-  node: MachineDetails | Device;
+  node: Device | MachineDetails;
 };
 
-const NetworkCardTable = ({ interfaces, node }: Props): JSX.Element => {
+const NetworkCardTable = ({ interfaces, node }: Props): React.ReactElement => {
   const fabrics = useSelector(fabricSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
   const subnets = useSelector(subnetSelectors.all);

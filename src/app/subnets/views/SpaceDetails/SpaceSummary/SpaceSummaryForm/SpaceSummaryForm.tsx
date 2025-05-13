@@ -8,7 +8,7 @@ import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
 import type { Space } from "@/app/store/space/types";
 
-export type SpaceSummaryValues = Pick<Space, "name" | "description">;
+export type SpaceSummaryValues = Pick<Space, "description" | "name">;
 const spaceSummaryFormSchema = Yup.object().shape({
   name: Yup.string(),
   description: Yup.string(),
@@ -20,7 +20,7 @@ const SpaceSummaryForm = ({
 }: {
   space: Space;
   handleDismiss: () => void;
-}): JSX.Element => {
+}): React.ReactElement => {
   const spaceErrors = useSelector(spaceSelectors.errors);
   const saving = useSelector(spaceSelectors.saving);
   const saved = useSelector(spaceSelectors.saved);

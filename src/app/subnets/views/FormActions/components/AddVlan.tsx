@@ -44,7 +44,7 @@ const vlanSchema = Yup.object()
 const AddVlan = ({
   activeForm,
   setActiveForm,
-}: FormActionProps): JSX.Element => {
+}: FormActionProps): React.ReactElement => {
   const dispatch = useDispatch();
   const isSaving = useSelector(vlanSelectors.saving);
   const isSaved = useSelector(vlanSelectors.saved);
@@ -68,7 +68,9 @@ const AddVlan = ({
         fabric: "",
         space: "",
       }}
-      onCancel={() => setActiveForm(null)}
+      onCancel={() => {
+        setActiveForm(null);
+      }}
       onSaveAnalytics={{
         action: "Add VLAN",
         category: "Subnets form actions",
@@ -85,7 +87,9 @@ const AddVlan = ({
           })
         );
       }}
-      onSuccess={() => setActiveForm(null)}
+      onSuccess={() => {
+        setActiveForm(null);
+      }}
       saved={isSaved}
       saving={isSaving}
       submitLabel={`Add ${activeForm}`}

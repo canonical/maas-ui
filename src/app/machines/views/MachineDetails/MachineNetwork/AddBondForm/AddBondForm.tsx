@@ -82,7 +82,7 @@ const AddBondForm = ({
   selected,
   setSelected,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const [editingMembers, setEditingMembers] = useState(false);
   const [bondVLAN, setBondVLAN] = useState<NetworkInterface["vlan_id"] | null>(
     null
@@ -123,7 +123,9 @@ const AddBondForm = ({
     systemId,
     "creatingBond",
     "createBond",
-    () => handleClose()
+    () => {
+      handleClose();
+    }
   );
 
   useFetchActions([

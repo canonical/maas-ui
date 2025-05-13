@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import fabricSelectors from "@/app/store/fabric/selectors";
@@ -21,7 +21,11 @@ type Props = {
   node: Node;
 };
 
-const FabricColumn = ({ link, nic, node }: Props): JSX.Element | null => {
+const FabricColumn = ({
+  link,
+  nic,
+  node,
+}: Props): React.ReactElement | null => {
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const fabrics = useSelector(fabricSelectors.all);
   const vlan = useSelector((state: RootState) =>

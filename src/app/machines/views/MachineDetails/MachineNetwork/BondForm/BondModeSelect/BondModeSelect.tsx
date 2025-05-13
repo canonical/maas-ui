@@ -7,9 +7,9 @@ import { useFetchActions } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { bondOptions as bondOptionsSelectors } from "@/app/store/general/selectors";
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: Option | null;
-} & FormikFieldProps;
+};
 
 type Option = { label: string; value: string };
 
@@ -17,7 +17,7 @@ export const BondModeSelect = ({
   defaultOption = { label: "Select bond mode", value: "" },
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const bondModes = useSelector(bondOptionsSelectors.modes);
   const loaded = useSelector(bondOptionsSelectors.loaded);
   const options: Option[] =

@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { Button, Icon, Link } from "@canonical/react-components";
 import { useSelector } from "react-redux";
@@ -85,7 +85,7 @@ const getSyncStatusString = (syncStatus: UtcDatetime) => {
   }
 };
 
-export const StatusBar = (): JSX.Element | null => {
+export const StatusBar = (): React.ReactElement | null => {
   const activeController = useSelector(controllerSelectors.active);
   const activeMachine = useSelector(machineSelectors.active);
   const version = useSelector(versionSelectors.get);
@@ -176,7 +176,9 @@ Site Manager as its upstream image source."
               <Button
                 appearance="link"
                 className="u-no-margin u-no-padding"
-                onClick={() => window.usabilla_live("click")}
+                onClick={() => {
+                  window.usabilla_live("click");
+                }}
               >
                 Give feedback
               </Button>

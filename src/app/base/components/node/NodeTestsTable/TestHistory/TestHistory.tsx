@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { Button, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 import ScriptStatus from "@/app/base/components/ScriptStatus";
 import type { RootState } from "@/app/store/root/types";
@@ -17,7 +17,7 @@ type Props = {
   scriptResult: ScriptResult;
 };
 
-const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
+const TestHistory = ({ close, scriptResult }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useSelector((state: RootState) =>
@@ -83,7 +83,12 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
     <>
       {content}
       <div className="u-align--right u-nudge-left--small">
-        <Button className="u-no-margin--bottom" onClick={() => close()}>
+        <Button
+          className="u-no-margin--bottom"
+          onClick={() => {
+            close();
+          }}
+        >
           Close
         </Button>
       </div>

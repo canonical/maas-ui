@@ -11,7 +11,7 @@ import configSelectors from "@/app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-const CommissioningFormFields = (): JSX.Element => {
+const CommissioningFormFields = (): React.ReactElement => {
   const formikProps = useFormikContext<CommissioningFormValues>();
   const distroSeriesOptions = useSelector(configSelectors.distroSeriesOptions);
 

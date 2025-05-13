@@ -23,7 +23,7 @@ type Props = {
 const NodeHostnameField = ({
   saving,
   setHostnameError,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { errors, values } = useFormikContext<FormValues>();
   const hostnameError = errors.hostname;
 
@@ -50,7 +50,9 @@ const NodeHostnameField = ({
   );
 };
 
-const NodeDomainField = ({ saving }: Pick<Props, "saving">): JSX.Element => {
+const NodeDomainField = ({
+  saving,
+}: Pick<Props, "saving">): React.ReactElement => {
   const domainsLoaded = useSelector(domainSelectors.loaded);
 
   return domainsLoaded ? (
@@ -71,7 +73,7 @@ const NodeNameFields = ({
   canEditHostname,
   setHostnameError,
   saving,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { values } = useFormikContext<FormValues>();
 
   return (

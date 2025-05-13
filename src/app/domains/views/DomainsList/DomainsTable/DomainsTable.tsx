@@ -1,6 +1,6 @@
 import { MainTable, ContextualMenu } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { DomainListSidePanelViews } from "../constants";
 
@@ -26,7 +26,7 @@ export const Labels = {
   FormTitle: "Set default",
 } as const;
 
-const DomainsTable = (): JSX.Element => {
+const DomainsTable = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { setSidePanelContent } = useSidePanel();
   const domains = useSelector(domainSelectors.all);

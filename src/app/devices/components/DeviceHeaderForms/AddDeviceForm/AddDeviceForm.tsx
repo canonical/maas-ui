@@ -121,7 +121,7 @@ const AddDeviceSchema = Yup.object().shape({
 
 export const AddDeviceForm = ({
   clearSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const devicesSaved = useSelector(deviceSelectors.saved);
   const devicesSaving = useSelector(deviceSelectors.saving);
@@ -141,7 +141,9 @@ export const AddDeviceForm = ({
     devicesSaved,
     deviceActions.cleanup,
     `${savingDevice} added successfully.`,
-    () => setSavingDevice(null)
+    () => {
+      setSavingDevice(null);
+    }
   );
 
   const loaded = domainsLoaded && subnetsLoaded && !zones.isPending;

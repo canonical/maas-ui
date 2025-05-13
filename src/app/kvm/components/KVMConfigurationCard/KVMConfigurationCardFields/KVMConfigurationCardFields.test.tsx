@@ -11,6 +11,7 @@ import {
   setupMockServer,
   waitFor,
   within,
+  userEvent,
 } from "@/testing/utils";
 
 setupMockServer(
@@ -42,12 +43,14 @@ describe("KVMConfigurationCardFields", () => {
       route: "/kvm/1/edit",
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
     expect(screen.getByRole("textbox", { name: "KVM host type" })).toHaveValue(
       "Virsh"
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         (
           within(screen.getByRole("combobox", { name: "Zone" })).getByRole(
@@ -55,8 +58,8 @@ describe("KVMConfigurationCardFields", () => {
             { name: "zone-1" }
           ) as HTMLOptionElement
         ).selected
-      ).toBe(true)
-    );
+      ).toBe(true);
+    });
     expect(
       (
         within(
@@ -87,10 +90,15 @@ describe("KVMConfigurationCardFields", () => {
       route: "/kvm/1/edit",
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Zone" })
+      ).toBeInTheDocument();
+    });
     expect(screen.getByRole("textbox", { name: "KVM host type" })).toHaveValue(
       "LXD"
     );
+    await userEvent.click(screen.getByRole("combobox", { name: "Zone" }));
     expect(
       (
         within(screen.getByRole("combobox", { name: "Zone" })).getByRole(

@@ -27,7 +27,7 @@ import { nodeIsMachine } from "@/app/store/utils";
 import { capitaliseFirst } from "@/app/utils";
 
 type Props = {
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
 };
 
 export enum Label {
@@ -37,7 +37,7 @@ export enum Label {
   Toggle = "Download",
 }
 
-export const DownloadMenu = ({ node }: Props): JSX.Element | null => {
+export const DownloadMenu = ({ node }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const installationResults = useSelector((state: RootState) =>
     scriptResultSelectors.getInstallationByNodeId(state, node.system_id)

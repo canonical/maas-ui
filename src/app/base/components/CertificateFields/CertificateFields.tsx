@@ -21,7 +21,7 @@ export const CertificateFields = ({
   onShouldGenerateCert,
   privateKeyFieldName = "key",
   shouldGenerateCert,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <>
       <p>Certificate</p>
@@ -29,14 +29,18 @@ export const CertificateFields = ({
         checked={shouldGenerateCert}
         id="generate-certificate"
         label={Labels.Generate}
-        onChange={() => onShouldGenerateCert(true)}
+        onChange={() => {
+          onShouldGenerateCert(true);
+        }}
         type="radio"
       />
       <Input
         checked={!shouldGenerateCert}
         id="provide-certificate"
         label={Labels.Provide}
-        onChange={() => onShouldGenerateCert(false)}
+        onChange={() => {
+          onShouldGenerateCert(false);
+        }}
         type="radio"
         wrapperClassName="u-sv2"
       />

@@ -15,7 +15,7 @@ type Props = {
 export const BasePowerField = <V extends AnyObject>({
   field,
   powerParametersValueName = "power_parameters",
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { setFieldValue, values } = useFormikContext<V>();
   const { choices, field_type, label, name, required } = field;
   const fieldName = `${powerParametersValueName}.${name}`;

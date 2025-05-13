@@ -1,7 +1,6 @@
-import { createMemoryHistory } from "history";
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import type { Dispatch } from "redux";
 import configureStore from "redux-mock-store";
 
@@ -67,11 +66,11 @@ describe("ScriptsUpload", () => {
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByText("./foo.sh (2000 bytes) ready for upload.")
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 
   it("displays an error if a file larger than 2MB is uploaded", async () => {
@@ -89,7 +88,7 @@ describe("ScriptsUpload", () => {
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
 
-    expect(store.getActions()[0]["payload"]["message"]).toEqual(
+    expect(store.getActions()[0].payload.message).toEqual(
       "foo.sh: File is larger than 2000000 bytes"
     );
   });
@@ -113,7 +112,7 @@ describe("ScriptsUpload", () => {
     // necessary to use a fireEvent instead of userEvent, since userEvent doesn't support "drag n drop" multiple file upload
     fireEvent.drop(upload, { target: { files } });
     await waitFor(() => {
-      expect(store.getActions()[0]["payload"]["message"]).toEqual(
+      expect(store.getActions()[0].payload.message).toEqual(
         "Only a single file may be uploaded."
       );
     });
@@ -205,23 +204,23 @@ describe("ScriptsUpload", () => {
   });
 
   it("can cancel and return to the commissioning list", async () => {
-    const history = createMemoryHistory({
-      initialEntries: ["/"],
-    });
-    renderWithProviders(<ScriptsUpload type="commissioning" />, {
-      state,
-      history,
-    });
+    const { router } = renderWithProviders(
+      <ScriptsUpload type="commissioning" />,
+      {
+        state,
+      }
+    );
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(history.location.pathname).toBe("/settings/scripts/commissioning"); // linting errors occur if you use settingsUrls.scripts
+    expect(router.state.location.pathname).toBe(
+      "/settings/scripts/commissioning"
+    ); // linting errors occur if you use settingsUrls.scripts
   });
 
   it("can cancel and return to the testing list", async () => {
-    const history = createMemoryHistory({
-      initialEntries: ["/"],
+    const { router } = renderWithProviders(<ScriptsUpload type="testing" />, {
+      state,
     });
-    renderWithProviders(<ScriptsUpload type="testing" />, { state, history });
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(history.location.pathname).toBe("/settings/scripts/testing"); // linting errors occur if you use settingsUrls.scripts
+    expect(router.state.location.pathname).toBe("/settings/scripts/testing"); // linting errors occur if you use settingsUrls.scripts
   });
 });

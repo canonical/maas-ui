@@ -15,9 +15,9 @@ import type { Machine, MachineDetails } from "@/app/store/machine/types";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
 
-type Props = {
+type Props = MachineActionFormProps & {
   setSearchFilter?: SetSearchFilter;
-} & MachineActionFormProps;
+};
 
 export type CloneFormValues = {
   interfaces: boolean;
@@ -54,7 +54,7 @@ export const CloneForm = ({
   processingCount,
   setSearchFilter,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const {
     dispatch: dispatchForSelectedMachines,
@@ -117,7 +117,9 @@ export const CloneForm = ({
           });
         }
       }}
-      onSuccess={() => setShowResults(true)}
+      onSuccess={() => {
+        setShowResults(true);
+      }}
       processingCount={processingCount}
       selectedCount={selectedCount}
       validationSchema={CloneFormSchema}

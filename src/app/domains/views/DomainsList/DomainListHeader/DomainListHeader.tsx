@@ -18,7 +18,7 @@ const DomainListHeader = ({
   setSidePanelContent,
 }: {
   setSidePanelContent: SetSidePanelContent;
-}): JSX.Element => {
+}): React.ReactElement => {
   const domainCount = useSelector(domainSelectors.count);
   const domainsLoaded = useSelector(domainSelectors.loaded);
 
@@ -36,9 +36,9 @@ const DomainListHeader = ({
         <Button
           data-testid="add-domain"
           key="add-domain"
-          onClick={() =>
-            setSidePanelContent({ view: DomainListSidePanelViews.ADD_DOMAIN })
-          }
+          onClick={() => {
+            setSidePanelContent({ view: DomainListSidePanelViews.ADD_DOMAIN });
+          }}
         >
           {Labels.AddDomains}
         </Button>

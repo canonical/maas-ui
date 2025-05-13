@@ -62,9 +62,9 @@ export type DeviceStatus = {
 
 export type DeviceStatuses = Record<Device[DeviceMeta.PK], DeviceStatus>;
 
-export type DeviceState = {
+export type DeviceState = GenericState<Device, APIError> & {
   active: Device[DeviceMeta.PK] | null;
   eventErrors: EventError<Device, APIError, DeviceMeta.PK>[];
   selected: Device[DeviceMeta.PK][];
   statuses: DeviceStatuses;
-} & GenericState<Device, APIError>;
+};

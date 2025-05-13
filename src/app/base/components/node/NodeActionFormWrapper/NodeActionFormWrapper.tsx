@@ -27,7 +27,7 @@ export const NodeActionFormWrapper = ({
   onUpdateSelected,
   processingCount,
   viewingDetails,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const [actionStarted] = useCycled(processingCount !== 0);
   const actionableNodeIDs = nodes.reduce<Node["system_id"][]>(
@@ -56,7 +56,9 @@ export const NodeActionFormWrapper = ({
         <NodeActionWarning
           action={action}
           nodeType={nodeType}
-          onUpdateSelected={() => onUpdateSelected(actionableNodeIDs)}
+          onUpdateSelected={() => {
+            onUpdateSelected(actionableNodeIDs);
+          }}
           selectedCount={nodes.length - actionableNodeIDs.length}
         />
       ) : (

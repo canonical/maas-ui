@@ -57,7 +57,7 @@ describe("AddLxd", () => {
 
   it("shows the credentials form by default", () => {
     renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
 
@@ -79,10 +79,12 @@ describe("AddLxd", () => {
     });
 
     renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
     // Submit credentials form
     await userEvent.type(
@@ -103,11 +105,11 @@ describe("AddLxd", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("listitem", { name: "Credentials" }).firstChild
-      ).not.toHaveClass("stepper__title--is-active")
-    );
+      ).not.toHaveClass("stepper__title--is-active");
+    });
     expect(
       screen.getByRole("listitem", { name: "Authentication" }).firstChild
     ).toHaveClass("stepper__title--is-active");
@@ -132,10 +134,12 @@ describe("AddLxd", () => {
     };
 
     renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
     // Submit credentials form
     await userEvent.type(
@@ -156,11 +160,11 @@ describe("AddLxd", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("listitem", { name: "Credentials" }).firstChild
-      ).not.toHaveClass("stepper__title--is-active")
-    );
+      ).not.toHaveClass("stepper__title--is-active");
+    });
     expect(
       screen.getByRole("listitem", { name: "Authentication" }).firstChild
     ).not.toHaveClass("stepper__title--is-active");
@@ -172,10 +176,12 @@ describe("AddLxd", () => {
   it("clears projects and runs cleanup on unmount", () => {
     const store = mockStore(state);
 
-    const { unmount } = renderWithProviders(
-      <AddLxd clearSidePanelContent={vi.fn()} />,
-      { route: "/kvm/add", store }
-    );
+    const {
+      result: { unmount },
+    } = renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
+      initialEntries: ["/kvm/add"],
+      store,
+    });
 
     unmount();
 
@@ -197,10 +203,12 @@ describe("AddLxd", () => {
       "192.168.1.1": [factory.podProject()],
     };
     renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
+      initialEntries: ["/kvm/add"],
       state,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
     // Submit credentials form
     await userEvent.type(

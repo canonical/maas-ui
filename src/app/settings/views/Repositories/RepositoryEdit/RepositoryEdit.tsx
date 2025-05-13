@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 import RepositoryForm from "../RepositoryForm";
 
@@ -10,7 +10,7 @@ import { repositoryActions } from "@/app/store/packagerepository";
 import repositorySelectors from "@/app/store/packagerepository/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-export const RepositoryEdit = (): JSX.Element => {
+export const RepositoryEdit = (): React.ReactElement => {
   useFetchActions([repositoryActions.fetch]);
   const id = useGetURLId("id");
   const { type } = useParams<{

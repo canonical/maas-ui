@@ -1,6 +1,6 @@
 import * as reactComponents from "@canonical/react-components";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import ControllerCommissioning from "./ControllerCommissioning";

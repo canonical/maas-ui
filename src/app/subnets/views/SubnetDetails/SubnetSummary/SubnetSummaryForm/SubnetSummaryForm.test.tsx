@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import SubnetSummaryForm from "./SubnetSummaryForm";
@@ -97,9 +97,9 @@ it("can dispatch an action to update the subnet", async () => {
   });
   const actualActions = store.getActions();
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction)
-  );
+    ).toStrictEqual(expectedAction);
+  });
 });

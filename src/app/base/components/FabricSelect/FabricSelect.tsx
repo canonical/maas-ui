@@ -8,9 +8,9 @@ import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import { simpleSortByKey } from "@/app/utils";
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: { label: string; value: string; disabled?: boolean } | null;
-} & FormikFieldProps;
+};
 
 export enum Label {
   DefaultOption = "Select fabric",
@@ -23,7 +23,7 @@ export const FabricSelect = ({
   label = Label.Select,
   disabled,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);

@@ -15,7 +15,7 @@ type AddSpaceValues = {
 const AddSpace = ({
   activeForm,
   setActiveForm,
-}: FormActionProps): JSX.Element => {
+}: FormActionProps): React.ReactElement => {
   const dispatch = useDispatch();
   const isSaving = useSelector(spaceSelectors.saving);
   const isSaved = useSelector(spaceSelectors.saved);
@@ -28,7 +28,9 @@ const AddSpace = ({
       cleanup={spaceActions.cleanup}
       errors={errors}
       initialValues={{ name: "" }}
-      onCancel={() => setActiveForm(null)}
+      onCancel={() => {
+        setActiveForm(null);
+      }}
       onSaveAnalytics={{
         action: "Add space",
         category: "Subnets form actions",
@@ -38,7 +40,9 @@ const AddSpace = ({
         dispatch(spaceActions.cleanup());
         dispatch(spaceActions.create({ name }));
       }}
-      onSuccess={() => setActiveForm(null)}
+      onSuccess={() => {
+        setActiveForm(null);
+      }}
       saved={isSaved}
       saving={isSaving}
       submitLabel={`Add ${activeForm}`}

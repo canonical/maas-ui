@@ -24,7 +24,7 @@ type ActionGroup = {
 
 type ActionLink = DataTestElement<ButtonProps>;
 
-type Props = {
+type Props = Pick<ContextualMenuDropdownProps, "constrainPanelWidth"> & {
   alwaysShowLifecycle?: boolean;
   className?: string;
   disabledTooltipPosition?: "left" | "top-left";
@@ -40,7 +40,7 @@ type Props = {
   toggleAppearance?: ValueOf<typeof ButtonAppearance>;
   toggleClassName?: string | null;
   toggleLabel?: string;
-} & Pick<ContextualMenuDropdownProps, "constrainPanelWidth">;
+};
 
 const actionGroups: ActionGroup[] = [
   {
@@ -151,7 +151,9 @@ const getTakeActionLinks = (
             "data-testid": `action-link-${action}`,
             // When nodes are not provided actions should always be enabled.
             disabled: nodes ? count === 0 : false,
-            onClick: () => onActionClick(action),
+            onClick: () => {
+              onActionClick(action);
+            },
           });
         }
         return groupLinks;
@@ -183,7 +185,7 @@ export const NodeActionMenu = ({
   toggleClassName,
   toggleLabel = Label.TakeAction,
   constrainPanelWidth,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <Tooltip
       message={

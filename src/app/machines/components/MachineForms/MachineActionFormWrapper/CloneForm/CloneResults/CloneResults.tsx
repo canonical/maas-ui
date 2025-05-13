@@ -11,7 +11,7 @@ import {
 } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import type { APIError, SetSearchFilter } from "@/app/base/types";
 import urls from "@/app/base/urls";
@@ -78,8 +78,8 @@ const getSystemId = (error: CloneError["destinations"][0]) => {
     // how the Django forms work. For this case we extract the system_id from
     // the error message manually.
     return (
-      error.message.match(
-        /Machine [0-9]+ is invalid: Select a valid choice\. (.{6}) is not one of the available choices\./
+      /Machine [0-9]+ is invalid: Select a valid choice\. (.{6}) is not one of the available choices\./.exec(
+        error.message
       )?.[1] || ""
     );
   }
@@ -132,7 +132,7 @@ export const CloneResults = ({
   setSearchFilter,
   sourceMachine,
   viewingDetails,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { pathname } = useLocation();
   const [destinationCount, setDestinationCount] = useState(0);
   const cloneErrors = useSelector((state: RootState) =>

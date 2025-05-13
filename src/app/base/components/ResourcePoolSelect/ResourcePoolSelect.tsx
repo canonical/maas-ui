@@ -1,16 +1,17 @@
 import type { HTMLProps } from "react";
+import React from "react";
 
 import { Select } from "@canonical/react-components";
 
 import { usePools } from "@/app/api/query/pools";
 import FormikField from "@/app/base/components/FormikField";
 
-type Props = {
+type Props = HTMLProps<HTMLSelectElement> & {
   disabled?: boolean;
   label?: string;
   name: string;
-  valueKey?: "name" | "id";
-} & HTMLProps<HTMLSelectElement>;
+  valueKey?: "id" | "name";
+};
 
 export const ResourcePoolSelect = ({
   disabled = false,
@@ -18,7 +19,7 @@ export const ResourcePoolSelect = ({
   name,
   valueKey = "name",
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const listPools = usePools();
   const resourcePools = listPools.data?.items || [];
 

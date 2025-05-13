@@ -41,7 +41,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
@@ -55,7 +55,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
@@ -70,7 +70,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
@@ -78,11 +78,11 @@ describe("PoolColumn", () => {
       expect(screen.getByRole("button", { name: "Change pool:" }))
     );
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "No other pools available" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 
   it("displays a message if the machine cannot have its pool changed", async () => {
@@ -91,7 +91,7 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
@@ -108,23 +108,25 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         store,
       }
     );
-    await waitFor(() => expect(poolsResolvers.listPools.resolved).toBeTruthy());
-    await waitFor(() =>
+    await waitFor(() => {
+      expect(poolsResolvers.listPools.resolved).toBeTruthy();
+    });
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Change pool:" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "swimming" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByRole("button", { name: "swimming" }));
 
     expect(
@@ -151,30 +153,30 @@ describe("PoolColumn", () => {
     renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
+        initialEntries: ["/machines"],
         state,
       }
     );
     expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Change pool:" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "swimming" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByRole("button", { name: "swimming" }));
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {
     renderWithProviders(<PoolColumn systemId="abc123" />, {
-      route: "/machines",
+      initialEntries: ["/machines"],
       state,
     });
 

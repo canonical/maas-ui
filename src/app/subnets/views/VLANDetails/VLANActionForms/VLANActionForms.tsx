@@ -1,7 +1,9 @@
+import type { ReactElement } from "react";
+
 import ConfigureDHCP from "../ConfigureDHCP";
 import EditVLAN from "../EditVLAN";
 
-import { type SetSidePanelContent } from "@/app/base/side-panel-context";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import ReservedRangeDeleteForm from "@/app/subnets/components/ReservedRangeDeleteForm";
@@ -28,8 +30,10 @@ const VLANActionForms = ({
   setSidePanelContent,
   subnetId,
   vlanId,
-}: VLANActionFormProps) => {
-  const clearSidePanelContent = () => setSidePanelContent(null);
+}: VLANActionFormProps): ReactElement | null => {
+  const clearSidePanelContent = () => {
+    setSidePanelContent(null);
+  };
 
   switch (activeForm) {
     case VLANActionTypes.ConfigureDHCP: {

@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
@@ -14,7 +14,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const NameColumn = ({ callId, systemId }: Props): JSX.Element => {
+const NameColumn = ({ callId, systemId }: Props): React.ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

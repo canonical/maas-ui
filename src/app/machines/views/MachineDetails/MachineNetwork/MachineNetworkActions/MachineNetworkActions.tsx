@@ -80,7 +80,7 @@ const MachineNetworkActions = ({
   setSidePanelContent,
   systemId,
   setSelected,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

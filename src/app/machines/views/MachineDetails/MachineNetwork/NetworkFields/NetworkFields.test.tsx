@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import NetworkFields, {
@@ -79,20 +79,20 @@ describe("NetworkFields", () => {
     const vlanSelect = screen.getByRole("combobox", {
       name: VLANSelectLabel.Select,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         within(vlanSelect).getByRole("option", { selected: true })
-      ).toHaveAttribute("value", state.vlan.items[0].id.toString())
-    );
+      ).toHaveAttribute("value", state.vlan.items[0].id.toString());
+    });
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: FabricSelectLabel.Select }),
       fabric.id.toString()
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         within(vlanSelect).getByRole("option", { selected: true })
-      ).toHaveAttribute("value", state.vlan.items[1].id.toString())
-    );
+      ).toHaveAttribute("value", state.vlan.items[1].id.toString());
+    });
   });
 
   it("resets all fields after vlan when the fabric is changed", async () => {
@@ -111,11 +111,11 @@ describe("NetworkFields", () => {
     const subnetSelect = screen.getByRole("combobox", {
       name: SubnetSelectLabel.Select,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         within(subnetSelect).getByRole("option", { selected: true })
-      ).toHaveAttribute("value", "")
-    );
+      ).toHaveAttribute("value", "");
+    });
     // Set the values of the fields so they're all visible and have values.
     await userEvent.selectOptions(
       subnetSelect,
@@ -134,21 +134,21 @@ describe("NetworkFields", () => {
       screen.getByRole("combobox", { name: FabricSelectLabel.Select }),
       state.fabric.items[1].id.toString()
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
-      ).not.toBeInTheDocument()
-    );
-    await waitFor(() =>
+      ).not.toBeInTheDocument();
+    });
+    await waitFor(() => {
       expect(
         screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
-      ).not.toBeInTheDocument()
-    );
-    await waitFor(() =>
+      ).not.toBeInTheDocument();
+    });
+    await waitFor(() => {
       expect(
         within(subnetSelect).getByRole("option", { selected: true })
-      ).toHaveAttribute("value", "")
-    );
+      ).toHaveAttribute("value", "");
+    });
   });
 
   it("resets all fields after vlan when it is changed", async () => {
@@ -185,19 +185,19 @@ describe("NetworkFields", () => {
     const subnetSelect = screen.getByRole("combobox", {
       name: SubnetSelectLabel.Select,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         within(subnetSelect).getByRole("option", { selected: true })
-      ).toHaveAttribute("value", "")
-    );
+      ).toHaveAttribute("value", "");
+    });
     expect(
       screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
     ).not.toBeInTheDocument();
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
-      ).not.toBeInTheDocument()
-    );
+      ).not.toBeInTheDocument();
+    });
   });
 
   it("resets all fields after subnet when it is changed", async () => {
@@ -234,11 +234,11 @@ describe("NetworkFields", () => {
     expect(
       screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
     ).not.toBeInTheDocument();
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
-      ).not.toBeInTheDocument()
-    );
+      ).not.toBeInTheDocument();
+    });
   });
 
   it("sets the ip address to the first address from the subnet when the mode is static", async () => {
@@ -271,11 +271,11 @@ describe("NetworkFields", () => {
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
       NetworkLinkMode.STATIC
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
-      ).toHaveAttribute("value", "1.2.3.4")
-    );
+      ).toHaveAttribute("value", "1.2.3.4");
+    });
   });
 
   it("does not display the mode field if a subnet has not been chosen", async () => {
@@ -294,11 +294,11 @@ describe("NetworkFields", () => {
     expect(
       screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
     ).not.toBeInTheDocument();
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
-      ).not.toBeInTheDocument()
-    );
+      ).not.toBeInTheDocument();
+    });
   });
 
   it("displays the mode field if a subnet has been chosen", async () => {
@@ -324,11 +324,11 @@ describe("NetworkFields", () => {
     const linkModeSelect = screen.getByRole("combobox", {
       name: LinkModeSelectLabel.Select,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         within(linkModeSelect).getByRole("option", { selected: true })
-      ).toHaveAttribute("value", NetworkLinkMode.LINK_UP)
-    );
+      ).toHaveAttribute("value", NetworkLinkMode.LINK_UP);
+    });
   });
 
   it("reset the mode field to 'auto' when editing and changed subnet", async () => {
@@ -357,11 +357,11 @@ describe("NetworkFields", () => {
     const linkModeSelect = screen.getByRole("combobox", {
       name: LinkModeSelectLabel.Select,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         within(linkModeSelect).getByRole("option", { selected: true })
-      ).toHaveAttribute("value", NetworkLinkMode.AUTO)
-    );
+      ).toHaveAttribute("value", NetworkLinkMode.AUTO);
+    });
   });
 
   it("reset the mode field to 'unconfigured' when editing and removed subnet", async () => {
@@ -401,9 +401,9 @@ describe("NetworkFields", () => {
       screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
     ).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
-    await waitFor(() =>
-      expect(onSubmit.mock.calls[0][0].mode).toBe(NetworkLinkMode.LINK_UP)
-    );
+    await waitFor(() => {
+      expect(onSubmit.mock.calls[0][0].mode).toBe(NetworkLinkMode.LINK_UP);
+    });
   });
 
   it("does not display the ip address field if the mode has not been chosen", async () => {
@@ -419,11 +419,11 @@ describe("NetworkFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
-      ).not.toBeInTheDocument()
-    );
+      ).not.toBeInTheDocument();
+    });
   });
 
   it("does not display the ip address field if the chosen mode is not static", async () => {
@@ -447,11 +447,11 @@ describe("NetworkFields", () => {
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
       NetworkLinkMode.AUTO
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
-      ).not.toBeInTheDocument()
-    );
+      ).not.toBeInTheDocument();
+    });
   });
 
   it("displays the ip address field if the mode is static", async () => {
@@ -475,10 +475,10 @@ describe("NetworkFields", () => {
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
       NetworkLinkMode.STATIC
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 });

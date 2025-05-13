@@ -12,7 +12,7 @@ type Props = {
 const PodDetailsActionMenu = ({
   hostId,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <ContextualMenu
       data-testid="action-dropdown"
@@ -20,27 +20,30 @@ const PodDetailsActionMenu = ({
       links={[
         {
           children: "Compose",
-          onClick: () =>
+          onClick: () => {
             setSidePanelContent({
               view: KVMSidePanelViews.COMPOSE_VM,
               extras: { hostId },
-            }),
+            });
+          },
         },
         {
           children: "Refresh",
-          onClick: () =>
+          onClick: () => {
             setSidePanelContent({
               view: KVMSidePanelViews.REFRESH_KVM,
               extras: { hostIds: [hostId] },
-            }),
+            });
+          },
         },
         {
           children: "Delete",
-          onClick: () =>
+          onClick: () => {
             setSidePanelContent({
               view: KVMSidePanelViews.DELETE_KVM,
               extras: { hostId },
-            }),
+            });
+          },
         },
       ]}
       position="right"

@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import {
@@ -8,7 +9,7 @@ import {
 } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
@@ -28,7 +29,7 @@ export enum Labels {
   CantContinue = "At least one image and source must be configured to continue.",
 }
 
-const ImagesIntro = () => {
+const ImagesIntro = (): ReactElement => {
   const dispatch = useDispatch();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const navigate = useNavigate();
@@ -96,7 +97,9 @@ const ImagesIntro = () => {
           data-testid="images-intro-continue"
           disabled={incomplete}
           hasIcon
-          onClick={() => navigate({ pathname: urls.intro.success })}
+          onClick={() => {
+            navigate({ pathname: urls.intro.success });
+          }}
         >
           Continue
           {incomplete && (

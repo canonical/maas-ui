@@ -9,7 +9,7 @@ type SortValueGetter<I, K extends string | null, A = null> = (
   sortKey: K,
   item: I,
   args?: A
-) => string | number | null;
+) => number | string | null;
 
 export type TableSort<I, K extends string | null, A = null> = {
   currentSort: Sort<K>;

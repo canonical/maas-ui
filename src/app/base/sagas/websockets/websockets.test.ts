@@ -332,7 +332,7 @@ describe("websocket sagas", () => {
         params: [
           { name: "foo", value: "bar" },
           { name: "baz", value: "qux" },
-        ] as Array<{ name: string; value: Config<string>["value"] }>,
+        ] as { name: string; value: Config<string>["value"] }[],
       },
     } as const;
     const saga = sendMessage(socketClient, action);

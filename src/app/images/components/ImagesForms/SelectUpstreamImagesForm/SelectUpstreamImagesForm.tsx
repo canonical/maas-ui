@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import type { MultiSelectItem } from "@canonical/react-components";
@@ -24,15 +25,11 @@ import {
 
 import "./_index.scss";
 
-export type GroupedImages = {
-  [key: string]: ReleasesWithArches;
-};
+export type GroupedImages = Record<string, ReleasesWithArches>;
 
-type ReleasesWithArches = {
-  [key: string]: MultiSelectItem[];
-};
+type ReleasesWithArches = Record<string, MultiSelectItem[]>;
 
-type ImagesByOS = { [key: string]: DownloadableImage[] };
+type ImagesByOS = Record<string, DownloadableImage[]>;
 
 type DownloadableImage = {
   id: string;
@@ -111,7 +108,7 @@ export const getSyncedImages = (
     );
 };
 
-export const groupImagesByOS = (images: DownloadableImage[]) => {
+export const groupImagesByOS = (images: DownloadableImage[]): ImagesByOS => {
   const imagesByOS: ImagesByOS = {};
 
   images.forEach((image) => {
@@ -131,7 +128,7 @@ export const groupImagesByOS = (images: DownloadableImage[]) => {
   return imagesByOS;
 };
 
-export const groupArchesByRelease = (images: ImagesByOS) => {
+export const groupArchesByRelease = (images: ImagesByOS): GroupedImages => {
   const groupedImages: GroupedImages = {};
 
   Object.keys(images).forEach((distro) => {
@@ -155,7 +152,7 @@ export const groupArchesByRelease = (images: ImagesByOS) => {
   return groupedImages;
 };
 
-const SelectUpstreamImagesForm = () => {
+const SelectUpstreamImagesForm = (): ReactElement => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const otherImages = useSelector(bootResourceSelectors.otherImages);
@@ -293,7 +290,7 @@ const SelectUpstreamImagesForm = () => {
           {({
             values,
             setFieldValue,
-          }: Pick<DownloadImagesSelectProps, "values" | "setFieldValue">) => (
+          }: Pick<DownloadImagesSelectProps, "setFieldValue" | "values">) => (
             <SelectUpstreamImagesSelect
               groupedImages={groupedImages}
               setFieldValue={setFieldValue}

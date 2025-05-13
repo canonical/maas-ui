@@ -94,7 +94,7 @@ const getSortValue = (sortKey: SortKey, user: User) => {
   return isComparable(value) ? value : null;
 };
 
-const UsersList = (): JSX.Element => {
+const UsersList = (): React.ReactElement => {
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
   const users = useSelector((state: RootState) =>
@@ -176,7 +176,9 @@ const UsersList = (): JSX.Element => {
                 <TableHeader
                   currentSort={currentSort}
                   data-testid="email-header"
-                  onClick={() => updateSort("email")}
+                  onClick={() => {
+                    updateSort("email");
+                  }}
                   sortKey="email"
                 >
                   Email
@@ -188,7 +190,9 @@ const UsersList = (): JSX.Element => {
                 <TableHeader
                   currentSort={currentSort}
                   data-testid="machines-count-header"
-                  onClick={() => updateSort("machines_count")}
+                  onClick={() => {
+                    updateSort("machines_count");
+                  }}
                   sortKey="machines_count"
                 >
                   Machines

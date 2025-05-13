@@ -32,7 +32,7 @@ export type LxdKVMHostTableRow = {
   defaultPoolID?: Pod["default_storage_pool"];
   hostType: LxdKVMHostType;
   hostsCount?: number;
-  key: string | number;
+  key: number | string;
   memory: RAMColumnProps["memory"];
   memoryOverCommit?: number;
   name: string;
@@ -52,13 +52,13 @@ type Props = {
   rows: LxdKVMHostTableRow[];
 };
 
-type SortKey = "hostType" | "name" | "cpu" | "zone" | "ram" | "storage" | "vms";
+type SortKey = "cpu" | "hostType" | "name" | "ram" | "storage" | "vms" | "zone";
 
 const getSortValue = (
   sortKey: SortKey,
   row: LxdKVMHostTableRow,
   zones?: ZoneResponse[]
-): string | number | null => {
+): number | string | null => {
   const zone = zones?.find((zone) => row.zone === zone.id);
   switch (sortKey) {
     case "zone":
@@ -150,7 +150,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
     };
   });
 
-const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
+const LxdKVMHostTable = ({ rows }: Props): React.ReactElement => {
   const zones = useZones();
   const { currentSort, sortRows, updateSort } = useTableSort<
     LxdKVMHostTableRow,
@@ -173,7 +173,9 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               <TableHeader
                 currentSort={currentSort}
                 data-testid="name-header"
-                onClick={() => updateSort("name")}
+                onClick={() => {
+                  updateSort("name");
+                }}
                 sortKey="name"
               >
                 Name
@@ -189,7 +191,9 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               className="p-double-row__header-spacer"
               currentSort={currentSort}
               data-testid="host-type-header"
-              onClick={() => updateSort("hostType")}
+              onClick={() => {
+                updateSort("hostType");
+              }}
               sortKey="hostType"
             >
               KVM host type
@@ -203,7 +207,9 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               <TableHeader
                 currentSort={currentSort}
                 data-testid="vms-header"
-                onClick={() => updateSort("vms")}
+                onClick={() => {
+                  updateSort("vms");
+                }}
                 sortKey="vms"
               >
                 VM<span className="u-no-text-transform">s</span>
@@ -223,7 +229,9 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
               <TableHeader
                 currentSort={currentSort}
                 data-testid="zone-header"
-                onClick={() => updateSort("zone")}
+                onClick={() => {
+                  updateSort("zone");
+                }}
                 sortKey="zone"
               >
                 AZ
@@ -238,7 +246,9 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
             <TableHeader
               currentSort={currentSort}
               data-testid="cpu-header"
-              onClick={() => updateSort("cpu")}
+              onClick={() => {
+                updateSort("cpu");
+              }}
               sortKey="cpu"
             >
               CPU cores
@@ -251,7 +261,9 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
             <TableHeader
               currentSort={currentSort}
               data-testid="ram-header"
-              onClick={() => updateSort("ram")}
+              onClick={() => {
+                updateSort("ram");
+              }}
               sortKey="ram"
             >
               RAM
@@ -264,7 +276,9 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
             <TableHeader
               currentSort={currentSort}
               data-testid="storage-header"
-              onClick={() => updateSort("storage")}
+              onClick={() => {
+                updateSort("storage");
+              }}
               sortKey="storage"
             >
               Storage

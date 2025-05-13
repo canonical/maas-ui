@@ -14,7 +14,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  zoneResolvers.getZone.handler()
+);
 
 describe("VirshDetails", () => {
   let state: RootState;
@@ -48,7 +51,9 @@ describe("VirshDetails", () => {
       state,
       routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
     expect(screen.getByLabelText(VirshSettingsLabel.Title)).toBeInTheDocument();
   });
 

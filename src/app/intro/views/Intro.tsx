@@ -1,8 +1,8 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router";
 
 import { useExitURL } from "../hooks";
 
@@ -20,7 +20,7 @@ import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
 import { getRelativeRoute } from "@/app/utils";
 
-const Intro = () => {
+const Intro = (): ReactElement => {
   const navigate = useNavigate();
   const location = useLocation();
   const authLoading = useSelector(authSelectors.loading);

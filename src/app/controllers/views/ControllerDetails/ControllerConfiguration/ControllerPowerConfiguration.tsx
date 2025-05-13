@@ -43,7 +43,9 @@ export enum Label {
   Title = "Power configuration",
 }
 
-const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
+const ControllerPowerConfiguration = ({
+  systemId,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
@@ -110,7 +112,9 @@ const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
               powerType: controller.power_type,
               powerParameters: initialPowerParameters,
             }}
-            onCancel={() => setEditing(false)}
+            onCancel={() => {
+              setEditing(false);
+            }}
             onSaveAnalytics={{
               action: "Configure power",
               category: "Controller details",
@@ -127,7 +131,9 @@ const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
               };
               dispatch(controllerActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
+            onSuccess={() => {
+              setEditing(false);
+            }}
             onValuesChanged={(values) => {
               const powerType = getPowerTypeFromName(
                 powerTypes,

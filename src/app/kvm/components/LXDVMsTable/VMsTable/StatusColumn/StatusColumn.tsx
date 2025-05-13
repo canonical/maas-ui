@@ -12,7 +12,7 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
-const StatusColumn = ({ systemId }: Props): JSX.Element => {
+const StatusColumn = ({ systemId }: Props): React.ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

@@ -24,7 +24,7 @@ import type { Subnet } from "@/app/store/subnet/types";
 
 type Option = { label: string; value: string };
 
-type ModelType = Subnet | Controller | Machine | Device | IPRange;
+type ModelType = Controller | Device | IPRange | Machine | Subnet;
 
 type Props = {
   editing: boolean;
@@ -75,7 +75,7 @@ export enum Labels {
   Value = "DHCP snippet",
 }
 
-export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
+export const DhcpFormFields = ({ editing }: Props): React.ReactElement => {
   const formikProps = useFormikContext<DHCPFormValues>();
   const subnets = useSelector(subnetSelectors.all);
   const controllers = useSelector(controllerSelectors.all);

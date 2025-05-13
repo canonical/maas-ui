@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import React from "react";
 
 import { Col, Icon, Row, Textarea, Tooltip } from "@canonical/react-components";
@@ -19,7 +20,7 @@ export enum Labels {
   HideAdvanced = "Hide advanced...",
 }
 
-const ChangeSourceFields = () => {
+const ChangeSourceFields = (): ReactElement => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<ChangeSourceValues>();
   const { keyring_data, keyring_filename, source_type } = values;

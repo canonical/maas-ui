@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import BaseUserForm from "@/app/base/components/UserForm";
 import type { Props as UserFormProps } from "@/app/base/components/UserForm/UserForm";
@@ -20,7 +20,7 @@ type PropTypes = {
   user?: UserFormProps["user"];
 };
 
-export const UserForm = ({ user }: PropTypes): JSX.Element => {
+export const UserForm = ({ user }: PropTypes): React.ReactElement => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const saved = useSelector(userSelectors.saved);
@@ -33,7 +33,9 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
     saved,
     userActions.cleanup,
     `${savingUser} ${editing ? "updated" : "added"} successfully.`,
-    () => setSaving(null)
+    () => {
+      setSaving(null);
+    }
   );
 
   return (
@@ -41,7 +43,9 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
       aria-label={title}
       cleanup={userActions.cleanup}
       includeUserType
-      onCancel={() => navigate(-1)}
+      onCancel={() => {
+        navigate(-1);
+      }}
       onSave={(values) => {
         const params = {
           email: values.email,

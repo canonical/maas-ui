@@ -26,7 +26,7 @@ const EditableSection = ({
   canEdit = true,
   renderContent,
   ...titledSectionProps
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [editing, setEditing] = useState(false);
   const showEditButton = canEdit && !editing;
 
@@ -36,7 +36,9 @@ const EditableSection = ({
         showEditButton ? (
           <Button
             className="u-no-margin--bottom"
-            onClick={() => setEditing(true)}
+            onClick={() => {
+              setEditing(true);
+            }}
           >
             {Labels.EditButton}
           </Button>

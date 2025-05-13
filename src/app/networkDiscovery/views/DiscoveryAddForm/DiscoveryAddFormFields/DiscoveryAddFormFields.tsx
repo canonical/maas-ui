@@ -1,7 +1,7 @@
 import { Col, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { DiscoveryAddValues } from "../types";
 import { DeviceType } from "../types";
@@ -51,7 +51,7 @@ const DiscoveryAddFormFields = ({
   discovery,
   setDevice,
   setDeviceType,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const devices = useSelector(deviceSelectors.all);
   const domains = useSelector(domainSelectors.all);
   const subnet = useSelector((state: RootState) =>

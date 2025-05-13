@@ -123,7 +123,9 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
     // Choose the "manual" power type which has no power fields, and fill in other
     // required fields.
     await waitFor(() => {
@@ -137,9 +139,11 @@ describe("AddMachineForm", () => {
       screen.getByRole("textbox", { name: "MAC address" }),
       "11:11:11:11:11:11"
     );
-    await waitFor(() =>
-      expect(screen.getByRole("button", { name: "Save machine" })).toBeEnabled()
-    );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Save machine" })
+      ).toBeEnabled();
+    });
   });
 
   it("can handle saving a machine", async () => {
@@ -151,7 +155,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: "Machine name" })
+      ).toBeInTheDocument();
+    });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Machine name" }),
@@ -181,6 +189,9 @@ describe("AddMachineForm", () => {
       screen.getByRole("textbox", { name: "MAC address" }),
       "11:11:11:11:11:11"
     );
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: /Register as DPU/i })
+    );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Power type" }),
       "manual"
@@ -192,13 +203,13 @@ describe("AddMachineForm", () => {
       domain: { name: "maas" },
       extra_macs: [],
       hostname: "mean-bean",
+      is_dpu: true,
       min_hwe_kernel: "ga-16.04",
       pool: { name: "swimming" },
       power_parameters: {},
       power_type: "manual",
       pxe_mac: "11:11:11:11:11:11",
       zone: { name: "1" },
-      // TODO: Add `is_dpu` field to params https://warthogs.atlassian.net/browse/MAASENG-4186
     });
     await waitFor(() => {
       expect(
@@ -216,7 +227,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: "MAC address" })
+      ).toBeInTheDocument();
+    });
 
     // Choose initial power type and fill in fields.
     await userEvent.type(
@@ -245,6 +260,7 @@ describe("AddMachineForm", () => {
       domain: { name: "maas" },
       extra_macs: [],
       hostname: "",
+      is_dpu: false,
       min_hwe_kernel: "ga-16.04",
       pool: { name: "swimming" },
       // Create action should not include power_address parameter since it does
@@ -272,7 +288,11 @@ describe("AddMachineForm", () => {
         route: "/machines/add",
       }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Power type" })
+      ).toBeInTheDocument();
+    });
 
     // Submit the form with two extra macs, where one is an empty string
     await userEvent.selectOptions(
@@ -301,6 +321,7 @@ describe("AddMachineForm", () => {
       domain: { name: "maas" },
       // There should only be one extra MAC defined.
       extra_macs: ["22:22:22:22:22:22"],
+      is_dpu: false,
       hostname: "",
       min_hwe_kernel: "ga-16.04",
       pool: { name: "swimming" },

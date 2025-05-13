@@ -40,7 +40,9 @@ const getColumn = (label: string | null, href?: string | null) => ({
   isVisuallyHidden: false,
 });
 
-export const groupRowsByFabric = (sourceRows: SubnetsTableRow[]) => {
+export const groupRowsByFabric = (
+  sourceRows: SubnetsTableRow[]
+): FabricTableRow[] => {
   const rows: FabricTableRow[] = [];
   sourceRows.forEach((sourceRow, index) => {
     const previousRow = rows[rows.length - 1];
@@ -69,7 +71,9 @@ export const groupRowsByFabric = (sourceRows: SubnetsTableRow[]) => {
   return rows;
 };
 
-export const groupRowsBySpace = (sourceRows: SubnetsTableRow[]) => {
+export const groupRowsBySpace = (
+  sourceRows: SubnetsTableRow[]
+): SpaceTableRow[] => {
   const rows: SpaceTableRow[] = [];
   sourceRows.forEach((sourceRow, index) => {
     const previousRow = rows[rows.length - 1];
@@ -99,7 +103,7 @@ export const groupRowsBySpace = (sourceRows: SubnetsTableRow[]) => {
 export const groupSubnetData = (
   data: SubnetsTableRow[],
   groupBy: GroupByKey = "fabric"
-) => {
+): Record<number | string, { count: number }> => {
   return data.reduce<Record<number | string, { count: number }>>((acc, cur) => {
     const name =
       groupBy === "fabric" ? cur.sortData?.fabricName : cur.sortData?.spaceName;

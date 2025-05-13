@@ -61,8 +61,10 @@ const processing = (state: RootState): Machine[MachineMeta.PK][] =>
     )
   );
 
-export const statusSelectors: { [x: string]: Selector<RootState, Machine[]> } =
-  {};
+export const statusSelectors: Record<
+  string,
+  Selector<RootState, Machine[]>
+> = {};
 
 // Create a selector for each machine status.
 ACTIONS.forEach(({ status }) => {
@@ -99,7 +101,7 @@ const updatingTags = createSelector(
   (machines: Machine[], statuses: MachineStatuses) =>
     machines.filter(
       ({ system_id }) =>
-        statuses[system_id]?.["tagging"] || statuses[system_id]?.["untagging"]
+        statuses[system_id]?.tagging || statuses[system_id]?.untagging
     )
 );
 
@@ -665,24 +667,24 @@ const unusedIdsInCall = createSelector(
 
 const selectors = {
   ...defaultSelectors,
-  aborting: statusSelectors["aborting"],
-  acquiring: statusSelectors["acquiring"],
+  aborting: statusSelectors.aborting,
+  acquiring: statusSelectors.acquiring,
   active,
   activeID,
-  checkingPower: statusSelectors["checkingPower"],
-  cloning: statusSelectors["cloning"],
-  commissioning: statusSelectors["commissioning"],
-  creatingPhysical: statusSelectors["creatingPhysical"],
-  creatingVlan: statusSelectors["creatingVlan"],
-  deleting: statusSelectors["deleting"],
-  deletingInterface: statusSelectors["deletingInterface"],
-  deploying: statusSelectors["deploying"],
+  checkingPower: statusSelectors.checkingPower,
+  cloning: statusSelectors.cloning,
+  commissioning: statusSelectors.commissioning,
+  creatingPhysical: statusSelectors.creatingPhysical,
+  creatingVlan: statusSelectors.creatingVlan,
+  deleting: statusSelectors.deleting,
+  deletingInterface: statusSelectors.deletingInterface,
+  deploying: statusSelectors.deploying,
   detailsLoaded,
   detailsLoading,
-  enteringRescueMode: statusSelectors["enteringRescueMode"],
+  enteringRescueMode: statusSelectors.enteringRescueMode,
   eventErrors,
   eventErrorsForIds,
-  exitingRescueMode: statusSelectors["exitingRescueMode"],
+  exitingRescueMode: statusSelectors.exitingRescueMode,
   filterOptions,
   filterOptionsLoaded,
   filterOptionsLoading,
@@ -699,7 +701,7 @@ const selectors = {
   getInterfaceById,
   getStatuses,
   getStatusForMachine,
-  linkingSubnet: statusSelectors["linkingSubnet"],
+  linkingSubnet: statusSelectors.linkingSubnet,
   list,
   listCount,
   listTotalPages,
@@ -709,23 +711,23 @@ const selectors = {
   listLoaded,
   listLoading,
   listStale,
-  locking: statusSelectors["locking"],
-  markingBroken: statusSelectors["markingBroken"],
-  markingFixed: statusSelectors["markingFixed"],
-  overridingFailedTesting: statusSelectors["overridingFailedTesting"],
+  locking: statusSelectors.locking,
+  markingBroken: statusSelectors.markingBroken,
+  markingFixed: statusSelectors.markingFixed,
+  overridingFailedTesting: statusSelectors.overridingFailedTesting,
   processing,
-  releasing: statusSelectors["releasing"],
+  releasing: statusSelectors.releasing,
   selected,
-  settingPool: statusSelectors["settingPool"],
-  settingZone: statusSelectors["settingZone"],
+  settingPool: statusSelectors.settingPool,
+  settingZone: statusSelectors.settingZone,
   statuses,
-  tagging: statusSelectors["tagging"],
-  testing: statusSelectors["testing"],
-  turningOff: statusSelectors["turningOff"],
-  turningOn: statusSelectors["turningOn"],
-  unlocking: statusSelectors["unlocking"],
-  unlinkingSubnet: statusSelectors["unlinkingSubnet"],
-  untagging: statusSelectors["untagging"],
+  tagging: statusSelectors.tagging,
+  testing: statusSelectors.testing,
+  turningOff: statusSelectors.turningOff,
+  turningOn: statusSelectors.turningOn,
+  unlocking: statusSelectors.unlocking,
+  unlinkingSubnet: statusSelectors.unlinkingSubnet,
+  untagging: statusSelectors.untagging,
   unusedIdsInCall,
   updatingTags,
 };

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import pluralize from "pluralize";
 
 import MachineHostname from "../MachineHostname";
@@ -27,7 +29,7 @@ const ErrorDetailsList = ({
   failureDetails,
 }: {
   failureDetails: NonNullable<ActionState["failureDetails"]>;
-}): JSX.Element => {
+}): React.ReactElement => {
   return (
     <>
       {Object.keys(failureDetails).length > 0
@@ -48,7 +50,10 @@ const ErrorDetailsList = ({
 const ErrorDetails = ({
   failureDetails,
   failedSystemIds,
-}: Pick<ActionState, "failedSystemIds" | "failureDetails">) => {
+}: Pick<
+  ActionState,
+  "failedSystemIds" | "failureDetails"
+>): ReactElement | null => {
   const failedSystemIdsCount = failedSystemIds?.length ?? 0;
 
   return failedSystemIdsCount > 0 ? (

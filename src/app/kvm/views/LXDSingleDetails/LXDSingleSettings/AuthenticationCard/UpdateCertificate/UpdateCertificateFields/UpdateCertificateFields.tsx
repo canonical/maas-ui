@@ -21,7 +21,7 @@ const UpdateCertificateFields = ({
   generatedCertificate,
   shouldGenerateCert,
   setShouldGenerateCert,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [usePassword, setUsePassword] = useState(false);
   const { resetForm } = useFormikContext<UpdateCertificateValues>();
 
@@ -50,7 +50,13 @@ const UpdateCertificateFields = ({
               type="password"
             />
             {!usePassword && (
-              <Button onClick={() => setUsePassword(true)}>Add</Button>
+              <Button
+                onClick={() => {
+                  setUsePassword(true);
+                }}
+              >
+                Add
+              </Button>
             )}
           </div>
         ) : (

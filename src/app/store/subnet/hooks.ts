@@ -6,6 +6,7 @@ import { getHasIPAddresses } from "./utils";
 
 import { useFetchActions } from "@/app/base/hooks";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
+import type { ReservedIp } from "@/app/store/reservedip/types";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
@@ -47,7 +48,9 @@ export const useCanBeDeleted = (id?: Subnet[SubnetMeta.PK] | null): boolean => {
   return !isDHCPEnabled || (isDHCPEnabled && !getHasIPAddresses(subnet));
 };
 
-export const useReservedIps = (subnetId: Subnet[SubnetMeta.PK]) => {
+export const useReservedIps = (
+  subnetId: Subnet[SubnetMeta.PK]
+): ReservedIp[] => {
   const reservedIps = useSelector((state: RootState) =>
     reservedIpSelectors.getBySubnet(state, subnetId)
   );

@@ -14,7 +14,7 @@ export enum Labels {
   Loading = "Loading...",
 }
 
-const General = (): JSX.Element => {
+const General = (): React.ReactElement => {
   const loaded = useSelector(configSelectors.loaded);
   const loading = useSelector(configSelectors.loading);
   const dispatch = useDispatch();

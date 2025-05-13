@@ -1,7 +1,7 @@
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
@@ -16,7 +16,10 @@ type Props = Required<Pick<SectionHeaderProps, "title">> & {
   setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const KVMListHeader = ({ setSidePanelContent, title }: Props): JSX.Element => {
+const KVMListHeader = ({
+  setSidePanelContent,
+  title,
+}: Props): React.ReactElement => {
   const location = useLocation();
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
@@ -37,13 +40,13 @@ const KVMListHeader = ({ setSidePanelContent, title }: Props): JSX.Element => {
           appearance="positive"
           data-testid="add-kvm"
           key="add-kvm"
-          onClick={() =>
+          onClick={() => {
             setSidePanelContent({
               view: lxdTabActive
                 ? KVMSidePanelViews.ADD_LXD_HOST
                 : KVMSidePanelViews.ADD_VIRSH_HOST,
-            })
-          }
+            });
+          }}
         >
           Add {lxdTabActive ? "LXD" : "Virsh"} host
         </Button>

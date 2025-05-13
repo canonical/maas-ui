@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
@@ -49,11 +49,11 @@ it("dispatches an action to create a tag", async () => {
     kernel_opts: "options1",
     name: "new-tag",
   });
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       store.getActions().find((action) => action.type === expected.type)
-    ).toStrictEqual(expected)
-  );
+    ).toStrictEqual(expected);
+  });
 });
 
 it("returns the newly created tag on save", async () => {
@@ -79,5 +79,7 @@ it("returns the newly created tag on save", async () => {
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: Label.Submit }));
-  await waitFor(() => expect(onTagCreated).toHaveBeenCalledWith(newTag));
+  await waitFor(() => {
+    expect(onTagCreated).toHaveBeenCalledWith(newTag);
+  });
 });

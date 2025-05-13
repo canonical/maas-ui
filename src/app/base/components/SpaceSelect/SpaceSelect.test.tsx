@@ -106,7 +106,9 @@ it("maintains selected option after new options are added", async () => {
     name: "space2",
   }) as HTMLOptionElement;
 
-  await waitFor(() => expect(option2.selected).toBe(true));
+  await waitFor(() => {
+    expect(option2.selected).toBe(true);
+  });
 
   rerender(<SpaceWithProvider state={stateAfter} />);
 

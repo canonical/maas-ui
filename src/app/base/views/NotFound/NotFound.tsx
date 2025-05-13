@@ -10,7 +10,7 @@ export enum Label {
   Title = "Error: Page not found",
 }
 
-const NotFound = ({ includeSection = false }: Props): JSX.Element => {
+const NotFound = ({ includeSection = false }: Props): React.ReactElement => {
   useWindowTitle(Label.Title);
   const message = `The requested URL ${window.location.pathname} was not found on this server.`;
   if (includeSection) {

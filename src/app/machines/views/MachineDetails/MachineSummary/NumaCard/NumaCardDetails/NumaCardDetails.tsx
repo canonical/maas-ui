@@ -34,7 +34,7 @@ const NumaCardDetails = ({
   machineId,
   numaNode,
   showExpanded = false,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [isExpanded, setIsExpanded] = useState(showExpanded);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, machineId)
@@ -69,7 +69,9 @@ const NumaCardDetails = ({
           className={classNames("numa-card__button", {
             "is-open": isExpanded,
           })}
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={() => {
+            setIsExpanded(!isExpanded);
+          }}
         >
           Node {numaNode.index}
         </button>

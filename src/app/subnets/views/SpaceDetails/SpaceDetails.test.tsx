@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 
 import SpaceDetails from "./SpaceDetails";

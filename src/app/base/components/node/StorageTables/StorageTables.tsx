@@ -23,7 +23,7 @@ type Props = {
   node: ControllerDetails | MachineDetails;
 };
 
-const StorageTables = ({ canEditStorage, node }: Props): JSX.Element => {
+const StorageTables = ({ canEditStorage, node }: Props): React.ReactElement => {
   const showDatastores = isVMWareLayout(node.detected_storage_layout);
   const showCacheSets = node.disks.some((disk) => isCacheSet(disk));
 

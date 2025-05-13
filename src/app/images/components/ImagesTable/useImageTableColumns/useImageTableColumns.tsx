@@ -19,15 +19,18 @@ import { formatUtcDatetime, getTimeDistanceString } from "@/app/utils/time";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
-export const filterCells = (row: Row<Image>, column: Column<Image>) => {
+export const filterCells = (
+  row: Row<Image>,
+  column: Column<Image>
+): boolean => {
   if (row.getIsGrouped()) {
-    return ["group-select", "name", "action"].includes(column.id);
+    return ["name", "action"].includes(column.id);
   } else {
     return !["name"].includes(column.id);
   }
 };
 
-export const filterHeaders = (header: Header<Image, unknown>) =>
+export const filterHeaders = (header: Header<Image, unknown>): boolean =>
   header.column.id !== "name";
 
 const useImageTableColumns = ({
@@ -36,7 +39,7 @@ const useImageTableColumns = ({
 }: {
   commissioningRelease: string | null;
   onDelete: (row: Row<Image>) => void;
-}) => {
+}): ImageColumnDef[] => {
   return useMemo(
     () =>
       [
@@ -183,7 +186,9 @@ const useImageTableColumns = ({
                       : "Cannot delete images that are currently being imported."
                     : "Deletes this image."
                 }
-                onDelete={() => onDelete(row)}
+                onDelete={() => {
+                  onDelete(row);
+                }}
               />
             );
           },

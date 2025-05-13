@@ -1,8 +1,9 @@
+import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
@@ -16,7 +17,7 @@ type UserDeleteProps = {
   user: User;
 };
 
-const UserDeleteForm = ({ user }: UserDeleteProps) => {
+const UserDeleteForm = ({ user }: UserDeleteProps): ReactElement => {
   const [deletedUser, setDeletedUser] = useState<User["username"] | null>(null);
   const navigate = useNavigate();
   const saved = useSelector(userSelectors.saved);
@@ -34,7 +35,9 @@ const UserDeleteForm = ({ user }: UserDeleteProps) => {
     <FormikForm<EmptyObject>
       aria-label="Delete user"
       initialValues={{}}
-      onCancel={() => navigate({ pathname: settingsURLs.users.index })}
+      onCancel={() => {
+        navigate({ pathname: settingsURLs.users.index });
+      }}
       onSubmit={() => {
         dispatch(userActions.delete(user.id));
         setDeletedUser(user.username);

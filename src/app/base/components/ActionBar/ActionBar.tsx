@@ -26,7 +26,7 @@ const ActionBar = ({
   searchFilter,
   setCurrentPage,
   ...props
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   return (
     <div className="action-bar" {...props}>
       {actions && <div className="action-bar__actions">{actions}</div>}
@@ -48,8 +48,12 @@ const ActionBar = ({
             onInputChange={(e) => {
               setCurrentPage(Number(e.target.value));
             }}
-            onNextClick={() => setCurrentPage(currentPage + 1)}
-            onPreviousClick={() => setCurrentPage(currentPage - 1)}
+            onNextClick={() => {
+              setCurrentPage(currentPage + 1);
+            }}
+            onPreviousClick={() => {
+              setCurrentPage(currentPage - 1);
+            }}
             totalPages={Math.ceil(itemCount / pageSize)}
           />
         </div>

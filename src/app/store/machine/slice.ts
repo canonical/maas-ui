@@ -206,10 +206,10 @@ const generateActionParams = <P extends BaseMachineActionParams>(
   action: NodeActions
 ) => ({
   prepare: (params: P, callId?: string) => {
-    let actionParams: {
+    let actionParams: BaseMachineActionParams & {
       action: NodeActions;
       extra: Omit<P, "filter" | "system_id"> | Omit<P, "system_id">;
-    } & BaseMachineActionParams;
+    };
     if ("filter" in params) {
       // Separate the filter and 'extra' params.
       const { filter, system_id, ...extra } = params;
@@ -301,7 +301,7 @@ const machineSlice = createSlice({
     [`${NodeActions.ACQUIRE}Success`]: statusHandlers.acquire
       .success as CaseReducer<MachineState, PayloadAction<unknown>>,
     addChassis: {
-      prepare: (params: { [x: string]: string }) => ({
+      prepare: (params: Record<string, string>) => ({
         payload: {
           params,
         },

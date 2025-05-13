@@ -38,7 +38,7 @@ const generateTitle = (
   return `${title} in ${fabric.name}`;
 };
 
-const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
+const VLANDetailsHeader = ({ id }: Props): React.ReactElement => {
   const { setSidePanelContent } = useSidePanel();
 
   const vlan = useSelector((state: RootState) =>
@@ -58,9 +58,9 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
       <Button
         data-testid="delete-vlan"
         key="delete-vlan"
-        onClick={() =>
-          setSidePanelContent({ view: VLANDetailsSidePanelViews.DeleteVLAN })
-        }
+        onClick={() => {
+          setSidePanelContent({ view: VLANDetailsSidePanelViews.DeleteVLAN });
+        }}
       >
         Delete VLAN
       </Button>

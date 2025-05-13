@@ -17,7 +17,7 @@ export type CreateZoneValues = {
   name: string;
 };
 
-const EditZone = ({ id, closeForm }: Props): JSX.Element | null => {
+const EditZone = ({ id, closeForm }: Props): React.ReactElement | null => {
   const queryClient = useQueryClient();
   const { data: zone } = useGetZone({ path: { zone_id: id } });
 

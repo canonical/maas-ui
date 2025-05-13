@@ -19,7 +19,10 @@ type Props = {
   id?: Fabric[FabricMeta.PK] | null;
 };
 
-const FabricDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
+const FabricDeleteForm = ({
+  closeForm,
+  id,
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)

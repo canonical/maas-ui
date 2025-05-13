@@ -43,7 +43,7 @@ export enum TestIds {
   SectionHeaderTitle = "section-header-title",
 }
 
-export const Login = (): JSX.Element => {
+export const Login = (): React.ReactElement => {
   const dispatch = useDispatch();
   const authenticated = useSelector(statusSelectors.authenticated);
   const authenticating = useSelector(statusSelectors.authenticating);

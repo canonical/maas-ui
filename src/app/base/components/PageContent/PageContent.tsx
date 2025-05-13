@@ -2,7 +2,7 @@ import type { HTMLProps, ReactNode } from "react";
 
 import classNames from "classnames";
 import { useSelector } from "react-redux";
-import { matchPath, useLocation } from "react-router-dom";
+import { matchPath, useLocation } from "react-router";
 
 import AppSidePanel from "../AppSidePanel";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
@@ -15,7 +15,7 @@ import { preferencesNavItems } from "@/app/preferences/constants";
 import { settingsNavItems } from "@/app/settings/constants";
 import status from "@/app/store/status/selectors";
 
-export type Props = {
+export type Props = HTMLProps<HTMLDivElement> & {
   children?: ReactNode;
   header?: ReactNode;
   sidebar?: ReactNode;
@@ -23,7 +23,7 @@ export type Props = {
   sidePanelContent: AppSidePanelProps["content"];
   sidePanelSize?: AppSidePanelProps["size"];
   sidePanelTitle: AppSidePanelProps["title"];
-} & HTMLProps<HTMLDivElement>;
+};
 
 const PageContent = ({
   children,
@@ -32,7 +32,7 @@ const PageContent = ({
   sidePanelContent,
   sidePanelTitle,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { pathname } = useLocation();
   const isSettingsPage = matchPath("settings/*", pathname);
   const isPreferencesPage = matchPath("account/prefs/*", pathname);
@@ -50,7 +50,7 @@ const PageContent = ({
             className={classNames("l-main__nav", `is-maas-${theme}--accent`)}
           >
             <SecondaryNavigation
-              isOpen={!!isSecondaryNavVisible}
+              isOpen={isSecondaryNavVisible}
               items={
                 isSettingsPage
                   ? settingsNavItems

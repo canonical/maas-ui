@@ -38,14 +38,14 @@ export type ImageValue = {
 export type ImageSidePanelContent =
   | SidePanelContent<
       ValueOf<typeof ImageSidePanelViews>,
-      { bootResource?: BootResource }
-    >
-  | SidePanelContent<
-      ValueOf<typeof ImageSidePanelViews>,
       {
         rowSelection?: RowSelectionState;
         setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
       }
+    >
+  | SidePanelContent<
+      ValueOf<typeof ImageSidePanelViews>,
+      { bootResource?: BootResource }
     >;
 
 export type ImageSetSidePanelContent =

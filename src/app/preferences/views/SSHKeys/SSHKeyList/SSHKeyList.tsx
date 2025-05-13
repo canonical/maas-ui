@@ -1,15 +1,15 @@
 import { ExternalLink } from "@canonical/maas-react-components";
 
-import BaseSSHKeyList from "@/app/base/components/SSHKeyList";
 import docsUrls from "@/app/base/docsUrls";
 import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
+import BaseSSHKeyList from "@/app/preferences/views/SSHKeys/BaseSSHKeyList";
 
 export enum Label {
   Title = "SSH keys",
 }
 
-const SSHKeyList = (): JSX.Element => {
+const SSHKeyList = (): React.ReactElement => {
   useWindowTitle(Label.Title);
   return (
     <>

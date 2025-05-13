@@ -1,5 +1,5 @@
 import { Button, Tooltip } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import CopyButton from "@/app/base/components/CopyButton";
 
@@ -31,7 +31,7 @@ const TableActions = ({
   onClear,
   onDelete,
   onEdit,
-}: Props): JSX.Element => (
+}: Props): React.ReactElement => (
   <div>
     {copyValue && <CopyButton value={copyValue} />}
     {(editPath || onEdit) && (
@@ -43,7 +43,11 @@ const TableActions = ({
           disabled={editDisabled}
           element={editPath ? Link : undefined}
           hasIcon
-          onClick={() => (onEdit ? onEdit() : null)}
+          onClick={() => {
+            if (onEdit) {
+              onEdit();
+            }
+          }}
           to={editPath || ""}
         >
           <i className="p-icon--edit">Edit</i>
@@ -59,7 +63,11 @@ const TableActions = ({
           disabled={deleteDisabled}
           element={deletePath ? Link : undefined}
           hasIcon
-          onClick={() => (onDelete ? onDelete() : null)}
+          onClick={() => {
+            if (onDelete) {
+              onDelete();
+            }
+          }}
           to={deletePath || ""}
           type={deletePath ? undefined : "button"}
         >
@@ -75,7 +83,9 @@ const TableActions = ({
           data-testid="table-actions-clear"
           disabled={clearDisabled}
           hasIcon
-          onClick={() => onClear()}
+          onClick={() => {
+            onClear();
+          }}
           type="button"
         >
           <i className="p-icon--close">Clear</i>

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import { ExpandedState } from "../NodeNetworkTab/NodeNetworkTab";
 
@@ -38,7 +38,7 @@ const NetworkActionRow = ({
   rightContent,
   selected,
   setSelected,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
   const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const { pathname } = useLocation();
@@ -56,13 +56,15 @@ const NetworkActionRow = ({
   const handleButtonClick = (state: ExpandedState) => {
     const expandedStateMap: Partial<Record<ExpandedState, () => void>> = {
       [ExpandedState.ADD_PHYSICAL]: isMachinesPage
-        ? () =>
+        ? () => {
             setSidePanelContent({
               view: MachineSidePanelViews.ADD_INTERFACE,
               extras: { systemId: node.system_id },
-            })
-        : () =>
-            setSidePanelContent({ view: DeviceSidePanelViews.ADD_INTERFACE }),
+            });
+          }
+        : () => {
+            setSidePanelContent({ view: DeviceSidePanelViews.ADD_INTERFACE });
+          },
       [ExpandedState.ADD_BOND]: () => {
         setSidePanelContent({
           view: MachineSidePanelViews.ADD_BOND,
