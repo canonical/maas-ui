@@ -1,9 +1,10 @@
-import PoolDeleteForm from "./PoolDeleteForm";
+import DeletePool from "./DeletePool";
 
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
-  screen,
+  renderWithBrowserRouter,
   renderWithProviders,
+  screen,
   setupMockServer,
   userEvent,
   waitFor,
@@ -13,26 +14,28 @@ const mockServer = setupMockServer(poolsResolvers.deletePool.handler());
 
 describe("PoolDeleteForm", () => {
   it("renders", () => {
-    renderWithProviders(<PoolDeleteForm id={1} />);
+    renderWithProviders(<DeletePool closeForm={vi.fn()} id={1} />);
 
     expect(screen.getByRole("form", { name: "Confirm pool deletion" }));
   });
 
-  it("can delete a pool", async () => {
-    renderWithProviders(<PoolDeleteForm id={1} />);
+  it("can delete a resource pool", async () => {
+    renderWithBrowserRouter(<DeletePool closeForm={vi.fn()} id={1} />);
+
+    expect(
+      screen.getByRole("form", { name: /Confirm pool deletion/i })
+    ).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
-    await waitFor(() => {
-      expect(poolsResolvers.deletePool.resolved).toBe(true);
-    });
+    expect(poolsResolvers.deletePool.resolved).toBe(true);
   });
 
   it("can show errors encountered when deleting a pool", async () => {
     mockServer.use(
       poolsResolvers.deletePool.error({ message: "Uh oh!", code: 404 })
     );
-    renderWithProviders(<PoolDeleteForm id={1} />);
+    renderWithProviders(<DeletePool closeForm={vi.fn()} id={1} />);
 
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 

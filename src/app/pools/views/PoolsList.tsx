@@ -6,9 +6,9 @@ import { useSidePanel } from "@/app/base/side-panel-context";
 import AddPool from "@/app/pools/components/AddPool/AddPool";
 import DeletePool from "@/app/pools/components/DeletePool/DeletePool";
 import EditPool from "@/app/pools/components/EditPool/EditPool";
+import PoolsListHeader from "@/app/pools/components/PoolsListHeader/PoolsListHeader";
 import PoolsTable from "@/app/pools/components/PoolsTable/PoolsTable";
 import { PoolActionSidePanelViews } from "@/app/pools/constants";
-import PoolsListHeader from "@/app/pools/views/PoolsListHeader";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
 const PoolsList = (): ReactElement => {
