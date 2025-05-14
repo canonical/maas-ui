@@ -25,7 +25,7 @@ describe("PoolsTable", () => {
     renderWithProviders(<PoolsTable />);
 
     await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Edit" })).toHaveClass(
+      expect(screen.getByRole("button", { name: "Edit" })).toHaveClass(
         "is-disabled"
       );
     });
@@ -42,7 +42,7 @@ describe("PoolsTable", () => {
     renderWithProviders(<PoolsTable />);
 
     await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Edit" })).not.toHaveClass(
+      expect(screen.getByRole("button", { name: "Edit" })).not.toHaveClass(
         "is-disabled"
       );
     });
@@ -67,7 +67,7 @@ describe("PoolsTable", () => {
     renderWithProviders(<PoolsTable />);
 
     await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
+      expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
     });
   });
 
@@ -91,7 +91,7 @@ describe("PoolsTable", () => {
     renderWithProviders(<PoolsTable />);
 
     await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
+      expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
     });
   });
 });
