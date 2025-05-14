@@ -11,6 +11,7 @@ import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
+import { isId } from "@/app/utils";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 
 const ZonesList: React.FC = () => {
@@ -45,7 +46,9 @@ const ZonesList: React.FC = () => {
       sidePanelContent.extras && "zoneId" in sidePanelContent.extras
         ? sidePanelContent.extras.zoneId
         : null;
-    content = zoneId ? <EditZone closeForm={closeForm} id={zoneId} /> : null;
+    content = isId(zoneId) ? (
+      <EditZone closeForm={closeForm} id={zoneId} />
+    ) : null;
   } else if (
     sidePanelContent &&
     sidePanelContent.view === ZoneActionSidePanelViews.DELETE_ZONE
@@ -54,8 +57,8 @@ const ZonesList: React.FC = () => {
       sidePanelContent.extras && "zoneId" in sidePanelContent.extras
         ? sidePanelContent.extras.zoneId
         : null;
-    content = zoneId ? (
-      <DeleteZone closeForm={closeForm} id={zoneId as number} />
+    content = isId(zoneId) ? (
+      <DeleteZone closeForm={closeForm} id={zoneId} />
     ) : null;
   }
 

@@ -231,7 +231,7 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.UNMOUNT_FILESYSTEM[1]]: "Unmount filesystem",
   [SidePanelViews.UPDATE_DATASTORE[1]]: "Update datastore",
   [SidePanelViews.UpdateTag[1]]: "Update Tag",
-  [SidePanelViews.CREATE_POOL[1]]: "Create pool",
+  [SidePanelViews.CREATE_POOL[1]]: "Add pool",
   [SidePanelViews.EDIT_POOL[1]]: "Edit pool",
   [SidePanelViews.DELETE_POOL[1]]: "Delete pool",
 };

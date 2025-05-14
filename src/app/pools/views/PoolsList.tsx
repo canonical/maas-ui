@@ -10,6 +10,7 @@ import PoolsListHeader from "@/app/pools/components/PoolsListHeader/PoolsListHea
 import PoolsTable from "@/app/pools/components/PoolsTable/PoolsTable";
 import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
+import { isId } from "@/app/utils";
 
 const PoolsList = (): ReactElement => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
@@ -37,7 +38,9 @@ const PoolsList = (): ReactElement => {
       sidePanelContent.extras && "poolId" in sidePanelContent.extras
         ? sidePanelContent.extras.poolId
         : null;
-    content = poolId ? <EditPool closeForm={closeForm} id={poolId} /> : null;
+    content = isId(poolId) ? (
+      <EditPool closeForm={closeForm} id={poolId} />
+    ) : null;
   } else if (
     sidePanelContent &&
     sidePanelContent.view === PoolActionSidePanelViews.DELETE_POOL
@@ -46,7 +49,9 @@ const PoolsList = (): ReactElement => {
       sidePanelContent.extras && "poolId" in sidePanelContent.extras
         ? sidePanelContent.extras.poolId
         : null;
-    content = poolId ? <DeletePool closeForm={closeForm} id={poolId} /> : null;
+    content = isId(poolId) ? (
+      <DeletePool closeForm={closeForm} id={poolId} />
+    ) : null;
   }
 
   return (
