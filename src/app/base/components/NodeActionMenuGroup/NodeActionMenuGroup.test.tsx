@@ -37,8 +37,8 @@ describe("NodeActionMenuGroup", () => {
 
   it("only shows actions that can be performed by the nodes", async () => {
     const nodes = [
-      factory.machine({ actions: [NodeActions.DELETE] }),
-      factory.machine({ actions: [NodeActions.SET_ZONE] }),
+      factory.machine({ actions: [NodeActions.DELETE], is_dpu: false }),
+      factory.machine({ actions: [NodeActions.SET_ZONE], is_dpu: false }),
     ];
     render(
       <NodeActionMenuGroup
@@ -86,7 +86,9 @@ describe("NodeActionMenuGroup", () => {
 
   it(`can be made to always show lifecycle actions, disabling the actions that
       cannot be performed`, async () => {
-    const nodes = [factory.machine({ actions: [NodeActions.DEPLOY] })];
+    const nodes = [
+      factory.machine({ actions: [NodeActions.DEPLOY], is_dpu: false }),
+    ];
     render(
       <NodeActionMenuGroup
         alwaysShowLifecycle
@@ -115,7 +117,9 @@ describe("NodeActionMenuGroup", () => {
   });
 
   it(`disables the actions that cannot be performed when nodes are provided`, async () => {
-    const nodes = [factory.machine({ actions: [NodeActions.DEPLOY] })];
+    const nodes = [
+      factory.machine({ actions: [NodeActions.DEPLOY], is_dpu: false }),
+    ];
     render(
       <NodeActionMenuGroup
         alwaysShowLifecycle
@@ -182,12 +186,15 @@ describe("NodeActionMenuGroup", () => {
           NodeActions.RELEASE,
           NodeActions.DEPLOY,
         ],
+        is_dpu: false,
       }),
       factory.machine({
         actions: [NodeActions.COMMISSION, NodeActions.RELEASE],
+        is_dpu: false,
       }),
       factory.machine({
         actions: [NodeActions.COMMISSION],
+        is_dpu: false,
       }),
     ];
     render(
@@ -217,6 +224,7 @@ describe("NodeActionMenuGroup", () => {
     const nodes = [
       factory.machine({
         actions: [NodeActions.DEPLOY],
+        is_dpu: false,
       }),
     ];
     const onActionClick = vi.fn();
@@ -240,6 +248,7 @@ describe("NodeActionMenuGroup", () => {
     const nodes = [
       factory.machine({
         actions: [NodeActions.DEPLOY, NodeActions.DELETE],
+        is_dpu: false,
       }),
     ];
     render(
@@ -285,6 +294,7 @@ describe("NodeActionMenuGroup", () => {
     const nodes = [
       factory.machine({
         actions: [NodeActions.TAG],
+        is_dpu: false,
       }),
     ];
     render(
