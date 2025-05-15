@@ -28,6 +28,7 @@ describe("MachineListControls", () => {
         factory.machine({
           fqdn: "abc123",
           system_id: "abc123",
+          is_dpu: false,
         }),
       ],
     });
