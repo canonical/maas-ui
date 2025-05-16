@@ -10,7 +10,9 @@ vi.mock("@/context", async () => {
 });
 
 const setupTestCase = (name = "test-row") => {
-  const { result } = renderHook(() => usePoolsTableColumns());
+  const { result } = renderHook(() =>
+    usePoolsTableColumns({ onEdit: () => {}, onDelete: () => {} })
+  );
   const props = {
     getValue: () => name,
     row: {

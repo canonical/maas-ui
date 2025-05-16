@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactElement } from "react";
 import { createContext, useCallback, useContext, useState } from "react";
 
 import { ControllerSidePanelViews } from "@/app/controllers/constants";
@@ -23,6 +23,8 @@ import {
   NetworkDiscoverySidePanelViews,
   type NetworkDiscoverySidePanelContent,
 } from "@/app/networkDiscovery/views/constants";
+import type { PoolSidePanelContent } from "@/app/pools/constants";
+import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import { PreferenceSidePanelViews } from "@/app/preferences/constants";
 import type { PreferenceSidePanelContent } from "@/app/preferences/types";
 import {
@@ -62,6 +64,7 @@ export type SidePanelContent =
   | KVMSidePanelContent
   | MachineSidePanelContent
   | NetworkDiscoverySidePanelContent
+  | PoolSidePanelContent
   | PreferenceSidePanelContent
   | SpaceDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
@@ -97,6 +100,7 @@ export const SidePanelViews = {
   ...FabricDetailsSidePanelViews,
   ...ImageSidePanelViews,
   ...PreferenceSidePanelViews,
+  ...PoolActionSidePanelViews,
   ...SubnetDetailsSidePanelViews,
   ...SpaceDetailsSidePanelViews,
 } as const;
@@ -156,7 +160,7 @@ const SidePanelContextProvider = ({
 }: PropsWithChildren<{
   initialSidePanelContent?: SidePanelContent;
   initialSidePanelSize?: SidePanelSize;
-}>): React.ReactElement => {
+}>): ReactElement => {
   const [sidePanelContent, setSidePanelContent] = useState<SidePanelContent>(
     initialSidePanelContent
   );

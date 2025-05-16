@@ -1,24 +1,27 @@
-import { Row, Col, Textarea } from "@canonical/react-components";
+import type { ReactElement } from "react";
+
+import { Textarea } from "@canonical/react-components";
+import * as Yup from "yup";
 
 import { useCreateZone } from "@/app/api/query/zones";
-import type { CreateZoneError } from "@/app/apiclient";
+import type { CreateZoneError, ZoneRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 
-type Props = {
+type AddZoneProps = {
   closeForm: () => void;
 };
 
-export type CreateZoneValues = {
-  description: string;
-  name: string;
-};
+const ZoneSchema = Yup.object().shape({
+  name: Yup.string().required("name is required"),
+  description: Yup.string(),
+});
 
-const AddZone = ({ closeForm }: Props): React.ReactElement => {
+const AddZone = ({ closeForm }: AddZoneProps): ReactElement => {
   const createZone = useCreateZone();
 
   return (
-    <FormikForm<CreateZoneValues, CreateZoneError>
+    <FormikForm<ZoneRequest, CreateZoneError>
       aria-label="Add AZ"
       errors={createZone.error}
       initialValues={{
@@ -36,23 +39,20 @@ const AddZone = ({ closeForm }: Props): React.ReactElement => {
       saved={createZone.isSuccess}
       saving={createZone.isPending}
       submitLabel="Add AZ"
+      validationSchema={ZoneSchema}
     >
-      <Row>
-        <Col size={12}>
-          <FormikField
-            label="Name"
-            name="name"
-            placeholder="Name"
-            required
-            type="text"
-          />
-          <FormikField
-            component={Textarea}
-            label="Description"
-            name="description"
-          />
-        </Col>
-      </Row>
+      <FormikField
+        label="Name"
+        name="name"
+        placeholder="Name"
+        required
+        type="text"
+      />
+      <FormikField
+        component={Textarea}
+        label="Description"
+        name="description"
+      />
     </FormikForm>
   );
 };

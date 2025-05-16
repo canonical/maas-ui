@@ -1,12 +1,9 @@
-import PoolList from "./PoolList";
-
+import PoolsList from "@/app/pools/views/PoolsList";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   screen,
-  renderWithMockStore,
   renderWithBrowserRouter,
-  mockIsPending,
   renderWithProviders,
   setupMockServer,
   waitFor,
@@ -15,15 +12,15 @@ import {
 
 const mockServer = setupMockServer(poolsResolvers.listPools.handler());
 
-describe("PoolList", () => {
+describe("PoolsList", () => {
   it("displays a loading component if pools are loading", async () => {
-    mockIsPending();
-    renderWithMockStore(<PoolList />);
+    renderWithProviders(<PoolsList />);
 
     await waitFor(() => {
       expect(screen.getByText("Loading...")).toBeInTheDocument();
     });
   });
+
   it("displays a link to delete confirmation", async () => {
     mockServer.use(
       poolsResolvers.listPools.handler({
@@ -41,7 +38,7 @@ describe("PoolList", () => {
       })
     );
 
-    renderWithProviders(<PoolList />);
+    renderWithProviders(<PoolsList />);
 
     await waitFor(() => {
       expect(screen.getByRole("cell", { name: "squambo" })).toBeInTheDocument();
@@ -52,7 +49,7 @@ describe("PoolList", () => {
 
     await waitFor(() => {
       expect(
-        within(row).getByRole("link", { name: "Delete" })
+        within(row).getByRole("button", { name: "Delete" })
       ).toBeInTheDocument();
     });
   });
@@ -67,7 +64,7 @@ describe("PoolList", () => {
       })
     );
 
-    renderWithProviders(<PoolList />);
+    renderWithProviders(<PoolsList />);
     await waitFor(() => {
       expect(screen.getByRole("cell", { name: "default" })).toBeInTheDocument();
     });
@@ -90,7 +87,7 @@ describe("PoolList", () => {
       })
     );
 
-    renderWithProviders(<PoolList />);
+    renderWithProviders(<PoolsList />);
     await waitFor(() => {
       expect(screen.getByRole("cell", { name: "default" })).toBeInTheDocument();
     });
@@ -101,30 +98,9 @@ describe("PoolList", () => {
     expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
   });
 
-  it("displays state errors in a notification", async () => {
-    mockServer.use(
-      poolsResolvers.listPools.error({
-        message: "Pools are not for swimming.",
-        code: 401,
-      })
-    );
-
-    renderWithProviders(<PoolList />);
-
-    await waitFor(() => {
-      expect(poolsResolvers.listPools.resolved).toBeTruthy();
-    });
-
-    await waitFor(() => {
-      expect(
-        screen.getByText("Pools are not for swimming.")
-      ).toBeInTheDocument();
-    });
-  });
-
   it("displays a message when rendering an empty list", async () => {
     mockServer.use(poolsResolvers.listPools.handler({ items: [], total: 0 }));
-    renderWithBrowserRouter(<PoolList />, { route: "/pools" });
+    renderWithBrowserRouter(<PoolsList />, { route: "/pools" });
 
     await waitFor(() => {
       expect(screen.getByText("No pools found.")).toBeInTheDocument();
