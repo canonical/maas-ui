@@ -5,7 +5,9 @@ import { Link } from "react-router";
 
 import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
+import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import { FilterMachines } from "@/app/store/machine/utils";
 
 const getMachinesLabel = (row: Row<ResourcePoolWithSummaryResponse>) => {
@@ -28,6 +30,7 @@ export type PoolsColumnDef = ColumnDef<
 >;
 
 const usePoolsTableColumns = (): PoolsColumnDef[] => {
+  const { setSidePanelContent } = useSidePanel();
   return useMemo(
     () =>
       [
@@ -53,19 +56,19 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
           header: "Description",
         },
         {
-          id: "actions",
+          id: "action",
           accessorKey: "id",
           enableSorting: false,
-          header: "Actions",
+          header: "Action",
           cell: ({ row }) => {
             return (
               <TableActions
+                data-testid="pool-actions"
                 deleteDisabled={
                   !row.original.permissions.includes("delete") ||
                   row.original.is_default ||
                   row.original.machine_total_count > 0
                 }
-                deletePath={urls.pools.delete({ id: row.original.id })}
                 deleteTooltip={
                   (row.original.is_default &&
                     "The default pool may not be deleted.") ||
@@ -74,13 +77,28 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
                   null
                 }
                 editDisabled={!row.original.permissions.includes("edit")}
-                editPath={urls.pools.edit({ id: row.original.id })}
+                onDelete={() => {
+                  setSidePanelContent({
+                    view: PoolActionSidePanelViews.DELETE_POOL,
+                    extras: {
+                      poolId: row.original.id,
+                    },
+                  });
+                }}
+                onEdit={() => {
+                  setSidePanelContent({
+                    view: PoolActionSidePanelViews.EDIT_POOL,
+                    extras: {
+                      poolId: row.original.id,
+                    },
+                  });
+                }}
               />
             );
           },
         },
       ] as PoolsColumnDef[],
-    []
+    [setSidePanelContent]
   );
 };
 

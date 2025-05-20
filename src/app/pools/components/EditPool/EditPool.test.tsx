@@ -1,0 +1,85 @@
+import { waitFor } from "@testing-library/react";
+
+import EditPool from "@/app/pools/components/EditPool/EditPool";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  userEvent,
+  screen,
+  setupMockServer,
+  renderWithProviders,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  poolsResolvers.getPool.handler(),
+  poolsResolvers.updatePool.handler()
+);
+
+describe("EditPool", () => {
+  const testPoolId = 1;
+
+  it("runs closeForm function when the cancel button is clicked", async () => {
+    const closeForm = vi.fn();
+    renderWithProviders(<EditPool closeForm={closeForm} id={testPoolId} />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Cancel" })
+      ).toBeInTheDocument();
+    });
+
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(closeForm).toHaveBeenCalled();
+  });
+
+  it("updates a zone on save click", async () => {
+    renderWithProviders(<EditPool closeForm={vi.fn()} id={testPoolId} />);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Name (required)")).toBeInTheDocument();
+    });
+
+    await userEvent.clear(screen.getByLabelText("Name (required)"));
+
+    await userEvent.clear(screen.getByLabelText("Description"));
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /name/i }),
+      "test name 2"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /description/i }),
+      "test description 2"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Save pool/i }));
+
+    await waitFor(() => {
+      expect(poolsResolvers.updatePool.resolved).toBeTruthy();
+    });
+  });
+
+  it("displays error message when update zone fails", async () => {
+    mockServer.use(
+      poolsResolvers.updatePool.error({ code: 400, message: "Uh oh!" }),
+      poolsResolvers.updatePool.handler()
+    );
+
+    renderWithProviders(<EditPool closeForm={vi.fn()} id={testPoolId} />);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Name (required)")).toBeInTheDocument();
+    });
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /name/i }),
+      "test"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Save pool/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Uh oh!")).toBeInTheDocument();
+    });
+  });
+});

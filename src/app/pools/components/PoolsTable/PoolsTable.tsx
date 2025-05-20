@@ -14,9 +14,11 @@ const PoolsTable = (): ReactElement => {
     query: { page: debouncedPage, size },
   });
 
+  const columns = usePoolsTableColumns();
+
   return (
     <GenericTable
-      columns={usePoolsTableColumns()}
+      columns={columns}
       data={pools.data?.items ?? []}
       isLoading={pools.isPending}
       noData="No pools found."
