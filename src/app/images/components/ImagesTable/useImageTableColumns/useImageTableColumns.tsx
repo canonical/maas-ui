@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
+import { GroupRowActions } from "@canonical/maas-react-components";
 import { Icon, Spinner } from "@canonical/react-components";
 import type {
   Column,
@@ -12,7 +13,6 @@ import type {
 import pluralize from "pluralize";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
-import GroupRowActions from "@/app/base/components/GenericTable/GroupRowActions";
 import TableActions from "@/app/base/components/TableActions";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useSidePanel } from "@/app/base/side-panel-context";

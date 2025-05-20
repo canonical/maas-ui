@@ -1,9 +1,10 @@
 import type { ReactElement } from "react";
 
+import { GenericTable } from "@canonical/maas-react-components";
+
 import usePoolsTableColumns from "./usePoolsTableColumns/usePoolsTableColumns";
 
 import { usePools } from "@/app/api/query/pools";
-import GenericTable from "@/app/base/components/GenericTable";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 
 const PoolsTable = (): ReactElement => {

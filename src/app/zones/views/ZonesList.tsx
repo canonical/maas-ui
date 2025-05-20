@@ -68,7 +68,7 @@ const ZonesList: React.FC = () => {
       sidePanelContent={content}
       sidePanelTitle={getSidePanelTitle("Zones", sidePanelContent)}
     >
-      {zonesCount?.data && zonesCount.data > 0 && <ZonesTable />}
+      <ZonesTable />
     </PageContent>
   );
 };
