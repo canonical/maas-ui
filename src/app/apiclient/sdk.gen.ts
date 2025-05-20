@@ -15,9 +15,27 @@ import type {
   LoginData,
   LoginResponse,
   LoginError,
+  GetConfigurationData,
+  GetConfigurationResponse,
+  GetConfigurationError,
   ListEventsData,
   ListEventsResponse,
   ListEventsError,
+  ClearAllDiscoveriesWithOptionalIpAndMacData,
+  ClearAllDiscoveriesWithOptionalIpAndMacResponse,
+  ClearAllDiscoveriesWithOptionalIpAndMacError,
+  ListDiscoveriesData,
+  ListDiscoveriesResponse,
+  ListDiscoveriesError,
+  ClearNeighboursDiscoveriesData,
+  ClearNeighboursDiscoveriesResponse,
+  ClearNeighboursDiscoveriesError,
+  ClearRdnsAndMdnsDiscoveriesData,
+  ClearRdnsAndMdnsDiscoveriesResponse,
+  ClearRdnsAndMdnsDiscoveriesError,
+  GetDiscoveryData,
+  GetDiscoveryResponse,
+  GetDiscoveryError,
   ListDomainsData,
   ListDomainsResponse,
   ListDomainsError,
@@ -81,6 +99,39 @@ import type {
   ListMachinesData,
   ListMachinesResponse,
   ListMachinesError,
+  ListNotificationsData,
+  ListNotificationsResponse,
+  ListNotificationsError,
+  CreateNotificationData,
+  CreateNotificationResponse,
+  CreateNotificationError,
+  DeleteNotificationData,
+  DeleteNotificationResponse,
+  DeleteNotificationError,
+  GetNotificationData,
+  GetNotificationResponse,
+  GetNotificationError,
+  UpdateNotificationData,
+  UpdateNotificationResponse,
+  UpdateNotificationError,
+  DismissNotificationData,
+  DismissNotificationResponse,
+  DismissNotificationError,
+  ListPackageRepositoriesData,
+  ListPackageRepositoriesResponse,
+  ListPackageRepositoriesError,
+  CreatePackageRepositoryData,
+  CreatePackageRepositoryResponse,
+  CreatePackageRepositoryError,
+  DeletePackageRepositoryData,
+  DeletePackageRepositoryResponse,
+  DeletePackageRepositoryError,
+  GetPackageRepositoryData,
+  GetPackageRepositoryResponse,
+  GetPackageRepositoryError,
+  UpdatePackageRepositoryData,
+  UpdatePackageRepositoryResponse,
+  UpdatePackageRepositoryError,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsResponse,
   ListFabricVlanSubnetReservedIpsError,
@@ -114,6 +165,21 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryResponse,
   ListResourcePoolsWithSummaryError,
+  ListFabricVlanSubnetStaticroutesData,
+  ListFabricVlanSubnetStaticroutesResponse,
+  ListFabricVlanSubnetStaticroutesError,
+  CreateFabricVlanSubnetStaticrouteData,
+  CreateFabricVlanSubnetStaticrouteResponse,
+  CreateFabricVlanSubnetStaticrouteError,
+  DeleteFabricVlanSubnetStaticrouteData,
+  DeleteFabricVlanSubnetStaticrouteResponse,
+  DeleteFabricVlanSubnetStaticrouteError,
+  GetFabricVlanSubnetStaticrouteData,
+  GetFabricVlanSubnetStaticrouteResponse,
+  GetFabricVlanSubnetStaticrouteError,
+  UpdateFabricVlanSubnetStaticrouteData,
+  UpdateFabricVlanSubnetStaticrouteResponse,
+  UpdateFabricVlanSubnetStaticrouteError,
   ListSpacesData,
   ListSpacesResponse,
   ListSpacesError,
@@ -291,6 +357,28 @@ export const login = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Get Configuration
+ */
+export const getConfiguration = <ThrowOnError extends boolean = false>(
+  options: Options<GetConfigurationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetConfigurationResponse,
+    GetConfigurationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/configurations/{name}",
+    ...options,
+  });
+};
+
+/**
  * List Events
  */
 export const listEvents = <ThrowOnError extends boolean = false>(
@@ -308,6 +396,122 @@ export const listEvents = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/events",
+    ...options,
+  });
+};
+
+/**
+ * Clear All Discoveries With Optional Ip And Mac
+ */
+export const clearAllDiscoveriesWithOptionalIpAndMac = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ClearAllDiscoveriesWithOptionalIpAndMacData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).delete<
+    ClearAllDiscoveriesWithOptionalIpAndMacResponse,
+    ClearAllDiscoveriesWithOptionalIpAndMacError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries",
+    ...options,
+  });
+};
+
+/**
+ * List Discoveries
+ */
+export const listDiscoveries = <ThrowOnError extends boolean = false>(
+  options?: Options<ListDiscoveriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListDiscoveriesResponse,
+    ListDiscoveriesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries",
+    ...options,
+  });
+};
+
+/**
+ * Clear Neighbours Discoveries
+ */
+export const clearNeighboursDiscoveries = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ClearNeighboursDiscoveriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).delete<
+    ClearNeighboursDiscoveriesResponse,
+    ClearNeighboursDiscoveriesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries:clear_neighbours",
+    ...options,
+  });
+};
+
+/**
+ * Clear Rdns And Mdns Discoveries
+ */
+export const clearRdnsAndMdnsDiscoveries = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ClearRdnsAndMdnsDiscoveriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).delete<
+    ClearRdnsAndMdnsDiscoveriesResponse,
+    ClearRdnsAndMdnsDiscoveriesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries:clear_dns",
+    ...options,
+  });
+};
+
+/**
+ * Get Discovery
+ */
+export const getDiscovery = <ThrowOnError extends boolean = false>(
+  options: Options<GetDiscoveryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetDiscoveryResponse,
+    GetDiscoveryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries/{discovery_id}",
     ...options,
   });
 };
@@ -809,6 +1013,264 @@ export const listMachines = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Notifications
+ */
+export const listNotifications = <ThrowOnError extends boolean = false>(
+  options?: Options<ListNotificationsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListNotificationsResponse,
+    ListNotificationsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications",
+    ...options,
+  });
+};
+
+/**
+ * Create Notification
+ */
+export const createNotification = <ThrowOnError extends boolean = false>(
+  options: Options<CreateNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateNotificationResponse,
+    CreateNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Delete Notification
+ */
+export const deleteNotification = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteNotificationResponse,
+    DeleteNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications/{notification_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Notification
+ */
+export const getNotification = <ThrowOnError extends boolean = false>(
+  options: Options<GetNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetNotificationResponse,
+    GetNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications/{notification_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Notification
+ */
+export const updateNotification = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateNotificationResponse,
+    UpdateNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications/{notification_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Dismiss Notification
+ */
+export const dismissNotification = <ThrowOnError extends boolean = false>(
+  options: Options<DismissNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    DismissNotificationResponse,
+    DismissNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications/{notification_id}:dismiss",
+    ...options,
+  });
+};
+
+/**
+ * List Package Repositories
+ */
+export const listPackageRepositories = <ThrowOnError extends boolean = false>(
+  options?: Options<ListPackageRepositoriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListPackageRepositoriesResponse,
+    ListPackageRepositoriesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories",
+    ...options,
+  });
+};
+
+/**
+ * Create Package Repository
+ */
+export const createPackageRepository = <ThrowOnError extends boolean = false>(
+  options: Options<CreatePackageRepositoryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreatePackageRepositoryResponse,
+    CreatePackageRepositoryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Delete Package Repository
+ */
+export const deletePackageRepository = <ThrowOnError extends boolean = false>(
+  options: Options<DeletePackageRepositoryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeletePackageRepositoryResponse,
+    DeletePackageRepositoryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Package Repository
+ */
+export const getPackageRepository = <ThrowOnError extends boolean = false>(
+  options: Options<GetPackageRepositoryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetPackageRepositoryResponse,
+    GetPackageRepositoryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Package Repository
+ */
+export const updatePackageRepository = <ThrowOnError extends boolean = false>(
+  options: Options<UpdatePackageRepositoryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdatePackageRepositoryResponse,
+    UpdatePackageRepositoryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
  * List Fabric Vlan Subnet Reserved Ips
  */
 export const listFabricVlanSubnetReservedIps = <
@@ -1076,6 +1538,134 @@ export const listResourcePoolsWithSummary = <
     ],
     url: "/MAAS/a/v3/resource_pools_with_summary",
     ...options,
+  });
+};
+
+/**
+ * List Fabric Vlan Subnet Staticroutes
+ */
+export const listFabricVlanSubnetStaticroutes = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ListFabricVlanSubnetStaticroutesData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    ListFabricVlanSubnetStaticroutesResponse,
+    ListFabricVlanSubnetStaticroutesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes",
+    ...options,
+  });
+};
+
+/**
+ * Create Fabric Vlan Subnet Staticroute
+ */
+export const createFabricVlanSubnetStaticroute = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<CreateFabricVlanSubnetStaticrouteData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateFabricVlanSubnetStaticrouteResponse,
+    CreateFabricVlanSubnetStaticrouteError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Delete Fabric Vlan Subnet Staticroute
+ */
+export const deleteFabricVlanSubnetStaticroute = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<DeleteFabricVlanSubnetStaticrouteData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteFabricVlanSubnetStaticrouteResponse,
+    DeleteFabricVlanSubnetStaticrouteError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Fabric Vlan Subnet Staticroute
+ */
+export const getFabricVlanSubnetStaticroute = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetFabricVlanSubnetStaticrouteData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetFabricVlanSubnetStaticrouteResponse,
+    GetFabricVlanSubnetStaticrouteError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Fabric Vlan Subnet Staticroute
+ */
+export const updateFabricVlanSubnetStaticroute = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<UpdateFabricVlanSubnetStaticrouteData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateFabricVlanSubnetStaticrouteResponse,
+    UpdateFabricVlanSubnetStaticrouteError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };
 

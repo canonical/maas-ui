@@ -12,7 +12,13 @@ import {
   type Options,
   accessToken,
   login,
+  getConfiguration,
   listEvents,
+  clearAllDiscoveriesWithOptionalIpAndMac,
+  listDiscoveries,
+  clearNeighboursDiscoveries,
+  clearRdnsAndMdnsDiscoveries,
+  getDiscovery,
   listDomains,
   createDomain,
   getDomainRrsets,
@@ -34,6 +40,17 @@ import {
   listMachinePciDevices,
   listMachineUsbDevices,
   listMachines,
+  listNotifications,
+  createNotification,
+  deleteNotification,
+  getNotification,
+  updateNotification,
+  dismissNotification,
+  listPackageRepositories,
+  createPackageRepository,
+  deletePackageRepository,
+  getPackageRepository,
+  updatePackageRepository,
   listFabricVlanSubnetReservedIps,
   createFabricVlanSubnetReservedIp,
   deleteFabricVlanSubnetReservedIp,
@@ -45,6 +62,11 @@ import {
   getResourcePool,
   updateResourcePool,
   listResourcePoolsWithSummary,
+  listFabricVlanSubnetStaticroutes,
+  createFabricVlanSubnetStaticroute,
+  deleteFabricVlanSubnetStaticroute,
+  getFabricVlanSubnetStaticroute,
+  updateFabricVlanSubnetStaticroute,
   listSpaces,
   createSpace,
   deleteSpace,
@@ -89,9 +111,23 @@ import type {
   LoginData,
   LoginError,
   LoginResponse,
+  GetConfigurationData,
   ListEventsData,
   ListEventsError,
   ListEventsResponse,
+  ClearAllDiscoveriesWithOptionalIpAndMacData,
+  ClearAllDiscoveriesWithOptionalIpAndMacError,
+  ClearAllDiscoveriesWithOptionalIpAndMacResponse,
+  ListDiscoveriesData,
+  ListDiscoveriesError,
+  ListDiscoveriesResponse,
+  ClearNeighboursDiscoveriesData,
+  ClearNeighboursDiscoveriesError,
+  ClearNeighboursDiscoveriesResponse,
+  ClearRdnsAndMdnsDiscoveriesData,
+  ClearRdnsAndMdnsDiscoveriesError,
+  ClearRdnsAndMdnsDiscoveriesResponse,
+  GetDiscoveryData,
   ListDomainsData,
   ListDomainsError,
   ListDomainsResponse,
@@ -145,6 +181,35 @@ import type {
   ListMachinesData,
   ListMachinesError,
   ListMachinesResponse,
+  ListNotificationsData,
+  ListNotificationsError,
+  ListNotificationsResponse,
+  CreateNotificationData,
+  CreateNotificationError,
+  CreateNotificationResponse,
+  DeleteNotificationData,
+  DeleteNotificationError,
+  DeleteNotificationResponse,
+  GetNotificationData,
+  UpdateNotificationData,
+  UpdateNotificationError,
+  UpdateNotificationResponse,
+  DismissNotificationData,
+  DismissNotificationError,
+  DismissNotificationResponse,
+  ListPackageRepositoriesData,
+  ListPackageRepositoriesError,
+  ListPackageRepositoriesResponse,
+  CreatePackageRepositoryData,
+  CreatePackageRepositoryError,
+  CreatePackageRepositoryResponse,
+  DeletePackageRepositoryData,
+  DeletePackageRepositoryError,
+  DeletePackageRepositoryResponse,
+  GetPackageRepositoryData,
+  UpdatePackageRepositoryData,
+  UpdatePackageRepositoryError,
+  UpdatePackageRepositoryResponse,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsError,
   ListFabricVlanSubnetReservedIpsResponse,
@@ -174,6 +239,19 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryError,
   ListResourcePoolsWithSummaryResponse,
+  ListFabricVlanSubnetStaticroutesData,
+  ListFabricVlanSubnetStaticroutesError,
+  ListFabricVlanSubnetStaticroutesResponse,
+  CreateFabricVlanSubnetStaticrouteData,
+  CreateFabricVlanSubnetStaticrouteError,
+  CreateFabricVlanSubnetStaticrouteResponse,
+  DeleteFabricVlanSubnetStaticrouteData,
+  DeleteFabricVlanSubnetStaticrouteError,
+  DeleteFabricVlanSubnetStaticrouteResponse,
+  GetFabricVlanSubnetStaticrouteData,
+  UpdateFabricVlanSubnetStaticrouteData,
+  UpdateFabricVlanSubnetStaticrouteError,
+  UpdateFabricVlanSubnetStaticrouteResponse,
   ListSpacesData,
   ListSpacesError,
   ListSpacesResponse,
@@ -362,6 +440,27 @@ export const loginMutation = (options?: Partial<Options<LoginData>>) => {
   return mutationOptions;
 };
 
+export const getConfigurationQueryKey = (
+  options: Options<GetConfigurationData>
+) => createQueryKey("getConfiguration", options);
+
+export const getConfigurationOptions = (
+  options: Options<GetConfigurationData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getConfiguration({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getConfigurationQueryKey(options),
+  });
+};
+
 export const listEventsQueryKey = (options?: Options<ListEventsData>) =>
   createQueryKey("listEvents", options);
 
@@ -460,6 +559,153 @@ export const listEventsInfiniteOptions = (
       queryKey: listEventsInfiniteQueryKey(options),
     }
   );
+};
+
+export const clearAllDiscoveriesWithOptionalIpAndMacMutation = (
+  options?: Partial<Options<ClearAllDiscoveriesWithOptionalIpAndMacData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    ClearAllDiscoveriesWithOptionalIpAndMacResponse,
+    ClearAllDiscoveriesWithOptionalIpAndMacError,
+    Options<ClearAllDiscoveriesWithOptionalIpAndMacData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await clearAllDiscoveriesWithOptionalIpAndMac({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listDiscoveriesQueryKey = (
+  options?: Options<ListDiscoveriesData>
+) => createQueryKey("listDiscoveries", options);
+
+export const listDiscoveriesOptions = (
+  options?: Options<ListDiscoveriesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listDiscoveries({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listDiscoveriesQueryKey(options),
+  });
+};
+
+export const listDiscoveriesInfiniteQueryKey = (
+  options?: Options<ListDiscoveriesData>
+): QueryKey<Options<ListDiscoveriesData>> =>
+  createQueryKey("listDiscoveries", options, true);
+
+export const listDiscoveriesInfiniteOptions = (
+  options?: Options<ListDiscoveriesData>
+) => {
+  return infiniteQueryOptions<
+    ListDiscoveriesResponse,
+    ListDiscoveriesError,
+    InfiniteData<ListDiscoveriesResponse>,
+    QueryKey<Options<ListDiscoveriesData>>,
+    | Pick<
+        QueryKey<Options<ListDiscoveriesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListDiscoveriesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listDiscoveries({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listDiscoveriesInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const clearNeighboursDiscoveriesMutation = (
+  options?: Partial<Options<ClearNeighboursDiscoveriesData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    ClearNeighboursDiscoveriesResponse,
+    ClearNeighboursDiscoveriesError,
+    Options<ClearNeighboursDiscoveriesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await clearNeighboursDiscoveries({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const clearRdnsAndMdnsDiscoveriesMutation = (
+  options?: Partial<Options<ClearRdnsAndMdnsDiscoveriesData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    ClearRdnsAndMdnsDiscoveriesResponse,
+    ClearRdnsAndMdnsDiscoveriesError,
+    Options<ClearRdnsAndMdnsDiscoveriesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await clearRdnsAndMdnsDiscoveries({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getDiscoveryQueryKey = (options: Options<GetDiscoveryData>) =>
+  createQueryKey("getDiscovery", options);
+
+export const getDiscoveryOptions = (options: Options<GetDiscoveryData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getDiscovery({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getDiscoveryQueryKey(options),
+  });
 };
 
 export const listDomainsQueryKey = (options?: Options<ListDomainsData>) =>
@@ -1290,6 +1536,389 @@ export const listMachinesInfiniteOptions = (
   );
 };
 
+export const listNotificationsQueryKey = (
+  options?: Options<ListNotificationsData>
+) => createQueryKey("listNotifications", options);
+
+export const listNotificationsOptions = (
+  options?: Options<ListNotificationsData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listNotifications({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listNotificationsQueryKey(options),
+  });
+};
+
+export const listNotificationsInfiniteQueryKey = (
+  options?: Options<ListNotificationsData>
+): QueryKey<Options<ListNotificationsData>> =>
+  createQueryKey("listNotifications", options, true);
+
+export const listNotificationsInfiniteOptions = (
+  options?: Options<ListNotificationsData>
+) => {
+  return infiniteQueryOptions<
+    ListNotificationsResponse,
+    ListNotificationsError,
+    InfiniteData<ListNotificationsResponse>,
+    QueryKey<Options<ListNotificationsData>>,
+    | Pick<
+        QueryKey<Options<ListNotificationsData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListNotificationsData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listNotifications({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listNotificationsInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createNotificationQueryKey = (
+  options: Options<CreateNotificationData>
+) => createQueryKey("createNotification", options);
+
+export const createNotificationOptions = (
+  options: Options<CreateNotificationData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createNotification({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createNotificationQueryKey(options),
+  });
+};
+
+export const createNotificationMutation = (
+  options?: Partial<Options<CreateNotificationData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    CreateNotificationResponse,
+    CreateNotificationError,
+    Options<CreateNotificationData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createNotification({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deleteNotificationMutation = (
+  options?: Partial<Options<DeleteNotificationData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeleteNotificationResponse,
+    DeleteNotificationError,
+    Options<DeleteNotificationData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteNotification({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getNotificationQueryKey = (
+  options: Options<GetNotificationData>
+) => createQueryKey("getNotification", options);
+
+export const getNotificationOptions = (
+  options: Options<GetNotificationData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getNotification({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getNotificationQueryKey(options),
+  });
+};
+
+export const updateNotificationMutation = (
+  options?: Partial<Options<UpdateNotificationData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    UpdateNotificationResponse,
+    UpdateNotificationError,
+    Options<UpdateNotificationData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updateNotification({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const dismissNotificationQueryKey = (
+  options: Options<DismissNotificationData>
+) => createQueryKey("dismissNotification", options);
+
+export const dismissNotificationOptions = (
+  options: Options<DismissNotificationData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await dismissNotification({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: dismissNotificationQueryKey(options),
+  });
+};
+
+export const dismissNotificationMutation = (
+  options?: Partial<Options<DismissNotificationData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DismissNotificationResponse,
+    DismissNotificationError,
+    Options<DismissNotificationData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await dismissNotification({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listPackageRepositoriesQueryKey = (
+  options?: Options<ListPackageRepositoriesData>
+) => createQueryKey("listPackageRepositories", options);
+
+export const listPackageRepositoriesOptions = (
+  options?: Options<ListPackageRepositoriesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listPackageRepositories({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listPackageRepositoriesQueryKey(options),
+  });
+};
+
+export const listPackageRepositoriesInfiniteQueryKey = (
+  options?: Options<ListPackageRepositoriesData>
+): QueryKey<Options<ListPackageRepositoriesData>> =>
+  createQueryKey("listPackageRepositories", options, true);
+
+export const listPackageRepositoriesInfiniteOptions = (
+  options?: Options<ListPackageRepositoriesData>
+) => {
+  return infiniteQueryOptions<
+    ListPackageRepositoriesResponse,
+    ListPackageRepositoriesError,
+    InfiniteData<ListPackageRepositoriesResponse>,
+    QueryKey<Options<ListPackageRepositoriesData>>,
+    | Pick<
+        QueryKey<Options<ListPackageRepositoriesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListPackageRepositoriesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listPackageRepositories({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listPackageRepositoriesInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createPackageRepositoryQueryKey = (
+  options: Options<CreatePackageRepositoryData>
+) => createQueryKey("createPackageRepository", options);
+
+export const createPackageRepositoryOptions = (
+  options: Options<CreatePackageRepositoryData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createPackageRepository({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createPackageRepositoryQueryKey(options),
+  });
+};
+
+export const createPackageRepositoryMutation = (
+  options?: Partial<Options<CreatePackageRepositoryData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    CreatePackageRepositoryResponse,
+    CreatePackageRepositoryError,
+    Options<CreatePackageRepositoryData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createPackageRepository({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deletePackageRepositoryMutation = (
+  options?: Partial<Options<DeletePackageRepositoryData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeletePackageRepositoryResponse,
+    DeletePackageRepositoryError,
+    Options<DeletePackageRepositoryData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deletePackageRepository({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getPackageRepositoryQueryKey = (
+  options: Options<GetPackageRepositoryData>
+) => createQueryKey("getPackageRepository", options);
+
+export const getPackageRepositoryOptions = (
+  options: Options<GetPackageRepositoryData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getPackageRepository({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getPackageRepositoryQueryKey(options),
+  });
+};
+
+export const updatePackageRepositoryMutation = (
+  options?: Partial<Options<UpdatePackageRepositoryData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    UpdatePackageRepositoryResponse,
+    UpdatePackageRepositoryError,
+    Options<UpdatePackageRepositoryData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updatePackageRepository({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const listFabricVlanSubnetReservedIpsQueryKey = (
   options: Options<ListFabricVlanSubnetReservedIpsData>
 ) => createQueryKey("listFabricVlanSubnetReservedIps", options);
@@ -1699,6 +2328,177 @@ export const listResourcePoolsWithSummaryInfiniteOptions = (
       queryKey: listResourcePoolsWithSummaryInfiniteQueryKey(options),
     }
   );
+};
+
+export const listFabricVlanSubnetStaticroutesQueryKey = (
+  options: Options<ListFabricVlanSubnetStaticroutesData>
+) => createQueryKey("listFabricVlanSubnetStaticroutes", options);
+
+export const listFabricVlanSubnetStaticroutesOptions = (
+  options: Options<ListFabricVlanSubnetStaticroutesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listFabricVlanSubnetStaticroutes({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listFabricVlanSubnetStaticroutesQueryKey(options),
+  });
+};
+
+export const listFabricVlanSubnetStaticroutesInfiniteQueryKey = (
+  options: Options<ListFabricVlanSubnetStaticroutesData>
+): QueryKey<Options<ListFabricVlanSubnetStaticroutesData>> =>
+  createQueryKey("listFabricVlanSubnetStaticroutes", options, true);
+
+export const listFabricVlanSubnetStaticroutesInfiniteOptions = (
+  options: Options<ListFabricVlanSubnetStaticroutesData>
+) => {
+  return infiniteQueryOptions<
+    ListFabricVlanSubnetStaticroutesResponse,
+    ListFabricVlanSubnetStaticroutesError,
+    InfiniteData<ListFabricVlanSubnetStaticroutesResponse>,
+    QueryKey<Options<ListFabricVlanSubnetStaticroutesData>>,
+    | Pick<
+        QueryKey<Options<ListFabricVlanSubnetStaticroutesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListFabricVlanSubnetStaticroutesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listFabricVlanSubnetStaticroutes({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listFabricVlanSubnetStaticroutesInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createFabricVlanSubnetStaticrouteQueryKey = (
+  options: Options<CreateFabricVlanSubnetStaticrouteData>
+) => createQueryKey("createFabricVlanSubnetStaticroute", options);
+
+export const createFabricVlanSubnetStaticrouteOptions = (
+  options: Options<CreateFabricVlanSubnetStaticrouteData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createFabricVlanSubnetStaticroute({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createFabricVlanSubnetStaticrouteQueryKey(options),
+  });
+};
+
+export const createFabricVlanSubnetStaticrouteMutation = (
+  options?: Partial<Options<CreateFabricVlanSubnetStaticrouteData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    CreateFabricVlanSubnetStaticrouteResponse,
+    CreateFabricVlanSubnetStaticrouteError,
+    Options<CreateFabricVlanSubnetStaticrouteData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createFabricVlanSubnetStaticroute({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deleteFabricVlanSubnetStaticrouteMutation = (
+  options?: Partial<Options<DeleteFabricVlanSubnetStaticrouteData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeleteFabricVlanSubnetStaticrouteResponse,
+    DeleteFabricVlanSubnetStaticrouteError,
+    Options<DeleteFabricVlanSubnetStaticrouteData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteFabricVlanSubnetStaticroute({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getFabricVlanSubnetStaticrouteQueryKey = (
+  options: Options<GetFabricVlanSubnetStaticrouteData>
+) => createQueryKey("getFabricVlanSubnetStaticroute", options);
+
+export const getFabricVlanSubnetStaticrouteOptions = (
+  options: Options<GetFabricVlanSubnetStaticrouteData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFabricVlanSubnetStaticroute({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFabricVlanSubnetStaticrouteQueryKey(options),
+  });
+};
+
+export const updateFabricVlanSubnetStaticrouteMutation = (
+  options?: Partial<Options<UpdateFabricVlanSubnetStaticrouteData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    UpdateFabricVlanSubnetStaticrouteResponse,
+    UpdateFabricVlanSubnetStaticrouteError,
+    Options<UpdateFabricVlanSubnetStaticrouteData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updateFabricVlanSubnetStaticroute({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
 export const listSpacesQueryKey = (options?: Options<ListSpacesData>) =>
@@ -2233,11 +3033,11 @@ export const getUserSslkeysWithSummaryInfiniteOptions = (
     GetUserSslkeysWithSummaryError,
     InfiniteData<GetUserSslkeysWithSummaryResponse>,
     QueryKey<Options<GetUserSslkeysWithSummaryData>>,
-    | number
     | Pick<
         QueryKey<Options<GetUserSslkeysWithSummaryData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
@@ -2651,11 +3451,11 @@ export const listUsersWithSummaryInfiniteOptions = (
     ListUsersWithSummaryError,
     InfiniteData<ListUsersWithSummaryResponse>,
     QueryKey<Options<ListUsersWithSummaryData>>,
-    | number
     | Pick<
         QueryKey<Options<ListUsersWithSummaryData>>[0],
         "body" | "headers" | "path" | "query"
       >
+    | number
   >(
     // @ts-ignore
     {
