@@ -52,7 +52,7 @@ describe("EditZone", () => {
       "test description 2"
     );
 
-    await userEvent.click(screen.getByRole("button", { name: /Update AZ/i }));
+    await userEvent.click(screen.getByRole("button", { name: /Save AZ/i }));
 
     await waitFor(() => {
       expect(zoneResolvers.updateZone.resolved).toBeTruthy();
@@ -76,7 +76,7 @@ describe("EditZone", () => {
       "test"
     );
 
-    await userEvent.click(screen.getByRole("button", { name: /Update AZ/i }));
+    await userEvent.click(screen.getByRole("button", { name: /Save AZ/i }));
 
     await waitFor(() => {
       expect(screen.getByText("Uh oh!")).toBeInTheDocument();

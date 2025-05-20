@@ -54,7 +54,7 @@ const EditZone = ({ id, closeForm }: EditZoneProps): ReactElement => {
           }}
           saved={editZone.isSuccess}
           saving={editZone.isPending}
-          submitLabel="Update AZ"
+          submitLabel="Save AZ"
         >
           <FormikField
             label="Name"

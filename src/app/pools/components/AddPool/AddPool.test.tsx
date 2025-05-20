@@ -1,58 +1,63 @@
 import { waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router";
 import { vi } from "vitest";
 
 import AddPool from "./AddPool";
 
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   screen,
-  renderWithMockStore,
   renderWithProviders,
   userEvent,
   setupMockServer,
 } from "@/testing/utils";
 
-setupMockServer(poolsResolvers.createPool.handler());
+const mockServer = setupMockServer(poolsResolvers.createPool.handler());
 
 describe("AddPool", () => {
-  let state: RootState;
+  it("runs closeForm function when the cancel button is clicked", async () => {
+    const closeForm = vi.fn();
+    renderWithProviders(<AddPool closeForm={closeForm} />);
 
-  beforeEach(() => {
-    state = factory.rootState();
+    await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+    expect(closeForm).toHaveBeenCalled();
   });
 
-  it("can render", () => {
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/pool/add", key: "testKey" }]}
-      >
-        <AddPool closeForm={vi.fn()} />
-      </MemoryRouter>,
-      { state }
-    );
-    expect(screen.getByRole("form", { name: "Add pool" }));
-  });
-
-  it("can create a resource pool", async () => {
+  it("calls create pool on save click", async () => {
     renderWithProviders(<AddPool closeForm={vi.fn()} />);
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Name (required)" }),
-      "test name"
+      screen.getByRole("textbox", { name: /name/i }),
+      "test-pool"
     );
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Description" }),
-      "test description"
+      screen.getByRole("textbox", { name: /description/i }),
+      "desc"
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "Save pool" }));
+    await userEvent.click(screen.getByRole("button", { name: /Save pool/i }));
 
     await waitFor(() => {
-      expect(poolsResolvers.createPool.resolved).toBe(true);
+      expect(poolsResolvers.createPool.resolved).toBeTruthy();
+    });
+  });
+
+  it("displays error message when create pool fails", async () => {
+    mockServer.use(
+      poolsResolvers.createPool.error({ code: 400, message: "Uh oh!" })
+    );
+
+    renderWithProviders(<AddPool closeForm={vi.fn()} />);
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /name/i }),
+      "danger-zone"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Save pool/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
     });
   });
 });

@@ -35,7 +35,7 @@ describe("AddZone", () => {
       "desc"
     );
 
-    await userEvent.click(screen.getByRole("button", { name: /Add AZ/i }));
+    await userEvent.click(screen.getByRole("button", { name: /Save AZ/i }));
 
     await waitFor(() => {
       expect(zoneResolvers.createZone.resolved).toBeTruthy();
@@ -54,7 +54,7 @@ describe("AddZone", () => {
       "danger-zone"
     );
 
-    await userEvent.click(screen.getByRole("button", { name: /Add AZ/i }));
+    await userEvent.click(screen.getByRole("button", { name: /Save AZ/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();

@@ -1,8 +1,9 @@
+import { vi } from "vitest";
+
 import DeletePool from "./DeletePool";
 
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
-  renderWithBrowserRouter,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -12,35 +13,36 @@ import {
 
 const mockServer = setupMockServer(poolsResolvers.deletePool.handler());
 
-describe("PoolDeleteForm", () => {
-  it("renders", () => {
-    renderWithProviders(<DeletePool closeForm={vi.fn()} id={1} />);
+describe("DeletePool", () => {
+  it("calls closeForm on cancel click", async () => {
+    const closeForm = vi.fn();
+    renderWithProviders(<DeletePool closeForm={closeForm} id={2} />);
 
-    expect(screen.getByRole("form", { name: "Confirm pool deletion" }));
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(closeForm).toHaveBeenCalled();
   });
 
-  it("can delete a resource pool", async () => {
-    renderWithBrowserRouter(<DeletePool closeForm={vi.fn()} id={1} />);
+  it("calls delete pool on save click", async () => {
+    renderWithProviders(<DeletePool closeForm={vi.fn()} id={2} />);
 
-    expect(
-      screen.getByRole("form", { name: /Confirm pool deletion/i })
-    ).toBeInTheDocument();
-
-    await userEvent.click(screen.getByRole("button", { name: /delete/i }));
-
-    expect(poolsResolvers.deletePool.resolved).toBe(true);
-  });
-
-  it("can show errors encountered when deleting a pool", async () => {
-    mockServer.use(
-      poolsResolvers.deletePool.error({ message: "Uh oh!", code: 404 })
-    );
-    renderWithProviders(<DeletePool closeForm={vi.fn()} id={1} />);
-
-    await userEvent.click(screen.getByRole("button", { name: /delete/i }));
+    await userEvent.click(screen.getByRole("button", { name: /Delete/i }));
 
     await waitFor(() => {
-      expect(screen.getByText("Uh oh!")).toBeInTheDocument();
+      expect(poolsResolvers.deletePool.resolved).toBeTruthy();
+    });
+  });
+
+  it("displays error messages when delete pool fails", async () => {
+    mockServer.use(
+      poolsResolvers.deletePool.error({ code: 400, message: "Uh oh!" })
+    );
+
+    renderWithProviders(<DeletePool closeForm={vi.fn()} id={2} />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
     });
   });
 });

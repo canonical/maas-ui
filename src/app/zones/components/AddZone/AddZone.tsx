@@ -38,7 +38,7 @@ const AddZone = ({ closeForm }: AddZoneProps): ReactElement => {
       resetOnSave={true}
       saved={createZone.isSuccess}
       saving={createZone.isPending}
-      submitLabel="Add AZ"
+      submitLabel="Save AZ"
       validationSchema={ZoneSchema}
     >
       <FormikField
