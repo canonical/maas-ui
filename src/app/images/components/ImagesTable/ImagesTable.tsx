@@ -1,10 +1,9 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
-import { TableCaption } from "@canonical/maas-react-components";
+import { GenericTable, TableCaption } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
-import GenericTable from "@/app/base/components/GenericTable";
 import useImageTableColumns, {
   filterCells,
   filterHeaders,
