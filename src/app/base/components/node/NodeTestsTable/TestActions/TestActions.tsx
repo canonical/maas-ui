@@ -1,6 +1,6 @@
 import type { ContextualMenuProps } from "@canonical/react-components";
-import type { LinkProps } from "react-router-dom";
-import { Link } from "react-router-dom";
+import type { LinkProps } from "react-router";
+import { Link } from "react-router";
 
 import type { SetExpanded } from "../NodeTestsTable";
 import { ScriptResultAction } from "../NodeTestsTable";
@@ -18,7 +18,7 @@ import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
   node: ControllerDetails | MachineDetails;
-  resultType: ScriptResultType.TESTING | ScriptResultType.COMMISSIONING;
+  resultType: ScriptResultType.COMMISSIONING | ScriptResultType.TESTING;
   scriptResult: ScriptResult;
   setExpanded: SetExpanded;
 };
@@ -30,7 +30,7 @@ const TestActions = ({
   resultType,
   scriptResult,
   setExpanded,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const sendAnalytics = useSendAnalytics();
   const canViewDetails = !scriptResultInProgress(scriptResult.status);
   const hasMetrics = scriptResult.results.length > 0;

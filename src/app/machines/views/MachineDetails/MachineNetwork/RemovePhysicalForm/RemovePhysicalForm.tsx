@@ -37,12 +37,14 @@ const RemovePhysicalForm: React.FC<Props> = ({
       systemId,
       "deletingInterface",
       "deleteInterface",
-      () => close()
+      () => {
+        close();
+      }
     );
   const { saved: unlinkedSubnet, saving: unlinkingSubnet } =
-    useMachineDetailsForm(systemId, "unlinkingSubnet", "unlinkSubnet", () =>
-      close()
-    );
+    useMachineDetailsForm(systemId, "unlinkingSubnet", "unlinkSubnet", () => {
+      close();
+    });
   if (machine && link && !nic) {
     [nic] = getLinkInterface(machine, link);
   }

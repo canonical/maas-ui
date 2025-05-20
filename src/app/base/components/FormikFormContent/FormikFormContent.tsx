@@ -7,7 +7,7 @@ import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
 import { withFormikDevtools } from "formik-devtools-extension";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import type { AnyAction } from "redux";
 
 import type { FormikFormButtonsProps } from "@/app/base/components/FormikFormButtons";
@@ -20,32 +20,32 @@ import {
 } from "@/app/base/hooks";
 import type { APIError } from "@/app/base/types";
 
-export type Props<V extends object, E> = {
-  allowAllEmpty?: boolean;
-  allowUnchanged?: boolean;
-  children?: ReactNode | ((formikContext: FormikContextType<V>) => ReactNode);
-  className?: string;
-  cleanup?: () => AnyAction;
-  "data-testid"?: string;
-  editable?: boolean;
-  errors?: APIError<E>;
-  footer?: ReactNode;
-  inline?: boolean;
-  loading?: boolean;
-  onSaveAnalytics?: {
-    action?: string;
-    category?: string;
-    label?: string;
+export type Props<V extends object, E> = FormikFormButtonsProps<V> &
+  Pick<AriaAttributes, "aria-label"> & {
+    allowAllEmpty?: boolean;
+    allowUnchanged?: boolean;
+    children?: ReactNode | ((formikContext: FormikContextType<V>) => ReactNode);
+    className?: string;
+    cleanup?: () => AnyAction;
+    "data-testid"?: string;
+    editable?: boolean;
+    errors?: APIError<E>;
+    footer?: ReactNode;
+    inline?: boolean;
+    loading?: boolean;
+    onSaveAnalytics?: {
+      action?: string;
+      category?: string;
+      label?: string;
+    };
+    onSuccess?: (values: V) => void;
+    onValuesChanged?: (values: V) => void;
+    resetOnSave?: boolean;
+    saved?: boolean;
+    savedRedirect?: string | null;
+    saving?: boolean;
+    submitDisabled?: boolean;
   };
-  onSuccess?: (values: V) => void;
-  onValuesChanged?: (values: V) => void;
-  resetOnSave?: boolean;
-  saved?: boolean;
-  savedRedirect?: string | null;
-  saving?: boolean;
-  submitDisabled?: boolean;
-} & Pick<AriaAttributes, "aria-label"> &
-  FormikFormButtonsProps<V>;
 
 const generateNonFieldError = <V extends object, E = null>(
   values: V,
@@ -99,7 +99,7 @@ const FormikFormContent = <V extends object, E = null>({
   "aria-label": ariaLabel,
   buttonsBehavior = "coupled",
   ...buttonsProps
-}: Props<V, E>): JSX.Element => {
+}: Props<V, E>): React.ReactElement => {
   const formikContext = useFormikContext<V>();
   if (import.meta.env.NODE_ENV === "development") {
     withFormikDevtools(formikContext);

@@ -15,12 +15,12 @@ export const timeSpanToDuration = (timeSpan: TimeSpan | null): Duration => {
   }
   return {
     hours:
-      Number(timeSpan.match(/([\d]+)\s*(?:hs?|hours?)\s*/)?.[1]) || undefined,
+      Number(/([\d]+)\s*(?:hs?|hours?)\s*/.exec(timeSpan)?.[1]) || undefined,
     minutes:
-      Number(timeSpan.match(/([\d]+)\s*(?:ms?|mins?|minutes?)\s*/)?.[1]) ||
+      Number(/([\d]+)\s*(?:ms?|mins?|minutes?)\s*/.exec(timeSpan)?.[1]) ||
       undefined,
     seconds:
-      Number(timeSpan.match(/([\d]+)\s*(?:s|secs?|seconds?)\s*/)?.[1]) ||
+      Number(/([\d]+)\s*(?:s|secs?|seconds?)\s*/.exec(timeSpan)?.[1]) ||
       undefined,
   };
 };

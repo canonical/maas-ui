@@ -9,10 +9,10 @@ import { getPowerTypeFromName } from "@/app/store/general/utils";
 import type { MachineDetails } from "@/app/store/machine/types";
 
 type Props = {
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
 };
 
-const NodePowerNotifications = ({ node }: Props): JSX.Element => {
+const NodePowerNotifications = ({ node }: Props): React.ReactElement => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const isRackControllerConnected = useIsRackControllerConnected();
   const powerType = getPowerTypeFromName(powerTypes, node.power_type);

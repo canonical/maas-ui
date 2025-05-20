@@ -1,5 +1,5 @@
 import { MainTable } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import OwnerColumn from "./OwnerColumn";
 
@@ -143,7 +143,7 @@ const DeviceListTable = ({
   loading = false,
   onSelectedChange,
   selectedIDs,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { currentSort, sortRows, updateSort } = useTableSort<Device, SortKey>(
     getSortValue,
     {
@@ -180,7 +180,9 @@ const DeviceListTable = ({
                 <TableHeader
                   currentSort={currentSort}
                   data-testid="fqdn-header"
-                  onClick={() => updateSort("fqdn")}
+                  onClick={() => {
+                    updateSort("fqdn");
+                  }}
                   sortKey="fqdn"
                 >
                   FQDN
@@ -197,7 +199,9 @@ const DeviceListTable = ({
               <TableHeader
                 currentSort={currentSort}
                 data-testid="ip-header"
-                onClick={() => updateSort("ip_assignment")}
+                onClick={() => {
+                  updateSort("ip_assignment");
+                }}
                 sortKey="ip_assignment"
               >
                 IP assignment
@@ -212,7 +216,9 @@ const DeviceListTable = ({
             <TableHeader
               currentSort={currentSort}
               data-testid="zone-header"
-              onClick={() => updateSort("zone")}
+              onClick={() => {
+                updateSort("zone");
+              }}
               sortKey="zone"
             >
               Zone
@@ -226,7 +232,9 @@ const DeviceListTable = ({
               <TableHeader
                 currentSort={currentSort}
                 data-testid="owner-header"
-                onClick={() => updateSort("owner")}
+                onClick={() => {
+                  updateSort("owner");
+                }}
                 sortKey="owner"
               >
                 Owner

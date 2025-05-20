@@ -14,7 +14,7 @@ import { getNodeActionTitle } from "@/app/store/utils";
 import { capitaliseFirst, kebabToCamelCase } from "@/app/utils";
 
 export type FieldlessFormProps<E = null> = NodeActionFormProps<E> & {
-  actions: typeof machineActions | typeof controllerActions;
+  actions: typeof controllerActions | typeof machineActions;
   action: NodeActions;
   buttonsHelpClassName?: string;
   buttonsHelp?: ReactNode;
@@ -36,7 +36,7 @@ export const FieldlessForm = <E,>({
   processingCount,
   selectedCount,
   viewingDetails,
-}: FieldlessFormProps<E>): JSX.Element => {
+}: FieldlessFormProps<E>): React.ReactElement => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });

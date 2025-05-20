@@ -17,7 +17,7 @@ type Props = {
   filter: FetchFilters | null;
 };
 
-const AllCheckbox = ({ callId, filter }: Props): JSX.Element => {
+const AllCheckbox = ({ callId, filter }: Props): React.ReactElement => {
   const selected = useSelector(machineSelectors.selected);
   // A filter exists in the selected state when all machines in the current
   // table are selected.

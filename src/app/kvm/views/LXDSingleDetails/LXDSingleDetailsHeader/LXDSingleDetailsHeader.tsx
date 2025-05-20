@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { Button, Icon, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import { useGetZone } from "@/app/api/query/zones";
 import { useFetchActions } from "@/app/base/hooks";
@@ -23,7 +23,7 @@ type Props = {
 const LXDSingleDetailsHeader = ({
   id,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const location = useLocation();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)

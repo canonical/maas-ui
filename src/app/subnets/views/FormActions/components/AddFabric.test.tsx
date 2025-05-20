@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import AddFabric from "./AddFabric";
@@ -40,12 +40,12 @@ test("correctly dispatches fabric cleanup and create actions on submit with name
   expect(screen.getByRole("button", { name: "Cancel" })).toBeVisible();
   await userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(store.getActions()).toStrictEqual([
       fabricActions.cleanup(),
       fabricActions.create({ name: "", description: "" }),
-    ])
-  );
+    ]);
+  });
 });
 
 test("correctly dispatches fabric cleanup and create actions on submit with name provided", async () => {
@@ -55,12 +55,12 @@ test("correctly dispatches fabric cleanup and create actions on submit with name
   await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
   await userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(store.getActions()).toStrictEqual([
       fabricActions.cleanup(),
       fabricActions.create({ name, description: "" }),
-    ])
-  );
+    ]);
+  });
 });
 
 test("correctly dispatches fabric cleanup and create actions on submit with all details provided", async () => {
@@ -78,10 +78,10 @@ test("correctly dispatches fabric cleanup and create actions on submit with all 
   );
   await userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(store.getActions()).toStrictEqual([
       fabricActions.cleanup(),
       fabricActions.create({ name, description }),
-    ])
-  );
+    ]);
+  });
 });

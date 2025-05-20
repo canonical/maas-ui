@@ -1,6 +1,6 @@
 import { Button, List } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import urls from "@/app/base/urls";
 import IntroCard from "@/app/intro/components/IntroCard";
@@ -13,7 +13,7 @@ export enum Labels {
   FinishSetup = "Finish setup",
 }
 
-const MaasIntroSuccess = (): JSX.Element => {
+const MaasIntroSuccess = (): React.ReactElement => {
   const dispatch = useDispatch();
   const authUser = useSelector(authSelectors.get);
   const exitURL = useExitURL();

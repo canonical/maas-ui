@@ -7,7 +7,7 @@ on:
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
     env:
@@ -20,7 +20,7 @@ jobs:
         with:
           maas-url: ${{ env.MAAS_URL }}/MAAS
           use-maasdb-dump: true
-          maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-1000.dump
+          maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-24.04-master-1000.dump
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Wait for MAAS
@@ -48,6 +48,15 @@ jobs:
         run: while [ $(maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
       - name: Run sitespeed.io tests
         run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
+      - name: Collect MAAS logs
+        if: failure()
+        shell: bash
+        run: journalctl -u snap.maas.pebble.service --since="1 hour ago" > sitespeed.io/maas_logs.txt
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: maas_logs
+          path: sitespeed.io/maas_logs.txt
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:

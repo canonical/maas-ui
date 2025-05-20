@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
@@ -17,7 +17,7 @@ export enum Labels {
   LoadingControllers = "Loading controllers",
 }
 
-const ControllerLink = ({ systemId }: Props): JSX.Element | null => {
+const ControllerLink = ({ systemId }: Props): React.ReactElement | null => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );

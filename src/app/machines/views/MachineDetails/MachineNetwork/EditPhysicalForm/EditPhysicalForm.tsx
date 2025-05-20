@@ -116,7 +116,7 @@ const EditPhysicalForm = ({
   linkId,
   nicId,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -137,7 +137,9 @@ const EditPhysicalForm = ({
     systemId,
     "updatingInterface",
     "updateInterface",
-    () => close()
+    () => {
+      close();
+    }
   );
 
   useFetchActions([

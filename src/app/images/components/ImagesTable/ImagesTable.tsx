@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import { TableCaption } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
@@ -48,8 +48,9 @@ const ImagesTable = ({
   selectedRows,
   setSelectedRows,
   variant,
-}: SMImagesTableProps) => {
+}: SMImagesTableProps): ReactElement => {
   const resources = useSelector(bootResourceSelectors.resources);
+  const isPolling = useSelector(bootResourceSelectors.polling);
   const images = getImages(resources);
 
   const { setSidePanelContent } = useSidePanel();
@@ -84,17 +85,15 @@ const ImagesTable = ({
       filterCells={filterCells}
       filterHeaders={filterHeaders}
       groupBy={["name"]}
+      isLoading={isPolling && images.length === 0}
       noData={
-        <TableCaption>
-          <TableCaption.Title>No images</TableCaption.Title>
-          <TableCaption.Description>
-            There are no images stored in Site Manager at the moment. You can
-            either upload images, or connect to an upstream image source to
-            download images from.
-          </TableCaption.Description>
-        </TableCaption>
+        <TableCaption.Description>
+          There are no images stored in Site Manager at the moment. You can
+          either upload images, or connect to an upstream image source to
+          download images from.
+        </TableCaption.Description>
       }
-      pin={[
+      pinGroup={[
         { value: "Ubuntu", isTop: true },
         { value: "Other", isTop: false },
       ]}

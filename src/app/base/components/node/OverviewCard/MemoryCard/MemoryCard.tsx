@@ -10,7 +10,10 @@ type Props = {
   setSidePanelContent?: MachineSetSidePanelContent;
 };
 
-const MemoryCard = ({ node, setSidePanelContent }: Props): JSX.Element => (
+const MemoryCard = ({
+  node,
+  setSidePanelContent,
+}: Props): React.ReactElement => (
   <>
     <div className="overview-card__memory">
       <strong className="p-muted-heading u-flex--between u-no-margin--bottom u-no-padding--top">

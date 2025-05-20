@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import SubnetsTable from "./SubnetsTable";
@@ -140,16 +140,16 @@ it("updates the list of items correctly when navigating to another page", async 
       name: "2",
     })
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(tableBody).getAllByRole("link", { name: /fabric/i })
-    ).toHaveLength(25)
-  );
-  await waitFor(() =>
+    ).toHaveLength(25);
+  });
+  await waitFor(() => {
     expect(
       within(tableBody).getByRole("link", { name: "fabric-26" })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
   expect(
     within(tableBody).getByRole("link", { name: "fabric-50" })
   ).toBeInTheDocument();
@@ -205,14 +205,14 @@ it("displays correctly paginated rows", async () => {
     })
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(screen.getByRole("navigation", { name: "pagination" })).getByRole(
         "button",
         { current: "page" }
       )
-    ).toHaveTextContent("2")
-  );
+    ).toHaveTextContent("2");
+  });
 
   expect(
     within(tableBody).getAllByRole("link", { name: /fabric/i })
@@ -245,9 +245,9 @@ it("displays the last available page once the currently active has no items", as
     )
   );
 
-  await waitFor(() =>
-    expect(within(tableBody).getAllByRole("row")).toHaveLength(2)
-  );
+  await waitFor(() => {
+    expect(within(tableBody).getAllByRole("row")).toHaveLength(2);
+  });
   expect(
     within(tableBody).getByRole("link", { name: `fabric-${numberOfFabrics}` })
   ).toBeInTheDocument();
@@ -266,11 +266,11 @@ it("displays the last available page once the currently active has no items", as
   );
 
   const pagination = screen.getByRole("navigation", { name: "pagination" });
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(pagination).getByRole("button", { name: "2" })
-    ).toHaveAttribute("aria-current", "page")
-  );
+    ).toHaveAttribute("aria-current", "page");
+  });
 
   expect(within(tableBody).getAllByRole("row")).toHaveLength(2);
 });
@@ -298,11 +298,11 @@ it("remains on the same page once the data is updated and page is still availabl
     })
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(pagination).getByRole("button", { name: "2" })
-    ).toHaveAttribute("aria-current", "page")
-  );
+    ).toHaveAttribute("aria-current", "page");
+  });
 
   const updatedState = getMockState({
     numberOfFabrics: SUBNETS_TABLE_ITEMS_PER_PAGE * 2,
@@ -317,11 +317,11 @@ it("remains on the same page once the data is updated and page is still availabl
     </Provider>
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(pagination).getByRole("button", { name: "2" })
-    ).toHaveAttribute("aria-current", "page")
-  );
+    ).toHaveAttribute("aria-current", "page");
+  });
 });
 
 it("displays the table group summary at the top of every page", async () => {
@@ -345,11 +345,11 @@ it("displays the table group summary at the top of every page", async () => {
     })
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       within(pagination).getByRole("button", { name: "2" })
-    ).toHaveAttribute("aria-current", "page")
-  );
+    ).toHaveAttribute("aria-current", "page");
+  });
 
   const tableBody2 = screen.getAllByRole("rowgroup")[1];
   expect(within(tableBody2).getAllByRole("row")[0]).toHaveTextContent(

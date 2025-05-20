@@ -26,7 +26,9 @@ setupMockServer(
 describe("useListSshKeys", () => {
   it("should return SSH keys data", async () => {
     const { result } = renderHookWithProviders(() => useListSshKeys());
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toEqual(mockSshKeys);
   });
 });
@@ -38,7 +40,9 @@ describe("useCreateSshKeys", () => {
     };
     const { result } = renderHookWithProviders(() => useCreateSshKeys());
     result.current.mutate({ body: newSshKey });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });
 
@@ -50,7 +54,9 @@ describe("useImportSshKeys", () => {
     };
     const { result } = renderHookWithProviders(() => useImportSshKeys());
     result.current.mutate({ body: newSshKey });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });
 
@@ -58,6 +64,8 @@ describe("useDeleteSshKey", () => {
   it("should delete an SSH key", async () => {
     const { result } = renderHookWithProviders(() => useDeleteSshKey());
     result.current.mutate({ path: { id: 1 } });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });

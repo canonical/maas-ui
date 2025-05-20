@@ -180,7 +180,10 @@ type Props = {
 };
 
 // eslint-disable-next-line complexity
-const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
+const ComposeForm = ({
+  clearSidePanelContent,
+  hostId,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
@@ -457,7 +460,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
           interfaces: [],
           memory: defaults.memory,
           pinnedCores: "",
-          pool: `${zones.data?.items[0]?.id}` || "",
+          pool: `${pools.data?.items[0]?.id}` || "",
           zone: `${zones.data?.items[0]?.id}` || "",
         }}
         modelName="machine"

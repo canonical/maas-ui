@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import SpaceSummary from "./SpaceSummary";
@@ -53,19 +53,19 @@ it("can open and close the Edit space summary form", async () => {
   await userEvent.click(
     within(spaceSummary).getAllByRole("button", { name: "Edit" })[0]
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("form", { name: "Edit space summary" })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
 
   await userEvent.click(
     within(spaceSummary).getByRole("button", { name: "Cancel" })
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.queryByRole("form", { name: "Edit space summary" })
-    ).not.toBeInTheDocument()
-  );
+    ).not.toBeInTheDocument();
+  });
 });

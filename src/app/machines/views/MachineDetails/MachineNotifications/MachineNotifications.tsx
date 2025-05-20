@@ -14,7 +14,7 @@ type Props = {
   notifications: MachineNotification[];
 };
 
-const MachineNotifications = ({ notifications }: Props): JSX.Element => {
+const MachineNotifications = ({ notifications }: Props): React.ReactElement => {
   const notificationList = notifications.reduce<ReactNode[]>(
     (collection, { active, content, severity, title }, i) => {
       // Use the `status` role for information that is not important enough to be an `alert`.

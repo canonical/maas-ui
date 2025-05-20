@@ -40,7 +40,7 @@ type Props = {
 
 export const AddMachineForm = ({
   clearSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const architectures = useSelector(architecturesSelectors.get);
   const architecturesLoaded = useSelector(architecturesSelectors.loaded);
@@ -76,7 +76,9 @@ export const AddMachineForm = ({
     machineSaved,
     machineActions.cleanup,
     `${savingMachine} added successfully.`,
-    () => setSavingMachine(null)
+    () => {
+      setSavingMachine(null);
+    }
   );
 
   const initialPowerParameters = useInitialPowerParameters();
@@ -87,6 +89,7 @@ export const AddMachineForm = ({
       Yup.string().matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
     ),
     hostname: hostnameValidation,
+    is_dpu: Yup.boolean(),
     min_hwe_kernel: Yup.string(),
     pool: Yup.string().required("Resource pool required"),
     power_parameters: Yup.object().shape(
@@ -135,6 +138,7 @@ export const AddMachineForm = ({
             extra_macs: [],
             hostname: "",
             min_hwe_kernel: defaultMinHweKernel || "",
+            is_dpu: false,
             pool:
               (resourcePools?.data?.items?.length &&
                 resourcePools?.data.items[0].name) ||
@@ -157,6 +161,7 @@ export const AddMachineForm = ({
               domain: { name: values.domain },
               extra_macs: values.extra_macs.filter(Boolean),
               hostname: values.hostname,
+              is_dpu: values.is_dpu,
               min_hwe_kernel: values.min_hwe_kernel,
               pool: { name: values.pool },
               power_parameters: formatPowerParameters(
@@ -166,7 +171,6 @@ export const AddMachineForm = ({
               power_type: values.power_type as PowerType["name"],
               pxe_mac: values.pxe_mac,
               zone: { name: values.zone },
-              // TODO: Add `is_dpu` field to params https://warthogs.atlassian.net/browse/MAASENG-4186
             };
             dispatch(machineActions.create(params));
             setSavingMachine(values.hostname || "Machine");

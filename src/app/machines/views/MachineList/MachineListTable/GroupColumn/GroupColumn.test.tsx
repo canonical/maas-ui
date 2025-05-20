@@ -62,7 +62,7 @@ it("displays correct fetched machines count when initial count is null", async (
   );
 
   expect(screen.getByText(/Test Group/)).toBeInTheDocument();
-  await waitFor(() =>
-    expect(screen.getByText(/2 machines/)).toBeInTheDocument()
-  );
+  await waitFor(() => {
+    expect(screen.getByText(/2 machines/)).toBeInTheDocument();
+  });
 });

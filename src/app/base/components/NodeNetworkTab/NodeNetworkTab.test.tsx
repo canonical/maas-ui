@@ -27,7 +27,9 @@ describe("NodeNetworkTab", () => {
         actions={(_, setExpanded) => (
           <button
             data-testid="add-button"
-            onClick={() => setExpanded({ content: ExpandedState.ADD_PHYSICAL })}
+            onClick={() => {
+              setExpanded({ content: ExpandedState.ADD_PHYSICAL });
+            }}
           ></button>
         )}
         addInterface={() => <div data-testid="add-interface"></div>}
@@ -47,7 +49,9 @@ describe("NodeNetworkTab", () => {
         actions={(_, setExpanded) => (
           <button
             data-testid="edit-button"
-            onClick={() => setExpanded({ content: ExpandedState.EDIT })}
+            onClick={() => {
+              setExpanded({ content: ExpandedState.EDIT });
+            }}
           ></button>
         )}
         addInterface={vi.fn()}

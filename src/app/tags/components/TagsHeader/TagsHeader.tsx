@@ -1,7 +1,7 @@
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import SearchBox from "@/app/base/components/SearchBox";
 import SegmentedControl from "@/app/base/components/SegmentedControl";
@@ -44,7 +44,7 @@ export const TagsHeader = ({
   setSidePanelContent,
   onDelete,
   onUpdate,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
@@ -61,13 +61,20 @@ export const TagsHeader = ({
       <MainToolbar.Controls>
         {isDetails && tag ? (
           <>
-            <Button hasIcon onClick={() => onUpdate(tag[TagMeta.PK])}>
+            <Button
+              hasIcon
+              onClick={() => {
+                onUpdate(tag[TagMeta.PK]);
+              }}
+            >
               <Icon name="edit" /> <span>{Label.EditButton}</span>
             </Button>
             <Button
               appearance="negative"
               hasIcon
-              onClick={() => onDelete(tag[TagMeta.PK], true)}
+              onClick={() => {
+                onDelete(tag[TagMeta.PK], true);
+              }}
             >
               <Icon className="is-light" name="delete" />{" "}
               <span>{Label.DeleteButton}</span>
@@ -103,9 +110,9 @@ export const TagsHeader = ({
         )}
         <Button
           appearance="positive"
-          onClick={() =>
-            setSidePanelContent({ view: TagSidePanelViews.AddTag })
-          }
+          onClick={() => {
+            setSidePanelContent({ view: TagSidePanelViews.AddTag });
+          }}
         >
           {Label.CreateButton}
         </Button>

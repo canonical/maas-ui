@@ -81,7 +81,7 @@ describe("CloneFormFields", () => {
 
     await waitFor(() => {
       const actualActions = store.getActions();
-      return expect(
+      expect(
         expectedActions.every((expected) =>
           actualActions.some((actual) => actual.type === expected)
         )
@@ -107,7 +107,7 @@ describe("CloneFormFields", () => {
 
     await waitFor(() => {
       const actualActions = store.getActions();
-      return expect(
+      expect(
         actualActions.find((action) => action.type === expectedAction.type)
       ).toStrictEqual(expectedAction);
     });

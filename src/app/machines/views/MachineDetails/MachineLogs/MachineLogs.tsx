@@ -15,7 +15,7 @@ export enum Label {
   Loading = "Loading logs",
 }
 
-const MachineLogs = ({ systemId }: Props): JSX.Element => {
+const MachineLogs = ({ systemId }: Props): React.ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

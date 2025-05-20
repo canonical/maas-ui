@@ -8,11 +8,11 @@ import { useFetchActions } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { architectures as architecturesSelectors } from "@/app/store/general/selectors";
 
-type Props = {
+type Props = HTMLProps<HTMLSelectElement> & {
   disabled?: boolean;
   label?: string;
   name: string;
-} & HTMLProps<HTMLSelectElement>;
+};
 
 export enum Labels {
   DefaultLabel = "Architecture",
@@ -23,7 +23,7 @@ export const ArchitectureSelect = ({
   label = Labels.DefaultLabel,
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const architectures = useSelector(architecturesSelectors.get);
   const architecturesLoaded = useSelector(architecturesSelectors.loaded);
 

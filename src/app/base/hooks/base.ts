@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { NotificationSeverity } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
+import { NotificationSeverity } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import type { KeyboardShortcut } from "../constants";
 
@@ -17,8 +17,8 @@ import { messageActions } from "@/app/store/message";
  * @param cleanup - A cleanup action to fire.
  * @param message - The message to be displayed.
  * @param onMessageAdded - A function to call once the message has
-                                      been displayed.
- * @param messageType - The notification type.
+ been displayed.
+ * @param messageSeverity - The severity level of the notification message.
  */
 export const useAddMessage = (
   addCondition: boolean,
@@ -132,7 +132,7 @@ export const useScrollOnRender = <T extends HTMLElement>(): ((
   targetNode: T | null
 ) => void) => {
   const htmlRef = useRef<HTMLElement>(document.querySelector("html"));
-  const onRenderRef = useCallback((targetNode: T | null) => {
+  return useCallback((targetNode: T | null) => {
     if (targetNode && htmlRef?.current) {
       const { height: targetHeight, y: targetTop } =
         targetNode.getBoundingClientRect();
@@ -158,7 +158,6 @@ export const useScrollOnRender = <T extends HTMLElement>(): ((
       }
     }
   }, []);
-  return onRenderRef;
 };
 
 /**

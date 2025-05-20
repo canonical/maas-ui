@@ -33,8 +33,8 @@ export type UserEventError = {
   event: string;
 };
 
-export type UserState = {
+export type UserState = GenericState<User, APIError> & {
   auth: AuthState;
   statuses: UserStatuses;
   eventErrors: UserEventError[];
-} & GenericState<User, APIError>;
+};

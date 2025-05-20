@@ -9,7 +9,7 @@ import {
 } from "@canonical/react-components";
 import type { Location } from "history";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router";
 
 import { usePools } from "@/app/api/query/pools";
 import type {
@@ -47,7 +47,7 @@ const getSortValue = (
   sortKey: SortKey,
   pod: Pod,
   pools?: ResourcePoolResponse[]
-): string | number | null => {
+): number | string | null => {
   const { cores, memory, storage, vm_count } = pod.resources;
   const pool = pools?.find((pool) => pod.pool === pool.id);
   switch (sortKey) {
@@ -140,12 +140,12 @@ const generateRows = (
                 className="no-background u-no-margin"
                 data-testid="vm-host-compose"
                 hasIcon
-                onClick={() =>
+                onClick={() => {
                   setSidePanelContent({
                     view: KVMSidePanelViews.COMPOSE_VM,
                     extras: { hostId: host.id },
-                  })
-                }
+                  });
+                }}
               >
                 <Icon name="plus" />
               </Button>
@@ -177,7 +177,7 @@ const LXDClusterHostsTable = ({
   hosts,
   searchFilter,
   setSidePanelContent,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const location = useLocation();
   const pools = usePools();
   const podsLoaded = useSelector(podSelectors.loaded);
@@ -210,7 +210,9 @@ const LXDClusterHostsTable = ({
                     <TableHeader
                       currentSort={currentSort}
                       data-testid="name-header"
-                      onClick={() => updateSort("name")}
+                      onClick={() => {
+                        updateSort("name");
+                      }}
                       sortKey="name"
                     >
                       KVM host
@@ -225,7 +227,9 @@ const LXDClusterHostsTable = ({
                   <TableHeader
                     currentSort={currentSort}
                     data-testid="vms-header"
-                    onClick={() => updateSort("vms")}
+                    onClick={() => {
+                      updateSort("vms");
+                    }}
                     sortKey="vms"
                   >
                     VM<span className="u-no-text-transform">s</span>
@@ -244,7 +248,9 @@ const LXDClusterHostsTable = ({
                   <TableHeader
                     currentSort={currentSort}
                     data-testid="pool-header"
-                    onClick={() => updateSort("pool")}
+                    onClick={() => {
+                      updateSort("pool");
+                    }}
                     sortKey="pool"
                   >
                     Resource pool
@@ -257,7 +263,9 @@ const LXDClusterHostsTable = ({
                   <TableHeader
                     currentSort={currentSort}
                     data-testid="cpu-header"
-                    onClick={() => updateSort("cpu")}
+                    onClick={() => {
+                      updateSort("cpu");
+                    }}
                     sortKey="cpu"
                   >
                     CPU cores
@@ -270,7 +278,9 @@ const LXDClusterHostsTable = ({
                   <TableHeader
                     currentSort={currentSort}
                     data-testid="ram-header"
-                    onClick={() => updateSort("ram")}
+                    onClick={() => {
+                      updateSort("ram");
+                    }}
                     sortKey="ram"
                   >
                     RAM
@@ -283,7 +293,9 @@ const LXDClusterHostsTable = ({
                   <TableHeader
                     currentSort={currentSort}
                     data-testid="storage-header"
-                    onClick={() => updateSort("storage")}
+                    onClick={() => {
+                      updateSort("storage");
+                    }}
                     sortKey="storage"
                   >
                     Storage

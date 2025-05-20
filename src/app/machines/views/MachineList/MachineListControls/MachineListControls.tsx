@@ -4,7 +4,7 @@ import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Col, Icon } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import GroupSelect from "@/app/base/components/GroupSelect";
@@ -44,7 +44,7 @@ const MachineListControls = ({
   hiddenColumns,
   setHiddenColumns,
   setSidePanelContent,
-}: MachineListControlsProps): JSX.Element => {
+}: MachineListControlsProps): React.ReactElement => {
   const [searchText, setSearchText] = useState(filter);
   const hasSelection = useHasSelection();
   const dispatch = useDispatch();
@@ -74,7 +74,9 @@ const MachineListControls = ({
               />
             </Col>
             <DebounceSearchBox
-              onDebounced={(debouncedText) => setFilter(debouncedText)}
+              onDebounced={(debouncedText) => {
+                setFilter(debouncedText);
+              }}
               searchText={searchText}
               setSearchText={setSearchText}
             />

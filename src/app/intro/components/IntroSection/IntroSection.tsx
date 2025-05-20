@@ -1,8 +1,8 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Notification, Spinner } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import PageContent from "@/app/base/components/PageContent";
 import type { Props as PageContentProps } from "@/app/base/components/PageContent/PageContent";
@@ -11,7 +11,7 @@ import type { APIError } from "@/app/base/types";
 import { useExitURL } from "@/app/intro/hooks";
 import { formatErrors } from "@/app/utils";
 
-type Props = {
+type Props = Partial<PageContentProps> & {
   children: ReactNode;
   complete?: boolean;
   errors?: APIError;
@@ -19,7 +19,7 @@ type Props = {
   shouldExitIntro?: boolean;
   titleLink?: ReactNode;
   windowTitle?: string;
-} & Partial<PageContentProps>;
+};
 
 const IntroSection = ({
   children,
@@ -32,7 +32,7 @@ const IntroSection = ({
   sidePanelContent = null,
   sidePanelTitle = null,
   ...props
-}: Props) => {
+}: Props): ReactElement => {
   const navigate = useNavigate();
   const errorMessage = formatErrors(errors);
   const exitURL = useExitURL();

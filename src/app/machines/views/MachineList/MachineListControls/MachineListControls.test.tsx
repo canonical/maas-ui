@@ -28,6 +28,7 @@ describe("MachineListControls", () => {
         factory.machine({
           fqdn: "abc123",
           system_id: "abc123",
+          is_dpu: false,
         }),
       ],
     });
@@ -59,7 +60,9 @@ describe("MachineListControls", () => {
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    await waitFor(() => expect(setFilter).toHaveBeenCalledWith("status:new"));
+    await waitFor(() => {
+      expect(setFilter).toHaveBeenCalledWith("status:new");
+    });
   });
 
   it("shows search bar, filter accordion, and grouping select when no machines are selected", () => {

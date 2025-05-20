@@ -207,7 +207,7 @@ const ControllerListTable = ({
   loading = false,
   onSelectedChange,
   selectedIDs,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { currentSort, sortRows, updateSort } = useTableSort<
     Controller,
     SortKey
@@ -251,7 +251,9 @@ const ControllerListTable = ({
               <TableHeader
                 currentSort={currentSort}
                 data-testid="fqdn-header"
-                onClick={() => updateSort("fqdn")}
+                onClick={() => {
+                  updateSort("fqdn");
+                }}
                 sortKey="fqdn"
               >
                 Name
@@ -271,7 +273,9 @@ const ControllerListTable = ({
             <TableHeader
               currentSort={currentSort}
               data-testid="type-header"
-              onClick={() => updateSort("node_type_display")}
+              onClick={() => {
+                updateSort("node_type_display");
+              }}
               sortKey="node_type_display"
             >
               Type
@@ -291,7 +295,9 @@ const ControllerListTable = ({
               <TableHeader
                 currentSort={currentSort}
                 data-testid="version-header"
-                onClick={() => updateSort("version")}
+                onClick={() => {
+                  updateSort("version");
+                }}
                 sortKey="version"
               >
                 Version

@@ -12,6 +12,7 @@ import MacAddressField from "@/app/base/components/MacAddressField";
 import MinimumKernelSelect from "@/app/base/components/MinimumKernelSelect";
 import PowerTypeFields from "@/app/base/components/PowerTypeFields";
 import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
+import TooltipButton from "@/app/base/components/TooltipButton";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import type { MachineState } from "@/app/store/machine/types";
@@ -21,7 +22,7 @@ type Props = {
   saved: MachineState["saved"];
 };
 
-export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
+export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {
   const [extraMACs, setExtraMACs] = useState<string[]>([]);
 
   const formikProps = useFormikContext<AddMachineValues>();
@@ -91,7 +92,9 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
           className="u-no-margin--bottom"
           data-testid="add-extra-mac"
           hasIcon
-          onClick={() => setExtraMACs([...extraMACs, ""])}
+          onClick={() => {
+            setExtraMACs([...extraMACs, ""]);
+          }}
           type="button"
         >
           <i className="p-icon--plus" />
@@ -99,9 +102,21 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
         </Button>
       </div>
       <PowerTypeFields />
-      {import.meta.env.VITE_APP_DPU_PROVISIONING === "true" && (
-        <FormikField label="Register as DPU" name="is_dpu" type="checkbox" />
-      )}
+      <FormikField
+        label={
+          <>
+            Register as DPU{" "}
+            <TooltipButton
+              iconName="help"
+              message="This option registers the machine as a DPU which will affect how MAAS handles the lifecycle of the machine."
+              position="btm-left"
+              positionElementClassName="u-display--inline"
+            />
+          </>
+        }
+        name="is_dpu"
+        type="checkbox"
+      />
     </>
   );
 };

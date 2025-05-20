@@ -1,7 +1,5 @@
-import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
+import { MemoryRouter, Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 
 import TagUpdate from "./TagUpdate";
@@ -14,7 +12,13 @@ import { NewDefinitionMessage } from "@/app/tags/constants";
 import { Label } from "@/app/tags/views/TagDetails";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -122,27 +126,15 @@ it("can update the tag", async () => {
 });
 
 it("goes to the tag details page if it can't go back", async () => {
-  const history = createMemoryHistory({
-    initialEntries: [
-      {
-        pathname: urls.tags.tag.index({ id: 1 }),
-      },
-    ],
-  });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <Routes>
-          <Route
-            element={<TagUpdate id={1} onClose={vi.fn()} />}
-            path={urls.tags.tag.index(null)}
-          />
-        </Routes>
-      </Router>
-    </Provider>
+  const { router } = renderWithProviders(
+    <TagUpdate id={1} onClose={vi.fn()} />,
+    {
+      store,
+      initialEntries: [urls.tags.tag.index({ id: 1 })],
+    }
   );
-  expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
+  expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"
@@ -150,7 +142,7 @@ it("goes to the tag details page if it can't go back", async () => {
   mockFormikFormSaved();
   await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
   await waitFor(() =>
-    expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 1 }))
+    expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 1 }))
   );
 });
 

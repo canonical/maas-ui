@@ -26,7 +26,7 @@ export type Props = {
 
 export const VMS_PER_PAGE = 5;
 
-const VmResources = ({ filters, podId }: Props): JSX.Element => {
+const VmResources = ({ filters, podId }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, podId)
   );

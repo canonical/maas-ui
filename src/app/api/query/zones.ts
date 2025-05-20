@@ -42,7 +42,7 @@ export const useZones = (options?: Options<ListZonesWithSummaryData>) => {
 export const useZoneCount = (options?: Options<ListZonesWithSummaryData>) => {
   return useWebsocketAwareQuery({
     ...listZonesWithSummaryOptions(options),
-    select: (data) => data?.items.length ?? 0,
+    select: (data) => data?.total ?? 0,
   } as UseQueryOptions<
     ListZonesWithSummaryResponse,
     ListZonesWithSummaryResponse,

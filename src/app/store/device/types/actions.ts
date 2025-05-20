@@ -4,7 +4,6 @@ import type { DeviceIpAssignment, DeviceMeta } from "./enum";
 import type { ZoneResponse } from "@/app/apiclient";
 import type { Controller, ControllerMeta } from "@/app/store/controller/types";
 import type { Domain } from "@/app/store/domain/types";
-import type { Machine, MachineMeta } from "@/app/store/machine/types";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 
@@ -22,7 +21,7 @@ export type CreateParams = {
     name?: DeviceNetworkInterface["name"];
     subnet?: Subnet[SubnetMeta.PK] | null;
   }[];
-  parent?: Controller[ControllerMeta.PK] | Machine[MachineMeta.PK];
+  parent?: Controller[ControllerMeta.PK];
   primary_mac: Device["primary_mac"];
   swap_size?: DeviceDetails["swap_size"];
   zone?: {

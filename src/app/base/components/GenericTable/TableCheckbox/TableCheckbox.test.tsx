@@ -59,13 +59,11 @@ const getMockRow = (rowProps: Partial<Row<Image>> = {}) => {
 describe("TableCheckbox.All", () => {
   const renderSelectAllCheckbox = (tableProps?: {
     getSelectedRowModel: Mock<[], { rows: object[] }>;
-    getRowCount: Mock<[], number>;
-    getGroupedRowModel: Mock<[], { rows: never[] }>;
+    getCoreRowModel: Mock<[], { rows: object[] }>;
   }) => {
     const mockTable = {
       getSelectedRowModel: vi.fn(() => ({ rows: [] })),
-      getRowCount: vi.fn(() => 10),
-      getGroupedRowModel: vi.fn(() => ({ rows: [] })),
+      getCoreRowModel: vi.fn(() => ({ rows: [] })),
       toggleAllPageRowsSelected: vi.fn(),
       getIsAllPageRowsSelected: vi.fn(() => false),
       ...tableProps,
@@ -86,8 +84,7 @@ describe("TableCheckbox.All", () => {
   it("displays 'mixed' state when some rows are selected", () => {
     renderSelectAllCheckbox({
       getSelectedRowModel: vi.fn(() => ({ rows: [{}] })), // 1 row selected
-      getRowCount: vi.fn(() => 10),
-      getGroupedRowModel: vi.fn(() => ({ rows: [] })),
+      getCoreRowModel: vi.fn(() => ({ rows: [{}, {}] })),
     });
     expect(screen.getByRole("checkbox")).toHaveAttribute(
       "aria-checked",
@@ -98,8 +95,7 @@ describe("TableCheckbox.All", () => {
   it("displays 'checked' when all rows are selected", () => {
     renderSelectAllCheckbox({
       getSelectedRowModel: vi.fn(() => ({ rows: [{}] })), // Simulate all rows selected
-      getRowCount: vi.fn(() => 1),
-      getGroupedRowModel: vi.fn(() => ({ rows: [] })),
+      getCoreRowModel: vi.fn(() => ({ rows: [{}] })),
     });
     expect(screen.getByRole("checkbox")).toHaveAttribute(
       "aria-checked",
@@ -152,9 +148,9 @@ describe("TableCheckbox.Group", () => {
     });
 
     await userEvent.click(screen.getByRole("checkbox"));
-    subRows.forEach((subRow: Row<Image>) =>
-      expect(subRow.toggleSelected).toHaveBeenCalledWith(true)
-    );
+    subRows.forEach((subRow: Row<Image>) => {
+      expect(subRow.toggleSelected).toHaveBeenCalledWith(true);
+    });
   });
 });
 

@@ -19,7 +19,7 @@ export enum MacSource {
   MANUAL = "manual",
 }
 
-export type BondFormValues = {
+export type BondFormValues = NetworkValues & {
   bond_downdelay: NetworkInterfaceParams["bond_downdelay"];
   bond_lacp_rate: BondLacpRate | "";
   bond_miimon: NetworkInterfaceParams["bond_miimon"];
@@ -32,4 +32,4 @@ export type BondFormValues = {
   name: NetworkInterface["name"];
   macSource: MacSource;
   tags: NetworkInterface["tags"];
-} & NetworkValues;
+};

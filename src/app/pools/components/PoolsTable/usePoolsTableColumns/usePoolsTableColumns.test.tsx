@@ -35,7 +35,7 @@ it("returns the correct number of columns", () => {
   expect(result.current).toBeInstanceOf(Array);
   expect(result.current.map((column) => column.id)).toStrictEqual([
     "name",
-    "machines",
+    "machine_ready_count",
     "description",
     "actions",
   ]);

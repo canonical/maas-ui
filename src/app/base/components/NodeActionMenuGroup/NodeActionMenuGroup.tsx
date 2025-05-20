@@ -10,6 +10,7 @@ import {
 } from "@canonical/react-components";
 
 import type { DataTestElement } from "@/app/base/types";
+import type { MachineDetails } from "@/app/store/machine/types";
 import type { Node } from "@/app/store/types/node";
 import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm, getNodeActionTitle } from "@/app/store/utils";
@@ -116,7 +117,10 @@ const generateActionMenus = (
   showCount?: boolean,
   singleNode?: boolean
 ) => {
-  return actionGroups.reduce<JSX.Element[]>((menus, group) => {
+  return actionGroups.reduce<React.ReactElement[]>((menus, group) => {
+    //if (nodes && (nodes[0] as MachineDetails).is_dpu) {
+    //  console.log(group);
+    //}
     const groupLinks = group.actions.reduce<ActionLink[]>(
       (groupLinks, action) => {
         if (excludeActions.includes(action)) {
@@ -180,15 +184,24 @@ const generateActionMenus = (
             "data-testid": `action-link-${action}`,
             // When nodes are not provided actions should always be enabled.
             disabled: nodes ? count === 0 : false,
-            onClick: () => onActionClick(action),
+            onClick: () => {
+              onActionClick(action);
+            },
           });
         }
         return groupLinks;
       },
       []
     );
-
-    if (groupLinks.length > 0) {
+    if (
+      (groupLinks.length > 0 && nodes === undefined) ||
+      (groupLinks.length > 0 && nodes && nodes.length === 0) ||
+      (groupLinks.length > 0 &&
+        nodes !== undefined &&
+        nodes.length > 0 &&
+        (((nodes![0] as MachineDetails).is_dpu && group.name !== "power") ||
+          (nodes![0] as MachineDetails).is_dpu === false))
+    ) {
       menus.push(
         <ContextualMenu
           dropdownProps={{ "aria-label": `${group.title} submenu` }}
@@ -225,7 +238,7 @@ export const NodeActionMenuGroup = ({
   onActionClick,
   showCount,
   singleNode = false,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const menus = generateActionMenus(
     alwaysShowLifecycle,
     excludeActions,
@@ -272,7 +285,11 @@ export const NodeActionMenuGroup = ({
           </span>
         )}
       <span className="p-action-button--wrapper">
-        <Button onClick={() => onActionClick(NodeActions.DELETE)}>
+        <Button
+          onClick={() => {
+            onActionClick(NodeActions.DELETE);
+          }}
+        >
           <Icon name="delete" />
           {Labels.Delete}
         </Button>

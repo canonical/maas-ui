@@ -66,7 +66,7 @@ const filterNames = new Map<FilterGroupKey, string>([
 const MachinesFilterAccordion = ({
   searchText,
   setSearchText,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const filtersLoaded = useSelector(machineSelectors.filtersLoaded);
   const [expandedSection, setExpandedSection] = useState<string>();
@@ -106,7 +106,9 @@ const MachinesFilterAccordion = ({
         className="filter-accordion__dropdown"
         expanded={expandedSection}
         externallyControlled
-        onExpandedChange={(id, _title) => setExpandedSection(id)}
+        onExpandedChange={(id, _title) => {
+          setExpandedSection(id);
+        }}
         sections={sections}
       />
     </ContextualMenu>

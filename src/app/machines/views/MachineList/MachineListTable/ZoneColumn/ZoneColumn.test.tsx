@@ -39,7 +39,7 @@ describe("ZoneColumn", () => {
 
     renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { initialEntries: ["/machines"], state }
     );
     expect(screen.getByTestId("zone")).toHaveTextContent("zone-one");
   });
@@ -49,7 +49,7 @@ describe("ZoneColumn", () => {
 
     renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { initialEntries: ["/machines"], state }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("space1");
   });
@@ -59,7 +59,7 @@ describe("ZoneColumn", () => {
 
     renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { initialEntries: ["/machines"], state }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("2 spaces");
   });
@@ -69,7 +69,7 @@ describe("ZoneColumn", () => {
 
     renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { initialEntries: ["/machines"], state }
     );
 
     await userEvent.hover(screen.getByTestId("spaces"));
@@ -85,7 +85,7 @@ describe("ZoneColumn", () => {
 
     renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { initialEntries: ["/machines"], state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
 
@@ -99,9 +99,11 @@ describe("ZoneColumn", () => {
     const store = mockStore(state);
     renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state, store }
+      { initialEntries: ["/machines"], state, store }
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
     await userEvent.click(
       await screen.findByRole("button", { name: "Change AZ:" })
     );
@@ -131,13 +133,13 @@ describe("ZoneColumn", () => {
   it("shows a spinner when changing zones", async () => {
     renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { initialEntries: ["/machines"], state }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Change AZ:" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
     const changeZoneLinks = await screen.findAllByTestId("change-zone-link");
     await userEvent.click(changeZoneLinks[0]);
@@ -146,7 +148,7 @@ describe("ZoneColumn", () => {
 
   it("does not render table menu if onToggleMenu not provided", () => {
     renderWithProviders(<ZoneColumn systemId="abc123" />, {
-      route: "/machines",
+      initialEntries: ["/machines"],
       state,
     });
     expect(

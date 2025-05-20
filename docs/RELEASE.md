@@ -18,10 +18,6 @@ the release branch once created. Bugfixes should be made on main and backported 
 
 ## Creating a release
 
-### Semver
-
-Please try to adhere to semantic versioning when creating a release. Although release drafter will just increment the patch, you should consider if the release contains new features, in which case the minor version should be incremented. For more details, refer to the [semantic versioning spec](https://semver.org/).
-
 ### Process
 
 #### Create the branch
@@ -54,14 +50,9 @@ Update the workflows to set the snap channel for the `maas` and
 
 Propose this against the appropriate version branch and merge once approved.
 
-#### Send version email
-
-Email the MAAS & Design list with a link to the new branch in GitHub and include
-the latest hash to include for ui Git submodule.
-
 #### Update main version to the next expected version
 
-Create a new branch of main and update the version in all package.jsons to the next expected version.
+Create a new branch off of main, and update the version in package.json to the next expected version.
 
 #### Add branch protection
 
@@ -76,3 +67,22 @@ Update the `VITE_APP_USABILLA_ID` on the new release branch with a Usabilla butt
 Update the `VITE_APP_USABILLA_ID` on the main branch with a Usabilla button ID that matches the next expected version, e.g. "MAAS 3.5" button id.
 
 You may need to create new buttons in Usabilla if they don't yet exist.
+
+#### Run the UI sync job for bug fixes
+
+The UI sync jenkins job will automatically run when changes are detected on the main branch. For bug fixes to version branches (e.g. 3.5), you'll need to run the job manually and set the parameters.
+
+1. Get the jenkins URL from a MAAS colleague and log in
+2. Find the job `maas-ui-sync` (should be on the dashboard) and click on it
+3. Click "Build with parameters" in the side bar
+4. Set `MAAS_UI_REF` and `LP_BRANCH_DEST` to the version you committed to (e.g. 3.5)
+5. Click "Build"
+
+#### Generating release notes
+
+Given that we use conventional commits in maas-ui, generating release notes is fairly easy. You should only do this step once we have a final release candidate, and someone has asked for the UI release notes.
+
+1. Run `git merge-base main <version - 1>` to find the merge base of the branch you want to release (if you're releasing v5.2, you should run `git merge-base main 5.1`)
+2. Copy the commit hash somewhere
+3. Check out the branch for the version you're releasing
+4. Run `git cliff <hash>..` to generate release notes (e.g. `git cliff 4ab754cd124cd32..`)

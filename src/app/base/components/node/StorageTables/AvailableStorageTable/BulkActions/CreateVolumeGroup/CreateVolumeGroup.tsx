@@ -56,7 +56,7 @@ export const CreateVolumeGroup = ({
   closeForm,
   selected,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -65,7 +65,9 @@ export const CreateVolumeGroup = ({
     systemId,
     "creatingVolumeGroup",
     "createVolumeGroup",
-    () => closeForm()
+    () => {
+      closeForm();
+    }
   );
   const totalSize = selected.reduce((sum, device) => (sum += device.size), 0);
 

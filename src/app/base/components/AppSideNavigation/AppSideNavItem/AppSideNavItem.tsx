@@ -2,7 +2,7 @@ import type { MouseEvent, ReactNode } from "react";
 
 import { Navigation } from "@canonical/maas-react-components";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { SideNavigationProps } from "../AppSideNavigation";
 import type { NavItem } from "../types";
@@ -13,7 +13,7 @@ import { MOBILE_VIEW_MAX_WIDTH } from "@/app/constants";
 
 type Props = {
   navLink: NavItem;
-  icon?: string | ReactNode;
+  icon?: ReactNode | string;
   path: string;
   setIsCollapsed: SideNavigationProps["setIsCollapsed"];
 };
@@ -23,7 +23,7 @@ export const AppSideNavItem = ({
   icon,
   path,
   setIsCollapsed,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const id = useId();
   return (
     <Navigation.Item

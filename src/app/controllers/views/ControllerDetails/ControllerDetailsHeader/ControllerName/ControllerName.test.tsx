@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import ControllerName from "./ControllerName";
@@ -64,7 +64,7 @@ it("can update a controller with the new domain", async () => {
 
   await userEvent.click(screen.getByRole("button", { name: /Save/ }));
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       store.getActions().find((action) => action.type === "controller/update")
     ).toStrictEqual({
@@ -79,6 +79,6 @@ it("can update a controller with the new domain", async () => {
         model: "controller",
         method: "update",
       },
-    })
-  );
+    });
+  });
 });

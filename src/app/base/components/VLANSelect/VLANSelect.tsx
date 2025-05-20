@@ -18,7 +18,7 @@ import { isId } from "@/app/utils";
 
 type Option = NonNullable<SelectProps["options"]>[0];
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: Option | null;
   fabric?: VLAN["fabric"];
   generateName?: (vlan: VLAN) => string;
@@ -26,7 +26,7 @@ type Props = {
   showSpinnerOnLoad?: boolean;
   setDefaultValueFromFabric?: boolean;
   vlans?: VLAN[] | null;
-} & FormikFieldProps;
+};
 
 export enum Label {
   Select = "VLAN",
@@ -43,7 +43,7 @@ export const VLANSelect = ({
   vlans,
   disabled,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   let vlanList: VLAN[] = useSelector(vlanSelectors.all);
   const vlansLoaded = useSelector(vlanSelectors.loaded);

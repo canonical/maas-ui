@@ -17,7 +17,7 @@ type Props = {
   systemId: Controller[ControllerMeta.PK];
 };
 
-const ControllerVLANsTable = ({ systemId }: Props): JSX.Element => {
+const ControllerVLANsTable = ({ systemId }: Props): React.ReactElement => {
   const { data, loaded } = useControllerVLANsTable({ systemId });
 
   return (

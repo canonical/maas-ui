@@ -25,7 +25,7 @@ export const Labels = {
   Date: "Date",
 } as const;
 
-const HardwareCard = ({ node }: Props): JSX.Element => {
+const HardwareCard = ({ node }: Props): React.ReactElement => {
   return (
     <Card aria-label={Labels.HardwareInfo} className="hardware-card">
       <div className="u-sv1 p-muted-heading">{Labels.HardwareInfo}</div>

@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 
 import SpaceSubnets from "./SpaceSubnets";
@@ -90,9 +90,9 @@ it("displays subnet details correctly", async () => {
     </Provider>
   );
 
-  await waitFor(() =>
-    expect(screen.queryAllByRole("gridcell").length).toBeGreaterThan(0)
-  );
+  await waitFor(() => {
+    expect(screen.queryAllByRole("gridcell").length).toBeGreaterThan(0);
+  });
 
   const headers = ["Subnet", "Available IPs", "VLAN", "Fabric"];
   const cells = ["test-subnet", "50%", "test-vlan", "test-fabric"];

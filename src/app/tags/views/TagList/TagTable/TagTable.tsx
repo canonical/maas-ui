@@ -7,7 +7,7 @@ import type {
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Icon, MainTable, Strip } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { TAGS_PER_PAGE } from "../constants";
 
@@ -99,7 +99,9 @@ const generateRows = (
               onDelete={() => {
                 onDelete(tag[TagMeta.PK]);
               }}
-              onEdit={() => onUpdate(tag[TagMeta.PK])}
+              onEdit={() => {
+                onUpdate(tag[TagMeta.PK]);
+              }}
             />
           ),
           className: "u-align--right",
@@ -156,7 +158,7 @@ const TagTable = ({
   setCurrentPage,
   tags,
   ...tableProps
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { currentSort, sortRows, updateSort } = useTableSort<Tag, SortKey>(
     getSortValue,
     {
@@ -187,7 +189,9 @@ const TagTable = ({
             content: (
               <TableHeader
                 currentSort={currentSort}
-                onClick={() => updateSort("name")}
+                onClick={() => {
+                  updateSort("name");
+                }}
                 sortKey="name"
               >
                 {Label.Name}
@@ -198,7 +202,9 @@ const TagTable = ({
             content: (
               <TableHeader
                 currentSort={currentSort}
-                onClick={() => updateSort("updated")}
+                onClick={() => {
+                  updateSort("updated");
+                }}
                 sortKey="updated"
               >
                 {Label.Updated}

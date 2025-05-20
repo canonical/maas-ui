@@ -1,7 +1,7 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import TagFormChanges, { Label, RowType } from "./TagFormChanges";
@@ -210,9 +210,9 @@ it("can remove manual tags", async () => {
   );
   // Get the tag's new row.
   const updatedRow = screen.getByRole("row", { name: tagName });
-  await waitFor(() =>
-    expect(updatedRow).toHaveAttribute("data-testid", RowType.Removed)
-  );
+  await waitFor(() => {
+    expect(updatedRow).toHaveAttribute("data-testid", RowType.Removed);
+  });
 });
 
 it("displays removed tags", () => {

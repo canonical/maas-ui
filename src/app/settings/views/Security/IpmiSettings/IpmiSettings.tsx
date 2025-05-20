@@ -38,7 +38,7 @@ export type IpmiFormValues = {
   maas_auto_ipmi_user_privilege_level: AutoIpmiPrivilegeLevel;
 };
 
-const IpmiSettings = (): JSX.Element => {
+const IpmiSettings = (): React.ReactElement => {
   const dispatch = useDispatch();
   const configLoaded = useSelector(configSelectors.loaded);
   const configLoading = useSelector(configSelectors.loading);

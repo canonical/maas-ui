@@ -20,6 +20,7 @@ import type { RootState } from "@/app/store/root/types";
 export type MachineFormValues = {
   architecture: MachineDetails["architecture"];
   description: MachineDetails["description"];
+  is_dpu: MachineDetails["is_dpu"];
   minHweKernel: MachineDetails["min_hwe_kernel"];
   pool: MachineDetails["pool"]["name"];
   zone: MachineDetails["zone"]["name"];
@@ -31,13 +32,14 @@ const MachineFormSchema: SchemaOf<MachineFormValues> = Yup.object()
   .shape({
     architecture: Yup.string().required("Architecture is required"),
     description: Yup.string(),
+    is_dpu: Yup.boolean(),
     minHweKernel: Yup.string(),
     pool: Yup.string().required("Resource pool is required"),
     zone: Yup.string().required("Zone is required"),
   })
   .defined();
 
-const MachineForm = ({ systemId }: Props): JSX.Element | null => {
+const MachineForm = ({ systemId }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -65,11 +67,14 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
             initialValues={{
               architecture: machine.architecture || "",
               description: machine.description || "",
+              is_dpu: machine.is_dpu || false,
               minHweKernel: machine.min_hwe_kernel || "",
               pool: machine.pool?.name || "",
               zone: machine.zone?.name || "",
             }}
-            onCancel={() => setEditing(false)}
+            onCancel={() => {
+              setEditing(false);
+            }}
             onSaveAnalytics={{
               action: "Configure machine",
               category: "Machine details",
@@ -79,17 +84,19 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
               const params = {
                 architecture: values.architecture,
                 description: values.description,
+                is_dpu: values.is_dpu,
                 extra_macs: machine.extra_macs,
                 pxe_mac: machine.pxe_mac,
                 min_hwe_kernel: values.minHweKernel,
                 pool: { name: values.pool },
                 system_id: machine.system_id,
                 zone: { name: values.zone },
-                // TODO: add "is_dpu" here https://warthogs.atlassian.net/browse/MAASENG-4190
               };
               dispatch(machineActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
+            onSuccess={() => {
+              setEditing(false);
+            }}
             saved={saved}
             saving={saving}
             submitLabel="Save changes"
@@ -109,6 +116,10 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
             />
             <Definition description={machine.zone.name} label="Zone" />
             <Definition description={machine.pool.name} label="Resource pool" />
+            <Definition
+              children={machine.is_dpu ? "True" : "False"}
+              label={"Registered as DPU"}
+            />
             <Definition description={machine.description} label="Note" />
           </div>
         )

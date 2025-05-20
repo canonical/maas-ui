@@ -22,7 +22,10 @@ export enum Labels {
   CannotDelete = "Domain cannot be deleted because it has resource records. Remove all resource records from the domain to allow deletion.",
 }
 
-const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
+const DeleteDomainForm = ({
+  closeForm,
+  id,
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)

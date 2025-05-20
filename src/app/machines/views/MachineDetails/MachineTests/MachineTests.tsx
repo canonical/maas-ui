@@ -20,17 +20,17 @@ import { isId } from "@/app/utils";
 
 /**
  * Group items by key
- * @param results a node results list
+ * @param items
  * @param key
  */
-const groupByKey = <I,>(items: I[], key: keyof I): { [x: string]: I[] } =>
+const groupByKey = <I,>(items: I[], key: keyof I): Record<string, I[]> =>
   items.reduce((obj, item) => {
     obj[item[key]] = obj[item[key]] || [];
     obj[item[key]].push(item);
     return obj;
   }, Object.create(null));
 
-const MachineTests = (): JSX.Element => {
+const MachineTests = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
 

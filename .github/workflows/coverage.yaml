@@ -1,37 +1,34 @@
 name: Test coverage and TiCS Report
 on:
-  schedule:  # uses last commit on default branch (main)
-    - cron: "30 0 * * 6" # At 0:30 on Saturday
+  schedule:
+    - cron: "30 0 * * 6" # Weekly full analysis
   push:
     branches:
       - "tics-debug-*"
-  # temporarily disabling client mode due to quota
-  # pull_request:
-  #   types: [opened, synchronize, reopened]
+#  We cannot run the TiCS job on pull requests because TiCS
+#  requires us to use secret tokens, and that cannot be done
+#  on PRs from forked repositories.
+#  pull_request:
+#    types: [ opened, synchronize, reopened ]
 
 jobs:
   test-coverage-tics:
     name: Run tests with coverage and generate TiCS report
-    runs-on: ubuntu-22.04
-    timeout-minutes: 720
+    runs-on: [ self-hosted, linux, amd64, tiobe, jammy ]
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
-
-      - name: Restore node_modules from cache
-        id: yarn-cache
-        uses: actions/cache@v4
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          fetch-depth: 0  # Important for TICS to analyze history
 
       - name: Setup Node.js from .nvmrc
         uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
+          cache: 'yarn'
 
-      - name: Install packages if cache is outdated
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: CYPRESS_INSTALL_BINARY=0 yarn install
+      - name: Install packages
+        run: CYPRESS_INSTALL_BINARY=0 yarn install --frozen-lockfile
 
       - name: Run tests with coverage
         run: yarn test-coverage
@@ -44,15 +41,26 @@ jobs:
           path: coverage
           retention-days: 1
 
+      # Generate a file list for TICS to analyze
+      - name: Generate file list for TICS
+        run: |
+          # Create a list of files to analyze
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # For PRs, analyze only changed files
+            git diff --name-only origin/${{ github.base_ref }} > tics-file-list.txt
+          else
+            # For scheduled runs and pushes, analyze the whole project
+            echo "." > tics-file-list.txt
+          fi
+          echo "Files to analyze:"
+          cat tics-file-list.txt
+
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
+        env:
+          # Add environment variables to optimize TICS performance
+          TICS_NUM_THREADS: 4  # Adjust based on your runner's capabilities
         with:
-          # Use 'qserver' mode for weekly runs and on push to ci-tics-main to
-          #    generate reference points
-          # Use 'client' mode for runs on PRs. Client is a quality gate comparing
-          #    changed files to the reference points and can fail if quality degrades
-          # See:
-          # https://github.com/tiobe/tics-github-action?tab=readme-ov-file#tics-github-action
           mode: ${{ github.event_name == 'pull_request' && 'client' || 'qserver' }}
           project: maas-ui
           viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
@@ -60,6 +68,7 @@ jobs:
           installTics: true
           tmpdir: /tmp/tics
           branchdir: ${{ github.workspace }}
+          filelist: ${{ github.workspace }}/tics-file-list.txt
 
       - name: Upload TICS Report
         uses: actions/upload-artifact@v4
@@ -70,15 +79,12 @@ jobs:
 
   publish-coverage-report:
     name: Publish Coverage Report
-    # if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'schedule'
+    runs-on: [ self-hosted, linux, amd64, tiobe, jammy ]
     needs: test-coverage-tics
-    continue-on-error: true
-
     permissions:
       id-token: write
       pages: write
-
     steps:
       - uses: actions/checkout@v4
 

@@ -1,6 +1,6 @@
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -15,16 +15,14 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
 import { simpleSortByKey } from "@/app/utils";
 
-type SubnetDiscoveryValues = {
-  [x: number]: Subnet["active_discovery"];
-};
+type SubnetDiscoveryValues = Record<number, Subnet["active_discovery"]>;
 
 export enum Labels {
   Loading = "Loading...",
   FormLabel = "Subnet mapping form",
 }
 
-const NetworkDiscoveryConfigurationSubnetForm = (): JSX.Element => {
+const NetworkDiscoveryConfigurationSubnetForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const subnets = useSelector(subnetSelectors.all);
   const fabrics = useSelector(fabricSelectors.all);
@@ -38,7 +36,7 @@ const NetworkDiscoveryConfigurationSubnetForm = (): JSX.Element => {
   useFetchActions([subnetActions.fetch, fabricActions.fetch]);
 
   const loaded = subnetsLoaded && fabricsLoaded;
-  let content: JSX.Element = <Spinner text={Labels.Loading} />;
+  let content: React.ReactElement = <Spinner text={Labels.Loading} />;
 
   if (loaded) {
     const sortedSubnets = [...subnets].sort(simpleSortByKey("cidr"));

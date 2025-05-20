@@ -15,7 +15,7 @@ export enum Labels {
   CheckboxLabel = "Enable the installation of proprietary drivers (i.e. HPVSA)",
 }
 
-const ThirdPartyDriversForm = (): JSX.Element => {
+const ThirdPartyDriversForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

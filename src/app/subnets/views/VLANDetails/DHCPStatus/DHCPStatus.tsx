@@ -7,7 +7,7 @@ import {
   Spinner,
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import ControllerLink from "@/app/base/components/ControllerLink";
 import Definition from "@/app/base/components/Definition";
@@ -54,7 +54,7 @@ const getDHCPStatus = (vlan: VLAN, vlans: VLAN[], fabrics: Fabric[]) => {
   return "Disabled";
 };
 
-const DHCPStatus = ({ id }: Props): JSX.Element | null => {
+const DHCPStatus = ({ id }: Props): React.ReactElement | null => {
   const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoading = useSelector(fabricSelectors.loading);

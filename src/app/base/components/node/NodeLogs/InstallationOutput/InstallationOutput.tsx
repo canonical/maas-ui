@@ -16,7 +16,7 @@ import type {
 import { PowerState } from "@/app/store/types/enum";
 
 type Props = {
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
 };
 
 export enum Label {
@@ -67,7 +67,7 @@ const generateOutput = (
   }
 };
 
-const InstallationOutput = ({ node }: Props): JSX.Element => {
+const InstallationOutput = ({ node }: Props): React.ReactElement => {
   const loading = useSelector((state: RootState) =>
     scriptResultSelectors.loading(state)
   );

@@ -41,7 +41,7 @@ type Props = {
   id: Domain["id"];
 };
 
-const DomainSummary = ({ id }: Props): JSX.Element | null => {
+const DomainSummary = ({ id }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const isAdmin = useSelector(authSelectors.isAdmin);
   const domain = useSelector((state: RootState) =>
@@ -72,7 +72,9 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
               name: domain.name || "",
               ttl: domain.ttl || "",
             }}
-            onCancel={() => setEditing(false)}
+            onCancel={() => {
+              setEditing(false);
+            }}
             onSubmit={(values) => {
               dispatch(cleanup());
               dispatch(
@@ -84,7 +86,9 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
                 })
               );
             }}
-            onSuccess={() => setEditing(false)}
+            onSuccess={() => {
+              setEditing(false);
+            }}
             saved={saved}
             saving={saving}
             submitLabel={Labels.SubmitLabel}

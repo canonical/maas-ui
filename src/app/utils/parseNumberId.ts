@@ -1,4 +1,4 @@
-export const parseNumberId = (id?: string | number | null): number | null => {
+export const parseNumberId = (id?: number | string | null): number | null => {
   if (!id) {
     return null;
   }

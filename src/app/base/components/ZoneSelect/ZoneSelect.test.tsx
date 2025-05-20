@@ -19,7 +19,9 @@ describe("ZoneSelect", () => {
         <ZoneSelect name="zone" />
       </Formik>
     );
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    await waitFor(() => {
+      expect(zoneResolvers.listZones.resolved).toBeTruthy();
+    });
 
     expect(await screen.findByText("zone-1")).toBeInTheDocument();
     expect(screen.getByText("zone-2")).toBeInTheDocument();

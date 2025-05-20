@@ -14,10 +14,10 @@ type FormValues = Record<
   OptionHTMLAttributes<HTMLOptionElement>["value"]
 >;
 
-export type Props<V extends FormValues = FormValues> = {
+export type Props<V extends FormValues = FormValues> = FormikFieldProps & {
   name: keyof V;
   options: NonNullable<SelectProps["options"]>;
-} & FormikFieldProps;
+};
 
 /**
  * Formik values eventually resolve to the correct types but option values are
@@ -37,15 +37,15 @@ const makeString = (
 };
 
 const arraysEqual = (
-  array1: (string | number)[],
-  array2: (string | number)[]
+  array1: (number | string)[],
+  array2: (number | string)[]
 ): boolean => {
   if (array1.length !== array2.length) {
     return false;
   }
   const stringArray: string[] = array2.map((value) => makeString(value));
   return !array1.some(
-    (item: string | number) => !stringArray.includes(makeString(item))
+    (item: number | string) => !stringArray.includes(makeString(item))
   );
 };
 
@@ -53,7 +53,7 @@ export const DynamicSelect = <V extends FormValues = FormValues>({
   options,
   name,
   ...props
-}: Props<V>): JSX.Element => {
+}: Props<V>): React.ReactElement => {
   const { setFieldValue, values } = useFormikContext<V>();
   const currentValue = makeString(values[name]);
   const previousValue = usePrevious(currentValue, false);

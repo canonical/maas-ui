@@ -70,7 +70,7 @@ export const CreateRaid = ({
   closeForm,
   selected,
   systemId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -79,7 +79,9 @@ export const CreateRaid = ({
     systemId,
     "creatingRaid",
     "createRaid",
-    () => closeForm()
+    () => {
+      closeForm();
+    }
   );
   const [initialBlockDevices, initialPartitions] =
     splitDiskPartitionIds(selected);

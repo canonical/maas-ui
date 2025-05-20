@@ -84,7 +84,7 @@ type Props = {
   hostId: Pod["id"];
 };
 
-export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
+export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   ) as PodDetails;
@@ -215,7 +215,9 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
                 <Button
                   data-testid="delete-interface"
                   disabled={!!composingPods.length}
-                  onClick={() => removeInterface(iface.id)}
+                  onClick={() => {
+                    removeInterface(iface.id);
+                  }}
                   type="button"
                 >
                   Delete

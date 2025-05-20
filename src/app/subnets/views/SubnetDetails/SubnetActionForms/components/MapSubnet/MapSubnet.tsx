@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { Notification, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useCycled } from "@/app/base/hooks";
@@ -16,7 +16,7 @@ import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types"
 export const MapSubnet = ({
   subnetId,
   setSidePanelContent,
-}: Omit<SubnetActionProps, "activeForm">): JSX.Element | null => {
+}: Omit<SubnetActionProps, "activeForm">): React.ReactElement | null => {
   const dispatch = useDispatch();
   const cleanup = useCallback(() => subnetActions.cleanup(), []);
   const subnet = useSelector((state: RootState) =>
@@ -39,7 +39,9 @@ export const MapSubnet = ({
     );
   }
 
-  const closeForm = () => setSidePanelContent(null);
+  const closeForm = () => {
+    setSidePanelContent(null);
+  };
   const isIPv4 = subnet.version === 4;
   return (
     <FormikForm<EmptyObject>

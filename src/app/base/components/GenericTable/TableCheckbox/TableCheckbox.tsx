@@ -1,10 +1,12 @@
+import type { ReactElement } from "react";
+
 import type { CheckboxInputProps } from "@canonical/react-components";
 import type { Row, Table } from "@tanstack/react-table";
 
-type TableCheckboxProps<T> = {
+type TableCheckboxProps<T> = Partial<CheckboxInputProps> & {
   row?: Row<T>;
   table?: Table<T>;
-} & Partial<CheckboxInputProps>;
+};
 
 const TableAllCheckbox = <T,>({ table, ...props }: TableCheckboxProps<T>) => {
   if (!table) {
@@ -16,7 +18,7 @@ const TableAllCheckbox = <T,>({ table, ...props }: TableCheckboxProps<T>) => {
     checked = "false";
   } else if (
     table.getSelectedRowModel().rows.length <
-    table.getRowCount() - table.getGroupedRowModel().rows.length
+    table.getCoreRowModel().rows.length
   ) {
     checked = "mixed";
   } else {
@@ -65,10 +67,14 @@ const TableGroupCheckbox = <T,>({ row, ...props }: TableCheckboxProps<T>) => {
           onChange: () => {
             if (row?.getIsAllSubRowsSelected()) {
               row?.toggleSelected(false);
-              row.subRows.forEach((subRow) => subRow.toggleSelected(false));
+              row.subRows.forEach((subRow) => {
+                subRow.toggleSelected(false);
+              });
             } else {
               row?.toggleSelected(true);
-              row.subRows.forEach((subRow) => subRow.toggleSelected(true));
+              row.subRows.forEach((subRow) => {
+                subRow.toggleSelected(true);
+              });
             }
           },
         }}
@@ -79,7 +85,10 @@ const TableGroupCheckbox = <T,>({ row, ...props }: TableCheckboxProps<T>) => {
   );
 };
 
-const TableCheckbox = <T,>({ row, ...props }: TableCheckboxProps<T>) => {
+const TableCheckbox = <T,>({
+  row,
+  ...props
+}: TableCheckboxProps<T>): ReactElement | null => {
   if (!row) {
     return null;
   }

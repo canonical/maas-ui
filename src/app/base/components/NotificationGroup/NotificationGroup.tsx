@@ -26,7 +26,10 @@ type Props = {
   severity: NotificationProps["severity"];
 };
 
-const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
+const NotificationGroup = ({
+  notifications,
+  severity,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const [groupOpen, setGroupOpen] = useState(false);
 
@@ -38,7 +41,7 @@ const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
           notifications.length
         )}`;
 
-  const dismissable = notifications.some(({ dismissable }) => !!dismissable);
+  const dismissable = notifications.some(({ dismissable }) => dismissable);
 
   return (
     <div className="p-notification-group">
@@ -71,7 +74,9 @@ const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
                 appearance="link"
                 className="u-no-margin--bottom"
                 inline
-                onClick={() => dismissAll(notifications, dispatch)}
+                onClick={() => {
+                  dismissAll(notifications, dispatch);
+                }}
               >
                 Dismiss all
               </Button>

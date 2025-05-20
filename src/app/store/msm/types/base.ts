@@ -1,6 +1,6 @@
 export interface MsmStatus {
   smUrl: string | null;
-  running: "not_connected" | "pending" | "connected";
+  running: "connected" | "not_connected" | "pending";
   startTime: string | null;
 }
 

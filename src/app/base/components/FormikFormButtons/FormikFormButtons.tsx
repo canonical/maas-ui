@@ -24,7 +24,7 @@ export type Props<V> = {
   savingLabel?: string | null;
   secondarySubmit?: FormikContextFunc<V> | null;
   secondarySubmitDisabled?: boolean;
-  secondarySubmitLabel?: string | FormikContextFunc<V, string> | null;
+  secondarySubmitLabel?: FormikContextFunc<V, string> | string | null;
   secondarySubmitTooltip?: string | null;
   submitAppearance?: ActionButtonProps["appearance"];
   submitDisabled?: boolean;
@@ -69,7 +69,7 @@ export const FormikFormButtons = <V,>({
   submitDisabled,
   submitLabel = "Save",
   buttonsBehavior = "coupled",
-}: Props<V>): JSX.Element => {
+}: Props<V>): React.ReactElement => {
   const formikContext = useFormikContext<V>();
   const { values } = formikContext;
   const showSecondarySubmit = Boolean(secondarySubmit && secondarySubmitLabel);
@@ -91,7 +91,9 @@ export const FormikFormButtons = <V,>({
         }
         onClick={
           secondarySubmit
-            ? () => secondarySubmit(values, formikContext)
+            ? () => {
+                secondarySubmit(values, formikContext);
+              }
             : undefined
         }
         type="button"
@@ -140,7 +142,11 @@ export const FormikFormButtons = <V,>({
             data-testid={TestIds.CancelButton}
             disabled={cancelDisabled}
             onClick={
-              onCancel ? () => onCancel(values, formikContext) : undefined
+              onCancel
+                ? () => {
+                    onCancel(values, formikContext);
+                  }
+                : undefined
             }
             type="button"
           >

@@ -7,9 +7,9 @@ import { useFetchActions } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { bondOptions as bondOptionsSelectors } from "@/app/store/general/selectors";
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: Option | null;
-} & FormikFieldProps;
+};
 
 type Option = { label: string; value: string };
 
@@ -17,7 +17,7 @@ export const LACPRateSelect = ({
   defaultOption = { label: "Select LACP rate", value: "" },
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const lacpRates = useSelector(bondOptionsSelectors.lacpRates);
   const loaded = useSelector(bondOptionsSelectors.loaded);
   const options: Option[] =

@@ -7,12 +7,12 @@ import { useFetchActions } from "@/app/base/hooks";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 
-type Props = {
+type Props = FormikFieldProps & {
   disabled?: boolean;
   label?: string | null;
   name: string;
-  valueKey?: "name" | "id";
-} & FormikFieldProps;
+  valueKey?: "id" | "name";
+};
 
 export enum Labels {
   DefaultLabel = "Domain",
@@ -24,7 +24,7 @@ export const DomainSelect = ({
   name,
   valueKey = "name",
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
 

@@ -9,7 +9,7 @@ type Props = {
   systemId?: Node["system_id"] | null;
 };
 
-const NodeLink = ({ nodeType, systemId }: Props): JSX.Element | null => {
+const NodeLink = ({ nodeType, systemId }: Props): React.ReactElement | null => {
   switch (nodeType) {
     case NodeType.DEFAULT:
     case NodeType.MACHINE:

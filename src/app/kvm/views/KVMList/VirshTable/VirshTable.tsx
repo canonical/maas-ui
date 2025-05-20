@@ -105,7 +105,7 @@ const generateRows = (kvms: Pod[]) =>
     ],
   }));
 
-const VirshTable = (): JSX.Element => {
+const VirshTable = (): React.ReactElement => {
   const virshKvms = useSelector(podSelectors.virsh);
   const pools = usePools();
   const { currentSort, sortRows, updateSort } = useTableSort<
@@ -130,7 +130,9 @@ const VirshTable = (): JSX.Element => {
               <TableHeader
                 currentSort={currentSort}
                 data-testid="name-header"
-                onClick={() => updateSort("name")}
+                onClick={() => {
+                  updateSort("name");
+                }}
                 sortKey="name"
               >
                 Name
@@ -145,7 +147,9 @@ const VirshTable = (): JSX.Element => {
             <TableHeader
               currentSort={currentSort}
               data-testid="vms-header"
-              onClick={() => updateSort("vms")}
+              onClick={() => {
+                updateSort("vms");
+              }}
               sortKey="vms"
             >
               VM<span className="u-no-text-transform">s</span>
@@ -167,7 +171,9 @@ const VirshTable = (): JSX.Element => {
               <TableHeader
                 currentSort={currentSort}
                 data-testid="pool-header"
-                onClick={() => updateSort("pool")}
+                onClick={() => {
+                  updateSort("pool");
+                }}
                 sortKey="pool"
               >
                 Resource pool
@@ -182,7 +188,9 @@ const VirshTable = (): JSX.Element => {
             <TableHeader
               currentSort={currentSort}
               data-testid="cpu-header"
-              onClick={() => updateSort("cpu")}
+              onClick={() => {
+                updateSort("cpu");
+              }}
               sortKey="cpu"
             >
               CPU cores
@@ -195,7 +203,9 @@ const VirshTable = (): JSX.Element => {
             <TableHeader
               currentSort={currentSort}
               data-testid="ram-header"
-              onClick={() => updateSort("ram")}
+              onClick={() => {
+                updateSort("ram");
+              }}
               sortKey="ram"
             >
               RAM
@@ -208,7 +218,9 @@ const VirshTable = (): JSX.Element => {
             <TableHeader
               currentSort={currentSort}
               data-testid="storage-header"
-              onClick={() => updateSort("storage")}
+              onClick={() => {
+                updateSort("storage");
+              }}
               sortKey="storage"
             >
               Storage

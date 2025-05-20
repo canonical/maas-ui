@@ -21,7 +21,7 @@ const VLANDeleteForm = ({
 }: Pick<
   VLANActionFormProps,
   "setSidePanelContent" | "vlanId"
->): JSX.Element | null => {
+>): React.ReactElement | null => {
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, vlanId)
@@ -44,12 +44,16 @@ const VLANDeleteForm = ({
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={() => setSidePanelContent(null)}
+      onCancel={() => {
+        setSidePanelContent(null);
+      }}
       onSubmit={() => {
         dispatch(cleanup());
         dispatch(vlanActions.delete(vlanId));
       }}
-      onSuccess={() => setSidePanelContent(null)}
+      onSuccess={() => {
+        setSidePanelContent(null);
+      }}
       saved={saved}
       savedRedirect={subnetURLs.index}
       saving={saving}

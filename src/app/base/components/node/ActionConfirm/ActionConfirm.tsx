@@ -37,12 +37,14 @@ const ActionConfirm = ({
   statusKey,
   submitAppearance = "negative",
   systemId,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     statusKey,
     eventName,
-    () => closeExpanded()
+    () => {
+      closeExpanded();
+    }
   );
   const formattedErrors = formatErrors(errors);
 

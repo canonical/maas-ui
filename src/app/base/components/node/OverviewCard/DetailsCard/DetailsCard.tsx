@@ -1,7 +1,7 @@
 import { Icon, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import {
   useFetchActions,
@@ -39,7 +39,7 @@ export enum Labels {
   KernelCrashDump = "Kernel crash dump",
 }
 
-const DetailsCard = ({ node }: Props): JSX.Element => {
+const DetailsCard = ({ node }: Props): React.ReactElement => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const tagsLoaded = useSelector(tagSelectors.loaded);
   const machineTags = useSelector((state: RootState) =>
@@ -107,13 +107,13 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           {canEdit ? (
             <Link
               className="p-link__chevron"
-              onClick={() =>
+              onClick={() => {
                 sendAnalytics(
                   `${node.node_type_display} details`,
                   "Zone configuration link",
                   `${node.node_type_display} summary tab`
-                )
-              }
+                );
+              }}
               to={configTabUrl}
             >
               {Labels.ZoneLink}
@@ -130,13 +130,13 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
             {canEdit ? (
               <Link
                 className="p-link__chevron"
-                onClick={() =>
+                onClick={() => {
                   sendAnalytics(
                     `${node.node_type_display} details`,
                     "Resource pool configuration link",
                     `${node.node_type_display} summary tab`
-                  )
-                }
+                  );
+                }}
                 to={configTabUrl}
               >
                 {Labels.PoolLink}
@@ -153,13 +153,13 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           {canEdit ? (
             <Link
               className="p-link__chevron"
-              onClick={() =>
+              onClick={() => {
                 sendAnalytics(
                   `${node.node_type_display} details`,
                   "Power type configuration link",
                   `${node.node_type_display} summary tab`
-                )
-              }
+                );
+              }}
               to={configTabUrl}
             >
               {Labels.PowerTypeLink}
@@ -177,13 +177,13 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           {canEdit ? (
             <Link
               className="p-link__chevron"
-              onClick={() =>
+              onClick={() => {
                 sendAnalytics(
                   `${node.node_type_display} details`,
                   "Tags configuration link",
                   `${node.node_type_display} summary tab`
-                )
-              }
+                );
+              }}
               to={configTabUrl}
             >
               {Labels.TagsLink}

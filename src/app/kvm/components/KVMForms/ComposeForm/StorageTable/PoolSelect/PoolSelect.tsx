@@ -11,7 +11,7 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { Pod, PodDetails } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 
-type RequestMap = { [location: string]: number };
+type RequestMap = Record<string, number>;
 
 type SelectPool = (poolName?: string) => void;
 
@@ -35,7 +35,7 @@ const generateDropdownContent = (
   disk: DiskField,
   requests: RequestMap,
   selectPool: SelectPool
-): JSX.Element => {
+): React.ReactElement => {
   const sortedPools = getSortedPoolsArray(
     pod.resources.storage_pools,
     pod.default_storage_pool
@@ -97,7 +97,9 @@ const generateDropdownContent = (
             data-testid={`kvm-pool-select-${name}`}
             disabled={free < 0}
             key={`${disk.id}-${name}`}
-            onClick={() => selectPool(name)}
+            onClick={() => {
+              selectPool(name);
+            }}
             type="button"
           >
             <div className="kvm-pool-select__row">
@@ -189,7 +191,7 @@ export const PoolSelect = ({
   disk,
   hostId,
   selectPool,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   ) as PodDetails;

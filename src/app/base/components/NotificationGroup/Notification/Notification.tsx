@@ -1,7 +1,7 @@
 import { Notification } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import settingsURLs from "@/app/settings/urls";
 import authSelectors from "@/app/store/auth/selectors";
@@ -25,7 +25,7 @@ const NotificationGroupNotification = ({
   className,
   id,
   severity,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAdmin = useSelector(authSelectors.isAdmin);

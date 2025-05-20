@@ -1,7 +1,7 @@
 import { ExternalLink } from "@canonical/maas-react-components";
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import ChangeStorageLayoutMenu from "./ChangeStorageLayoutMenu";
 
@@ -16,7 +16,7 @@ import { isMachineDetails, useCanEditStorage } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { isId } from "@/app/utils";
 
-const MachineStorage = (): JSX.Element => {
+const MachineStorage = (): React.ReactElement => {
   const id = useGetURLId(MachineMeta.PK);
   const sendAnalytics = useSendAnalytics();
   const machine = useSelector((state: RootState) =>
@@ -36,13 +36,13 @@ const MachineStorage = (): JSX.Element => {
             Learn more about deploying{" "}
             <ExternalLink
               data-testid="docs-footer-link"
-              onClick={() =>
+              onClick={() => {
                 sendAnalytics(
                   "Machine storage",
                   "Click link to MAAS docs",
                   "Windows"
-                )
-              }
+                );
+              }}
               to={docsUrls.windowsImages}
             >
               Windows

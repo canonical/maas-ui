@@ -9,7 +9,7 @@ import {
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { NewPodValues } from "../../types";
 
@@ -24,7 +24,7 @@ type Props = {
 
 export const SelectProjectFormFields = ({
   newPodValues,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const podsInServer = useSelector((state: RootState) =>
     podSelectors.getByLxdServer(state, newPodValues.power_address)
   );

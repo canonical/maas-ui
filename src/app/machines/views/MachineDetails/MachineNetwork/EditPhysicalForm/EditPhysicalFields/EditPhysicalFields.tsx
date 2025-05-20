@@ -19,7 +19,7 @@ const generateCaution = (values: EditPhysicalValues) =>
     ? "Link speed should not be higher than interface speed"
     : null;
 
-const EditPhysicalFields = ({ nic }: Props): JSX.Element | null => {
+const EditPhysicalFields = ({ nic }: Props): React.ReactElement | null => {
   const { values } = useFormikContext<EditPhysicalValues>();
   if (!nic) {
     return null;

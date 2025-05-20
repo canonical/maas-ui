@@ -1,19 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { Tag } from "@/app/store/tag/types";
 
-type Props<T extends string | Tag> = {
+type Props<T extends Tag | string> = {
   getLinkURL: (tag: T) => string;
   tags: T[];
 };
 
-const getTagName = <T extends string | Tag>(tag: T) =>
+const getTagName = <T extends Tag | string>(tag: T) =>
   typeof tag === "string" ? tag : tag.name;
 
-const TagLinks = <T extends string | Tag>({
+const TagLinks = <T extends Tag | string>({
   getLinkURL,
   tags,
-}: Props<T>): JSX.Element => {
+}: Props<T>): React.ReactElement => {
   const sortedTags = [...tags].sort((a, b) =>
     getTagName(a).localeCompare(getTagName(b))
   );

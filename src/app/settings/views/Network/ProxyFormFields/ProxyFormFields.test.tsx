@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import ProxyForm from "../ProxyForm";
@@ -50,8 +50,8 @@ describe("ProxyFormFields", () => {
 
     const fields = ["Don't use a proxy", "MAAS built-in", "External", "Peer"];
 
-    fields.forEach((field) =>
-      expect(screen.getByRole("radio", { name: field })).toBeInTheDocument()
-    );
+    fields.forEach((field) => {
+      expect(screen.getByRole("radio", { name: field })).toBeInTheDocument();
+    });
   });
 });

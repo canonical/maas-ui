@@ -39,7 +39,7 @@ export const FormCard = ({
   sidebar = true,
   stacked,
   title,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const id = useId();
   const { CARD_TITLE } = COL_SIZES;
   const contentSize = getContentSize(sidebar, title);

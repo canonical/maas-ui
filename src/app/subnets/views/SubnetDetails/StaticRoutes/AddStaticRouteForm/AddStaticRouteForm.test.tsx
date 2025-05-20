@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import { Labels } from "../StaticRoutes";
@@ -44,11 +44,11 @@ it("dispatches a correct action on add static route form submit", async () => {
     </Provider>
   );
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       screen.getByRole("form", { name: "Add static route" })
-    ).toBeInTheDocument()
-  );
+    ).toBeInTheDocument();
+  });
 
   const addStaticRouteForm = screen.getByRole("form", {
     name: "Add static route",
@@ -85,11 +85,11 @@ it("dispatches a correct action on add static route form submit", async () => {
     }),
   ];
   const actualActions = store.getActions();
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       actualActions.filter(
         (action) => action.type === staticRouteActions.create.type
       )
-    ).toStrictEqual(expectedActions)
-  );
+    ).toStrictEqual(expectedActions);
+  });
 });

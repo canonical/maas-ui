@@ -27,9 +27,11 @@ setupMockServer(
 const renderComposeForm = async (store: MockStore, pod: Pod) => {
   const view = renderWithProviders(
     <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-    { route: `/kvm/${pod.id}`, store }
+    { initialEntries: [`/kvm/${pod.id}`], store }
   );
-  await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+  await waitFor(() => {
+    expect(zoneResolvers.listZones.resolved).toBeTruthy();
+  });
   return view;
 };
 
@@ -137,11 +139,11 @@ describe("PoolSelect", () => {
     const store = mockStore(state);
     await renderComposeForm(store, pod);
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "default" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     // Open PoolSelect dropdown
     await userEvent.click(screen.getByRole("button", { name: "default" }));
@@ -199,11 +201,11 @@ describe("PoolSelect", () => {
     const store = mockStore(state);
     await renderComposeForm(store, pod);
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("spinbutton", { name: "Size (GB)" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     // Open PoolSelect dropdown and change disk size to 50GB
     const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });

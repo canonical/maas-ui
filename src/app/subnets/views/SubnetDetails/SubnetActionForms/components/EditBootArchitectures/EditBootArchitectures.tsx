@@ -27,7 +27,7 @@ const Schema = Yup.object().shape({
 export const EditBootArchitectures = ({
   subnetId,
   setSidePanelContent,
-}: Omit<SubnetActionProps, "activeForm">): JSX.Element | null => {
+}: Omit<SubnetActionProps, "activeForm">): React.ReactElement | null => {
   const dispatch = useDispatch();
   const architecturesLoading = useSelector(
     knownBootArchitecturesSelectors.loading
@@ -50,7 +50,9 @@ export const EditBootArchitectures = ({
     );
   }
 
-  const closeForm = () => setSidePanelContent(null);
+  const closeForm = () => {
+    setSidePanelContent(null);
+  };
   return (
     <FormikForm<FormValues>
       cleanup={cleanup}

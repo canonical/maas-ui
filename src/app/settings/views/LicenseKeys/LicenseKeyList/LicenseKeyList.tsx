@@ -53,7 +53,9 @@ const generateRows = (
                 distro_series: licenseKey.distro_series,
                 osystem: licenseKey.osystem,
               })}
-              onDelete={() => setExpandedId(licenseKey.license_key)}
+              onDelete={() => {
+                setExpandedId(licenseKey.license_key);
+              }}
             />
           ),
           className: "u-align--right",
@@ -81,7 +83,7 @@ const generateRows = (
     };
   });
 
-const LicenseKeyList = (): JSX.Element => {
+const LicenseKeyList = (): React.ReactElement => {
   const dispatch = useDispatch();
   const [expandedId, setExpandedId] = useState<
     LicenseKeys["license_key"] | null
@@ -111,7 +113,9 @@ const LicenseKeyList = (): JSX.Element => {
     saved,
     licenseKeysActions.cleanup,
     `License key ${title} removed successfully.`,
-    () => setDeleting(null)
+    () => {
+      setDeleting(null);
+    }
   );
 
   useAddMessage(

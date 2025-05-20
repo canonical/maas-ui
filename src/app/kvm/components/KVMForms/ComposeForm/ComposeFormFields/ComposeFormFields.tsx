@@ -42,7 +42,7 @@ export const ComposeFormFields = ({
   available,
   defaults,
   podType,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { setFieldValue, values } = useFormikContext<ComposeFormValues>();
   const [pinningCores, setPinningCores] = useState(false);
   const coresCaution = available.cores < defaults.cores;

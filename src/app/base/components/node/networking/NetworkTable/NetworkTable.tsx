@@ -112,7 +112,7 @@ const generateColumnData = (
   isABondOrBridgeParent: boolean,
   link: NetworkLink | null,
   nic: NetworkInterface,
-  node: MachineDetails | ControllerDetails,
+  node: ControllerDetails | MachineDetails,
   selected: Props["selected"],
   setExpanded?: SetExpanded,
   setSelected?: Props["setSelected"]
@@ -199,7 +199,7 @@ const generateRow = (
   fabricsLoaded: boolean,
   isAllNetworkingDisabled: boolean,
   link: NetworkLink | null,
-  node: MachineDetails | ControllerDetails,
+  node: ControllerDetails | MachineDetails,
   nic: NetworkInterface | null,
   selected: Props["selected"],
   subnets: Subnet[],
@@ -282,7 +282,7 @@ const generateRows = (
   fabrics: Fabric[],
   fabricsLoaded: boolean,
   isAllNetworkingDisabled: boolean,
-  node: MachineDetails | ControllerDetails,
+  node: ControllerDetails | MachineDetails,
   selected: Props["selected"],
   subnets: Subnet[],
   vlans: VLAN[],
@@ -345,8 +345,8 @@ const getChild = (row: NetworkRow, rows: NetworkRow[]): NetworkRow | null => {
 };
 
 const compareValues = (
-  rowAValue: string | number | null,
-  rowBValue: string | number | null,
+  rowAValue: number | string | null,
+  rowBValue: number | string | null,
   direction: ValueOf<typeof SortDirection>
 ) => {
   if (!rowAValue && !rowBValue) {
@@ -425,7 +425,7 @@ export const generateUniqueId = ({ linkId, nicId }: Selected): string =>
   `${nicId || ""}-${linkId || ""}`;
 
 type BaseProps = {
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
 };
 
 type ActionProps = BaseProps & {
@@ -447,7 +447,7 @@ const NetworkTable = ({
   selected,
   setExpanded,
   setSelected,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
@@ -525,7 +525,9 @@ const NetworkTable = ({
               <div>
                 <TableHeader
                   currentSort={currentSort}
-                  onClick={() => updateSort("name")}
+                  onClick={() => {
+                    updateSort("name");
+                  }}
                   sortKey="name"
                 >
                   {Label.Name}
@@ -542,7 +544,9 @@ const NetworkTable = ({
               <TableHeader
                 className="u-align--center"
                 currentSort={currentSort}
-                onClick={() => updateSort("pxe")}
+                onClick={() => {
+                  updateSort("pxe");
+                }}
                 sortKey="pxe"
               >
                 {Label.PXE}
@@ -555,7 +559,9 @@ const NetworkTable = ({
             <TableHeader
               className="p-double-row__header-spacer"
               currentSort={currentSort}
-              onClick={() => updateSort("speed")}
+              onClick={() => {
+                updateSort("speed");
+              }}
               sortKey="speed"
             >
               {Label.Speed}
@@ -569,7 +575,9 @@ const NetworkTable = ({
               <TableHeader
                 className="p-double-row__header-spacer"
                 currentSort={currentSort}
-                onClick={() => updateSort("type")}
+                onClick={() => {
+                  updateSort("type");
+                }}
                 sortKey="type"
               >
                 {Label.Type}
@@ -586,7 +594,9 @@ const NetworkTable = ({
             <div>
               <TableHeader
                 currentSort={currentSort}
-                onClick={() => updateSort("fabric")}
+                onClick={() => {
+                  updateSort("fabric");
+                }}
                 sortKey="fabric"
               >
                 {Label.Fabric}
@@ -601,7 +611,9 @@ const NetworkTable = ({
             <div>
               <TableHeader
                 currentSort={currentSort}
-                onClick={() => updateSort("subnet")}
+                onClick={() => {
+                  updateSort("subnet");
+                }}
                 sortKey="subnet"
               >
                 {Label.Subnet}
@@ -616,7 +628,9 @@ const NetworkTable = ({
             <div>
               <TableHeader
                 currentSort={currentSort}
-                onClick={() => updateSort("ip")}
+                onClick={() => {
+                  updateSort("ip");
+                }}
                 sortKey="ip"
               >
                 {Label.IP}
@@ -630,7 +644,9 @@ const NetworkTable = ({
             <TableHeader
               className="p-double-row__header-spacer"
               currentSort={currentSort}
-              onClick={() => updateSort("dhcp")}
+              onClick={() => {
+                updateSort("dhcp");
+              }}
               sortKey="dhcp"
             >
               {Label.DHCP}

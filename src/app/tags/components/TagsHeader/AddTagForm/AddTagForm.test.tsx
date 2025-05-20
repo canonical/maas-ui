@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
@@ -18,7 +18,7 @@ import {
   render,
   screen,
   waitFor,
-  renderWithHistoryRouter,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -78,39 +78,35 @@ it("dispatches an action to create a tag", async () => {
     name: "name1",
   });
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       store.getActions().find((action) => action.type === expected.type)
-    ).toStrictEqual(expected)
-  );
+    ).toStrictEqual(expected);
+  });
 });
 
 it("redirects to the newly created tag on save", async () => {
   const onClose = vi.fn();
-  const initialEntries = [{ pathname: urls.tags.index }];
-  const { history } = renderWithHistoryRouter(
-    <AddTagForm onClose={onClose} />,
-    {
-      state,
-      initialEntries,
-    }
-  );
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1" })],
+    saved: true,
+  });
+  const { router } = renderWithProviders(<AddTagForm onClose={onClose} />, {
+    state,
+    initialEntries: [urls.tags.index],
+  });
 
-  expect(history.location.pathname).toBe(urls.tags.index);
+  expect(router.state.location.pathname).toBe(urls.tags.index);
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"
   );
 
   mockFormikFormSaved();
-  state.tag = factory.tagState({
-    items: [factory.tag({ id: 8, name: "tag1" })],
-    saved: true,
-  });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   await waitFor(() => {
-    expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 8 }));
+    expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 8 }));
   });
   expect(onClose).toHaveBeenCalled();
 });
@@ -276,7 +272,7 @@ it("shows an error if tag name is invalid", async () => {
 
   await userEvent.tab();
 
-  await waitFor(() =>
-    expect(nameInput).toHaveAccessibleErrorMessage(Label.NameValidation)
-  );
+  await waitFor(() => {
+    expect(nameInput).toHaveAccessibleErrorMessage(Label.NameValidation);
+  });
 });

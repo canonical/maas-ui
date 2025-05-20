@@ -1,12 +1,15 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import FabricDeleteForm from "./FabricDeleteForm";
 
 import { fabricActions } from "@/app/store/fabric";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -18,13 +21,9 @@ it("does not allow deletion if the fabric is the default fabric", () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />, {
+    store,
+  });
 
   expect(
     screen.getByText(
@@ -45,13 +44,9 @@ it("does not allow deletion if the fabric has subnets attached", () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />, {
+    store,
+  });
 
   expect(
     screen.getByText(
@@ -67,13 +62,9 @@ it(`displays a delete confirmation if the fabric is not the default and has no
     fabric: factory.fabricState({ items: [fabric] }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />, {
+    store,
+  });
 
   expect(
     screen.getByText("Are you sure you want to delete this fabric?")
@@ -86,25 +77,21 @@ it("deletes the fabric when confirmed", async () => {
     fabric: factory.fabricState({ items: [fabric] }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />, {
+    store,
+  });
 
   await userEvent.click(screen.getByRole("button", { name: "Delete fabric" }));
 
   const expectedActions = [fabricActions.delete(fabric.id)];
   const actualActions = store.getActions();
-  await waitFor(() =>
+  await waitFor(() => {
     expectedActions.forEach((expectedAction) => {
       expect(
         actualActions.find(
           (actualAction) => actualAction.type === expectedAction.type
         )
       ).toStrictEqual(expectedAction);
-    })
-  );
+    });
+  });
 });

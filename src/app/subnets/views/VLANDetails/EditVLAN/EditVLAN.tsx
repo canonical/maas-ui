@@ -50,7 +50,11 @@ const Schema = Yup.object().shape({
     .required("VID is required"),
 });
 
-const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
+const EditVLAN = ({
+  close,
+  id,
+  ...props
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
@@ -98,7 +102,9 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
           })
         );
       }}
-      onSuccess={() => close()}
+      onSuccess={() => {
+        close();
+      }}
       resetOnSave
       saved={saved}
       saving={saving}

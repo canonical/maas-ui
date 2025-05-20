@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import type { ColumnDef, Row } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
@@ -27,7 +27,7 @@ export type PoolsColumnDef = ColumnDef<
   Partial<ResourcePoolWithSummaryResponse>
 >;
 
-const usePoolsTableColumns = () => {
+const usePoolsTableColumns = (): PoolsColumnDef[] => {
   return useMemo(
     () =>
       [
@@ -38,8 +38,8 @@ const usePoolsTableColumns = () => {
           header: "Name",
         },
         {
-          id: "machines",
-          accessorKey: "machine_total_count",
+          id: "machine_ready_count",
+          accessorKey: "machine_ready_count",
           enableSorting: true,
           header: "Machines",
           cell: ({ row }) => {

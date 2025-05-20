@@ -20,7 +20,7 @@ const StorageSchema = Yup.object().shape({
   enable_disk_erasing_on_release: Yup.boolean().required(),
 });
 
-const StorageForm = (): JSX.Element => {
+const StorageForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const loaded = useSelector(configSelectors.loaded);
   const loading = useSelector(configSelectors.loading);

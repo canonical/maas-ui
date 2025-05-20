@@ -5,9 +5,9 @@ import type { Props as FormikFieldProps } from "@/app/base/components/FormikFiel
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import { getIpAssignmentDisplay } from "@/app/store/device/utils";
 
-type Props = {
+type Props = Omit<FormikFieldProps<typeof Select>, "component" | "options"> & {
   includeStatic?: boolean;
-} & Omit<FormikFieldProps<typeof Select>, "component" | "options">;
+};
 
 export enum Labels {
   DefaultOption = "Select IP assignment",
@@ -18,7 +18,7 @@ export const IpAssignmentSelect = ({
   includeStatic = true,
   label = Labels.Select,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <FormikField
       component={Select}

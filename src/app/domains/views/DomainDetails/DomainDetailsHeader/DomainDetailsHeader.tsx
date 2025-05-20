@@ -38,7 +38,7 @@ export enum Labels {
 const DomainDetailsHeader = ({
   id,
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
   );
@@ -56,9 +56,9 @@ const DomainDetailsHeader = ({
     <Button
       data-testid="add-record"
       key="add-record"
-      onClick={() =>
-        setSidePanelContent({ view: DomainDetailsSidePanelViews.ADD_RECORD })
-      }
+      onClick={() => {
+        setSidePanelContent({ view: DomainDetailsSidePanelViews.ADD_RECORD });
+      }}
     >
       {Labels.AddRecord}
     </Button>,
@@ -69,11 +69,11 @@ const DomainDetailsHeader = ({
         appearance="negative"
         data-testid="delete-domain"
         key="delete-domain"
-        onClick={() =>
+        onClick={() => {
           setSidePanelContent({
             view: DomainDetailsSidePanelViews.DELETE_DOMAIN,
-          })
-        }
+          });
+        }}
       >
         {Labels.DeleteDomain}
       </Button>

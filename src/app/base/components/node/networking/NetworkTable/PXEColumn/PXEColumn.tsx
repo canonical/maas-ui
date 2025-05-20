@@ -8,14 +8,14 @@ import { isBootInterface } from "@/app/store/utils";
 type Props = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
 };
 
 export enum Label {
   IsBoot = "PXE boot",
 }
 
-const PXEColumn = ({ link, nic, node }: Props): JSX.Element | null => {
+const PXEColumn = ({ link, nic, node }: Props): React.ReactElement | null => {
   const isBoot = isBootInterface(node, nic, link);
 
   return isBoot ? (

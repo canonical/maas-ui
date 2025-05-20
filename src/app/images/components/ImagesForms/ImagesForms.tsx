@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import DeleteImageForm from "./DeleteImageForm";
@@ -9,11 +10,13 @@ import { ImageSidePanelViews } from "@/app/images/constants";
 
 type Props = SidePanelContentTypes & {};
 
-const ImagesForms = ({ sidePanelContent, setSidePanelContent }: Props) => {
-  const clearSidePanelContent = useCallback(
-    () => setSidePanelContent(null),
-    [setSidePanelContent]
-  );
+const ImagesForms = ({
+  sidePanelContent,
+  setSidePanelContent,
+}: Props): ReactElement | null => {
+  const clearSidePanelContent = useCallback(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   if (!sidePanelContent) {
     return null;

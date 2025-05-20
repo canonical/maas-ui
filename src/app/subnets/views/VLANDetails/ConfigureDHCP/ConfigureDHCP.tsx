@@ -53,7 +53,7 @@ export type ConfigureDHCPValues = {
   subnet: Subnet[SubnetMeta.PK] | "";
 };
 
-const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
+const ConfigureDHCP = ({ closeForm, id }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const controllersLoading = useSelector(controllerSelectors.loading);
   const fabricsLoading = useSelector(fabricSelectors.loading);
@@ -221,7 +221,9 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
             }
             dispatch(vlanActions.configureDHCP(params));
           }}
-          onSuccess={() => closeForm()}
+          onSuccess={() => {
+            closeForm();
+          }}
           saved={saved}
           saving={configuringDHCP}
           submitLabel="Configure DHCP"

@@ -1,5 +1,5 @@
 import { Spinner } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import urls from "@/app/base/urls";
 import type { Machine, MachineMeta } from "@/app/store/machine/types";
@@ -13,7 +13,7 @@ export enum Labels {
   Loading = "Loading machines",
 }
 
-const MachineLink = ({ systemId }: Props): JSX.Element | null => {
+const MachineLink = ({ systemId }: Props): React.ReactElement | null => {
   const { machine, loading } = useFetchMachine(systemId);
 
   if (loading) {

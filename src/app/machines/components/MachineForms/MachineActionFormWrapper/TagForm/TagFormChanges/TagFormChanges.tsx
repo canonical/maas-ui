@@ -10,7 +10,7 @@ import {
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import type { ColumnWithLooseAccessor } from "react-table";
 
 import TagChip from "../TagChip";
@@ -26,11 +26,11 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { getTagCounts } from "@/app/store/tag/utils";
 import { toFormikNumber } from "@/app/utils";
 
-type Props = {
+type Props = Pick<MachineActionFormProps, "selectedCount"> & {
   tags: Tag[];
   newTags: Tag[TagMeta.PK][];
   toggleTagDetails: (tag: Tag | null) => void;
-} & Pick<MachineActionFormProps, "selectedCount">;
+};
 
 export enum Label {
   Added = "To be added",
@@ -96,7 +96,9 @@ const generateRows = (
             : undefined
         }
         machineCount={machineCount}
-        onClick={() => toggleTagDetails(tag)}
+        onClick={() => {
+          toggleTagDetails(tag);
+        }}
         tag={tag}
         tagIdsAndCounts={tagIdsAndCounts}
       />
@@ -120,7 +122,7 @@ export const TagFormChanges = ({
   selectedCount,
   newTags,
   toggleTagDetails,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const tagIdsAndCounts = getTagCounts(tags);
   const tagIds = tagIdsAndCounts ? Array.from(tagIdsAndCounts?.keys()) : [];

@@ -41,7 +41,7 @@ type GeneralFormValues = {
   release_notifications: boolean;
 };
 
-const GeneralForm = (): JSX.Element => {
+const GeneralForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const maasName = useSelector(configSelectors.maasName);
   const maasTheme = useSelector(configSelectors.theme);
@@ -160,7 +160,9 @@ const GeneralForm = (): JSX.Element => {
               component={ThemedRadioButton}
               label={color.label}
               name="theme"
-              onClick={() => setTheme(color.value)}
+              onClick={() => {
+                setTheme(color.value);
+              }}
             />
           </Col>
         ))}

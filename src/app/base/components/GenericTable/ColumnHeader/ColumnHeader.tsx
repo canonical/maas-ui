@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Button } from "@canonical/react-components";
 import type { Header } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
@@ -9,7 +11,7 @@ type TableHeaderProps<T> = {
   header: Header<T, unknown>;
 };
 
-const TableHeader = <T,>({ header }: TableHeaderProps<T>) => {
+const ColumnHeader = <T,>({ header }: TableHeaderProps<T>): ReactElement => {
   return (
     <th className={classNames(`${header.column.id}`)} key={header.id}>
       {header.column.getCanSort() ? (
@@ -29,4 +31,4 @@ const TableHeader = <T,>({ header }: TableHeaderProps<T>) => {
   );
 };
 
-export default TableHeader;
+export default ColumnHeader;

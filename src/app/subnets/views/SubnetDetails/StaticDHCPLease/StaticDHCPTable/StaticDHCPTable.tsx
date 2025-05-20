@@ -1,5 +1,7 @@
+import type { ReactElement } from "react";
+
 import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import TableActions from "@/app/base/components/TableActions";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
@@ -58,18 +60,18 @@ const generateRows = (
         </td>
         <td>
           <TableActions
-            onDelete={() =>
+            onDelete={() => {
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews.DeleteDHCPLease,
                 extras: { reservedIpId: reservedIp.id },
-              })
-            }
-            onEdit={() =>
+              });
+            }}
+            onEdit={() => {
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews.ReserveDHCPLease,
                 extras: { reservedIpId: reservedIp.id },
-              })
-            }
+              });
+            }}
           />
         </td>
       </tr>
@@ -81,7 +83,7 @@ type Props = {
   loading: boolean;
 };
 
-const StaticDHCPTable = ({ reservedIps, loading }: Props) => {
+const StaticDHCPTable = ({ reservedIps, loading }: Props): ReactElement => {
   const { setSidePanelContent } = useSidePanel();
   return (
     <DynamicTable

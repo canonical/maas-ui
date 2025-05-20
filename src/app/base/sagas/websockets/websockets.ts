@@ -54,11 +54,11 @@ import type {
 } from "@/websocket-client";
 
 export type WebSocketChannel = EventChannel<
-  | ReconnectingWebSocketEvent
-  | ErrorEvent
   | CloseEvent
+  | ErrorEvent
   // The reponse from the websocket API will be a JSON string.
   | MessageEvent<string>
+  | ReconnectingWebSocketEvent
 >;
 
 /**
@@ -117,7 +117,7 @@ export function createConnection(
   // promise, but rather wait for it to eventually connect.
   return new Promise((resolve, reject) => {
     const readyState = websocketClient.rws?.readyState;
-    const closedOrClosing: Readonly<Array<number>> = [
+    const closedOrClosing: readonly number[] = [
       WebSocket.CLOSED,
       WebSocket.CLOSING,
     ] as const;

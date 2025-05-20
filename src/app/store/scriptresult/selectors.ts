@@ -324,7 +324,7 @@ const getOtherTestingByNodeId = createSelector(
   }
 );
 
-type NodeScriptResults = { [x: string]: ScriptResult[] };
+type NodeScriptResults = Record<string, ScriptResult[]>;
 
 /**
  * Returns the failed testing script results for each of the supplied node ids.

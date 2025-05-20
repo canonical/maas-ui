@@ -7,7 +7,7 @@ import {
 
 import docsUrls from "@/app/base/docsUrls";
 
-const TLSDisabled = (): JSX.Element => {
+const TLSDisabled = (): React.ReactElement => {
   return (
     <>
       <p>

@@ -18,7 +18,10 @@ type Props = {
   objectName?: string | null;
 };
 
-const AuthenticationCard = ({ hostId, objectName }: Props): JSX.Element => {
+const AuthenticationCard = ({
+  hostId,
+  objectName,
+}: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
@@ -39,7 +42,9 @@ const AuthenticationCard = ({ hostId, objectName }: Props): JSX.Element => {
     if (showUpdateCertificate || !hasCertificateData) {
       content = (
         <UpdateCertificate
-          closeForm={() => setShowUpdateCertificate(false)}
+          closeForm={() => {
+            setShowUpdateCertificate(false);
+          }}
           hasCertificateData={hasCertificateData}
           objectName={objectName}
           pod={pod}
@@ -60,7 +65,9 @@ const AuthenticationCard = ({ hostId, objectName }: Props): JSX.Element => {
             <Button
               className="u-no-margin--bottom"
               data-testid="show-update-certificate"
-              onClick={() => setShowUpdateCertificate(true)}
+              onClick={() => {
+                setShowUpdateCertificate(true);
+              }}
             >
               <span className="u-nudge-left--small">
                 <Icon name="change-version" />

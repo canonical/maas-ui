@@ -14,12 +14,14 @@ import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types"
 export const DeleteSubnet = ({
   subnetId,
   setSidePanelContent,
-}: Omit<SubnetActionProps, "activeForm">): JSX.Element | null => {
+}: Omit<SubnetActionProps, "activeForm">): React.ReactElement | null => {
   const dispatch = useDispatch();
   const errors = useSelector(subnetSelectors.errors);
   const saving = useSelector(subnetSelectors.saving);
   const saved = useSelector(subnetSelectors.saved);
-  const handleClose = () => setSidePanelContent(null);
+  const handleClose = () => {
+    setSidePanelContent(null);
+  };
   const canBeDeleted = useCanBeDeleted(subnetId);
   const dhcpEnabled = useIsDHCPEnabled(subnetId);
 

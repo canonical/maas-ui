@@ -8,9 +8,9 @@ import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
 import { simpleSortByKey } from "@/app/utils";
 
-type Props = {
+type Props = FormikFieldProps & {
   defaultOption?: { label: string; value: string; disabled?: boolean } | null;
-} & FormikFieldProps;
+};
 
 export const SpaceSelect = ({
   defaultOption = { label: "Select space", value: "", disabled: true },
@@ -18,7 +18,7 @@ export const SpaceSelect = ({
   label = "Space",
   disabled,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const spaces = useSelector(spaceSelectors.all);
   const spacesLoaded = useSelector(spaceSelectors.loaded);
 

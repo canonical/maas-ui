@@ -8,13 +8,18 @@ import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import type { Fabric } from "@/app/store/fabric/types";
 
-const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
+const FabricSummary = ({ fabric }: { fabric: Fabric }): React.ReactElement => {
   return (
     <EditableSection
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (
-          <EditFabric close={() => setEditing(false)} id={fabric.id} />
+          <EditFabric
+            close={() => {
+              setEditing(false);
+            }}
+            id={fabric.id}
+          />
         ) : (
           <Row>
             <Col size={6}>

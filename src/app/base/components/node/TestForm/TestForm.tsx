@@ -35,9 +35,7 @@ const TestFormSchema = Yup.object().shape({
 export type FormValues = {
   enableSSH: boolean;
   scripts: Script[];
-  scriptInputs: {
-    [x: string]: { url: string };
-  };
+  scriptInputs: Record<string, { url: string }>;
 };
 
 type Props<E = null> = NodeActionFormProps<E> & {
@@ -61,7 +59,7 @@ export const TestForm = <E,>({
   selectedMachines,
   selectedCount,
   viewingDetails,
-}: Props<E>): JSX.Element => {
+}: Props<E>): React.ReactElement => {
   const dispatch = useDispatch();
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);

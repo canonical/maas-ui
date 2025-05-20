@@ -17,7 +17,7 @@ import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  node: MachineDetails | ControllerDetails;
+  node: ControllerDetails | MachineDetails;
 };
 
 export enum Label {
@@ -53,7 +53,7 @@ const getPageEvents = (
     .slice(startIndex, startIndex + pageSize);
 };
 
-const EventLogs = ({ node }: Props): JSX.Element => {
+const EventLogs = ({ node }: Props): React.ReactElement => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [requestedDay, setRequestedDay] = useState(false);

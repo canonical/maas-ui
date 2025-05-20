@@ -9,14 +9,14 @@ import type { MachineListControlsProps } from "../MachineListControls";
 import { useSendAnalytics } from "@/app/base/hooks";
 import { columnLabels, columnToggles } from "@/app/machines/constants";
 
-type Props = {
+type Props = Pick<MachineListControlsProps, "setHiddenColumns"> & {
   hiddenColumns: string[];
-} & Pick<MachineListControlsProps, "setHiddenColumns">;
+};
 
 const HiddenColumnsSelect = ({
   hiddenColumns,
   setHiddenColumns,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const sendAnalytics = useSendAnalytics();
   const selectedColumnsLength = columnToggles.length - hiddenColumns.length;
   const someColumnsChecked =

@@ -2,7 +2,7 @@ import { useEffect, useCallback } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import SubnetsControls from "./SubnetsControls";
 import SubnetsTable from "./SubnetsTable";
@@ -21,7 +21,7 @@ import {
 import { SubnetSidePanelViews } from "@/app/subnets/types";
 import FormActions from "@/app/subnets/views/FormActions";
 
-const SubnetsList = (): JSX.Element => {
+const SubnetsList = (): React.ReactElement => {
   useWindowTitle("Subnets");
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const query = useQuery();
@@ -29,35 +29,38 @@ const SubnetsList = (): JSX.Element => {
   const groupBy = query.get(SubnetsUrlParams.By);
   const searchText = query.get(SubnetsUrlParams.Q) || "";
   const setGroupBy = useCallback(
-    (group: GroupByKey | null) =>
+    (group: GroupByKey | null) => {
       navigate(
         {
           pathname: "/networks",
           search: `?${SubnetsUrlParams.By}=${group}&${SubnetsUrlParams.Q}=${searchText}`,
         },
         { replace: true }
-      ),
+      );
+    },
     [navigate, searchText]
   );
   const setSearchText = useCallback(
-    (searchText: string) =>
+    (searchText: string) => {
       navigate(
         {
           pathname: "/networks",
           search: `?${SubnetsUrlParams.By}=${groupBy}&${SubnetsUrlParams.Q}=${searchText}`,
         },
         { replace: true }
-      ),
+      );
+    },
     [navigate, groupBy]
   );
 
   const hasValidGroupBy = groupBy && ["fabric", "space"].includes(groupBy);
 
   useEffect(() => {
+    setSidePanelContent(null);
     if (!hasValidGroupBy) {
       setGroupBy("fabric");
     }
-  }, [groupBy, setGroupBy, hasValidGroupBy]);
+  }, [groupBy, setGroupBy, hasValidGroupBy, setSidePanelContent]);
 
   const [, name] = sidePanelContent?.view || [];
   const activeForm =
@@ -94,7 +97,9 @@ const SubnetsList = (): JSX.Element => {
                 const [, name] = view;
                 return {
                   children: name,
-                  onClick: () => setSidePanelContent({ view }),
+                  onClick: () => {
+                    setSidePanelContent({ view });
+                  },
                 };
               })}
               position="right"

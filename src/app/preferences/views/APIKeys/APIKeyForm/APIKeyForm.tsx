@@ -1,6 +1,6 @@
 import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
@@ -34,15 +34,19 @@ const APIKeyEditSchema = Yup.object().shape({
   name: Yup.string().required("API key name is required"),
 });
 
-export const APIKeyForm = ({ token }: Props): JSX.Element => {
+export const APIKeyForm = ({ token }: Props): React.ReactElement => {
   const editing = !!token;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const errors = useSelector(tokenSelectors.errors);
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
-  const onCancel = () => navigate({ pathname: urls.preferences.apiKeys.index });
-  useOnEscapePressed(() => onCancel());
+  const onCancel = () => {
+    navigate({ pathname: urls.preferences.apiKeys.index });
+  };
+  useOnEscapePressed(() => {
+    onCancel();
+  });
 
   useAddMessage(
     saved,

@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import AddSpace from "./AddSpace";
@@ -28,10 +28,10 @@ test("correctly dispatches space cleanup and create actions on form submit", asy
   await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
   await userEvent.click(screen.getByRole("button", { name: /Add Space/ }));
 
-  await waitFor(() =>
+  await waitFor(() => {
     expect(store.getActions()).toStrictEqual([
       spaceActions.cleanup(),
       spaceActions.create({ name }),
-    ])
-  );
+    ]);
+  });
 });

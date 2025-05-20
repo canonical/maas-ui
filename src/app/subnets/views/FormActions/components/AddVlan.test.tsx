@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import AddVlan from "./AddVlan";
@@ -26,23 +26,23 @@ it("displays validation messages for VID", async () => {
   await userEvent.type(VidTextBox, "abc");
   await userEvent.click(submitButton);
 
-  await waitFor(() =>
-    expect(screen.getByText(errorMessage)).toBeInTheDocument()
-  );
+  await waitFor(() => {
+    expect(screen.getByText(errorMessage)).toBeInTheDocument();
+  });
 
   await userEvent.clear(VidTextBox);
   await userEvent.type(VidTextBox, "123");
 
-  await waitFor(() =>
-    expect(screen.queryByText(errorMessage)).not.toBeInTheDocument()
-  );
+  await waitFor(() => {
+    expect(screen.queryByText(errorMessage)).not.toBeInTheDocument();
+  });
 
   await userEvent.clear(VidTextBox);
   await userEvent.type(VidTextBox, "99999");
 
-  await waitFor(() =>
-    expect(screen.getByText(errorMessage)).toBeInTheDocument()
-  );
+  await waitFor(() => {
+    expect(screen.getByText(errorMessage)).toBeInTheDocument();
+  });
 });
 
 it("correctly dispatches VLAN cleanup and create actions on form submit", async () => {

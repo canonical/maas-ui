@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { Col, Icon, NotificationSeverity } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";
@@ -38,7 +38,7 @@ const DeleteForm = ({
   clearSidePanelContent,
   clusterId,
   hostId,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pod = useSelector((state: RootState) =>

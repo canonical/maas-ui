@@ -6,12 +6,12 @@ import { useZones } from "@/app/api/query/zones";
 import type { ZoneResponse } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 
-type Props = {
+type Props = HTMLProps<HTMLSelectElement> & {
   disabled?: boolean;
   label?: string;
   name: string;
   valueKey?: keyof ZoneResponse;
-} & HTMLProps<HTMLSelectElement>;
+};
 
 export enum Label {
   Zone = "Zone",
@@ -22,7 +22,7 @@ export const ZoneSelect = ({
   label = Label.Zone,
   name,
   ...props
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const zones = useZones();
 
   return (

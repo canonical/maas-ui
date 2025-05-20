@@ -21,7 +21,7 @@ const NodeDevicesWarning = ({
   node,
   nodeDevices,
   setSidePanelContent,
-}: Props): JSX.Element | null => {
+}: Props): React.ReactElement | null => {
   const isMachine = nodeIsMachine(node);
   const busDisplay = bus === NodeDeviceBus.PCIE ? "PCI" : "USB";
   const canBeCommissioned =
@@ -63,11 +63,11 @@ const NodeDevicesWarning = ({
           <Button
             appearance="positive"
             data-testid="commission-machine"
-            onClick={() =>
+            onClick={() => {
               setSidePanelContent({
                 view: MachineSidePanelViews.COMMISSION_MACHINE,
-              })
-            }
+              });
+            }}
           >
             Commission
           </Button>
