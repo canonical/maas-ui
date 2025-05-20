@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { type Dispatch, type SetStateAction, useMemo } from "react";
 
 import { Icon, Spinner } from "@canonical/react-components";
 import type {
@@ -7,6 +7,7 @@ import type {
   Getter,
   Header,
   Row,
+  RowSelectionState,
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
@@ -14,6 +15,8 @@ import DoubleRow from "@/app/base/components/DoubleRow";
 import GroupRowActions from "@/app/base/components/GenericTable/GroupRowActions";
 import TableActions from "@/app/base/components/TableActions";
 import TooltipButton from "@/app/base/components/TooltipButton";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { ImageSidePanelViews } from "@/app/images/constants";
 import type { Image } from "@/app/images/types";
 import { formatUtcDatetime, getTimeDistanceString } from "@/app/utils/time";
 
@@ -35,11 +38,14 @@ export const filterHeaders = (header: Header<Image, unknown>): boolean =>
 
 const useImageTableColumns = ({
   commissioningRelease,
-  onDelete,
+  selectedRows,
+  setSelectedRows,
 }: {
   commissioningRelease: string | null;
-  onDelete: (row: Row<Image>) => void;
+  selectedRows: RowSelectionState;
+  setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
 }): ImageColumnDef[] => {
+  const { setSidePanelContent } = useSidePanel();
   return useMemo(
     () =>
       [
@@ -187,14 +193,25 @@ const useImageTableColumns = ({
                     : "Deletes this image."
                 }
                 onDelete={() => {
-                  onDelete(row);
+                  if (row.original.id) {
+                    if (!row.getIsSelected()) {
+                      row.toggleSelected();
+                    }
+                    setSidePanelContent({
+                      view: ImageSidePanelViews.DELETE_MULTIPLE_IMAGES,
+                      extras: {
+                        rowSelection: { ...selectedRows, [row.id]: true },
+                        setRowSelection: setSelectedRows,
+                      },
+                    });
+                  }
                 }}
               />
             );
           },
         },
       ] as ImageColumnDef[],
-    [commissioningRelease, onDelete]
+    [commissioningRelease, selectedRows, setSelectedRows, setSidePanelContent]
   );
 };
 

@@ -10,9 +10,7 @@ vi.mock("@/context", async () => {
 });
 
 const setupTestCase = (name = "test-row") => {
-  const { result } = renderHook(() =>
-    usePoolsTableColumns({ onEdit: () => {}, onDelete: () => {} })
-  );
+  const { result } = renderHook(() => usePoolsTableColumns());
   const props = {
     getValue: () => name,
     row: {
@@ -39,6 +37,6 @@ it("returns the correct number of columns", () => {
     "name",
     "machine_ready_count",
     "description",
-    "actions",
+    "action",
   ]);
 });

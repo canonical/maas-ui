@@ -5,11 +5,8 @@ import usePoolsTableColumns from "./usePoolsTableColumns/usePoolsTableColumns";
 import { usePools } from "@/app/api/query/pools";
 import GenericTable from "@/app/base/components/GenericTable";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { PoolActionSidePanelViews } from "@/app/pools/constants";
 
 const PoolsTable = (): ReactElement => {
-  const { setSidePanelContent } = useSidePanel();
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
 
@@ -17,24 +14,7 @@ const PoolsTable = (): ReactElement => {
     query: { page: debouncedPage, size },
   });
 
-  const columns = usePoolsTableColumns({
-    onEdit: (row) => {
-      setSidePanelContent({
-        view: PoolActionSidePanelViews.EDIT_POOL,
-        extras: {
-          poolId: row.original.id,
-        },
-      });
-    },
-    onDelete: (row) => {
-      setSidePanelContent({
-        view: PoolActionSidePanelViews.DELETE_POOL,
-        extras: {
-          poolId: row.original.id,
-        },
-      });
-    },
-  });
+  const columns = usePoolsTableColumns();
 
   return (
     <GenericTable
