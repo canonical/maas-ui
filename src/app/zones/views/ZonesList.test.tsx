@@ -1,5 +1,4 @@
-import ZonesList from "./ZonesListTable/ZonesListTable";
-
+import ZonesList from "@/app/zones/components/ZonesTable/ZonesTable";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,

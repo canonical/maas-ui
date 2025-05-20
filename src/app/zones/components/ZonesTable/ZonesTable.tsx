@@ -7,11 +7,11 @@ import { useZones } from "@/app/api/query/zones";
 import GenericTable from "@/app/base/components/GenericTable";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import authSelectors from "@/app/store/auth/selectors";
-import useZonesTableColumns from "@/app/zones/views/ZonesList/ZonesListTable/useZonesTableColumns/useZonesTableColumns";
+import useZonesTableColumns from "@/app/zones/components/ZonesTable/useZonesTableColumns/useZonesTableColumns";
 
 import "./_index.scss";
 
-const ZonesListTable: React.FC = () => {
+const ZonesTable: React.FC = () => {
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
   const zones = useZones({
@@ -43,4 +43,4 @@ const ZonesListTable: React.FC = () => {
   );
 };
 
-export default ZonesListTable;
+export default ZonesTable;

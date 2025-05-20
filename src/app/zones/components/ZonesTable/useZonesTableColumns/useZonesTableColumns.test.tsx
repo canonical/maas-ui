@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 
-import useZonesTableColumns from "@/app/zones/views/ZonesList/ZonesListTable/useZonesTableColumns/useZonesTableColumns";
+import useZonesTableColumns from "@/app/zones/components/ZonesTable/useZonesTableColumns/useZonesTableColumns";
 
 vi.mock("@/context", async () => {
   const actual = await vi.importActual("@/context");

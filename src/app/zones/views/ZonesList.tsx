@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 
-import ZonesListHeader from "./ZonesListHeader";
-import ZonesListTable from "./ZonesListTable";
-import AddZone from "./ZonesListTable/AddZone";
-import DeleteZone from "./ZonesListTable/DeleteZone";
-import EditZone from "./ZonesListTable/EditZone";
+import AddZone from "../components/AddZone";
+import DeleteZone from "../components/DeleteZone";
+import EditZone from "../components/EditZone";
+import ZonesListHeader from "../components/ZonesListHeader";
+import ZonesTable from "../components/ZonesTable";
 
 import { useZoneCount } from "@/app/api/query/zones";
 import PageContent from "@/app/base/components/PageContent";
@@ -68,7 +68,7 @@ const ZonesList: React.FC = () => {
       sidePanelContent={content}
       sidePanelTitle={getSidePanelTitle("Zones", sidePanelContent)}
     >
-      {zonesCount?.data && zonesCount.data > 0 && <ZonesListTable />}
+      {zonesCount?.data && zonesCount.data > 0 && <ZonesTable />}
     </PageContent>
   );
 };

@@ -48,7 +48,7 @@ const SubnetDetails = lazy(() => import("@/app/subnets/views/SubnetDetails"));
 const SubnetsList = lazy(() => import("@/app/subnets/views/SubnetsList"));
 const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
 const Tags = lazy(() => import("@/app/tags/views/Tags"));
-const ZonesList = lazy(() => import("@/app/zones/views/ZonesList"));
+const ZonesList = lazy(() => import("@/app/zones/views"));
 
 const base = urls.preferences.index;
 export const router = createBrowserRouter(
