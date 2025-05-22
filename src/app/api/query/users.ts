@@ -43,6 +43,17 @@ export const useUsers = (options?: Options<ListUsersWithSummaryData>) => {
   );
 };
 
+export const useUserCount = (options?: Options<ListUsersWithSummaryData>) => {
+  return useWebsocketAwareQuery({
+    ...listUsersWithSummaryOptions(options),
+    select: (data) => data?.total ?? 0,
+  } as UseQueryOptions<
+    ListUsersWithSummaryResponse,
+    ListUsersWithSummaryResponse,
+    number
+  >);
+};
+
 export const useGetThisUser = (options?: Options<GetUserInfoData>) => {
   return useWebsocketAwareQuery(
     getUserInfoOptions(options) as UseQueryOptions<

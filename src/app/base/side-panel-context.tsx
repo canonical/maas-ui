@@ -27,6 +27,8 @@ import type { PoolSidePanelContent } from "@/app/pools/constants";
 import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import { PreferenceSidePanelViews } from "@/app/preferences/constants";
 import type { PreferenceSidePanelContent } from "@/app/preferences/types";
+import type { UserSidePanelContent } from "@/app/settings/views/Users/constants";
+import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
 import {
   SubnetSidePanelViews,
   type SubnetSidePanelContent,
@@ -70,6 +72,7 @@ export type SidePanelContent =
   | SubnetDetailsSidePanelContent
   | SubnetSidePanelContent
   | TagSidePanelContent
+  | UserSidePanelContent
   | VLANDetailsSidePanelContent
   | ZoneSidePanelContent
   | null;
@@ -91,6 +94,7 @@ export const SidePanelViews = {
   ...DeviceSidePanelViews,
   ...KVMSidePanelViews,
   ...TagSidePanelViews,
+  ...UserActionSidePanelViews,
   ...ZoneActionSidePanelViews,
   ...SubnetSidePanelViews,
   ...DomainDetailsSidePanelViews,
