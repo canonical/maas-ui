@@ -1,7 +1,6 @@
-import { vi } from "vitest";
+import { renderHook } from "@testing-library/react";
 
-import useImageTableColumns from "@/app/images/components/ImagesTable/useImageTableColumns/useImageTableColumns";
-import { renderHook } from "@/testing/utils";
+import useZonesTableColumns from "@/app/zones/components/ZonesTable/useZonesTableColumns/useZonesTableColumns";
 
 vi.mock("@/context", async () => {
   const actual = await vi.importActual("@/context");
@@ -11,14 +10,7 @@ vi.mock("@/context", async () => {
 });
 
 const setupTestCase = (name = "test-row") => {
-  const commissioningRelease: string | null = "20.04";
-  const { result } = renderHook(() =>
-    useImageTableColumns({
-      commissioningRelease,
-      selectedRows: {},
-      setSelectedRows: vi.fn(),
-    })
-  );
+  const { result } = renderHook(() => useZonesTableColumns({ isAdmin: false }));
   const props = {
     getValue: () => name,
     row: {
@@ -43,13 +35,10 @@ it("returns the correct number of columns", () => {
   expect(result.current).toBeInstanceOf(Array);
   expect(result.current.map((column) => column.id)).toStrictEqual([
     "name",
-    "release",
-    "architecture",
-    "size",
-    "canDeployToMemory",
-    "status",
-    "lastDeployed",
-    "machines",
+    "description",
+    "machines_count",
+    "devices_count",
+    "controllers_count",
     "action",
   ]);
 });

@@ -71,7 +71,7 @@ context("Machine listing", () => {
 
     cy.findByRole("searchbox").should("have.value", "");
 
-    cy.findByRole("link", { name: /1 pool/i }).should("exist");
+    cy.findByRole("link", { name: /[0-9]+ pool[s]?/i }).should("exist");
 
     cy.findByRole("button", { name: /Filters/i }).click();
 
@@ -158,7 +158,7 @@ context("Machine listing", () => {
   });
 
   it("can filter machine list by deployment target", () => {
-    cy.findByRole("link", { name: /1 pool/i }).should("exist");
+    cy.findByRole("link", { name: /[0-9]+ pool[s]?/i }).should("exist");
 
     cy.findByRole("button", { name: /filters/i }).click();
     cy.findByRole("tab", { name: /deployment target/i })

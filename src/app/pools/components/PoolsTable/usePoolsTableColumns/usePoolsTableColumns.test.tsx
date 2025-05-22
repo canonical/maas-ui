@@ -37,6 +37,6 @@ it("returns the correct number of columns", () => {
     "name",
     "machine_ready_count",
     "description",
-    "actions",
+    "action",
   ]);
 });

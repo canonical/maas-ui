@@ -40,7 +40,7 @@ const Machines = lazy(() => import("@/app/machines/views/Machines"));
 const NetworkDiscovery = lazy(
   () => import("@/app/networkDiscovery/views/NetworkDiscovery")
 );
-const Pools = lazy(() => import("@/app/pools/views/Pools"));
+const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(() => import("@/app/subnets/views/FabricDetails"));
 const SpaceDetails = lazy(() => import("@/app/subnets/views/SpaceDetails"));
@@ -48,7 +48,7 @@ const SubnetDetails = lazy(() => import("@/app/subnets/views/SubnetDetails"));
 const SubnetsList = lazy(() => import("@/app/subnets/views/SubnetsList"));
 const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
 const Tags = lazy(() => import("@/app/tags/views/Tags"));
-const ZonesList = lazy(() => import("@/app/zones/views/ZonesList"));
+const ZonesList = lazy(() => import("@/app/zones/views"));
 
 const base = urls.preferences.index;
 export const router = createBrowserRouter(
@@ -373,7 +373,7 @@ export const router = createBrowserRouter(
           path: `${urls.pools.index}/*`,
           element: (
             <ErrorBoundary>
-              <Pools />
+              <PoolsList />
             </ErrorBoundary>
           ),
         },
