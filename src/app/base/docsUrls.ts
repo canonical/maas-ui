@@ -8,7 +8,7 @@ const docsUrls = {
     "https://maas.io/docs/how-to-enhance-maas-security#p-9102-renew-certificates",
   cloudInit: "https://maas.io/docs/how-to-use-cloud-init-with-maas",
   configurationJourney:
-    "https://maas.io/docs/how-to-install-maas#p-9034-maas-ui-setup",
+    "https://maas.io/docs/how-to-get-maas-up-and-running#p-9034-maas-ui-setup",
   dhcp: "https://maas.io/docs/about-maas-networking#p-20679-dhcp",
   hardwareSync:
     "https://maas.io/docs/how-to-manage-machines#p-9078-enable-hardware-sync-maas-32",
