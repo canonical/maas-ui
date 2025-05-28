@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useMemo } from "react";
+import { useCallback, useState, useMemo } from "react";
 
 import {
   Accordion,
@@ -27,6 +27,13 @@ const SelectUpstreamImagesSelect = ({
   setFieldValue,
   groupedImages,
 }: DownloadImagesSelectProps): ReactElement => {
+  const [forceRenderKey, setForceRenderKey] = useState(0);
+
+  const handleAccordionExpandedChange = useCallback(() => {
+    // Force re-render of all MultiSelect components to close any open dropdowns
+    setForceRenderKey((prev) => prev + 1);
+  }, []);
+
   const accordionSections = useMemo(
     () =>
       Object.keys(groupedImages).map((distro) => {
@@ -48,6 +55,7 @@ const SelectUpstreamImagesSelect = ({
                       <FormikField
                         component={MultiSelect}
                         items={groupedImages[distro][release]}
+                        key={`${getValueKey(distro, release)}-${forceRenderKey}`}
                         name={getValueKey(distro, release)}
                         onItemsUpdate={(items: MultiSelectItem[]) => {
                           setFieldValue(getValueKey(distro, release), items);
@@ -66,8 +74,13 @@ const SelectUpstreamImagesSelect = ({
           title: distro,
         } as Section;
       }),
-    [groupedImages, values, setFieldValue]
+    [groupedImages, forceRenderKey, values, setFieldValue]
   );
-  return <Accordion sections={accordionSections} />;
+  return (
+    <Accordion
+      onExpandedChange={handleAccordionExpandedChange}
+      sections={accordionSections}
+    />
+  );
 };
 export default SelectUpstreamImagesSelect;
