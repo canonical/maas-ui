@@ -12,9 +12,7 @@ import APIKeyDelete from "@/app/preferences/views/APIKeys/APIKeyDelete";
 import APIKeyEdit from "@/app/preferences/views/APIKeys/APIKeyEdit";
 import APIKeyList from "@/app/preferences/views/APIKeys/APIKeyList";
 import Details from "@/app/preferences/views/Details";
-import AddSSHKey from "@/app/preferences/views/SSHKeys/AddSSHKey";
-import DeleteSSHKey from "@/app/preferences/views/SSHKeys/DeleteSSHKey";
-import SSHKeyList from "@/app/preferences/views/SSHKeys/SSHKeyList";
+import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
 import AddSSLKey from "@/app/preferences/views/SSLKeys/AddSSLKey";
 import DeleteSSLKey from "@/app/preferences/views/SSLKeys/DeleteSSLKey";
 import SSLKeyList from "@/app/preferences/views/SSLKeys/SSLKeyList";
@@ -249,38 +247,10 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: getRelativeRoute(urls.preferences.sshKeys.index, base),
+              path: getRelativeRoute(urls.preferences.sshKeys, base),
               element: (
                 <ErrorBoundary>
-                  <PageContent sidePanelContent={null} sidePanelTitle={null}>
-                    <SSHKeyList />
-                  </PageContent>
-                </ErrorBoundary>
-              ),
-            },
-            {
-              path: getRelativeRoute(urls.preferences.sshKeys.add, base),
-              element: (
-                <ErrorBoundary>
-                  <PageContent
-                    sidePanelContent={<AddSSHKey />}
-                    sidePanelTitle="Add SSH key"
-                  >
-                    <SSHKeyList />
-                  </PageContent>
-                </ErrorBoundary>
-              ),
-            },
-            {
-              path: getRelativeRoute(urls.preferences.sshKeys.delete, base),
-              element: (
-                <ErrorBoundary>
-                  <PageContent
-                    sidePanelContent={<DeleteSSHKey />}
-                    sidePanelTitle="Delete SSH key"
-                  >
-                    <SSHKeyList />
-                  </PageContent>
+                  <SSHKeysList />
                 </ErrorBoundary>
               ),
             },

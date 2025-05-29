@@ -12,11 +12,7 @@ const urls = {
   },
   details: "/account/prefs/details",
   index: "/account/prefs",
-  sshKeys: {
-    add: "/account/prefs/ssh-keys/add",
-    delete: "/account/prefs/ssh-keys/delete",
-    index: "/account/prefs/ssh-keys",
-  },
+  sshKeys: "/account/prefs/ssh-keys",
   sslKeys: {
     add: "/account/prefs/ssl-keys/add",
     delete: argPath<{ id: SslKeyResponse["id"] }>(

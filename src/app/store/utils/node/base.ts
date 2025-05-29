@@ -192,6 +192,8 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.ADD_MACHINE[1]]: "Add machine",
   [SidePanelViews.ADD_DEVICE[1]]: "Add device",
   [SidePanelViews.ADD_SPECIAL_FILESYSTEM[1]]: "Add special filesystem",
+  [SidePanelViews.ADD_SSH_KEY[1]]: "Add SSH key",
+  [SidePanelViews.DELETE_SSH_KEY[1]]: "Delete SSH key",
   [SidePanelViews.AddTag[1]]: "Create new tag",
   [SidePanelViews.ADD_VLAN[1]]: "Add VLAN",
   [SidePanelViews.APPLY_STORAGE_LAYOUT[1]]: "Change storage layout",

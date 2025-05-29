@@ -1,19 +1,16 @@
-import SSHKeyList, { Label as SSHKeyListLabels } from "./SSHKeyList";
-
+import SSHKeysList from "@/app/preferences/views/SSHKeys/views/SSHKeysList";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import { screen, setupMockServer, renderWithProviders } from "@/testing/utils";
 
 setupMockServer(sshKeyResolvers.listSshKeys.handler());
 
-describe("SSHKeyList", () => {
+describe("SSHKeysList", () => {
   it("renders", () => {
-    renderWithProviders(<SSHKeyList />, {
+    renderWithProviders(<SSHKeysList />, {
       initialEntries: ["/account/prefs/ssh-keys"],
     });
 
-    expect(
-      screen.getByRole("grid", { name: SSHKeyListLabels.Title })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("grid", { name: "SSH keys" })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "About SSH keys" })
     ).toBeInTheDocument();

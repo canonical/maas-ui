@@ -1,7 +1,6 @@
-import DeleteSSHKey from "./DeleteSSHKey";
-
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { PreferenceSidePanelViews } from "@/app/preferences/constants";
+import DeleteSSHKey from "@/app/preferences/views/SSHKeys/components/DeleteSSHKey/DeleteSSHKey";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
   renderWithBrowserRouter,
@@ -26,9 +25,7 @@ describe("DeleteSSHKey", () => {
   });
 
   it("renders", () => {
-    renderWithBrowserRouter(<DeleteSSHKey />, {
-      route: "/account/prefs/ssh-keys/delete?ids=2,3",
-    });
+    renderWithBrowserRouter(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
     expect(
       screen.getByRole("form", { name: "Delete SSH key confirmation" })
     ).toBeInTheDocument();
@@ -38,9 +35,7 @@ describe("DeleteSSHKey", () => {
   });
 
   it("can delete a group of SSH keys", async () => {
-    renderWithBrowserRouter(<DeleteSSHKey />, {
-      route: "/account/prefs/ssh-keys/delete?ids=2,3",
-    });
+    renderWithBrowserRouter(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
     await waitFor(() => {
@@ -52,9 +47,7 @@ describe("DeleteSSHKey", () => {
     mockServer.use(
       sshKeyResolvers.deleteSshKey.error({ message: "Uh oh!", code: 404 })
     );
-    renderWithBrowserRouter(<DeleteSSHKey />, {
-      route: "/account/prefs/ssh-keys/delete?ids=2,3",
-    });
+    renderWithBrowserRouter(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
 
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 

@@ -27,6 +27,8 @@ import type { PoolSidePanelContent } from "@/app/pools/constants";
 import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import { PreferenceSidePanelViews } from "@/app/preferences/constants";
 import type { PreferenceSidePanelContent } from "@/app/preferences/types";
+import type { SSHKeySidePanelContent } from "@/app/preferences/views/SSHKeys/constants";
+import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
 import {
   SubnetSidePanelViews,
   type SubnetSidePanelContent,
@@ -67,6 +69,7 @@ export type SidePanelContent =
   | PoolSidePanelContent
   | PreferenceSidePanelContent
   | SpaceDetailsSidePanelContent
+  | SSHKeySidePanelContent
   | SubnetDetailsSidePanelContent
   | SubnetSidePanelContent
   | TagSidePanelContent
@@ -99,6 +102,7 @@ export const SidePanelViews = {
   ...VLANDetailsSidePanelViews,
   ...FabricDetailsSidePanelViews,
   ...ImageSidePanelViews,
+  ...SSHKeyActionSidePanelViews,
   ...PreferenceSidePanelViews,
   ...PoolActionSidePanelViews,
   ...SubnetDetailsSidePanelViews,
