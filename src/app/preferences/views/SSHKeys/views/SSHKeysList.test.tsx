@@ -10,7 +10,7 @@ describe("SSHKeysList", () => {
       initialEntries: ["/account/prefs/ssh-keys"],
     });
 
-    expect(screen.getByRole("grid", { name: "SSH keys" })).toBeInTheDocument();
+    expect(screen.getByTestId("ssh-keys-table")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "About SSH keys" })
     ).toBeInTheDocument();

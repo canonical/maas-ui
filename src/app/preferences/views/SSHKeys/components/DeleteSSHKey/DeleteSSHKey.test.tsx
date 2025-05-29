@@ -27,7 +27,7 @@ describe("DeleteSSHKey", () => {
   it("renders", () => {
     renderWithBrowserRouter(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
     expect(
-      screen.getByRole("form", { name: "Delete SSH key confirmation" })
+      screen.getByRole("form", { name: "Confirm SSH key deletion" })
     ).toBeInTheDocument();
     expect(
       screen.getByText("Are you sure you want to delete these SSH keys?")

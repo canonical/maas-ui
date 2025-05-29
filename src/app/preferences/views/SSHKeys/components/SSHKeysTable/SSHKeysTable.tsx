@@ -65,7 +65,7 @@ const SSHKeysTable = ({ isIntro = false }: SSHKeysTableProps): ReactElement => {
   const columns = useSSHKeysTableColumns();
 
   return (
-    <div className="ssh-keys-table">
+    <div className="ssh-keys-table" data-testid="ssh-keys-table">
       {failureReason && (
         <Notification severity="negative" title="Error:">
           {failureReason.message}
