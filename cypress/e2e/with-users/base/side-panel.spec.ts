@@ -14,14 +14,14 @@ context("Side panel", () => {
     cy.findByRole("complementary", { name: "Add device" }).should("be.visible");
     cy.get("body").type("{esc}");
     cy.findByRole("complementary", { name: "Add device" }).should("not.exist");
-    cy.findByTestId("app-side-panel").should("not.be.visible");
+    cy.get("#aside-panel").should("not.be.visible");
   });
 
   it("closes the side panel when navigating to a different page", () => {
     cy.get("#aside-panel").should("be.visible");
     cy.findByRole("heading", { name: "Add device" }).should("be.visible");
     cy.visit(generateMAASURL("/machines"));
-    cy.findByTestId("app-side-panel").should("not.be.visible");
+    cy.get("#aside-panel").should("not.be.visible");
     cy.waitForPageToLoad();
     cy.visit(generateMAASURL("/controllers"));
     cy.findByRole("button", { name: "Add rack controller" }).click();
