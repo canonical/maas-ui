@@ -199,7 +199,10 @@ const SelectUpstreamImagesForm = (): ReactElement => {
   };
 
   return (
-    <>
+    <div
+      className="select-upstream-images-form"
+      data-testid="select-upstream-images-form"
+    >
       Select images to be imported and kept in sync daily. Images will be
       available for deployment on MAAS managed machines.
       {tooManySources && (
@@ -299,7 +302,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
           )}
         </FormikForm>
       </Strip>
-    </>
+    </div>
   );
 };
 
