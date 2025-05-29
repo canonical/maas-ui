@@ -1,9 +1,11 @@
-import { renderHook, waitFor } from "@testing-library/react";
+import { render, renderHook, screen, waitFor } from "@testing-library/react";
 import type { Mock } from "vitest";
 
 import {
   useCycled,
+  useGlobalKeyShortcut,
   useId,
+  useOnKeyPressed,
   usePreviousPersistent,
   useProcessing,
   useScrollOnRender,
@@ -14,6 +16,7 @@ import {
 import {
   renderHookWithMockStore,
   renderHookWithProviders,
+  userEvent,
 } from "@/testing/utils";
 
 const mockUseLocationValue = {
@@ -312,5 +315,78 @@ describe("usePreviousPersistent", () => {
     expect(result.current).toEqual(1);
     rerender(3);
     expect(result.current).toEqual(2);
+  });
+});
+
+describe("useOnKeyPressed", () => {
+  it("calls the callback when the specified key is pressed", () => {
+    const callback = vi.fn();
+    renderHook(() => useOnKeyPressed("Enter", callback));
+
+    const event = new KeyboardEvent("keydown", { key: "Enter" });
+    document.dispatchEvent(event);
+
+    expect(callback).toHaveBeenCalledWith(event);
+  });
+
+  it("does not call the callback for other keys", () => {
+    const onAfterPressed = vi.fn();
+    renderHook(() => useOnKeyPressed("Enter", onAfterPressed));
+
+    const event = new KeyboardEvent("keydown", { key: "Escape" });
+    document.dispatchEvent(event);
+
+    expect(onAfterPressed).not.toHaveBeenCalled();
+  });
+});
+
+describe("useGlobalKeyShortcut", () => {
+  const callback = vi.fn();
+
+  const TestInput = () => {
+    useGlobalKeyShortcut("/", callback);
+    return <input aria-label="Email" name="email" type="text" />;
+  };
+
+  const TestTextarea = () => {
+    useGlobalKeyShortcut("/", callback);
+    return <textarea aria-label="Description" name="description" />;
+  };
+
+  it("calls the callback when the specified key is pressed", () => {
+    renderHook(() => useGlobalKeyShortcut("/", callback));
+
+    const event = new KeyboardEvent("keydown", { key: "/" });
+    document.dispatchEvent(event);
+
+    expect(callback).toHaveBeenCalledWith(event);
+  });
+
+  it("does not call the callback for other keys", () => {
+    renderHook(() => useGlobalKeyShortcut("/", callback));
+
+    const event = new KeyboardEvent("keydown", { key: "Escape" });
+    document.dispatchEvent(event);
+
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("does not call the callback if an input element is focused", async () => {
+    render(<TestInput />);
+
+    await userEvent.type(screen.getByRole("textbox", { name: "Email" }), "/");
+
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("does not call the callback if a textarea element is focused", async () => {
+    render(<TestTextarea />);
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Description" }),
+      "/"
+    );
+
+    expect(callback).not.toHaveBeenCalled();
   });
 });

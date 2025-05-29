@@ -235,8 +235,11 @@ export const useGlobalKeyShortcut = (
     if (event.ctrlKey || event.altKey || event.metaKey) {
       return;
     }
-    // ignore keyboard events from input elements
-    if ((event.target as Element).nodeName !== "INPUT") {
+    // ignore keyboard events from input elements and textareas
+    if (
+      (event.target as Element).nodeName !== "INPUT" &&
+      (event.target as Element).nodeName !== "TEXTAREA"
+    ) {
       onAfterPressed(event);
     }
   });
