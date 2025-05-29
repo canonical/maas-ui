@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Button, Icon, Link } from "@canonical/react-components";
+import { AppStatus, Button, Icon, Link } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import TooltipButton from "../TooltipButton";
@@ -131,7 +131,7 @@ export const StatusBar = (): React.ReactElement | null => {
   }
 
   return (
-    <aside aria-label="status bar" className="p-status-bar">
+    <AppStatus aria-label="status bar" className="p-status-bar">
       <div className="p-status-bar__row u-flex">
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>
@@ -194,7 +194,7 @@ Site Manager as its upstream image source."
           </div>
         )}
       </div>
-    </aside>
+    </AppStatus>
   );
 };
 

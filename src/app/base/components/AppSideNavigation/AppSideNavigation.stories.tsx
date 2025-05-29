@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { Application } from "@canonical/react-components";
 import type { Meta } from "@storybook/react";
 
 import { AppSideNavigation } from "./AppSideNavigation";
@@ -16,9 +17,9 @@ const meta: Meta<typeof AppSideNavigation> = {
   },
   decorators: [
     (Story): ReactElement => (
-      <div className="l-application">
+      <Application>
         <Story />
-      </div>
+      </Application>
     ),
   ],
 };
