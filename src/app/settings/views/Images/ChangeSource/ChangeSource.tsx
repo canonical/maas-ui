@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useWindowTitle } from "@/app/base/hooks";
 import type { APIError } from "@/app/base/types";
 import {
   getDownloadableImages,
@@ -59,6 +60,8 @@ const ChangeSource = (): ReactElement => {
     return bootResourceActions.cleanup();
   }, []);
   const saved = !saving && previousSaving && !errors;
+
+  useWindowTitle("Source");
 
   const canChangeSource = resources.every((resource) => !resource.downloading);
   const source: BootResourceUbuntuSource =
