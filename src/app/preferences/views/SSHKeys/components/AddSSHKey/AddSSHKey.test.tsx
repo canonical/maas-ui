@@ -24,7 +24,7 @@ describe("AddSSHKey", () => {
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("calls import on save click with LP/GH", async () => {
+  it("calls the import endpoint on save button click when LP or GH is chosen", async () => {
     renderWithProviders(<AddSSHKey closeForm={vi.fn()} />);
 
     await userEvent.selectOptions(screen.getByRole("combobox"), "lp");
@@ -43,7 +43,7 @@ describe("AddSSHKey", () => {
     });
   });
 
-  it("calls create import on save click with Upload", async () => {
+  it("calls the create endpoint on save button click when Upload is chosen", async () => {
     renderWithProviders(<AddSSHKey closeForm={vi.fn()} />);
 
     await userEvent.selectOptions(screen.getByRole("combobox"), "upload");

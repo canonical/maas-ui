@@ -10,13 +10,12 @@ import MachineListHeader from "./MachineList/MachineListHeader";
 import { useGrouping, useResponsiveColumns } from "./MachineList/hooks";
 
 import PageContent from "@/app/base/components/PageContent/PageContent";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import MachineList from "@/app/machines/views/MachineList";
 import machineSelectors from "@/app/store/machine/selectors";
 import { selectedToFilters, FilterMachines } from "@/app/store/machine/utils";
 import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
 const Machines = (): React.ReactElement => {
   const navigate = useNavigate();

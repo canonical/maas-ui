@@ -19,14 +19,13 @@ import PageContent from "@/app/base/components/PageContent";
 import NodeTestDetails from "@/app/base/components/node/NodeTestDetails";
 import { useScrollToTop } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import ControllerForms from "@/app/controllers/components/ControllerForms/ControllerForms";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import { ControllerMeta } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute, isId } from "@/app/utils";
 
 const ControllerDetails = (): React.ReactElement => {

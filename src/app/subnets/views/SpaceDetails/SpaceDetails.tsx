@@ -12,12 +12,11 @@ import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
 import { SpaceMeta } from "@/app/store/space/types";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
