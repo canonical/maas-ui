@@ -3,7 +3,6 @@ import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   screen,
-  renderWithBrowserRouter,
   renderWithProviders,
   setupMockServer,
   waitFor,
@@ -100,7 +99,7 @@ describe("PoolsList", () => {
 
   it("displays a message when rendering an empty list", async () => {
     mockServer.use(poolsResolvers.listPools.handler({ items: [], total: 0 }));
-    renderWithBrowserRouter(<PoolsList />, { route: "/pools" });
+    renderWithProviders(<PoolsList />);
 
     await waitFor(() => {
       expect(screen.getByText("No pools found.")).toBeInTheDocument();

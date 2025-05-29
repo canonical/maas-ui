@@ -1,9 +1,9 @@
-import * as sidePanelHooks from "@/app/base/side-panel-context";
-import { PreferenceSidePanelViews } from "@/app/preferences/constants";
+import { vi } from "vitest";
+
 import DeleteSSHKey from "@/app/preferences/views/SSHKeys/components/DeleteSSHKey/DeleteSSHKey";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -13,19 +13,8 @@ import {
 const mockServer = setupMockServer(sshKeyResolvers.deleteSshKey.handler());
 
 describe("DeleteSSHKey", () => {
-  beforeEach(() => {
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent: vi.fn(),
-      sidePanelContent: {
-        view: PreferenceSidePanelViews.DELETE_SSH_KEYS,
-      },
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
-  });
-
   it("renders", () => {
-    renderWithBrowserRouter(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
+    renderWithProviders(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
     expect(
       screen.getByRole("form", { name: "Confirm SSH key deletion" })
     ).toBeInTheDocument();
@@ -34,8 +23,16 @@ describe("DeleteSSHKey", () => {
     ).toBeInTheDocument();
   });
 
+  it("calls closeForm on cancel click", async () => {
+    const closeForm = vi.fn();
+    renderWithProviders(<DeleteSSHKey closeForm={closeForm} ids={[2]} />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(closeForm).toHaveBeenCalled();
+  });
+
   it("can delete a group of SSH keys", async () => {
-    renderWithBrowserRouter(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
+    renderWithProviders(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
     await waitFor(() => {
@@ -47,7 +44,7 @@ describe("DeleteSSHKey", () => {
     mockServer.use(
       sshKeyResolvers.deleteSshKey.error({ message: "Uh oh!", code: 404 })
     );
-    renderWithBrowserRouter(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
+    renderWithProviders(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
 
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
