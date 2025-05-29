@@ -20,9 +20,7 @@ it("adds a correct className for a wide panel", async () => {
   renderWithBrowserRouter(<AppSidePanel title="side panel title" />, {
     sidePanelSize: "wide",
   });
-  expect(
-    screen
-      .getByRole("complementary", { name: "side panel title" })
-      .classList.contains("is-wide")
-  ).toBe(true);
+  expect(screen.getByRole("complementary").classList.contains("is-wide")).toBe(
+    true
+  );
 });

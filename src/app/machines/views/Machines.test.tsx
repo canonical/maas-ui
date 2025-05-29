@@ -438,7 +438,7 @@ describe("Machines", () => {
       "0 machines in 0 pools"
     );
     expect(
-      within(screen.getByTestId("app-side-panel")).getByRole("heading", {
+      within(screen.getByRole("complementary")).getByRole("heading", {
         level: 3,
       })
     ).toHaveTextContent("Deploy");

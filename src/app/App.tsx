@@ -1,7 +1,11 @@
 import type { ReactNode } from "react";
 import { Suspense, useEffect } from "react";
 
-import { Notification } from "@canonical/react-components";
+import {
+  Application,
+  AppStatus,
+  Notification,
+} from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
@@ -168,7 +172,7 @@ export const App = (): React.ReactElement => {
   }
 
   return (
-    <div className="l-application" id={MAAS_UI_ID}>
+    <Application id={MAAS_UI_ID}>
       <ThemePreviewContextProvider>
         <ConnectionStatus />
         {authLoaded && authenticated ? (
@@ -194,11 +198,11 @@ export const App = (): React.ReactElement => {
         >
           {content}
         </Suspense>
-        <aside className="l-status">
+        <AppStatus>
           <StatusBar />
-        </aside>
+        </AppStatus>
       </ThemePreviewContextProvider>
-    </div>
+    </Application>
   );
 };
 
