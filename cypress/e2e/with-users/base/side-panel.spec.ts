@@ -10,7 +10,7 @@ context("Side panel", () => {
   });
 
   it("closes the side panel on ESC key press", () => {
-    cy.findByRole("complementary").should("be.visible");
+    cy.get("#aside-panel").should("be.visible");
     cy.findByRole("complementary", { name: "Add device" }).should("be.visible");
     cy.get("body").type("{esc}");
     cy.findByRole("complementary", { name: "Add device" }).should("not.exist");
@@ -18,7 +18,7 @@ context("Side panel", () => {
   });
 
   it("closes the side panel when navigating to a different page", () => {
-    cy.findByRole("complementary").should("be.visible");
+    cy.get("#aside-panel").should("be.visible");
     cy.findByRole("heading", { name: "Add device" }).should("be.visible");
     cy.visit(generateMAASURL("/machines"));
     cy.findByTestId("app-side-panel").should("not.be.visible");
