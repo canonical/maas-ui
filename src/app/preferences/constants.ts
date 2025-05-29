@@ -11,7 +11,7 @@ export const preferencesNavItems: NavItem[] = [
     label: "API keys",
   },
   {
-    path: urls.preferences.sshKeys.index,
+    path: urls.preferences.sshKeys,
     label: "SSH keys",
   },
   {
@@ -19,7 +19,3 @@ export const preferencesNavItems: NavItem[] = [
     label: "SSL keys",
   },
 ];
-
-export const PreferenceSidePanelViews = {
-  DELETE_SSH_KEYS: ["", "deleteSSHKeys"],
-} as const;

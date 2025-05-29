@@ -1,13 +1,15 @@
 import {
   canOpenActionForm,
-  getSidePanelTitle,
   isNodeDetails,
   nodeIsController,
   nodeIsDevice,
   nodeIsMachine,
 } from "./base";
 
-import { SidePanelViews } from "@/app/base/side-panel-context";
+import {
+  getSidePanelTitle,
+  SidePanelViews,
+} from "@/app/base/side-panel-context";
 import { NodeActions, NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 

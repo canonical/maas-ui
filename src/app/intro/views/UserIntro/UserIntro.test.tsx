@@ -119,7 +119,7 @@ describe("UserIntro", () => {
 
     await waitForLoading();
 
-    expect(screen.getByRole("grid", { name: "SSH keys" })).toBeInTheDocument();
+    expect(screen.getByTestId("ssh-keys-table")).toBeInTheDocument();
   });
 
   it("marks the intro as completed when clicking the continue button", async () => {

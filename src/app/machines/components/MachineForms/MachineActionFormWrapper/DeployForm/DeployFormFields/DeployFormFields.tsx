@@ -322,7 +322,7 @@ export const DeployFormFields = (): React.ReactElement => {
                 <i className="p-icon--warning is-inline"></i>
                 Login will not be possible because no SSH keys have been added
                 to your account. To add an SSH key, visit your{" "}
-                <Link to={urls.preferences.sshKeys.index}>account page</Link>.
+                <Link to={urls.preferences.sshKeys}>account page</Link>.
               </p>
             </Col>
           </Row>

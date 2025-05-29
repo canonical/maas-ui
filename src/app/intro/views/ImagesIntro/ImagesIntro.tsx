@@ -11,7 +11,7 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import ImagesForms from "@/app/images/components/ImagesForms";
 import ImagesTable from "@/app/images/components/ImagesTable";
@@ -22,7 +22,6 @@ import IntroSection from "@/app/intro/components/IntroSection";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import configSelectors from "@/app/store/config/selectors";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
 export enum Labels {
   Continue = "Continue",

@@ -9,13 +9,12 @@ import ImageListHeader from "./ImageListHeader";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import ImagesForms from "@/app/images/components/ImagesForms";
 import ImagesTable from "@/app/images/components/ImagesTable";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
 export enum Labels {
   SyncDisabled = "Automatic image updates are disabled. This may mean that images won't be automatically updated and receive the latest package versions and security fixes.",

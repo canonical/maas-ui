@@ -261,11 +261,11 @@
 @import "@/app/preferences/views/APIKeys/APIKeyList";
 @import "@/app/preferences/views/SSLKeys/AddSSLKey";
 @import "@/app/preferences/views/SSLKeys/SSLKeyList";
-@import "@/app/preferences/views/SSHKeys/BaseSSHKeyList";
+@import "@/app/preferences/views/SSHKeys/components/SSHKeysTable";
 @include APIKeyList;
 @include AddSSLKey;
 @include SSLKeyList;
-@include SSHKeyList;
+@include SSHKeysTable;
 
 // settings
 @import "@/app/settings/components/SettingsTable";

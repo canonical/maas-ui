@@ -2,11 +2,10 @@ import { ExternalLink } from "@canonical/maas-react-components";
 import { Col, Row, Select, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import type { SSHKeyFormValues } from "../types";
-
 import FormikField from "@/app/base/components/FormikField";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import docsUrls from "@/app/base/docsUrls";
+import type { SSHKeyFormValues } from "@/app/preferences/views/SSHKeys/components/AddSSHKey/AddSSHKey";
 
 export const SSHKeyFormFields = (): React.ReactElement => {
   const { values } = useFormikContext<SSHKeyFormValues>();

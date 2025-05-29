@@ -1,16 +1,27 @@
-import * as Yup from "yup";
+import type { ReactElement } from "react";
 
-import SSHKeyFormFields from "./SSHKeyFormFields";
-import type { SSHKeyFormValues } from "./types";
+import * as Yup from "yup";
 
 import { useCreateSshKeys, useImportSshKeys } from "@/app/api/query/sshKeys";
 import type {
   CreateUserSshkeysError,
   ImportUserSshkeysError,
+  SshKeyImportFromSourceRequest,
+  SshKeyManualUploadRequest,
   SshKeysProtocolType,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
+import SSHKeyFormFields from "@/app/preferences/views/SSHKeys/components/AddSSHKey/SSHKeyFormFields";
+
+type AddSSHKeyProps = {
+  closeForm?: () => void;
+};
+
+export type SSHKeyFormValues = {
+  protocol: SshKeyImportFromSourceRequest["protocol"] | "" | "upload";
+  auth_id: SshKeyImportFromSourceRequest["auth_id"];
+  key: SshKeyManualUploadRequest["key"];
+};
 
 const SSHKeySchema = Yup.object().shape({
   protocol: Yup.string().required("Source is required"),
@@ -24,11 +35,7 @@ const SSHKeySchema = Yup.object().shape({
   }),
 });
 
-type Props = Partial<FormikFormProps<SSHKeyFormValues>> & {
-  cols?: number;
-};
-
-export const SSHKeyForm = ({ cols, ...props }: Props): React.ReactElement => {
+const AddSSHKey = ({ closeForm }: AddSSHKeyProps): ReactElement => {
   const uploadSshKey = useCreateSshKeys();
   const importSshKey = useImportSshKeys();
 
@@ -37,8 +44,15 @@ export const SSHKeyForm = ({ cols, ...props }: Props): React.ReactElement => {
       SSHKeyFormValues,
       CreateUserSshkeysError | ImportUserSshkeysError
     >
+      aria-label="Add SSH key"
       errors={uploadSshKey.error || importSshKey.error}
       initialValues={{ auth_id: "", protocol: "", key: "" }}
+      onCancel={closeForm}
+      onSaveAnalytics={{
+        action: "Saved",
+        category: "SSH keys preferences",
+        label: "Import SSH key form",
+      }}
       onSubmit={(values) => {
         if (values.key && values.key !== "") {
           uploadSshKey.mutate({
@@ -55,15 +69,16 @@ export const SSHKeyForm = ({ cols, ...props }: Props): React.ReactElement => {
           });
         }
       }}
+      onSuccess={closeForm}
+      resetOnSave={true}
       saved={uploadSshKey.isSuccess || importSshKey.isSuccess}
       saving={uploadSshKey.isPending || importSshKey.isPending}
       submitLabel="Import SSH key"
       validationSchema={SSHKeySchema}
-      {...props}
     >
       <SSHKeyFormFields />
     </FormikForm>
   );
 };
 
-export default SSHKeyForm;
+export default AddSSHKey;
