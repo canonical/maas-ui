@@ -1,5 +1,6 @@
 @mixin SSHKeysTable {
   .p-generic-table {
+    padding-top: 1rem !important;
     margin-bottom: 10%;
 
     .source, .id {
@@ -8,6 +9,10 @@
 
     .keys {
       width: 50%;
+    }
+
+    .action {
+      width: 10%;
     }
   }
 
