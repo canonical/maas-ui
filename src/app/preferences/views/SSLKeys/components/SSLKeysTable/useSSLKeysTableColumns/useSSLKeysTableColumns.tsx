@@ -19,6 +19,15 @@ const useSSLKeysTableColumns = (): SSLKeysColumnDef[] => {
           accessorKey: "key",
           enableSorting: true,
           header: "Key",
+          cell: ({
+            row: {
+              original: { key },
+            },
+          }) => (
+            <span className="u-truncate" title={key}>
+              {key}
+            </span>
+          ),
         },
         {
           id: "action",
