@@ -1,17 +1,13 @@
-import {
-  Col,
-  Row,
-  Textarea,
-  useOnEscapePressed,
-} from "@canonical/react-components";
+import type { ReactElement } from "react";
+
+import { Col, Row, Textarea } from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
-import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import { useCreateSslKeys } from "@/app/api/query/sslKeys";
+import type { CreateUserSslkeyError, SslKeyRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import urls from "@/app/base/urls";
 
 export enum Label {
   Title = "Add SSL key",
@@ -19,6 +15,10 @@ export enum Label {
   KeyField = "SSL key",
   SubmitLabel = "Save SSL key",
 }
+
+type AddSSLKeyProps = {
+  closeForm: () => void;
+};
 
 // This can be removed when the autoComplete prop is supported:
 // https://github.com/canonical/react-components/issues/571
@@ -30,18 +30,15 @@ const SSLKeySchema = Yup.object().shape({
   key: Yup.string().required("SSL key is required"),
 });
 
-export const AddSSLKey = (): React.ReactElement => {
-  const navigate = useNavigate();
+export const AddSSLKey = ({ closeForm }: AddSSLKeyProps): ReactElement => {
   const uploadSslKey = useCreateSslKeys();
-  const onCancel = () => navigate({ pathname: urls.preferences.sslKeys.index });
-  useOnEscapePressed(() => onCancel());
 
   return (
-    <FormikForm
-      aria-label={Label.FormLabel}
+    <FormikForm<SslKeyRequest, CreateUserSslkeyError>
+      aria-label="Add SSL key"
       errors={uploadSslKey.error}
       initialValues={{ key: "" }}
-      onCancel={onCancel}
+      onCancel={closeForm}
       onSaveAnalytics={{
         action: "Saved",
         category: "SSL keys preferences",
@@ -56,10 +53,11 @@ export const AddSSLKey = (): React.ReactElement => {
           });
         }
       }}
+      onSuccess={closeForm}
+      resetOnSave={true}
       saved={uploadSslKey.isSuccess}
-      savedRedirect={urls.preferences.sslKeys.index}
       saving={uploadSslKey.isPending}
-      submitLabel={Label.SubmitLabel}
+      submitLabel="Save SSL key"
       validationSchema={SSLKeySchema}
     >
       <Row>

@@ -1,6 +1,6 @@
 import DeleteSSLKey from "./DeleteSSLKey";
 
-import { Label as SSLKeyListLabels } from "@/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList";
+import { Label as SSLKeyListLabels } from "@/app/preferences/views/SSLKeys/views/SSLKeyList";
 import { sslKeyResolvers } from "@/testing/resolvers/sslKeys";
 import {
   screen,

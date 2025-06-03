@@ -1,5 +1,3 @@
-import type { SslKeyResponse } from "../apiclient";
-
 import type { Token } from "@/app/store/token/types";
 import { argPath } from "@/app/utils";
 
@@ -13,13 +11,7 @@ const urls = {
   details: "/account/prefs/details",
   index: "/account/prefs",
   sshKeys: "/account/prefs/ssh-keys",
-  sslKeys: {
-    add: "/account/prefs/ssl-keys/add",
-    delete: argPath<{ id: SslKeyResponse["id"] }>(
-      "/account/prefs/ssl-keys/:id/delete"
-    ),
-    index: "/account/prefs/ssl-keys",
-  },
+  sslKeys: "/account/prefs/ssl-keys",
 };
 
 export default urls;
