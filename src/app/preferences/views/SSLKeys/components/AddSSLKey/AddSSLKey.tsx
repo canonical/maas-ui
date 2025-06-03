@@ -9,13 +9,6 @@ import type { CreateUserSslkeyError, SslKeyRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 
-export enum Label {
-  Title = "Add SSL key",
-  FormLabel = "Add SSL key form",
-  KeyField = "SSL key",
-  SubmitLabel = "Save SSL key",
-}
-
 type AddSSLKeyProps = {
   closeForm: () => void;
 };
@@ -68,7 +61,7 @@ export const AddSSLKey = ({ closeForm }: AddSSLKeyProps): ReactElement => {
             autoCorrect="off"
             className="ssl-key-form-fields__key p-text--code"
             component={ProxyTextarea}
-            label={Label.KeyField}
+            label="SSL key"
             name="key"
             spellCheck="false"
           />
