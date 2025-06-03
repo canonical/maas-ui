@@ -27,6 +27,8 @@ import type { PoolSidePanelContent } from "@/app/pools/constants";
 import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import type { SSHKeySidePanelContent } from "@/app/preferences/views/SSHKeys/constants";
 import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
+import type { SSLKeySidePanelContent } from "@/app/preferences/views/SSLKeys/constants";
+import { SSLKeyActionSidePanelViews } from "@/app/preferences/views/SSLKeys/constants";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import {
@@ -69,6 +71,7 @@ export type SidePanelContent =
   | PoolSidePanelContent
   | SpaceDetailsSidePanelContent
   | SSHKeySidePanelContent
+  | SSLKeySidePanelContent
   | SubnetDetailsSidePanelContent
   | SubnetSidePanelContent
   | TagSidePanelContent
@@ -102,6 +105,7 @@ export const SidePanelViews = {
   ...FabricDetailsSidePanelViews,
   ...ImageSidePanelViews,
   ...SSHKeyActionSidePanelViews,
+  ...SSLKeyActionSidePanelViews,
   ...PoolActionSidePanelViews,
   ...SubnetDetailsSidePanelViews,
   ...SpaceDetailsSidePanelViews,
@@ -121,6 +125,8 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.ADD_SPECIAL_FILESYSTEM[1]]: "Add special filesystem",
   [SidePanelViews.ADD_SSH_KEY[1]]: "Add SSH key",
   [SidePanelViews.DELETE_SSH_KEY[1]]: "Delete SSH key",
+  [SidePanelViews.ADD_SSL_KEY[1]]: "Add SSL key",
+  [SidePanelViews.DELETE_SSL_KEY[1]]: "Delete SSL key",
   [SidePanelViews.AddTag[1]]: "Create new tag",
   [SidePanelViews.ADD_VLAN[1]]: "Add VLAN",
   [SidePanelViews.APPLY_STORAGE_LAYOUT[1]]: "Change storage layout",

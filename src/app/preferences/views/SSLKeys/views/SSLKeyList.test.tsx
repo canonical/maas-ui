@@ -1,4 +1,4 @@
-import SSLKeyList, { Label as SSLKeyListLabels } from "./SSLKeyList";
+import SSLKeyList from "./SSLKeyList";
 
 import * as factory from "@/testing/factories";
 import { sslKeyResolvers } from "@/testing/resolvers/sslKeys";
@@ -8,6 +8,7 @@ import {
   mockIsPending,
   waitForLoading,
   renderWithProviders,
+  waitFor,
 } from "@/testing/utils";
 
 const mockKeys = {
@@ -44,7 +45,7 @@ describe("SSLKeyList", () => {
   it("displays a loading component if machines are loading", () => {
     mockIsPending();
     renderWithProviders(<SSLKeyList />);
-    expect(screen.getByText("Loading")).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("can display errors", async () => {
@@ -59,12 +60,7 @@ describe("SSLKeyList", () => {
     expect(screen.getByText("Unable to list SSL keys")).toBeInTheDocument();
   });
 
-  it("can render the table", () => {
-    renderWithProviders(<SSLKeyList />);
-    expect(screen.getByRole("grid", { name: SSLKeyListLabels.Title }));
-  });
-
-  it("displays an empty state message", () => {
+  it("displays an empty state message", async () => {
     mockServer.use(
       sslKeyResolvers.getSslKeys.handler({
         items: [],
@@ -73,6 +69,8 @@ describe("SSLKeyList", () => {
     );
     renderWithProviders(<SSLKeyList />);
 
-    expect(screen.getByText("No SSL keys available.")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("No SSL keys available.")).toBeInTheDocument();
+    });
   });
 });

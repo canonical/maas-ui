@@ -15,7 +15,7 @@ export const preferencesNavItems: NavItem[] = [
     label: "SSH keys",
   },
   {
-    path: urls.preferences.sslKeys.index,
+    path: urls.preferences.sslKeys,
     label: "SSL keys",
   },
 ];

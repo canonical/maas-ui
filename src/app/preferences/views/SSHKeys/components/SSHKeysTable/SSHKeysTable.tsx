@@ -87,6 +87,7 @@ const SSHKeysTable = ({ isIntro = false }: SSHKeysTableProps): ReactElement => {
         </MainToolbar>
       )}
       <GenericTable
+        aria-label="SSH keys"
         columns={columns}
         data={sshKeys}
         isLoading={isPending}

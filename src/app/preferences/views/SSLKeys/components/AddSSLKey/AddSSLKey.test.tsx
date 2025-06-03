@@ -1,4 +1,4 @@
-import { AddSSLKey, Label as AddSSLKeyLabels } from "./AddSSLKey";
+import { AddSSLKey } from "./AddSSLKey";
 
 import { sslKeyResolvers } from "@/testing/resolvers/sslKeys";
 import {
@@ -13,21 +13,19 @@ setupMockServer(sslKeyResolvers.createSslKey.handler());
 
 describe("AddSSLKey", () => {
   it("can render", () => {
-    renderWithProviders(<AddSSLKey />);
+    renderWithProviders(<AddSSLKey closeForm={vi.fn()} />);
     expect(
-      screen.getByRole("form", { name: AddSSLKeyLabels.FormLabel })
+      screen.getByRole("form", { name: "Add SSL key" })
     ).toBeInTheDocument();
   });
 
   it("can create a SSL key", async () => {
-    renderWithProviders(<AddSSLKey />);
+    renderWithProviders(<AddSSLKey closeForm={vi.fn()} />);
     await userEvent.type(
-      screen.getByRole("textbox", { name: AddSSLKeyLabels.KeyField }),
+      screen.getByRole("textbox", { name: "SSL key" }),
       "--- begin cert ---..."
     );
-    await userEvent.click(
-      screen.getByRole("button", { name: AddSSLKeyLabels.SubmitLabel })
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Save SSL key" }));
 
     await waitFor(() => {
       expect(sslKeyResolvers.createSslKey.resolved).toBeTruthy();
