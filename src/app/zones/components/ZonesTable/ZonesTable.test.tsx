@@ -223,7 +223,7 @@ describe("ZonesTable", () => {
       });
     });
 
-    it("opens delete pool side panel form", async () => {
+    it("opens delete zone side panel form", async () => {
       mockServer.use(
         zoneResolvers.listZones.handler({
           items: [

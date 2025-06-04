@@ -59,7 +59,7 @@ describe("ZonesList", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders DeleteZone when view is DELETE_ZONE and a valid poolId is provided", () => {
+  it("renders DeleteZone when view is DELETE_ZONE and a valid zoneId is provided", () => {
     mockSidePanelContent = {
       view: ZoneActionSidePanelViews.DELETE_ZONE,
       extras: { zoneId: 42 },
