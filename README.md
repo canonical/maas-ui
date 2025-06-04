@@ -36,6 +36,7 @@ This repository contains the sourcecode for the [MAAS](https://maas.io) web app,
 
 ## Contributing
 
+
 Community contributions are most welcome, and there are a number of ways to participate:
 
 - [Submit bugs and feature requests](https://maas.io/docs/how-to-review-and-report-bugs)
