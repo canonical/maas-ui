@@ -10,12 +10,7 @@ import SSLKeysTable from "@/app/preferences/views/SSLKeys/components/SSLKeysTabl
 import { SSLKeyActionSidePanelViews } from "@/app/preferences/views/SSLKeys/constants";
 import { isId } from "@/app/utils";
 
-export enum Label {
-  Title = "SSL keys",
-  DeleteConfirm = "Confirm or cancel deletion of SSL key",
-}
-
-const SSLKeyList = (): ReactElement => {
+const SSLKeysList = (): ReactElement => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useWindowTitle("SSL keys");
@@ -58,4 +53,4 @@ const SSLKeyList = (): ReactElement => {
   );
 };
 
-export default SSLKeyList;
+export default SSLKeysList;

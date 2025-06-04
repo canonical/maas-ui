@@ -31,7 +31,7 @@ describe("EditPool", () => {
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("updates a zone on save click", async () => {
+  it("calls update pool on save click", async () => {
     renderWithProviders(<EditPool closeForm={vi.fn()} id={testPoolId} />);
 
     await waitFor(() => {
@@ -59,7 +59,7 @@ describe("EditPool", () => {
     });
   });
 
-  it("displays error message when update zone fails", async () => {
+  it("displays error message when update pool fails", async () => {
     mockServer.use(
       poolsResolvers.updatePool.error({ code: 400, message: "Uh oh!" }),
       poolsResolvers.updatePool.handler()

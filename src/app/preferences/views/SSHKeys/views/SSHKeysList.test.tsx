@@ -1,57 +1,71 @@
+import type { SSHKeySidePanelContent } from "@/app/preferences/views/SSHKeys/constants";
+import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
 import SSHKeysList from "@/app/preferences/views/SSHKeys/views/SSHKeysList";
-import * as factory from "@/testing/factories";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
-  screen,
-  setupMockServer,
   renderWithProviders,
-  waitFor,
-  within,
+  screen,
+  userEvent,
+  setupMockServer,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(sshKeyResolvers.listSshKeys.handler());
+setupMockServer(sshKeyResolvers.listSshKeys.handler());
+
+let mockSidePanelContent: SSHKeySidePanelContent | null = null;
+const mockSetSidePanelContent = vi.fn();
+
+vi.mock("@/app/base/side-panel-context", async () => {
+  const actual = await vi.importActual("@/app/base/side-panel-context");
+  return {
+    ...actual,
+    useSidePanel: () => ({
+      sidePanelContent: mockSidePanelContent,
+      setSidePanelContent: mockSetSidePanelContent,
+      sidePanelSize: "regular",
+      setSidePanelSize: vi.fn(),
+    }),
+  };
+});
 
 describe("SSHKeysList", () => {
-  it("displays a loading component if ssh keys are loading", async () => {
-    renderWithProviders(<SSHKeysList />);
-
-    await waitFor(() => {
-      expect(screen.getByText("Loading...")).toBeInTheDocument();
-    });
+  beforeEach(() => {
+    mockSetSidePanelContent.mockClear();
+    mockSidePanelContent = null;
   });
 
-  it("displays a link to delete confirmation", async () => {
-    mockServer.use(
-      sshKeyResolvers.listSshKeys.handler({
-        items: [factory.sshKey({ auth_id: "squambo" })],
-        total: 1,
-      })
-    );
+  it("renders AddSSHKey when view is ADD_SSH_KEY", () => {
+    mockSidePanelContent = {
+      view: SSHKeyActionSidePanelViews.ADD_SSH_KEY,
+    };
 
     renderWithProviders(<SSHKeysList />);
-
-    await waitFor(() => {
-      expect(screen.getByRole("cell", { name: "squambo" })).toBeInTheDocument();
-    });
-    const cell = screen.getByRole("cell", { name: "squambo" });
-    const row = cell.closest("tr")!;
-    expect(row).not.toHaveClass("is-active");
-
-    await waitFor(() => {
-      expect(
-        within(row).getByRole("button", { name: "Delete" })
-      ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByRole("complementary", { name: "Add SSH key" })
+    ).toBeInTheDocument();
   });
 
-  it("displays a message when rendering an empty list", async () => {
-    mockServer.use(
-      sshKeyResolvers.listSshKeys.handler({ items: [], total: 0 })
-    );
-    renderWithProviders(<SSHKeysList />);
+  it("renders DeleteSSHKey when view is DELETE_SSH_KEY and valid sshKeyIds are provided", () => {
+    mockSidePanelContent = {
+      view: SSHKeyActionSidePanelViews.DELETE_SSH_KEY,
+      extras: { sshKeyIds: [42] },
+    };
 
-    await waitFor(() => {
-      expect(screen.getByText("No SSH keys available.")).toBeInTheDocument();
-    });
+    renderWithProviders(<SSHKeysList />);
+    expect(
+      screen.getByRole("complementary", { name: "Delete SSH key" })
+    ).toBeInTheDocument();
+  });
+
+  it("closes side panel form when canceled", async () => {
+    mockSidePanelContent = {
+      view: SSHKeyActionSidePanelViews.ADD_SSH_KEY,
+    };
+
+    renderWithProviders(<SSHKeysList />);
+    expect(
+      screen.getByRole("complementary", { name: "Add SSH key" })
+    ).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
   });
 });

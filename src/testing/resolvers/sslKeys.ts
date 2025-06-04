@@ -47,16 +47,16 @@ const mockDeleteSslKeyError: DeleteUserSslkeyError = {
 };
 
 const sslKeyResolvers = {
-  getSslKeys: {
+  listSslKeys: {
     resolved: false,
     handler: (data: GetUserSslkeysResponse = mockSslKeys) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/me/sslkeys`, () => {
-        sslKeyResolvers.getSslKeys.resolved = true;
+        sslKeyResolvers.listSslKeys.resolved = true;
         return HttpResponse.json(data);
       }),
     error: (error: GetUserSslkeysError = mockGetSslKeysError) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/me/sslkeys`, () => {
-        sslKeyResolvers.getSslKeys.resolved = true;
+        sslKeyResolvers.listSslKeys.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },

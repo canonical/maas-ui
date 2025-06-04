@@ -1,3 +1,4 @@
+import { SidePanelViews } from "@/app/base/side-panel-context";
 import PoolsListHeader from "@/app/pools/components/PoolsListHeader/PoolsListHeader";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
@@ -11,7 +12,7 @@ describe("PoolsListHeader", () => {
     await userEvent.click(screen.getByRole("button", { name: "Add pool" }));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: ["poolForm", "createPool"],
+      view: SidePanelViews.CREATE_POOL,
     });
   });
 });

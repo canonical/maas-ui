@@ -13,7 +13,7 @@ import APIKeyEdit from "@/app/preferences/views/APIKeys/APIKeyEdit";
 import APIKeyList from "@/app/preferences/views/APIKeys/APIKeyList";
 import Details from "@/app/preferences/views/Details";
 import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
-import SSLKeyList from "@/app/preferences/views/SSLKeys/views";
+import SSLKeysList from "@/app/preferences/views/SSLKeys/views";
 import { getRelativeRoute } from "@/app/utils";
 
 const ControllerDetails = lazy(
@@ -256,7 +256,7 @@ export const router = createBrowserRouter(
               path: getRelativeRoute(urls.preferences.sslKeys, base),
               element: (
                 <ErrorBoundary>
-                  <SSLKeyList />
+                  <SSLKeysList />
                 </ErrorBoundary>
               ),
             },

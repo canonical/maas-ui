@@ -1,33 +1,86 @@
-import ZonesList from "@/app/zones/components/ZonesTable/ZonesTable";
+import type { ZoneSidePanelContent } from "@/app/zones/constants";
+import { ZoneActionSidePanelViews } from "@/app/zones/constants";
+import ZonesList from "@/app/zones/views/ZonesList";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
   screen,
+  userEvent,
   setupMockServer,
-  waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  zoneResolvers.getZone.handler()
+);
+
+let mockSidePanelContent: ZoneSidePanelContent | null = null;
+const mockSetSidePanelContent = vi.fn();
+
+vi.mock("@/app/base/side-panel-context", async () => {
+  const actual = await vi.importActual("@/app/base/side-panel-context");
+  return {
+    ...actual,
+    useSidePanel: () => ({
+      sidePanelContent: mockSidePanelContent,
+      setSidePanelContent: mockSetSidePanelContent,
+      sidePanelSize: "regular",
+      setSidePanelSize: vi.fn(),
+    }),
+  };
+});
 
 describe("ZonesList", () => {
-  it("correctly fetches the necessary data", async () => {
-    renderWithProviders(<ZonesList />);
-
-    expect(await screen.findByText("zone-1")).toBeInTheDocument();
+  beforeEach(() => {
+    mockSetSidePanelContent.mockClear();
+    mockSidePanelContent = null;
   });
 
-  it("shows a zones table if there are any zones", async () => {
-    renderWithProviders(<ZonesList />);
+  it("renders AddZone when view is CREATE_ZONE", () => {
+    mockSidePanelContent = {
+      view: ZoneActionSidePanelViews.CREATE_ZONE,
+    };
 
-    expect(screen.getByRole("grid")).toBeInTheDocument();
+    renderWithProviders(<ZonesList />);
+    expect(
+      screen.getByRole("complementary", { name: "Add AZ" })
+    ).toBeInTheDocument();
   });
 
-  it("shows a message if there are no zones", async () => {
-    mockServer.use(zoneResolvers.listZones.handler({ items: [], total: 0 }));
-    renderWithProviders(<ZonesList />);
+  it("renders EditZone when view is EDIT_ZONE and a valid zoneId is provided", () => {
+    mockSidePanelContent = {
+      view: ZoneActionSidePanelViews.EDIT_ZONE,
+      extras: { zoneId: 42 },
+    };
 
-    await waitFor(() =>
-      expect(screen.getByText("No zones available.")).toBeInTheDocument()
-    );
+    renderWithProviders(<ZonesList />);
+    expect(
+      screen.getByRole("complementary", { name: "Edit AZ" })
+    ).toBeInTheDocument();
+  });
+
+  it("renders DeleteZone when view is DELETE_ZONE and a valid zoneId is provided", () => {
+    mockSidePanelContent = {
+      view: ZoneActionSidePanelViews.DELETE_ZONE,
+      extras: { zoneId: 42 },
+    };
+
+    renderWithProviders(<ZonesList />, { state: {} });
+    expect(
+      screen.getByRole("complementary", { name: "Delete AZ" })
+    ).toBeInTheDocument();
+  });
+
+  it("closes side panel form when canceled", async () => {
+    mockSidePanelContent = {
+      view: ZoneActionSidePanelViews.CREATE_ZONE,
+    };
+
+    renderWithProviders(<ZonesList />);
+    expect(
+      screen.getByRole("complementary", { name: "Add AZ" })
+    ).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
   });
 });
