@@ -2,12 +2,12 @@ import userEvent from "@testing-library/user-event";
 import type { Mock } from "vitest";
 import { describe } from "vitest";
 
-import SSHKeysTable from "./SSHKeysTable";
+import SSLKeysTable from "./SSLKeysTable";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
+import { SSLKeyActionSidePanelViews } from "@/app/preferences/views/SSLKeys/constants";
 import * as factory from "@/testing/factories";
-import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
+import { sslKeyResolvers } from "@/testing/resolvers/sslKeys";
 import {
   renderWithProviders,
   screen,
@@ -15,7 +15,7 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(sshKeyResolvers.listSshKeys.handler());
+const mockServer = setupMockServer(sslKeyResolvers.listSslKeys.handler());
 
 vi.mock("@/app/base/side-panel-context", async () => {
   const actual = await vi.importActual("@/app/base/side-panel-context");
@@ -25,7 +25,7 @@ vi.mock("@/app/base/side-panel-context", async () => {
   };
 });
 
-describe("SSHKeysTable", () => {
+describe("SSLKeysTable", () => {
   const mockSetSidePanelContent = vi.fn();
 
   (useSidePanel as Mock).mockReturnValue({
@@ -33,8 +33,8 @@ describe("SSHKeysTable", () => {
   });
 
   describe("display", () => {
-    it("displays a loading component if SSH keys are loading", async () => {
-      renderWithProviders(<SSHKeysTable isIntro={false} />);
+    it("displays a loading component if SSL keys are loading", async () => {
+      renderWithProviders(<SSLKeysTable />);
 
       await waitFor(() => {
         expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -43,19 +43,19 @@ describe("SSHKeysTable", () => {
 
     it("displays a message when rendering an empty list", async () => {
       mockServer.use(
-        sshKeyResolvers.listSshKeys.handler({ items: [], total: 0 })
+        sslKeyResolvers.listSslKeys.handler({ items: [], total: 0 })
       );
-      renderWithProviders(<SSHKeysTable isIntro={false} />);
+      renderWithProviders(<SSLKeysTable />);
 
       await waitFor(() => {
-        expect(screen.getByText("No SSH keys available.")).toBeInTheDocument();
+        expect(screen.getByText("No SSL keys available.")).toBeInTheDocument();
       });
     });
 
     it("displays the columns correctly", () => {
-      renderWithProviders(<SSHKeysTable isIntro={false} />);
+      renderWithProviders(<SSLKeysTable />);
 
-      ["Source", "ID", "Key", "Action"].forEach((column) => {
+      ["Key", "Action"].forEach((column) => {
         expect(
           screen.getByRole("columnheader", {
             name: new RegExp(`^${column}`, "i"),
@@ -72,42 +72,39 @@ describe("SSHKeysTable", () => {
   });
 
   describe("actions", () => {
-    it("opens add SSH key side panel form", async () => {
-      renderWithProviders(<SSHKeysTable isIntro={false} />);
+    it("opens add SSL key side panel form", async () => {
+      renderWithProviders(<SSLKeysTable />);
 
       await waitFor(() => {
         expect(
-          screen.getByRole("button", { name: "Import SSH key" })
+          screen.getByRole("button", { name: "Add SSL key" })
         ).toBeInTheDocument();
       });
 
       await userEvent.click(
-        screen.getByRole("button", { name: "Import SSH key" })
+        screen.getByRole("button", { name: "Add SSL key" })
       );
 
       await waitFor(() => {
         expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: SSHKeyActionSidePanelViews.ADD_SSH_KEY,
+          view: SSLKeyActionSidePanelViews.ADD_SSL_KEY,
         });
       });
     });
 
-    it("opens delete SSH key side panel form", async () => {
+    it("opens delete SSL key side panel form", async () => {
       mockServer.use(
-        sshKeyResolvers.listSshKeys.handler({
+        sslKeyResolvers.listSslKeys.handler({
           items: [
-            factory.sshKey({
+            factory.sslKey({
               id: 1,
             }),
-            factory.sshKey({
-              id: 2,
-            }),
           ],
-          total: 2,
+          total: 1,
         })
       );
 
-      renderWithProviders(<SSHKeysTable isIntro={false} />);
+      renderWithProviders(<SSLKeysTable />);
 
       await waitFor(() => {
         expect(
@@ -119,9 +116,9 @@ describe("SSHKeysTable", () => {
 
       await waitFor(() => {
         expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: SSHKeyActionSidePanelViews.DELETE_SSH_KEY,
+          view: SSLKeyActionSidePanelViews.DELETE_SSL_KEY,
           extras: {
-            sshKeyIds: [1, 2],
+            sslKeyId: 1,
           },
         });
       });

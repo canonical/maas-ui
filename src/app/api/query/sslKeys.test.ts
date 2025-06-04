@@ -9,7 +9,7 @@ import {
 } from "@/testing/utils";
 
 setupMockServer(
-  sslKeyResolvers.getSslKeys.handler(),
+  sslKeyResolvers.listSslKeys.handler(),
   sslKeyResolvers.createSslKey.handler(),
   sslKeyResolvers.deleteSslKey.handler()
 );
