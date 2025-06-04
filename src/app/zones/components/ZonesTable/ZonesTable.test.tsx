@@ -159,6 +159,9 @@ describe("ZonesTable", () => {
     });
   });
 
+  // TODO: backend-provided permissions is only available for pools,
+  //  and will be discussed as to whether they should be added everywhere.
+  //  Enable these tests if they are added to zones
   describe("permissions", () => {
     it.skip("enables the action buttons with correct permissions");
 
@@ -186,12 +189,6 @@ describe("ZonesTable", () => {
         ).toBeAriaDisabled();
       });
     });
-
-    it.skip("disables the delete button for zones that contain machines");
-
-    it.skip("disables the delete button for zones that contain controllers");
-
-    it.skip("disables the delete button for zones that contain devices");
   });
 
   describe("actions", () => {
