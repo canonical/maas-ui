@@ -4,8 +4,8 @@ import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineSetSidePanelContent } from "@/app/machines/types";
 
 type Props = {
-  disabled?: boolean;
-  setSidePanelContent: MachineSetSidePanelContent;
+  readonly disabled?: boolean;
+  readonly setSidePanelContent: MachineSetSidePanelContent;
 };
 
 export const AddHardwareMenu = ({

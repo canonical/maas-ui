@@ -12,8 +12,8 @@ import type { Pod } from "@/app/store/pod/types";
 export const TRUNCATION_POINT = 3;
 
 type Props = {
-  defaultPoolId?: Pod["default_storage_pool"];
-  pools: KVMStoragePoolResources;
+  readonly defaultPoolId?: Pod["default_storage_pool"];
+  readonly pools: KVMStoragePoolResources;
 };
 
 const KVMStorageCards = ({

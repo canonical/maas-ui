@@ -19,7 +19,7 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  newPodValues: NewPodValues;
+  readonly newPodValues: NewPodValues;
 };
 
 export const SelectProjectFormFields = ({

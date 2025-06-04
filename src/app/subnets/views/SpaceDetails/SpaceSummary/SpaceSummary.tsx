@@ -6,7 +6,11 @@ import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import type { Space } from "@/app/store/space/types";
 
-const SpaceSummary = ({ space }: { space: Space }): React.ReactElement => {
+const SpaceSummary = ({
+  space,
+}: {
+  readonly space: Space;
+}): React.ReactElement => {
   return (
     <EditableSection
       hasSidebarTitle

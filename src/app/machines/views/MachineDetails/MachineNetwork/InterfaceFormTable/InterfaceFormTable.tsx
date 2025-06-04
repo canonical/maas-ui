@@ -92,11 +92,11 @@ const generateRow = (
 };
 
 type Props = {
-  interfaces: InterfaceRow[];
-  selected?: Selected[];
-  selectedEditable?: boolean;
-  setSelected?: SetSelected | null;
-  systemId: Machine["system_id"];
+  readonly interfaces: InterfaceRow[];
+  readonly selected?: Selected[];
+  readonly selectedEditable?: boolean;
+  readonly setSelected?: SetSelected | null;
+  readonly systemId: Machine["system_id"];
 };
 
 const InterfaceFormTable = ({

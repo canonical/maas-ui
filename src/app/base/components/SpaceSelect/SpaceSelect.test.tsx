@@ -71,7 +71,7 @@ it("renders options correctly", async () => {
 });
 
 it("maintains selected option after new options are added", async () => {
-  const SpaceWithProvider = ({ state }: { state: RootState }) => (
+  const SpaceWithProvider = ({ state }: { readonly state: RootState }) => (
     <Provider store={mockStore(state)}>
       <Formik initialValues={{ space: "" }} onSubmit={vi.fn()}>
         <SpaceSelect name="space" />

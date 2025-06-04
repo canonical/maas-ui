@@ -17,7 +17,7 @@ import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 export enum Label {

@@ -39,8 +39,8 @@ const editStaticRouteSchema = Yup.object().shape({
 });
 
 export type Props = {
-  staticRouteId?: StaticRoute[StaticRouteMeta.PK];
-  setSidePanelContent: SetSidePanelContent;
+  readonly staticRouteId?: StaticRoute[StaticRouteMeta.PK];
+  readonly setSidePanelContent: SetSidePanelContent;
 };
 const EditStaticRouteForm = ({
   staticRouteId,

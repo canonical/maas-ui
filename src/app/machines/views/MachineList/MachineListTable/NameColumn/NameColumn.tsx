@@ -20,12 +20,12 @@ import type {
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  callId?: string | null;
-  groupValue: MachineStateListGroup["value"];
-  showActions?: boolean;
-  showMAC?: boolean;
-  systemId: Machine[MachineMeta.PK];
-  machines?: Machine[];
+  readonly callId?: string | null;
+  readonly groupValue: MachineStateListGroup["value"];
+  readonly showActions?: boolean;
+  readonly showMAC?: boolean;
+  readonly systemId: Machine[MachineMeta.PK];
+  readonly machines?: Machine[];
 };
 
 const generateFQDN = (machine: Machine, machineURL: string) => {

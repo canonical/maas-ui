@@ -11,7 +11,7 @@ import type { Space, SpaceMeta } from "@/app/store/space/types";
 import { getSpaceDisplay } from "@/app/store/space/utils";
 
 type Props = {
-  id?: Space[SpaceMeta.PK] | null;
+  readonly id?: Space[SpaceMeta.PK] | null;
 };
 
 const SpaceLink = ({ id }: Props): React.ReactElement => {

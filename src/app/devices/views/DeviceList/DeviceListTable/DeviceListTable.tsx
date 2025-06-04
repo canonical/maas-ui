@@ -22,11 +22,11 @@ import {
 import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 
 type Props = {
-  devices: Device[];
-  hasFilter?: boolean;
-  loading?: boolean;
-  onSelectedChange: (newSelectedIDs: Device[DeviceMeta.PK][]) => void;
-  selectedIDs: Device[DeviceMeta.PK][];
+  readonly devices: Device[];
+  readonly hasFilter?: boolean;
+  readonly loading?: boolean;
+  readonly onSelectedChange: (newSelectedIDs: Device[DeviceMeta.PK][]) => void;
+  readonly selectedIDs: Device[DeviceMeta.PK][];
 };
 
 export enum Labels {

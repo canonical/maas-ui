@@ -12,7 +12,7 @@ import { isControllerDetails } from "@/app/store/controller/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  readonly systemId: Controller[ControllerMeta.PK];
 };
 
 const ControllerSummary = ({ systemId }: Props): React.ReactElement => {

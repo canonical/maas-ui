@@ -7,22 +7,22 @@ import TableMenu from "@/app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "@/app/base/components/TableMenu/TableMenu";
 
 type Props<L> = {
-  className?: string | null;
-  icon?: ReactNode | null;
-  iconSpace?: boolean | null;
-  menuClassName?: string | null;
-  menuLinks?: TableMenuProps<L>["links"];
-  menuTitle?: string | null;
-  onToggleMenu?: TableMenuProps<L>["onToggleMenu"];
-  primary?: ReactNode | null;
-  primaryAriaLabel?: string | null;
-  primaryClassName?: string | null;
-  primaryTextClassName?: string | null;
-  primaryTitle?: string | null;
-  secondary?: ReactNode | null;
-  secondaryAriaLabel?: string | null;
-  secondaryClassName?: string | null;
-  secondaryTitle?: string | null;
+  readonly className?: string | null;
+  readonly icon?: ReactNode | null;
+  readonly iconSpace?: boolean | null;
+  readonly menuClassName?: string | null;
+  readonly menuLinks?: TableMenuProps<L>["links"];
+  readonly menuTitle?: string | null;
+  readonly onToggleMenu?: TableMenuProps<L>["onToggleMenu"];
+  readonly primary?: ReactNode | null;
+  readonly primaryAriaLabel?: string | null;
+  readonly primaryClassName?: string | null;
+  readonly primaryTextClassName?: string | null;
+  readonly primaryTitle?: string | null;
+  readonly secondary?: ReactNode | null;
+  readonly secondaryAriaLabel?: string | null;
+  readonly secondaryClassName?: string | null;
+  readonly secondaryTitle?: string | null;
 };
 
 export enum TestIds {

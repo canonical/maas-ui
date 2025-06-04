@@ -29,11 +29,11 @@ import {
 } from "@/app/store/utils";
 
 type Props = {
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  systemId: Machine["system_id"];
-  selected?: Selected[];
-  setSelected?: SetSelected;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly systemId: Machine["system_id"];
+  readonly selected?: Selected[];
+  readonly setSelected?: SetSelected;
 };
 
 export enum Label {

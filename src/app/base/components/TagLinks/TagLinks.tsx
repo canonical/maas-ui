@@ -3,8 +3,8 @@ import { Link } from "react-router";
 import type { Tag } from "@/app/store/tag/types";
 
 type Props<T extends Tag | string> = {
-  getLinkURL: (tag: T) => string;
-  tags: T[];
+  readonly getLinkURL: (tag: T) => string;
+  readonly tags: T[];
 };
 
 const getTagName = <T extends Tag | string>(tag: T) =>

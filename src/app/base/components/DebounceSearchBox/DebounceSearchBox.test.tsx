@@ -32,7 +32,7 @@ describe("DebounceSearchBox", () => {
   it(`does not run onDebounced fn when the search text changes via props, even
       after the debounce interval`, async () => {
     const onDebounced = vi.fn();
-    const Proxy = ({ searchText }: { searchText: string }) => (
+    const Proxy = ({ searchText }: { readonly searchText: string }) => (
       <DebounceSearchBox
         onDebounced={onDebounced}
         searchText={searchText}

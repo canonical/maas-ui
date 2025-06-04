@@ -14,8 +14,8 @@ import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  close: () => void;
-  id: Fabric[FabricMeta.PK];
+  readonly close: () => void;
+  readonly id: Fabric[FabricMeta.PK];
 };
 
 export type FormValues = {

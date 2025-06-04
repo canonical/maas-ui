@@ -10,10 +10,10 @@ import type {
 } from "@/app/store/machine/types";
 
 type Props = {
-  callId?: string | null;
-  group: MachineStateListGroup | null;
-  grouping: FetchGroupKey | null;
-  groupName: MachineStateListGroup["name"];
+  readonly callId?: string | null;
+  readonly group: MachineStateListGroup | null;
+  readonly grouping: FetchGroupKey | null;
+  readonly groupName: MachineStateListGroup["name"];
 };
 
 const GroupCheckbox = ({

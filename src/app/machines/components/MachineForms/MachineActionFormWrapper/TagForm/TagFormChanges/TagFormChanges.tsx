@@ -27,9 +27,9 @@ import { getTagCounts } from "@/app/store/tag/utils";
 import { toFormikNumber } from "@/app/utils";
 
 type Props = Pick<MachineActionFormProps, "selectedCount"> & {
-  tags: Tag[];
-  newTags: Tag[TagMeta.PK][];
-  toggleTagDetails: (tag: Tag | null) => void;
+  readonly tags: Tag[];
+  readonly newTags: Tag[TagMeta.PK][];
+  readonly toggleTagDetails: (tag: Tag | null) => void;
 };
 
 export enum Label {
@@ -147,7 +147,8 @@ export const TagFormChanges = ({
         accessor: Column.Label,
         // The data for this column is supplied inside a children prop so that
         // the data can also return the appropriate rowspan (used in getCellProps).
-        Cell: ({ value }: { value: LabelCol }) => value.children || null,
+        Cell: ({ value }: { readonly value: LabelCol }) =>
+          value.children || null,
         className: "label-col",
         Header: "Tag changes",
       },

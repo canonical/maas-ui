@@ -28,7 +28,7 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import { isIpInSubnet } from "@/app/utils/subnetIpRange";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
+  readonly clearSidePanelContent: ClearSidePanelContent;
 };
 
 const AddDeviceInterfaceSchema = Yup.object().shape({

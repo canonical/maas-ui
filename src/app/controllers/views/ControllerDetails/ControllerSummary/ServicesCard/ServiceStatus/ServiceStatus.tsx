@@ -5,7 +5,7 @@ import { ServiceStatus as ServiceStatusType } from "@/app/store/service/types";
 import { getServiceDisplayName } from "@/app/store/service/utils";
 
 type Props = {
-  service: Service;
+  readonly service: Service;
 };
 
 const ServiceStatus = ({ service }: Props): React.ReactElement => {

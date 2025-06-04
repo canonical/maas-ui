@@ -23,9 +23,9 @@ import type { RootState } from "@/app/store/root/types";
 import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
-  bus: NodeDeviceBus;
-  node: ControllerDetails | MachineDetails;
-  setSidePanelContent?: MachineSetSidePanelContent;
+  readonly bus: NodeDeviceBus;
+  readonly node: ControllerDetails | MachineDetails;
+  readonly setSidePanelContent?: MachineSetSidePanelContent;
 };
 type NodeDeviceGroup = {
   hardwareTypes: HardwareType[];

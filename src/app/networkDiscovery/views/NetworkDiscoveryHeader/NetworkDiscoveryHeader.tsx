@@ -19,7 +19,7 @@ export enum Labels {
 const NetworkDiscoveryHeader = ({
   setSidePanelContent,
 }: {
-  setSidePanelContent: SetSidePanelContent;
+  readonly setSidePanelContent: SetSidePanelContent;
 }): React.ReactElement => {
   const location = useLocation();
 

@@ -49,10 +49,10 @@ const InterfaceSchema = Yup.object().shape({
 });
 
 type Props = {
-  close: () => void;
-  selected: Selected[];
-  systemId: MachineDetails["system_id"];
-  setSelected: SetSelected;
+  readonly close: () => void;
+  readonly selected: Selected[];
+  readonly systemId: MachineDetails["system_id"];
+  readonly setSelected: SetSelected;
 };
 
 const AddBridgeForm = ({

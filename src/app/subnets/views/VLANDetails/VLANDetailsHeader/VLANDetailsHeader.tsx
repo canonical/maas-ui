@@ -17,7 +17,7 @@ import { VlanVid } from "@/app/store/vlan/types";
 import { isVLANDetails } from "@/app/store/vlan/utils";
 
 type Props = {
-  id?: VLAN[VLANMeta.PK] | null;
+  readonly id?: VLAN[VLANMeta.PK] | null;
 };
 
 const generateTitle = (

@@ -5,11 +5,11 @@ import type { KVMResource } from "@/app/kvm/types";
 import { resourceWithOverCommit } from "@/app/store/pod/utils";
 
 export type Props = {
-  memory: {
+  readonly memory: {
     hugepages: KVMResource;
     general: KVMResource;
   };
-  overCommit?: number;
+  readonly overCommit?: number;
 };
 
 const RAMColumn = ({

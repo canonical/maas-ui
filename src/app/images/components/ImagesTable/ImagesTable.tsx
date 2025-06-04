@@ -17,9 +17,9 @@ import configSelectors from "@/app/store/config/selectors";
 import "./_index.scss";
 
 type SMImagesTableProps = {
-  selectedRows: RowSelectionState;
-  setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
-  variant?: "full-height" | "regular";
+  readonly selectedRows: RowSelectionState;
+  readonly setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
+  readonly variant?: "full-height" | "regular";
 };
 
 export const getImages = (resources: BootResource[]): Image[] => {

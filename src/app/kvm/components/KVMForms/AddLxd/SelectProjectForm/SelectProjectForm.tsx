@@ -23,10 +23,10 @@ import type { RootState } from "@/app/store/root/types";
 import { formatErrors, preparePayload } from "@/app/utils";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-  newPodValues: NewPodValues;
-  setStep: (step: AddLxdStepValues) => void;
-  setSubmissionErrors: (submissionErrors: string | null) => void;
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly newPodValues: NewPodValues;
+  readonly setStep: (step: AddLxdStepValues) => void;
+  readonly setSubmissionErrors: (submissionErrors: string | null) => void;
 };
 
 export const SelectProjectForm = ({

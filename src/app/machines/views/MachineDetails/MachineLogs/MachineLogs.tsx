@@ -9,7 +9,7 @@ import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = { systemId: Machine["system_id"] };
+type Props = { readonly systemId: Machine["system_id"] };
 
 export enum Label {
   Loading = "Loading logs",

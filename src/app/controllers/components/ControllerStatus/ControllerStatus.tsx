@@ -11,7 +11,7 @@ import { ServiceStatus } from "@/app/store/service/types";
 import type { Service } from "@/app/store/service/types";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  readonly systemId: Controller[ControllerMeta.PK];
 };
 
 const countStatus = (services: Service[], status: ServiceStatus) =>

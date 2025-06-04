@@ -20,12 +20,12 @@ import { FilterMachines } from "@/app/store/machine/utils";
 import { useFetchMachines } from "@/app/store/machine/utils/hooks";
 
 type Props = {
-  grouping: FetchGroupKey | null;
-  hiddenColumns: ReturnType<typeof useResponsiveColumns>[0];
-  hiddenGroups: (string | null)[];
-  headerFormOpen?: boolean;
-  searchFilter: string;
-  setHiddenGroups: (groups: (string | null)[]) => void;
+  readonly grouping: FetchGroupKey | null;
+  readonly hiddenColumns: ReturnType<typeof useResponsiveColumns>[0];
+  readonly hiddenGroups: (string | null)[];
+  readonly headerFormOpen?: boolean;
+  readonly searchFilter: string;
+  readonly setHiddenGroups: (groups: (string | null)[]) => void;
 };
 
 const MachineList = ({

@@ -46,8 +46,8 @@ import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 
 type Props = MachineActionVariableProps &
   SidePanelContentTypes & {
-    setSearchFilter?: SetSearchFilter;
-    viewingDetails?: boolean;
+    readonly setSearchFilter?: SetSearchFilter;
+    readonly viewingDetails?: boolean;
   };
 
 /* eslint-disable complexity */

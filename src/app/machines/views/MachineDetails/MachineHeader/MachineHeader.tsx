@@ -29,8 +29,8 @@ import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
-  setSidePanelContent: MachineSetSidePanelContent;
-  systemId: Machine["system_id"];
+  readonly setSidePanelContent: MachineSetSidePanelContent;
+  readonly systemId: Machine["system_id"];
 };
 
 const MachineHeader = ({

@@ -8,8 +8,8 @@ import discoverySelectors from "@/app/store/discovery/selectors";
 import type { Discovery } from "@/app/store/discovery/types";
 
 type Props = {
-  discovery: Discovery;
-  onClose: () => void;
+  readonly discovery: Discovery;
+  readonly onClose: () => void;
 };
 
 const DiscoveryDeleteForm = ({ discovery, onClose }: Props): ReactElement => {

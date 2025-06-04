@@ -11,9 +11,9 @@ import type { AnyObject } from "@/app/base/types";
 
 export type Props = Omit<Partial<FormikFieldProps>, "name"> &
   Omit<Partial<TagSelectorProps>, "tags"> & {
-    storedValue?: "id" | "name";
-    name: string;
-    tags: TagSelectorProps["tags"];
+    readonly storedValue?: "id" | "name";
+    readonly name: string;
+    readonly tags: TagSelectorProps["tags"];
   };
 
 export enum Label {

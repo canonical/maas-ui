@@ -19,7 +19,7 @@ vi.mock("@canonical/react-components/dist/hooks", () => ({
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>) =>
-  ({ children }: { children: ReactNode }) => (
+  ({ children }: { readonly children: ReactNode }) => (
     <Provider store={store}>{children}</Provider>
   );
 

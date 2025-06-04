@@ -8,7 +8,7 @@ import type { Controller, ControllerMeta } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  readonly systemId: Controller[ControllerMeta.PK];
 };
 
 // Get the HA VLAN info for a controller.

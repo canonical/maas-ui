@@ -17,11 +17,11 @@ import type { RootState } from "@/app/store/root/types";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
-  clusterId?: VMCluster["id"];
-  hostId: Pod["id"];
-  searchFilter: string;
-  setSearchFilter: SetSearchFilter;
-  setSidePanelContent: KVMSetSidePanelContent;
+  readonly clusterId?: VMCluster["id"];
+  readonly hostId: Pod["id"];
+  readonly searchFilter: string;
+  readonly setSearchFilter: SetSearchFilter;
+  readonly setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const LXDHostVMs = ({

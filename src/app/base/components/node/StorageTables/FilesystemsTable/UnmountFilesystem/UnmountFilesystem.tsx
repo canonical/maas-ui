@@ -9,9 +9,9 @@ import type { Disk, Partition } from "@/app/store/types/node";
 import { isDisk, isMounted } from "@/app/store/utils";
 
 type Props = {
-  close: () => void;
-  systemId: Machine["system_id"];
-  storageDevice: Disk | Partition;
+  readonly close: () => void;
+  readonly systemId: Machine["system_id"];
+  readonly storageDevice: Disk | Partition;
 };
 
 const UnmountFilesystem = ({

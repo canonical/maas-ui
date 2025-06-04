@@ -7,9 +7,9 @@ import type { PodNetworkInterface, PodResource } from "@/app/store/pod/types";
 import { simpleSortByKey } from "@/app/utils";
 
 export type Props = {
-  dynamicLayout?: boolean;
-  interfaces: PodNetworkInterface[];
-  showAggregated?: boolean;
+  readonly dynamicLayout?: boolean;
+  readonly interfaces: PodNetworkInterface[];
+  readonly showAggregated?: boolean;
 };
 
 const VfResources = ({

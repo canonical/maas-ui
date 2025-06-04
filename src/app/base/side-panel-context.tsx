@@ -245,8 +245,8 @@ const SidePanelContextProvider = ({
   initialSidePanelContent = null,
   initialSidePanelSize = "regular",
 }: PropsWithChildren<{
-  initialSidePanelContent?: SidePanelContent;
-  initialSidePanelSize?: SidePanelSize;
+  readonly initialSidePanelContent?: SidePanelContent;
+  readonly initialSidePanelSize?: SidePanelSize;
 }>): ReactElement => {
   const [sidePanelContent, setSidePanelContent] = useState<SidePanelContent>(
     initialSidePanelContent

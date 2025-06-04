@@ -12,7 +12,7 @@ import { nodeIsDevice, nodeIsMachine } from "@/app/store/utils";
 import { capitaliseFirst } from "@/app/utils";
 
 type Props<E = null> = NodeActionFormProps<E> & {
-  onSubmit: (zoneID: ZoneResponse["id"]) => void;
+  readonly onSubmit: (zoneID: ZoneResponse["id"]) => void;
 };
 
 export type SetZoneFormValues = {

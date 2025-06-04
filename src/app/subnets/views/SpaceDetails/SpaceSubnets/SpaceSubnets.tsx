@@ -55,7 +55,11 @@ const generateRows = ({
   return rows;
 };
 
-const SpaceSubnets = ({ space }: { space: Space }): React.ReactElement => {
+const SpaceSubnets = ({
+  space,
+}: {
+  readonly space: Space;
+}): React.ReactElement => {
   const vlans = useSelector(vlanSelectors.all);
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getBySpace(state, space.id)

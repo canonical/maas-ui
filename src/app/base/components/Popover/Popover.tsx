@@ -5,10 +5,10 @@ import classNames from "classnames";
 import usePortal from "react-useportal";
 
 type Props = {
-  children: ReactNode;
-  className?: string;
-  content?: ReactNode;
-  position?: "left" | "right";
+  readonly children: ReactNode;
+  readonly className?: string;
+  readonly content?: ReactNode;
+  readonly position?: "left" | "right";
 };
 
 const getPositionStyle = (

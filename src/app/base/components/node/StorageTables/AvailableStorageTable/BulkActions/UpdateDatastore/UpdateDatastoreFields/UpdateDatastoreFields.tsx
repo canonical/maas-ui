@@ -17,8 +17,8 @@ import type { Disk, Partition } from "@/app/store/types/node";
 import { formatSize, formatType } from "@/app/store/utils";
 
 type Props = {
-  datastores: Disk[];
-  storageDevices: (Disk | Partition)[];
+  readonly datastores: Disk[];
+  readonly storageDevices: (Disk | Partition)[];
 };
 
 export const UpdateDatastoreFields = ({

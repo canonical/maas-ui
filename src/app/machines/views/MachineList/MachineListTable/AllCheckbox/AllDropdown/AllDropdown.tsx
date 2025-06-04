@@ -9,8 +9,8 @@ import type { FetchFilters } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  callId?: string | null;
-  filter: FetchFilters | null;
+  readonly callId?: string | null;
+  readonly filter: FetchFilters | null;
 };
 
 export enum AllDropdownLabel {

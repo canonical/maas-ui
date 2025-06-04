@@ -23,10 +23,10 @@ import type { VLAN } from "@/app/store/vlan/types";
 import { groupAsMap } from "@/app/utils";
 
 type Props = {
-  hostId: Pod["id"];
-  iface: InterfaceField;
-  index: number;
-  selectSubnet: (subnetID?: number) => void;
+  readonly hostId: Pod["id"];
+  readonly iface: InterfaceField;
+  readonly index: number;
+  readonly selectSubnet: (subnetID?: number) => void;
 };
 
 export type MenuLink =

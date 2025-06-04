@@ -4,10 +4,10 @@ import KVMResourceMeter from "@/app/kvm/components/KVMResourceMeter";
 import { getRanges } from "@/app/utils";
 
 export type Props = {
-  allocated: number[] | number;
-  dynamicLayout?: boolean;
-  free: number[] | number;
-  other?: number;
+  readonly allocated: number[] | number;
+  readonly dynamicLayout?: boolean;
+  readonly free: number[] | number;
+  readonly other?: number;
 };
 
 const CoreResources = ({

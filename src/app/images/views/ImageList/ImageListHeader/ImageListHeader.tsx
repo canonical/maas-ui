@@ -19,8 +19,8 @@ import configSelectors from "@/app/store/config/selectors";
 import "./_index.scss";
 
 type ImageListHeaderProps = {
-  selectedRows: RowSelectionState;
-  setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
+  readonly selectedRows: RowSelectionState;
+  readonly setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
 };
 
 export enum Labels {

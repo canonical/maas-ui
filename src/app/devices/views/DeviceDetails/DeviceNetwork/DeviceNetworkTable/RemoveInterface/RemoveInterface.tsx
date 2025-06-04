@@ -16,9 +16,9 @@ import type { RootState } from "@/app/store/root/types";
 import { formatErrors } from "@/app/utils";
 
 type Props = {
-  closeForm: () => void;
-  nicId: DeviceNetworkInterface["id"];
-  systemId: Device[DeviceMeta.PK];
+  readonly closeForm: () => void;
+  readonly nicId: DeviceNetworkInterface["id"];
+  readonly systemId: Device[DeviceMeta.PK];
 };
 
 const RemoveInterface = ({

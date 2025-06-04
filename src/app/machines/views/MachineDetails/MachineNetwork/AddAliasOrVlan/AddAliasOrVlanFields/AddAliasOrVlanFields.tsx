@@ -16,9 +16,11 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import { toFormikNumber } from "@/app/utils";
 
 type Props = {
-  nic?: NetworkInterface | null;
-  interfaceType: NetworkInterfaceTypes.ALIAS | NetworkInterfaceTypes.VLAN;
-  systemId: MachineDetails["system_id"];
+  readonly nic?: NetworkInterface | null;
+  readonly interfaceType:
+    | NetworkInterfaceTypes.ALIAS
+    | NetworkInterfaceTypes.VLAN;
+  readonly systemId: MachineDetails["system_id"];
 };
 
 export const AddAliasOrVlanFields = ({

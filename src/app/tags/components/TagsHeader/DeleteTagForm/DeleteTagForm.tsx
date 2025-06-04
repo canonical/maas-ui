@@ -16,9 +16,9 @@ import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 
 type Props = {
-  fromDetails?: boolean;
-  id: Tag[TagMeta.PK];
-  onClose: () => void;
+  readonly fromDetails?: boolean;
+  readonly id: Tag[TagMeta.PK];
+  readonly onClose: () => void;
 };
 
 export const DeleteTagForm = ({

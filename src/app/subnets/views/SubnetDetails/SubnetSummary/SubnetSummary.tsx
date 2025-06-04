@@ -22,7 +22,7 @@ import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {
-  id: Subnet[SubnetMeta.PK] | null;
+  readonly id: Subnet[SubnetMeta.PK] | null;
 };
 
 const SubnetSummary = ({ id }: Props): React.ReactElement | null => {

@@ -3,12 +3,12 @@ import type { HTMLProps } from "react";
 import { Button, Icon, Spinner } from "@canonical/react-components";
 
 type Props = HTMLProps<HTMLElement> & {
-  currentPage: number;
-  itemCount: number;
-  loading?: boolean;
-  pageSize: number;
-  setCurrentPage: (page: number) => void;
-  showPageBounds?: boolean;
+  readonly currentPage: number;
+  readonly itemCount: number;
+  readonly loading?: boolean;
+  readonly pageSize: number;
+  readonly setCurrentPage: (page: number) => void;
+  readonly showPageBounds?: boolean;
 };
 
 const getBounds = (

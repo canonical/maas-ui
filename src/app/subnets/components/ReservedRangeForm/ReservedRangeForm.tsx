@@ -30,10 +30,10 @@ import {
 } from "@/app/utils/subnetIpRange";
 
 type Props = {
-  createType?: IPRangeType;
-  ipRangeId?: IPRange[IPRangeMeta.PK] | null;
-  setSidePanelContent: SetSidePanelContent;
-  subnetId?: Subnet[SubnetMeta.PK] | null;
+  readonly createType?: IPRangeType;
+  readonly ipRangeId?: IPRange[IPRangeMeta.PK] | null;
+  readonly setSidePanelContent: SetSidePanelContent;
+  readonly subnetId?: Subnet[SubnetMeta.PK] | null;
 };
 
 export type FormValues = {

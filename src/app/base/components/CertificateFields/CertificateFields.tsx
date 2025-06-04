@@ -3,10 +3,10 @@ import { Input } from "@canonical/react-components";
 import UploadTextArea from "@/app/base/components/UploadTextArea";
 
 type Props = {
-  certificateFieldName?: string;
-  onShouldGenerateCert: (shouldGenerateCert: boolean) => void;
-  privateKeyFieldName?: string;
-  shouldGenerateCert: boolean;
+  readonly certificateFieldName?: string;
+  readonly onShouldGenerateCert: (shouldGenerateCert: boolean) => void;
+  readonly privateKeyFieldName?: string;
+  readonly shouldGenerateCert: boolean;
 };
 
 export enum Labels {

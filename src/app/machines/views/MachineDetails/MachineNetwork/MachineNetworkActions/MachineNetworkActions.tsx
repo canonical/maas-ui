@@ -27,11 +27,11 @@ type Action = {
 };
 
 type Props = {
-  expanded: Expanded | null;
-  selected: Selected[];
-  setSidePanelContent: MachineSetSidePanelContent;
-  setSelected: React.Dispatch<React.SetStateAction<Selected[]>>;
-  systemId: Machine["system_id"];
+  readonly expanded: Expanded | null;
+  readonly selected: Selected[];
+  readonly setSidePanelContent: MachineSetSidePanelContent;
+  readonly setSelected: React.Dispatch<React.SetStateAction<Selected[]>>;
+  readonly systemId: Machine["system_id"];
 };
 
 // Check if any of the selected interfaces includes the provided type.

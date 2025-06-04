@@ -16,8 +16,8 @@ const MachineActionMenu = ({
   hasSelection,
   setSidePanelContent,
 }: {
-  hasSelection: ReturnType<typeof useHasSelection>;
-  setSidePanelContent: MachineSetSidePanelContent;
+  readonly hasSelection: ReturnType<typeof useHasSelection>;
+  readonly setSidePanelContent: MachineSetSidePanelContent;
 }): ReactElement => {
   const sendAnalytics = useSendAnalytics();
   const [tagsSeen, setTagsSeen] = useStorageState(

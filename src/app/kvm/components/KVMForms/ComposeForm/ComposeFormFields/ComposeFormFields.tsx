@@ -16,15 +16,15 @@ import type { Pod } from "@/app/store/pod/types";
 import { arrayFromRangesString, getRanges } from "@/app/utils";
 
 type Props = {
-  architectures: Pod["architectures"];
-  available: {
+  readonly architectures: Pod["architectures"];
+  readonly available: {
     cores: number;
     hugepages: number;
     memory: number; // MiB
     pinnedCores: number[];
   };
-  defaults: ComposeFormDefaults;
-  podType: Pod["type"];
+  readonly defaults: ComposeFormDefaults;
+  readonly podType: Pod["type"];
 };
 
 const getHugepagesTooltip = (isLxd: boolean, hasFreeHugepages: boolean) => {

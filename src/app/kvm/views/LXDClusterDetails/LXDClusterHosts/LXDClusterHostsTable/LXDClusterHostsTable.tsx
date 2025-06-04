@@ -34,11 +34,11 @@ import type { VMCluster } from "@/app/store/vmcluster/types";
 import { isComparable } from "@/app/utils";
 
 type Props = {
-  currentPage: number;
-  clusterId: VMCluster["id"];
-  hosts: Pod[];
-  searchFilter: string;
-  setSidePanelContent: KVMSetSidePanelContent;
+  readonly currentPage: number;
+  readonly clusterId: VMCluster["id"];
+  readonly hosts: Pod[];
+  readonly searchFilter: string;
+  readonly setSidePanelContent: KVMSetSidePanelContent;
 };
 
 type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";

@@ -27,7 +27,7 @@ export enum Labels {
 }
 
 type Props = {
-  type?: "commissioning" | "testing";
+  readonly type?: "commissioning" | "testing";
 };
 
 const generateRows = (

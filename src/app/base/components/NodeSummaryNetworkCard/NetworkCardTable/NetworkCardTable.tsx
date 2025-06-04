@@ -25,8 +25,8 @@ import { getDHCPStatus } from "@/app/store/vlan/utils";
 import { formatSpeedUnits } from "@/app/utils";
 
 type Props = {
-  interfaces: NetworkInterface[];
-  node: Device | MachineDetails;
+  readonly interfaces: NetworkInterface[];
+  readonly node: Device | MachineDetails;
 };
 
 const NetworkCardTable = ({ interfaces, node }: Props): React.ReactElement => {

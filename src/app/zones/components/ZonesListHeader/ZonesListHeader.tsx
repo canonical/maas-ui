@@ -11,7 +11,7 @@ import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 const ZonesListHeader = ({
   setSidePanelContent,
 }: {
-  setSidePanelContent: SetSidePanelContent;
+  readonly setSidePanelContent: SetSidePanelContent;
 }): React.ReactElement => {
   const zonesCount = useZoneCount();
 

@@ -175,8 +175,8 @@ export const getDefaultPoolLocation = (pod: Pod): string => {
 };
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-  hostId: Pod["id"];
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly hostId: Pod["id"];
 };
 
 // eslint-disable-next-line complexity

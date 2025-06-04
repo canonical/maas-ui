@@ -39,9 +39,9 @@ const DhcpSchema = Yup.object()
   .defined();
 
 type Props = Partial<FormikFormProps<DHCPFormValues>> & {
-  analyticsCategory: string;
-  id?: DHCPSnippet["id"];
-  onSave?: () => void;
+  readonly analyticsCategory: string;
+  readonly id?: DHCPSnippet["id"];
+  readonly onSave?: () => void;
 };
 
 export enum Labels {

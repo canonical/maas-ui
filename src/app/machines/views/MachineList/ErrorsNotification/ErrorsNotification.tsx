@@ -9,8 +9,8 @@ const ErrorsNotification = ({
   errors,
   onAfterDismiss,
 }: {
-  errors: APIError;
-  onAfterDismiss?: () => void;
+  readonly errors: APIError;
+  readonly onAfterDismiss?: () => void;
 }): React.ReactElement | null => {
   const [isOpen, setIsOpen] = useState(true);
   const previousErrors = usePrevious(errors);

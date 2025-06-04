@@ -10,9 +10,9 @@ import type { Tag } from "@/app/store/tag/types";
 import type { NodeModel } from "@/app/store/types/node";
 
 type Props = {
-  count: number;
-  nodeType: NodeModel;
-  tags: Tag["name"][];
+  readonly count: number;
+  readonly nodeType: NodeModel;
+  readonly tags: Tag["name"][];
 };
 
 const NodesTagsLink = ({

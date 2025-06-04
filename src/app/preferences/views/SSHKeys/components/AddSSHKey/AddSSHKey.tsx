@@ -14,7 +14,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import SSHKeyFormFields from "@/app/preferences/views/SSHKeys/components/AddSSHKey/SSHKeyFormFields";
 
 type AddSSHKeyProps = {
-  closeForm?: () => void;
+  readonly closeForm?: () => void;
 };
 
 export type SSHKeyFormValues = {

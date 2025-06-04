@@ -40,7 +40,7 @@ export const storageLayoutOptions: StorageLayoutOption[][] = [
 ];
 
 type Props = {
-  systemId: Machine["system_id"];
+  readonly systemId: Machine["system_id"];
 };
 
 const ChangeStorageLayoutMenu = ({ systemId }: Props): ReactElement => {

@@ -17,8 +17,8 @@ import { NodeActions } from "@/app/store/types/node";
 import { breakLines } from "@/app/utils";
 
 type Props = {
-  onToggleMenu?: MachineMenuToggleHandler;
-  systemId: Machine["system_id"];
+  readonly onToggleMenu?: MachineMenuToggleHandler;
+  readonly systemId: Machine["system_id"];
 };
 
 export const PowerColumn = ({

@@ -6,7 +6,7 @@ import type { ScriptResultData } from "@/app/store/scriptresult/types";
 import { ScriptResultDataType } from "@/app/store/scriptresult/types";
 
 type Props = {
-  log: ScriptResultData;
+  readonly log: ScriptResultData;
 };
 
 const NodeTestDetailsLogs = ({ log }: Props): React.ReactElement => {

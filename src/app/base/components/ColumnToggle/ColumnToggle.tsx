@@ -4,10 +4,10 @@ import { useRef } from "react";
 import { Button, Icon } from "@canonical/react-components";
 
 type Props = {
-  isExpanded: boolean;
-  label: ReactNode;
-  onClose: () => void;
-  onOpen: () => void;
+  readonly isExpanded: boolean;
+  readonly label: ReactNode;
+  readonly onClose: () => void;
+  readonly onOpen: () => void;
 };
 
 const ColumnToggle = ({

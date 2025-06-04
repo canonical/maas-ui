@@ -11,8 +11,8 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 
 type Props = {
-  modelName: string;
-  subnetIds: Subnet[SubnetMeta.PK][];
+  readonly modelName: string;
+  readonly subnetIds: Subnet[SubnetMeta.PK][];
 };
 
 const DHCPSnippets = ({ modelName, subnetIds }: Props): React.ReactElement => {

@@ -26,7 +26,7 @@ import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
+  readonly clearSidePanelContent: ClearSidePanelContent;
 };
 
 export const AddChassisForm = ({

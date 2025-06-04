@@ -14,7 +14,7 @@ import userSelectors from "@/app/store/user/selectors";
 import type { User } from "@/app/store/user/types";
 
 type UserDeleteProps = {
-  user: User;
+  readonly user: User;
 };
 
 const UserDeleteForm = ({ user }: UserDeleteProps): ReactElement => {

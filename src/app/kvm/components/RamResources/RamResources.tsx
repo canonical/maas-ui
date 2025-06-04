@@ -5,14 +5,14 @@ import { COLOURS } from "@/app/base/constants";
 import { memoryWithUnit } from "@/app/kvm/utils";
 
 export type Props = {
-  dynamicLayout?: boolean;
-  generalAllocated: number; // B
-  generalFree: number; // B
-  generalOther?: number; // B
-  hugepagesAllocated?: number; // B
-  hugepagesFree?: number; // B
-  hugepagesOther?: number; // B
-  pageSize?: number; // B
+  readonly dynamicLayout?: boolean;
+  readonly generalAllocated: number; // B
+  readonly generalFree: number; // B
+  readonly generalOther?: number; // B
+  readonly hugepagesAllocated?: number; // B
+  readonly hugepagesFree?: number; // B
+  readonly hugepagesOther?: number; // B
+  readonly pageSize?: number; // B
 };
 
 const getTooltipSubstring = (general: number, hugepages: number) =>

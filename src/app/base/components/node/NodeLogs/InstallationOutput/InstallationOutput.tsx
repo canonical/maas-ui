@@ -16,7 +16,7 @@ import type {
 import { PowerState } from "@/app/store/types/enum";
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 export enum Label {

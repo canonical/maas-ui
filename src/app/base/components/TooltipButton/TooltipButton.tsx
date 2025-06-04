@@ -11,11 +11,11 @@ import { Button, Icon, Tooltip } from "@canonical/react-components";
 import { breakLines, unindentString } from "@/app/utils";
 
 type Props = Omit<TooltipProps, "aria-label" | "children"> & {
-  "aria-label"?: ButtonProps["aria-label"];
-  buttonProps?: SubComponentProps<Omit<ButtonProps, "aria-label">>;
-  children?: ReactNode;
-  iconName?: IconProps["name"];
-  iconProps?: SubComponentProps<Omit<IconProps, "name">>;
+  readonly "aria-label"?: ButtonProps["aria-label"];
+  readonly buttonProps?: SubComponentProps<Omit<ButtonProps, "aria-label">>;
+  readonly children?: ReactNode;
+  readonly iconName?: IconProps["name"];
+  readonly iconProps?: SubComponentProps<Omit<IconProps, "name">>;
 };
 
 const TooltipButton = ({

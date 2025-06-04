@@ -12,13 +12,13 @@ import { useExitURL } from "@/app/intro/hooks";
 import { formatErrors } from "@/app/utils";
 
 type Props = Partial<PageContentProps> & {
-  children: ReactNode;
-  complete?: boolean;
-  errors?: APIError;
-  loading?: boolean;
-  shouldExitIntro?: boolean;
-  titleLink?: ReactNode;
-  windowTitle?: string;
+  readonly children: ReactNode;
+  readonly complete?: boolean;
+  readonly errors?: APIError;
+  readonly loading?: boolean;
+  readonly shouldExitIntro?: boolean;
+  readonly titleLink?: ReactNode;
+  readonly windowTitle?: string;
 };
 
 const IntroSection = ({

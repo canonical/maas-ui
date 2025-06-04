@@ -8,14 +8,14 @@ import type { Node, NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
 
 type Props = {
-  action: NodeActions;
-  children: ReactNode;
-  clearSidePanelContent?: ClearSidePanelContent;
-  nodes: Node[];
-  nodeType: string;
-  processingCount: number;
-  onUpdateSelected: (nodeIDs: Node["system_id"][]) => void;
-  viewingDetails: boolean;
+  readonly action: NodeActions;
+  readonly children: ReactNode;
+  readonly clearSidePanelContent?: ClearSidePanelContent;
+  readonly nodes: Node[];
+  readonly nodeType: string;
+  readonly processingCount: number;
+  readonly onUpdateSelected: (nodeIDs: Node["system_id"][]) => void;
+  readonly viewingDetails: boolean;
 };
 
 export const NodeActionFormWrapper = ({

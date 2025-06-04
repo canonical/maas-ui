@@ -19,13 +19,13 @@ import { isId } from "@/app/utils";
 type Option = NonNullable<SelectProps["options"]>[0];
 
 type Props = FormikFieldProps & {
-  defaultOption?: Option | null;
-  fabric?: VLAN["fabric"];
-  generateName?: (vlan: VLAN) => string;
-  includeDefaultVlan?: boolean;
-  showSpinnerOnLoad?: boolean;
-  setDefaultValueFromFabric?: boolean;
-  vlans?: VLAN[] | null;
+  readonly defaultOption?: Option | null;
+  readonly fabric?: VLAN["fabric"];
+  readonly generateName?: (vlan: VLAN) => string;
+  readonly includeDefaultVlan?: boolean;
+  readonly showSpinnerOnLoad?: boolean;
+  readonly setDefaultValueFromFabric?: boolean;
+  readonly vlans?: VLAN[] | null;
 };
 
 export enum Label {

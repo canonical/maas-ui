@@ -9,7 +9,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 
 type AddZoneProps = {
-  closeForm: () => void;
+  readonly closeForm: () => void;
 };
 
 const ZoneSchema = Yup.object().shape({

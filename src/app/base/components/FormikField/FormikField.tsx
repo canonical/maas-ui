@@ -12,10 +12,10 @@ import { useId } from "@/app/base/hooks/base";
 
 export type Props<C extends ComponentType | ElementType = typeof Input> =
   ComponentProps<C> & {
-    component?: C;
-    displayError?: boolean;
-    name: string;
-    value?: HTMLProps<HTMLElement>["value"];
+    readonly component?: C;
+    readonly displayError?: boolean;
+    readonly name: string;
+    readonly value?: HTMLProps<HTMLElement>["value"];
   };
 
 const FormikField = <C extends ComponentType | ElementType = typeof Input>({

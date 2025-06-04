@@ -17,8 +17,8 @@ import {
 } from "@/app/store/utils";
 
 type Props = {
-  selected: (Disk | Partition)[];
-  systemId: Machine["system_id"];
+  readonly selected: (Disk | Partition)[];
+  readonly systemId: Machine["system_id"];
 };
 
 const BulkActions = ({

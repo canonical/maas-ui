@@ -12,14 +12,14 @@ import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
-  currentPage: number;
-  machinesLoading?: boolean;
-  onAddVMClick?: () => void;
-  searchFilter: string;
-  setCurrentPage: (page: number) => void;
-  setSearchFilter: SetSearchFilter;
-  setSidePanelContent: KVMSetSidePanelContent;
-  vmCount: number;
+  readonly currentPage: number;
+  readonly machinesLoading?: boolean;
+  readonly onAddVMClick?: () => void;
+  readonly searchFilter: string;
+  readonly setCurrentPage: (page: number) => void;
+  readonly setSearchFilter: SetSearchFilter;
+  readonly setSidePanelContent: KVMSetSidePanelContent;
+  readonly vmCount: number;
 };
 
 const VMsActionBar = ({

@@ -47,7 +47,11 @@ describe("DeleteForm", () => {
   it("redirects when a node is deleted from details view", () => {
     const nodes = [factory.machine({ system_id: "abc123" })];
     const store = mockStore(state);
-    const Proxy = ({ processingCount }: { processingCount: number }) => (
+    const Proxy = ({
+      processingCount,
+    }: {
+      readonly processingCount: number;
+    }) => (
       <DeleteForm
         clearSidePanelContent={vi.fn()}
         modelName="machine"
@@ -75,8 +79,8 @@ describe("DeleteForm", () => {
       errors,
       processingCount,
     }: {
-      errors: string | null;
-      processingCount: number;
+      readonly errors: string | null;
+      readonly processingCount: number;
     }) => (
       <DeleteForm
         clearSidePanelContent={vi.fn()}

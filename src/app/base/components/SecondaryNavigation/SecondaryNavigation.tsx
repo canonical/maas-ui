@@ -10,7 +10,7 @@ export type NavItem = {
   items?: NavItem[];
 };
 
-type ItemProps = { item: NavItem };
+type ItemProps = { readonly item: NavItem };
 
 const SideNavigationLink = ({ item }: ItemProps) => {
   const location = useLocation();
@@ -39,7 +39,7 @@ const SubNavItem = ({ item }: ItemProps) => {
   );
 };
 
-const SubNavigation = ({ items }: { items: NavItem["items"] }) => {
+const SubNavigation = ({ items }: { readonly items: NavItem["items"] }) => {
   if (!items || !items.length) return null;
 
   return (
@@ -94,9 +94,9 @@ export const SecondaryNavigation = ({
   items,
   title,
 }: {
-  isOpen?: boolean;
-  items: NavItem[];
-  title: string;
+  readonly isOpen?: boolean;
+  readonly items: NavItem[];
+  readonly title: string;
 }): React.ReactElement => {
   const { theme } = useThemeContext();
 

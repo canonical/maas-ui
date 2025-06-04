@@ -10,13 +10,13 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 
 type AddSSLKeyProps = {
-  closeForm: () => void;
+  readonly closeForm: () => void;
 };
 
 // This can be removed when the autoComplete prop is supported:
 // https://github.com/canonical/react-components/issues/571
 const ProxyTextarea = (
-  props: TextareaProps & { autoComplete?: "off" | "on" }
+  props: TextareaProps & { readonly autoComplete?: "off" | "on" }
 ) => <Textarea {...props} />;
 
 const SSLKeySchema = Yup.object().shape({

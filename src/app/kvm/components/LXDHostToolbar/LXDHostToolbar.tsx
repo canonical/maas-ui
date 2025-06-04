@@ -13,13 +13,13 @@ import type { RootState } from "@/app/store/root/types";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
-  clusterId?: VMCluster["id"];
-  hostId: Pod["id"];
-  setSidePanelContent?: KVMSetSidePanelContent;
-  setViewByNuma?: (viewByNuma: boolean) => void;
-  showBasic?: boolean;
-  title?: string;
-  viewByNuma?: boolean;
+  readonly clusterId?: VMCluster["id"];
+  readonly hostId: Pod["id"];
+  readonly setSidePanelContent?: KVMSetSidePanelContent;
+  readonly setViewByNuma?: (viewByNuma: boolean) => void;
+  readonly showBasic?: boolean;
+  readonly title?: string;
+  readonly viewByNuma?: boolean;
 };
 
 const LXDHostToolbar = ({

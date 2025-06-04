@@ -12,9 +12,9 @@ import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain, DomainResource } from "@/app/store/domain/types";
 
 type Props = {
-  closeForm: () => void;
-  id: Domain["id"];
-  resource: DomainResource;
+  readonly closeForm: () => void;
+  readonly id: Domain["id"];
+  readonly resource: DomainResource;
 };
 
 export enum Labels {

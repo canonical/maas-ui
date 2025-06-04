@@ -19,10 +19,10 @@ const actionForms = {
 };
 
 export type VLANActionFormProps = {
-  subnetId?: Subnet[SubnetMeta.PK];
-  vlanId: VLAN[VLANMeta.PK];
-  activeForm: VLANActionType;
-  setSidePanelContent: SetSidePanelContent;
+  readonly subnetId?: Subnet[SubnetMeta.PK];
+  readonly vlanId: VLAN[VLANMeta.PK];
+  readonly activeForm: VLANActionType;
+  readonly setSidePanelContent: SetSidePanelContent;
 };
 
 const VLANActionForms = ({

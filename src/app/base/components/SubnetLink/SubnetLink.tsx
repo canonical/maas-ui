@@ -11,7 +11,7 @@ import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import { getSubnetDisplay } from "@/app/store/subnet/utils";
 
 type Props = {
-  id?: Subnet[SubnetMeta.PK] | null;
+  readonly id?: Subnet[SubnetMeta.PK] | null;
 };
 
 const SubnetLink = ({ id }: Props): React.ReactElement => {

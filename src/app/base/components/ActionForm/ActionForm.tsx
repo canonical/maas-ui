@@ -36,15 +36,15 @@ export type ActionFormProps<V extends object, E = null> = Omit<
   FormikFormProps<V, E>,
   "saved" | "saving" | "savingLabel" | "submitLabel"
 > & {
-  actionName: string;
-  loaded?: boolean;
-  modelName: string;
-  processingCount?: number;
-  selectedCount?: number | null;
-  showProcessingCount?: boolean;
-  submitLabel?: string;
-  actionStatus?: ActionState["status"];
-  actionErrors?: ActionState["errors"];
+  readonly actionName: string;
+  readonly loaded?: boolean;
+  readonly modelName: string;
+  readonly processingCount?: number;
+  readonly selectedCount?: number | null;
+  readonly showProcessingCount?: boolean;
+  readonly submitLabel?: string;
+  readonly actionStatus?: ActionState["status"];
+  readonly actionErrors?: ActionState["errors"];
 };
 
 export enum Labels {

@@ -25,7 +25,7 @@ import { PowerState } from "@/app/store/types/enum";
 import type { NodeEvent } from "@/app/store/types/node";
 
 type Props = {
-  id: Machine["system_id"];
+  readonly id: Machine["system_id"];
 };
 
 const formatEventText = (event: NodeEvent) => {

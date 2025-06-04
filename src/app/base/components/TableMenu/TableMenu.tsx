@@ -8,14 +8,14 @@ import { ContextualMenu } from "@canonical/react-components";
 import classNames from "classnames";
 
 export type Props<L = null> = {
-  className?: ContextualMenuProps<L>["className"];
-  disabled?: ContextualMenuProps<L>["toggleDisabled"];
-  links?: ContextualMenuProps<L>["links"];
-  onToggleMenu?: ContextualMenuProps<L>["onToggleMenu"];
-  position?: ContextualMenuProps<L>["position"];
-  positionNode?: ContextualMenuProps<L>["positionNode"];
-  "aria-label"?: ContextualMenuProps<L>["aria-label"];
-  title?: string | null;
+  readonly className?: ContextualMenuProps<L>["className"];
+  readonly disabled?: ContextualMenuProps<L>["toggleDisabled"];
+  readonly links?: ContextualMenuProps<L>["links"];
+  readonly onToggleMenu?: ContextualMenuProps<L>["onToggleMenu"];
+  readonly position?: ContextualMenuProps<L>["position"];
+  readonly positionNode?: ContextualMenuProps<L>["positionNode"];
+  readonly "aria-label"?: ContextualMenuProps<L>["aria-label"];
+  readonly title?: string | null;
 };
 
 const TableMenu = <L,>({

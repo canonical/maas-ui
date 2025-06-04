@@ -8,12 +8,12 @@ import { COL_SIZES } from "@/app/base/constants";
 import { useId } from "@/app/base/hooks/base";
 
 type Props = {
-  children: ReactNode;
-  className?: ClassName;
-  highlighted?: boolean;
-  sidebar?: boolean;
-  stacked?: boolean;
-  title?: ReactNode;
+  readonly children: ReactNode;
+  readonly className?: ClassName;
+  readonly highlighted?: boolean;
+  readonly sidebar?: boolean;
+  readonly stacked?: boolean;
+  readonly title?: ReactNode;
 };
 
 const getContentSize = (sidebar: boolean, title: ReactNode) => {

@@ -14,8 +14,8 @@ import type { Tag, UpdateParams, TagMeta } from "@/app/store/tag/types";
 import { NewDefinitionMessage } from "@/app/tags/constants";
 
 type Props = {
-  id: Tag[TagMeta.PK];
-  onClose: () => void;
+  readonly id: Tag[TagMeta.PK];
+  readonly onClose: () => void;
 };
 
 export enum Label {

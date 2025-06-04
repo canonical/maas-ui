@@ -10,8 +10,8 @@ import { getCanBeDeleted } from "@/app/store/space/utils";
 import urls from "@/app/subnets/urls";
 
 type SpaceDeleteProps = {
-  handleClose?: () => void;
-  space: Space;
+  readonly handleClose?: () => void;
+  readonly space: Space;
 };
 
 export const SpaceDelete = ({

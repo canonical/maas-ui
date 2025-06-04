@@ -20,8 +20,8 @@ import { VLANMeta } from "@/app/store/vlan/types";
 import { isId } from "@/app/utils";
 
 type Props = {
-  close: () => void;
-  id: VLAN[VLANMeta.PK];
+  readonly close: () => void;
+  readonly id: VLAN[VLANMeta.PK];
 };
 
 export type FormValues = {

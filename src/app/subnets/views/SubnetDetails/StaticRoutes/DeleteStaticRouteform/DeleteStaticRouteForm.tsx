@@ -12,8 +12,8 @@ import type {
 } from "@/app/store/staticroute/types";
 
 type Props = {
-  staticRouteId?: StaticRoute[StaticRouteMeta.PK];
-  setSidePanelContent: SetSidePanelContent;
+  readonly staticRouteId?: StaticRoute[StaticRouteMeta.PK];
+  readonly setSidePanelContent: SetSidePanelContent;
 };
 
 const DeleteStaticRouteForm = ({

@@ -13,7 +13,7 @@ import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {
-  id: Pod["id"];
+  readonly id: Pod["id"];
 };
 
 export enum Label {

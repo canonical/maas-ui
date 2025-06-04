@@ -17,7 +17,7 @@ export enum Labels {
 }
 
 type PropTypes = {
-  user?: UserFormProps["user"];
+  readonly user?: UserFormProps["user"];
 };
 
 export const UserForm = ({ user }: PropTypes): React.ReactElement => {

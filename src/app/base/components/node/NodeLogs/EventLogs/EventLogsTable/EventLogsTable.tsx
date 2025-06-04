@@ -5,7 +5,7 @@ import { Icon, MainTable } from "@canonical/react-components";
 import type { EventRecord } from "@/app/store/event/types";
 
 type Props = {
-  events: EventRecord[];
+  readonly events: EventRecord[];
 };
 
 type EventRow = {

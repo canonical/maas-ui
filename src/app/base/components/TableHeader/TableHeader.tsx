@@ -7,11 +7,11 @@ import classNames from "classnames";
 import type { Sort } from "@/app/base/types";
 
 type Props = {
-  children: ReactNode;
-  className?: string;
-  currentSort?: Sort;
-  onClick?: ButtonProps["onClick"];
-  sortKey?: string;
+  readonly children: ReactNode;
+  readonly className?: string;
+  readonly currentSort?: Sort;
+  readonly onClick?: ButtonProps["onClick"];
+  readonly sortKey?: string;
 };
 
 const TableHeader = ({

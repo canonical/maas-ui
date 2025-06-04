@@ -2,8 +2,8 @@ import DhcpForm from "@/app/base/components/DhcpForm";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {
-  close: () => void;
-  id: DHCPSnippet["id"];
+  readonly close: () => void;
+  readonly id: DHCPSnippet["id"];
 };
 
 const EditDHCP = ({ close, id }: Props): React.ReactElement | null => {

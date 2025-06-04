@@ -16,7 +16,7 @@ import type { Pod } from "@/app/store/pod/types";
 import { resourceWithOverCommit } from "@/app/store/pod/utils";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = { id: Pod["id"] };
+type Props = { readonly id: Pod["id"] };
 
 const KVMResourcesCard = ({ id }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>

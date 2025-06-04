@@ -6,9 +6,9 @@ import { machineActions } from "@/app/store/machine";
 import { FilterMachines } from "@/app/store/machine/utils";
 
 type Props = {
-  filter: string;
-  machineCount: number | null;
-  selectedCount: number;
+  readonly filter: string;
+  readonly machineCount: number | null;
+  readonly selectedCount: number;
 };
 
 export const MachineListSelectedCount = ({

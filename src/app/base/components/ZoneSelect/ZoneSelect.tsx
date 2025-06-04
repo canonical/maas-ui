@@ -7,10 +7,10 @@ import type { ZoneResponse } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 
 type Props = HTMLProps<HTMLSelectElement> & {
-  disabled?: boolean;
-  label?: string;
-  name: string;
-  valueKey?: keyof ZoneResponse;
+  readonly disabled?: boolean;
+  readonly label?: string;
+  readonly name: string;
+  readonly valueKey?: keyof ZoneResponse;
 };
 
 export enum Label {

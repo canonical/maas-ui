@@ -36,11 +36,11 @@ export type UserValues = {
 };
 
 export type Props = Partial<FormikFormProps<UserValues>> & {
-  includeCurrentPassword?: boolean;
-  includeUserType?: boolean;
-  onSave: (values: UserValues) => void;
-  onUpdateFields?: (values: UserValues) => void;
-  user?: User | null;
+  readonly includeCurrentPassword?: boolean;
+  readonly includeUserType?: boolean;
+  readonly onSave: (values: UserValues) => void;
+  readonly onUpdateFields?: (values: UserValues) => void;
+  readonly user?: User | null;
 };
 
 const schemaFields = {

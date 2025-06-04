@@ -9,9 +9,9 @@ import { generalActions } from "@/app/store/general";
 import { architectures as architecturesSelectors } from "@/app/store/general/selectors";
 
 type Props = HTMLProps<HTMLSelectElement> & {
-  disabled?: boolean;
-  label?: string;
-  name: string;
+  readonly disabled?: boolean;
+  readonly label?: string;
+  readonly name: string;
 };
 
 export enum Labels {

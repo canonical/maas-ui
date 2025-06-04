@@ -9,12 +9,12 @@ import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
 
 type Props = {
-  clusterId: VMCluster[VMClusterMeta.PK];
-  currentPage: number;
-  searchFilter: string;
-  setCurrentPage: (page: number) => void;
-  setSearchFilter: SetSearchFilter;
-  hosts: Pod[];
+  readonly clusterId: VMCluster[VMClusterMeta.PK];
+  readonly currentPage: number;
+  readonly searchFilter: string;
+  readonly setCurrentPage: (page: number) => void;
+  readonly setSearchFilter: SetSearchFilter;
+  readonly hosts: Pod[];
 };
 
 const LXDClusterHostsActionBar = ({

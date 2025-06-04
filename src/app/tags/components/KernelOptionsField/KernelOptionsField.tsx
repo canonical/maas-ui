@@ -22,9 +22,9 @@ export enum Label {
 }
 
 export type Props = {
-  deployedMachinesCount?: number;
-  generateDeployedMessage?: (count: number) => string;
-  id?: Tag[TagMeta.PK];
+  readonly deployedMachinesCount?: number;
+  readonly generateDeployedMessage?: (count: number) => string;
+  readonly id?: Tag[TagMeta.PK];
 };
 
 const generateDeployedMessageForExisting = (count: number) =>

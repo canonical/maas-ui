@@ -21,8 +21,8 @@ import type { RootState } from "@/app/store/root/types";
 import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
-  systemId: Controller["system_id"];
-  setSidePanelContent: SetSidePanelContent;
+  readonly systemId: Controller["system_id"];
+  readonly setSidePanelContent: SetSidePanelContent;
 };
 
 const ControllerDetailsHeader = ({

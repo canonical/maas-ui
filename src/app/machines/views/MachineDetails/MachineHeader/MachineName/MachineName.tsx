@@ -10,9 +10,9 @@ import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  editingName: boolean;
-  id: Machine["system_id"];
-  setEditingName: (editingName: boolean) => void;
+  readonly editingName: boolean;
+  readonly id: Machine["system_id"];
+  readonly setEditingName: (editingName: boolean) => void;
 };
 
 const MachineName = ({

@@ -7,8 +7,8 @@ import type { Partition } from "@/app/store/types/node";
 import { formatSize, formatType } from "@/app/store/utils";
 
 type Props = {
-  partition: Partition;
-  systemId: Machine["system_id"];
+  readonly partition: Partition;
+  readonly systemId: Machine["system_id"];
 };
 
 export const EditPartitionFields = ({

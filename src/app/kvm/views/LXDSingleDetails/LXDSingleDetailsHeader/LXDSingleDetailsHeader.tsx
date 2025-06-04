@@ -16,8 +16,8 @@ import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  id: Pod["id"];
-  setSidePanelContent: KVMSetSidePanelContent;
+  readonly id: Pod["id"];
+  readonly setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const LXDSingleDetailsHeader = ({

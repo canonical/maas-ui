@@ -2,7 +2,7 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import type { Subnet } from "@/app/store/subnet/types";
 
 type Props = {
-  allowProxy: Subnet["allow_proxy"];
+  readonly allowProxy: Subnet["allow_proxy"];
 };
 
 const ProxyAccessLabel = ({ allowProxy }: Props): React.ReactElement => (

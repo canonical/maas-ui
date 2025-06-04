@@ -147,7 +147,7 @@ it("updates the new tags after creating a tag", async () => {
   const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);
   const setNewTags = vi.fn();
-  const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
+  const Form = ({ tags }: { readonly tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
         <Formik initialValues={{ added: tags, removed: [] }} onSubmit={vi.fn()}>

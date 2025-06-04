@@ -14,8 +14,8 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { isId } from "@/app/utils";
 
 type Props = {
-  id: Tag[TagMeta.PK] | null;
-  narrow?: boolean;
+  readonly id: Tag[TagMeta.PK] | null;
+  readonly narrow?: boolean;
 };
 
 export enum Label {

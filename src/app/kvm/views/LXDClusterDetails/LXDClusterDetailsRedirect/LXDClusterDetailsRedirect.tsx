@@ -12,7 +12,7 @@ import type { VMCluster } from "@/app/store/vmcluster/types";
 import { isId } from "@/app/utils";
 
 type Props = {
-  clusterId: VMCluster["id"];
+  readonly clusterId: VMCluster["id"];
 };
 
 export enum Label {

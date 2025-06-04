@@ -5,7 +5,7 @@ import TitledSection from "@/app/base/components/TitledSection";
 import type { SubnetStatistics } from "@/app/store/subnet/types";
 
 type Props = {
-  statistics: SubnetStatistics;
+  readonly statistics: SubnetStatistics;
 };
 
 const SubnetUtilisation = ({ statistics }: Props): React.ReactElement => {

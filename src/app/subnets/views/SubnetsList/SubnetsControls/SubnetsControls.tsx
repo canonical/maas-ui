@@ -7,8 +7,8 @@ const SubnetsControls = ({
   searchText: initialSearchText = "",
   handleSearch,
 }: Pick<SubnetGroupByProps, "groupBy"> & {
-  searchText?: string;
-  handleSearch: (text: string) => void;
+  readonly searchText?: string;
+  readonly handleSearch: (text: string) => void;
 }): React.ReactElement => {
   const [searchText, setSearchText] = useState(initialSearchText);
 

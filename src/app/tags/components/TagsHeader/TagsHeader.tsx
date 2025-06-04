@@ -15,14 +15,14 @@ import { TagMeta } from "@/app/store/tag/types";
 import { TagSidePanelViews } from "@/app/tags/constants";
 
 export type Props = {
-  filter: TagSearchFilter;
-  setFilter: (filter: TagSearchFilter) => void;
-  searchText: string;
-  setSearchText: (searchText: string) => void;
-  isDetails: boolean;
-  setSidePanelContent: SetSidePanelContent;
-  onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
-  onUpdate: (id: Tag[TagMeta.PK]) => void;
+  readonly filter: TagSearchFilter;
+  readonly setFilter: (filter: TagSearchFilter) => void;
+  readonly searchText: string;
+  readonly setSearchText: (searchText: string) => void;
+  readonly isDetails: boolean;
+  readonly setSidePanelContent: SetSidePanelContent;
+  readonly onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
+  readonly onUpdate: (id: Tag[TagMeta.PK]) => void;
 };
 
 export enum Label {

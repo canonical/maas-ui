@@ -10,9 +10,9 @@ import { getSortedPoolsArray } from "@/app/kvm/utils";
 import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
-  children: ReactNode;
-  defaultPoolId?: Pod["default_storage_pool"];
-  pools: KVMStoragePoolResources;
+  readonly children: ReactNode;
+  readonly defaultPoolId?: Pod["default_storage_pool"];
+  readonly pools: KVMStoragePoolResources;
 };
 
 const StoragePopover = ({

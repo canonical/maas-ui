@@ -9,7 +9,7 @@ import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = { systemId: Machine["system_id"] };
+type Props = { readonly systemId: Machine["system_id"] };
 
 export const RamColumn = ({ systemId }: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>

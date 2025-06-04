@@ -8,7 +8,7 @@ import settingsURLs from "@/app/settings/urls";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {
-  dhcpSnippet?: DHCPSnippet;
+  readonly dhcpSnippet?: DHCPSnippet;
 };
 
 export const DhcpForm = ({ dhcpSnippet }: Props): React.ReactElement => {

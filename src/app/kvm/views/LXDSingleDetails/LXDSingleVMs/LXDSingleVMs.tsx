@@ -9,10 +9,10 @@ import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  id: Pod["id"];
-  searchFilter: string;
-  setSidePanelContent: KVMSetSidePanelContent;
-  setSearchFilter: SetSearchFilter;
+  readonly id: Pod["id"];
+  readonly searchFilter: string;
+  readonly setSidePanelContent: KVMSetSidePanelContent;
+  readonly setSearchFilter: SetSearchFilter;
 };
 
 export enum Label {

@@ -21,7 +21,7 @@ export enum Labels {
 }
 
 type Props = {
-  closeForm: () => void;
+  readonly closeForm: () => void;
 };
 
 const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {

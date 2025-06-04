@@ -13,7 +13,7 @@ import TagNameField from "@/app/base/components/TagNameField";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 
 type Props = {
-  showTitles?: boolean;
+  readonly showTitles?: boolean;
 };
 
 const InterfaceFormFields = ({

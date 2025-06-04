@@ -20,8 +20,8 @@ export enum Label {
 }
 
 export type Props = {
-  filters?: FetchFilters;
-  podId: Pod["id"];
+  readonly filters?: FetchFilters;
+  readonly podId: Pod["id"];
 };
 
 export const VMS_PER_PAGE = 5;

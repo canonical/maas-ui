@@ -42,8 +42,8 @@ export type KVMConfigurationValues = {
 };
 
 type Props = {
-  pod: PodDetails;
-  zoneDisabled?: boolean;
+  readonly pod: PodDetails;
+  readonly zoneDisabled?: boolean;
 };
 
 export enum Label {

@@ -25,9 +25,9 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import { getDHCPStatus, getVLANDisplay } from "@/app/store/vlan/utils";
 
 type Props = {
-  loadingMachineDetails?: boolean;
-  machine: MachineDetails | null;
-  selected: boolean;
+  readonly loadingMachineDetails?: boolean;
+  readonly machine: MachineDetails | null;
+  readonly selected: boolean;
 };
 
 export const CloneNetworkTable = ({

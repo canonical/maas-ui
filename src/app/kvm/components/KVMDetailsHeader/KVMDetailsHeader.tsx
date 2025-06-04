@@ -16,13 +16,13 @@ type TitleBlock = {
 };
 
 type Props = {
-  buttons?: SectionHeaderProps["buttons"];
-  className?: ClassName;
-  loading?: SectionHeaderProps["loading"];
-  setSidePanelContent: KVMSetSidePanelContent;
-  tabLinks: SectionHeaderProps["tabLinks"];
-  title: ReactNode;
-  titleBlocks: TitleBlock[];
+  readonly buttons?: SectionHeaderProps["buttons"];
+  readonly className?: ClassName;
+  readonly loading?: SectionHeaderProps["loading"];
+  readonly setSidePanelContent: KVMSetSidePanelContent;
+  readonly tabLinks: SectionHeaderProps["tabLinks"];
+  readonly title: ReactNode;
+  readonly titleBlocks: TitleBlock[];
 };
 
 const KVMDetailsHeader = ({

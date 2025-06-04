@@ -10,8 +10,8 @@ import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  callId?: string | null;
-  systemId: Machine["system_id"];
+  readonly callId?: string | null;
+  readonly systemId: Machine["system_id"];
 };
 
 const NameColumn = ({ callId, systemId }: Props): React.ReactElement => {

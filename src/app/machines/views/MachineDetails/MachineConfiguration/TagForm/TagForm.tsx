@@ -14,7 +14,7 @@ import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import { NodeActions } from "@/app/store/types/node";
 
-type Props = { systemId: MachineDetails["system_id"] };
+type Props = { readonly systemId: MachineDetails["system_id"] };
 
 const TagForm = ({ systemId }: Props): React.ReactElement | null => {
   const machine = useSelector((state: RootState) =>

@@ -17,9 +17,9 @@ import scriptSelectors from "@/app/store/script/selectors";
 import type { Script } from "@/app/store/script/types";
 
 type Props = {
-  id: Script["id"];
-  isCollapsible?: boolean;
-  onCollapse?: () => void;
+  readonly id: Script["id"];
+  readonly isCollapsible?: boolean;
+  readonly onCollapse?: () => void;
 };
 
 const ScriptDetails = ({

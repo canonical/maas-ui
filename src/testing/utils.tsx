@@ -141,13 +141,13 @@ export const getByTextContent = (text: string | RegExp): HTMLElement => {
 };
 
 interface WrapperProps {
-  parentRoute?: string;
-  routePattern?: string;
-  state?: RootState;
-  store?: MockStoreEnhanced<RootState | unknown, object>;
-  queryData?: InitialData;
-  sidePanelContent?: SidePanelContent;
-  sidePanelSize?: SidePanelSize;
+  readonly parentRoute?: string;
+  readonly routePattern?: string;
+  readonly state?: RootState;
+  readonly store?: MockStoreEnhanced<RootState | unknown, object>;
+  readonly queryData?: InitialData;
+  readonly sidePanelContent?: SidePanelContent;
+  readonly sidePanelSize?: SidePanelSize;
 }
 
 export const BrowserRouterWithProvider = ({
@@ -158,7 +158,7 @@ export const BrowserRouterWithProvider = ({
   sidePanelContent,
   sidePanelSize,
   store,
-}: WrapperProps & { children: React.ReactNode }): React.ReactNode => {
+}: WrapperProps & { readonly children: React.ReactNode }): React.ReactNode => {
   const route = <Route element={children} path={routePattern} />;
   return (
     <QueryClientProvider client={setupQueryClient(queryData)}>
@@ -192,7 +192,7 @@ const WithMockStoreProvider = ({
   children,
   state,
   store,
-}: WrapperProps & { children: React.ReactNode }) => {
+}: WrapperProps & { readonly children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={setupQueryClient()}>
       <Provider store={store ?? getMockStore(state || rootStateFactory())}>
@@ -230,7 +230,7 @@ export const renderWithBrowserRouter = (
 
   window.history.pushState({}, "Test page", route);
 
-  const Wrapper = ({ children }: { children: React.ReactNode }) => {
+  const Wrapper = ({ children }: { readonly children: React.ReactNode }) => {
     return (
       <BrowserRouterWithProvider
         queryData={queryData}
