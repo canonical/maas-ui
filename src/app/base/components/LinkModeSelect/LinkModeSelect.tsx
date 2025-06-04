@@ -5,9 +5,9 @@ import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import { LINK_MODE_DISPLAY } from "@/app/store/utils";
 
 type Props = FormikFieldProps & {
-  defaultOption?: { label: string; value: string } | null;
-  interfaceType: NetworkInterfaceTypes;
-  subnet?: Subnet["id"] | null;
+  readonly defaultOption?: { label: string; value: string } | null;
+  readonly interfaceType: NetworkInterfaceTypes;
+  readonly subnet?: Subnet["id"] | null;
 };
 
 export enum Label {

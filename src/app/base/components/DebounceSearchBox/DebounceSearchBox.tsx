@@ -10,11 +10,11 @@ type Props = Omit<
   SearchBoxProps,
   "externallyControlled" | "onChange" | "ref" | "value"
 > & {
-  debounceInterval?: number;
-  onDebounced: (debouncedText: string) => void;
-  searchText: string;
-  setSearchText: (searchText: string) => void;
-  onChange?: SearchBoxProps["onChange"];
+  readonly debounceInterval?: number;
+  readonly onDebounced: (debouncedText: string) => void;
+  readonly searchText: string;
+  readonly setSearchText: (searchText: string) => void;
+  readonly onChange?: SearchBoxProps["onChange"];
 };
 
 export const DEFAULT_DEBOUNCE_INTERVAL = 500;

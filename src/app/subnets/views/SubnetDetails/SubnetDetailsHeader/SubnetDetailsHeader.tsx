@@ -12,7 +12,7 @@ import {
 } from "@/app/subnets/views/SubnetDetails/constants";
 
 type Props = {
-  subnet: Subnet;
+  readonly subnet: Subnet;
 };
 
 const SubnetDetailsHeader = ({ subnet }: Props): React.ReactElement => {

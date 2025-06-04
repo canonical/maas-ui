@@ -79,7 +79,11 @@ const generateRows = (vlans: VLAN[], subnets: Subnet[]) => {
   return rows;
 };
 
-const FabricVLANs = ({ fabric }: { fabric: Fabric }): React.ReactElement => {
+const FabricVLANs = ({
+  fabric,
+}: {
+  readonly fabric: Fabric;
+}): React.ReactElement => {
   const vlans = useSelector((state: RootState) =>
     vlanSelectors.getByFabric(state, fabric.id)
   );

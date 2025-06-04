@@ -4,12 +4,12 @@ import classNames from "classnames";
 import type { JSX } from "react/jsx-runtime";
 
 export type Props = React.PropsWithoutRef<JSX.IntrinsicElements["input"]> & {
-  checked?: boolean;
-  className?: string;
-  color?: ColorValues;
-  name?: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  label?: ReactNode;
+  readonly checked?: boolean;
+  readonly className?: string;
+  readonly color?: ColorValues;
+  readonly name?: string;
+  readonly onClick?: MouseEventHandler<HTMLButtonElement>;
+  readonly label?: ReactNode;
 };
 
 export enum ColorValues {

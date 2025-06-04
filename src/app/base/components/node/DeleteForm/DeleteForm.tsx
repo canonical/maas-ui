@@ -7,9 +7,9 @@ import { NodeActions } from "@/app/store/types/node";
 import { capitaliseFirst } from "@/app/utils";
 
 type Props<E = null> = NodeActionFormProps<E> & {
-  onSubmit: () => void;
-  onAfterSuccess?: () => void;
-  redirectURL: string;
+  readonly onSubmit: () => void;
+  readonly onAfterSuccess?: () => void;
+  readonly redirectURL: string;
 };
 
 export const DeleteForm = <E,>({

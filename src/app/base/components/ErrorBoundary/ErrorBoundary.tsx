@@ -10,9 +10,9 @@ import { version as versionSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  analyticsEnabled?: boolean | null;
-  children?: ReactNode;
-  maasVersion?: string;
+  readonly analyticsEnabled?: boolean | null;
+  readonly children?: ReactNode;
+  readonly maasVersion?: string;
 };
 
 type State = {

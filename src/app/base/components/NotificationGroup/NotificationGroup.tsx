@@ -22,8 +22,8 @@ const dismissAll = (notifications: NotificationType[], dispatch: Dispatch) => {
 };
 
 type Props = {
-  notifications: NotificationType[];
-  severity: NotificationProps["severity"];
+  readonly notifications: NotificationType[];
+  readonly severity: NotificationProps["severity"];
 };
 
 const NotificationGroup = ({

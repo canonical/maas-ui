@@ -8,10 +8,10 @@ import type { Machine } from "@/app/store/machine/types";
 import type { Disk, Partition } from "@/app/store/types/node";
 
 type Props = {
-  close: () => void;
-  systemId: Machine["system_id"];
-  diskId?: Disk["id"];
-  partitionId?: Partition["id"];
+  readonly close: () => void;
+  readonly systemId: Machine["system_id"];
+  readonly diskId?: Disk["id"];
+  readonly partitionId?: Partition["id"];
 };
 
 const CreateCacheSet = ({

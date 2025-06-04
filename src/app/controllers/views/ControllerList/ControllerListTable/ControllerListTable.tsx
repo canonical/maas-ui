@@ -31,11 +31,13 @@ import {
 import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 
 type Props = {
-  controllers: Controller[];
-  hasFilter?: boolean;
-  loading?: boolean;
-  onSelectedChange: (newSelectedIDs: Controller[ControllerMeta.PK][]) => void;
-  selectedIDs: Controller[ControllerMeta.PK][];
+  readonly controllers: Controller[];
+  readonly hasFilter?: boolean;
+  readonly loading?: boolean;
+  readonly onSelectedChange: (
+    newSelectedIDs: Controller[ControllerMeta.PK][]
+  ) => void;
+  readonly selectedIDs: Controller[ControllerMeta.PK][];
 };
 
 type SortKey = keyof Controller | "version";

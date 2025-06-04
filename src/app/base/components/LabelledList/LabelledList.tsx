@@ -11,8 +11,8 @@ export type ListItem = {
 };
 
 type Props = {
-  className?: string;
-  items: ListItem[];
+  readonly className?: string;
+  readonly items: ListItem[];
 };
 
 const LabelledList = ({

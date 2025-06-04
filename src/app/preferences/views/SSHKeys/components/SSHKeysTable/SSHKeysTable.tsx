@@ -15,7 +15,7 @@ import useSSHKeysTableColumns from "@/app/preferences/views/SSHKeys/components/S
 import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
 
 type SSHKeysTableProps = {
-  isIntro: boolean;
+  readonly isIntro: boolean;
 };
 
 export type SSHKeyValue = {

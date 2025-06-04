@@ -44,12 +44,12 @@ type FormattedCloneError = {
 };
 
 type Props = {
-  closeForm: () => void;
+  readonly closeForm: () => void;
   // This is optional because it can show in a machine's details page.
-  setSearchFilter?: SetSearchFilter;
-  selectedCount?: number | null;
-  sourceMachine: MachineDetails | null;
-  viewingDetails?: boolean;
+  readonly setSearchFilter?: SetSearchFilter;
+  readonly selectedCount?: number | null;
+  readonly sourceMachine: MachineDetails | null;
+  readonly viewingDetails?: boolean;
 };
 
 const getErrorDescription = (code: ValueOf<typeof CloneErrorCodes>) => {

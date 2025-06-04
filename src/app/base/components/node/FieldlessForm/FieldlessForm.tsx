@@ -14,11 +14,11 @@ import { getNodeActionTitle } from "@/app/store/utils";
 import { capitaliseFirst, kebabToCamelCase } from "@/app/utils";
 
 export type FieldlessFormProps<E = null> = NodeActionFormProps<E> & {
-  actions: typeof controllerActions | typeof machineActions;
-  action: NodeActions;
-  buttonsHelpClassName?: string;
-  buttonsHelp?: ReactNode;
-  cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
+  readonly actions: typeof controllerActions | typeof machineActions;
+  readonly action: NodeActions;
+  readonly buttonsHelpClassName?: string;
+  readonly buttonsHelp?: ReactNode;
+  readonly cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
 };
 
 export const FieldlessForm = <E,>({

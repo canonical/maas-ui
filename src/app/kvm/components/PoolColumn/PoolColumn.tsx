@@ -4,8 +4,8 @@ import type { ResourcePoolResponse, ZoneResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 
 type Props = {
-  poolId?: ResourcePoolResponse["id"] | null;
-  zoneId?: ZoneResponse["id"] | null;
+  readonly poolId?: ResourcePoolResponse["id"] | null;
+  readonly zoneId?: ZoneResponse["id"] | null;
 };
 
 const PoolColumn = ({ poolId, zoneId }: Props): React.ReactElement | null => {

@@ -26,18 +26,24 @@ export type Props<I, PK extends keyof I> = Pick<
   AriaAttributes,
   "aria-label"
 > & {
-  disabled?: boolean;
-  filterNames: Map<FilterKey, string>;
-  filterOrder: FilterKey[];
-  filtersToString: FilterItems<I, PK>["filtersToString"];
-  filterString?: string;
-  getCurrentFilters: FilterItems<I, PK>["getCurrentFilters"];
-  getValue: (item: I, filter: FilterKey) => FilterValue | FilterValue[] | null;
-  getValueDisplay?: (filter: FilterKey, value: FilterValue) => ReactNode;
-  isFilterActive: FilterItems<I, PK>["isFilterActive"];
-  items: I[];
-  onUpdateFilterString: (filterString: string) => void;
-  toggleFilter: FilterItems<I, PK>["toggleFilter"];
+  readonly disabled?: boolean;
+  readonly filterNames: Map<FilterKey, string>;
+  readonly filterOrder: FilterKey[];
+  readonly filtersToString: FilterItems<I, PK>["filtersToString"];
+  readonly filterString?: string;
+  readonly getCurrentFilters: FilterItems<I, PK>["getCurrentFilters"];
+  readonly getValue: (
+    item: I,
+    filter: FilterKey
+  ) => FilterValue | FilterValue[] | null;
+  readonly getValueDisplay?: (
+    filter: FilterKey,
+    value: FilterValue
+  ) => ReactNode;
+  readonly isFilterActive: FilterItems<I, PK>["isFilterActive"];
+  readonly items: I[];
+  readonly onUpdateFilterString: (filterString: string) => void;
+  readonly toggleFilter: FilterItems<I, PK>["toggleFilter"];
 };
 
 // An accordion section.

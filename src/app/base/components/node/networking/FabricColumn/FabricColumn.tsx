@@ -16,9 +16,9 @@ import { getVLANDisplay } from "@/app/store/vlan/utils";
 import subnetURLs from "@/app/subnets/urls";
 
 type Props = {
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  node: Node;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly node: Node;
 };
 
 const FabricColumn = ({

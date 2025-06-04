@@ -17,7 +17,7 @@ import scriptSelectors from "@/app/store/script/selectors";
 import { ScriptType } from "@/app/store/script/types";
 
 type Props = {
-  type: "commissioning" | "testing";
+  readonly type: "commissioning" | "testing";
 };
 
 export enum Labels {

@@ -17,13 +17,13 @@ import { settingsNavItems } from "@/app/settings/constants";
 import status from "@/app/store/status/selectors";
 
 export type Props = HTMLProps<HTMLDivElement> & {
-  children?: ReactNode;
-  header?: ReactNode;
-  sidebar?: ReactNode;
-  isNotificationListHidden?: boolean;
-  sidePanelContent: AppSidePanelProps["content"];
-  sidePanelSize?: AppSidePanelProps["size"];
-  sidePanelTitle: AppSidePanelProps["title"];
+  readonly children?: ReactNode;
+  readonly header?: ReactNode;
+  readonly sidebar?: ReactNode;
+  readonly isNotificationListHidden?: boolean;
+  readonly sidePanelContent: AppSidePanelProps["content"];
+  readonly sidePanelSize?: AppSidePanelProps["size"];
+  readonly sidePanelTitle: AppSidePanelProps["title"];
 };
 
 const PageContent = ({

@@ -18,8 +18,8 @@ import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {
-  id: Pod["id"];
-  setSidePanelContent: KVMSetSidePanelContent;
+  readonly id: Pod["id"];
+  readonly setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export enum Label {

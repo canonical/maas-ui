@@ -12,12 +12,12 @@ import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import { BootResourceAction } from "@/app/store/bootresource/types";
 
 type DeleteImagesProps = {
-  rowSelection: RowSelectionState;
-  setRowSelection:
+  readonly rowSelection: RowSelectionState;
+  readonly setRowSelection:
     | Dispatch<SetStateAction<RowSelectionState>>
     | null
     | undefined;
-  closeForm: () => void;
+  readonly closeForm: () => void;
 };
 
 const DeleteMultipleImagesForm = ({

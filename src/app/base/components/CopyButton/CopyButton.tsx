@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { Button } from "@canonical/react-components";
 
 type Props = {
-  value: string;
+  readonly value: string;
 };
 
 const CopyButton = ({ value }: Props): React.ReactElement => {

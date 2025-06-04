@@ -8,8 +8,8 @@ import type { MachineDetails } from "@/app/store/machine/types";
 import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
-  setSidePanelContent?: MachineSetSidePanelContent;
+  readonly node: ControllerDetails | MachineDetails;
+  readonly setSidePanelContent?: MachineSetSidePanelContent;
 };
 
 // Get the subtext for the CPU card. Only nodes commissioned after

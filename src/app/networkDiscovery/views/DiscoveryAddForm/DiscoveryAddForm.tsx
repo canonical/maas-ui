@@ -38,8 +38,8 @@ export enum Labels {
 }
 
 type Props = {
-  discovery: Discovery;
-  onClose: () => void;
+  readonly discovery: Discovery;
+  readonly onClose: () => void;
 };
 
 const formSubmit = (

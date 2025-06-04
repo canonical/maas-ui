@@ -25,21 +25,21 @@ type ActionGroup = {
 type ActionLink = DataTestElement<ButtonProps>;
 
 type Props = Pick<ContextualMenuDropdownProps, "constrainPanelWidth"> & {
-  alwaysShowLifecycle?: boolean;
-  className?: string;
-  disabledTooltipPosition?: "left" | "top-left";
-  excludeActions?: NodeActions[];
-  filterActions?: boolean;
-  getTitle?: (action: NodeActions) => ReactNode | null;
-  hasSelection: boolean;
-  menuPosition?: "left" | "right";
-  nodeDisplay?: string;
-  nodes?: Node[];
-  onActionClick: (action: NodeActions) => void;
-  showCount?: boolean;
-  toggleAppearance?: ValueOf<typeof ButtonAppearance>;
-  toggleClassName?: string | null;
-  toggleLabel?: string;
+  readonly alwaysShowLifecycle?: boolean;
+  readonly className?: string;
+  readonly disabledTooltipPosition?: "left" | "top-left";
+  readonly excludeActions?: NodeActions[];
+  readonly filterActions?: boolean;
+  readonly getTitle?: (action: NodeActions) => ReactNode | null;
+  readonly hasSelection: boolean;
+  readonly menuPosition?: "left" | "right";
+  readonly nodeDisplay?: string;
+  readonly nodes?: Node[];
+  readonly onActionClick: (action: NodeActions) => void;
+  readonly showCount?: boolean;
+  readonly toggleAppearance?: ValueOf<typeof ButtonAppearance>;
+  readonly toggleClassName?: string | null;
+  readonly toggleLabel?: string;
 };
 
 const actionGroups: ActionGroup[] = [

@@ -15,16 +15,16 @@ import type { Node, SimpleNode } from "@/app/store/types/node";
 import { nodeIsController } from "@/app/store/utils";
 
 export type Props = {
-  editingName: boolean;
+  readonly editingName: boolean;
   // Machines and devices can edit their name, but no controllers.
-  node: Node | null;
-  onSubmit: (
+  readonly node: Node | null;
+  readonly onSubmit: (
     hostname: SimpleNode["hostname"],
     domain: Domain[DomainMeta.PK]
   ) => void;
-  setEditingName: (editingName: boolean) => void;
-  saved?: boolean;
-  saving?: boolean;
+  readonly setEditingName: (editingName: boolean) => void;
+  readonly saved?: boolean;
+  readonly saving?: boolean;
 };
 
 export type FormValues = {

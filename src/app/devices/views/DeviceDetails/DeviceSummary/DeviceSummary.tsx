@@ -16,7 +16,7 @@ export enum Label {
 }
 
 type Props = {
-  systemId: Device[DeviceMeta.PK];
+  readonly systemId: Device[DeviceMeta.PK];
 };
 
 const DeviceSummary = ({ systemId }: Props): React.ReactElement => {

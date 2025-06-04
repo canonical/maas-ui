@@ -112,7 +112,7 @@ describe("NodeActionFormWrapper", () => {
 
   it("clears header content if no nodes are provided", async () => {
     const clearSidePanelContent = vi.fn();
-    const Proxy = ({ nodes }: { nodes: Node[] }) => (
+    const Proxy = ({ nodes }: { readonly nodes: Node[] }) => (
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={clearSidePanelContent}

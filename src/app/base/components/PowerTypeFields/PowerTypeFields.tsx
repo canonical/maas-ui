@@ -22,15 +22,15 @@ import {
 } from "@/app/store/general/utils";
 
 type Props = {
-  customFieldProps?: {
+  readonly customFieldProps?: {
     [PowerTypeNames.LXD]?: Partial<LXDPowerFieldsProps>;
   };
-  disableSelect?: boolean;
-  forChassis?: boolean;
-  powerParametersValueName?: string;
-  powerTypeValueName?: string;
-  fieldScopes?: PowerFieldScope[];
-  showSelect?: boolean;
+  readonly disableSelect?: boolean;
+  readonly forChassis?: boolean;
+  readonly powerParametersValueName?: string;
+  readonly powerTypeValueName?: string;
+  readonly fieldScopes?: PowerFieldScope[];
+  readonly showSelect?: boolean;
 };
 
 export const PowerTypeFields = <V extends AnyObject>({

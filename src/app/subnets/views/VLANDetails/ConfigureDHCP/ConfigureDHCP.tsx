@@ -32,8 +32,8 @@ import type {
 import { isId } from "@/app/utils";
 
 type Props = {
-  closeForm: () => void;
-  id?: VLAN[VLANMeta.PK] | null;
+  readonly closeForm: () => void;
+  readonly id?: VLAN[VLANMeta.PK] | null;
 };
 
 export enum DHCPType {

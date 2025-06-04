@@ -8,7 +8,7 @@ import { generalActions } from "@/app/store/general";
 import { bondOptions as bondOptionsSelectors } from "@/app/store/general/selectors";
 
 type Props = FormikFieldProps & {
-  defaultOption?: Option | null;
+  readonly defaultOption?: Option | null;
 };
 
 type Option = { label: string; value: string };

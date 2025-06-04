@@ -62,11 +62,11 @@ const getErrorSentence = (
 };
 
 type Props = {
-  action: NodeActions;
-  nodeType: string;
-  selectedCount: number;
-  actionableNodeIDs?: string[];
-  onUpdateSelected?: () => void;
+  readonly action: NodeActions;
+  readonly nodeType: string;
+  readonly selectedCount: number;
+  readonly actionableNodeIDs?: string[];
+  readonly onUpdateSelected?: () => void;
 };
 
 const NodeActionWarning = ({

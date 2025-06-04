@@ -136,7 +136,11 @@ describe("DhcpForm", () => {
     state.dhcpsnippet.saved = false;
     const onSave = vi.fn();
     const store = mockStore(state);
-    const Proxy = ({ analyticsCategory }: { analyticsCategory: string }) => (
+    const Proxy = ({
+      analyticsCategory,
+    }: {
+      readonly analyticsCategory: string;
+    }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <DhcpForm analyticsCategory={analyticsCategory} onSave={onSave} />

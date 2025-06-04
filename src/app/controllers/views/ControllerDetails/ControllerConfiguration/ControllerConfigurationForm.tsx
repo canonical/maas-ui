@@ -25,7 +25,7 @@ import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 
-type Props = { systemId: MachineDetails["system_id"] };
+type Props = { readonly systemId: MachineDetails["system_id"] };
 
 export enum Label {
   Title = "Controller configuration",

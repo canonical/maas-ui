@@ -14,7 +14,7 @@ import scriptResultSelectors from "@/app/store/scriptresult/selectors";
 import { TestStatusStatus } from "@/app/store/types/node";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  readonly systemId: Controller[ControllerMeta.PK];
 };
 
 const ControllerCommissioning = ({

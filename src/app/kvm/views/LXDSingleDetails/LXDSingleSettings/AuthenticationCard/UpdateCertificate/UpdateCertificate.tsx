@@ -14,10 +14,10 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { PodDetails } from "@/app/store/pod/types";
 
 type Props = {
-  closeForm: () => void;
-  hasCertificateData: boolean;
-  objectName?: string | null;
-  pod: PodDetails;
+  readonly closeForm: () => void;
+  readonly hasCertificateData: boolean;
+  readonly objectName?: string | null;
+  readonly pod: PodDetails;
 };
 
 export type UpdateCertificateValues = {

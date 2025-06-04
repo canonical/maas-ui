@@ -4,8 +4,8 @@ import { useDeleteSshKey } from "@/app/api/query/sshKeys";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 
 type DeleteSSHKeyProps = {
-  ids: number[];
-  closeForm: () => void;
+  readonly ids: number[];
+  readonly closeForm: () => void;
 };
 
 const DeleteSSHKey = ({ ids, closeForm }: DeleteSSHKeyProps): ReactElement => {

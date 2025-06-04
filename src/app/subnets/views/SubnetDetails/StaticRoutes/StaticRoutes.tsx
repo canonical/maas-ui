@@ -19,7 +19,7 @@ import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import { getSubnetDisplay } from "@/app/store/subnet/utils";
 
 export type Props = {
-  subnetId: Subnet[SubnetMeta.PK];
+  readonly subnetId: Subnet[SubnetMeta.PK];
 };
 
 export enum Labels {

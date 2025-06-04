@@ -18,8 +18,8 @@ const SpaceSummaryForm = ({
   space,
   handleDismiss,
 }: {
-  space: Space;
-  handleDismiss: () => void;
+  readonly space: Space;
+  readonly handleDismiss: () => void;
 }): React.ReactElement => {
   const spaceErrors = useSelector(spaceSelectors.errors);
   const saving = useSelector(spaceSelectors.saving);

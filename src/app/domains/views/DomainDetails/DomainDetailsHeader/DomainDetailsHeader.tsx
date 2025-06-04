@@ -26,8 +26,8 @@ const pluralizeString = (
 };
 
 type Props = {
-  id: Domain["id"];
-  setSidePanelContent: SetSidePanelContent;
+  readonly id: Domain["id"];
+  readonly setSidePanelContent: SetSidePanelContent;
 };
 
 export enum Labels {

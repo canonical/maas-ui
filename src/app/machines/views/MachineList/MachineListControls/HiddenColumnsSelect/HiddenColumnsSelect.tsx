@@ -10,7 +10,7 @@ import { useSendAnalytics } from "@/app/base/hooks";
 import { columnLabels, columnToggles } from "@/app/machines/constants";
 
 type Props = Pick<MachineListControlsProps, "setHiddenColumns"> & {
-  hiddenColumns: string[];
+  readonly hiddenColumns: string[];
 };
 
 const HiddenColumnsSelect = ({

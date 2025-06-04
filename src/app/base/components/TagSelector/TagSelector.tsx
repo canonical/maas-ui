@@ -13,22 +13,27 @@ export type Tag = {
 };
 
 export type Props = {
-  allowNewTags?: boolean;
-  disabled?: boolean;
-  error?: string;
-  externalSelectedTags?: Tag[];
-  help?: string;
-  initialSelected?: Tag[];
-  label?: string | null;
-  onAddNewTag?: (name: string) => (event: React.SyntheticEvent) => void;
-  onTagsUpdate?: (tags: Tag[]) => void;
-  placeholder?: string;
-  required?: boolean;
-  generateDropdownEntry?: (tag: Tag, highlightedName: ReactNode) => ReactNode;
-  header?: ReactNode;
-  showSelectedTags?: boolean;
-  tags: Tag[];
-  disabledTags?: Tag[];
+  readonly allowNewTags?: boolean;
+  readonly disabled?: boolean;
+  readonly error?: string;
+  readonly externalSelectedTags?: Tag[];
+  readonly help?: string;
+  readonly initialSelected?: Tag[];
+  readonly label?: string | null;
+  readonly onAddNewTag?: (
+    name: string
+  ) => (event: React.SyntheticEvent) => void;
+  readonly onTagsUpdate?: (tags: Tag[]) => void;
+  readonly placeholder?: string;
+  readonly required?: boolean;
+  readonly generateDropdownEntry?: (
+    tag: Tag,
+    highlightedName: ReactNode
+  ) => ReactNode;
+  readonly header?: ReactNode;
+  readonly showSelectedTags?: boolean;
+  readonly tags: Tag[];
+  readonly disabledTags?: Tag[];
 };
 
 // Give an explicit name to the text input so we can exclude it from form submission

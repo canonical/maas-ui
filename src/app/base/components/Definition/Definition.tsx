@@ -3,7 +3,7 @@ import { Children } from "react";
 import { useId } from "@/app/base/hooks/base";
 
 type CommonProps = {
-  label: React.ReactNode;
+  readonly label: React.ReactNode;
 };
 
 type DescriptionProps =

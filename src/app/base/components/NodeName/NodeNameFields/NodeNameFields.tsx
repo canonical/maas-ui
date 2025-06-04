@@ -13,9 +13,9 @@ import domainSelectors from "@/app/store/domain/selectors";
 import { DomainMeta } from "@/app/store/domain/types";
 
 type Props = {
-  canEditHostname?: boolean;
-  saving?: boolean;
-  setHostnameError: (
+  readonly canEditHostname?: boolean;
+  readonly saving?: boolean;
+  readonly setHostnameError: (
     error: FormikErrors<FormValues>["hostname"] | null
   ) => void;
 };

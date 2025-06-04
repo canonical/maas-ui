@@ -8,8 +8,8 @@ import type { PowerField } from "@/app/store/general/types";
 import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
-  field: PowerField;
-  powerParametersValueName?: string;
+  readonly field: PowerField;
+  readonly powerParametersValueName?: string;
 };
 
 export const BasePowerField = <V extends AnyObject>({

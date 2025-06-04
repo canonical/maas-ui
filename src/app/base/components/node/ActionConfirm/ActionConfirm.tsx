@@ -16,15 +16,15 @@ import type { Machine, MachineStatus } from "@/app/store/machine/types";
 import { formatErrors } from "@/app/utils";
 
 type Props = {
-  confirmLabel: string;
-  eventName?: string;
-  message?: ReactNode;
-  closeExpanded: () => void;
-  onConfirm: () => void;
-  onSaveAnalytics: AnalyticsEvent;
-  statusKey: keyof MachineStatus;
-  submitAppearance?: ActionButtonProps["appearance"];
-  systemId: Machine["system_id"];
+  readonly confirmLabel: string;
+  readonly eventName?: string;
+  readonly message?: ReactNode;
+  readonly closeExpanded: () => void;
+  readonly onConfirm: () => void;
+  readonly onSaveAnalytics: AnalyticsEvent;
+  readonly statusKey: keyof MachineStatus;
+  readonly submitAppearance?: ActionButtonProps["appearance"];
+  readonly systemId: Machine["system_id"];
 };
 
 const ActionConfirm = ({

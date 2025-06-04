@@ -49,7 +49,7 @@ export type LxdKVMHostTableRow = {
 };
 
 type Props = {
-  rows: LxdKVMHostTableRow[];
+  readonly rows: LxdKVMHostTableRow[];
 };
 
 type SortKey = "cpu" | "hostType" | "name" | "ram" | "storage" | "vms" | "zone";

@@ -57,13 +57,13 @@ export const networkFieldsInitialValues = {
 const fieldOrder = ["fabric", "vlan", "subnet", "mode", "ip_address"];
 
 type Props = {
-  editing?: boolean;
-  fabricDisabled?: boolean;
-  includeUnconfiguredSubnet?: boolean;
-  includeDefaultVlan?: boolean;
-  interfaceType: NetworkInterfaceTypes;
-  vlanDisabled?: boolean;
-  vlans?: VLAN[] | null;
+  readonly editing?: boolean;
+  readonly fabricDisabled?: boolean;
+  readonly includeUnconfiguredSubnet?: boolean;
+  readonly includeDefaultVlan?: boolean;
+  readonly interfaceType: NetworkInterfaceTypes;
+  readonly vlanDisabled?: boolean;
+  readonly vlans?: VLAN[] | null;
 };
 
 export enum Label {

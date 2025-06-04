@@ -9,9 +9,9 @@ import fileDownload from "js-file-download";
 import type { CertificateData } from "@/app/store/general/types";
 
 type Props = {
-  certificate: CertificateData["certificate"];
-  filename: string;
-  isGenerated?: boolean;
+  readonly certificate: CertificateData["certificate"];
+  readonly filename: string;
+  readonly isGenerated?: boolean;
 };
 
 export enum Labels {

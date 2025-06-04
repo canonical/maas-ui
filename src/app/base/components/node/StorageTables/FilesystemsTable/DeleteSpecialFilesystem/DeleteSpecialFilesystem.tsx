@@ -8,9 +8,9 @@ import type { Machine } from "@/app/store/machine/types";
 import type { Filesystem } from "@/app/store/types/node";
 
 type Props = {
-  close: () => void;
-  mountPoint: Filesystem["mount_point"];
-  systemId: Machine["system_id"];
+  readonly close: () => void;
+  readonly mountPoint: Filesystem["mount_point"];
+  readonly systemId: Machine["system_id"];
 };
 
 const DeleteSpecialFilesystem = ({

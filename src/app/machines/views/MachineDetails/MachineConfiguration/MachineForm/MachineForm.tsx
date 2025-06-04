@@ -26,7 +26,7 @@ export type MachineFormValues = {
   zone: MachineDetails["zone"]["name"];
 };
 
-type Props = { systemId: MachineDetails["system_id"] };
+type Props = { readonly systemId: MachineDetails["system_id"] };
 
 const MachineFormSchema: SchemaOf<MachineFormValues> = Yup.object()
   .shape({

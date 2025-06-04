@@ -5,9 +5,9 @@ import type { KVMResource } from "@/app/kvm/types";
 import { resourceWithOverCommit } from "@/app/store/pod/utils";
 
 type Props = {
-  children: ReactNode;
-  cores: KVMResource;
-  overCommit?: number;
+  readonly children: ReactNode;
+  readonly cores: KVMResource;
+  readonly overCommit?: number;
 };
 
 const CPUPopover = ({

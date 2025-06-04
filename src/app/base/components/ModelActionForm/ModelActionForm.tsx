@@ -6,8 +6,8 @@ import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/
 import FormikForm from "@/app/base/components/FormikForm/FormikForm";
 
 type Props<V extends object, E = null> = FormikFormProps<V, E> & {
-  modelType: string;
-  message?: ReactNode;
+  readonly modelType: string;
+  readonly message?: ReactNode;
 };
 
 const ModelActionForm = <V extends object, E = null>({

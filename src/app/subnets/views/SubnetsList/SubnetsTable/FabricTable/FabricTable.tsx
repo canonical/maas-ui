@@ -20,8 +20,8 @@ const FabricTable = ({
   data,
   emptyMsg,
 }: {
-  data: SubnetsTableRow[];
-  emptyMsg: string;
+  readonly data: SubnetsTableRow[];
+  readonly emptyMsg: string;
 }): React.ReactElement => {
   const { pageData, ...paginationProps } = usePagination(data);
   const headers = useMemo(

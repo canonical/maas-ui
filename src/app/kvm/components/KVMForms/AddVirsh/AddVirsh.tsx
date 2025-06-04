@@ -27,7 +27,7 @@ import type { Pod } from "@/app/store/pod/types";
 import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
+  readonly clearSidePanelContent: ClearSidePanelContent;
 };
 
 export type AddVirshValues = {

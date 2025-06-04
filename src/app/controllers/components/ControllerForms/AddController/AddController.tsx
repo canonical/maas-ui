@@ -11,7 +11,7 @@ import configSelectors from "@/app/store/config/selectors";
 import { version as versionSelectors } from "@/app/store/general/selectors";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
+  readonly clearSidePanelContent: ClearSidePanelContent;
 };
 
 export const AddController = ({

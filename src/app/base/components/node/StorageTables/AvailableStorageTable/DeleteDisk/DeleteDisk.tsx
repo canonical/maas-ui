@@ -9,9 +9,9 @@ import type { Disk } from "@/app/store/types/node";
 import { formatType } from "@/app/store/utils";
 
 type Props = {
-  close: () => void;
-  systemId: Machine["system_id"];
-  disk: Disk;
+  readonly close: () => void;
+  readonly systemId: Machine["system_id"];
+  readonly disk: Disk;
 };
 
 const DeleteDisk = ({ systemId, disk, close }: Props): ReactElement => {

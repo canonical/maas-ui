@@ -5,9 +5,9 @@ import type WebSocketClient from "@/websocket-client";
 
 export const WebSocketContext = createContext<WebSocketClient | null>(null);
 
-export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const WebSocketProvider: React.FC<{
+  readonly children: React.ReactNode;
+}> = ({ children }) => {
   return (
     <WebSocketContext.Provider value={websocketClient}>
       {children}

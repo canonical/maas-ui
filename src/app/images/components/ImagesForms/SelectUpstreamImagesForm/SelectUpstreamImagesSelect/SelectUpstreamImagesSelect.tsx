@@ -17,9 +17,9 @@ export const getValueKey = (distro: string, release: string): string =>
   `${distro}-${release}`.replace(".", "-");
 
 export type DownloadImagesSelectProps = {
-  values: Record<string, MultiSelectItem[]>;
-  setFieldValue: (key: string, value: MultiSelectItem[]) => void;
-  groupedImages: GroupedImages;
+  readonly values: Record<string, MultiSelectItem[]>;
+  readonly setFieldValue: (key: string, value: MultiSelectItem[]) => void;
+  readonly groupedImages: GroupedImages;
 };
 
 const SelectUpstreamImagesSelect = ({

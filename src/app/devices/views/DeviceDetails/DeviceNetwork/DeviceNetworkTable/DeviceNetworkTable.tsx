@@ -54,7 +54,7 @@ type NetworkRow = Omit<MainTableRow, "sortData"> & {
 type SortKey = keyof NetworkRowSortData;
 
 type Props = {
-  systemId: Device[DeviceMeta.PK];
+  readonly systemId: Device[DeviceMeta.PK];
 };
 
 const getSortValue = (sortKey: SortKey, row: NetworkRow) => {

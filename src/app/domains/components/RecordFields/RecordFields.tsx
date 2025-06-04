@@ -65,7 +65,7 @@ const getRecordDataPlaceholder = (type: RecordType) => {
 };
 
 type Props = {
-  editing?: boolean;
+  readonly editing?: boolean;
 };
 
 const RecordFields = ({ editing }: Props): React.ReactElement => {

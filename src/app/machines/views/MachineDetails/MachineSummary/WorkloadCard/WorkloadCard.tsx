@@ -13,7 +13,7 @@ import { FilterMachines, isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  id: Machine["system_id"];
+  readonly id: Machine["system_id"];
 };
 
 const WorkloadCard = ({ id }: Props): React.ReactElement => {

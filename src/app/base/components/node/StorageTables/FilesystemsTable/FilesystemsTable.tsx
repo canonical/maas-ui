@@ -21,8 +21,8 @@ export enum FilesystemAction {
 }
 
 type Props = {
-  canEditStorage: boolean;
-  node: ControllerDetails | MachineDetails;
+  readonly canEditStorage: boolean;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 const headers = [

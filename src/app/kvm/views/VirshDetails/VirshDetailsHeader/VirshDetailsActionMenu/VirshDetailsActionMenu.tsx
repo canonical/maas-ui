@@ -5,8 +5,8 @@ import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
-  hostId: Pod["id"];
-  setSidePanelContent: KVMSetSidePanelContent;
+  readonly hostId: Pod["id"];
+  readonly setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const PodDetailsActionMenu = ({

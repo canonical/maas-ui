@@ -10,8 +10,8 @@ const ErrorDetailsItem = ({
   errorMessage,
   systemIds,
 }: {
-  errorMessage: keyof NonNullable<ActionState["failureDetails"]>;
-  systemIds: ActionState["failedSystemIds"];
+  readonly errorMessage: keyof NonNullable<ActionState["failureDetails"]>;
+  readonly systemIds: ActionState["failedSystemIds"];
 }) => {
   return (
     <dl className="u-no-margin--bottom">
@@ -28,7 +28,7 @@ const ErrorDetailsItem = ({
 const ErrorDetailsList = ({
   failureDetails,
 }: {
-  failureDetails: NonNullable<ActionState["failureDetails"]>;
+  readonly failureDetails: NonNullable<ActionState["failureDetails"]>;
 }): React.ReactElement => {
   return (
     <>

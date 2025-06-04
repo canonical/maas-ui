@@ -17,8 +17,8 @@ import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 
 type Props = {
-  onToggleMenu?: MachineMenuToggleHandler;
-  systemId: Machine[MachineMeta.PK];
+  readonly onToggleMenu?: MachineMenuToggleHandler;
+  readonly systemId: Machine[MachineMeta.PK];
 };
 
 export const PoolColumn = ({

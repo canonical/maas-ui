@@ -13,7 +13,7 @@ import {
 } from "@/app/store/general/selectors";
 
 type Props = {
-  type: "ppa" | "repository";
+  readonly type: "ppa" | "repository";
 };
 
 export enum Labels {

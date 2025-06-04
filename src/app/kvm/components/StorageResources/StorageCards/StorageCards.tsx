@@ -11,8 +11,8 @@ import { calcFreePoolStorage, getSortedPoolsArray } from "@/app/kvm/utils";
 import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
-  defaultPoolId?: Pod["default_storage_pool"];
-  pools: KVMStoragePoolResources;
+  readonly defaultPoolId?: Pod["default_storage_pool"];
+  readonly pools: KVMStoragePoolResources;
 };
 type CardSize = "large" | "medium" | "small";
 

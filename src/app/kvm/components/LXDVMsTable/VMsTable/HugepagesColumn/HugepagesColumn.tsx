@@ -1,5 +1,5 @@
 type Props = {
-  hugepagesBacked: boolean;
+  readonly hugepagesBacked: boolean;
 };
 
 const HugepagesColumn = ({ hugepagesBacked }: Props): React.ReactElement => {

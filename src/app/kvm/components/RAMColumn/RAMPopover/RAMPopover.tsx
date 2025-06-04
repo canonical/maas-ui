@@ -6,12 +6,12 @@ import { memoryWithUnit } from "@/app/kvm/utils";
 import { resourceWithOverCommit } from "@/app/store/pod/utils";
 
 type Props = {
-  children: ReactNode;
-  memory: {
+  readonly children: ReactNode;
+  readonly memory: {
     hugepages: KVMResource;
     general: KVMResource;
   };
-  overCommit?: number;
+  readonly overCommit?: number;
 };
 
 const RAMPopover = ({

@@ -12,7 +12,7 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import { BridgeType, NetworkInterfaceTypes } from "@/app/store/types/enum";
 
 type Props = {
-  typeDisabled?: boolean;
+  readonly typeDisabled?: boolean;
 };
 
 const BridgeFormFields = ({

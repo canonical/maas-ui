@@ -8,14 +8,14 @@ import type { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 
 type Props = {
-  currentPage: number;
-  setCurrentPage: (page: number) => void;
-  filter: TagSearchFilter;
-  searchText: string;
-  tags: Tag[];
-  tableId: string;
-  onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
-  onUpdate: (id: Tag[TagMeta.PK]) => void;
+  readonly currentPage: number;
+  readonly setCurrentPage: (page: number) => void;
+  readonly filter: TagSearchFilter;
+  readonly searchText: string;
+  readonly tags: Tag[];
+  readonly tableId: string;
+  readonly onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
+  readonly onUpdate: (id: Tag[TagMeta.PK]) => void;
 };
 
 export enum Label {

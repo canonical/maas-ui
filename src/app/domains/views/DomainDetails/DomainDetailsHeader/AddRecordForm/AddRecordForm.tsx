@@ -18,8 +18,8 @@ export enum Labels {
 }
 
 type Props = {
-  closeForm: () => void;
-  id: Domain["id"];
+  readonly closeForm: () => void;
+  readonly id: Domain["id"];
 };
 
 type CreateRecordValues = {

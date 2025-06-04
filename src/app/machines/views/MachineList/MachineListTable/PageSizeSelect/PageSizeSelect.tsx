@@ -2,9 +2,9 @@ import { Select } from "@canonical/react-components";
 import type { PaginationProps } from "@canonical/react-components";
 
 type Props = {
-  pageSize: number;
-  paginate: NonNullable<PaginationProps["paginate"]>;
-  setPageSize: (pageSize: number) => void;
+  readonly pageSize: number;
+  readonly paginate: NonNullable<PaginationProps["paginate"]>;
+  readonly setPageSize: (pageSize: number) => void;
 };
 
 export enum Labels {

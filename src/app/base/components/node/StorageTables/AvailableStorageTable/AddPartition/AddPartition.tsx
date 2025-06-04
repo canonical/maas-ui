@@ -24,9 +24,9 @@ export type AddPartitionValues = {
 };
 
 type Props = {
-  closeExpanded: () => void;
-  disk: Disk;
-  systemId: Machine["system_id"];
+  readonly closeExpanded: () => void;
+  readonly disk: Disk;
+  readonly systemId: Machine["system_id"];
 };
 
 const generateSchema = (availableSize: number) =>

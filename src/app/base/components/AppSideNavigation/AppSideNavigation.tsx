@@ -29,17 +29,17 @@ import type { RootState } from "@/app/store/root/types";
 import { statusActions } from "@/app/store/status";
 
 export type SideNavigationProps = {
-  authUser: ReturnType<typeof authSelectors.get>;
-  filteredGroups: typeof navGroups;
-  isAdmin: boolean;
-  isAuthenticated: boolean;
-  isCollapsed: boolean;
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
-  logout: () => void;
-  path: string;
-  showLinks: boolean;
-  theme: string;
-  vaultIncomplete: boolean;
+  readonly authUser: ReturnType<typeof authSelectors.get>;
+  readonly filteredGroups: typeof navGroups;
+  readonly isAdmin: boolean;
+  readonly isAuthenticated: boolean;
+  readonly isCollapsed: boolean;
+  readonly setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  readonly logout: () => void;
+  readonly path: string;
+  readonly showLinks: boolean;
+  readonly theme: string;
+  readonly vaultIncomplete: boolean;
 };
 
 export const AppSideNavigation = ({

@@ -86,9 +86,12 @@ describe("machine hook utils", () => {
   describe("useFetchMachineCount", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode; filters?: FetchFilters }) => (
-        <Provider store={store}>{children}</Provider>
-      );
+      ({
+        children,
+      }: {
+        readonly children?: ReactNode;
+        readonly filters?: FetchFilters;
+      }) => <Provider store={store}>{children}</Provider>;
 
     it("can dispatch machine count action", () => {
       const store = mockStore(state);
@@ -253,7 +256,7 @@ describe("machine hook utils", () => {
 
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) => (
+      ({ children }: { readonly children?: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
       );
 
@@ -488,7 +491,7 @@ describe("machine hook utils", () => {
 
   const generateWrapper =
     (store: MockStoreEnhanced<unknown>) =>
-    ({ children }: { children?: ReactNode }) => (
+    ({ children }: { readonly children?: ReactNode }) => (
       <Provider store={store}>{children}</Provider>
     );
 
@@ -499,7 +502,7 @@ describe("machine hook utils", () => {
 
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) => (
+      ({ children }: { readonly children?: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
       );
 
@@ -527,7 +530,7 @@ describe("machine hook utils", () => {
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) => (
+      ({ children }: { readonly children?: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
       );
 
@@ -568,7 +571,7 @@ describe("machine hook utils", () => {
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) => (
+      ({ children }: { readonly children?: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
       );
 
@@ -628,7 +631,7 @@ describe("machine hook utils", () => {
   describe("useSelectedMachinesActionsDispatch", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) => (
+      ({ children }: { readonly children?: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
       );
 
@@ -780,7 +783,7 @@ describe("machine hook utils", () => {
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) => (
+      ({ children }: { readonly children?: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
       );
 

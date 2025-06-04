@@ -16,8 +16,8 @@ import type { RootState } from "@/app/store/root/types";
 import { preparePayload } from "@/app/utils";
 
 type Props = {
-  closeForm: () => void;
-  systemId: Device[DeviceMeta.PK];
+  readonly closeForm: () => void;
+  readonly systemId: Device[DeviceMeta.PK];
 };
 
 const AddInterface = ({ closeForm, systemId }: Props): React.ReactElement => {

@@ -7,10 +7,10 @@ import { usePools } from "@/app/api/query/pools";
 import FormikField from "@/app/base/components/FormikField";
 
 type Props = HTMLProps<HTMLSelectElement> & {
-  disabled?: boolean;
-  label?: string;
-  name: string;
-  valueKey?: "id" | "name";
+  readonly disabled?: boolean;
+  readonly label?: string;
+  readonly name: string;
+  readonly valueKey?: "id" | "name";
 };
 
 export const ResourcePoolSelect = ({

@@ -19,8 +19,8 @@ export enum Labels {
 }
 
 type Props = {
-  canEditStorage: boolean;
-  node: ControllerDetails | MachineDetails;
+  readonly canEditStorage: boolean;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 const StorageTables = ({ canEditStorage, node }: Props): React.ReactElement => {

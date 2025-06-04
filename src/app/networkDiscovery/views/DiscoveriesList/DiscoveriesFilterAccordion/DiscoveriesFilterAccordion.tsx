@@ -8,8 +8,8 @@ import {
 } from "@/app/store/discovery/utils";
 
 type Props = {
-  searchText?: string;
-  setSearchText: (searchText: string) => void;
+  readonly searchText?: string;
+  readonly setSearchText: (searchText: string) => void;
 };
 
 export enum Labels {

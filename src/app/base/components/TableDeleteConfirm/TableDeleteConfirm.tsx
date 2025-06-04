@@ -5,14 +5,14 @@ type Props = Pick<
   TableConfirmProps,
   "errors" | "onClose" | "onConfirm" | "onSuccess" | "sidebar"
 > & {
-  deleted: TableConfirmProps["finished"];
-  deleting: TableConfirmProps["inProgress"];
-  message?: string;
-  modelName?: string;
-  modelType?: string;
-  onClose: TableConfirmProps["onClose"];
-  onConfirm: TableConfirmProps["onConfirm"];
-  sidebar?: TableConfirmProps["sidebar"];
+  readonly deleted: TableConfirmProps["finished"];
+  readonly deleting: TableConfirmProps["inProgress"];
+  readonly message?: string;
+  readonly modelName?: string;
+  readonly modelType?: string;
+  readonly onClose: TableConfirmProps["onClose"];
+  readonly onConfirm: TableConfirmProps["onConfirm"];
+  readonly sidebar?: TableConfirmProps["sidebar"];
 };
 
 export enum Labels {

@@ -24,7 +24,7 @@ const mockStore = configureStore();
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>) =>
-  ({ children }: { children: ReactNode }) => (
+  ({ children }: { readonly children: ReactNode }) => (
     <Provider store={store}>{children}</Provider>
   );
 
@@ -146,7 +146,11 @@ describe("node hooks", () => {
 
   describe("useMachineActions", () => {
     let state: RootState;
-    const HookWrapper = ({ action }: { action: MachineMenuAction }) => {
+    const HookWrapper = ({
+      action,
+    }: {
+      readonly action: MachineMenuAction;
+    }) => {
       const actions = useMachineActions("abc123", [action]);
       return (
         <>

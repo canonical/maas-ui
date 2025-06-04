@@ -57,7 +57,7 @@ const generatePowerParameters = (
 const NodePowerDefinitions = ({
   node,
 }: {
-  node: ControllerDetails | MachineDetails;
+  readonly node: ControllerDetails | MachineDetails;
 }): React.ReactElement => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const powerType = getPowerTypeFromName(powerTypes, node.power_type);

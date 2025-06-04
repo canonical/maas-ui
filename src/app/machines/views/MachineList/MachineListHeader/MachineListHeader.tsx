@@ -13,14 +13,14 @@ import type { FetchGroupKey } from "@/app/store/machine/types";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 
 type Props = {
-  grouping: FetchGroupKey | null;
-  hiddenColumns?: ReturnType<typeof useResponsiveColumns>[0];
-  setGrouping: (group: FetchGroupKey | null) => void;
-  setHiddenGroups: (groups: string[]) => void;
-  setHiddenColumns: ReturnType<typeof useResponsiveColumns>[1];
-  searchFilter: string;
-  setSearchFilter: SetSearchFilter;
-  setSidePanelContent: MachineSetSidePanelContent;
+  readonly grouping: FetchGroupKey | null;
+  readonly hiddenColumns?: ReturnType<typeof useResponsiveColumns>[0];
+  readonly setGrouping: (group: FetchGroupKey | null) => void;
+  readonly setHiddenGroups: (groups: string[]) => void;
+  readonly setHiddenColumns: ReturnType<typeof useResponsiveColumns>[1];
+  readonly searchFilter: string;
+  readonly setSearchFilter: SetSearchFilter;
+  readonly setSidePanelContent: MachineSetSidePanelContent;
 };
 
 export const MachineListHeader = ({

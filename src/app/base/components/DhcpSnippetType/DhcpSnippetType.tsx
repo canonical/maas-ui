@@ -4,9 +4,9 @@ import { useDhcpTarget } from "@/app/settings/hooks";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {
-  nodeId?: DHCPSnippet["node"];
-  subnetId?: DHCPSnippet["subnet"];
-  ipRangeId?: DHCPSnippet["iprange"];
+  readonly nodeId?: DHCPSnippet["node"];
+  readonly subnetId?: DHCPSnippet["subnet"];
+  readonly ipRangeId?: DHCPSnippet["iprange"];
 };
 
 const dhcpTypeLabels = {

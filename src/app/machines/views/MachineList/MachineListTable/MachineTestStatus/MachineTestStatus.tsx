@@ -4,9 +4,9 @@ import ScriptStatus from "@/app/base/components/ScriptStatus";
 import { TestStatusStatus } from "@/app/store/types/node";
 
 type Props = {
-  children: React.ReactNode;
-  status: TestStatusStatus;
-  tooltipPosition?: Position;
+  readonly children: React.ReactNode;
+  readonly status: TestStatusStatus;
+  readonly tooltipPosition?: Position;
 };
 
 const MachineTestStatus = ({

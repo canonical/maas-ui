@@ -23,7 +23,7 @@ import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import { isId } from "@/app/utils";
 
 type Props = {
-  id: VLAN[VLANMeta.PK];
+  readonly id: VLAN[VLANMeta.PK];
 };
 
 export enum Headers {

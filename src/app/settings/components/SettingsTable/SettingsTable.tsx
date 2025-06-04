@@ -20,20 +20,20 @@ export type TableButtons = {
 };
 
 export type Props = {
-  buttons?: TableButtons[];
-  defaultSort?: string;
-  emptyStateMsg?: MainTableProps["emptyStateMsg"];
-  headers?: MainTableProps["headers"];
-  helpLabel?: string;
-  helpLink?: string;
-  loaded?: boolean;
-  loading?: boolean;
-  rows?: MainTableProps["rows"];
-  searchOnChange?: (inputValue: string) => void;
-  searchPlaceholder?: string;
-  searchText?: string;
-  tableClassName?: string;
-  title?: string;
+  readonly buttons?: TableButtons[];
+  readonly defaultSort?: string;
+  readonly emptyStateMsg?: MainTableProps["emptyStateMsg"];
+  readonly headers?: MainTableProps["headers"];
+  readonly helpLabel?: string;
+  readonly helpLink?: string;
+  readonly loaded?: boolean;
+  readonly loading?: boolean;
+  readonly rows?: MainTableProps["rows"];
+  readonly searchOnChange?: (inputValue: string) => void;
+  readonly searchPlaceholder?: string;
+  readonly searchText?: string;
+  readonly tableClassName?: string;
+  readonly title?: string;
 };
 
 export const SettingsTable = ({

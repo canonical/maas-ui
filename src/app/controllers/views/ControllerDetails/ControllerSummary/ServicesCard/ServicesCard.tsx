@@ -18,7 +18,7 @@ import {
 import { NodeType } from "@/app/store/types/node";
 
 type Props = {
-  controller: ControllerDetails;
+  readonly controller: ControllerDetails;
 };
 
 type ServiceItem = {

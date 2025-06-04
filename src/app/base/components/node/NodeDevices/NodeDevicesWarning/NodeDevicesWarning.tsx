@@ -10,10 +10,10 @@ import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
 import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
-  bus: NodeDeviceBus;
-  node: ControllerDetails | MachineDetails;
-  nodeDevices: NodeDevice[];
-  setSidePanelContent?: MachineSetSidePanelContent;
+  readonly bus: NodeDeviceBus;
+  readonly node: ControllerDetails | MachineDetails;
+  readonly nodeDevices: NodeDevice[];
+  readonly setSidePanelContent?: MachineSetSidePanelContent;
 };
 
 const NodeDevicesWarning = ({

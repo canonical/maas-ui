@@ -25,18 +25,18 @@ type ActionGroup = {
 type ActionLink = DataTestElement<ButtonProps>;
 
 type Props = {
-  alwaysShowLifecycle?: boolean;
-  disabledTooltipPosition?: "left" | "top-left";
-  excludeActions?: NodeActions[];
-  filterActions?: boolean;
-  getTitle?: (action: NodeActions) => ReactNode | null;
-  hasSelection: boolean;
-  isNodeLocked?: boolean;
-  nodeDisplay?: string;
-  nodes?: Node[];
-  onActionClick: (action: NodeActions) => void;
-  singleNode?: boolean;
-  showCount?: boolean;
+  readonly alwaysShowLifecycle?: boolean;
+  readonly disabledTooltipPosition?: "left" | "top-left";
+  readonly excludeActions?: NodeActions[];
+  readonly filterActions?: boolean;
+  readonly getTitle?: (action: NodeActions) => ReactNode | null;
+  readonly hasSelection: boolean;
+  readonly isNodeLocked?: boolean;
+  readonly nodeDisplay?: string;
+  readonly nodes?: Node[];
+  readonly onActionClick: (action: NodeActions) => void;
+  readonly singleNode?: boolean;
+  readonly showCount?: boolean;
 };
 
 export enum Labels {

@@ -202,7 +202,7 @@ const ReserveDHCPLease = ({
       }
       validationSchema={ReserveDHCPLeaseSchema}
     >
-      {({ values }: { values: FormValues }) => (
+      {({ values }: { readonly values: FormValues }) => (
         <>
           <FormikField
             cidr={subnet.cidr}

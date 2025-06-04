@@ -10,7 +10,7 @@ import type { Controller, ControllerMeta } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  systemId?: Controller[ControllerMeta.PK] | null;
+  readonly systemId?: Controller[ControllerMeta.PK] | null;
 };
 
 export enum Labels {

@@ -23,7 +23,7 @@ export enum Label {
 }
 
 type Props = {
-  token?: Token;
+  readonly token?: Token;
 };
 
 const APIKeyAddSchema = Yup.object().shape({

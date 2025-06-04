@@ -12,8 +12,8 @@ import { bondOptions as bondOptionsSelectors } from "@/app/store/general/selecto
 import { BondMode, BondXmitHashPolicy } from "@/app/store/general/types";
 
 type Props = FormikFieldProps & {
-  bondMode?: BondMode | null;
-  defaultOption?: { label: string; value: string } | null;
+  readonly bondMode?: BondMode | null;
+  readonly defaultOption?: { label: string; value: string } | null;
 };
 
 type Option = { label: string; value: string };

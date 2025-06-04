@@ -16,9 +16,9 @@ import {
 } from "@/app/store/utils";
 
 type Props = {
-  loadingMachineDetails?: boolean;
-  machine: MachineDetails | null;
-  selected: boolean;
+  readonly loadingMachineDetails?: boolean;
+  readonly machine: MachineDetails | null;
+  readonly selected: boolean;
 };
 
 const normaliseColumns = ({

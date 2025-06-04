@@ -15,9 +15,9 @@ import type { DeviceSetSidePanelContent } from "@/app/devices/types";
 import deviceSelectors from "@/app/store/device/selectors";
 
 type Props = {
-  searchFilter: string;
-  setSidePanelContent: DeviceSetSidePanelContent;
-  setSearchFilter: SetSearchFilter;
+  readonly searchFilter: string;
+  readonly setSidePanelContent: DeviceSetSidePanelContent;
+  readonly setSearchFilter: SetSearchFilter;
 };
 
 const DeviceListHeader = ({

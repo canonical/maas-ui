@@ -11,7 +11,7 @@ import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
 
 type Props = {
-  nic: NetworkInterface | null;
+  readonly nic: NetworkInterface | null;
 };
 
 const generateCaution = (values: EditPhysicalValues) =>

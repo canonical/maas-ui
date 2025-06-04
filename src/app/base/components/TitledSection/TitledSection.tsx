@@ -26,10 +26,10 @@ export type Props = PropsWithSpread<
 >;
 
 type HeadingProps = {
-  element: Headings;
-  className?: string;
-  id: string;
-  children: ReactNode;
+  readonly element: Headings;
+  readonly className?: string;
+  readonly id: string;
+  readonly children: ReactNode;
 };
 
 const Heading = ({ element, id, className, children }: HeadingProps) =>

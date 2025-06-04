@@ -1,6 +1,6 @@
 import DoubleRow from "@/app/base/components/DoubleRow";
 
-type Props = { tags: string[] };
+type Props = { readonly tags: string[] };
 
 const TagsColumn = ({ tags }: Props): React.ReactElement | null => {
   return (

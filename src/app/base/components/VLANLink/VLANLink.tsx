@@ -11,7 +11,7 @@ import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import { getVLANDisplay } from "@/app/store/vlan/utils";
 
 type Props = {
-  id?: VLAN[VLANMeta.PK] | null;
+  readonly id?: VLAN[VLANMeta.PK] | null;
 };
 
 const VLANLink = ({ id }: Props): React.ReactElement => {

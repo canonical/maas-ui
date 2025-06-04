@@ -14,7 +14,7 @@ import type { Controller, ControllerMeta } from "@/app/store/controller/types";
 import type { Subnet } from "@/app/store/subnet/types";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  readonly systemId: Controller[ControllerMeta.PK];
 };
 
 const ControllerVLANsTable = ({ systemId }: Props): React.ReactElement => {
@@ -32,7 +32,7 @@ const ControllerVLANsTable = ({ systemId }: Props): React.ReactElement => {
             Cell: ({
               value,
             }: {
-              value: ControllerTableData[ControllerVLANsColumns.FABRIC];
+              readonly value: ControllerTableData[ControllerVLANsColumns.FABRIC];
             }) => <FabricLink id={value?.id} />,
           },
           {
@@ -41,7 +41,7 @@ const ControllerVLANsTable = ({ systemId }: Props): React.ReactElement => {
             Cell: ({
               value,
             }: {
-              value: ControllerTableData[ControllerVLANsColumns.VLAN];
+              readonly value: ControllerTableData[ControllerVLANsColumns.VLAN];
             }) => <VLANLink id={value?.id} />,
           },
           {
@@ -54,7 +54,7 @@ const ControllerVLANsTable = ({ systemId }: Props): React.ReactElement => {
             Cell: ({
               value,
             }: {
-              value: ControllerTableData[ControllerVLANsColumns.SUBNET];
+              readonly value: ControllerTableData[ControllerVLANsColumns.SUBNET];
             }) => (
               <>
                 {value?.map(({ id }: Subnet) => (
@@ -71,7 +71,7 @@ const ControllerVLANsTable = ({ systemId }: Props): React.ReactElement => {
             Cell: ({
               value,
             }: {
-              value: ControllerTableData[ControllerVLANsColumns.PRIMARY_RACK];
+              readonly value: ControllerTableData[ControllerVLANsColumns.PRIMARY_RACK];
             }) => <ControllerLink systemId={value} />,
           },
           {
@@ -80,7 +80,7 @@ const ControllerVLANsTable = ({ systemId }: Props): React.ReactElement => {
             Cell: ({
               value,
             }: {
-              value: ControllerTableData[ControllerVLANsColumns.SECONDARY_RACK];
+              readonly value: ControllerTableData[ControllerVLANsColumns.SECONDARY_RACK];
             }) => <ControllerLink systemId={value} />,
           },
         ],

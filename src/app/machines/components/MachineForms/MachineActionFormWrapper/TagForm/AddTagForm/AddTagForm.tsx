@@ -4,11 +4,11 @@ import type { Tag } from "@/app/store/tag/types";
 import BaseAddTagForm from "@/app/tags/components/AddTagForm";
 
 export type Props = Partial<MachineActionFormProps> & {
-  name: string | null;
-  onTagCreated: (tag: Tag) => void;
-  viewingDetails?: boolean;
-  viewingMachineConfig?: boolean;
-  onCancel?: () => void;
+  readonly name: string | null;
+  readonly onTagCreated: (tag: Tag) => void;
+  readonly viewingDetails?: boolean;
+  readonly viewingMachineConfig?: boolean;
+  readonly onCancel?: () => void;
 };
 
 export const AddTagForm = ({

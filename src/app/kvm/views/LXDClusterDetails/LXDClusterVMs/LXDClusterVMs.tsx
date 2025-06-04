@@ -14,10 +14,10 @@ import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
-  clusterId: VMCluster["id"];
-  searchFilter: string;
-  setSidePanelContent: KVMSetSidePanelContent;
-  setSearchFilter: SetSearchFilter;
+  readonly clusterId: VMCluster["id"];
+  readonly searchFilter: string;
+  readonly setSidePanelContent: KVMSetSidePanelContent;
+  readonly setSearchFilter: SetSearchFilter;
 };
 
 export enum Label {

@@ -25,8 +25,8 @@ type AddSpecialFilesystemValues = {
 };
 
 type Props = {
-  closeForm: () => void;
-  machine: MachineDetails;
+  readonly closeForm: () => void;
+  readonly machine: MachineDetails;
 };
 
 export const AddSpecialFilesystem = ({

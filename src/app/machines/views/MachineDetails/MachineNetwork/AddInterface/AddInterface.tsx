@@ -33,8 +33,8 @@ import { getNextNicName } from "@/app/store/utils";
 import { preparePayload } from "@/app/utils";
 
 type Props = {
-  close: () => void;
-  systemId: MachineDetails["system_id"];
+  readonly close: () => void;
+  readonly systemId: MachineDetails["system_id"];
 };
 
 export type AddInterfaceValues = NetworkValues & {

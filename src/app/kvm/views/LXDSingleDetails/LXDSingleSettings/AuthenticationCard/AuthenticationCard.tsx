@@ -14,8 +14,8 @@ import { isPodDetails } from "@/app/store/pod/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  hostId: Pod["id"] | null;
-  objectName?: string | null;
+  readonly hostId: Pod["id"] | null;
+  readonly objectName?: string | null;
 };
 
 const AuthenticationCard = ({

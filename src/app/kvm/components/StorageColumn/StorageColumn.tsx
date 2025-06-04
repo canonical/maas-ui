@@ -5,9 +5,9 @@ import type { KVMResource, KVMStoragePoolResources } from "@/app/kvm/types";
 import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
-  defaultPoolId?: Pod["default_storage_pool"];
-  pools: KVMStoragePoolResources;
-  storage: KVMResource;
+  readonly defaultPoolId?: Pod["default_storage_pool"];
+  readonly pools: KVMStoragePoolResources;
+  readonly storage: KVMResource;
 };
 
 const StorageColumn = ({

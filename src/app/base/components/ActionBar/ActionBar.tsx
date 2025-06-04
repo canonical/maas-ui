@@ -6,14 +6,14 @@ import type { SearchBoxProps } from "@canonical/react-components";
 import SearchBox from "@/app/base/components/SearchBox";
 
 type Props = {
-  actions?: ReactNode;
-  currentPage: number;
-  loading?: boolean;
-  itemCount: number;
-  onSearchChange: SearchBoxProps["onChange"];
-  pageSize?: number;
-  searchFilter: string;
-  setCurrentPage: (page: number) => void;
+  readonly actions?: ReactNode;
+  readonly currentPage: number;
+  readonly loading?: boolean;
+  readonly itemCount: number;
+  readonly onSearchChange: SearchBoxProps["onChange"];
+  readonly pageSize?: number;
+  readonly searchFilter: string;
+  readonly setCurrentPage: (page: number) => void;
 };
 
 const ActionBar = ({

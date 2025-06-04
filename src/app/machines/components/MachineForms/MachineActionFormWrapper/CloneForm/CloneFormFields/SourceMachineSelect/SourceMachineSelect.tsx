@@ -21,11 +21,11 @@ export enum Label {
 }
 
 type Props = {
-  className?: string;
-  loadingMachineDetails?: boolean;
-  pageSize?: number;
-  onMachineClick: (machine: Machine | null) => void;
-  selectedMachine?: MachineDetails | null;
+  readonly className?: string;
+  readonly loadingMachineDetails?: boolean;
+  readonly pageSize?: number;
+  readonly onMachineClick: (machine: Machine | null) => void;
+  readonly selectedMachine?: MachineDetails | null;
 };
 
 export const SourceMachineSelect = ({

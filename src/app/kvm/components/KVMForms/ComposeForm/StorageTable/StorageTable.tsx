@@ -15,8 +15,8 @@ import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  defaultDisk: Disk;
-  hostId: Pod["id"];
+  readonly defaultDisk: Disk;
+  readonly hostId: Pod["id"];
 };
 
 export const StorageTable = ({

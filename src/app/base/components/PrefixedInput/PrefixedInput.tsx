@@ -6,7 +6,7 @@ import { Input } from "@canonical/react-components";
 import classNames from "classnames";
 
 export type PrefixedInputProps = Omit<InputProps, "type"> & {
-  immutableText: string;
+  readonly immutableText: string;
 };
 
 const PrefixedInput = ({

@@ -5,7 +5,7 @@ import type { Space, SpaceMeta } from "@/app/store/space/types";
 import { isId } from "@/app/utils";
 
 type Props = {
-  spaceId?: Space[SpaceMeta.PK] | null;
+  readonly spaceId?: Space[SpaceMeta.PK] | null;
 };
 
 const SubnetSpace = ({ spaceId }: Props): React.ReactElement | null => {

@@ -54,12 +54,12 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import { arrayItemsEqual } from "@/app/utils";
 
 type Props = {
-  close: () => void;
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  selected: Selected[];
-  setSelected: SetSelected;
-  systemId: MachineDetails["system_id"];
+  readonly close: () => void;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly selected: Selected[];
+  readonly setSelected: SetSelected;
+  readonly systemId: MachineDetails["system_id"];
 };
 
 const InterfaceSchema = Yup.object().shape({

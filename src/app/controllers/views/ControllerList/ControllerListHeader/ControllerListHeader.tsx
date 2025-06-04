@@ -15,9 +15,9 @@ import controllerSelectors from "@/app/store/controller/selectors";
 import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
-  searchFilter: string;
-  setSearchFilter: SetSearchFilter;
-  setSidePanelContent: SetSidePanelContent;
+  readonly searchFilter: string;
+  readonly setSearchFilter: SetSearchFilter;
+  readonly setSidePanelContent: SetSidePanelContent;
 };
 
 const ControllerListHeader = ({

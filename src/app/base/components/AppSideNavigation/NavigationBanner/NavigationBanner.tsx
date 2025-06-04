@@ -8,7 +8,7 @@ import urls from "@/app/base/urls";
 const NavigationBanner = ({
   children,
 }: {
-  children?: React.ReactNode;
+  readonly children?: React.ReactNode;
 }): React.ReactElement => {
   const location = useLocation();
 

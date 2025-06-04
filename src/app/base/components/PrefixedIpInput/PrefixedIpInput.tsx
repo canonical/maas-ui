@@ -16,8 +16,8 @@ type Props = Omit<
   PrefixedInputProps,
   "immutableText" | "maxLength" | "name" | "placeholder"
 > & {
-  cidr: Subnet["cidr"];
-  name: string;
+  readonly cidr: Subnet["cidr"];
+  readonly name: string;
 };
 
 const PrefixedIpInput = ({

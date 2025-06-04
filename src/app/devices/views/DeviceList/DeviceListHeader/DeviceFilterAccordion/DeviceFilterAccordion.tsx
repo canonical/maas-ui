@@ -8,8 +8,8 @@ import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {
-  searchText: string;
-  setSearchText: (searchText: string) => void;
+  readonly searchText: string;
+  readonly setSearchText: (searchText: string) => void;
 };
 
 const filterOrder = [

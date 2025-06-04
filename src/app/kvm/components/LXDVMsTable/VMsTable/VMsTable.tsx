@@ -46,18 +46,20 @@ export type GetResources = (vm: Machine) => {
 };
 
 type Props = {
-  callId?: string | null;
-  displayForCluster?: boolean;
-  getHostColumn?: GetHostColumn;
-  getResources: GetResources;
-  machinesLoading: boolean;
-  pods: Pod["name"][];
-  searchFilter: string;
-  sortDirection: ValueOf<typeof SortDirection>;
-  sortKey: FetchGroupKey | null;
-  setSortDirection: (sortDirection: ValueOf<typeof SortDirection>) => void;
-  setSortKey: (sortKey: FetchGroupKey | null) => void;
-  vms: Machine[];
+  readonly callId?: string | null;
+  readonly displayForCluster?: boolean;
+  readonly getHostColumn?: GetHostColumn;
+  readonly getResources: GetResources;
+  readonly machinesLoading: boolean;
+  readonly pods: Pod["name"][];
+  readonly searchFilter: string;
+  readonly sortDirection: ValueOf<typeof SortDirection>;
+  readonly sortKey: FetchGroupKey | null;
+  readonly setSortDirection: (
+    sortDirection: ValueOf<typeof SortDirection>
+  ) => void;
+  readonly setSortKey: (sortKey: FetchGroupKey | null) => void;
+  readonly vms: Machine[];
 };
 
 type RowContent = {

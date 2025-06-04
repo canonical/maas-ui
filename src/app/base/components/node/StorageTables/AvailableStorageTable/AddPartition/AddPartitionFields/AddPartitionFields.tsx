@@ -8,8 +8,8 @@ import FormikField from "@/app/base/components/FormikField";
 import type { Machine } from "@/app/store/machine/types";
 
 type Props = {
-  partitionName: string;
-  systemId: Machine["system_id"];
+  readonly partitionName: string;
+  readonly systemId: Machine["system_id"];
 };
 
 export const AddPartitionFields = ({

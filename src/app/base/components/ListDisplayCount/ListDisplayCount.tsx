@@ -22,10 +22,10 @@ export const ListDisplayCount = ({
   currentPage,
   type = "item",
 }: {
-  count: number;
-  pageSize: number;
-  currentPage: number;
-  type: string;
+  readonly count: number;
+  readonly pageSize: number;
+  readonly currentPage: number;
+  readonly type: string;
 }): React.ReactElement => {
   return (
     <strong className="machine-list--display-count">

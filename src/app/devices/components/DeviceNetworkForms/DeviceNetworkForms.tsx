@@ -8,7 +8,7 @@ import EditInterface from "@/app/devices/views/DeviceDetails/DeviceNetwork/EditI
 import type { Device } from "@/app/store/device/types";
 
 type Props = SidePanelContentTypes & {
-  systemId: Device["system_id"];
+  readonly systemId: Device["system_id"];
 };
 
 const DeviceNetworkForms = ({

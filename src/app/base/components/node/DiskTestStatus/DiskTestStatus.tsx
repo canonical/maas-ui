@@ -1,7 +1,7 @@
 import { ScriptResultStatus } from "@/app/store/scriptresult/types";
 import type { Disk } from "@/app/store/types/node";
 
-type Props = { testStatus: Disk["test_status"] };
+type Props = { readonly testStatus: Disk["test_status"] };
 
 const DiskTestStatus = ({ testStatus }: Props): React.ReactElement => {
   switch (testStatus) {

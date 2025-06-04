@@ -32,9 +32,9 @@ type CreateVolumeGroupValues = {
 };
 
 type Props = {
-  closeForm: () => void;
-  selected: (Disk | Partition)[];
-  systemId: Machine["system_id"];
+  readonly closeForm: () => void;
+  readonly selected: (Disk | Partition)[];
+  readonly systemId: Machine["system_id"];
 };
 
 const getInitialName = (disks: Disk[]) => {

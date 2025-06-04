@@ -15,7 +15,7 @@ type InputFieldValue =
 export type FormikFormValues = Record<string, InputFieldValue>;
 
 export type Props<V extends object, E = null> = ContentProps<V, E> &
-  FormikConfig<V> & { initialValues: FormikFormValues };
+  FormikConfig<V> & { readonly initialValues: FormikFormValues };
 
 const FormikForm = <V extends object, E = null>({
   allowAllEmpty,

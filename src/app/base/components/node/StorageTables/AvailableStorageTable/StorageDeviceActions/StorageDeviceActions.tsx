@@ -24,13 +24,13 @@ import {
 } from "@/app/store/utils";
 
 type Props = {
-  disabled: boolean;
-  storageDevice: Disk | Partition;
-  onActionClick: (
+  readonly disabled: boolean;
+  readonly storageDevice: Disk | Partition;
+  readonly onActionClick: (
     rowAction: StorageDeviceAction,
     view?: TableAction<StorageDeviceAction>["view"]
   ) => void;
-  systemId: MachineDetails["system_id"];
+  readonly systemId: MachineDetails["system_id"];
 };
 
 const StorageDeviceActions = ({

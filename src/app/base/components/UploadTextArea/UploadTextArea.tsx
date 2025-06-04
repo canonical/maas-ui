@@ -21,9 +21,9 @@ type Props<V> = Omit<
   | "onChange"
   | "spellCheck"
 > & {
-  label: string;
-  maxSize?: number;
-  name: keyof V;
+  readonly label: string;
+  readonly maxSize?: number;
+  readonly name: keyof V;
 };
 
 const MAX_SIZE_BYTES = 2000000;

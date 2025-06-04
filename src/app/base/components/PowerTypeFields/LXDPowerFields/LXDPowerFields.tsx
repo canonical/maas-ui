@@ -11,10 +11,10 @@ import type { PowerField as PowerFieldType } from "@/app/store/general/types";
 import type { PowerParameters } from "@/app/store/types/node";
 
 export type Props = {
-  canEditCertificate?: boolean;
-  fields: PowerFieldType[];
-  initialShouldGenerateCert?: boolean;
-  powerParametersValueName?: string;
+  readonly canEditCertificate?: boolean;
+  readonly fields: PowerFieldType[];
+  readonly initialShouldGenerateCert?: boolean;
+  readonly powerParametersValueName?: string;
 };
 
 export const CustomFields = {

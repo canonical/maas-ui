@@ -13,7 +13,7 @@ import {
 } from "@/app/store/subnet/utils";
 
 export type Props = {
-  subnetId: Subnet[SubnetMeta.PK] | null;
+  readonly subnetId: Subnet[SubnetMeta.PK] | null;
 };
 
 export enum Labels {

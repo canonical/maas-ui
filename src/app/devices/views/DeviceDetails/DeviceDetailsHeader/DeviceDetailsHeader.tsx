@@ -16,8 +16,8 @@ import { isDeviceDetails } from "@/app/store/device/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  setSidePanelContent: DeviceSetSidePanelContent;
-  systemId: Device["system_id"];
+  readonly setSidePanelContent: DeviceSetSidePanelContent;
+  readonly systemId: Device["system_id"];
 };
 
 const DeviceDetailsHeader = ({

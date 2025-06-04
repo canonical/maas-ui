@@ -20,8 +20,8 @@ import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
-  clusterId: VMCluster["id"];
-  setSidePanelContent: KVMSetSidePanelContent;
+  readonly clusterId: VMCluster["id"];
+  readonly setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export enum Label {

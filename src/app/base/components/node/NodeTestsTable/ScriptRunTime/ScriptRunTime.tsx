@@ -10,7 +10,7 @@ import {
 import type { ScriptResult } from "@/app/store/scriptresult/types";
 
 type Props = {
-  scriptResult: ScriptResult;
+  readonly scriptResult: ScriptResult;
 };
 
 // Add leading zeros to single digit numbers.

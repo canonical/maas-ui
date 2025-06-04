@@ -13,8 +13,8 @@ import ZoneSelect from "@/app/base/components/ZoneSelect";
 import podSelectors from "@/app/store/pod/selectors";
 
 type Props = {
-  setShouldGenerateCert: (generateCert: boolean) => void;
-  shouldGenerateCert: boolean;
+  readonly setShouldGenerateCert: (generateCert: boolean) => void;
+  readonly shouldGenerateCert: boolean;
 };
 
 export const CredentialsFormFields = ({

@@ -14,7 +14,7 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 
 type Props = {
-  id: VLAN[VLANMeta.PK] | null;
+  readonly id: VLAN[VLANMeta.PK] | null;
 };
 
 const VLANSummary = ({ id }: Props): React.ReactElement | null => {

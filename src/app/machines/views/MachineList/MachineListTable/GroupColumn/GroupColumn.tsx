@@ -25,8 +25,8 @@ const GroupColumn = ({
   GroupRowsProps,
   "callId" | "filter" | "hiddenGroups" | "setHiddenGroups" | "showActions"
 > & {
-  grouping: NonNullable<GroupRowsProps["grouping"]>;
-  group: MachineStateListGroup;
+  readonly grouping: NonNullable<GroupRowsProps["grouping"]>;
+  readonly group: MachineStateListGroup;
 }): ReactElement => {
   const { collapsed, count, name, value } = group;
   return (

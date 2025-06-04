@@ -56,10 +56,10 @@ import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {
-  close: () => void;
-  selected: Selected[];
-  setSelected: SetSelected;
-  systemId: MachineDetails["system_id"];
+  readonly close: () => void;
+  readonly selected: Selected[];
+  readonly setSelected: SetSelected;
+  readonly systemId: MachineDetails["system_id"];
 };
 
 const InterfaceSchema = Yup.object().shape({

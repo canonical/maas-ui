@@ -34,13 +34,13 @@ import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/ho
 import { NodeActions } from "@/app/store/types/node";
 
 type ContainerProps = Omit<MachineActionFormProps, "processingCount"> & {
-  action: MachineActions;
-  applyConfiguredNetworking?: boolean;
-  clearSidePanelContent: ClearSidePanelContent;
-  hardwareType?: HardwareType;
-  selectedCountLoading?: boolean;
-  setSearchFilter?: SetSearchFilter;
-  viewingDetails: boolean;
+  readonly action: MachineActions;
+  readonly applyConfiguredNetworking?: boolean;
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly hardwareType?: HardwareType;
+  readonly selectedCountLoading?: boolean;
+  readonly setSearchFilter?: SetSearchFilter;
+  readonly viewingDetails: boolean;
 };
 
 type Props = ContainerProps &
@@ -48,13 +48,13 @@ type Props = ContainerProps &
     ReturnType<typeof useSelectedMachinesActionsDispatch>,
     "failedSystemIds" | "successCount"
   > & {
-    clearSelectedMachines: () => void;
-    dispatch: Dispatch<Action>;
-    dispatchForSelectedMachines: ReturnType<
+    readonly clearSelectedMachines: () => void;
+    readonly dispatch: Dispatch<Action>;
+    readonly dispatchForSelectedMachines: ReturnType<
       typeof useSelectedMachinesActionsDispatch
     >["dispatch"];
-    filter: ReturnType<typeof selectedToFilters>;
-    onRenderRef: ReturnType<typeof useScrollOnRender<HTMLDivElement>>;
+    readonly filter: ReturnType<typeof selectedToFilters>;
+    readonly onRenderRef: ReturnType<typeof useScrollOnRender<HTMLDivElement>>;
   };
 
 export const MachineActionForm = ({

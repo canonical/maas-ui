@@ -3,7 +3,7 @@ import SectionHeader from "@/app/base/components/SectionHeader";
 import { useWindowTitle } from "@/app/base/hooks";
 
 type Props = {
-  includeSection?: boolean;
+  readonly includeSection?: boolean;
 };
 
 export enum Label {

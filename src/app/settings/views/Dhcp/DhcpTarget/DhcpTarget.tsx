@@ -8,8 +8,8 @@ import { useDhcpTarget } from "@/app/settings/hooks";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {
-  nodeId?: DHCPSnippet["node"];
-  subnetId?: DHCPSnippet["subnet"];
+  readonly nodeId?: DHCPSnippet["node"];
+  readonly subnetId?: DHCPSnippet["subnet"];
 };
 
 const DhcpTarget = ({ nodeId, subnetId }: Props): React.ReactElement | null => {

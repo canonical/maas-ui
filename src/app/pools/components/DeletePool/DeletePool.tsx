@@ -7,8 +7,8 @@ import { getResourcePoolQueryKey } from "@/app/apiclient/@tanstack/react-query.g
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 
 type DeletePoolProps = {
-  id: number;
-  closeForm: () => void;
+  readonly id: number;
+  readonly closeForm: () => void;
 };
 
 const DeletePool = ({ id, closeForm }: DeletePoolProps): ReactElement => {

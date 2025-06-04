@@ -13,8 +13,8 @@ import type { Disk, Partition } from "@/app/store/types/node";
 import { formatSize, formatType, isDisk } from "@/app/store/utils";
 
 type Props = {
-  storageDevices: (Disk | Partition)[];
-  systemId: Machine["system_id"];
+  readonly storageDevices: (Disk | Partition)[];
+  readonly systemId: Machine["system_id"];
 };
 
 /**

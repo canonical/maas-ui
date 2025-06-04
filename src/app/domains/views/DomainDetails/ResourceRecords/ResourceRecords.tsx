@@ -38,7 +38,7 @@ type Expanded = {
 };
 
 type Props = {
-  id: Domain["id"];
+  readonly id: Domain["id"];
 };
 
 const generateRowId = (resource: DomainResource, i: number) =>

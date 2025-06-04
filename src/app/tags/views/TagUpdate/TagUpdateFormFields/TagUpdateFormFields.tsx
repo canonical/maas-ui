@@ -15,7 +15,7 @@ import { Label } from "@/app/tags/views/TagDetails";
 import { formatUtcDatetime } from "@/app/utils/time";
 
 type Props = {
-  id: Tag[TagMeta.PK];
+  readonly id: Tag[TagMeta.PK];
 };
 
 export const TagUpdateFormFields = ({

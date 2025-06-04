@@ -22,12 +22,12 @@ import { NodeActions } from "@/app/store/types/node";
 import { kebabToCamelCase } from "@/app/utils";
 
 type Props = {
-  action: ControllerActions;
-  applyConfiguredNetworking?: boolean;
-  clearSidePanelContent: ClearSidePanelContent;
-  hardwareType?: HardwareType;
-  controllers: Controller[];
-  viewingDetails: boolean;
+  readonly action: ControllerActions;
+  readonly applyConfiguredNetworking?: boolean;
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly hardwareType?: HardwareType;
+  readonly controllers: Controller[];
+  readonly viewingDetails: boolean;
 };
 
 const getProcessingCount = (
