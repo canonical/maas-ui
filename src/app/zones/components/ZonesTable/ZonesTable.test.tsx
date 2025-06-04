@@ -163,9 +163,9 @@ describe("ZonesTable", () => {
   //  and will be discussed as to whether they should be added everywhere.
   //  Enable these tests if they are added to zones
   describe("permissions", () => {
-    it.skip("enables the action buttons with correct permissions");
+    it.todo("enables the action buttons with correct permissions");
 
-    it.skip("disables the action buttons without permissions");
+    it.todo("disables the action buttons without permissions");
 
     it("disables the delete button for default zones", async () => {
       mockServer.use(

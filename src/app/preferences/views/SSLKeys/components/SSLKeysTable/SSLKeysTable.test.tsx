@@ -65,12 +65,6 @@ describe("SSLKeysTable", () => {
     });
   });
 
-  describe("permissions", () => {
-    it.skip("enables the action buttons with correct permissions");
-
-    it.skip("disables the action buttons without permissions");
-  });
-
   describe("actions", () => {
     it("opens add SSL key side panel form", async () => {
       renderWithProviders(<SSLKeysTable />);
