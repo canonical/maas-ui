@@ -79,7 +79,7 @@ jobs:
 
   publish-coverage-report:
     name: Publish Coverage Report
-    if: github.ref == 'refs/heads/main' || github.ref == 'ref/heads/tics-debug-*' || github.event_name == 'schedule'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/tics-debug-*' || github.event_name == 'schedule'
     runs-on: [ self-hosted, linux, amd64, tiobe, jammy ]
     needs: test-coverage-tics
     permissions:
