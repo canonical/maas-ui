@@ -13,8 +13,8 @@ export enum Label {
 }
 
 type Props = {
-  callId?: string | null;
-  filter: FetchFilters | null;
+  readonly callId?: string | null;
+  readonly filter: FetchFilters | null;
 };
 
 const AllCheckbox = ({ callId, filter }: Props): React.ReactElement => {

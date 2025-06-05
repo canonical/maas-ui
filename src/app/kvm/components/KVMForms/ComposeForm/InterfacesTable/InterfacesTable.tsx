@@ -81,7 +81,7 @@ const getTooltipMessage = (hasSubnets: boolean, hasPxeSubnets: boolean) => {
 };
 
 type Props = {
-  hostId: Pod["id"];
+  readonly hostId: Pod["id"];
 };
 
 export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {

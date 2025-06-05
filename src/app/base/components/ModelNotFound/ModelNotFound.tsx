@@ -6,11 +6,11 @@ import SectionHeader from "@/app/base/components/SectionHeader";
 import { capitaliseFirst, isId } from "@/app/utils";
 
 type Props = {
-  id?: number | string | null;
-  inSection?: boolean;
-  linkText?: string;
-  linkURL: string;
-  modelName: string;
+  readonly id?: number | string | null;
+  readonly inSection?: boolean;
+  readonly linkText?: string;
+  readonly linkURL: string;
+  readonly modelName: string;
 };
 
 export enum TestIds {

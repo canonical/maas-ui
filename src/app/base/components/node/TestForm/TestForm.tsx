@@ -39,10 +39,12 @@ export type FormValues = {
 };
 
 type Props<E = null> = NodeActionFormProps<E> & {
-  applyConfiguredNetworking?: Script["apply_configured_networking"];
-  cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
-  hardwareType?: HardwareType;
-  onTest: (args: FormValues & { systemId?: Node["system_id"] }) => void;
+  readonly applyConfiguredNetworking?: Script["apply_configured_networking"];
+  readonly cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
+  readonly hardwareType?: HardwareType;
+  readonly onTest: (
+    args: FormValues & { systemId?: Node["system_id"] }
+  ) => void;
 };
 
 export const TestForm = <E,>({

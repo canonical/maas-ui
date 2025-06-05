@@ -17,7 +17,7 @@ const mockStore = configureStore();
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>, pathname = "") =>
-  ({ children }: { children: ReactNode }) => (
+  ({ children }: { readonly children: ReactNode }) => (
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname }]}>{children}</MemoryRouter>
     </Provider>

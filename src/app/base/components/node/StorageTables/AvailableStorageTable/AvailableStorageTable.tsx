@@ -58,8 +58,8 @@ export enum StorageDeviceAction {
 }
 
 type Props = {
-  canEditStorage: boolean;
-  node: ControllerDetails | MachineDetails;
+  readonly canEditStorage: boolean;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 /**

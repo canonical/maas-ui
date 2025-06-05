@@ -10,9 +10,9 @@ import domainSelectors from "@/app/store/domain/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  id: Controller["system_id"];
-  isEditing: boolean;
-  setIsEditing: (editingName: boolean) => void;
+  readonly id: Controller["system_id"];
+  readonly isEditing: boolean;
+  readonly setIsEditing: (editingName: boolean) => void;
 };
 
 const ControllerName = ({

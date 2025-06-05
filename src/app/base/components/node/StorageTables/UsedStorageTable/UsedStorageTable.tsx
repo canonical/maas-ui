@@ -21,7 +21,7 @@ import {
 } from "@/app/store/utils";
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 const normaliseColumns = (

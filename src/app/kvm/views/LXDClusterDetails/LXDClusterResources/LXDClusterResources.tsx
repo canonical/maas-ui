@@ -10,7 +10,7 @@ import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
-  clusterId: VMCluster["id"];
+  readonly clusterId: VMCluster["id"];
 };
 
 export enum Label {

@@ -11,10 +11,10 @@ import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
 import { getObjectString } from "@/app/store/script/utils";
 
 type Props = {
-  preselectedTesting: FormattedScript[];
-  preselectedCommissioning: FormattedScript[];
-  commissioningScripts: FormattedScript[];
-  testingScripts: FormattedScript[];
+  readonly preselectedTesting: FormattedScript[];
+  readonly preselectedCommissioning: FormattedScript[];
+  readonly commissioningScripts: FormattedScript[];
+  readonly testingScripts: FormattedScript[];
 };
 
 export const CommissionFormFields = ({

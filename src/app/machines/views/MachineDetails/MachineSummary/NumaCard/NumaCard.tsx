@@ -10,7 +10,7 @@ import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  id: Machine["system_id"];
+  readonly id: Machine["system_id"];
 };
 
 export enum Labels {

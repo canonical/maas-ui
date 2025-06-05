@@ -9,7 +9,11 @@ import spaceSelectors from "@/app/store/space/selectors";
 import { simpleSortByKey } from "@/app/utils";
 
 type Props = FormikFieldProps & {
-  defaultOption?: { label: string; value: string; disabled?: boolean } | null;
+  readonly defaultOption?: {
+    label: string;
+    value: string;
+    disabled?: boolean;
+  } | null;
 };
 
 export const SpaceSelect = ({

@@ -31,7 +31,7 @@ import type { RootState } from "@/app/store/root/types";
 import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  readonly systemId: Controller[ControllerMeta.PK];
 };
 
 export type PowerFormValues = {

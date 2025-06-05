@@ -5,10 +5,10 @@ import { Col, Row } from "@canonical/react-components";
 import NotificationList from "@/app/base/components/NotificationList";
 
 export type Props = HTMLProps<HTMLDivElement> & {
-  children?: ReactNode;
-  header?: ReactNode;
-  sidebar?: ReactNode;
-  isNotificationListHidden?: boolean;
+  readonly children?: ReactNode;
+  readonly header?: ReactNode;
+  readonly sidebar?: ReactNode;
+  readonly isNotificationListHidden?: boolean;
 };
 
 export const MAIN_CONTENT_SECTION_ID = "main-content-section";

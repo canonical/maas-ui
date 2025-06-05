@@ -14,7 +14,7 @@ import {
 } from "@/app/store/utils";
 
 type Props = {
-  id: Machine["system_id"];
+  readonly id: Machine["system_id"];
 };
 
 const StorageNotifications = ({ id }: Props): React.ReactElement | null => {

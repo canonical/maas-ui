@@ -14,9 +14,9 @@ import {
 import { formatSpeedUnits } from "@/app/utils";
 
 type Props = {
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  node: ControllerDetails | MachineDetails;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 const SpeedColumn = ({ link, nic, node }: Props): React.ReactElement | null => {

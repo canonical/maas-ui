@@ -11,7 +11,7 @@ import { getFabricDisplay } from "@/app/store/fabric/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  id?: Fabric[FabricMeta.PK] | null;
+  readonly id?: Fabric[FabricMeta.PK] | null;
 };
 
 export enum Labels {

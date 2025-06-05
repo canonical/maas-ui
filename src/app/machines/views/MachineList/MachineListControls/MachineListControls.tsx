@@ -21,16 +21,16 @@ import type { FetchGroupKey } from "@/app/store/machine/types";
 import { useHasSelection } from "@/app/store/machine/utils/hooks";
 
 export type MachineListControlsProps = {
-  machineCount: number;
-  resourcePoolsCount: number;
-  filter: string;
-  grouping: FetchGroupKey | null;
-  setFilter: (filter: string) => void;
-  setGrouping: (group: FetchGroupKey | null) => void;
-  setHiddenGroups: (groups: string[]) => void;
-  hiddenColumns: string[];
-  setHiddenColumns: ReturnType<typeof useResponsiveColumns>[1];
-  setSidePanelContent: MachineSetSidePanelContent;
+  readonly machineCount: number;
+  readonly resourcePoolsCount: number;
+  readonly filter: string;
+  readonly grouping: FetchGroupKey | null;
+  readonly setFilter: (filter: string) => void;
+  readonly setGrouping: (group: FetchGroupKey | null) => void;
+  readonly setHiddenGroups: (groups: string[]) => void;
+  readonly hiddenColumns: string[];
+  readonly setHiddenColumns: ReturnType<typeof useResponsiveColumns>[1];
+  readonly setSidePanelContent: MachineSetSidePanelContent;
 };
 
 const MachineListControls = ({

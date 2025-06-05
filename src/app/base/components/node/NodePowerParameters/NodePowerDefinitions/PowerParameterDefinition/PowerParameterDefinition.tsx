@@ -4,8 +4,8 @@ import { PowerFieldType } from "@/app/store/general/types";
 import type { PowerParameter } from "@/app/store/types/node";
 
 type Props = {
-  field: PowerField;
-  powerParameter: PowerParameter;
+  readonly field: PowerField;
+  readonly powerParameter: PowerParameter;
 };
 
 const getParameterDescription = (

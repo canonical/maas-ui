@@ -9,10 +9,10 @@ import type { Pod, PodMeta } from "@/app/store/pod/types";
 import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
 
 type Props = {
-  clusterId?: VMCluster[VMClusterMeta.PK];
-  hostId?: Pod[PodMeta.PK];
-  message: ReactNode;
-  setSidePanelContent: KVMSetSidePanelContent;
+  readonly clusterId?: VMCluster[VMClusterMeta.PK];
+  readonly hostId?: Pod[PodMeta.PK];
+  readonly message: ReactNode;
+  readonly setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const DangerZoneCard = ({

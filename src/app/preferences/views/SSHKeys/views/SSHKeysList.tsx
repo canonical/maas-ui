@@ -11,7 +11,7 @@ import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/cons
 import { isId } from "@/app/utils";
 
 type SSHKeysListProps = {
-  isIntro?: boolean;
+  readonly isIntro?: boolean;
 };
 
 const SSHKeysList = ({ isIntro = false }: SSHKeysListProps): ReactElement => {

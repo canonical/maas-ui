@@ -13,7 +13,7 @@ import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {
-  id: Fabric[FabricMeta.PK];
+  readonly id: Fabric[FabricMeta.PK];
 };
 
 const FabricControllers = ({ id }: Props): React.ReactElement => {

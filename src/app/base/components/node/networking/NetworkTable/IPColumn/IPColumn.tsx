@@ -45,9 +45,9 @@ const getNetworkTestingStatus = (
 };
 
 type Props = {
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  node: ControllerDetails | MachineDetails;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 const IPColumn = ({ link, nic, node }: Props): React.ReactElement | null => {

@@ -9,8 +9,8 @@ import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain, DomainMeta } from "@/app/store/domain/types";
 
 type Props = {
-  id: Domain[DomainMeta.PK];
-  onClose: () => void;
+  readonly id: Domain[DomainMeta.PK];
+  readonly onClose: () => void;
 };
 const SetDefaultForm = ({ id, onClose }: Props): ReactElement => {
   const dispatch = useDispatch();

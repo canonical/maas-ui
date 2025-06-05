@@ -9,8 +9,8 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-  hostIds: Pod["id"][];
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly hostIds: Pod["id"][];
 };
 
 const RefreshForm = ({

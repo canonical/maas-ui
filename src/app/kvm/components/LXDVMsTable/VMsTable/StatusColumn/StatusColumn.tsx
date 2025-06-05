@@ -9,7 +9,7 @@ import { isTransientStatus, useFormattedOS } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  systemId: Machine["system_id"];
+  readonly systemId: Machine["system_id"];
 };
 
 const StatusColumn = ({ systemId }: Props): React.ReactElement => {

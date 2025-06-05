@@ -11,7 +11,7 @@ type MachineNotification = {
 };
 
 type Props = {
-  notifications: MachineNotification[];
+  readonly notifications: MachineNotification[];
 };
 
 const MachineNotifications = ({ notifications }: Props): React.ReactElement => {

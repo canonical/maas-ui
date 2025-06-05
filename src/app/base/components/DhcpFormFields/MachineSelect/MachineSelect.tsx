@@ -22,12 +22,12 @@ export enum Labels {
 }
 
 export type Props = {
-  label?: React.ReactNode;
-  defaultOption?: string;
-  filters?: FetchFilters;
-  displayError?: boolean;
-  name: string;
-  value?: HTMLProps<HTMLElement>["value"];
+  readonly label?: React.ReactNode;
+  readonly defaultOption?: string;
+  readonly filters?: FetchFilters;
+  readonly displayError?: boolean;
+  readonly name: string;
+  readonly value?: HTMLProps<HTMLElement>["value"];
 };
 
 export const MachineSelect = ({

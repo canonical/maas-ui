@@ -27,8 +27,8 @@ export enum Label {
 }
 
 type Props = {
-  searchText?: string;
-  setSearchText: (searchText: string) => void;
+  readonly searchText?: string;
+  readonly setSearchText: (searchText: string) => void;
 };
 
 const filterOrder = [

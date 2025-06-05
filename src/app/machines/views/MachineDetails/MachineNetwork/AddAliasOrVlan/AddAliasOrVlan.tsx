@@ -36,10 +36,12 @@ export enum Labels {
 }
 
 type Props = {
-  close: () => void;
-  nic?: NetworkInterface | null;
-  interfaceType: NetworkInterfaceTypes.ALIAS | NetworkInterfaceTypes.VLAN;
-  systemId: MachineDetails["system_id"];
+  readonly close: () => void;
+  readonly nic?: NetworkInterface | null;
+  readonly interfaceType:
+    | NetworkInterfaceTypes.ALIAS
+    | NetworkInterfaceTypes.VLAN;
+  readonly systemId: MachineDetails["system_id"];
 };
 
 const InterfaceSchema = Yup.object().shape({

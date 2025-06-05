@@ -19,14 +19,14 @@ import { useFetchMachines } from "@/app/store/machine/utils/hooks";
 import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
-  displayForCluster?: boolean;
-  getHostColumn?: GetHostColumn;
-  getResources: GetResources;
-  onAddVMClick?: () => void;
-  pods: Pod["name"][];
-  searchFilter: string;
-  setSearchFilter: SetSearchFilter;
-  setSidePanelContent: KVMSetSidePanelContent;
+  readonly displayForCluster?: boolean;
+  readonly getHostColumn?: GetHostColumn;
+  readonly getResources: GetResources;
+  readonly onAddVMClick?: () => void;
+  readonly pods: Pod["name"][];
+  readonly searchFilter: string;
+  readonly setSearchFilter: SetSearchFilter;
+  readonly setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export const VMS_PER_PAGE = 10;

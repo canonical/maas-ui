@@ -69,11 +69,11 @@ const getStatusIcon = (machine: Machine | null) => {
 };
 
 type Props = {
-  onToggleMenu?: MachineMenuToggleHandler;
-  systemId: string;
+  readonly onToggleMenu?: MachineMenuToggleHandler;
+  readonly systemId: string;
 };
 
-const Progress = ({ machine }: { machine: Machine | null }) => {
+const Progress = ({ machine }: { readonly machine: Machine | null }) => {
   const progressText = machine ? getProgressText(machine) : "";
   return machine ? (
     <>

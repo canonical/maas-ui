@@ -4,18 +4,18 @@ import { Link } from "react-router";
 import CopyButton from "@/app/base/components/CopyButton";
 
 type Props = {
-  clearDisabled?: boolean;
-  clearTooltip?: string | null;
-  copyValue?: string;
-  deleteDisabled?: boolean;
-  deleteTooltip?: string | null;
-  deletePath?: string;
-  editDisabled?: boolean;
-  editPath?: string;
-  editTooltip?: string | null;
-  onClear?: () => void;
-  onDelete?: () => void;
-  onEdit?: () => void;
+  readonly clearDisabled?: boolean;
+  readonly clearTooltip?: string | null;
+  readonly copyValue?: string;
+  readonly deleteDisabled?: boolean;
+  readonly deleteTooltip?: string | null;
+  readonly deletePath?: string;
+  readonly editDisabled?: boolean;
+  readonly editPath?: string;
+  readonly editTooltip?: string | null;
+  readonly onClear?: () => void;
+  readonly onDelete?: () => void;
+  readonly onEdit?: () => void;
 };
 
 const TableActions = ({

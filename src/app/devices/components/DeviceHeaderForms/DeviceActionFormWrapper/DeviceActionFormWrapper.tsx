@@ -13,10 +13,10 @@ import { NodeActions } from "@/app/store/types/node";
 import { kebabToCamelCase } from "@/app/utils";
 
 type Props = {
-  action: DeviceActions;
-  clearSidePanelContent: ClearSidePanelContent;
-  devices: Device[];
-  viewingDetails: boolean;
+  readonly action: DeviceActions;
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly devices: Device[];
+  readonly viewingDetails: boolean;
 };
 
 export const ActionFormWrapper = ({

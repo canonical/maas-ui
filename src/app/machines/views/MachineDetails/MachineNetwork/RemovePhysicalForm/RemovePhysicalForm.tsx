@@ -16,10 +16,10 @@ import {
 } from "@/app/store/utils";
 
 interface Props {
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  systemId: Machine["system_id"];
-  close: () => void;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly systemId: Machine["system_id"];
+  readonly close: () => void;
 }
 
 const RemovePhysicalForm: React.FC<Props> = ({

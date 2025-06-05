@@ -40,11 +40,13 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import { preparePayload } from "@/app/utils";
 
 type Props = {
-  close: () => void;
-  nic?: NetworkInterface | null;
-  link?: NetworkLink | null;
-  interfaceType: NetworkInterfaceTypes.ALIAS | NetworkInterfaceTypes.VLAN;
-  systemId: MachineDetails["system_id"];
+  readonly close: () => void;
+  readonly nic?: NetworkInterface | null;
+  readonly link?: NetworkLink | null;
+  readonly interfaceType:
+    | NetworkInterfaceTypes.ALIAS
+    | NetworkInterfaceTypes.VLAN;
+  readonly systemId: MachineDetails["system_id"];
 };
 
 export type EditAliasOrVlanValues = NetworkValues & {

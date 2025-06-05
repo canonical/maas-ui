@@ -5,8 +5,8 @@ import type { KVMResource } from "@/app/kvm/types";
 import { resourceWithOverCommit } from "@/app/store/pod/utils";
 
 type Props = {
-  cores: KVMResource;
-  overCommit?: number;
+  readonly cores: KVMResource;
+  readonly overCommit?: number;
 };
 
 const CPUColumn = ({

@@ -11,9 +11,9 @@ import { NodeActions } from "@/app/store/types/node";
 import { capitaliseFirst } from "@/app/utils";
 
 type Props = {
-  machine: MachineDetails;
-  hardwareType: HardwareType;
-  setSidePanelContent: MachineSetSidePanelContent;
+  readonly machine: MachineDetails;
+  readonly hardwareType: HardwareType;
+  readonly setSidePanelContent: MachineSetSidePanelContent;
 };
 
 const hasTestsRun = (testStatus: TestStatus) =>

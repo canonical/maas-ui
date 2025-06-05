@@ -4,7 +4,7 @@ import LabelledList from "@/app/base/components/LabelledList";
 import type { CertificateMetadata as CertificateMetadataType } from "@/app/store/general/types";
 
 type Props = {
-  metadata: CertificateMetadataType;
+  readonly metadata: CertificateMetadataType;
 };
 
 const CertificateMetadata = ({ metadata }: Props): React.ReactElement => {

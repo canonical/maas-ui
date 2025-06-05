@@ -10,7 +10,7 @@ import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 
 type Props = {
-  id: Tag[TagMeta.PK];
+  readonly id: Tag[TagMeta.PK];
 };
 
 const AppliedTo = ({ id }: Props): React.ReactElement | null => {

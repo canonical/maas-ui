@@ -6,9 +6,9 @@ import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import { isBootInterface } from "@/app/store/utils";
 
 type Props = {
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  node: ControllerDetails | MachineDetails;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 export enum Label {

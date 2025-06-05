@@ -4,7 +4,7 @@ import pluralize from "pluralize";
 import FormikField from "@/app/base/components/FormikField";
 
 type Props = {
-  selectedCount: number;
+  readonly selectedCount: number;
 };
 
 export const MarkBrokenFormFields = ({

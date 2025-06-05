@@ -38,7 +38,7 @@ type EditDomainValues = {
 };
 
 type Props = {
-  id: Domain["id"];
+  readonly id: Domain["id"];
 };
 
 const DomainSummary = ({ id }: Props): React.ReactElement | null => {

@@ -15,8 +15,8 @@ import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
 type Props = {
-  closeForm: () => void;
-  id?: Fabric[FabricMeta.PK] | null;
+  readonly closeForm: () => void;
+  readonly id?: Fabric[FabricMeta.PK] | null;
 };
 
 const FabricDeleteForm = ({

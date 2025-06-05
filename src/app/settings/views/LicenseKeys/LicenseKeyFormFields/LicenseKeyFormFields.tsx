@@ -9,8 +9,8 @@ import FormikField from "@/app/base/components/FormikField";
 import type { OSInfoOptions } from "@/app/store/general/selectors/osInfo";
 
 type Props = {
-  osystems: string[][];
-  releases: OSInfoOptions;
+  readonly osystems: string[][];
+  readonly releases: OSInfoOptions;
 };
 
 export enum Labels {

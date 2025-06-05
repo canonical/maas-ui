@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import classNames from "classnames";
 
 type Props = {
-  children: ReactNode;
-  className?: string;
-  loading?: boolean;
+  readonly children: ReactNode;
+  readonly className?: string;
+  readonly loading?: boolean;
 };
 
 const Placeholder = ({

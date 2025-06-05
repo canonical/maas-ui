@@ -5,8 +5,8 @@ import type { Node } from "@/app/store/types/node";
 import { NodeType } from "@/app/store/types/node";
 
 type Props = {
-  nodeType: NodeType;
-  systemId?: Node["system_id"] | null;
+  readonly nodeType: NodeType;
+  readonly systemId?: Node["system_id"] | null;
 };
 
 const NodeLink = ({ nodeType, systemId }: Props): React.ReactElement | null => {

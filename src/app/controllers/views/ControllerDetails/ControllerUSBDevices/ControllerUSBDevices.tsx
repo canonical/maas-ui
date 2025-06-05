@@ -10,7 +10,7 @@ import { NodeDeviceBus } from "@/app/store/nodedevice/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  readonly systemId: Controller[ControllerMeta.PK];
 };
 
 const ControllerUSBDevices = ({ systemId }: Props): React.ReactElement => {

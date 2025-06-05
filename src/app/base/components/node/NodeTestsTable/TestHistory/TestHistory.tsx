@@ -13,8 +13,8 @@ import type { ScriptResult } from "@/app/store/scriptresult/types";
 import { ScriptResultType } from "@/app/store/scriptresult/types";
 
 type Props = {
-  close: () => void;
-  scriptResult: ScriptResult;
+  readonly close: () => void;
+  readonly scriptResult: ScriptResult;
 };
 
 const TestHistory = ({ close, scriptResult }: Props): React.ReactElement => {

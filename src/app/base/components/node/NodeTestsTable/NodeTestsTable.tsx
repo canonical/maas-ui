@@ -34,8 +34,8 @@ export type Expanded = {
 export type SetExpanded = (expanded: Expanded) => void;
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
-  scriptResults: ScriptResult[];
+  readonly node: ControllerDetails | MachineDetails;
+  readonly scriptResults: ScriptResult[];
 };
 
 const NodeTestsTable = ({ node, scriptResults }: Props): React.ReactElement => {

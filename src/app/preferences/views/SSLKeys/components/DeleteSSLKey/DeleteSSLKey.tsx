@@ -4,8 +4,8 @@ import { useDeleteSslKey } from "@/app/api/query/sslKeys";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 
 type DeleteSSLKeyProps = {
-  id: number;
-  closeForm: () => void;
+  readonly id: number;
+  readonly closeForm: () => void;
 };
 
 const DeleteSSLKey = ({ id, closeForm }: DeleteSSLKeyProps): ReactElement => {

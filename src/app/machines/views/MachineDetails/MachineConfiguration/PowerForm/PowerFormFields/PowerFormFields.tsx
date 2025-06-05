@@ -8,7 +8,7 @@ import type { MachineDetails } from "@/app/store/machine/types";
 import { getMachineFieldScopes } from "@/app/store/machine/utils";
 
 type Props = {
-  machine: MachineDetails;
+  readonly machine: MachineDetails;
 };
 
 const PowerFormFields = ({ machine }: Props): React.ReactElement => {

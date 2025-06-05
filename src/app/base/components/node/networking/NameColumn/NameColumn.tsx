@@ -12,14 +12,16 @@ import { getInterfaceName, getLinkInterface } from "@/app/store/utils";
 import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 
 type Props = {
-  checkboxSpace?: boolean;
-  checkSelected?: CheckboxHandlers<Selected>["checkSelected"] | null;
-  handleRowCheckbox?: CheckboxHandlers<Selected>["handleRowCheckbox"] | null;
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  node: Node;
-  selected?: Selected[] | null;
-  showCheckbox?: boolean;
+  readonly checkboxSpace?: boolean;
+  readonly checkSelected?: CheckboxHandlers<Selected>["checkSelected"] | null;
+  readonly handleRowCheckbox?:
+    | CheckboxHandlers<Selected>["handleRowCheckbox"]
+    | null;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly node: Node;
+  readonly selected?: Selected[] | null;
+  readonly showCheckbox?: boolean;
 };
 
 const NameColumn = ({

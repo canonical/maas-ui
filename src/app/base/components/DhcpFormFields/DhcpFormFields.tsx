@@ -27,7 +27,7 @@ type Option = { label: string; value: string };
 type ModelType = Controller | Device | IPRange | Machine | Subnet;
 
 type Props = {
-  editing: boolean;
+  readonly editing: boolean;
 };
 
 const modelTypeLabel: Record<Exclude<DHCPFormValues["type"], "">, string> = {

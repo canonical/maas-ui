@@ -3,13 +3,13 @@ import { Meter, formatBytes } from "@canonical/maas-react-components";
 import { COLOURS } from "@/app/base/constants";
 
 type Props = {
-  allocated: number;
-  binaryUnit?: boolean;
-  detailed?: boolean;
-  free: number;
-  other?: number;
-  segmented?: boolean;
-  unit?: string | null;
+  readonly allocated: number;
+  readonly binaryUnit?: boolean;
+  readonly detailed?: boolean;
+  readonly free: number;
+  readonly other?: number;
+  readonly segmented?: boolean;
+  readonly unit?: string | null;
 };
 
 const KVMResourceMeter = ({

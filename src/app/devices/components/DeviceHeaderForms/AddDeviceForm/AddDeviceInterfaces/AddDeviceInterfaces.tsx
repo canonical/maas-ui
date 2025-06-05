@@ -22,9 +22,9 @@ const AddDeviceInterfaceFields = ({
   iface,
   removeInterface,
 }: {
-  deleteDisabled: boolean;
-  iface: AddDeviceInterface;
-  removeInterface: (id: number) => void;
+  readonly deleteDisabled: boolean;
+  readonly iface: AddDeviceInterface;
+  readonly removeInterface: (id: number) => void;
 }) => {
   const { handleChange, setFieldValue } = useFormikContext<AddDeviceValues>();
   const subnet = useSelector((state: RootState) =>

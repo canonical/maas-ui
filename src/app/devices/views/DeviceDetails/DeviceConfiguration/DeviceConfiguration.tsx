@@ -20,7 +20,7 @@ import type { RootState } from "@/app/store/root/types";
 import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {
-  systemId: Device[DeviceMeta.PK];
+  readonly systemId: Device[DeviceMeta.PK];
 };
 
 export enum Label {

@@ -13,15 +13,15 @@ import urls from "@/app/base/urls";
 import type { User } from "@/app/store/user/types";
 
 type Props = {
-  authUser: User | null;
-  groups: NavGroup[];
-  isAdmin: boolean;
-  isAuthenticated: boolean;
-  logout: () => void;
-  path: string;
-  setIsCollapsed: SideNavigationProps["setIsCollapsed"];
-  showLinks: boolean;
-  vaultIncomplete: boolean;
+  readonly authUser: User | null;
+  readonly groups: NavGroup[];
+  readonly isAdmin: boolean;
+  readonly isAuthenticated: boolean;
+  readonly logout: () => void;
+  readonly path: string;
+  readonly setIsCollapsed: SideNavigationProps["setIsCollapsed"];
+  readonly showLinks: boolean;
+  readonly vaultIncomplete: boolean;
 };
 
 const AppSideNavItemGroup = ({
@@ -31,7 +31,7 @@ const AppSideNavItemGroup = ({
   path,
   setIsCollapsed,
 }: Pick<Props, "isAdmin" | "path" | "setIsCollapsed" | "vaultIncomplete"> & {
-  group: NavGroup;
+  readonly group: NavGroup;
 }) => {
   const id = useId();
   const hasActiveChild = useMemo(() => {

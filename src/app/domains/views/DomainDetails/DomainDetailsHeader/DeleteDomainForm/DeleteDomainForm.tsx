@@ -12,8 +12,8 @@ import type { Domain } from "@/app/store/domain/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  closeForm: () => void;
-  id: Domain["id"];
+  readonly closeForm: () => void;
+  readonly id: Domain["id"];
 };
 
 export enum Labels {

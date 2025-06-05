@@ -3,7 +3,7 @@ import type { ListItem } from "../LabelledList";
 import { useId } from "@/app/base/hooks/base";
 
 type Props = {
-  item: ListItem;
+  readonly item: ListItem;
 };
 
 const LabelledListItem = ({ item }: Props): React.ReactElement => {

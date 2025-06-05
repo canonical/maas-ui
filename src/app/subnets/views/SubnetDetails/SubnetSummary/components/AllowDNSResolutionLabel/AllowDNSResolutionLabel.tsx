@@ -2,7 +2,7 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import type { Subnet } from "@/app/store/subnet/types";
 
 type Props = {
-  allowDNS: Subnet["allow_dns"];
+  readonly allowDNS: Subnet["allow_dns"];
 };
 
 const AllowDNSResolutionLabel = ({ allowDNS }: Props): React.ReactElement => (

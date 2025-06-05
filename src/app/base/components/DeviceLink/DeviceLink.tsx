@@ -10,7 +10,7 @@ import type { Device, DeviceMeta } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  systemId?: Device[DeviceMeta.PK] | null;
+  readonly systemId?: Device[DeviceMeta.PK] | null;
 };
 
 export enum Labels {

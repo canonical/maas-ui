@@ -11,7 +11,7 @@ import { resourceWithOverCommit } from "@/app/store/pod/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  id: Pod["id"];
+  readonly id: Pod["id"];
 };
 
 const LXDVMsSummaryCard = ({ id }: Props): React.ReactElement => {

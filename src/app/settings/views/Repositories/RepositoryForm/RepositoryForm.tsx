@@ -28,8 +28,8 @@ import { getRepoDisplayName } from "@/app/store/packagerepository/utils";
 import { parseCommaSeparatedValues } from "@/app/utils";
 
 type Props = {
-  repository?: PackageRepository | null;
-  type: "ppa" | "repository";
+  readonly repository?: PackageRepository | null;
+  readonly type: "ppa" | "repository";
 };
 
 const commaSeparated = Yup.string()

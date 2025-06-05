@@ -42,10 +42,10 @@ const InterfaceSchema = Yup.object().shape({
 });
 
 type Props = {
-  close: () => void;
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  systemId: MachineDetails["system_id"];
+  readonly close: () => void;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly systemId: MachineDetails["system_id"];
 };
 
 const EditBridgeForm = ({

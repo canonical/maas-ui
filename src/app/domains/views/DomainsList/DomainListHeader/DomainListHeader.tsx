@@ -17,7 +17,7 @@ export enum Labels {
 const DomainListHeader = ({
   setSidePanelContent,
 }: {
-  setSidePanelContent: SetSidePanelContent;
+  readonly setSidePanelContent: SetSidePanelContent;
 }): React.ReactElement => {
   const domainCount = useSelector(domainSelectors.count);
   const domainsLoaded = useSelector(domainSelectors.loaded);

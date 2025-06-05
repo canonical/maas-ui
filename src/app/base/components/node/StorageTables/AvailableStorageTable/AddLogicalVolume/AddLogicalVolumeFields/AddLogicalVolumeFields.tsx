@@ -9,7 +9,7 @@ import TagNameField from "@/app/base/components/TagNameField";
 import type { Machine } from "@/app/store/machine/types";
 
 type Props = {
-  systemId: Machine["system_id"];
+  readonly systemId: Machine["system_id"];
 };
 
 export const AddLogicalVolumeFields = ({

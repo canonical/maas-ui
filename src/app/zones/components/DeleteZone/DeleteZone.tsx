@@ -7,8 +7,8 @@ import { getZoneQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 
 type DeleteZoneProps = {
-  id: number;
-  closeForm: () => void;
+  readonly id: number;
+  readonly closeForm: () => void;
 };
 
 const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {

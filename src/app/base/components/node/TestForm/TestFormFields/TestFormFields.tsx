@@ -13,9 +13,9 @@ import { getObjectString } from "@/app/store/script/utils";
 
 type ScriptsDisplay = Script & { displayName: string };
 type Props = {
-  modelName: string;
-  preselected: ScriptsDisplay[];
-  scripts: Script[];
+  readonly modelName: string;
+  readonly preselected: ScriptsDisplay[];
+  readonly scripts: Script[];
 };
 export const TestFormFields = ({
   modelName,

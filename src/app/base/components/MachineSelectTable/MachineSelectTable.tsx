@@ -23,12 +23,12 @@ export enum Label {
 }
 
 type Props = {
-  pageSize: number;
-  machines: Machine[];
-  onMachineClick: (machine: Machine | null) => void;
-  searchText: string;
-  machinesLoading?: boolean;
-  setSearchText: (searchText: string) => void;
+  readonly pageSize: number;
+  readonly machines: Machine[];
+  readonly onMachineClick: (machine: Machine | null) => void;
+  readonly searchText: string;
+  readonly machinesLoading?: boolean;
+  readonly setSearchText: (searchText: string) => void;
 };
 
 const safeGetRegexString = (searchText: string): string => {

@@ -13,7 +13,7 @@ import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 
 type Props = Required<Pick<SectionHeaderProps, "title">> & {
-  setSidePanelContent: KVMSetSidePanelContent;
+  readonly setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const KVMListHeader = ({

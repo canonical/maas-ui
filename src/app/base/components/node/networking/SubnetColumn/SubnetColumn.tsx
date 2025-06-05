@@ -23,9 +23,9 @@ import {
 import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  node: Node;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly node: Node;
 };
 
 const SubnetColumn = ({

@@ -2,10 +2,10 @@ import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 
 type Props = {
-  available: number;
-  filterSelected?: () => void;
-  modelName: string;
-  selected?: number;
+  readonly available: number;
+  readonly filterSelected?: () => void;
+  readonly modelName: string;
+  readonly selected?: number;
 };
 
 const getSubtitleString = (

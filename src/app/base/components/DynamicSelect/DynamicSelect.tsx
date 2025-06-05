@@ -15,8 +15,8 @@ type FormValues = Record<
 >;
 
 export type Props<V extends FormValues = FormValues> = FormikFieldProps & {
-  name: keyof V;
-  options: NonNullable<SelectProps["options"]>;
+  readonly name: keyof V;
+  readonly options: NonNullable<SelectProps["options"]>;
 };
 
 /**

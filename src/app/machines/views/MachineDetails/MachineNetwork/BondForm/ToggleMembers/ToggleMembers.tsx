@@ -5,10 +5,10 @@ import { useSendAnalytics } from "@/app/base/hooks";
 import type { NetworkInterface } from "@/app/store/types/node";
 
 type Props = {
-  editingMembers?: boolean;
-  selected: Selected[];
-  setEditingMembers: (editingMembers: boolean) => void;
-  validNics: NetworkInterface[];
+  readonly editingMembers?: boolean;
+  readonly selected: Selected[];
+  readonly setEditingMembers: (editingMembers: boolean) => void;
+  readonly validNics: NetworkInterface[];
 };
 
 export const ToggleMembers = ({

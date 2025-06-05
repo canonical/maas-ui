@@ -11,8 +11,8 @@ import type { PowerField as PowerFieldType } from "@/app/store/general/types";
 import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
-  fields: PowerFieldType[];
-  powerParametersValueName?: string;
+  readonly fields: PowerFieldType[];
+  readonly powerParametersValueName?: string;
 };
 
 export const WORKAROUNDS_FIELD_NAME = "workaround_flags";

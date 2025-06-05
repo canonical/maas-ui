@@ -26,8 +26,8 @@ import {
 } from "@/app/store/utils";
 
 type Props = {
-  selected: Selected[];
-  systemId: Machine["system_id"];
+  readonly selected: Selected[];
+  readonly systemId: Machine["system_id"];
 };
 
 type Option = {

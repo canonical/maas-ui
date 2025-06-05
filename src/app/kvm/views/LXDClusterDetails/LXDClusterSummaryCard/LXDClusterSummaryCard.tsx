@@ -13,8 +13,8 @@ import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
-  clusterId: VMCluster["id"];
-  showStorage?: boolean;
+  readonly clusterId: VMCluster["id"];
+  readonly showStorage?: boolean;
 };
 
 const LXDClusterSummaryCard = ({

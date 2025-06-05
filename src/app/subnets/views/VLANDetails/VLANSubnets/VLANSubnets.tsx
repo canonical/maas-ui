@@ -8,7 +8,7 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 
 type Props = {
-  id: VLAN[VLANMeta.PK] | null;
+  readonly id: VLAN[VLANMeta.PK] | null;
 };
 
 const VLANSubnets = ({ id }: Props): React.ReactElement | null => {

@@ -15,7 +15,7 @@ import { formatHostType } from "@/app/store/pod/utils";
 import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {
-  zoneDisabled?: boolean;
+  readonly zoneDisabled?: boolean;
 };
 
 const KVMConfigurationCardFields = ({

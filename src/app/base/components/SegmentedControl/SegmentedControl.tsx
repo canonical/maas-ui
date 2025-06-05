@@ -8,10 +8,10 @@ type Segment<V> = {
 };
 
 type Props<V> = Omit<HTMLAttributes<HTMLDivElement>, "onSelect"> & {
-  onSelect: (selected: V) => void;
-  buttonClassName?: string;
-  options: Segment<V>[];
-  selected: V;
+  readonly onSelect: (selected: V) => void;
+  readonly buttonClassName?: string;
+  readonly options: Segment<V>[];
+  readonly selected: V;
 };
 
 const SegmentedControl = <V,>({

@@ -26,9 +26,9 @@ export type CreateBcacheValues = {
 };
 
 type Props = {
-  closeExpanded: () => void;
-  storageDevice: Disk | Partition;
-  systemId: Machine["system_id"];
+  readonly closeExpanded: () => void;
+  readonly storageDevice: Disk | Partition;
+  readonly systemId: Machine["system_id"];
 };
 
 const CreateBcacheSchema = Yup.object().shape({

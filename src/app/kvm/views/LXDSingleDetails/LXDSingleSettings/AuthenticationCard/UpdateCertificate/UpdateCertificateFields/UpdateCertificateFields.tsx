@@ -12,9 +12,9 @@ import FormikField from "@/app/base/components/FormikField";
 import type { GeneratedCertificate } from "@/app/store/general/types";
 
 type Props = {
-  generatedCertificate: GeneratedCertificate | null;
-  shouldGenerateCert: boolean;
-  setShouldGenerateCert: (shouldGenerateCert: boolean) => void;
+  readonly generatedCertificate: GeneratedCertificate | null;
+  readonly shouldGenerateCert: boolean;
+  readonly setShouldGenerateCert: (shouldGenerateCert: boolean) => void;
 };
 
 const UpdateCertificateFields = ({

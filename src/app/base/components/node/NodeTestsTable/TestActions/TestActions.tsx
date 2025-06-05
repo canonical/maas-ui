@@ -17,10 +17,12 @@ import { scriptResultInProgress } from "@/app/store/scriptresult/utils";
 import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
-  resultType: ScriptResultType.COMMISSIONING | ScriptResultType.TESTING;
-  scriptResult: ScriptResult;
-  setExpanded: SetExpanded;
+  readonly node: ControllerDetails | MachineDetails;
+  readonly resultType:
+    | ScriptResultType.COMMISSIONING
+    | ScriptResultType.TESTING;
+  readonly scriptResult: ScriptResult;
+  readonly setExpanded: SetExpanded;
 };
 
 type LinkWithDataTest = DataTestElement<LinkProps>;

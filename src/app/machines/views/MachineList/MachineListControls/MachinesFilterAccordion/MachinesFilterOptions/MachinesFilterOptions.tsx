@@ -22,9 +22,9 @@ export enum Label {
 }
 
 type Props = {
-  group: FilterGroup["key"];
-  searchText?: string;
-  setSearchText: (searchText: string) => void;
+  readonly group: FilterGroup["key"];
+  readonly searchText?: string;
+  readonly setSearchText: (searchText: string) => void;
 };
 
 const MachinesFilterOptions = ({

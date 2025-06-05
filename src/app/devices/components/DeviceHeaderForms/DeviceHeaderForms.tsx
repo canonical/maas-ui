@@ -11,8 +11,8 @@ import { DeviceSidePanelViews } from "@/app/devices/constants";
 import type { Device } from "@/app/store/device/types";
 
 type Props = SidePanelContentTypes & {
-  devices: Device[];
-  viewingDetails?: boolean;
+  readonly devices: Device[];
+  readonly viewingDetails?: boolean;
 };
 
 const DeviceHeaderForms = ({

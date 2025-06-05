@@ -18,8 +18,8 @@ import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  id: Machine[MachineMeta.PK];
-  setSidePanelContent: MachineSetSidePanelContent;
+  readonly id: Machine[MachineMeta.PK];
+  readonly setSidePanelContent: MachineSetSidePanelContent;
 };
 
 const MachineNetwork = ({

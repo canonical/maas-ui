@@ -10,8 +10,8 @@ import type { BootResource } from "@/app/store/bootresource/types";
 import { BootResourceAction } from "@/app/store/bootresource/types";
 
 type Props = {
-  closeForm: () => void;
-  resource: BootResource;
+  readonly closeForm: () => void;
+  readonly resource: BootResource;
 };
 
 export enum Labels {

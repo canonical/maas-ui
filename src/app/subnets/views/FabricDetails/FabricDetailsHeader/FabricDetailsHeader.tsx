@@ -9,8 +9,8 @@ import authSelectors from "@/app/store/auth/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
 
 type Props = {
-  fabric: Fabric;
-  setSidePanelContent: SetSidePanelContent;
+  readonly fabric: Fabric;
+  readonly setSidePanelContent: SetSidePanelContent;
 };
 
 const FabricDetailsHeader = ({

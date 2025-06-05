@@ -9,9 +9,9 @@ import type {
 } from "@/app/store/general/types";
 
 type Props = {
-  certificate: CertificateData["certificate"];
-  eventCategory: string;
-  metadata: CertificateMetadataType;
+  readonly certificate: CertificateData["certificate"];
+  readonly eventCategory: string;
+  readonly metadata: CertificateMetadataType;
 };
 
 export enum Labels {

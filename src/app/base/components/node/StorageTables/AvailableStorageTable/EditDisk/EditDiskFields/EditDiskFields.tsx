@@ -8,8 +8,8 @@ import type { Disk } from "@/app/store/types/node";
 import { formatSize, formatType } from "@/app/store/utils";
 
 type Props = {
-  disk: Disk;
-  systemId: Machine["system_id"];
+  readonly disk: Disk;
+  readonly systemId: Machine["system_id"];
 };
 
 export const EditDiskFields = ({

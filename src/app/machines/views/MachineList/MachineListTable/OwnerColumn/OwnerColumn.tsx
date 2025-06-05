@@ -17,9 +17,9 @@ import { NodeActions } from "@/app/store/types/node";
 import userSelectors from "@/app/store/user/selectors";
 
 type Props = {
-  onToggleMenu?: MachineMenuToggleHandler;
-  systemId: Machine[MachineMeta.PK];
-  showFullName?: boolean;
+  readonly onToggleMenu?: MachineMenuToggleHandler;
+  readonly systemId: Machine[MachineMeta.PK];
+  readonly showFullName?: boolean;
 };
 
 const actions: MachineMenuAction[] = [NodeActions.ACQUIRE, NodeActions.RELEASE];

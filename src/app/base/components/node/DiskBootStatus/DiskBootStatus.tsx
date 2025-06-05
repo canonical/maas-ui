@@ -3,7 +3,7 @@ import { Icon } from "@canonical/react-components";
 import { DiskTypes } from "@/app/store/types/enum";
 import type { Disk } from "@/app/store/types/node";
 
-type Props = { disk: Disk };
+type Props = { readonly disk: Disk };
 
 const DiskBootStatus = ({ disk }: Props): React.ReactElement => {
   if (disk.type === DiskTypes.PHYSICAL) {

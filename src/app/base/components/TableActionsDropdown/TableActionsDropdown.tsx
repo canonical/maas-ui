@@ -16,9 +16,9 @@ export type TableAction<A> = {
 type TableActionsLink = DataTestElement<ButtonProps>;
 
 type Props<A> = {
-  actions: TableAction<A>[];
-  disabled?: boolean;
-  onActionClick: (action: A, view?: TableAction<A>["view"]) => void;
+  readonly actions: TableAction<A>[];
+  readonly disabled?: boolean;
+  readonly onActionClick: (action: A, view?: TableAction<A>["view"]) => void;
 };
 
 const TableActionsDropdown = <A extends string>({

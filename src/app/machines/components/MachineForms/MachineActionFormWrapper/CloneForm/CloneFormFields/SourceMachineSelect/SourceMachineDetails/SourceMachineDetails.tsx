@@ -5,7 +5,7 @@ import Placeholder from "@/app/base/components/Placeholder";
 import type { MachineDetails } from "@/app/store/machine/types";
 
 type Props = {
-  machine: MachineDetails | null;
+  readonly machine: MachineDetails | null;
 };
 
 export enum Labels {

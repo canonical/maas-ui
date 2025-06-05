@@ -22,29 +22,31 @@ import type { APIError } from "@/app/base/types";
 
 export type Props<V extends object, E> = FormikFormButtonsProps<V> &
   Pick<AriaAttributes, "aria-label"> & {
-    allowAllEmpty?: boolean;
-    allowUnchanged?: boolean;
-    children?: ReactNode | ((formikContext: FormikContextType<V>) => ReactNode);
-    className?: string;
-    cleanup?: () => AnyAction;
-    "data-testid"?: string;
-    editable?: boolean;
-    errors?: APIError<E>;
-    footer?: ReactNode;
-    inline?: boolean;
-    loading?: boolean;
-    onSaveAnalytics?: {
+    readonly allowAllEmpty?: boolean;
+    readonly allowUnchanged?: boolean;
+    readonly children?:
+      | ReactNode
+      | ((formikContext: FormikContextType<V>) => ReactNode);
+    readonly className?: string;
+    readonly cleanup?: () => AnyAction;
+    readonly "data-testid"?: string;
+    readonly editable?: boolean;
+    readonly errors?: APIError<E>;
+    readonly footer?: ReactNode;
+    readonly inline?: boolean;
+    readonly loading?: boolean;
+    readonly onSaveAnalytics?: {
       action?: string;
       category?: string;
       label?: string;
     };
-    onSuccess?: (values: V) => void;
-    onValuesChanged?: (values: V) => void;
-    resetOnSave?: boolean;
-    saved?: boolean;
-    savedRedirect?: string | null;
-    saving?: boolean;
-    submitDisabled?: boolean;
+    readonly onSuccess?: (values: V) => void;
+    readonly onValuesChanged?: (values: V) => void;
+    readonly resetOnSave?: boolean;
+    readonly saved?: boolean;
+    readonly savedRedirect?: string | null;
+    readonly saving?: boolean;
+    readonly submitDisabled?: boolean;
   };
 
 const generateNonFieldError = <V extends object, E = null>(

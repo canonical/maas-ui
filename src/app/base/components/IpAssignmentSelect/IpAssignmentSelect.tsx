@@ -6,7 +6,7 @@ import { DeviceIpAssignment } from "@/app/store/device/types";
 import { getIpAssignmentDisplay } from "@/app/store/device/utils";
 
 type Props = Omit<FormikFieldProps<typeof Select>, "component" | "options"> & {
-  includeStatic?: boolean;
+  readonly includeStatic?: boolean;
 };
 
 export enum Labels {

@@ -200,6 +200,7 @@ export default tseslint.config(
       ],
 
       "react/jsx-sort-props": "error",
+      "react/prefer-read-only-props": "warn",
     },
   },
   {

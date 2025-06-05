@@ -1,7 +1,7 @@
 import TooltipButton from "@/app/base/components/TooltipButton";
 import type { Disk } from "@/app/store/types/node";
 
-type Props = { disk: Disk };
+type Props = { readonly disk: Disk };
 
 const DiskNumaNodes = ({ disk }: Props): React.ReactElement => {
   let numaNodes: number[] = [];

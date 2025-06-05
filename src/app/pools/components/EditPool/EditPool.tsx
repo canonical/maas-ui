@@ -14,8 +14,8 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 
 type EditPoolProps = {
-  id: number;
-  closeForm: () => void;
+  readonly id: number;
+  readonly closeForm: () => void;
 };
 
 const PoolSchema = Yup.object().shape({

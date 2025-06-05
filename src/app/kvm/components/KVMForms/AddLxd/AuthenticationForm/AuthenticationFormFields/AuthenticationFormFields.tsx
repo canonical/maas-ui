@@ -8,10 +8,10 @@ import FormikField from "@/app/base/components/FormikField";
 import type { GeneratedCertificate } from "@/app/store/general/types";
 
 type Props = {
-  disabled: boolean;
-  generatedCertificate: GeneratedCertificate | null;
-  setUseCertificate: (useCert: boolean) => void;
-  useCertificate: boolean;
+  readonly disabled: boolean;
+  readonly generatedCertificate: GeneratedCertificate | null;
+  readonly setUseCertificate: (useCert: boolean) => void;
+  readonly useCertificate: boolean;
 };
 
 export const AuthenticationFormFields = ({

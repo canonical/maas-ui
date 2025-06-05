@@ -6,9 +6,9 @@ const NodeActionConfirmationText = ({
   action,
   modelName,
 }: {
-  selectedCount: number;
-  action: NodeActions;
-  modelName: string;
+  readonly selectedCount: number;
+  readonly action: NodeActions;
+  readonly modelName: string;
 }): React.ReactElement => (
   <>
     <p>

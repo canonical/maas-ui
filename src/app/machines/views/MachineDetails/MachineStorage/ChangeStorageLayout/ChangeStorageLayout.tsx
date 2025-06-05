@@ -11,9 +11,9 @@ import { StorageLayout } from "@/app/store/types/enum";
 import { isVMWareLayout } from "@/app/store/utils";
 
 type Props = {
-  systemId: Machine["system_id"];
-  clearSidePanelContent: ClearSidePanelContent;
-  selectedLayout: StorageLayoutOption;
+  readonly systemId: Machine["system_id"];
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly selectedLayout: StorageLayoutOption;
 };
 
 export const ChangeStorageLayout = ({

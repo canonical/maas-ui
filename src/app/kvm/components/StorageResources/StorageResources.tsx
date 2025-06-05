@@ -8,11 +8,11 @@ import type { KVMStoragePoolResources } from "@/app/kvm/types";
 import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
-  allocated: number; // B
-  defaultPoolId?: Pod["default_storage_pool"];
-  free: number; // B
-  other?: number; // B
-  pools: KVMStoragePoolResources;
+  readonly allocated: number; // B
+  readonly defaultPoolId?: Pod["default_storage_pool"];
+  readonly free: number; // B
+  readonly other?: number; // B
+  readonly pools: KVMStoragePoolResources;
 };
 
 const StorageResources = ({

@@ -9,7 +9,7 @@ const SubnetsTable = ({
   groupBy,
   searchText,
 }: Pick<SubnetGroupByProps, "groupBy"> & {
-  searchText: string;
+  readonly searchText: string;
 }): React.ReactElement | null => {
   const subnetsTable = useSubnetsTable(groupBy);
   const { data, loaded } = useSubnetsTableSearch(subnetsTable, searchText);

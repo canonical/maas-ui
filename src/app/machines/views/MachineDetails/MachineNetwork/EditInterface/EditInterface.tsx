@@ -21,12 +21,12 @@ import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import { getInterfaceType, getLinkFromNic } from "@/app/store/utils";
 
 type Props = {
-  close: () => void;
-  linkId?: NetworkLink["id"] | null;
-  nicId?: NetworkInterface["id"] | null;
-  selected: Selected[];
-  setSelected: SetSelected;
-  systemId: MachineDetails["system_id"];
+  readonly close: () => void;
+  readonly linkId?: NetworkLink["id"] | null;
+  readonly nicId?: NetworkInterface["id"] | null;
+  readonly selected: Selected[];
+  readonly setSelected: SetSelected;
+  readonly systemId: MachineDetails["system_id"];
 };
 
 const EditInterface = ({

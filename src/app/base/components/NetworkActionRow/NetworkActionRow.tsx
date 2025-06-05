@@ -22,11 +22,11 @@ type Action = {
 };
 
 type Props = {
-  extraActions?: Action[];
-  node: Node;
-  rightContent?: ReactNode;
-  selected?: Selected[];
-  setSelected?: SetSelected;
+  readonly extraActions?: Action[];
+  readonly node: Node;
+  readonly rightContent?: ReactNode;
+  readonly selected?: Selected[];
+  readonly setSelected?: SetSelected;
 };
 
 export const NETWORK_DISABLED_MESSAGE =

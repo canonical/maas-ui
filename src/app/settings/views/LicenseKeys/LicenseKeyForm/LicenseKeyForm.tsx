@@ -20,7 +20,7 @@ import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import { LicenseKeysMeta } from "@/app/store/licensekeys/types";
 
 type Props = {
-  licenseKey?: LicenseKeys;
+  readonly licenseKey?: LicenseKeys;
 };
 
 export enum Labels {

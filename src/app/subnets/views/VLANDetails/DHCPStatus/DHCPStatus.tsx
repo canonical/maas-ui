@@ -29,7 +29,7 @@ import { getFullVLANName } from "@/app/store/vlan/utils";
 import { isId } from "@/app/utils";
 
 type Props = {
-  id: VLAN[VLANMeta.PK] | null;
+  readonly id: VLAN[VLANMeta.PK] | null;
 };
 
 // Note this is not the same as the getDHCPStatus VLAN util as it uses slightly

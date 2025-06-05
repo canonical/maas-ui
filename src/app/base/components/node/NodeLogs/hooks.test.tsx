@@ -19,7 +19,7 @@ const mockStore = configureStore();
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>) =>
-  ({ children }: { children: ReactNode }) => (
+  ({ children }: { readonly children: ReactNode }) => (
     <Provider store={store}>{children}</Provider>
   );
 

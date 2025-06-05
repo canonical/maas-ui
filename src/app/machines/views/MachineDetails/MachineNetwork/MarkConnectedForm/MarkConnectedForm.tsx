@@ -18,11 +18,11 @@ export enum ConnectionState {
 }
 
 type Props = {
-  close: () => void;
-  systemId: MachineDetails["system_id"];
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  connectionState: ConnectionState;
+  readonly close: () => void;
+  readonly systemId: MachineDetails["system_id"];
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly connectionState: ConnectionState;
 };
 
 const MarkConnectedForm = ({

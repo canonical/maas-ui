@@ -12,29 +12,29 @@ export type FormikContextFunc<V, R = void> = (
 ) => R;
 
 export type Props<V> = {
-  buttonsClassName?: string;
-  buttonsHelp?: ReactNode;
-  buttonsHelpClassName?: string;
-  cancelDisabled?: boolean;
-  cancelLabel?: string;
-  inline?: boolean;
-  onCancel?: FormikContextFunc<V> | null;
-  saved?: boolean;
-  saving?: boolean;
-  savingLabel?: string | null;
-  secondarySubmit?: FormikContextFunc<V> | null;
-  secondarySubmitDisabled?: boolean;
-  secondarySubmitLabel?: FormikContextFunc<V, string> | string | null;
-  secondarySubmitTooltip?: string | null;
-  submitAppearance?: ActionButtonProps["appearance"];
-  submitDisabled?: boolean;
-  submitLabel?: string;
+  readonly buttonsClassName?: string;
+  readonly buttonsHelp?: ReactNode;
+  readonly buttonsHelpClassName?: string;
+  readonly cancelDisabled?: boolean;
+  readonly cancelLabel?: string;
+  readonly inline?: boolean;
+  readonly onCancel?: FormikContextFunc<V> | null;
+  readonly saved?: boolean;
+  readonly saving?: boolean;
+  readonly savingLabel?: string | null;
+  readonly secondarySubmit?: FormikContextFunc<V> | null;
+  readonly secondarySubmitDisabled?: boolean;
+  readonly secondarySubmitLabel?: FormikContextFunc<V, string> | string | null;
+  readonly secondarySubmitTooltip?: string | null;
+  readonly submitAppearance?: ActionButtonProps["appearance"];
+  readonly submitDisabled?: boolean;
+  readonly submitLabel?: string;
   /**
    * Determines the behavior of the primary and secondary submit buttons.
    * - "coupled" (default): The secondary submit button is disabled if the primary submit button is disabled.
    * - "independent": The secondary submit button's disabled state is controlled independently.
    */
-  buttonsBehavior?: "coupled" | "independent";
+  readonly buttonsBehavior?: "coupled" | "independent";
 };
 
 export enum TestIds {

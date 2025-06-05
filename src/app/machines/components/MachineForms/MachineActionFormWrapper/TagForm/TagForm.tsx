@@ -22,7 +22,7 @@ import { NodeActions } from "@/app/store/types/node";
 import TagDetails from "@/app/tags/components/TagDetails";
 
 type Props = MachineActionFormProps & {
-  viewingMachineConfig?: boolean;
+  readonly viewingMachineConfig?: boolean;
 };
 
 export enum Label {

@@ -16,8 +16,8 @@ type GenerateURL = (
 ) => string;
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
-  urls: {
+  readonly node: ControllerDetails | MachineDetails;
+  readonly urls: {
     events: GenerateURL;
     index: GenerateURL;
     installationOutput: GenerateURL;

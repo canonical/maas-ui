@@ -16,9 +16,9 @@ import type { RootState } from "@/app/store/root/types";
 import { formatUtcDatetime } from "@/app/utils/time";
 
 type Props = {
-  className?: string | null;
-  id: NotificationType["id"];
-  severity: NotificationProps["severity"];
+  readonly className?: string | null;
+  readonly id: NotificationType["id"];
+  readonly severity: NotificationProps["severity"];
 };
 
 const NotificationGroupNotification = ({

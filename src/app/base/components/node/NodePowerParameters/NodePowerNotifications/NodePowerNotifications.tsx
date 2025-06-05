@@ -9,7 +9,7 @@ import { getPowerTypeFromName } from "@/app/store/general/utils";
 import type { MachineDetails } from "@/app/store/machine/types";
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 const NodePowerNotifications = ({ node }: Props): React.ReactElement => {

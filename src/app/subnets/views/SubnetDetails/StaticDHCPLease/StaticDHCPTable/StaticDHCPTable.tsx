@@ -79,8 +79,8 @@ const generateRows = (
   });
 
 type Props = {
-  reservedIps: ReservedIp[];
-  loading: boolean;
+  readonly reservedIps: ReservedIp[];
+  readonly loading: boolean;
 };
 
 const StaticDHCPTable = ({ reservedIps, loading }: Props): ReactElement => {

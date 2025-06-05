@@ -15,7 +15,7 @@ import type { ClearSidePanelContent } from "@/app/base/types";
 import { podActions } from "@/app/store/pod";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
+  readonly clearSidePanelContent: ClearSidePanelContent;
 };
 
 export const AddLxdSteps = {

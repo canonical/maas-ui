@@ -34,7 +34,7 @@ export type PowerFormValues = {
   powerParameters: PowerParametersType;
 };
 
-type Props = { systemId: Machine["system_id"] };
+type Props = { readonly systemId: Machine["system_id"] };
 
 const PowerForm = ({ systemId }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();

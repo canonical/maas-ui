@@ -11,9 +11,9 @@ import domainSelectors from "@/app/store/domain/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  editingName: boolean;
-  id: Device["system_id"];
-  setEditingName: (editingName: boolean) => void;
+  readonly editingName: boolean;
+  readonly id: Device["system_id"];
+  readonly setEditingName: (editingName: boolean) => void;
 };
 
 const DeviceName = ({

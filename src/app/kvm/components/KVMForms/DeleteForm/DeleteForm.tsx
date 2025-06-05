@@ -25,9 +25,9 @@ type DeleteFormValues = {
 };
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-  clusterId?: VMCluster[VMClusterMeta.PK] | null;
-  hostId?: Pod[PodMeta.PK] | null;
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly clusterId?: VMCluster[VMClusterMeta.PK] | null;
+  readonly hostId?: Pod[PodMeta.PK] | null;
 };
 
 const DeleteFormSchema = Yup.object().shape({

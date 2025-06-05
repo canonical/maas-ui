@@ -17,7 +17,7 @@ import type { RootState } from "@/app/store/root/types";
 
 export const TRUNCATION_POINT = 4;
 
-type Props = { numaId: PodNuma["node_id"]; podId: Pod["id"] };
+type Props = { readonly numaId: PodNuma["node_id"]; readonly podId: Pod["id"] };
 
 const NumaResourcesCard = ({ numaId, podId }: Props): React.ReactElement => {
   const pod = useSelector((state: RootState) =>

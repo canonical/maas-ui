@@ -20,7 +20,7 @@ import KernelOptionsField from "@/app/tags/components/KernelOptionsField";
 import { NewDefinitionMessage } from "@/app/tags/constants";
 
 type Props = {
-  onClose: () => void;
+  readonly onClose: () => void;
 };
 
 export enum Label {

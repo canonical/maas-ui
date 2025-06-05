@@ -8,9 +8,9 @@ import type { Machine } from "@/app/store/machine/types";
 import type { Disk } from "@/app/store/types/node";
 
 type Props = {
-  close: () => void;
-  systemId: Machine["system_id"];
-  diskId: Disk["id"];
+  readonly close: () => void;
+  readonly systemId: Machine["system_id"];
+  readonly diskId: Disk["id"];
 };
 
 const DeleteVolumeGroup = ({

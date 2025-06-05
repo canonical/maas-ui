@@ -10,7 +10,7 @@ import { isMachineDetails } from "@/app/store/machine/utils";
 import { NodeDeviceBus } from "@/app/store/nodedevice/types";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = { setSidePanelContent: MachineSetSidePanelContent };
+type Props = { readonly setSidePanelContent: MachineSetSidePanelContent };
 
 const MachinePCIDevices = ({
   setSidePanelContent,

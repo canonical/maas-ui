@@ -285,7 +285,7 @@ describe("FormikFormContent", () => {
     const Schema = Yup.object().shape({ val1: Yup.string() });
 
     // Proxy component required to be able to change FormikForm saved prop.
-    const Proxy = ({ saved }: { saved: boolean }) => (
+    const Proxy = ({ saved }: { readonly saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <Formik
@@ -318,7 +318,7 @@ describe("FormikFormContent", () => {
     };
     const Schema = Yup.object().shape({ val1: Yup.string() });
     // Proxy component required to be able to change FormikForm saved prop.
-    const Proxy = ({ saved }: { saved: boolean }) => (
+    const Proxy = ({ saved }: { readonly saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <Formik
@@ -352,7 +352,7 @@ describe("FormikFormContent", () => {
   it("runs onSuccess function if successfully saved with no errors", async () => {
     const onSuccess = vi.fn();
     const store = mockStore(state);
-    const Proxy = ({ saved }: { saved: boolean }) => (
+    const Proxy = ({ saved }: { readonly saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <Formik initialValues={{}} onSubmit={vi.fn()}>
@@ -387,7 +387,13 @@ describe("FormikFormContent", () => {
   it("does not run onSuccess function if saved but there are errors", async () => {
     const onSuccess = vi.fn();
     const store = mockStore(state);
-    const Proxy = ({ errors, saved }: { errors?: string; saved: boolean }) => (
+    const Proxy = ({
+      errors,
+      saved,
+    }: {
+      readonly errors?: string;
+      readonly saved: boolean;
+    }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <Formik initialValues={{}} onSubmit={vi.fn()}>
@@ -416,8 +422,8 @@ describe("FormikFormContent", () => {
       saved,
       errors,
     }: {
-      saved: boolean;
-      errors?: string | null;
+      readonly saved: boolean;
+      readonly errors?: string | null;
     }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
@@ -450,8 +456,8 @@ describe("FormikFormContent", () => {
       saved,
       errors,
     }: {
-      saved: boolean;
-      errors?: string | null;
+      readonly saved: boolean;
+      readonly errors?: string | null;
     }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>

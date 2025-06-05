@@ -8,9 +8,9 @@ import type {
 import { getInterfaceNumaNodes, getInterfaceTypeText } from "@/app/store/utils";
 
 type Props = {
-  link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
-  node: Node;
+  readonly link?: NetworkLink | null;
+  readonly nic?: NetworkInterface | null;
+  readonly node: Node;
 };
 
 const TypeColumn = ({ link, nic, node }: Props): React.ReactElement | null => {

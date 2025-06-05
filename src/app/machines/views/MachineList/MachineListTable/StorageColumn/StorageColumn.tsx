@@ -9,7 +9,7 @@ import type { Machine, MachineMeta } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  systemId: Machine[MachineMeta.PK];
+  readonly systemId: Machine[MachineMeta.PK];
 };
 
 export const StorageColumn = ({

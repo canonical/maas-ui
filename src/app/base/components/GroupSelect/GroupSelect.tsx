@@ -2,12 +2,12 @@ import { Select } from "@canonical/react-components";
 import classNames from "classnames";
 
 type Props<T> = {
-  className?: string;
-  grouping: T | null;
-  groupOptions: { value: T | string; label: string }[];
-  name?: string;
-  setGrouping: (group: T | null) => void;
-  setHiddenGroups?: (groups: string[]) => void;
+  readonly className?: string;
+  readonly grouping: T | null;
+  readonly groupOptions: { value: T | string; label: string }[];
+  readonly name?: string;
+  readonly setGrouping: (group: T | null) => void;
+  readonly setHiddenGroups?: (groups: string[]) => void;
 };
 
 const GroupSelect = <T extends string>({

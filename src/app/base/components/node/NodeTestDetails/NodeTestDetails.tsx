@@ -19,7 +19,7 @@ import {
 import { isId } from "@/app/utils";
 
 type Props = {
-  getReturnPath: (id: string) => string;
+  readonly getReturnPath: (id: string) => string;
 };
 
 const NodeTestDetails = ({

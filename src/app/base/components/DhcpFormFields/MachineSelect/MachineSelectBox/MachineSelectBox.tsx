@@ -12,9 +12,9 @@ const MachineSelectBox = ({
   pageSize = 5,
   filters,
 }: {
-  pageSize?: number;
-  onSelect: (machine: Machine | null) => void;
-  filters?: FetchFilters;
+  readonly pageSize?: number;
+  readonly onSelect: (machine: Machine | null) => void;
+  readonly filters?: FetchFilters;
 }): React.ReactElement => {
   const [searchText, setSearchText] = useState("");
   const [debouncedText, setDebouncedText] = useState("");

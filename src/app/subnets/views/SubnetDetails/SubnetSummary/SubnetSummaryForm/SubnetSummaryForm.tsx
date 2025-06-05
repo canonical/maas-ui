@@ -28,8 +28,8 @@ const subnetSummaryFormSchema = Yup.object().shape({
 });
 
 type Props = {
-  handleDismiss: () => void;
-  id: Subnet[SubnetMeta.PK];
+  readonly handleDismiss: () => void;
+  readonly id: Subnet[SubnetMeta.PK];
 };
 
 const SubnetSummaryForm = ({

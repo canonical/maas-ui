@@ -16,9 +16,9 @@ type RequestMap = Record<string, number>;
 type SelectPool = (poolName?: string) => void;
 
 type Props = {
-  disk: DiskField;
-  hostId: Pod["id"];
-  selectPool: SelectPool;
+  readonly disk: DiskField;
+  readonly hostId: Pod["id"];
+  readonly selectPool: SelectPool;
 };
 
 const byteDisplay = (bytes: number, roundDown = false): number =>

@@ -15,17 +15,17 @@ import type { APIError } from "@/app/base/types";
 import { formatErrors } from "@/app/utils";
 
 export type Props = {
-  confirmAppearance?: ActionButtonProps["appearance"];
-  confirmLabel: string;
-  errors?: APIError;
-  errorKey?: string;
-  finished?: boolean;
-  inProgress?: boolean;
-  message: ReactNode;
-  onClose: () => void;
-  onConfirm: () => void;
-  onSuccess?: () => void;
-  sidebar?: boolean;
+  readonly confirmAppearance?: ActionButtonProps["appearance"];
+  readonly confirmLabel: string;
+  readonly errors?: APIError;
+  readonly errorKey?: string;
+  readonly finished?: boolean;
+  readonly inProgress?: boolean;
+  readonly message: ReactNode;
+  readonly onClose: () => void;
+  readonly onConfirm: () => void;
+  readonly onSuccess?: () => void;
+  readonly sidebar?: boolean;
 };
 
 const TableConfirm = ({

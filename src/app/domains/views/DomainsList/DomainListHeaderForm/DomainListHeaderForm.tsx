@@ -21,7 +21,7 @@ export enum Labels {
 }
 
 type Props = {
-  closeForm: () => void;
+  readonly closeForm: () => void;
 };
 
 export type CreateDomainValues = {

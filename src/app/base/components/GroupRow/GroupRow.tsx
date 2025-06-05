@@ -10,9 +10,9 @@ export enum Label {
 }
 
 type GroupRowProps = {
-  itemName: string;
-  groupName: string;
-  count: number;
+  readonly itemName: string;
+  readonly groupName: string;
+  readonly count: number;
 };
 
 const GroupRow = ({

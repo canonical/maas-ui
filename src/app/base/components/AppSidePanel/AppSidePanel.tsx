@@ -9,9 +9,9 @@ import { useSidePanel } from "@/app/base/side-panel-context";
 import { history } from "@/redux-store";
 
 export type AppSidePanelProps = {
-  title: string | null;
-  content?: ReactNode;
-  size: SidePanelSize;
+  readonly title: string | null;
+  readonly content?: ReactNode;
+  readonly size: SidePanelSize;
 };
 
 const useCloseSidePanelOnRouteChange = (): void => {

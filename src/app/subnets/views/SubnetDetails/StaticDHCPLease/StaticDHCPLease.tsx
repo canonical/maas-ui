@@ -15,7 +15,7 @@ import type { Subnet } from "@/app/store/subnet/types/base";
 import StaticDHCPTable from "@/app/subnets/views/SubnetDetails/StaticDHCPLease/StaticDHCPTable";
 
 type StaticDHCPLeaseProps = {
-  subnetId: Subnet[SubnetMeta.PK];
+  readonly subnetId: Subnet[SubnetMeta.PK];
 };
 
 const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps): ReactElement => {

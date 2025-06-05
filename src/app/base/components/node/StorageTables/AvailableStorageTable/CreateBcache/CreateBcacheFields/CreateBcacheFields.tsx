@@ -10,9 +10,9 @@ import type { Disk, Partition } from "@/app/store/types/node";
 import { formatSize } from "@/app/store/utils";
 
 type Props = {
-  cacheSets: Disk[];
-  storageDevice: Disk | Partition;
-  systemId: Machine["system_id"];
+  readonly cacheSets: Disk[];
+  readonly storageDevice: Disk | Partition;
+  readonly systemId: Machine["system_id"];
 };
 
 export const CreateBcacheFields = ({

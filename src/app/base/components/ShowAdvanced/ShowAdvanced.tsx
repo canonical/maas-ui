@@ -8,10 +8,10 @@ export enum Labels {
 }
 
 type Props = {
-  children: React.ReactNode;
-  initialIsShown?: boolean;
-  onAfterShow?: () => void;
-  onAfterHide?: () => void;
+  readonly children: React.ReactNode;
+  readonly initialIsShown?: boolean;
+  readonly onAfterShow?: () => void;
+  readonly onAfterHide?: () => void;
 };
 
 const ShowAdvanced = ({

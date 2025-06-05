@@ -15,10 +15,10 @@ import type { NodeNumaNode } from "@/app/store/types/node";
 import { getRanges } from "@/app/utils";
 
 type Props = {
-  isLast?: boolean;
-  machineId: Machine["system_id"];
-  numaNode: NodeNumaNode;
-  showExpanded?: boolean;
+  readonly isLast?: boolean;
+  readonly machineId: Machine["system_id"];
+  readonly numaNode: NodeNumaNode;
+  readonly showExpanded?: boolean;
 };
 
 export enum Labels {

@@ -23,11 +23,11 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-  newPodValues: NewPodValues;
-  setNewPodValues: (values: NewPodValues) => void;
-  setStep: (step: AddLxdStepValues) => void;
-  setSubmissionErrors: (submissionErrors: string | null) => void;
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly newPodValues: NewPodValues;
+  readonly setNewPodValues: (values: NewPodValues) => void;
+  readonly setStep: (step: AddLxdStepValues) => void;
+  readonly setSubmissionErrors: (submissionErrors: string | null) => void;
 };
 
 export const CredentialsForm = ({

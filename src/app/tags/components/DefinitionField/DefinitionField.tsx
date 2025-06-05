@@ -29,7 +29,7 @@ export enum Label {
 }
 
 type Props = {
-  id?: Tag[TagMeta.PK];
+  readonly id?: Tag[TagMeta.PK];
 };
 
 const getDefinitionError = (

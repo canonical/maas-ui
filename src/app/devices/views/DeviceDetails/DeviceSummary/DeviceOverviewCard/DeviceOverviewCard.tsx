@@ -10,7 +10,7 @@ import tagSelectors from "@/app/store/tag/selectors";
 import { getTagsDisplay } from "@/app/store/tag/utils";
 
 type Props = {
-  systemId: Device[DeviceMeta.PK];
+  readonly systemId: Device[DeviceMeta.PK];
 };
 
 const DeviceOverviewCard = ({ systemId }: Props): React.ReactElement | null => {

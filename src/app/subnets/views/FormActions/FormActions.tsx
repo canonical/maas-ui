@@ -18,8 +18,8 @@ const FormComponents: Record<
 };
 
 export interface FormActionProps {
-  activeForm: SubnetForm;
-  setActiveForm: SetSidePanelContent;
+  readonly activeForm: SubnetForm;
+  readonly setActiveForm: SetSidePanelContent;
 }
 
 const FormActions = ({

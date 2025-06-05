@@ -16,7 +16,7 @@ import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/ho
 import { NodeActions } from "@/app/store/types/node";
 
 type Props = MachineActionFormProps & {
-  setSearchFilter?: SetSearchFilter;
+  readonly setSearchFilter?: SetSearchFilter;
 };
 
 export type CloneFormValues = {

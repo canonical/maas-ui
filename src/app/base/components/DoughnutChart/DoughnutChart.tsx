@@ -23,27 +23,27 @@ type Props = {
   /**
    * The label in the centre of the doughnut.
    */
-  label?: string;
+  readonly label?: string;
   /**
    * An optional class name applied to the wrapping element.
    */
-  className?: string;
+  readonly className?: string;
   /**
    * The width of the segments when hovered.
    */
-  segmentHoverWidth: number;
+  readonly segmentHoverWidth: number;
   /**
    * The width of the segments.
    */
-  segmentWidth: number;
+  readonly segmentWidth: number;
   /**
    * The doughnut segments.
    */
-  segments: Segment[];
+  readonly segments: Segment[];
   /**
    * The size of the doughnut.
    */
-  size: number;
+  readonly size: number;
 };
 
 export enum TestIds {

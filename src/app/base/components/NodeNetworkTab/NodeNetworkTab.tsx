@@ -32,11 +32,11 @@ type GetComponent = (
 ) => ReactNode;
 
 type Props = {
-  actions?: GetComponent;
-  addInterface?: GetComponent;
-  dhcpTable: GetComponent;
-  expandedForm?: GetComponent;
-  interfaceTable: GetComponent;
+  readonly actions?: GetComponent;
+  readonly addInterface?: GetComponent;
+  readonly dhcpTable: GetComponent;
+  readonly expandedForm?: GetComponent;
+  readonly interfaceTable: GetComponent;
 };
 
 const NodeNetworkTab = ({

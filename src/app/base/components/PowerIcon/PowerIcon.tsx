@@ -6,10 +6,10 @@ import classNames from "classnames";
 import { PowerState } from "@/app/store/types/enum";
 
 type Props = {
-  children?: ReactNode;
-  className?: string;
-  powerState: PowerState;
-  showSpinner?: boolean;
+  readonly children?: ReactNode;
+  readonly className?: string;
+  readonly powerState: PowerState;
+  readonly showSpinner?: boolean;
 };
 
 const getIconName = (powerState: PowerState, showSpinner?: boolean): string => {

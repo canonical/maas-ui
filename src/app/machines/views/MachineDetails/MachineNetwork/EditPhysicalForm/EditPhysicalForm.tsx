@@ -48,10 +48,10 @@ import {
 } from "@/app/utils/subnetIpRange";
 
 type Props = {
-  close: () => void;
-  linkId?: NetworkLink["id"] | null;
-  nicId?: NetworkInterface["id"] | null;
-  systemId: MachineDetails["system_id"];
+  readonly close: () => void;
+  readonly linkId?: NetworkLink["id"] | null;
+  readonly nicId?: NetworkInterface["id"] | null;
+  readonly systemId: MachineDetails["system_id"];
 };
 
 const InterfaceSchema = Yup.object().shape({

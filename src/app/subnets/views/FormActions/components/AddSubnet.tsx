@@ -22,7 +22,7 @@ type AddSubnetValues = {
   fabric: string;
 };
 
-const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
+const AddSubnetFields = ({ isSaving }: { readonly isSaving: boolean }) => {
   const { values } = useFormikContext<AddSubnetValues>();
 
   return (

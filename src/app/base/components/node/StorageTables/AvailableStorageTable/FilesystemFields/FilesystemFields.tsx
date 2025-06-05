@@ -17,7 +17,7 @@ type FilesystemValues = {
 };
 
 type Props = {
-  systemId: Machine["system_id"];
+  readonly systemId: Machine["system_id"];
 };
 
 export const FilesystemFields = ({

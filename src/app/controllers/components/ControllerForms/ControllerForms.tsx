@@ -9,8 +9,8 @@ import type { ControllerActionSidePanelContent } from "@/app/controllers/types";
 import type { Controller } from "@/app/store/controller/types";
 
 type Props = SidePanelContentTypes & {
-  controllers: Controller[];
-  viewingDetails?: boolean;
+  readonly controllers: Controller[];
+  readonly viewingDetails?: boolean;
 };
 
 const ControllerForms = ({

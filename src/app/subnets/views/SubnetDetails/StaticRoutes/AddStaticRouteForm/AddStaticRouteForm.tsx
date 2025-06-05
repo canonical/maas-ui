@@ -38,8 +38,8 @@ const addStaticRouteSchema = Yup.object().shape({
 });
 
 export type Props = {
-  subnetId: Subnet[SubnetMeta.PK];
-  setSidePanelContent: SetSidePanelContent;
+  readonly subnetId: Subnet[SubnetMeta.PK];
+  readonly setSidePanelContent: SetSidePanelContent;
 };
 const AddStaticRouteForm = ({
   subnetId,

@@ -7,10 +7,10 @@ import { ScriptResultStatus } from "@/app/store/scriptresult/types";
 import { TestStatusStatus } from "@/app/store/types/node";
 
 type Props = {
-  children?: React.ReactNode;
-  status: ScriptResultStatus | TestStatusStatus;
-  tooltipMessage?: React.ReactNode;
-  tooltipPosition?: Position;
+  readonly children?: React.ReactNode;
+  readonly status: ScriptResultStatus | TestStatusStatus;
+  readonly tooltipMessage?: React.ReactNode;
+  readonly tooltipPosition?: Position;
 };
 
 const getIconName = (status: ScriptResultStatus | TestStatusStatus): string => {

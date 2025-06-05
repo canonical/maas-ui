@@ -2,8 +2,8 @@ import DoubleRow from "@/app/base/components/DoubleRow";
 import { getRanges } from "@/app/utils";
 
 type Props = {
-  pinnedCores: number[];
-  unpinnedCores: number;
+  readonly pinnedCores: number[];
+  readonly unpinnedCores: number;
 };
 
 const CoresColumn = ({

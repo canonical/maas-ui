@@ -14,7 +14,7 @@ import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 const PoolsListHeader = ({
   setSidePanelContent,
 }: {
-  setSidePanelContent: SetSidePanelContent;
+  readonly setSidePanelContent: SetSidePanelContent;
 }): ReactNode => {
   const { machineCount } = useFetchMachineCount();
   const resourcePoolsCount = usePoolCount();

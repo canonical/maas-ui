@@ -14,7 +14,7 @@ import type { Message } from "@/app/store/message/types";
 import { notificationActions } from "@/app/store/notification";
 import notificationSelectors from "@/app/store/notification/selectors";
 
-const Messages = ({ messages }: { messages: Message[] }) => {
+const Messages = ({ messages }: { readonly messages: Message[] }) => {
   const dispatch = useDispatch();
 
   return (

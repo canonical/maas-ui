@@ -26,17 +26,19 @@ const hasKernelOptions = (tags: Tag[], tag: TagSelectorTag) =>
   !!tags.find(({ id }) => tag.id === id)?.kernel_opts;
 
 type Props = Pick<MachineActionFormProps, "searchFilter"> & {
-  machines: Machine[];
-  newTags: Tag[TagMeta.PK][];
-  setNewTags: (tags: Tag[TagMeta.PK][]) => void;
-  setNewTagName: (name: string) => void;
-  viewingDetails?: boolean;
-  viewingMachineConfig?: boolean;
-  selectedMachines?: SelectedMachines | null;
-  selectedCount?: number | null;
-  toggleTagDetails: (tag: Tag | null) => void;
+  readonly machines: Machine[];
+  readonly newTags: Tag[TagMeta.PK][];
+  readonly setNewTags: (tags: Tag[TagMeta.PK][]) => void;
+  readonly setNewTagName: (name: string) => void;
+  readonly viewingDetails?: boolean;
+  readonly viewingMachineConfig?: boolean;
+  readonly selectedMachines?: SelectedMachines | null;
+  readonly selectedCount?: number | null;
+  readonly toggleTagDetails: (tag: Tag | null) => void;
 } & {
-  setSecondaryContent: Dispatch<SetStateAction<TagFormSecondaryContent>>;
+  readonly setSecondaryContent: Dispatch<
+    SetStateAction<TagFormSecondaryContent>
+  >;
 };
 
 export enum Label {

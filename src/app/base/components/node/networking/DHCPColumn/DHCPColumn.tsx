@@ -10,7 +10,7 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import { getDHCPStatus } from "@/app/store/vlan/utils";
 
 type Props = {
-  nic?: NetworkInterface | null;
+  readonly nic?: NetworkInterface | null;
 };
 
 const DHCPColumn = ({ nic }: Props): React.ReactElement | null => {

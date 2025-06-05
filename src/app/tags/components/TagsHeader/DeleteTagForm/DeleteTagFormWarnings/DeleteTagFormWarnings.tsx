@@ -11,7 +11,7 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { FetchNodeStatus } from "@/app/store/types/node";
 
 type Props = {
-  id: Tag[TagMeta.PK];
+  readonly id: Tag[TagMeta.PK];
 };
 
 const generateWarning = (nodeType: string, count: number) => (

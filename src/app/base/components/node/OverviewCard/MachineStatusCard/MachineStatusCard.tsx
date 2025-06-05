@@ -20,7 +20,7 @@ import {
 import { breakLines, isEphemerallyDeployed } from "@/app/utils";
 
 type Props = {
-  machine: MachineDetails;
+  readonly machine: MachineDetails;
 };
 
 const isVM = (machine: MachineDetails, machineTags: Tag[]) => {

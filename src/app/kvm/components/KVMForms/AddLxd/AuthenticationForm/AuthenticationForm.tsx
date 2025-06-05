@@ -20,10 +20,10 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-  newPodValues: NewPodValues;
-  setNewPodValues: (podValues: NewPodValues) => void;
-  setStep: (step: AddLxdStepValues) => void;
+  readonly clearSidePanelContent: ClearSidePanelContent;
+  readonly newPodValues: NewPodValues;
+  readonly setNewPodValues: (podValues: NewPodValues) => void;
+  readonly setStep: (step: AddLxdStepValues) => void;
 };
 
 export type AuthenticationFormValues = {

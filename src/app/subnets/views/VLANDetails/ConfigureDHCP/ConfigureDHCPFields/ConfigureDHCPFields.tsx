@@ -18,7 +18,7 @@ import { getFullVLANName } from "@/app/store/vlan/utils";
 import { simpleSortByKey } from "@/app/utils";
 
 type Props = {
-  vlan: VLAN;
+  readonly vlan: VLAN;
 };
 
 const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {

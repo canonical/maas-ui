@@ -12,9 +12,9 @@ import { isDomainDetails } from "@/app/store/domain/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  closeForm: () => void;
-  id: Domain["id"];
-  resource: DomainResource;
+  readonly closeForm: () => void;
+  readonly id: Domain["id"];
+  readonly resource: DomainResource;
 };
 
 export const Labels = {

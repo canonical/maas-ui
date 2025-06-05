@@ -24,9 +24,9 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import { getVLANDisplay } from "@/app/store/vlan/utils";
 
 type Props = {
-  discovery: Discovery;
-  setDevice: (device: Device[DeviceMeta.PK] | null) => void;
-  setDeviceType: (deviceType: DeviceType) => void;
+  readonly discovery: Discovery;
+  readonly setDevice: (device: Device[DeviceMeta.PK] | null) => void;
+  readonly setDeviceType: (deviceType: DeviceType) => void;
 };
 
 export enum Labels {

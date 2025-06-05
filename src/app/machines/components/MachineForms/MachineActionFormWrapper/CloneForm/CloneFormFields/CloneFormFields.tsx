@@ -22,8 +22,8 @@ import { subnetActions } from "@/app/store/subnet";
 import { vlanActions } from "@/app/store/vlan";
 
 type Props = {
-  selectedMachine: MachineDetails | null;
-  setSelectedMachine: (machine: MachineDetails | null) => void;
+  readonly selectedMachine: MachineDetails | null;
+  readonly setSelectedMachine: (machine: MachineDetails | null) => void;
 };
 
 export const CloneFormFields = ({

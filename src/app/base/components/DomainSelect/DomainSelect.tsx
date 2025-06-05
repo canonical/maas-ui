@@ -8,10 +8,10 @@ import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 
 type Props = FormikFieldProps & {
-  disabled?: boolean;
-  label?: string | null;
-  name: string;
-  valueKey?: "id" | "name";
+  readonly disabled?: boolean;
+  readonly label?: string | null;
+  readonly name: string;
+  readonly valueKey?: "id" | "name";
 };
 
 export enum Labels {

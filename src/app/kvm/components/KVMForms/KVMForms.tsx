@@ -19,8 +19,8 @@ import { FilterMachines } from "@/app/store/machine/utils";
 import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
 
 type Props = SidePanelContentTypes & {
-  searchFilter?: string;
-  setSearchFilter?: SetSearchFilter;
+  readonly searchFilter?: string;
+  readonly setSearchFilter?: SetSearchFilter;
 };
 
 const getFormComponent = ({

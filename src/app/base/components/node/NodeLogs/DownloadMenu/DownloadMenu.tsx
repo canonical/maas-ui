@@ -27,7 +27,7 @@ import { nodeIsMachine } from "@/app/store/utils";
 import { capitaliseFirst } from "@/app/utils";
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 export enum Label {

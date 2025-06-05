@@ -16,11 +16,11 @@ import type {
 } from "@/app/store/machine/types";
 
 type Props = {
-  callId?: string | null;
-  label: ReactNode;
-  groupValue?: MachineStateListGroup["value"];
-  systemId: Machine[MachineMeta.PK];
-  machines?: Machine[];
+  readonly callId?: string | null;
+  readonly label: ReactNode;
+  readonly groupValue?: MachineStateListGroup["value"];
+  readonly systemId: Machine[MachineMeta.PK];
+  readonly machines?: Machine[];
 };
 
 export const getSelectedMachinesRange = ({

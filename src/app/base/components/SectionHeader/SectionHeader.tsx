@@ -11,19 +11,19 @@ import type { LinkProps } from "react-router";
 import type { DataTestElement } from "@/app/base/types";
 
 export type Props<P = LinkProps> = {
-  actionMenuGroup?: React.ReactElement | null;
-  buttons?: React.ReactElement[] | null;
-  className?: ClassName;
-  renderButtons?: () => ReactNode;
-  headerSize?: "wide";
-  loading?: boolean;
-  subtitle?: ReactNode;
-  subtitleClassName?: string;
-  subtitleLoading?: boolean;
-  tabLinks?: DataTestElement<TabLink<P>>[];
-  title?: ReactNode;
-  titleClassName?: string;
-  titleElement?: keyof JSX.IntrinsicElements;
+  readonly actionMenuGroup?: React.ReactElement | null;
+  readonly buttons?: React.ReactElement[] | null;
+  readonly className?: ClassName;
+  readonly renderButtons?: () => ReactNode;
+  readonly headerSize?: "wide";
+  readonly loading?: boolean;
+  readonly subtitle?: ReactNode;
+  readonly subtitleClassName?: string;
+  readonly subtitleLoading?: boolean;
+  readonly tabLinks?: DataTestElement<TabLink<P>>[];
+  readonly title?: ReactNode;
+  readonly titleClassName?: string;
+  readonly titleElement?: keyof JSX.IntrinsicElements;
 };
 
 const generateSubtitle = (

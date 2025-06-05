@@ -7,18 +7,18 @@ import type { SwitchProps } from "../Switch";
 import Switch from "../Switch";
 
 export type Props = SwitchProps & {
-  caution?: string;
-  className?: string;
-  error?: string;
-  help?: string;
-  id?: string;
-  label?: ReactNode;
-  labelClassName?: string;
-  required?: boolean;
-  stacked?: boolean;
-  success?: string;
-  type?: string;
-  wrapperClassName?: string;
+  readonly caution?: string;
+  readonly className?: string;
+  readonly error?: string;
+  readonly help?: string;
+  readonly id?: string;
+  readonly label?: ReactNode;
+  readonly labelClassName?: string;
+  readonly required?: boolean;
+  readonly stacked?: boolean;
+  readonly success?: string;
+  readonly type?: string;
+  readonly wrapperClassName?: string;
 };
 
 const SwitchField = ({

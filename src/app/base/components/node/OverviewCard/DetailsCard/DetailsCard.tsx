@@ -22,7 +22,7 @@ import { nodeIsMachine } from "@/app/store/utils";
 import { extractPowerType } from "@/app/utils";
 
 type Props = {
-  node: ControllerDetails | MachineDetails;
+  readonly node: ControllerDetails | MachineDetails;
 };
 
 export enum Labels {

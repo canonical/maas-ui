@@ -96,7 +96,7 @@ it("does not display automatic tags on the list", async () => {
 });
 
 it("updates the new tags after creating a tag", async () => {
-  const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
+  const Form = ({ tags }: { readonly tags: Tag[TagMeta.PK][] }) => (
     <Formik initialValues={{ tags: tags }} onSubmit={vi.fn()}>
       <NodeConfigurationFields />
     </Formik>

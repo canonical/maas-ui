@@ -1,8 +1,8 @@
 import DoubleRow from "@/app/base/components/DoubleRow";
 
 type Props = {
-  version?: string;
-  vms: number;
+  readonly version?: string;
+  readonly vms: number;
 };
 
 const VMsColumn = ({ version, vms }: Props): React.ReactElement | null => {

@@ -23,7 +23,7 @@ import { NodeStatusCode } from "@/app/store/types/node";
 import { isId } from "@/app/utils";
 
 type Props = {
-  setSidePanelContent: MachineSetSidePanelContent;
+  readonly setSidePanelContent: MachineSetSidePanelContent;
 };
 
 const MachineSummary = ({ setSidePanelContent }: Props): React.ReactElement => {

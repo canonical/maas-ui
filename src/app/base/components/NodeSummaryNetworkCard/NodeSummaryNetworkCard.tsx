@@ -26,10 +26,10 @@ type InterfaceGroup = {
 };
 
 type Props = {
-  children?: ReactNode;
-  interfaces: NetworkInterface[] | null;
-  networkURL: string;
-  node: Device | MachineDetails;
+  readonly children?: ReactNode;
+  readonly interfaces: NetworkInterface[] | null;
+  readonly networkURL: string;
+  readonly node: Device | MachineDetails;
 };
 
 /**

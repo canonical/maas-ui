@@ -19,7 +19,7 @@ import GroupRow from "@/app/base/components/GroupRow";
 export const SpaceCellContents = ({
   value,
 }: PropsWithChildren<{
-  value: SubnetsTableColumn;
+  readonly value: SubnetsTableColumn;
 }>): React.ReactElement => {
   const [isWarningOpen, setIsWarningOpen] = useState(false);
   return (
@@ -61,7 +61,7 @@ export const SpaceCellContents = ({
 export const CellContents = ({
   value,
 }: {
-  value: SubnetsTableColumn;
+  readonly value: SubnetsTableColumn;
 }): React.ReactElement => (
   <>
     <span

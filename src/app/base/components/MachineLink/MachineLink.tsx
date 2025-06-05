@@ -6,7 +6,7 @@ import type { Machine, MachineMeta } from "@/app/store/machine/types";
 import { useFetchMachine } from "@/app/store/machine/utils";
 
 type Props = {
-  systemId?: Machine[MachineMeta.PK] | null;
+  readonly systemId?: Machine[MachineMeta.PK] | null;
 };
 
 export enum Labels {

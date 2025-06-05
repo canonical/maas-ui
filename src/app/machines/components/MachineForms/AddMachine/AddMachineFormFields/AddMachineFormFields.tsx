@@ -19,7 +19,7 @@ import type { MachineState } from "@/app/store/machine/types";
 import { formatMacAddress } from "@/app/utils";
 
 type Props = {
-  saved: MachineState["saved"];
+  readonly saved: MachineState["saved"];
 };
 
 export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {

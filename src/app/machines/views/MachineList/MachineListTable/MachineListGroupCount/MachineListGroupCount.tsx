@@ -19,10 +19,10 @@ const MachineListGroupCount = ({
   group,
   grouping,
 }: {
-  count: number | null;
-  filter: FetchFilters | null;
-  group: MachineStateListGroup["value"];
-  grouping: FetchGroupKey | null;
+  readonly count: number | null;
+  readonly filter: FetchFilters | null;
+  readonly group: MachineStateListGroup["value"];
+  readonly grouping: FetchGroupKey | null;
 }): React.ReactElement => {
   const groupFilters = selectedToFilters({
     groups: [group],

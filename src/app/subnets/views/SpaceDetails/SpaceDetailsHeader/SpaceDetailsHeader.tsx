@@ -7,7 +7,7 @@ import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
 import type { Space } from "@/app/store/space/types";
 
 type Props = SidePanelContentTypes & {
-  space: Space;
+  readonly space: Space;
 };
 
 const SpaceDetailsHeader = ({
