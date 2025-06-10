@@ -122,6 +122,22 @@ export type ConfigurationResponse = {
   kind?: string;
 };
 
+/**
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type ConfigurationsListResponse = {
+  _links?: BaseHal;
+  _embedded?: Record<string, unknown>;
+  items: ConfigurationResponse[];
+  kind?: string;
+};
+
 export type ConflictBodyResponse = {
   code?: number;
   message?: string;
@@ -961,6 +977,76 @@ export type PreconditionFailedBodyResponse = {
 };
 
 /**
+ * An enumeration.
+ */
+export type PublicConfigName =
+  | "active_discovery_interval"
+  | "auto_vlan_creation"
+  | "boot_images_auto_import"
+  | "boot_images_no_proxy"
+  | "commissioning_distro_series"
+  | "completed_intro"
+  | "curtin_verbose"
+  | "default_boot_interface_link_type"
+  | "default_distro_series"
+  | "default_dns_ttl"
+  | "default_min_hwe_kernel"
+  | "default_osystem"
+  | "default_storage_layout"
+  | "disk_erase_with_quick_erase"
+  | "disk_erase_with_secure_erase"
+  | "dns_trusted_acl"
+  | "dnssec_validation"
+  | "enable_analytics"
+  | "enable_disk_erasing_on_release"
+  | "enable_http_proxy"
+  | "enable_kernel_crash_dump"
+  | "enable_third_party_drivers"
+  | "enlist_commissioning"
+  | "force_v1_network_yaml"
+  | "hardware_sync_interval"
+  | "http_proxy"
+  | "kernel_opts"
+  | "maas_auto_ipmi_cipher_suite_id"
+  | "maas_auto_ipmi_k_g_bmc_key"
+  | "maas_auto_ipmi_user_privilege_level"
+  | "maas_auto_ipmi_user"
+  | "maas_auto_ipmi_workaround_flags"
+  | "maas_internal_domain"
+  | "maas_name"
+  | "maas_proxy_port"
+  | "maas_syslog_port"
+  | "max_node_commissioning_results"
+  | "max_node_installation_results"
+  | "max_node_release_results"
+  | "max_node_testing_results"
+  | "network_discovery"
+  | "node_timeout"
+  | "ntp_external_only"
+  | "ntp_servers"
+  | "prefer_v4_proxy"
+  | "prometheus_enabled"
+  | "prometheus_push_gateway"
+  | "prometheus_push_interval"
+  | "promtail_enabled"
+  | "promtail_port"
+  | "release_notifications"
+  | "remote_syslog"
+  | "session_length"
+  | "subnet_ip_exhaustion_threshold_count"
+  | "theme"
+  | "tls_cert_expiration_notification_enabled"
+  | "tls_cert_expiration_notification_interval"
+  | "upstream_dns"
+  | "use_peer_proxy"
+  | "use_rack_proxy"
+  | "vcenter_datacenter"
+  | "vcenter_password"
+  | "vcenter_server"
+  | "vcenter_username"
+  | "windows_kms_host";
+
+/**
  * The vocabulary of a `Subnet`'s possible reverse DNS modes.
  */
 export type RdnsMode = 0 | 1 | 2;
@@ -1459,6 +1545,56 @@ export type TxtRecordResponse = {
   kind?: string;
 };
 
+export type TagRequest = {
+  /**
+   * The new tag name. Because the name will be used in urls, it should be short.
+   */
+  name: string;
+  /**
+   * An XPATH query that is evaluated againstthe hardware_details stored for all nodes (i.e. the output of ``lshw -xml``).
+   */
+  definition?: string;
+  /**
+   * A description of what fhe tag will be used for in natural language.
+   */
+  comment?: string;
+  /**
+   * Nodes associated with this tag will add this string to their kernel options when booting. The value overrides the global ``kernel_opts`` setting. If more than one tag is associated with a node, command line will be concatenated from all associated tags, in alphabetic tag name order.
+   */
+  kernel_opts?: string;
+};
+
+/**
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type TagResponse = {
+  _links?: BaseHal;
+  _embedded?: Record<string, unknown>;
+  id: number;
+  name: string;
+  comment: string;
+  definition: string;
+  kernel_opts: string;
+  kind?: string;
+};
+
+/**
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type TagsListResponse = {
+  items: TagResponse[];
+  total: number;
+  next?: string;
+  kind?: string;
+};
+
 export type UnauthorizedBodyResponse = {
   code?: number;
   message?: string;
@@ -1501,6 +1637,10 @@ export type UsbDevicesListResponse = {
   kind?: string;
 };
 
+export type UserChangePasswordRequest = {
+  password: string;
+};
+
 export type UserInfoResponse = {
   id: number;
   username: string;
@@ -1530,12 +1670,9 @@ export type UserResponse = {
   _embedded?: Record<string, unknown>;
   id: number;
   username: string;
-  password: string;
   is_superuser: boolean;
   first_name: string;
   last_name?: string;
-  is_staff: boolean;
-  is_active: boolean;
   date_joined: string;
   email?: string;
   last_login?: string;
@@ -1743,10 +1880,10 @@ export type ZoneWithSummaryResponse = {
   id: number;
   name: string;
   description: string;
-  kind?: string;
   devices_count: number;
   machines_count: number;
   controllers_count: number;
+  kind?: string;
 };
 
 /**
@@ -1833,7 +1970,7 @@ export type LoginResponse = LoginResponses[keyof LoginResponses];
 export type GetConfigurationData = {
   body?: never;
   path: {
-    name: string;
+    name: PublicConfigName;
   };
   query?: never;
   url: "/MAAS/a/v3/configurations/{name}";
@@ -1862,6 +1999,42 @@ export type GetConfigurationResponses = {
 
 export type GetConfigurationResponse =
   GetConfigurationResponses[keyof GetConfigurationResponses];
+
+export type GetConfigurationsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * A set of configuration names to filter by.
+     */
+    name?: PublicConfigName[];
+  };
+  url: "/MAAS/a/v3/configurations";
+};
+
+export type GetConfigurationsErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetConfigurationsError =
+  GetConfigurationsErrors[keyof GetConfigurationsErrors];
+
+export type GetConfigurationsResponses = {
+  /**
+   * Successful Response
+   */
+  200: ConfigurationsListResponse;
+};
+
+export type GetConfigurationsResponse =
+  GetConfigurationsResponses[keyof GetConfigurationsResponses];
 
 export type ListEventsData = {
   body?: never;
@@ -4356,6 +4529,182 @@ export type GetFabricVlanSubnetResponses = {
 export type GetFabricVlanSubnetResponse =
   GetFabricVlanSubnetResponses[keyof GetFabricVlanSubnetResponses];
 
+export type ListTagsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    page?: number;
+    size?: number;
+  };
+  url: "/MAAS/a/v3/tags";
+};
+
+export type ListTagsErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListTagsError = ListTagsErrors[keyof ListTagsErrors];
+
+export type ListTagsResponses = {
+  /**
+   * Successful Response
+   */
+  200: TagsListResponse;
+};
+
+export type ListTagsResponse = ListTagsResponses[keyof ListTagsResponses];
+
+export type CreateTagData = {
+  body: TagRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/tags";
+};
+
+export type CreateTagErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateTagError = CreateTagErrors[keyof CreateTagErrors];
+
+export type CreateTagResponses = {
+  /**
+   * Successful Response
+   */
+  201: TagResponse;
+};
+
+export type CreateTagResponse = CreateTagResponses[keyof CreateTagResponses];
+
+export type DeleteTagData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    tag_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/tags/{tag_id}";
+};
+
+export type DeleteTagErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteTagError = DeleteTagErrors[keyof DeleteTagErrors];
+
+export type DeleteTagResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteTagResponse = DeleteTagResponses[keyof DeleteTagResponses];
+
+export type GetTagData = {
+  body?: never;
+  path: {
+    tag_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/tags/{tag_id}";
+};
+
+export type GetTagErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetTagError = GetTagErrors[keyof GetTagErrors];
+
+export type GetTagResponses = {
+  /**
+   * Successful Response
+   */
+  200: TagResponse;
+};
+
+export type GetTagResponse = GetTagResponses[keyof GetTagResponses];
+
+export type UpdateTagData = {
+  body: TagRequest;
+  path: {
+    tag_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/tags/{tag_id}";
+};
+
+export type UpdateTagErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateTagError = UpdateTagErrors[keyof UpdateTagErrors];
+
+export type UpdateTagResponses = {
+  /**
+   * Successful Response
+   */
+  200: TagResponse;
+};
+
+export type UpdateTagResponse = UpdateTagResponses[keyof UpdateTagResponses];
+
+export type GetMeWithSummaryData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me_with_summary";
+};
+
+export type GetMeWithSummaryErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetMeWithSummaryError =
+  GetMeWithSummaryErrors[keyof GetMeWithSummaryErrors];
+
+export type GetMeWithSummaryResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserWithSummaryResponse;
+};
+
+export type GetMeWithSummaryResponse =
+  GetMeWithSummaryResponses[keyof GetMeWithSummaryResponses];
+
 export type GetUserInfoData = {
   body?: never;
   path?: never;
@@ -4385,6 +4734,75 @@ export type GetUserInfoResponses = {
 
 export type GetUserInfoResponse =
   GetUserInfoResponses[keyof GetUserInfoResponses];
+
+export type CompleteIntroData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me:complete_intro";
+};
+
+export type CompleteIntroErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CompleteIntroError = CompleteIntroErrors[keyof CompleteIntroErrors];
+
+export type CompleteIntroResponses = {
+  /**
+   * Successful Response
+   */
+  200: unknown;
+  /**
+   * No Content
+   */
+  204: void;
+};
+
+export type CompleteIntroResponse =
+  CompleteIntroResponses[keyof CompleteIntroResponses];
+
+export type ChangePasswordUserData = {
+  body: UserChangePasswordRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me:change_password";
+};
+
+export type ChangePasswordUserErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ChangePasswordUserError =
+  ChangePasswordUserErrors[keyof ChangePasswordUserErrors];
+
+export type ChangePasswordUserResponses = {
+  /**
+   * Successful Response
+   */
+  200: unknown;
+  /**
+   * No Content
+   */
+  204: void;
+};
+
+export type ChangePasswordUserResponse =
+  ChangePasswordUserResponses[keyof ChangePasswordUserResponses];
 
 export type ListUsersData = {
   body?: never;
@@ -4552,6 +4970,43 @@ export type UpdateUserResponses = {
 
 export type UpdateUserResponse = UpdateUserResponses[keyof UpdateUserResponses];
 
+export type ChangePasswordAdminData = {
+  body: UserChangePasswordRequest;
+  path: {
+    user_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/users/{user_id}:change_password";
+};
+
+export type ChangePasswordAdminErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ChangePasswordAdminError =
+  ChangePasswordAdminErrors[keyof ChangePasswordAdminErrors];
+
+export type ChangePasswordAdminResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type ChangePasswordAdminResponse =
+  ChangePasswordAdminResponses[keyof ChangePasswordAdminResponses];
+
 export type ListUsersWithSummaryData = {
   body?: never;
   path?: never;
@@ -4642,7 +5097,7 @@ export type CreateFabricVlanResponses = {
   /**
    * Successful Response
    */
-  201: unknown;
+  201: VlanResponse;
 };
 
 export type CreateFabricVlanResponse =

@@ -13,6 +13,7 @@ import {
   accessToken,
   login,
   getConfiguration,
+  getConfigurations,
   listEvents,
   clearAllDiscoveriesWithOptionalIpAndMac,
   listDiscoveries,
@@ -87,12 +88,21 @@ import {
   deleteFabricVlanSubnet,
   updateFabricVlanSubnet,
   getFabricVlanSubnet,
+  listTags,
+  createTag,
+  deleteTag,
+  getTag,
+  updateTag,
+  getMeWithSummary,
   getUserInfo,
+  completeIntro,
+  changePasswordUser,
   listUsers,
   createUser,
   deleteUser,
   getUser,
   updateUser,
+  changePasswordAdmin,
   listUsersWithSummary,
   listFabricVlans,
   createFabricVlan,
@@ -112,6 +122,7 @@ import type {
   LoginError,
   LoginResponse,
   GetConfigurationData,
+  GetConfigurationsData,
   ListEventsData,
   ListEventsError,
   ListEventsResponse,
@@ -304,7 +315,27 @@ import type {
   UpdateFabricVlanSubnetError,
   UpdateFabricVlanSubnetResponse,
   GetFabricVlanSubnetData,
+  ListTagsData,
+  ListTagsError,
+  ListTagsResponse,
+  CreateTagData,
+  CreateTagError,
+  CreateTagResponse,
+  DeleteTagData,
+  DeleteTagError,
+  DeleteTagResponse,
+  GetTagData,
+  UpdateTagData,
+  UpdateTagError,
+  UpdateTagResponse,
+  GetMeWithSummaryData,
   GetUserInfoData,
+  CompleteIntroData,
+  CompleteIntroError,
+  CompleteIntroResponse,
+  ChangePasswordUserData,
+  ChangePasswordUserError,
+  ChangePasswordUserResponse,
   ListUsersData,
   ListUsersError,
   ListUsersResponse,
@@ -318,6 +349,9 @@ import type {
   UpdateUserData,
   UpdateUserError,
   UpdateUserResponse,
+  ChangePasswordAdminData,
+  ChangePasswordAdminError,
+  ChangePasswordAdminResponse,
   ListUsersWithSummaryData,
   ListUsersWithSummaryError,
   ListUsersWithSummaryResponse,
@@ -458,6 +492,27 @@ export const getConfigurationOptions = (
       return data;
     },
     queryKey: getConfigurationQueryKey(options),
+  });
+};
+
+export const getConfigurationsQueryKey = (
+  options?: Options<GetConfigurationsData>
+) => createQueryKey("getConfigurations", options);
+
+export const getConfigurationsOptions = (
+  options?: Options<GetConfigurationsData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getConfigurations({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getConfigurationsQueryKey(options),
   });
 };
 
@@ -3239,6 +3294,186 @@ export const getFabricVlanSubnetOptions = (
   });
 };
 
+export const listTagsQueryKey = (options?: Options<ListTagsData>) =>
+  createQueryKey("listTags", options);
+
+export const listTagsOptions = (options?: Options<ListTagsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listTags({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listTagsQueryKey(options),
+  });
+};
+
+export const listTagsInfiniteQueryKey = (
+  options?: Options<ListTagsData>
+): QueryKey<Options<ListTagsData>> => createQueryKey("listTags", options, true);
+
+export const listTagsInfiniteOptions = (options?: Options<ListTagsData>) => {
+  return infiniteQueryOptions<
+    ListTagsResponse,
+    ListTagsError,
+    InfiniteData<ListTagsResponse>,
+    QueryKey<Options<ListTagsData>>,
+    | Pick<
+        QueryKey<Options<ListTagsData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListTagsData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listTags({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listTagsInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createTagQueryKey = (options: Options<CreateTagData>) =>
+  createQueryKey("createTag", options);
+
+export const createTagOptions = (options: Options<CreateTagData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createTag({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createTagQueryKey(options),
+  });
+};
+
+export const createTagMutation = (
+  options?: Partial<Options<CreateTagData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    CreateTagResponse,
+    CreateTagError,
+    Options<CreateTagData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createTag({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deleteTagMutation = (
+  options?: Partial<Options<DeleteTagData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeleteTagResponse,
+    DeleteTagError,
+    Options<DeleteTagData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteTag({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getTagQueryKey = (options: Options<GetTagData>) =>
+  createQueryKey("getTag", options);
+
+export const getTagOptions = (options: Options<GetTagData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getTag({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getTagQueryKey(options),
+  });
+};
+
+export const updateTagMutation = (
+  options?: Partial<Options<UpdateTagData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    UpdateTagResponse,
+    UpdateTagError,
+    Options<UpdateTagData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updateTag({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getMeWithSummaryQueryKey = (
+  options?: Options<GetMeWithSummaryData>
+) => createQueryKey("getMeWithSummary", options);
+
+export const getMeWithSummaryOptions = (
+  options?: Options<GetMeWithSummaryData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getMeWithSummary({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getMeWithSummaryQueryKey(options),
+  });
+};
+
 export const getUserInfoQueryKey = (options?: Options<GetUserInfoData>) =>
   createQueryKey("getUserInfo", options);
 
@@ -3255,6 +3490,85 @@ export const getUserInfoOptions = (options?: Options<GetUserInfoData>) => {
     },
     queryKey: getUserInfoQueryKey(options),
   });
+};
+
+export const completeIntroQueryKey = (options?: Options<CompleteIntroData>) =>
+  createQueryKey("completeIntro", options);
+
+export const completeIntroOptions = (options?: Options<CompleteIntroData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await completeIntro({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: completeIntroQueryKey(options),
+  });
+};
+
+export const completeIntroMutation = (
+  options?: Partial<Options<CompleteIntroData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    CompleteIntroResponse,
+    CompleteIntroError,
+    Options<CompleteIntroData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await completeIntro({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const changePasswordUserQueryKey = (
+  options: Options<ChangePasswordUserData>
+) => createQueryKey("changePasswordUser", options);
+
+export const changePasswordUserOptions = (
+  options: Options<ChangePasswordUserData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await changePasswordUser({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: changePasswordUserQueryKey(options),
+  });
+};
+
+export const changePasswordUserMutation = (
+  options?: Partial<Options<ChangePasswordUserData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    ChangePasswordUserResponse,
+    ChangePasswordUserError,
+    Options<ChangePasswordUserData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await changePasswordUser({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
 export const listUsersQueryKey = (options?: Options<ListUsersData>) =>
@@ -3407,6 +3721,47 @@ export const updateUserMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await updateUser({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const changePasswordAdminQueryKey = (
+  options: Options<ChangePasswordAdminData>
+) => createQueryKey("changePasswordAdmin", options);
+
+export const changePasswordAdminOptions = (
+  options: Options<ChangePasswordAdminData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await changePasswordAdmin({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: changePasswordAdminQueryKey(options),
+  });
+};
+
+export const changePasswordAdminMutation = (
+  options?: Partial<Options<ChangePasswordAdminData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    ChangePasswordAdminResponse,
+    ChangePasswordAdminError,
+    Options<ChangePasswordAdminData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await changePasswordAdmin({
         ...options,
         ...localOptions,
         throwOnError: true,

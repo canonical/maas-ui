@@ -18,6 +18,9 @@ import type {
   GetConfigurationData,
   GetConfigurationResponse,
   GetConfigurationError,
+  GetConfigurationsData,
+  GetConfigurationsResponse,
+  GetConfigurationsError,
   ListEventsData,
   ListEventsResponse,
   ListEventsError,
@@ -240,9 +243,33 @@ import type {
   GetFabricVlanSubnetData,
   GetFabricVlanSubnetResponse,
   GetFabricVlanSubnetError,
+  ListTagsData,
+  ListTagsResponse,
+  ListTagsError,
+  CreateTagData,
+  CreateTagResponse,
+  CreateTagError,
+  DeleteTagData,
+  DeleteTagResponse,
+  DeleteTagError,
+  GetTagData,
+  GetTagResponse,
+  GetTagError,
+  UpdateTagData,
+  UpdateTagResponse,
+  UpdateTagError,
+  GetMeWithSummaryData,
+  GetMeWithSummaryResponse,
+  GetMeWithSummaryError,
   GetUserInfoData,
   GetUserInfoResponse,
   GetUserInfoError,
+  CompleteIntroData,
+  CompleteIntroResponse,
+  CompleteIntroError,
+  ChangePasswordUserData,
+  ChangePasswordUserResponse,
+  ChangePasswordUserError,
   ListUsersData,
   ListUsersResponse,
   ListUsersError,
@@ -258,6 +285,9 @@ import type {
   UpdateUserData,
   UpdateUserResponse,
   UpdateUserError,
+  ChangePasswordAdminData,
+  ChangePasswordAdminResponse,
+  ChangePasswordAdminError,
   ListUsersWithSummaryData,
   ListUsersWithSummaryResponse,
   ListUsersWithSummaryError,
@@ -374,6 +404,28 @@ export const getConfiguration = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/configurations/{name}",
+    ...options,
+  });
+};
+
+/**
+ * Get Configurations
+ */
+export const getConfigurations = <ThrowOnError extends boolean = false>(
+  options?: Options<GetConfigurationsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetConfigurationsResponse,
+    GetConfigurationsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/configurations",
     ...options,
   });
 };
@@ -2139,6 +2191,147 @@ export const getFabricVlanSubnet = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Tags
+ */
+export const listTags = <ThrowOnError extends boolean = false>(
+  options?: Options<ListTagsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListTagsResponse,
+    ListTagsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags",
+    ...options,
+  });
+};
+
+/**
+ * Create Tag
+ */
+export const createTag = <ThrowOnError extends boolean = false>(
+  options: Options<CreateTagData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateTagResponse,
+    CreateTagError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Delete Tag
+ */
+export const deleteTag = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteTagData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteTagResponse,
+    DeleteTagError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags/{tag_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Tag
+ */
+export const getTag = <ThrowOnError extends boolean = false>(
+  options: Options<GetTagData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetTagResponse,
+    GetTagError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags/{tag_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Tag
+ */
+export const updateTag = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateTagData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateTagResponse,
+    UpdateTagError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags/{tag_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Get user with a summary. ONLY FOR INTERNAL USAGE.
+ * Get user with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
+export const getMeWithSummary = <ThrowOnError extends boolean = false>(
+  options?: Options<GetMeWithSummaryData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetMeWithSummaryResponse,
+    GetMeWithSummaryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me_with_summary",
+    ...options,
+  });
+};
+
+/**
  * Get User Info
  */
 export const getUserInfo = <ThrowOnError extends boolean = false>(
@@ -2157,6 +2350,54 @@ export const getUserInfo = <ThrowOnError extends boolean = false>(
     ],
     url: "/MAAS/a/v3/users/me",
     ...options,
+  });
+};
+
+/**
+ * Complete Intro
+ */
+export const completeIntro = <ThrowOnError extends boolean = false>(
+  options?: Options<CompleteIntroData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    CompleteIntroResponse,
+    CompleteIntroError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me:complete_intro",
+    ...options,
+  });
+};
+
+/**
+ * Change Password User
+ */
+export const changePasswordUser = <ThrowOnError extends boolean = false>(
+  options: Options<ChangePasswordUserData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    ChangePasswordUserResponse,
+    ChangePasswordUserError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me:change_password",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };
 
@@ -2270,6 +2511,32 @@ export const updateUser = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/users/{user_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Change Password Admin
+ */
+export const changePasswordAdmin = <ThrowOnError extends boolean = false>(
+  options: Options<ChangePasswordAdminData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    ChangePasswordAdminResponse,
+    ChangePasswordAdminError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/{user_id}:change_password",
     ...options,
     headers: {
       "Content-Type": "application/json",
