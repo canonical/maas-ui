@@ -4,17 +4,23 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
 import type {
+  ChangePasswordUserData,
+  ChangePasswordUserError,
+  ChangePasswordUserResponse,
+  CompleteIntroData,
+  CompleteIntroError,
+  CompleteIntroResponse,
   CreateUserData,
   CreateUserError,
   CreateUserResponse,
   DeleteUserData,
   DeleteUserError,
   DeleteUserResponse,
+  GetMeWithSummaryData,
+  GetMeWithSummaryError,
+  GetMeWithSummaryResponse,
   GetUserData,
   GetUserError,
-  GetUserInfoData,
-  GetUserInfoError,
-  GetUserInfoResponse,
   GetUserResponse,
   ListUsersWithSummaryData,
   ListUsersWithSummaryError,
@@ -24,9 +30,12 @@ import type {
   UpdateUserResponse,
 } from "@/app/apiclient";
 import {
+  changePasswordUserMutation,
+  completeIntroMutation,
   createUserMutation,
   deleteUserMutation,
-  getUserInfoOptions,
+  getMeWithSummaryOptions,
+  getMeWithSummaryQueryKey,
   getUserOptions,
   listUsersWithSummaryOptions,
   listUsersWithSummaryQueryKey,
@@ -54,12 +63,12 @@ export const useUserCount = (options?: Options<ListUsersWithSummaryData>) => {
   >);
 };
 
-export const useGetThisUser = (options?: Options<GetUserInfoData>) => {
+export const useGetThisUser = (options?: Options<GetMeWithSummaryData>) => {
   return useWebsocketAwareQuery(
-    getUserInfoOptions(options) as UseQueryOptions<
-      GetUserInfoResponse,
-      GetUserInfoError,
-      GetUserInfoResponse
+    getMeWithSummaryOptions(options) as UseQueryOptions<
+      GetMeWithSummaryResponse,
+      GetMeWithSummaryError,
+      GetMeWithSummaryResponse
     >
   );
 };
@@ -72,6 +81,42 @@ export const useGetUser = (options: Options<GetUserData>) => {
       GetUserResponse
     >
   );
+};
+
+export const useCompleteIntro = (
+  mutationOptions?: Options<CompleteIntroData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    CompleteIntroResponse,
+    CompleteIntroError,
+    Options<CompleteIntroData>
+  >({
+    ...completeIntroMutation(mutationOptions),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: listUsersWithSummaryQueryKey(),
+      });
+    },
+  });
+};
+
+export const useChangeThisUsersPassword = (
+  mutationOptions?: Options<ChangePasswordUserData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    ChangePasswordUserResponse,
+    ChangePasswordUserError,
+    Options<ChangePasswordUserData>
+  >({
+    ...changePasswordUserMutation(mutationOptions),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: getMeWithSummaryQueryKey(),
+      });
+    },
+  });
 };
 
 export const useCreateUser = (mutationOptions?: Options<CreateUserData>) => {
