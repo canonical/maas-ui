@@ -10,8 +10,11 @@ import { useExitURL } from "./hooks";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { userResolvers } from "@/testing/resolvers/users";
+import { setupMockServer } from "@/testing/utils";
 
 const mockStore = configureStore();
+setupMockServer(userResolvers.getThisUser.handler());
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>) =>
@@ -23,22 +26,11 @@ describe("hooks", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = factory.rootState({
-      user: factory.userState({
-        auth: factory.authState({
-          user: factory.user({ completed_intro: false, is_superuser: true }),
-        }),
-      }),
-    });
+    state = factory.rootState();
   });
 
   describe("useExitURL", () => {
     it("gets the exit URL for an admin", () => {
-      state.user = factory.userState({
-        auth: factory.authState({
-          user: factory.user({ is_superuser: true }),
-        }),
-      });
       const store = mockStore(state);
       const { result } = renderHook(() => useExitURL(), {
         wrapper: generateWrapper(store),
@@ -47,11 +39,6 @@ describe("hooks", () => {
     });
 
     it("gets the exit URL for a non-admin", () => {
-      state.user = factory.userState({
-        auth: factory.authState({
-          user: factory.user({ is_superuser: false }),
-        }),
-      });
       const store = mockStore(state);
       const { result } = renderHook(() => useExitURL(), {
         wrapper: generateWrapper(store),

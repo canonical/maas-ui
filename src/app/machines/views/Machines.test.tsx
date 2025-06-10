@@ -19,6 +19,7 @@ import {
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
+import { userResolvers } from "@/testing/resolvers/users";
 import {
   renderWithProviders,
   userEvent,
@@ -30,7 +31,10 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(poolsResolvers.listPools.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  userResolvers.listUsers.handler()
+);
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
   return {

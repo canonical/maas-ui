@@ -4,9 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
 import type {
-  ChangePasswordUserData,
-  ChangePasswordUserError,
-  ChangePasswordUserResponse,
   CompleteIntroData,
   CompleteIntroError,
   CompleteIntroResponse,
@@ -33,12 +30,10 @@ import type {
   UpdateUserResponse,
 } from "@/app/apiclient";
 import {
-  changePasswordUserMutation,
   completeIntroMutation,
   createUserMutation,
   deleteUserMutation,
   getMeWithSummaryOptions,
-  getMeWithSummaryQueryKey,
   getUserOptions,
   listUsersWithSummaryOptions,
   listUsersWithSummaryQueryKey,
@@ -93,6 +88,17 @@ export const useGetUser = (options: Options<GetUserData>) => {
   );
 };
 
+export const useGetIsSuperUser = (options?: Options<GetMeWithSummaryData>) => {
+  return useWebsocketAwareQuery({
+    ...getMeWithSummaryOptions(options),
+    select: (data) => data.is_superuser,
+  } as UseQueryOptions<
+    GetMeWithSummaryResponse,
+    GetMeWithSummaryError,
+    boolean
+  >);
+};
+
 export const useCompleteIntro = (
   mutationOptions?: Options<CompleteIntroData>
 ) => {
@@ -106,24 +112,6 @@ export const useCompleteIntro = (
     onSuccess: () => {
       void queryClient.invalidateQueries({
         queryKey: listUsersWithSummaryQueryKey(),
-      });
-    },
-  });
-};
-
-export const useChangeThisUsersPassword = (
-  mutationOptions?: Options<ChangePasswordUserData>
-) => {
-  const queryClient = useQueryClient();
-  return useMutation<
-    ChangePasswordUserResponse,
-    ChangePasswordUserError,
-    Options<ChangePasswordUserData>
-  >({
-    ...changePasswordUserMutation(mutationOptions),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: getMeWithSummaryQueryKey(),
       });
     },
   });

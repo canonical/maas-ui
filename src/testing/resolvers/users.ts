@@ -49,7 +49,7 @@ const userResolvers: Resolver<
 > = {
   listUsers: {
     resolved: false,
-    handler: (data: ListUsersWithSummaryResponse = mockUsers) =>
+    handler: (data = mockUsers) =>
       http.get(`${BASE_URL}MAAS/a/v3/users_with_summary`, () => {
         userResolvers.listUsers.resolved = true;
         return HttpResponse.json(data);
@@ -57,6 +57,32 @@ const userResolvers: Resolver<
     error: (error: ListUsersWithSummaryError = mockErrors.listError) =>
       http.get(`${BASE_URL}MAAS/a/v3/users_with_summary`, () => {
         userResolvers.listUsers.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  getThisUser: {
+    resolved: false,
+    handler: (data = mockUsers.items[0]) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users/me_with_summary`, () => {
+        userResolvers.getThisUser.resolved = true;
+        return HttpResponse.json(data);
+      }),
+    error: (error: GetUserError = mockErrors.getError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users/me_with_summary`, () => {
+        userResolvers.getThisUser.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  completeIntro: {
+    resolved: false,
+    handler: () =>
+      http.put(`${BASE_URL}MAAS/a/v3/users/me:complete_intro`, () => {
+        userResolvers.completeIntro.resolved = true;
+        return HttpResponse.json({});
+      }),
+    error: (error: UpdateUserError = mockErrors.updateError) =>
+      http.put(`${BASE_URL}MAAS/a/v3/users/me:complete_intro`, () => {
+        userResolvers.updateUser.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },

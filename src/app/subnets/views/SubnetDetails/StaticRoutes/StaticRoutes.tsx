@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
 
-import { useGetThisUser } from "@/app/api/query/users";
+import { useGetIsSuperUser } from "@/app/api/query/users";
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
 import TitledSection from "@/app/base/components/TitledSection";
@@ -100,7 +100,7 @@ const StaticRoutes = ({ subnetId }: Props): React.ReactElement | null => {
   );
   const subnets = useSelector(subnetSelectors.all);
   const subnetsLoading = useSelector(subnetSelectors.loading);
-  const user = useGetThisUser();
+  const isSuperUser = useGetIsSuperUser();
   const loading = staticRoutesLoading || subnetsLoading;
   const isAddStaticRouteOpen =
     sidePanelContent?.view ===
@@ -111,7 +111,7 @@ const StaticRoutes = ({ subnetId }: Props): React.ReactElement | null => {
   return (
     <TitledSection
       buttons={
-        user.data?.is_superuser ? (
+        isSuperUser.data ? (
           <Button
             disabled={isAddStaticRouteOpen}
             onClick={() => {

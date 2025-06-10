@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router";
 
-import { useGetThisUser } from "@/app/api/query/users";
+import { useGetIsSuperUser } from "@/app/api/query/users";
 import type { ZoneWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -29,7 +29,7 @@ const machinesFilter = (name: string) =>
 
 const useZonesTableColumns = (): ZoneColumnDef[] => {
   const { setSidePanelContent } = useSidePanel();
-  const user = useGetThisUser();
+  const isSuperUser = useGetIsSuperUser();
   return useMemo(
     () => [
       {
@@ -95,7 +95,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         enableSorting: false,
         header: "Action",
         cell: ({ row }: { row: Row<ZoneWithSummaryResponse> }) => {
-          const canBeDeleted = user.data?.is_superuser && row.original.id !== 1;
+          const canBeDeleted = isSuperUser.data && row.original.id !== 1;
           return (
             <TableActions
               data-testid="zone-actions"
@@ -124,7 +124,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         },
       },
     ],
-    [user.data, setSidePanelContent]
+    [isSuperUser.data, setSidePanelContent]
   );
 };
 

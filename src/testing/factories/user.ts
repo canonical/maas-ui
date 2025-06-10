@@ -1,17 +1,7 @@
 import { define, random } from "cooky-cutter";
 
 import type { UserWithSummaryResponse } from "@/app/apiclient";
-import type { UserEventError, UserStatuses } from "@/app/store/user/types/base";
 import { timestamp } from "@/testing/factories/general";
-
-export const userEventError = define<UserEventError>({
-  error: "Uh oh",
-  event: "markIntroComplete",
-});
-
-export const userStatuses = define<UserStatuses>({
-  markingIntroComplete: false,
-});
 
 export const user = define<UserWithSummaryResponse>({
   id: random,

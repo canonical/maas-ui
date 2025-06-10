@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
-import { useGetThisUser } from "@/app/api/query/users";
+import { useGetIsSuperUser } from "@/app/api/query/users";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
 import PowerTypeFields from "@/app/base/components/PowerTypeFields";
@@ -65,7 +65,7 @@ const ControllerPowerConfiguration = ({
   const initialPowerParameters = useInitialPowerParameters(
     (isDetails && controller.power_parameters) || {}
   );
-  const user = useGetThisUser();
+  const isSuperUser = useGetIsSuperUser();
 
   const powerParametersSchema =
     generatePowerParametersSchema(selectedPowerType);
@@ -154,7 +154,7 @@ const ControllerPowerConfiguration = ({
               </Notification>
             ) : null}
             <PowerTypeFields
-              disableSelect={!user.data?.is_superuser}
+              disableSelect={!isSuperUser.data}
               powerParametersValueName="powerParameters"
               powerTypeValueName="powerType"
             />

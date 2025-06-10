@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import VLANControllers from "./VLANControllers";
 
-import { useGetThisUser } from "@/app/api/query/users";
+import { useGetIsSuperUser } from "@/app/api/query/users";
 import Definition from "@/app/base/components/Definition";
 import FabricLink from "@/app/base/components/FabricLink";
 import SpaceLink from "@/app/base/components/SpaceLink";
@@ -18,7 +18,7 @@ type Props = {
 };
 
 const VLANSummary = ({ id }: Props): React.ReactElement | null => {
-  const user = useGetThisUser();
+  const isSuperUser = useGetIsSuperUser();
   const { setSidePanelContent } = useSidePanel();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
@@ -31,7 +31,7 @@ const VLANSummary = ({ id }: Props): React.ReactElement | null => {
   return (
     <TitledSection
       buttons={
-        user.data?.is_superuser && (
+        isSuperUser.data && (
           <Button
             onClick={() => {
               setSidePanelContent({ view: SidePanelViews.EditVLAN });

@@ -4,7 +4,7 @@ import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { useGetThisUser } from "@/app/api/query/users";
+import { useGetIsSuperUser } from "@/app/api/query/users";
 import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikField from "@/app/base/components/FormikField";
@@ -51,7 +51,7 @@ const DomainSummary = ({ id }: Props): React.ReactElement | null => {
   const saving = useSelector(domainsSelectors.saving);
   const cleanup = useCallback(() => domainActions.cleanup(), []);
 
-  const user = useGetThisUser();
+  const isSuperUser = useGetIsSuperUser();
 
   if (!domain) {
     return null;
@@ -59,7 +59,7 @@ const DomainSummary = ({ id }: Props): React.ReactElement | null => {
 
   return (
     <EditableSection
-      canEdit={user.data?.is_superuser}
+      canEdit={isSuperUser.data}
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (

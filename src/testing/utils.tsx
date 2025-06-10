@@ -665,12 +665,16 @@ export const waitForLoading = async (loadingText = "Loading") =>
 export interface Resolver<T, E> {
   [key: string]: {
     resolved: boolean;
-    handler: (data?: {
-      items: Array<T>;
-      total: number;
-      next?: string;
-      kind?: string;
-    }) => HttpHandler;
+    handler: (
+      data?:
+        | T
+        | {
+            items: Array<T>;
+            total: number;
+            next?: string;
+            kind?: string;
+          }
+    ) => HttpHandler;
     error: (error: E) => HttpHandler;
   };
 }

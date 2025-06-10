@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import NotificationGroupNotification from "./Notification";
@@ -6,15 +7,20 @@ import type { ConfigState } from "@/app/store/config/types";
 import { ConfigNames } from "@/app/store/config/types";
 import { NotificationIdent } from "@/app/store/notification/types";
 import type { RootState } from "@/app/store/root/types";
-import type { UserState } from "@/app/store/user/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { userResolvers } from "@/testing/resolvers/users";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const mockServer = setupMockServer(userResolvers.getThisUser.handler());
 
 describe("NotificationGroupNotification", () => {
   let config: ConfigState;
-  let user: UserState;
 
   beforeEach(() => {
     config = factory.configState({
@@ -24,11 +30,6 @@ describe("NotificationGroupNotification", () => {
           value: true,
         }),
       ],
-    });
-    user = factory.userState({
-      auth: factory.authState({
-        user: factory.user({ is_superuser: true }),
-      }),
     });
   });
 
@@ -43,12 +44,12 @@ describe("NotificationGroupNotification", () => {
         items: [notification],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroupNotification
         id={notification.id}
         severity="negative"
       />,
-      { route: "/", state }
+      { initialEntries: ["/"], state }
     );
     expect(screen.getByTestId("notification-message")).toHaveTextContent(
       "something important"
@@ -67,12 +68,12 @@ describe("NotificationGroupNotification", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroupNotification
         id={notification.id}
         severity="negative"
       />,
-      { route: "/", store }
+      { initialEntries: ["/"], store }
     );
     await userEvent.click(screen.getByTestId("notification-close-button"));
     expect(store.getActions().length).toEqual(1);
@@ -87,12 +88,12 @@ describe("NotificationGroupNotification", () => {
         items: [notification],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroupNotification
         id={notification.id}
         severity="negative"
       />,
-      { route: "/", state }
+      { initialEntries: ["/"], state }
     );
     expect(
       screen.queryByTestId("notification-close-button")
@@ -109,21 +110,20 @@ describe("NotificationGroupNotification", () => {
       notification: factory.notificationState({
         items: [notification],
       }),
-      user,
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroupNotification
         id={notification.id}
         severity="negative"
       />,
-      { route: "/settings", state }
+      { initialEntries: ["/settings"], state }
     );
     expect(screen.getByTestId("notification-timestamp")).toHaveTextContent(
       /Tue, 27 Apr. 2021 00:34:39/i
     );
   });
 
-  it("shows a settings link for release notifications", () => {
+  it("shows a settings link for release notifications", async () => {
     const notification = factory.notification({
       ident: NotificationIdent.RELEASE,
     });
@@ -132,17 +132,18 @@ describe("NotificationGroupNotification", () => {
       notification: factory.notificationState({
         items: [notification],
       }),
-      user,
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroupNotification
         id={notification.id}
         severity="negative"
       />,
-      { route: "/settings", state }
+      { initialEntries: ["/settings"], state }
     );
-    expect(screen.getByTestId("notification-action")).toHaveTextContent(
-      "See settings"
+    await waitFor(() =>
+      expect(screen.getByTestId("notification-action")).toHaveTextContent(
+        "See settings"
+      )
     );
   });
 
@@ -156,20 +157,16 @@ describe("NotificationGroupNotification", () => {
       notification: factory.notificationState({
         items: [notification],
       }),
-      user: factory.userState({
-        auth: factory.authState({
-          user: factory.user({
-            is_superuser: false,
-          }),
-        }),
-      }),
     });
-    renderWithBrowserRouter(
+    mockServer.use(
+      userResolvers.getThisUser.handler(factory.user({ is_superuser: false }))
+    );
+    renderWithProviders(
       <NotificationGroupNotification
         id={notification.id}
         severity="negative"
       />,
-      { route: "/settings", state }
+      { initialEntries: ["/settings"], state }
     );
     expect(screen.queryByTestId("notification-action")).not.toBeInTheDocument();
   });

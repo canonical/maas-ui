@@ -1,13 +1,23 @@
+import { waitFor } from "@testing-library/react";
+
 import FabricDetailsHeader from "./FabricDetailsHeader";
 import { FabricDetailsSidePanelViews } from "./constants";
 
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { userResolvers } from "@/testing/resolvers/users";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+} from "@/testing/utils";
 
 let state: RootState;
 let fabric: Fabric;
+
+setupMockServer(userResolvers.getThisUser.handler());
 
 describe("FabricDetailsHeader", () => {
   beforeEach(() => {
@@ -19,35 +29,27 @@ describe("FabricDetailsHeader", () => {
     });
   });
 
-  it("shows the delete button when the user is an admin", () => {
-    state.user = factory.userState({
-      auth: factory.authState({
-        user: factory.user({ is_superuser: true }),
-      }),
-    });
-    renderWithBrowserRouter(
+  it("shows the delete button when the user is an admin", async () => {
+    renderWithProviders(
       <FabricDetailsHeader fabric={fabric} setSidePanelContent={vi.fn()} />,
       {
-        route: "/fabric/1",
+        initialEntries: ["/fabric/1"],
         state,
       }
     );
 
-    expect(
-      screen.getByRole("button", { name: "Delete fabric" })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Delete fabric" })
+      ).toBeInTheDocument()
+    );
   });
 
   it("does not show the delete button if the user is not an admin", () => {
-    state.user = factory.userState({
-      auth: factory.authState({
-        user: factory.user({ is_superuser: false }),
-      }),
-    });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FabricDetailsHeader fabric={fabric} setSidePanelContent={vi.fn()} />,
       {
-        route: "/fabric/1",
+        initialEntries: ["/fabric/1"],
         state,
       }
     );
@@ -57,20 +59,21 @@ describe("FabricDetailsHeader", () => {
 
   it("calls a function to open the Delete form when the button is clicked", async () => {
     const setSidePanelContent = vi.fn();
-    state.user = factory.userState({
-      auth: factory.authState({
-        user: factory.user({ is_superuser: true }),
-      }),
-    });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FabricDetailsHeader
         fabric={fabric}
         setSidePanelContent={setSidePanelContent}
       />,
       {
-        route: "/fabric/1",
+        initialEntries: ["/fabric/1"],
         state,
       }
+    );
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Delete fabric" })
+      ).toBeInTheDocument()
     );
 
     await userEvent.click(

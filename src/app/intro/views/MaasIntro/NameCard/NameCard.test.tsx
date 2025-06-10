@@ -7,7 +7,15 @@ import NameCard, { Labels as NameCardLabels } from "./NameCard";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
+import { userResolvers } from "@/testing/resolvers/users";
+import {
+  userEvent,
+  screen,
+  setupMockServer,
+  renderWithProviders,
+} from "@/testing/utils";
+
+setupMockServer(userResolvers.getThisUser.handler());
 
 describe("NameCard", () => {
   let state: RootState;
@@ -19,14 +27,11 @@ describe("NameCard", () => {
           factory.config({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
         ],
       }),
-      user: factory.userState({
-        auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
-      }),
     });
   });
 
   it("displays a tick when there are no name errors", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ name: "my new maas" }} onSubmit={vi.fn()}>
         <NameCard />
       </Formik>,
@@ -38,7 +43,7 @@ describe("NameCard", () => {
   });
 
   it("displays an error icon when there are name errors", async () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ name: "my new maas" }}
         onSubmit={vi.fn()}

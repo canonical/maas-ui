@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import AppSideNavigation from "./AppSideNavigation";
@@ -9,14 +7,15 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
+import { userResolvers } from "@/testing/resolvers/users";
 import {
   userEvent,
   screen,
-  render,
   waitFor,
   within,
   renderWithBrowserRouter,
   renderWithProviders,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockUseNavigate = vi.fn();
@@ -29,6 +28,7 @@ vi.mock("react-router", async () => {
 });
 
 const mockStore = configureStore<RootState>();
+const mockServer = setupMockServer(userResolvers.getThisUser.handler());
 
 afterEach(() => {
   vi.resetModules();
@@ -58,29 +58,22 @@ describe("GlobalSideNav", () => {
           }),
         ],
       }),
-      user: factory.userState({
-        auth: factory.authState({
-          user: factory.user({
-            id: 99,
-            is_superuser: true,
-            completed_intro: true,
-            username: "koala",
-          }),
-        }),
-      }),
     });
   });
 
   it("displays navigation", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/"],
+      state,
+    });
 
     expect(screen.getByRole("navigation")).toBeInTheDocument();
   });
 
   it("can handle a logged out user", () => {
-    state.user.auth.user = null;
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/",
+    mockServer.use(userResolvers.getThisUser.error({}));
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/"],
       state,
     });
 
@@ -98,12 +91,12 @@ describe("GlobalSideNav", () => {
 
   it("can dispatch an action to log out", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <BrowserRouter>
-          <AppSideNavigation />
-        </BrowserRouter>
-      </Provider>
+    renderWithProviders(<AppSideNavigation />, { store });
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Log out" })
+      ).toBeInTheDocument()
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Log out" }));
@@ -116,43 +109,62 @@ describe("GlobalSideNav", () => {
     });
   });
 
-  it("hides nav links if not completed intro", () => {
-    state.user.auth.user = factory.user({
-      completed_intro: false,
-      username: "koala",
-    });
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/",
+  it("hides nav links if not completed intro", async () => {
+    mockServer.use(
+      userResolvers.getThisUser.handler(
+        factory.user({
+          completed_intro: false,
+          username: "koala",
+        })
+      )
+    );
+    renderWithProviders(<AppSideNavigation />, {
       state,
     });
 
     const mainNav = screen.getByRole("banner", { name: "main navigation" });
+    await waitFor(() => expect(mainNav).toBeInTheDocument());
     expect(within(mainNav).getAllByRole("link")[0]).toHaveAccessibleName(
       "Homepage"
     );
 
-    expect(screen.getByRole("button", { name: "Log out" })).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Log out" })
+      ).toBeInTheDocument()
+    );
   });
 
-  it("can highlight active URL", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/settings",
+  it("can highlight active URL", async () => {
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/settings"],
       state,
     });
 
+    await waitFor(() =>
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
+    );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Settings");
   });
 
-  it("highlights machines when active", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/machines",
+  it("highlights machines when active", async () => {
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/machines"],
       state,
     });
 
+    await waitFor(() =>
+      expect(screen.getAllByRole("navigation")).not.toHaveLength(0)
+    );
     // Ensure that machine link is selected from within the nav
     const sideNavigation = screen.getAllByRole("navigation")[0];
+    await waitFor(() =>
+      expect(
+        within(sideNavigation).getAllByRole("link", { current: "page" }).length
+      ).toBeGreaterThan(0)
+    );
     const currentMenuItem = within(sideNavigation).getAllByRole("link", {
       current: "page",
     })[0];
@@ -160,67 +172,91 @@ describe("GlobalSideNav", () => {
     expect(currentMenuItem).toHaveTextContent("Machines");
   });
 
-  it("highlights pools when active", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/pools",
+  it("highlights pools when active", async () => {
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/pools"],
       state,
     });
 
+    await waitFor(() =>
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
+    );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Pools");
   });
 
-  it("highlights tags when active", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/tags",
+  it("highlights tags when active", async () => {
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/tags"],
       state,
     });
 
+    await waitFor(() =>
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
+    );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Tags");
   });
 
-  it("highlights tags viewing a tag", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/tag/1",
+  it("highlights tags viewing a tag", async () => {
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/tag/1"],
       state,
     });
 
+    await waitFor(() =>
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
+    );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Tags");
   });
 
-  it("can highlight a url with a query param", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/networks?by=fabric",
+  it("can highlight a url with a query param", async () => {
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/networks?by=fabric"],
       state,
     });
 
+    await waitFor(() =>
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
+    );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Subnets");
   });
 
-  it("highlights sub-urls", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/machine/abc123",
+  it("highlights sub-urls", async () => {
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/machine/abc123"],
       state,
     });
+
+    await waitFor(() =>
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
+    );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Machines");
   });
 
-  it("displays a warning icon next to controllers if vault is not fully configured", () => {
+  it("displays a warning icon next to controllers if vault is not fully configured", async () => {
     state.controller.items = [
       factory.controller({ vault_configured: true }),
       factory.controller({ vault_configured: false }),
     ];
-    renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/"],
+      state,
+    });
 
+    await waitFor(() =>
+      expect(
+        screen.getByRole("link", { name: /Controllers/i })
+      ).toBeInTheDocument()
+    );
     const controllerLink = screen.getByRole("link", {
       name: /Controllers/i,
     });
@@ -228,13 +264,20 @@ describe("GlobalSideNav", () => {
     expect(warningIcon).toHaveClass("p-icon--security-warning-grey");
   });
 
-  it("does not display a warning icon next to controllers if vault is fully configured", () => {
+  it("does not display a warning icon next to controllers if vault is fully configured", async () => {
     state.controller.items = [
       factory.controller({ vault_configured: true }),
       factory.controller({ vault_configured: true }),
     ];
-    renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
-
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/"],
+      state,
+    });
+    await waitFor(() =>
+      expect(
+        screen.getByRole("link", { name: /Controllers/i })
+      ).toBeInTheDocument()
+    );
     const controllerLink = screen.getByRole("link", {
       name: "Controllers",
     });
@@ -243,13 +286,20 @@ describe("GlobalSideNav", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("does not display a warning icon next to controllers if vault setup has not started", () => {
+  it("does not display a warning icon next to controllers if vault setup has not started", async () => {
     state.controller.items = [
       factory.controller({ vault_configured: false }),
       factory.controller({ vault_configured: false }),
     ];
-    renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
-
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/"],
+      state,
+    });
+    await waitFor(() =>
+      expect(
+        screen.getByRole("link", { name: /Controllers/i })
+      ).toBeInTheDocument()
+    );
     const controllerLink = screen.getByRole("link", {
       name: "Controllers",
     });
@@ -258,12 +308,12 @@ describe("GlobalSideNav", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("links from the logo to machine list page for admins", () => {
-    state.user.auth.user = factory.user({ is_superuser: true });
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/machine/abc123",
+  it("links from the logo to machine list page for admins", async () => {
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/machine/abc123"],
       state,
     });
+    await waitFor(() => expect(userResolvers.getThisUser.resolved).toBe(true));
     expect(
       within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
         "link",
@@ -274,13 +324,15 @@ describe("GlobalSideNav", () => {
     ).toHaveAttribute("href", "/machines");
   });
 
-  it("links from the logo to the machine list for non admins", () => {
-    state.user.auth.user = factory.user({ is_superuser: false });
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/machine/abc123",
+  it("links from the logo to the machine list for non admins", async () => {
+    mockServer.use(
+      userResolvers.getThisUser.handler(factory.user({ is_superuser: false }))
+    );
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/machine/abc123"],
       state,
     });
-
+    await waitFor(() => expect(userResolvers.getThisUser.resolved).toBe(true));
     expect(
       within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
         "link",
@@ -299,30 +351,37 @@ describe("GlobalSideNav", () => {
     ).toHaveAttribute("href", "/machines");
   });
 
-  it("redirects to the intro page if intro not completed", () => {
+  it("redirects to the intro page if intro not completed", async () => {
     state.config.items = [
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
     ];
-    state.user.auth.user = factory.user({ completed_intro: true });
     renderWithProviders(<AppSideNavigation />, {
       initialEntries: ["/machines"],
       state,
     });
-
-    expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.index);
+    await waitFor(() => expect(userResolvers.getThisUser.resolved).toBe(true));
+    await waitFor(() =>
+      expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.index)
+    );
   });
 
-  it("redirects to the user intro page if user intro not completed", () => {
+  it("redirects to the user intro page if user intro not completed", async () => {
     state.config.items = [
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
     ];
-    state.user.auth.user = factory.user({ completed_intro: false });
+    mockServer.use(
+      userResolvers.getThisUser.handler(
+        factory.user({ completed_intro: false })
+      )
+    );
     renderWithProviders(<AppSideNavigation />, {
       initialEntries: ["/machines"],
       state,
     });
-
-    expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.user);
+    await waitFor(() => expect(userResolvers.getThisUser.resolved).toBe(true));
+    await waitFor(() =>
+      expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.user)
+    );
   });
 
   it("does not redirect if the intro is being displayed", async () => {
@@ -340,19 +399,21 @@ describe("GlobalSideNav", () => {
     );
   });
 
-  it("displays 'Virsh' link if user has Virsh KVM hosts", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/machines",
+  it("displays 'Virsh' link if user has Virsh KVM hosts", async () => {
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/machines"],
       state,
     });
-
+    await waitFor(() =>
+      expect(screen.getByRole("link", { name: /Virsh/i })).toBeInTheDocument()
+    );
     expect(screen.getByRole("link", { name: "Virsh" })).toBeInTheDocument();
   });
 
   it("hides 'Virsh' link if user has no Virsh KVM hosts", () => {
     state.pod.items = [];
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/machines",
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/machines"],
       state,
     });
 
@@ -362,8 +423,8 @@ describe("GlobalSideNav", () => {
   });
 
   it("is collapsed by default", () => {
-    renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/",
+    renderWithProviders(<AppSideNavigation />, {
+      initialEntries: ["/"],
       state,
     });
 
@@ -373,7 +434,6 @@ describe("GlobalSideNav", () => {
   });
 
   it("persists collapsed state", async () => {
-    state.user.auth.user = null;
     const { rerender } = renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/",
       state,

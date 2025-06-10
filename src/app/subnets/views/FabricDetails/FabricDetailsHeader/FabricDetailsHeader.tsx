@@ -2,7 +2,7 @@ import { Button } from "@canonical/react-components";
 
 import { FabricDetailsSidePanelViews } from "./constants";
 
-import { useGetThisUser } from "@/app/api/query/users";
+import { useGetIsSuperUser } from "@/app/api/query/users";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import type { Fabric } from "@/app/store/fabric/types";
@@ -16,12 +16,12 @@ const FabricDetailsHeader = ({
   fabric,
   setSidePanelContent,
 }: Props): React.ReactElement => {
-  const user = useGetThisUser();
+  const isSuperUser = useGetIsSuperUser();
 
   return (
     <SectionHeader
       buttons={
-        user.data?.is_superuser
+        isSuperUser.data
           ? [
               <Button
                 appearance="neutral"

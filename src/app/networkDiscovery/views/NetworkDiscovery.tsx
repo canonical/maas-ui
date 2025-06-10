@@ -10,7 +10,7 @@ import DiscoveriesList from "./DiscoveriesList";
 import NetworkDiscoveryConfigurationForm from "./NetworkDiscoveryConfigurationForm";
 import NetworkDiscoveryHeader from "./NetworkDiscoveryHeader";
 
-import { useGetThisUser } from "@/app/api/query/users";
+import { useGetIsSuperUser } from "@/app/api/query/users";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -27,14 +27,14 @@ export enum Label {
 
 const NetworkDiscovery = (): React.ReactElement => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
-  const user = useGetThisUser();
+  const isSuperUser = useGetIsSuperUser();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     setSidePanelContent(null);
   }, [setSidePanelContent]);
 
-  if (!user.data?.is_superuser) {
+  if (!isSuperUser.data) {
     return (
       <PageContent
         header={<SectionHeader title={Label.Permissions} />}

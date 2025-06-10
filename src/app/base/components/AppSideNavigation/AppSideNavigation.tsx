@@ -92,7 +92,7 @@ export const AppSideNavigation = ({
           <AppSideNavItems
             authUser={authUser}
             groups={filteredGroups}
-            isAdmin={authUser.is_superuser}
+            isAdmin={authUser?.is_superuser ?? false}
             isAuthenticated={isAuthenticated}
             logout={logout}
             path={path}
