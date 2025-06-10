@@ -25,6 +25,9 @@ import type {
   ListUsersWithSummaryData,
   ListUsersWithSummaryError,
   ListUsersWithSummaryResponse,
+  LoginData,
+  LoginError,
+  LoginResponse,
   UpdateUserData,
   UpdateUserError,
   UpdateUserResponse,
@@ -39,8 +42,15 @@ import {
   getUserOptions,
   listUsersWithSummaryOptions,
   listUsersWithSummaryQueryKey,
+  loginMutation,
   updateUserMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
+
+export const useLogin = (mutationOptions?: Options<LoginData>) => {
+  return useMutation<LoginResponse, LoginError, Options<LoginData>>({
+    ...loginMutation(mutationOptions),
+  });
+};
 
 export const useUsers = (options?: Options<ListUsersWithSummaryData>) => {
   return useWebsocketAwareQuery(

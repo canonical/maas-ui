@@ -5,16 +5,18 @@ import { Button, Notification, Spinner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
-import { useGetUser, useUpdateUser } from "@/app/api/query/users";
-import type { CreateUserError, UserRequest } from "@/app/apiclient";
+import { Labels } from "../../constants";
+
+import { useGetUser, useLogin, useUpdateUser } from "@/app/api/query/users";
+import type { UpdateUserError, UserRequest } from "@/app/apiclient";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { Labels } from "@/app/base/components/UserForm/UserForm";
 
 type EditUserProps = {
   id: number;
-  closeForm: () => void;
+  closeForm?: () => void;
+  isSelfEditing?: boolean;
 };
 
 const UserSchema = Yup.object().shape({
@@ -37,11 +39,29 @@ const UserSchema = Yup.object().shape({
     .required("Username is required"),
 });
 
-const EditUser = ({ id, closeForm }: EditUserProps): ReactElement => {
+const SelfEditUserSchema = UserSchema.shape({
+  oldPassword: Yup.string().required("Your current password is required"),
+  password: Yup.string().required("A new password is required"),
+  passwordConfirm: Yup.string().required("Confirm your new password"),
+});
+
+const EditUser = ({
+  id,
+  closeForm,
+  isSelfEditing = false,
+}: EditUserProps): ReactElement => {
   const queryClient = useQueryClient();
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+
+  const authenticate = useLogin();
   const user = useGetUser({ path: { user_id: id } });
   const updateUser = useUpdateUser();
+
+  const combinedErrors = {
+    ...(updateUser.error || {}),
+    ...(authError ? { old_password: authError } : {}),
+  };
 
   return (
     <>
@@ -53,47 +73,61 @@ const EditUser = ({ id, closeForm }: EditUserProps): ReactElement => {
       )}
       {user.isSuccess && user.data && (
         <FormikForm<
-          UserRequest & { passwordConfirm: UserRequest["password"] },
-          CreateUserError
+          UserRequest & {
+            passwordConfirm: UserRequest["password"];
+            oldPassword: UserRequest["password"];
+          },
+          UpdateUserError
         >
-          aria-label="Edit user"
-          errors={updateUser.error}
+          aria-label={isSelfEditing ? "Edit your profile" : "Edit user"}
+          errors={
+            Object.keys(combinedErrors).length > 0 ? combinedErrors : null
+          }
           initialValues={{
             username: user.data.username,
             password: "",
             passwordConfirm: "",
+            oldPassword: "",
             is_superuser: user.data.is_superuser,
             first_name: user.data.first_name,
             last_name: user.data.last_name || "",
             email: user.data.email,
           }}
           onCancel={closeForm}
-          onSubmit={(values) => {
-            if (values.password && values.passwordConfirm) {
-              updateUser.mutate({
-                path: { user_id: id },
-                body: {
-                  username: values.username,
-                  password: values.password,
-                  is_superuser: values.is_superuser,
-                  first_name: values.first_name,
-                  last_name: values.last_name,
-                  email: values.email,
-                } as UserRequest,
-              });
-            } else {
-              updateUser.mutate({
-                path: { user_id: id },
-                body: {
-                  username: values.username,
-                  password: user.data?.password, // if not changed, use the fetched password
-                  is_superuser: values.is_superuser,
-                  first_name: values.first_name,
-                  last_name: values.last_name,
-                  email: values.email,
-                } as UserRequest,
-              });
+          onSubmit={async (values) => {
+            setAuthError(null);
+
+            if (isSelfEditing && values.password && values.oldPassword) {
+              try {
+                await authenticate.mutateAsync({
+                  body: {
+                    username: values.username,
+                    password: values.oldPassword,
+                  },
+                });
+              } catch (error) {
+                setAuthError(`Current password is incorrect: ${error}`);
+                return;
+              }
             }
+
+            const updateData: UserRequest = {
+              username: values.username,
+              is_superuser: values.is_superuser,
+              first_name: values.first_name,
+              last_name: values.last_name,
+              email: values.email,
+            };
+
+            // Only include password if it's being changed
+            if (values.password && values.passwordConfirm) {
+              updateData.password = values.password;
+            }
+
+            updateUser.mutate({
+              path: { user_id: id },
+              body: updateData,
+            });
           }}
           onSuccess={() => {
             queryClient
@@ -106,9 +140,11 @@ const EditUser = ({ id, closeForm }: EditUserProps): ReactElement => {
           }}
           resetOnSave={true}
           saved={updateUser.isSuccess}
-          saving={updateUser.isPending}
-          submitLabel="Save user"
-          validationSchema={UserSchema}
+          saving={updateUser.isPending || authenticate.isPending}
+          submitLabel={isSelfEditing ? "Save profile" : "Save user"}
+          validationSchema={
+            isSelfEditing && passwordVisible ? SelfEditUserSchema : UserSchema
+          }
         >
           <FormikField
             autoComplete="username"
@@ -125,11 +161,13 @@ const EditUser = ({ id, closeForm }: EditUserProps): ReactElement => {
             required={true}
             type="email"
           />
-          <FormikField
-            label={Labels.MaasAdmin}
-            name="is_superuser"
-            type="checkbox"
-          />
+          {!isSelfEditing && (
+            <FormikField
+              label={Labels.MaasAdmin}
+              name="is_superuser"
+              type="checkbox"
+            />
+          )}
           {!passwordVisible && (
             <div className="u-sv2">
               <Button
@@ -147,9 +185,18 @@ const EditUser = ({ id, closeForm }: EditUserProps): ReactElement => {
           )}
           {passwordVisible && (
             <>
+              {isSelfEditing && (
+                <FormikField
+                  autoComplete="current-password"
+                  label={Labels.CurrentPassword}
+                  name="oldPassword"
+                  required={true}
+                  type="password"
+                />
+              )}
               <FormikField
                 autoComplete="new-password"
-                label={Labels.Password}
+                label={isSelfEditing ? Labels.NewPassword : Labels.Password}
                 name="password"
                 required={true}
                 type="password"
@@ -157,7 +204,9 @@ const EditUser = ({ id, closeForm }: EditUserProps): ReactElement => {
               <FormikField
                 autoComplete="new-password"
                 help="Enter the same password as before, for verification"
-                label={Labels.PasswordAgain}
+                label={
+                  isSelfEditing ? Labels.NewPasswordAgain : Labels.PasswordAgain
+                }
                 name="passwordConfirm"
                 required={true}
                 type="password"
@@ -167,7 +216,7 @@ const EditUser = ({ id, closeForm }: EditUserProps): ReactElement => {
         </FormikForm>
       )}
     </>
-  );
+  ) as React.ReactElement;
 };
 
 export default EditUser;

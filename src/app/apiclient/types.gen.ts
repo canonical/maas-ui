@@ -1649,7 +1649,7 @@ export type UserInfoResponse = {
 
 export type UserRequest = {
   username: string;
-  password: string;
+  password?: string;
   is_superuser: boolean;
   first_name: string;
   last_name: string;

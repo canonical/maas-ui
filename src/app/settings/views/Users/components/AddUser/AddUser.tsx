@@ -4,11 +4,12 @@ import { useState } from "react";
 import { Button } from "@canonical/react-components";
 import * as Yup from "yup";
 
+import { Labels } from "../../constants";
+
 import { useCreateUser } from "@/app/api/query/users";
 import type { CreateUserError, UserRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { Labels } from "@/app/base/components/UserForm/UserForm";
 
 type AddUserProps = {
   closeForm: () => void;

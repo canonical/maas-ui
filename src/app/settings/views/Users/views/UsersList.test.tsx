@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 
 import UsersList from "./UsersList";
 
+import type { UserWithSummaryResponse } from "@/app/apiclient";
 import type { RootState } from "@/app/store/root/types";
-import type { User } from "@/app/store/user/types";
 import * as factory from "@/testing/factories";
 import {
   userEvent,
@@ -20,13 +20,12 @@ const mockStore = configureStore();
 
 describe("UsersList", () => {
   let state: RootState;
-  let users: User[];
+  let users: UserWithSummaryResponse[];
 
   beforeEach(() => {
     users = [
       factory.user({
         email: "admin@example.com",
-        global_permissions: ["machine_create"],
         id: 1,
         is_superuser: true,
         last_name: "Kangaroo",
@@ -35,7 +34,6 @@ describe("UsersList", () => {
       }),
       factory.user({
         email: "user@example.com",
-        global_permissions: ["machine_create"],
         id: 2,
         is_superuser: false,
         last_name: "Koala",
@@ -44,13 +42,6 @@ describe("UsersList", () => {
       }),
     ];
     state = factory.rootState({
-      user: factory.userState({
-        auth: factory.authState({
-          user: users[0],
-        }),
-        loaded: true,
-        items: users,
-      }),
       status: factory.statusState({ externalAuthURL: null }),
     });
   });
