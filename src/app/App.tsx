@@ -15,13 +15,12 @@ import SectionHeader from "./base/components/SectionHeader";
 import ThemePreviewContextProvider from "./base/theme-context";
 import { MAAS_UI_ID } from "./constants";
 
+import { useGetThisUser } from "@/app/api/query/users";
 import AppSideNavigation from "@/app/base/components/AppSideNavigation";
 import Login from "@/app/base/components/Login";
 import StatusBar from "@/app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "@/app/base/file-context";
 import { useFetchActions } from "@/app/base/hooks";
-import { authActions } from "@/app/store/auth";
-import authSelectors from "@/app/store/auth/selectors";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { generalActions } from "@/app/store/general";
@@ -73,14 +72,14 @@ export const App = (): React.ReactElement => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
   const authenticating = useSelector(status.authenticating);
-  const authLoading = useSelector(authSelectors.loading);
-  const authLoaded = useSelector(authSelectors.loaded);
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
   const configLoading = useSelector(configSelectors.loading);
   const configErrors = useSelector(configSelectors.errors);
   const previousAuthenticated = usePrevious(authenticated, false);
+
+  const user = useGetThisUser();
 
   useFetchActions([statusActions.checkAuthenticated]);
 
@@ -100,7 +99,6 @@ export const App = (): React.ReactElement => {
 
   useEffect(() => {
     if (connected) {
-      dispatch(authActions.fetch());
       dispatch(generalActions.fetchVersion());
       // Fetch the config at the top so we can access the MAAS name for the
       // window title.
@@ -108,7 +106,7 @@ export const App = (): React.ReactElement => {
     }
   }, [dispatch, connected]);
   const isLoading =
-    authLoading ||
+    user.isPending ||
     authenticating ||
     configLoading ||
     (!connected && connecting);
@@ -116,7 +114,7 @@ export const App = (): React.ReactElement => {
   const hasVaultError =
     configErrors === VaultErrors.REQUEST_FAILED ||
     configErrors === VaultErrors.CONNECTION_FAILED;
-  const isLoaded = authLoaded && authenticated;
+  const isLoaded = user.isSuccess && authenticated;
 
   let content: ReactNode = null;
   // display loading spinner only on initial load
@@ -171,7 +169,7 @@ export const App = (): React.ReactElement => {
     <div className="l-application" id={MAAS_UI_ID}>
       <ThemePreviewContextProvider>
         <ConnectionStatus />
-        {authLoaded && authenticated ? (
+        {user.isSuccess && authenticated ? (
           <AppSideNavigation />
         ) : (
           <header className="l-navigation-bar is-pinned">

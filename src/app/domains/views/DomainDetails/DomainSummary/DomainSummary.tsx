@@ -4,11 +4,11 @@ import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { useGetThisUser } from "@/app/api/query/users";
 import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import authSelectors from "@/app/store/auth/selectors";
 import { domainActions } from "@/app/store/domain";
 import { MIN_TTL } from "@/app/store/domain/constants";
 import domainsSelectors from "@/app/store/domain/selectors";
@@ -43,7 +43,6 @@ type Props = {
 
 const DomainSummary = ({ id }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
-  const isAdmin = useSelector(authSelectors.isAdmin);
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, id)
   );
@@ -52,13 +51,15 @@ const DomainSummary = ({ id }: Props): React.ReactElement | null => {
   const saving = useSelector(domainsSelectors.saving);
   const cleanup = useCallback(() => domainActions.cleanup(), []);
 
+  const user = useGetThisUser();
+
   if (!domain) {
     return null;
   }
 
   return (
     <EditableSection
-      canEdit={isAdmin}
+      canEdit={user.data?.is_superuser}
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import authSelectors from "@/app/store/auth/selectors";
+import { useGetThisUser } from "@/app/api/query/users";
 import configSelectors from "@/app/store/config/selectors";
 import { getCookie } from "@/app/utils";
 
@@ -16,6 +16,6 @@ export const useCompletedIntro = (): boolean => {
  * Returns whether the user intro has been completed or skipped.
  */
 export const useCompletedUserIntro = (): boolean => {
-  const completedUserIntro = useSelector(authSelectors.completedUserIntro);
-  return completedUserIntro || !!getCookie("skipintro");
+  const user = useGetThisUser();
+  return user.data?.completed_intro || !!getCookie("skipintro");
 };

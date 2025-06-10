@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 
 import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
 
+import { useGetThisUser } from "@/app/api/query/users";
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
 import TitledSection from "@/app/base/components/TitledSection";
 import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import authSelectors from "@/app/store/auth/selectors";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
 import type { StaticRoute } from "@/app/store/staticroute/types";
@@ -100,7 +100,7 @@ const StaticRoutes = ({ subnetId }: Props): React.ReactElement | null => {
   );
   const subnets = useSelector(subnetSelectors.all);
   const subnetsLoading = useSelector(subnetSelectors.loading);
-  const isAdmin = useSelector(authSelectors.isAdmin);
+  const user = useGetThisUser();
   const loading = staticRoutesLoading || subnetsLoading;
   const isAddStaticRouteOpen =
     sidePanelContent?.view ===
@@ -111,7 +111,7 @@ const StaticRoutes = ({ subnetId }: Props): React.ReactElement | null => {
   return (
     <TitledSection
       buttons={
-        isAdmin ? (
+        user.data?.is_superuser ? (
           <Button
             disabled={isAddStaticRouteOpen}
             onClick={() => {

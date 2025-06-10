@@ -3,12 +3,12 @@ import { useSelector } from "react-redux";
 
 import VLANControllers from "./VLANControllers";
 
+import { useGetThisUser } from "@/app/api/query/users";
 import Definition from "@/app/base/components/Definition";
 import FabricLink from "@/app/base/components/FabricLink";
 import SpaceLink from "@/app/base/components/SpaceLink";
 import TitledSection from "@/app/base/components/TitledSection";
 import { SidePanelViews, useSidePanel } from "@/app/base/side-panel-context";
-import authSelectors from "@/app/store/auth/selectors";
 import type { RootState } from "@/app/store/root/types";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
@@ -18,7 +18,7 @@ type Props = {
 };
 
 const VLANSummary = ({ id }: Props): React.ReactElement | null => {
-  const isAdmin = useSelector(authSelectors.isAdmin);
+  const user = useGetThisUser();
   const { setSidePanelContent } = useSidePanel();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
@@ -31,7 +31,7 @@ const VLANSummary = ({ id }: Props): React.ReactElement | null => {
   return (
     <TitledSection
       buttons={
-        isAdmin && (
+        user.data?.is_superuser && (
           <Button
             onClick={() => {
               setSidePanelContent({ view: SidePanelViews.EditVLAN });

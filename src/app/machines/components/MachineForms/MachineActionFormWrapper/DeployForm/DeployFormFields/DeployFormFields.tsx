@@ -16,12 +16,12 @@ import { Link } from "react-router";
 
 import type { DeployFormValues } from "../DeployForm";
 
+import { useGetThisUser } from "@/app/api/query/users";
 import FormikField from "@/app/base/components/FormikField";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import UploadTextArea from "@/app/base/components/UploadTextArea";
 import docsUrls from "@/app/base/docsUrls";
 import urls from "@/app/base/urls";
-import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
 import {
   osInfo as osInfoSelectors,
@@ -37,7 +37,8 @@ export const DeployFormFields = (): React.ReactElement => {
   const formikProps = useFormikContext<DeployFormValues>();
   const { handleChange, setFieldValue, values } = formikProps;
 
-  const user = useSelector(authSelectors.get);
+  const user = useGetThisUser();
+
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
   const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
   const { osystems = [], releases = [] } =
@@ -315,7 +316,7 @@ export const DeployFormFields = (): React.ReactElement => {
             />
           </Col>
         </Row>
-        {user && user.sshkeys_count === 0 && (
+        {user && user.data?.sshkeys_count === 0 && (
           <Row>
             <Col size={12}>
               <p className="u-no-max-width" data-testid="sshkeys-warning">

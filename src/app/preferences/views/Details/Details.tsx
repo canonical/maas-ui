@@ -4,13 +4,10 @@ import { ContentSection } from "@canonical/maas-react-components";
 import { Col, Notification, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { useChangeThisUsersPassword } from "@/app/api/query/users";
 import UserForm from "@/app/base/components/UserForm";
-import { useAddMessage, useWindowTitle } from "@/app/base/hooks";
-import { authActions } from "@/app/store/auth";
-import authSelectors from "@/app/store/auth/selectors";
+import { useWindowTitle } from "@/app/base/hooks";
 import statusSelectors from "@/app/store/status/selectors";
-import { userActions } from "@/app/store/user";
-import userSelectors from "@/app/store/user/selectors";
 
 export enum Label {
   Title = "Details",
@@ -24,18 +21,9 @@ export const Details = (): React.ReactElement => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const [passwordChanged, setPasswordChanged] = useState(false);
 
-  const cleanup = () => {
-    dispatch(authActions.cleanup());
-    return userActions.cleanup();
-  };
+  const changePassword = useChangeThisUsersPassword();
 
   useWindowTitle(Label.Title);
-
-  useAddMessage(
-    usersSaved && (!passwordChanged || authUserSaved),
-    cleanup,
-    "Your details were updated successfully"
-  );
 
   return (
     <ContentSection aria-label={Label.Title}>
@@ -49,11 +37,11 @@ export const Details = (): React.ReactElement => {
         <Row>
           <Col size={6}>
             <UserForm
-              cleanup={cleanup}
               includeCurrentPassword
               includeUserType={false}
               onSave={(values) => {
                 if (authUser) {
+                  changePassword.mutate({});
                   dispatch(
                     userActions.update({
                       id: authUser.id,

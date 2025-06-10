@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 
 import { VLANDetailsSidePanelViews } from "../constants";
 
+import { useGetThisUser } from "@/app/api/query/users";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useFetchActions } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import authSelectors from "@/app/store/auth/selectors";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
@@ -48,12 +48,12 @@ const VLANDetailsHeader = ({ id }: Props): React.ReactElement => {
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, fabricId)
   );
-  const isAdmin = useSelector(authSelectors.isAdmin);
+  const user = useGetThisUser();
 
   useFetchActions([fabricActions.fetch]);
 
   const buttons = [];
-  if (isAdmin) {
+  if (user.data?.is_superuser) {
     buttons.push(
       <Button
         data-testid="delete-vlan"

@@ -1,11 +1,9 @@
 import React from "react";
 
 import { GenericTable, TableCaption } from "@canonical/maas-react-components";
-import { useSelector } from "react-redux";
 
 import { useZones } from "@/app/api/query/zones";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import authSelectors from "@/app/store/auth/selectors";
 import useZonesTableColumns from "@/app/zones/components/ZonesTable/useZonesTableColumns/useZonesTableColumns";
 
 import "./_index.scss";
@@ -17,10 +15,7 @@ const ZonesTable: React.FC = () => {
     query: { page: debouncedPage, size },
   });
 
-  const isAdmin = useSelector(authSelectors.isAdmin);
-  const columns = useZonesTableColumns({
-    isAdmin,
-  });
+  const columns = useZonesTableColumns();
 
   return (
     <GenericTable

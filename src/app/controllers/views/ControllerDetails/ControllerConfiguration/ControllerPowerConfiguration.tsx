@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
+import { useGetThisUser } from "@/app/api/query/users";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
 import PowerTypeFields from "@/app/base/components/PowerTypeFields";
 import NodePowerParameters from "@/app/base/components/node/NodePowerParameters";
 import { useCanEdit, useWindowTitle } from "@/app/base/hooks";
-import authSelectors from "@/app/store/auth/selectors";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type {
@@ -65,7 +65,7 @@ const ControllerPowerConfiguration = ({
   const initialPowerParameters = useInitialPowerParameters(
     (isDetails && controller.power_parameters) || {}
   );
-  const isAdmin = useSelector(authSelectors.isAdmin);
+  const user = useGetThisUser();
 
   const powerParametersSchema =
     generatePowerParametersSchema(selectedPowerType);
@@ -154,7 +154,7 @@ const ControllerPowerConfiguration = ({
               </Notification>
             ) : null}
             <PowerTypeFields
-              disableSelect={!isAdmin}
+              disableSelect={!user.data?.is_superuser}
               powerParametersValueName="powerParameters"
               powerTypeValueName="powerType"
             />

@@ -10,6 +10,8 @@ import AppSideNavItems from "./AppSideNavItems";
 import NavigationBanner from "./NavigationBanner";
 import { navGroups } from "./constants";
 
+import { useGetThisUser } from "@/app/api/query/users";
+import type { UserWithSummaryResponse } from "@/app/apiclient";
 import {
   useFetchActions,
   useCompletedIntro,
@@ -19,7 +21,6 @@ import {
 import { useGlobalKeyShortcut } from "@/app/base/hooks/base";
 import { useThemeContext } from "@/app/base/theme-context";
 import urls from "@/app/base/urls";
-import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
@@ -29,9 +30,8 @@ import type { RootState } from "@/app/store/root/types";
 import { statusActions } from "@/app/store/status";
 
 export type SideNavigationProps = {
-  authUser: ReturnType<typeof authSelectors.get>;
+  authUser: UserWithSummaryResponse;
   filteredGroups: typeof navGroups;
-  isAdmin: boolean;
   isAuthenticated: boolean;
   isCollapsed: boolean;
   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,7 +45,6 @@ export type SideNavigationProps = {
 export const AppSideNavigation = ({
   authUser,
   filteredGroups,
-  isAdmin,
   isAuthenticated,
   isCollapsed,
   setIsCollapsed,
@@ -93,7 +92,7 @@ export const AppSideNavigation = ({
           <AppSideNavItems
             authUser={authUser}
             groups={filteredGroups}
-            isAdmin={isAdmin}
+            isAdmin={authUser.is_superuser}
             isAuthenticated={isAuthenticated}
             logout={logout}
             path={path}
@@ -112,12 +111,11 @@ const AppSideNavigationContainer = (): React.ReactElement => {
   const navigate = useNavigate();
   const location = useLocation();
   const configLoaded = useSelector(configSelectors.loaded);
-  const authUser = useSelector(authSelectors.get);
-  const isAdmin = useSelector(authSelectors.isAdmin);
   const path = location.pathname;
+  const user = useGetThisUser();
   const completedIntro = useCompletedIntro();
   const completedUserIntro = useCompletedUserIntro();
-  const isAuthenticated = !!authUser;
+  const isAuthenticated = !!user.data;
   const introMatch = useMatch({ path: urls.intro.index, end: false });
   const isAtIntro = !!introMatch;
   const showLinks = isAuthenticated && completedIntro && completedUserIntro;
@@ -197,9 +195,8 @@ const AppSideNavigationContainer = (): React.ReactElement => {
 
   return (
     <AppSideNavigation
-      authUser={authUser}
+      authUser={user.data!}
       filteredGroups={filteredGroups}
-      isAdmin={isAdmin}
       isAuthenticated={isAuthenticated}
       isCollapsed={isCollapsed}
       logout={logout}

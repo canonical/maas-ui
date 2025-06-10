@@ -4,8 +4,8 @@ import ReactGA from "react-ga4";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
+import { useGetThisUser } from "@/app/api/query/users";
 import type { UsabillaLive } from "@/app/base/types";
-import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
 import { version as versionSelectors } from "@/app/store/general/selectors";
 
@@ -82,13 +82,15 @@ export const useSendAnalyticsWhen = (
 export const useGoogleAnalytics = (): boolean => {
   const location = useLocation();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
-  const authUser = useSelector(authSelectors.get);
   const uuid = useSelector(configSelectors.uuid);
   const version = useSelector(versionSelectors.get);
   const debug = import.meta.env.NODE_ENV === "development";
+
+  const user = useGetThisUser();
+
   const allowGoogleAnalytics = !!(
     analyticsEnabled &&
-    authUser &&
+    user &&
     uuid &&
     version &&
     !debug
@@ -98,7 +100,7 @@ export const useGoogleAnalytics = (): boolean => {
     if (allowGoogleAnalytics) {
       ReactGA.initialize("G-V64NN1TC9B", {
         gaOptions: {
-          user_id: `${uuid}-${authUser.id}`,
+          user_id: `${uuid}-${user.data?.id}`,
           dimension1: version,
           dimension2: uuid,
         },
@@ -109,7 +111,7 @@ export const useGoogleAnalytics = (): boolean => {
         title: window.location.pathname,
       });
     }
-  }, [allowGoogleAnalytics, authUser, uuid, version]);
+  }, [allowGoogleAnalytics, user.data, uuid, version]);
 
   useEffect(() => {
     ReactGA.send({
