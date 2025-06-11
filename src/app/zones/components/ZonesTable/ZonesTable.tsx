@@ -1,6 +1,6 @@
 import React from "react";
 
-import { GenericTable, TableCaption } from "@canonical/maas-react-components";
+import { GenericTable } from "@canonical/maas-react-components";
 
 import { useZones } from "@/app/api/query/zones";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
@@ -22,7 +22,7 @@ const ZonesTable: React.FC = () => {
       columns={columns}
       data={zones.data?.items ?? []}
       isLoading={zones.isPending}
-      noData={<TableCaption>No zones available.</TableCaption>}
+      noData="No zones found."
       pagination={{
         currentPage: page,
         dataContext: "zones",

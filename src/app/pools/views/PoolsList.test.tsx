@@ -1,109 +1,86 @@
+import type { PoolSidePanelContent } from "@/app/pools/constants";
+import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import PoolsList from "@/app/pools/views/PoolsList";
-import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
-  screen,
-  renderWithBrowserRouter,
   renderWithProviders,
+  screen,
+  userEvent,
   setupMockServer,
-  waitFor,
-  within,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(poolsResolvers.listPools.handler());
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  poolsResolvers.getPool.handler()
+);
+
+let mockSidePanelContent: PoolSidePanelContent | null = null;
+const mockSetSidePanelContent = vi.fn();
+
+vi.mock("@/app/base/side-panel-context", async () => {
+  const actual = await vi.importActual("@/app/base/side-panel-context");
+  return {
+    ...actual,
+    useSidePanel: () => ({
+      sidePanelContent: mockSidePanelContent,
+      setSidePanelContent: mockSetSidePanelContent,
+      sidePanelSize: "regular",
+      setSidePanelSize: vi.fn(),
+    }),
+  };
+});
 
 describe("PoolsList", () => {
-  it("displays a loading component if pools are loading", async () => {
-    renderWithProviders(<PoolsList />);
-
-    await waitFor(() => {
-      expect(screen.getByText("Loading...")).toBeInTheDocument();
-    });
+  beforeEach(() => {
+    mockSetSidePanelContent.mockClear();
+    mockSidePanelContent = null;
   });
 
-  it("displays a link to delete confirmation", async () => {
-    mockServer.use(
-      poolsResolvers.listPools.handler({
-        items: [
-          factory.resourcePool({
-            id: 0,
-            name: "squambo",
-            description: "a pool",
-            is_default: false,
-            machine_total_count: 0,
-            permissions: ["delete"],
-          }),
-        ],
-        total: 1,
-      })
-    );
+  it("renders AddPool when view is CREATE_POOL", () => {
+    mockSidePanelContent = {
+      view: PoolActionSidePanelViews.CREATE_POOL,
+    };
 
     renderWithProviders(<PoolsList />);
-
-    await waitFor(() => {
-      expect(screen.getByRole("cell", { name: "squambo" })).toBeInTheDocument();
-    });
-    const cell = screen.getByRole("cell", { name: "squambo" });
-    const row = cell.closest("tr")!;
-    expect(row).not.toHaveClass("is-active");
-
-    await waitFor(() => {
-      expect(
-        within(row).getByRole("button", { name: "Delete" })
-      ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByRole("complementary", { name: "Add pool" })
+    ).toBeInTheDocument();
   });
 
-  it("does not show a machine link for empty pools", async () => {
-    mockServer.use(
-      poolsResolvers.listPools.handler({
-        items: [
-          factory.resourcePool({ name: "default", machine_total_count: 0 }),
-        ],
-        total: 1,
-      })
-    );
+  it("renders EditPool when view is EDIT_POOL and a valid poolId is provided", () => {
+    mockSidePanelContent = {
+      view: PoolActionSidePanelViews.EDIT_POOL,
+      extras: { poolId: 42 },
+    };
 
     renderWithProviders(<PoolsList />);
-    await waitFor(() => {
-      expect(screen.getByRole("cell", { name: "default" })).toBeInTheDocument();
-    });
-    const cell = screen.getByRole("cell", { name: "default" });
-    const row = cell.closest("tr")!;
-    expect(within(row).getByText("Empty pool")).toBeInTheDocument();
+    expect(
+      screen.getByRole("complementary", { name: "Edit pool" })
+    ).toBeInTheDocument();
   });
 
-  it("can show a machine link for non-empty pools", async () => {
-    mockServer.use(
-      poolsResolvers.listPools.handler({
-        items: [
-          factory.resourcePool({
-            name: "default",
-            machine_total_count: 5,
-            machine_ready_count: 1,
-          }),
-        ],
-        total: 1,
-      })
-    );
+  it("renders DeletePool when view is DELETE_POOL and a valid poolId is provided", () => {
+    mockSidePanelContent = {
+      view: PoolActionSidePanelViews.DELETE_POOL,
+      extras: { poolId: 42 },
+    };
 
     renderWithProviders(<PoolsList />);
-    await waitFor(() => {
-      expect(screen.getByRole("cell", { name: "default" })).toBeInTheDocument();
-    });
-    const link = within(
-      screen.getByRole("cell", { name: "default" }).closest("tr")!
-    ).getByRole("link", { name: "1 of 5 ready" });
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
+    expect(
+      screen.getByRole("complementary", { name: "Delete pool" })
+    ).toBeInTheDocument();
   });
 
-  it("displays a message when rendering an empty list", async () => {
-    mockServer.use(poolsResolvers.listPools.handler({ items: [], total: 0 }));
-    renderWithBrowserRouter(<PoolsList />, { route: "/pools" });
+  it("closes side panel form when canceled", async () => {
+    mockSidePanelContent = {
+      view: PoolActionSidePanelViews.CREATE_POOL,
+    };
 
-    await waitFor(() => {
-      expect(screen.getByText("No pools found.")).toBeInTheDocument();
-    });
+    renderWithProviders(<PoolsList />);
+    expect(
+      screen.getByRole("complementary", { name: "Add pool" })
+    ).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
   });
 });

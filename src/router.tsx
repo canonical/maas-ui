@@ -12,12 +12,8 @@ import APIKeyDelete from "@/app/preferences/views/APIKeys/APIKeyDelete";
 import APIKeyEdit from "@/app/preferences/views/APIKeys/APIKeyEdit";
 import APIKeyList from "@/app/preferences/views/APIKeys/APIKeyList";
 import Details from "@/app/preferences/views/Details";
-import AddSSHKey from "@/app/preferences/views/SSHKeys/AddSSHKey";
-import DeleteSSHKey from "@/app/preferences/views/SSHKeys/DeleteSSHKey";
-import SSHKeyList from "@/app/preferences/views/SSHKeys/SSHKeyList";
-import AddSSLKey from "@/app/preferences/views/SSLKeys/AddSSLKey";
-import DeleteSSLKey from "@/app/preferences/views/SSLKeys/DeleteSSLKey";
-import SSLKeyList from "@/app/preferences/views/SSLKeys/SSLKeyList";
+import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
+import SSLKeysList from "@/app/preferences/views/SSLKeys/views";
 import { getRelativeRoute } from "@/app/utils";
 
 const ControllerDetails = lazy(
@@ -249,77 +245,18 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: getRelativeRoute(urls.preferences.sshKeys.index, base),
+              path: getRelativeRoute(urls.preferences.sshKeys, base),
               element: (
                 <ErrorBoundary>
-                  <PageContent sidePanelContent={null} sidePanelTitle={null}>
-                    <SSHKeyList />
-                  </PageContent>
+                  <SSHKeysList />
                 </ErrorBoundary>
               ),
             },
             {
-              path: getRelativeRoute(urls.preferences.sshKeys.add, base),
+              path: getRelativeRoute(urls.preferences.sslKeys, base),
               element: (
                 <ErrorBoundary>
-                  <PageContent
-                    sidePanelContent={<AddSSHKey />}
-                    sidePanelTitle="Add SSH key"
-                  >
-                    <SSHKeyList />
-                  </PageContent>
-                </ErrorBoundary>
-              ),
-            },
-            {
-              path: getRelativeRoute(urls.preferences.sshKeys.delete, base),
-              element: (
-                <ErrorBoundary>
-                  <PageContent
-                    sidePanelContent={<DeleteSSHKey />}
-                    sidePanelTitle="Delete SSH key"
-                  >
-                    <SSHKeyList />
-                  </PageContent>
-                </ErrorBoundary>
-              ),
-            },
-            {
-              path: getRelativeRoute(urls.preferences.sslKeys.index, base),
-              element: (
-                <ErrorBoundary>
-                  <PageContent sidePanelContent={null} sidePanelTitle={null}>
-                    <SSLKeyList />
-                  </PageContent>
-                </ErrorBoundary>
-              ),
-            },
-            {
-              path: getRelativeRoute(urls.preferences.sslKeys.add, base),
-              element: (
-                <ErrorBoundary>
-                  <PageContent
-                    sidePanelContent={<AddSSLKey />}
-                    sidePanelTitle="Add SSL key"
-                  >
-                    <SSLKeyList />
-                  </PageContent>
-                </ErrorBoundary>
-              ),
-            },
-            {
-              path: getRelativeRoute(
-                urls.preferences.sslKeys.delete(null),
-                base
-              ),
-              element: (
-                <ErrorBoundary>
-                  <PageContent
-                    sidePanelContent={<DeleteSSLKey />}
-                    sidePanelTitle="Delete SSL key"
-                  >
-                    <SSLKeyList />
-                  </PageContent>
+                  <SSLKeysList />
                 </ErrorBoundary>
               ),
             },

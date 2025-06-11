@@ -9,8 +9,7 @@ import ZonesTable from "../components/ZonesTable";
 import { useZoneCount } from "@/app/api/query/zones";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import { isId } from "@/app/utils";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 

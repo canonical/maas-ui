@@ -13,11 +13,10 @@ import NetworkDiscoveryHeader from "./NetworkDiscoveryHeader";
 import { useGetIsSuperUser } from "@/app/api/query/users";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
 import configSelectors from "@/app/store/config/selectors";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute } from "@/app/utils";
 
 export enum Label {

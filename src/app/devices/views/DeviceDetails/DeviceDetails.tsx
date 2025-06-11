@@ -11,7 +11,7 @@ import DeviceSummary from "./DeviceSummary";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import DeviceHeaderForms from "@/app/devices/components/DeviceHeaderForms";
 import DeviceNetworkForms from "@/app/devices/components/DeviceNetworkForms";
@@ -20,7 +20,6 @@ import deviceSelectors from "@/app/store/device/selectors";
 import { DeviceMeta } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { isId, getRelativeRoute } from "@/app/utils";
 
 const DeviceDetails = (): React.ReactElement => {

@@ -7,8 +7,8 @@ import { useCompleteIntro, useGetThisUser } from "@/app/api/query/users";
 import TableConfirm from "@/app/base/components/TableConfirm";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
-import SSHKeyList from "@/app/preferences/views/SSHKeys/BaseSSHKeyList";
-import SSHKeyForm from "@/app/preferences/views/SSHKeys/SSHKeyForm";
+import AddSSHKey from "@/app/preferences/views/SSHKeys/components/AddSSHKey";
+import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
 import { formatErrors } from "@/app/utils";
 
 export enum Labels {
@@ -47,15 +47,8 @@ const UserIntro = (): React.ReactElement => {
           Add multiple keys from Launchpad and Github or enter them manually.
         </p>
         <h4>Keys</h4>
-        {hasSSHKeys ? <SSHKeyList /> : null}
-        <SSHKeyForm
-          onSaveAnalytics={{
-            action: "Import",
-            category: "User intro",
-            label: "Import SSH key form",
-          }}
-          resetOnSave
-        />
+        {hasSSHKeys ? <SSHKeysList isIntro={true} /> : null}
+        <AddSSHKey />
       </IntroCard>
       <div className="u-align--right">
         <Button

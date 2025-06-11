@@ -22,14 +22,13 @@ import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import NodeTestDetails from "@/app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import MachineForms from "@/app/machines/components/MachineForms";
 import { machineActions } from "@/app/store/machine";
 import { MachineMeta } from "@/app/store/machine/types";
 import { useFetchMachine } from "@/app/store/machine/utils/hooks";
 import { tagActions } from "@/app/store/tag";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute, isId } from "@/app/utils";
 
 const MachineDetails = (): React.ReactElement => {

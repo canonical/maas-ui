@@ -9,7 +9,7 @@ import ControllerListTable from "./ControllerListTable";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import VaultNotification from "@/app/base/components/VaultNotification";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import ControllerForms from "@/app/controllers/components/ControllerForms/ControllerForms";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
@@ -18,7 +18,6 @@ import { generalActions } from "@/app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
 const ControllerList = (): React.ReactElement => {
   const dispatch = useDispatch();

@@ -1,5 +1,6 @@
 import ZonesListHeader from "./ZonesListHeader";
 
+import { SidePanelViews } from "@/app/base/side-panel-context";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("ZonesListHeader", () => {
@@ -12,7 +13,7 @@ describe("ZonesListHeader", () => {
     await userEvent.click(screen.getByRole("button", { name: "Add AZ" }));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: ["zoneForm", "createZone"],
+      view: SidePanelViews.CREATE_ZONE,
     });
   });
 });
