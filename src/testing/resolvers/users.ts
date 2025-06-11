@@ -5,6 +5,7 @@ import { BASE_URL } from "../utils";
 import type {
   CreateUserError,
   DeleteUserError,
+  GetUserError,
   ListUsersError,
   ListUsersWithSummaryResponse,
   UpdateUserError,
@@ -39,6 +40,12 @@ const mockListUsersError: ListUsersError = {
   kind: "Error", // This will always be 'Error' for every error response
 };
 
+const mockGetUserError: GetUserError = {
+  message: "Not found",
+  code: 404,
+  kind: "Error",
+};
+
 const mockCreateUserError: CreateUserError = {
   message: "A user with this name already exists.",
   code: 409,
@@ -48,12 +55,6 @@ const mockCreateUserError: CreateUserError = {
 const mockUpdateUserError: UpdateUserError = {
   message: "Internal server error",
   code: 500,
-  kind: "Error",
-};
-
-const mockDeleteUserError: DeleteUserError = {
-  message: "Not found",
-  code: 404,
   kind: "Error",
 };
 
@@ -81,6 +82,11 @@ const usersResolvers = {
         const user = mockUsers.items.find((user) => user.id === id);
         usersResolvers.getUser.resolved = true;
         return user ? HttpResponse.json(user) : HttpResponse.error();
+      }),
+    error: (error: GetUserError = mockGetUserError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users/:id`, () => {
+        usersResolvers.getUser.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
       }),
   },
   createUser: {
@@ -116,7 +122,7 @@ const usersResolvers = {
         usersResolvers.deleteUser.resolved = true;
         return HttpResponse.json({}, { status: 204 });
       }),
-    error: (error: DeleteUserError = mockDeleteUserError) =>
+    error: (error: DeleteUserError = mockGetUserError) =>
       http.delete(`${BASE_URL}MAAS/a/v3/users/:id`, () => {
         usersResolvers.deleteUser.resolved = true;
         return HttpResponse.json(error, { status: error.code });

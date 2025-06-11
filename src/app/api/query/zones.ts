@@ -24,8 +24,8 @@ import {
   createZoneMutation,
   deleteZoneMutation,
   getZoneOptions,
-  listZonesQueryKey,
   listZonesWithSummaryOptions,
+  listZonesWithSummaryQueryKey,
   updateZoneMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
@@ -70,7 +70,7 @@ export const useCreateZone = (mutationOptions?: Options<CreateZoneData>) => {
     ...createZoneMutation(mutationOptions),
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: listZonesQueryKey(),
+        queryKey: listZonesWithSummaryQueryKey(),
       });
     },
   });
@@ -85,7 +85,9 @@ export const useUpdateZone = (mutationOptions?: Options<UpdateZoneData>) => {
   >({
     ...updateZoneMutation(mutationOptions),
     onSuccess: async () => {
-      void queryClient.invalidateQueries({ queryKey: listZonesQueryKey() });
+      void queryClient.invalidateQueries({
+        queryKey: listZonesWithSummaryQueryKey(),
+      });
     },
   });
 };
@@ -99,7 +101,9 @@ export const useDeleteZone = (mutationOptions?: Options<DeleteZoneData>) => {
   >({
     ...deleteZoneMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: listZonesQueryKey() });
+      void queryClient.invalidateQueries({
+        queryKey: listZonesWithSummaryQueryKey(),
+      });
     },
   });
 };
