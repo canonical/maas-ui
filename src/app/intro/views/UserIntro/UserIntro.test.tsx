@@ -5,6 +5,7 @@ import UserIntro, { Labels as UserIntroLabels } from "./UserIntro";
 import * as baseHooks from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
+import { userResolvers } from "@/testing/resolvers/users";
 import {
   userEvent,
   screen,
@@ -14,7 +15,11 @@ import {
   waitForLoading,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(sshKeyResolvers.listSshKeys.handler());
+const mockServer = setupMockServer(
+  sshKeyResolvers.listSshKeys.handler(),
+  userResolvers.getThisUser.handler(),
+  userResolvers.completeIntro.handler()
+);
 
 describe("UserIntro", () => {
   let markedIntroCompleteMock: SpyInstance;
@@ -52,10 +57,11 @@ describe("UserIntro", () => {
     expect(icon).toHaveClass("p-icon--success-grey");
   });
 
-  it("redirects if the user has already completed the intro", () => {
+  it("redirects if the user has already completed the intro", async () => {
     const { router } = renderWithProviders(<UserIntro />, {
       initialEntries: ["/intro/user"],
     });
+    await waitForLoading();
     expect(router.state.location.pathname).toBe(urls.machines.index);
   });
 
@@ -109,21 +115,26 @@ describe("UserIntro", () => {
     );
   });
 
-  it("can show errors when trying to update the user", () => {
+  it("can show errors when trying to update the user", async () => {
+    mockServer.use(
+      userResolvers.getThisUser.error({ code: 400, message: "Uh oh" })
+    );
     renderWithProviders(<UserIntro />, {
       initialEntries: ["/intro/user"],
     });
+    await waitForLoading();
     expect(screen.getByText("Error:")).toBeInTheDocument();
     expect(screen.getByText("Uh oh")).toBeInTheDocument();
   });
 
-  it("redirects when the user has been updated", () => {
+  it("redirects when the user has been updated", async () => {
     // Mock the markedIntroComplete state to simulate the markingIntroComplete
     // state having gone from true to false.
     markedIntroCompleteMock.mockImplementationOnce(() => [true, () => null]);
     const { router } = renderWithProviders(<UserIntro />, {
       initialEntries: ["/intro/user"],
     });
+    await waitForLoading();
     expect(router.state.location.pathname).toBe(urls.machines.index);
   });
 

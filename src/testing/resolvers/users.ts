@@ -76,12 +76,12 @@ const userResolvers: Resolver<
   completeIntro: {
     resolved: false,
     handler: () =>
-      http.put(`${BASE_URL}MAAS/a/v3/users/me:complete_intro`, () => {
+      http.post(`${BASE_URL}MAAS/a/v3/users/me:complete_intro`, () => {
         userResolvers.completeIntro.resolved = true;
         return HttpResponse.json({});
       }),
     error: (error: UpdateUserError = mockErrors.updateError) =>
-      http.put(`${BASE_URL}MAAS/a/v3/users/me:complete_intro`, () => {
+      http.post(`${BASE_URL}MAAS/a/v3/users/me:complete_intro`, () => {
         userResolvers.updateUser.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),

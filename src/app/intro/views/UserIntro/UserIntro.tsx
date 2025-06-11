@@ -26,7 +26,9 @@ const UserIntro = (): React.ReactElement => {
 
   const sshkeys = data?.items || [];
   const hasSSHKeys = sshkeys.length > 0;
-  const errorMessage = formatErrors(user.isError ? user.error : undefined);
+  const errorMessage = formatErrors(
+    user.isError ? user.error.message : undefined
+  );
 
   return (
     <IntroSection
