@@ -47,6 +47,19 @@ const userResolvers: Resolver<
   | PreconditionFailedBodyResponse
   | ValidationErrorBodyResponse
 > = {
+  authenticate: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}/MAAS/a/v3/auth/login`, () => {
+        userResolvers.authenticate.resolved = true;
+        return HttpResponse.json();
+      }),
+    error: (error: ListUsersWithSummaryError = mockErrors.createError) =>
+      http.post(`${BASE_URL}/MAAS/a/v3/auth/login`, () => {
+        userResolvers.authenticate.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
   listUsers: {
     resolved: false,
     handler: (data = mockUsers) =>

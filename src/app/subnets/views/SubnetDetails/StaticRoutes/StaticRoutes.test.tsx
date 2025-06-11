@@ -4,9 +4,16 @@ import { AddStaticRouteFormLabels } from "./AddStaticRouteForm/AddStaticRouteFor
 import StaticRoutes, { Labels } from "./StaticRoutes";
 
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, waitFor } from "@/testing/utils";
+import { userResolvers } from "@/testing/resolvers/users";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
+setupMockServer(userResolvers.getThisUser.handler());
 
 it("renders for a subnet", () => {
   const subnet = factory.subnet({ id: 1 });
@@ -66,6 +73,7 @@ it("has a button to open the static route form", async () => {
   const store = mockStore(state);
   renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { store });
 
+  await waitFor(() => expect(userResolvers.getThisUser.resolved).toBe(true));
   await waitFor(() => {
     expect(
       screen.getByRole("button", {

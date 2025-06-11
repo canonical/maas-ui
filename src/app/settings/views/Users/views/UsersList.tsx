@@ -6,14 +6,13 @@ import { useSelector } from "react-redux";
 import { useUserCount } from "@/app/api/query/users";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import AddUser from "@/app/settings/views/Users/components/AddUser/AddUser";
 import DeleteUser from "@/app/settings/views/Users/components/DeleteUser/DeleteUser";
 import EditUser from "@/app/settings/views/Users/components/EditUser/EditUser";
 import UsersTable from "@/app/settings/views/Users/components/UsersTable/UsersTable";
 import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
 import statusSelectors from "@/app/store/status/selectors";
-import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { isId } from "@/app/utils";
 
 const UsersList = (): React.ReactElement => {

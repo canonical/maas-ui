@@ -1,10 +1,19 @@
+import { waitFor } from "@testing-library/react";
+
 import VLANDetailsHeader from "./VLANDetailsHeader";
 
 import type { RootState } from "@/app/store/root/types";
 import type { VLAN } from "@/app/store/vlan/types";
 import { VlanVid } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { userResolvers } from "@/testing/resolvers/users";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+} from "@/testing/utils";
+
+setupMockServer(userResolvers.getThisUser.handler());
 
 describe("VLANDetailsHeader", () => {
   let state: RootState;
@@ -90,27 +99,19 @@ describe("VLANDetailsHeader", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("shows the delete button when the user is an admin", () => {
-    state.user = factory.userState({
-      auth: factory.authState({
-        user: factory.user({ is_superuser: true }),
-      }),
-    });
+  it("shows the delete button when the user is an admin", async () => {
     renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
       route: "/vlan/1234",
       state,
     });
-    expect(
-      screen.getByRole("button", { name: "Delete VLAN" })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Delete VLAN" })
+      ).toBeInTheDocument()
+    );
   });
 
   it("does not show the delete button if the user is not an admin", () => {
-    state.user = factory.userState({
-      auth: factory.authState({
-        user: factory.user({ is_superuser: false }),
-      }),
-    });
     renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
       route: "/vlan/1234",
       state,

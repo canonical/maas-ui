@@ -1,7 +1,5 @@
 import type { ReactElement } from "react";
-import { useState } from "react";
 
-import { Button } from "@canonical/react-components";
 import * as Yup from "yup";
 
 import { Labels } from "../../constants";
@@ -22,10 +20,9 @@ const UserSchema = Yup.object().shape({
   fullName: Yup.string(),
   is_superuser: Yup.boolean(),
   password: Yup.string().required("Password is required"),
-  passwordConfirm: Yup.string().oneOf(
-    [Yup.ref("password")],
-    "Passwords must be the same"
-  ),
+  passwordConfirm: Yup.string()
+    .required("Password re-entry is required")
+    .oneOf([Yup.ref("password")], "Passwords must be the same"),
   username: Yup.string()
     .max(150, "Username must be 150 characters or less")
     .matches(
@@ -36,7 +33,6 @@ const UserSchema = Yup.object().shape({
 });
 
 const AddUser = ({ closeForm }: AddUserProps): ReactElement => {
-  const [passwordVisible, setPasswordVisible] = useState(true);
   const createUser = useCreateUser();
 
   return (
@@ -46,6 +42,7 @@ const AddUser = ({ closeForm }: AddUserProps): ReactElement => {
       initialValues={{
         username: "",
         password: "",
+        passwordConfirm: "",
         is_superuser: false,
         first_name: "",
         last_name: "",
@@ -91,40 +88,21 @@ const AddUser = ({ closeForm }: AddUserProps): ReactElement => {
         name="is_superuser"
         type="checkbox"
       />
-      {!passwordVisible && (
-        <div className="u-sv2">
-          <Button
-            appearance="link"
-            className="u-no-margin--bottom"
-            data-testid="toggle-passwords"
-            onClick={() => {
-              setPasswordVisible(!passwordVisible);
-            }}
-            type="button"
-          >
-            {Labels.ChangePassword}
-          </Button>
-        </div>
-      )}
-      {passwordVisible && (
-        <>
-          <FormikField
-            autoComplete="new-password"
-            label={Labels.Password}
-            name="password"
-            required={true}
-            type="password"
-          />
-          <FormikField
-            autoComplete="new-password"
-            help="Enter the same password as before, for verification"
-            label={Labels.PasswordAgain}
-            name="passwordConfirm"
-            required={true}
-            type="password"
-          />
-        </>
-      )}
+      <FormikField
+        autoComplete="new-password"
+        label={Labels.Password}
+        name="password"
+        required={true}
+        type="password"
+      />
+      <FormikField
+        autoComplete="new-password"
+        help="Enter the same password as before, for verification"
+        label={Labels.PasswordAgain}
+        name="passwordConfirm"
+        required={true}
+        type="password"
+      />
     </FormikForm>
   );
 };

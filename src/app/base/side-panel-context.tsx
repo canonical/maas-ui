@@ -173,6 +173,9 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.CREATE_POOL[1]]: "Add pool",
   [SidePanelViews.EDIT_POOL[1]]: "Edit pool",
   [SidePanelViews.DELETE_POOL[1]]: "Delete pool",
+  [SidePanelViews.CREATE_USER[1]]: "Add user",
+  [SidePanelViews.EDIT_USER[1]]: "Edit user",
+  [SidePanelViews.DELETE_USER[1]]: "Delete user",
 };
 
 /**

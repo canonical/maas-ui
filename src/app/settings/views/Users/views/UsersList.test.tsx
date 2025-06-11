@@ -1,157 +1,90 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
-import UsersList from "./UsersList";
-
-import type { UserWithSummaryResponse } from "@/app/apiclient";
-import type { RootState } from "@/app/store/root/types";
+import type { UserSidePanelContent } from "@/app/settings/views/Users/constants";
+import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
+import UsersList from "@/app/settings/views/Users/views/UsersList";
 import * as factory from "@/testing/factories";
+import { userResolvers } from "@/testing/resolvers/users";
 import {
-  userEvent,
+  renderWithProviders,
   screen,
-  render,
-  within,
-  renderWithMockStore,
-  renderWithBrowserRouter,
+  userEvent,
+  setupMockServer,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
+setupMockServer(
+  userResolvers.listUsers.handler(),
+  userResolvers.getThisUser.handler()
+);
+
+let mockSidePanelContent: UserSidePanelContent | null = null;
+const mockSetSidePanelContent = vi.fn();
+
+vi.mock("@/app/base/side-panel-context", async () => {
+  const actual = await vi.importActual("@/app/base/side-panel-context");
+  return {
+    ...actual,
+    useSidePanel: () => ({
+      sidePanelContent: mockSidePanelContent,
+      setSidePanelContent: mockSetSidePanelContent,
+      sidePanelSize: "regular",
+      setSidePanelSize: vi.fn(),
+    }),
+  };
+});
 
 describe("UsersList", () => {
-  let state: RootState;
-  let users: UserWithSummaryResponse[];
-
+  const state = factory.rootState({
+    status: factory.statusState({ externalAuthURL: null }),
+  });
   beforeEach(() => {
-    users = [
-      factory.user({
-        email: "admin@example.com",
-        id: 1,
-        is_superuser: true,
-        last_name: "Kangaroo",
-        sshkeys_count: 0,
-        username: "admin",
-      }),
-      factory.user({
-        email: "user@example.com",
-        id: 2,
-        is_superuser: false,
-        last_name: "Koala",
-        sshkeys_count: 0,
-        username: "user1",
-      }),
-    ];
-    state = factory.rootState({
-      status: factory.statusState({ externalAuthURL: null }),
-    });
+    mockSetSidePanelContent.mockClear();
+    mockSidePanelContent = null;
   });
 
-  it("disables delete for the current user", () => {
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-      >
-        <UsersList />
-      </MemoryRouter>,
-      { state }
-    );
-    const row = screen.getAllByTestId("user-row")[0];
+  it("renders AddUser when view is CREATE_USER", () => {
+    mockSidePanelContent = {
+      view: UserActionSidePanelViews.CREATE_USER,
+    };
+
+    renderWithProviders(<UsersList />, { state });
     expect(
-      within(row).getByRole("link", { name: /delete/i })
-    ).toBeAriaDisabled();
-  });
-
-  it("links to preferences for the current user", () => {
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-      >
-        <UsersList />
-      </MemoryRouter>,
-      { state }
-    );
-    const row = screen.getAllByTestId("user-row")[0];
-    expect(within(row).getByRole("link", { name: "Edit" })).toHaveAttribute(
-      "href",
-      "/account/prefs/details"
-    );
-  });
-
-  it("can filter users", async () => {
-    const store = mockStore(state);
-    const { rerender } = render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <UsersList />
-        </MemoryRouter>
-      </Provider>
-    );
-    let rows = screen.getAllByTestId("user-row");
-    expect(rows.length).toBe(2);
-
-    await userEvent.type(
-      screen.getAllByPlaceholderText("Search users")[0],
-      "admin"
-    );
-
-    rerender(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <UsersList />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    rows = screen.getAllByTestId("user-row");
-    expect(rows.length).toBe(1);
-  });
-
-  it("can toggle username and real name", async () => {
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-      >
-        <UsersList />
-      </MemoryRouter>,
-      { state }
-    );
-    expect(
-      within(screen.getAllByTestId("user-row")[0]).getByText("admin")
-    ).toBeInTheDocument();
-    // Click on the header toggle.
-    await userEvent.click(screen.getByRole("button", { name: "Real name" }));
-    expect(
-      within(screen.getAllByTestId("user-row")[0]).getByText("Kangaroo")
+      screen.getByRole("complementary", { name: "Add user" })
     ).toBeInTheDocument();
   });
 
-  it("shows a message when using external auth", () => {
-    state.status.externalAuthURL = "http://login.example.com";
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-      >
-        <UsersList />
-      </MemoryRouter>,
-      { state }
-    );
+  it("renders EditUser when view is EDIT_USER", () => {
+    mockSidePanelContent = {
+      view: UserActionSidePanelViews.EDIT_USER,
+      extras: { userId: 42 },
+    };
+
+    renderWithProviders(<UsersList />, { state });
     expect(
-      screen.getByText(
-        "Users for this MAAS are managed using an external service"
-      )
+      screen.getByRole("complementary", { name: "Edit user" })
     ).toBeInTheDocument();
-    expect(screen.queryByRole("table")).not.toBeInTheDocument();
   });
 
-  it("displays a message when there are no users", () => {
-    state.user.items = [];
+  it("renders DeleteUser when view is DELETE_USER and valid sshKeyIds are provided", () => {
+    mockSidePanelContent = {
+      view: UserActionSidePanelViews.DELETE_USER,
+      extras: { userId: 42 },
+    };
 
-    renderWithBrowserRouter(<UsersList />, { state, route: "/settings/users" });
+    renderWithProviders(<UsersList />, { state });
+    expect(
+      screen.getByRole("complementary", { name: "Delete user" })
+    ).toBeInTheDocument();
+  });
 
-    expect(screen.getByText("No users available.")).toBeInTheDocument();
+  it("closes side panel form when canceled", async () => {
+    mockSidePanelContent = {
+      view: UserActionSidePanelViews.CREATE_USER,
+    };
+
+    renderWithProviders(<UsersList />, { state });
+    expect(
+      screen.getByRole("complementary", { name: "Add user" })
+    ).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
   });
 });

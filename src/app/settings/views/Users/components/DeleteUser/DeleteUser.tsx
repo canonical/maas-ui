@@ -4,7 +4,6 @@ import { Notification, Spinner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useDeleteUser, useGetUser } from "@/app/api/query/users";
-import type { BaseExceptionDetail } from "@/app/apiclient";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 
@@ -29,9 +28,7 @@ const DeleteUser: React.FC<DeleteUserProps> = ({ id, closeForm }) => {
       {user.isSuccess && user.data && (
         <ModelActionForm
           aria-label="Confirm user deletion"
-          errors={deleteUser.error?.details!.map(
-            (detail: BaseExceptionDetail) => detail.message
-          )}
+          errors={deleteUser.error}
           initialValues={{}}
           message={
             <>

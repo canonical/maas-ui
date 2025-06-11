@@ -1,10 +1,6 @@
 import { useState } from "react";
 
-import {
-  GenericTable,
-  MainToolbar,
-  TableCaption,
-} from "@canonical/maas-react-components";
+import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import { useUsers } from "@/app/api/query/users";
@@ -50,7 +46,7 @@ const UsersTable = () => {
         columns={columns}
         data={users.data?.items ?? []}
         isLoading={users.isPending}
-        noData={<TableCaption>No users available.</TableCaption>}
+        noData="No users found."
         pagination={{
           currentPage: page,
           dataContext: "users",
