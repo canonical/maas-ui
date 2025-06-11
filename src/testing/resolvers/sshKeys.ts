@@ -59,7 +59,7 @@ const sshKeyResolvers: Resolver<
 > = {
   listSshKeys: {
     resolved: false,
-    handler: (data: ListUserSshkeysResponse = mockSshKeys) =>
+    handler: (data = mockSshKeys) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/me/sshkeys`, () => {
         sshKeyResolvers.listSshKeys.resolved = true;
         return HttpResponse.json(data);

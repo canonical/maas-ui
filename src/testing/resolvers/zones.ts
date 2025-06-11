@@ -7,7 +7,6 @@ import type {
   DeleteZoneError,
   GetZoneError,
   ListZonesWithSummaryError,
-  ListZonesWithSummaryResponse,
   NotFoundBodyResponse,
   UpdateZoneError,
   ValidationErrorBodyResponse,
@@ -57,7 +56,7 @@ const zoneResolvers: Resolver<
 > = {
   listZones: {
     resolved: false,
-    handler: (data: ListZonesWithSummaryResponse = mockZones) =>
+    handler: (data = mockZones) =>
       http.get(`${BASE_URL}MAAS/a/v3/zones_with_summary`, () => {
         zoneResolvers.listZones.resolved = true;
         return HttpResponse.json(data);

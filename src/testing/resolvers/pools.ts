@@ -11,14 +11,14 @@ import type {
   DeleteResourcePoolError,
   GetUserError,
   ListResourcePoolsError,
-  ListResourcePoolsResponse,
   NotFoundBodyResponse,
+  ResourcePoolsWithSummaryListResponse,
   ResourcePoolWithSummaryResponse,
   UpdateResourcePoolError,
   ValidationErrorBodyResponse,
 } from "@/app/apiclient";
 
-const mockPools: ListResourcePoolsResponse = {
+const mockPools: ResourcePoolsWithSummaryListResponse = {
   items: [
     resourcePool({
       name: "swimming",
@@ -57,7 +57,7 @@ const poolsResolvers: Resolver<
 > = {
   listPools: {
     resolved: false,
-    handler: (data: ListResourcePoolsResponse = mockPools) =>
+    handler: (data = mockPools) =>
       http.get(`${BASE_URL}MAAS/a/v3/resource_pools_with_summary`, () => {
         poolsResolvers.listPools.resolved = true;
         return HttpResponse.json(data);
