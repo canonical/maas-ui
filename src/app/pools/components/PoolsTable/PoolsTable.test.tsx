@@ -14,6 +14,7 @@ import {
   waitFor,
   setupMockServer,
   within,
+  mockIsPending,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -38,6 +39,7 @@ describe("PoolsTable", () => {
 
   describe("display", () => {
     it("displays a loading component if pools are loading", async () => {
+      mockIsPending();
       renderWithProviders(<PoolsTable />);
 
       await waitFor(() => {
