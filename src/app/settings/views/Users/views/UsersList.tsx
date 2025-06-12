@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useUserCount } from "@/app/api/query/users";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
@@ -16,7 +15,6 @@ import statusSelectors from "@/app/store/status/selectors";
 import { isId } from "@/app/utils";
 
 const UsersList = (): React.ReactElement => {
-  const usersCount = useUserCount();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
@@ -25,9 +23,6 @@ const UsersList = (): React.ReactElement => {
 
   const closeForm = () => {
     setSidePanelContent(null);
-    // useWebsocketAwareQuery filtering the invalidations prevents
-    // the hooks from causing a list update, this line forces it
-    void usersCount.refetch();
   };
 
   useEffect(() => {

@@ -13,6 +13,7 @@ import {
   screen,
   waitFor,
   setupMockServer,
+  mockIsPending,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(sslKeyResolvers.listSslKeys.handler());
@@ -34,6 +35,7 @@ describe("SSLKeysTable", () => {
 
   describe("display", () => {
     it("displays a loading component if SSL keys are loading", async () => {
+      mockIsPending();
       renderWithProviders(<SSLKeysTable />);
 
       await waitFor(() => {

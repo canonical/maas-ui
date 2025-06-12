@@ -21,8 +21,8 @@ const DeleteUser = ({ id, closeForm }: DeleteUserProps): ReactElement => {
     <>
       {user.isPending && <Spinner text="Loading..." />}
       {user.isError && (
-        <Notification data-testid="no-such-pool-error" severity="negative">
-          AZ with id {id} does not exist.
+        <Notification data-testid="no-such-user-error" severity="negative">
+          {user.error.message}
         </Notification>
       )}
       {user.isSuccess && user.data && (
