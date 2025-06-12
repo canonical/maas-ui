@@ -32,10 +32,7 @@ import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
 import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
-import UserAdd from "@/app/settings/views/Users/UserAdd";
-import UserDelete from "@/app/settings/views/Users/UserDelete";
-import UserEdit from "@/app/settings/views/Users/UserEdit";
-import UsersList from "@/app/settings/views/Users/UsersList";
+import UsersList from "@/app/settings/views/Users/views";
 import { getRelativeRoute } from "@/app/utils";
 
 const Routes = (): React.ReactElement => {
@@ -124,42 +121,8 @@ const Routes = (): React.ReactElement => {
         path={getRelativeRoute(urls.settings.security.index, base)}
       />
       <Route
-        element={
-          <PageContent sidePanelContent={null} sidePanelTitle="">
-            <UsersList />
-          </PageContent>
-        }
+        element={<UsersList />}
         path={getRelativeRoute(urls.settings.users.index, base)}
-      />
-      <Route
-        element={
-          <PageContent sidePanelContent={<UserAdd />} sidePanelTitle="Add User">
-            <UsersList />
-          </PageContent>
-        }
-        path={getRelativeRoute(urls.settings.users.add, base)}
-      />
-      <Route
-        element={
-          <PageContent
-            sidePanelContent={<UserEdit />}
-            sidePanelTitle="Edit User"
-          >
-            <UsersList />
-          </PageContent>
-        }
-        path={getRelativeRoute(urls.settings.users.edit(null), base)}
-      />
-      <Route
-        element={
-          <PageContent
-            sidePanelContent={<UserDelete />}
-            sidePanelTitle="Delete User"
-          >
-            <UsersList />
-          </PageContent>
-        }
-        path={getRelativeRoute(urls.settings.users.delete(null), base)}
       />
       <Route
         element={

@@ -29,6 +29,8 @@ import type { SSHKeySidePanelContent } from "@/app/preferences/views/SSHKeys/con
 import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
 import type { SSLKeySidePanelContent } from "@/app/preferences/views/SSLKeys/constants";
 import { SSLKeyActionSidePanelViews } from "@/app/preferences/views/SSLKeys/constants";
+import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
+import type { UserSidePanelContent } from "@/app/settings/views/Users/constants";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import {
@@ -75,6 +77,7 @@ export type SidePanelContent =
   | SubnetDetailsSidePanelContent
   | SubnetSidePanelContent
   | TagSidePanelContent
+  | UserSidePanelContent
   | VLANDetailsSidePanelContent
   | ZoneSidePanelContent
   | null;
@@ -96,6 +99,7 @@ export const SidePanelViews = {
   ...DeviceSidePanelViews,
   ...KVMSidePanelViews,
   ...TagSidePanelViews,
+  ...UserActionSidePanelViews,
   ...ZoneActionSidePanelViews,
   ...SubnetSidePanelViews,
   ...DomainDetailsSidePanelViews,
@@ -169,6 +173,9 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.CREATE_POOL[1]]: "Add pool",
   [SidePanelViews.EDIT_POOL[1]]: "Edit pool",
   [SidePanelViews.DELETE_POOL[1]]: "Delete pool",
+  [SidePanelViews.CREATE_USER[1]]: "Add user",
+  [SidePanelViews.EDIT_USER[1]]: "Edit user",
+  [SidePanelViews.DELETE_USER[1]]: "Delete user",
 };
 
 /**
