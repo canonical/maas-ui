@@ -1,6 +1,5 @@
 export {
   architecturesState,
-  authState,
   bondOptionsState,
   bootResourceState,
   componentsToDisableState,
@@ -72,7 +71,6 @@ export {
   tagState,
   tlsCertificateState,
   tokenState,
-  userState,
   vaultEnabledState,
   versionState,
   vlanEventError,
@@ -204,7 +202,7 @@ export {
 } from "./subnet";
 export { tag } from "./tag";
 export { token } from "./token";
-export { user, userEventError, userStatuses } from "./user";
+export { user } from "./user";
 export { vlan, vlanDetails } from "./vlan";
 export {
   virtualMachine,

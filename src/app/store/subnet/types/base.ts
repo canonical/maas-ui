@@ -1,5 +1,6 @@
 import type { IPAddressType, SubnetMeta } from "./enum";
 
+import type { UserResponse } from "@/app/apiclient";
 import type { APIError } from "@/app/base/types";
 import type { Domain } from "@/app/store/domain/types";
 import type { KnownBootArchitecture } from "@/app/store/general/types";
@@ -11,7 +12,6 @@ import type {
 } from "@/app/store/types/model";
 import type { NetworkInterface, Node, NodeType } from "@/app/store/types/node";
 import type { EventError, GenericState } from "@/app/store/types/state";
-import type { User } from "@/app/store/user/types";
 import type { VLAN } from "@/app/store/vlan/types";
 
 export type SubnetStatisticsRange = {
@@ -67,7 +67,7 @@ export type SubnetIP = TimestampFields & {
   dns_records?: SubnetDNSRecord[];
   ip: string;
   node_summary?: SubnetIPNodeSummary;
-  user?: User["username"];
+  user?: UserResponse["username"];
 };
 
 export type SubnetScanFailure = {

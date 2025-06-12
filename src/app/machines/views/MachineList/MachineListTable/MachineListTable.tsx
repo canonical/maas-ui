@@ -29,7 +29,6 @@ import { FetchGroupKey } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
 import { tagActions } from "@/app/store/tag";
-import { userActions } from "@/app/store/user";
 import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
 
 export enum Label {
@@ -98,7 +97,6 @@ export const MachineListTable = ({
     generalActions.fetchPowerTypes,
     generalActions.fetchVersion,
     tagActions.fetch,
-    userActions.fetch,
   ]);
 
   const toggleHandler = useCallback(

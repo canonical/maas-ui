@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import { Labels } from "../StaticRoutes";
@@ -8,7 +6,13 @@ import AddStaticRouteForm from "./AddStaticRouteForm";
 
 import { staticRouteActions } from "@/app/store/staticroute";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -16,12 +20,6 @@ it("dispatches a correct action on add static route form submit", async () => {
   const subnet = factory.subnet({ id: 1, cidr: "172.16.1.0/24" });
   const destinationSubnet = factory.subnet({ id: 2, cidr: "223.16.1.0/24" });
   const state = factory.rootState({
-    user: factory.userState({
-      auth: factory.authState({
-        user: factory.user(),
-      }),
-      items: [factory.user(), factory.user(), factory.user()],
-    }),
     staticroute: factory.staticRouteState({
       loaded: true,
       items: [],
@@ -33,15 +31,9 @@ it("dispatches a correct action on add static route form submit", async () => {
   });
 
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <AddStaticRouteForm
-          setSidePanelContent={vi.fn()}
-          subnetId={subnet.id}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <AddStaticRouteForm setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
+    { store }
   );
 
   await waitFor(() => {

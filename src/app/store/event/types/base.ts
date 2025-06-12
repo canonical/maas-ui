@@ -1,9 +1,9 @@
 import type { EventTypeLevel } from "./enum";
 
+import type { UserResponse } from "@/app/apiclient";
 import type { TimestampedModel } from "@/app/store/types/model";
 import type { BaseNode } from "@/app/store/types/node";
 import type { GenericState } from "@/app/store/types/state";
-import type { User } from "@/app/store/user/types";
 
 export type EventType = {
   description: string;
@@ -23,8 +23,8 @@ export type EventRecord = TimestampedModel & {
   node_system_id: BaseNode["system_id"] | null;
   type: EventType;
   user_agent: string;
-  user_id: User["id"] | null;
-  username: User["username"];
+  user_id: UserResponse["id"] | null;
+  username: UserResponse["username"];
 };
 
 export type EventState = GenericState<EventRecord, string | null>;

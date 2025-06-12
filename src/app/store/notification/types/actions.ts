@@ -1,6 +1,6 @@
 import type { Notification } from "./base";
 
-import type { User, UserMeta } from "@/app/store/user/types";
+import type { UserResponse } from "@/app/apiclient";
 
 export type CreateParams = {
   admins: Notification["admins"];
@@ -9,6 +9,6 @@ export type CreateParams = {
   dismissable: Notification["dismissable"];
   ident: Notification["ident"];
   message: Notification["message"];
-  user: User[UserMeta.PK];
+  user: UserResponse["id"];
   users: Notification["users"];
 };

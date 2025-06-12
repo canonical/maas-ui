@@ -1,9 +1,7 @@
-import reduceReducers from "reduce-reducers";
 import type { Action, AnyAction, Reducer } from "redux";
 import { combineReducers } from "redux";
 import type { RouterState } from "redux-first-history";
 
-import auth from "@/app/store/auth";
 import bootresource from "@/app/store/bootresource";
 import config from "@/app/store/config";
 import controller from "@/app/store/controller";
@@ -36,9 +34,6 @@ import type { StatusState } from "@/app/store/status/types";
 import subnet from "@/app/store/subnet";
 import tag from "@/app/store/tag";
 import token from "@/app/store/token";
-import user from "@/app/store/user";
-import { initialState as userInitialState } from "@/app/store/user/slice";
-import type { UserState } from "@/app/store/user/types";
 import vlan from "@/app/store/vlan";
 import vmcluster from "@/app/store/vmcluster";
 
@@ -75,10 +70,6 @@ const createAppReducer = (routerReducer: Reducer<RouterState, Action>) =>
     subnet,
     tag,
     token,
-    // This needs to be cast to the correct type until the following issue is
-    // resolved:
-    // https://github.com/redux-utilities/reduce-reducers/issues/33
-    user: reduceReducers(user, auth) as Reducer<UserState>,
     vlan,
     vmcluster,
   });
@@ -98,10 +89,6 @@ const createRootReducer =
     } else if (["status/checkAuthenticatedError"].includes(action.type)) {
       setupState = {
         status: state?.status,
-        user: {
-          ...userInitialState,
-          ...(state?.user.auth ? { auth: state?.user.auth } : {}),
-        },
       };
     }
     return createAppReducer(routerReducer)(

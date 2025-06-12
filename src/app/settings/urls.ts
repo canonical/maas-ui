@@ -1,7 +1,7 @@
+import type { UserResponse } from "@/app/apiclient";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import type { PackageRepository } from "@/app/store/packagerepository/types";
-import type { User } from "@/app/store/user/types";
 import { argPath } from "@/app/utils";
 
 const urls = {
@@ -69,8 +69,8 @@ const urls = {
   storage: "/settings/storage",
   users: {
     add: "/settings/users/add",
-    edit: argPath<{ id: User["id"] }>("/settings/users/:id/edit"),
-    delete: argPath<{ id: User["id"] }>("/settings/users/:id/delete"),
+    edit: argPath<{ id: UserResponse["id"] }>("/settings/users/:id/edit"),
+    delete: argPath<{ id: UserResponse["id"] }>("/settings/users/:id/delete"),
     index: "/settings/users",
   },
 } as const;
