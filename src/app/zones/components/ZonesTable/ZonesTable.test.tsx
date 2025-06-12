@@ -21,7 +21,7 @@ import {
 const mockServer = setupMockServer(
   zoneResolvers.listZones.handler(),
   zoneResolvers.getZone.handler(),
-  authResolvers.getThisUser.handler()
+  authResolvers.getCurrentUser.handler()
 );
 
 vi.mock("@/app/base/side-panel-context", async () => {

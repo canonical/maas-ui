@@ -17,7 +17,7 @@ import {
 let state: RootState;
 let fabric: Fabric;
 
-setupMockServer(authResolvers.getThisUser.handler());
+setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("FabricDetailsHeader", () => {
   beforeEach(() => {

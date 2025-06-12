@@ -15,7 +15,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore();
-const mockServer = setupMockServer(authResolvers.getThisUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("DomainSummary", () => {
   it("render nothing if domain doesn't exist", () => {
@@ -64,7 +64,9 @@ describe("DomainSummary", () => {
       }),
     });
     mockServer.use(
-      authResolvers.getThisUser.handler(factory.user({ is_superuser: false }))
+      authResolvers.getCurrentUser.handler(
+        factory.user({ is_superuser: false })
+      )
     );
 
     renderWithProviders(<DomainSummary id={1} />, {

@@ -14,7 +14,7 @@ import { authResolvers } from "@/testing/resolvers/auth";
 import { setupMockServer } from "@/testing/utils";
 
 const mockStore = configureStore();
-setupMockServer(authResolvers.getThisUser.handler());
+setupMockServer(authResolvers.getCurrentUser.handler());
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>) =>

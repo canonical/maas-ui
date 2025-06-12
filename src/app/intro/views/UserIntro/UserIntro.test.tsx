@@ -17,7 +17,7 @@ import {
 
 const mockServer = setupMockServer(
   sshKeyResolvers.listSshKeys.handler(),
-  authResolvers.getThisUser.handler(),
+  authResolvers.getCurrentUser.handler(),
   authResolvers.completeIntro.handler()
 );
 
@@ -117,7 +117,7 @@ describe("UserIntro", () => {
 
   it("can show errors when trying to update the user", async () => {
     mockServer.use(
-      authResolvers.getThisUser.error({ code: 400, message: "Uh oh" })
+      authResolvers.getCurrentUser.error({ code: 400, message: "Uh oh" })
     );
     renderWithProviders(<UserIntro />, {
       initialEntries: ["/intro/user"],

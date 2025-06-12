@@ -12,7 +12,7 @@ import { authResolvers } from "@/testing/resolvers/auth";
 import { renderHookWithProviders, setupMockServer } from "@/testing/utils";
 
 const mockStore = configureStore();
-setupMockServer(authResolvers.getThisUser.handler());
+setupMockServer(authResolvers.getCurrentUser.handler());
 
 vi.mock("@/app/utils", async () => {
   const actual: object = await vi.importActual("@/app/utils");

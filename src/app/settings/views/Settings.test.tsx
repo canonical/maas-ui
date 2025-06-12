@@ -8,7 +8,7 @@ import { authResolvers } from "@/testing/resolvers/auth";
 import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(authResolvers.getThisUser.handler());
+setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("Settings", () => {
   it("dispatches action to fetch config on load", () => {

@@ -23,7 +23,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore();
-setupMockServer(authResolvers.getThisUser.handler());
+setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("VLANSummary", () => {
   let controller: Controller;

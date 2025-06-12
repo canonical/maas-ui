@@ -13,7 +13,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore();
-setupMockServer(authResolvers.getThisUser.handler());
+setupMockServer(authResolvers.getCurrentUser.handler());
 
 it("renders for a subnet", () => {
   const subnet = factory.subnet({ id: 1 });
@@ -73,7 +73,7 @@ it("has a button to open the static route form", async () => {
   const store = mockStore(state);
   renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { store });
 
-  await waitFor(() => expect(authResolvers.getThisUser.resolved).toBe(true));
+  await waitFor(() => expect(authResolvers.getCurrentUser.resolved).toBe(true));
   await waitFor(() => {
     expect(
       screen.getByRole("button", {

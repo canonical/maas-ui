@@ -17,7 +17,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const mockServer = setupMockServer(authResolvers.getThisUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("NotificationGroupNotification", () => {
   let config: ConfigState;
@@ -159,7 +159,9 @@ describe("NotificationGroupNotification", () => {
       }),
     });
     mockServer.use(
-      authResolvers.getThisUser.handler(factory.user({ is_superuser: false }))
+      authResolvers.getCurrentUser.handler(
+        factory.user({ is_superuser: false })
+      )
     );
     renderWithProviders(
       <NotificationGroupNotification

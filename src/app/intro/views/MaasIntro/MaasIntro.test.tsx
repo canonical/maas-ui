@@ -20,7 +20,7 @@ import {
 
 const mockStore = configureStore<RootState>();
 setupMockServer(
-  authResolvers.getThisUser.handler(
+  authResolvers.getCurrentUser.handler(
     factory.user({ completed_intro: false, is_superuser: true })
   )
 );

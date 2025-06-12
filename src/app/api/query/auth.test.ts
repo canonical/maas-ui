@@ -13,7 +13,7 @@ import {
 
 setupMockServer(
   authResolvers.authenticate.handler(),
-  authResolvers.getThisUser.handler(),
+  authResolvers.getCurrentUser.handler(),
   authResolvers.completeIntro.handler()
 );
 

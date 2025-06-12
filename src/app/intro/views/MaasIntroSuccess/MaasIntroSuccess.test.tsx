@@ -19,7 +19,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const mockServer = setupMockServer(authResolvers.getThisUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("MaasIntroSuccess", () => {
   let state: RootState;
@@ -35,7 +35,7 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the user intro if not yet completed", () => {
     mockServer.use(
-      authResolvers.getThisUser.handler(
+      authResolvers.getCurrentUser.handler(
         factory.user({ completed_intro: false })
       )
     );
@@ -50,7 +50,7 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the machine list if an admin that has completed the user intro", async () => {
     mockServer.use(
-      authResolvers.getThisUser.handler(
+      authResolvers.getCurrentUser.handler(
         factory.user({ completed_intro: true, is_superuser: true })
       )
     );
@@ -67,7 +67,7 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the machine list if a non-admin that has completed the user intro", async () => {
     mockServer.use(
-      authResolvers.getThisUser.handler(
+      authResolvers.getCurrentUser.handler(
         factory.user({ completed_intro: true, is_superuser: false })
       )
     );

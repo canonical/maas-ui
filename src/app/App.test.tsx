@@ -12,7 +12,7 @@ import { authResolvers } from "@/testing/resolvers/auth";
 import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(authResolvers.getThisUser.handler());
+setupMockServer(authResolvers.getCurrentUser.handler());
 
 vi.mock("@canonical/react-components/dist/hooks", async () => {
   const actual: object = await vi.importActual(
@@ -117,7 +117,9 @@ describe("App", () => {
     state.status.authenticated = true;
     const store = mockStore(state);
     renderWithProviders(<App />, { initialEntries: ["/settings"], store });
-    await waitFor(() => expect(authResolvers.getThisUser.resolved).toBe(true));
+    await waitFor(() =>
+      expect(authResolvers.getCurrentUser.resolved).toBe(true)
+    );
   });
 
   it("shows a login screen when logged out", async () => {

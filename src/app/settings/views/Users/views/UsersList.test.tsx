@@ -14,7 +14,7 @@ import {
 setupMockServer(
   usersResolvers.listUsers.handler(),
   usersResolvers.getUser.handler(),
-  authResolvers.getThisUser.handler()
+  authResolvers.getCurrentUser.handler()
 );
 
 let mockSidePanelContent: UserSidePanelContent | null = null;

@@ -9,7 +9,7 @@ import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getThisUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("Intro", () => {
   let state: RootState;
@@ -32,7 +32,7 @@ describe("Intro", () => {
 
   it("displays a message if the user is not an admin", async () => {
     mockServer.use(
-      authResolvers.getThisUser.handler(
+      authResolvers.getCurrentUser.handler(
         factory.user({ completed_intro: false, is_superuser: false })
       )
     );
@@ -54,7 +54,7 @@ describe("Intro", () => {
       items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
     mockServer.use(
-      authResolvers.getThisUser.handler(
+      authResolvers.getCurrentUser.handler(
         factory.user({ completed_intro: true, is_superuser: true })
       )
     );
@@ -82,7 +82,7 @@ describe("Intro", () => {
       items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
     mockServer.use(
-      authResolvers.getThisUser.handler(
+      authResolvers.getCurrentUser.handler(
         factory.user({ completed_intro: false })
       )
     );

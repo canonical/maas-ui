@@ -13,7 +13,7 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-setupMockServer(authResolvers.getThisUser.handler());
+setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("VLANDetailsHeader", () => {
   let state: RootState;

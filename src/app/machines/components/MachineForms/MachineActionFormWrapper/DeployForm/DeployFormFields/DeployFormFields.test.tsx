@@ -15,7 +15,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore();
-const mockServer = setupMockServer(authResolvers.getThisUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("DeployFormFields", () => {
   let state: RootState;
@@ -319,7 +319,7 @@ describe("DeployFormFields", () => {
 
   it("displays a warning if user has no SSH keys", async () => {
     mockServer.use(
-      authResolvers.getThisUser.handler(factory.user({ sshkeys_count: 0 }))
+      authResolvers.getCurrentUser.handler(factory.user({ sshkeys_count: 0 }))
     );
     const store = mockStore(state);
     renderWithProviders(

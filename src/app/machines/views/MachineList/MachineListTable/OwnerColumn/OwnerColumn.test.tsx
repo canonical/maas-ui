@@ -15,7 +15,7 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
-  authResolvers.getThisUser.handler(),
+  authResolvers.getCurrentUser.handler(),
   usersResolvers.listUsers.handler()
 );
 
@@ -62,7 +62,7 @@ describe("OwnerColumn", () => {
 
   it("displays owner's username if showFullName is true and user doesn't have a full name", () => {
     mockServer.use(
-      authResolvers.getThisUser.handler(
+      authResolvers.getCurrentUser.handler(
         factory.user({ last_name: "", username: "user1" })
       )
     );

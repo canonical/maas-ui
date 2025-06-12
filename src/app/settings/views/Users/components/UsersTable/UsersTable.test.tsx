@@ -92,7 +92,7 @@ describe("UsersTable", () => {
           items: [user],
           total: 1,
         }),
-        authResolvers.getThisUser.handler(user)
+        authResolvers.getCurrentUser.handler(user)
       );
 
       renderWithProviders(<UsersTable />);

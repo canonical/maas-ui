@@ -28,7 +28,7 @@ vi.mock("react-router", async () => {
 });
 
 const mockStore = configureStore<RootState>();
-const mockServer = setupMockServer(authResolvers.getThisUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 afterEach(() => {
   vi.resetModules();
@@ -71,7 +71,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("can handle a logged out user", () => {
-    mockServer.use(authResolvers.getThisUser.error({}));
+    mockServer.use(authResolvers.getCurrentUser.error({}));
     renderWithProviders(<AppSideNavigation />, {
       initialEntries: ["/"],
       state,
@@ -111,7 +111,7 @@ describe("GlobalSideNav", () => {
 
   it("hides nav links if not completed intro", async () => {
     mockServer.use(
-      authResolvers.getThisUser.handler(
+      authResolvers.getCurrentUser.handler(
         factory.user({
           completed_intro: false,
           username: "koala",
@@ -313,7 +313,9 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/machine/abc123"],
       state,
     });
-    await waitFor(() => expect(authResolvers.getThisUser.resolved).toBe(true));
+    await waitFor(() =>
+      expect(authResolvers.getCurrentUser.resolved).toBe(true)
+    );
     expect(
       within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
         "link",
@@ -326,13 +328,17 @@ describe("GlobalSideNav", () => {
 
   it("links from the logo to the machine list for non admins", async () => {
     mockServer.use(
-      authResolvers.getThisUser.handler(factory.user({ is_superuser: false }))
+      authResolvers.getCurrentUser.handler(
+        factory.user({ is_superuser: false })
+      )
     );
     renderWithProviders(<AppSideNavigation />, {
       initialEntries: ["/machine/abc123"],
       state,
     });
-    await waitFor(() => expect(authResolvers.getThisUser.resolved).toBe(true));
+    await waitFor(() =>
+      expect(authResolvers.getCurrentUser.resolved).toBe(true)
+    );
     expect(
       within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
         "link",
@@ -359,7 +365,9 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/machines"],
       state,
     });
-    await waitFor(() => expect(authResolvers.getThisUser.resolved).toBe(true));
+    await waitFor(() =>
+      expect(authResolvers.getCurrentUser.resolved).toBe(true)
+    );
     await waitFor(() =>
       expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.index)
     );
@@ -370,7 +378,7 @@ describe("GlobalSideNav", () => {
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
     ];
     mockServer.use(
-      authResolvers.getThisUser.handler(
+      authResolvers.getCurrentUser.handler(
         factory.user({ completed_intro: false })
       )
     );
@@ -378,7 +386,9 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/machines"],
       state,
     });
-    await waitFor(() => expect(authResolvers.getThisUser.resolved).toBe(true));
+    await waitFor(() =>
+      expect(authResolvers.getCurrentUser.resolved).toBe(true)
+    );
     await waitFor(() =>
       expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.user)
     );

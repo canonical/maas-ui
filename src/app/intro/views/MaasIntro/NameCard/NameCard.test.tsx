@@ -15,7 +15,7 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-setupMockServer(authResolvers.getThisUser.handler());
+setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("NameCard", () => {
   let state: RootState;

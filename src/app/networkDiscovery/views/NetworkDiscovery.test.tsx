@@ -17,7 +17,7 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getThisUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("NetworkDiscovery", () => {
   let state: RootState;
@@ -82,7 +82,9 @@ describe("NetworkDiscovery", () => {
 
   it("displays a message if not an admin", async () => {
     mockServer.use(
-      authResolvers.getThisUser.handler(factory.user({ is_superuser: false }))
+      authResolvers.getCurrentUser.handler(
+        factory.user({ is_superuser: false })
+      )
     );
     renderWithProviders(<NetworkDiscovery />, {
       initialEntries: [urls.networkDiscovery.index],
