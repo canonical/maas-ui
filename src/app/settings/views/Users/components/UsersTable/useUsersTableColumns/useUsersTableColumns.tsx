@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
-import { useGetThisUser } from "@/app/api/query/auth";
+import { useGetCurrentUser } from "@/app/api/query/auth";
 import type { UserWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import TableHeader from "@/app/base/components/TableHeader";
@@ -18,7 +18,7 @@ type UsersColumnDef = ColumnDef<
 
 const useUsersTableColumns = (): UsersColumnDef[] => {
   const { setSidePanelContent } = useSidePanel();
-  const authUser = useGetThisUser();
+  const authUser = useGetCurrentUser();
   const [isDisplayingUsername, setIsDisplayingUsername] = useState(true);
   return useMemo(
     () =>

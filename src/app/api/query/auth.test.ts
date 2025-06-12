@@ -30,7 +30,7 @@ describe("useAuthenticate", () => {
   });
 });
 
-describe("useGetThisUser", () => {
+describe("useGetCurrentUser", () => {
   it("should return the correct user", async () => {
     const expectedUser = mockAuth;
     const { result } = renderHookWithProviders(() => useGetCurrentUser());
