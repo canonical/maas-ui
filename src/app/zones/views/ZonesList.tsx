@@ -6,7 +6,6 @@ import EditZone from "../components/EditZone";
 import ZonesListHeader from "../components/ZonesListHeader";
 import ZonesTable from "../components/ZonesTable";
 
-import { useZoneCount } from "@/app/api/query/zones";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
@@ -14,16 +13,12 @@ import { isId } from "@/app/utils";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 
 const ZonesList: React.FC = () => {
-  const zonesCount = useZoneCount();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useWindowTitle("Zones");
 
   const closeForm = () => {
     setSidePanelContent(null);
-    // useWebsocketAwareQuery filtering the invalidations prevents
-    // the hooks from causing a list update, this line forces it
-    void zonesCount.refetch();
   };
 
   useEffect(() => {

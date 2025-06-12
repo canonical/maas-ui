@@ -24,8 +24,8 @@ const EditZone = ({ id, closeForm }: EditZoneProps): ReactElement => {
     <>
       {zone.isPending && <Spinner text="Loading..." />}
       {zone.isError && (
-        <Notification data-testid="no-such-pool-error" severity="negative">
-          AZ with id {id} does not exist.
+        <Notification data-testid="no-such-zone-error" severity="negative">
+          {zone.error.message}
         </Notification>
       )}
       {zone.isSuccess && zone.data && (

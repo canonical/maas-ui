@@ -13,6 +13,7 @@ import {
   screen,
   waitFor,
   setupMockServer,
+  mockIsPending,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(sshKeyResolvers.listSshKeys.handler());
@@ -34,6 +35,7 @@ describe("SSHKeysTable", () => {
 
   describe("display", () => {
     it("displays a loading component if SSH keys are loading", async () => {
+      mockIsPending();
       renderWithProviders(<SSHKeysTable isIntro={false} />);
 
       await waitFor(() => {
