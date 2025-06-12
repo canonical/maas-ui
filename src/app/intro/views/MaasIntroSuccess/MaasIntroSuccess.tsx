@@ -1,12 +1,12 @@
 import { Button, List } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 
+import { useGetCurrentUser } from "@/app/api/query/auth";
 import urls from "@/app/base/urls";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import { useExitURL } from "@/app/intro/hooks";
-import authSelectors from "@/app/store/auth/selectors";
 import { configActions } from "@/app/store/config";
 
 export enum Labels {
@@ -15,9 +15,9 @@ export enum Labels {
 
 const MaasIntroSuccess = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const authUser = useSelector(authSelectors.get);
+  const user = useGetCurrentUser();
   const exitURL = useExitURL();
-  const continueLink = authUser?.completed_intro ? exitURL : urls.intro.user;
+  const continueLink = user.data?.completed_intro ? exitURL : urls.intro.user;
 
   return (
     <IntroSection windowTitle="Success">

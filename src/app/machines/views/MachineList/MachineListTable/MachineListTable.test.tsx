@@ -1,3 +1,5 @@
+import { waitFor } from "@testing-library/react";
+
 import { MachineListTable, Label } from "./MachineListTable";
 
 import { SortDirection } from "@/app/base/types";
@@ -11,13 +13,22 @@ import {
   TestStatusStatus,
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import { mockUsers, usersResolvers } from "@/testing/resolvers/users";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
   within,
   renderWithProviders,
-  renderWithMockStore,
+  setupMockServer,
 } from "@/testing/utils";
+
+setupMockServer(
+  usersResolvers.listUsers.handler(),
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 const callId = "mocked-nanoid";
 
@@ -25,18 +36,6 @@ describe("MachineListTable", () => {
   let state: RootState;
   let machines: Machine[] = [];
   let groups: MachineStateListGroup[] = [];
-  const queryData = {
-    zones: [
-      factory.zone({
-        id: 0,
-        name: "default",
-      }),
-      factory.zone({
-        id: 1,
-        name: "Backup",
-      }),
-    ],
-  };
   beforeEach(() => {
     machines = [
       factory.machine({
@@ -197,7 +196,7 @@ describe("MachineListTable", () => {
   });
 
   it("displays skeleton rows when loading", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <MachineListTable
         callId={callId}
         currentPage={1}
@@ -217,7 +216,7 @@ describe("MachineListTable", () => {
         sortKey={null}
         totalPages={1}
       />,
-      { state, queryData }
+      { state }
     );
     expect(
       within(
@@ -405,15 +404,6 @@ describe("MachineListTable", () => {
   });
 
   it("can change machines to display full owners name instead of username", async () => {
-    const user = factory.user({
-      id: 1,
-      username: "admin",
-      last_name: "full name",
-    });
-    state.machine.items[0].owner = user.username;
-    state.user = factory.userState({
-      items: [user],
-    });
     renderWithProviders(
       <MachineListTable
         callId={callId}
@@ -441,14 +431,18 @@ describe("MachineListTable", () => {
       within(
         within(getFirstRow()).getByRole("gridcell", { name: "Owner" })
       ).getByTestId("owner");
-    expect(getFirstMachineOwner()).toHaveTextContent(user.username);
+    expect(getFirstMachineOwner()).toHaveTextContent("admin");
     await userEvent.click(
       within(screen.getByRole("columnheader", { name: "Owner" })).getByRole(
         "button",
         { name: /Name/ }
       )
     );
-    expect(getFirstMachineOwner()).toHaveTextContent(user.last_name);
+    await waitFor(() =>
+      expect(getFirstMachineOwner()).toHaveTextContent(
+        mockUsers.items[0].last_name!
+      )
+    );
   });
 
   it("updates sort on header click", async () => {

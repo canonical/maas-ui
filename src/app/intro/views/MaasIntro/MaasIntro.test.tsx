@@ -1,4 +1,4 @@
-import { MemoryRouter } from "react-router";
+import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import { Labels as ConnectivityCardLabels } from "./ConnectivityCard/ConnectivityCard";
@@ -10,14 +10,20 @@ import { ConfigNames } from "@/app/store/config/types";
 import { repositoryActions } from "@/app/store/packagerepository";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
-  renderWithMockStore,
+  renderWithProviders,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+setupMockServer(
+  authResolvers.getThisUser.handler(
+    factory.user({ completed_intro: false, is_superuser: true })
+  )
+);
 
 describe("MaasIntro", () => {
   let state: RootState;
@@ -48,19 +54,13 @@ describe("MaasIntro", () => {
       packagerepository: factory.packageRepositoryState({
         items: [mainArchive, portsArchive],
       }),
-      user: factory.userState({
-        auth: factory.authState({
-          user: factory.user({ completed_intro: false, is_superuser: true }),
-        }),
-      }),
     });
   });
 
   it("displays a spinner when loading", () => {
     state.config.loading = true;
-    state.user.auth.loading = true;
-    renderWithBrowserRouter(<MaasIntro />, {
-      route: "/intro",
+    renderWithProviders(<MaasIntro />, {
+      initialEntries: ["/intro"],
       state,
     });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -68,11 +68,11 @@ describe("MaasIntro", () => {
 
   it("can update just the config", async () => {
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-        <MaasIntro />
-      </MemoryRouter>,
-      { store }
+    renderWithProviders(<MaasIntro />, { store, initialEntries: ["/intro"] });
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: NameCardLabels.Name })
+      ).toBeInTheDocument()
     );
     const name = screen.getByRole("textbox", { name: NameCardLabels.Name });
     const proxy = screen.getByRole("textbox", {
@@ -113,11 +113,11 @@ describe("MaasIntro", () => {
 
   it("can dispatch actions to update the default package repository urls", async () => {
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-        <MaasIntro />
-      </MemoryRouter>,
-      { store }
+    renderWithProviders(<MaasIntro />, { store, initialEntries: ["/intro"] });
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: NameCardLabels.Name })
+      ).toBeInTheDocument()
     );
     const name = screen.getByRole("textbox", { name: NameCardLabels.Name });
     const proxy = screen.getByRole("textbox", {
@@ -170,15 +170,18 @@ describe("MaasIntro", () => {
 
   it("can skip the initial MAAS setup", async () => {
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-        <MaasIntro />
-      </MemoryRouter>,
-      { store }
+    renderWithProviders(<MaasIntro />, { store, initialEntries: ["/intro"] });
+    await waitFor(() =>
+      expect(
+        screen.queryByText(MaasIntroLabels.AreYouSure)
+      ).not.toBeInTheDocument()
     );
-    expect(
-      screen.queryByText(MaasIntroLabels.AreYouSure)
-    ).not.toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: MaasIntroLabels.SecondarySubmit })
+      ).toBeInTheDocument()
+    );
 
     // Open the skip confirmation.
     await userEvent.click(

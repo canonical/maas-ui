@@ -1,11 +1,10 @@
 import { Button } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 
 import { FabricDetailsSidePanelViews } from "./constants";
 
+import { useGetIsSuperUser } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
-import authSelectors from "@/app/store/auth/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
 
 type Props = {
@@ -17,12 +16,12 @@ const FabricDetailsHeader = ({
   fabric,
   setSidePanelContent,
 }: Props): React.ReactElement => {
-  const isAdmin = useSelector(authSelectors.isAdmin);
+  const isSuperUser = useGetIsSuperUser();
 
   return (
     <SectionHeader
       buttons={
-        isAdmin
+        isSuperUser.data
           ? [
               <Button
                 appearance="neutral"

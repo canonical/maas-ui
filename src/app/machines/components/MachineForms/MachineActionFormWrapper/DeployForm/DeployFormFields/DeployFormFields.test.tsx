@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import DeployForm from "../DeployForm";
@@ -7,15 +5,17 @@ import DeployForm from "../DeployForm";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
-  render,
   screen,
   waitFor,
-  renderWithBrowserRouter,
+  renderWithProviders,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
+const mockServer = setupMockServer(authResolvers.getThisUser.handler());
 
 describe("DeployFormFields", () => {
   let state: RootState;
@@ -104,21 +104,6 @@ describe("DeployFormFields", () => {
           def456: factory.machineStatus(),
         },
       }),
-      user: factory.userState({
-        auth: factory.authState({
-          saved: false,
-          user: factory.user({
-            email: "test@example.com",
-            global_permissions: ["machine_create"],
-            id: 1,
-            is_superuser: true,
-            last_name: "",
-            sshkeys_count: 1,
-            username: "admin",
-          }),
-        }),
-        loaded: true,
-      }),
     });
   });
 
@@ -127,19 +112,14 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_osystem = "centos";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     expect(screen.getByRole("combobox", { name: "OS" })).toHaveValue("centos");
   });
@@ -149,19 +129,14 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     expect(screen.getByRole("combobox", { name: "Release" })).toHaveValue(
       "bionic"
@@ -177,19 +152,14 @@ describe("DeployFormFields", () => {
       state.general.defaultMinHweKernel.data = "ga-18.04";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     await waitFor(() => {
       expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue(
@@ -207,19 +177,14 @@ describe("DeployFormFields", () => {
       state.general.defaultMinHweKernel.data = "different-kernel";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     await waitFor(() => {
       expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("");
@@ -231,19 +196,14 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "xenial";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     expect(
       screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
@@ -265,19 +225,14 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     // Initial selection is Ubuntu 18.04. Switch to CentOS 6 to CentOS 7 back to
     // Ubuntu 18.04 and checkbox should be enabled.
@@ -309,19 +264,14 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     expect(
       screen.queryByRole("radio", { name: /LXD/ })
@@ -344,19 +294,14 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
 
     const SUPPORT_MESSAGE =
@@ -372,26 +317,23 @@ describe("DeployFormFields", () => {
     expect(screen.queryByText(SUPPORT_MESSAGE)).not.toBeInTheDocument();
   });
 
-  it("displays a warning if user has no SSH keys", () => {
-    if (state.user.auth.user) {
-      state.user.auth.user.sshkeys_count = 0;
-    }
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+  it("displays a warning if user has no SSH keys", async () => {
+    mockServer.use(
+      authResolvers.getThisUser.handler(factory.user({ sshkeys_count: 0 }))
     );
-    expect(screen.getByTestId("sshkeys-warning")).toBeInTheDocument();
+    const store = mockStore(state);
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
+    );
+    await waitFor(() =>
+      expect(screen.getByTestId("sshkeys-warning")).toBeInTheDocument()
+    );
   });
 
   it(`displays an error and disables form fields if there are no OSes or
@@ -401,19 +343,14 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.releases = [];
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     expect(screen.getByTestId("images-error")).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "OS" })).toBeDisabled();
@@ -428,19 +365,14 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     expect(
       screen.queryByPlaceholderText(/Paste or drop script here/)
@@ -464,19 +396,14 @@ describe("DeployFormFields", () => {
       state.general.defaultMinHweKernel.data = "different-default-release";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     // Change kernel to non-default.
     await userEvent.selectOptions(
@@ -503,19 +430,14 @@ describe("DeployFormFields", () => {
       state.general.defaultMinHweKernel.data = "ga-18.04";
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     // Change release to Ubuntu 20.04.
     await userEvent.selectOptions(
@@ -544,19 +466,14 @@ describe("DeployFormFields", () => {
       value: "15m",
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
 
     expect(
@@ -580,19 +497,14 @@ describe("DeployFormFields", () => {
       value: "",
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
     expect(
       screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
@@ -601,19 +513,14 @@ describe("DeployFormFields", () => {
 
   it("'Periodically sync hardware' is unchecked by default", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
 
     expect(
@@ -633,19 +540,14 @@ describe("DeployFormFields", () => {
 
   it("adds a enable_hw_sync field to the request on submit", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <DeployForm
-            clearSidePanelContent={vi.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { store, initialEntries: ["/machines/add"] }
     );
 
     await userEvent.click(
@@ -669,14 +571,14 @@ describe("DeployFormFields", () => {
   });
 
   it("selects 'Deploy to disk' as the default deployment target", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeployForm
         clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines/add", state }
+      { initialEntries: ["/machines/add"], state }
     );
 
     expect(screen.getByRole("radio", { name: "Deploy to disk" })).toBeChecked();
@@ -686,14 +588,14 @@ describe("DeployFormFields", () => {
   });
 
   it("hides 'Register as MAAS KVM host' if 'Deploy in memory' is selected", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeployForm
         clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines/add", state }
+      { initialEntries: ["/machines/add"], state }
     );
 
     await userEvent.click(
@@ -706,14 +608,14 @@ describe("DeployFormFields", () => {
   });
 
   it("shows a tooltip for minimum OS requirements", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeployForm
         clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines/add", state }
+      { initialEntries: ["/machines/add"], state }
     );
 
     await userEvent.hover(
@@ -728,14 +630,14 @@ describe("DeployFormFields", () => {
   });
 
   it("shows a tooltip for minimum hardware requirements", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeployForm
         clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines/add", state }
+      { initialEntries: ["/machines/add"], state }
     );
 
     await userEvent.hover(

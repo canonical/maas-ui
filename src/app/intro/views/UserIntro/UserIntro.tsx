@@ -1,18 +1,14 @@
 import { useState } from "react";
 
 import { ActionButton, Button, Card, Icon } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 
+import { useCompleteIntro, useGetCurrentUser } from "@/app/api/query/auth";
 import { useListSshKeys } from "@/app/api/query/sshKeys";
 import TableConfirm from "@/app/base/components/TableConfirm";
-import { useCycled } from "@/app/base/hooks";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import AddSSHKey from "@/app/preferences/views/SSHKeys/components/AddSSHKey";
 import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
-import authSelectors from "@/app/store/auth/selectors";
-import { userActions } from "@/app/store/user";
-import userSelectors from "@/app/store/user/selectors";
 import { formatErrors } from "@/app/utils";
 
 export enum Labels {
@@ -22,32 +18,30 @@ export enum Labels {
 }
 
 const UserIntro = (): React.ReactElement => {
-  const dispatch = useDispatch();
   const [showSkip, setShowSkip] = useState(false);
-  const authLoading = useSelector(authSelectors.loading);
-  const authUser = useSelector(authSelectors.get);
-  const completedUserIntro = useSelector(authSelectors.completedUserIntro);
-  const markingIntroComplete = useSelector(userSelectors.markingIntroComplete);
-  const [markedIntroComplete] = useCycled(!markingIntroComplete);
-  const errors = useSelector(userSelectors.markingIntroCompleteErrors);
+
+  const user = useGetCurrentUser();
+  const completeIntro = useCompleteIntro();
   const { data, isPending: sshKeyLoading } = useListSshKeys();
 
   const sshkeys = data?.items || [];
   const hasSSHKeys = sshkeys.length > 0;
-  const errorMessage = formatErrors(errors);
+  const errorMessage = formatErrors(
+    user.isError ? user.error.message : undefined
+  );
 
   return (
     <IntroSection
-      errors={errors}
-      loading={authLoading || sshKeyLoading}
-      shouldExitIntro={completedUserIntro || markedIntroComplete}
+      errors={errorMessage}
+      loading={user.isPending || sshKeyLoading}
+      shouldExitIntro={user.data?.completed_intro}
       windowTitle="User"
     >
       <IntroCard
         complete={hasSSHKeys}
         data-testid="sshkey-card"
         hasErrors={!!errorMessage}
-        title={<>SSH keys for {authUser?.username}</>}
+        title={<>SSH keys for {user.data?.username}</>}
       >
         <p>
           Add multiple keys from Launchpad and Github or enter them manually.
@@ -69,11 +63,11 @@ const UserIntro = (): React.ReactElement => {
           appearance="positive"
           data-testid="continue-button"
           disabled={!hasSSHKeys}
-          loading={markingIntroComplete && !showSkip}
+          loading={completeIntro.isPending && !showSkip}
           onClick={() => {
-            dispatch(userActions.markIntroComplete());
+            completeIntro.mutate({});
           }}
-          success={markedIntroComplete}
+          success={completeIntro.isSuccess}
         >
           {Labels.Continue}
         </ActionButton>
@@ -82,9 +76,12 @@ const UserIntro = (): React.ReactElement => {
         <Card data-testid="skip-setup" highlighted>
           <TableConfirm
             confirmLabel={Labels.Skip}
-            errors={errors}
-            finished={markedIntroComplete}
-            inProgress={markingIntroComplete && showSkip}
+            errors={completeIntro.error?.message}
+            finished={completeIntro.isSuccess}
+            inProgress={
+              !(user.data?.completed_intro || completeIntro.isSuccess) &&
+              showSkip
+            }
             message={
               <>
                 <Icon className="is-inline" name="warning" />
@@ -95,7 +92,7 @@ const UserIntro = (): React.ReactElement => {
               setShowSkip(false);
             }}
             onConfirm={() => {
-              dispatch(userActions.markIntroComplete());
+              completeIntro.mutate({});
             }}
             sidebar={false}
           />
