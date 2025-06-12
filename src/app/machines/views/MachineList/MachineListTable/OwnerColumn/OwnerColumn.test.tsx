@@ -1,9 +1,23 @@
+import { waitFor } from "@testing-library/react";
+
 import { OwnerColumn } from "./OwnerColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import { mockUsers, usersResolvers } from "@/testing/resolvers/users";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  userEvent,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  usersResolvers.listUsers.handler()
+);
 
 describe("OwnerColumn", () => {
   let state: RootState;
@@ -34,11 +48,6 @@ describe("OwnerColumn", () => {
           }),
         ],
       }),
-      user: factory.userState({
-        items: [
-          factory.user({ last_name: "User Full Name", username: "user1" }),
-        ],
-      }),
     });
   });
 
@@ -52,7 +61,11 @@ describe("OwnerColumn", () => {
   });
 
   it("displays owner's username if showFullName is true and user doesn't have a full name", () => {
-    state.user.items[0].last_name = "";
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.user({ last_name: "", username: "user1" })
+      )
+    );
     renderWithBrowserRouter(
       <OwnerColumn onToggleMenu={vi.fn()} showFullName systemId="abc123" />,
       { state, route: "/machines" }
@@ -61,13 +74,17 @@ describe("OwnerColumn", () => {
     expect(screen.getByTestId("owner")).toHaveTextContent("user1");
   });
 
-  it("can display owner's full name if present", () => {
+  it("can display owner's full name if present", async () => {
     renderWithBrowserRouter(
       <OwnerColumn onToggleMenu={vi.fn()} showFullName systemId="abc123" />,
       { state, route: "/machines" }
     );
 
-    expect(screen.getByTestId("owner")).toHaveTextContent("User Full Name");
+    await waitFor(() =>
+      expect(screen.getByTestId("owner")).toHaveTextContent(
+        mockUsers.items[0].last_name!
+      )
+    );
   });
 
   it("displays tags", () => {

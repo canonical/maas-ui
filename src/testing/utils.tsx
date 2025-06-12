@@ -75,10 +75,6 @@ export const setupQueryClient = (queryData?: InitialData) => {
   return queryClient;
 };
 
-const createBaseState = () => factory.rootState();
-
-export const setupInitialState = (state?: Partial<RootState>) =>
-  structuredClone({ ...createBaseState(), ...state });
 export const setupInitialData = (queryData?: InitialData) =>
   queryData ?? createInitialData();
 
@@ -440,21 +436,6 @@ export const renderHookWithMockStore = (
     rerender: customRerender,
     store,
   };
-};
-
-export const renderHookWithQueryClient = (hook: Hook) => {
-  const queryClient = setupQueryClient();
-  return renderHook(hook, {
-    wrapper: ({ children }) => (
-      <WebSocketProvider>
-        <QueryClientProvider client={queryClient}>
-          <Provider store={configureStore()(rootStateFactory())}>
-            {children}
-          </Provider>
-        </QueryClientProvider>
-      </WebSocketProvider>
-    ),
-  });
 };
 
 export const waitFor = vi.waitFor;

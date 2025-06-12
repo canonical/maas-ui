@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import { useUsers } from "@/app/api/query/users";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import { useMachineActions } from "@/app/base/hooks";
 import type { MachineMenuAction } from "@/app/base/hooks/node";
@@ -14,7 +15,6 @@ import type { RootState } from "@/app/store/root/types";
 import tagSelectors from "@/app/store/tag/selectors";
 import { getTagsDisplay } from "@/app/store/tag/utils";
 import { NodeActions } from "@/app/store/types/node";
-import userSelectors from "@/app/store/user/selectors";
 
 type Props = {
   onToggleMenu?: MachineMenuToggleHandler;
@@ -37,9 +37,9 @@ export const OwnerColumn = ({
     tagSelectors.getByIDs(state, machine?.tags || null)
   );
   const toggleMenu = useToggleMenu(onToggleMenu || null);
-  const user = useSelector((state: RootState) =>
-    userSelectors.getByUsername(state, machine?.owner || "")
-  );
+  const user =
+    useUsers({ query: { username_or_email: machine?.owner || "" } }).data
+      ?.items[0] || null;
   const ownerDisplay = showFullName
     ? user?.last_name || machine?.owner || "-"
     : machine?.owner || "-";

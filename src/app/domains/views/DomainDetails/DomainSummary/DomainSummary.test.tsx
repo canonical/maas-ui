@@ -1,5 +1,4 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
+import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import DomainSummary, { Labels as DomainSummaryLabels } from "./DomainSummary";
@@ -7,19 +6,21 @@ import DomainSummary, { Labels as DomainSummaryLabels } from "./DomainSummary";
 import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   screen,
-  render,
-  renderWithBrowserRouter,
+  renderWithProviders,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("DomainSummary", () => {
   it("render nothing if domain doesn't exist", () => {
     const state = factory.rootState();
-    renderWithBrowserRouter(<DomainSummary id={1} />, {
+    renderWithProviders(<DomainSummary id={1} />, {
       state,
     });
 
@@ -41,7 +42,7 @@ describe("DomainSummary", () => {
       }),
     });
 
-    renderWithBrowserRouter(<DomainSummary id={1} />, {
+    renderWithProviders(<DomainSummary id={1} />, {
       state,
     });
 
@@ -56,25 +57,27 @@ describe("DomainSummary", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("doesn't render Edit button when user is not admin", () => {
+  it("doesn't render Edit button when user is not admin", async () => {
     const state = factory.rootState({
       domain: factory.domainState({
         items: [factory.domain({ id: 1, name: "test" })],
       }),
-      user: factory.userState({
-        auth: factory.authState({
-          user: factory.user({ is_superuser: false }),
-        }),
-      }),
     });
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.user({ is_superuser: false })
+      )
+    );
 
-    renderWithBrowserRouter(<DomainSummary id={1} />, {
+    renderWithProviders(<DomainSummary id={1} />, {
       state,
     });
 
-    expect(
-      screen.queryByRole("button", { name: EditableSectionLabels.EditButton })
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("button", { name: EditableSectionLabels.EditButton })
+      ).not.toBeInTheDocument()
+    );
   });
 
   describe("when user is admin", () => {
@@ -90,16 +93,11 @@ describe("DomainSummary", () => {
             }),
           ],
         }),
-        user: factory.userState({
-          auth: factory.authState({
-            user: factory.user({ is_superuser: true }),
-          }),
-        }),
       });
     });
 
     it("renders the Edit button", () => {
-      renderWithBrowserRouter(<DomainSummary id={1} />, {
+      renderWithProviders(<DomainSummary id={1} />, {
         state,
       });
 
@@ -111,7 +109,7 @@ describe("DomainSummary", () => {
     });
 
     it("renders the form when Edit button is clicked", async () => {
-      renderWithBrowserRouter(<DomainSummary id={1} />, {
+      renderWithProviders(<DomainSummary id={1} />, {
         state,
       });
 
@@ -130,7 +128,7 @@ describe("DomainSummary", () => {
     });
 
     it("closes the form when Cancel button is clicked", async () => {
-      renderWithBrowserRouter(<DomainSummary id={1} />, {
+      renderWithProviders(<DomainSummary id={1} />, {
         state,
       });
 
@@ -153,13 +151,7 @@ describe("DomainSummary", () => {
     it("calls actions.update on save click", async () => {
       const store = mockStore(state);
 
-      render(
-        <Provider store={store}>
-          <MemoryRouter>
-            <DomainSummary id={1} />
-          </MemoryRouter>
-        </Provider>
-      );
+      renderWithProviders(<DomainSummary id={1} />, { store });
 
       await userEvent.click(
         screen.getAllByRole("button", {

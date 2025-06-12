@@ -43,16 +43,16 @@ const authResolvers = {
         return HttpResponse.json(error, { status: error.code });
       }),
   },
-  getThisUser: {
+  getCurrentUser: {
     resolved: false,
     handler: (data = mockAuth) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/me_with_summary`, () => {
-        authResolvers.getThisUser.resolved = true;
+        authResolvers.getCurrentUser.resolved = true;
         return HttpResponse.json(data);
       }),
     error: (error: GetMeWithSummaryError = mockAuthenticateError) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/me_with_summary`, () => {
-        authResolvers.getThisUser.resolved = true;
+        authResolvers.getCurrentUser.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
