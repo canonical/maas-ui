@@ -30,7 +30,7 @@ export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
   });
 };
 
-export const useGetThisUser = (options?: Options<GetMeWithSummaryData>) => {
+export const useGetCurrentUser = (options?: Options<GetMeWithSummaryData>) => {
   return useWebsocketAwareQuery(
     getMeWithSummaryOptions(options) as UseQueryOptions<
       GetMeWithSummaryResponse,
