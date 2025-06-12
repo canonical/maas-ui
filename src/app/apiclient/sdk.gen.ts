@@ -15,24 +15,48 @@ import type {
   LoginData,
   LoginResponse,
   LoginError,
+  GetConfigurationData,
+  GetConfigurationResponse,
+  GetConfigurationError,
+  GetConfigurationsData,
+  GetConfigurationsResponse,
+  GetConfigurationsError,
   ListEventsData,
   ListEventsResponse,
   ListEventsError,
+  ClearAllDiscoveriesWithOptionalIpAndMacData,
+  ClearAllDiscoveriesWithOptionalIpAndMacResponse,
+  ClearAllDiscoveriesWithOptionalIpAndMacError,
+  ListDiscoveriesData,
+  ListDiscoveriesResponse,
+  ListDiscoveriesError,
+  ClearNeighboursDiscoveriesData,
+  ClearNeighboursDiscoveriesResponse,
+  ClearNeighboursDiscoveriesError,
+  ClearRdnsAndMdnsDiscoveriesData,
+  ClearRdnsAndMdnsDiscoveriesResponse,
+  ClearRdnsAndMdnsDiscoveriesError,
+  GetDiscoveryData,
+  GetDiscoveryResponse,
+  GetDiscoveryError,
   ListDomainsData,
   ListDomainsResponse,
   ListDomainsError,
   CreateDomainData,
   CreateDomainResponse,
   CreateDomainError,
+  GetDomainRrsetsData,
+  GetDomainRrsetsResponse,
+  GetDomainRrsetsError,
+  CreateDomainRrsetsData,
+  CreateDomainRrsetsResponse,
+  CreateDomainRrsetsError,
   DeleteDomainData,
   DeleteDomainResponse,
   DeleteDomainError,
   GetDomainData,
   GetDomainResponse,
   GetDomainError,
-  GetDomainRrsetsData,
-  GetDomainRrsetsResponse,
-  GetDomainRrsetsError,
   ListFabricsData,
   ListFabricsResponse,
   ListFabricsError,
@@ -78,6 +102,39 @@ import type {
   ListMachinesData,
   ListMachinesResponse,
   ListMachinesError,
+  ListNotificationsData,
+  ListNotificationsResponse,
+  ListNotificationsError,
+  CreateNotificationData,
+  CreateNotificationResponse,
+  CreateNotificationError,
+  DeleteNotificationData,
+  DeleteNotificationResponse,
+  DeleteNotificationError,
+  GetNotificationData,
+  GetNotificationResponse,
+  GetNotificationError,
+  UpdateNotificationData,
+  UpdateNotificationResponse,
+  UpdateNotificationError,
+  DismissNotificationData,
+  DismissNotificationResponse,
+  DismissNotificationError,
+  ListPackageRepositoriesData,
+  ListPackageRepositoriesResponse,
+  ListPackageRepositoriesError,
+  CreatePackageRepositoryData,
+  CreatePackageRepositoryResponse,
+  CreatePackageRepositoryError,
+  DeletePackageRepositoryData,
+  DeletePackageRepositoryResponse,
+  DeletePackageRepositoryError,
+  GetPackageRepositoryData,
+  GetPackageRepositoryResponse,
+  GetPackageRepositoryError,
+  UpdatePackageRepositoryData,
+  UpdatePackageRepositoryResponse,
+  UpdatePackageRepositoryError,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsResponse,
   ListFabricVlanSubnetReservedIpsError,
@@ -111,6 +168,21 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryResponse,
   ListResourcePoolsWithSummaryError,
+  ListFabricVlanSubnetStaticroutesData,
+  ListFabricVlanSubnetStaticroutesResponse,
+  ListFabricVlanSubnetStaticroutesError,
+  CreateFabricVlanSubnetStaticrouteData,
+  CreateFabricVlanSubnetStaticrouteResponse,
+  CreateFabricVlanSubnetStaticrouteError,
+  DeleteFabricVlanSubnetStaticrouteData,
+  DeleteFabricVlanSubnetStaticrouteResponse,
+  DeleteFabricVlanSubnetStaticrouteError,
+  GetFabricVlanSubnetStaticrouteData,
+  GetFabricVlanSubnetStaticrouteResponse,
+  GetFabricVlanSubnetStaticrouteError,
+  UpdateFabricVlanSubnetStaticrouteData,
+  UpdateFabricVlanSubnetStaticrouteResponse,
+  UpdateFabricVlanSubnetStaticrouteError,
   ListSpacesData,
   ListSpacesResponse,
   ListSpacesError,
@@ -153,6 +225,9 @@ import type {
   GetUserSslkeyData,
   GetUserSslkeyResponse,
   GetUserSslkeyError,
+  GetUserSslkeysWithSummaryData,
+  GetUserSslkeysWithSummaryResponse,
+  GetUserSslkeysWithSummaryError,
   ListFabricVlanSubnetsData,
   ListFabricVlanSubnetsResponse,
   ListFabricVlanSubnetsError,
@@ -168,9 +243,33 @@ import type {
   GetFabricVlanSubnetData,
   GetFabricVlanSubnetResponse,
   GetFabricVlanSubnetError,
+  ListTagsData,
+  ListTagsResponse,
+  ListTagsError,
+  CreateTagData,
+  CreateTagResponse,
+  CreateTagError,
+  DeleteTagData,
+  DeleteTagResponse,
+  DeleteTagError,
+  GetTagData,
+  GetTagResponse,
+  GetTagError,
+  UpdateTagData,
+  UpdateTagResponse,
+  UpdateTagError,
+  GetMeWithSummaryData,
+  GetMeWithSummaryResponse,
+  GetMeWithSummaryError,
   GetUserInfoData,
   GetUserInfoResponse,
   GetUserInfoError,
+  CompleteIntroData,
+  CompleteIntroResponse,
+  CompleteIntroError,
+  ChangePasswordUserData,
+  ChangePasswordUserResponse,
+  ChangePasswordUserError,
   ListUsersData,
   ListUsersResponse,
   ListUsersError,
@@ -186,6 +285,12 @@ import type {
   UpdateUserData,
   UpdateUserResponse,
   UpdateUserError,
+  ChangePasswordAdminData,
+  ChangePasswordAdminResponse,
+  ChangePasswordAdminError,
+  ListUsersWithSummaryData,
+  ListUsersWithSummaryResponse,
+  ListUsersWithSummaryError,
   ListFabricVlansData,
   ListFabricVlansResponse,
   ListFabricVlansError,
@@ -282,6 +387,50 @@ export const login = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Get Configuration
+ */
+export const getConfiguration = <ThrowOnError extends boolean = false>(
+  options: Options<GetConfigurationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetConfigurationResponse,
+    GetConfigurationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/configurations/{name}",
+    ...options,
+  });
+};
+
+/**
+ * Get Configurations
+ */
+export const getConfigurations = <ThrowOnError extends boolean = false>(
+  options?: Options<GetConfigurationsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetConfigurationsResponse,
+    GetConfigurationsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/configurations",
+    ...options,
+  });
+};
+
+/**
  * List Events
  */
 export const listEvents = <ThrowOnError extends boolean = false>(
@@ -299,6 +448,122 @@ export const listEvents = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/events",
+    ...options,
+  });
+};
+
+/**
+ * Clear All Discoveries With Optional Ip And Mac
+ */
+export const clearAllDiscoveriesWithOptionalIpAndMac = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ClearAllDiscoveriesWithOptionalIpAndMacData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).delete<
+    ClearAllDiscoveriesWithOptionalIpAndMacResponse,
+    ClearAllDiscoveriesWithOptionalIpAndMacError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries",
+    ...options,
+  });
+};
+
+/**
+ * List Discoveries
+ */
+export const listDiscoveries = <ThrowOnError extends boolean = false>(
+  options?: Options<ListDiscoveriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListDiscoveriesResponse,
+    ListDiscoveriesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries",
+    ...options,
+  });
+};
+
+/**
+ * Clear Neighbours Discoveries
+ */
+export const clearNeighboursDiscoveries = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ClearNeighboursDiscoveriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).delete<
+    ClearNeighboursDiscoveriesResponse,
+    ClearNeighboursDiscoveriesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries:clear_neighbours",
+    ...options,
+  });
+};
+
+/**
+ * Clear Rdns And Mdns Discoveries
+ */
+export const clearRdnsAndMdnsDiscoveries = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ClearRdnsAndMdnsDiscoveriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).delete<
+    ClearRdnsAndMdnsDiscoveriesResponse,
+    ClearRdnsAndMdnsDiscoveriesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries:clear_dns",
+    ...options,
+  });
+};
+
+/**
+ * Get Discovery
+ */
+export const getDiscovery = <ThrowOnError extends boolean = false>(
+  options: Options<GetDiscoveryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetDiscoveryResponse,
+    GetDiscoveryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/discoveries/{discovery_id}",
     ...options,
   });
 };
@@ -352,6 +617,54 @@ export const createDomain = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Get Domain Rrsets
+ */
+export const getDomainRrsets = <ThrowOnError extends boolean = false>(
+  options: Options<GetDomainRrsetsData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetDomainRrsetsResponse,
+    GetDomainRrsetsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
+    ...options,
+  });
+};
+
+/**
+ * Create Domain Rrsets
+ */
+export const createDomainRrsets = <ThrowOnError extends boolean = false>(
+  options: Options<CreateDomainRrsetsData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateDomainRrsetsResponse,
+    CreateDomainRrsetsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
  * Delete Domain
  */
 export const deleteDomain = <ThrowOnError extends boolean = false>(
@@ -391,28 +704,6 @@ export const getDomain = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/domains/{domain_id}",
-    ...options,
-  });
-};
-
-/**
- * Get Domain Rrsets
- */
-export const getDomainRrsets = <ThrowOnError extends boolean = false>(
-  options: Options<GetDomainRrsetsData, ThrowOnError>
-) => {
-  return (options.client ?? _heyApiClient).get<
-    GetDomainRrsetsResponse,
-    GetDomainRrsetsError,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
     ...options,
   });
 };
@@ -774,6 +1065,264 @@ export const listMachines = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Notifications
+ */
+export const listNotifications = <ThrowOnError extends boolean = false>(
+  options?: Options<ListNotificationsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListNotificationsResponse,
+    ListNotificationsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications",
+    ...options,
+  });
+};
+
+/**
+ * Create Notification
+ */
+export const createNotification = <ThrowOnError extends boolean = false>(
+  options: Options<CreateNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateNotificationResponse,
+    CreateNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Delete Notification
+ */
+export const deleteNotification = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteNotificationResponse,
+    DeleteNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications/{notification_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Notification
+ */
+export const getNotification = <ThrowOnError extends boolean = false>(
+  options: Options<GetNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetNotificationResponse,
+    GetNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications/{notification_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Notification
+ */
+export const updateNotification = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateNotificationResponse,
+    UpdateNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications/{notification_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Dismiss Notification
+ */
+export const dismissNotification = <ThrowOnError extends boolean = false>(
+  options: Options<DismissNotificationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    DismissNotificationResponse,
+    DismissNotificationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/notifications/{notification_id}:dismiss",
+    ...options,
+  });
+};
+
+/**
+ * List Package Repositories
+ */
+export const listPackageRepositories = <ThrowOnError extends boolean = false>(
+  options?: Options<ListPackageRepositoriesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListPackageRepositoriesResponse,
+    ListPackageRepositoriesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories",
+    ...options,
+  });
+};
+
+/**
+ * Create Package Repository
+ */
+export const createPackageRepository = <ThrowOnError extends boolean = false>(
+  options: Options<CreatePackageRepositoryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreatePackageRepositoryResponse,
+    CreatePackageRepositoryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Delete Package Repository
+ */
+export const deletePackageRepository = <ThrowOnError extends boolean = false>(
+  options: Options<DeletePackageRepositoryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeletePackageRepositoryResponse,
+    DeletePackageRepositoryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Package Repository
+ */
+export const getPackageRepository = <ThrowOnError extends boolean = false>(
+  options: Options<GetPackageRepositoryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetPackageRepositoryResponse,
+    GetPackageRepositoryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Package Repository
+ */
+export const updatePackageRepository = <ThrowOnError extends boolean = false>(
+  options: Options<UpdatePackageRepositoryData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdatePackageRepositoryResponse,
+    UpdatePackageRepositoryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
  * List Fabric Vlan Subnet Reserved Ips
  */
 export const listFabricVlanSubnetReservedIps = <
@@ -1041,6 +1590,134 @@ export const listResourcePoolsWithSummary = <
     ],
     url: "/MAAS/a/v3/resource_pools_with_summary",
     ...options,
+  });
+};
+
+/**
+ * List Fabric Vlan Subnet Staticroutes
+ */
+export const listFabricVlanSubnetStaticroutes = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ListFabricVlanSubnetStaticroutesData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    ListFabricVlanSubnetStaticroutesResponse,
+    ListFabricVlanSubnetStaticroutesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes",
+    ...options,
+  });
+};
+
+/**
+ * Create Fabric Vlan Subnet Staticroute
+ */
+export const createFabricVlanSubnetStaticroute = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<CreateFabricVlanSubnetStaticrouteData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateFabricVlanSubnetStaticrouteResponse,
+    CreateFabricVlanSubnetStaticrouteError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Delete Fabric Vlan Subnet Staticroute
+ */
+export const deleteFabricVlanSubnetStaticroute = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<DeleteFabricVlanSubnetStaticrouteData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteFabricVlanSubnetStaticrouteResponse,
+    DeleteFabricVlanSubnetStaticrouteError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Fabric Vlan Subnet Staticroute
+ */
+export const getFabricVlanSubnetStaticroute = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetFabricVlanSubnetStaticrouteData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetFabricVlanSubnetStaticrouteResponse,
+    GetFabricVlanSubnetStaticrouteError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Fabric Vlan Subnet Staticroute
+ */
+export const updateFabricVlanSubnetStaticroute = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<UpdateFabricVlanSubnetStaticrouteData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateFabricVlanSubnetStaticrouteResponse,
+    UpdateFabricVlanSubnetStaticrouteError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };
 
@@ -1373,6 +2050,29 @@ export const getUserSslkey = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List sslkeys with a summary. ONLY FOR INTERNAL USAGE.
+ * List sslkeys with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
+export const getUserSslkeysWithSummary = <ThrowOnError extends boolean = false>(
+  options?: Options<GetUserSslkeysWithSummaryData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetUserSslkeysWithSummaryResponse,
+    GetUserSslkeysWithSummaryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sslkeys_with_summary",
+    ...options,
+  });
+};
+
+/**
  * List Fabric Vlan Subnets
  */
 export const listFabricVlanSubnets = <ThrowOnError extends boolean = false>(
@@ -1491,6 +2191,147 @@ export const getFabricVlanSubnet = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Tags
+ */
+export const listTags = <ThrowOnError extends boolean = false>(
+  options?: Options<ListTagsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListTagsResponse,
+    ListTagsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags",
+    ...options,
+  });
+};
+
+/**
+ * Create Tag
+ */
+export const createTag = <ThrowOnError extends boolean = false>(
+  options: Options<CreateTagData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateTagResponse,
+    CreateTagError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Delete Tag
+ */
+export const deleteTag = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteTagData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteTagResponse,
+    DeleteTagError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags/{tag_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Tag
+ */
+export const getTag = <ThrowOnError extends boolean = false>(
+  options: Options<GetTagData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetTagResponse,
+    GetTagError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags/{tag_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Tag
+ */
+export const updateTag = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateTagData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateTagResponse,
+    UpdateTagError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags/{tag_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Get user with a summary. ONLY FOR INTERNAL USAGE.
+ * Get user with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
+export const getMeWithSummary = <ThrowOnError extends boolean = false>(
+  options?: Options<GetMeWithSummaryData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetMeWithSummaryResponse,
+    GetMeWithSummaryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me_with_summary",
+    ...options,
+  });
+};
+
+/**
  * Get User Info
  */
 export const getUserInfo = <ThrowOnError extends boolean = false>(
@@ -1509,6 +2350,54 @@ export const getUserInfo = <ThrowOnError extends boolean = false>(
     ],
     url: "/MAAS/a/v3/users/me",
     ...options,
+  });
+};
+
+/**
+ * Complete Intro
+ */
+export const completeIntro = <ThrowOnError extends boolean = false>(
+  options?: Options<CompleteIntroData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    CompleteIntroResponse,
+    CompleteIntroError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me:complete_intro",
+    ...options,
+  });
+};
+
+/**
+ * Change Password User
+ */
+export const changePasswordUser = <ThrowOnError extends boolean = false>(
+  options: Options<ChangePasswordUserData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    ChangePasswordUserResponse,
+    ChangePasswordUserError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me:change_password",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };
 
@@ -1627,6 +2516,55 @@ export const updateUser = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
+  });
+};
+
+/**
+ * Change Password Admin
+ */
+export const changePasswordAdmin = <ThrowOnError extends boolean = false>(
+  options: Options<ChangePasswordAdminData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    ChangePasswordAdminResponse,
+    ChangePasswordAdminError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/{user_id}:change_password",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * List users with a summary. ONLY FOR INTERNAL USAGE.
+ * List users with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
+export const listUsersWithSummary = <ThrowOnError extends boolean = false>(
+  options?: Options<ListUsersWithSummaryData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListUsersWithSummaryResponse,
+    ListUsersWithSummaryError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users_with_summary",
+    ...options,
   });
 };
 

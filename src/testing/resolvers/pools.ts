@@ -6,6 +6,7 @@ import { BASE_URL } from "../utils";
 import type {
   CreateResourcePoolError,
   DeleteResourcePoolError,
+  GetResourcePoolError,
   ListResourcePoolsError,
   ListResourcePoolsResponse,
   UpdateResourcePoolError,
@@ -47,6 +48,12 @@ const mockListPoolsError: ListResourcePoolsError = {
   kind: "Error", // This will always be 'Error' for every error response
 };
 
+const mockGetPoolError: GetResourcePoolError = {
+  message: "Not found",
+  code: 404,
+  kind: "Error",
+};
+
 const mockCreatePoolError: CreateResourcePoolError = {
   message: "A pool with this name already exists.",
   code: 409,
@@ -56,12 +63,6 @@ const mockCreatePoolError: CreateResourcePoolError = {
 const mockUpdatePoolError: UpdateResourcePoolError = {
   message: "Internal server error",
   code: 500,
-  kind: "Error",
-};
-
-const mockDeletePoolError: DeleteResourcePoolError = {
-  message: "Not found",
-  code: 404,
   kind: "Error",
 };
 
@@ -89,6 +90,11 @@ const poolsResolvers = {
         const pool = mockPools.items.find((pool) => pool.id === id);
         poolsResolvers.getPool.resolved = true;
         return pool ? HttpResponse.json(pool) : HttpResponse.error();
+      }),
+    error: (error: GetResourcePoolError = mockGetPoolError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users/:id`, () => {
+        poolsResolvers.getPool.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
       }),
   },
   createPool: {
@@ -124,7 +130,7 @@ const poolsResolvers = {
         poolsResolvers.deletePool.resolved = true;
         return HttpResponse.json({}, { status: 204 });
       }),
-    error: (error: DeleteResourcePoolError = mockDeletePoolError) =>
+    error: (error: DeleteResourcePoolError = mockGetPoolError) =>
       http.delete(`${BASE_URL}MAAS/a/v3/resource_pools/:id`, () => {
         poolsResolvers.deletePool.resolved = true;
         return HttpResponse.json(error, { status: error.code });
