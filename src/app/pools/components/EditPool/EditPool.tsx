@@ -34,7 +34,7 @@ const EditPool = ({ id, closeForm }: EditPoolProps): ReactElement => {
       {pool.isPending && <Spinner text="Loading..." />}
       {pool.isError && (
         <Notification data-testid="no-such-pool-error" severity="negative">
-          Resource pool with id {id} does not exist.
+          {pool.error.message}
         </Notification>
       )}
       {pool.isSuccess && pool.data && (
