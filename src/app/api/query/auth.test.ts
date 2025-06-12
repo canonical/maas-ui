@@ -2,7 +2,7 @@ import {
   useAuthenticate,
   useCompleteIntro,
   useGetIsSuperUser,
-  useGetThisUser,
+  useGetCurrentUser,
 } from "@/app/api/query/auth";
 import { authResolvers, mockAuth } from "@/testing/resolvers/auth";
 import {
@@ -33,7 +33,7 @@ describe("useAuthenticate", () => {
 describe("useGetThisUser", () => {
   it("should return the correct user", async () => {
     const expectedUser = mockAuth;
-    const { result } = renderHookWithProviders(() => useGetThisUser());
+    const { result } = renderHookWithProviders(() => useGetCurrentUser());
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toEqual(expectedUser);
   });

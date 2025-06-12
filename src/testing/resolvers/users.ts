@@ -11,21 +11,21 @@ import type {
   UpdateUserError,
   UsersWithSummaryListResponse,
 } from "@/app/apiclient";
-import { user } from "@/testing/factories";
+import { user as userFactory } from "@/testing/factories";
 
 const mockUsers: ListUsersWithSummaryResponse = {
   items: [
-    user({
+    userFactory({
       id: 1,
       email: "user1@example.com",
       username: "user1",
     }),
-    user({
+    userFactory({
       id: 2,
       email: "user2@example.com",
       username: "user2",
     }),
-    user({
+    userFactory({
       id: 3,
       email: "user3@example.com",
       username: "user3",
