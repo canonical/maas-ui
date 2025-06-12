@@ -97,7 +97,6 @@ import type { TagState } from "@/app/store/tag/types";
 import type { TagStateList } from "@/app/store/tag/types/base";
 import type { TokenState } from "@/app/store/token/types";
 import type { EventError } from "@/app/store/types/state";
-import type { AuthState, UserState } from "@/app/store/user/types";
 import { DEFAULT_STATUSES as DEFAULT_VLAN_STATUSES } from "@/app/store/vlan/slice";
 import type {
   VLAN,
@@ -124,15 +123,6 @@ const defaultGeneralState = {
   loaded: false,
   loading: false,
 };
-
-export const authState = define<AuthState>({
-  errors: null,
-  loaded: false,
-  loading: false,
-  saved: false,
-  saving: false,
-  user: null,
-});
 
 export const bootResourceState = define<BootResourceState>({
   connectionError: false,
@@ -369,16 +359,6 @@ export const tokenState = define<TokenState>({
 export const packageRepositoryState = define<PackageRepositoryState>({
   ...defaultState,
   errors: null,
-});
-
-export const userState = define<UserState>({
-  ...defaultState,
-  auth: authState,
-  errors: null,
-  eventErrors: () => [],
-  statuses: () => ({
-    markingIntroComplete: false,
-  }),
 });
 
 export const podStatus = define<PodStatus>(DEFAULT_POD_STATUSES);
@@ -657,7 +637,6 @@ export const rootState = define<RootState>({
   subnet: subnetState,
   tag: tagState,
   token: tokenState,
-  user: userState,
   vlan: vlanState,
   vmcluster: vmClusterState,
 });
