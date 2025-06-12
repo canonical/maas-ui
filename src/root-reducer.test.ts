@@ -2,6 +2,14 @@ import createRootReducer from "./root-reducer";
 
 import * as factory from "@/testing/factories";
 
+vi.mock("@/app/api/query/auth", () => ({
+  useGetCurrentUser: vi.fn(() => ({
+    data: null,
+    isLoading: false,
+    error: null,
+  })),
+}));
+
 describe("rootReducer", () => {
   it(`should reset app to initial state on LOGOUT_SUCCESS, except status which
     resets to authenticating = false`, () => {
