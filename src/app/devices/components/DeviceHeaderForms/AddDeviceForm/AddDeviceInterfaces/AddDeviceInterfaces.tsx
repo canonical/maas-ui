@@ -33,7 +33,11 @@ const AddDeviceInterfaceFields = ({
 
   useEffect(() => {
     if (iface.ip_assignment === DeviceIpAssignment.STATIC && subnet) {
-      void setFieldValue(`interfaces[${iface.id}].subnet_cidr`, subnet.cidr);
+      setFieldValue(`interfaces[${iface.id}].subnet_cidr`, subnet.cidr).catch(
+        (reason) => {
+          throw new Error(reason);
+        }
+      );
     }
   }, [iface.id, iface.ip_assignment, setFieldValue, subnet]);
 
@@ -55,8 +59,16 @@ const AddDeviceInterfaceFields = ({
         name={`interfaces[${iface.id}].ip_assignment`}
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           handleChange(e);
-          void setFieldValue(`interfaces[${iface.id}].subnet`, "");
-          void setFieldValue(`interfaces[${iface.id}].ip_address`, "");
+          setFieldValue(`interfaces[${iface.id}].subnet`, "").catch(
+            (reason) => {
+              throw new Error(reason);
+            }
+          );
+          setFieldValue(`interfaces[${iface.id}].ip_address`, "").catch(
+            (reason) => {
+              throw new Error(reason);
+            }
+          );
         }}
         required
       />
@@ -126,10 +138,12 @@ export const AddDeviceInterfaces = (): React.ReactElement => {
   };
 
   const removeInterface = (id: number) => {
-    void setFieldValue(
+    setFieldValue(
       "interfaces",
       interfaces.filter((iface) => iface.id !== id)
-    );
+    ).catch((reason) => {
+      throw new Error(reason);
+    });
   };
 
   return (

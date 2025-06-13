@@ -76,8 +76,12 @@ const InterfaceFormFields = ({
             name="ip_assignment"
             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
               handleChange(e);
-              void setFieldValue("subnet", "");
-              void setFieldValue("ip_address", "");
+              setFieldValue("subnet", "").catch((reason) => {
+                throw new Error(reason);
+              });
+              setFieldValue("ip_address", "").catch((reason) => {
+                throw new Error(reason);
+              });
             }}
           />
           {showSubnetField && (

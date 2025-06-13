@@ -44,8 +44,12 @@ export const AddPartitionFields = ({
             const value =
               e.target.value !== "" ? parseFloat(e.target.value) : "";
             handleChange(e);
-            void setFieldValue("partitionSize", value);
-            void setFieldTouched("partitionSize", true, false);
+            setFieldValue("partitionSize", value).catch((reason) => {
+              throw new Error(reason);
+            });
+            setFieldTouched("partitionSize", true, false).catch((reason) => {
+              throw new Error(reason);
+            });
           }}
           required
           step="any"

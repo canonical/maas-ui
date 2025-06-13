@@ -51,10 +51,16 @@ export const FilesystemFields = ({
             // Swap filesystems must be mounted at "none" instead of an empty
             // string in order to work with the API.
             if (e.target.value === "swap") {
-              void setFieldTouched("mountPoint");
-              void setFieldValue("mountPoint", "none");
+              setFieldTouched("mountPoint").catch((reason) => {
+                throw new Error(reason);
+              });
+              setFieldValue("mountPoint", "none").catch((reason) => {
+                throw new Error(reason);
+              });
             } else {
-              void setFieldValue("mountPoint", "");
+              setFieldValue("mountPoint", "").catch((reason) => {
+                throw new Error(reason);
+              });
             }
           }}
           options={[

@@ -17,7 +17,11 @@ export const MacAddressField = ({
     <FormikField
       name={name}
       onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-        void setFieldValue(name, formatMacAddress(evt.target.value));
+        setFieldValue(name, formatMacAddress(evt.target.value)).catch(
+          (reason) => {
+            throw new Error(reason);
+          }
+        );
       }}
       placeholder="00:00:00:00:00:00"
       type="text"

@@ -114,17 +114,21 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
     while (ids.includes(id)) {
       id++;
     }
-    void setFieldValue("interfaces", [
+    setFieldValue("interfaces", [
       ...interfaces,
       generateNewInterface(id, firstPxeSubnet?.id),
-    ]);
+    ]).catch((reason) => {
+      throw new Error(reason);
+    });
   };
 
   const removeInterface = (id: number) => {
-    void setFieldValue(
+    setFieldValue(
       "interfaces",
       interfaces.filter((iface) => iface.id !== id)
-    );
+    ).catch((reason) => {
+      throw new Error(reason);
+    });
   };
 
   return (
@@ -176,7 +180,11 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
                 name={`interfaces[${i}].space`}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   handleChange(e);
-                  void setFieldValue(`interfaces[${i}].subnet`, "");
+                  setFieldValue(`interfaces[${i}].subnet`, "").catch(
+                    (reason) => {
+                      throw new Error(reason);
+                    }
+                  );
                 }}
                 options={[
                   {
@@ -195,7 +203,11 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
                 iface={iface}
                 index={i}
                 selectSubnet={(subnetID?: number) => {
-                  void setFieldValue(`interfaces[${i}].subnet`, subnetID);
+                  setFieldValue(`interfaces[${i}].subnet`, subnetID).catch(
+                    (reason) => {
+                      throw new Error(reason);
+                    }
+                  );
                 }}
               />
               <Row>

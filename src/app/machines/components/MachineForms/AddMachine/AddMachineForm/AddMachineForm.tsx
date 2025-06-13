@@ -194,7 +194,7 @@ export const AddMachineForm = ({
           saving={machineSaving}
           secondarySubmit={(_, { submitForm }) => {
             setSecondarySubmit(true);
-            void submitForm();
+            submitForm();
           }}
           secondarySubmitLabel="Save and add another"
           submitLabel="Save machine"

@@ -91,7 +91,7 @@ const ActionForm = <V extends object, E = null>({
   return (
     <FormikForm<V, E>
       onSubmit={(values, formikHelpers) => {
-        void onSubmit(values, formikHelpers);
+        onSubmit(values, formikHelpers);
         // Set selected count in component state once form is submitted, so
         // that the saving label is not affected by updates to the component's
         // selectedCount prop, e.g. unselecting or deleting items.

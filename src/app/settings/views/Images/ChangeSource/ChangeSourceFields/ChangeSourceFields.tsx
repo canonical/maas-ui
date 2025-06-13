@@ -36,9 +36,15 @@ const ChangeSourceFields = (): ReactElement => {
               name="source_type"
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
                 handleChange(e);
-                void setFieldValue("url", "");
-                void setFieldValue("keyring_data", "");
-                void setFieldValue("keyring_filename", "");
+                setFieldValue("url", "").catch((reason) => {
+                  throw new Error(reason);
+                });
+                setFieldValue("keyring_data", "").catch((reason) => {
+                  throw new Error(reason);
+                });
+                setFieldValue("keyring_filename", "").catch((reason) => {
+                  throw new Error(reason);
+                });
               }}
               type="radio"
               value={BootResourceSourceType.MAAS_IO}
@@ -66,8 +72,12 @@ const ChangeSourceFields = (): ReactElement => {
             <ShowAdvanced
               initialIsShown={!!(keyring_data || keyring_filename)}
               onAfterHide={() => {
-                void setFieldValue("keyring_data", "");
-                void setFieldValue("keyring_filename", "");
+                setFieldValue("keyring_data", "").catch((reason) => {
+                  throw new Error(reason);
+                });
+                setFieldValue("keyring_filename", "").catch((reason) => {
+                  throw new Error(reason);
+                });
               }}
             >
               <FormikField

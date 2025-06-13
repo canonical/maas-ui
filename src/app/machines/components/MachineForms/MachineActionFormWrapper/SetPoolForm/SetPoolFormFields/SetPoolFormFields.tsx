@@ -16,8 +16,12 @@ export const SetPoolFormFields = (): React.ReactElement => {
     handleChange(evt);
     // Reset the name field when changing the radio options otherwise the
     // selected/provided name will appear in the different name inputs.
-    void setFieldValue("name", "");
-    void setFieldTouched("name", false, false);
+    setFieldValue("name", "").catch((reason) => {
+      throw new Error(reason);
+    });
+    setFieldTouched("name", false, false).catch((reason) => {
+      throw new Error(reason);
+    });
   };
 
   return (

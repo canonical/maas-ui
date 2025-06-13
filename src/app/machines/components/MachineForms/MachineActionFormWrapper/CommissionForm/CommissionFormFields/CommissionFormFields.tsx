@@ -58,7 +58,11 @@ export const CommissionFormFields = ({
           label="Commissioning scripts"
           name="commissioningScripts"
           onTagsUpdate={(selectedScripts: Tag[]) => {
-            void setFieldValue("commissioningScripts", selectedScripts);
+            setFieldValue("commissioningScripts", selectedScripts).catch(
+              (reason) => {
+                throw new Error(reason);
+              }
+            );
           }}
           placeholder="Select additional scripts"
           tags={commissioningScripts}
@@ -71,7 +75,9 @@ export const CommissionFormFields = ({
           label="Testing scripts"
           name="tests"
           onTagsUpdate={(selectedScripts: Tag[]) => {
-            void setFieldValue("testingScripts", selectedScripts);
+            setFieldValue("testingScripts", selectedScripts).catch((reason) => {
+              throw new Error(reason);
+            });
           }}
           placeholder="Select additional scripts"
           tags={testingScripts}
@@ -90,10 +96,12 @@ export const CommissionFormFields = ({
             name={`scriptInputs[${script.name}].url`}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
-              void setFieldValue(
+              setFieldValue(
                 `scriptInputs[${script.name}].url`,
                 e.target.value
-              );
+              ).catch((reason) => {
+                throw new Error(reason);
+              });
             }}
             type="text"
           />

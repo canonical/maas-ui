@@ -52,8 +52,12 @@ const generateCheckboxGroup = (
           const temp = [...values, field];
           newFields = fields.filter((oldField) => temp.includes(oldField));
         }
-        void setFieldValue(key, newFields);
-        void setFieldTouched(key, true);
+        setFieldValue(key, newFields).catch((reason) => {
+          throw new Error(reason);
+        });
+        setFieldTouched(key, true).catch((reason) => {
+          throw new Error(reason);
+        });
       }}
       type="checkbox"
       value={field}
@@ -100,7 +104,11 @@ const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
               label={Labels.EnableSources}
               name="disable_sources"
               onChange={() => {
-                void setFieldValue("disable_sources", !values.disable_sources);
+                setFieldValue("disable_sources", !values.disable_sources).catch(
+                  (reason) => {
+                    throw new Error(reason);
+                  }
+                );
               }}
               type="checkbox"
               wrapperClassName="u-no-margin--bottom"
@@ -141,7 +149,11 @@ const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
               label={Labels.EnableSources}
               name="disable_sources"
               onChange={() => {
-                void setFieldValue("disable_sources", !values.disable_sources);
+                setFieldValue("disable_sources", !values.disable_sources).catch(
+                  (reason) => {
+                    throw new Error(reason);
+                  }
+                );
               }}
               type="checkbox"
               wrapperClassName="u-no-margin--bottom"

@@ -67,7 +67,9 @@ export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {
               const newExtraMACs = [...extraMACs];
               newExtraMACs[i] = formatMacAddress(e.target.value);
               setExtraMACs(newExtraMACs);
-              void setFieldValue("extra_macs", newExtraMACs);
+              setFieldValue("extra_macs", newExtraMACs).catch((reason) => {
+                throw new Error(reason);
+              });
             }}
             placeholder="00:00:00:00:00:00"
             type="text"
@@ -79,7 +81,9 @@ export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {
             onClick={() => {
               const newExtraMACs = extraMACs.filter((_, j) => j !== i);
               setExtraMACs(newExtraMACs);
-              void setFieldValue("extra_macs", newExtraMACs);
+              setFieldValue("extra_macs", newExtraMACs).catch((reason) => {
+                throw new Error(reason);
+              });
             }}
             type="button"
           >

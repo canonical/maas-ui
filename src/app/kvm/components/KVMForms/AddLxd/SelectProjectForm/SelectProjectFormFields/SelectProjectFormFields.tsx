@@ -73,7 +73,9 @@ export const SelectProjectFormFields = ({
           name="project-select"
           onChange={() => {
             setNewProject(true);
-            void setFieldValue("existingProject", "");
+            setFieldValue("existingProject", "").catch((reason) => {
+              throw new Error(reason);
+            });
           }}
           type="radio"
         />
@@ -94,8 +96,14 @@ export const SelectProjectFormFields = ({
           name="project-select"
           onChange={() => {
             setNewProject(false);
-            void setFieldValue("newProject", "");
-            void setFieldValue("existingProject", freeProjects[0]?.name || "");
+            setFieldValue("newProject", "").catch((reason) => {
+              throw new Error(reason);
+            });
+            setFieldValue("existingProject", freeProjects[0]?.name || "").catch(
+              (reason) => {
+                throw new Error(reason);
+              }
+            );
           }}
           type="radio"
         />

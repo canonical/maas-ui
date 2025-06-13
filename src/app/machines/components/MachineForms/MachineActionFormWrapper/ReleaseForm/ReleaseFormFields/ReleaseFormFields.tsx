@@ -18,8 +18,12 @@ export const ReleaseFormFields = (): React.ReactElement => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             handleChange(e);
             if (!e.target.checked) {
-              void setFieldValue("quickErase", false);
-              void setFieldValue("secureErase", false);
+              setFieldValue("quickErase", false).catch((reason) => {
+                throw new Error(reason);
+              });
+              setFieldValue("secureErase", false).catch((reason) => {
+                throw new Error(reason);
+              });
             }
           }}
           type="checkbox"

@@ -195,10 +195,12 @@ export const TagFormChanges = ({
               newTags,
               "positive",
               (tag) => {
-                void setFieldValue(
+                setFieldValue(
                   "added",
                   values.added.filter((id) => tag.id !== toFormikNumber(id))
-                );
+                ).catch((reason) => {
+                  throw new Error(reason);
+                });
               },
               <>
                 <span className="u-nudge-left--small">{Label.Discard}</span>
@@ -215,10 +217,12 @@ export const TagFormChanges = ({
               newTags,
               "negative",
               (tag) => {
-                void setFieldValue(
+                setFieldValue(
                   "removed",
                   values.removed.filter((id) => tag.id !== toFormikNumber(id))
-                );
+                ).catch((reason) => {
+                  throw new Error(reason);
+                });
               },
               <>
                 <span className="u-nudge-left--small">{Label.Discard}</span>
@@ -235,10 +239,12 @@ export const TagFormChanges = ({
               newTags,
               "information",
               (tag) => {
-                void setFieldValue(
+                setFieldValue(
                   "removed",
                   values.removed.concat([tag.id.toString()])
-                );
+                ).catch((reason) => {
+                  throw new Error(reason);
+                });
               },
               <>
                 <span className="u-nudge-left--small">{Label.Remove}</span>

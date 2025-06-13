@@ -51,7 +51,9 @@ export const MachineSelect = ({
   );
   const handleSelect = (machine: Machine | null) => {
     handleClose();
-    void setFieldValue(name, machine?.system_id || null);
+    setFieldValue(name, machine?.system_id || null).catch((reason) => {
+      throw new Error(reason);
+    });
   };
   useOnEscapePressed(handleClose);
   const { machine } = useFetchMachine(value as string);
@@ -78,7 +80,9 @@ export const MachineSelect = ({
             onClick={() => {
               setIsOpen(!isOpen);
               if (!isOpen) {
-                void setFieldValue(name, "", false);
+                setFieldValue(name, "", false).catch((reason) => {
+                  throw new Error(reason);
+                });
               }
             }}
           >

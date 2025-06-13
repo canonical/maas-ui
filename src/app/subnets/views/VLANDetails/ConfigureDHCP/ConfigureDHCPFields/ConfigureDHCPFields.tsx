@@ -57,11 +57,15 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
               name="dhcpType"
               onChange={async (e: ChangeEvent) => {
                 await handleChange(e);
-                void setFieldValue(
+                setFieldValue(
                   "primaryRack",
                   connectedControllers[0]?.system_id || ""
-                );
-                void setFieldValue("relayVLAN", "");
+                ).catch((reason) => {
+                  throw new Error(reason);
+                });
+                setFieldValue("relayVLAN", "").catch((reason) => {
+                  throw new Error(reason);
+                });
               }}
               type="radio"
               value={DHCPType.CONTROLLERS}
@@ -125,9 +129,17 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
               name="dhcpType"
               onChange={async (e: ChangeEvent) => {
                 await handleChange(e);
-                void setFieldValue("relayVLAN", vlansWithDHCP[0]?.id || "");
-                void setFieldValue("primaryRack", "");
-                void setFieldValue("secondaryRack", "");
+                setFieldValue("relayVLAN", vlansWithDHCP[0]?.id || "").catch(
+                  (reason) => {
+                    throw new Error(reason);
+                  }
+                );
+                setFieldValue("primaryRack", "").catch((reason) => {
+                  throw new Error(reason);
+                });
+                setFieldValue("secondaryRack", "").catch((reason) => {
+                  throw new Error(reason);
+                });
               }}
               type="radio"
               value={DHCPType.RELAY}

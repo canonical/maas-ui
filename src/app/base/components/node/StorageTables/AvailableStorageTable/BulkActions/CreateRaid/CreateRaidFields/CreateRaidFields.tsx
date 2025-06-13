@@ -85,40 +85,59 @@ export const CreateRaidFields = ({
   ) => {
     if (isDisk(storageDevice)) {
       if (isSpareDevice) {
-        void setFieldValue("blockDeviceIds", [
+        setFieldValue("blockDeviceIds", [
           ...blockDeviceIds,
           storageDevice.id,
-        ]);
-        void setFieldValue(
+        ]).catch((reason) => {
+          throw new Error(reason);
+        });
+        setFieldValue(
           "spareBlockDeviceIds",
           spareBlockDeviceIds.filter((id) => id !== storageDevice.id)
-        );
+        ).catch((reason) => {
+          throw new Error(reason);
+        });
       } else {
-        void setFieldValue(
+        setFieldValue(
           "blockDeviceIds",
           blockDeviceIds.filter((id) => id !== storageDevice.id)
-        );
-        void setFieldValue("spareBlockDeviceIds", [
+        ).catch((reason) => {
+          throw new Error(reason);
+        });
+        setFieldValue("spareBlockDeviceIds", [
           ...spareBlockDeviceIds,
           storageDevice.id,
-        ]);
+        ]).catch((reason) => {
+          throw new Error(reason);
+        });
       }
     } else {
       if (isSpareDevice) {
-        void setFieldValue("partitionIds", [...partitionIds, storageDevice.id]);
-        void setFieldValue(
+        setFieldValue("partitionIds", [
+          ...partitionIds,
+          storageDevice.id,
+        ]).catch((reason) => {
+          throw new Error(reason);
+        });
+        setFieldValue(
           "sparePartitionIds",
           sparePartitionIds.filter((id) => id !== storageDevice.id)
-        );
+        ).catch((reason) => {
+          throw new Error(reason);
+        });
       } else {
-        void setFieldValue(
+        setFieldValue(
           "partitionIds",
           partitionIds.filter((id) => id !== storageDevice.id)
-        );
-        void setFieldValue("sparePartitionIds", [
+        ).catch((reason) => {
+          throw new Error(reason);
+        });
+        setFieldValue("sparePartitionIds", [
           ...sparePartitionIds,
           storageDevice.id,
-        ]);
+        ]).catch((reason) => {
+          throw new Error(reason);
+        });
       }
     }
   };
@@ -136,19 +155,29 @@ export const CreateRaidFields = ({
               handleChange(e);
               // We reset the block/partition id values on RAID level change
               // to prevent stale values from existing in the form state.
-              void setFieldValue(
+              setFieldValue(
                 "blockDeviceIds",
                 initialValues.blockDeviceIds
+              ).catch((reason) => {
+                throw new Error(reason);
+              });
+              setFieldValue("partitionIds", initialValues.partitionIds).catch(
+                (reason) => {
+                  throw new Error(reason);
+                }
               );
-              void setFieldValue("partitionIds", initialValues.partitionIds);
-              void setFieldValue(
+              setFieldValue(
                 "spareBlockDeviceIds",
                 initialValues.spareBlockDeviceIds
-              );
-              void setFieldValue(
+              ).catch((reason) => {
+                throw new Error(reason);
+              });
+              setFieldValue(
                 "sparePartitionIds",
                 initialValues.sparePartitionIds
-              );
+              ).catch((reason) => {
+                throw new Error(reason);
+              });
             }}
             options={availableRaidModes.map((raidMode) => ({
               label: raidMode.label,

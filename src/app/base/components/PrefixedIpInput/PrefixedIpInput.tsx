@@ -62,10 +62,14 @@ const PrefixedIpInput = ({
     if (subnetIsIpv4) {
       const octets = pastedText.split(".");
       const trimmed = octets.slice(0 - editable.split(".").length);
-      void formikProps.setFieldValue(name, trimmed.join("."));
+      formikProps.setFieldValue(name, trimmed.join(".")).catch((reason) => {
+        throw new Error(reason);
+      });
     } else {
       const interfaceId = pastedText.replace(ipv6Prefix, "");
-      void formikProps.setFieldValue(name, interfaceId);
+      formikProps.setFieldValue(name, interfaceId).catch((reason) => {
+        throw new Error(reason);
+      });
     }
   };
 

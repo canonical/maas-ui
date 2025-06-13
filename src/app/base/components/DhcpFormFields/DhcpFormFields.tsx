@@ -140,8 +140,14 @@ export const DhcpFormFields = ({ editing }: Props): React.ReactElement => {
         name="type"
         onChange={(e: React.FormEvent) => {
           formikProps.handleChange(e);
-          void formikProps.setFieldValue("entity", "");
-          void formikProps.setFieldTouched("entity", false, false);
+          formikProps.setFieldValue("entity", "").catch((reason) => {
+            throw new Error(reason);
+          });
+          formikProps
+            .setFieldTouched("entity", false, false)
+            .catch((reason) => {
+              throw new Error(reason);
+            });
         }}
         options={[
           { value: "", label: "Global" },

@@ -94,7 +94,9 @@ const NetworkFields = ({
         ({ id }) => id === toFormikNumber(values.subnet)
       );
       if (subnet) {
-        void setFieldValue("subnet_cidr", subnet.cidr);
+        setFieldValue("subnet_cidr", subnet.cidr).catch((reason) => {
+          throw new Error(reason);
+        });
       }
     }
   }, [interfaceType, setFieldValue, subnets, values.subnet]);
@@ -114,7 +116,9 @@ const NetworkFields = ({
         value =
           editing && hasSubnet ? NetworkLinkMode.AUTO : NetworkLinkMode.LINK_UP;
       }
-      void setFieldValue(fieldOrder[i], value);
+      setFieldValue(fieldOrder[i], value).catch((reason) => {
+        throw new Error(reason);
+      });
     }
   };
 
@@ -133,7 +137,9 @@ const NetworkFields = ({
             );
             // Update the VLAN on the node to be the default VLAN for that
             // fabric.
-            void setFieldValue("vlan", fabric?.default_vlan_id);
+            setFieldValue("vlan", fabric?.default_vlan_id).catch((reason) => {
+              throw new Error(reason);
+            });
             resetFollowingFields("vlan");
           }
         }}
@@ -200,27 +206,35 @@ const NetworkFields = ({
                 const subnetIsIpv4 = isIPv4(networkAddress);
 
                 if (subnetIsIpv4) {
-                  void setFieldValue(
+                  setFieldValue(
                     "ip_address",
                     subnet.statistics.first_address.replace(
                       `${immutableOctets}.`,
                       ""
                     )
-                  );
+                  ).catch((reason) => {
+                    throw new Error(reason);
+                  });
                 } else {
-                  void setFieldValue(
+                  setFieldValue(
                     "ip_address",
                     subnet.statistics.first_address.replace(`${ipv6Prefix}`, "")
-                  );
+                  ).catch((reason) => {
+                    throw new Error(reason);
+                  });
                 }
               } else {
-                void setFieldValue(
+                setFieldValue(
                   "ip_address",
                   subnet?.statistics.first_address || ""
-                );
+                ).catch((reason) => {
+                  throw new Error(reason);
+                });
               }
             } else {
-              void setFieldValue("ip_address", "");
+              setFieldValue("ip_address", "").catch((reason) => {
+                throw new Error(reason);
+              });
             }
           }}
           subnet={values.subnet}

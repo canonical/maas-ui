@@ -34,11 +34,16 @@ export const LicenseKeyFormFields = ({
         name="osystem"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
-          void formikProps.setFieldTouched("distro_series", true, true);
-          void formikProps.setFieldValue(
-            "distro_series",
-            releases[e.target.value][0]
-          );
+          formikProps
+            .setFieldTouched("distro_series", true, true)
+            .catch((reason) => {
+              throw new Error(reason);
+            });
+          formikProps
+            .setFieldValue("distro_series", releases[e.target.value][0])
+            .catch((reason) => {
+              throw new Error(reason);
+            });
         }}
         options={osystems.map((osystem) => {
           const [os, label] = osystem;
@@ -52,7 +57,9 @@ export const LicenseKeyFormFields = ({
         name="distro_series"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
-          void formikProps.setFieldTouched("osystem", true, true);
+          formikProps.setFieldTouched("osystem", true, true).catch((reason) => {
+            throw new Error(reason);
+          });
         }}
         options={distroSeriesOptions}
         required={true}

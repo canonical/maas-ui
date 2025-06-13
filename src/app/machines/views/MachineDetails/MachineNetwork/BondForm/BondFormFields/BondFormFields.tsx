@@ -91,7 +91,9 @@ const BondFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             handleChange(evt);
             // Reset the mac address field from the select box.
-            void setFieldValue("mac_address", values.macNic);
+            setFieldValue("mac_address", values.macNic).catch((reason) => {
+              throw new Error(reason);
+            });
           }}
           type="radio"
           value={MacSource.NIC}
@@ -105,7 +107,9 @@ const BondFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
             handleChange(evt);
             // Fill the mac addres field from the value of this select.
-            void setFieldValue("mac_address", evt.target.value);
+            setFieldValue("mac_address", evt.target.value).catch((reason) => {
+              throw new Error(reason);
+            });
           }}
           options={getMacOptions(machine, selected)}
           wrapperClassName="u-nudge-right--x-large u-sv2"
@@ -130,9 +134,15 @@ const BondFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
             handleChange(evt);
             // Reset the link monitoring fields.
-            void setFieldValue("bond_downdelay", 0);
-            void setFieldValue("bond_miimon", 0);
-            void setFieldValue("bond_updelay", 0);
+            setFieldValue("bond_downdelay", 0).catch((reason) => {
+              throw new Error(reason);
+            });
+            setFieldValue("bond_miimon", 0).catch((reason) => {
+              throw new Error(reason);
+            });
+            setFieldValue("bond_updelay", 0).catch((reason) => {
+              throw new Error(reason);
+            });
           }}
           options={[
             {

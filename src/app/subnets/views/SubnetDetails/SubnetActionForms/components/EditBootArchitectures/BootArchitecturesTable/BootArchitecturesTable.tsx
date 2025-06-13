@@ -30,12 +30,14 @@ export const BootArchitecturesTable = (): React.ReactElement => {
     !disabled_boot_architectures.includes(bootArchName);
 
   const handleArchChange = (bootArchName: KnownBootArchitecture["name"]) => {
-    void setFieldValue(
+    setFieldValue(
       "disabled_boot_architectures",
       isChecked(bootArchName)
         ? [...disabled_boot_architectures, bootArchName]
         : disabled_boot_architectures.filter((item) => item !== bootArchName)
-    );
+    ).catch((reason) => {
+      throw new Error(reason);
+    });
   };
 
   return (

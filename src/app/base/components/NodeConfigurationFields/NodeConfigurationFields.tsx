@@ -79,7 +79,11 @@ const NodeConfigurationFields = (): React.ReactElement => {
                 label: "Save",
               }}
               onTagCreated={(tag) => {
-                void setFieldValue("tags", values.tags.concat([tag.id]));
+                setFieldValue("tags", values.tags.concat([tag.id])).catch(
+                  (reason) => {
+                    throw new Error(reason);
+                  }
+                );
                 setNewTagName(null);
                 closePortal();
               }}
