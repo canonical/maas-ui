@@ -6,6 +6,7 @@ import { Label as VirshSettingsLabel } from "@/app/kvm/views/VirshDetails/VirshS
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
@@ -16,7 +17,8 @@ import {
 
 setupMockServer(
   zoneResolvers.listZones.handler(),
-  zoneResolvers.getZone.handler()
+  zoneResolvers.getZone.handler(),
+  poolsResolvers.listPools.handler()
 );
 
 describe("VirshDetails", () => {
