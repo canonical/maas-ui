@@ -11,6 +11,7 @@ import type { RepositoryFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
 import { generalActions } from "@/app/store/general";
 import {
@@ -60,7 +61,7 @@ export const RepositoryForm = ({
   repository,
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const [savedRepo, setSavedRepo] = useState<string | null>(null);
   const componentsToDisableLoaded = useSelector(
     componentsToDisableSelectors.loaded
@@ -145,7 +146,7 @@ export const RepositoryForm = ({
             errors={errors}
             initialValues={initialValues}
             onCancel={() => {
-              void navigate({ pathname: settingsURLs.repositories.index });
+              navigate({ pathname: settingsURLs.repositories.index });
             }}
             onSaveAnalytics={{
               action: "Saved",

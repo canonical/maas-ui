@@ -12,6 +12,7 @@ import type { MaasIntroValues } from "./types";
 import FormikForm from "@/app/base/components/FormikForm";
 import TableConfirm from "@/app/base/components/TableConfirm";
 import { useFetchActions } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { UrlSchema } from "@/app/base/validation";
 import IntroSection from "@/app/intro/components/IntroSection";
@@ -43,7 +44,7 @@ export const MaasIntroSchema = Yup.object()
 
 const MaasIntro = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const authLoading = useSelector(authSelectors.loading);
   const authUser = useSelector(authSelectors.get);
   const httpProxy = useSelector(configSelectors.httpProxy);
@@ -151,9 +152,9 @@ const MaasIntro = (): React.ReactElement => {
               onConfirm={() => {
                 dispatch(configActions.update({ completed_intro: true }));
                 if (!authUser?.completed_intro) {
-                  void navigate({ pathname: urls.intro.user });
+                  navigate({ pathname: urls.intro.user });
                 } else {
-                  void navigate({
+                  navigate({
                     pathname: exitURL,
                   });
                 }

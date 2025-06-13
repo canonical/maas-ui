@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
@@ -37,12 +38,12 @@ const APIKeyEditSchema = Yup.object().shape({
 export const APIKeyForm = ({ token }: Props): React.ReactElement => {
   const editing = !!token;
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const errors = useSelector(tokenSelectors.errors);
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
   const onCancel = () => {
-    void navigate({ pathname: urls.preferences.apiKeys.index });
+    navigate({ pathname: urls.preferences.apiKeys.index });
   };
   useOnEscapePressed(() => {
     onCancel();

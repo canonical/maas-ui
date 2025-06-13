@@ -3,6 +3,7 @@ import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
+import type { SyncNavigateFunction } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import { notificationActions } from "@/app/store/notification";
@@ -27,7 +28,7 @@ const NotificationGroupNotification = ({
   severity,
 }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const isAdmin = useSelector(authSelectors.isAdmin);
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
@@ -46,7 +47,7 @@ const NotificationGroupNotification = ({
               {
                 label: "See settings",
                 onClick: () => {
-                  void navigate({
+                  navigate({
                     pathname: settingsURLs.configuration.general,
                   });
                 },

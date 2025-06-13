@@ -11,6 +11,7 @@ import { useGrouping, useResponsiveColumns } from "./MachineList/hooks";
 
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import MachineList from "@/app/machines/views/MachineList";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -18,7 +19,7 @@ import { selectedToFilters, FilterMachines } from "@/app/store/machine/utils";
 import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
 
 const Machines = (): React.ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
   // The filter state is initialised from the URL.
@@ -42,7 +43,7 @@ const Machines = (): React.ReactElement => {
     (searchText: string) => {
       setFilter(searchText);
       const filters = FilterMachines.getCurrentFilters(searchText);
-      void navigate(
+      navigate(
         {
           search: FilterMachines.filtersToQueryString(filters),
         },

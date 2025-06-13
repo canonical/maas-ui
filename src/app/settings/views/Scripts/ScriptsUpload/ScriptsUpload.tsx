@@ -11,6 +11,7 @@ import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import { messageActions } from "@/app/store/message";
 import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
@@ -34,7 +35,7 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
   const [savedScript, setSavedScript] = useState<string | null>(null);
   const [script, setScript] = useState<ReadScriptResponse | null>(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const listLocation = `/settings/scripts/${type}`;
 
   useEffect(() => {
@@ -115,7 +116,7 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
   useEffect(() => {
     if (saved) {
       // The script was successfully uploaded so redirect to the scripts list.
-      void navigate(listLocation, { replace: true });
+      navigate(listLocation, { replace: true });
     }
   }, [navigate, listLocation, saved]);
 
@@ -147,7 +148,7 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
         <FormikForm
           initialValues={{}}
           onCancel={() => {
-            void navigate({ pathname: listLocation });
+            navigate({ pathname: listLocation });
           }}
           onSubmit={() => {
             dispatch(scriptActions.cleanup());

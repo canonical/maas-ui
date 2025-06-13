@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import type { SetSearchFilter } from "@/app/base/types";
+import type { SetSearchFilter, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import LXDHostVMs from "@/app/kvm/components/LXDHostVMs";
 import { useActivePod, useKVMDetailsRedirect } from "@/app/kvm/hooks";
@@ -36,7 +36,7 @@ const LXDClusterHostVMs = ({
   setSidePanelContent,
   setSearchFilter,
 }: Props): React.ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const hostId = useGetURLId(PodMeta.PK, "hostId");
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
@@ -62,7 +62,7 @@ const LXDClusterHostVMs = ({
 
   useEffect(() => {
     if (redirectURL) {
-      void navigate(redirectURL, { replace: true });
+      navigate(redirectURL, { replace: true });
     }
   }, [navigate, redirectURL]);
 

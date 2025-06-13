@@ -7,7 +7,10 @@ import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import FormikField from "@/app/base/components/FormikField";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import type {
+  ClearSidePanelContent,
+  SyncNavigateFunction,
+} from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { machineActions } from "@/app/store/machine";
 import { messageActions } from "@/app/store/message";
@@ -40,7 +43,7 @@ const DeleteForm = ({
   hostId,
 }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
@@ -114,7 +117,7 @@ const DeleteForm = ({
             NotificationSeverity.INFORMATION
           )
         );
-        void navigate({ pathname: urls.kvm.index });
+        navigate({ pathname: urls.kvm.index });
         clearSidePanelContent();
         dispatch(machineActions.invalidateQueries());
       }}

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 import PageContent from "@/app/base/components/PageContent";
 import type { Props as PageContentProps } from "@/app/base/components/PageContent/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import type { APIError } from "@/app/base/types";
+import type { APIError, SyncNavigateFunction } from "@/app/base/types";
 import { useExitURL } from "@/app/intro/hooks";
 import { formatErrors } from "@/app/utils";
 
@@ -33,7 +33,7 @@ const IntroSection = ({
   sidePanelTitle = null,
   ...props
 }: Props): ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const errorMessage = formatErrors(errors);
   const exitURL = useExitURL();
 
@@ -41,7 +41,7 @@ const IntroSection = ({
 
   useEffect(() => {
     if (shouldExitIntro) {
-      void navigate(exitURL, { replace: true });
+      navigate(exitURL, { replace: true });
     }
   }, [navigate, exitURL, shouldExitIntro]);
 

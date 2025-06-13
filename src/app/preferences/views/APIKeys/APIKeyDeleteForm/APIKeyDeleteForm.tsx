@@ -5,13 +5,14 @@ import { useNavigate } from "react-router";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 
 const APIKeyDeleteForm = ({ id }: { id: number }): ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
 
@@ -23,7 +24,7 @@ const APIKeyDeleteForm = ({ id }: { id: number }): ReactElement => {
       initialValues={{}}
       modelType="API key"
       onCancel={() => {
-        void navigate({ pathname: urls.preferences.apiKeys.index });
+        navigate({ pathname: urls.preferences.apiKeys.index });
       }}
       onSubmit={() => {
         dispatch(tokenActions.delete(id));

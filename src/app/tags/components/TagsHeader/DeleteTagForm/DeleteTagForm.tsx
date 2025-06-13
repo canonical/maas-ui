@@ -8,7 +8,7 @@ import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage, useScrollToTop } from "@/app/base/hooks";
-import type { EmptyObject } from "@/app/base/types";
+import type { EmptyObject, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
@@ -27,7 +27,7 @@ export const DeleteTagForm = ({
   onClose,
 }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const saved = useSelector(tagSelectors.saved);
   const saving = useSelector(tagSelectors.saving);
   const errors = useSelector(tagSelectors.errors);
@@ -50,9 +50,9 @@ export const DeleteTagForm = ({
     if (fromDetails) {
       // Explicitly return to the page they user came from in case they have opened
       // the list of machines.
-      void navigate({ pathname: urls.tags.tag.index({ id: id }) });
+      navigate({ pathname: urls.tags.tag.index({ id: id }) });
     } else {
-      void navigate({ pathname: urls.tags.index });
+      navigate({ pathname: urls.tags.index });
     }
   };
   if (!tag) {

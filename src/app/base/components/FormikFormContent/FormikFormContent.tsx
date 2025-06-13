@@ -18,7 +18,7 @@ import {
   useFormikFormDisabled,
   useSendAnalyticsWhen,
 } from "@/app/base/hooks";
-import type { APIError } from "@/app/base/types";
+import type { APIError, SyncNavigateFunction } from "@/app/base/types";
 
 export type Props<V extends object, E> = FormikFormButtonsProps<V> &
   Pick<AriaAttributes, "aria-label"> & {
@@ -105,7 +105,7 @@ const FormikFormContent = <V extends object, E = null>({
     withFormikDevtools(formikContext);
   }
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const onSuccessCalled = useRef(false);
   const { handleSubmit, initialValues, resetForm, values } = formikContext;
   const formDisabled = useFormikFormDisabled<V>({
@@ -168,7 +168,7 @@ const FormikFormContent = <V extends object, E = null>({
 
   useEffect(() => {
     if (savedRedirect && saved) {
-      void navigate(savedRedirect, { replace: true });
+      navigate(savedRedirect, { replace: true });
     }
   }, [navigate, savedRedirect, saved]);
 

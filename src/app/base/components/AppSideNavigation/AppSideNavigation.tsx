@@ -18,6 +18,7 @@ import {
 } from "@/app/base/hooks";
 import { useGlobalKeyShortcut } from "@/app/base/hooks/base";
 import { useThemeContext } from "@/app/base/theme-context";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
@@ -109,7 +110,7 @@ export const AppSideNavigation = ({
 
 const AppSideNavigationContainer = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const configLoaded = useSelector(configSelectors.loaded);
   const authUser = useSelector(authSelectors.get);
@@ -137,9 +138,9 @@ const AppSideNavigationContainer = (): React.ReactElement => {
     // https://github.com/remix-run/react-router/issues/7634
     if (!isAtIntro && configLoaded) {
       if (!completedIntro) {
-        void navigate({ pathname: urls.intro.index }, { replace: true });
+        navigate({ pathname: urls.intro.index }, { replace: true });
       } else if (isAuthenticated && !completedUserIntro) {
-        void navigate({ pathname: urls.intro.user }, { replace: true });
+        navigate({ pathname: urls.intro.user }, { replace: true });
       }
     }
   }, [

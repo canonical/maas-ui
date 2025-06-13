@@ -9,6 +9,7 @@ import DeviceListTable from "./DeviceListTable";
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import DeviceHeaderForms from "@/app/devices/components/DeviceHeaderForms";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
@@ -18,7 +19,7 @@ import { tagActions } from "@/app/store/tag";
 
 const DeviceList = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const currentFilters = FilterDevices.queryStringToFilters(location.search);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
@@ -41,7 +42,7 @@ const DeviceList = (): React.ReactElement => {
     (searchText: string) => {
       setFilter(searchText);
       const filters = FilterDevices.getCurrentFilters(searchText);
-      void navigate({ search: FilterDevices.filtersToQueryString(filters) });
+      navigate({ search: FilterDevices.filtersToQueryString(filters) });
     },
     [navigate, setFilter]
   );

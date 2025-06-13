@@ -15,13 +15,14 @@ import UserIntro from "./UserIntro";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useCompletedIntro, useCompletedUserIntro } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
 import { getRelativeRoute } from "@/app/utils";
 
 const Intro = (): ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const authLoading = useSelector(authSelectors.loading);
   const isAdmin = useSelector(authSelectors.isAdmin);
@@ -36,15 +37,15 @@ const Intro = (): ReactElement => {
     if (!authLoading && !configLoading && !showIncomplete) {
       if (completedIntro && completedUserIntro) {
         // If both intros have been completed then exit the flow.
-        void navigate(exitURL, { replace: true });
+        navigate(exitURL, { replace: true });
       } else if (viewingUserIntro && !completedIntro) {
         // If the user is viewing the user intro but hasn't yet completed the maas
         // intro then send them back to the start.
-        void navigate(urls.intro.index, { replace: true });
+        navigate(urls.intro.index, { replace: true });
       } else if (!viewingUserIntro && completedIntro) {
         // If the user is viewing the maas intro but has already completed it then
         // send them to the user intro.
-        void navigate(urls.intro.user, { replace: true });
+        navigate(urls.intro.user, { replace: true });
       }
     }
   }, [
