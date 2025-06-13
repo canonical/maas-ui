@@ -19,7 +19,9 @@ const DeleteSSLKey = ({ id, closeForm }: DeleteSSLKeyProps): ReactElement => {
       message="Are you sure you want to delete this SSL key?"
       modelType="SSL key"
       onCancel={closeForm}
-      onSubmit={() => deleteSSLKey.mutate({ path: { sslkey_id: id } })}
+      onSubmit={() => {
+        deleteSSLKey.mutate({ path: { sslkey_id: id } });
+      }}
       onSuccess={closeForm}
       saved={deleteSSLKey.isSuccess}
       saving={deleteSSLKey.isPending}

@@ -63,9 +63,9 @@ it("redirects to the config form", async () => {
       ],
     }
   );
-  await waitFor(() =>
+  await waitFor(() => {
     expect(router.state.location.pathname).toEqual(
       urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 })
-    )
-  );
+    );
+  });
 });

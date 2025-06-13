@@ -54,8 +54,8 @@ describe("ControllerList", () => {
 
     await userEvent.type(screen.getByRole("searchbox"), "hostname:foo");
 
-    await waitFor(() =>
-      expect(router.state.location.search).toBe("?hostname=foo")
-    );
+    await waitFor(() => {
+      expect(router.state.location.search).toBe("?hostname=foo");
+    });
   });
 });
