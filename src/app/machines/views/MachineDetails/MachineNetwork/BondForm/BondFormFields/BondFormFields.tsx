@@ -64,7 +64,7 @@ const BondFormFields = ({
     BondMode.BALANCE_XOR,
     BondMode.LINK_AGGREGATION,
     BondMode.BALANCE_TLB,
-  ].includes(values.bond_mode as BondMode);
+  ].includes(values.bond_mode);
   const showLACPRate = values.bond_mode === BondMode.LINK_AGGREGATION;
   const showMonitoring = values.linkMonitoring === LinkMonitoring.MII;
   return (
@@ -74,7 +74,7 @@ const BondFormFields = ({
         <BondModeSelect defaultOption={null} name="bond_mode" required />
         {showHashPolicy && (
           <HashPolicySelect
-            bondMode={values.bond_mode as BondMode}
+            bondMode={values.bond_mode}
             defaultOption={null}
             name="bond_xmit_hash_policy"
           />

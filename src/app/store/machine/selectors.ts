@@ -71,9 +71,7 @@ ACTIONS.forEach(({ status }) => {
   statusSelectors[status] = createSelector(
     [defaultSelectors.all, statuses],
     (machines: Machine[], statuses: MachineStatuses) =>
-      machines.filter(
-        ({ system_id }) => statuses[system_id][status as keyof MachineStatus]
-      )
+      machines.filter(({ system_id }) => statuses[system_id][status])
   );
 });
 

@@ -122,7 +122,7 @@ const DiscoveryAddFormFields = ({
               name={DeviceMeta.PK}
               onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
                 void setFieldValue(DeviceMeta.PK, evt.target.value);
-                setDevice(evt.target.value as Device[DeviceMeta.PK]);
+                setDevice(evt.target.value);
               }}
               options={[
                 { label: Labels.SelectDeviceName, value: "", disabled: true },

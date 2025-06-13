@@ -199,8 +199,8 @@ const generateActionMenus = (
       (groupLinks.length > 0 &&
         nodes !== undefined &&
         nodes.length > 0 &&
-        (((nodes![0] as MachineDetails).is_dpu && group.name !== "power") ||
-          (nodes![0] as MachineDetails).is_dpu === false))
+        (((nodes[0] as MachineDetails).is_dpu && group.name !== "power") ||
+          (nodes[0] as MachineDetails).is_dpu === false))
     ) {
       menus.push(
         <ContextualMenu

@@ -6,7 +6,7 @@ import { renderHook } from "@/testing/utils";
 vi.mock("@/context", async () => {
   const actual = await vi.importActual("@/context");
   return {
-    ...actual!,
+    ...actual,
   };
 });
 

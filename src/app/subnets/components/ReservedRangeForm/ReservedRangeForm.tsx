@@ -126,7 +126,7 @@ const ReservedRangeForm = ({
             const networkAddress = subnet.cidr.split("/")[0];
             const subnetIsIpv4 = isIPv4(networkAddress);
             if (subnetIsIpv4) {
-              return isIpInSubnet(ip, subnet.cidr as string);
+              return isIpInSubnet(ip, subnet.cidr);
             } else {
               try {
                 const prefixLength = parseInt(subnet.cidr.split("/")[1]);
@@ -162,7 +162,7 @@ const ReservedRangeForm = ({
             const networkAddress = subnet.cidr.split("/")[0];
             const subnetIsIpv4 = isIPv4(networkAddress);
             if (subnetIsIpv4) {
-              return isIpInSubnet(ip, subnet.cidr as string);
+              return isIpInSubnet(ip, subnet.cidr);
             } else {
               try {
                 const prefixLength = parseInt(subnet.cidr.split("/")[1]);

@@ -39,14 +39,14 @@ const reservedIpSlice = createSlice({
     ) => {
       commonReducers.createSuccess(state);
       const item = action.payload;
-      const index = (state.items as ReservedIp[]).findIndex(
+      const index = state.items.findIndex(
         (draftItem: ReservedIp) =>
           draftItem[ReservedIpMeta.PK] === item[ReservedIpMeta.PK]
       );
       if (index !== -1) {
         state.items[index] = item;
       } else {
-        (state.items as ReservedIp[]).push(item);
+        state.items.push(item);
       }
     },
     delete: {
@@ -74,12 +74,12 @@ const reservedIpSlice = createSlice({
       ) => {
         commonReducers.deleteSuccess(state);
         const id = action.meta.item.id;
-        const index = (state.items as ReservedIp[]).findIndex(
+        const index = state.items.findIndex(
           (draftItem: ReservedIp) => draftItem[ReservedIpMeta.PK] === id
         );
 
         if (index !== -1) {
-          (state.items as ReservedIp[]).splice(index, 1);
+          state.items.splice(index, 1);
         }
       },
     },
@@ -89,7 +89,7 @@ const reservedIpSlice = createSlice({
     ) => {
       commonReducers.updateSuccess(state);
       const item = action.payload;
-      const index = (state.items as ReservedIp[]).findIndex(
+      const index = state.items.findIndex(
         (draftItem: ReservedIp) =>
           draftItem[ReservedIpMeta.PK] === item[ReservedIpMeta.PK]
       );
