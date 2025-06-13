@@ -36,15 +36,15 @@ const Intro = (): ReactElement => {
     if (!authLoading && !configLoading && !showIncomplete) {
       if (completedIntro && completedUserIntro) {
         // If both intros have been completed then exit the flow.
-        navigate(exitURL, { replace: true });
+        void navigate(exitURL, { replace: true });
       } else if (viewingUserIntro && !completedIntro) {
         // If the user is viewing the user intro but hasn't yet completed the maas
         // intro then send them back to the start.
-        navigate(urls.intro.index, { replace: true });
+        void navigate(urls.intro.index, { replace: true });
       } else if (!viewingUserIntro && completedIntro) {
         // If the user is viewing the maas intro but has already completed it then
         // send them to the user intro.
-        navigate(urls.intro.user, { replace: true });
+        void navigate(urls.intro.user, { replace: true });
       }
     }
   }, [

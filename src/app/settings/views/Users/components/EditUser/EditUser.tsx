@@ -131,7 +131,7 @@ const EditUser = ({
             });
           }}
           onSuccess={() => {
-            queryClient
+            void queryClient
               .invalidateQueries({
                 queryKey: getUserQueryKey({
                   path: { user_id: id },

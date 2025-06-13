@@ -46,7 +46,7 @@ export const TestFormFields = ({
             const selectedScripts = tags.map((tag) =>
               scripts.find((script) => script.id === tag.id)
             );
-            setFieldValue("scripts", selectedScripts);
+            void setFieldValue("scripts", selectedScripts);
           }}
           placeholder="Select scripts"
           tags={scripts.map(({ id, name }) => ({
@@ -67,7 +67,10 @@ export const TestFormFields = ({
             name={`scriptInputs[${script.name}].url`}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
-              setFieldValue(`scriptInputs[${script.name}].url`, e.target.value);
+              void setFieldValue(
+                `scriptInputs[${script.name}].url`,
+                e.target.value
+              );
             }}
             type="text"
           />

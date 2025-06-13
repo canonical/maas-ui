@@ -32,7 +32,7 @@ const SubnetSummaryFormFields = (): React.ReactElement => {
       (fabric) => fabric.id === Number(e.target.value)
     );
     if (fabric) {
-      setFieldValue("vlan", fabric.default_vlan_id.toString());
+      void setFieldValue("vlan", fabric.default_vlan_id.toString());
     }
   };
 

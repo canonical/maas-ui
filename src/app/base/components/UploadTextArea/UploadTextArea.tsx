@@ -40,7 +40,7 @@ export const UploadTextArea = <V extends AnyObject>({
     useFormikContext<V>();
 
   const handleUpload = (files: File[] | null) => {
-    setFieldTouched(name, true);
+    void setFieldTouched(name, true);
     setFileErrors(null);
 
     if (!files || files.length === 0) {
@@ -67,7 +67,7 @@ export const UploadTextArea = <V extends AnyObject>({
     };
     reader.onloadend = () => {
       if (typeof reader.result === "string") {
-        setFieldValue(name, reader.result);
+        void setFieldValue(name, reader.result);
       } else {
         setFileErrors("Only text files are supported.");
         reader.abort();

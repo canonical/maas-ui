@@ -34,7 +34,7 @@ export const StorageTable = ({
   // Ensure initial disk is always validated correctly.
   useEffect(() => {
     if (disks.length && !(touched.disks?.length && touched.disks[0].size)) {
-      setFieldTouched("disks[0].size", true, true);
+      void setFieldTouched("disks[0].size", true, true);
     }
   }, [disks, setFieldTouched, touched]);
 
@@ -44,17 +44,17 @@ export const StorageTable = ({
     while (ids.includes(id)) {
       id++;
     }
-    setFieldTouched(`disks[${disks.length}].size`, true, true);
-    setFieldValue("disks", [...disks, { ...defaultDisk, id }], true);
+    void setFieldTouched(`disks[${disks.length}].size`, true, true);
+    void setFieldValue("disks", [...disks, { ...defaultDisk, id }], true);
   };
 
   const removeDisk = (id: number) => {
     const filteredDisks = disks.filter((disk) => disk.id !== id);
-    setFieldValue("disks", filteredDisks);
+    void setFieldValue("disks", filteredDisks);
 
     // If boot disk is removed, set boot to first disk in the remaining array.
     if (!filteredDisks.some((disk) => disk.id === bootDisk)) {
-      setFieldValue("bootDisk", filteredDisks[0]?.id);
+      void setFieldValue("bootDisk", filteredDisks[0]?.id);
     }
   };
 
@@ -93,8 +93,8 @@ export const StorageTable = ({
                   const value = parseFloat(e.target.value) || "";
                   if (value === "" || value >= 0) {
                     handleChange(e);
-                    setFieldTouched(`disks[${i}].size`, true, true);
-                    setFieldValue(`disks[${i}].size`, value);
+                    void setFieldTouched(`disks[${i}].size`, true, true);
+                    void setFieldValue(`disks[${i}].size`, value);
                   }
                 }}
                 step="any"
@@ -105,7 +105,7 @@ export const StorageTable = ({
                 disk={disk}
                 hostId={hostId}
                 selectPool={(poolName?: string) => {
-                  setFieldValue(`disks[${i}].location`, poolName);
+                  void setFieldValue(`disks[${i}].location`, poolName);
                 }}
               />
               <TagNameField
@@ -121,7 +121,7 @@ export const StorageTable = ({
                 name="bootDisk"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   handleChange(e);
-                  setFieldValue("bootDisk", disk.id);
+                  void setFieldValue("bootDisk", disk.id);
                 }}
                 type="radio"
               />

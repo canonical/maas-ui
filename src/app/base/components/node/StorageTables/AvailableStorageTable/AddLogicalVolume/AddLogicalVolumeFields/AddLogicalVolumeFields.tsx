@@ -31,8 +31,8 @@ export const AddLogicalVolumeFields = ({
             const value =
               e.target.value !== "" ? parseFloat(e.target.value) : "";
             handleChange(e);
-            setFieldValue("size", value);
-            setFieldTouched("size", true, false);
+            void setFieldValue("size", value);
+            void setFieldTouched("size", true, false);
           }}
           required
           step="any"

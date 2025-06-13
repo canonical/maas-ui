@@ -85,34 +85,37 @@ export const CreateRaidFields = ({
   ) => {
     if (isDisk(storageDevice)) {
       if (isSpareDevice) {
-        setFieldValue("blockDeviceIds", [...blockDeviceIds, storageDevice.id]);
-        setFieldValue(
+        void setFieldValue("blockDeviceIds", [
+          ...blockDeviceIds,
+          storageDevice.id,
+        ]);
+        void setFieldValue(
           "spareBlockDeviceIds",
           spareBlockDeviceIds.filter((id) => id !== storageDevice.id)
         );
       } else {
-        setFieldValue(
+        void setFieldValue(
           "blockDeviceIds",
           blockDeviceIds.filter((id) => id !== storageDevice.id)
         );
-        setFieldValue("spareBlockDeviceIds", [
+        void setFieldValue("spareBlockDeviceIds", [
           ...spareBlockDeviceIds,
           storageDevice.id,
         ]);
       }
     } else {
       if (isSpareDevice) {
-        setFieldValue("partitionIds", [...partitionIds, storageDevice.id]);
-        setFieldValue(
+        void setFieldValue("partitionIds", [...partitionIds, storageDevice.id]);
+        void setFieldValue(
           "sparePartitionIds",
           sparePartitionIds.filter((id) => id !== storageDevice.id)
         );
       } else {
-        setFieldValue(
+        void setFieldValue(
           "partitionIds",
           partitionIds.filter((id) => id !== storageDevice.id)
         );
-        setFieldValue("sparePartitionIds", [
+        void setFieldValue("sparePartitionIds", [
           ...sparePartitionIds,
           storageDevice.id,
         ]);
@@ -133,13 +136,16 @@ export const CreateRaidFields = ({
               handleChange(e);
               // We reset the block/partition id values on RAID level change
               // to prevent stale values from existing in the form state.
-              setFieldValue("blockDeviceIds", initialValues.blockDeviceIds);
-              setFieldValue("partitionIds", initialValues.partitionIds);
-              setFieldValue(
+              void setFieldValue(
+                "blockDeviceIds",
+                initialValues.blockDeviceIds
+              );
+              void setFieldValue("partitionIds", initialValues.partitionIds);
+              void setFieldValue(
                 "spareBlockDeviceIds",
                 initialValues.spareBlockDeviceIds
               );
-              setFieldValue(
+              void setFieldValue(
                 "sparePartitionIds",
                 initialValues.sparePartitionIds
               );

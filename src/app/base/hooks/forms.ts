@@ -33,7 +33,7 @@ export const useFormikErrors = <V = AnyObject, E = null>(
           errorString = fieldErrors;
         }
         setFieldError(field, errorString);
-        setFieldTouched(field, true, false);
+        void setFieldTouched(field, true, false);
       });
     }
   }, [errors, previousErrors, setFieldError, setFieldTouched, values]);

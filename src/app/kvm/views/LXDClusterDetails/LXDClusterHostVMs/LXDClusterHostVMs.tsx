@@ -62,7 +62,7 @@ const LXDClusterHostVMs = ({
 
   useEffect(() => {
     if (redirectURL) {
-      navigate(redirectURL, { replace: true });
+      void navigate(redirectURL, { replace: true });
     }
   }, [navigate, redirectURL]);
 

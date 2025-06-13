@@ -168,7 +168,7 @@ const FormikFormContent = <V extends object, E = null>({
 
   useEffect(() => {
     if (savedRedirect && saved) {
-      navigate(savedRedirect, { replace: true });
+      void navigate(savedRedirect, { replace: true });
     }
   }, [navigate, savedRedirect, saved]);
 

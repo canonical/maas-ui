@@ -31,8 +31,8 @@ export const CredentialsFormFields = ({
     // The validation schema changes depending on the state of
     // `shouldGenerateCert`. Here we touch the fields so that the new validation
     // is applied to the fields that changed.
-    setFieldTouched("certificate");
-    setFieldTouched("key");
+    void setFieldTouched("certificate");
+    void setFieldTouched("key");
   }, [shouldGenerateCert, setFieldTouched]);
 
   return (
@@ -59,8 +59,8 @@ export const CredentialsFormFields = ({
         <CertificateFields
           onShouldGenerateCert={(shouldGenerateCert) => {
             setShouldGenerateCert(shouldGenerateCert);
-            setFieldValue("certificate", "");
-            setFieldValue("key", "");
+            void setFieldValue("certificate", "");
+            void setFieldValue("key", "");
           }}
           shouldGenerateCert={shouldGenerateCert}
         />

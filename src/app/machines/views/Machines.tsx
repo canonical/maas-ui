@@ -42,7 +42,7 @@ const Machines = (): React.ReactElement => {
     (searchText: string) => {
       setFilter(searchText);
       const filters = FilterMachines.getCurrentFilters(searchText);
-      navigate(
+      void navigate(
         {
           search: FilterMachines.filtersToQueryString(filters),
         },

@@ -68,7 +68,7 @@ const LXDClusterDetails = (): React.ReactElement => {
     (searchFilter: string) => {
       setFilter(searchFilter);
       const filters = FilterMachines.getCurrentFilters(searchFilter);
-      navigate({ search: FilterMachines.filtersToQueryString(filters) });
+      void navigate({ search: FilterMachines.filtersToQueryString(filters) });
     },
     [setFilter, navigate]
   );

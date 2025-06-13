@@ -54,14 +54,14 @@ const LXDSingleDetails = (): React.ReactElement => {
     (searchFilter: string) => {
       setFilter(searchFilter);
       const filters = FilterMachines.getCurrentFilters(searchFilter);
-      navigate({ search: FilterMachines.filtersToQueryString(filters) });
+      void navigate({ search: FilterMachines.filtersToQueryString(filters) });
     },
     [setFilter, navigate]
   );
 
   useEffect(() => {
     if (redirectURL) {
-      navigate(redirectURL, { replace: true });
+      void navigate(redirectURL, { replace: true });
     }
   }, [navigate, redirectURL]);
 

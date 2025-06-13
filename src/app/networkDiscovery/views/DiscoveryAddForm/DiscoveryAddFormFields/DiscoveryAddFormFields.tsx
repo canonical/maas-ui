@@ -77,7 +77,7 @@ const DiscoveryAddFormFields = ({
             label={Labels.Type}
             name="type"
             onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
-              setFieldValue("type", evt.target.value);
+              void setFieldValue("type", evt.target.value);
               setDeviceType(evt.target.value as DeviceType);
               // Clear the device in case it has been set previously.
               setDevice(null);
@@ -121,7 +121,7 @@ const DiscoveryAddFormFields = ({
               }
               name={DeviceMeta.PK}
               onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
-                setFieldValue(DeviceMeta.PK, evt.target.value);
+                void setFieldValue(DeviceMeta.PK, evt.target.value);
                 setDevice(evt.target.value as Device[DeviceMeta.PK]);
               }}
               options={[

@@ -33,8 +33,8 @@ export const AuthenticationFormFields = ({
           label="Add trust to LXD via command line"
           onChange={() => {
             setUseCertificate(true);
-            setFieldTouched("password", false);
-            setFieldValue("password", "");
+            void setFieldTouched("password", false);
+            void setFieldValue("password", "");
           }}
           type="radio"
         />

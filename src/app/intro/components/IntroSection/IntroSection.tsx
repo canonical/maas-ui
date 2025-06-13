@@ -41,7 +41,7 @@ const IntroSection = ({
 
   useEffect(() => {
     if (shouldExitIntro) {
-      navigate(exitURL, { replace: true });
+      void navigate(exitURL, { replace: true });
     }
   }, [navigate, exitURL, shouldExitIntro]);
 

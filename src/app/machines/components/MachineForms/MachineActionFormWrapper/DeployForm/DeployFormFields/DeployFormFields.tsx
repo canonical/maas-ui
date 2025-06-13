@@ -53,7 +53,7 @@ export const DeployFormFields = (): React.ReactElement => {
   const noImages = osystems.length === 0 || releases.length === 0;
   const clearVmHostOptions = () => {
     setDeployVmHost(false);
-    setFieldValue("vmHostType", "");
+    void setFieldValue("vmHostType", "");
   };
   const hardwareSyncInterval = useSelector(
     configSelectors.hardwareSyncInterval
@@ -64,9 +64,9 @@ export const DeployFormFields = (): React.ReactElement => {
   useEffect(() => {
     if (defaultMinHweKernel) {
       if (kernelOptions.find(({ value }) => value === defaultMinHweKernel)) {
-        setFieldValue("kernel", defaultMinHweKernel);
+        void setFieldValue("kernel", defaultMinHweKernel);
       } else {
-        setFieldValue("kernel", "");
+        void setFieldValue("kernel", "");
       }
     }
   }, [defaultMinHweKernel, kernelOptions, setFieldValue]);
@@ -91,12 +91,15 @@ export const DeployFormFields = (): React.ReactElement => {
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
                 const value = e.target.value;
-                setFieldValue("kernel", "");
+                void setFieldValue("kernel", "");
                 if (
                   allReleaseOptions[value] &&
                   allReleaseOptions[value].length
                 ) {
-                  setFieldValue("release", allReleaseOptions[value][0].value);
+                  void setFieldValue(
+                    "release",
+                    allReleaseOptions[value][0].value
+                  );
                 }
                 if (value !== "ubuntu") {
                   clearVmHostOptions();
@@ -113,7 +116,7 @@ export const DeployFormFields = (): React.ReactElement => {
               name="release"
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
-                setFieldValue("kernel", "");
+                void setFieldValue("kernel", "");
                 if (!["bionic", "focal"].includes(e.target.value)) {
                   clearVmHostOptions();
                 }
@@ -145,7 +148,7 @@ export const DeployFormFields = (): React.ReactElement => {
               label="Deploy to disk"
               name="ephemeralDeploy"
               onChange={() => {
-                setFieldValue("ephemeralDeploy", false);
+                void setFieldValue("ephemeralDeploy", false);
               }}
               type="radio"
             />
@@ -155,7 +158,7 @@ export const DeployFormFields = (): React.ReactElement => {
               label="Deploy in memory"
               name="ephemeralDeploy"
               onChange={() => {
-                setFieldValue("ephemeralDeploy", true);
+                void setFieldValue("ephemeralDeploy", true);
               }}
               type="radio"
             />
@@ -192,7 +195,7 @@ export const DeployFormFields = (): React.ReactElement => {
                     const { checked } = evt.target;
                     if (checked) {
                       setDeployVmHost(true);
-                      setFieldValue("vmHostType", PodType.LXD);
+                      void setFieldValue("vmHostType", PodType.LXD);
                     } else {
                       clearVmHostOptions();
                     }

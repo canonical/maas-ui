@@ -137,9 +137,9 @@ const AppSideNavigationContainer = (): React.ReactElement => {
     // https://github.com/remix-run/react-router/issues/7634
     if (!isAtIntro && configLoaded) {
       if (!completedIntro) {
-        navigate({ pathname: urls.intro.index }, { replace: true });
+        void navigate({ pathname: urls.intro.index }, { replace: true });
       } else if (isAuthenticated && !completedUserIntro) {
-        navigate({ pathname: urls.intro.user }, { replace: true });
+        void navigate({ pathname: urls.intro.user }, { replace: true });
       }
     }
   }, [

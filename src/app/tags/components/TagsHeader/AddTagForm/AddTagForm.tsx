@@ -54,7 +54,7 @@ export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
 
   useEffect(() => {
     if (tag) {
-      navigate({ pathname: urls.tags.tag.index({ id: tag.id }) });
+      void navigate({ pathname: urls.tags.tag.index({ id: tag.id }) });
       if (tag.definition) {
         sendAnalytics("XPath tagging", "Valid XPath", "Save");
       } else {

@@ -73,8 +73,8 @@ export const ComposeFormFields = ({
         label="Use any available core(s)"
         onChange={() => {
           setPinningCores(false);
-          setFieldValue("cores", defaults.cores);
-          setFieldValue("pinnedCores", "");
+          void setFieldValue("cores", defaults.cores);
+          void setFieldValue("pinnedCores", "");
         }}
         type="radio"
       />
@@ -102,8 +102,8 @@ export const ComposeFormFields = ({
           label="Pin VM to specific core(s)"
           onChange={() => {
             setPinningCores(true);
-            setFieldValue("cores", "");
-            setFieldValue("pinnedCores", "");
+            void setFieldValue("cores", "");
+            void setFieldValue("pinnedCores", "");
           }}
           type="radio"
         />

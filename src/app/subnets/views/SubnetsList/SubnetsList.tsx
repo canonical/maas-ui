@@ -30,7 +30,7 @@ const SubnetsList = (): React.ReactElement => {
   const searchText = query.get(SubnetsUrlParams.Q) || "";
   const setGroupBy = useCallback(
     (group: GroupByKey | null) => {
-      navigate(
+      void navigate(
         {
           pathname: "/networks",
           search: `?${SubnetsUrlParams.By}=${group}&${SubnetsUrlParams.Q}=${searchText}`,
@@ -42,7 +42,7 @@ const SubnetsList = (): React.ReactElement => {
   );
   const setSearchText = useCallback(
     (searchText: string) => {
-      navigate(
+      void navigate(
         {
           pathname: "/networks",
           search: `?${SubnetsUrlParams.By}=${groupBy}&${SubnetsUrlParams.Q}=${searchText}`,

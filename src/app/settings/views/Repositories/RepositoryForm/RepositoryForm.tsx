@@ -145,7 +145,7 @@ export const RepositoryForm = ({
             errors={errors}
             initialValues={initialValues}
             onCancel={() => {
-              navigate({ pathname: settingsURLs.repositories.index });
+              void navigate({ pathname: settingsURLs.repositories.index });
             }}
             onSaveAnalytics={{
               action: "Saved",

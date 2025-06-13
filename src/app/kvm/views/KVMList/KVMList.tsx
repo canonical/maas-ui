@@ -45,7 +45,7 @@ const KVMList = (): React.ReactElement => {
   // Redirect to the appropriate tab when arriving at /kvm.
   useEffect(() => {
     if (!showingLXD && !showingVirsh) {
-      navigate(urls.kvm.lxd.index, { replace: true });
+      void navigate(urls.kvm.lxd.index, { replace: true });
     }
   }, [navigate, showingLXD, showingVirsh]);
 

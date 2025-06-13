@@ -75,7 +75,7 @@ export const VLANSelect = ({
     if (setDefaultValueFromFabric) {
       const vlan = selectedFabric?.default_vlan_id;
       if (isId(vlan)) {
-        setFieldValue("vlan", vlan);
+        void setFieldValue("vlan", vlan);
       }
     }
   }, [setDefaultValueFromFabric, setFieldValue, selectedFabric]);

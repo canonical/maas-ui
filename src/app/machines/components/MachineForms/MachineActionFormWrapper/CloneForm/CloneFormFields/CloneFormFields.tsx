@@ -62,11 +62,11 @@ export const CloneFormFields = ({
           <SourceMachineSelect
             onMachineClick={(machine) => {
               if (machine) {
-                setFieldValue("source", machine.system_id);
+                void setFieldValue("source", machine.system_id);
               } else {
-                setFieldValue("source", "");
-                setFieldValue("interfaces", false);
-                setFieldValue("storage", false);
+                void setFieldValue("source", "");
+                void setFieldValue("interfaces", false);
+                void setFieldValue("storage", false);
                 setSelectedMachine(null);
               }
             }}

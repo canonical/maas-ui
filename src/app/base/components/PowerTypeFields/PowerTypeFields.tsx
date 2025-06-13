@@ -112,7 +112,7 @@ export const PowerTypeFields = <V extends AnyObject>({
             // type, in order to start validation from new.
             await handleChange(e);
             setErrors(initialErrors);
-            setTouched(initialTouched);
+            void setTouched(initialTouched);
 
             const powerType = getPowerTypeFromName(powerTypes, e.target.value);
             // Explicitly set the fields of the selected power type to defaults.
@@ -121,7 +121,7 @@ export const PowerTypeFields = <V extends AnyObject>({
             // persist and appear to be a default value, even though it isn't.
             if (powerType) {
               powerType.fields.forEach((field) => {
-                setFieldValue(
+                void setFieldValue(
                   `${powerParametersValueName}.${field.name}`,
                   field.default || ""
                 );

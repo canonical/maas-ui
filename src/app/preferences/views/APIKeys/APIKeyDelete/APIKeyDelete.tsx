@@ -12,7 +12,7 @@ const APIKeyDelete = (): ReactElement => {
   const id = useGetURLId("id");
   const navigate = useNavigate();
   const onCancel = () => {
-    navigate({ pathname: urls.preferences.apiKeys.index });
+    void navigate({ pathname: urls.preferences.apiKeys.index });
   };
   useOnEscapePressed(() => {
     onCancel();

@@ -195,7 +195,7 @@ export const TagFormChanges = ({
               newTags,
               "positive",
               (tag) => {
-                setFieldValue(
+                void setFieldValue(
                   "added",
                   values.added.filter((id) => tag.id !== toFormikNumber(id))
                 );
@@ -215,7 +215,7 @@ export const TagFormChanges = ({
               newTags,
               "negative",
               (tag) => {
-                setFieldValue(
+                void setFieldValue(
                   "removed",
                   values.removed.filter((id) => tag.id !== toFormikNumber(id))
                 );
@@ -235,7 +235,7 @@ export const TagFormChanges = ({
               newTags,
               "information",
               (tag) => {
-                setFieldValue(
+                void setFieldValue(
                   "removed",
                   values.removed.concat([tag.id.toString()])
                 );

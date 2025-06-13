@@ -23,7 +23,7 @@ const APIKeyDeleteForm = ({ id }: { id: number }): ReactElement => {
       initialValues={{}}
       modelType="API key"
       onCancel={() => {
-        navigate({ pathname: urls.preferences.apiKeys.index });
+        void navigate({ pathname: urls.preferences.apiKeys.index });
       }}
       onSubmit={() => {
         dispatch(tokenActions.delete(id));

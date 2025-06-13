@@ -52,7 +52,9 @@ const ControllerList = (): React.ReactElement => {
     (searchText: string) => {
       setFilter(searchText);
       const filters = FilterControllers.getCurrentFilters(searchText);
-      navigate({ search: FilterControllers.filtersToQueryString(filters) });
+      void navigate({
+        search: FilterControllers.filtersToQueryString(filters),
+      });
     },
     [navigate, setFilter]
   );

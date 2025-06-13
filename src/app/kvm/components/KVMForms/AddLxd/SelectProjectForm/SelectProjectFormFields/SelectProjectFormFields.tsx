@@ -73,7 +73,7 @@ export const SelectProjectFormFields = ({
           name="project-select"
           onChange={() => {
             setNewProject(true);
-            setFieldValue("existingProject", "");
+            void setFieldValue("existingProject", "");
           }}
           type="radio"
         />
@@ -94,8 +94,8 @@ export const SelectProjectFormFields = ({
           name="project-select"
           onChange={() => {
             setNewProject(false);
-            setFieldValue("newProject", "");
-            setFieldValue("existingProject", freeProjects[0]?.name || "");
+            void setFieldValue("newProject", "");
+            void setFieldValue("existingProject", freeProjects[0]?.name || "");
           }}
           type="radio"
         />

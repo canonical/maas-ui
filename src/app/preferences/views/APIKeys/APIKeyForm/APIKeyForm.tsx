@@ -42,7 +42,7 @@ export const APIKeyForm = ({ token }: Props): React.ReactElement => {
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
   const onCancel = () => {
-    navigate({ pathname: urls.preferences.apiKeys.index });
+    void navigate({ pathname: urls.preferences.apiKeys.index });
   };
   useOnEscapePressed(() => {
     onCancel();

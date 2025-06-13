@@ -56,12 +56,12 @@ const BridgeFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             const { checked } = evt.target;
             // Manually set the value because we've overwritten the onChange.
-            setFieldValue("bridge_stp", checked);
+            void setFieldValue("bridge_stp", checked);
             // Set an initial value for the fd field or clear the current value.
             if (checked) {
-              setFieldValue("bridge_fd", 15);
+              void setFieldValue("bridge_fd", 15);
             } else {
-              setFieldValue("bridge_fd", "");
+              void setFieldValue("bridge_fd", "");
             }
           }}
           type="checkbox"

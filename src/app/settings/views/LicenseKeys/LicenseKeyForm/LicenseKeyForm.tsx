@@ -86,7 +86,7 @@ export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
             license_key: licenseKey ? licenseKey.license_key : "",
           }}
           onCancel={() => {
-            navigate({ pathname: settingsURLs.licenseKeys.index });
+            void navigate({ pathname: settingsURLs.licenseKeys.index });
           }}
           onSaveAnalytics={{
             action: "Saved",

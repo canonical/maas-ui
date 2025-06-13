@@ -97,7 +97,7 @@ const ImagesIntro = (): ReactElement => {
           disabled={incomplete}
           hasIcon
           onClick={() => {
-            navigate({ pathname: urls.intro.success });
+            void navigate({ pathname: urls.intro.success });
           }}
         >
           Continue

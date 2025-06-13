@@ -39,13 +39,17 @@ const CommissioningFormFields = (): React.ReactElement => {
             allUbuntuKernelOptions[e.target.value][0].value;
 
           formikProps.handleChange(e);
-          formikProps.setFieldTouched(
+          void formikProps.setFieldTouched(
             "commissioning_distro_series",
             true,
             true
           );
-          formikProps.setFieldValue("default_min_hwe_kernel", kernelValue);
-          formikProps.setFieldTouched("default_min_hwe_kernel", true, true);
+          void formikProps.setFieldValue("default_min_hwe_kernel", kernelValue);
+          void formikProps.setFieldTouched(
+            "default_min_hwe_kernel",
+            true,
+            true
+          );
         }}
         options={distroSeriesOptions}
       />

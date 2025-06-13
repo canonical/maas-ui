@@ -151,9 +151,9 @@ const MaasIntro = (): React.ReactElement => {
               onConfirm={() => {
                 dispatch(configActions.update({ completed_intro: true }));
                 if (!authUser?.completed_intro) {
-                  navigate({ pathname: urls.intro.user });
+                  void navigate({ pathname: urls.intro.user });
                 } else {
-                  navigate({
+                  void navigate({
                     pathname: exitURL,
                   });
                 }

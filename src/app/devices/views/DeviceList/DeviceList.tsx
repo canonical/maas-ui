@@ -41,7 +41,7 @@ const DeviceList = (): React.ReactElement => {
     (searchText: string) => {
       setFilter(searchText);
       const filters = FilterDevices.getCurrentFilters(searchText);
-      navigate({ search: FilterDevices.filtersToQueryString(filters) });
+      void navigate({ search: FilterDevices.filtersToQueryString(filters) });
     },
     [navigate, setFilter]
   );

@@ -30,7 +30,7 @@ export const BootArchitecturesTable = (): React.ReactElement => {
     !disabled_boot_architectures.includes(bootArchName);
 
   const handleArchChange = (bootArchName: KnownBootArchitecture["name"]) => {
-    setFieldValue(
+    void setFieldValue(
       "disabled_boot_architectures",
       isChecked(bootArchName)
         ? [...disabled_boot_architectures, bootArchName]

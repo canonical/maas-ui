@@ -43,7 +43,7 @@ export const BasePowerField = <V extends AnyObject>({
                 const newFieldValue = checked
                   ? fieldValue.filter((val) => val !== checkboxValue)
                   : [...fieldValue, checkboxValue];
-                setFieldValue(fieldName, newFieldValue);
+                void setFieldValue(fieldName, newFieldValue);
               }}
               type="checkbox"
               value={checkboxValue}

@@ -59,14 +59,14 @@ export const LXDPowerFields = <V extends AnyObject>({
       onShouldGenerateCert={(shouldGenerateCert) => {
         setShouldGenerateCert(shouldGenerateCert);
         if (shouldGenerateCert) {
-          setFieldValue(certFieldName, "");
-          setFieldValue(privateKeyFieldName, "");
+          void setFieldValue(certFieldName, "");
+          void setFieldValue(privateKeyFieldName, "");
         } else {
-          setFieldValue(
+          void setFieldValue(
             certFieldName,
             initialParameters[CustomFields.CERTIFICATE] || ""
           );
-          setFieldValue(
+          void setFieldValue(
             privateKeyFieldName,
             initialParameters[CustomFields.KEY] || ""
           );

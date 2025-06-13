@@ -46,7 +46,7 @@ const NotificationGroupNotification = ({
               {
                 label: "See settings",
                 onClick: () => {
-                  navigate({
+                  void navigate({
                     pathname: settingsURLs.configuration.general,
                   });
                 },

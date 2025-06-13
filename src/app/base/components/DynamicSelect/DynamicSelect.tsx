@@ -74,7 +74,7 @@ export const DynamicSelect = <V extends FormValues = FormValues>({
       !arraysEqual(currentOptionValues, previousOptionValues)
     ) {
       if (!currentOptionValues.includes(currentValue)) {
-        setFieldValue(
+        void setFieldValue(
           name,
           currentOptionValues.length > 0 ? currentOptionValues[0] : "",
           false

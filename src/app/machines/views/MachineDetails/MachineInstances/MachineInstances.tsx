@@ -97,7 +97,7 @@ const MachineInstances = (): React.ReactElement => {
       machine &&
       (!isMachineDetails(machine) || machine.devices.length === 0)
     ) {
-      navigate(urls.machines.machine.summary({ id: machine.system_id }), {
+      void navigate(urls.machines.machine.summary({ id: machine.system_id }), {
         replace: true,
       });
     }

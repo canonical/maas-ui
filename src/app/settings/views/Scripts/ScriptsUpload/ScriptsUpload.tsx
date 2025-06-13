@@ -115,7 +115,7 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
   useEffect(() => {
     if (saved) {
       // The script was successfully uploaded so redirect to the scripts list.
-      navigate(listLocation, { replace: true });
+      void navigate(listLocation, { replace: true });
     }
   }, [navigate, listLocation, saved]);
 
@@ -147,7 +147,7 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
         <FormikForm
           initialValues={{}}
           onCancel={() => {
-            navigate({ pathname: listLocation });
+            void navigate({ pathname: listLocation });
           }}
           onSubmit={() => {
             dispatch(scriptActions.cleanup());

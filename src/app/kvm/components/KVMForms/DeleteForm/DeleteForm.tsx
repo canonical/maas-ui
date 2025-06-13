@@ -114,7 +114,7 @@ const DeleteForm = ({
             NotificationSeverity.INFORMATION
           )
         );
-        navigate({ pathname: urls.kvm.index });
+        void navigate({ pathname: urls.kvm.index });
         clearSidePanelContent();
         dispatch(machineActions.invalidateQueries());
       }}

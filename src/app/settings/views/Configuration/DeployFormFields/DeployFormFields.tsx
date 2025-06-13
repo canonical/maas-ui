@@ -31,12 +31,12 @@ const DeployFormFields = (): React.ReactElement => {
         name="default_osystem"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
-          formikProps.setFieldTouched("default_osystem", true, true);
-          formikProps.setFieldValue(
+          void formikProps.setFieldTouched("default_osystem", true, true);
+          void formikProps.setFieldValue(
             "default_distro_series",
             allDistroSeries[e.target.value][0].value
           );
-          formikProps.setFieldTouched("default_distro_series", true, true);
+          void formikProps.setFieldTouched("default_distro_series", true, true);
         }}
         options={defaultOSystemOptions}
       />

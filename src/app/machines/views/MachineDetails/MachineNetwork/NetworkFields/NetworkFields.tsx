@@ -94,7 +94,7 @@ const NetworkFields = ({
         ({ id }) => id === toFormikNumber(values.subnet)
       );
       if (subnet) {
-        setFieldValue("subnet_cidr", subnet.cidr);
+        void setFieldValue("subnet_cidr", subnet.cidr);
       }
     }
   }, [interfaceType, setFieldValue, subnets, values.subnet]);
@@ -114,7 +114,7 @@ const NetworkFields = ({
         value =
           editing && hasSubnet ? NetworkLinkMode.AUTO : NetworkLinkMode.LINK_UP;
       }
-      setFieldValue(fieldOrder[i], value);
+      void setFieldValue(fieldOrder[i], value);
     }
   };
 
@@ -133,7 +133,7 @@ const NetworkFields = ({
             );
             // Update the VLAN on the node to be the default VLAN for that
             // fabric.
-            setFieldValue("vlan", fabric?.default_vlan_id);
+            void setFieldValue("vlan", fabric?.default_vlan_id);
             resetFollowingFields("vlan");
           }
         }}
@@ -200,7 +200,7 @@ const NetworkFields = ({
                 const subnetIsIpv4 = isIPv4(networkAddress);
 
                 if (subnetIsIpv4) {
-                  setFieldValue(
+                  void setFieldValue(
                     "ip_address",
                     subnet.statistics.first_address.replace(
                       `${immutableOctets}.`,
@@ -208,19 +208,19 @@ const NetworkFields = ({
                     )
                   );
                 } else {
-                  setFieldValue(
+                  void setFieldValue(
                     "ip_address",
                     subnet.statistics.first_address.replace(`${ipv6Prefix}`, "")
                   );
                 }
               } else {
-                setFieldValue(
+                void setFieldValue(
                   "ip_address",
                   subnet?.statistics.first_address || ""
                 );
               }
             } else {
-              setFieldValue("ip_address", "");
+              void setFieldValue("ip_address", "");
             }
           }}
           subnet={values.subnet}

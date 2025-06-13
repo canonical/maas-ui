@@ -50,9 +50,9 @@ export const DeleteTagForm = ({
     if (fromDetails) {
       // Explicitly return to the page they user came from in case they have opened
       // the list of machines.
-      navigate({ pathname: urls.tags.tag.index({ id: id }) });
+      void navigate({ pathname: urls.tags.tag.index({ id: id }) });
     } else {
-      navigate({ pathname: urls.tags.index });
+      void navigate({ pathname: urls.tags.index });
     }
   };
   if (!tag) {

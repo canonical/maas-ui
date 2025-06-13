@@ -34,8 +34,8 @@ export const LicenseKeyFormFields = ({
         name="osystem"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
-          formikProps.setFieldTouched("distro_series", true, true);
-          formikProps.setFieldValue(
+          void formikProps.setFieldTouched("distro_series", true, true);
+          void formikProps.setFieldValue(
             "distro_series",
             releases[e.target.value][0]
           );
@@ -52,7 +52,7 @@ export const LicenseKeyFormFields = ({
         name="distro_series"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
-          formikProps.setFieldTouched("osystem", true, true);
+          void formikProps.setFieldTouched("osystem", true, true);
         }}
         options={distroSeriesOptions}
         required={true}

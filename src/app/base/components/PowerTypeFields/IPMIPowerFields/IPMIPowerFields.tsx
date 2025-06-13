@@ -34,7 +34,7 @@ export const IPMIPowerFields = <V extends AnyObject>({
   // unselected.
   useEffect(() => {
     if (isMultiChoice && workaroundsFieldValue.length === 0) {
-      setFieldValue(workaroundsFieldName, [NONE_WORKAROUND_VALUE]);
+      void setFieldValue(workaroundsFieldName, [NONE_WORKAROUND_VALUE]);
     }
   }, [
     isMultiChoice,
@@ -77,7 +77,7 @@ export const IPMIPowerFields = <V extends AnyObject>({
                               )
                             : [...workaroundsFieldValue, checkboxValue]
                         ).filter((val) => val !== NONE_WORKAROUND_VALUE);
-                        setFieldValue(workaroundsFieldName, newFieldValue);
+                        void setFieldValue(workaroundsFieldName, newFieldValue);
                       }}
                       type="checkbox"
                       value={checkboxValue}

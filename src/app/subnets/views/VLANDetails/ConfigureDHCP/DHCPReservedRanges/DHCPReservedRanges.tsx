@@ -160,15 +160,15 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
     const subnet = subnets.find(
       (subnet) => Number(e.target.value) === subnet.id
     );
-    setFieldValue(
+    void setFieldValue(
       "endIP",
       subnet?.statistics.suggested_dynamic_range?.end || ""
     );
-    setFieldValue(
+    void setFieldValue(
       "gatewayIP",
       subnet?.gateway_ip || subnet?.statistics.suggested_gateway || ""
     );
-    setFieldValue(
+    void setFieldValue(
       "startIP",
       subnet?.statistics.suggested_dynamic_range?.start || ""
     );
