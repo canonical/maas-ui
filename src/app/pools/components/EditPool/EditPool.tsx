@@ -56,7 +56,7 @@ const EditPool = ({ id, closeForm }: EditPoolProps): ReactElement => {
             });
           }}
           onSuccess={() => {
-            void queryClient
+            return queryClient
               .invalidateQueries({
                 queryKey: getResourcePoolQueryKey({
                   path: { resource_pool_id: id },
