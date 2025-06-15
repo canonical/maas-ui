@@ -13,6 +13,7 @@ import type { SubnetSummaryFormValues } from "../types";
 
 import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import VLANSelect from "@/app/base/components/VLANSelect";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
@@ -34,7 +35,7 @@ const SubnetSummaryFormFields = (): React.ReactElement => {
     if (fabric) {
       setFieldValue("vlan", fabric.default_vlan_id.toString()).catch(
         (reason) => {
-          throw new Error(reason);
+          throw new FormikFieldChangeError("vlan", "setFieldValue", reason);
         }
       );
     }

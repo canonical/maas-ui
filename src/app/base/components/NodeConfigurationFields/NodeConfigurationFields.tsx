@@ -10,6 +10,7 @@ import type { SchemaOf } from "yup";
 import type { NodeConfigurationValues } from "./types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import TagIdField from "@/app/base/components/TagIdField";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 import type { RootState } from "@/app/store/root/types";
@@ -81,7 +82,11 @@ const NodeConfigurationFields = (): React.ReactElement => {
               onTagCreated={(tag) => {
                 setFieldValue("tags", values.tags.concat([tag.id])).catch(
                   (reason) => {
-                    throw new Error(reason);
+                    throw new FormikFieldChangeError(
+                      "tags",
+                      "setFieldValue",
+                      reason
+                    );
                   }
                 );
                 setNewTagName(null);

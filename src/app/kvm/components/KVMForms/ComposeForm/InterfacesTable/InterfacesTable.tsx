@@ -17,6 +17,7 @@ import SubnetSelect from "./SubnetSelect";
 
 import Definition from "@/app/base/components/Definition";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod, PodDetails } from "@/app/store/pod/types";
@@ -118,7 +119,7 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
       ...interfaces,
       generateNewInterface(id, firstPxeSubnet?.id),
     ]).catch((reason) => {
-      throw new Error(reason);
+      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
     });
   };
 
@@ -127,7 +128,7 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
       "interfaces",
       interfaces.filter((iface) => iface.id !== id)
     ).catch((reason) => {
-      throw new Error(reason);
+      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
     });
   };
 
@@ -182,7 +183,11 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
                   handleChange(e);
                   setFieldValue(`interfaces[${i}].subnet`, "").catch(
                     (reason) => {
-                      throw new Error(reason);
+                      throw new FormikFieldChangeError(
+                        `interfaces[${i}].subnet`,
+                        "setFieldValue",
+                        reason
+                      );
                     }
                   );
                 }}
@@ -205,7 +210,11 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
                 selectSubnet={(subnetID?: number) => {
                   setFieldValue(`interfaces[${i}].subnet`, subnetID).catch(
                     (reason) => {
-                      throw new Error(reason);
+                      throw new FormikFieldChangeError(
+                        `interfaces[${i}].subnet`,
+                        "setFieldValue",
+                        reason
+                      );
                     }
                   );
                 }}

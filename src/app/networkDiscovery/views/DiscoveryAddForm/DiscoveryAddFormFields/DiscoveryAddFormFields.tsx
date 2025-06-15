@@ -8,6 +8,7 @@ import { DeviceType } from "../types";
 
 import MachineSelect from "@/app/base/components/DhcpFormFields/MachineSelect";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import urls from "@/app/base/urls";
@@ -78,7 +79,11 @@ const DiscoveryAddFormFields = ({
             name="type"
             onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
               setFieldValue("type", evt.target.value).catch((reason) => {
-                throw new Error(reason);
+                throw new FormikFieldChangeError(
+                  "type",
+                  "setFieldValue",
+                  reason
+                );
               });
               setDeviceType(evt.target.value as DeviceType);
               // Clear the device in case it has been set previously.
@@ -125,7 +130,11 @@ const DiscoveryAddFormFields = ({
               onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
                 setFieldValue(DeviceMeta.PK, evt.target.value).catch(
                   (reason) => {
-                    throw new Error(reason);
+                    throw new FormikFieldChangeError(
+                      DeviceMeta.PK,
+                      "setFieldValue",
+                      reason
+                    );
                   }
                 );
                 setDevice(evt.target.value);

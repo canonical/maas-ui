@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import type { FormValues } from "../TestForm";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import TagSelector from "@/app/base/components/TagSelector";
 import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
 import type { Script } from "@/app/store/script/types";
@@ -47,7 +48,11 @@ export const TestFormFields = ({
               scripts.find((script) => script.id === tag.id)
             );
             setFieldValue("scripts", selectedScripts).catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "scripts",
+                "setFieldValue",
+                reason
+              );
             });
           }}
           placeholder="Select scripts"
@@ -73,7 +78,11 @@ export const TestFormFields = ({
                 `scriptInputs[${script.name}].url`,
                 e.target.value
               ).catch((reason) => {
-                throw new Error(reason);
+                throw new FormikFieldChangeError(
+                  `scriptInputs[${script.name}].url`,
+                  "setFieldValue",
+                  reason
+                );
               });
             }}
             type="text"

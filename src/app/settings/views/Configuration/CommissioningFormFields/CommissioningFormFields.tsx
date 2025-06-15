@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import type { CommissioningFormValues } from "../CommissioningForm";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import configSelectors from "@/app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
@@ -42,17 +43,29 @@ const CommissioningFormFields = (): React.ReactElement => {
           formikProps
             .setFieldTouched("commissioning_distro_series", true, true)
             .catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "commissioning_distro_series",
+                "setFieldTouched",
+                reason
+              );
             });
           formikProps
             .setFieldValue("default_min_hwe_kernel", kernelValue)
             .catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "default_min_hwe_kernel",
+                "setFieldValue",
+                reason
+              );
             });
           formikProps
             .setFieldTouched("default_min_hwe_kernel", true, true)
             .catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "default_min_hwe_kernel",
+                "setFieldTouched",
+                reason
+              );
             });
         }}
         options={distroSeriesOptions}

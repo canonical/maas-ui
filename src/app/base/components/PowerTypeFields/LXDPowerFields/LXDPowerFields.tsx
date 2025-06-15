@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import BasePowerField from "../BasePowerField";
 
 import CertificateFields from "@/app/base/components/CertificateFields";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import type { AnyObject } from "@/app/base/types";
 import type { PowerField as PowerFieldType } from "@/app/store/general/types";
 import type { PowerParameters } from "@/app/store/types/node";
@@ -60,23 +61,39 @@ export const LXDPowerFields = <V extends AnyObject>({
         setShouldGenerateCert(shouldGenerateCert);
         if (shouldGenerateCert) {
           setFieldValue(certFieldName, "").catch((reason) => {
-            throw new Error(reason);
+            throw new FormikFieldChangeError(
+              certFieldName,
+              "setFieldValue",
+              reason
+            );
           });
           setFieldValue(privateKeyFieldName, "").catch((reason) => {
-            throw new Error(reason);
+            throw new FormikFieldChangeError(
+              privateKeyFieldName,
+              "setFieldValue",
+              reason
+            );
           });
         } else {
           setFieldValue(
             certFieldName,
             initialParameters[CustomFields.CERTIFICATE] || ""
           ).catch((reason) => {
-            throw new Error(reason);
+            throw new FormikFieldChangeError(
+              certFieldName,
+              "setFieldValue",
+              reason
+            );
           });
           setFieldValue(
             privateKeyFieldName,
             initialParameters[CustomFields.KEY] || ""
           ).catch((reason) => {
-            throw new Error(reason);
+            throw new FormikFieldChangeError(
+              privateKeyFieldName,
+              "setFieldValue",
+              reason
+            );
           });
         }
       }}

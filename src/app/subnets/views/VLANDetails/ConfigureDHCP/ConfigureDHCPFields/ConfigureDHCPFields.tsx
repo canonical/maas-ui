@@ -8,6 +8,7 @@ import type { ConfigureDHCPValues } from "../ConfigureDHCP";
 import { DHCPType } from "../ConfigureDHCP";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import VLANSelect from "@/app/base/components/VLANSelect";
 import controllerSelectors from "@/app/store/controller/selectors";
 import fabricSelectors from "@/app/store/fabric/selectors";
@@ -61,10 +62,18 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
                   "primaryRack",
                   connectedControllers[0]?.system_id || ""
                 ).catch((reason) => {
-                  throw new Error(reason);
+                  throw new FormikFieldChangeError(
+                    "primaryRack",
+                    "setFieldValue",
+                    reason
+                  );
                 });
                 setFieldValue("relayVLAN", "").catch((reason) => {
-                  throw new Error(reason);
+                  throw new FormikFieldChangeError(
+                    "relayVLAN",
+                    "setFieldValue",
+                    reason
+                  );
                 });
               }}
               type="radio"
@@ -131,14 +140,26 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
                 await handleChange(e);
                 setFieldValue("relayVLAN", vlansWithDHCP[0]?.id || "").catch(
                   (reason) => {
-                    throw new Error(reason);
+                    throw new FormikFieldChangeError(
+                      "relayVLAN",
+                      "setFieldValue",
+                      reason
+                    );
                   }
                 );
                 setFieldValue("primaryRack", "").catch((reason) => {
-                  throw new Error(reason);
+                  throw new FormikFieldChangeError(
+                    "primaryRack",
+                    "setFieldValue",
+                    reason
+                  );
                 });
                 setFieldValue("secondaryRack", "").catch((reason) => {
-                  throw new Error(reason);
+                  throw new FormikFieldChangeError(
+                    "secondaryRack",
+                    "setFieldValue",
+                    reason
+                  );
                 });
               }}
               type="radio"

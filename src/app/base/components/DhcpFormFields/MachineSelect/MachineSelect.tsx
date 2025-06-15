@@ -10,6 +10,7 @@ import SelectButton from "../../SelectButton";
 
 import MachineSelectBox from "./MachineSelectBox/MachineSelectBox";
 
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import OutsideClickHandler from "@/app/base/components/OutsideClickHandler";
 import { useFetchActions, usePreviousPersistent } from "@/app/base/hooks";
 import type { FetchFilters, Machine } from "@/app/store/machine/types";
@@ -52,7 +53,7 @@ export const MachineSelect = ({
   const handleSelect = (machine: Machine | null) => {
     handleClose();
     setFieldValue(name, machine?.system_id || null).catch((reason) => {
-      throw new Error(reason);
+      throw new FormikFieldChangeError(name, "setFieldValue", reason);
     });
   };
   useOnEscapePressed(handleClose);
@@ -81,7 +82,11 @@ export const MachineSelect = ({
               setIsOpen(!isOpen);
               if (!isOpen) {
                 setFieldValue(name, "", false).catch((reason) => {
-                  throw new Error(reason);
+                  throw new FormikFieldChangeError(
+                    name,
+                    "setFieldValue",
+                    reason
+                  );
                 });
               }
             }}

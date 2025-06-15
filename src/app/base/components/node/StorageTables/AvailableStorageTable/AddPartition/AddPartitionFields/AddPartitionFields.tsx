@@ -5,6 +5,7 @@ import FilesystemFields from "../../FilesystemFields";
 import type { AddPartitionValues } from "../AddPartition";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import type { Machine } from "@/app/store/machine/types";
 
 type Props = {
@@ -45,10 +46,18 @@ export const AddPartitionFields = ({
               e.target.value !== "" ? parseFloat(e.target.value) : "";
             handleChange(e);
             setFieldValue("partitionSize", value).catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "partitionSize",
+                "setFieldValue",
+                reason
+              );
             });
             setFieldTouched("partitionSize", true, false).catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "partitionSize",
+                "setFieldTouched",
+                reason
+              );
             });
           }}
           required

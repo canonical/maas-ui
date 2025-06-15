@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import type { AddDeviceInterface, AddDeviceValues } from "../types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import PrefixedIpInput from "@/app/base/components/PrefixedIpInput";
@@ -35,7 +36,11 @@ const AddDeviceInterfaceFields = ({
     if (iface.ip_assignment === DeviceIpAssignment.STATIC && subnet) {
       setFieldValue(`interfaces[${iface.id}].subnet_cidr`, subnet.cidr).catch(
         (reason) => {
-          throw new Error(reason);
+          throw new FormikFieldChangeError(
+            `interfaces[${iface.id}].subnet_cidr`,
+            "setFieldValue",
+            reason
+          );
         }
       );
     }
@@ -61,12 +66,20 @@ const AddDeviceInterfaceFields = ({
           handleChange(e);
           setFieldValue(`interfaces[${iface.id}].subnet`, "").catch(
             (reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                `interfaces[${iface.id}].subnet`,
+                "setFieldValue",
+                reason
+              );
             }
           );
           setFieldValue(`interfaces[${iface.id}].ip_address`, "").catch(
             (reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                `interfaces[${iface.id}].ip_address`,
+                "setFieldValue",
+                reason
+              );
             }
           );
         }}
@@ -142,7 +155,7 @@ export const AddDeviceInterfaces = (): React.ReactElement => {
       "interfaces",
       interfaces.filter((iface) => iface.id !== id)
     ).catch((reason) => {
-      throw new Error(reason);
+      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
     });
   };
 

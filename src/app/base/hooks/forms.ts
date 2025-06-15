@@ -5,6 +5,7 @@ import { useFormikContext } from "formik";
 
 import type { AnyObject, APIError } from "../types";
 
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import { simpleObjectEquality } from "@/app/settings/utils";
 
 /**
@@ -34,7 +35,7 @@ export const useFormikErrors = <V = AnyObject, E = null>(
         }
         setFieldError(field, errorString);
         setFieldTouched(field, true, false).catch((reason) => {
-          throw new Error(reason);
+          throw new FormikFieldChangeError(field, "setFieldTouched", reason);
         });
       });
     }

@@ -5,6 +5,7 @@ import type { BridgeFormValues } from "../AddBridgeForm/types";
 import NetworkFields from "../NetworkFields";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import SwitchField from "@/app/base/components/SwitchField";
 import TagNameField from "@/app/base/components/TagNameField";
@@ -57,16 +58,28 @@ const BridgeFormFields = ({
             const { checked } = evt.target;
             // Manually set the value because we've overwritten the onChange.
             setFieldValue("bridge_stp", checked).catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "bridge_stp",
+                "setFieldValue",
+                reason
+              );
             });
             // Set an initial value for the fd field or clear the current value.
             if (checked) {
               setFieldValue("bridge_fd", 15).catch((reason) => {
-                throw new Error(reason);
+                throw new FormikFieldChangeError(
+                  "bridge_fd",
+                  "setFieldValue",
+                  reason
+                );
               });
             } else {
               setFieldValue("bridge_fd", "").catch((reason) => {
-                throw new Error(reason);
+                throw new FormikFieldChangeError(
+                  "bridge_fd",
+                  "setFieldValue",
+                  reason
+                );
               });
             }
           }}

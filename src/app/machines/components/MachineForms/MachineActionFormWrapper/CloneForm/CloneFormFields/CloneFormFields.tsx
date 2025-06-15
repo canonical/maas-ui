@@ -11,6 +11,7 @@ import CloneStorageTable from "./CloneStorageTable";
 import SourceMachineSelect from "./SourceMachineSelect";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import { useFetchActions } from "@/app/base/hooks";
 import { fabricActions } from "@/app/store/fabric";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -63,17 +64,33 @@ export const CloneFormFields = ({
             onMachineClick={(machine) => {
               if (machine) {
                 setFieldValue("source", machine.system_id).catch((reason) => {
-                  throw new Error(reason);
+                  throw new FormikFieldChangeError(
+                    "source",
+                    "setFieldValue",
+                    reason
+                  );
                 });
               } else {
                 setFieldValue("source", "").catch((reason) => {
-                  throw new Error(reason);
+                  throw new FormikFieldChangeError(
+                    "source",
+                    "setFieldValue",
+                    reason
+                  );
                 });
                 setFieldValue("interfaces", false).catch((reason) => {
-                  throw new Error(reason);
+                  throw new FormikFieldChangeError(
+                    "interfaces",
+                    "setFieldValue",
+                    reason
+                  );
                 });
                 setFieldValue("storage", false).catch((reason) => {
-                  throw new Error(reason);
+                  throw new FormikFieldChangeError(
+                    "storage",
+                    "setFieldValue",
+                    reason
+                  );
                 });
                 setSelectedMachine(null);
               }

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import type { ConfigureDHCPValues } from "../ConfigureDHCP";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import SubnetLink from "@/app/base/components/SubnetLink";
 import SubnetSelect from "@/app/base/components/SubnetSelect";
 import TitledSection from "@/app/base/components/TitledSection";
@@ -164,19 +165,19 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
       "endIP",
       subnet?.statistics.suggested_dynamic_range?.end || ""
     ).catch((reason) => {
-      throw new Error(reason);
+      throw new FormikFieldChangeError("endIP", "setFieldValue", reason);
     });
     setFieldValue(
       "gatewayIP",
       subnet?.gateway_ip || subnet?.statistics.suggested_gateway || ""
     ).catch((reason) => {
-      throw new Error(reason);
+      throw new FormikFieldChangeError("gatewayIP", "setFieldValue", reason);
     });
     setFieldValue(
       "startIP",
       subnet?.statistics.suggested_dynamic_range?.start || ""
     ).catch((reason) => {
-      throw new Error(reason);
+      throw new FormikFieldChangeError("startIP", "setFieldValue", reason);
     });
   };
 

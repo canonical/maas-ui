@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import type { RepositoryFormValues } from "../RepositoryForm/types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,
@@ -53,10 +54,10 @@ const generateCheckboxGroup = (
           newFields = fields.filter((oldField) => temp.includes(oldField));
         }
         setFieldValue(key, newFields).catch((reason) => {
-          throw new Error(reason);
+          throw new FormikFieldChangeError(key, "setFieldValue", reason);
         });
         setFieldTouched(key, true).catch((reason) => {
-          throw new Error(reason);
+          throw new FormikFieldChangeError(key, "setFieldTouched", reason);
         });
       }}
       type="checkbox"
@@ -106,7 +107,11 @@ const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources).catch(
                   (reason) => {
-                    throw new Error(reason);
+                    throw new FormikFieldChangeError(
+                      "disable_sources",
+                      "setFieldValue",
+                      reason
+                    );
                   }
                 );
               }}
@@ -151,7 +156,11 @@ const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources).catch(
                   (reason) => {
-                    throw new Error(reason);
+                    throw new FormikFieldChangeError(
+                      "disable_sources",
+                      "setFieldValue",
+                      reason
+                    );
                   }
                 );
               }}

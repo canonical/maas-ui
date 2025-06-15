@@ -5,6 +5,7 @@ import FilesystemFields from "../../FilesystemFields";
 import type { AddLogicalVolumeValues } from "../AddLogicalVolume";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import TagNameField from "@/app/base/components/TagNameField";
 import type { Machine } from "@/app/store/machine/types";
 
@@ -32,10 +33,14 @@ export const AddLogicalVolumeFields = ({
               e.target.value !== "" ? parseFloat(e.target.value) : "";
             handleChange(e);
             setFieldValue("size", value).catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError("size", "setFieldValue", reason);
             });
             setFieldTouched("size", true, false).catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "size",
+                "setFieldTouched",
+                reason
+              );
             });
           }}
           required

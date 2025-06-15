@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import type { DeployFormValues } from "../DeployForm/types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import configSelectors from "@/app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
@@ -34,7 +35,11 @@ const DeployFormFields = (): React.ReactElement => {
           formikProps
             .setFieldTouched("default_osystem", true, true)
             .catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "default_osystem",
+                "setFieldTouched",
+                reason
+              );
             });
           formikProps
             .setFieldValue(
@@ -42,12 +47,20 @@ const DeployFormFields = (): React.ReactElement => {
               allDistroSeries[e.target.value][0].value
             )
             .catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "default_distro_series",
+                "setFieldValue",
+                reason
+              );
             });
           formikProps
             .setFieldTouched("default_distro_series", true, true)
             .catch((reason) => {
-              throw new Error(reason);
+              throw new FormikFieldChangeError(
+                "default_distro_series",
+                "setFieldTouched",
+                reason
+              );
             });
         }}
         options={defaultOSystemOptions}

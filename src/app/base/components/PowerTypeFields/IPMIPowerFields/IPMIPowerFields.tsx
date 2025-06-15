@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 
 import BasePowerField from "../BasePowerField";
 
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import type { AnyObject } from "@/app/base/types";
 import type { PowerField as PowerFieldType } from "@/app/store/general/types";
 import type { PowerParameters } from "@/app/store/types/node";
@@ -36,7 +37,11 @@ export const IPMIPowerFields = <V extends AnyObject>({
     if (isMultiChoice && workaroundsFieldValue.length === 0) {
       setFieldValue(workaroundsFieldName, [NONE_WORKAROUND_VALUE]).catch(
         (reason) => {
-          throw new Error(reason);
+          throw new FormikFieldChangeError(
+            workaroundsFieldName,
+            "setFieldValue",
+            reason
+          );
         }
       );
     }
@@ -85,7 +90,11 @@ export const IPMIPowerFields = <V extends AnyObject>({
                           workaroundsFieldName,
                           newFieldValue
                         ).catch((reason) => {
-                          throw new Error(reason);
+                          throw new FormikFieldChangeError(
+                            workaroundsFieldName,
+                            "setFieldValue",
+                            reason
+                          );
                         });
                       }}
                       type="checkbox"
