@@ -173,7 +173,7 @@ export const App = (): React.ReactElement => {
     <Application id={MAAS_UI_ID}>
       <ThemePreviewContextProvider>
         <ConnectionStatus />
-        {user.isSuccess && authenticated ? (
+        {isLoaded ? (
           <AppSideNavigation />
         ) : (
           <header className="l-navigation-bar is-pinned">

@@ -10,11 +10,12 @@ import { useExitURL } from "./hooks";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { user } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { setupMockServer } from "@/testing/utils";
 
 const mockStore = configureStore();
-setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>) =>
@@ -31,6 +32,9 @@ describe("hooks", () => {
 
   describe("useExitURL", () => {
     it("gets the exit URL for an admin", () => {
+      mockServer.use(
+        authResolvers.getCurrentUser.handler(user({ is_superuser: true }))
+      );
       const store = mockStore(state);
       const { result } = renderHook(() => useExitURL(), {
         wrapper: generateWrapper(store),
@@ -39,6 +43,9 @@ describe("hooks", () => {
     });
 
     it("gets the exit URL for a non-admin", () => {
+      mockServer.use(
+        authResolvers.getCurrentUser.handler(user({ is_superuser: false }))
+      );
       const store = mockStore(state);
       const { result } = renderHook(() => useExitURL(), {
         wrapper: generateWrapper(store),

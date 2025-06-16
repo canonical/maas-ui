@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react";
 import type { SpyInstance } from "vitest";
 
 import UserIntro, { Labels as UserIntroLabels } from "./UserIntro";
@@ -113,6 +114,10 @@ describe("UserIntro", () => {
     await userEvent.click(
       screen.getByRole("button", { name: UserIntroLabels.Continue })
     );
+
+    await waitFor(() => {
+      expect(authResolvers.completeIntro.resolved).toBe(true);
+    });
   });
 
   it("can show errors when trying to update the user", async () => {
@@ -156,5 +161,9 @@ describe("UserIntro", () => {
     await userEvent.click(
       within(confirm).getByRole("button", { name: UserIntroLabels.Skip })
     );
+
+    await waitFor(() => {
+      expect(authResolvers.completeIntro.resolved).toBe(true);
+    });
   });
 });
