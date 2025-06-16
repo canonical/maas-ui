@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -12,11 +10,10 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   userEvent,
-  render,
   screen,
   within,
-  renderWithMockStore,
-  renderWithBrowserRouter,
+  renderWithProviders,
+  waitFor,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -48,7 +45,7 @@ describe("EventLogs", () => {
   });
 
   it("can display the table", () => {
-    renderWithMockStore(<EventLogs node={machine} />, {
+    renderWithProviders(<EventLogs node={machine} />, {
       state,
     });
     expect(screen.getByLabelText(Label.Title)).toBeInTheDocument();
@@ -56,15 +53,10 @@ describe("EventLogs", () => {
 
   it("fetches events up to the preload amount", () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <EventLogs node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<EventLogs node={machine} />, {
+      store,
+      initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+    });
     const dispatches = store
       .getActions()
       .filter(({ type }) => type === "event/fetch");
@@ -89,15 +81,10 @@ describe("EventLogs", () => {
       );
     }
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <EventLogs node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<EventLogs node={machine} />, {
+      store,
+      initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+    });
     let dispatches = store
       .getActions()
       .filter(({ type }) => type === "event/fetch");
@@ -132,7 +119,7 @@ describe("EventLogs", () => {
         node_id: 1,
       }),
     ];
-    renderWithMockStore(<EventLogs node={machine} />, {
+    renderWithProviders(<EventLogs node={machine} />, {
       state,
     });
     const rows = screen.getAllByRole("row");
@@ -166,7 +153,7 @@ describe("EventLogs", () => {
         type: factory.eventType({ description: undefined }),
       }),
     ];
-    renderWithMockStore(<EventLogs node={machine} />, {
+    renderWithProviders(<EventLogs node={machine} />, {
       state,
     });
     await userEvent.type(screen.getByRole("searchbox"), "failed");
@@ -193,7 +180,7 @@ describe("EventLogs", () => {
         })
       );
     }
-    renderWithMockStore(<EventLogs node={machine} />, {
+    renderWithProviders(<EventLogs node={machine} />, {
       state,
     });
     const rows = screen.getAllByRole("row");
@@ -212,27 +199,15 @@ describe("EventLogs", () => {
       );
     }
     const store = mockStore(state);
-    const { rerender } = render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <EventLogs node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<EventLogs node={machine} />, {
+      store,
+      initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+    });
     await userEvent.selectOptions(screen.getByRole("combobox"), "100");
-    // Render another log, this one should get the updated page size.
-    rerender(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <EventLogs node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(screen.getAllByRole("row")).toHaveLength(101);
+
+    await waitFor(() => {
+      expect(screen.getAllByRole("row")).toHaveLength(101);
+    });
   });
 
   it("does not display the scroll-to-top component if there are less than 50 items", async () => {
@@ -245,7 +220,7 @@ describe("EventLogs", () => {
         })
       );
     }
-    renderWithMockStore(<EventLogs node={machine} />, {
+    renderWithProviders(<EventLogs node={machine} />, {
       state,
     });
     await userEvent.selectOptions(screen.getByRole("combobox"), "50");
@@ -264,7 +239,7 @@ describe("EventLogs", () => {
         })
       );
     }
-    renderWithMockStore(<EventLogs node={machine} />, {
+    renderWithProviders(<EventLogs node={machine} />, {
       state,
     });
     await userEvent.selectOptions(screen.getByRole("combobox"), "50");
@@ -283,7 +258,7 @@ describe("EventLogs", () => {
         })
       );
     }
-    renderWithBrowserRouter(<EventLogs node={machine} />, {
+    renderWithProviders(<EventLogs node={machine} />, {
       state,
     });
     await userEvent.selectOptions(screen.getByRole("combobox"), "50");
