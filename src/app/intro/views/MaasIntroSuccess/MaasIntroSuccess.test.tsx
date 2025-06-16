@@ -1,4 +1,4 @@
-import { MemoryRouter } from "react-router";
+import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import MaasIntroSuccess, {
@@ -10,14 +10,16 @@ import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
-  renderWithMockStore,
+  renderWithProviders,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("MaasIntroSuccess", () => {
   let state: RootState;
@@ -28,20 +30,17 @@ describe("MaasIntroSuccess", () => {
           factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
         ],
       }),
-      user: factory.userState({
-        auth: factory.authState({
-          user: factory.user({ completed_intro: false, is_superuser: false }),
-        }),
-      }),
     });
   });
 
   it("links to the user intro if not yet completed", () => {
-    state.user.auth = factory.authState({
-      user: factory.user({ completed_intro: false }),
-    });
-    renderWithBrowserRouter(<MaasIntroSuccess />, {
-      route: "/intro/success",
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.user({ completed_intro: false })
+      )
+    );
+    renderWithProviders(<MaasIntroSuccess />, {
+      initialEntries: ["/intro/success"],
       state,
     });
     expect(
@@ -49,42 +48,47 @@ describe("MaasIntroSuccess", () => {
     ).toHaveAttribute("href", urls.intro.user);
   });
 
-  it("links to the machine list if an admin that has completed the user intro", () => {
-    state.user.auth = factory.authState({
-      user: factory.user({ completed_intro: true, is_superuser: true }),
-    });
-    renderWithBrowserRouter(<MaasIntroSuccess />, {
-      route: "/intro/success",
+  it("links to the machine list if an admin that has completed the user intro", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.user({ completed_intro: true, is_superuser: true })
+      )
+    );
+    renderWithProviders(<MaasIntroSuccess />, {
+      initialEntries: ["/intro/success"],
       state,
     });
-    expect(
-      screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
-    ).toHaveAttribute("href", urls.machines.index);
+    await waitFor(() =>
+      expect(
+        screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
+      ).toHaveAttribute("href", urls.machines.index)
+    );
   });
 
-  it("links to the machine list if a non-admin that has completed the user intro", () => {
-    state.user.auth = factory.authState({
-      user: factory.user({ completed_intro: true, is_superuser: false }),
-    });
-    renderWithBrowserRouter(<MaasIntroSuccess />, {
-      route: "/intro/success",
+  it("links to the machine list if a non-admin that has completed the user intro", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.user({ completed_intro: true, is_superuser: false })
+      )
+    );
+
+    renderWithProviders(<MaasIntroSuccess />, {
+      initialEntries: ["/intro/success"],
       state,
     });
-    expect(
-      screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
-    ).toHaveAttribute("href", urls.machines.index);
+    await waitFor(() =>
+      expect(
+        screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
+      ).toHaveAttribute("href", urls.machines.index)
+    );
   });
 
   it("dispatches an action to update completed intro config", async () => {
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/intro/success", key: "testKey" }]}
-      >
-        <MaasIntroSuccess />
-      </MemoryRouter>,
-      { store }
-    );
+    renderWithProviders(<MaasIntroSuccess />, {
+      initialEntries: ["/intro/success"],
+      store,
+    });
 
     await userEvent.click(
       screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })

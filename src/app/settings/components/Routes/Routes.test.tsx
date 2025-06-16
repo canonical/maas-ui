@@ -12,21 +12,11 @@ const licensekey = factory.licenseKeys({
   distro_series: "disco",
 });
 
-const user = factory.user({
-  id: 1,
-  username: "admin",
-});
-
 const packageRepository = factory.packageRepository({ id: 1 });
 const dhcpSnippet = factory.dhcpSnippet();
 
 beforeEach(() => {
   state = factory.rootState({
-    user: factory.userState({
-      auth: factory.authState({ loaded: true, user }),
-      loaded: true,
-      items: [user],
-    }),
     status: factory.statusState({ externalAuthURL: null }),
     licensekeys: factory.licenseKeysState({
       loaded: true,

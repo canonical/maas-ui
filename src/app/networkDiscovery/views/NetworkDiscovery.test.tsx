@@ -1,3 +1,5 @@
+import { waitFor } from "@testing-library/react";
+
 import { Labels as DiscoveriesListLabel } from "./DiscoveriesList/DiscoveriesList";
 import NetworkDiscovery, { Label } from "./NetworkDiscovery";
 import { Label as NetworkDiscoveryConfigurationFormLabel } from "./NetworkDiscoveryConfigurationForm/NetworkDiscoveryConfigurationForm";
@@ -7,7 +9,15 @@ import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  renderWithBrowserRouter,
+  renderWithProviders,
+  screen,
+  setupMockServer,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("NetworkDiscovery", () => {
   let state: RootState;
@@ -16,9 +26,6 @@ describe("NetworkDiscovery", () => {
     state = factory.rootState({
       config: factory.configState({
         items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "enabled" }],
-      }),
-      user: factory.userState({
-        auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
       }),
     });
   });
@@ -37,46 +44,54 @@ describe("NetworkDiscovery", () => {
       path: `${urls.networkDiscovery.index}/not/a/path`,
     },
   ].forEach(({ label, path }) => {
-    it(`Displays: ${label} at: ${path}`, () => {
+    it(`Displays: ${label} at: ${path}`, async () => {
       renderWithBrowserRouter(<NetworkDiscovery />, {
         route: path,
         state,
         routePattern: `${urls.networkDiscovery.index}/*`,
       });
-      expect(screen.getByLabelText(label)).toBeInTheDocument();
+      await waitFor(() =>
+        expect(screen.getByLabelText(label)).toBeInTheDocument()
+      );
     });
   });
 
-  it("displays a notification when discovery is disabled", () => {
+  it("displays a notification when discovery is disabled", async () => {
     state.config = factory.configState({
       items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "disabled" }],
     });
-    renderWithBrowserRouter(<NetworkDiscovery />, {
-      route: urls.networkDiscovery.index,
+    renderWithProviders(<NetworkDiscovery />, {
+      initialEntries: [urls.networkDiscovery.index],
       state,
     });
-    expect(screen.getByText(Label.Disabled)).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByText(Label.Disabled)).toBeInTheDocument()
+    );
   });
 
   it("does not display a notification when discovery is enabled", () => {
     state.config = factory.configState({
       items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "enabled" }],
     });
-    renderWithBrowserRouter(<NetworkDiscovery />, {
-      route: urls.networkDiscovery.index,
+    renderWithProviders(<NetworkDiscovery />, {
+      initialEntries: [urls.networkDiscovery.index],
       state,
     });
     expect(screen.queryByText(Label.Disabled)).not.toBeInTheDocument();
   });
 
-  it("displays a message if not an admin", () => {
-    state.user.auth = factory.authState({
-      user: factory.user({ is_superuser: false }),
-    });
-    renderWithBrowserRouter(<NetworkDiscovery />, {
-      route: urls.networkDiscovery.index,
+  it("displays a message if not an admin", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.user({ is_superuser: false })
+      )
+    );
+    renderWithProviders(<NetworkDiscovery />, {
+      initialEntries: [urls.networkDiscovery.index],
       state,
     });
-    expect(screen.getByText(Label.Permissions)).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByText(Label.Permissions)).toBeInTheDocument()
+    );
   });
 });
