@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router";
 
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import ImagesForms from "@/app/images/components/ImagesForms";
 import ImagesTable from "@/app/images/components/ImagesTable";
@@ -31,7 +32,7 @@ export enum Labels {
 const ImagesIntro = (): ReactElement => {
   const dispatch = useDispatch();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.resources);
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);

@@ -44,7 +44,7 @@ const EditZone = ({ id, closeForm }: EditZoneProps): ReactElement => {
             });
           }}
           onSuccess={() => {
-            queryClient
+            return queryClient
               .invalidateQueries({
                 queryKey: getZoneQueryKey({
                   path: { zone_id: id },

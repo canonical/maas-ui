@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import type { RepositoryFormValues } from "../RepositoryForm/types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,
@@ -52,8 +53,12 @@ const generateCheckboxGroup = (
           const temp = [...values, field];
           newFields = fields.filter((oldField) => temp.includes(oldField));
         }
-        setFieldValue(key, newFields);
-        setFieldTouched(key, true);
+        setFieldValue(key, newFields).catch((reason) => {
+          throw new FormikFieldChangeError(key, "setFieldValue", reason);
+        });
+        setFieldTouched(key, true).catch((reason) => {
+          throw new FormikFieldChangeError(key, "setFieldTouched", reason);
+        });
       }}
       type="checkbox"
       value={field}
@@ -100,7 +105,15 @@ const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
               label={Labels.EnableSources}
               name="disable_sources"
               onChange={() => {
-                setFieldValue("disable_sources", !values.disable_sources);
+                setFieldValue("disable_sources", !values.disable_sources).catch(
+                  (reason) => {
+                    throw new FormikFieldChangeError(
+                      "disable_sources",
+                      "setFieldValue",
+                      reason
+                    );
+                  }
+                );
               }}
               type="checkbox"
               wrapperClassName="u-no-margin--bottom"
@@ -141,7 +154,15 @@ const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
               label={Labels.EnableSources}
               name="disable_sources"
               onChange={() => {
-                setFieldValue("disable_sources", !values.disable_sources);
+                setFieldValue("disable_sources", !values.disable_sources).catch(
+                  (reason) => {
+                    throw new FormikFieldChangeError(
+                      "disable_sources",
+                      "setFieldValue",
+                      reason
+                    );
+                  }
+                );
               }}
               type="checkbox"
               wrapperClassName="u-no-margin--bottom"

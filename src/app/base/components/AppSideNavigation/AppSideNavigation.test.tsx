@@ -404,9 +404,9 @@ describe("GlobalSideNav", () => {
       store,
       initialEntries: [urls.intro.images],
     });
-    await waitFor(() =>
-      expect(router.state.location.pathname).toBe(urls.intro.images)
-    );
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(urls.intro.images);
+    });
   });
 
   it("displays 'Virsh' link if user has Virsh KVM hosts", async () => {

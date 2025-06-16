@@ -14,6 +14,7 @@ import { Link } from "react-router";
 import type { NewPodValues } from "../../types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import urls from "@/app/base/urls";
 import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
@@ -73,7 +74,13 @@ export const SelectProjectFormFields = ({
           name="project-select"
           onChange={() => {
             setNewProject(true);
-            setFieldValue("existingProject", "");
+            setFieldValue("existingProject", "").catch((reason) => {
+              throw new FormikFieldChangeError(
+                "existingProject",
+                "setFieldValue",
+                reason
+              );
+            });
           }}
           type="radio"
         />
@@ -94,8 +101,22 @@ export const SelectProjectFormFields = ({
           name="project-select"
           onChange={() => {
             setNewProject(false);
-            setFieldValue("newProject", "");
-            setFieldValue("existingProject", freeProjects[0]?.name || "");
+            setFieldValue("newProject", "").catch((reason) => {
+              throw new FormikFieldChangeError(
+                "newProject",
+                "setFieldValue",
+                reason
+              );
+            });
+            setFieldValue("existingProject", freeProjects[0]?.name || "").catch(
+              (reason) => {
+                throw new FormikFieldChangeError(
+                  "existingProject",
+                  "setFieldValue",
+                  reason
+                );
+              }
+            );
           }}
           type="radio"
         />

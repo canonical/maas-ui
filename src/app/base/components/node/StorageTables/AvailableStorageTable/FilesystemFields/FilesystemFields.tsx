@@ -3,6 +3,7 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
@@ -51,10 +52,28 @@ export const FilesystemFields = ({
             // Swap filesystems must be mounted at "none" instead of an empty
             // string in order to work with the API.
             if (e.target.value === "swap") {
-              setFieldTouched("mountPoint");
-              setFieldValue("mountPoint", "none");
+              setFieldTouched("mountPoint").catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "mountPoint",
+                  "setFieldTouched",
+                  reason
+                );
+              });
+              setFieldValue("mountPoint", "none").catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "mountPoint",
+                  "setFieldValue",
+                  reason
+                );
+              });
             } else {
-              setFieldValue("mountPoint", "");
+              setFieldValue("mountPoint", "").catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "mountPoint",
+                  "setFieldValue",
+                  reason
+                );
+              });
             }
           }}
           options={[

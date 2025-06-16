@@ -32,13 +32,17 @@ vi.mock("react-router", () => ({
 
 describe("useWindowTitle", () => {
   it("sets the window title", () => {
-    const { rerender } = renderHookWithMockStore(() => useWindowTitle("Test"));
+    const { rerender } = renderHookWithMockStore(() => {
+      useWindowTitle("Test");
+    });
     expect(document.title).toBe("Test | MAAS");
     rerender();
     expect(document.title).toBe("Test | MAAS");
   });
   it("keeps the window title unchanged on unmount", () => {
-    const { unmount } = renderHookWithMockStore(() => useWindowTitle("Test"));
+    const { unmount } = renderHookWithMockStore(() => {
+      useWindowTitle("Test");
+    });
     expect(document.title).toBe("Test | MAAS");
     unmount();
     expect(document.title).toBe("Test | MAAS");
@@ -171,7 +175,7 @@ describe("useCycled", () => {
     resetCycle();
     await waitFor(() => {
       [hasCycled, resetCycle] = result.current;
-      return expect(hasCycled).toBe(false);
+      expect(hasCycled).toBe(false);
     });
     // The onCycle function should not get called when it resets.
     expect(onCycled).toHaveBeenCalledTimes(1);
@@ -194,7 +198,7 @@ describe("useCycled", () => {
     rerender({ state: false });
     await waitFor(() => {
       [hasCycled, resetCycle] = result.current;
-      return expect(hasCycled).toBe(false);
+      expect(hasCycled).toBe(false);
     });
     // Cycle the value back to true:
     rerender({ state: true });
@@ -273,7 +277,9 @@ describe("useScrollToTop", () => {
   it("scrolls to the top of the page on pathname change", () => {
     const scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
-    const { rerender } = renderHook(() => useScrollToTop());
+    const { rerender } = renderHook(() => {
+      useScrollToTop();
+    });
 
     expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
     expect(scrollToSpy).toHaveBeenCalledTimes(1);
@@ -287,7 +293,9 @@ describe("useScrollToTop", () => {
   it("does not scroll to the top of the page if pathname stays the same", () => {
     const scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
-    renderHookWithProviders(() => useScrollToTop());
+    renderHookWithProviders(() => {
+      useScrollToTop();
+    });
 
     expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
     expect(scrollToSpy).toHaveBeenCalledTimes(1);
@@ -321,7 +329,9 @@ describe("usePreviousPersistent", () => {
 describe("useOnKeyPressed", () => {
   it("calls the callback when the specified key is pressed", () => {
     const callback = vi.fn();
-    renderHook(() => useOnKeyPressed("Enter", callback));
+    renderHook(() => {
+      useOnKeyPressed("Enter", callback);
+    });
 
     const event = new KeyboardEvent("keydown", { key: "Enter" });
     document.dispatchEvent(event);
@@ -331,7 +341,9 @@ describe("useOnKeyPressed", () => {
 
   it("does not call the callback for other keys", () => {
     const onAfterPressed = vi.fn();
-    renderHook(() => useOnKeyPressed("Enter", onAfterPressed));
+    renderHook(() => {
+      useOnKeyPressed("Enter", onAfterPressed);
+    });
 
     const event = new KeyboardEvent("keydown", { key: "Escape" });
     document.dispatchEvent(event);
@@ -354,7 +366,9 @@ describe("useGlobalKeyShortcut", () => {
   };
 
   it("calls the callback when the specified key is pressed", () => {
-    renderHook(() => useGlobalKeyShortcut("/", callback));
+    renderHook(() => {
+      useGlobalKeyShortcut("/", callback);
+    });
 
     const event = new KeyboardEvent("keydown", { key: "/" });
     document.dispatchEvent(event);
@@ -363,7 +377,9 @@ describe("useGlobalKeyShortcut", () => {
   });
 
   it("does not call the callback for other keys", () => {
-    renderHook(() => useGlobalKeyShortcut("/", callback));
+    renderHook(() => {
+      useGlobalKeyShortcut("/", callback);
+    });
 
     const event = new KeyboardEvent("keydown", { key: "Escape" });
     document.dispatchEvent(event);

@@ -48,7 +48,7 @@ const DeleteUser = ({ id, closeForm }: DeleteUserProps): ReactElement => {
             // async with closeForm called first, because unlike
             // other delete forms, this one uses GET
             closeForm();
-            void queryClient.invalidateQueries({
+            return queryClient.invalidateQueries({
               queryKey: getUserQueryKey({
                 path: { user_id: id },
               }),

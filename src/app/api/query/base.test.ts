@@ -1,5 +1,6 @@
 import * as reactQuery from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
+import { waitFor } from "@testing-library/react";
 
 import { useWebsocketAwareQuery } from "./base";
 
@@ -52,7 +53,7 @@ it("skips query invalidation when connectedCount is unchanged", () => {
   expect(mockInvalidateQueries).not.toHaveBeenCalled();
 });
 
-it("invalidates queries when connectedCount changes", () => {
+it("invalidates queries when connectedCount changes", async () => {
   const initialState = rootState({
     status: statusState({ connectedCount: 0 }),
   });
@@ -74,7 +75,9 @@ it("invalidates queries when connectedCount changes", () => {
       status: statusState({ connectedCount: 1 }),
     }),
   });
-  expect(mockInvalidateQueries).toHaveBeenCalled();
+  await waitFor(() => {
+    expect(mockInvalidateQueries).toHaveBeenCalled();
+  });
 });
 
 it("returns the result of useQuery", () => {

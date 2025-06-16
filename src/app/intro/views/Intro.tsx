@@ -16,12 +16,13 @@ import { useGetCurrentUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useCompletedIntro, useCompletedUserIntro } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";
 import { getRelativeRoute } from "@/app/utils";
 
 const Intro = (): ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const configLoading = useSelector(configSelectors.loading);
   const completedIntro = useCompletedIntro();

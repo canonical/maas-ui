@@ -69,7 +69,7 @@ export const useCreateZone = (mutationOptions?: Options<CreateZoneData>) => {
   >({
     ...createZoneMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listZonesWithSummaryQueryKey(),
       });
     },
@@ -85,7 +85,7 @@ export const useUpdateZone = (mutationOptions?: Options<UpdateZoneData>) => {
   >({
     ...updateZoneMutation(mutationOptions),
     onSuccess: async () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listZonesWithSummaryQueryKey(),
       });
     },
@@ -101,7 +101,7 @@ export const useDeleteZone = (mutationOptions?: Options<DeleteZoneData>) => {
   >({
     ...deleteZoneMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listZonesWithSummaryQueryKey(),
       });
     },

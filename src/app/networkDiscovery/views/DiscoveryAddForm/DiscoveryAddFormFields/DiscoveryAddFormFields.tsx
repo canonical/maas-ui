@@ -8,6 +8,7 @@ import { DeviceType } from "../types";
 
 import MachineSelect from "@/app/base/components/DhcpFormFields/MachineSelect";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import urls from "@/app/base/urls";
@@ -77,7 +78,13 @@ const DiscoveryAddFormFields = ({
             label={Labels.Type}
             name="type"
             onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
-              setFieldValue("type", evt.target.value);
+              setFieldValue("type", evt.target.value).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "type",
+                  "setFieldValue",
+                  reason
+                );
+              });
               setDeviceType(evt.target.value as DeviceType);
               // Clear the device in case it has been set previously.
               setDevice(null);
@@ -121,8 +128,16 @@ const DiscoveryAddFormFields = ({
               }
               name={DeviceMeta.PK}
               onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
-                setFieldValue(DeviceMeta.PK, evt.target.value);
-                setDevice(evt.target.value as Device[DeviceMeta.PK]);
+                setFieldValue(DeviceMeta.PK, evt.target.value).catch(
+                  (reason) => {
+                    throw new FormikFieldChangeError(
+                      DeviceMeta.PK,
+                      "setFieldValue",
+                      reason
+                    );
+                  }
+                );
+                setDevice(evt.target.value);
               }}
               options={[
                 { label: Labels.SelectDeviceName, value: "", disabled: true },

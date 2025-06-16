@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import type { SetPoolFormValues } from "../types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
 
 export const SetPoolFormFields = (): React.ReactElement => {
@@ -16,8 +17,12 @@ export const SetPoolFormFields = (): React.ReactElement => {
     handleChange(evt);
     // Reset the name field when changing the radio options otherwise the
     // selected/provided name will appear in the different name inputs.
-    setFieldValue("name", "");
-    setFieldTouched("name", false, false);
+    setFieldValue("name", "").catch((reason) => {
+      throw new FormikFieldChangeError("name", "setFieldValue", reason);
+    });
+    setFieldTouched("name", false, false).catch((reason) => {
+      throw new FormikFieldChangeError("name", "setFieldTouched", reason);
+    });
   };
 
   return (

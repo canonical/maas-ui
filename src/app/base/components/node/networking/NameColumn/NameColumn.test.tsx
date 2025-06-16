@@ -48,7 +48,7 @@ describe("NameColumn", () => {
         />
       </Provider>
     );
-    const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
+    const checkbox: HTMLInputElement = screen.getByRole("checkbox");
     expect(checkbox.disabled).toBe(true);
   });
 

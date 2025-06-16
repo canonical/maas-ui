@@ -97,7 +97,7 @@ describe("Auth API", () => {
     });
 
     it("encodes special characters", () => {
-      api.auth.login({
+      void api.auth.login({
         username: "ko&ala",
         password: "gum%tree",
       });

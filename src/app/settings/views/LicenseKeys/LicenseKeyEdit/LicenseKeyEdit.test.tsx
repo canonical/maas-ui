@@ -121,14 +121,14 @@ describe("LicenseKeyEdit", () => {
       })
     ).toBeInTheDocument();
 
-    const operatingSystem = screen.getByRole("option", {
+    const operatingSystem: HTMLOptionElement = screen.getByRole("option", {
       name: "Windows",
-    }) as HTMLOptionElement;
+    });
     expect(operatingSystem.selected).toBe(true);
 
-    const release = screen.getByRole("option", {
+    const release: HTMLOptionElement = screen.getByRole("option", {
       name: "Windows Server 2012",
-    }) as HTMLOptionElement;
+    });
     expect(release.selected).toBe(true);
 
     expect(

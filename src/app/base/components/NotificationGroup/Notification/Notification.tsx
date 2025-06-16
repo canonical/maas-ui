@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
 import { notificationActions } from "@/app/store/notification";
 import notificationSelectors from "@/app/store/notification/selectors";
@@ -27,7 +28,7 @@ const NotificationGroupNotification = ({
   severity,
 }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const isSuperUser = useGetIsSuperUser();
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)

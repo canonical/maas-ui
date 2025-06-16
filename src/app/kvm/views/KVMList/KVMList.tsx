@@ -12,6 +12,7 @@ import VirshTable from "./VirshTable";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import KVMForms from "@/app/kvm/components/KVMForms";
 import { getFormTitle } from "@/app/kvm/utils";
@@ -25,7 +26,7 @@ export enum Label {
 }
 
 const KVMList = (): React.ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const podsLoading = useSelector(podSelectors.loading);
   const lxdKvms = useSelector(podSelectors.lxd);

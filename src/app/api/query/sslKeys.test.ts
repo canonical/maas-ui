@@ -17,7 +17,9 @@ setupMockServer(
 describe("useGetSslKeys", () => {
   it("should return SSL keys data", async () => {
     const { result } = renderHookWithProviders(() => useGetSslKeys());
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toEqual(mockSslKeys);
   });
 });
@@ -29,7 +31,9 @@ describe("useCreateSslKeys", () => {
     };
     const { result } = renderHookWithProviders(() => useCreateSslKeys());
     result.current.mutate({ body: newSslKey });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });
 
@@ -37,6 +41,8 @@ describe("useDeleteSslKey", () => {
   it("should delete an SSL key", async () => {
     const { result } = renderHookWithProviders(() => useDeleteSslKey());
     result.current.mutate({ path: { sslkey_id: 1 } });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });

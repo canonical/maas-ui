@@ -50,7 +50,7 @@ export const useCreateSshKeys = (
   >({
     ...createUserSshkeysMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listUserSshkeysQueryKey(),
       });
     },
@@ -68,7 +68,7 @@ export const useImportSshKeys = (
   >({
     ...importUserSshkeysMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listUserSshkeysQueryKey(),
       });
     },
@@ -86,7 +86,7 @@ export const useDeleteSshKey = (
   >({
     ...deleteUserSshkeyMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listUserSshkeysQueryKey(),
       });
     },

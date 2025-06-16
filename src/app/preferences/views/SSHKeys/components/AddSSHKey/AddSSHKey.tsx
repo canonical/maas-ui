@@ -63,7 +63,7 @@ const AddSSHKey = ({ closeForm }: AddSSHKeyProps): ReactElement => {
         } else {
           importSshKey.mutate({
             body: {
-              auth_id: values.auth_id as string,
+              auth_id: values.auth_id,
               protocol: values.protocol as SshKeysProtocolType,
             },
           });

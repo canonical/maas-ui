@@ -11,6 +11,7 @@ import type { LicenseKeyFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
 import { generalActions } from "@/app/store/general";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
@@ -36,7 +37,7 @@ const LicenseKeySchema = Yup.object().shape({
 
 export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const [savingLicenseKey, setSaving] = useState<string | null>(null);
   const saving = useSelector(licenseKeysSelectors.saving);
   const saved = useSelector(licenseKeysSelectors.saved);

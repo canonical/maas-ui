@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSendAnalytics } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { TAG_NAME_REGEX } from "@/app/base/validation";
 import { messageActions } from "@/app/store/message";
@@ -40,7 +41,7 @@ const AddTagFormSchema = Yup.object().shape({
 
 export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const [savedName, setSavedName] = useState<Tag["name"] | null>(null);
   const saved = useSelector(tagSelectors.saved);
   const saving = useSelector(tagSelectors.saving);

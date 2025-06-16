@@ -27,7 +27,7 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
         deleteZone.mutate({ path: { zone_id: id } });
       }}
       onSuccess={() => {
-        queryClient
+        return queryClient
           .invalidateQueries({
             queryKey: getZoneQueryKey({
               path: { zone_id: id },

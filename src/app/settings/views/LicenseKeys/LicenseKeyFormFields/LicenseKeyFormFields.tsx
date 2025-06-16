@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import type { LicenseKeyFormValues } from "../LicenseKeyForm/types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import type { OSInfoOptions } from "@/app/store/general/selectors/osInfo";
 
 type Props = {
@@ -34,11 +35,24 @@ export const LicenseKeyFormFields = ({
         name="osystem"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
-          formikProps.setFieldTouched("distro_series", true, true);
-          formikProps.setFieldValue(
-            "distro_series",
-            releases[e.target.value][0]
-          );
+          formikProps
+            .setFieldTouched("distro_series", true, true)
+            .catch((reason) => {
+              throw new FormikFieldChangeError(
+                "distro_series",
+                "setFieldTouched",
+                reason
+              );
+            });
+          formikProps
+            .setFieldValue("distro_series", releases[e.target.value][0])
+            .catch((reason) => {
+              throw new FormikFieldChangeError(
+                "distro_series",
+                "setFieldValue",
+                reason
+              );
+            });
         }}
         options={osystems.map((osystem) => {
           const [os, label] = osystem;
@@ -52,7 +66,13 @@ export const LicenseKeyFormFields = ({
         name="distro_series"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
-          formikProps.setFieldTouched("osystem", true, true);
+          formikProps.setFieldTouched("osystem", true, true).catch((reason) => {
+            throw new FormikFieldChangeError(
+              "osystem",
+              "setFieldTouched",
+              reason
+            );
+          });
         }}
         options={distroSeriesOptions}
         required={true}

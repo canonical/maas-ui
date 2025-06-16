@@ -26,7 +26,9 @@ describe("useAuthenticate", () => {
         password: "password",
       },
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });
 
@@ -34,7 +36,9 @@ describe("useGetCurrentUser", () => {
   it("should return the correct user", async () => {
     const expectedUser = mockAuth;
     const { result } = renderHookWithProviders(() => useGetCurrentUser());
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toEqual(expectedUser);
   });
 });
@@ -43,7 +47,9 @@ describe("useGetIsSuperUser", () => {
   it("should return the correct authorization", async () => {
     const expectedUser = mockAuth;
     const { result } = renderHookWithProviders(() => useGetIsSuperUser());
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toEqual(expectedUser.is_superuser);
   });
 });
@@ -52,6 +58,8 @@ describe("useCompleteIntro", () => {
   it("should complete intro", async () => {
     const { result } = renderHookWithProviders(() => useCompleteIntro());
     result.current.mutate({});
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });

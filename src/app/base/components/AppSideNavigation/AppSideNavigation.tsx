@@ -20,6 +20,7 @@ import {
 } from "@/app/base/hooks";
 import { useGlobalKeyShortcut } from "@/app/base/hooks/base";
 import { useThemeContext } from "@/app/base/theme-context";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";
 import { controllerActions } from "@/app/store/controller";
@@ -108,7 +109,7 @@ export const AppSideNavigation = ({
 
 const AppSideNavigationContainer = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const configLoaded = useSelector(configSelectors.loaded);
   const path = location.pathname;

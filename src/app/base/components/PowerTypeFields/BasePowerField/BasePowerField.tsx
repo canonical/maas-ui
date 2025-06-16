@@ -2,6 +2,7 @@ import { Input, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import type { AnyObject } from "@/app/base/types";
 import { PowerFieldType } from "@/app/store/general/types";
 import type { PowerField } from "@/app/store/general/types";
@@ -43,7 +44,13 @@ export const BasePowerField = <V extends AnyObject>({
                 const newFieldValue = checked
                   ? fieldValue.filter((val) => val !== checkboxValue)
                   : [...fieldValue, checkboxValue];
-                setFieldValue(fieldName, newFieldValue);
+                setFieldValue(fieldName, newFieldValue).catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    fieldName,
+                    "setFieldValue",
+                    reason
+                  );
+                });
               }}
               type="checkbox"
               value={checkboxValue}

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import type { DeployFormValues } from "../DeployForm/types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import configSelectors from "@/app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
@@ -31,12 +32,36 @@ const DeployFormFields = (): React.ReactElement => {
         name="default_osystem"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
-          formikProps.setFieldTouched("default_osystem", true, true);
-          formikProps.setFieldValue(
-            "default_distro_series",
-            allDistroSeries[e.target.value][0].value
-          );
-          formikProps.setFieldTouched("default_distro_series", true, true);
+          formikProps
+            .setFieldTouched("default_osystem", true, true)
+            .catch((reason) => {
+              throw new FormikFieldChangeError(
+                "default_osystem",
+                "setFieldTouched",
+                reason
+              );
+            });
+          formikProps
+            .setFieldValue(
+              "default_distro_series",
+              allDistroSeries[e.target.value][0].value
+            )
+            .catch((reason) => {
+              throw new FormikFieldChangeError(
+                "default_distro_series",
+                "setFieldValue",
+                reason
+              );
+            });
+          formikProps
+            .setFieldTouched("default_distro_series", true, true)
+            .catch((reason) => {
+              throw new FormikFieldChangeError(
+                "default_distro_series",
+                "setFieldTouched",
+                reason
+              );
+            });
         }}
         options={defaultOSystemOptions}
       />

@@ -10,6 +10,7 @@ import PageContent from "@/app/base/components/PageContent/PageContent";
 import VaultNotification from "@/app/base/components/VaultNotification";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import ControllerForms from "@/app/controllers/components/ControllerForms/ControllerForms";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
@@ -21,7 +22,7 @@ import { tagActions } from "@/app/store/tag";
 
 const ControllerList = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const currentFilters = FilterControllers.queryStringToFilters(
     location.search
@@ -52,7 +53,9 @@ const ControllerList = (): React.ReactElement => {
     (searchText: string) => {
       setFilter(searchText);
       const filters = FilterControllers.getCurrentFilters(searchText);
-      navigate({ search: FilterControllers.filtersToQueryString(filters) });
+      navigate({
+        search: FilterControllers.filtersToQueryString(filters),
+      });
     },
     [navigate, setFilter]
   );

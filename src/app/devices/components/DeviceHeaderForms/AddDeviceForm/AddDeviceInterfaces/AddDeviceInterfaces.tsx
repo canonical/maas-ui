@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import type { AddDeviceInterface, AddDeviceValues } from "../types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import PrefixedIpInput from "@/app/base/components/PrefixedIpInput";
@@ -33,7 +34,15 @@ const AddDeviceInterfaceFields = ({
 
   useEffect(() => {
     if (iface.ip_assignment === DeviceIpAssignment.STATIC && subnet) {
-      setFieldValue(`interfaces[${iface.id}].subnet_cidr`, subnet.cidr);
+      setFieldValue(`interfaces[${iface.id}].subnet_cidr`, subnet.cidr).catch(
+        (reason) => {
+          throw new FormikFieldChangeError(
+            `interfaces[${iface.id}].subnet_cidr`,
+            "setFieldValue",
+            reason
+          );
+        }
+      );
     }
   }, [iface.id, iface.ip_assignment, setFieldValue, subnet]);
 
@@ -55,8 +64,24 @@ const AddDeviceInterfaceFields = ({
         name={`interfaces[${iface.id}].ip_assignment`}
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           handleChange(e);
-          setFieldValue(`interfaces[${iface.id}].subnet`, "");
-          setFieldValue(`interfaces[${iface.id}].ip_address`, "");
+          setFieldValue(`interfaces[${iface.id}].subnet`, "").catch(
+            (reason) => {
+              throw new FormikFieldChangeError(
+                `interfaces[${iface.id}].subnet`,
+                "setFieldValue",
+                reason
+              );
+            }
+          );
+          setFieldValue(`interfaces[${iface.id}].ip_address`, "").catch(
+            (reason) => {
+              throw new FormikFieldChangeError(
+                `interfaces[${iface.id}].ip_address`,
+                "setFieldValue",
+                reason
+              );
+            }
+          );
         }}
         required
       />
@@ -109,7 +134,7 @@ export const AddDeviceInterfaces = (): React.ReactElement => {
 
   const addInterface = () => {
     currentId.current += 1;
-    setFieldValue("interfaces", [
+    void setFieldValue("interfaces", [
       ...interfaces,
       {
         id: currentId.current,
@@ -129,7 +154,9 @@ export const AddDeviceInterfaces = (): React.ReactElement => {
     setFieldValue(
       "interfaces",
       interfaces.filter((iface) => iface.id !== id)
-    );
+    ).catch((reason) => {
+      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
+    });
   };
 
   return (

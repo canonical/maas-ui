@@ -129,7 +129,7 @@ const ReserveDHCPLease = ({
         test: (ip_address) => {
           const ip = formatIpAddress(ip_address, subnet.cidr);
           if (subnetIsIpv4) {
-            return isIpInSubnet(ip, subnet.cidr as string);
+            return isIpInSubnet(ip, subnet.cidr);
           } else {
             try {
               const addr = ipaddr.parse(ip);

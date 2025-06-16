@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import type { InterfaceFormValues } from "../InterfaceForm";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import SubnetSelect from "@/app/base/components/SubnetSelect";
@@ -76,8 +77,20 @@ const InterfaceFormFields = ({
             name="ip_assignment"
             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
               handleChange(e);
-              setFieldValue("subnet", "");
-              setFieldValue("ip_address", "");
+              setFieldValue("subnet", "").catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "subnet",
+                  "setFieldValue",
+                  reason
+                );
+              });
+              setFieldValue("ip_address", "").catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "ip_address",
+                  "setFieldValue",
+                  reason
+                );
+              });
             }}
           />
           {showSubnetField && (

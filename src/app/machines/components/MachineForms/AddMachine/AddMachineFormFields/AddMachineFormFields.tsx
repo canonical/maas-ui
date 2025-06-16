@@ -8,6 +8,7 @@ import type { AddMachineValues } from "../types";
 import ArchitectureSelect from "@/app/base/components/ArchitectureSelect";
 import DomainSelect from "@/app/base/components/DomainSelect";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import MinimumKernelSelect from "@/app/base/components/MinimumKernelSelect";
 import PowerTypeFields from "@/app/base/components/PowerTypeFields";
@@ -67,7 +68,13 @@ export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {
               const newExtraMACs = [...extraMACs];
               newExtraMACs[i] = formatMacAddress(e.target.value);
               setExtraMACs(newExtraMACs);
-              setFieldValue("extra_macs", newExtraMACs);
+              setFieldValue("extra_macs", newExtraMACs).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "extra_macs",
+                  "setFieldValue",
+                  reason
+                );
+              });
             }}
             placeholder="00:00:00:00:00:00"
             type="text"
@@ -79,7 +86,13 @@ export const AddMachineFormFields = ({ saved }: Props): React.ReactElement => {
             onClick={() => {
               const newExtraMACs = extraMACs.filter((_, j) => j !== i);
               setExtraMACs(newExtraMACs);
-              setFieldValue("extra_macs", newExtraMACs);
+              setFieldValue("extra_macs", newExtraMACs).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "extra_macs",
+                  "setFieldValue",
+                  reason
+                );
+              });
             }}
             type="button"
           >

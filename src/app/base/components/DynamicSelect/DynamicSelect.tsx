@@ -8,6 +8,7 @@ import { useFormikContext } from "formik";
 
 import FormikField from "@/app/base/components/FormikField";
 import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 
 type FormValues = Record<
   string,
@@ -78,7 +79,9 @@ export const DynamicSelect = <V extends FormValues = FormValues>({
           name,
           currentOptionValues.length > 0 ? currentOptionValues[0] : "",
           false
-        );
+        ).catch((reason) => {
+          throw new FormikFieldChangeError(name, "setFieldValue", reason);
+        });
       }
     }
   }, [

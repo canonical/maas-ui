@@ -83,9 +83,9 @@ describe("CommissioningFormFields", () => {
       </Provider>
     );
 
-    const bionic_option = screen.getByRole("option", {
+    const bionic_option: HTMLOptionElement = screen.getByRole("option", {
       name: 'Ubuntu 18.04 LTS "Bionic Beaver"',
-    }) as HTMLOptionElement;
+    });
     expect(bionic_option.selected).toBe(true);
   });
 
@@ -101,9 +101,12 @@ describe("CommissioningFormFields", () => {
       </Provider>
     );
 
-    const hwe_18_lowlatency_option = screen.getByRole("option", {
-      name: "bionic (hwe-18.04-lowlatency)",
-    }) as HTMLOptionElement;
+    const hwe_18_lowlatency_option: HTMLOptionElement = screen.getByRole(
+      "option",
+      {
+        name: "bionic (hwe-18.04-lowlatency)",
+      }
+    );
     expect(hwe_18_lowlatency_option.selected).toBe(true);
   });
 });

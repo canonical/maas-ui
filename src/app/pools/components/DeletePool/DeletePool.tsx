@@ -26,7 +26,7 @@ const DeletePool = ({ id, closeForm }: DeletePoolProps): ReactElement => {
         deletePool.mutate({ path: { resource_pool_id: id } });
       }}
       onSuccess={() => {
-        queryClient
+        return queryClient
           .invalidateQueries({
             queryKey: getResourcePoolQueryKey({
               path: { resource_pool_id: id },

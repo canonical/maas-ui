@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import type { CommissionFormValues, FormattedScript } from "../types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import TagSelector from "@/app/base/components/TagSelector";
 import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
 import { getObjectString } from "@/app/store/script/utils";
@@ -58,7 +59,15 @@ export const CommissionFormFields = ({
           label="Commissioning scripts"
           name="commissioningScripts"
           onTagsUpdate={(selectedScripts: Tag[]) => {
-            setFieldValue("commissioningScripts", selectedScripts);
+            setFieldValue("commissioningScripts", selectedScripts).catch(
+              (reason) => {
+                throw new FormikFieldChangeError(
+                  "commissioningScripts",
+                  "setFieldValue",
+                  reason
+                );
+              }
+            );
           }}
           placeholder="Select additional scripts"
           tags={commissioningScripts}
@@ -71,7 +80,13 @@ export const CommissionFormFields = ({
           label="Testing scripts"
           name="tests"
           onTagsUpdate={(selectedScripts: Tag[]) => {
-            setFieldValue("testingScripts", selectedScripts);
+            setFieldValue("testingScripts", selectedScripts).catch((reason) => {
+              throw new FormikFieldChangeError(
+                "testingScripts",
+                "setFieldValue",
+                reason
+              );
+            });
           }}
           placeholder="Select additional scripts"
           tags={testingScripts}
@@ -90,7 +105,16 @@ export const CommissionFormFields = ({
             name={`scriptInputs[${script.name}].url`}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
-              setFieldValue(`scriptInputs[${script.name}].url`, e.target.value);
+              setFieldValue(
+                `scriptInputs[${script.name}].url`,
+                e.target.value
+              ).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  `scriptInputs[${script.name}].url`,
+                  "setFieldValue",
+                  reason
+                );
+              });
             }}
             type="text"
           />

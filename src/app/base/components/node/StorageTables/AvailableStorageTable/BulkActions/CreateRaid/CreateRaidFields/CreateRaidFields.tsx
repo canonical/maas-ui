@@ -5,6 +5,7 @@ import FilesystemFields from "../../../FilesystemFields";
 import type { CreateRaidValues } from "../CreateRaid";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import TagNameField from "@/app/base/components/TagNameField";
 import { RAID_MODES } from "@/app/store/machine/constants";
 import type { RaidMode } from "@/app/store/machine/constants";
@@ -85,37 +86,91 @@ export const CreateRaidFields = ({
   ) => {
     if (isDisk(storageDevice)) {
       if (isSpareDevice) {
-        setFieldValue("blockDeviceIds", [...blockDeviceIds, storageDevice.id]);
+        setFieldValue("blockDeviceIds", [
+          ...blockDeviceIds,
+          storageDevice.id,
+        ]).catch((reason) => {
+          throw new FormikFieldChangeError(
+            "blockDeviceIds",
+            "setFieldValue",
+            reason
+          );
+        });
         setFieldValue(
           "spareBlockDeviceIds",
           spareBlockDeviceIds.filter((id) => id !== storageDevice.id)
-        );
+        ).catch((reason) => {
+          throw new FormikFieldChangeError(
+            "spareBlockDeviceIds",
+            "setFieldValue",
+            reason
+          );
+        });
       } else {
         setFieldValue(
           "blockDeviceIds",
           blockDeviceIds.filter((id) => id !== storageDevice.id)
-        );
+        ).catch((reason) => {
+          throw new FormikFieldChangeError(
+            "blockDeviceIds",
+            "setFieldValue",
+            reason
+          );
+        });
         setFieldValue("spareBlockDeviceIds", [
           ...spareBlockDeviceIds,
           storageDevice.id,
-        ]);
+        ]).catch((reason) => {
+          throw new FormikFieldChangeError(
+            "spareBlockDeviceIds",
+            "setFieldValue",
+            reason
+          );
+        });
       }
     } else {
       if (isSpareDevice) {
-        setFieldValue("partitionIds", [...partitionIds, storageDevice.id]);
+        setFieldValue("partitionIds", [
+          ...partitionIds,
+          storageDevice.id,
+        ]).catch((reason) => {
+          throw new FormikFieldChangeError(
+            "partitionIds",
+            "setFieldValue",
+            reason
+          );
+        });
         setFieldValue(
           "sparePartitionIds",
           sparePartitionIds.filter((id) => id !== storageDevice.id)
-        );
+        ).catch((reason) => {
+          throw new FormikFieldChangeError(
+            "sparePartitionIds",
+            "setFieldValue",
+            reason
+          );
+        });
       } else {
         setFieldValue(
           "partitionIds",
           partitionIds.filter((id) => id !== storageDevice.id)
-        );
+        ).catch((reason) => {
+          throw new FormikFieldChangeError(
+            "partitionIds",
+            "setFieldValue",
+            reason
+          );
+        });
         setFieldValue("sparePartitionIds", [
           ...sparePartitionIds,
           storageDevice.id,
-        ]);
+        ]).catch((reason) => {
+          throw new FormikFieldChangeError(
+            "sparePartitionIds",
+            "setFieldValue",
+            reason
+          );
+        });
       }
     }
   };
@@ -133,16 +188,45 @@ export const CreateRaidFields = ({
               handleChange(e);
               // We reset the block/partition id values on RAID level change
               // to prevent stale values from existing in the form state.
-              setFieldValue("blockDeviceIds", initialValues.blockDeviceIds);
-              setFieldValue("partitionIds", initialValues.partitionIds);
+              setFieldValue(
+                "blockDeviceIds",
+                initialValues.blockDeviceIds
+              ).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "blockDeviceIds",
+                  "setFieldValue",
+                  reason
+                );
+              });
+              setFieldValue("partitionIds", initialValues.partitionIds).catch(
+                (reason) => {
+                  throw new FormikFieldChangeError(
+                    "partitionIds",
+                    "setFieldValue",
+                    reason
+                  );
+                }
+              );
               setFieldValue(
                 "spareBlockDeviceIds",
                 initialValues.spareBlockDeviceIds
-              );
+              ).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "spareBlockDeviceIds",
+                  "setFieldValue",
+                  reason
+                );
+              });
               setFieldValue(
                 "sparePartitionIds",
                 initialValues.sparePartitionIds
-              );
+              ).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "sparePartitionIds",
+                  "setFieldValue",
+                  reason
+                );
+              });
             }}
             options={availableRaidModes.map((raidMode) => ({
               label: raidMode.label,

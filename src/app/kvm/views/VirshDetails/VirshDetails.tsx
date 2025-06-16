@@ -11,6 +11,7 @@ import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import KVMForms from "@/app/kvm/components/KVMForms";
 import { useActivePod, useKVMDetailsRedirect } from "@/app/kvm/hooks";
@@ -25,7 +26,7 @@ export enum Label {
 }
 
 const VirshDetails = (): React.ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const id = useGetURLId(PodMeta.PK);
 
   const pod = useSelector((state: RootState) =>
