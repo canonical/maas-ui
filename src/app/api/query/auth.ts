@@ -20,7 +20,7 @@ import type {
 import {
   completeIntroMutation,
   getMeWithSummaryOptions,
-  listUsersWithSummaryQueryKey,
+  getMeWithSummaryQueryKey,
   loginMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
@@ -30,14 +30,22 @@ export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
   });
 };
 
-export const useGetCurrentUser = (options?: Options<GetMeWithSummaryData>) => {
-  return useWebsocketAwareQuery(
-    getMeWithSummaryOptions(options) as UseQueryOptions<
-      GetMeWithSummaryResponse,
+export const useGetCurrentUser = (
+  options?: Options<GetMeWithSummaryData>,
+  queryOptions?: UseQueryOptions<
+    GetMeWithSummaryData,
+    GetMeWithSummaryError,
+    GetMeWithSummaryResponse
+  >
+) => {
+  return useWebsocketAwareQuery({
+    ...(getMeWithSummaryOptions(options) as UseQueryOptions<
+      GetMeWithSummaryData,
       GetMeWithSummaryError,
       GetMeWithSummaryResponse
-    >
-  );
+    >),
+    ...queryOptions,
+  });
 };
 
 export const useGetIsSuperUser = (options?: Options<GetMeWithSummaryData>) => {
@@ -63,7 +71,7 @@ export const useCompleteIntro = (
     ...completeIntroMutation(mutationOptions),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listUsersWithSummaryQueryKey(),
+        queryKey: getMeWithSummaryQueryKey(),
       });
     },
   });

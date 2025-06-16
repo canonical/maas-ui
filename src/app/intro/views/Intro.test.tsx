@@ -7,7 +7,12 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
-import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
+import {
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  waitForLoading,
+} from "@/testing/utils";
 
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
@@ -46,6 +51,29 @@ describe("Intro", () => {
           "This MAAS has not be configured. Ask an admin to log in and finish the configuration."
         )
       ).toBeInTheDocument()
+    );
+  });
+
+  it("does not display a message if the user is an admin", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.user({ completed_intro: false, is_superuser: true })
+      )
+    );
+    const { router } = renderWithProviders(<Intro />, {
+      initialEntries: ["/intro"],
+      state,
+    });
+    await waitFor(() =>
+      expect(router.state.location.pathname).toBe(urls.intro.index)
+    );
+    await waitForLoading();
+    await waitFor(() =>
+      expect(
+        screen.queryByText(
+          "This MAAS has not be configured. Ask an admin to log in and finish the configuration."
+        )
+      ).not.toBeInTheDocument()
     );
   });
 
