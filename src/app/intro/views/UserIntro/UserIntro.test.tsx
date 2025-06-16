@@ -1,5 +1,5 @@
 import { waitFor } from "@testing-library/react";
-import type { SpyInstance } from "vitest";
+import type { MockInstance } from "vitest";
 
 import UserIntro, { Labels as UserIntroLabels } from "./UserIntro";
 
@@ -23,7 +23,7 @@ const mockServer = setupMockServer(
 );
 
 describe("UserIntro", () => {
-  let markedIntroCompleteMock: SpyInstance;
+  let markedIntroCompleteMock: MockInstance;
   beforeEach(() => {
     markedIntroCompleteMock = vi
       .spyOn(baseHooks, "useCycled")

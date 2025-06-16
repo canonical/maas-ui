@@ -13,6 +13,7 @@ import { Outlet } from "react-router";
 
 import packageInfo from "../../package.json";
 
+import { getMeWithSummaryQueryKey } from "./apiclient/@tanstack/react-query.gen";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
@@ -83,7 +84,10 @@ export const App = (): React.ReactElement => {
   const configErrors = useSelector(configSelectors.errors);
   const previousAuthenticated = usePrevious(authenticated, false);
 
-  const user = useGetCurrentUser();
+  const user = useGetCurrentUser(undefined, {
+    retry: false,
+    queryKey: getMeWithSummaryQueryKey(),
+  });
 
   useFetchActions([statusActions.checkAuthenticated]);
 

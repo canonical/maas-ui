@@ -5,6 +5,7 @@ import { ActionButton, Button, Card, Icon } from "@canonical/react-components";
 import { useCompleteIntro, useGetCurrentUser } from "@/app/api/query/auth";
 import { useListSshKeys } from "@/app/api/query/sshKeys";
 import TableConfirm from "@/app/base/components/TableConfirm";
+import { useCycled } from "@/app/base/hooks";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import AddSSHKey from "@/app/preferences/views/SSHKeys/components/AddSSHKey";
@@ -23,6 +24,7 @@ const UserIntro = (): React.ReactElement => {
   const user = useGetCurrentUser();
   const completeIntro = useCompleteIntro();
   const { data, isPending: sshKeyLoading } = useListSshKeys();
+  const [markedIntroComplete] = useCycled(completeIntro.isPending);
 
   const sshkeys = data?.items || [];
   const hasSSHKeys = sshkeys.length > 0;
@@ -34,7 +36,10 @@ const UserIntro = (): React.ReactElement => {
     <IntroSection
       errors={errorMessage}
       loading={user.isPending || sshKeyLoading}
-      shouldExitIntro={user.data?.completed_intro}
+      shouldExitIntro={
+        user.data?.completed_intro ||
+        (completeIntro.isSuccess && markedIntroComplete)
+      }
       windowTitle="User"
     >
       <IntroCard

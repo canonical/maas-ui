@@ -32,7 +32,7 @@ import {
 export const useUsers = (options?: Options<ListUsersWithSummaryData>) => {
   return useWebsocketAwareQuery(
     listUsersWithSummaryOptions(options) as UseQueryOptions<
-      ListUsersWithSummaryResponse,
+      ListUsersWithSummaryData,
       ListUsersWithSummaryError,
       ListUsersWithSummaryResponse
     >
@@ -45,7 +45,7 @@ export const useUserCount = (options?: Options<ListUsersWithSummaryData>) => {
     select: (data) => data?.total ?? 0,
   } as UseQueryOptions<
     ListUsersWithSummaryResponse,
-    ListUsersWithSummaryResponse,
+    ListUsersWithSummaryError,
     number
   >);
 };
@@ -53,7 +53,7 @@ export const useUserCount = (options?: Options<ListUsersWithSummaryData>) => {
 export const useGetUser = (options: Options<GetUserData>) => {
   return useWebsocketAwareQuery(
     getUserOptions(options) as UseQueryOptions<
-      GetUserResponse,
+      GetUserData,
       GetUserError,
       GetUserResponse
     >
