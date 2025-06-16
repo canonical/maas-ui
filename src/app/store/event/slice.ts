@@ -21,8 +21,7 @@ const eventSlice = createSlice({
       prepare: (
         node_id: EventRecord["node_id"],
         limit?: number | null,
-        start?: number | null,
-        maxDays?: number | null
+        start?: number | null
       ) => ({
         meta: {
           model: EventMeta.MODEL,
@@ -36,7 +35,6 @@ const eventSlice = createSlice({
             node_id,
             // Only send the params that are provided.
             ...(limit || limit === 0 ? { limit } : {}),
-            ...(maxDays || maxDays === 0 ? { max_days: maxDays } : {}),
             ...(start || start === 0 ? { start } : {}),
           },
         },

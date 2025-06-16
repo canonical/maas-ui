@@ -9,6 +9,7 @@ import EventLogsTable from "./EventLogsTable";
 import ArrowPagination from "@/app/base/components/ArrowPagination";
 import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/MainContentSection/MainContentSection";
 import SearchBox from "@/app/base/components/SearchBox";
+import { useFetchActions } from "@/app/base/hooks";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import { eventActions } from "@/app/store/event";
 import eventSelectors from "@/app/store/event/selectors";
@@ -56,7 +57,6 @@ const getPageEvents = (
 const EventLogs = ({ node }: Props): React.ReactElement => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [requestedDay, setRequestedDay] = useState(false);
   const [requestedCount, setRequestedCount] = useState(false);
   const [lastRequested, setLastRequested] = useState<number | null>(null);
   const dispatch = useDispatch();
@@ -85,35 +85,14 @@ const EventLogs = ({ node }: Props): React.ReactElement => {
   // less items.
   const showBackToTop = paginatedEvents.length >= 50;
 
-  useEffect(() => {
-    // If the events haven't been requested yet then get all the events for the
-    // last day.
-    if (node && !requestedDay) {
-      dispatch(eventActions.fetch(node.id, null, null, 1));
-      setRequestedDay(true);
-    }
-  }, [dispatch, node, requestedDay, setRequestedDay]);
+  useFetchActions([() => eventActions.fetch(node.id, PRELOAD_COUNT)]);
 
-  useEffect(() => {
-    // If the events have been requested but less than the preload amount were
-    // returned then request the preload number of events.
-    if (
-      node &&
-      requestedDay &&
-      !requestedCount &&
-      events.length < PRELOAD_COUNT
-    ) {
-      dispatch(eventActions.fetch(node.id, PRELOAD_COUNT));
-      setRequestedCount(true);
-    }
-  }, [
+  useEffect(() => {}, [
     dispatch,
     events,
     node,
     requestedCount,
-    requestedDay,
     setRequestedCount,
-    setRequestedDay,
   ]);
 
   useEffect(() => {
