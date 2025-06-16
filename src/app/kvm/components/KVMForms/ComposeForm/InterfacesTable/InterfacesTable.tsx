@@ -17,6 +17,7 @@ import SubnetSelect from "./SubnetSelect";
 
 import Definition from "@/app/base/components/Definition";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod, PodDetails } from "@/app/store/pod/types";
@@ -117,14 +118,18 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
     setFieldValue("interfaces", [
       ...interfaces,
       generateNewInterface(id, firstPxeSubnet?.id),
-    ]);
+    ]).catch((reason) => {
+      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
+    });
   };
 
   const removeInterface = (id: number) => {
     setFieldValue(
       "interfaces",
       interfaces.filter((iface) => iface.id !== id)
-    );
+    ).catch((reason) => {
+      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
+    });
   };
 
   return (
@@ -176,7 +181,15 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
                 name={`interfaces[${i}].space`}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   handleChange(e);
-                  setFieldValue(`interfaces[${i}].subnet`, "");
+                  setFieldValue(`interfaces[${i}].subnet`, "").catch(
+                    (reason) => {
+                      throw new FormikFieldChangeError(
+                        `interfaces[${i}].subnet`,
+                        "setFieldValue",
+                        reason
+                      );
+                    }
+                  );
                 }}
                 options={[
                   {
@@ -195,7 +208,15 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
                 iface={iface}
                 index={i}
                 selectSubnet={(subnetID?: number) => {
-                  setFieldValue(`interfaces[${i}].subnet`, subnetID);
+                  setFieldValue(`interfaces[${i}].subnet`, subnetID).catch(
+                    (reason) => {
+                      throw new FormikFieldChangeError(
+                        `interfaces[${i}].subnet`,
+                        "setFieldValue",
+                        reason
+                      );
+                    }
+                  );
                 }}
               />
               <Row>

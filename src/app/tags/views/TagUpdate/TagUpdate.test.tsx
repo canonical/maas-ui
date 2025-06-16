@@ -118,11 +118,11 @@ it("can update the tag", async () => {
     kernel_opts: "options1",
     name: "name1",
   });
-  await waitFor(() =>
+  await waitFor(() => {
     expect(
       store.getActions().find((action) => action.type === expected.type)
-    ).toStrictEqual(expected)
-  );
+    ).toStrictEqual(expected);
+  });
 });
 
 it("goes to the tag details page if it can't go back", async () => {
@@ -141,9 +141,9 @@ it("goes to the tag details page if it can't go back", async () => {
   );
   mockFormikFormSaved();
   await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
-  await waitFor(() =>
-    expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 1 }))
-  );
+  await waitFor(() => {
+    expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
+  });
 });
 
 it("shows a confirmation when a tag's definition is updated", async () => {

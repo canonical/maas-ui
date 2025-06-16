@@ -13,6 +13,7 @@ import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useQuery } from "@/app/base/hooks/urls";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import {
   SubnetForms,
   SubnetsUrlParams,
@@ -25,7 +26,7 @@ const SubnetsList = (): React.ReactElement => {
   useWindowTitle("Subnets");
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const query = useQuery();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const groupBy = query.get(SubnetsUrlParams.By);
   const searchText = query.get(SubnetsUrlParams.Q) || "";
   const setGroupBy = useCallback(

@@ -10,6 +10,7 @@ import type { LXDPowerFieldsProps } from "./LXDPowerFields";
 import LXDPowerFields from "./LXDPowerFields";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import { useFetchActions } from "@/app/base/hooks";
 import type { AnyObject } from "@/app/base/types";
 import { generalActions } from "@/app/store/general";
@@ -124,7 +125,13 @@ export const PowerTypeFields = <V extends AnyObject>({
                 setFieldValue(
                   `${powerParametersValueName}.${field.name}`,
                   field.default || ""
-                );
+                ).catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    `${powerParametersValueName}.${field.name}`,
+                    "setFieldValue",
+                    reason
+                  );
+                });
               });
             }
           }}

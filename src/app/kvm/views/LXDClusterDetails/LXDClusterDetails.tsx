@@ -22,7 +22,7 @@ import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import type { SetSearchFilter } from "@/app/base/types";
+import type { SetSearchFilter, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import KVMForms from "@/app/kvm/components/KVMForms/KVMForms";
 import { getFormTitle } from "@/app/kvm/utils";
@@ -40,7 +40,7 @@ export enum Label {
 
 const LXDClusterDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const clusterId = useGetURLId(VMClusterMeta.PK, "clusterId");
   const cluster = useSelector((state: RootState) =>

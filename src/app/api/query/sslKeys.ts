@@ -46,7 +46,7 @@ export const useCreateSslKeys = (
   >({
     ...createUserSslkeyMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: getUserSslkeysQueryKey(),
       });
     },
@@ -64,7 +64,7 @@ export const useDeleteSslKey = (
   >({
     ...deleteUserSslkeyMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: getUserSslkeysQueryKey(),
       });
     },

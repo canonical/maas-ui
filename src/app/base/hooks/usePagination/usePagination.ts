@@ -16,7 +16,9 @@ function usePagination(pageSize: number = DEFAULT_PAGE_SIZE) {
     setPage((prev) => prev - 1);
   };
 
-  const resetPageCount = () => setPage(1);
+  const resetPageCount = () => {
+    setPage(1);
+  };
 
   const handlePageSizeChange = (size: number) => {
     setSize(size);

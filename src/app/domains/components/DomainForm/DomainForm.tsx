@@ -13,10 +13,9 @@ const DomainForm = ({
   sidePanelContent,
   setSidePanelContent,
 }: Props): React.ReactElement | null => {
-  const clearSidePanelContent = useCallback(
-    () => setSidePanelContent(null),
-    [setSidePanelContent]
-  );
+  const clearSidePanelContent = useCallback(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
   if (!sidePanelContent) {
     return null;

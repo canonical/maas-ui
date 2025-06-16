@@ -5,6 +5,7 @@ import type { AuthenticationFormValues } from "../AuthenticationForm";
 
 import CertificateDownload from "@/app/base/components/CertificateDownload";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import type { GeneratedCertificate } from "@/app/store/general/types";
 
 type Props = {
@@ -33,8 +34,20 @@ export const AuthenticationFormFields = ({
           label="Add trust to LXD via command line"
           onChange={() => {
             setUseCertificate(true);
-            setFieldTouched("password", false);
-            setFieldValue("password", "");
+            setFieldTouched("password", false).catch((reason) => {
+              throw new FormikFieldChangeError(
+                "password",
+                "setFieldTouched",
+                reason
+              );
+            });
+            setFieldValue("password", "").catch((reason) => {
+              throw new FormikFieldChangeError(
+                "password",
+                "setFieldValue",
+                reason
+              );
+            });
           }}
           type="radio"
         />

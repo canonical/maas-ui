@@ -6,6 +6,7 @@ import { isIPv4 } from "is-ip";
 import PrefixedInput from "../PrefixedInput";
 import type { PrefixedInputProps } from "../PrefixedInput/PrefixedInput";
 
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import type { Subnet } from "@/app/store/subnet/types";
 import {
   getImmutableAndEditableOctets,
@@ -62,10 +63,14 @@ const PrefixedIpInput = ({
     if (subnetIsIpv4) {
       const octets = pastedText.split(".");
       const trimmed = octets.slice(0 - editable.split(".").length);
-      formikProps.setFieldValue(name, trimmed.join("."));
+      formikProps.setFieldValue(name, trimmed.join(".")).catch((reason) => {
+        throw new FormikFieldChangeError(name, "setFieldValue", reason);
+      });
     } else {
       const interfaceId = pastedText.replace(ipv6Prefix, "");
-      formikProps.setFieldValue(name, interfaceId);
+      formikProps.setFieldValue(name, interfaceId).catch((reason) => {
+        throw new FormikFieldChangeError(name, "setFieldValue", reason);
+      });
     }
   };
 

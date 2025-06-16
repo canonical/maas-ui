@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 
 import BaseDhcpForm from "@/app/base/components/DhcpForm";
 import type { DHCPFormValues } from "@/app/base/components/DhcpForm/types";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
@@ -12,7 +13,7 @@ type Props = {
 };
 
 export const DhcpForm = ({ dhcpSnippet }: Props): React.ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const [name, setName] = useState<DHCPFormValues["name"]>();
   const editing = !!dhcpSnippet;
   const title = editing ? `Editing \`${name}\`` : "Add DHCP snippet";

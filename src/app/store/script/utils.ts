@@ -19,5 +19,5 @@ export const getObjectString = (
   key: string
 ): string | null => {
   const value = getObjectValue(parameter, key);
-  return value && typeof value === "string" ? (value as string) : null;
+  return value && typeof value === "string" ? value : null;
 };

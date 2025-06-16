@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DynamicSelect from "@/app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { vlanActions } from "@/app/store/vlan";
@@ -75,7 +76,9 @@ export const VLANSelect = ({
     if (setDefaultValueFromFabric) {
       const vlan = selectedFabric?.default_vlan_id;
       if (isId(vlan)) {
-        setFieldValue("vlan", vlan);
+        setFieldValue("vlan", vlan).catch((reason) => {
+          throw new FormikFieldChangeError("vlan", "setFieldValue", reason);
+        });
       }
     }
   }, [setDefaultValueFromFabric, setFieldValue, selectedFabric]);

@@ -4,6 +4,7 @@ import { useFormikContext } from "formik";
 import type { ReleaseFormValues } from "../ReleaseForm";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 
 export const ReleaseFormFields = (): React.ReactElement => {
   const { handleChange, setFieldValue, values } =
@@ -18,8 +19,20 @@ export const ReleaseFormFields = (): React.ReactElement => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             handleChange(e);
             if (!e.target.checked) {
-              setFieldValue("quickErase", false);
-              setFieldValue("secureErase", false);
+              setFieldValue("quickErase", false).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "quickErase",
+                  "setFieldValue",
+                  reason
+                );
+              });
+              setFieldValue("secureErase", false).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  "secureErase",
+                  "setFieldValue",
+                  reason
+                );
+              });
             }
           }}
           type="checkbox"

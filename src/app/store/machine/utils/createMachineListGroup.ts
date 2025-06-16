@@ -57,9 +57,7 @@ export const createMachineListGroup = ({
 
   switch (groupBy) {
     case FetchGroupKey.Status: {
-      const nodeStatusKey = getNodeStatusKey(machineValue) as
-        | keyof typeof FetchNodeStatus
-        | undefined;
+      const nodeStatusKey = getNodeStatusKey(machineValue);
       return nodeStatusKey
         ? {
             name: machineValue,

@@ -25,7 +25,9 @@ const mockServer = setupMockServer(
 describe("useUsers", () => {
   it("should return users data", async () => {
     const { result } = renderHookWithProviders(() => useUsers());
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toEqual(mockUsers);
   });
 });
@@ -55,7 +57,9 @@ describe("useGetUser", () => {
     const { result } = renderHookWithProviders(() =>
       useGetUser({ path: { user_id: expectedUser.id } })
     );
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
     expect(result.current.data).toEqual(expectedUser);
   });
 
@@ -63,7 +67,9 @@ describe("useGetUser", () => {
     const { result } = renderHookWithProviders(() =>
       useGetUser({ path: { user_id: 99 } })
     );
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
   });
 });
 
@@ -79,7 +85,9 @@ describe("useCreateUser", () => {
     };
     const { result } = renderHookWithProviders(() => useCreateUser());
     result.current.mutate({ body: newUser });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });
 
@@ -94,7 +102,9 @@ describe("useUpdateUser", () => {
     };
     const { result } = renderHookWithProviders(() => useUpdateUser());
     result.current.mutate({ body: updatedUser, path: { user_id: 1 } });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });
 
@@ -102,6 +112,8 @@ describe("useDeleteUser", () => {
   it("should delete a user", async () => {
     const { result } = renderHookWithProviders(() => useDeleteUser());
     result.current.mutate({ path: { user_id: 1 } });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });

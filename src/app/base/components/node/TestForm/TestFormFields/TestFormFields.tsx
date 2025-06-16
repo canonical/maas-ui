@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import type { FormValues } from "../TestForm";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import TagSelector from "@/app/base/components/TagSelector";
 import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
 import type { Script } from "@/app/store/script/types";
@@ -46,7 +47,13 @@ export const TestFormFields = ({
             const selectedScripts = tags.map((tag) =>
               scripts.find((script) => script.id === tag.id)
             );
-            setFieldValue("scripts", selectedScripts);
+            setFieldValue("scripts", selectedScripts).catch((reason) => {
+              throw new FormikFieldChangeError(
+                "scripts",
+                "setFieldValue",
+                reason
+              );
+            });
           }}
           placeholder="Select scripts"
           tags={scripts.map(({ id, name }) => ({
@@ -67,7 +74,16 @@ export const TestFormFields = ({
             name={`scriptInputs[${script.name}].url`}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
-              setFieldValue(`scriptInputs[${script.name}].url`, e.target.value);
+              setFieldValue(
+                `scriptInputs[${script.name}].url`,
+                e.target.value
+              ).catch((reason) => {
+                throw new FormikFieldChangeError(
+                  `scriptInputs[${script.name}].url`,
+                  "setFieldValue",
+                  reason
+                );
+              });
             }}
             type="text"
           />

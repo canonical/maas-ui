@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import KVMConfigurationCard from "@/app/kvm/components/KVMConfigurationCard";
 import LXDHostToolbar from "@/app/kvm/components/LXDHostToolbar";
@@ -29,7 +30,7 @@ export enum Label {
 }
 
 const LXDClusterHostSettings = ({ clusterId }: Props): React.ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const hostId = useGetURLId(PodMeta.PK, "hostId");
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)

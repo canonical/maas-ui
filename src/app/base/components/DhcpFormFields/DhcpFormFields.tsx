@@ -11,6 +11,7 @@ import MachineSelect from "./MachineSelect/MachineSelect";
 
 import type { DHCPFormValues } from "@/app/base/components/DhcpForm/types";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller } from "@/app/store/controller/types";
 import deviceSelectors from "@/app/store/device/selectors";
@@ -140,8 +141,18 @@ export const DhcpFormFields = ({ editing }: Props): React.ReactElement => {
         name="type"
         onChange={(e: React.FormEvent) => {
           formikProps.handleChange(e);
-          formikProps.setFieldValue("entity", "");
-          formikProps.setFieldTouched("entity", false, false);
+          formikProps.setFieldValue("entity", "").catch((reason) => {
+            throw new FormikFieldChangeError("entity", "setFieldValue", reason);
+          });
+          formikProps
+            .setFieldTouched("entity", false, false)
+            .catch((reason) => {
+              throw new FormikFieldChangeError(
+                "entity",
+                "setFieldTouched",
+                reason
+              );
+            });
         }}
         options={[
           { value: "", label: "Global" },

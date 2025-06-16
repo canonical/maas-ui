@@ -6,7 +6,9 @@ function useDebouncedValue<T>(value: T, delay = DEFAULT_DELAY): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => setDebouncedValue(value), delay);
+    const timeoutId = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
     return () => {
       clearTimeout(timeoutId);
     };

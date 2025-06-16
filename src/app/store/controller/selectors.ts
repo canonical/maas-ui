@@ -68,9 +68,7 @@ export const statusSelectors = ACTIONS.reduce<
   selectors[status] = createSelector(
     [defaultSelectors.all, statuses],
     (controllers: Controller[], statuses: ControllerStatuses) =>
-      controllers.filter(
-        ({ system_id }) => statuses[system_id][status as keyof ControllerStatus]
-      )
+      controllers.filter(({ system_id }) => statuses[system_id][status])
   );
   return selectors;
 }, {});

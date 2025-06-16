@@ -5,6 +5,7 @@ import { Col, Icon, Row, Textarea, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import ShowAdvanced from "@/app/base/components/ShowAdvanced";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
@@ -36,9 +37,27 @@ const ChangeSourceFields = (): ReactElement => {
               name="source_type"
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
                 handleChange(e);
-                setFieldValue("url", "");
-                setFieldValue("keyring_data", "");
-                setFieldValue("keyring_filename", "");
+                setFieldValue("url", "").catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    "url",
+                    "setFieldValue",
+                    reason
+                  );
+                });
+                setFieldValue("keyring_data", "").catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    "keyring_data",
+                    "setFieldValue",
+                    reason
+                  );
+                });
+                setFieldValue("keyring_filename", "").catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    "keyring_filename",
+                    "setFieldValue",
+                    reason
+                  );
+                });
               }}
               type="radio"
               value={BootResourceSourceType.MAAS_IO}
@@ -66,8 +85,20 @@ const ChangeSourceFields = (): ReactElement => {
             <ShowAdvanced
               initialIsShown={!!(keyring_data || keyring_filename)}
               onAfterHide={() => {
-                setFieldValue("keyring_data", "");
-                setFieldValue("keyring_filename", "");
+                setFieldValue("keyring_data", "").catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    "keyring_data",
+                    "setFieldValue",
+                    reason
+                  );
+                });
+                setFieldValue("keyring_filename", "").catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    "keyring_filename",
+                    "setFieldValue",
+                    reason
+                  );
+                });
               }}
             >
               <FormikField

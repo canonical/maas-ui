@@ -62,7 +62,7 @@ export const useCompleteIntro = (
   >({
     ...completeIntroMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listUsersWithSummaryQueryKey(),
       });
     },

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import type { FormValues } from "../EditBootArchitectures";
 
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import RowCheckbox from "@/app/base/components/RowCheckbox";
 import { knownBootArchitectures as knownBootArchitecturesSelectors } from "@/app/store/general/selectors";
 import type { KnownBootArchitecture } from "@/app/store/general/types";
@@ -35,7 +36,13 @@ export const BootArchitecturesTable = (): React.ReactElement => {
       isChecked(bootArchName)
         ? [...disabled_boot_architectures, bootArchName]
         : disabled_boot_architectures.filter((item) => item !== bootArchName)
-    );
+    ).catch((reason) => {
+      throw new FormikFieldChangeError(
+        "disabled_boot_architectures",
+        "setFieldValue",
+        reason
+      );
+    });
   };
 
   return (

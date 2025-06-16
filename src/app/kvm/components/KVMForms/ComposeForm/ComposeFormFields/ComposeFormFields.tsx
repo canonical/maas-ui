@@ -8,6 +8,7 @@ import type { ComposeFormDefaults, ComposeFormValues } from "../ComposeForm";
 
 import DomainSelect from "@/app/base/components/DomainSelect";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
 import ShowAdvanced from "@/app/base/components/ShowAdvanced";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
@@ -73,8 +74,16 @@ export const ComposeFormFields = ({
         label="Use any available core(s)"
         onChange={() => {
           setPinningCores(false);
-          setFieldValue("cores", defaults.cores);
-          setFieldValue("pinnedCores", "");
+          setFieldValue("cores", defaults.cores).catch((reason) => {
+            throw new FormikFieldChangeError("cores", "setFieldValue", reason);
+          });
+          setFieldValue("pinnedCores", "").catch((reason) => {
+            throw new FormikFieldChangeError(
+              "pinnedCores",
+              "setFieldValue",
+              reason
+            );
+          });
         }}
         type="radio"
       />
@@ -102,8 +111,20 @@ export const ComposeFormFields = ({
           label="Pin VM to specific core(s)"
           onChange={() => {
             setPinningCores(true);
-            setFieldValue("cores", "");
-            setFieldValue("pinnedCores", "");
+            setFieldValue("cores", "").catch((reason) => {
+              throw new FormikFieldChangeError(
+                "cores",
+                "setFieldValue",
+                reason
+              );
+            });
+            setFieldValue("pinnedCores", "").catch((reason) => {
+              throw new FormikFieldChangeError(
+                "pinnedCores",
+                "setFieldValue",
+                reason
+              );
+            });
           }}
           type="radio"
         />

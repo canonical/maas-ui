@@ -69,7 +69,7 @@ export const useCreateUser = (mutationOptions?: Options<CreateUserData>) => {
   >({
     ...createUserMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listUsersWithSummaryQueryKey(),
       });
     },
@@ -85,7 +85,7 @@ export const useUpdateUser = (mutationOptions?: Options<UpdateUserData>) => {
   >({
     ...updateUserMutation(mutationOptions),
     onSuccess: async () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listUsersWithSummaryQueryKey(),
       });
     },
@@ -101,7 +101,7 @@ export const useDeleteUser = (mutationOptions?: Options<DeleteUserData>) => {
   >({
     ...deleteUserMutation(mutationOptions),
     onSuccess: () => {
-      void queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listUsersWithSummaryQueryKey(),
       });
     },

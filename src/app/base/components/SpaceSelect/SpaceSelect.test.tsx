@@ -102,9 +102,9 @@ it("maintains selected option after new options are added", async () => {
   const { rerender } = render(<SpaceWithProvider state={stateBefore} />);
 
   await userEvent.selectOptions(screen.getByRole("combobox"), ["space2"]);
-  const option2 = screen.getByRole("option", {
+  const option2: HTMLOptionElement = screen.getByRole("option", {
     name: "space2",
-  }) as HTMLOptionElement;
+  });
 
   await waitFor(() => {
     expect(option2.selected).toBe(true);

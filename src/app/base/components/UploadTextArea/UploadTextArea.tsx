@@ -8,6 +8,7 @@ import { useFormikContext } from "formik";
 import { useDropzone } from "react-dropzone";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import { useId } from "@/app/base/hooks/base";
 import type { AnyObject } from "@/app/base/types";
 
@@ -40,7 +41,9 @@ export const UploadTextArea = <V extends AnyObject>({
     useFormikContext<V>();
 
   const handleUpload = (files: File[] | null) => {
-    setFieldTouched(name, true);
+    setFieldTouched(name, true).catch((reason) => {
+      throw new FormikFieldChangeError(name, "setFieldTouched", reason);
+    });
     setFileErrors(null);
 
     if (!files || files.length === 0) {
@@ -67,7 +70,9 @@ export const UploadTextArea = <V extends AnyObject>({
     };
     reader.onloadend = () => {
       if (typeof reader.result === "string") {
-        setFieldValue(name, reader.result);
+        setFieldValue(name, reader.result).catch((reason) => {
+          throw new FormikFieldChangeError(name, "setFieldValue", reason);
+        });
       } else {
         setFileErrors("Only text files are supported.");
         reader.abort();

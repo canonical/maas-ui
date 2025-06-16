@@ -17,6 +17,7 @@ import TagChip from "../TagChip";
 import { useSelectedTags, useUnchangedTags } from "../hooks";
 import type { TagFormValues } from "../types";
 
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import urls from "@/app/base/urls";
 import type { MachineActionFormProps } from "@/app/machines/types";
 import type { TagIdCountMap } from "@/app/store/machine/utils";
@@ -198,7 +199,13 @@ export const TagFormChanges = ({
                 setFieldValue(
                   "added",
                   values.added.filter((id) => tag.id !== toFormikNumber(id))
-                );
+                ).catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    "added",
+                    "setFieldValue",
+                    reason
+                  );
+                });
               },
               <>
                 <span className="u-nudge-left--small">{Label.Discard}</span>
@@ -218,7 +225,13 @@ export const TagFormChanges = ({
                 setFieldValue(
                   "removed",
                   values.removed.filter((id) => tag.id !== toFormikNumber(id))
-                );
+                ).catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    "removed",
+                    "setFieldValue",
+                    reason
+                  );
+                });
               },
               <>
                 <span className="u-nudge-left--small">{Label.Discard}</span>
@@ -238,7 +251,13 @@ export const TagFormChanges = ({
                 setFieldValue(
                   "removed",
                   values.removed.concat([tag.id.toString()])
-                );
+                ).catch((reason) => {
+                  throw new FormikFieldChangeError(
+                    "removed",
+                    "setFieldValue",
+                    reason
+                  );
+                });
               },
               <>
                 <span className="u-nudge-left--small">{Label.Remove}</span>

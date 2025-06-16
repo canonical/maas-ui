@@ -166,7 +166,7 @@ const statusHandlers = generateStatusHandlers<
           if (action.meta.callId in state.actions && action?.payload) {
             actionsItem.status = ACTION_STATUS.success;
             if (action?.payload && "success_count" in action.payload) {
-              actionsItem.successCount = action.payload.success_count as number;
+              actionsItem.successCount = action.payload.success_count;
             }
             if (
               "failed_system_ids" in action?.payload &&
@@ -808,10 +808,10 @@ const machineSlice = createSlice({
             group.items.splice(index, 1);
             // update the count
             if (group.count && group.count > 0) {
-              group.count = group.count! - 1;
+              group.count = group.count - 1;
             }
             if (list.count && list.count > 0) {
-              list.count = list.count! - 1;
+              list.count = list.count - 1;
             }
             // Exit the loop early if the item has been found and removed
             return;

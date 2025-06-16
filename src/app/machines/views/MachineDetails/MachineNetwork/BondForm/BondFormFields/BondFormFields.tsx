@@ -10,6 +10,7 @@ import type { BondFormValues } from "../types";
 import { MacSource, LinkMonitoring } from "../types";
 
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import TagNameField from "@/app/base/components/TagNameField";
 import type { Selected } from "@/app/base/components/node/networking/types";
@@ -64,7 +65,7 @@ const BondFormFields = ({
     BondMode.BALANCE_XOR,
     BondMode.LINK_AGGREGATION,
     BondMode.BALANCE_TLB,
-  ].includes(values.bond_mode as BondMode);
+  ].includes(values.bond_mode);
   const showLACPRate = values.bond_mode === BondMode.LINK_AGGREGATION;
   const showMonitoring = values.linkMonitoring === LinkMonitoring.MII;
   return (
@@ -74,7 +75,7 @@ const BondFormFields = ({
         <BondModeSelect defaultOption={null} name="bond_mode" required />
         {showHashPolicy && (
           <HashPolicySelect
-            bondMode={values.bond_mode as BondMode}
+            bondMode={values.bond_mode}
             defaultOption={null}
             name="bond_xmit_hash_policy"
           />
@@ -91,7 +92,13 @@ const BondFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             handleChange(evt);
             // Reset the mac address field from the select box.
-            setFieldValue("mac_address", values.macNic);
+            setFieldValue("mac_address", values.macNic).catch((reason) => {
+              throw new FormikFieldChangeError(
+                "mac_address",
+                "setFieldValue",
+                reason
+              );
+            });
           }}
           type="radio"
           value={MacSource.NIC}
@@ -105,7 +112,13 @@ const BondFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
             handleChange(evt);
             // Fill the mac addres field from the value of this select.
-            setFieldValue("mac_address", evt.target.value);
+            setFieldValue("mac_address", evt.target.value).catch((reason) => {
+              throw new FormikFieldChangeError(
+                "mac_address",
+                "setFieldValue",
+                reason
+              );
+            });
           }}
           options={getMacOptions(machine, selected)}
           wrapperClassName="u-nudge-right--x-large u-sv2"
@@ -130,9 +143,27 @@ const BondFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
             handleChange(evt);
             // Reset the link monitoring fields.
-            setFieldValue("bond_downdelay", 0);
-            setFieldValue("bond_miimon", 0);
-            setFieldValue("bond_updelay", 0);
+            setFieldValue("bond_downdelay", 0).catch((reason) => {
+              throw new FormikFieldChangeError(
+                "bond_downdelay",
+                "setFieldValue",
+                reason
+              );
+            });
+            setFieldValue("bond_miimon", 0).catch((reason) => {
+              throw new FormikFieldChangeError(
+                "bond_miimon",
+                "setFieldValue",
+                reason
+              );
+            });
+            setFieldValue("bond_updelay", 0).catch((reason) => {
+              throw new FormikFieldChangeError(
+                "bond_updelay",
+                "setFieldValue",
+                reason
+              );
+            });
           }}
           options={[
             {

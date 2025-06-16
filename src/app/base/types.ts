@@ -1,5 +1,6 @@
 import type { ValueOf } from "@canonical/react-components";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { NavigateOptions, To } from "react-router";
 
 import type { ACTION_STATUS } from "./constants";
 
@@ -108,4 +109,9 @@ export type StateError<A extends string, I> = {
   action: A;
   error: APIError;
   identifier: I | null;
+};
+
+export type SyncNavigateFunction = {
+  (to: To, options?: NavigateOptions): void;
+  (delta: number): void;
 };

@@ -13,6 +13,7 @@ import { useGetCurrentUser } from "@/app/api/query/auth";
 import FormikForm from "@/app/base/components/FormikForm";
 import TableConfirm from "@/app/base/components/TableConfirm";
 import { useFetchActions } from "@/app/base/hooks";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { UrlSchema } from "@/app/base/validation";
 import IntroSection from "@/app/intro/components/IntroSection";
@@ -43,7 +44,7 @@ export const MaasIntroSchema = Yup.object()
 
 const MaasIntro = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const httpProxy = useSelector(configSelectors.httpProxy);
   const maasName = useSelector(configSelectors.maasName);
   const upstreamDns = useSelector(configSelectors.upstreamDns);

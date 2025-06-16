@@ -30,9 +30,9 @@ const PoolsListHeader = ({
         <Button
           data-testid="add-pool"
           key="add-pool"
-          onClick={() =>
-            setSidePanelContent({ view: PoolActionSidePanelViews.CREATE_POOL })
-          }
+          onClick={() => {
+            setSidePanelContent({ view: PoolActionSidePanelViews.CREATE_POOL });
+          }}
         >
           Add pool
         </Button>

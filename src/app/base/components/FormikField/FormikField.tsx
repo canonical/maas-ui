@@ -18,6 +18,14 @@ export type Props<C extends ComponentType | ElementType = typeof Input> =
     value?: HTMLProps<HTMLElement>["value"];
   };
 
+export class FormikFieldChangeError extends Error {
+  constructor(fieldName: string, operation: string, reason: string) {
+    super(`Formik ${operation} failed for field "${fieldName}": ${reason}`);
+    this.name = "FormikFieldChangeError";
+    this.cause = `${fieldName}:${operation}`;
+  }
+}
+
 const FormikField = <C extends ComponentType | ElementType = typeof Input>({
   component: Component = Input,
   displayError = true,

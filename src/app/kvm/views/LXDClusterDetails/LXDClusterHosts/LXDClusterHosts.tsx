@@ -10,7 +10,7 @@ import LXDClusterHostsActionBar from "./LXDClusterHostsActionBar";
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
-import type { SetSearchFilter } from "@/app/base/types";
+import type { SetSearchFilter, SyncNavigateFunction } from "@/app/base/types";
 import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import podSelectors from "@/app/store/pod/selectors";
@@ -32,7 +32,7 @@ const LXDClusterHosts = ({
   clusterId,
   setSidePanelContent,
 }: Props): React.ReactElement => {
-  const navigate = useNavigate();
+  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
