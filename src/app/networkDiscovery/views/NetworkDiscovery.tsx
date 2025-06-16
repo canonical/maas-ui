@@ -10,12 +10,12 @@ import DiscoveriesList from "./DiscoveriesList";
 import NetworkDiscoveryConfigurationForm from "./NetworkDiscoveryConfigurationForm";
 import NetworkDiscoveryHeader from "./NetworkDiscoveryHeader";
 
+import { useGetIsSuperUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
-import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
 import { getRelativeRoute } from "@/app/utils";
 
@@ -26,14 +26,14 @@ export enum Label {
 
 const NetworkDiscovery = (): React.ReactElement => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
-  const isAdmin = useSelector(authSelectors.isAdmin);
+  const isSuperUser = useGetIsSuperUser();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     setSidePanelContent(null);
   }, [setSidePanelContent]);
 
-  if (!isAdmin) {
+  if (!isSuperUser.data) {
     return (
       <PageContent
         header={<SectionHeader title={Label.Permissions} />}

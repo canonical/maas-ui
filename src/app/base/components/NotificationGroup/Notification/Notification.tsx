@@ -3,9 +3,9 @@ import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
+import { useGetIsSuperUser } from "@/app/api/query/auth";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
-import authSelectors from "@/app/store/auth/selectors";
 import { notificationActions } from "@/app/store/notification";
 import notificationSelectors from "@/app/store/notification/selectors";
 import type { Notification as NotificationType } from "@/app/store/notification/types";
@@ -29,7 +29,7 @@ const NotificationGroupNotification = ({
 }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
-  const isAdmin = useSelector(authSelectors.isAdmin);
+  const isSuperUser = useGetIsSuperUser();
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
   );
@@ -37,7 +37,7 @@ const NotificationGroupNotification = ({
   if (!notification) {
     return null;
   }
-  const showSettings = isReleaseNotification(notification) && isAdmin;
+  const showSettings = isReleaseNotification(notification) && isSuperUser.data;
   const showDate = isUpgradeNotification(notification);
   return (
     <Notification

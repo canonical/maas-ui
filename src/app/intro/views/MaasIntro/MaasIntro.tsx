@@ -9,6 +9,7 @@ import ConnectivityCard from "./ConnectivityCard";
 import NameCard from "./NameCard";
 import type { MaasIntroValues } from "./types";
 
+import { useGetCurrentUser } from "@/app/api/query/auth";
 import FormikForm from "@/app/base/components/FormikForm";
 import TableConfirm from "@/app/base/components/TableConfirm";
 import { useFetchActions } from "@/app/base/hooks";
@@ -17,7 +18,6 @@ import urls from "@/app/base/urls";
 import { UrlSchema } from "@/app/base/validation";
 import IntroSection from "@/app/intro/components/IntroSection";
 import { useExitURL } from "@/app/intro/hooks";
-import authSelectors from "@/app/store/auth/selectors";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { repositoryActions } from "@/app/store/packagerepository";
@@ -45,8 +45,6 @@ export const MaasIntroSchema = Yup.object()
 const MaasIntro = (): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
-  const authLoading = useSelector(authSelectors.loading);
-  const authUser = useSelector(authSelectors.get);
   const httpProxy = useSelector(configSelectors.httpProxy);
   const maasName = useSelector(configSelectors.maasName);
   const upstreamDns = useSelector(configSelectors.upstreamDns);
@@ -62,13 +60,15 @@ const MaasIntro = (): React.ReactElement => {
   const [showSkip, setShowSkip] = useState(false);
   const exitURL = useExitURL();
 
+  const user = useGetCurrentUser();
+
   useFetchActions([repositoryActions.fetch]);
 
   const errors = {
     ...(configErrors && typeof configErrors === "object" ? configErrors : {}),
     ...(reposErrors && typeof reposErrors === "object" ? reposErrors : {}),
   };
-  const loading = authLoading || configLoading || reposLoading;
+  const loading = user.isPending || configLoading || reposLoading;
   const saving = configSaving || reposSaving;
   return (
     <IntroSection loading={loading}>
@@ -136,7 +136,7 @@ const MaasIntro = (): React.ReactElement => {
           <Card data-testid="skip-setup" highlighted>
             <TableConfirm
               confirmLabel={
-                authUser?.completed_intro
+                user.data?.completed_intro
                   ? Labels.SecondarySubmit
                   : Labels.SkipToUserSetup
               }
@@ -151,7 +151,7 @@ const MaasIntro = (): React.ReactElement => {
               }}
               onConfirm={() => {
                 dispatch(configActions.update({ completed_intro: true }));
-                if (!authUser?.completed_intro) {
+                if (!user.data?.completed_intro) {
                   navigate({ pathname: urls.intro.user });
                 } else {
                   navigate({

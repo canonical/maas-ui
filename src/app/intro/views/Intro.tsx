@@ -12,29 +12,30 @@ import MaasIntro from "./MaasIntro";
 import MaasIntroSuccess from "./MaasIntroSuccess";
 import UserIntro from "./UserIntro";
 
+import { useGetCurrentUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useCompletedIntro, useCompletedUserIntro } from "@/app/base/hooks";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
 import { getRelativeRoute } from "@/app/utils";
 
 const Intro = (): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
-  const authLoading = useSelector(authSelectors.loading);
-  const isAdmin = useSelector(authSelectors.isAdmin);
   const configLoading = useSelector(configSelectors.loading);
   const completedIntro = useCompletedIntro();
   const completedUserIntro = useCompletedUserIntro();
   const exitURL = useExitURL();
   const viewingUserIntro = location.pathname.startsWith(urls.intro.user);
-  const showIncomplete = !completedIntro && !isAdmin;
+
+  const user = useGetCurrentUser();
+
+  const showIncomplete = !completedIntro && !user.data?.completed_intro;
 
   useEffect(() => {
-    if (!authLoading && !configLoading && !showIncomplete) {
+    if (!user.isPending && !configLoading && !showIncomplete) {
       if (completedIntro && completedUserIntro) {
         // If both intros have been completed then exit the flow.
         navigate(exitURL, { replace: true });
@@ -50,10 +51,10 @@ const Intro = (): ReactElement => {
     }
   }, [
     navigate,
-    authLoading,
+    user.data,
+    user.isPending,
     configLoading,
     completedIntro,
-    isAdmin,
     completedUserIntro,
     showIncomplete,
     viewingUserIntro,
@@ -61,7 +62,7 @@ const Intro = (): ReactElement => {
   ]);
 
   let content: ReactNode;
-  if (authLoading || configLoading) {
+  if (user.isPending || configLoading) {
     content = (
       <PageContent
         header={<SectionHeader loading />}

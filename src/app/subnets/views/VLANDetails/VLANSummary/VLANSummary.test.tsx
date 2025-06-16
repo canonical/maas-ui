@@ -1,5 +1,4 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
+import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import { VLANDetailsSidePanelViews } from "../constants";
@@ -14,93 +13,91 @@ import type { RootState } from "@/app/store/root/types";
 import type { Space } from "@/app/store/space/types";
 import type { VLAN } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
-  render,
   screen,
   within,
-  renderWithBrowserRouter,
+  setupMockServer,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
+setupMockServer(authResolvers.getCurrentUser.handler());
 
-let controller: Controller;
-let fabric: Fabric;
-let space: Space;
-let state: RootState;
-let vlan: VLAN;
-const setSidePanelContent = vi.fn();
+describe("VLANSummary", () => {
+  let controller: Controller;
+  let fabric: Fabric;
+  let space: Space;
+  let state: RootState;
+  let vlan: VLAN;
+  const setSidePanelContent = vi.fn();
 
-beforeEach(() => {
-  vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-    setSidePanelContent,
-    sidePanelContent: null,
-    setSidePanelSize: vi.fn(),
-    sidePanelSize: "regular",
+  beforeEach(() => {
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: vi.fn(),
+      sidePanelSize: "regular",
+    });
+
+    fabric = factory.fabric({ id: 1, name: "fabric-1" });
+    space = factory.space({ id: 22, name: "outer" });
+    controller = factory.controller({
+      domain: factory.modelRef({ name: "domain" }),
+      hostname: "controller-abc",
+      system_id: "abc123",
+    });
+    vlan = factory.vlan({
+      description: "I'm a little VLAN",
+      fabric: fabric.id,
+      mtu: 5432,
+      name: "vlan-333",
+      primary_rack: controller.system_id,
+      space: space.id,
+      vid: 1010,
+    });
+    state = factory.rootState({
+      controller: factory.controllerState({ items: [controller] }),
+      fabric: factory.fabricState({ items: [fabric] }),
+      space: factory.spaceState({ items: [space] }),
+      vlan: factory.vlanState({ items: [vlan] }),
+    });
   });
 
-  fabric = factory.fabric({ id: 1, name: "fabric-1" });
-  space = factory.space({ id: 22, name: "outer" });
-  controller = factory.controller({
-    domain: factory.modelRef({ name: "domain" }),
-    hostname: "controller-abc",
-    system_id: "abc123",
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
-  vlan = factory.vlan({
-    description: "I'm a little VLAN",
-    fabric: fabric.id,
-    mtu: 5432,
-    name: "vlan-333",
-    primary_rack: controller.system_id,
-    space: space.id,
-    vid: 1010,
+
+  it("renders correct details", () => {
+    const store = mockStore(state);
+    renderWithProviders(<VLANSummary id={vlan.id} />, { store });
+    const vlanSummary = screen.getByRole("region", { name: "VLAN summary" });
+    expect(
+      within(vlanSummary).getByRole("link", { name: space.name })
+    ).toHaveAttribute("href", urls.subnets.space.index({ id: space.id }));
+    expect(
+      within(vlanSummary).getByRole("link", { name: fabric.name })
+    ).toHaveAttribute("href", urls.subnets.fabric.index({ id: fabric.id }));
+    expect(
+      within(vlanSummary).getByRole("link", { name: /controller-abc/i })
+    ).toHaveAttribute(
+      "href",
+      urls.controllers.controller.index({ id: controller.system_id })
+    );
   });
-  state = factory.rootState({
-    controller: factory.controllerState({ items: [controller] }),
-    fabric: factory.fabricState({ items: [fabric] }),
-    space: factory.spaceState({ items: [space] }),
-    user: factory.userState({
-      auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
-    }),
-    vlan: factory.vlanState({ items: [vlan] }),
-  });
-});
 
-afterEach(() => {
-  vi.restoreAllMocks();
-});
-
-it("renders correct details", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <VLANSummary id={vlan.id} />
-      </MemoryRouter>
-    </Provider>
-  );
-  const vlanSummary = screen.getByRole("region", { name: "VLAN summary" });
-  expect(
-    within(vlanSummary).getByRole("link", { name: space.name })
-  ).toHaveAttribute("href", urls.subnets.space.index({ id: space.id }));
-  expect(
-    within(vlanSummary).getByRole("link", { name: fabric.name })
-  ).toHaveAttribute("href", urls.subnets.fabric.index({ id: fabric.id }));
-  expect(
-    within(vlanSummary).getByRole("link", { name: /controller-abc/i })
-  ).toHaveAttribute(
-    "href",
-    urls.controllers.controller.index({ id: controller.system_id })
-  );
-});
-
-it("can trigger the edit form side panel", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(<VLANSummary id={vlan.id} />, { store });
-  const button = screen.getByRole("button", { name: "Edit" });
-  expect(button).toBeInTheDocument();
-  await userEvent.click(button);
-  expect(setSidePanelContent).toHaveBeenCalledWith({
-    view: VLANDetailsSidePanelViews.EditVLAN,
+  it("can trigger the edit form side panel", async () => {
+    const store = mockStore(state);
+    renderWithProviders(<VLANSummary id={vlan.id} />, { store });
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument()
+    );
+    const button = screen.getByRole("button", { name: "Edit" });
+    expect(button).toBeInTheDocument();
+    await userEvent.click(button);
+    expect(setSidePanelContent).toHaveBeenCalledWith({
+      view: VLANDetailsSidePanelViews.EditVLAN,
+    });
   });
 });

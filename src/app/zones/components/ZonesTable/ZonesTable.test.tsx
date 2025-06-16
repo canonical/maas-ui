@@ -5,9 +5,9 @@ import { describe } from "vitest";
 import ZonesTable from "./ZonesTable";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { UserMeta } from "@/app/store/user/types";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
@@ -20,7 +20,8 @@ import {
 
 const mockServer = setupMockServer(
   zoneResolvers.listZones.handler(),
-  zoneResolvers.getZone.handler()
+  zoneResolvers.getZone.handler(),
+  authResolvers.getCurrentUser.handler()
 );
 
 vi.mock("@/app/base/side-panel-context", async () => {
@@ -234,15 +235,7 @@ describe("ZonesTable", () => {
         })
       );
 
-      renderWithProviders(<ZonesTable />, {
-        state: factory.rootState({
-          [UserMeta.MODEL]: factory.userState({
-            auth: factory.authState({
-              user: factory.user({ is_superuser: true }),
-            }),
-          }),
-        }),
-      });
+      renderWithProviders(<ZonesTable />);
 
       await waitFor(() => {
         expect(
