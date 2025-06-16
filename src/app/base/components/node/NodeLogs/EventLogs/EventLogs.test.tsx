@@ -54,16 +54,7 @@ describe("EventLogs", () => {
     expect(screen.getByLabelText(Label.Title)).toBeInTheDocument();
   });
 
-  it("fetches the events from the last day", () => {
-    // Create more than the preload amount of events.
-    for (let i = 0; i < 203; i++) {
-      state.event.items.push(
-        factory.eventRecord({
-          node_id: 1,
-          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
-        })
-      );
-    }
+  it("fetches events up to the preload amount", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -79,29 +70,6 @@ describe("EventLogs", () => {
       .filter(({ type }) => type === "event/fetch");
     expect(dispatches.length).toBe(1);
     expect(dispatches[0].payload).toStrictEqual({
-      params: {
-        max_days: 1,
-        node_id: 1,
-      },
-    });
-  });
-
-  it("fetches more events if the first day contains less than the preload amount", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <EventLogs node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
-    const dispatches = store
-      .getActions()
-      .filter(({ type }) => type === "event/fetch");
-    expect(dispatches.length).toBe(2);
-    expect(dispatches[1].payload).toStrictEqual({
       params: {
         limit: 201,
         node_id: 1,
