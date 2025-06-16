@@ -6,6 +6,7 @@ import { FabricDetailsSidePanelViews } from "./constants";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { user } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
   renderWithProviders,
@@ -17,7 +18,7 @@ import {
 let state: RootState;
 let fabric: Fabric;
 
-setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("FabricDetailsHeader", () => {
   beforeEach(() => {
@@ -46,6 +47,9 @@ describe("FabricDetailsHeader", () => {
   });
 
   it("does not show the delete button if the user is not an admin", () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(user({ is_superuser: false }))
+    );
     renderWithProviders(
       <FabricDetailsHeader fabric={fabric} setSidePanelContent={vi.fn()} />,
       {

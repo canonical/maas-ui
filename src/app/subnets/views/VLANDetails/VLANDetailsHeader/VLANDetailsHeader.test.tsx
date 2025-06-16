@@ -6,6 +6,7 @@ import type { RootState } from "@/app/store/root/types";
 import type { VLAN } from "@/app/store/vlan/types";
 import { VlanVid } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
+import { user } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
   renderWithBrowserRouter,
@@ -13,7 +14,7 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("VLANDetailsHeader", () => {
   let state: RootState;
@@ -112,6 +113,9 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("does not show the delete button if the user is not an admin", () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(user({ is_superuser: false }))
+    );
     renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
       route: "/vlan/1234",
       state,

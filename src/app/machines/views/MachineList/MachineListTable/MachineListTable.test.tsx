@@ -61,7 +61,7 @@ describe("MachineListTable", () => {
           status: TestStatusStatus.PASSED,
         }),
         osystem: "ubuntu",
-        owner: "admin",
+        owner: mockUsers.items[0].username,
         physical_disk_count: 1,
         pool: factory.modelRef(),
         pxe_mac: "00:11:22:33:44:55",
@@ -431,7 +431,9 @@ describe("MachineListTable", () => {
       within(
         within(getFirstRow()).getByRole("gridcell", { name: "Owner" })
       ).getByTestId("owner");
-    expect(getFirstMachineOwner()).toHaveTextContent("admin");
+    expect(getFirstMachineOwner()).toHaveTextContent(
+      mockUsers.items[0].username
+    );
     await userEvent.click(
       within(screen.getByRole("columnheader", { name: "Owner" })).getByRole(
         "button",
