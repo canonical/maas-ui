@@ -14,8 +14,10 @@ const expectExpandedNavigation = () => {
 };
 
 context("Navigation - non-admin", () => {
-  beforeEach(() => {
-    cy.loginNonAdmin();
+  before(() => {
+    cy.session("non-admin", () => {
+      cy.loginNonAdmin();
+    });
     cy.visit(generateMAASURL("/"));
   });
 
@@ -29,16 +31,19 @@ context("Navigation - non-admin", () => {
 });
 
 context("Navigation - admin - collapse", () => {
-  beforeEach(() => {
-    cy.login();
-    // Need the window to be wide enough so that menu items aren't hidden under
-    // the hardware menu.
+  before(() => {
+    cy.session("admin", () => {
+      cy.login();
+    });
     cy.viewport("macbook-13");
     cy.visit(generateMAASURL("/"));
   });
 
-  it("expands and collapses the side navigation using a keyboard shortcut", () => {
+  beforeEach(() => {
     cy.viewport("ipad-mini");
+  });
+
+  it("expands and collapses the side navigation using a keyboard shortcut", () => {
     cy.waitForPageToLoad();
     expectCollapsedNavigation();
     cy.get("body").type("[");
@@ -48,16 +53,13 @@ context("Navigation - admin - collapse", () => {
   });
 
   it("ignores the keyboard shortcut when modifier key is pressed", () => {
-    cy.viewport("ipad-mini");
     cy.waitForPageToLoad();
     expectCollapsedNavigation();
-    // ctrl + [ is often used as a shortcut for going back in browsers
     cy.get("body").type("{ctrl}[");
     expectCollapsedNavigation();
   });
 
   it("expands and collapses the side navigation on click of a button", () => {
-    cy.viewport("ipad-mini");
     cy.waitForPageToLoad();
     expectCollapsedNavigation();
     cy.findByRole("button", { name: /expand main navigation/ }).click();
@@ -92,13 +94,12 @@ context("Navigation - admin - collapse", () => {
 });
 
 context("Navigation - admin", () => {
-  beforeEach(() => {
-    cy.login();
-    // Need the window to be wide enough so that menu items aren't hidden under
-    // the hardware menu.
+  before(() => {
+    cy.session("admin", () => {
+      cy.login();
+    });
     cy.viewport("macbook-13");
     cy.visit(generateMAASURL("/"));
-    // set side navigation to expanded
     cy.expandMainNavigation();
   });
 
