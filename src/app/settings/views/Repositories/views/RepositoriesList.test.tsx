@@ -1,18 +1,12 @@
-import configureStore from "redux-mock-store";
-
 import type { RepositorySidePanelContent } from "../constants";
 import { RepositoryActionSidePanelViews } from "../constants";
 
 import RepositoriesList from "./RepositoriesList";
 
-import { rootState } from "@/testing/factories";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
 import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 setupMockServer(packageRepositoriesResolvers.listPackageRepositories.handler());
-
-const mockStore = configureStore();
-const state = rootState();
 
 let mockSidePanelContent: RepositorySidePanelContent | null = null;
 const mockSetSidePanelContent = vi.fn();
