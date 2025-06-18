@@ -1,7 +1,8 @@
 import { MemoryRouter } from "react-router";
 
 import RepositoryForm from "../RepositoryForm";
-import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
+
+import { Labels as RepositoryFormLabels } from "./RepositoryFormFields";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

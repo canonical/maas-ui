@@ -1,6 +1,9 @@
 import type { PropsWithChildren, ReactElement } from "react";
 import { createContext, useCallback, useContext, useState } from "react";
 
+import type { RepositorySidePanelContent } from "../settings/views/Repositories/constants";
+import { RepositoryActionSidePanelViews } from "../settings/views/Repositories/constants";
+
 import { ControllerSidePanelViews } from "@/app/controllers/constants";
 import type { ControllerSidePanelContent } from "@/app/controllers/types";
 import { DeviceSidePanelViews } from "@/app/devices/constants";
@@ -71,6 +74,7 @@ export type SidePanelContent =
   | MachineSidePanelContent
   | NetworkDiscoverySidePanelContent
   | PoolSidePanelContent
+  | RepositorySidePanelContent
   | SpaceDetailsSidePanelContent
   | SSHKeySidePanelContent
   | SSLKeySidePanelContent
@@ -113,6 +117,7 @@ export const SidePanelViews = {
   ...PoolActionSidePanelViews,
   ...SubnetDetailsSidePanelViews,
   ...SpaceDetailsSidePanelViews,
+  ...RepositoryActionSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {
@@ -176,6 +181,10 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.CREATE_USER[1]]: "Add user",
   [SidePanelViews.EDIT_USER[1]]: "Edit user",
   [SidePanelViews.DELETE_USER[1]]: "Delete user",
+  [SidePanelViews.ADD_REPOSITORY[1]]: "Add repository",
+  [SidePanelViews.ADD_PPA[1]]: "Add PPA",
+  [SidePanelViews.EDIT_REPOSITORY[1]]: "Edit repository",
+  [SidePanelViews.DELETE_REPOSITORY[1]]: "Delete repository",
 };
 
 /**

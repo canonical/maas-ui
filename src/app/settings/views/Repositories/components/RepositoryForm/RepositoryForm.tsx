@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import RepositoryFormFields from "../RepositoryFormFields";
@@ -11,7 +10,7 @@ import type { RepositoryFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
-import type { SyncNavigateFunction } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import settingsURLs from "@/app/settings/urls";
 import { generalActions } from "@/app/store/general";
 import {
@@ -61,7 +60,7 @@ export const RepositoryForm = ({
   repository,
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate: SyncNavigateFunction = useNavigate();
+  const { setSidePanelContent } = useSidePanel();
   const [savedRepo, setSavedRepo] = useState<string | null>(null);
   const componentsToDisableLoaded = useSelector(
     componentsToDisableSelectors.loaded
@@ -114,7 +113,7 @@ export const RepositoryForm = ({
       distributions: repository.distributions.join(", "),
       enabled: repository.enabled,
       key: repository.key,
-      name: getRepoDisplayName(repository),
+      name: getRepoDisplayName(repository.name),
       url: repository.url,
     };
   } else {
@@ -146,7 +145,7 @@ export const RepositoryForm = ({
             errors={errors}
             initialValues={initialValues}
             onCancel={() => {
-              navigate({ pathname: settingsURLs.repositories.index });
+              setSidePanelContent(null);
             }}
             onSaveAnalytics={{
               action: "Saved",

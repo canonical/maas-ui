@@ -50,7 +50,7 @@ export const usePoolCount = (
     select: (data) => data?.total ?? 0,
   } as UseQueryOptions<
     ListResourcePoolsWithSummaryResponse,
-    ListResourcePoolsWithSummaryResponse,
+    ListResourcePoolsWithSummaryError,
     number
   >);
 };
@@ -58,7 +58,7 @@ export const usePoolCount = (
 export const useGetPool = (options: Options<GetResourcePoolData>) => {
   return useWebsocketAwareQuery(
     getResourcePoolOptions(options) as UseQueryOptions<
-      GetResourcePoolResponse,
+      GetResourcePoolData,
       GetResourcePoolError,
       GetResourcePoolResponse
     >

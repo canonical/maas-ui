@@ -9,7 +9,7 @@ import type { RootState } from "@/app/store/root/types";
 import { generateBaseSelectors } from "@/app/store/utils";
 
 const searchFunction = (repo: PackageRepository, term: string) =>
-  getRepoDisplayName(repo).includes(term) ||
+  getRepoDisplayName(repo.name).includes(term) ||
   repo.name.includes(term) ||
   repo.url.includes(term);
 
