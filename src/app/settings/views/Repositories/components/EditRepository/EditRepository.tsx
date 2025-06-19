@@ -9,7 +9,7 @@ import { repositoryActions } from "@/app/store/packagerepository";
 import repositorySelectors from "@/app/store/packagerepository/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-export const RepositoryEdit = (): React.ReactElement => {
+export const EditRepository = (): React.ReactElement => {
   const { sidePanelContent } = useSidePanel();
   const id =
     sidePanelContent?.extras && "repositoryId" in sidePanelContent.extras
@@ -37,4 +37,4 @@ export const RepositoryEdit = (): React.ReactElement => {
   return <RepositoryForm repository={repository} type={type} />;
 };
 
-export default RepositoryEdit;
+export default EditRepository;

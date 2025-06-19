@@ -91,7 +91,7 @@ const settingsPages = [
   },
   {
     path: "/settings/repositories",
-    label: "Package repos",
+    label: "Package repositories",
   },
 ];
 

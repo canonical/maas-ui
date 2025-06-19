@@ -2,7 +2,7 @@ import type { RepositorySidePanelContent } from "../../constants";
 import { RepositoryActionSidePanelViews } from "../../constants";
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
-import RepositoryEdit from "./RepositoryEdit";
+import EditRepository from "./EditRepository";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -53,7 +53,7 @@ describe("RepositoryEdit", () => {
 
   it("displays a loading component if loading", () => {
     state.packagerepository.loading = true;
-    renderWithProviders(<RepositoryEdit />, { state });
+    renderWithProviders(<EditRepository />, { state });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
@@ -65,7 +65,7 @@ describe("RepositoryEdit", () => {
         type: "repository",
       },
     };
-    renderWithProviders(<RepositoryEdit />, { state });
+    renderWithProviders(<EditRepository />, { state });
     expect(screen.getByText("Repository not found")).toBeInTheDocument();
   });
 
@@ -77,7 +77,7 @@ describe("RepositoryEdit", () => {
         type: "repository",
       },
     };
-    renderWithProviders(<RepositoryEdit />, { state });
+    renderWithProviders(<EditRepository />, { state });
     const form = screen.getByRole("form", { name: "Edit repository" });
     expect(form).toBeInTheDocument();
     expect(

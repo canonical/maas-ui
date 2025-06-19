@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 import type { RepositorySidePanelContent } from "../../constants";
 import { RepositoryActionSidePanelViews } from "../../constants";
 
-import RepositoryDelete from "./RepositoryDelete";
+import RepositoryDelete from "./DeleteRepository";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

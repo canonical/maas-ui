@@ -1,5 +1,5 @@
-import RepositoryDelete from "../components/RepositoryDelete/RepositoryDelete";
-import RepositoryEdit from "../components/RepositoryEdit";
+import DeleteRepository from "../components/DeleteRepository/DeleteRepository";
+import EditRepository from "../components/EditRepository";
 import RepositoryForm from "../components/RepositoryForm";
 import RepositoriesTable from "../components/RepositoryTable/RepositoriesTable";
 import { RepositoryActionSidePanelViews } from "../constants";
@@ -25,10 +25,10 @@ export const RepositoriesList = (): React.ReactElement => {
       content = <RepositoryForm type="repository" />;
       break;
     case RepositoryActionSidePanelViews.EDIT_REPOSITORY:
-      content = <RepositoryEdit />;
+      content = <EditRepository />;
       break;
     case RepositoryActionSidePanelViews.DELETE_REPOSITORY:
-      content = <RepositoryDelete />;
+      content = <DeleteRepository />;
       break;
     default:
       content = null;
