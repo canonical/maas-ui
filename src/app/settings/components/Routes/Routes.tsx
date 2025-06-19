@@ -22,9 +22,7 @@ import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryF
 import NtpForm from "@/app/settings/views/Network/NtpForm";
 import ProxyForm from "@/app/settings/views/Network/ProxyForm";
 import SyslogForm from "@/app/settings/views/Network/SyslogForm";
-import RepositoriesList from "@/app/settings/views/Repositories/RepositoriesList";
-import RepositoryAdd from "@/app/settings/views/Repositories/RepositoryAdd";
-import RepositoryEdit from "@/app/settings/views/Repositories/RepositoryEdit";
+import RepositoriesList from "@/app/settings/views/Repositories/views";
 import ScriptsList from "@/app/settings/views/Scripts/ScriptsList";
 import ScriptsUpload from "@/app/settings/views/Scripts/ScriptsUpload";
 import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
@@ -278,34 +276,8 @@ const Routes = (): React.ReactElement => {
         path={getRelativeRoute(urls.settings.dhcp.edit(null), base)}
       />
       <Route
-        element={
-          <PageContent sidePanelContent={null} sidePanelTitle={null}>
-            <RepositoriesList />
-          </PageContent>
-        }
+        element={<RepositoriesList />}
         path={getRelativeRoute(urls.settings.repositories.index, base)}
-      />
-      <Route
-        element={
-          <PageContent
-            sidePanelContent={<RepositoryAdd />}
-            sidePanelTitle="Add Repository"
-          >
-            <RepositoriesList />
-          </PageContent>
-        }
-        path={getRelativeRoute(urls.settings.repositories.add(null), base)}
-      />
-      <Route
-        element={
-          <PageContent
-            sidePanelContent={<RepositoryEdit />}
-            sidePanelTitle={"Edit Repository"}
-          >
-            <RepositoriesList />
-          </PageContent>
-        }
-        path={getRelativeRoute(urls.settings.repositories.edit(null), base)}
       />
       <Route
         element={

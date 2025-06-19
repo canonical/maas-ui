@@ -274,8 +274,8 @@
 @import "@/app/settings/views/Security/SecurityProtocols/TLSEnabled/TLSEnabledFields";
 @import "@/app/settings/views/Dhcp/DhcpList";
 @import "@/app/settings/views/LicenseKeys/LicenseKeyList";
-@import "@/app/settings/views/Repositories/RepositoriesList";
-@import "@/app/settings/views/Repositories/RepositoryFormFields";
+@import "@/app/settings/views/Repositories/views";
+@import "@/app/settings/views/Repositories/components/RepositoryFormFields";
 @import "@/app/settings/views/Scripts/ScriptsList";
 @import "@/app/settings/views/Scripts/ScriptsUpload";
 @import "@/app/settings/views/Scripts/ScriptDetails";
