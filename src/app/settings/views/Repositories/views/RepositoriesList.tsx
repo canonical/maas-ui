@@ -1,6 +1,6 @@
+import AddRepository from "../components/AddRepository/AddRepository";
 import DeleteRepository from "../components/DeleteRepository/DeleteRepository";
 import EditRepository from "../components/EditRepository";
-import RepositoryForm from "../components/RepositoryForm";
 import RepositoriesTable from "../components/RepositoryTable/RepositoriesTable";
 import { RepositoryActionSidePanelViews } from "../constants";
 
@@ -19,11 +19,11 @@ export const RepositoriesList = (): React.ReactElement => {
 
   if (sidePanelContent?.view) {
     if (sidePanelContent.view === RepositoryActionSidePanelViews.ADD_PPA) {
-      content = <RepositoryForm type="ppa" />;
+      content = <AddRepository type="ppa" />;
     } else if (
       sidePanelContent.view === RepositoryActionSidePanelViews.ADD_REPOSITORY
     ) {
-      content = <RepositoryForm type="repository" />;
+      content = <AddRepository type="repository" />;
     } else if (
       sidePanelContent.view ===
         RepositoryActionSidePanelViews.EDIT_REPOSITORY &&

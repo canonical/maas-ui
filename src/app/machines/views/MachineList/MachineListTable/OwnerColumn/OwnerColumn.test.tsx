@@ -80,11 +80,11 @@ describe("OwnerColumn", () => {
       { state, route: "/machines" }
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(screen.getByTestId("owner")).toHaveTextContent(
         mockUsers.items[0].last_name!
-      )
-    );
+      );
+    });
   });
 
   it("displays tags", () => {

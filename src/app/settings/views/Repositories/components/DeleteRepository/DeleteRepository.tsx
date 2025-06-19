@@ -23,11 +23,15 @@ const DeleteRepository = ({ id }: Props) => {
       errors={errors}
       initialValues={{}}
       modelType="repository"
-      onCancel={() => setSidePanelContent(null)}
+      onCancel={() => {
+        setSidePanelContent(null);
+      }}
       onSubmit={() => {
         dispatch(repositoryActions.delete(id));
       }}
-      onSuccess={() => setSidePanelContent(null)}
+      onSuccess={() => {
+        setSidePanelContent(null);
+      }}
       saved={saved}
       saving={saving}
     />

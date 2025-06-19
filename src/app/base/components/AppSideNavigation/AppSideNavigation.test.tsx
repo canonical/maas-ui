@@ -93,11 +93,11 @@ describe("GlobalSideNav", () => {
     const store = mockStore(state);
     renderWithProviders(<AppSideNavigation />, { store });
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Log out" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     await userEvent.click(screen.getByRole("button", { name: "Log out" }));
 
@@ -123,16 +123,18 @@ describe("GlobalSideNav", () => {
     });
 
     const mainNav = screen.getByRole("banner", { name: "main navigation" });
-    await waitFor(() => expect(mainNav).toBeInTheDocument());
+    await waitFor(() => {
+      expect(mainNav).toBeInTheDocument();
+    });
     expect(within(mainNav).getAllByRole("link")[0]).toHaveAccessibleName(
       "Homepage"
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Log out" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 
   it("can highlight active URL", async () => {
@@ -141,9 +143,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    await waitFor(() =>
-      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument();
+    });
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Settings");
@@ -155,16 +157,16 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    await waitFor(() =>
-      expect(screen.getAllByRole("navigation")).not.toHaveLength(0)
-    );
+    await waitFor(() => {
+      expect(screen.getAllByRole("navigation")).not.toHaveLength(0);
+    });
     // Ensure that machine link is selected from within the nav
     const sideNavigation = screen.getAllByRole("navigation")[0];
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         within(sideNavigation).getAllByRole("link", { current: "page" }).length
-      ).toBeGreaterThan(0)
-    );
+      ).toBeGreaterThan(0);
+    });
     const currentMenuItem = within(sideNavigation).getAllByRole("link", {
       current: "page",
     })[0];
@@ -178,9 +180,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    await waitFor(() =>
-      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument();
+    });
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Pools");
@@ -192,9 +194,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    await waitFor(() =>
-      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument();
+    });
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Tags");
@@ -206,9 +208,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    await waitFor(() =>
-      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument();
+    });
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Tags");
@@ -220,9 +222,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    await waitFor(() =>
-      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument();
+    });
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Subnets");
@@ -234,9 +236,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    await waitFor(() =>
-      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("link", { current: "page" })).toBeInTheDocument();
+    });
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Machines");
@@ -252,11 +254,11 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("link", { name: /Controllers/i })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     const controllerLink = screen.getByRole("link", {
       name: /Controllers/i,
     });
@@ -273,11 +275,11 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/"],
       state,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("link", { name: /Controllers/i })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     const controllerLink = screen.getByRole("link", {
       name: "Controllers",
     });
@@ -295,11 +297,11 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/"],
       state,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("link", { name: /Controllers/i })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     const controllerLink = screen.getByRole("link", {
       name: "Controllers",
     });
@@ -313,9 +315,9 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/machine/abc123"],
       state,
     });
-    await waitFor(() =>
-      expect(authResolvers.getCurrentUser.resolved).toBe(true)
-    );
+    await waitFor(() => {
+      expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    });
     expect(
       within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
         "link",
@@ -336,9 +338,9 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/machine/abc123"],
       state,
     });
-    await waitFor(() =>
-      expect(authResolvers.getCurrentUser.resolved).toBe(true)
-    );
+    await waitFor(() => {
+      expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    });
     expect(
       within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
         "link",
@@ -365,12 +367,12 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/machines"],
       state,
     });
-    await waitFor(() =>
-      expect(authResolvers.getCurrentUser.resolved).toBe(true)
-    );
-    await waitFor(() =>
-      expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.index)
-    );
+    await waitFor(() => {
+      expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    });
+    await waitFor(() => {
+      expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.index);
+    });
   });
 
   it("redirects to the user intro page if user intro not completed", async () => {
@@ -386,12 +388,12 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/machines"],
       state,
     });
-    await waitFor(() =>
-      expect(authResolvers.getCurrentUser.resolved).toBe(true)
-    );
-    await waitFor(() =>
-      expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.user)
-    );
+    await waitFor(() => {
+      expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    });
+    await waitFor(() => {
+      expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.user);
+    });
   });
 
   it("does not redirect if the intro is being displayed", async () => {
@@ -414,9 +416,9 @@ describe("GlobalSideNav", () => {
       initialEntries: ["/machines"],
       state,
     });
-    await waitFor(() =>
-      expect(screen.getByRole("link", { name: /Virsh/i })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("link", { name: /Virsh/i })).toBeInTheDocument();
+    });
     expect(screen.getByRole("link", { name: "Virsh" })).toBeInTheDocument();
   });
 

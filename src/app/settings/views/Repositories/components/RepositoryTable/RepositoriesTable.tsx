@@ -29,20 +29,20 @@ const RepositoriesTable = () => {
         <MainToolbar.Title>Package repositories</MainToolbar.Title>
         <MainToolbar.Controls>
           <Button
-            onClick={() =>
+            onClick={() => {
               setSidePanelContent({
                 view: RepositoryActionSidePanelViews.ADD_PPA,
-              })
-            }
+              });
+            }}
           >
             Add PPA
           </Button>
           <Button
-            onClick={() =>
+            onClick={() => {
               setSidePanelContent({
                 view: RepositoryActionSidePanelViews.ADD_REPOSITORY,
-              })
-            }
+              });
+            }}
           >
             Add repository
           </Button>

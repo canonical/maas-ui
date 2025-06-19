@@ -50,9 +50,9 @@ describe("NetworkDiscovery", () => {
         state,
         routePattern: `${urls.networkDiscovery.index}/*`,
       });
-      await waitFor(() =>
-        expect(screen.getByLabelText(label)).toBeInTheDocument()
-      );
+      await waitFor(() => {
+        expect(screen.getByLabelText(label)).toBeInTheDocument();
+      });
     });
   });
 
@@ -64,9 +64,9 @@ describe("NetworkDiscovery", () => {
       initialEntries: [urls.networkDiscovery.index],
       state,
     });
-    await waitFor(() =>
-      expect(screen.getByText(Label.Disabled)).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByText(Label.Disabled)).toBeInTheDocument();
+    });
   });
 
   it("does not display a notification when discovery is enabled", () => {
@@ -90,8 +90,8 @@ describe("NetworkDiscovery", () => {
       initialEntries: [urls.networkDiscovery.index],
       state,
     });
-    await waitFor(() =>
-      expect(screen.getByText(Label.Permissions)).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByText(Label.Permissions)).toBeInTheDocument();
+    });
   });
 });

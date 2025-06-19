@@ -69,11 +69,11 @@ describe("MaasIntro", () => {
   it("can update just the config", async () => {
     const store = mockStore(state);
     renderWithProviders(<MaasIntro />, { store, initialEntries: ["/intro"] });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: NameCardLabels.Name })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     const name = screen.getByRole("textbox", { name: NameCardLabels.Name });
     const proxy = screen.getByRole("textbox", {
       name: ConnectivityCardLabels.HttpProxy,
@@ -114,11 +114,11 @@ describe("MaasIntro", () => {
   it("can dispatch actions to update the default package repository urls", async () => {
     const store = mockStore(state);
     renderWithProviders(<MaasIntro />, { store, initialEntries: ["/intro"] });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: NameCardLabels.Name })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
     const name = screen.getByRole("textbox", { name: NameCardLabels.Name });
     const proxy = screen.getByRole("textbox", {
       name: ConnectivityCardLabels.HttpProxy,
@@ -171,17 +171,17 @@ describe("MaasIntro", () => {
   it("can skip the initial MAAS setup", async () => {
     const store = mockStore(state);
     renderWithProviders(<MaasIntro />, { store, initialEntries: ["/intro"] });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.queryByText(MaasIntroLabels.AreYouSure)
-      ).not.toBeInTheDocument()
-    );
+      ).not.toBeInTheDocument();
+    });
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: MaasIntroLabels.SecondarySubmit })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     // Open the skip confirmation.
     await userEvent.click(
