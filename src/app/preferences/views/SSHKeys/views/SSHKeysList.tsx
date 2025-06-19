@@ -4,9 +4,11 @@ import { useEffect } from "react";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
-import AddSSHKey from "@/app/preferences/views/SSHKeys/components/AddSSHKey/AddSSHKey";
-import DeleteSSHKey from "@/app/preferences/views/SSHKeys/components/DeleteSSHKey";
-import SSHKeysTable from "@/app/preferences/views/SSHKeys/components/SSHKeysTable/SSHKeysTable";
+import {
+  AddSSHKey,
+  DeleteSSHKey,
+  SSHKeysTable,
+} from "@/app/preferences/views/SSHKeys/components";
 import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
 import { isId } from "@/app/utils";
 
