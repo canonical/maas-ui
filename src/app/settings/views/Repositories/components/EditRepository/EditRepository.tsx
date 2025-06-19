@@ -4,22 +4,17 @@ import { useSelector } from "react-redux";
 import RepositoryForm from "../RepositoryForm";
 
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { repositoryActions } from "@/app/store/packagerepository";
 import repositorySelectors from "@/app/store/packagerepository/selectors";
+import type { PackageRepository } from "@/app/store/packagerepository/types";
 import type { RootState } from "@/app/store/root/types";
 
-export const EditRepository = (): React.ReactElement => {
-  const { sidePanelContent } = useSidePanel();
-  const id =
-    sidePanelContent?.extras && "repositoryId" in sidePanelContent.extras
-      ? sidePanelContent.extras.repositoryId
-      : null;
-  const type =
-    sidePanelContent?.extras && "type" in sidePanelContent.extras
-      ? sidePanelContent.extras.type
-      : null;
+type Props = {
+  id: PackageRepository["id"];
+  type: "ppa" | "repository" | undefined;
+};
 
+export const EditRepository = ({ id, type }: Props): React.ReactElement => {
   const loaded = useSelector(repositorySelectors.loaded);
   const loading = useSelector(repositorySelectors.loading);
   const repository = useSelector((state: RootState) =>

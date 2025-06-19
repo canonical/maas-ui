@@ -1,30 +1,21 @@
-import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { repositoryActions } from "@/app/store/packagerepository";
 import repositorySelectors from "@/app/store/packagerepository/selectors";
+import type { PackageRepository } from "@/app/store/packagerepository/types";
 
-const RepositoryDelete = () => {
+type Props = {
+  id: PackageRepository["id"];
+};
+
+const DeleteRepository = ({ id }: Props) => {
   const dispatch = useDispatch();
   const errors = useSelector(repositorySelectors.errors);
   const saving = useSelector(repositorySelectors.saving);
   const saved = useSelector(repositorySelectors.saved);
-
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
-  const id =
-    sidePanelContent?.extras && "repositoryId" in sidePanelContent.extras
-      ? sidePanelContent.extras.repositoryId
-      : null;
-
-  if (!id) {
-    return (
-      <Notification severity="negative">
-        A package repository with this ID could not be found.
-      </Notification>
-    );
-  }
+  const { setSidePanelContent } = useSidePanel();
 
   return (
     <ModelActionForm
@@ -43,4 +34,4 @@ const RepositoryDelete = () => {
   );
 };
 
-export default RepositoryDelete;
+export default DeleteRepository;

@@ -17,22 +17,33 @@ export const RepositoriesList = (): React.ReactElement => {
   let content = null;
   const { sidePanelContent } = useSidePanel();
 
-  switch (sidePanelContent?.view) {
-    case RepositoryActionSidePanelViews.ADD_PPA:
+  if (sidePanelContent?.view) {
+    if (sidePanelContent.view === RepositoryActionSidePanelViews.ADD_PPA) {
       content = <RepositoryForm type="ppa" />;
-      break;
-    case RepositoryActionSidePanelViews.ADD_REPOSITORY:
+    } else if (
+      sidePanelContent.view === RepositoryActionSidePanelViews.ADD_REPOSITORY
+    ) {
       content = <RepositoryForm type="repository" />;
-      break;
-    case RepositoryActionSidePanelViews.EDIT_REPOSITORY:
-      content = <EditRepository />;
-      break;
-    case RepositoryActionSidePanelViews.DELETE_REPOSITORY:
-      content = <DeleteRepository />;
-      break;
-    default:
-      content = null;
-      break;
+    } else if (
+      sidePanelContent.view ===
+        RepositoryActionSidePanelViews.EDIT_REPOSITORY &&
+      sidePanelContent.extras &&
+      "repositoryId" in sidePanelContent.extras &&
+      "type" in sidePanelContent.extras
+    ) {
+      content = (
+        <EditRepository
+          id={sidePanelContent.extras.repositoryId}
+          type={sidePanelContent.extras.type}
+        />
+      );
+    } else if (
+      sidePanelContent.view ===
+        RepositoryActionSidePanelViews.DELETE_REPOSITORY &&
+      sidePanelContent.extras &&
+      "repositoryId" in sidePanelContent.extras
+    )
+      content = <DeleteRepository id={sidePanelContent.extras.repositoryId} />;
   }
 
   useWindowTitle("Package repos");
