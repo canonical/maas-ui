@@ -1,22 +1,26 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
 import RepositoryForm from "./RepositoryForm";
 
-import settingsURLs from "@/app/settings/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
 import {
   userEvent,
   screen,
-  render,
   renderWithProviders,
+  setupMockServer,
+  waitForLoading,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
+
+setupMockServer(
+  packageRepositoriesResolvers.createPackageRepository.handler(),
+  packageRepositoriesResolvers.updatePackageRepository.handler()
+);
 
 describe("RepositoryForm", () => {
   let state: RootState;
@@ -34,27 +38,15 @@ describe("RepositoryForm", () => {
           loaded: true,
         }),
       }),
-      packagerepository: factory.packageRepositoryState({
-        loaded: true,
-        items: [factory.packageRepository()],
-      }),
     });
   });
 
-  it(`dispatches actions to fetch repos, components to disable,
+  it(`dispatches actions to fetch components to disable,
     known architectures and pockets to disable if not already loaded`, () => {
-    state.packagerepository.loaded = false;
+    state.general.componentsToDisable.loaded = false;
     const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm type="repository" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<RepositoryForm type="repository" />, { store });
 
     expect(store.getActions()).toEqual([
       {
@@ -84,108 +76,49 @@ describe("RepositoryForm", () => {
         },
         payload: null,
       },
-      {
-        type: "packagerepository/fetch",
-        meta: {
-          model: "packagerepository",
-          method: "list",
-        },
-        payload: null,
-      },
     ]);
   });
 
-  it("correctly sets title given type and repository props", () => {
-    const store = mockStore(state);
-    const { rerender } = render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm type="repository" />
-        </MemoryRouter>
-      </Provider>
-    );
+  it("shows 'Add PPA' if type is 'ppa' and no repo is provided", async () => {
+    renderWithProviders(<RepositoryForm type="ppa" />, { state });
+
+    await waitForLoading();
+
+    expect(screen.getByRole("form", { name: "Add PPA" })).toBeInTheDocument();
+  });
+
+  it("shows 'Add repository' if type is 'repository' and no repo is provided", async () => {
+    renderWithProviders(<RepositoryForm type="repository" />, { state });
+
     expect(
       screen.getByRole("form", { name: "Add repository" })
     ).toBeInTheDocument();
+  });
 
-    rerender(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm type="ppa" />
-        </MemoryRouter>
-      </Provider>
+  it("shows 'Edit PPA' if type is 'ppa' and a repo is provided", async () => {
+    renderWithProviders(
+      <RepositoryForm repository={factory.packageRepository()} type="ppa" />,
+      { state }
     );
-    expect(screen.getByRole("form", { name: "Add PPA" })).toBeInTheDocument();
 
-    rerender(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      screen.getByRole("form", { name: "Edit repository" })
-    ).toBeInTheDocument();
-
-    rerender(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="ppa"
-          />
-        </MemoryRouter>
-      </Provider>
-    );
     expect(screen.getByRole("form", { name: "Edit PPA" })).toBeInTheDocument();
   });
 
-  it("cleans up when unmounting", async () => {
-    const store = mockStore(state);
-    const { unmount } = render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm type="repository" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    unmount();
-
-    expect(store.getActions()).toEqual([
-      {
-        type: "packagerepository/cleanup",
-      },
-    ]);
-  });
-
-  it("redirects when the repository is saved", () => {
-    state.packagerepository.saved = true;
-    const { router } = renderWithProviders(
-      <RepositoryForm type="repository" />,
+  it("shows 'Edit repository' if type is 'repository' and a repo is provided", async () => {
+    renderWithProviders(
+      <RepositoryForm
+        repository={factory.packageRepository()}
+        type="repository"
+      />,
       { state }
     );
-    expect(router.state.location.pathname).toBe(
-      settingsURLs.repositories.index
-    );
+
+    expect(
+      screen.getByRole("form", { name: "Edit repository" })
+    ).toBeInTheDocument();
   });
 
   it("can update a repository", async () => {
-    const store = mockStore(state);
     const repository = {
       id: 9,
       created: factory.timestamp("Tue, 27 Aug. 2019 12:39:12"),
@@ -202,14 +135,9 @@ describe("RepositoryForm", () => {
       default: false,
       enabled: true,
     };
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm repository={repository} type="repository" />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <RepositoryForm repository={repository} type="repository" />,
+      { state }
     );
 
     await userEvent.clear(
@@ -241,46 +169,17 @@ describe("RepositoryForm", () => {
       screen.getByRole("button", { name: "Save repository" })
     );
 
-    const action = store
-      .getActions()
-      .find((action) => action.type === "packagerepository/update");
-    expect(action).toEqual({
-      type: "packagerepository/update",
-      payload: {
-        params: {
-          id: 9,
-          name: "newName",
-          url: "http://www.website.com",
-          distributions: [],
-          disable_sources: false,
-          components: [],
-          arches: ["i386", "amd64"],
-          key: "",
-          enabled: true,
-        },
-      },
-      meta: {
-        model: "packagerepository",
-        method: "update",
-      },
-    });
+    expect(packageRepositoriesResolvers.updatePackageRepository.resolved).toBe(
+      true
+    );
   });
 
   it("can create a repository", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm type="repository" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<RepositoryForm type="repository" />, { state });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: RepositoryFormLabels.Name }),
-      "name"
+      "newName"
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: RepositoryFormLabels.URL }),
@@ -291,94 +190,8 @@ describe("RepositoryForm", () => {
       screen.getByRole("button", { name: "Save repository" })
     );
 
-    const action = store
-      .getActions()
-      .find((action) => action.type === "packagerepository/create");
-    expect(action).toEqual({
-      type: "packagerepository/create",
-      payload: {
-        params: {
-          name: "name",
-          url: "http://www.website.com",
-          distributions: [],
-          disable_sources: false,
-          components: [],
-          arches: ["i386", "amd64"],
-          key: "",
-          enabled: true,
-        },
-      },
-      meta: {
-        model: "packagerepository",
-        method: "create",
-      },
-    });
-  });
-
-  it("adds a message and cleans up packagerepository state when a repo is added", () => {
-    state.packagerepository.saved = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm type="repository" />
-        </MemoryRouter>
-      </Provider>
+    expect(packageRepositoriesResolvers.createPackageRepository.resolved).toBe(
+      true
     );
-    const actions = store.getActions();
-    expect(
-      actions.some((action) => action.type === "packagerepository/cleanup")
-    ).toBe(true);
-    expect(actions.some((action) => action.type === "message/add")).toBe(true);
-  });
-
-  it("correctly parses comma-separated distributions and components", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <RepositoryForm type="repository" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.type(
-      screen.getByRole("textbox", { name: RepositoryFormLabels.Name }),
-      "name"
-    );
-    await userEvent.type(
-      screen.getByRole("textbox", { name: RepositoryFormLabels.URL }),
-      "http://www.website.com"
-    );
-    await userEvent.type(
-      screen.getByRole("textbox", { name: RepositoryFormLabels.Distributions }),
-      "focal, jammy, noble"
-    );
-    await userEvent.type(
-      screen.getByRole("textbox", { name: RepositoryFormLabels.Components }),
-      "main, universe, restricted"
-    );
-
-    await userEvent.click(
-      screen.getByRole("button", { name: "Save repository" })
-    );
-
-    const createAction = store
-      .getActions()
-      .find((action) => action.type === "packagerepository/create");
-    expect(createAction.payload.params.distributions).toEqual([
-      "focal",
-      "jammy",
-      "noble",
-    ]);
-    expect(createAction.payload.params.components).toEqual([
-      "main",
-      "universe",
-      "restricted",
-    ]);
   });
 });

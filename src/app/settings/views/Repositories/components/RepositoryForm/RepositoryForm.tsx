@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,27 +8,37 @@ import RepositoryFormFields from "../RepositoryFormFields";
 
 import type { RepositoryFormValues } from "./types";
 
+import {
+  useCreatePackageRepository,
+  useUpdatePackageRepository,
+} from "@/app/api/query/packageRepositories";
+import type {
+  ComponentsToDisableEnum,
+  CreatePackageRepositoryData,
+  CreatePackageRepositoryError,
+  KnownArchesEnum,
+  KnownComponentsEnum,
+  PackageRepositoryResponse,
+  PocketsToDisableEnum,
+  UpdatePackageRepositoryData,
+  UpdatePackageRepositoryError,
+} from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useAddMessage } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import settingsURLs from "@/app/settings/urls";
 import { generalActions } from "@/app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,
   pocketsToDisable as pocketsToDisableSelectors,
 } from "@/app/store/general/selectors";
-import { repositoryActions } from "@/app/store/packagerepository";
-import repositorySelectors from "@/app/store/packagerepository/selectors";
-import type {
-  CreateParams,
-  PackageRepository,
-} from "@/app/store/packagerepository/types";
-import { getRepoDisplayName } from "@/app/store/packagerepository/utils";
+import {
+  getIsDefaultRepo,
+  getRepoDisplayName,
+} from "@/app/store/packagerepository/utils";
 import { parseCommaSeparatedValues } from "@/app/utils";
 
 type Props = {
-  repository?: PackageRepository | null;
+  repository?: PackageRepositoryResponse | null;
   type: "ppa" | "repository";
 };
 
@@ -61,7 +71,6 @@ export const RepositoryForm = ({
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const { setSidePanelContent } = useSidePanel();
-  const [savedRepo, setSavedRepo] = useState<string | null>(null);
   const componentsToDisableLoaded = useSelector(
     componentsToDisableSelectors.loaded
   );
@@ -69,24 +78,13 @@ export const RepositoryForm = ({
     knownArchitecturesSelectors.loaded
   );
   const pocketsToDisableLoaded = useSelector(pocketsToDisableSelectors.loaded);
-  const repositoriesLoaded = useSelector(repositorySelectors.loaded);
-  const repositoriesSaved = useSelector(repositorySelectors.saved);
-  const repositoriesSaving = useSelector(repositorySelectors.saving);
-  const errors = useSelector(repositorySelectors.errors);
   const allLoaded =
     componentsToDisableLoaded &&
     knownArchitecturesLoaded &&
-    pocketsToDisableLoaded &&
-    repositoriesLoaded;
+    pocketsToDisableLoaded;
 
-  useAddMessage(
-    repositoriesSaved,
-    repositoryActions.cleanup,
-    `${savedRepo} ${repository ? "updated" : "added"} successfully.`,
-    () => {
-      setSavedRepo(null);
-    }
-  );
+  const createRepo = useCreatePackageRepository();
+  const updateRepo = useUpdatePackageRepository();
 
   // Fetch data if not all loaded.
   useEffect(() => {
@@ -94,22 +92,23 @@ export const RepositoryForm = ({
       dispatch(generalActions.fetchComponentsToDisable());
       dispatch(generalActions.fetchKnownArchitectures());
       dispatch(generalActions.fetchPocketsToDisable());
-      dispatch(repositoryActions.fetch());
     }
   }, [dispatch, allLoaded]);
 
   const typeString = type === "ppa" ? "PPA" : "repository";
-  let initialValues;
+  let initialValues: RepositoryFormValues;
   let title;
   if (repository) {
     title = `Edit ${typeString}`;
     initialValues = {
-      arches: repository.arches,
+      arches: repository.arches as unknown as KnownArchesEnum[],
       components: repository.components.join(", "),
-      default: repository.default,
+      default: getIsDefaultRepo(repository),
       disable_sources: repository.disable_sources,
-      disabled_components: repository.disabled_components,
-      disabled_pockets: repository.disabled_pockets,
+      disabled_components:
+        repository.disabled_components as unknown as ComponentsToDisableEnum[],
+      disabled_pockets:
+        repository.disabled_pockets as unknown as PocketsToDisableEnum[],
       distributions: repository.distributions.join(", "),
       enabled: repository.enabled,
       key: repository.key,
@@ -139,10 +138,12 @@ export const RepositoryForm = ({
         <Spinner text="Loading..." />
       ) : (
         <>
-          <FormikForm<RepositoryFormValues>
+          <FormikForm<
+            RepositoryFormValues,
+            CreatePackageRepositoryError | UpdatePackageRepositoryError
+          >
             aria-label={title}
-            cleanup={repositoryActions.cleanup}
-            errors={errors}
+            errors={createRepo.error ?? updateRepo.error}
             initialValues={initialValues}
             onCancel={() => {
               setSidePanelContent(null);
@@ -153,7 +154,9 @@ export const RepositoryForm = ({
               label: `${title} form`,
             }}
             onSubmit={(values) => {
-              const params: CreateParams = {
+              const params:
+                | CreatePackageRepositoryData["body"]
+                | UpdatePackageRepositoryData["body"] = {
                 arches: values.arches,
                 disable_sources: values.disable_sources,
                 key: values.key,
@@ -167,29 +170,27 @@ export const RepositoryForm = ({
               } else {
                 params.components = parseCommaSeparatedValues(
                   values.components
-                );
+                ) as unknown as KnownComponentsEnum[];
                 params.distributions = parseCommaSeparatedValues(
                   values.distributions
                 );
                 params.enabled = values.enabled;
               }
 
-              dispatch(repositoryActions.cleanup());
               if (repository) {
-                dispatch(
-                  repositoryActions.update({
-                    ...params,
-                    id: repository.id,
-                  })
-                );
+                updateRepo.mutate({
+                  path: { package_repository_id: repository.id },
+                  body: { ...params },
+                });
               } else {
-                dispatch(repositoryActions.create(params));
+                createRepo.mutate({
+                  body: { ...params },
+                });
               }
-              setSavedRepo(values.name);
             }}
-            saved={repositoriesSaved}
-            savedRedirect={settingsURLs.repositories.index}
-            saving={repositoriesSaving}
+            onSuccess={() => setSidePanelContent(null)}
+            saved={createRepo.isSuccess || updateRepo.isSuccess}
+            saving={createRepo.isPending || updateRepo.isPending}
             submitLabel={`Save ${typeString}`}
             validationSchema={RepositorySchema}
           >

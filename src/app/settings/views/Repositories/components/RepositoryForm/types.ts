@@ -1,15 +1,20 @@
-import type { PackageRepository } from "@/app/store/packagerepository/types";
+import type {
+  ComponentsToDisableEnum,
+  KnownArchesEnum,
+  PackageRepositoryResponse,
+  PocketsToDisableEnum,
+} from "@/app/apiclient";
 
 export type RepositoryFormValues = {
-  arches: PackageRepository["arches"];
+  arches: KnownArchesEnum[];
   components: string;
-  default: PackageRepository["default"];
-  disable_sources: PackageRepository["disable_sources"];
-  disabled_components: PackageRepository["disabled_components"];
-  disabled_pockets: PackageRepository["disabled_pockets"];
+  default: boolean;
+  disable_sources: PackageRepositoryResponse["disable_sources"];
+  disabled_components: ComponentsToDisableEnum[];
+  disabled_pockets: PocketsToDisableEnum[];
   distributions: string;
-  enabled: PackageRepository["enabled"];
-  key: PackageRepository["key"];
-  name: PackageRepository["name"];
-  url: PackageRepository["url"];
+  enabled: PackageRepositoryResponse["enabled"];
+  key: PackageRepositoryResponse["key"];
+  name: PackageRepositoryResponse["name"];
+  url: PackageRepositoryResponse["url"];
 };
