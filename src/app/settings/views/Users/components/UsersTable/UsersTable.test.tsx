@@ -15,6 +15,7 @@ import {
   waitFor,
   setupMockServer,
   mockIsPending,
+  waitForLoading,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -75,6 +76,48 @@ describe("UsersTable", () => {
           })
         ).toBeInTheDocument();
       });
+    });
+
+    it("displays the form when Add user is clicked", async () => {
+      renderWithProviders(<UsersTable />);
+
+      await userEvent.click(screen.getByRole("button", { name: "Add user" }));
+
+      expect(mockSetSidePanelContent).toHaveBeenCalledWith({
+        view: UserActionSidePanelViews.CREATE_USER,
+      });
+    });
+
+    it("can switch between username and real name displays", async () => {
+      const user = factory.user({
+        username: "test-username",
+        last_name: "test-lastname",
+      });
+
+      mockServer.use(
+        usersResolvers.listUsers.handler({ items: [user], total: 1 })
+      );
+      renderWithProviders(<UsersTable />);
+
+      await waitForLoading();
+
+      expect(screen.getByText(user.username)).toBeInTheDocument();
+
+      await userEvent.click(screen.getByText("Real name"));
+
+      await waitFor(() => {
+        expect(screen.queryByText(user.username)).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText(user.last_name!)).toBeInTheDocument();
+
+      await userEvent.click(screen.getByText("Username"));
+
+      await waitFor(() => {
+        expect(screen.queryByText(user.last_name!)).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText(user.username)).toBeInTheDocument();
     });
   });
 
