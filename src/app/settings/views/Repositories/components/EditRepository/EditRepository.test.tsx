@@ -52,7 +52,7 @@ describe("RepositoryEdit", () => {
 
   it("can display a repository edit form with correct repo data", () => {
     renderWithProviders(<EditRepository id={1} type="ppa" />, { state });
-    const form = screen.getByRole("form", { name: "Edit repository" });
+    const form = screen.getByRole("form", { name: "Edit PPA" });
     expect(form).toBeInTheDocument();
     expect(
       within(form).getByRole("textbox", { name: RepositoryFormLabels.Name })
