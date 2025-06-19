@@ -26,7 +26,9 @@ describe("usePackageRepositories", () => {
   it("should return a list of package repositories", async () => {
     const { result } = renderHookWithProviders(() => usePackageRepositories());
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
 
     expect(result.current.data?.items).toEqual(mockPackageRepositories.items);
   });
@@ -38,7 +40,9 @@ describe("useGetPackageRepository", () => {
       useGetPackageRepository({ path: { package_repository_id: 1 } })
     );
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
 
     expect(result.current.data).toEqual(mockPackageRepositories.items[0]);
   });
@@ -48,7 +52,9 @@ describe("useGetPackageRepository", () => {
       useGetPackageRepository({ path: { package_repository_id: 42069 } })
     );
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
   });
 });
 
@@ -66,7 +72,9 @@ describe("useCreatePackageRepository", () => {
       },
     });
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });
 
@@ -87,6 +95,8 @@ describe("useUpdatePackageRepository", () => {
       },
     });
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });

@@ -5,6 +5,8 @@ import type {
   PocketsToDisableEnum,
 } from "@/app/apiclient";
 
+export type RepositoryType = "ppa" | "repository";
+
 export type RepositoryFormValues = {
   arches: KnownArchesEnum[];
   components: string;

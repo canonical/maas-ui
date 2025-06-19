@@ -62,7 +62,9 @@ describe("intro hooks", () => {
   describe("useCompletedUserIntro", () => {
     it("gets whether the user intro has been completed", async () => {
       const { result } = renderHookWithProviders(() => useCompletedUserIntro());
-      await waitFor(() => expect(result.current).toBe(true));
+      await waitFor(() => {
+        expect(result.current).toBe(true);
+      });
     });
 
     it("gets whether the user intro has been skipped", () => {

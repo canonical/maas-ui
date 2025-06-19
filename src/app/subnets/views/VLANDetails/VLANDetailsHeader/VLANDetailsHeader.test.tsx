@@ -105,11 +105,11 @@ describe("VLANDetailsHeader", () => {
       route: "/vlan/1234",
       state,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Delete VLAN" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 
   it("does not show the delete button if the user is not an admin", () => {

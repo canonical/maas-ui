@@ -140,11 +140,11 @@ describe("NotificationGroupNotification", () => {
       />,
       { initialEntries: ["/settings"], state }
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(screen.getByTestId("notification-action")).toHaveTextContent(
         "See settings"
-      )
-    );
+      );
+    });
   });
 
   it("does not show the release notification menu to non-admins", () => {

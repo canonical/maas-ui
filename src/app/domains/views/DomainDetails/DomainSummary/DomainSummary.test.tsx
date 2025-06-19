@@ -73,11 +73,11 @@ describe("DomainSummary", () => {
       state,
     });
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.queryByRole("button", { name: EditableSectionLabels.EditButton })
-      ).not.toBeInTheDocument()
-    );
+      ).not.toBeInTheDocument();
+    });
   });
 
   describe("when user is admin", () => {

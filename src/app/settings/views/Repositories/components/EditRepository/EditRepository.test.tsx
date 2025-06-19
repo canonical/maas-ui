@@ -13,12 +13,14 @@ import {
   mockIsPending,
   waitFor,
   waitForLoading,
+  userEvent,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   packageRepositoriesResolvers.getPackageRepository.handler(
     factory.packageRepository({ id: 1, name: "test" })
-  )
+  ),
+  packageRepositoriesResolvers.updatePackageRepository.handler()
 );
 
 describe("RepositoryEdit", () => {
@@ -69,6 +71,62 @@ describe("RepositoryEdit", () => {
     expect(screen.getByText("Repository not found")).toBeInTheDocument();
   });
 
+  it("shows 'Edit PPA' if type is 'ppa' and a repo is provided", async () => {
+    renderWithProviders(<EditRepository id={1} type="ppa" />, { state });
+
+    await waitForLoading();
+
+    expect(screen.getByRole("form", { name: "Edit PPA" })).toBeInTheDocument();
+  });
+
+  it("shows 'Edit repository' if type is 'repository' and a repo is provided", async () => {
+    renderWithProviders(<EditRepository id={1} type="repository" />, { state });
+
+    await waitForLoading();
+
+    expect(
+      screen.getByRole("form", { name: "Edit repository" })
+    ).toBeInTheDocument();
+  });
+
+  it("can update a repository", async () => {
+    renderWithProviders(<EditRepository id={1} type="repository" />, { state });
+
+    await waitForLoading();
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Name })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.URL })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Key })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Distributions })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Components })
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Name }),
+      "newName"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.URL }),
+      "http://www.website.com"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save repository" })
+    );
+
+    expect(packageRepositoriesResolvers.updatePackageRepository.resolved).toBe(
+      true
+    );
+  });
   it("can display a repository edit form with correct repo data", async () => {
     renderWithProviders(<EditRepository id={1} type="ppa" />, { state });
 

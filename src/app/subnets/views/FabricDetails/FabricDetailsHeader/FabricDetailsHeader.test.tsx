@@ -39,11 +39,11 @@ describe("FabricDetailsHeader", () => {
       }
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Delete fabric" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
   });
 
   it("does not show the delete button if the user is not an admin", () => {
@@ -74,11 +74,11 @@ describe("FabricDetailsHeader", () => {
       }
     );
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Delete fabric" })
-      ).toBeInTheDocument()
-    );
+      ).toBeInTheDocument();
+    });
 
     await userEvent.click(
       screen.getByRole("button", { name: "Delete fabric" })

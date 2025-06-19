@@ -1,18 +1,27 @@
-import RepositoryForm from "../RepositoryForm";
+import AddRepository from "../AddRepository/AddRepository";
+import EditRepository from "../EditRepository";
 
 import { Labels as RepositoryFormLabels } from "./RepositoryFormFields";
 
-import type { PackageRepositoryResponse } from "@/app/apiclient";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, within, renderWithProviders } from "@/testing/utils";
+import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
+import {
+  screen,
+  within,
+  renderWithProviders,
+  setupMockServer,
+  waitForLoading,
+} from "@/testing/utils";
 
 describe("RepositoryFormFields", () => {
   let state: RootState;
-  let mockRepo: PackageRepositoryResponse;
+
+  const mockServer = setupMockServer(
+    packageRepositoriesResolvers.getPackageRepository.handler()
+  );
 
   beforeEach(() => {
-    mockRepo = factory.packageRepository();
     state = factory.rootState({
       general: factory.generalState({
         componentsToDisable: factory.componentsToDisableState({
@@ -28,13 +37,8 @@ describe("RepositoryFormFields", () => {
     });
   });
 
-  it("displays distribution and component inputs if type is repository", () => {
-    mockRepo.name = "not default";
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
-    );
+  it("displays distribution and component inputs if type is repository", async () => {
+    renderWithProviders(<AddRepository type="repository" />, { state });
 
     expect(
       screen.getByRole("textbox", { name: RepositoryFormLabels.Distributions })
@@ -45,12 +49,12 @@ describe("RepositoryFormFields", () => {
     ).toBeInTheDocument();
   });
 
-  it("doesn't display distribution and component inputs if type is ppa", () => {
-    mockRepo.name = "not default";
-
-    renderWithProviders(<RepositoryForm repository={mockRepo} type="ppa" />, {
+  it("doesn't display distribution and component inputs if type is ppa", async () => {
+    renderWithProviders(<AddRepository type="ppa" />, {
       state,
     });
+
+    await waitForLoading();
     expect(
       screen.queryByRole("textbox", {
         name: RepositoryFormLabels.Distributions,
@@ -62,30 +66,42 @@ describe("RepositoryFormFields", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("doesn't display disabled pockets checkboxes if repository is not default", () => {
+  it("doesn't display disabled pockets checkboxes if repository is not default", async () => {
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
-    mockRepo.name = "not default";
-    mockRepo.disabled_pockets = ["updates"];
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+    const mockRepo = factory.packageRepository({
+      name: "not default",
+      disabled_pockets: ["updates"],
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     expect(
       screen.queryByRole("list", { name: RepositoryFormLabels.DisabledPockets })
     ).not.toBeInTheDocument();
   });
 
-  it("displays disabled pockets checkboxes if repository is default", () => {
+  it("displays disabled pockets checkboxes if repository is default", async () => {
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
-    mockRepo.name = "main_archive";
-    mockRepo.disabled_pockets = ["updates"];
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+    const mockRepo = factory.packageRepository({
+      name: "main_archive",
+      disabled_pockets: ["updates"],
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     const disabled_pockets_list = screen.getByRole("list", {
       name: RepositoryFormLabels.DisabledPockets,
@@ -96,19 +112,25 @@ describe("RepositoryFormFields", () => {
     );
   });
 
-  it("doesn't display disabled components checkboxes if repository is not default", () => {
+  it("doesn't display disabled components checkboxes if repository is not default", async () => {
     state.general.componentsToDisable.data = [
       "restricted",
       "universe",
       "multiverse",
     ];
-    mockRepo.name = "not default";
-    mockRepo.disabled_components = ["universe"];
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+    const mockRepo = factory.packageRepository({
+      name: "not default",
+      disabled_pockets: ["universe"],
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
     expect(
       screen.queryByRole("list", {
         name: RepositoryFormLabels.DisabledComponents,
@@ -116,19 +138,25 @@ describe("RepositoryFormFields", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("displays disabled components checkboxes if repository is default", () => {
+  it("displays disabled components checkboxes if repository is default", async () => {
     state.general.componentsToDisable.data = [
       "restricted",
       "universe",
       "multiverse",
     ];
-    mockRepo.name = "main_archive";
-    mockRepo.disabled_components = ["universe"];
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+    const mockRepo = factory.packageRepository({
+      name: "main_archive",
+      disabled_pockets: ["universe"],
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     const disabled_components_list = screen.getByRole("list", {
       name: RepositoryFormLabels.DisabledComponents,
@@ -139,52 +167,76 @@ describe("RepositoryFormFields", () => {
     ).toBe(3);
   });
 
-  it("correctly reflects repository name", () => {
-    mockRepo.name = "repo-name";
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+  it("correctly reflects repository name", async () => {
+    const mockRepo = factory.packageRepository({
+      name: "repo-name",
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     expect(
       screen.getByRole("textbox", { name: RepositoryFormLabels.Name })
     ).toHaveValue("repo-name");
   });
 
-  it("correctly reflects repository url", () => {
-    mockRepo.url = "fake.url";
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+  it("correctly reflects repository url", async () => {
+    const mockRepo = factory.packageRepository({
+      url: "fake.url",
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     expect(
       screen.getByRole("textbox", { name: RepositoryFormLabels.URL })
     ).toHaveValue("fake.url");
   });
 
-  it("correctly reflects repository key", () => {
-    mockRepo.key = "fake-key";
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+  it("correctly reflects repository key", async () => {
+    const mockRepo = factory.packageRepository({
+      key: "fake-key",
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     expect(
       screen.getByRole("textbox", { name: RepositoryFormLabels.Key })
     ).toHaveValue("fake-key");
   });
 
-  it("correctly reflects repository enabled state", () => {
-    mockRepo.enabled = false;
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+  it("correctly reflects repository enabled state", async () => {
+    const mockRepo = factory.packageRepository({
+      enabled: false,
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     expect(
       screen.getAllByRole("checkbox", {
@@ -193,13 +245,19 @@ describe("RepositoryFormFields", () => {
     ).not.toBeChecked();
   });
 
-  it("correctly reflects repository disable_sources state by displaying the inverse", () => {
-    mockRepo.disable_sources = false;
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+  it("correctly reflects repository disable_sources state by displaying the inverse", async () => {
+    const mockRepo = factory.packageRepository({
+      disable_sources: false,
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     expect(
       screen.getAllByRole("checkbox", {
@@ -208,14 +266,20 @@ describe("RepositoryFormFields", () => {
     ).toBeChecked();
   });
 
-  it("correctly reflects repository arches", () => {
+  it("correctly reflects repository arches", async () => {
     state.general.knownArchitectures.data = ["amd64", "i386", "ppc64el"];
-    mockRepo.arches = ["amd64", "ppc64el"];
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+    const mockRepo = factory.packageRepository({
+      arches: ["amd64", "ppc64el"],
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     const arches_list = screen.getByRole("list", {
       name: RepositoryFormLabels.Arches,
@@ -230,15 +294,21 @@ describe("RepositoryFormFields", () => {
     expect(arches_list_items[2]).toBeChecked();
   });
 
-  it("correctly reflects repository disabled_pockets", () => {
+  it("correctly reflects repository disabled_pockets", async () => {
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
-    mockRepo.name = "main_archive";
-    mockRepo.disabled_pockets = ["updates"];
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+    const mockRepo = factory.packageRepository({
+      name: "main_archive",
+      disabled_pockets: ["updates"],
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     const disabled_pockets_list = within(
       screen.getByRole("list", {
@@ -252,19 +322,25 @@ describe("RepositoryFormFields", () => {
     expect(disabled_pockets_list[2]).not.toBeChecked();
   });
 
-  it("correctly reflects repository disabled_components", () => {
+  it("correctly reflects repository disabled_components", async () => {
     state.general.componentsToDisable.data = [
       "restricted",
       "universe",
       "multiverse",
     ];
-    mockRepo.name = "main_archive";
-    mockRepo.disabled_components = ["universe"];
-
-    renderWithProviders(
-      <RepositoryForm repository={mockRepo} type="repository" />,
-      { state }
+    const mockRepo = factory.packageRepository({
+      name: "main_archive",
+      disabled_components: ["universe"],
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
     );
+
+    renderWithProviders(<EditRepository id={mockRepo.id} type="repository" />, {
+      state,
+    });
+
+    await waitForLoading();
 
     const disabled_components_list = within(
       screen.getByRole("list", {
