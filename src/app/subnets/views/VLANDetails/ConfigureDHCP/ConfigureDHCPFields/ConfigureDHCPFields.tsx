@@ -57,7 +57,8 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
               label="Provide DHCP from rack controller(s)"
               name="dhcpType"
               onChange={async (e: ChangeEvent) => {
-                handleChange(e);
+                // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+                await handleChange(e);
                 setFieldValue(
                   "primaryRack",
                   connectedControllers[0]?.system_id || ""
@@ -137,7 +138,8 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
               label="Relay to another VLAN"
               name="dhcpType"
               onChange={async (e: ChangeEvent) => {
-                handleChange(e);
+                // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+                await handleChange(e);
                 setFieldValue("relayVLAN", vlansWithDHCP[0]?.id || "").catch(
                   (reason) => {
                     throw new FormikFieldChangeError(

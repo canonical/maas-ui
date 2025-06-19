@@ -111,7 +111,8 @@ export const PowerTypeFields = <V extends AnyObject>({
           onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
             // Reset errors and touched formik state when selecting a new power
             // type, in order to start validation from new.
-            handleChange(e);
+            // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+            await handleChange(e);
             setErrors(initialErrors);
             setTouched(initialTouched);
 

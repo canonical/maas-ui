@@ -155,7 +155,8 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
   const handleSubnetChange: ChangeEventHandler<HTMLSelectElement> = async (
     e
   ) => {
-    handleChange(e);
+    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    await handleChange(e);
     // We set reserved range defaults based on the selected subnet if they exist
     // otherwise leave the field empty.
     const subnet = subnets.find(
