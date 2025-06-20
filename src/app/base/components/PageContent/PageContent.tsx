@@ -35,8 +35,8 @@ const PageContent = ({
   ...props
 }: Props): React.ReactElement => {
   const { pathname } = useLocation();
-  const isSettingsPage = matchPath("settings/*", pathname);
-  const isPreferencesPage = matchPath("account/prefs/*", pathname);
+  const isSettingsPage = !!matchPath("settings/*", pathname);
+  const isPreferencesPage = !!matchPath("account/prefs/*", pathname);
   const authenticated = useSelector(status.authenticated);
   const connected = useSelector(status.connected);
   const hasSecondaryNav = isSettingsPage || isPreferencesPage;

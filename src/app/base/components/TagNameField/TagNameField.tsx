@@ -30,7 +30,7 @@ const TagNameField = <V extends AnyObject = AnyObject>({
       }))}
       name={name}
       // Populate the list of tags with the provided list or with the initial values list.
-      tags={(tagList || [...initial] || []).map((tag: string) => ({
+      tags={(tagList || [...initial]).map((tag: string) => ({
         name: tag,
       }))}
       {...props}

@@ -203,7 +203,7 @@ export default class FilterHandlers {
         ? !this.isFilterActive(filters, prefixFilter, prefixKey)
         : shouldExist;
     if (!exists) {
-      if (newExist === undefined ? true : newExist) {
+      if (newExist) {
         if (typeof filters[prefixKey] === "undefined") {
           filters[prefixKey] = [];
         }

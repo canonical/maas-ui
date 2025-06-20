@@ -141,13 +141,9 @@ export const FormikFormButtons = <V,>({
             className="formik-form-buttons__button"
             data-testid={TestIds.CancelButton}
             disabled={cancelDisabled}
-            onClick={
-              onCancel
-                ? () => {
-                    onCancel(values, formikContext);
-                  }
-                : undefined
-            }
+            onClick={() => {
+              onCancel(values, formikContext);
+            }}
             type="button"
           >
             {cancelLabel}
