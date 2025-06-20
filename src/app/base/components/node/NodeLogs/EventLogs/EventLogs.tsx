@@ -99,7 +99,7 @@ const EventLogs = ({ node }: Props): React.ReactElement => {
     const onLastPage =
       events.length === 0 ||
       currentPage === Math.ceil(events.length / pageSize);
-    const lastItem = events?.[events.length - 1];
+    const lastItem = events[events.length - 1];
     const alreadyRequested = events.length && lastRequested === lastItem.id;
     // There's no need to fetch more events if the initial preload hasn't
     // happend or if it returned less events than requested.

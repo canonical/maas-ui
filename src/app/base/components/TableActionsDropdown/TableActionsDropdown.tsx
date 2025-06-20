@@ -33,7 +33,7 @@ const TableActionsDropdown = <A extends string>({
         children: action.label,
         "data-testid": action.type,
         onClick: () => {
-          onActionClick(action.type, action?.view);
+          onActionClick(action.type, action.view);
         },
       });
     }

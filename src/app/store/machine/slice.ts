@@ -163,7 +163,7 @@ const statusHandlers = generateStatusHandlers<
         if (action.meta.callId) {
           const actionsItem = state.actions[action.meta.callId];
 
-          if (action.meta.callId in state.actions && action?.payload) {
+          if (action.meta.callId in state.actions && action.payload) {
             actionsItem.status = ACTION_STATUS.success;
             if (action?.payload && "success_count" in action.payload) {
               actionsItem.successCount = action.payload.success_count;
@@ -474,7 +474,7 @@ const machineSlice = createSlice({
             state.counts[action.meta.callId] = {
               ...DEFAULT_COUNT_STATE,
               loading: true,
-              params: action?.meta.item || null,
+              params: action.meta.item || null,
               fetchedAt: Date.now(),
             };
           }
@@ -1065,7 +1065,7 @@ const machineSlice = createSlice({
             state.lists[action.meta.callId] = {
               ...DEFAULT_LIST_STATE,
               loading: true,
-              params: action?.meta.item || null,
+              params: action.meta.item || null,
               fetchedAt: Date.now(),
             };
           } else {
