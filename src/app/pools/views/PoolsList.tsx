@@ -3,11 +3,13 @@ import { useEffect } from "react";
 
 import PageContent from "@/app/base/components/PageContent";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
-import AddPool from "@/app/pools/components/AddPool/AddPool";
-import DeletePool from "@/app/pools/components/DeletePool/DeletePool";
-import EditPool from "@/app/pools/components/EditPool/EditPool";
-import PoolsListHeader from "@/app/pools/components/PoolsListHeader";
-import PoolsTable from "@/app/pools/components/PoolsTable";
+import {
+  AddPool,
+  DeletePool,
+  EditPool,
+  PoolsListHeader,
+  PoolsTable,
+} from "@/app/pools/components";
 import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import { isId } from "@/app/utils";
 

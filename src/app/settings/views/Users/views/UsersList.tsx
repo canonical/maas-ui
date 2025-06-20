@@ -6,10 +6,12 @@ import { useSelector } from "react-redux";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
-import AddUser from "@/app/settings/views/Users/components/AddUser/AddUser";
-import DeleteUser from "@/app/settings/views/Users/components/DeleteUser/DeleteUser";
-import EditUser from "@/app/settings/views/Users/components/EditUser/EditUser";
-import UsersTable from "@/app/settings/views/Users/components/UsersTable/UsersTable";
+import {
+  AddUser,
+  DeleteUser,
+  EditUser,
+  UsersTable,
+} from "@/app/settings/views/Users/components";
 import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
 import statusSelectors from "@/app/store/status/selectors";
 import { isId } from "@/app/utils";
