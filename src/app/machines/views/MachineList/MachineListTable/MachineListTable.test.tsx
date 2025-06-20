@@ -440,11 +440,11 @@ describe("MachineListTable", () => {
         { name: /Name/ }
       )
     );
-    await waitFor(() =>
+    await waitFor(() => {
       expect(getFirstMachineOwner()).toHaveTextContent(
         mockUsers.items[0].last_name!
-      )
-    );
+      );
+    });
   });
 
   it("updates sort on header click", async () => {

@@ -48,9 +48,9 @@ describe("App", () => {
     state.status.error = null;
     state.status.connected = true;
     renderWithProviders(<App />, { initialEntries: ["/settings"], state });
-    await waitFor(() =>
-      expect(screen.getByText("Failed to connect")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByText("Failed to connect")).toBeInTheDocument();
+    });
     expect(
       screen.getByText(
         /The server connection failed with the error "Vault request failed"/
@@ -64,9 +64,9 @@ describe("App", () => {
     state.status.error = null;
     state.status.connected = true;
     renderWithProviders(<App />, { initialEntries: ["/settings"], state });
-    await waitFor(() =>
-      expect(screen.getByText("Failed to connect")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByText("Failed to connect")).toBeInTheDocument();
+    });
     expect(
       screen.getByText(
         /The server connection failed with the error "Vault connection failed"/
@@ -85,9 +85,9 @@ describe("App", () => {
     state.status.connected = true;
     state.status.connecting = true;
     renderWithProviders(<App />, { initialEntries: ["/settings"], state });
-    await waitFor(() =>
-      expect(screen.queryByText("Loading...")).not.toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
+    });
   });
 
   it("displays a loading message when authenticating", () => {
@@ -117,16 +117,18 @@ describe("App", () => {
     state.status.authenticated = true;
     const store = mockStore(state);
     renderWithProviders(<App />, { initialEntries: ["/settings"], store });
-    await waitFor(() =>
-      expect(authResolvers.getCurrentUser.resolved).toBe(true)
-    );
+    await waitFor(() => {
+      expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    });
   });
 
   it("shows a login screen when logged out", async () => {
     state.status.authenticated = false;
     state.status.connected = true;
     renderWithProviders(<App />, { initialEntries: ["/settings"], state });
-    await waitFor(() => expect(screen.getByText("Login")).toBeInTheDocument());
+    await waitFor(() => {
+      expect(screen.getByText("Login")).toBeInTheDocument();
+    });
   });
 
   it("fetches auth details on mount", () => {

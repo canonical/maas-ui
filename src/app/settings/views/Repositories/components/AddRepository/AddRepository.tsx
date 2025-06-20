@@ -1,6 +1,7 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { repositorySchema } from "../../constants";
@@ -8,18 +9,11 @@ import { getRepositoryTypeString } from "../../utils";
 import RepositoryFormFields from "../RepositoryFormFields";
 import type { RepositoryFormValues } from "../types";
 
-import {
-  useGetPackageRepository,
-  useUpdatePackageRepository,
-} from "@/app/api/query/packageRepositories";
+import { useCreatePackageRepository } from "@/app/api/query/packageRepositories";
 import type {
-  ComponentsToDisableEnum,
-  KnownArchesEnum,
+  CreatePackageRepositoryData,
+  CreatePackageRepositoryError,
   KnownComponentsEnum,
-  PackageRepositoryResponse,
-  PocketsToDisableEnum,
-  UpdatePackageRepositoryData,
-  UpdatePackageRepositoryError,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -29,18 +23,13 @@ import {
   knownArchitectures as knownArchitecturesSelectors,
   pocketsToDisable as pocketsToDisableSelectors,
 } from "@/app/store/general/selectors";
-import {
-  getIsDefaultRepo,
-  getRepoDisplayName,
-} from "@/app/store/packagerepository/utils";
 import { parseCommaSeparatedValues } from "@/app/utils";
 
 type Props = {
-  id: PackageRepositoryResponse["id"];
-  type: "ppa" | "repository" | undefined;
+  type: "ppa" | "repository";
 };
 
-export const EditRepository = ({ id, type }: Props): React.ReactElement => {
+const AddRepository = ({ type }: Props): ReactElement => {
   const dispatch = useDispatch();
   const { setSidePanelContent } = useSidePanel();
   const componentsToDisableLoaded = useSelector(
@@ -50,21 +39,12 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
     knownArchitecturesSelectors.loaded
   );
   const pocketsToDisableLoaded = useSelector(pocketsToDisableSelectors.loaded);
-
-  const {
-    isPending,
-    isError,
-    data: repository,
-    error,
-  } = useGetPackageRepository({
-    path: { package_repository_id: id },
-  });
-  const updateRepo = useUpdatePackageRepository();
-
   const allLoaded =
     componentsToDisableLoaded &&
     knownArchitecturesLoaded &&
     pocketsToDisableLoaded;
+
+  const createRepo = useCreatePackageRepository();
 
   // Fetch data if not all loaded.
   useEffect(() => {
@@ -75,48 +55,30 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
     }
   }, [dispatch, allLoaded]);
 
-  if (isPending || !allLoaded) {
+  const typeString = getRepositoryTypeString(type);
+  const title = `Add ${typeString}`;
+  const initialValues: RepositoryFormValues = {
+    arches: ["i386", "amd64"],
+    components: "",
+    default: false,
+    disable_sources: false,
+    disabled_components: [],
+    disabled_pockets: [],
+    distributions: "",
+    enabled: true,
+    key: "",
+    name: "",
+    url: type === "ppa" ? "ppa:" : "",
+  };
+
+  if (!allLoaded) {
     return <Spinner text="Loading..." />;
   }
 
-  if (isError) {
-    return (
-      <Notification
-        severity="negative"
-        title="Error while fetching package repository"
-      >
-        {error.message}
-      </Notification>
-    );
-  }
-
-  if (!type || !repository) {
-    return <h4>Repository not found</h4>;
-  }
-
-  const initialValues: RepositoryFormValues = {
-    arches: repository.arches as unknown as KnownArchesEnum[],
-    components: repository.components.join(", "),
-    default: getIsDefaultRepo(repository),
-    disable_sources: repository.disable_sources,
-    disabled_components:
-      repository.disabled_components as unknown as ComponentsToDisableEnum[],
-    disabled_pockets:
-      repository.disabled_pockets as unknown as PocketsToDisableEnum[],
-    distributions: repository.distributions.join(", "),
-    enabled: repository.enabled,
-    key: repository.key,
-    name: getRepoDisplayName(repository.name),
-    url: repository.url,
-  };
-
-  const typeString = getRepositoryTypeString(type);
-  const title = `Edit ${typeString}`;
-
   return (
-    <FormikForm<RepositoryFormValues, UpdatePackageRepositoryError>
+    <FormikForm<RepositoryFormValues, CreatePackageRepositoryError>
       aria-label={title}
-      errors={updateRepo.error}
+      errors={createRepo.error}
       initialValues={initialValues}
       onCancel={() => {
         setSidePanelContent(null);
@@ -127,7 +89,7 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
         label: `${title} form`,
       }}
       onSubmit={(values) => {
-        const params: UpdatePackageRepositoryData["body"] = {
+        const params: CreatePackageRepositoryData["body"] = {
           arches: values.arches,
           disable_sources: values.disable_sources,
           key: values.key,
@@ -148,16 +110,15 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
           params.enabled = values.enabled;
         }
 
-        updateRepo.mutate({
-          path: { package_repository_id: repository.id },
+        createRepo.mutate({
           body: { ...params },
         });
       }}
       onSuccess={() => {
         setSidePanelContent(null);
       }}
-      saved={updateRepo.isSuccess}
-      saving={updateRepo.isPending}
+      saved={createRepo.isSuccess}
+      saving={createRepo.isPending}
       submitLabel={`Save ${typeString}`}
       validationSchema={repositorySchema}
     >
@@ -166,4 +127,4 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
   );
 };
 
-export default EditRepository;
+export default AddRepository;

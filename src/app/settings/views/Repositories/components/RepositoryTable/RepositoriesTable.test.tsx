@@ -112,7 +112,9 @@ describe("RepositoryTable", () => {
       await waitForLoading();
 
       const buttons = screen.getAllByRole("button", { name: "Delete" });
-      buttons.forEach((button) => expect(button).toBeAriaDisabled());
+      buttons.forEach((button) => {
+        expect(button).toBeAriaDisabled();
+      });
     });
 
     it("opens the 'Add repository' side panel when the 'Add repository' button is clicked", async () => {

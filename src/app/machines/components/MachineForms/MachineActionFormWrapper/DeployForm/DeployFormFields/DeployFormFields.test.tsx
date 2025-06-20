@@ -331,9 +331,9 @@ describe("DeployFormFields", () => {
       />,
       { store, initialEntries: ["/machines/add"] }
     );
-    await waitFor(() =>
-      expect(screen.getByTestId("sshkeys-warning")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByTestId("sshkeys-warning")).toBeInTheDocument();
+    });
   });
 
   it(`displays an error and disables form fields if there are no OSes or

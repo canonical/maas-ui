@@ -73,7 +73,9 @@ it("has a button to open the static route form", async () => {
   const store = mockStore(state);
   renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { store });
 
-  await waitFor(() => expect(authResolvers.getCurrentUser.resolved).toBe(true));
+  await waitFor(() => {
+    expect(authResolvers.getCurrentUser.resolved).toBe(true);
+  });
   await waitFor(() => {
     expect(
       screen.getByRole("button", {

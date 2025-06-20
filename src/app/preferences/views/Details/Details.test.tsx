@@ -52,7 +52,9 @@ describe("Details", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Save profile" }));
 
-    await waitFor(() => expect(usersResolvers.updateUser.resolved).toBe(true));
+    await waitFor(() => {
+      expect(usersResolvers.updateUser.resolved).toBe(true);
+    });
   });
 
   it("shows a message when using external auth", () => {

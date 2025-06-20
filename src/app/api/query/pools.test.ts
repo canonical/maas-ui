@@ -67,7 +67,7 @@ describe("useCreatePool", () => {
 });
 
 describe("useGetPool", () => {
-  it("should return the correct zone", async () => {
+  it("should return the correct pool", async () => {
     const expectedPool = mockPools.items[0];
     const { result } = renderHookWithProviders(() =>
       useGetPool({ path: { resource_pool_id: expectedPool.id } })
@@ -78,7 +78,7 @@ describe("useGetPool", () => {
     expect(result.current.data).toEqual(expectedPool);
   });
 
-  it("should return error if zone does not exist", async () => {
+  it("should return error if pool does not exist", async () => {
     const { result } = renderHookWithProviders(() =>
       useGetPool({ path: { resource_pool_id: 99 } })
     );
@@ -89,7 +89,7 @@ describe("useGetPool", () => {
 });
 
 describe("useUpdatePool", () => {
-  it("should update a new pool", async () => {
+  it("should update a pool", async () => {
     const newPool: ResourcePoolRequest = {
       name: "updatedPool",
       description: "updatedPoolDescription",
