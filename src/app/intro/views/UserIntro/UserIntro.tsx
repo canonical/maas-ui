@@ -8,7 +8,7 @@ import TableConfirm from "@/app/base/components/TableConfirm";
 import { useCycled } from "@/app/base/hooks";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
-import AddSSHKey from "@/app/preferences/views/SSHKeys/components/AddSSHKey";
+import { AddSSHKey } from "@/app/preferences/views/SSHKeys/components";
 import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
 import { formatErrors } from "@/app/utils";
 
