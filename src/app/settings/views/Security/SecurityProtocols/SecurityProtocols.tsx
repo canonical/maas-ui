@@ -15,10 +15,6 @@ const SecurityProtocols = (): React.ReactElement => {
   useWindowTitle("Security protocols");
   useFetchActions([generalActions.fetchTlsCertificate]);
 
-  if (!tlsCertificateLoaded) {
-    return <Spinner text="Loading..." />;
-  }
-
   return (
     <ContentSection variant="narrow">
       <ContentSection.Title className="section-header__title">

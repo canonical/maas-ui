@@ -92,7 +92,7 @@ const ControllerPowerConfiguration = ({
 
   const otherNodesCount =
     controller.power_bmc_node_count > 1
-      ? controller?.power_bmc_node_count - 1
+      ? controller.power_bmc_node_count - 1
       : 0;
 
   return (

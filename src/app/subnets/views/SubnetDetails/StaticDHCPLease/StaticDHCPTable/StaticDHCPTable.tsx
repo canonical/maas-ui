@@ -35,7 +35,7 @@ const generateRows = (
         <td>{reservedIp.ip}</td>
         <td>{reservedIp.mac_address || "—"}</td>
         <td>
-          {reservedIp?.node_summary ? (
+          {reservedIp.node_summary ? (
             <Link
               to={getNodeUrl(
                 reservedIp.node_summary.node_type,

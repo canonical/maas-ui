@@ -49,7 +49,7 @@ export const DownloadMenu = ({ node }: Props): React.ReactElement | null => {
     installationResults?.some(
       ({ name }) => name === ScriptResultNames.CURTIN_LOG
     );
-  const installationOutput = useGetInstallationOutput(node.system_id);
+  const installationOutput = useGetInstallationOutput(node?.system_id);
   const getSummaryXmlKey = useRef(nanoid());
   const getSummaryYamlKey = useRef(nanoid());
   const fileContext = useContext(FileContext);
@@ -190,7 +190,7 @@ export const DownloadMenu = ({ node }: Props): React.ReactElement | null => {
             "installation-output",
             "log",
             "installation-output",
-            installationOutput.log
+            installationOutput?.log
           ),
         ]}
         position="right"
