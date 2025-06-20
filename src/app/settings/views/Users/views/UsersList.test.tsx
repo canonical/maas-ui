@@ -89,4 +89,19 @@ describe("UsersList", () => {
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
   });
+
+  it("renders external user maintenance notification", () => {
+    renderWithProviders(<UsersList />, {
+      state: factory.rootState({
+        status: factory.statusState({
+          externalAuthURL: "https://external-auth.org",
+        }),
+      }),
+    });
+    expect(
+      screen.getByText(
+        "Users for this MAAS are managed using an external service"
+      )
+    ).toBeInTheDocument();
+  });
 });
