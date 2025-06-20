@@ -56,21 +56,21 @@ const useRepositoriesTableColumns = (): RepositoriesColumnDef[] => {
                 ? "Default repositories cannot be deleted."
                 : null
             }
-            onDelete={() =>
+            onDelete={() => {
               setSidePanelContent({
                 view: RepositoryActionSidePanelViews.DELETE_REPOSITORY,
                 extras: { repositoryId: original.id },
-              })
-            }
-            onEdit={() =>
+              });
+            }}
+            onEdit={() => {
               setSidePanelContent({
                 view: RepositoryActionSidePanelViews.EDIT_REPOSITORY,
                 extras: {
                   repositoryId: original.id,
                   type: original.url.startsWith("ppa:") ? "ppa" : "repository",
                 },
-              })
-            }
+              });
+            }}
           />
         ),
       },

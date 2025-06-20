@@ -58,11 +58,11 @@ describe("MaasIntroSuccess", () => {
       initialEntries: ["/intro/success"],
       state,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
-      ).toHaveAttribute("href", urls.machines.index)
-    );
+      ).toHaveAttribute("href", urls.machines.index);
+    });
   });
 
   it("links to the machine list if a non-admin that has completed the user intro", async () => {
@@ -76,11 +76,11 @@ describe("MaasIntroSuccess", () => {
       initialEntries: ["/intro/success"],
       state,
     });
-    await waitFor(() =>
+    await waitFor(() => {
       expect(
         screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
-      ).toHaveAttribute("href", urls.machines.index)
-    );
+      ).toHaveAttribute("href", urls.machines.index);
+    });
   });
 
   it("dispatches an action to update completed intro config", async () => {

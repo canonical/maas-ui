@@ -3,7 +3,7 @@ import type { FormikProps } from "formik";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import type { RepositoryFormValues } from "../RepositoryForm/types";
+import type { RepositoryFormValues } from "../types";
 
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";

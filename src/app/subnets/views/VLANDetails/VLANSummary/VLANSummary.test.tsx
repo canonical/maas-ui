@@ -90,9 +90,9 @@ describe("VLANSummary", () => {
   it("can trigger the edit form side panel", async () => {
     const store = mockStore(state);
     renderWithProviders(<VLANSummary id={vlan.id} />, { store });
-    await waitFor(() =>
-      expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
+    });
     const button = screen.getByRole("button", { name: "Edit" });
     expect(button).toBeInTheDocument();
     await userEvent.click(button);
