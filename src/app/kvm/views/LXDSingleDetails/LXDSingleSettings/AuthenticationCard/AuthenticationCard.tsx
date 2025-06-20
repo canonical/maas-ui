@@ -55,7 +55,7 @@ const AuthenticationCard = ({
         <Row>
           <Col size={6}>
             <CertificateDetails
-              certificate={power_parameters.certificate as string}
+              certificate={power_parameters?.certificate as string}
               eventCategory="KVM configuration"
               metadata={certificateMetadata}
             />

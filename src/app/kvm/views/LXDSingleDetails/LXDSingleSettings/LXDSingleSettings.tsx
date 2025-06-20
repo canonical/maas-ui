@@ -48,7 +48,7 @@ const LXDSingleSettings = ({
     <Strip aria-label={Label.Title} className="u-no-padding--top" shallow>
       <LXDHostToolbar hostId={id} showBasic />
       <KVMConfigurationCard pod={pod} />
-      <AuthenticationCard hostId={id} objectName={pod.name} />
+      <AuthenticationCard hostId={id} objectName={pod?.name} />
       <DangerZoneCard
         hostId={id}
         message={
