@@ -1,4 +1,3 @@
-import type { Options } from "@hey-api/client-fetch";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -17,6 +16,7 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryError,
   ListResourcePoolsWithSummaryResponse,
+  Options,
   UpdateResourcePoolData,
   UpdateResourcePoolError,
   UpdateResourcePoolResponse,

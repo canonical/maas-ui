@@ -22,7 +22,8 @@
       "vite-plugin-svgr/client",
       "node",
       "vitest/globals"
-    ]
+    ],
+    "lib": ["ESNext", "DOM.Iterable", "DOM"]
   },
   "exclude": ["dist", "public", "node_modules"],
   "include": ["src"]

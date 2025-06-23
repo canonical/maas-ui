@@ -1,4 +1,3 @@
-import type { Options } from "@hey-api/client-fetch";
 import {
   useMutation,
   useQueryClient,
@@ -17,6 +16,7 @@ import type {
   GetUserSslkeysData,
   GetUserSslkeysError,
   GetUserSslkeysResponse,
+  Options,
 } from "@/app/apiclient";
 import {
   createUserSslkeyMutation,
