@@ -1,4 +1,3 @@
-import type { Options } from "@hey-api/client-fetch";
 import {
   useMutation,
   useQueryClient,
@@ -16,6 +15,7 @@ import type {
   LoginData,
   LoginError,
   LoginResponse,
+  Options,
 } from "@/app/apiclient";
 import {
   completeIntroMutation,

@@ -42,7 +42,7 @@ const Schema = Yup.object().shape({
   mtu: Yup.number()
     .min(VLANMTURange.Min, mtuHelp)
     .max(VLANMTURange.Max, mtuHelp),
-  name: Yup.string(),
+  name: Yup.string().nullable(),
   space: Yup.number(),
   vid: Yup.number()
     .min(VLANVidRange.Min, vidHelp)
