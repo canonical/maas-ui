@@ -134,7 +134,7 @@ export const AddDeviceInterfaces = (): React.ReactElement => {
 
   const addInterface = () => {
     currentId.current += 1;
-    void setFieldValue("interfaces", [
+    setFieldValue("interfaces", [
       ...interfaces,
       {
         id: currentId.current,
@@ -147,7 +147,9 @@ export const AddDeviceInterfaces = (): React.ReactElement => {
         ),
         subnet: "",
       },
-    ]);
+    ]).catch((reason) => {
+      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
+    });
   };
 
   const removeInterface = (id: number) => {

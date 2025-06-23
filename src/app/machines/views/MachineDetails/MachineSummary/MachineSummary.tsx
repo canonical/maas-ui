@@ -58,7 +58,7 @@ const MachineSummary = ({ setSidePanelContent }: Props): React.ReactElement => {
       <NumaCard id={id} />
       <div className="machine-summary__network-card">
         <NodeSummaryNetworkCard
-          interfaces={isMachineDetails(machine) ? machine.interfaces : null}
+          interfaces={machine!.interfaces}
           networkURL={networkURL}
           node={machine}
         >

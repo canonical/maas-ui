@@ -149,10 +149,7 @@ export const App = (): React.ReactElement => {
         sidePanelTitle={null}
       >
         <Notification severity="negative" title="Error:">
-          The server connection failed
-          {hasVaultError || connectionError
-            ? ` with the error "${configErrors}"`
-            : ""}
+          The server connection failed with the error "{configErrors}"
         </Notification>
       </PageContent>
     );

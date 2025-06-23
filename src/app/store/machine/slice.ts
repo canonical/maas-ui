@@ -165,7 +165,7 @@ const statusHandlers = generateStatusHandlers<
 
           if (action.meta.callId in state.actions && action.payload) {
             actionsItem.status = ACTION_STATUS.success;
-            if (action?.payload && "success_count" in action.payload) {
+            if (action.payload && "success_count" in action.payload) {
               actionsItem.successCount = action.payload.success_count;
             }
             if (
@@ -1071,7 +1071,7 @@ const machineSlice = createSlice({
           } else {
             // refetching
             state.lists[action.meta.callId].refetching = true;
-            state.lists[action.meta.callId].params = action?.meta.item || null;
+            state.lists[action.meta.callId].params = action.meta.item || null;
             state.lists[action.meta.callId].refetchedAt = Date.now();
           }
         }

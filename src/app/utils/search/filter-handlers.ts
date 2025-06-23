@@ -210,7 +210,7 @@ export default class FilterHandlers {
         filters[prefixKey].push("");
       }
     } else if (exists) {
-      if (newExist === undefined ? true : !newExist) {
+      if (!newExist) {
         delete filters[prefixKey];
       }
     }
