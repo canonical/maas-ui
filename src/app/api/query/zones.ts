@@ -1,4 +1,3 @@
-import type { Options } from "@hey-api/client-fetch";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
@@ -16,6 +15,7 @@ import type {
   ListZonesWithSummaryData,
   ListZonesWithSummaryError,
   ListZonesWithSummaryResponse,
+  Options,
   UpdateZoneData,
   UpdateZoneError,
   UpdateZoneResponse,

@@ -85,6 +85,7 @@ export default tseslint.config(
   })),
   {
     files: ["src/**/*.ts?(x)"],
+    ignores: ["src/app/apiclient/**/*.ts"],
     plugins: {
       "unused-imports": unusedImports,
       react,
