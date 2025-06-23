@@ -34,7 +34,7 @@ const MachineSummary = ({ setSidePanelContent }: Props): React.ReactElement => {
   useFetchMachine(id);
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} details`);
 
-  if (!isId(id) || !isMachineDetails(machine)) {
+  if (!isId(id) || !machine || !isMachineDetails(machine)) {
     return <Spinner text="Loading" />;
   }
 
@@ -58,7 +58,7 @@ const MachineSummary = ({ setSidePanelContent }: Props): React.ReactElement => {
       <NumaCard id={id} />
       <div className="machine-summary__network-card">
         <NodeSummaryNetworkCard
-          interfaces={machine!.interfaces}
+          interfaces={isMachineDetails(machine) ? machine.interfaces : null}
           networkURL={networkURL}
           node={machine}
         >

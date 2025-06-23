@@ -169,7 +169,7 @@ const statusHandlers = generateStatusHandlers<
               actionsItem.successCount = action.payload.success_count;
             }
             if (
-              "failed_system_ids" in action?.payload &&
+              "failed_system_ids" in action.payload &&
               action.payload.failed_system_ids?.length > 0
             ) {
               actionsItem.status = ACTION_STATUS.error;

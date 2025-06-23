@@ -11,7 +11,8 @@ import type { TagFormValues } from "./types";
 import type { APIError } from "@/app/base/types";
 import type { FetchFilters } from "@/app/store/machine/types";
 import type { SelectedMachines } from "@/app/store/machine/types/base";
-import { FilterMachines, selectedToFilters } from "@/app/store/machine/utils";
+import { FilterMachines } from "@/app/store/machine/utils";
+import { selectedToSeparateFilters } from "@/app/store/machine/utils/common";
 import type { UseFetchQueryOptions } from "@/app/store/machine/utils/hooks";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
@@ -55,38 +56,6 @@ export const useUnchangedTags = (tags: Tag[]): Tag[] => {
       !values.added.find((tagId) => toFormikNumber(tagId) === tag.id) &&
       !values.removed.find((tagId) => toFormikNumber(tagId) === tag.id)
   );
-};
-
-const selectedToSeparateFilters = (
-  selectedMachines: SelectedMachines | null
-) => {
-  const getIsSingleFilter = (
-    selectedMachines: SelectedMachines | null
-  ): selectedMachines is { filter: FetchFilters } => {
-    if (selectedMachines && "filter" in selectedMachines) {
-      return true;
-    }
-    return false;
-  };
-  const isSingleFilter = getIsSingleFilter(selectedMachines);
-  // Fetch items and groups separately
-  // - otherwise the back-end will return machines
-  // matching both groups and items
-  const groupFilters = selectedToFilters(
-    isSingleFilter
-      ? { filter: selectedMachines?.filter }
-      : {
-          groups: selectedMachines?.groups,
-          grouping: selectedMachines?.grouping,
-        }
-  );
-  const itemFilters = selectedToFilters(
-    !isSingleFilter ? { items: selectedMachines?.items } : null
-  );
-  return {
-    groupFilters,
-    itemFilters,
-  };
 };
 
 export const useFetchTags = (
