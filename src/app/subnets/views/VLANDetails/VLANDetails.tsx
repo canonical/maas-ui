@@ -16,7 +16,7 @@ import {
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
+import { useFetchActions, useGetURLId, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
@@ -53,18 +53,9 @@ const VLANDetails = (): React.ReactElement => {
     };
   }, [dispatch, id]);
 
-  if (!vlan) {
-    const vlanNotFound = !isId(id) || !vlansLoading;
+  useFetchActions([vlanActions.fetch]);
 
-    if (vlanNotFound) {
-      return (
-        <ModelNotFound
-          id={id}
-          linkURL={subnetURLs.indexWithParams({ by: "fabric" })}
-          modelName="VLAN"
-        />
-      );
-    }
+  if (vlansLoading) {
     return (
       <PageContent
         header={<SectionHeader loading />}
@@ -73,6 +64,17 @@ const VLANDetails = (): React.ReactElement => {
       />
     );
   }
+
+  if (!vlan) {
+    return (
+      <ModelNotFound
+        id={id}
+        linkURL={subnetURLs.indexWithParams({ by: "fabric" })}
+        modelName="VLAN"
+      />
+    );
+  }
+
   const [, name] = sidePanelContent?.view || [];
   const activeForm =
     name && Object.keys(VLANActionTypes).includes(name)
