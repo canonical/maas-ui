@@ -18,7 +18,7 @@ const PoolsListHeader = ({
 }): ReactNode => {
   const { machineCount } = useFetchMachineCount();
   const resourcePoolsCount = usePoolCount();
-  const count = resourcePoolsCount?.data ?? resourcePoolsCount.data;
+  const count = resourcePoolsCount?.data ? resourcePoolsCount.data : 0;
 
   return (
     <MainToolbar>

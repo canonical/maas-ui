@@ -78,7 +78,7 @@ const MachineHeader = ({
     }
   };
 
-  if (!machine || !isDetails) {
+  if (!(machine && isDetails)) {
     return <SectionHeader loading />;
   }
 

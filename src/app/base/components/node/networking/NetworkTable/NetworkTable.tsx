@@ -260,7 +260,7 @@ const generateRow = (
         : null,
     sortData: {
       bondOrBridge:
-        (isABondOrBridgeParent && nic.children[0]) ||
+        (isABondOrBridgeParent && nic?.children[0]) ||
         (isABondOrBridgeChild && nic.id) ||
         null,
       dhcp: shouldShowDHCP ? getDHCPStatus(vlan, vlans, fabrics) : null,

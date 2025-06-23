@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 
-import AddZone from "../components/AddZone";
-import DeleteZone from "../components/DeleteZone";
-import EditZone from "../components/EditZone";
-import ZonesListHeader from "../components/ZonesListHeader";
-import ZonesTable from "../components/ZonesTable";
-
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import { isId } from "@/app/utils";
+import {
+  AddZone,
+  DeleteZone,
+  EditZone,
+  ZonesListHeader,
+  ZonesTable,
+} from "@/app/zones/components";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 
 const ZonesList: React.FC = () => {

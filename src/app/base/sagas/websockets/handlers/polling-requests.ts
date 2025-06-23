@@ -35,7 +35,7 @@ export const isPolling = (action: AnyAction): boolean =>
 export const isStartPollingAction = (action: AnyAction): boolean =>
   Boolean(action?.meta?.poll) &&
   // Ignore actions that are already being polled.
-  !isPolling(action);
+  !isPolling(action!);
 
 /**
  * Whether this is an action that stops polling a websocket request.

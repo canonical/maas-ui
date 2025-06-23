@@ -10,7 +10,7 @@ export const arrayFromRangesString = (
   }
   const rangeArray: number[] = [];
   // Remove whitespace and split string between commas.
-  const splitRanges = rangeString.replace(/\s/g, "").split(",");
+  const splitRanges = rangeString?.replace(/\s/g, "").split(",");
 
   for (const substring of splitRanges) {
     if (/^(\d{1,3}-\d{1,3})$/.exec(substring)) {

@@ -48,7 +48,7 @@ export function* handleFileContextRequest({
   );
   if (fileContextRequest?.meta.fileContextKey) {
     // Store the file in the context.
-    fileContextStore.add(fileContextRequest.meta.fileContextKey, result);
+    fileContextStore.add(fileContextRequest?.meta.fileContextKey, result);
     // Clean up the previous request.
     fileContextRequests.delete(request_id);
   }

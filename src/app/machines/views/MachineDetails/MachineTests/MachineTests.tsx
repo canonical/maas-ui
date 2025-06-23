@@ -84,7 +84,7 @@ const MachineTests = (): React.ReactElement => {
                 let title: string | null = null;
                 if (scriptResults[0].hardware_type === HardwareType.Network) {
                   const { mac_address, name } =
-                    scriptResults[0]?.parameters?.interface?.value || {};
+                    scriptResults[0].parameters?.interface?.value || {};
                   if (name && mac_address) {
                     title = `${name} (${mac_address})`;
                   } else {

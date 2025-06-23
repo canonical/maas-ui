@@ -42,7 +42,7 @@ const MachineSummary = ({ setSidePanelContent }: Props): React.ReactElement => {
   const showWorkloadCard = [
     NodeStatusCode.ALLOCATED,
     NodeStatusCode.DEPLOYED,
-  ].includes(machine.status_code);
+  ].includes(machine?.status_code);
 
   return (
     <div className="machine-summary__cards">

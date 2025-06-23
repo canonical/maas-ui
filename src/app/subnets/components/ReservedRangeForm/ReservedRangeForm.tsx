@@ -63,7 +63,7 @@ const ReservedRangeForm = ({
   if (!ipRangeId) {
     computedIpRangeId =
       sidePanelContent?.extras && "ipRangeId" in sidePanelContent.extras
-        ? sidePanelContent?.extras?.ipRangeId
+        ? sidePanelContent.extras?.ipRangeId
         : undefined;
   }
   const ipRange = useSelector((state: RootState) =>

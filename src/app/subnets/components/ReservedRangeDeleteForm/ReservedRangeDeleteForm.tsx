@@ -17,7 +17,7 @@ const ReservedRangeDeleteForm = ({
   const saving = useSelector(ipRangeSelectors.saving);
   const ipRangeId =
     sidePanelContent?.extras && "ipRangeId" in sidePanelContent.extras
-      ? sidePanelContent?.extras?.ipRangeId
+      ? sidePanelContent.extras?.ipRangeId
       : null;
 
   if (!ipRangeId && ipRangeId !== 0) {

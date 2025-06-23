@@ -151,9 +151,7 @@ export const App = (): React.ReactElement => {
         <Notification severity="negative" title="Error:">
           The server connection failed
           {hasVaultError || connectionError
-            ? ` with the error "${
-                hasVaultError ? configErrors : connectionError
-              }"`
+            ? ` with the error "${configErrors}"`
             : ""}
         </Notification>
       </PageContent>

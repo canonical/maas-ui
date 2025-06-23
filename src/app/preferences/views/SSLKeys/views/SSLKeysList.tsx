@@ -4,9 +4,11 @@ import { useEffect } from "react";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
-import AddSSLKey from "@/app/preferences/views/SSLKeys/components/AddSSLKey";
-import DeleteSSLKey from "@/app/preferences/views/SSLKeys/components/DeleteSSLKey";
-import SSLKeysTable from "@/app/preferences/views/SSLKeys/components/SSLKeysTable/SSLKeysTable";
+import {
+  AddSSLKey,
+  DeleteSSLKey,
+  SSLKeysTable,
+} from "@/app/preferences/views/SSLKeys/components";
 import { SSLKeyActionSidePanelViews } from "@/app/preferences/views/SSLKeys/constants";
 import { isId } from "@/app/utils";
 

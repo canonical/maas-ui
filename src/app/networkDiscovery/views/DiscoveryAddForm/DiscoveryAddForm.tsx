@@ -131,7 +131,7 @@ const DiscoveryAddForm = ({
   let hostname = discovery.hostname;
   let domainName: string | null = null;
   if (hostname?.includes(".")) {
-    [hostname, domainName] = hostname.split(".");
+    [hostname, domainName] = hostname?.split(".");
   }
   const domainByName = useSelector((state: RootState) =>
     domainSelectors.getByName(state, domainName)

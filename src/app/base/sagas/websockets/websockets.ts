@@ -335,7 +335,7 @@ export function* sendMessage(
 ): SagaGenerator<void> {
   const { meta, payload, type } = action;
   const params = payload ? payload.params : null;
-  const { cache, identifier, method, model, nocache } = meta;
+  const { cache, identifier, method, model, nocache, callId } = meta;
   const endpoint: WebSocketEndpoint = `${model}.${method}`;
   const hasMultipleDispatches = meta.dispatchMultiple && Array.isArray(params);
   // If method is 'list' and data has loaded/is loading, do not fetch again
@@ -357,7 +357,7 @@ export function* sendMessage(
     meta: {
       item: params || payload,
       identifier,
-      callId: action.meta?.callId,
+      callId,
     },
     type: `${type}Start`,
   });
