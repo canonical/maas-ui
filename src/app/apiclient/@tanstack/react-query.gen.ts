@@ -13,6 +13,7 @@ import {
   accessToken,
   login,
   getConfiguration,
+  setConfiguration,
   getConfigurations,
   listEvents,
   clearAllDiscoveriesWithOptionalIpAndMac,
@@ -122,6 +123,9 @@ import type {
   LoginError,
   LoginResponse,
   GetConfigurationData,
+  SetConfigurationData,
+  SetConfigurationError,
+  SetConfigurationResponse,
   GetConfigurationsData,
   ListEventsData,
   ListEventsError,
@@ -423,6 +427,9 @@ const createQueryKey = <TOptions extends Options>(
 export const accessTokenQueryKey = (options?: Options<AccessTokenData>) =>
   createQueryKey("accessToken", options);
 
+/**
+ * Access Token
+ */
 export const accessTokenOptions = (options?: Options<AccessTokenData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -441,6 +448,9 @@ export const accessTokenOptions = (options?: Options<AccessTokenData>) => {
 export const loginQueryKey = (options: Options<LoginData>) =>
   createQueryKey("login", options);
 
+/**
+ * Login
+ */
 export const loginOptions = (options: Options<LoginData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -456,7 +466,12 @@ export const loginOptions = (options: Options<LoginData>) => {
   });
 };
 
-export const loginMutation = (options?: Partial<Options<LoginData>>) => {
+/**
+ * Login
+ */
+export const loginMutation = (
+  options?: Partial<Options<LoginData>>
+): UseMutationOptions<LoginResponse, LoginError, Options<LoginData>> => {
   const mutationOptions: UseMutationOptions<
     LoginResponse,
     LoginError,
@@ -478,6 +493,9 @@ export const getConfigurationQueryKey = (
   options: Options<GetConfigurationData>
 ) => createQueryKey("getConfiguration", options);
 
+/**
+ * Get Configuration
+ */
 export const getConfigurationOptions = (
   options: Options<GetConfigurationData>
 ) => {
@@ -495,10 +513,40 @@ export const getConfigurationOptions = (
   });
 };
 
+/**
+ * Set Configuration
+ */
+export const setConfigurationMutation = (
+  options?: Partial<Options<SetConfigurationData>>
+): UseMutationOptions<
+  SetConfigurationResponse,
+  SetConfigurationError,
+  Options<SetConfigurationData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    SetConfigurationResponse,
+    SetConfigurationError,
+    Options<SetConfigurationData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await setConfiguration({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getConfigurationsQueryKey = (
   options?: Options<GetConfigurationsData>
 ) => createQueryKey("getConfigurations", options);
 
+/**
+ * Get Configurations
+ */
 export const getConfigurationsOptions = (
   options?: Options<GetConfigurationsData>
 ) => {
@@ -519,6 +567,9 @@ export const getConfigurationsOptions = (
 export const listEventsQueryKey = (options?: Options<ListEventsData>) =>
   createQueryKey("listEvents", options);
 
+/**
+ * List Events
+ */
 export const listEventsOptions = (options?: Options<ListEventsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -540,7 +591,9 @@ const createInfiniteParams = <
   queryKey: QueryKey<Options>,
   page: K
 ) => {
-  const params = queryKey[0];
+  const params = {
+    ...queryKey[0],
+  };
   if (page.body) {
     params.body = {
       ...(queryKey[0].body as any),
@@ -573,6 +626,9 @@ export const listEventsInfiniteQueryKey = (
 ): QueryKey<Options<ListEventsData>> =>
   createQueryKey("listEvents", options, true);
 
+/**
+ * List Events
+ */
 export const listEventsInfiniteOptions = (
   options?: Options<ListEventsData>
 ) => {
@@ -616,9 +672,16 @@ export const listEventsInfiniteOptions = (
   );
 };
 
+/**
+ * Clear All Discoveries With Optional Ip And Mac
+ */
 export const clearAllDiscoveriesWithOptionalIpAndMacMutation = (
   options?: Partial<Options<ClearAllDiscoveriesWithOptionalIpAndMacData>>
-) => {
+): UseMutationOptions<
+  ClearAllDiscoveriesWithOptionalIpAndMacResponse,
+  ClearAllDiscoveriesWithOptionalIpAndMacError,
+  Options<ClearAllDiscoveriesWithOptionalIpAndMacData>
+> => {
   const mutationOptions: UseMutationOptions<
     ClearAllDiscoveriesWithOptionalIpAndMacResponse,
     ClearAllDiscoveriesWithOptionalIpAndMacError,
@@ -640,6 +703,9 @@ export const listDiscoveriesQueryKey = (
   options?: Options<ListDiscoveriesData>
 ) => createQueryKey("listDiscoveries", options);
 
+/**
+ * List Discoveries
+ */
 export const listDiscoveriesOptions = (
   options?: Options<ListDiscoveriesData>
 ) => {
@@ -662,6 +728,9 @@ export const listDiscoveriesInfiniteQueryKey = (
 ): QueryKey<Options<ListDiscoveriesData>> =>
   createQueryKey("listDiscoveries", options, true);
 
+/**
+ * List Discoveries
+ */
 export const listDiscoveriesInfiniteOptions = (
   options?: Options<ListDiscoveriesData>
 ) => {
@@ -705,9 +774,16 @@ export const listDiscoveriesInfiniteOptions = (
   );
 };
 
+/**
+ * Clear Neighbours Discoveries
+ */
 export const clearNeighboursDiscoveriesMutation = (
   options?: Partial<Options<ClearNeighboursDiscoveriesData>>
-) => {
+): UseMutationOptions<
+  ClearNeighboursDiscoveriesResponse,
+  ClearNeighboursDiscoveriesError,
+  Options<ClearNeighboursDiscoveriesData>
+> => {
   const mutationOptions: UseMutationOptions<
     ClearNeighboursDiscoveriesResponse,
     ClearNeighboursDiscoveriesError,
@@ -725,9 +801,16 @@ export const clearNeighboursDiscoveriesMutation = (
   return mutationOptions;
 };
 
+/**
+ * Clear Rdns And Mdns Discoveries
+ */
 export const clearRdnsAndMdnsDiscoveriesMutation = (
   options?: Partial<Options<ClearRdnsAndMdnsDiscoveriesData>>
-) => {
+): UseMutationOptions<
+  ClearRdnsAndMdnsDiscoveriesResponse,
+  ClearRdnsAndMdnsDiscoveriesError,
+  Options<ClearRdnsAndMdnsDiscoveriesData>
+> => {
   const mutationOptions: UseMutationOptions<
     ClearRdnsAndMdnsDiscoveriesResponse,
     ClearRdnsAndMdnsDiscoveriesError,
@@ -748,6 +831,9 @@ export const clearRdnsAndMdnsDiscoveriesMutation = (
 export const getDiscoveryQueryKey = (options: Options<GetDiscoveryData>) =>
   createQueryKey("getDiscovery", options);
 
+/**
+ * Get Discovery
+ */
 export const getDiscoveryOptions = (options: Options<GetDiscoveryData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -766,6 +852,9 @@ export const getDiscoveryOptions = (options: Options<GetDiscoveryData>) => {
 export const listDomainsQueryKey = (options?: Options<ListDomainsData>) =>
   createQueryKey("listDomains", options);
 
+/**
+ * List Domains
+ */
 export const listDomainsOptions = (options?: Options<ListDomainsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -786,6 +875,9 @@ export const listDomainsInfiniteQueryKey = (
 ): QueryKey<Options<ListDomainsData>> =>
   createQueryKey("listDomains", options, true);
 
+/**
+ * List Domains
+ */
 export const listDomainsInfiniteOptions = (
   options?: Options<ListDomainsData>
 ) => {
@@ -832,6 +924,9 @@ export const listDomainsInfiniteOptions = (
 export const createDomainQueryKey = (options: Options<CreateDomainData>) =>
   createQueryKey("createDomain", options);
 
+/**
+ * Create Domain
+ */
 export const createDomainOptions = (options: Options<CreateDomainData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -847,9 +942,16 @@ export const createDomainOptions = (options: Options<CreateDomainData>) => {
   });
 };
 
+/**
+ * Create Domain
+ */
 export const createDomainMutation = (
   options?: Partial<Options<CreateDomainData>>
-) => {
+): UseMutationOptions<
+  CreateDomainResponse,
+  CreateDomainError,
+  Options<CreateDomainData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateDomainResponse,
     CreateDomainError,
@@ -871,6 +973,9 @@ export const getDomainRrsetsQueryKey = (
   options: Options<GetDomainRrsetsData>
 ) => createQueryKey("getDomainRrsets", options);
 
+/**
+ * Get Domain Rrsets
+ */
 export const getDomainRrsetsOptions = (
   options: Options<GetDomainRrsetsData>
 ) => {
@@ -892,6 +997,9 @@ export const createDomainRrsetsQueryKey = (
   options: Options<CreateDomainRrsetsData>
 ) => createQueryKey("createDomainRrsets", options);
 
+/**
+ * Create Domain Rrsets
+ */
 export const createDomainRrsetsOptions = (
   options: Options<CreateDomainRrsetsData>
 ) => {
@@ -909,9 +1017,16 @@ export const createDomainRrsetsOptions = (
   });
 };
 
+/**
+ * Create Domain Rrsets
+ */
 export const createDomainRrsetsMutation = (
   options?: Partial<Options<CreateDomainRrsetsData>>
-) => {
+): UseMutationOptions<
+  CreateDomainRrsetsResponse,
+  CreateDomainRrsetsError,
+  Options<CreateDomainRrsetsData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateDomainRrsetsResponse,
     CreateDomainRrsetsError,
@@ -929,9 +1044,16 @@ export const createDomainRrsetsMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Domain
+ */
 export const deleteDomainMutation = (
   options?: Partial<Options<DeleteDomainData>>
-) => {
+): UseMutationOptions<
+  DeleteDomainResponse,
+  DeleteDomainError,
+  Options<DeleteDomainData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteDomainResponse,
     DeleteDomainError,
@@ -952,6 +1074,9 @@ export const deleteDomainMutation = (
 export const getDomainQueryKey = (options: Options<GetDomainData>) =>
   createQueryKey("getDomain", options);
 
+/**
+ * Get Domain
+ */
 export const getDomainOptions = (options: Options<GetDomainData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -970,6 +1095,9 @@ export const getDomainOptions = (options: Options<GetDomainData>) => {
 export const listFabricsQueryKey = (options?: Options<ListFabricsData>) =>
   createQueryKey("listFabrics", options);
 
+/**
+ * List Fabrics
+ */
 export const listFabricsOptions = (options?: Options<ListFabricsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -990,6 +1118,9 @@ export const listFabricsInfiniteQueryKey = (
 ): QueryKey<Options<ListFabricsData>> =>
   createQueryKey("listFabrics", options, true);
 
+/**
+ * List Fabrics
+ */
 export const listFabricsInfiniteOptions = (
   options?: Options<ListFabricsData>
 ) => {
@@ -1036,6 +1167,9 @@ export const listFabricsInfiniteOptions = (
 export const createFabricQueryKey = (options: Options<CreateFabricData>) =>
   createQueryKey("createFabric", options);
 
+/**
+ * Create Fabric
+ */
 export const createFabricOptions = (options: Options<CreateFabricData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -1051,9 +1185,16 @@ export const createFabricOptions = (options: Options<CreateFabricData>) => {
   });
 };
 
+/**
+ * Create Fabric
+ */
 export const createFabricMutation = (
   options?: Partial<Options<CreateFabricData>>
-) => {
+): UseMutationOptions<
+  CreateFabricResponse,
+  CreateFabricError,
+  Options<CreateFabricData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateFabricResponse,
     CreateFabricError,
@@ -1071,9 +1212,16 @@ export const createFabricMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Fabric
+ */
 export const deleteFabricMutation = (
   options?: Partial<Options<DeleteFabricData>>
-) => {
+): UseMutationOptions<
+  DeleteFabricResponse,
+  DeleteFabricError,
+  Options<DeleteFabricData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteFabricResponse,
     DeleteFabricError,
@@ -1094,6 +1242,9 @@ export const deleteFabricMutation = (
 export const getFabricQueryKey = (options: Options<GetFabricData>) =>
   createQueryKey("getFabric", options);
 
+/**
+ * Get Fabric
+ */
 export const getFabricOptions = (options: Options<GetFabricData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -1109,9 +1260,16 @@ export const getFabricOptions = (options: Options<GetFabricData>) => {
   });
 };
 
+/**
+ * Update Fabric
+ */
 export const updateFabricMutation = (
   options?: Partial<Options<UpdateFabricData>>
-) => {
+): UseMutationOptions<
+  UpdateFabricResponse,
+  UpdateFabricError,
+  Options<UpdateFabricData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateFabricResponse,
     UpdateFabricError,
@@ -1132,6 +1290,9 @@ export const updateFabricMutation = (
 export const listInterfacesQueryKey = (options: Options<ListInterfacesData>) =>
   createQueryKey("listInterfaces", options);
 
+/**
+ * List Interfaces
+ */
 export const listInterfacesOptions = (options: Options<ListInterfacesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -1152,6 +1313,9 @@ export const listInterfacesInfiniteQueryKey = (
 ): QueryKey<Options<ListInterfacesData>> =>
   createQueryKey("listInterfaces", options, true);
 
+/**
+ * List Interfaces
+ */
 export const listInterfacesInfiniteOptions = (
   options: Options<ListInterfacesData>
 ) => {
@@ -1199,6 +1363,9 @@ export const listFabricVlanSubnetIprangeQueryKey = (
   options: Options<ListFabricVlanSubnetIprangeData>
 ) => createQueryKey("listFabricVlanSubnetIprange", options);
 
+/**
+ * List Fabric Vlan Subnet Iprange
+ */
 export const listFabricVlanSubnetIprangeOptions = (
   options: Options<ListFabricVlanSubnetIprangeData>
 ) => {
@@ -1221,6 +1388,9 @@ export const listFabricVlanSubnetIprangeInfiniteQueryKey = (
 ): QueryKey<Options<ListFabricVlanSubnetIprangeData>> =>
   createQueryKey("listFabricVlanSubnetIprange", options, true);
 
+/**
+ * List Fabric Vlan Subnet Iprange
+ */
 export const listFabricVlanSubnetIprangeInfiniteOptions = (
   options: Options<ListFabricVlanSubnetIprangeData>
 ) => {
@@ -1268,6 +1438,9 @@ export const createFabricVlanSubnetIprangeQueryKey = (
   options: Options<CreateFabricVlanSubnetIprangeData>
 ) => createQueryKey("createFabricVlanSubnetIprange", options);
 
+/**
+ * Create Fabric Vlan Subnet Iprange
+ */
 export const createFabricVlanSubnetIprangeOptions = (
   options: Options<CreateFabricVlanSubnetIprangeData>
 ) => {
@@ -1285,9 +1458,16 @@ export const createFabricVlanSubnetIprangeOptions = (
   });
 };
 
+/**
+ * Create Fabric Vlan Subnet Iprange
+ */
 export const createFabricVlanSubnetIprangeMutation = (
   options?: Partial<Options<CreateFabricVlanSubnetIprangeData>>
-) => {
+): UseMutationOptions<
+  CreateFabricVlanSubnetIprangeResponse,
+  CreateFabricVlanSubnetIprangeError,
+  Options<CreateFabricVlanSubnetIprangeData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateFabricVlanSubnetIprangeResponse,
     CreateFabricVlanSubnetIprangeError,
@@ -1305,9 +1485,16 @@ export const createFabricVlanSubnetIprangeMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Fabric Vlan Subnet Iprange
+ */
 export const deleteFabricVlanSubnetIprangeMutation = (
   options?: Partial<Options<DeleteFabricVlanSubnetIprangeData>>
-) => {
+): UseMutationOptions<
+  DeleteFabricVlanSubnetIprangeResponse,
+  DeleteFabricVlanSubnetIprangeError,
+  Options<DeleteFabricVlanSubnetIprangeData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteFabricVlanSubnetIprangeResponse,
     DeleteFabricVlanSubnetIprangeError,
@@ -1325,9 +1512,16 @@ export const deleteFabricVlanSubnetIprangeMutation = (
   return mutationOptions;
 };
 
+/**
+ * Update Fabric Vlan Subnet Iprange
+ */
 export const updateFabricVlanSubnetIprangeMutation = (
   options?: Partial<Options<UpdateFabricVlanSubnetIprangeData>>
-) => {
+): UseMutationOptions<
+  UpdateFabricVlanSubnetIprangeResponse,
+  UpdateFabricVlanSubnetIprangeError,
+  Options<UpdateFabricVlanSubnetIprangeData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateFabricVlanSubnetIprangeResponse,
     UpdateFabricVlanSubnetIprangeError,
@@ -1349,6 +1543,9 @@ export const getFabricVlanSubnetIprangeQueryKey = (
   options: Options<GetFabricVlanSubnetIprangeData>
 ) => createQueryKey("getFabricVlanSubnetIprange", options);
 
+/**
+ * Get Fabric Vlan Subnet Iprange
+ */
 export const getFabricVlanSubnetIprangeOptions = (
   options: Options<GetFabricVlanSubnetIprangeData>
 ) => {
@@ -1370,6 +1567,9 @@ export const getMachinePowerParametersQueryKey = (
   options: Options<GetMachinePowerParametersData>
 ) => createQueryKey("getMachinePowerParameters", options);
 
+/**
+ * Get Machine Power Parameters
+ */
 export const getMachinePowerParametersOptions = (
   options: Options<GetMachinePowerParametersData>
 ) => {
@@ -1391,6 +1591,9 @@ export const listMachinePciDevicesQueryKey = (
   options: Options<ListMachinePciDevicesData>
 ) => createQueryKey("listMachinePciDevices", options);
 
+/**
+ * List Machine Pci Devices
+ */
 export const listMachinePciDevicesOptions = (
   options: Options<ListMachinePciDevicesData>
 ) => {
@@ -1413,6 +1616,9 @@ export const listMachinePciDevicesInfiniteQueryKey = (
 ): QueryKey<Options<ListMachinePciDevicesData>> =>
   createQueryKey("listMachinePciDevices", options, true);
 
+/**
+ * List Machine Pci Devices
+ */
 export const listMachinePciDevicesInfiniteOptions = (
   options: Options<ListMachinePciDevicesData>
 ) => {
@@ -1460,6 +1666,9 @@ export const listMachineUsbDevicesQueryKey = (
   options: Options<ListMachineUsbDevicesData>
 ) => createQueryKey("listMachineUsbDevices", options);
 
+/**
+ * List Machine Usb Devices
+ */
 export const listMachineUsbDevicesOptions = (
   options: Options<ListMachineUsbDevicesData>
 ) => {
@@ -1482,6 +1691,9 @@ export const listMachineUsbDevicesInfiniteQueryKey = (
 ): QueryKey<Options<ListMachineUsbDevicesData>> =>
   createQueryKey("listMachineUsbDevices", options, true);
 
+/**
+ * List Machine Usb Devices
+ */
 export const listMachineUsbDevicesInfiniteOptions = (
   options: Options<ListMachineUsbDevicesData>
 ) => {
@@ -1528,6 +1740,9 @@ export const listMachineUsbDevicesInfiniteOptions = (
 export const listMachinesQueryKey = (options?: Options<ListMachinesData>) =>
   createQueryKey("listMachines", options);
 
+/**
+ * List Machines
+ */
 export const listMachinesOptions = (options?: Options<ListMachinesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -1548,6 +1763,9 @@ export const listMachinesInfiniteQueryKey = (
 ): QueryKey<Options<ListMachinesData>> =>
   createQueryKey("listMachines", options, true);
 
+/**
+ * List Machines
+ */
 export const listMachinesInfiniteOptions = (
   options?: Options<ListMachinesData>
 ) => {
@@ -1595,6 +1813,9 @@ export const listNotificationsQueryKey = (
   options?: Options<ListNotificationsData>
 ) => createQueryKey("listNotifications", options);
 
+/**
+ * List Notifications
+ */
 export const listNotificationsOptions = (
   options?: Options<ListNotificationsData>
 ) => {
@@ -1617,6 +1838,9 @@ export const listNotificationsInfiniteQueryKey = (
 ): QueryKey<Options<ListNotificationsData>> =>
   createQueryKey("listNotifications", options, true);
 
+/**
+ * List Notifications
+ */
 export const listNotificationsInfiniteOptions = (
   options?: Options<ListNotificationsData>
 ) => {
@@ -1664,6 +1888,9 @@ export const createNotificationQueryKey = (
   options: Options<CreateNotificationData>
 ) => createQueryKey("createNotification", options);
 
+/**
+ * Create Notification
+ */
 export const createNotificationOptions = (
   options: Options<CreateNotificationData>
 ) => {
@@ -1681,9 +1908,16 @@ export const createNotificationOptions = (
   });
 };
 
+/**
+ * Create Notification
+ */
 export const createNotificationMutation = (
   options?: Partial<Options<CreateNotificationData>>
-) => {
+): UseMutationOptions<
+  CreateNotificationResponse,
+  CreateNotificationError,
+  Options<CreateNotificationData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateNotificationResponse,
     CreateNotificationError,
@@ -1701,9 +1935,16 @@ export const createNotificationMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Notification
+ */
 export const deleteNotificationMutation = (
   options?: Partial<Options<DeleteNotificationData>>
-) => {
+): UseMutationOptions<
+  DeleteNotificationResponse,
+  DeleteNotificationError,
+  Options<DeleteNotificationData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteNotificationResponse,
     DeleteNotificationError,
@@ -1725,6 +1966,9 @@ export const getNotificationQueryKey = (
   options: Options<GetNotificationData>
 ) => createQueryKey("getNotification", options);
 
+/**
+ * Get Notification
+ */
 export const getNotificationOptions = (
   options: Options<GetNotificationData>
 ) => {
@@ -1742,9 +1986,16 @@ export const getNotificationOptions = (
   });
 };
 
+/**
+ * Update Notification
+ */
 export const updateNotificationMutation = (
   options?: Partial<Options<UpdateNotificationData>>
-) => {
+): UseMutationOptions<
+  UpdateNotificationResponse,
+  UpdateNotificationError,
+  Options<UpdateNotificationData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateNotificationResponse,
     UpdateNotificationError,
@@ -1766,6 +2017,9 @@ export const dismissNotificationQueryKey = (
   options: Options<DismissNotificationData>
 ) => createQueryKey("dismissNotification", options);
 
+/**
+ * Dismiss Notification
+ */
 export const dismissNotificationOptions = (
   options: Options<DismissNotificationData>
 ) => {
@@ -1783,9 +2037,16 @@ export const dismissNotificationOptions = (
   });
 };
 
+/**
+ * Dismiss Notification
+ */
 export const dismissNotificationMutation = (
   options?: Partial<Options<DismissNotificationData>>
-) => {
+): UseMutationOptions<
+  DismissNotificationResponse,
+  DismissNotificationError,
+  Options<DismissNotificationData>
+> => {
   const mutationOptions: UseMutationOptions<
     DismissNotificationResponse,
     DismissNotificationError,
@@ -1807,6 +2068,9 @@ export const listPackageRepositoriesQueryKey = (
   options?: Options<ListPackageRepositoriesData>
 ) => createQueryKey("listPackageRepositories", options);
 
+/**
+ * List Package Repositories
+ */
 export const listPackageRepositoriesOptions = (
   options?: Options<ListPackageRepositoriesData>
 ) => {
@@ -1829,6 +2093,9 @@ export const listPackageRepositoriesInfiniteQueryKey = (
 ): QueryKey<Options<ListPackageRepositoriesData>> =>
   createQueryKey("listPackageRepositories", options, true);
 
+/**
+ * List Package Repositories
+ */
 export const listPackageRepositoriesInfiniteOptions = (
   options?: Options<ListPackageRepositoriesData>
 ) => {
@@ -1876,6 +2143,9 @@ export const createPackageRepositoryQueryKey = (
   options: Options<CreatePackageRepositoryData>
 ) => createQueryKey("createPackageRepository", options);
 
+/**
+ * Create Package Repository
+ */
 export const createPackageRepositoryOptions = (
   options: Options<CreatePackageRepositoryData>
 ) => {
@@ -1893,9 +2163,16 @@ export const createPackageRepositoryOptions = (
   });
 };
 
+/**
+ * Create Package Repository
+ */
 export const createPackageRepositoryMutation = (
   options?: Partial<Options<CreatePackageRepositoryData>>
-) => {
+): UseMutationOptions<
+  CreatePackageRepositoryResponse,
+  CreatePackageRepositoryError,
+  Options<CreatePackageRepositoryData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreatePackageRepositoryResponse,
     CreatePackageRepositoryError,
@@ -1913,9 +2190,16 @@ export const createPackageRepositoryMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Package Repository
+ */
 export const deletePackageRepositoryMutation = (
   options?: Partial<Options<DeletePackageRepositoryData>>
-) => {
+): UseMutationOptions<
+  DeletePackageRepositoryResponse,
+  DeletePackageRepositoryError,
+  Options<DeletePackageRepositoryData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeletePackageRepositoryResponse,
     DeletePackageRepositoryError,
@@ -1937,6 +2221,9 @@ export const getPackageRepositoryQueryKey = (
   options: Options<GetPackageRepositoryData>
 ) => createQueryKey("getPackageRepository", options);
 
+/**
+ * Get Package Repository
+ */
 export const getPackageRepositoryOptions = (
   options: Options<GetPackageRepositoryData>
 ) => {
@@ -1954,9 +2241,16 @@ export const getPackageRepositoryOptions = (
   });
 };
 
+/**
+ * Update Package Repository
+ */
 export const updatePackageRepositoryMutation = (
   options?: Partial<Options<UpdatePackageRepositoryData>>
-) => {
+): UseMutationOptions<
+  UpdatePackageRepositoryResponse,
+  UpdatePackageRepositoryError,
+  Options<UpdatePackageRepositoryData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdatePackageRepositoryResponse,
     UpdatePackageRepositoryError,
@@ -1978,6 +2272,9 @@ export const listFabricVlanSubnetReservedIpsQueryKey = (
   options: Options<ListFabricVlanSubnetReservedIpsData>
 ) => createQueryKey("listFabricVlanSubnetReservedIps", options);
 
+/**
+ * List Fabric Vlan Subnet Reserved Ips
+ */
 export const listFabricVlanSubnetReservedIpsOptions = (
   options: Options<ListFabricVlanSubnetReservedIpsData>
 ) => {
@@ -2000,6 +2297,9 @@ export const listFabricVlanSubnetReservedIpsInfiniteQueryKey = (
 ): QueryKey<Options<ListFabricVlanSubnetReservedIpsData>> =>
   createQueryKey("listFabricVlanSubnetReservedIps", options, true);
 
+/**
+ * List Fabric Vlan Subnet Reserved Ips
+ */
 export const listFabricVlanSubnetReservedIpsInfiniteOptions = (
   options: Options<ListFabricVlanSubnetReservedIpsData>
 ) => {
@@ -2047,6 +2347,9 @@ export const createFabricVlanSubnetReservedIpQueryKey = (
   options: Options<CreateFabricVlanSubnetReservedIpData>
 ) => createQueryKey("createFabricVlanSubnetReservedIp", options);
 
+/**
+ * Create Fabric Vlan Subnet Reserved Ip
+ */
 export const createFabricVlanSubnetReservedIpOptions = (
   options: Options<CreateFabricVlanSubnetReservedIpData>
 ) => {
@@ -2064,9 +2367,16 @@ export const createFabricVlanSubnetReservedIpOptions = (
   });
 };
 
+/**
+ * Create Fabric Vlan Subnet Reserved Ip
+ */
 export const createFabricVlanSubnetReservedIpMutation = (
   options?: Partial<Options<CreateFabricVlanSubnetReservedIpData>>
-) => {
+): UseMutationOptions<
+  CreateFabricVlanSubnetReservedIpResponse,
+  CreateFabricVlanSubnetReservedIpError,
+  Options<CreateFabricVlanSubnetReservedIpData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateFabricVlanSubnetReservedIpResponse,
     CreateFabricVlanSubnetReservedIpError,
@@ -2084,9 +2394,16 @@ export const createFabricVlanSubnetReservedIpMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Fabric Vlan Subnet Reserved Ip
+ */
 export const deleteFabricVlanSubnetReservedIpMutation = (
   options?: Partial<Options<DeleteFabricVlanSubnetReservedIpData>>
-) => {
+): UseMutationOptions<
+  DeleteFabricVlanSubnetReservedIpResponse,
+  DeleteFabricVlanSubnetReservedIpError,
+  Options<DeleteFabricVlanSubnetReservedIpData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteFabricVlanSubnetReservedIpResponse,
     DeleteFabricVlanSubnetReservedIpError,
@@ -2104,9 +2421,16 @@ export const deleteFabricVlanSubnetReservedIpMutation = (
   return mutationOptions;
 };
 
+/**
+ * Update Fabric Vlan Subnet Reserved Ip
+ */
 export const updateFabricVlanSubnetReservedIpMutation = (
   options?: Partial<Options<UpdateFabricVlanSubnetReservedIpData>>
-) => {
+): UseMutationOptions<
+  UpdateFabricVlanSubnetReservedIpResponse,
+  UpdateFabricVlanSubnetReservedIpError,
+  Options<UpdateFabricVlanSubnetReservedIpData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateFabricVlanSubnetReservedIpResponse,
     UpdateFabricVlanSubnetReservedIpError,
@@ -2128,6 +2452,9 @@ export const getFabricVlanSubnetReservedIpQueryKey = (
   options: Options<GetFabricVlanSubnetReservedIpData>
 ) => createQueryKey("getFabricVlanSubnetReservedIp", options);
 
+/**
+ * Get Fabric Vlan Subnet Reserved Ip
+ */
 export const getFabricVlanSubnetReservedIpOptions = (
   options: Options<GetFabricVlanSubnetReservedIpData>
 ) => {
@@ -2149,6 +2476,9 @@ export const listResourcePoolsQueryKey = (
   options?: Options<ListResourcePoolsData>
 ) => createQueryKey("listResourcePools", options);
 
+/**
+ * List Resource Pools
+ */
 export const listResourcePoolsOptions = (
   options?: Options<ListResourcePoolsData>
 ) => {
@@ -2171,6 +2501,9 @@ export const listResourcePoolsInfiniteQueryKey = (
 ): QueryKey<Options<ListResourcePoolsData>> =>
   createQueryKey("listResourcePools", options, true);
 
+/**
+ * List Resource Pools
+ */
 export const listResourcePoolsInfiniteOptions = (
   options?: Options<ListResourcePoolsData>
 ) => {
@@ -2218,6 +2551,9 @@ export const createResourcePoolQueryKey = (
   options: Options<CreateResourcePoolData>
 ) => createQueryKey("createResourcePool", options);
 
+/**
+ * Create Resource Pool
+ */
 export const createResourcePoolOptions = (
   options: Options<CreateResourcePoolData>
 ) => {
@@ -2235,9 +2571,16 @@ export const createResourcePoolOptions = (
   });
 };
 
+/**
+ * Create Resource Pool
+ */
 export const createResourcePoolMutation = (
   options?: Partial<Options<CreateResourcePoolData>>
-) => {
+): UseMutationOptions<
+  CreateResourcePoolResponse,
+  CreateResourcePoolError,
+  Options<CreateResourcePoolData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateResourcePoolResponse,
     CreateResourcePoolError,
@@ -2255,9 +2598,16 @@ export const createResourcePoolMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Resource Pool
+ */
 export const deleteResourcePoolMutation = (
   options?: Partial<Options<DeleteResourcePoolData>>
-) => {
+): UseMutationOptions<
+  DeleteResourcePoolResponse,
+  DeleteResourcePoolError,
+  Options<DeleteResourcePoolData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteResourcePoolResponse,
     DeleteResourcePoolError,
@@ -2279,6 +2629,9 @@ export const getResourcePoolQueryKey = (
   options: Options<GetResourcePoolData>
 ) => createQueryKey("getResourcePool", options);
 
+/**
+ * Get Resource Pool
+ */
 export const getResourcePoolOptions = (
   options: Options<GetResourcePoolData>
 ) => {
@@ -2296,9 +2649,16 @@ export const getResourcePoolOptions = (
   });
 };
 
+/**
+ * Update Resource Pool
+ */
 export const updateResourcePoolMutation = (
   options?: Partial<Options<UpdateResourcePoolData>>
-) => {
+): UseMutationOptions<
+  UpdateResourcePoolResponse,
+  UpdateResourcePoolError,
+  Options<UpdateResourcePoolData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateResourcePoolResponse,
     UpdateResourcePoolError,
@@ -2320,6 +2680,10 @@ export const listResourcePoolsWithSummaryQueryKey = (
   options?: Options<ListResourcePoolsWithSummaryData>
 ) => createQueryKey("listResourcePoolsWithSummary", options);
 
+/**
+ * List resource pools with a summary. ONLY FOR INTERNAL USAGE.
+ * List resource pools with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
 export const listResourcePoolsWithSummaryOptions = (
   options?: Options<ListResourcePoolsWithSummaryData>
 ) => {
@@ -2342,6 +2706,10 @@ export const listResourcePoolsWithSummaryInfiniteQueryKey = (
 ): QueryKey<Options<ListResourcePoolsWithSummaryData>> =>
   createQueryKey("listResourcePoolsWithSummary", options, true);
 
+/**
+ * List resource pools with a summary. ONLY FOR INTERNAL USAGE.
+ * List resource pools with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
 export const listResourcePoolsWithSummaryInfiniteOptions = (
   options?: Options<ListResourcePoolsWithSummaryData>
 ) => {
@@ -2389,6 +2757,9 @@ export const listFabricVlanSubnetStaticroutesQueryKey = (
   options: Options<ListFabricVlanSubnetStaticroutesData>
 ) => createQueryKey("listFabricVlanSubnetStaticroutes", options);
 
+/**
+ * List Fabric Vlan Subnet Staticroutes
+ */
 export const listFabricVlanSubnetStaticroutesOptions = (
   options: Options<ListFabricVlanSubnetStaticroutesData>
 ) => {
@@ -2411,6 +2782,9 @@ export const listFabricVlanSubnetStaticroutesInfiniteQueryKey = (
 ): QueryKey<Options<ListFabricVlanSubnetStaticroutesData>> =>
   createQueryKey("listFabricVlanSubnetStaticroutes", options, true);
 
+/**
+ * List Fabric Vlan Subnet Staticroutes
+ */
 export const listFabricVlanSubnetStaticroutesInfiniteOptions = (
   options: Options<ListFabricVlanSubnetStaticroutesData>
 ) => {
@@ -2458,6 +2832,9 @@ export const createFabricVlanSubnetStaticrouteQueryKey = (
   options: Options<CreateFabricVlanSubnetStaticrouteData>
 ) => createQueryKey("createFabricVlanSubnetStaticroute", options);
 
+/**
+ * Create Fabric Vlan Subnet Staticroute
+ */
 export const createFabricVlanSubnetStaticrouteOptions = (
   options: Options<CreateFabricVlanSubnetStaticrouteData>
 ) => {
@@ -2475,9 +2852,16 @@ export const createFabricVlanSubnetStaticrouteOptions = (
   });
 };
 
+/**
+ * Create Fabric Vlan Subnet Staticroute
+ */
 export const createFabricVlanSubnetStaticrouteMutation = (
   options?: Partial<Options<CreateFabricVlanSubnetStaticrouteData>>
-) => {
+): UseMutationOptions<
+  CreateFabricVlanSubnetStaticrouteResponse,
+  CreateFabricVlanSubnetStaticrouteError,
+  Options<CreateFabricVlanSubnetStaticrouteData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateFabricVlanSubnetStaticrouteResponse,
     CreateFabricVlanSubnetStaticrouteError,
@@ -2495,9 +2879,16 @@ export const createFabricVlanSubnetStaticrouteMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Fabric Vlan Subnet Staticroute
+ */
 export const deleteFabricVlanSubnetStaticrouteMutation = (
   options?: Partial<Options<DeleteFabricVlanSubnetStaticrouteData>>
-) => {
+): UseMutationOptions<
+  DeleteFabricVlanSubnetStaticrouteResponse,
+  DeleteFabricVlanSubnetStaticrouteError,
+  Options<DeleteFabricVlanSubnetStaticrouteData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteFabricVlanSubnetStaticrouteResponse,
     DeleteFabricVlanSubnetStaticrouteError,
@@ -2519,6 +2910,9 @@ export const getFabricVlanSubnetStaticrouteQueryKey = (
   options: Options<GetFabricVlanSubnetStaticrouteData>
 ) => createQueryKey("getFabricVlanSubnetStaticroute", options);
 
+/**
+ * Get Fabric Vlan Subnet Staticroute
+ */
 export const getFabricVlanSubnetStaticrouteOptions = (
   options: Options<GetFabricVlanSubnetStaticrouteData>
 ) => {
@@ -2536,9 +2930,16 @@ export const getFabricVlanSubnetStaticrouteOptions = (
   });
 };
 
+/**
+ * Update Fabric Vlan Subnet Staticroute
+ */
 export const updateFabricVlanSubnetStaticrouteMutation = (
   options?: Partial<Options<UpdateFabricVlanSubnetStaticrouteData>>
-) => {
+): UseMutationOptions<
+  UpdateFabricVlanSubnetStaticrouteResponse,
+  UpdateFabricVlanSubnetStaticrouteError,
+  Options<UpdateFabricVlanSubnetStaticrouteData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateFabricVlanSubnetStaticrouteResponse,
     UpdateFabricVlanSubnetStaticrouteError,
@@ -2559,6 +2960,9 @@ export const updateFabricVlanSubnetStaticrouteMutation = (
 export const listSpacesQueryKey = (options?: Options<ListSpacesData>) =>
   createQueryKey("listSpaces", options);
 
+/**
+ * List Spaces
+ */
 export const listSpacesOptions = (options?: Options<ListSpacesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -2579,6 +2983,9 @@ export const listSpacesInfiniteQueryKey = (
 ): QueryKey<Options<ListSpacesData>> =>
   createQueryKey("listSpaces", options, true);
 
+/**
+ * List Spaces
+ */
 export const listSpacesInfiniteOptions = (
   options?: Options<ListSpacesData>
 ) => {
@@ -2625,6 +3032,9 @@ export const listSpacesInfiniteOptions = (
 export const createSpaceQueryKey = (options: Options<CreateSpaceData>) =>
   createQueryKey("createSpace", options);
 
+/**
+ * Create Space
+ */
 export const createSpaceOptions = (options: Options<CreateSpaceData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -2640,9 +3050,16 @@ export const createSpaceOptions = (options: Options<CreateSpaceData>) => {
   });
 };
 
+/**
+ * Create Space
+ */
 export const createSpaceMutation = (
   options?: Partial<Options<CreateSpaceData>>
-) => {
+): UseMutationOptions<
+  CreateSpaceResponse,
+  CreateSpaceError,
+  Options<CreateSpaceData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateSpaceResponse,
     CreateSpaceError,
@@ -2660,9 +3077,16 @@ export const createSpaceMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Space
+ */
 export const deleteSpaceMutation = (
   options?: Partial<Options<DeleteSpaceData>>
-) => {
+): UseMutationOptions<
+  DeleteSpaceResponse,
+  DeleteSpaceError,
+  Options<DeleteSpaceData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteSpaceResponse,
     DeleteSpaceError,
@@ -2683,6 +3107,9 @@ export const deleteSpaceMutation = (
 export const getSpaceQueryKey = (options: Options<GetSpaceData>) =>
   createQueryKey("getSpace", options);
 
+/**
+ * Get Space
+ */
 export const getSpaceOptions = (options: Options<GetSpaceData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -2698,9 +3125,16 @@ export const getSpaceOptions = (options: Options<GetSpaceData>) => {
   });
 };
 
+/**
+ * Update Space
+ */
 export const updateSpaceMutation = (
   options?: Partial<Options<UpdateSpaceData>>
-) => {
+): UseMutationOptions<
+  UpdateSpaceResponse,
+  UpdateSpaceError,
+  Options<UpdateSpaceData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateSpaceResponse,
     UpdateSpaceError,
@@ -2722,6 +3156,9 @@ export const listUserSshkeysQueryKey = (
   options?: Options<ListUserSshkeysData>
 ) => createQueryKey("listUserSshkeys", options);
 
+/**
+ * List User Sshkeys
+ */
 export const listUserSshkeysOptions = (
   options?: Options<ListUserSshkeysData>
 ) => {
@@ -2744,6 +3181,9 @@ export const listUserSshkeysInfiniteQueryKey = (
 ): QueryKey<Options<ListUserSshkeysData>> =>
   createQueryKey("listUserSshkeys", options, true);
 
+/**
+ * List User Sshkeys
+ */
 export const listUserSshkeysInfiniteOptions = (
   options?: Options<ListUserSshkeysData>
 ) => {
@@ -2791,6 +3231,9 @@ export const createUserSshkeysQueryKey = (
   options: Options<CreateUserSshkeysData>
 ) => createQueryKey("createUserSshkeys", options);
 
+/**
+ * Create User Sshkeys
+ */
 export const createUserSshkeysOptions = (
   options: Options<CreateUserSshkeysData>
 ) => {
@@ -2808,9 +3251,16 @@ export const createUserSshkeysOptions = (
   });
 };
 
+/**
+ * Create User Sshkeys
+ */
 export const createUserSshkeysMutation = (
   options?: Partial<Options<CreateUserSshkeysData>>
-) => {
+): UseMutationOptions<
+  CreateUserSshkeysResponse,
+  CreateUserSshkeysError,
+  Options<CreateUserSshkeysData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateUserSshkeysResponse,
     CreateUserSshkeysError,
@@ -2828,9 +3278,16 @@ export const createUserSshkeysMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete User Sshkey
+ */
 export const deleteUserSshkeyMutation = (
   options?: Partial<Options<DeleteUserSshkeyData>>
-) => {
+): UseMutationOptions<
+  DeleteUserSshkeyResponse,
+  DeleteUserSshkeyError,
+  Options<DeleteUserSshkeyData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteUserSshkeyResponse,
     DeleteUserSshkeyError,
@@ -2851,6 +3308,9 @@ export const deleteUserSshkeyMutation = (
 export const getUserSshkeyQueryKey = (options: Options<GetUserSshkeyData>) =>
   createQueryKey("getUserSshkey", options);
 
+/**
+ * Get User Sshkey
+ */
 export const getUserSshkeyOptions = (options: Options<GetUserSshkeyData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -2870,6 +3330,9 @@ export const importUserSshkeysQueryKey = (
   options: Options<ImportUserSshkeysData>
 ) => createQueryKey("importUserSshkeys", options);
 
+/**
+ * Import User Sshkeys
+ */
 export const importUserSshkeysOptions = (
   options: Options<ImportUserSshkeysData>
 ) => {
@@ -2887,9 +3350,16 @@ export const importUserSshkeysOptions = (
   });
 };
 
+/**
+ * Import User Sshkeys
+ */
 export const importUserSshkeysMutation = (
   options?: Partial<Options<ImportUserSshkeysData>>
-) => {
+): UseMutationOptions<
+  ImportUserSshkeysResponse,
+  ImportUserSshkeysError,
+  Options<ImportUserSshkeysData>
+> => {
   const mutationOptions: UseMutationOptions<
     ImportUserSshkeysResponse,
     ImportUserSshkeysError,
@@ -2910,6 +3380,9 @@ export const importUserSshkeysMutation = (
 export const getUserSslkeysQueryKey = (options?: Options<GetUserSslkeysData>) =>
   createQueryKey("getUserSslkeys", options);
 
+/**
+ * Get User Sslkeys
+ */
 export const getUserSslkeysOptions = (
   options?: Options<GetUserSslkeysData>
 ) => {
@@ -2932,6 +3405,9 @@ export const getUserSslkeysInfiniteQueryKey = (
 ): QueryKey<Options<GetUserSslkeysData>> =>
   createQueryKey("getUserSslkeys", options, true);
 
+/**
+ * Get User Sslkeys
+ */
 export const getUserSslkeysInfiniteOptions = (
   options?: Options<GetUserSslkeysData>
 ) => {
@@ -2979,6 +3455,9 @@ export const createUserSslkeyQueryKey = (
   options: Options<CreateUserSslkeyData>
 ) => createQueryKey("createUserSslkey", options);
 
+/**
+ * Create User Sslkey
+ */
 export const createUserSslkeyOptions = (
   options: Options<CreateUserSslkeyData>
 ) => {
@@ -2996,9 +3475,16 @@ export const createUserSslkeyOptions = (
   });
 };
 
+/**
+ * Create User Sslkey
+ */
 export const createUserSslkeyMutation = (
   options?: Partial<Options<CreateUserSslkeyData>>
-) => {
+): UseMutationOptions<
+  CreateUserSslkeyResponse,
+  CreateUserSslkeyError,
+  Options<CreateUserSslkeyData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateUserSslkeyResponse,
     CreateUserSslkeyError,
@@ -3016,9 +3502,16 @@ export const createUserSslkeyMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete User Sslkey
+ */
 export const deleteUserSslkeyMutation = (
   options?: Partial<Options<DeleteUserSslkeyData>>
-) => {
+): UseMutationOptions<
+  DeleteUserSslkeyResponse,
+  DeleteUserSslkeyError,
+  Options<DeleteUserSslkeyData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteUserSslkeyResponse,
     DeleteUserSslkeyError,
@@ -3039,6 +3532,9 @@ export const deleteUserSslkeyMutation = (
 export const getUserSslkeyQueryKey = (options: Options<GetUserSslkeyData>) =>
   createQueryKey("getUserSslkey", options);
 
+/**
+ * Get User Sslkey
+ */
 export const getUserSslkeyOptions = (options: Options<GetUserSslkeyData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3058,6 +3554,10 @@ export const getUserSslkeysWithSummaryQueryKey = (
   options?: Options<GetUserSslkeysWithSummaryData>
 ) => createQueryKey("getUserSslkeysWithSummary", options);
 
+/**
+ * List sslkeys with a summary. ONLY FOR INTERNAL USAGE.
+ * List sslkeys with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
 export const getUserSslkeysWithSummaryOptions = (
   options?: Options<GetUserSslkeysWithSummaryData>
 ) => {
@@ -3080,6 +3580,10 @@ export const getUserSslkeysWithSummaryInfiniteQueryKey = (
 ): QueryKey<Options<GetUserSslkeysWithSummaryData>> =>
   createQueryKey("getUserSslkeysWithSummary", options, true);
 
+/**
+ * List sslkeys with a summary. ONLY FOR INTERNAL USAGE.
+ * List sslkeys with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
 export const getUserSslkeysWithSummaryInfiniteOptions = (
   options?: Options<GetUserSslkeysWithSummaryData>
 ) => {
@@ -3127,6 +3631,9 @@ export const listFabricVlanSubnetsQueryKey = (
   options: Options<ListFabricVlanSubnetsData>
 ) => createQueryKey("listFabricVlanSubnets", options);
 
+/**
+ * List Fabric Vlan Subnets
+ */
 export const listFabricVlanSubnetsOptions = (
   options: Options<ListFabricVlanSubnetsData>
 ) => {
@@ -3149,6 +3656,9 @@ export const listFabricVlanSubnetsInfiniteQueryKey = (
 ): QueryKey<Options<ListFabricVlanSubnetsData>> =>
   createQueryKey("listFabricVlanSubnets", options, true);
 
+/**
+ * List Fabric Vlan Subnets
+ */
 export const listFabricVlanSubnetsInfiniteOptions = (
   options: Options<ListFabricVlanSubnetsData>
 ) => {
@@ -3196,6 +3706,9 @@ export const createFabricVlanSubnetQueryKey = (
   options: Options<CreateFabricVlanSubnetData>
 ) => createQueryKey("createFabricVlanSubnet", options);
 
+/**
+ * Create Fabric Vlan Subnet
+ */
 export const createFabricVlanSubnetOptions = (
   options: Options<CreateFabricVlanSubnetData>
 ) => {
@@ -3213,9 +3726,16 @@ export const createFabricVlanSubnetOptions = (
   });
 };
 
+/**
+ * Create Fabric Vlan Subnet
+ */
 export const createFabricVlanSubnetMutation = (
   options?: Partial<Options<CreateFabricVlanSubnetData>>
-) => {
+): UseMutationOptions<
+  CreateFabricVlanSubnetResponse,
+  CreateFabricVlanSubnetError,
+  Options<CreateFabricVlanSubnetData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateFabricVlanSubnetResponse,
     CreateFabricVlanSubnetError,
@@ -3233,9 +3753,16 @@ export const createFabricVlanSubnetMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Fabric Vlan Subnet
+ */
 export const deleteFabricVlanSubnetMutation = (
   options?: Partial<Options<DeleteFabricVlanSubnetData>>
-) => {
+): UseMutationOptions<
+  DeleteFabricVlanSubnetResponse,
+  DeleteFabricVlanSubnetError,
+  Options<DeleteFabricVlanSubnetData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteFabricVlanSubnetResponse,
     DeleteFabricVlanSubnetError,
@@ -3253,9 +3780,16 @@ export const deleteFabricVlanSubnetMutation = (
   return mutationOptions;
 };
 
+/**
+ * Update Fabric Vlan Subnet
+ */
 export const updateFabricVlanSubnetMutation = (
   options?: Partial<Options<UpdateFabricVlanSubnetData>>
-) => {
+): UseMutationOptions<
+  UpdateFabricVlanSubnetResponse,
+  UpdateFabricVlanSubnetError,
+  Options<UpdateFabricVlanSubnetData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateFabricVlanSubnetResponse,
     UpdateFabricVlanSubnetError,
@@ -3277,6 +3811,9 @@ export const getFabricVlanSubnetQueryKey = (
   options: Options<GetFabricVlanSubnetData>
 ) => createQueryKey("getFabricVlanSubnet", options);
 
+/**
+ * Get Fabric Vlan Subnet
+ */
 export const getFabricVlanSubnetOptions = (
   options: Options<GetFabricVlanSubnetData>
 ) => {
@@ -3297,6 +3834,9 @@ export const getFabricVlanSubnetOptions = (
 export const listTagsQueryKey = (options?: Options<ListTagsData>) =>
   createQueryKey("listTags", options);
 
+/**
+ * List Tags
+ */
 export const listTagsOptions = (options?: Options<ListTagsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3316,6 +3856,9 @@ export const listTagsInfiniteQueryKey = (
   options?: Options<ListTagsData>
 ): QueryKey<Options<ListTagsData>> => createQueryKey("listTags", options, true);
 
+/**
+ * List Tags
+ */
 export const listTagsInfiniteOptions = (options?: Options<ListTagsData>) => {
   return infiniteQueryOptions<
     ListTagsResponse,
@@ -3360,6 +3903,9 @@ export const listTagsInfiniteOptions = (options?: Options<ListTagsData>) => {
 export const createTagQueryKey = (options: Options<CreateTagData>) =>
   createQueryKey("createTag", options);
 
+/**
+ * Create Tag
+ */
 export const createTagOptions = (options: Options<CreateTagData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3375,9 +3921,16 @@ export const createTagOptions = (options: Options<CreateTagData>) => {
   });
 };
 
+/**
+ * Create Tag
+ */
 export const createTagMutation = (
   options?: Partial<Options<CreateTagData>>
-) => {
+): UseMutationOptions<
+  CreateTagResponse,
+  CreateTagError,
+  Options<CreateTagData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateTagResponse,
     CreateTagError,
@@ -3395,9 +3948,16 @@ export const createTagMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Tag
+ */
 export const deleteTagMutation = (
   options?: Partial<Options<DeleteTagData>>
-) => {
+): UseMutationOptions<
+  DeleteTagResponse,
+  DeleteTagError,
+  Options<DeleteTagData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteTagResponse,
     DeleteTagError,
@@ -3418,6 +3978,9 @@ export const deleteTagMutation = (
 export const getTagQueryKey = (options: Options<GetTagData>) =>
   createQueryKey("getTag", options);
 
+/**
+ * Get Tag
+ */
 export const getTagOptions = (options: Options<GetTagData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3433,9 +3996,16 @@ export const getTagOptions = (options: Options<GetTagData>) => {
   });
 };
 
+/**
+ * Update Tag
+ */
 export const updateTagMutation = (
   options?: Partial<Options<UpdateTagData>>
-) => {
+): UseMutationOptions<
+  UpdateTagResponse,
+  UpdateTagError,
+  Options<UpdateTagData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateTagResponse,
     UpdateTagError,
@@ -3457,6 +4027,10 @@ export const getMeWithSummaryQueryKey = (
   options?: Options<GetMeWithSummaryData>
 ) => createQueryKey("getMeWithSummary", options);
 
+/**
+ * Get user with a summary. ONLY FOR INTERNAL USAGE.
+ * Get user with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
 export const getMeWithSummaryOptions = (
   options?: Options<GetMeWithSummaryData>
 ) => {
@@ -3477,6 +4051,9 @@ export const getMeWithSummaryOptions = (
 export const getUserInfoQueryKey = (options?: Options<GetUserInfoData>) =>
   createQueryKey("getUserInfo", options);
 
+/**
+ * Get User Info
+ */
 export const getUserInfoOptions = (options?: Options<GetUserInfoData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3495,6 +4072,9 @@ export const getUserInfoOptions = (options?: Options<GetUserInfoData>) => {
 export const completeIntroQueryKey = (options?: Options<CompleteIntroData>) =>
   createQueryKey("completeIntro", options);
 
+/**
+ * Complete Intro
+ */
 export const completeIntroOptions = (options?: Options<CompleteIntroData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3510,9 +4090,16 @@ export const completeIntroOptions = (options?: Options<CompleteIntroData>) => {
   });
 };
 
+/**
+ * Complete Intro
+ */
 export const completeIntroMutation = (
   options?: Partial<Options<CompleteIntroData>>
-) => {
+): UseMutationOptions<
+  CompleteIntroResponse,
+  CompleteIntroError,
+  Options<CompleteIntroData>
+> => {
   const mutationOptions: UseMutationOptions<
     CompleteIntroResponse,
     CompleteIntroError,
@@ -3534,6 +4121,9 @@ export const changePasswordUserQueryKey = (
   options: Options<ChangePasswordUserData>
 ) => createQueryKey("changePasswordUser", options);
 
+/**
+ * Change Password User
+ */
 export const changePasswordUserOptions = (
   options: Options<ChangePasswordUserData>
 ) => {
@@ -3551,9 +4141,16 @@ export const changePasswordUserOptions = (
   });
 };
 
+/**
+ * Change Password User
+ */
 export const changePasswordUserMutation = (
   options?: Partial<Options<ChangePasswordUserData>>
-) => {
+): UseMutationOptions<
+  ChangePasswordUserResponse,
+  ChangePasswordUserError,
+  Options<ChangePasswordUserData>
+> => {
   const mutationOptions: UseMutationOptions<
     ChangePasswordUserResponse,
     ChangePasswordUserError,
@@ -3574,6 +4171,9 @@ export const changePasswordUserMutation = (
 export const listUsersQueryKey = (options?: Options<ListUsersData>) =>
   createQueryKey("listUsers", options);
 
+/**
+ * List Users
+ */
 export const listUsersOptions = (options?: Options<ListUsersData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3594,6 +4194,9 @@ export const listUsersInfiniteQueryKey = (
 ): QueryKey<Options<ListUsersData>> =>
   createQueryKey("listUsers", options, true);
 
+/**
+ * List Users
+ */
 export const listUsersInfiniteOptions = (options?: Options<ListUsersData>) => {
   return infiniteQueryOptions<
     ListUsersResponse,
@@ -3638,6 +4241,9 @@ export const listUsersInfiniteOptions = (options?: Options<ListUsersData>) => {
 export const createUserQueryKey = (options: Options<CreateUserData>) =>
   createQueryKey("createUser", options);
 
+/**
+ * Create User
+ */
 export const createUserOptions = (options: Options<CreateUserData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3653,9 +4259,16 @@ export const createUserOptions = (options: Options<CreateUserData>) => {
   });
 };
 
+/**
+ * Create User
+ */
 export const createUserMutation = (
   options?: Partial<Options<CreateUserData>>
-) => {
+): UseMutationOptions<
+  CreateUserResponse,
+  CreateUserError,
+  Options<CreateUserData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateUserResponse,
     CreateUserError,
@@ -3673,9 +4286,16 @@ export const createUserMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete User
+ */
 export const deleteUserMutation = (
   options?: Partial<Options<DeleteUserData>>
-) => {
+): UseMutationOptions<
+  DeleteUserResponse,
+  DeleteUserError,
+  Options<DeleteUserData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteUserResponse,
     DeleteUserError,
@@ -3696,6 +4316,9 @@ export const deleteUserMutation = (
 export const getUserQueryKey = (options: Options<GetUserData>) =>
   createQueryKey("getUser", options);
 
+/**
+ * Get User
+ */
 export const getUserOptions = (options: Options<GetUserData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3711,9 +4334,16 @@ export const getUserOptions = (options: Options<GetUserData>) => {
   });
 };
 
+/**
+ * Update User
+ */
 export const updateUserMutation = (
   options?: Partial<Options<UpdateUserData>>
-) => {
+): UseMutationOptions<
+  UpdateUserResponse,
+  UpdateUserError,
+  Options<UpdateUserData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateUserResponse,
     UpdateUserError,
@@ -3735,6 +4365,9 @@ export const changePasswordAdminQueryKey = (
   options: Options<ChangePasswordAdminData>
 ) => createQueryKey("changePasswordAdmin", options);
 
+/**
+ * Change Password Admin
+ */
 export const changePasswordAdminOptions = (
   options: Options<ChangePasswordAdminData>
 ) => {
@@ -3752,9 +4385,16 @@ export const changePasswordAdminOptions = (
   });
 };
 
+/**
+ * Change Password Admin
+ */
 export const changePasswordAdminMutation = (
   options?: Partial<Options<ChangePasswordAdminData>>
-) => {
+): UseMutationOptions<
+  ChangePasswordAdminResponse,
+  ChangePasswordAdminError,
+  Options<ChangePasswordAdminData>
+> => {
   const mutationOptions: UseMutationOptions<
     ChangePasswordAdminResponse,
     ChangePasswordAdminError,
@@ -3776,6 +4416,10 @@ export const listUsersWithSummaryQueryKey = (
   options?: Options<ListUsersWithSummaryData>
 ) => createQueryKey("listUsersWithSummary", options);
 
+/**
+ * List users with a summary. ONLY FOR INTERNAL USAGE.
+ * List users with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
 export const listUsersWithSummaryOptions = (
   options?: Options<ListUsersWithSummaryData>
 ) => {
@@ -3798,6 +4442,10 @@ export const listUsersWithSummaryInfiniteQueryKey = (
 ): QueryKey<Options<ListUsersWithSummaryData>> =>
   createQueryKey("listUsersWithSummary", options, true);
 
+/**
+ * List users with a summary. ONLY FOR INTERNAL USAGE.
+ * List users with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
 export const listUsersWithSummaryInfiniteOptions = (
   options?: Options<ListUsersWithSummaryData>
 ) => {
@@ -3845,6 +4493,9 @@ export const listFabricVlansQueryKey = (
   options: Options<ListFabricVlansData>
 ) => createQueryKey("listFabricVlans", options);
 
+/**
+ * List Fabric Vlans
+ */
 export const listFabricVlansOptions = (
   options: Options<ListFabricVlansData>
 ) => {
@@ -3867,6 +4518,9 @@ export const listFabricVlansInfiniteQueryKey = (
 ): QueryKey<Options<ListFabricVlansData>> =>
   createQueryKey("listFabricVlans", options, true);
 
+/**
+ * List Fabric Vlans
+ */
 export const listFabricVlansInfiniteOptions = (
   options: Options<ListFabricVlansData>
 ) => {
@@ -3914,6 +4568,9 @@ export const createFabricVlanQueryKey = (
   options: Options<CreateFabricVlanData>
 ) => createQueryKey("createFabricVlan", options);
 
+/**
+ * Create Fabric Vlan
+ */
 export const createFabricVlanOptions = (
   options: Options<CreateFabricVlanData>
 ) => {
@@ -3931,9 +4588,16 @@ export const createFabricVlanOptions = (
   });
 };
 
+/**
+ * Create Fabric Vlan
+ */
 export const createFabricVlanMutation = (
   options?: Partial<Options<CreateFabricVlanData>>
-) => {
+): UseMutationOptions<
+  CreateFabricVlanResponse,
+  CreateFabricVlanError,
+  Options<CreateFabricVlanData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateFabricVlanResponse,
     CreateFabricVlanError,
@@ -3951,9 +4615,16 @@ export const createFabricVlanMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Fabric Vlan
+ */
 export const deleteFabricVlanMutation = (
   options?: Partial<Options<DeleteFabricVlanData>>
-) => {
+): UseMutationOptions<
+  DeleteFabricVlanResponse,
+  DeleteFabricVlanError,
+  Options<DeleteFabricVlanData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteFabricVlanResponse,
     DeleteFabricVlanError,
@@ -3974,6 +4645,9 @@ export const deleteFabricVlanMutation = (
 export const getFabricVlanQueryKey = (options: Options<GetFabricVlanData>) =>
   createQueryKey("getFabricVlan", options);
 
+/**
+ * Get Fabric Vlan
+ */
 export const getFabricVlanOptions = (options: Options<GetFabricVlanData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -3989,9 +4663,16 @@ export const getFabricVlanOptions = (options: Options<GetFabricVlanData>) => {
   });
 };
 
+/**
+ * Update Fabric Vlan
+ */
 export const updateFabricVlanMutation = (
   options?: Partial<Options<UpdateFabricVlanData>>
-) => {
+): UseMutationOptions<
+  UpdateFabricVlanResponse,
+  UpdateFabricVlanError,
+  Options<UpdateFabricVlanData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateFabricVlanResponse,
     UpdateFabricVlanError,
@@ -4012,6 +4693,9 @@ export const updateFabricVlanMutation = (
 export const listZonesQueryKey = (options?: Options<ListZonesData>) =>
   createQueryKey("listZones", options);
 
+/**
+ * List Zones
+ */
 export const listZonesOptions = (options?: Options<ListZonesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -4032,6 +4716,9 @@ export const listZonesInfiniteQueryKey = (
 ): QueryKey<Options<ListZonesData>> =>
   createQueryKey("listZones", options, true);
 
+/**
+ * List Zones
+ */
 export const listZonesInfiniteOptions = (options?: Options<ListZonesData>) => {
   return infiniteQueryOptions<
     ListZonesResponse,
@@ -4076,6 +4763,9 @@ export const listZonesInfiniteOptions = (options?: Options<ListZonesData>) => {
 export const createZoneQueryKey = (options: Options<CreateZoneData>) =>
   createQueryKey("createZone", options);
 
+/**
+ * Create Zone
+ */
 export const createZoneOptions = (options: Options<CreateZoneData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -4091,9 +4781,16 @@ export const createZoneOptions = (options: Options<CreateZoneData>) => {
   });
 };
 
+/**
+ * Create Zone
+ */
 export const createZoneMutation = (
   options?: Partial<Options<CreateZoneData>>
-) => {
+): UseMutationOptions<
+  CreateZoneResponse,
+  CreateZoneError,
+  Options<CreateZoneData>
+> => {
   const mutationOptions: UseMutationOptions<
     CreateZoneResponse,
     CreateZoneError,
@@ -4111,9 +4808,17 @@ export const createZoneMutation = (
   return mutationOptions;
 };
 
+/**
+ * Delete Zone
+ * Deletes a zone. All the resources belonging to this zone will be moved to the default zone.
+ */
 export const deleteZoneMutation = (
   options?: Partial<Options<DeleteZoneData>>
-) => {
+): UseMutationOptions<
+  DeleteZoneResponse,
+  DeleteZoneError,
+  Options<DeleteZoneData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteZoneResponse,
     DeleteZoneError,
@@ -4134,6 +4839,9 @@ export const deleteZoneMutation = (
 export const getZoneQueryKey = (options: Options<GetZoneData>) =>
   createQueryKey("getZone", options);
 
+/**
+ * Get Zone
+ */
 export const getZoneOptions = (options: Options<GetZoneData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -4149,9 +4857,16 @@ export const getZoneOptions = (options: Options<GetZoneData>) => {
   });
 };
 
+/**
+ * Update Zone
+ */
 export const updateZoneMutation = (
   options?: Partial<Options<UpdateZoneData>>
-) => {
+): UseMutationOptions<
+  UpdateZoneResponse,
+  UpdateZoneError,
+  Options<UpdateZoneData>
+> => {
   const mutationOptions: UseMutationOptions<
     UpdateZoneResponse,
     UpdateZoneError,
@@ -4173,6 +4888,10 @@ export const listZonesWithSummaryQueryKey = (
   options?: Options<ListZonesWithSummaryData>
 ) => createQueryKey("listZonesWithSummary", options);
 
+/**
+ * List zones with a summary. ONLY FOR INTERNAL USAGE.
+ * List zones with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
 export const listZonesWithSummaryOptions = (
   options?: Options<ListZonesWithSummaryData>
 ) => {
@@ -4195,6 +4914,10 @@ export const listZonesWithSummaryInfiniteQueryKey = (
 ): QueryKey<Options<ListZonesWithSummaryData>> =>
   createQueryKey("listZonesWithSummary", options, true);
 
+/**
+ * List zones with a summary. ONLY FOR INTERNAL USAGE.
+ * List zones with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
 export const listZonesWithSummaryInfiniteOptions = (
   options?: Options<ListZonesWithSummaryData>
 ) => {

@@ -1,4 +1,3 @@
-import type { Options } from "@hey-api/client-fetch";
 import {
   useMutation,
   useQueryClient,
@@ -20,6 +19,7 @@ import type {
   DeleteUserSshkeyData,
   DeleteUserSshkeyResponse,
   DeleteUserSshkeyError,
+  Options,
 } from "@/app/apiclient";
 import {
   createUserSshkeysMutation,

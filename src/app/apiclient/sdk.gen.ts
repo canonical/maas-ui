@@ -5,325 +5,327 @@ import {
   type TDataShape,
   type Client,
   urlSearchParamsBodySerializer,
-} from "@hey-api/client-fetch";
-
+} from "./client";
 import { client as _heyApiClient } from "./client.gen";
 import type {
   AccessTokenData,
-  AccessTokenResponse2,
-  AccessTokenError,
+  AccessTokenResponses,
+  AccessTokenErrors,
   LoginData,
-  LoginResponse,
-  LoginError,
+  LoginResponses,
+  LoginErrors,
   GetConfigurationData,
-  GetConfigurationResponse,
-  GetConfigurationError,
+  GetConfigurationResponses,
+  GetConfigurationErrors,
+  SetConfigurationData,
+  SetConfigurationResponses,
+  SetConfigurationErrors,
   GetConfigurationsData,
-  GetConfigurationsResponse,
-  GetConfigurationsError,
+  GetConfigurationsResponses,
+  GetConfigurationsErrors,
   ListEventsData,
-  ListEventsResponse,
-  ListEventsError,
+  ListEventsResponses,
+  ListEventsErrors,
   ClearAllDiscoveriesWithOptionalIpAndMacData,
-  ClearAllDiscoveriesWithOptionalIpAndMacResponse,
-  ClearAllDiscoveriesWithOptionalIpAndMacError,
+  ClearAllDiscoveriesWithOptionalIpAndMacResponses,
+  ClearAllDiscoveriesWithOptionalIpAndMacErrors,
   ListDiscoveriesData,
-  ListDiscoveriesResponse,
-  ListDiscoveriesError,
+  ListDiscoveriesResponses,
+  ListDiscoveriesErrors,
   ClearNeighboursDiscoveriesData,
-  ClearNeighboursDiscoveriesResponse,
-  ClearNeighboursDiscoveriesError,
+  ClearNeighboursDiscoveriesResponses,
+  ClearNeighboursDiscoveriesErrors,
   ClearRdnsAndMdnsDiscoveriesData,
-  ClearRdnsAndMdnsDiscoveriesResponse,
-  ClearRdnsAndMdnsDiscoveriesError,
+  ClearRdnsAndMdnsDiscoveriesResponses,
+  ClearRdnsAndMdnsDiscoveriesErrors,
   GetDiscoveryData,
-  GetDiscoveryResponse,
-  GetDiscoveryError,
+  GetDiscoveryResponses,
+  GetDiscoveryErrors,
   ListDomainsData,
-  ListDomainsResponse,
-  ListDomainsError,
+  ListDomainsResponses,
+  ListDomainsErrors,
   CreateDomainData,
-  CreateDomainResponse,
-  CreateDomainError,
+  CreateDomainResponses,
+  CreateDomainErrors,
   GetDomainRrsetsData,
-  GetDomainRrsetsResponse,
-  GetDomainRrsetsError,
+  GetDomainRrsetsResponses,
+  GetDomainRrsetsErrors,
   CreateDomainRrsetsData,
-  CreateDomainRrsetsResponse,
-  CreateDomainRrsetsError,
+  CreateDomainRrsetsResponses,
+  CreateDomainRrsetsErrors,
   DeleteDomainData,
-  DeleteDomainResponse,
-  DeleteDomainError,
+  DeleteDomainResponses,
+  DeleteDomainErrors,
   GetDomainData,
-  GetDomainResponse,
-  GetDomainError,
+  GetDomainResponses,
+  GetDomainErrors,
   ListFabricsData,
-  ListFabricsResponse,
-  ListFabricsError,
+  ListFabricsResponses,
+  ListFabricsErrors,
   CreateFabricData,
-  CreateFabricResponse,
-  CreateFabricError,
+  CreateFabricResponses,
+  CreateFabricErrors,
   DeleteFabricData,
-  DeleteFabricResponse,
-  DeleteFabricError,
+  DeleteFabricResponses,
+  DeleteFabricErrors,
   GetFabricData,
-  GetFabricResponse,
-  GetFabricError,
+  GetFabricResponses,
+  GetFabricErrors,
   UpdateFabricData,
-  UpdateFabricResponse,
-  UpdateFabricError,
+  UpdateFabricResponses,
+  UpdateFabricErrors,
   ListInterfacesData,
-  ListInterfacesResponse,
-  ListInterfacesError,
+  ListInterfacesResponses,
+  ListInterfacesErrors,
   ListFabricVlanSubnetIprangeData,
-  ListFabricVlanSubnetIprangeResponse,
-  ListFabricVlanSubnetIprangeError,
+  ListFabricVlanSubnetIprangeResponses,
+  ListFabricVlanSubnetIprangeErrors,
   CreateFabricVlanSubnetIprangeData,
-  CreateFabricVlanSubnetIprangeResponse,
-  CreateFabricVlanSubnetIprangeError,
+  CreateFabricVlanSubnetIprangeResponses,
+  CreateFabricVlanSubnetIprangeErrors,
   DeleteFabricVlanSubnetIprangeData,
-  DeleteFabricVlanSubnetIprangeResponse,
-  DeleteFabricVlanSubnetIprangeError,
+  DeleteFabricVlanSubnetIprangeResponses,
+  DeleteFabricVlanSubnetIprangeErrors,
   UpdateFabricVlanSubnetIprangeData,
-  UpdateFabricVlanSubnetIprangeResponse,
-  UpdateFabricVlanSubnetIprangeError,
+  UpdateFabricVlanSubnetIprangeResponses,
+  UpdateFabricVlanSubnetIprangeErrors,
   GetFabricVlanSubnetIprangeData,
-  GetFabricVlanSubnetIprangeResponse,
-  GetFabricVlanSubnetIprangeError,
+  GetFabricVlanSubnetIprangeResponses,
+  GetFabricVlanSubnetIprangeErrors,
   GetMachinePowerParametersData,
-  GetMachinePowerParametersResponse,
-  GetMachinePowerParametersError,
+  GetMachinePowerParametersResponses,
+  GetMachinePowerParametersErrors,
   ListMachinePciDevicesData,
-  ListMachinePciDevicesResponse,
-  ListMachinePciDevicesError,
+  ListMachinePciDevicesResponses,
+  ListMachinePciDevicesErrors,
   ListMachineUsbDevicesData,
-  ListMachineUsbDevicesResponse,
-  ListMachineUsbDevicesError,
+  ListMachineUsbDevicesResponses,
+  ListMachineUsbDevicesErrors,
   ListMachinesData,
-  ListMachinesResponse,
-  ListMachinesError,
+  ListMachinesResponses,
+  ListMachinesErrors,
   ListNotificationsData,
-  ListNotificationsResponse,
-  ListNotificationsError,
+  ListNotificationsResponses,
+  ListNotificationsErrors,
   CreateNotificationData,
-  CreateNotificationResponse,
-  CreateNotificationError,
+  CreateNotificationResponses,
+  CreateNotificationErrors,
   DeleteNotificationData,
-  DeleteNotificationResponse,
-  DeleteNotificationError,
+  DeleteNotificationResponses,
+  DeleteNotificationErrors,
   GetNotificationData,
-  GetNotificationResponse,
-  GetNotificationError,
+  GetNotificationResponses,
+  GetNotificationErrors,
   UpdateNotificationData,
-  UpdateNotificationResponse,
-  UpdateNotificationError,
+  UpdateNotificationResponses,
+  UpdateNotificationErrors,
   DismissNotificationData,
-  DismissNotificationResponse,
-  DismissNotificationError,
+  DismissNotificationResponses,
+  DismissNotificationErrors,
   ListPackageRepositoriesData,
-  ListPackageRepositoriesResponse,
-  ListPackageRepositoriesError,
+  ListPackageRepositoriesResponses,
+  ListPackageRepositoriesErrors,
   CreatePackageRepositoryData,
-  CreatePackageRepositoryResponse,
-  CreatePackageRepositoryError,
+  CreatePackageRepositoryResponses,
+  CreatePackageRepositoryErrors,
   DeletePackageRepositoryData,
-  DeletePackageRepositoryResponse,
-  DeletePackageRepositoryError,
+  DeletePackageRepositoryResponses,
+  DeletePackageRepositoryErrors,
   GetPackageRepositoryData,
-  GetPackageRepositoryResponse,
-  GetPackageRepositoryError,
+  GetPackageRepositoryResponses,
+  GetPackageRepositoryErrors,
   UpdatePackageRepositoryData,
-  UpdatePackageRepositoryResponse,
-  UpdatePackageRepositoryError,
+  UpdatePackageRepositoryResponses,
+  UpdatePackageRepositoryErrors,
   ListFabricVlanSubnetReservedIpsData,
-  ListFabricVlanSubnetReservedIpsResponse,
-  ListFabricVlanSubnetReservedIpsError,
+  ListFabricVlanSubnetReservedIpsResponses,
+  ListFabricVlanSubnetReservedIpsErrors,
   CreateFabricVlanSubnetReservedIpData,
-  CreateFabricVlanSubnetReservedIpResponse,
-  CreateFabricVlanSubnetReservedIpError,
+  CreateFabricVlanSubnetReservedIpResponses,
+  CreateFabricVlanSubnetReservedIpErrors,
   DeleteFabricVlanSubnetReservedIpData,
-  DeleteFabricVlanSubnetReservedIpResponse,
-  DeleteFabricVlanSubnetReservedIpError,
+  DeleteFabricVlanSubnetReservedIpResponses,
+  DeleteFabricVlanSubnetReservedIpErrors,
   UpdateFabricVlanSubnetReservedIpData,
-  UpdateFabricVlanSubnetReservedIpResponse,
-  UpdateFabricVlanSubnetReservedIpError,
+  UpdateFabricVlanSubnetReservedIpResponses,
+  UpdateFabricVlanSubnetReservedIpErrors,
   GetFabricVlanSubnetReservedIpData,
-  GetFabricVlanSubnetReservedIpResponse,
-  GetFabricVlanSubnetReservedIpError,
+  GetFabricVlanSubnetReservedIpResponses,
+  GetFabricVlanSubnetReservedIpErrors,
   ListResourcePoolsData,
-  ListResourcePoolsResponse,
-  ListResourcePoolsError,
+  ListResourcePoolsResponses,
+  ListResourcePoolsErrors,
   CreateResourcePoolData,
-  CreateResourcePoolResponse,
-  CreateResourcePoolError,
+  CreateResourcePoolResponses,
+  CreateResourcePoolErrors,
   DeleteResourcePoolData,
-  DeleteResourcePoolResponse,
-  DeleteResourcePoolError,
+  DeleteResourcePoolResponses,
+  DeleteResourcePoolErrors,
   GetResourcePoolData,
-  GetResourcePoolResponse,
-  GetResourcePoolError,
+  GetResourcePoolResponses,
+  GetResourcePoolErrors,
   UpdateResourcePoolData,
-  UpdateResourcePoolResponse,
-  UpdateResourcePoolError,
+  UpdateResourcePoolResponses,
+  UpdateResourcePoolErrors,
   ListResourcePoolsWithSummaryData,
-  ListResourcePoolsWithSummaryResponse,
-  ListResourcePoolsWithSummaryError,
+  ListResourcePoolsWithSummaryResponses,
+  ListResourcePoolsWithSummaryErrors,
   ListFabricVlanSubnetStaticroutesData,
-  ListFabricVlanSubnetStaticroutesResponse,
-  ListFabricVlanSubnetStaticroutesError,
+  ListFabricVlanSubnetStaticroutesResponses,
+  ListFabricVlanSubnetStaticroutesErrors,
   CreateFabricVlanSubnetStaticrouteData,
-  CreateFabricVlanSubnetStaticrouteResponse,
-  CreateFabricVlanSubnetStaticrouteError,
+  CreateFabricVlanSubnetStaticrouteResponses,
+  CreateFabricVlanSubnetStaticrouteErrors,
   DeleteFabricVlanSubnetStaticrouteData,
-  DeleteFabricVlanSubnetStaticrouteResponse,
-  DeleteFabricVlanSubnetStaticrouteError,
+  DeleteFabricVlanSubnetStaticrouteResponses,
+  DeleteFabricVlanSubnetStaticrouteErrors,
   GetFabricVlanSubnetStaticrouteData,
-  GetFabricVlanSubnetStaticrouteResponse,
-  GetFabricVlanSubnetStaticrouteError,
+  GetFabricVlanSubnetStaticrouteResponses,
+  GetFabricVlanSubnetStaticrouteErrors,
   UpdateFabricVlanSubnetStaticrouteData,
-  UpdateFabricVlanSubnetStaticrouteResponse,
-  UpdateFabricVlanSubnetStaticrouteError,
+  UpdateFabricVlanSubnetStaticrouteResponses,
+  UpdateFabricVlanSubnetStaticrouteErrors,
   ListSpacesData,
-  ListSpacesResponse,
-  ListSpacesError,
+  ListSpacesResponses,
+  ListSpacesErrors,
   CreateSpaceData,
-  CreateSpaceResponse,
-  CreateSpaceError,
+  CreateSpaceResponses,
+  CreateSpaceErrors,
   DeleteSpaceData,
-  DeleteSpaceResponse,
-  DeleteSpaceError,
+  DeleteSpaceResponses,
+  DeleteSpaceErrors,
   GetSpaceData,
-  GetSpaceResponse,
-  GetSpaceError,
+  GetSpaceResponses,
+  GetSpaceErrors,
   UpdateSpaceData,
-  UpdateSpaceResponse,
-  UpdateSpaceError,
+  UpdateSpaceResponses,
+  UpdateSpaceErrors,
   ListUserSshkeysData,
-  ListUserSshkeysResponse,
-  ListUserSshkeysError,
+  ListUserSshkeysResponses,
+  ListUserSshkeysErrors,
   CreateUserSshkeysData,
-  CreateUserSshkeysResponse,
-  CreateUserSshkeysError,
+  CreateUserSshkeysResponses,
+  CreateUserSshkeysErrors,
   DeleteUserSshkeyData,
-  DeleteUserSshkeyResponse,
-  DeleteUserSshkeyError,
+  DeleteUserSshkeyResponses,
+  DeleteUserSshkeyErrors,
   GetUserSshkeyData,
-  GetUserSshkeyResponse,
-  GetUserSshkeyError,
+  GetUserSshkeyResponses,
+  GetUserSshkeyErrors,
   ImportUserSshkeysData,
-  ImportUserSshkeysResponse,
-  ImportUserSshkeysError,
+  ImportUserSshkeysResponses,
+  ImportUserSshkeysErrors,
   GetUserSslkeysData,
-  GetUserSslkeysResponse,
-  GetUserSslkeysError,
+  GetUserSslkeysResponses,
+  GetUserSslkeysErrors,
   CreateUserSslkeyData,
-  CreateUserSslkeyResponse,
-  CreateUserSslkeyError,
+  CreateUserSslkeyResponses,
+  CreateUserSslkeyErrors,
   DeleteUserSslkeyData,
-  DeleteUserSslkeyResponse,
-  DeleteUserSslkeyError,
+  DeleteUserSslkeyResponses,
+  DeleteUserSslkeyErrors,
   GetUserSslkeyData,
-  GetUserSslkeyResponse,
-  GetUserSslkeyError,
+  GetUserSslkeyResponses,
+  GetUserSslkeyErrors,
   GetUserSslkeysWithSummaryData,
-  GetUserSslkeysWithSummaryResponse,
-  GetUserSslkeysWithSummaryError,
+  GetUserSslkeysWithSummaryResponses,
+  GetUserSslkeysWithSummaryErrors,
   ListFabricVlanSubnetsData,
-  ListFabricVlanSubnetsResponse,
-  ListFabricVlanSubnetsError,
+  ListFabricVlanSubnetsResponses,
+  ListFabricVlanSubnetsErrors,
   CreateFabricVlanSubnetData,
-  CreateFabricVlanSubnetResponse,
-  CreateFabricVlanSubnetError,
+  CreateFabricVlanSubnetResponses,
+  CreateFabricVlanSubnetErrors,
   DeleteFabricVlanSubnetData,
-  DeleteFabricVlanSubnetResponse,
-  DeleteFabricVlanSubnetError,
+  DeleteFabricVlanSubnetResponses,
+  DeleteFabricVlanSubnetErrors,
   UpdateFabricVlanSubnetData,
-  UpdateFabricVlanSubnetResponse,
-  UpdateFabricVlanSubnetError,
+  UpdateFabricVlanSubnetResponses,
+  UpdateFabricVlanSubnetErrors,
   GetFabricVlanSubnetData,
-  GetFabricVlanSubnetResponse,
-  GetFabricVlanSubnetError,
+  GetFabricVlanSubnetResponses,
+  GetFabricVlanSubnetErrors,
   ListTagsData,
-  ListTagsResponse,
-  ListTagsError,
+  ListTagsResponses,
+  ListTagsErrors,
   CreateTagData,
-  CreateTagResponse,
-  CreateTagError,
+  CreateTagResponses,
+  CreateTagErrors,
   DeleteTagData,
-  DeleteTagResponse,
-  DeleteTagError,
+  DeleteTagResponses,
+  DeleteTagErrors,
   GetTagData,
-  GetTagResponse,
-  GetTagError,
+  GetTagResponses,
+  GetTagErrors,
   UpdateTagData,
-  UpdateTagResponse,
-  UpdateTagError,
+  UpdateTagResponses,
+  UpdateTagErrors,
   GetMeWithSummaryData,
-  GetMeWithSummaryResponse,
-  GetMeWithSummaryError,
+  GetMeWithSummaryResponses,
+  GetMeWithSummaryErrors,
   GetUserInfoData,
-  GetUserInfoResponse,
-  GetUserInfoError,
+  GetUserInfoResponses,
+  GetUserInfoErrors,
   CompleteIntroData,
-  CompleteIntroResponse,
-  CompleteIntroError,
+  CompleteIntroResponses,
+  CompleteIntroErrors,
   ChangePasswordUserData,
-  ChangePasswordUserResponse,
-  ChangePasswordUserError,
+  ChangePasswordUserResponses,
+  ChangePasswordUserErrors,
   ListUsersData,
-  ListUsersResponse,
-  ListUsersError,
+  ListUsersResponses,
+  ListUsersErrors,
   CreateUserData,
-  CreateUserResponse,
-  CreateUserError,
+  CreateUserResponses,
+  CreateUserErrors,
   DeleteUserData,
-  DeleteUserResponse,
-  DeleteUserError,
+  DeleteUserResponses,
+  DeleteUserErrors,
   GetUserData,
-  GetUserResponse,
-  GetUserError,
+  GetUserResponses,
+  GetUserErrors,
   UpdateUserData,
-  UpdateUserResponse,
-  UpdateUserError,
+  UpdateUserResponses,
+  UpdateUserErrors,
   ChangePasswordAdminData,
-  ChangePasswordAdminResponse,
-  ChangePasswordAdminError,
+  ChangePasswordAdminResponses,
+  ChangePasswordAdminErrors,
   ListUsersWithSummaryData,
-  ListUsersWithSummaryResponse,
-  ListUsersWithSummaryError,
+  ListUsersWithSummaryResponses,
+  ListUsersWithSummaryErrors,
   ListFabricVlansData,
-  ListFabricVlansResponse,
-  ListFabricVlansError,
+  ListFabricVlansResponses,
+  ListFabricVlansErrors,
   CreateFabricVlanData,
-  CreateFabricVlanResponse,
-  CreateFabricVlanError,
+  CreateFabricVlanResponses,
+  CreateFabricVlanErrors,
   DeleteFabricVlanData,
-  DeleteFabricVlanResponse,
-  DeleteFabricVlanError,
+  DeleteFabricVlanResponses,
+  DeleteFabricVlanErrors,
   GetFabricVlanData,
-  GetFabricVlanResponse,
-  GetFabricVlanError,
+  GetFabricVlanResponses,
+  GetFabricVlanErrors,
   UpdateFabricVlanData,
-  UpdateFabricVlanResponse,
-  UpdateFabricVlanError,
+  UpdateFabricVlanResponses,
+  UpdateFabricVlanErrors,
   ListZonesData,
-  ListZonesResponse,
-  ListZonesError,
+  ListZonesResponses,
+  ListZonesErrors,
   CreateZoneData,
-  CreateZoneResponse,
-  CreateZoneError,
+  CreateZoneResponses,
+  CreateZoneErrors,
   DeleteZoneData,
-  DeleteZoneResponse,
-  DeleteZoneError,
+  DeleteZoneResponses,
+  DeleteZoneErrors,
   GetZoneData,
-  GetZoneResponse,
-  GetZoneError,
+  GetZoneResponses,
+  GetZoneErrors,
   UpdateZoneData,
-  UpdateZoneResponse,
-  UpdateZoneError,
+  UpdateZoneResponses,
+  UpdateZoneErrors,
   ListZonesWithSummaryData,
-  ListZonesWithSummaryResponse,
-  ListZonesWithSummaryError,
+  ListZonesWithSummaryResponses,
+  ListZonesWithSummaryErrors,
 } from "./types.gen";
 
 export type Options<
@@ -350,8 +352,8 @@ export const accessToken = <ThrowOnError extends boolean = false>(
   options?: Options<AccessTokenData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    AccessTokenResponse2,
-    AccessTokenError,
+    AccessTokenResponses,
+    AccessTokenErrors,
     ThrowOnError
   >({
     security: [
@@ -372,8 +374,8 @@ export const login = <ThrowOnError extends boolean = false>(
   options: Options<LoginData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    LoginResponse,
-    LoginError,
+    LoginResponses,
+    LoginErrors,
     ThrowOnError
   >({
     ...urlSearchParamsBodySerializer,
@@ -381,7 +383,7 @@ export const login = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -393,8 +395,8 @@ export const getConfiguration = <ThrowOnError extends boolean = false>(
   options: Options<GetConfigurationData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetConfigurationResponse,
-    GetConfigurationError,
+    GetConfigurationResponses,
+    GetConfigurationErrors,
     ThrowOnError
   >({
     security: [
@@ -409,14 +411,40 @@ export const getConfiguration = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Set Configuration
+ */
+export const setConfiguration = <ThrowOnError extends boolean = false>(
+  options: Options<SetConfigurationData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    SetConfigurationResponses,
+    SetConfigurationErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/configurations/{name}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
  * Get Configurations
  */
 export const getConfigurations = <ThrowOnError extends boolean = false>(
   options?: Options<GetConfigurationsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetConfigurationsResponse,
-    GetConfigurationsError,
+    GetConfigurationsResponses,
+    GetConfigurationsErrors,
     ThrowOnError
   >({
     security: [
@@ -437,8 +465,8 @@ export const listEvents = <ThrowOnError extends boolean = false>(
   options?: Options<ListEventsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListEventsResponse,
-    ListEventsError,
+    ListEventsResponses,
+    ListEventsErrors,
     ThrowOnError
   >({
     security: [
@@ -461,8 +489,8 @@ export const clearAllDiscoveriesWithOptionalIpAndMac = <
   options?: Options<ClearAllDiscoveriesWithOptionalIpAndMacData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).delete<
-    ClearAllDiscoveriesWithOptionalIpAndMacResponse,
-    ClearAllDiscoveriesWithOptionalIpAndMacError,
+    ClearAllDiscoveriesWithOptionalIpAndMacResponses,
+    ClearAllDiscoveriesWithOptionalIpAndMacErrors,
     ThrowOnError
   >({
     security: [
@@ -483,8 +511,8 @@ export const listDiscoveries = <ThrowOnError extends boolean = false>(
   options?: Options<ListDiscoveriesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListDiscoveriesResponse,
-    ListDiscoveriesError,
+    ListDiscoveriesResponses,
+    ListDiscoveriesErrors,
     ThrowOnError
   >({
     security: [
@@ -507,8 +535,8 @@ export const clearNeighboursDiscoveries = <
   options?: Options<ClearNeighboursDiscoveriesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).delete<
-    ClearNeighboursDiscoveriesResponse,
-    ClearNeighboursDiscoveriesError,
+    ClearNeighboursDiscoveriesResponses,
+    ClearNeighboursDiscoveriesErrors,
     ThrowOnError
   >({
     security: [
@@ -531,8 +559,8 @@ export const clearRdnsAndMdnsDiscoveries = <
   options?: Options<ClearRdnsAndMdnsDiscoveriesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).delete<
-    ClearRdnsAndMdnsDiscoveriesResponse,
-    ClearRdnsAndMdnsDiscoveriesError,
+    ClearRdnsAndMdnsDiscoveriesResponses,
+    ClearRdnsAndMdnsDiscoveriesErrors,
     ThrowOnError
   >({
     security: [
@@ -553,8 +581,8 @@ export const getDiscovery = <ThrowOnError extends boolean = false>(
   options: Options<GetDiscoveryData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetDiscoveryResponse,
-    GetDiscoveryError,
+    GetDiscoveryResponses,
+    GetDiscoveryErrors,
     ThrowOnError
   >({
     security: [
@@ -575,8 +603,8 @@ export const listDomains = <ThrowOnError extends boolean = false>(
   options?: Options<ListDomainsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListDomainsResponse,
-    ListDomainsError,
+    ListDomainsResponses,
+    ListDomainsErrors,
     ThrowOnError
   >({
     security: [
@@ -597,8 +625,8 @@ export const createDomain = <ThrowOnError extends boolean = false>(
   options: Options<CreateDomainData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateDomainResponse,
-    CreateDomainError,
+    CreateDomainResponses,
+    CreateDomainErrors,
     ThrowOnError
   >({
     security: [
@@ -611,7 +639,7 @@ export const createDomain = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -623,8 +651,8 @@ export const getDomainRrsets = <ThrowOnError extends boolean = false>(
   options: Options<GetDomainRrsetsData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetDomainRrsetsResponse,
-    GetDomainRrsetsError,
+    GetDomainRrsetsResponses,
+    GetDomainRrsetsErrors,
     ThrowOnError
   >({
     security: [
@@ -645,8 +673,8 @@ export const createDomainRrsets = <ThrowOnError extends boolean = false>(
   options: Options<CreateDomainRrsetsData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateDomainRrsetsResponse,
-    CreateDomainRrsetsError,
+    CreateDomainRrsetsResponses,
+    CreateDomainRrsetsErrors,
     ThrowOnError
   >({
     security: [
@@ -659,7 +687,7 @@ export const createDomainRrsets = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -671,8 +699,8 @@ export const deleteDomain = <ThrowOnError extends boolean = false>(
   options: Options<DeleteDomainData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteDomainResponse,
-    DeleteDomainError,
+    DeleteDomainResponses,
+    DeleteDomainErrors,
     ThrowOnError
   >({
     security: [
@@ -693,8 +721,8 @@ export const getDomain = <ThrowOnError extends boolean = false>(
   options: Options<GetDomainData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetDomainResponse,
-    GetDomainError,
+    GetDomainResponses,
+    GetDomainErrors,
     ThrowOnError
   >({
     security: [
@@ -715,8 +743,8 @@ export const listFabrics = <ThrowOnError extends boolean = false>(
   options?: Options<ListFabricsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListFabricsResponse,
-    ListFabricsError,
+    ListFabricsResponses,
+    ListFabricsErrors,
     ThrowOnError
   >({
     security: [
@@ -737,8 +765,8 @@ export const createFabric = <ThrowOnError extends boolean = false>(
   options: Options<CreateFabricData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateFabricResponse,
-    CreateFabricError,
+    CreateFabricResponses,
+    CreateFabricErrors,
     ThrowOnError
   >({
     security: [
@@ -751,7 +779,7 @@ export const createFabric = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -763,8 +791,8 @@ export const deleteFabric = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFabricData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteFabricResponse,
-    DeleteFabricError,
+    DeleteFabricResponses,
+    DeleteFabricErrors,
     ThrowOnError
   >({
     security: [
@@ -785,8 +813,8 @@ export const getFabric = <ThrowOnError extends boolean = false>(
   options: Options<GetFabricData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetFabricResponse,
-    GetFabricError,
+    GetFabricResponses,
+    GetFabricErrors,
     ThrowOnError
   >({
     security: [
@@ -807,8 +835,8 @@ export const updateFabric = <ThrowOnError extends boolean = false>(
   options: Options<UpdateFabricData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateFabricResponse,
-    UpdateFabricError,
+    UpdateFabricResponses,
+    UpdateFabricErrors,
     ThrowOnError
   >({
     security: [
@@ -821,7 +849,7 @@ export const updateFabric = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -833,8 +861,8 @@ export const listInterfaces = <ThrowOnError extends boolean = false>(
   options: Options<ListInterfacesData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    ListInterfacesResponse,
-    ListInterfacesError,
+    ListInterfacesResponses,
+    ListInterfacesErrors,
     ThrowOnError
   >({
     security: [
@@ -857,8 +885,8 @@ export const listFabricVlanSubnetIprange = <
   options: Options<ListFabricVlanSubnetIprangeData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    ListFabricVlanSubnetIprangeResponse,
-    ListFabricVlanSubnetIprangeError,
+    ListFabricVlanSubnetIprangeResponses,
+    ListFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
     security: [
@@ -881,8 +909,8 @@ export const createFabricVlanSubnetIprange = <
   options: Options<CreateFabricVlanSubnetIprangeData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateFabricVlanSubnetIprangeResponse,
-    CreateFabricVlanSubnetIprangeError,
+    CreateFabricVlanSubnetIprangeResponses,
+    CreateFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
     security: [
@@ -895,7 +923,7 @@ export const createFabricVlanSubnetIprange = <
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -909,8 +937,8 @@ export const deleteFabricVlanSubnetIprange = <
   options: Options<DeleteFabricVlanSubnetIprangeData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteFabricVlanSubnetIprangeResponse,
-    DeleteFabricVlanSubnetIprangeError,
+    DeleteFabricVlanSubnetIprangeResponses,
+    DeleteFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
     security: [
@@ -933,8 +961,8 @@ export const updateFabricVlanSubnetIprange = <
   options: Options<UpdateFabricVlanSubnetIprangeData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateFabricVlanSubnetIprangeResponse,
-    UpdateFabricVlanSubnetIprangeError,
+    UpdateFabricVlanSubnetIprangeResponses,
+    UpdateFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
     security: [
@@ -947,7 +975,7 @@ export const updateFabricVlanSubnetIprange = <
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -961,8 +989,8 @@ export const getFabricVlanSubnetIprange = <
   options: Options<GetFabricVlanSubnetIprangeData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetFabricVlanSubnetIprangeResponse,
-    GetFabricVlanSubnetIprangeError,
+    GetFabricVlanSubnetIprangeResponses,
+    GetFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
     security: [
@@ -983,8 +1011,8 @@ export const getMachinePowerParameters = <ThrowOnError extends boolean = false>(
   options: Options<GetMachinePowerParametersData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetMachinePowerParametersResponse,
-    GetMachinePowerParametersError,
+    GetMachinePowerParametersResponses,
+    GetMachinePowerParametersErrors,
     ThrowOnError
   >({
     security: [
@@ -1005,8 +1033,8 @@ export const listMachinePciDevices = <ThrowOnError extends boolean = false>(
   options: Options<ListMachinePciDevicesData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    ListMachinePciDevicesResponse,
-    ListMachinePciDevicesError,
+    ListMachinePciDevicesResponses,
+    ListMachinePciDevicesErrors,
     ThrowOnError
   >({
     security: [
@@ -1027,8 +1055,8 @@ export const listMachineUsbDevices = <ThrowOnError extends boolean = false>(
   options: Options<ListMachineUsbDevicesData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    ListMachineUsbDevicesResponse,
-    ListMachineUsbDevicesError,
+    ListMachineUsbDevicesResponses,
+    ListMachineUsbDevicesErrors,
     ThrowOnError
   >({
     security: [
@@ -1049,8 +1077,8 @@ export const listMachines = <ThrowOnError extends boolean = false>(
   options?: Options<ListMachinesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListMachinesResponse,
-    ListMachinesError,
+    ListMachinesResponses,
+    ListMachinesErrors,
     ThrowOnError
   >({
     security: [
@@ -1071,8 +1099,8 @@ export const listNotifications = <ThrowOnError extends boolean = false>(
   options?: Options<ListNotificationsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListNotificationsResponse,
-    ListNotificationsError,
+    ListNotificationsResponses,
+    ListNotificationsErrors,
     ThrowOnError
   >({
     security: [
@@ -1093,8 +1121,8 @@ export const createNotification = <ThrowOnError extends boolean = false>(
   options: Options<CreateNotificationData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateNotificationResponse,
-    CreateNotificationError,
+    CreateNotificationResponses,
+    CreateNotificationErrors,
     ThrowOnError
   >({
     security: [
@@ -1107,7 +1135,7 @@ export const createNotification = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1119,8 +1147,8 @@ export const deleteNotification = <ThrowOnError extends boolean = false>(
   options: Options<DeleteNotificationData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteNotificationResponse,
-    DeleteNotificationError,
+    DeleteNotificationResponses,
+    DeleteNotificationErrors,
     ThrowOnError
   >({
     security: [
@@ -1141,8 +1169,8 @@ export const getNotification = <ThrowOnError extends boolean = false>(
   options: Options<GetNotificationData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetNotificationResponse,
-    GetNotificationError,
+    GetNotificationResponses,
+    GetNotificationErrors,
     ThrowOnError
   >({
     security: [
@@ -1163,8 +1191,8 @@ export const updateNotification = <ThrowOnError extends boolean = false>(
   options: Options<UpdateNotificationData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateNotificationResponse,
-    UpdateNotificationError,
+    UpdateNotificationResponses,
+    UpdateNotificationErrors,
     ThrowOnError
   >({
     security: [
@@ -1177,7 +1205,7 @@ export const updateNotification = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1189,8 +1217,8 @@ export const dismissNotification = <ThrowOnError extends boolean = false>(
   options: Options<DismissNotificationData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    DismissNotificationResponse,
-    DismissNotificationError,
+    DismissNotificationResponses,
+    DismissNotificationErrors,
     ThrowOnError
   >({
     security: [
@@ -1211,8 +1239,8 @@ export const listPackageRepositories = <ThrowOnError extends boolean = false>(
   options?: Options<ListPackageRepositoriesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListPackageRepositoriesResponse,
-    ListPackageRepositoriesError,
+    ListPackageRepositoriesResponses,
+    ListPackageRepositoriesErrors,
     ThrowOnError
   >({
     security: [
@@ -1233,8 +1261,8 @@ export const createPackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<CreatePackageRepositoryData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreatePackageRepositoryResponse,
-    CreatePackageRepositoryError,
+    CreatePackageRepositoryResponses,
+    CreatePackageRepositoryErrors,
     ThrowOnError
   >({
     security: [
@@ -1247,7 +1275,7 @@ export const createPackageRepository = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1259,8 +1287,8 @@ export const deletePackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<DeletePackageRepositoryData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeletePackageRepositoryResponse,
-    DeletePackageRepositoryError,
+    DeletePackageRepositoryResponses,
+    DeletePackageRepositoryErrors,
     ThrowOnError
   >({
     security: [
@@ -1281,8 +1309,8 @@ export const getPackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<GetPackageRepositoryData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetPackageRepositoryResponse,
-    GetPackageRepositoryError,
+    GetPackageRepositoryResponses,
+    GetPackageRepositoryErrors,
     ThrowOnError
   >({
     security: [
@@ -1303,8 +1331,8 @@ export const updatePackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<UpdatePackageRepositoryData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdatePackageRepositoryResponse,
-    UpdatePackageRepositoryError,
+    UpdatePackageRepositoryResponses,
+    UpdatePackageRepositoryErrors,
     ThrowOnError
   >({
     security: [
@@ -1317,7 +1345,7 @@ export const updatePackageRepository = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1331,8 +1359,8 @@ export const listFabricVlanSubnetReservedIps = <
   options: Options<ListFabricVlanSubnetReservedIpsData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    ListFabricVlanSubnetReservedIpsResponse,
-    ListFabricVlanSubnetReservedIpsError,
+    ListFabricVlanSubnetReservedIpsResponses,
+    ListFabricVlanSubnetReservedIpsErrors,
     ThrowOnError
   >({
     security: [
@@ -1355,8 +1383,8 @@ export const createFabricVlanSubnetReservedIp = <
   options: Options<CreateFabricVlanSubnetReservedIpData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateFabricVlanSubnetReservedIpResponse,
-    CreateFabricVlanSubnetReservedIpError,
+    CreateFabricVlanSubnetReservedIpResponses,
+    CreateFabricVlanSubnetReservedIpErrors,
     ThrowOnError
   >({
     security: [
@@ -1369,7 +1397,7 @@ export const createFabricVlanSubnetReservedIp = <
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1383,8 +1411,8 @@ export const deleteFabricVlanSubnetReservedIp = <
   options: Options<DeleteFabricVlanSubnetReservedIpData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteFabricVlanSubnetReservedIpResponse,
-    DeleteFabricVlanSubnetReservedIpError,
+    DeleteFabricVlanSubnetReservedIpResponses,
+    DeleteFabricVlanSubnetReservedIpErrors,
     ThrowOnError
   >({
     security: [
@@ -1407,8 +1435,8 @@ export const updateFabricVlanSubnetReservedIp = <
   options: Options<UpdateFabricVlanSubnetReservedIpData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateFabricVlanSubnetReservedIpResponse,
-    UpdateFabricVlanSubnetReservedIpError,
+    UpdateFabricVlanSubnetReservedIpResponses,
+    UpdateFabricVlanSubnetReservedIpErrors,
     ThrowOnError
   >({
     security: [
@@ -1421,7 +1449,7 @@ export const updateFabricVlanSubnetReservedIp = <
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1435,8 +1463,8 @@ export const getFabricVlanSubnetReservedIp = <
   options: Options<GetFabricVlanSubnetReservedIpData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetFabricVlanSubnetReservedIpResponse,
-    GetFabricVlanSubnetReservedIpError,
+    GetFabricVlanSubnetReservedIpResponses,
+    GetFabricVlanSubnetReservedIpErrors,
     ThrowOnError
   >({
     security: [
@@ -1457,8 +1485,8 @@ export const listResourcePools = <ThrowOnError extends boolean = false>(
   options?: Options<ListResourcePoolsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListResourcePoolsResponse,
-    ListResourcePoolsError,
+    ListResourcePoolsResponses,
+    ListResourcePoolsErrors,
     ThrowOnError
   >({
     security: [
@@ -1479,8 +1507,8 @@ export const createResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<CreateResourcePoolData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateResourcePoolResponse,
-    CreateResourcePoolError,
+    CreateResourcePoolResponses,
+    CreateResourcePoolErrors,
     ThrowOnError
   >({
     security: [
@@ -1493,7 +1521,7 @@ export const createResourcePool = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1505,8 +1533,8 @@ export const deleteResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<DeleteResourcePoolData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteResourcePoolResponse,
-    DeleteResourcePoolError,
+    DeleteResourcePoolResponses,
+    DeleteResourcePoolErrors,
     ThrowOnError
   >({
     security: [
@@ -1527,8 +1555,8 @@ export const getResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<GetResourcePoolData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetResourcePoolResponse,
-    GetResourcePoolError,
+    GetResourcePoolResponses,
+    GetResourcePoolErrors,
     ThrowOnError
   >({
     security: [
@@ -1549,8 +1577,8 @@ export const updateResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<UpdateResourcePoolData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateResourcePoolResponse,
-    UpdateResourcePoolError,
+    UpdateResourcePoolResponses,
+    UpdateResourcePoolErrors,
     ThrowOnError
   >({
     security: [
@@ -1563,7 +1591,7 @@ export const updateResourcePool = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1578,8 +1606,8 @@ export const listResourcePoolsWithSummary = <
   options?: Options<ListResourcePoolsWithSummaryData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListResourcePoolsWithSummaryResponse,
-    ListResourcePoolsWithSummaryError,
+    ListResourcePoolsWithSummaryResponses,
+    ListResourcePoolsWithSummaryErrors,
     ThrowOnError
   >({
     security: [
@@ -1602,8 +1630,8 @@ export const listFabricVlanSubnetStaticroutes = <
   options: Options<ListFabricVlanSubnetStaticroutesData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    ListFabricVlanSubnetStaticroutesResponse,
-    ListFabricVlanSubnetStaticroutesError,
+    ListFabricVlanSubnetStaticroutesResponses,
+    ListFabricVlanSubnetStaticroutesErrors,
     ThrowOnError
   >({
     security: [
@@ -1626,8 +1654,8 @@ export const createFabricVlanSubnetStaticroute = <
   options: Options<CreateFabricVlanSubnetStaticrouteData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateFabricVlanSubnetStaticrouteResponse,
-    CreateFabricVlanSubnetStaticrouteError,
+    CreateFabricVlanSubnetStaticrouteResponses,
+    CreateFabricVlanSubnetStaticrouteErrors,
     ThrowOnError
   >({
     security: [
@@ -1640,7 +1668,7 @@ export const createFabricVlanSubnetStaticroute = <
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1654,8 +1682,8 @@ export const deleteFabricVlanSubnetStaticroute = <
   options: Options<DeleteFabricVlanSubnetStaticrouteData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteFabricVlanSubnetStaticrouteResponse,
-    DeleteFabricVlanSubnetStaticrouteError,
+    DeleteFabricVlanSubnetStaticrouteResponses,
+    DeleteFabricVlanSubnetStaticrouteErrors,
     ThrowOnError
   >({
     security: [
@@ -1678,8 +1706,8 @@ export const getFabricVlanSubnetStaticroute = <
   options: Options<GetFabricVlanSubnetStaticrouteData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetFabricVlanSubnetStaticrouteResponse,
-    GetFabricVlanSubnetStaticrouteError,
+    GetFabricVlanSubnetStaticrouteResponses,
+    GetFabricVlanSubnetStaticrouteErrors,
     ThrowOnError
   >({
     security: [
@@ -1702,8 +1730,8 @@ export const updateFabricVlanSubnetStaticroute = <
   options: Options<UpdateFabricVlanSubnetStaticrouteData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateFabricVlanSubnetStaticrouteResponse,
-    UpdateFabricVlanSubnetStaticrouteError,
+    UpdateFabricVlanSubnetStaticrouteResponses,
+    UpdateFabricVlanSubnetStaticrouteErrors,
     ThrowOnError
   >({
     security: [
@@ -1716,7 +1744,7 @@ export const updateFabricVlanSubnetStaticroute = <
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1728,8 +1756,8 @@ export const listSpaces = <ThrowOnError extends boolean = false>(
   options?: Options<ListSpacesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListSpacesResponse,
-    ListSpacesError,
+    ListSpacesResponses,
+    ListSpacesErrors,
     ThrowOnError
   >({
     security: [
@@ -1750,8 +1778,8 @@ export const createSpace = <ThrowOnError extends boolean = false>(
   options: Options<CreateSpaceData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateSpaceResponse,
-    CreateSpaceError,
+    CreateSpaceResponses,
+    CreateSpaceErrors,
     ThrowOnError
   >({
     security: [
@@ -1764,7 +1792,7 @@ export const createSpace = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1776,8 +1804,8 @@ export const deleteSpace = <ThrowOnError extends boolean = false>(
   options: Options<DeleteSpaceData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteSpaceResponse,
-    DeleteSpaceError,
+    DeleteSpaceResponses,
+    DeleteSpaceErrors,
     ThrowOnError
   >({
     security: [
@@ -1798,8 +1826,8 @@ export const getSpace = <ThrowOnError extends boolean = false>(
   options: Options<GetSpaceData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetSpaceResponse,
-    GetSpaceError,
+    GetSpaceResponses,
+    GetSpaceErrors,
     ThrowOnError
   >({
     security: [
@@ -1820,8 +1848,8 @@ export const updateSpace = <ThrowOnError extends boolean = false>(
   options: Options<UpdateSpaceData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateSpaceResponse,
-    UpdateSpaceError,
+    UpdateSpaceResponses,
+    UpdateSpaceErrors,
     ThrowOnError
   >({
     security: [
@@ -1834,7 +1862,7 @@ export const updateSpace = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1846,8 +1874,8 @@ export const listUserSshkeys = <ThrowOnError extends boolean = false>(
   options?: Options<ListUserSshkeysData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListUserSshkeysResponse,
-    ListUserSshkeysError,
+    ListUserSshkeysResponses,
+    ListUserSshkeysErrors,
     ThrowOnError
   >({
     security: [
@@ -1868,8 +1896,8 @@ export const createUserSshkeys = <ThrowOnError extends boolean = false>(
   options: Options<CreateUserSshkeysData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateUserSshkeysResponse,
-    CreateUserSshkeysError,
+    CreateUserSshkeysResponses,
+    CreateUserSshkeysErrors,
     ThrowOnError
   >({
     security: [
@@ -1882,7 +1910,7 @@ export const createUserSshkeys = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1894,8 +1922,8 @@ export const deleteUserSshkey = <ThrowOnError extends boolean = false>(
   options: Options<DeleteUserSshkeyData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteUserSshkeyResponse,
-    DeleteUserSshkeyError,
+    DeleteUserSshkeyResponses,
+    DeleteUserSshkeyErrors,
     ThrowOnError
   >({
     security: [
@@ -1916,8 +1944,8 @@ export const getUserSshkey = <ThrowOnError extends boolean = false>(
   options: Options<GetUserSshkeyData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetUserSshkeyResponse,
-    GetUserSshkeyError,
+    GetUserSshkeyResponses,
+    GetUserSshkeyErrors,
     ThrowOnError
   >({
     security: [
@@ -1938,8 +1966,8 @@ export const importUserSshkeys = <ThrowOnError extends boolean = false>(
   options: Options<ImportUserSshkeysData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    ImportUserSshkeysResponse,
-    ImportUserSshkeysError,
+    ImportUserSshkeysResponses,
+    ImportUserSshkeysErrors,
     ThrowOnError
   >({
     security: [
@@ -1952,7 +1980,7 @@ export const importUserSshkeys = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -1964,8 +1992,8 @@ export const getUserSslkeys = <ThrowOnError extends boolean = false>(
   options?: Options<GetUserSslkeysData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetUserSslkeysResponse,
-    GetUserSslkeysError,
+    GetUserSslkeysResponses,
+    GetUserSslkeysErrors,
     ThrowOnError
   >({
     security: [
@@ -1986,8 +2014,8 @@ export const createUserSslkey = <ThrowOnError extends boolean = false>(
   options: Options<CreateUserSslkeyData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateUserSslkeyResponse,
-    CreateUserSslkeyError,
+    CreateUserSslkeyResponses,
+    CreateUserSslkeyErrors,
     ThrowOnError
   >({
     security: [
@@ -2000,7 +2028,7 @@ export const createUserSslkey = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2012,8 +2040,8 @@ export const deleteUserSslkey = <ThrowOnError extends boolean = false>(
   options: Options<DeleteUserSslkeyData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteUserSslkeyResponse,
-    DeleteUserSslkeyError,
+    DeleteUserSslkeyResponses,
+    DeleteUserSslkeyErrors,
     ThrowOnError
   >({
     security: [
@@ -2034,8 +2062,8 @@ export const getUserSslkey = <ThrowOnError extends boolean = false>(
   options: Options<GetUserSslkeyData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetUserSslkeyResponse,
-    GetUserSslkeyError,
+    GetUserSslkeyResponses,
+    GetUserSslkeyErrors,
     ThrowOnError
   >({
     security: [
@@ -2057,8 +2085,8 @@ export const getUserSslkeysWithSummary = <ThrowOnError extends boolean = false>(
   options?: Options<GetUserSslkeysWithSummaryData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetUserSslkeysWithSummaryResponse,
-    GetUserSslkeysWithSummaryError,
+    GetUserSslkeysWithSummaryResponses,
+    GetUserSslkeysWithSummaryErrors,
     ThrowOnError
   >({
     security: [
@@ -2079,8 +2107,8 @@ export const listFabricVlanSubnets = <ThrowOnError extends boolean = false>(
   options: Options<ListFabricVlanSubnetsData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    ListFabricVlanSubnetsResponse,
-    ListFabricVlanSubnetsError,
+    ListFabricVlanSubnetsResponses,
+    ListFabricVlanSubnetsErrors,
     ThrowOnError
   >({
     security: [
@@ -2101,8 +2129,8 @@ export const createFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<CreateFabricVlanSubnetData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateFabricVlanSubnetResponse,
-    CreateFabricVlanSubnetError,
+    CreateFabricVlanSubnetResponses,
+    CreateFabricVlanSubnetErrors,
     ThrowOnError
   >({
     security: [
@@ -2115,7 +2143,7 @@ export const createFabricVlanSubnet = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2127,8 +2155,8 @@ export const deleteFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFabricVlanSubnetData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteFabricVlanSubnetResponse,
-    DeleteFabricVlanSubnetError,
+    DeleteFabricVlanSubnetResponses,
+    DeleteFabricVlanSubnetErrors,
     ThrowOnError
   >({
     security: [
@@ -2149,8 +2177,8 @@ export const updateFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<UpdateFabricVlanSubnetData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateFabricVlanSubnetResponse,
-    UpdateFabricVlanSubnetError,
+    UpdateFabricVlanSubnetResponses,
+    UpdateFabricVlanSubnetErrors,
     ThrowOnError
   >({
     security: [
@@ -2163,7 +2191,7 @@ export const updateFabricVlanSubnet = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2175,8 +2203,8 @@ export const getFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<GetFabricVlanSubnetData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetFabricVlanSubnetResponse,
-    GetFabricVlanSubnetError,
+    GetFabricVlanSubnetResponses,
+    GetFabricVlanSubnetErrors,
     ThrowOnError
   >({
     security: [
@@ -2197,8 +2225,8 @@ export const listTags = <ThrowOnError extends boolean = false>(
   options?: Options<ListTagsData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListTagsResponse,
-    ListTagsError,
+    ListTagsResponses,
+    ListTagsErrors,
     ThrowOnError
   >({
     security: [
@@ -2219,8 +2247,8 @@ export const createTag = <ThrowOnError extends boolean = false>(
   options: Options<CreateTagData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateTagResponse,
-    CreateTagError,
+    CreateTagResponses,
+    CreateTagErrors,
     ThrowOnError
   >({
     security: [
@@ -2233,7 +2261,7 @@ export const createTag = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2245,8 +2273,8 @@ export const deleteTag = <ThrowOnError extends boolean = false>(
   options: Options<DeleteTagData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteTagResponse,
-    DeleteTagError,
+    DeleteTagResponses,
+    DeleteTagErrors,
     ThrowOnError
   >({
     security: [
@@ -2267,8 +2295,8 @@ export const getTag = <ThrowOnError extends boolean = false>(
   options: Options<GetTagData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetTagResponse,
-    GetTagError,
+    GetTagResponses,
+    GetTagErrors,
     ThrowOnError
   >({
     security: [
@@ -2289,8 +2317,8 @@ export const updateTag = <ThrowOnError extends boolean = false>(
   options: Options<UpdateTagData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateTagResponse,
-    UpdateTagError,
+    UpdateTagResponses,
+    UpdateTagErrors,
     ThrowOnError
   >({
     security: [
@@ -2303,7 +2331,7 @@ export const updateTag = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2316,8 +2344,8 @@ export const getMeWithSummary = <ThrowOnError extends boolean = false>(
   options?: Options<GetMeWithSummaryData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetMeWithSummaryResponse,
-    GetMeWithSummaryError,
+    GetMeWithSummaryResponses,
+    GetMeWithSummaryErrors,
     ThrowOnError
   >({
     security: [
@@ -2338,8 +2366,8 @@ export const getUserInfo = <ThrowOnError extends boolean = false>(
   options?: Options<GetUserInfoData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetUserInfoResponse,
-    GetUserInfoError,
+    GetUserInfoResponses,
+    GetUserInfoErrors,
     ThrowOnError
   >({
     security: [
@@ -2360,8 +2388,8 @@ export const completeIntro = <ThrowOnError extends boolean = false>(
   options?: Options<CompleteIntroData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    CompleteIntroResponse,
-    CompleteIntroError,
+    CompleteIntroResponses,
+    CompleteIntroErrors,
     ThrowOnError
   >({
     security: [
@@ -2382,8 +2410,8 @@ export const changePasswordUser = <ThrowOnError extends boolean = false>(
   options: Options<ChangePasswordUserData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    ChangePasswordUserResponse,
-    ChangePasswordUserError,
+    ChangePasswordUserResponses,
+    ChangePasswordUserErrors,
     ThrowOnError
   >({
     security: [
@@ -2396,7 +2424,7 @@ export const changePasswordUser = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2408,8 +2436,8 @@ export const listUsers = <ThrowOnError extends boolean = false>(
   options?: Options<ListUsersData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListUsersResponse,
-    ListUsersError,
+    ListUsersResponses,
+    ListUsersErrors,
     ThrowOnError
   >({
     security: [
@@ -2430,8 +2458,8 @@ export const createUser = <ThrowOnError extends boolean = false>(
   options: Options<CreateUserData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateUserResponse,
-    CreateUserError,
+    CreateUserResponses,
+    CreateUserErrors,
     ThrowOnError
   >({
     security: [
@@ -2444,7 +2472,7 @@ export const createUser = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2456,8 +2484,8 @@ export const deleteUser = <ThrowOnError extends boolean = false>(
   options: Options<DeleteUserData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteUserResponse,
-    DeleteUserError,
+    DeleteUserResponses,
+    DeleteUserErrors,
     ThrowOnError
   >({
     security: [
@@ -2478,8 +2506,8 @@ export const getUser = <ThrowOnError extends boolean = false>(
   options: Options<GetUserData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetUserResponse,
-    GetUserError,
+    GetUserResponses,
+    GetUserErrors,
     ThrowOnError
   >({
     security: [
@@ -2500,8 +2528,8 @@ export const updateUser = <ThrowOnError extends boolean = false>(
   options: Options<UpdateUserData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateUserResponse,
-    UpdateUserError,
+    UpdateUserResponses,
+    UpdateUserErrors,
     ThrowOnError
   >({
     security: [
@@ -2514,7 +2542,7 @@ export const updateUser = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2526,8 +2554,8 @@ export const changePasswordAdmin = <ThrowOnError extends boolean = false>(
   options: Options<ChangePasswordAdminData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    ChangePasswordAdminResponse,
-    ChangePasswordAdminError,
+    ChangePasswordAdminResponses,
+    ChangePasswordAdminErrors,
     ThrowOnError
   >({
     security: [
@@ -2540,7 +2568,7 @@ export const changePasswordAdmin = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2553,8 +2581,8 @@ export const listUsersWithSummary = <ThrowOnError extends boolean = false>(
   options?: Options<ListUsersWithSummaryData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListUsersWithSummaryResponse,
-    ListUsersWithSummaryError,
+    ListUsersWithSummaryResponses,
+    ListUsersWithSummaryErrors,
     ThrowOnError
   >({
     security: [
@@ -2575,8 +2603,8 @@ export const listFabricVlans = <ThrowOnError extends boolean = false>(
   options: Options<ListFabricVlansData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    ListFabricVlansResponse,
-    ListFabricVlansError,
+    ListFabricVlansResponses,
+    ListFabricVlansErrors,
     ThrowOnError
   >({
     security: [
@@ -2597,8 +2625,8 @@ export const createFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<CreateFabricVlanData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateFabricVlanResponse,
-    CreateFabricVlanError,
+    CreateFabricVlanResponses,
+    CreateFabricVlanErrors,
     ThrowOnError
   >({
     security: [
@@ -2611,7 +2639,7 @@ export const createFabricVlan = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2623,8 +2651,8 @@ export const deleteFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFabricVlanData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteFabricVlanResponse,
-    DeleteFabricVlanError,
+    DeleteFabricVlanResponses,
+    DeleteFabricVlanErrors,
     ThrowOnError
   >({
     security: [
@@ -2645,8 +2673,8 @@ export const getFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<GetFabricVlanData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetFabricVlanResponse,
-    GetFabricVlanError,
+    GetFabricVlanResponses,
+    GetFabricVlanErrors,
     ThrowOnError
   >({
     security: [
@@ -2667,8 +2695,8 @@ export const updateFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<UpdateFabricVlanData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateFabricVlanResponse,
-    UpdateFabricVlanError,
+    UpdateFabricVlanResponses,
+    UpdateFabricVlanErrors,
     ThrowOnError
   >({
     security: [
@@ -2681,7 +2709,7 @@ export const updateFabricVlan = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2693,8 +2721,8 @@ export const listZones = <ThrowOnError extends boolean = false>(
   options?: Options<ListZonesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListZonesResponse,
-    ListZonesError,
+    ListZonesResponses,
+    ListZonesErrors,
     ThrowOnError
   >({
     security: [
@@ -2715,8 +2743,8 @@ export const createZone = <ThrowOnError extends boolean = false>(
   options: Options<CreateZoneData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    CreateZoneResponse,
-    CreateZoneError,
+    CreateZoneResponses,
+    CreateZoneErrors,
     ThrowOnError
   >({
     security: [
@@ -2729,7 +2757,7 @@ export const createZone = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2742,8 +2770,8 @@ export const deleteZone = <ThrowOnError extends boolean = false>(
   options: Options<DeleteZoneData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteZoneResponse,
-    DeleteZoneError,
+    DeleteZoneResponses,
+    DeleteZoneErrors,
     ThrowOnError
   >({
     security: [
@@ -2764,8 +2792,8 @@ export const getZone = <ThrowOnError extends boolean = false>(
   options: Options<GetZoneData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetZoneResponse,
-    GetZoneError,
+    GetZoneResponses,
+    GetZoneErrors,
     ThrowOnError
   >({
     security: [
@@ -2786,8 +2814,8 @@ export const updateZone = <ThrowOnError extends boolean = false>(
   options: Options<UpdateZoneData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).put<
-    UpdateZoneResponse,
-    UpdateZoneError,
+    UpdateZoneResponses,
+    UpdateZoneErrors,
     ThrowOnError
   >({
     security: [
@@ -2800,7 +2828,7 @@ export const updateZone = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...options?.headers,
+      ...options.headers,
     },
   });
 };
@@ -2813,8 +2841,8 @@ export const listZonesWithSummary = <ThrowOnError extends boolean = false>(
   options?: Options<ListZonesWithSummaryData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListZonesWithSummaryResponse,
-    ListZonesWithSummaryError,
+    ListZonesWithSummaryResponses,
+    ListZonesWithSummaryErrors,
     ThrowOnError
   >({
     security: [
