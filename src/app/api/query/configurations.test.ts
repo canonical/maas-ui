@@ -19,7 +19,7 @@ setupMockServer(
   configurationsResolvers.getConfiguration.handler(),
   configurationsResolvers.listConfigurations.handler(),
   configurationsResolvers.setConfiguration.handler(),
-  configurationsResolvers.setConfigurations.handler()
+  configurationsResolvers.setBulkConfigurations.handler()
 );
 
 describe("useConfigurations", () => {
@@ -30,7 +30,7 @@ describe("useConfigurations", () => {
       expect(result.current.isSuccess).toBe(true);
     });
 
-    expect(result.current.data?.items).toEqual(mockConfigurations);
+    expect(result.current.data).toEqual(mockConfigurations);
   });
 });
 
@@ -77,6 +77,8 @@ describe("useBulkSetConfiguration", () => {
       },
     });
 
-    expect(result.current.isSuccess).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
   });
 });

@@ -69,22 +69,22 @@ const configurationsResolvers = {
         return HttpResponse.json(configFactory());
       }),
     error: (error: SetConfigurationError = mockSetConfigurationError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/configurations/:id`, () => {
+      http.put(`${BASE_URL}MAAS/a/v3/configurations/:id`, () => {
         configurationsResolvers.setConfiguration.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
-  setConfigurations: {
+  setBulkConfigurations: {
     resolved: false,
     handler: () =>
       http.put(`${BASE_URL}MAAS/a/v3/configurations`, () => {
-        configurationsResolvers.setConfigurations.resolved = true;
+        configurationsResolvers.setBulkConfigurations.resolved = true;
         // The success response on this endpoint is empty, according to the open API spec
         return HttpResponse.json({}, { status: 200 });
       }),
     error: (error: SetConfigurationsError = mockSetConfigurationError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/configurations`, () => {
-        configurationsResolvers.setConfigurations.resolved = true;
+      http.put(`${BASE_URL}MAAS/a/v3/configurations`, () => {
+        configurationsResolvers.setBulkConfigurations.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
