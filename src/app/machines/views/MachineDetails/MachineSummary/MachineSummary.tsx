@@ -34,7 +34,7 @@ const MachineSummary = ({ setSidePanelContent }: Props): React.ReactElement => {
   useFetchMachine(id);
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} details`);
 
-  if (!isId(id) || !isMachineDetails(machine)) {
+  if (!isId(id) || !machine || !isMachineDetails(machine)) {
     return <Spinner text="Loading" />;
   }
 

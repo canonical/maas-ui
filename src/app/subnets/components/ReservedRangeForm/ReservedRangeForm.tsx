@@ -88,7 +88,7 @@ const ReservedRangeForm = ({
   if (!createType) {
     computedCreateType =
       sidePanelContent?.extras && "createType" in sidePanelContent.extras
-        ? sidePanelContent?.extras?.createType
+        ? sidePanelContent.extras?.createType
         : undefined;
   }
 

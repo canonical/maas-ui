@@ -214,13 +214,7 @@ const MachineHeader = ({
           active: pathname.startsWith(`${urlBase}/logs`),
           component: Link,
           label: (
-            <ScriptStatus
-              status={
-                isDetails
-                  ? machine.installation_status
-                  : ScriptResultStatus.NONE
-              }
-            >
+            <ScriptStatus status={machine.installation_status}>
               Logs
             </ScriptStatus>
           ),

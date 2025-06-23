@@ -449,7 +449,7 @@ export const isRaid = (disk: Disk | null): boolean =>
  * @returns whether the disk is a virtual disk
  */
 export const isVirtual = (disk: Disk | null): boolean =>
-  disk?.type === DiskTypes.VIRTUAL && "parent" in disk!;
+  disk !== null && disk.type === DiskTypes.VIRTUAL && "parent" in disk;
 
 /**
  * Returns whether a storage layout is used for VMWare ESXi.

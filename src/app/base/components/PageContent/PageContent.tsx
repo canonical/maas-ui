@@ -52,20 +52,8 @@ const PageContent = ({
           >
             <SecondaryNavigation
               isOpen={isSecondaryNavVisible}
-              items={
-                isSettingsPage
-                  ? settingsNavItems
-                  : isPreferencesPage
-                    ? preferencesNavItems
-                    : []
-              }
-              title={
-                isSettingsPage
-                  ? "Settings"
-                  : isPreferencesPage
-                    ? "My preferences"
-                    : ""
-              }
+              items={isSettingsPage ? settingsNavItems : preferencesNavItems}
+              title={isSettingsPage ? "Settings" : "My preferences"}
             />
           </div>
         ) : null}

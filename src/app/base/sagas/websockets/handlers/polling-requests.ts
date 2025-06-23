@@ -32,10 +32,18 @@ export const isPolling = (action: AnyAction): boolean =>
  * @param {Object} action.
  * @returns {Bool} - action is a request action.
  */
-export const isStartPollingAction = (action: AnyAction): boolean =>
-  Boolean(action?.meta?.poll) &&
-  // Ignore actions that are already being polled.
-  !isPolling(action!);
+export const isStartPollingAction = (
+  action: AnyAction | null | undefined
+): boolean => {
+  if (!action || !action.meta) {
+    return false;
+  }
+  return (
+    Boolean(action.meta.poll) &&
+    // Ignore actions that are already being polled.
+    !isPolling(action)
+  );
+};
 
 /**
  * Whether this is an action that stops polling a websocket request.

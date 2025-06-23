@@ -98,7 +98,7 @@ export const api = {
     },
     externalLogin: (): Promise<XMLHttpRequest["response"]> => {
       return new Promise((resolve, reject) => {
-        void import("@/bakery").then(({ default: bakery }) =>
+        import("@/bakery").then(({ default: bakery }) =>
           bakery.get(
             BAKERY_LOGIN_API,
             DEFAULT_HEADERS,

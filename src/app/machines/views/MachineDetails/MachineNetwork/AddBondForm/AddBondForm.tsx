@@ -190,7 +190,7 @@ const AddBondForm = ({
         macNic: macAddress,
         subnet: subnet ? subnet.id : "",
         tags: [],
-        vlan: bondVLAN ? bondVLAN : "",
+        vlan: bondVLAN,
       }}
       onCancel={handleClose}
       onSaveAnalytics={{

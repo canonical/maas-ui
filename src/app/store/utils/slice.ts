@@ -153,7 +153,7 @@ export const updateErrors = <
       error: action?.payload ?? null,
       event,
       id: metaId,
-    });
+    } as S["eventErrors"][0]);
   });
   // Replace the event errors with the cleaned/updated list.
   state.eventErrors = newErrors as S["eventErrors"];

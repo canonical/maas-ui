@@ -10,7 +10,6 @@ import packageInfo from "../package.json";
 
 import { createQueryClient } from "./app/api/query-client";
 import { store } from "./redux-store";
-import * as serviceWorker from "./serviceWorker";
 
 import SidePanelContextProvider from "@/app/base/side-panel-context";
 import { WebSocketProvider } from "@/app/base/websocket-context";
@@ -62,5 +61,3 @@ console.info(
 );
 
 export default AppRoot;
-
-serviceWorker.unregister();
