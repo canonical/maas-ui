@@ -1,5 +1,4 @@
-import AddRepository from "../AddRepository/AddRepository";
-import EditRepository from "../EditRepository";
+import { AddRepository, EditRepository } from "../../components";
 
 import { Labels as RepositoryFormLabels } from "./RepositoryFormFields";
 
