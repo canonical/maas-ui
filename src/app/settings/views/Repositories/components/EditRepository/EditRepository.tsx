@@ -4,7 +4,11 @@ import { Notification, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { repositorySchema } from "../../constants";
-import { getRepositoryTypeString } from "../../utils";
+import {
+  getRepositoryTypeString,
+  getIsDefaultRepo,
+  getRepoDisplayName,
+} from "../../utils";
 import RepositoryFormFields from "../RepositoryFormFields";
 import type { RepositoryFormValues } from "../types";
 
@@ -29,10 +33,6 @@ import {
   knownArchitectures as knownArchitecturesSelectors,
   pocketsToDisable as pocketsToDisableSelectors,
 } from "@/app/store/general/selectors";
-import {
-  getIsDefaultRepo,
-  getRepoDisplayName,
-} from "@/app/store/packagerepository/utils";
 import { parseCommaSeparatedValues } from "@/app/utils";
 
 type Props = {
