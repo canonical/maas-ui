@@ -12,7 +12,9 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(packageRepositoriesResolvers.deletePackageRepository.handler());
+const mockServer = setupMockServer(
+  packageRepositoriesResolvers.deletePackageRepository.handler()
+);
 
 vi.mock("@/app/base/side-panel-context", async () => {
   const actual = await vi.importActual("@/app/base/side-panel-context");
@@ -36,7 +38,7 @@ describe("RepositoryDelete", () => {
     ).toBeInTheDocument();
   });
 
-  it("can delete a repository", async () => {
+  it("can delete a repository and close the side panel", async () => {
     renderWithProviders(<DeleteRepository id={1} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
@@ -45,6 +47,24 @@ describe("RepositoryDelete", () => {
       expect(
         packageRepositoriesResolvers.deletePackageRepository.resolved
       ).toBe(true);
+    });
+
+    await waitFor(() => {
+      expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
+    });
+  });
+
+  it("shows errors on submission", async () => {
+    mockServer.use(
+      packageRepositoriesResolvers.deletePackageRepository.error()
+    );
+
+    renderWithProviders(<DeleteRepository id={1} />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error/)).toBeInTheDocument();
     });
   });
 
