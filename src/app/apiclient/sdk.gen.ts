@@ -6,7 +6,6 @@ import {
   type Client,
   urlSearchParamsBodySerializer,
 } from "./client";
-import { client as _heyApiClient } from "./client.gen";
 import type {
   AccessTokenData,
   AccessTokenResponses,
@@ -23,6 +22,9 @@ import type {
   GetConfigurationsData,
   GetConfigurationsResponses,
   GetConfigurationsErrors,
+  SetConfigurationsData,
+  SetConfigurationsResponses,
+  SetConfigurationsErrors,
   ListEventsData,
   ListEventsResponses,
   ListEventsErrors,
@@ -327,6 +329,7 @@ import type {
   ListZonesWithSummaryResponses,
   ListZonesWithSummaryErrors,
 } from "./types.gen";
+import { client as _heyApiClient } from "./client.gen";
 
 export type Options<
   TData extends TDataShape = TDataShape,
@@ -455,6 +458,32 @@ export const getConfigurations = <ThrowOnError extends boolean = false>(
     ],
     url: "/MAAS/a/v3/configurations",
     ...options,
+  });
+};
+
+/**
+ * Set Configurations
+ */
+export const setConfigurations = <ThrowOnError extends boolean = false>(
+  options: Options<SetConfigurationsData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    SetConfigurationsResponses,
+    SetConfigurationsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/configurations",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 

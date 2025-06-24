@@ -2977,6 +2977,21 @@ export type UnauthorizedBodyResponse = {
 };
 
 /**
+ * UpdateConfigurationItemRequest
+ */
+export type UpdateConfigurationItemRequest = {
+  /**
+   * Value
+   * The value of the configuration.
+   */
+  value?: unknown;
+  /**
+   * The name of the configuration.
+   */
+  name: PublicConfigName;
+};
+
+/**
  * UpdateConfigurationRequest
  */
 export type UpdateConfigurationRequest = {
@@ -2985,6 +3000,17 @@ export type UpdateConfigurationRequest = {
    * The value of the configuration.
    */
   value?: unknown;
+};
+
+/**
+ * UpdateConfigurationsRequest
+ */
+export type UpdateConfigurationsRequest = {
+  /**
+   * Configurations
+   * List of configurations to be updated.
+   */
+  configurations: UpdateConfigurationItemRequest[];
 };
 
 /**
@@ -3819,6 +3845,37 @@ export type GetConfigurationsResponses = {
 
 export type GetConfigurationsResponse =
   GetConfigurationsResponses[keyof GetConfigurationsResponses];
+
+export type SetConfigurationsData = {
+  body: UpdateConfigurationsRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/configurations";
+};
+
+export type SetConfigurationsErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type SetConfigurationsError =
+  SetConfigurationsErrors[keyof SetConfigurationsErrors];
+
+export type SetConfigurationsResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type SetConfigurationsResponse =
+  SetConfigurationsResponses[keyof SetConfigurationsResponses];
 
 export type ListEventsData = {
   body?: never;
@@ -7743,5 +7800,5 @@ export type ListZonesWithSummaryResponse =
   ListZonesWithSummaryResponses[keyof ListZonesWithSummaryResponses];
 
 export type ClientOptions = {
-  baseUrl: "http://maas-ui-demo.internal:5240" | (string & {});
+  baseUrl: `${string}://${string}` | (string & {});
 };

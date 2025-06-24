@@ -9,7 +9,6 @@ import {
   serializeObjectParam,
   serializePrimitiveParam,
 } from "../core/pathSerializer";
-
 import type { Client, ClientOptions, Config, RequestOptions } from "./types";
 
 interface PathSerializer {
