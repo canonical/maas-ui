@@ -97,18 +97,11 @@ const AddRepository = ({ type }: Props): ReactElement => {
           url: values.url,
         };
 
-        if (values.default) {
-          params.disabled_components = values.disabled_components;
-          params.disabled_pockets = values.disabled_pockets;
-        } else {
-          params.components = parseCommaSeparatedValues(
-            values.components
-          ) as unknown as KnownComponentsEnum[];
-          params.distributions = parseCommaSeparatedValues(
-            values.distributions
-          );
-          params.enabled = values.enabled;
-        }
+        params.components = parseCommaSeparatedValues(
+          values.components
+        ) as unknown as KnownComponentsEnum[];
+        params.distributions = parseCommaSeparatedValues(values.distributions);
+        params.enabled = values.enabled;
 
         createRepo.mutate({
           body: { ...params },
