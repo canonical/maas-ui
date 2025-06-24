@@ -1,7 +1,12 @@
+import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
+
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
 import EditRepository from "./EditRepository";
 
+import * as repoQueryHooks from "@/app/api/query/packageRepositories";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
@@ -14,6 +19,7 @@ import {
   waitFor,
   waitForLoading,
   userEvent,
+  spyOnMutation,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -23,8 +29,23 @@ const mockServer = setupMockServer(
   packageRepositoriesResolvers.updatePackageRepository.handler()
 );
 
+const mockStore = configureStore();
+
+vi.mock("@/app/base/side-panel-context", async () => {
+  const actual = await vi.importActual("@/app/base/side-panel-context");
+  return {
+    ...actual,
+    useSidePanel: vi.fn(),
+  };
+});
+
 describe("RepositoryEdit", () => {
   let state: RootState;
+  const mockSetSidePanelContent = vi.fn();
+
+  (useSidePanel as Mock).mockReturnValue({
+    setSidePanelContent: mockSetSidePanelContent,
+  });
 
   beforeEach(() => {
     state = factory.rootState({
@@ -46,6 +67,37 @@ describe("RepositoryEdit", () => {
     mockIsPending();
     renderWithProviders(<EditRepository id={1} type={"ppa"} />, { state });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
+
+  it("dispatches actions to fetch known components, architectures, and pockets on load", () => {
+    state.general.componentsToDisable.loaded = false;
+    state.general.knownArchitectures.loaded = false;
+    state.general.pocketsToDisable.loaded = false;
+    const store = mockStore(state);
+
+    renderWithProviders(<EditRepository id={1} type="ppa" />, { store });
+
+    expect(store.getActions()).toEqual([
+      {
+        type: "general/fetchComponentsToDisable",
+        payload: null,
+        meta: {
+          cache: true,
+          model: "general",
+          method: "components_to_disable",
+        },
+      },
+      {
+        type: "general/fetchKnownArchitectures",
+        payload: null,
+        meta: { cache: true, model: "general", method: "known_architectures" },
+      },
+      {
+        type: "general/fetchPocketsToDisable",
+        payload: null,
+        meta: { cache: true, model: "general", method: "pockets_to_disable" },
+      },
+    ]);
   });
 
   it("shows an error message if the repository fetch fails", async () => {
@@ -127,6 +179,7 @@ describe("RepositoryEdit", () => {
       true
     );
   });
+
   it("can display a repository edit form with correct repo data", async () => {
     renderWithProviders(<EditRepository id={1} type="ppa" />, { state });
 
@@ -138,5 +191,60 @@ describe("RepositoryEdit", () => {
     expect(
       within(form).getByRole("textbox", { name: RepositoryFormLabels.Name })
     ).toBeInTheDocument();
+  });
+
+  it("closes the side panel on cancel", async () => {
+    renderWithProviders(<EditRepository id={1} type="ppa" />, { state });
+
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+    expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
+  });
+
+  it("sets disabled_components and disabled_pockets if the repo is a default repo", async () => {
+    const mockRepo = factory.packageRepository({
+      id: 1,
+      name: "main_archive",
+    });
+    mockServer.use(
+      packageRepositoriesResolvers.getPackageRepository.handler(mockRepo)
+    );
+
+    const mockMutate = spyOnMutation(
+      repoQueryHooks,
+      "useUpdatePackageRepository"
+    );
+
+    renderWithProviders(<EditRepository id={1} type="repository" />, { state });
+
+    await waitForLoading();
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Key" }),
+      "testing"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save repository" })
+    );
+
+    await waitFor(() => {
+      expect(mockMutate).toHaveBeenCalledWith({
+        body: {
+          arches: [],
+          disable_sources: false,
+          disabled_components: [],
+          disabled_pockets: [],
+          key: "testing",
+          name: "Ubuntu archive",
+          url: "test url",
+        },
+        path: {
+          package_repository_id: 1,
+        },
+      });
+    });
   });
 });
