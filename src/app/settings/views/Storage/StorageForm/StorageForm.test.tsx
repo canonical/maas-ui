@@ -1,19 +1,45 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import StorageForm from "./StorageForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, render, waitFor } from "@/testing/utils";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  setupMockServer,
+  renderWithProviders,
+  mockIsPending,
+  waitForLoading,
+} from "@/testing/utils";
 
-const mockStore = configureStore();
+const mockServer = setupMockServer(
+  configurationsResolvers.listConfigurations.handler(),
+  configurationsResolvers.setBulkConfigurations.handler()
+);
 
 describe("StorageForm", () => {
   let state: RootState;
 
+  const configItems = [
+    {
+      name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
+      value: true,
+    },
+    {
+      name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
+      value: true,
+    },
+    {
+      name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
+      value: true,
+    },
+    {
+      name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
+      value: "flat",
+    },
+  ];
   beforeEach(() => {
     state = factory.rootState({
       config: factory.configState({
@@ -30,33 +56,41 @@ describe("StorageForm", () => {
               ["vmfs6", "VMFS6 layout"],
             ],
           },
-          {
-            name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
-            value: false,
-          },
-          {
-            name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
-            value: false,
-          },
-          {
-            name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
-            value: false,
-          },
         ],
       }),
     });
   });
 
-  it("dispatches an action to update config on save button click", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <StorageForm />
-        </MemoryRouter>
-      </Provider>
+  it("renders the storage form", async () => {
+    mockServer.use(
+      configurationsResolvers.listConfigurations.handler({
+        items: configItems,
+      })
     );
-
+    renderWithProviders(<StorageForm />, { state });
+    await waitForLoading();
+    expect(
+      screen.getByRole("combobox", { name: "Default storage layout" })
+    ).toHaveValue("flat");
+    expect(
+      screen.getByRole("checkbox", {
+        name: "Erase nodes' disks prior to releasing",
+      })
+    ).toBeChecked();
+    expect(
+      screen.getByRole("checkbox", {
+        name: "Use secure erase by default when erasing disks",
+      })
+    ).toBeChecked();
+    expect(
+      screen.getByRole("checkbox", {
+        name: "Use quick erase by default when erasing disks",
+      })
+    ).toBeChecked();
+  });
+  it("can update storage configuration", async () => {
+    renderWithProviders(<StorageForm />, { state });
+    await waitForLoading();
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Default storage layout" }),
       "Bcache layout"
@@ -65,53 +99,54 @@ describe("StorageForm", () => {
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     await waitFor(() => {
-      expect(store.getActions()).toEqual([
-        {
-          type: "config/update",
-          payload: {
-            params: {
-              items: {
-                [ConfigNames.DEFAULT_STORAGE_LAYOUT]: "bcache",
-                [ConfigNames.DISK_ERASE_WITH_QUICK_ERASE]: false,
-                [ConfigNames.DISK_ERASE_WITH_SECURE_ERASE]: false,
-                [ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE]: false,
-              },
-            },
-          },
-          meta: {
-            model: "config",
-            method: "bulk_update",
-          },
-        },
-      ]);
+      expect(configurationsResolvers.setBulkConfigurations.resolved).toBe(true);
     });
   });
 
-  it("dispatches action to fetch config if not already loaded", () => {
-    state.config.loaded = false;
-    const store = mockStore(state);
+  it("shows a spinner while loading", async () => {
+    mockIsPending();
+    renderWithProviders(<StorageForm />, { state });
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <StorageForm />
-        </MemoryRouter>
-      </Provider>
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
+
+  it("shows an error message when fetching configurations fails", async () => {
+    mockServer.use(
+      configurationsResolvers.listConfigurations.error({
+        code: 500,
+        message: "Failed to fetch configurations",
+      })
     );
 
-    const fetchActions = store
-      .getActions()
-      .filter((action) => action.type.endsWith("fetch"));
+    renderWithProviders(<StorageForm />, { state });
 
-    expect(fetchActions).toEqual([
-      {
-        type: "config/fetch",
-        meta: {
-          model: "config",
-          method: "list",
-        },
-        payload: null,
-      },
-    ]);
+    await waitFor(() => {
+      expect(
+        screen.getByText("Error while fetching storage configurations")
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("shows an error message when saving configurations fails", async () => {
+    mockServer.use(
+      configurationsResolvers.setBulkConfigurations.error({
+        code: 500,
+        message: "Failed to save configurations",
+      })
+    );
+
+    renderWithProviders(<StorageForm />, { state });
+    await waitForLoading();
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Default storage layout" }),
+      "Bcache layout"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Failed to save configurations")
+      ).toBeInTheDocument();
+    });
   });
 });

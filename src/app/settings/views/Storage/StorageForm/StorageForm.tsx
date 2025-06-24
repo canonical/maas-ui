@@ -1,17 +1,20 @@
-import { useEffect } from "react";
-
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { Notification, Spinner } from "@canonical/react-components";
 import * as Yup from "yup";
 
 import StorageFormFields from "./StorageFormFields";
 import type { StorageFormValues } from "./types";
 
+import {
+  useConfigurations,
+  useBulkSetConfigurations,
+} from "@/app/api/query/configurations";
+import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
+import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 const StorageSchema = Yup.object().shape({
   default_storage_layout: Yup.string().required(),
@@ -21,27 +24,25 @@ const StorageSchema = Yup.object().shape({
 });
 
 const StorageForm = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const loaded = useSelector(configSelectors.loaded);
-  const loading = useSelector(configSelectors.loading);
-  const saved = useSelector(configSelectors.saved);
-  const saving = useSelector(configSelectors.saving);
-  const errors = useSelector(configSelectors.errors);
-
-  const defaultStorageLayout = useSelector(
-    configSelectors.defaultStorageLayout
-  );
-  const diskEraseWithQuick = useSelector(configSelectors.diskEraseWithQuick);
-  const diskEraseWithSecure = useSelector(configSelectors.diskEraseWithSecure);
-  const enableDiskErasing = useSelector(configSelectors.enableDiskErasing);
-
+  const names = [
+    ConfigNames.DEFAULT_STORAGE_LAYOUT,
+    ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
+    ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
+    ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
+  ] as PublicConfigName[];
+  const { data, isPending, error, isSuccess } = useConfigurations({
+    query: {
+      name: names,
+    },
+  });
+  const {
+    default_storage_layout,
+    disk_erase_with_quick_erase,
+    disk_erase_with_secure_erase,
+    enable_disk_erasing_on_release,
+  } = getConfigsFromResponse(data?.items || [], names);
+  const updateConfig = useBulkSetConfigurations();
   useWindowTitle("Storage");
-
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(configActions.fetch());
-    }
-  }, [dispatch, loaded]);
 
   return (
     <ContentSection variant="narrow">
@@ -49,16 +50,27 @@ const StorageForm = (): React.ReactElement => {
         Storage
       </ContentSection.Title>
       <ContentSection.Content>
-        {loading && <Spinner text="Loading..." />}
-        {loaded && (
-          <FormikForm<StorageFormValues>
+        {isPending && <Spinner text="Loading..." />}
+        {error && (
+          <Notification
+            severity="negative"
+            title="Error while fetching storage configurations"
+          >
+            {error.message}
+          </Notification>
+        )}
+        {isSuccess && (
+          <FormikForm<StorageFormValues, SetConfigurationsError>
             cleanup={configActions.cleanup}
-            errors={errors}
+            errors={updateConfig.error}
             initialValues={{
-              default_storage_layout: defaultStorageLayout || "",
-              disk_erase_with_quick_erase: diskEraseWithQuick || false,
-              disk_erase_with_secure_erase: diskEraseWithSecure || false,
-              enable_disk_erasing_on_release: enableDiskErasing || false,
+              default_storage_layout: (default_storage_layout as string) || "",
+              disk_erase_with_quick_erase:
+                (disk_erase_with_quick_erase as boolean) || false,
+              disk_erase_with_secure_erase:
+                (disk_erase_with_secure_erase as boolean) || false,
+              enable_disk_erasing_on_release:
+                (enable_disk_erasing_on_release as boolean) || false,
             }}
             onSaveAnalytics={{
               action: "Saved",
@@ -66,11 +78,32 @@ const StorageForm = (): React.ReactElement => {
               label: "Storage form",
             }}
             onSubmit={(values, { resetForm }) => {
-              dispatch(configActions.update(values));
+              updateConfig.mutate({
+                body: {
+                  configurations: [
+                    {
+                      name: "default_storage_layout",
+                      value: values.default_storage_layout,
+                    },
+                    {
+                      name: "disk_erase_with_quick_erase",
+                      value: values.disk_erase_with_quick_erase,
+                    },
+                    {
+                      name: "disk_erase_with_secure_erase",
+                      value: values.disk_erase_with_secure_erase,
+                    },
+                    {
+                      name: "enable_disk_erasing_on_release",
+                      value: values.enable_disk_erasing_on_release,
+                    },
+                  ],
+                },
+              });
               resetForm({ values });
             }}
-            saved={saved}
-            saving={saving}
+            saved={updateConfig.isSuccess}
+            saving={updateConfig.isPending}
             validationSchema={StorageSchema}
           >
             <StorageFormFields />

@@ -1,16 +1,19 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import StorageForm from "../StorageForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, render, waitFor } from "@/testing/utils";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  setupMockServer,
+  renderWithProviders,
+  waitForLoading,
+} from "@/testing/utils";
 
-const mockStore = configureStore();
-
+setupMockServer(configurationsResolvers.listConfigurations.handler());
 describe("StorageFormFields", () => {
   let state: RootState;
 
@@ -30,32 +33,14 @@ describe("StorageFormFields", () => {
               ["vmfs6", "VMFS6 layout"],
             ],
           },
-          {
-            name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
-            value: false,
-          },
-          {
-            name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
-            value: false,
-          },
-          {
-            name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
-            value: false,
-          },
         ],
       }),
     });
   });
 
   it("displays a warning if blank storage layout chosen", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <StorageForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<StorageForm />, { state });
+    await waitForLoading();
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Default storage layout" }),
@@ -69,14 +54,9 @@ describe("StorageFormFields", () => {
   });
 
   it("displays a warning if a VMFS storage layout chosen", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <StorageForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<StorageForm />, { state });
+    await waitForLoading();
+
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Default storage layout" }),
       "VMFS6 layout"

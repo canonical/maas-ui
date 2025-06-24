@@ -1,3 +1,5 @@
+import type { ConfigurationResponse, PublicConfigName } from "../apiclient";
+
 import type { AnyObject } from "@/app/base/types";
 
 /**
@@ -14,4 +16,22 @@ const simpleObjectEquality = <O = AnyObject>(obj1: O, obj2: O): boolean => {
   return false;
 };
 
-export { simpleObjectEquality };
+/**
+ * Extracts configuration values from the API response.
+ * @param items - The API response items.
+ * @param names - The names of the configurations to extract.
+ * @returns An object containing the extracted configuration values.
+ */
+const getConfigsFromResponse = (
+  items: ConfigurationResponse[],
+  names: PublicConfigName[]
+): Record<PublicConfigName, unknown> => {
+  return items.reduce<Record<string, unknown>>((acc, item) => {
+    if (names.includes(item.name as PublicConfigName)) {
+      acc[item.name] = item.value;
+    }
+    return acc;
+  }, {});
+};
+
+export { simpleObjectEquality, getConfigsFromResponse };
