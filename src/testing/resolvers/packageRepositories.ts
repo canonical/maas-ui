@@ -5,6 +5,7 @@ import { BASE_URL } from "../utils";
 
 import type {
   CreatePackageRepositoryError,
+  DeletePackageRepositoryError,
   GetPackageRepositoryError,
   GetPackageRepositoryResponse,
   ListPackageRepositoriesError,
@@ -42,6 +43,12 @@ const mockCreatePackageRepoError: CreatePackageRepositoryError = {
 const mockUpdatePackageRepoError: UpdatePackageRepositoryError = {
   code: 422,
   message: "Unprocessable entity",
+  kind: "Error",
+};
+
+const mockDeletePackageRepoError: DeletePackageRepositoryError = {
+  code: 404,
+  message: "Repository not found",
   kind: "Error",
 };
 
@@ -115,6 +122,19 @@ const packageRepositoriesResolvers = {
     error: (error: UpdatePackageRepositoryError = mockUpdatePackageRepoError) =>
       http.put(`${BASE_URL}MAAS/a/v3/package_repositories/:id`, () => {
         packageRepositoriesResolvers.updatePackageRepository.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  deletePackageRepository: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/package_repositories/:id`, () => {
+        packageRepositoriesResolvers.deletePackageRepository.resolved = true;
+        return HttpResponse.json({}, { status: 204 });
+      }),
+    error: (error: DeletePackageRepositoryError = mockDeletePackageRepoError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/package_repositories/:id`, () => {
+        packageRepositoriesResolvers.deletePackageRepository.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },

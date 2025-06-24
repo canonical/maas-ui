@@ -1,39 +1,33 @@
-import { useDispatch, useSelector } from "react-redux";
-
+import { useDeletePackageRepository } from "@/app/api/query/packageRepositories";
+import type { PackageRepositoryResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { repositoryActions } from "@/app/store/packagerepository";
-import repositorySelectors from "@/app/store/packagerepository/selectors";
-import type { PackageRepository } from "@/app/store/packagerepository/types";
 
 type Props = {
-  id: PackageRepository["id"];
+  id: PackageRepositoryResponse["id"];
 };
 
 const DeleteRepository = ({ id }: Props) => {
-  const dispatch = useDispatch();
-  const errors = useSelector(repositorySelectors.errors);
-  const saving = useSelector(repositorySelectors.saving);
-  const saved = useSelector(repositorySelectors.saved);
   const { setSidePanelContent } = useSidePanel();
+  const deleteRepo = useDeletePackageRepository();
 
   return (
     <ModelActionForm
       aria-label="Confirm repository deletion"
-      errors={errors}
+      errors={deleteRepo.error}
       initialValues={{}}
       modelType="repository"
       onCancel={() => {
         setSidePanelContent(null);
       }}
       onSubmit={() => {
-        dispatch(repositoryActions.delete(id));
+        deleteRepo.mutate({ path: { package_repository_id: id } });
       }}
       onSuccess={() => {
         setSidePanelContent(null);
       }}
-      saved={saved}
-      saving={saving}
+      saved={deleteRepo.isSuccess}
+      saving={deleteRepo.isPending}
     />
   );
 };

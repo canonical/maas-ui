@@ -1,5 +1,6 @@
 import {
   useCreatePackageRepository,
+  useDeletePackageRepository,
   useGetPackageRepository,
   usePackageRepositories,
   useUpdatePackageRepository,
@@ -19,7 +20,8 @@ setupMockServer(
   packageRepositoriesResolvers.listPackageRepositories.handler(),
   packageRepositoriesResolvers.getPackageRepository.handler(),
   packageRepositoriesResolvers.createPackageRepository.handler(),
-  packageRepositoriesResolvers.updatePackageRepository.handler()
+  packageRepositoriesResolvers.updatePackageRepository.handler(),
+  packageRepositoriesResolvers.deletePackageRepository.handler()
 );
 
 describe("usePackageRepositories", () => {
@@ -92,6 +94,24 @@ describe("useUpdatePackageRepository", () => {
         name: "new repo",
         url: "https://fake.com",
         disable_sources: false,
+      },
+    });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useDeletePackageRepository", () => {
+  it("should delete a package repository", async () => {
+    const { result } = renderHookWithProviders(() =>
+      useDeletePackageRepository()
+    );
+
+    result.current.mutate({
+      path: {
+        package_repository_id: 1,
       },
     });
 
