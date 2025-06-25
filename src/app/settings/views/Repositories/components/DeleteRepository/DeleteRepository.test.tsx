@@ -1,33 +1,35 @@
-import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import DeleteRepository from "./DeleteRepository";
 
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
-import { screen, renderWithProviders, userEvent } from "@/testing/utils";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
+import {
+  screen,
+  renderWithProviders,
+  userEvent,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
 
-const mockStore = configureStore();
+const mockServer = setupMockServer(
+  packageRepositoriesResolvers.deletePackageRepository.handler()
+);
+
+vi.mock("@/app/base/side-panel-context", async () => {
+  const actual = await vi.importActual("@/app/base/side-panel-context");
+  return {
+    ...actual,
+    useSidePanel: vi.fn(),
+  };
+});
 
 describe("RepositoryDelete", () => {
-  let state: RootState;
+  const mockSetSidePanelContent = vi.fn();
 
-  beforeEach(() => {
-    state = factory.rootState({
-      packagerepository: factory.packageRepositoryState({
-        loaded: true,
-        items: [
-          factory.packageRepository({
-            id: 1,
-            name: "main_archive",
-            url: "http://archive.ubuntu.com/ubuntu",
-            default: true,
-            enabled: true,
-          }),
-        ],
-      }),
-    });
+  (useSidePanel as Mock).mockReturnValue({
+    setSidePanelContent: mockSetSidePanelContent,
   });
-
   it("renders", async () => {
     renderWithProviders(<DeleteRepository id={1} />);
 
@@ -36,24 +38,43 @@ describe("RepositoryDelete", () => {
     ).toBeInTheDocument();
   });
 
-  it("can delete a repository", async () => {
-    const store = mockStore(state);
-
-    renderWithProviders(<DeleteRepository id={1} />, { store });
+  it("can delete a repository and close the side panel", async () => {
+    renderWithProviders(<DeleteRepository id={1} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    expect(store.getActions()[0]).toEqual({
-      type: "packagerepository/delete",
-      payload: {
-        params: {
-          id: 1,
-        },
-      },
-      meta: {
-        model: "packagerepository",
-        method: "delete",
-      },
+    await waitFor(() => {
+      expect(
+        packageRepositoriesResolvers.deletePackageRepository.resolved
+      ).toBe(true);
+    });
+
+    await waitFor(() => {
+      expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
+    });
+  });
+
+  it("shows errors on submission", async () => {
+    mockServer.use(
+      packageRepositoriesResolvers.deletePackageRepository.error()
+    );
+
+    renderWithProviders(<DeleteRepository id={1} />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error/)).toBeInTheDocument();
+    });
+  });
+
+  it("closes the side panel on Cancel", async () => {
+    renderWithProviders(<DeleteRepository id={1} />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+    await waitFor(() => {
+      expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
     });
   });
 });

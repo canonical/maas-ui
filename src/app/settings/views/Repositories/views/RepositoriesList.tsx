@@ -1,7 +1,9 @@
-import AddRepository from "../components/AddRepository/AddRepository";
-import DeleteRepository from "../components/DeleteRepository/DeleteRepository";
-import EditRepository from "../components/EditRepository";
-import RepositoriesTable from "../components/RepositoryTable/RepositoriesTable";
+import {
+  AddRepository,
+  EditRepository,
+  DeleteRepository,
+  RepositoriesTable,
+} from "../components";
 import { RepositoryActionSidePanelViews } from "../constants";
 
 import PageContent from "@/app/base/components/PageContent";

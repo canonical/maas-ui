@@ -10,7 +10,7 @@ import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   getIsDefaultRepo,
   getRepoDisplayName,
-} from "@/app/store/packagerepository/utils";
+} from "@/app/settings/views/Repositories/utils";
 
 type RepositoriesColumnDef = ColumnDef<
   PackageRepositoryResponse,

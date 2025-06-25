@@ -651,3 +651,39 @@ export const waitForLoading = async (loadingText = "Loading") =>
       screen.queryByText(new RegExp(loadingText, "i"))
     ).not.toBeInTheDocument()
   );
+
+/**
+ * Spies on a given mutation hook to observe the mutation function
+ * @param obj The module that the hook belongs to
+ * @param methodName The name of the mutation hook to spy on
+ * @returns A mock function that can be observed
+ */
+export const spyOnMutation = (obj: unknown, methodName: string) => {
+  const mockMutate = vi.fn();
+  vi.spyOn(obj, methodName as never).mockImplementation(() => {
+    return {
+      mutate: mockMutate,
+      mutateAsync: vi.fn(),
+      data: undefined,
+      error: null,
+      variables: undefined,
+      isError: false,
+      isPending: false,
+      isIdle: true,
+      isSuccess: false,
+      status: "idle",
+      reset: vi.fn(),
+      context: null,
+      failureCount: 0,
+      failureReason: null,
+      isPaused: false,
+      submittedAt: 0,
+    };
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  return mockMutate;
+};

@@ -1,9 +1,11 @@
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
 import AddRepository from "./AddRepository";
 
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
@@ -13,6 +15,7 @@ import {
   renderWithProviders,
   setupMockServer,
   waitForLoading,
+  waitFor,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,8 +25,22 @@ setupMockServer(
   packageRepositoriesResolvers.updatePackageRepository.handler()
 );
 
+vi.mock("@/app/base/side-panel-context", async () => {
+  const actual = await vi.importActual("@/app/base/side-panel-context");
+  return {
+    ...actual,
+    useSidePanel: vi.fn(),
+  };
+});
+
 describe("AddRepository", () => {
   let state: RootState;
+
+  const mockSetSidePanelContent = vi.fn();
+
+  (useSidePanel as Mock).mockReturnValue({
+    setSidePanelContent: mockSetSidePanelContent,
+  });
 
   beforeEach(() => {
     state = factory.rootState({
@@ -94,6 +111,7 @@ describe("AddRepository", () => {
       screen.getByRole("form", { name: "Add repository" })
     ).toBeInTheDocument();
   });
+
   it("can create a repository", async () => {
     renderWithProviders(<AddRepository type="repository" />, { state });
 
@@ -113,5 +131,15 @@ describe("AddRepository", () => {
     expect(packageRepositoriesResolvers.createPackageRepository.resolved).toBe(
       true
     );
+  });
+
+  it("closes the side panel on cancel", async () => {
+    renderWithProviders(<AddRepository type="ppa" />, { state });
+
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+    await waitFor(() => {
+      expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
+    });
   });
 });

@@ -10,6 +10,9 @@ import type {
   CreatePackageRepositoryData,
   CreatePackageRepositoryError,
   CreatePackageRepositoryResponse,
+  DeletePackageRepositoryData,
+  DeletePackageRepositoryError,
+  DeletePackageRepositoryResponse,
   GetPackageRepositoryData,
   GetPackageRepositoryError,
   GetPackageRepositoryResponse,
@@ -23,6 +26,7 @@ import type {
 } from "@/app/apiclient";
 import {
   createPackageRepositoryMutation,
+  deletePackageRepositoryMutation,
   getPackageRepositoryOptions,
   listPackageRepositoriesOptions,
   listPackageRepositoriesQueryKey,
@@ -64,7 +68,7 @@ export const useCreatePackageRepository = (
   >({
     ...createPackageRepositoryMutation(mutationOptions),
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: listPackageRepositoriesQueryKey(),
       });
     },
@@ -82,7 +86,25 @@ export const useUpdatePackageRepository = (
   >({
     ...updatePackageRepositoryMutation(mutationOptions),
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
+        queryKey: listPackageRepositoriesQueryKey(),
+      });
+    },
+  });
+};
+
+export const useDeletePackageRepository = (
+  mutationOptions?: Options<DeletePackageRepositoryData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    DeletePackageRepositoryResponse,
+    DeletePackageRepositoryError,
+    Options<DeletePackageRepositoryData>
+  >({
+    ...deletePackageRepositoryMutation(mutationOptions),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
         queryKey: listPackageRepositoriesQueryKey(),
       });
     },

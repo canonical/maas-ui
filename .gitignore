@@ -45,6 +45,7 @@ sitespeed.io/results
 /playwright-report/
 /playwright/.cache/
 coverage/
+.coverage/
 
 # openapi-ts error logs
 openapi-ts-error-*.log
