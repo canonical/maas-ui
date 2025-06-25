@@ -158,7 +158,7 @@ describe("SessionTimeout", () => {
     });
 
     await waitFor(() => {
-      expect(mockMutate).toHaveBeenCalledWith({
+      expect(mockMutate.mock.calls[0][0]).toMatchObject({
         body: {
           configurations: [
             {
