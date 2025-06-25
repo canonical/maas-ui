@@ -3,8 +3,6 @@ import IpmiSettings from "../IpmiSettings";
 import { Labels as FormFieldsLabels } from "./IpmiFormFields";
 
 import { AutoIpmiPrivilegeLevel, ConfigNames } from "@/app/store/config/types";
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   screen,
@@ -17,7 +15,6 @@ const mockServer = setupMockServer(
   configurationsResolvers.listConfigurations.handler()
 );
 describe("IpmiFormFields", () => {
-  let initialState: RootState;
   const configItems = [
     {
       name: ConfigNames.MAAS_AUTO_IPMI_USER,
@@ -32,20 +29,12 @@ describe("IpmiFormFields", () => {
       value: AutoIpmiPrivilegeLevel.OPERATOR,
     },
   ];
-  beforeEach(() => {
-    initialState = factory.rootState({
-      config: factory.configState({
-        loaded: true,
-      }),
-    });
-  });
 
   it("updates value for ipmi username", async () => {
-    const state = { ...initialState };
     mockServer.use(
       configurationsResolvers.listConfigurations.handler({ items: configItems })
     );
-    renderWithProviders(<IpmiSettings />, { state });
+    renderWithProviders(<IpmiSettings />);
     await waitForLoading();
     expect(
       screen.getByRole("textbox", { name: FormFieldsLabels.IPMIUsername })
@@ -53,11 +42,10 @@ describe("IpmiFormFields", () => {
   });
 
   it("updates value for ipmi user privilege level", async () => {
-    const state = { ...initialState };
     mockServer.use(
       configurationsResolvers.listConfigurations.handler({ items: configItems })
     );
-    renderWithProviders(<IpmiSettings />, { state });
+    renderWithProviders(<IpmiSettings />);
     await waitForLoading();
     expect(
       screen.getByRole("radio", { name: FormFieldsLabels.OperatorRadio })

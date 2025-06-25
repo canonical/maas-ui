@@ -106,6 +106,7 @@ describe("IpmiSettings", () => {
       ).toBeInTheDocument();
     });
   });
+
   it("shows an error message when updating configurations fails", async () => {
     mockServer.use(
       configurationsResolvers.setBulkConfigurations.error({

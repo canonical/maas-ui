@@ -1,7 +1,6 @@
 import { ContentSection } from "@canonical/maas-react-components";
 import { Icon, Notification, Spinner } from "@canonical/react-components";
 import { formatDuration } from "date-fns";
-import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import {
@@ -12,9 +11,9 @@ import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
+import { useLogout } from "@/app/base/hooks/logout";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
-import { statusActions } from "@/app/store/status";
 import {
   humanReadableToSeconds,
   secondsToDuration,
@@ -22,15 +21,6 @@ import {
 
 type SessionTimeoutFormValues = {
   session_length: string;
-};
-
-const useLogout = () => {
-  const dispatch = useDispatch();
-
-  return () => {
-    localStorage.removeItem("maas-config");
-    dispatch(statusActions.logout());
-  };
 };
 
 export enum Labels {
