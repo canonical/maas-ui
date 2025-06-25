@@ -1,6 +1,7 @@
 import { ContentSection } from "@canonical/maas-react-components";
 import { Icon, Notification, Spinner } from "@canonical/react-components";
 import { formatDuration } from "date-fns";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import {
@@ -13,6 +14,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
+import { statusActions } from "@/app/store/status";
 import {
   humanReadableToSeconds,
   secondsToDuration,
@@ -20,6 +22,15 @@ import {
 
 type SessionTimeoutFormValues = {
   session_length: string;
+};
+
+const useLogout = () => {
+  const dispatch = useDispatch();
+
+  return () => {
+    localStorage.removeItem("maas-config");
+    dispatch(statusActions.logout());
+  };
 };
 
 export enum Labels {
@@ -62,6 +73,7 @@ const SessionTimeout = (): React.ReactElement => {
   const session_length = data?.items?.[0].value || {};
   const updateConfig = useBulkSetConfigurations();
   useWindowTitle("Session timeout");
+  const logout = useLogout();
 
   if (isPending) {
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;
@@ -100,16 +112,22 @@ const SessionTimeout = (): React.ReactElement => {
               values.session_length
             );
             sessionLengthInSeconds &&
-              updateConfig.mutate({
-                body: {
-                  configurations: [
-                    {
-                      name: ConfigNames.SESSION_LENGTH,
-                      value: sessionLengthInSeconds,
-                    },
-                  ],
+              updateConfig.mutate(
+                {
+                  body: {
+                    configurations: [
+                      {
+                        name: ConfigNames.SESSION_LENGTH,
+                        value: sessionLengthInSeconds,
+                      },
+                    ],
+                  },
                 },
-              });
+                {
+                  onSuccess: logout,
+                }
+              );
+
             resetForm({ values });
           }}
           resetOnSave

@@ -19,6 +19,5 @@ context("Settings - Security - Session timeout", () => {
       }
     });
     cy.findByRole("form", { name: "Login" }).should("exist");
-    cy.findByText(/Your session has expired/i).should("exist");
   });
 });
