@@ -47,8 +47,6 @@ export const Login = (): React.ReactElement => {
   const authenticating = useSelector(statusSelectors.authenticating);
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
-  const authenticationError = useSelector(statusSelectors.authenticationError);
-
   const noUsers = useSelector(statusSelectors.noUsers);
 
   useWindowTitle("Login");
