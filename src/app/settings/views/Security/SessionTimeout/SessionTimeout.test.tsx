@@ -1,11 +1,10 @@
 import { screen } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 
 import SessionTimeout, {
   Labels as SessionTimeoutLabels,
 } from "./SessionTimeout";
 
-import { configActions } from "@/app/store/config";
+import * as configurationsQueryHooks from "@/app/api/query/configurations";
 import type { RootState } from "@/app/store/root/types";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
@@ -18,14 +17,13 @@ import {
   renderWithProviders,
   waitForLoading,
   waitFor,
+  spyOnMutation,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   configurationsResolvers.listConfigurations.handler(),
   configurationsResolvers.setBulkConfigurations.handler()
 );
-
-const mockStore = configureStore<RootState>();
 
 describe("SessionTimeout", () => {
   let state: RootState;
@@ -133,10 +131,13 @@ describe("SessionTimeout", () => {
   });
 
   it("correctly converts time values to seconds on save", async () => {
-    const store = mockStore(state);
-
     mockServer.use(
       configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
+
+    const mockMutate = spyOnMutation(
+      configurationsQueryHooks,
+      "useBulkSetConfigurations"
     );
     renderWithBrowserRouter(<SessionTimeout />, { state });
     await waitForLoading();
@@ -156,12 +157,17 @@ describe("SessionTimeout", () => {
       expect(configurationsResolvers.setBulkConfigurations.resolved).toBe(true);
     });
 
-    const actualActions = store.getActions();
-    const expectedAction = configActions.update({
-      session_length: 1044000,
+    await waitFor(() => {
+      expect(mockMutate).toHaveBeenCalledWith({
+        body: {
+          configurations: [
+            {
+              name: "session_length",
+              value: 1044000,
+            },
+          ],
+        },
+      });
     });
-    expect(
-      actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
   });
 });
