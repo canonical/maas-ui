@@ -1,39 +1,50 @@
 import { screen } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 
 import SessionTimeout, {
   Labels as SessionTimeoutLabels,
 } from "./SessionTimeout";
 
-import { configActions } from "@/app/store/config";
+import * as configurationsQueryHooks from "@/app/api/query/configurations";
 import type { RootState } from "@/app/store/root/types";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   userEvent,
   renderWithBrowserRouter,
   getTestState,
+  setupMockServer,
+  mockIsPending,
+  renderWithProviders,
+  waitForLoading,
+  waitFor,
+  spyOnMutation,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
+const mockServer = setupMockServer(
+  configurationsResolvers.listConfigurations.handler(),
+  configurationsResolvers.setBulkConfigurations.handler()
+);
 
 describe("SessionTimeout", () => {
   let state: RootState;
-
+  const configItems = getTestState().config.items;
   beforeEach(() => {
     state = getTestState();
   });
 
   it("displays a spinner while loading", () => {
-    state.config.loaded = false;
-    state.config.loading = true;
+    mockIsPending();
     renderWithBrowserRouter(<SessionTimeout />, { state });
 
     expect(screen.getByText(SessionTimeoutLabels.Loading)).toBeInTheDocument();
   });
 
   it("displays the form with correct values", async () => {
-    renderWithBrowserRouter(<SessionTimeout />, { state });
-
+    mockServer.use(
+      configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
+    renderWithProviders(<SessionTimeout />, { state });
+    await waitForLoading();
     expect(
       screen.getByRole("form", {
         name: SessionTimeoutLabels.ConfigureSessionTimeout,
@@ -46,8 +57,11 @@ describe("SessionTimeout", () => {
   });
 
   it("displays the updated timeout length when the value is saved", async () => {
-    renderWithBrowserRouter(<SessionTimeout />, { state });
-
+    mockServer.use(
+      configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
+    renderWithProviders(<SessionTimeout />, { state });
+    await waitForLoading();
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     );
@@ -62,15 +76,20 @@ describe("SessionTimeout", () => {
     );
 
     mockFormikFormSaved();
-
+    await waitFor(() => {
+      expect(configurationsResolvers.setBulkConfigurations.resolved).toBe(true);
+    });
     expect(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     ).toHaveValue("3 hours");
   });
 
   it("disables the submit button if an invalid value is entered", async () => {
-    renderWithBrowserRouter(<SessionTimeout />, { state });
-
+    mockServer.use(
+      configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
+    renderWithProviders(<SessionTimeout />, { state });
+    await waitForLoading();
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     );
@@ -111,10 +130,17 @@ describe("SessionTimeout", () => {
     ).toBeDisabled();
   });
 
-  it("correctly converts time values to seconds and dispatches an action to update the session timeout on save", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<SessionTimeout />, { store });
+  it("correctly converts time values to seconds on save", async () => {
+    mockServer.use(
+      configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
 
+    const mockMutate = spyOnMutation(
+      configurationsQueryHooks,
+      "useBulkSetConfigurations"
+    );
+    renderWithBrowserRouter(<SessionTimeout />, { state });
+    await waitForLoading();
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     );
@@ -127,13 +153,21 @@ describe("SessionTimeout", () => {
       screen.getByRole("button", { name: SessionTimeoutLabels.Save })
     );
 
-    const actualActions = store.getActions();
-    const expectedAction = configActions.update({
-      session_length: 1044000,
+    await waitFor(() => {
+      expect(configurationsResolvers.setBulkConfigurations.resolved).toBe(true);
     });
 
-    expect(
-      actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+    await waitFor(() => {
+      expect(mockMutate.mock.calls[0][0]).toMatchObject({
+        body: {
+          configurations: [
+            {
+              name: "session_length",
+              value: 1044000,
+            },
+          ],
+        },
+      });
+    });
   });
 });

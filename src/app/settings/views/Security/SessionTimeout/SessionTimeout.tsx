@@ -1,14 +1,19 @@
 import { ContentSection } from "@canonical/maas-react-components";
-import { Icon, Spinner } from "@canonical/react-components";
+import { Icon, Notification, Spinner } from "@canonical/react-components";
 import { formatDuration } from "date-fns";
-import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import {
+  useConfigurations,
+  useBulkSetConfigurations,
+} from "@/app/api/query/configurations";
+import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
+import { useLogout } from "@/app/base/hooks/logout";
 import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 import {
   humanReadableToSeconds,
   secondsToDuration,
@@ -51,15 +56,16 @@ const SessionTimeoutSchema = Yup.object().shape({
 });
 
 const SessionTimeout = (): React.ReactElement => {
+  const names = [ConfigNames.SESSION_LENGTH] as PublicConfigName[];
+  const { data, isPending, error } = useConfigurations({
+    query: { name: names },
+  });
+  const session_length = data?.items?.[0].value || {};
+  const updateConfig = useBulkSetConfigurations();
   useWindowTitle("Session timeout");
-  const dispatch = useDispatch();
-  const configLoading = useSelector(configSelectors.loading);
-  const sessionLength = useSelector(configSelectors.sessionLength) || undefined;
-  const saved = useSelector(configSelectors.saved);
-  const saving = useSelector(configSelectors.saving);
-  const errors = useSelector(configSelectors.errors);
+  const logout = useLogout();
 
-  if (configLoading) {
+  if (isPending) {
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;
   }
 
@@ -69,12 +75,22 @@ const SessionTimeout = (): React.ReactElement => {
         Session timeout
       </ContentSection.Title>
       <ContentSection.Content>
-        <FormikForm<SessionTimeoutFormValues>
+        {error && (
+          <Notification
+            severity="negative"
+            title="Error while fetching setting security configurations session timeout"
+          >
+            {error.message}
+          </Notification>
+        )}
+        <FormikForm<SessionTimeoutFormValues, SetConfigurationsError>
           aria-label={Labels.ConfigureSessionTimeout}
           cleanup={configActions.cleanup}
-          errors={errors}
+          errors={updateConfig.error}
           initialValues={{
-            session_length: formatDuration(secondsToDuration(sessionLength)),
+            session_length: formatDuration(
+              secondsToDuration(session_length as number)
+            ),
           }}
           onSaveAnalytics={{
             action: "Saved",
@@ -86,16 +102,27 @@ const SessionTimeout = (): React.ReactElement => {
               values.session_length
             );
             sessionLengthInSeconds &&
-              dispatch(
-                configActions.update({
-                  session_length: sessionLengthInSeconds,
-                })
+              updateConfig.mutate(
+                {
+                  body: {
+                    configurations: [
+                      {
+                        name: ConfigNames.SESSION_LENGTH,
+                        value: sessionLengthInSeconds,
+                      },
+                    ],
+                  },
+                },
+                {
+                  onSuccess: logout,
+                }
               );
+
             resetForm({ values });
           }}
           resetOnSave
-          saved={saved}
-          saving={saving}
+          saved={updateConfig.isSuccess}
+          saving={updateConfig.isPending}
           validationSchema={SessionTimeoutSchema}
         >
           <FormikField

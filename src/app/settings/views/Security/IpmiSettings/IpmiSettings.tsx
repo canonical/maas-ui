@@ -1,17 +1,19 @@
-import { useEffect } from "react";
-
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { Notification, Spinner } from "@canonical/react-components";
 import * as Yup from "yup";
 
 import Fields from "./IpmiFormFields";
 
+import {
+  useBulkSetConfigurations,
+  useConfigurations,
+} from "@/app/api/query/configurations";
+import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
+import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
-import { AutoIpmiPrivilegeLevel } from "@/app/store/config/types";
+import { AutoIpmiPrivilegeLevel, ConfigNames } from "@/app/store/config/types";
 
 const IpmiSchema = Yup.object().shape({
   maas_auto_ipmi_user: Yup.string()
@@ -39,24 +41,21 @@ export type IpmiFormValues = {
 };
 
 const IpmiSettings = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const configLoaded = useSelector(configSelectors.loaded);
-  const configLoading = useSelector(configSelectors.loading);
-  const saved = useSelector(configSelectors.saved);
-  const saving = useSelector(configSelectors.saving);
-  const errors = useSelector(configSelectors.errors);
-  const ipmiUser = useSelector(configSelectors.maasAutoIpmiUser);
-  const bmcKey = useSelector(configSelectors.maasAutoIpmiKGBmcKey);
-  const ipmiPrivilegeLevel = useSelector(
-    configSelectors.maasAutoUserPrivilegeLevel
-  );
+  const names = [
+    ConfigNames.MAAS_AUTO_IPMI_USER,
+    ConfigNames.MAAS_AUTO_IPMI_K_G_BMC_KEY,
+    ConfigNames.MAAS_AUTO_IPMI_USER_PRIVILEGE_LEVEL,
+  ] as PublicConfigName[];
+  const { data, isPending, error, isSuccess } = useConfigurations({
+    query: { name: names },
+  });
+  const {
+    maas_auto_ipmi_user,
+    maas_auto_ipmi_k_g_bmc_key,
+    maas_auto_ipmi_user_privilege_level,
+  } = getConfigsFromResponse(data?.items || [], names);
+  const updateConfig = useBulkSetConfigurations();
   useWindowTitle("IPMI settings");
-
-  useEffect(() => {
-    if (!configLoaded) {
-      dispatch(configActions.fetch());
-    }
-  }, [dispatch, configLoaded]);
 
   return (
     <ContentSection variant="narrow">
@@ -64,17 +63,27 @@ const IpmiSettings = (): React.ReactElement => {
         IPMI settings
       </ContentSection.Title>
       <ContentSection.Content>
-        {configLoading && <Spinner text={Labels.Loading} />}
-        {configLoaded && (
-          <FormikForm<IpmiFormValues>
+        {isPending && <Spinner text={Labels.Loading} />}
+        {error && (
+          <Notification
+            severity="negative"
+            title="Error while fetching security configurations ipmi settings"
+          >
+            {error.message}
+          </Notification>
+        )}
+        {isSuccess && (
+          <FormikForm<IpmiFormValues, SetConfigurationsError>
             aria-label={Labels.FormLabel}
             cleanup={configActions.cleanup}
-            errors={errors}
+            errors={updateConfig.error}
             initialValues={{
-              maas_auto_ipmi_user: ipmiUser || "maas",
-              maas_auto_ipmi_k_g_bmc_key: bmcKey || "",
+              maas_auto_ipmi_user: (maas_auto_ipmi_user as string) || "maas",
+              maas_auto_ipmi_k_g_bmc_key:
+                (maas_auto_ipmi_k_g_bmc_key as string) || "",
               maas_auto_ipmi_user_privilege_level:
-                ipmiPrivilegeLevel || AutoIpmiPrivilegeLevel.ADMIN,
+                (maas_auto_ipmi_user_privilege_level as AutoIpmiPrivilegeLevel) ||
+                AutoIpmiPrivilegeLevel.ADMIN,
             }}
             onSaveAnalytics={{
               action: "Saved",
@@ -82,11 +91,28 @@ const IpmiSettings = (): React.ReactElement => {
               label: "IPMI form",
             }}
             onSubmit={(values, { resetForm }) => {
-              dispatch(configActions.update(values));
+              updateConfig.mutate({
+                body: {
+                  configurations: [
+                    {
+                      name: ConfigNames.MAAS_AUTO_IPMI_USER,
+                      value: values.maas_auto_ipmi_user,
+                    },
+                    {
+                      name: ConfigNames.MAAS_AUTO_IPMI_K_G_BMC_KEY,
+                      value: values.maas_auto_ipmi_k_g_bmc_key,
+                    },
+                    {
+                      name: ConfigNames.MAAS_AUTO_IPMI_USER_PRIVILEGE_LEVEL,
+                      value: values.maas_auto_ipmi_user_privilege_level,
+                    },
+                  ],
+                },
+              });
               resetForm({ values });
             }}
-            saved={saved}
-            saving={saving}
+            saved={updateConfig.isSuccess}
+            saving={updateConfig.isPending}
             validationSchema={IpmiSchema}
           >
             <Fields />
