@@ -1,15 +1,20 @@
-import { useEffect } from "react";
-
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner, Select } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { Spinner, Select, Notification } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import {
+  useBulkSetConfigurations,
+  useConfigurations,
+} from "@/app/api/query/configurations";
+import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
+import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 const DnsSchema = Yup.object().shape({
   // TODO: Client-side IP validation, or display error from server
@@ -20,27 +25,23 @@ const DnsSchema = Yup.object().shape({
 });
 
 const DnsForm = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const updateConfig = configActions.update;
+  const names = [
+    ConfigNames.DNSSEC_VALIDATION,
+    ConfigNames.DNS_TRUSTED_ACL,
+    ConfigNames.UPSTREAM_DNS,
+  ] as PublicConfigName[];
 
-  const loaded = useSelector(configSelectors.loaded);
-  const loading = useSelector(configSelectors.loading);
-  const saved = useSelector(configSelectors.saved);
-  const saving = useSelector(configSelectors.saving);
-  const errors = useSelector(configSelectors.errors);
+  const { data, isPending, error, isSuccess } = useConfigurations({
+    query: { name: names },
+  });
 
-  const dnssecValidation = useSelector(configSelectors.dnssecValidation);
-  const dnsTrustedAcl = useSelector(configSelectors.dnsTrustedAcl);
-  const upstreamDns = useSelector(configSelectors.upstreamDns);
+  const { dnssec_validation, dns_trusted_acl, upstream_dns } =
+    getConfigsFromResponse(data?.items || [], names);
   const dnssecOptions = useSelector(configSelectors.dnssecOptions);
 
-  useWindowTitle("DNS");
+  const updateConfig = useBulkSetConfigurations();
 
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(configActions.fetch());
-    }
-  }, [dispatch, loaded]);
+  useWindowTitle("DNS");
 
   return (
     <ContentSection variant="narrow">
@@ -48,15 +49,23 @@ const DnsForm = (): React.ReactElement => {
         DNS
       </ContentSection.Title>
       <ContentSection.Content>
-        {loading && <Spinner text="Loading..." />}
-        {loaded && (
+        {isPending && <Spinner text="Loading..." />}
+        {error && (
+          <Notification
+            severity="negative"
+            title="Error while fetching network configurations"
+          >
+            {error.message}
+          </Notification>
+        )}
+        {isSuccess && (
           <FormikForm
             cleanup={configActions.cleanup}
-            errors={errors}
+            errors={updateConfig.error}
             initialValues={{
-              dnssec_validation: dnssecValidation || "",
-              dns_trusted_acl: dnsTrustedAcl || "",
-              upstream_dns: upstreamDns || "",
+              dnssec_validation: dnssec_validation || "",
+              dns_trusted_acl: dns_trusted_acl || "",
+              upstream_dns: upstream_dns || "",
             }}
             onSaveAnalytics={{
               action: "Saved",
@@ -64,11 +73,28 @@ const DnsForm = (): React.ReactElement => {
               label: "DNS form",
             }}
             onSubmit={(values, { resetForm }) => {
-              dispatch(updateConfig(values));
+              updateConfig.mutate({
+                body: {
+                  configurations: [
+                    {
+                      name: ConfigNames.DNSSEC_VALIDATION,
+                      value: values.dnssec_validation,
+                    },
+                    {
+                      name: ConfigNames.DNS_TRUSTED_ACL,
+                      value: values.dns_trusted_acl,
+                    },
+                    {
+                      name: ConfigNames.UPSTREAM_DNS,
+                      value: values.upstream_dns,
+                    },
+                  ],
+                },
+              });
               resetForm({ values });
             }}
-            saved={saved}
-            saving={saving}
+            saved={isSuccess}
+            saving={isPending}
             validationSchema={DnsSchema}
           >
             <FormikField
