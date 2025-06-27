@@ -1,31 +1,22 @@
-import { useEffect } from "react";
-
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { Notification, Spinner } from "@canonical/react-components";
 
 import ThirdPartyDriversForm from "../ThirdPartyDriversForm";
 
+import { useGetConfiguration } from "@/app/api/query/configurations";
 import { useWindowTitle } from "@/app/base/hooks";
-import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 export enum Labels {
   Loading = "Loading...",
 }
 
 const ThirdPartyDrivers = (): React.ReactElement => {
-  const loaded = useSelector(configSelectors.loaded);
-  const loading = useSelector(configSelectors.loading);
-  const dispatch = useDispatch();
+  const { isPending, error, isSuccess } = useGetConfiguration({
+    path: { name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS },
+  });
 
   useWindowTitle("Ubuntu");
-
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(configActions.fetch());
-    }
-  }, [dispatch, loaded]);
 
   return (
     <ContentSection variant="narrow">
@@ -33,8 +24,16 @@ const ThirdPartyDrivers = (): React.ReactElement => {
         Ubuntu
       </ContentSection.Title>
       <ContentSection.Content>
-        {loading && <Spinner text="Loading..." />}
-        {loaded && <ThirdPartyDriversForm />}
+        {isPending && <Spinner text="Loading..." />}
+        {error && (
+          <Notification
+            severity="negative"
+            title="Error while fetching image configurations"
+          >
+            {error.message}
+          </Notification>
+        )}
+        {isSuccess && <ThirdPartyDriversForm />}
       </ContentSection.Content>
     </ContentSection>
   );

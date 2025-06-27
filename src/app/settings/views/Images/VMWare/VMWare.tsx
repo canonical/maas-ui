@@ -1,31 +1,28 @@
-import { useEffect } from "react";
-
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { Notification, Spinner } from "@canonical/react-components";
 
 import VMWareForm from "../VMWareForm";
 
+import { useConfigurations } from "@/app/api/query/configurations";
+import type { PublicConfigName } from "@/app/apiclient";
 import { useWindowTitle } from "@/app/base/hooks";
-import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 export enum Labels {
   Loading = "Loading...",
 }
 
 const VMWare = (): React.ReactElement => {
-  const loaded = useSelector(configSelectors.loaded);
-  const loading = useSelector(configSelectors.loading);
-  const dispatch = useDispatch();
-
+  const names = [
+    ConfigNames.VCENTER_SERVER,
+    ConfigNames.VCENTER_USERNAME,
+    ConfigNames.VCENTER_PASSWORD,
+    ConfigNames.VCENTER_DATACENTER,
+  ] as PublicConfigName[];
+  const { isPending, error, isSuccess } = useConfigurations({
+    query: { name: names },
+  });
   useWindowTitle("VMWare");
-
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(configActions.fetch());
-    }
-  }, [dispatch, loaded]);
 
   return (
     <ContentSection variant="narrow">
@@ -33,8 +30,16 @@ const VMWare = (): React.ReactElement => {
         VMware
       </ContentSection.Title>
       <ContentSection.Content>
-        {loading && <Spinner text={Labels.Loading} />}
-        {loaded && <VMWareForm />}
+        {isPending && <Spinner text={Labels.Loading} />}
+        {error && (
+          <Notification
+            severity="negative"
+            title="Error while fetching image configurations"
+          >
+            {error.message}
+          </Notification>
+        )}
+        {isSuccess && <VMWareForm />}
       </ContentSection.Content>
     </ContentSection>
   );
