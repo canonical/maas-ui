@@ -1,39 +1,29 @@
-import { useEffect } from "react";
-
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { Spinner, Notification } from "@canonical/react-components";
 import * as Yup from "yup";
 
+import {
+  useSetConfiguration,
+  useGetConfiguration,
+} from "@/app/api/query/configurations";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 const SyslogSchema = Yup.object().shape({
   remote_syslog: Yup.string(),
 });
 
 const SyslogForm = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const updateConfig = configActions.update;
-
-  const loaded = useSelector(configSelectors.loaded);
-  const loading = useSelector(configSelectors.loading);
-  const saved = useSelector(configSelectors.saved);
-  const saving = useSelector(configSelectors.saving);
-  const errors = useSelector(configSelectors.errors);
-
-  const remoteSyslog = useSelector(configSelectors.remoteSyslog);
+  const { data, isPending, error, isSuccess } = useGetConfiguration({
+    path: { name: ConfigNames.REMOTE_SYSLOG },
+  });
+  const remote_syslog = data?.value || "";
+  const updateConfig = useSetConfiguration();
 
   useWindowTitle("Syslog");
-
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(configActions.fetch());
-    }
-  }, [dispatch, loaded]);
 
   return (
     <ContentSection variant="narrow">
@@ -41,13 +31,21 @@ const SyslogForm = (): React.ReactElement => {
         Syslog
       </ContentSection.Title>
       <ContentSection.Content>
-        {loading && <Spinner text="Loading..." />}
-        {loaded && (
+        {isPending && <Spinner text="Loading..." />}
+        {error && (
+          <Notification
+            severity="negative"
+            title="Error while fetching network configurations"
+          >
+            {error.message}
+          </Notification>
+        )}
+        {isSuccess && (
           <FormikForm
             cleanup={configActions.cleanup}
-            errors={errors}
+            errors={updateConfig.error}
             initialValues={{
-              remote_syslog: remoteSyslog || "",
+              remote_syslog,
             }}
             onSaveAnalytics={{
               action: "Saved",
@@ -55,11 +53,16 @@ const SyslogForm = (): React.ReactElement => {
               label: "Syslog form",
             }}
             onSubmit={(values, { resetForm }) => {
-              dispatch(updateConfig(values));
+              updateConfig.mutate({
+                body: {
+                  value: values.remote_syslog,
+                },
+                path: { name: ConfigNames.REMOTE_SYSLOG },
+              });
               resetForm({ values });
             }}
-            saved={saved}
-            saving={saving}
+            saved={updateConfig.isSuccess}
+            saving={updateConfig.isPending}
             validationSchema={SyslogSchema}
           >
             <FormikField
