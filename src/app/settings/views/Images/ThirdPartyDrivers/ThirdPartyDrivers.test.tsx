@@ -1,60 +1,34 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import { Labels as TPDFormLabels } from "../ThirdPartyDriversForm/ThirdPartyDriversForm";
 
 import ThirdPartyDrivers, { Labels as TPDLabels } from "./ThirdPartyDrivers";
 
 import { ConfigNames } from "@/app/store/config/types";
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
-import { screen, render } from "@/testing/utils";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import {
+  screen,
+  setupMockServer,
+  mockIsPending,
+  renderWithProviders,
+  waitForLoading,
+} from "@/testing/utils";
 
-const mockStore = configureStore();
-
+setupMockServer(
+  configurationsResolvers.getConfiguration.handler({
+    name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS,
+    value: false,
+  }),
+  configurationsResolvers.setConfiguration.handler()
+);
 describe("ThirdPartyDrivers", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = factory.rootState({
-      config: factory.configState({
-        items: [
-          factory.config({
-            name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS,
-            value: false,
-          }),
-        ],
-      }),
-    });
-  });
-
   it("displays a spinner if config is loading", () => {
-    state.config.loading = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ThirdPartyDrivers />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    mockIsPending();
+    renderWithProviders(<ThirdPartyDrivers />);
     expect(screen.getByText(TPDLabels.Loading)).toBeInTheDocument();
   });
 
-  it("displays the ThirdPartyDrivers form if config is loaded", () => {
-    state.config.loaded = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ThirdPartyDrivers />
-        </MemoryRouter>
-      </Provider>
-    );
+  it("displays the ThirdPartyDrivers form if config is loaded", async () => {
+    renderWithProviders(<ThirdPartyDrivers />);
+    await waitForLoading();
 
     expect(
       screen.getByRole("form", { name: TPDFormLabels.FormLabel })

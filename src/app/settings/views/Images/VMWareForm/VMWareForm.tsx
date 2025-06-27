@@ -1,10 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import {
+  useBulkSetConfigurations,
+  useConfigurations,
+} from "@/app/api/query/configurations";
+import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 const VMWareSchema = Yup.object().shape({
   vcenter_server: Yup.string(),
@@ -22,28 +27,32 @@ export enum Labels {
 }
 
 const VMWareForm = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const updateConfig = configActions.update;
-  const errors = useSelector(configSelectors.errors);
-
-  const saved = useSelector(configSelectors.saved);
-  const saving = useSelector(configSelectors.saving);
-
-  const vCenterServer = useSelector(configSelectors.vCenterServer);
-  const vCenterUsername = useSelector(configSelectors.vCenterUsername);
-  const vCenterPassword = useSelector(configSelectors.vCenterPassword);
-  const vCenterDatacenter = useSelector(configSelectors.vCenterDatacenter);
-
+  const names = [
+    ConfigNames.VCENTER_SERVER,
+    ConfigNames.VCENTER_USERNAME,
+    ConfigNames.VCENTER_PASSWORD,
+    ConfigNames.VCENTER_DATACENTER,
+  ] as PublicConfigName[];
+  const { data, isPending, isSuccess } = useConfigurations({
+    query: { name: names },
+  });
+  const {
+    vcenter_server,
+    vcenter_username,
+    vcenter_password,
+    vcenter_datacenter,
+  } = getConfigsFromResponse(data?.items || [], names);
+  const updateConfig = useBulkSetConfigurations();
   return (
     <FormikForm
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
-      errors={errors}
+      errors={updateConfig.error}
       initialValues={{
-        vcenter_server: vCenterServer ?? "",
-        vcenter_username: vCenterUsername ?? "",
-        vcenter_password: vCenterPassword ?? "",
-        vcenter_datacenter: vCenterDatacenter ?? "",
+        vcenter_server: vcenter_server ?? "",
+        vcenter_username: vcenter_username ?? "",
+        vcenter_password: vcenter_password ?? "",
+        vcenter_datacenter: vcenter_datacenter ?? "",
       }}
       onSaveAnalytics={{
         action: "Saved",
@@ -51,11 +60,32 @@ const VMWareForm = (): React.ReactElement => {
         label: "VMware form",
       }}
       onSubmit={(values, { resetForm }) => {
-        dispatch(updateConfig(values));
+        updateConfig.mutate({
+          body: {
+            configurations: [
+              {
+                name: ConfigNames.VCENTER_SERVER,
+                value: values.vcenter_server,
+              },
+              {
+                name: ConfigNames.VCENTER_USERNAME,
+                value: values.vcenter_username,
+              },
+              {
+                name: ConfigNames.VCENTER_PASSWORD,
+                value: values.vcenter_password,
+              },
+              {
+                name: ConfigNames.VCENTER_DATACENTER,
+                value: values.vcenter_datacenter,
+              },
+            ],
+          },
+        });
         resetForm({ values });
       }}
-      saved={saved}
-      saving={saving}
+      saved={isSuccess}
+      saving={isPending}
       validationSchema={VMWareSchema}
     >
       <FormikField

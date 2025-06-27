@@ -1,10 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import {
+  useGetConfiguration,
+  useSetConfiguration,
+} from "@/app/api/query/configurations";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 const ThirdPartyDriversSchema = Yup.object().shape({
   enable_third_party_drivers: Yup.boolean(),
@@ -16,24 +19,19 @@ export enum Labels {
 }
 
 const ThirdPartyDriversForm = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const updateConfig = configActions.update;
-
-  const saved = useSelector(configSelectors.saved);
-  const saving = useSelector(configSelectors.saving);
-  const errors = useSelector(configSelectors.errors);
-
-  const thirdPartyDriversEnabled = useSelector(
-    configSelectors.thirdPartyDriversEnabled
-  );
+  const { data, isPending, isSuccess } = useGetConfiguration({
+    path: { name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS },
+  });
+  const enable_third_party_drivers = data?.value || false;
+  const updateConfig = useSetConfiguration();
 
   return (
     <FormikForm
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
-      errors={errors}
+      errors={updateConfig.error}
       initialValues={{
-        enable_third_party_drivers: thirdPartyDriversEnabled ?? false,
+        enable_third_party_drivers,
       }}
       onSaveAnalytics={{
         action: "Saved",
@@ -41,11 +39,18 @@ const ThirdPartyDriversForm = (): React.ReactElement => {
         label: "Ubuntu form",
       }}
       onSubmit={(values, { resetForm }) => {
-        dispatch(updateConfig(values));
+        updateConfig.mutate({
+          body: {
+            value: values.enable_third_party_drivers,
+          },
+          path: {
+            name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS,
+          },
+        });
         resetForm({ values });
       }}
-      saved={saved}
-      saving={saving}
+      saved={isSuccess}
+      saving={isPending}
       validationSchema={ThirdPartyDriversSchema}
     >
       <FormikField
