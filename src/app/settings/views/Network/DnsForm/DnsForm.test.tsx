@@ -14,43 +14,51 @@ import {
   waitFor,
 } from "@/testing/utils";
 
+const configItems = [
+  {
+    name: ConfigNames.DNSSEC_VALIDATION,
+    value: "auto",
+    choices: [
+      ["auto", "Automatic (use default root key)"],
+      ["yes", "Yes (manually configured root key)"],
+      ["no", "No (Disable DNSSEC; useful when upstream DNS is misconfigured)"],
+    ],
+  },
+  { name: ConfigNames.DNS_TRUSTED_ACL, value: "" },
+  { name: ConfigNames.UPSTREAM_DNS, value: "" },
+];
 const mockServer = setupMockServer(
-  configurationsResolvers.listConfigurations.handler(),
+  configurationsResolvers.listConfigurations.handler({ items: configItems }),
   configurationsResolvers.setBulkConfigurations.handler()
 );
 
 describe("DnsForm", () => {
   let state: RootState;
-  const configItems = [
-    {
-      name: ConfigNames.DNSSEC_VALIDATION,
-      value: "auto",
-      choices: [
-        ["auto", "Automatic (use default root key)"],
-        ["yes", "Yes (manually configured root key)"],
-        [
-          "no",
-          "No (Disable DNSSEC; useful when upstream DNS is misconfigured)",
-        ],
-      ],
-    },
-    { name: ConfigNames.DNS_TRUSTED_ACL, value: "" },
-    { name: ConfigNames.UPSTREAM_DNS, value: "" },
-  ];
+
   beforeEach(() => {
     state = factory.rootState({
       config: factory.configState({
         loaded: true,
+        items: [
+          {
+            name: ConfigNames.DNSSEC_VALIDATION,
+            value: "auto",
+            choices: [
+              ["auto", "Automatic (use default root key)"],
+              ["yes", "Yes (manually configured root key)"],
+              [
+                "no",
+                "No (Disable DNSSEC; useful when upstream DNS is misconfigured)",
+              ],
+            ],
+          },
+        ],
       }),
     });
   });
   it("renders the dns form", async () => {
-    mockServer.use(
-      configurationsResolvers.listConfigurations.handler({ items: configItems })
-    );
     renderWithProviders(<DnsForm />, { state });
     await waitForLoading();
-    screen.debug();
     expect(
       screen.getByRole("textbox", {
         name: "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)",
@@ -59,10 +67,6 @@ describe("DnsForm", () => {
     const combo = screen.getByRole("combobox", {
       name: "Enable DNSSEC validation of upstream zones",
     });
-    console.log("combo type:", combo?.constructor?.name);
-    console.log("start of combo ");
-    console.log(combo);
-    console.log(" end of combo ");
     expect(combo).toHaveValue("auto");
     expect(
       screen.getByRole("textbox", {
@@ -108,6 +112,9 @@ describe("DnsForm", () => {
   });
   it("shows an error message when saving configurations fails", async () => {
     mockServer.use(
+      configurationsResolvers.listConfigurations.handler({
+        items: configItems,
+      }),
       configurationsResolvers.setBulkConfigurations.error({
         code: 500,
         message: "Failed to save configurations",

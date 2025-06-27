@@ -1,6 +1,8 @@
+import { useEffect } from "react";
+
 import { ContentSection } from "@canonical/maas-react-components";
 import { Spinner, Select, Notification } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import {
@@ -25,6 +27,7 @@ const DnsSchema = Yup.object().shape({
 });
 
 const DnsForm = (): React.ReactElement => {
+  const dispatch = useDispatch();
   const names = [
     ConfigNames.DNSSEC_VALIDATION,
     ConfigNames.DNS_TRUSTED_ACL,
@@ -42,6 +45,12 @@ const DnsForm = (): React.ReactElement => {
   const updateConfig = useBulkSetConfigurations();
 
   useWindowTitle("DNS");
+
+  useEffect(() => {
+    if (!isSuccess) {
+      dispatch(configActions.fetch());
+    }
+  }, [dispatch, isSuccess]);
 
   return (
     <ContentSection variant="narrow">

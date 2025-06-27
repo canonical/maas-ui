@@ -15,17 +15,14 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
-  configurationsResolvers.listConfigurations.handler(),
-  configurationsResolvers.setBulkConfigurations.handler()
+  configurationsResolvers.getConfiguration.handler({
+    name: ConfigNames.REMOTE_SYSLOG,
+    value: "",
+  }),
+  configurationsResolvers.setConfiguration.handler()
 );
 describe("SyslogForm", () => {
   let state: RootState;
-  const configItems = [
-    {
-      name: ConfigNames.REMOTE_SYSLOG,
-      value: "",
-    },
-  ];
   beforeEach(() => {
     state = factory.rootState({
       config: factory.configState({
@@ -35,9 +32,6 @@ describe("SyslogForm", () => {
   });
 
   it("renders the syslog form", async () => {
-    mockServer.use(
-      configurationsResolvers.listConfigurations.handler({ items: configItems })
-    );
     renderWithProviders(<SyslogForm />, { state });
     await waitForLoading();
     expect(
@@ -58,7 +52,7 @@ describe("SyslogForm", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() => {
-      expect(configurationsResolvers.setBulkConfigurations.resolved).toBe(true);
+      expect(configurationsResolvers.setConfiguration.resolved).toBe(true);
     });
   });
 
@@ -68,9 +62,10 @@ describe("SyslogForm", () => {
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
+
   it("shows an error message when fetching configurations fails", async () => {
     mockServer.use(
-      configurationsResolvers.listConfigurations.error({
+      configurationsResolvers.getConfiguration.error({
         code: 500,
         message: "Failed to fetch configurations",
       })
@@ -86,7 +81,7 @@ describe("SyslogForm", () => {
   });
   it("shows an error message when saving configurations fails", async () => {
     mockServer.use(
-      configurationsResolvers.setBulkConfigurations.error({
+      configurationsResolvers.setConfiguration.error({
         code: 500,
         message: "Failed to save configurations",
       })

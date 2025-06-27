@@ -3,10 +3,9 @@ import { Spinner, Notification } from "@canonical/react-components";
 import * as Yup from "yup";
 
 import {
-  useBulkSetConfigurations,
-  useConfigurations,
+  useSetConfiguration,
+  useGetConfiguration,
 } from "@/app/api/query/configurations";
-import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
@@ -18,12 +17,11 @@ const SyslogSchema = Yup.object().shape({
 });
 
 const SyslogForm = (): React.ReactElement => {
-  const names = [ConfigNames.REMOTE_SYSLOG] as PublicConfigName[];
-  const { data, isPending, error, isSuccess } = useConfigurations({
-    query: { name: names },
+  const { data, isPending, error, isSuccess } = useGetConfiguration({
+    path: { name: ConfigNames.REMOTE_SYSLOG },
   });
-  const remote_syslog = data?.items?.[0] || {};
-  const updateConfig = useBulkSetConfigurations();
+  const remote_syslog = data?.value || "";
+  const updateConfig = useSetConfiguration();
 
   useWindowTitle("Syslog");
 
@@ -47,7 +45,7 @@ const SyslogForm = (): React.ReactElement => {
             cleanup={configActions.cleanup}
             errors={updateConfig.error}
             initialValues={{
-              remote_syslog: remote_syslog || "",
+              remote_syslog,
             }}
             onSaveAnalytics={{
               action: "Saved",
@@ -57,13 +55,9 @@ const SyslogForm = (): React.ReactElement => {
             onSubmit={(values, { resetForm }) => {
               updateConfig.mutate({
                 body: {
-                  configurations: [
-                    {
-                      name: ConfigNames.REMOTE_SYSLOG,
-                      value: values.remote_syslog,
-                    },
-                  ],
+                  value: values.remote_syslog,
                 },
+                path: { name: ConfigNames.REMOTE_SYSLOG },
               });
               resetForm({ values });
             }}
