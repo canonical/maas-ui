@@ -1,4 +1,4 @@
-import { NetworkDiscoverySidePanelViews } from "../constants";
+import { NetworkDiscoverySidePanelViews } from "../../constants";
 
 import DiscoveriesList, {
   Labels as DiscoveriesListLabels,

@@ -7,8 +7,8 @@ import type { DiscoveryResponse } from "@/app/apiclient";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/constants";
 import { Labels } from "@/app/networkDiscovery/views/DiscoveriesList/DiscoveriesList";
-import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/views/constants";
 import type { UtcDatetime } from "@/app/store/types/model";
 import { formatUtcDatetime } from "@/app/utils/time";
 

@@ -2,7 +2,7 @@ import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useLocation, Link } from "react-router";
 
-import { NetworkDiscoverySidePanelViews } from "../../views/constants";
+import { NetworkDiscoverySidePanelViews } from "../../constants";
 
 import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import SectionHeader from "@/app/base/components/SectionHeader";

@@ -13,7 +13,7 @@ import DiscoveryAddForm from "@/app/networkDiscovery/components/DiscoveryAddForm
 import DiscoveryDeleteForm from "@/app/networkDiscovery/components/DiscoveryDeleteForm";
 import NetworkDiscoveryHeader from "@/app/networkDiscovery/components/NetworkDiscoveryHeader";
 import ClearAllForm from "@/app/networkDiscovery/components/NetworkDiscoveryHeader/ClearAllForm";
-import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/views/constants";
+import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/constants";
 import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {

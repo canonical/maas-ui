@@ -13,7 +13,7 @@ import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import NetworkDiscoveryHeader from "@/app/networkDiscovery/components/NetworkDiscoveryHeader";
 import ClearAllForm from "@/app/networkDiscovery/components/NetworkDiscoveryHeader/ClearAllForm";
-import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/views/constants";
+import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/constants";
 import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryForm";
 import configSelectors from "@/app/store/config/selectors";
 
