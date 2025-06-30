@@ -66,8 +66,8 @@ beforeEach(() => {
   discovery = factory.discovery({
     ip: "1.2.3.4",
     mac_address: "aa:bb:cc",
-    subnet: 9,
-    vlan: 8,
+    subnet_id: 9,
+    vlan_id: 8,
   });
   state = factory.rootState({
     device: factory.deviceState({
