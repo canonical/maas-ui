@@ -2,13 +2,13 @@ import type { ReactElement } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import type { DiscoveryResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { discoveryActions } from "@/app/store/discovery";
 import discoverySelectors from "@/app/store/discovery/selectors";
-import type { Discovery } from "@/app/store/discovery/types";
 
 type Props = {
-  discovery: Discovery;
+  discovery: DiscoveryResponse;
   onClose: () => void;
 };
 
@@ -28,8 +28,8 @@ const DiscoveryDeleteForm = ({ discovery, onClose }: Props): ReactElement => {
       onSubmit={() => {
         dispatch(
           discoveryActions.delete({
-            ip: discovery.ip,
-            mac: discovery.mac_address,
+            ip: discovery.ip!,
+            mac: discovery.mac_address!,
           })
         );
       }}
