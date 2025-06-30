@@ -1,15 +1,20 @@
-import { useState } from "react";
+import React, { useCallback, useEffect } from "react";
 
-import { Col, Row } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
-import DiscoveriesFilterAccordion from "./DiscoveriesFilterAccordion";
-
-import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
-import SearchBox from "@/app/base/components/SearchBox";
-import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useGetIsSuperUser } from "@/app/api/query/auth";
+import PageContent from "@/app/base/components/PageContent";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useWindowTitle } from "@/app/base/hooks";
+import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import DiscoveriesTable from "@/app/networkDiscovery/components/DiscoveriesTable/DiscoveriesTable";
-import { discoveryActions } from "@/app/store/discovery";
-import { FilterDiscoveries } from "@/app/store/discovery/utils";
+import DiscoveryAddForm from "@/app/networkDiscovery/views/DiscoveryAddForm";
+import DiscoveryDeleteForm from "@/app/networkDiscovery/views/DiscoveryDeleteForm";
+import NetworkDiscoveryHeader from "@/app/networkDiscovery/views/NetworkDiscoveryHeader";
+import ClearAllForm from "@/app/networkDiscovery/views/NetworkDiscoveryHeader/ClearAllForm";
+import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/views/constants";
+import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {
   DiscoveriesList = "Discoveries list",
@@ -17,53 +22,86 @@ export enum Labels {
   NoNewDiscoveries = "No new discoveries.",
   AddDiscovery = "Add discovery...",
   DeleteDiscovery = "Delete discovery...",
+  Disabled = "List of devices will not update as discovery is turned off.",
+  Permissions = "You do not have permission to view this page.",
 }
 
 const DiscoveriesList = (): React.ReactElement => {
-  const [searchString, setSearchString] = useState("");
-  const { data, isLoading, isSuccess } = useNetworkDiscoveries();
-  const allDiscoveries = data?.items ?? [];
-
-  const discoveries = FilterDiscoveries.filterItems(
-    allDiscoveries,
-    searchString ?? ""
-  );
-
-  const loading = isLoading;
-  const loaded = isSuccess;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+  const networkDiscovery = useSelector(configSelectors.networkDiscovery);
+  const isSuperUser = useGetIsSuperUser();
 
   useWindowTitle("Network Discovery");
 
-  useFetchActions([discoveryActions.fetch]);
+  useEffect(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
-  if (loaded && !searchString && discoveries.length === 0) {
-    return <div data-testid="no-discoveries">No new discoveries.</div>;
+  const clearSidePanelContent = useCallback(() => {
+    setSidePanelContent(null);
+  }, [setSidePanelContent]);
+
+  if (!isSuperUser.data) {
+    return (
+      <PageContent
+        header={<SectionHeader title={Labels.Permissions} />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      />
+    );
+  }
+
+  let content = null;
+
+  if (
+    sidePanelContent &&
+    sidePanelContent.view === NetworkDiscoverySidePanelViews.ADD_DISCOVERY
+  ) {
+    const discovery =
+      sidePanelContent.extras && "discovery" in sidePanelContent.extras
+        ? sidePanelContent.extras.discovery
+        : null;
+    content = (
+      <DiscoveryAddForm
+        discovery={discovery!}
+        onClose={clearSidePanelContent}
+      />
+    );
+  } else if (
+    sidePanelContent &&
+    sidePanelContent.view === NetworkDiscoverySidePanelViews.DELETE_DISCOVERY
+  ) {
+    const discovery =
+      sidePanelContent.extras && "discovery" in sidePanelContent.extras
+        ? sidePanelContent.extras.discovery
+        : null;
+    content = (
+      <DiscoveryDeleteForm
+        discovery={discovery!}
+        onClose={clearSidePanelContent}
+      />
+    );
+  } else if (
+    sidePanelContent &&
+    sidePanelContent.view ===
+      NetworkDiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES
+  ) {
+    content = <ClearAllForm closeForm={clearSidePanelContent} />;
   }
 
   return (
-    <div aria-label={Labels.DiscoveriesList}>
-      <Row>
-        <Col size={3}>
-          <DiscoveriesFilterAccordion
-            searchText={searchString}
-            setSearchText={setSearchString}
-          />
-        </Col>
-        <Col size={9}>
-          <SearchBox
-            data-testid="discoveries-search"
-            externallyControlled
-            onChange={setSearchString}
-            value={searchString}
-          />
-        </Col>
-      </Row>
-      <DiscoveriesTable
-        discoveries={discoveries}
-        filtering={!!searchString}
-        loading={loading}
-      />
-    </div>
+    <PageContent
+      header={
+        <NetworkDiscoveryHeader setSidePanelContent={setSidePanelContent} />
+      }
+      sidePanelContent={content}
+      sidePanelTitle={getSidePanelTitle("Network discovery", sidePanelContent)} // "Clear all discoveries"
+    >
+      {networkDiscovery === "disabled" && (
+        <Notification severity="caution">{Labels.Disabled}</Notification>
+      )}
+      <DiscoveriesTable />
+    </PageContent>
   );
 };
 
