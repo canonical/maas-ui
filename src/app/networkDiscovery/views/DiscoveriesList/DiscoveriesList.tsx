@@ -8,18 +8,19 @@ import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
-import ClearAllForm from "@/app/networkDiscovery/components/ClearAllForm";
-import DiscoveriesTable from "@/app/networkDiscovery/components/DiscoveriesTable/DiscoveriesTable";
-import DiscoveryAddForm from "@/app/networkDiscovery/components/DiscoveryAddForm";
-import DiscoveryDeleteForm from "@/app/networkDiscovery/components/DiscoveryDeleteForm";
-import NetworkDiscoveryHeader from "@/app/networkDiscovery/components/NetworkDiscoveryHeader";
+import {
+  ClearAllForm,
+  DiscoveriesTable,
+  DiscoveryAddForm,
+  DiscoveryDeleteForm,
+  NetworkDiscoveryHeader,
+} from "@/app/networkDiscovery/components";
 import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/constants";
 import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {
   DiscoveriesList = "Discoveries list",
   Loading = "Loading...",
-  NoNewDiscoveries = "No new discoveries.",
   AddDiscovery = "Add discovery...",
   DeleteDiscovery = "Delete discovery...",
   Disabled = "List of devices will not update as discovery is turned off.",
