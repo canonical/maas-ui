@@ -4,15 +4,15 @@ import { useCallback, useEffect } from "react";
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import NetworkDiscoveryConfigurationSubnetForm from "./NetworkDiscoveryConfigurationSubnetForm";
+import NetworkDiscoveryConfigurationSubnetForm from "../../components/NetworkDiscoveryConfigurationSubnetForm";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
-import NetworkDiscoveryHeader from "@/app/networkDiscovery/views/NetworkDiscoveryHeader";
-import ClearAllForm from "@/app/networkDiscovery/views/NetworkDiscoveryHeader/ClearAllForm";
+import NetworkDiscoveryHeader from "@/app/networkDiscovery/components/NetworkDiscoveryHeader";
+import ClearAllForm from "@/app/networkDiscovery/components/NetworkDiscoveryHeader/ClearAllForm";
 import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/views/constants";
 import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryForm";
 import configSelectors from "@/app/store/config/selectors";

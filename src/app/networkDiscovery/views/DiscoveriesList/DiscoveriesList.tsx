@@ -9,10 +9,10 @@ import SectionHeader from "@/app/base/components/SectionHeader";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import DiscoveriesTable from "@/app/networkDiscovery/components/DiscoveriesTable/DiscoveriesTable";
-import DiscoveryAddForm from "@/app/networkDiscovery/views/DiscoveryAddForm";
-import DiscoveryDeleteForm from "@/app/networkDiscovery/views/DiscoveryDeleteForm";
-import NetworkDiscoveryHeader from "@/app/networkDiscovery/views/NetworkDiscoveryHeader";
-import ClearAllForm from "@/app/networkDiscovery/views/NetworkDiscoveryHeader/ClearAllForm";
+import DiscoveryAddForm from "@/app/networkDiscovery/components/DiscoveryAddForm";
+import DiscoveryDeleteForm from "@/app/networkDiscovery/components/DiscoveryDeleteForm";
+import NetworkDiscoveryHeader from "@/app/networkDiscovery/components/NetworkDiscoveryHeader";
+import ClearAllForm from "@/app/networkDiscovery/components/NetworkDiscoveryHeader/ClearAllForm";
 import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/views/constants";
 import configSelectors from "@/app/store/config/selectors";
 

@@ -6,8 +6,8 @@ import { Col, Row } from "@canonical/react-components";
 
 import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import SearchBox from "@/app/base/components/SearchBox";
+import DiscoveriesFilterAccordion from "@/app/networkDiscovery/components/DiscoveriesTable/DiscoveriesFilterAccordion";
 import useDiscoveriesTableColumns from "@/app/networkDiscovery/components/DiscoveriesTable/useDiscoveriesTableColumns/useDiscoveriesTableColumns";
-import DiscoveriesFilterAccordion from "@/app/networkDiscovery/views/DiscoveriesList/DiscoveriesFilterAccordion";
 import { Labels } from "@/app/networkDiscovery/views/DiscoveriesList/DiscoveriesList";
 import { FilterDiscoveries } from "@/app/store/discovery/utils";
 
