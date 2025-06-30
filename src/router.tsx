@@ -33,8 +33,11 @@ const MachineDetails = lazy(
   () => import("@/app/machines/views/MachineDetails")
 );
 const Machines = lazy(() => import("@/app/machines/views/Machines"));
-const NetworkDiscovery = lazy(
-  () => import("@/app/networkDiscovery/views/NetworkDiscovery")
+const DiscoveriesList = lazy(
+  () => import("@/app/networkDiscovery/views/DiscoveriesList")
+);
+const NetworkDiscoveryConfigurationForm = lazy(
+  () => import("@/app/networkDiscovery/views/NetworkDiscoveryConfigurationForm")
 );
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
@@ -74,12 +77,28 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.networkDiscovery.index}/*`,
-          element: (
-            <ErrorBoundary>
-              <NetworkDiscovery />
-            </ErrorBoundary>
-          ),
+          path: urls.networkDiscovery.index,
+          children: [
+            {
+              path: urls.networkDiscovery.index,
+              element: (
+                <ErrorBoundary>
+                  <DiscoveriesList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.networkDiscovery.configuration,
+                urls.networkDiscovery.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <NetworkDiscoveryConfigurationForm />
+                </ErrorBoundary>
+              ),
+            },
+          ],
         },
         {
           path: urls.networkDiscovery.legacyIndex,

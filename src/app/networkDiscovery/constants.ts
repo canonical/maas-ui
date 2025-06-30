@@ -1,7 +1,7 @@
 import type { ValueOf } from "@canonical/react-components";
 
+import type { DiscoveryResponse } from "@/app/apiclient";
 import type { SidePanelContent } from "@/app/base/types";
-import type { Discovery } from "@/app/store/discovery/types";
 
 export const NetworkDiscoverySidePanelViews = {
   ADD_DISCOVERY: ["", "addDiscovery"],
@@ -11,5 +11,5 @@ export const NetworkDiscoverySidePanelViews = {
 
 export type NetworkDiscoverySidePanelContent = SidePanelContent<
   ValueOf<typeof NetworkDiscoverySidePanelViews>,
-  { discovery?: Discovery }
+  { discovery?: DiscoveryResponse }
 >;

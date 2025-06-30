@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import type { DiscoveryAddValues } from "../types";
 import { DeviceType } from "../types";
 
+import type { DiscoveryResponse } from "@/app/apiclient";
 import MachineSelect from "@/app/base/components/DhcpFormFields/MachineSelect";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
@@ -15,7 +16,6 @@ import urls from "@/app/base/urls";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device } from "@/app/store/device/types";
 import { DeviceMeta } from "@/app/store/device/types";
-import type { Discovery } from "@/app/store/discovery/types";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
@@ -25,7 +25,7 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import { getVLANDisplay } from "@/app/store/vlan/utils";
 
 type Props = {
-  discovery: Discovery;
+  discovery: DiscoveryResponse;
   setDevice: (device: Device[DeviceMeta.PK] | null) => void;
   setDeviceType: (deviceType: DeviceType) => void;
 };
@@ -56,16 +56,16 @@ const DiscoveryAddFormFields = ({
   const devices = useSelector(deviceSelectors.all);
   const domains = useSelector(domainSelectors.all);
   const subnet = useSelector((state: RootState) =>
-    subnetSelectors.getByCIDR(state, discovery.subnet_cidr)
+    subnetSelectors.getByCIDR(state, discovery.subnet_cidr!)
   );
   const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, discovery.vlan)
+    vlanSelectors.getById(state, discovery.vlan_id)
   );
   const { setFieldValue, values } = useFormikContext<DiscoveryAddValues>();
   const isDevice = values.type === DeviceType.DEVICE;
   const isInterface = values.type === DeviceType.INTERFACE;
   // Only include static when the discovery has a subnet.
-  const includeStatic = !!discovery.subnet || discovery.subnet === 0;
+  const includeStatic = !!discovery.subnet_id || discovery.subnet_id === 0;
   const subnetDisplay = getSubnetDisplay(subnet);
   const vlanDisplay = getVLANDisplay(vlan);
 
@@ -172,7 +172,9 @@ const DiscoveryAddFormFields = ({
           <div className="">
             <p>{Labels.Fabric}</p>
             <p>
-              <Link to={urls.subnets.fabric.index({ id: discovery.fabric })}>
+              <Link
+                to={urls.subnets.fabric.index({ id: discovery.fabric_id! })}
+              >
                 {discovery.fabric_name}
               </Link>
             </p>
@@ -181,7 +183,7 @@ const DiscoveryAddFormFields = ({
             <p>{Labels.Vlan}</p>
             <p>
               {vlanDisplay ? (
-                <Link to={urls.subnets.vlan.index({ id: discovery.vlan })}>
+                <Link to={urls.subnets.vlan.index({ id: discovery.vlan_id! })}>
                   {vlanDisplay}
                 </Link>
               ) : null}
@@ -189,9 +191,11 @@ const DiscoveryAddFormFields = ({
           </div>
           <div className="u-nudge-down--small">
             <p>{Labels.Subnet}</p>
-            {discovery.subnet && subnetDisplay ? (
+            {discovery.subnet_id && subnetDisplay ? (
               <p>
-                <Link to={urls.subnets.subnet.index({ id: discovery.subnet })}>
+                <Link
+                  to={urls.subnets.subnet.index({ id: discovery.subnet_id })}
+                >
                   {subnetDisplay}
                 </Link>
               </p>

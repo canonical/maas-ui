@@ -1,10 +1,8 @@
 import configureStore from "redux-mock-store";
 
-import type { NetworkDiscoverySidePanelContent } from "../../views/constants";
-import { NetworkDiscoverySidePanelViews } from "../../views/constants";
+import DiscoveryDeleteForm from "./DiscoveryDeleteForm";
 
-import NetworkForm from "./NetworkForm";
-
+import { discoveryActions } from "@/app/store/discovery";
 import type { Discovery } from "@/app/store/discovery/types";
 import type { RootState } from "@/app/store/root/types";
 import {
@@ -14,7 +12,7 @@ import {
 } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 enableCallIdMocks();
@@ -68,8 +66,8 @@ beforeEach(() => {
   discovery = factory.discovery({
     ip: "1.2.3.4",
     mac_address: "aa:bb:cc",
-    subnet: 9,
-    vlan: 8,
+    subnet_id: 9,
+    vlan_id: 8,
   });
   state = factory.rootState({
     device: factory.deviceState({
@@ -108,40 +106,26 @@ afterAll(() => {
   vi.restoreAllMocks();
 });
 
-it("renders the clear discovery form when the sidepanel view is provided", () => {
-  const sidePanelContent: NetworkDiscoverySidePanelContent = {
-    view: NetworkDiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES,
-  };
+it("renders", () => {
+  const store = mockStore(state);
   renderWithBrowserRouter(
-    <NetworkForm
-      setSidePanelContent={vi.fn()}
-      sidePanelContent={sidePanelContent}
-    />
+    <DiscoveryDeleteForm discovery={discovery} onClose={vi.fn()} />,
+    { store }
   );
-
-  expect(
-    screen.getByRole("form", { name: "Clear all discoveries" })
-  ).toBeInTheDocument();
 });
 
-it("renders the add discovery form given the sidepanel view", () => {
+it("can dispatch an action to delete a discovery", async () => {
   const store = mockStore(state);
-  const sidePanelContent: NetworkDiscoverySidePanelContent = {
-    view: NetworkDiscoverySidePanelViews.ADD_DISCOVERY,
-    extras: {
-      discovery,
-    },
-  };
-
   renderWithBrowserRouter(
-    <NetworkForm
-      setSidePanelContent={vi.fn()}
-      sidePanelContent={sidePanelContent}
-    />,
+    <DiscoveryDeleteForm discovery={discovery} onClose={vi.fn()} />,
     { store }
   );
 
+  await userEvent.click(screen.getByRole("button", { name: /delete/i }));
+
   expect(
-    screen.getByRole("form", { name: "Add discovery" })
-  ).toBeInTheDocument();
+    store.getActions().find((action) => action.type === "discovery/delete")
+  ).toStrictEqual(
+    discoveryActions.delete({ ip: discovery.ip, mac: discovery.mac_address })
+  );
 });

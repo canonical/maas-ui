@@ -25,7 +25,7 @@ import type { MachineSidePanelContent } from "@/app/machines/types";
 import {
   NetworkDiscoverySidePanelViews,
   type NetworkDiscoverySidePanelContent,
-} from "@/app/networkDiscovery/views/constants";
+} from "@/app/networkDiscovery/constants";
 import type { PoolSidePanelContent } from "@/app/pools/constants";
 import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import type { SSHKeySidePanelContent } from "@/app/preferences/views/SSHKeys/constants";

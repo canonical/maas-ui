@@ -1,7 +1,5 @@
-import { useSelector } from "react-redux";
-
+import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import FilterAccordion from "@/app/base/components/FilterAccordion";
-import discoverySelectors from "@/app/store/discovery/selectors";
 import {
   FilterDiscoveries,
   getDiscoveryValue,
@@ -29,21 +27,27 @@ const DiscoveriesFilterAccordion = ({
   searchText,
   setSearchText,
 }: Props): React.ReactElement => {
-  const discoveries = useSelector(discoverySelectors.all);
-  const loaded = useSelector(discoverySelectors.loaded);
+  const discoveries = useNetworkDiscoveries();
+
+  const effectiveSearchText = searchText ?? "";
+
+  const filteredDiscoveries = FilterDiscoveries.filterItems(
+    discoveries.data?.items ?? [],
+    effectiveSearchText
+  );
 
   return (
     <FilterAccordion
       aria-label={Labels.FilterDiscoveries}
-      disabled={!loaded}
+      disabled={!discoveries.isSuccess}
       filterNames={filterNames}
       filterOrder={filterOrder}
-      filterString={searchText}
+      filterString={effectiveSearchText}
       filtersToString={FilterDiscoveries.filtersToString}
       getCurrentFilters={FilterDiscoveries.getCurrentFilters}
       getValue={getDiscoveryValue}
       isFilterActive={FilterDiscoveries.isFilterActive}
-      items={discoveries}
+      items={filteredDiscoveries}
       onUpdateFilterString={setSearchText}
       toggleFilter={FilterDiscoveries.toggleFilter}
     />

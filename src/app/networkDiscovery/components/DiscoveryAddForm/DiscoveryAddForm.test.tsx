@@ -8,7 +8,6 @@ import { DeviceType } from "./types";
 
 import { deviceActions } from "@/app/store/device";
 import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
-import type { Discovery } from "@/app/store/discovery/types";
 import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
@@ -31,7 +30,12 @@ enableCallIdMocks();
 
 describe("DiscoveryAddForm", () => {
   let state: RootState;
-  let discovery: Discovery;
+  const discovery = factory.discovery({
+    ip: "1.2.3.4",
+    mac_address: "aa:bb:cc",
+    subnet_id: 9,
+    vlan_id: 8,
+  });
 
   beforeEach(() => {
     const machines = [
@@ -76,22 +80,12 @@ describe("DiscoveryAddForm", () => {
         zone: factory.modelRef(),
       }),
     ];
-    discovery = factory.discovery({
-      ip: "1.2.3.4",
-      mac_address: "aa:bb:cc",
-      subnet: 9,
-      vlan: 8,
-    });
     state = factory.rootState({
       device: factory.deviceState({
         loaded: true,
         items: [
           factory.device({ system_id: "abc123", fqdn: "abc123.example" }),
         ],
-      }),
-      discovery: factory.discoveryState({
-        loaded: true,
-        items: [discovery],
       }),
       domain: factory.domainState({
         loaded: true,
@@ -312,11 +306,13 @@ describe("DiscoveryAddForm", () => {
   });
 
   it("displays a success message for a device with no hostname", async () => {
-    state.discovery.items[0].hostname = "";
     mockFormikFormSaved();
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
+      <DiscoveryAddForm
+        discovery={factory.discovery({ hostname: "" })}
+        onClose={vi.fn()}
+      />,
       { route: "/network-discovery", store }
     );
 
@@ -337,10 +333,12 @@ describe("DiscoveryAddForm", () => {
   });
 
   it("displays a success message for an interface with no hostname", async () => {
-    state.discovery.items[0].hostname = "";
     const store = mockStore(state);
     const { rerender } = renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
+      <DiscoveryAddForm
+        discovery={factory.discovery({ hostname: "" })}
+        onClose={vi.fn()}
+      />,
       { route: "/network-discovery", store }
     );
 

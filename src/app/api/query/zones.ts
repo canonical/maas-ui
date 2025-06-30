@@ -32,7 +32,7 @@ import {
 export const useZones = (options?: Options<ListZonesWithSummaryData>) => {
   return useWebsocketAwareQuery(
     listZonesWithSummaryOptions(options) as UseQueryOptions<
-      ListZonesWithSummaryResponse,
+      ListZonesWithSummaryData,
       ListZonesWithSummaryError,
       ListZonesWithSummaryResponse
     >

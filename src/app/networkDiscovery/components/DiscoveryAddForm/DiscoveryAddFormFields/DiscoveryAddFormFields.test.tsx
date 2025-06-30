@@ -110,7 +110,7 @@ describe("DiscoveryAddFormFields", () => {
   });
 
   it("includes static ip if there is a subnet", () => {
-    discovery.subnet = 0;
+    discovery.subnet_id = 0;
     renderWithBrowserRouter(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
@@ -134,7 +134,7 @@ describe("DiscoveryAddFormFields", () => {
   });
 
   it("does not includes static ip if there is no subnet", () => {
-    discovery.subnet = null;
+    discovery.subnet_id = undefined;
     renderWithBrowserRouter(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
