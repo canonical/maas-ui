@@ -1,56 +1,42 @@
-import configureStore from "redux-mock-store";
+import { waitFor } from "@testing-library/react";
 
 import NetworkDiscoveryHeader, {
   Labels as NetworkDiscoveryHeaderLabels,
 } from "./NetworkDiscoveryHeader";
 
 import urls from "@/app/base/urls";
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
+import {
+  mockNetworkDiscoveries,
+  networkDiscoveryResolvers,
+} from "@/testing/resolvers/networkDiscovery";
+import {
+  screen,
+  renderWithBrowserRouter,
+  userEvent,
+  setupMockServer,
+} from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
+setupMockServer(networkDiscoveryResolvers.listNetworkDiscoveries.handler());
 
 describe("NetworkDiscoveryHeader", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = factory.rootState({
-      discovery: factory.discoveryState({
-        loaded: true,
-        items: [
-          factory.discovery({
-            hostname: "my-discovery-test",
-          }),
-          factory.discovery({
-            hostname: "another-test",
-          }),
-        ],
-      }),
-    });
-  });
-
-  it("displays the discovery count in the header", () => {
+  it("displays the discovery count in the header", async () => {
     renderWithBrowserRouter(
-      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />,
-      {
-        route: "/network-discovery",
-        state,
-      }
+      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />
     );
 
-    const indexLink = screen.getByText("2 discoveries");
-    expect(indexLink).toBeInTheDocument();
-    expect(indexLink).toHaveAttribute("href", urls.networkDiscovery.index);
+    await waitFor(() => {
+      expect(
+        screen.getByText(`${mockNetworkDiscoveries.total} discoveries`)
+      ).toBeInTheDocument();
+    });
+    expect(
+      screen.getByText(`${mockNetworkDiscoveries.total} discoveries`)
+    ).toHaveAttribute("href", urls.networkDiscovery.index);
   });
 
   it("has a button to clear discoveries", () => {
     renderWithBrowserRouter(
-      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />,
-      {
-        route: "/network-discovery",
-        state,
-      }
+      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />
     );
     expect(
       screen.getByRole("button", {
@@ -60,14 +46,9 @@ describe("NetworkDiscoveryHeader", () => {
   });
 
   it("opens the side panel when the 'Clear all discoveries' button is clicked", async () => {
-    const store = mockStore(state);
     const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
-      <NetworkDiscoveryHeader setSidePanelContent={setSidePanelContent} />,
-      {
-        route: "/network-discovery",
-        store,
-      }
+      <NetworkDiscoveryHeader setSidePanelContent={setSidePanelContent} />
     );
 
     await userEvent.click(

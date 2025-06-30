@@ -6,10 +6,8 @@ import { NetworkDiscoverySidePanelViews } from "../../constants";
 
 import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import { discoveryActions } from "@/app/store/discovery";
 
 export enum Labels {
   ClearAll = "Clear all discoveries",
@@ -23,8 +21,6 @@ const NetworkDiscoveryHeader = ({
   const location = useLocation();
 
   const discoveries = useNetworkDiscoveries();
-
-  useFetchActions([discoveryActions.fetch]);
 
   const buttons: React.ReactElement[] = [
     <Button
