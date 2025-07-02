@@ -2,8 +2,7 @@ name: Build upload
 on:
   push:
     branches:
-      - main
-      - "3.*"
+      - "3.7"
 jobs:
   upload-build:
     if: github.repository_owner == 'canonical'

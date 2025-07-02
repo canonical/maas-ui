@@ -2,8 +2,7 @@ name: sitespeed.io
 on:
   push:
     branches:
-      - main
-      - "3.*"
+      - "3.7"
 jobs:
   run-sitespeed:
     name: Run sitespeed.io

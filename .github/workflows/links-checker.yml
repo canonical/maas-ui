@@ -4,7 +4,7 @@ on:
     - cron: "0 05 * * 1-5" # At 05:00 every day-of-week from Monday through Friday.
   push:
     branches:
-      - fix-docs-links-* # Branches that start with fix-docs-links-
+      - "3.7"
 
 jobs:
   docs:

@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - "3.7"
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
