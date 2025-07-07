@@ -95,7 +95,7 @@ const DnsForm = (): React.ReactElement => {
                     },
                     {
                       name: ConfigNames.UPSTREAM_DNS,
-                      value: values.upstream_dns,
+                      value: [values.upstream_dns],
                     },
                   ],
                 },
