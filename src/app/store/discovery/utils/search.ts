@@ -7,15 +7,15 @@ import {
 import FilterItems from "@/app/utils/search/filter-items";
 
 export const getDiscoveryValue = (
-  dicovery: DiscoveryResponse,
+  discovery: DiscoveryResponse,
   filter: string
 ): FilterValue | FilterValue[] | null => {
   let value: FilterValue | FilterValue[] | null = null;
-  if (dicovery.hasOwnProperty(filter)) {
-    const dicoveryValue = dicovery[filter as keyof DiscoveryResponse];
+  if (discovery.hasOwnProperty(filter)) {
+    const discoveryValue = discovery[filter as keyof DiscoveryResponse];
     // Only return values that are valid for filters.
-    if (isFilterValue(dicoveryValue) || isFilterValueArray(dicoveryValue)) {
-      value = dicoveryValue;
+    if (isFilterValue(discoveryValue) || isFilterValueArray(discoveryValue)) {
+      value = discoveryValue;
     }
   }
   return value;

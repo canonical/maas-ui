@@ -11,7 +11,7 @@ import {
 } from "@/testing/resolvers/networkDiscovery";
 import {
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   userEvent,
   setupMockServer,
 } from "@/testing/utils";
@@ -20,7 +20,7 @@ setupMockServer(networkDiscoveryResolvers.listNetworkDiscoveries.handler());
 
 describe("NetworkDiscoveryHeader", () => {
   it("displays the discovery count in the header", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />
     );
 
@@ -35,7 +35,7 @@ describe("NetworkDiscoveryHeader", () => {
   });
 
   it("has a button to clear discoveries", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />
     );
     expect(
@@ -47,7 +47,7 @@ describe("NetworkDiscoveryHeader", () => {
 
   it("opens the side panel when the 'Clear all discoveries' button is clicked", async () => {
     const setSidePanelContent = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NetworkDiscoveryHeader setSidePanelContent={setSidePanelContent} />
     );
 
