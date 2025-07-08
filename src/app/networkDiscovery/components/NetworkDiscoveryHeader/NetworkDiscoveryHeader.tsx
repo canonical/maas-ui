@@ -1,16 +1,13 @@
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useSelector } from "react-redux";
 import { useLocation, Link } from "react-router";
 
-import { NetworkDiscoverySidePanelViews } from "../constants";
+import { NetworkDiscoverySidePanelViews } from "../../constants";
 
+import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import { discoveryActions } from "@/app/store/discovery";
-import discoverySelectors from "@/app/store/discovery/selectors";
 
 export enum Labels {
   ClearAll = "Clear all discoveries",
@@ -23,14 +20,12 @@ const NetworkDiscoveryHeader = ({
 }): React.ReactElement => {
   const location = useLocation();
 
-  const discoveries = useSelector(discoverySelectors.all);
-
-  useFetchActions([discoveryActions.fetch]);
+  const discoveries = useNetworkDiscoveries();
 
   const buttons: React.ReactElement[] = [
     <Button
       data-testid="clear-all"
-      disabled={discoveries.length === 0}
+      disabled={discoveries.data?.total === 0}
       key="clear-all"
       onClick={() => {
         setSidePanelContent({
@@ -49,7 +44,7 @@ const NetworkDiscoveryHeader = ({
         {
           active: location.pathname === urls.networkDiscovery.index,
           component: Link,
-          label: pluralize("discovery", discoveries.length, true),
+          label: pluralize("discovery", discoveries.data?.total, true),
           to: urls.networkDiscovery.index,
         },
         {

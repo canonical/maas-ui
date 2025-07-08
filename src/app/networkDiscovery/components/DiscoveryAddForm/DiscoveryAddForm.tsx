@@ -9,6 +9,7 @@ import DiscoveryAddFormFields from "./DiscoveryAddFormFields";
 import { DeviceType } from "./types";
 import type { DiscoveryAddValues } from "./types";
 
+import type { DiscoveryResponse } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions, useCycled } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
@@ -18,7 +19,6 @@ import deviceSelectors from "@/app/store/device/selectors";
 import type { CreateInterfaceParams, Device } from "@/app/store/device/types";
 import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
 import { discoveryActions } from "@/app/store/discovery";
-import type { Discovery } from "@/app/store/discovery/types";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import { useFetchMachines } from "@/app/store/machine/utils/hooks";
@@ -38,19 +38,19 @@ export enum Labels {
 }
 
 type Props = {
-  discovery: Discovery;
+  discovery: DiscoveryResponse;
   onClose: () => void;
 };
 
 const formSubmit = (
   dispatch: Dispatch,
-  discovery: Discovery,
+  discovery: DiscoveryResponse,
   values: DiscoveryAddValues
 ) => {
   // Clear the errors from the previous submission.
   dispatch(discoveryActions.cleanup());
   if (values.type === DeviceType.DEVICE) {
-    if (!discovery.ip || !discovery.mac_address || !discovery.subnet) {
+    if (!discovery.ip || !discovery.mac_address || !discovery.subnet_id) {
       return;
     }
     dispatch(
@@ -63,7 +63,7 @@ const formSubmit = (
             ip_address: discovery.ip,
             ip_assignment: values.ip_assignment,
             mac: discovery.mac_address,
-            subnet: discovery.subnet,
+            subnet: discovery.subnet_id,
           },
         ],
         parent: values.parent || "",
@@ -80,8 +80,8 @@ const formSubmit = (
             ip_assignment: values.ip_assignment,
             mac_address: discovery.mac_address,
             name: values.hostname,
-            subnet: discovery.subnet?.toString(),
-            vlan: discovery.vlan,
+            subnet: discovery.subnet_id?.toString(),
+            vlan: discovery.vlan_id,
           },
           [],
           [],
