@@ -118,7 +118,7 @@
     "@testing-library/user-event": "14.6.1",
     "@types/classnames": "2.3.4",
     "@types/clone-deep": "4.0.4",
-    "@types/node": "20.17.23",
+    "@types/node": "22.16.2",
     "@types/path-parse": "1.0.22",
     "@types/pluralize": "0.0.33",
     "@types/react": "19.1.2",
