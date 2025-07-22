@@ -183,6 +183,314 @@ export type BodyLogin = {
 };
 
 /**
+ * BootSourceFetchListResponse
+ */
+export type BootSourceFetchListResponse = {
+  /**
+   * Items
+   */
+  items: BootSourceFetchResponse[];
+};
+
+/**
+ * BootSourceFetchRequest
+ */
+export type BootSourceFetchRequest = {
+  /**
+   * Url
+   * URL of SimpleStreams server providing boot source information.
+   */
+  url: string;
+  /**
+   * Keyring Path
+   * File path to keyring to use for verifying signatures of the boot sources.
+   */
+  keyring_path?: string;
+  /**
+   * Keyring Data
+   * Base64-encoded keyring data to use for verifying signatures of the boot sources.
+   */
+  keyring_data?: string;
+  /**
+   * Validate Products
+   * Whether to validate products in the boot sources.
+   */
+  validate_products?: boolean;
+};
+
+/**
+ * BootSourceFetchResponse
+ */
+export type BootSourceFetchResponse = {
+  /**
+   * Os
+   */
+  os: string;
+  /**
+   * Arch
+   */
+  arch: string;
+  /**
+   * Subarch
+   */
+  subarch: string;
+  /**
+   * Kflavor
+   */
+  kflavor: string;
+  /**
+   * Release
+   */
+  release: string;
+  /**
+   * Label
+   */
+  label?: string;
+  /**
+   * Content Id
+   */
+  content_id: string;
+  /**
+   * Product Name
+   */
+  product_name: string;
+  /**
+   * Version Name
+   */
+  version_name: string;
+  /**
+   * Path
+   */
+  path: string;
+  /**
+   * Subarches
+   */
+  subarches?: string;
+  /**
+   * Bootloader Type
+   */
+  bootloader_type?: string;
+  /**
+   * Release Title
+   */
+  release_title?: string;
+  /**
+   * Release Codename
+   */
+  release_codename?: string;
+  /**
+   * Support Eol
+   */
+  support_eol?: string;
+};
+
+/**
+ * BootSourceRequest
+ */
+export type BootSourceRequest = {
+  /**
+   * Url
+   * URL of SimpleStreams server providing boot source information.
+   */
+  url: string;
+  /**
+   * Keyring Filename
+   * File path to keyring to use for verifying signatures of the boot sources.
+   */
+  keyring_filename?: string;
+  /**
+   * Keyring Data
+   * Base64-encoded keyring data used for signature verification. Optional alternative to providing a keyring file path.
+   */
+  keyring_data?: string;
+  /**
+   * Priority
+   * Priority value. Higher values mean higher priority. Must be non-negative.
+   */
+  priority: number;
+  /**
+   * Skip Keyring Verification
+   * If true, keyring signature verification will be skipped.
+   */
+  skip_keyring_verification?: boolean;
+};
+
+/**
+ * BootSourceResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type BootSourceResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Url
+   */
+  url: string;
+  /**
+   * Keyring Filename
+   */
+  keyring_filename?: string;
+  /**
+   * Keyring Data
+   */
+  keyring_data?: string;
+  /**
+   * Priority
+   */
+  priority: number;
+  /**
+   * Skip Keyring Verification
+   */
+  skip_keyring_verification: boolean;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * BootSourceSelectionListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type BootSourceSelectionListResponse = {
+  /**
+   * Items
+   */
+  items: BootSourceSelectionResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * BootSourceSelectionRequest
+ */
+export type BootSourceSelectionRequest = {
+  /**
+   * Os
+   * The OS (e.g. ubuntu, centos) for which to import resources.
+   */
+  os: string;
+  /**
+   * Release
+   * The release for which to import resources.
+   */
+  release: string;
+  /**
+   * Arches
+   * The architecture list for which to import resources.
+   */
+  arches?: string[];
+  /**
+   * Subarches
+   * The subarchitecture list for which to import resources.
+   */
+  subarches?: string[];
+  /**
+   * Labels
+   * The label lists for which to import resources.
+   */
+  labels?: string[];
+};
+
+/**
+ * BootSourceSelectionResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type BootSourceSelectionResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Os
+   */
+  os: string;
+  /**
+   * Release
+   */
+  release: string;
+  /**
+   * Arches
+   */
+  arches: string[];
+  /**
+   * Subarches
+   */
+  subarches: string[];
+  /**
+   * Labels
+   */
+  labels: string[];
+  /**
+   * Boot Source Id
+   */
+  boot_source_id: number;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * BootSourcesListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type BootSourcesListResponse = {
+  /**
+   * Items
+   */
+  items: BootSourceResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * CNAMERecord
  */
 export type CnameRecord = {
@@ -1830,7 +2138,6 @@ export type PowerTypeEnum =
   | "moonshot"
   | "mscm"
   | "msftocs"
-  | "nova"
   | "openbmc"
   | "proxmox"
   | "raritan"
@@ -1909,6 +2216,8 @@ export type PublicConfigName =
   | "max_node_release_results"
   | "max_node_testing_results"
   | "node_timeout"
+  | "ntp_external_only"
+  | "ntp_servers"
   | "prefer_v4_proxy"
   | "prometheus_enabled"
   | "prometheus_push_gateway"
@@ -2955,6 +3264,97 @@ export type TagsListResponse = {
 };
 
 /**
+ * UISubnetResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type UiSubnetResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Name
+   */
+  name?: string;
+  /**
+   * Description
+   */
+  description?: string;
+  /**
+   * Cidr
+   */
+  cidr: string;
+  rdns_mode: RdnsMode;
+  /**
+   * Gateway Ip
+   */
+  gateway_ip?: string;
+  /**
+   * Dns Servers
+   */
+  dns_servers?: string[];
+  /**
+   * Allow Dns
+   */
+  allow_dns: boolean;
+  /**
+   * Allow Proxy
+   */
+  allow_proxy: boolean;
+  /**
+   * Active Discovery
+   */
+  active_discovery: boolean;
+  /**
+   * Managed
+   */
+  managed: boolean;
+  /**
+   * Disabled Boot Architectures
+   */
+  disabled_boot_architectures: string[];
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * UISubnetsListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type UiSubnetsListResponse = {
+  /**
+   * Items
+   */
+  items: UiSubnetResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * UnauthorizedBodyResponse
  */
 export type UnauthorizedBodyResponse = {
@@ -3742,6 +4142,376 @@ export type LoginResponses = {
 };
 
 export type LoginResponse = LoginResponses[keyof LoginResponses];
+
+export type ListBootSourcesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/boot_sources";
+};
+
+export type ListBootSourcesErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListBootSourcesError =
+  ListBootSourcesErrors[keyof ListBootSourcesErrors];
+
+export type ListBootSourcesResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootSourcesListResponse;
+};
+
+export type ListBootSourcesResponse =
+  ListBootSourcesResponses[keyof ListBootSourcesResponses];
+
+export type CreateBootSourceData = {
+  body: BootSourceRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources";
+};
+
+export type CreateBootSourceErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateBootSourceError =
+  CreateBootSourceErrors[keyof CreateBootSourceErrors];
+
+export type CreateBootSourceResponses = {
+  /**
+   * Successful Response
+   */
+  201: BootSourceResponse;
+};
+
+export type CreateBootSourceResponse =
+  CreateBootSourceResponses[keyof CreateBootSourceResponses];
+
+export type ListBootSourceBootSourceSelectionData = {
+  body?: never;
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+  };
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections";
+};
+
+export type ListBootSourceBootSourceSelectionErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListBootSourceBootSourceSelectionError =
+  ListBootSourceBootSourceSelectionErrors[keyof ListBootSourceBootSourceSelectionErrors];
+
+export type ListBootSourceBootSourceSelectionResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootSourceSelectionListResponse;
+};
+
+export type ListBootSourceBootSourceSelectionResponse =
+  ListBootSourceBootSourceSelectionResponses[keyof ListBootSourceBootSourceSelectionResponses];
+
+export type CreateBootSourceBootSourceSelectionData = {
+  body: BootSourceSelectionRequest;
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections";
+};
+
+export type CreateBootSourceBootSourceSelectionErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateBootSourceBootSourceSelectionError =
+  CreateBootSourceBootSourceSelectionErrors[keyof CreateBootSourceBootSourceSelectionErrors];
+
+export type CreateBootSourceBootSourceSelectionResponses = {
+  /**
+   * Successful Response
+   */
+  201: BootSourceSelectionResponse;
+};
+
+export type CreateBootSourceBootSourceSelectionResponse =
+  CreateBootSourceBootSourceSelectionResponses[keyof CreateBootSourceBootSourceSelectionResponses];
+
+export type DeleteBootSourceData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}";
+};
+
+export type DeleteBootSourceErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteBootSourceError =
+  DeleteBootSourceErrors[keyof DeleteBootSourceErrors];
+
+export type DeleteBootSourceResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteBootSourceResponse =
+  DeleteBootSourceResponses[keyof DeleteBootSourceResponses];
+
+export type GetBootSourceData = {
+  body?: never;
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}";
+};
+
+export type GetBootSourceErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetBootSourceError = GetBootSourceErrors[keyof GetBootSourceErrors];
+
+export type GetBootSourceResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootSourceResponse;
+};
+
+export type GetBootSourceResponse =
+  GetBootSourceResponses[keyof GetBootSourceResponses];
+
+export type UpdateBootSourceData = {
+  body: BootSourceRequest;
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}";
+};
+
+export type UpdateBootSourceErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateBootSourceError =
+  UpdateBootSourceErrors[keyof UpdateBootSourceErrors];
+
+export type UpdateBootSourceResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootSourceResponse;
+};
+
+export type UpdateBootSourceResponse =
+  UpdateBootSourceResponses[keyof UpdateBootSourceResponses];
+
+export type DeleteBootSourceBootSourceSelectionData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}";
+};
+
+export type DeleteBootSourceBootSourceSelectionErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteBootSourceBootSourceSelectionError =
+  DeleteBootSourceBootSourceSelectionErrors[keyof DeleteBootSourceBootSourceSelectionErrors];
+
+export type DeleteBootSourceBootSourceSelectionResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteBootSourceBootSourceSelectionResponse =
+  DeleteBootSourceBootSourceSelectionResponses[keyof DeleteBootSourceBootSourceSelectionResponses];
+
+export type GetBootSourceBootSourceSelectionData = {
+  body?: never;
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}";
+};
+
+export type GetBootSourceBootSourceSelectionErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetBootSourceBootSourceSelectionError =
+  GetBootSourceBootSourceSelectionErrors[keyof GetBootSourceBootSourceSelectionErrors];
+
+export type GetBootSourceBootSourceSelectionResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootSourceSelectionResponse;
+};
+
+export type GetBootSourceBootSourceSelectionResponse =
+  GetBootSourceBootSourceSelectionResponses[keyof GetBootSourceBootSourceSelectionResponses];
+
+export type FetchBootSourcesData = {
+  body: BootSourceFetchRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources:fetch";
+};
+
+export type FetchBootSourcesErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type FetchBootSourcesError =
+  FetchBootSourcesErrors[keyof FetchBootSourcesErrors];
+
+export type FetchBootSourcesResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootSourceFetchListResponse;
+};
+
+export type FetchBootSourcesResponse =
+  FetchBootSourcesResponses[keyof FetchBootSourcesResponses];
 
 export type GetConfigurationData = {
   body?: never;
@@ -6987,6 +7757,38 @@ export type UpdateTagResponses = {
 
 export type UpdateTagResponse = UpdateTagResponses[keyof UpdateTagResponses];
 
+export type EvaluateTagData = {
+  body?: never;
+  path: {
+    /**
+     * Tag Id
+     */
+    tag_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/tags/{tag_id}:evaluate";
+};
+
+export type EvaluateTagErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type EvaluateTagError = EvaluateTagErrors[keyof EvaluateTagErrors];
+
+export type EvaluateTagResponses = {
+  /**
+   * Successful Response
+   */
+  202: unknown;
+};
+
 export type GetMeWithSummaryData = {
   body?: never;
   path?: never;
@@ -7799,6 +8601,95 @@ export type ListZonesWithSummaryResponses = {
 export type ListZonesWithSummaryResponse =
   ListZonesWithSummaryResponses[keyof ListZonesWithSummaryResponses];
 
+export type GetSubnetData = {
+  body?: never;
+  path: {
+    /**
+     * Subnet Id
+     */
+    subnet_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3ui/subnets/{subnet_id}";
+};
+
+export type GetSubnetErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetSubnetError = GetSubnetErrors[keyof GetSubnetErrors];
+
+export type GetSubnetResponses = {
+  /**
+   * Successful Response
+   */
+  200: UiSubnetResponse;
+};
+
+export type GetSubnetResponse = GetSubnetResponses[keyof GetSubnetResponses];
+
+export type ListSubnetsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+    /**
+     * Filter by subnet cidr
+     */
+    cidr?: string[];
+    /**
+     * Filter by vlan id
+     */
+    vlan_id?: number[];
+    /**
+     * Filter by fabric name
+     */
+    fabric?: string[];
+    /**
+     * Filter by space name
+     */
+    space?: string[];
+    /**
+     * Properties to order by. You can wrap the property with `asc()` or `desc()` to modify the ordering
+     */
+    order_by?: string[];
+  };
+  url: "/MAAS/a/v3ui/subnets";
+};
+
+export type ListSubnetsErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListSubnetsError = ListSubnetsErrors[keyof ListSubnetsErrors];
+
+export type ListSubnetsResponses = {
+  /**
+   * Successful Response
+   */
+  200: UiSubnetsListResponse;
+};
+
+export type ListSubnetsResponse =
+  ListSubnetsResponses[keyof ListSubnetsResponses];
+
 export type ClientOptions = {
-  baseUrl: `${string}://${string}` | (string & {});
+  baseUrl: "http://maas-ui-demo.internal:5240" | (string & {});
 };

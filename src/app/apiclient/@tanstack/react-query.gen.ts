@@ -4,6 +4,16 @@ import {
   type Options,
   accessToken,
   login,
+  listBootSources,
+  createBootSource,
+  listBootSourceBootSourceSelection,
+  createBootSourceBootSourceSelection,
+  deleteBootSource,
+  getBootSource,
+  updateBootSource,
+  deleteBootSourceBootSourceSelection,
+  getBootSourceBootSourceSelection,
+  fetchBootSources,
   getConfiguration,
   setConfiguration,
   getConfigurations,
@@ -87,6 +97,7 @@ import {
   deleteTag,
   getTag,
   updateTag,
+  evaluateTag,
   getMeWithSummary,
   getUserInfo,
   completeIntro,
@@ -109,6 +120,8 @@ import {
   getZone,
   updateZone,
   listZonesWithSummary,
+  getSubnet,
+  listSubnets,
 } from "../sdk.gen";
 import {
   queryOptions,
@@ -121,6 +134,32 @@ import type {
   LoginData,
   LoginError,
   LoginResponse,
+  ListBootSourcesData,
+  ListBootSourcesError,
+  ListBootSourcesResponse,
+  CreateBootSourceData,
+  CreateBootSourceError,
+  CreateBootSourceResponse,
+  ListBootSourceBootSourceSelectionData,
+  ListBootSourceBootSourceSelectionError,
+  ListBootSourceBootSourceSelectionResponse,
+  CreateBootSourceBootSourceSelectionData,
+  CreateBootSourceBootSourceSelectionError,
+  CreateBootSourceBootSourceSelectionResponse,
+  DeleteBootSourceData,
+  DeleteBootSourceError,
+  DeleteBootSourceResponse,
+  GetBootSourceData,
+  UpdateBootSourceData,
+  UpdateBootSourceError,
+  UpdateBootSourceResponse,
+  DeleteBootSourceBootSourceSelectionData,
+  DeleteBootSourceBootSourceSelectionError,
+  DeleteBootSourceBootSourceSelectionResponse,
+  GetBootSourceBootSourceSelectionData,
+  FetchBootSourcesData,
+  FetchBootSourcesError,
+  FetchBootSourcesResponse,
   GetConfigurationData,
   SetConfigurationData,
   SetConfigurationError,
@@ -334,6 +373,8 @@ import type {
   UpdateTagData,
   UpdateTagError,
   UpdateTagResponse,
+  EvaluateTagData,
+  EvaluateTagError,
   GetMeWithSummaryData,
   GetUserInfoData,
   CompleteIntroData,
@@ -390,6 +431,10 @@ import type {
   ListZonesWithSummaryData,
   ListZonesWithSummaryError,
   ListZonesWithSummaryResponse,
+  GetSubnetData,
+  ListSubnetsData,
+  ListSubnetsError,
+  ListSubnetsResponse,
 } from "../types.gen";
 import { client as _heyApiClient } from "../client.gen";
 
@@ -482,6 +527,471 @@ export const loginMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await login({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listBootSourcesQueryKey = (
+  options?: Options<ListBootSourcesData>
+) => createQueryKey("listBootSources", options);
+
+/**
+ * List Boot Sources
+ */
+export const listBootSourcesOptions = (
+  options?: Options<ListBootSourcesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listBootSources({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listBootSourcesQueryKey(options),
+  });
+};
+
+const createInfiniteParams = <
+  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
+>(
+  queryKey: QueryKey<Options>,
+  page: K
+) => {
+  const params = {
+    ...queryKey[0],
+  };
+  if (page.body) {
+    params.body = {
+      ...(queryKey[0].body as any),
+      ...(page.body as any),
+    };
+  }
+  if (page.headers) {
+    params.headers = {
+      ...queryKey[0].headers,
+      ...page.headers,
+    };
+  }
+  if (page.path) {
+    params.path = {
+      ...(queryKey[0].path as any),
+      ...(page.path as any),
+    };
+  }
+  if (page.query) {
+    params.query = {
+      ...(queryKey[0].query as any),
+      ...(page.query as any),
+    };
+  }
+  return params as unknown as typeof page;
+};
+
+export const listBootSourcesInfiniteQueryKey = (
+  options?: Options<ListBootSourcesData>
+): QueryKey<Options<ListBootSourcesData>> =>
+  createQueryKey("listBootSources", options, true);
+
+/**
+ * List Boot Sources
+ */
+export const listBootSourcesInfiniteOptions = (
+  options?: Options<ListBootSourcesData>
+) => {
+  return infiniteQueryOptions<
+    ListBootSourcesResponse,
+    ListBootSourcesError,
+    InfiniteData<ListBootSourcesResponse>,
+    QueryKey<Options<ListBootSourcesData>>,
+    | Pick<
+        QueryKey<Options<ListBootSourcesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListBootSourcesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listBootSources({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listBootSourcesInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createBootSourceQueryKey = (
+  options: Options<CreateBootSourceData>
+) => createQueryKey("createBootSource", options);
+
+/**
+ * Create Boot Source
+ */
+export const createBootSourceOptions = (
+  options: Options<CreateBootSourceData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createBootSource({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createBootSourceQueryKey(options),
+  });
+};
+
+/**
+ * Create Boot Source
+ */
+export const createBootSourceMutation = (
+  options?: Partial<Options<CreateBootSourceData>>
+): UseMutationOptions<
+  CreateBootSourceResponse,
+  CreateBootSourceError,
+  Options<CreateBootSourceData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateBootSourceResponse,
+    CreateBootSourceError,
+    Options<CreateBootSourceData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createBootSource({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listBootSourceBootSourceSelectionQueryKey = (
+  options: Options<ListBootSourceBootSourceSelectionData>
+) => createQueryKey("listBootSourceBootSourceSelection", options);
+
+/**
+ * List Boot Source Boot Source Selection
+ */
+export const listBootSourceBootSourceSelectionOptions = (
+  options: Options<ListBootSourceBootSourceSelectionData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listBootSourceBootSourceSelection({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listBootSourceBootSourceSelectionQueryKey(options),
+  });
+};
+
+export const listBootSourceBootSourceSelectionInfiniteQueryKey = (
+  options: Options<ListBootSourceBootSourceSelectionData>
+): QueryKey<Options<ListBootSourceBootSourceSelectionData>> =>
+  createQueryKey("listBootSourceBootSourceSelection", options, true);
+
+/**
+ * List Boot Source Boot Source Selection
+ */
+export const listBootSourceBootSourceSelectionInfiniteOptions = (
+  options: Options<ListBootSourceBootSourceSelectionData>
+) => {
+  return infiniteQueryOptions<
+    ListBootSourceBootSourceSelectionResponse,
+    ListBootSourceBootSourceSelectionError,
+    InfiniteData<ListBootSourceBootSourceSelectionResponse>,
+    QueryKey<Options<ListBootSourceBootSourceSelectionData>>,
+    | Pick<
+        QueryKey<Options<ListBootSourceBootSourceSelectionData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListBootSourceBootSourceSelectionData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listBootSourceBootSourceSelection({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listBootSourceBootSourceSelectionInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createBootSourceBootSourceSelectionQueryKey = (
+  options: Options<CreateBootSourceBootSourceSelectionData>
+) => createQueryKey("createBootSourceBootSourceSelection", options);
+
+/**
+ * Create Boot Source Boot Source Selection
+ */
+export const createBootSourceBootSourceSelectionOptions = (
+  options: Options<CreateBootSourceBootSourceSelectionData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createBootSourceBootSourceSelection({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createBootSourceBootSourceSelectionQueryKey(options),
+  });
+};
+
+/**
+ * Create Boot Source Boot Source Selection
+ */
+export const createBootSourceBootSourceSelectionMutation = (
+  options?: Partial<Options<CreateBootSourceBootSourceSelectionData>>
+): UseMutationOptions<
+  CreateBootSourceBootSourceSelectionResponse,
+  CreateBootSourceBootSourceSelectionError,
+  Options<CreateBootSourceBootSourceSelectionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateBootSourceBootSourceSelectionResponse,
+    CreateBootSourceBootSourceSelectionError,
+    Options<CreateBootSourceBootSourceSelectionData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createBootSourceBootSourceSelection({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete Boot Source
+ */
+export const deleteBootSourceMutation = (
+  options?: Partial<Options<DeleteBootSourceData>>
+): UseMutationOptions<
+  DeleteBootSourceResponse,
+  DeleteBootSourceError,
+  Options<DeleteBootSourceData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteBootSourceResponse,
+    DeleteBootSourceError,
+    Options<DeleteBootSourceData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteBootSource({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getBootSourceQueryKey = (options: Options<GetBootSourceData>) =>
+  createQueryKey("getBootSource", options);
+
+/**
+ * Get Boot Source
+ */
+export const getBootSourceOptions = (options: Options<GetBootSourceData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBootSource({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBootSourceQueryKey(options),
+  });
+};
+
+/**
+ * Update Boot Source
+ */
+export const updateBootSourceMutation = (
+  options?: Partial<Options<UpdateBootSourceData>>
+): UseMutationOptions<
+  UpdateBootSourceResponse,
+  UpdateBootSourceError,
+  Options<UpdateBootSourceData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateBootSourceResponse,
+    UpdateBootSourceError,
+    Options<UpdateBootSourceData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updateBootSource({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete Boot Source Boot Source Selection
+ */
+export const deleteBootSourceBootSourceSelectionMutation = (
+  options?: Partial<Options<DeleteBootSourceBootSourceSelectionData>>
+): UseMutationOptions<
+  DeleteBootSourceBootSourceSelectionResponse,
+  DeleteBootSourceBootSourceSelectionError,
+  Options<DeleteBootSourceBootSourceSelectionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteBootSourceBootSourceSelectionResponse,
+    DeleteBootSourceBootSourceSelectionError,
+    Options<DeleteBootSourceBootSourceSelectionData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteBootSourceBootSourceSelection({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getBootSourceBootSourceSelectionQueryKey = (
+  options: Options<GetBootSourceBootSourceSelectionData>
+) => createQueryKey("getBootSourceBootSourceSelection", options);
+
+/**
+ * Get Boot Source Boot Source Selection
+ */
+export const getBootSourceBootSourceSelectionOptions = (
+  options: Options<GetBootSourceBootSourceSelectionData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBootSourceBootSourceSelection({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBootSourceBootSourceSelectionQueryKey(options),
+  });
+};
+
+export const fetchBootSourcesQueryKey = (
+  options: Options<FetchBootSourcesData>
+) => createQueryKey("fetchBootSources", options);
+
+/**
+ * Fetch Boot Sources
+ */
+export const fetchBootSourcesOptions = (
+  options: Options<FetchBootSourcesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await fetchBootSources({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: fetchBootSourcesQueryKey(options),
+  });
+};
+
+/**
+ * Fetch Boot Sources
+ */
+export const fetchBootSourcesMutation = (
+  options?: Partial<Options<FetchBootSourcesData>>
+): UseMutationOptions<
+  FetchBootSourcesResponse,
+  FetchBootSourcesError,
+  Options<FetchBootSourcesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    FetchBootSourcesResponse,
+    FetchBootSourcesError,
+    Options<FetchBootSourcesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await fetchBootSources({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -613,42 +1123,6 @@ export const listEventsOptions = (options?: Options<ListEventsData>) => {
     },
     queryKey: listEventsQueryKey(options),
   });
-};
-
-const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
->(
-  queryKey: QueryKey<Options>,
-  page: K
-) => {
-  const params = {
-    ...queryKey[0],
-  };
-  if (page.body) {
-    params.body = {
-      ...(queryKey[0].body as any),
-      ...(page.body as any),
-    };
-  }
-  if (page.headers) {
-    params.headers = {
-      ...queryKey[0].headers,
-      ...page.headers,
-    };
-  }
-  if (page.path) {
-    params.path = {
-      ...(queryKey[0].path as any),
-      ...(page.path as any),
-    };
-  }
-  if (page.query) {
-    params.query = {
-      ...(queryKey[0].query as any),
-      ...(page.query as any),
-    };
-  }
-  return params as unknown as typeof page;
 };
 
 export const listEventsInfiniteQueryKey = (
@@ -4053,6 +4527,50 @@ export const updateTagMutation = (
   return mutationOptions;
 };
 
+export const evaluateTagQueryKey = (options: Options<EvaluateTagData>) =>
+  createQueryKey("evaluateTag", options);
+
+/**
+ * Evaluate Tag
+ */
+export const evaluateTagOptions = (options: Options<EvaluateTagData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await evaluateTag({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: evaluateTagQueryKey(options),
+  });
+};
+
+/**
+ * Evaluate Tag
+ */
+export const evaluateTagMutation = (
+  options?: Partial<Options<EvaluateTagData>>
+): UseMutationOptions<unknown, EvaluateTagError, Options<EvaluateTagData>> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    EvaluateTagError,
+    Options<EvaluateTagData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await evaluateTag({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getMeWithSummaryQueryKey = (
   options?: Options<GetMeWithSummaryData>
 ) => createQueryKey("getMeWithSummary", options);
@@ -4987,6 +5505,99 @@ export const listZonesWithSummaryInfiniteOptions = (
         return data;
       },
       queryKey: listZonesWithSummaryInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const getSubnetQueryKey = (options: Options<GetSubnetData>) =>
+  createQueryKey("getSubnet", options);
+
+/**
+ * Get Subnet
+ */
+export const getSubnetOptions = (options: Options<GetSubnetData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSubnet({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSubnetQueryKey(options),
+  });
+};
+
+export const listSubnetsQueryKey = (options?: Options<ListSubnetsData>) =>
+  createQueryKey("listSubnets", options);
+
+/**
+ * List Subnets
+ */
+export const listSubnetsOptions = (options?: Options<ListSubnetsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listSubnets({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listSubnetsQueryKey(options),
+  });
+};
+
+export const listSubnetsInfiniteQueryKey = (
+  options?: Options<ListSubnetsData>
+): QueryKey<Options<ListSubnetsData>> =>
+  createQueryKey("listSubnets", options, true);
+
+/**
+ * List Subnets
+ */
+export const listSubnetsInfiniteOptions = (
+  options?: Options<ListSubnetsData>
+) => {
+  return infiniteQueryOptions<
+    ListSubnetsResponse,
+    ListSubnetsError,
+    InfiniteData<ListSubnetsResponse>,
+    QueryKey<Options<ListSubnetsData>>,
+    | Pick<
+        QueryKey<Options<ListSubnetsData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListSubnetsData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listSubnets({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listSubnetsInfiniteQueryKey(options),
     }
   );
 };
