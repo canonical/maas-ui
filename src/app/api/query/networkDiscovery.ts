@@ -11,8 +11,8 @@ import type {
   ListDiscoveriesResponse,
   Options,
 } from "@/app/apiclient";
-import { clearAllDiscoveriesWithOptionalIpAndMac } from "@/app/apiclient";
 import {
+  clearAllDiscoveriesWithOptionalIpAndMacMutation,
   listDiscoveriesOptions,
   listDiscoveriesQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -38,8 +38,7 @@ export const useClearNetworkDiscoveries = (
     ClearAllDiscoveriesWithOptionalIpAndMacError,
     Options<ClearAllDiscoveriesWithOptionalIpAndMacData>
   >({
-    // TODO: Replace with the mutation once available
-    ...clearAllDiscoveriesWithOptionalIpAndMac(mutationOptions),
+    ...clearAllDiscoveriesWithOptionalIpAndMacMutation(mutationOptions),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listDiscoveriesQueryKey(),

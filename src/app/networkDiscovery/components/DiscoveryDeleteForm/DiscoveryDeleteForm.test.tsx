@@ -2,8 +2,7 @@ import configureStore from "redux-mock-store";
 
 import DiscoveryDeleteForm from "./DiscoveryDeleteForm";
 
-import { discoveryActions } from "@/app/store/discovery";
-import type { Discovery } from "@/app/store/discovery/types";
+import type { DiscoveryResponse } from "@/app/apiclient";
 import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
@@ -12,13 +11,22 @@ import {
 } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { networkDiscoveryResolvers } from "@/testing/resolvers/networkDiscovery";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 enableCallIdMocks();
 
+setupMockServer(networkDiscoveryResolvers.clearNetworkDiscoveries.handler());
+
 let state: RootState;
-let discovery: Discovery;
+let discovery: DiscoveryResponse;
 
 beforeEach(() => {
   const machines = [
@@ -74,10 +82,6 @@ beforeEach(() => {
       loaded: true,
       items: [factory.device({ system_id: "abc123", fqdn: "abc123.example" })],
     }),
-    discovery: factory.discoveryState({
-      loaded: true,
-      items: [discovery],
-    }),
     domain: factory.domainState({
       loaded: true,
       items: [factory.domain({ name: "local" })],
@@ -123,9 +127,9 @@ it("can dispatch an action to delete a discovery", async () => {
 
   await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
-  expect(
-    store.getActions().find((action) => action.type === "discovery/delete")
-  ).toStrictEqual(
-    discoveryActions.delete({ ip: discovery.ip, mac: discovery.mac_address })
-  );
+  await waitFor(() => {
+    expect(
+      networkDiscoveryResolvers.clearNetworkDiscoveries.resolved
+    ).toBeTruthy();
+  });
 });

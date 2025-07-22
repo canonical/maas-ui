@@ -6,8 +6,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { useClearNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
-import ModelActionForm from "@/app/base/components/ModelActionForm";
+import type { ClearAllDiscoveriesWithOptionalIpAndMacError } from "@/app/apiclient";
+import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
+import type { EmptyObject } from "@/app/base/types";
 import configSelectors from "@/app/store/config/selectors";
 import { NetworkDiscovery } from "@/app/store/config/types";
 import { messageActions } from "@/app/store/message";
@@ -55,11 +57,10 @@ const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
     );
   }
   return (
-    <ModelActionForm
+    <FormikForm<EmptyObject, ClearAllDiscoveriesWithOptionalIpAndMacError>
       aria-label="Clear all discoveries"
       errors={clearDiscovery.error}
       initialValues={{}}
-      modelType="discovery"
       onCancel={closeForm}
       onSaveAnalytics={{
         action: "Network discovery",
@@ -87,7 +88,7 @@ const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
         Clearing all discoveries will remove all items from the list below.
       </Notification>
       {content}
-    </ModelActionForm>
+    </FormikForm>
   );
 };
 
