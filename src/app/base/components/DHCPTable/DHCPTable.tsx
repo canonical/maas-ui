@@ -77,7 +77,7 @@ const generateRows = (
         subnets.find(({ id }) => id === dhcpsnippet.subnet)?.name || "";
     }
     return {
-      className: isExpanded ? "p-table__row is-active" : null,
+      className: isExpanded ? "p-table__row is-active" : undefined,
       columns: [
         {
           content: dhcpsnippet.name,
@@ -93,8 +93,10 @@ const generateRows = (
           ),
         },
         {
-          content: appliesTo,
-          "data-testid": TestIds.AppliesTo,
+          content: appliesTo ?? "",
+          ...(appliesTo
+            ? { ["data-testid"]: TestIds.AppliesTo as string }
+            : {}),
         },
         { content: enabled },
         { content: dhcpsnippet.description },
