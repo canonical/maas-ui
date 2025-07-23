@@ -75,10 +75,10 @@ context("Machine listing", () => {
 
     cy.findByRole("button", { name: /Filters/i }).click();
 
-    cy.findByLabelText("submenu").within(() => cy.findByText("Status").click());
-    cy.findByLabelText("submenu").within(() =>
-      cy.findByRole("checkbox", { name: "Testing" }).click()
-    );
+    cy.findByRole("tab", { name: /Status/i })
+      .should("exist")
+      .click();
+    cy.findByRole("checkbox", { name: "Testing" }).click();
 
     // verify that the searchbox and URL are updated
     const expectMachineFilters = () => {
