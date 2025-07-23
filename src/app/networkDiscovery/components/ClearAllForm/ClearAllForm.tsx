@@ -82,6 +82,7 @@ const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
       saved={clearDiscovery.isSuccess}
       saving={clearDiscovery.isPending}
       secondarySubmitLabel="Save and add another"
+      submitAppearance="negative"
       submitLabel={Labels.SubmitLabel}
     >
       <Notification severity={NotificationSeverity.CAUTION} title="Warning:">

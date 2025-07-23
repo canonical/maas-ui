@@ -26,6 +26,7 @@ const DiscoveryDeleteForm = ({ discovery, onClose }: Props): ReactElement => {
           query: { ip: discovery.ip, mac: discovery.mac_address },
         });
       }}
+      onSuccess={onClose}
       saved={clearDiscovery.isSuccess}
       saving={clearDiscovery.isPending}
     />
