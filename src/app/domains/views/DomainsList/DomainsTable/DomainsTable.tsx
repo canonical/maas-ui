@@ -66,11 +66,13 @@ const DomainsTable = (): React.ReactElement => {
       columns: [
         {
           content: (
-            <Link to={urls.domains.details({ id: domain.id })}>
+            <Link
+              data-testid="domain-name"
+              to={urls.domains.details({ id: domain.id })}
+            >
               {domain.is_default ? `${domain.name} (default)` : domain.name}
             </Link>
           ),
-          "data-testid": "domain-name",
         },
         {
           content: domain.authoritative ? "Yes" : "No",

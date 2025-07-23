@@ -7,6 +7,22 @@
     position: sticky;
     right: 0;
     z-index: 1;
+
+    .expand-button {
+     align-items: center;
+     border: none;
+     display: flex;
+     gap: $sph--x-small;
+     padding: 0 $sph--small !important;
+
+     .total-count {
+       margin-left: 0.2rem;
+     }
+   }
+
+   .button-active {
+     background: #ebebeb;
+   }
   }
 
   .p-status-bar__row {
