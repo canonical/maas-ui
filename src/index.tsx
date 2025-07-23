@@ -1,5 +1,9 @@
 import { StrictMode } from "react";
 
+import {
+  NotificationProvider,
+  ToastNotificationProvider,
+} from "@canonical/react-components";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
@@ -20,20 +24,24 @@ export const Root = () => {
   const queryClient = createQueryClient();
 
   return (
-    <Provider store={store}>
-      <WebSocketProvider>
-        <QueryClientProvider client={queryClient}>
-          <SidePanelContextProvider>
-            <RouterProvider router={router} />
-          </SidePanelContextProvider>
-          <ReactQueryDevtools
-            initialIsOpen={
-              import.meta.env.VITE_APP_REACT_QUERY_DEVTOOLS === "true"
-            }
-          />
-        </QueryClientProvider>
-      </WebSocketProvider>
-    </Provider>
+    <ToastNotificationProvider>
+      <NotificationProvider pathname={location.pathname}>
+        <Provider store={store}>
+          <WebSocketProvider>
+            <QueryClientProvider client={queryClient}>
+              <SidePanelContextProvider>
+                <RouterProvider router={router} />
+              </SidePanelContextProvider>
+              <ReactQueryDevtools
+                initialIsOpen={
+                  import.meta.env.VITE_APP_REACT_QUERY_DEVTOOLS === "true"
+                }
+              />
+            </QueryClientProvider>
+          </WebSocketProvider>
+        </Provider>
+      </NotificationProvider>
+    </ToastNotificationProvider>
   );
 };
 
