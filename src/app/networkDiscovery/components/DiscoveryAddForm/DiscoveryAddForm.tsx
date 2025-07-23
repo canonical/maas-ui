@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 import * as Yup from "yup";
@@ -10,6 +11,7 @@ import { DeviceType } from "./types";
 import type { DiscoveryAddValues } from "./types";
 
 import type { DiscoveryResponse } from "@/app/apiclient";
+import { listDiscoveriesQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions, useCycled } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
@@ -18,7 +20,6 @@ import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { CreateInterfaceParams, Device } from "@/app/store/device/types";
 import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
-import { discoveryActions } from "@/app/store/discovery";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import { useFetchMachines } from "@/app/store/machine/utils/hooks";
@@ -48,7 +49,6 @@ const formSubmit = (
   values: DiscoveryAddValues
 ) => {
   // Clear the errors from the previous submission.
-  dispatch(discoveryActions.cleanup());
   if (values.type === DeviceType.DEVICE) {
     if (!discovery.ip || !discovery.mac_address || !discovery.subnet_id) {
       return;
@@ -158,6 +158,8 @@ const DiscoveryAddForm = ({
     filters: { status: FetchNodeStatus.DEPLOYED },
   });
 
+  const queryClient = useQueryClient();
+
   useFetchActions([
     deviceActions.fetch,
     domainActions.fetch,
@@ -187,7 +189,6 @@ const DiscoveryAddForm = ({
       allowUnchanged
       aria-label="Add discovery"
       className="u-width--full"
-      cleanup={discoveryActions.cleanup}
       errors={errors}
       initialValues={{
         [DeviceMeta.PK]: "",
@@ -208,10 +209,12 @@ const DiscoveryAddForm = ({
         setRedirect(null);
         formSubmit(dispatch, discovery, values);
       }}
-      onSuccess={(values) => {
+      onSuccess={async (values) => {
         // Refetch the discoveries so that this discovery will get removed
         // from the list.
-        dispatch(discoveryActions.fetch());
+        await queryClient.invalidateQueries({
+          queryKey: listDiscoveriesQueryKey(),
+        });
         if (!redirect) {
           onClose();
           let device: string;

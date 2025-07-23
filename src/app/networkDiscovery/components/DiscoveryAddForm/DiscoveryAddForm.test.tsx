@@ -35,6 +35,7 @@ describe("DiscoveryAddForm", () => {
     mac_address: "aa:bb:cc",
     subnet_id: 9,
     vlan_id: 8,
+    hostname: "discovery-hostname.domain-name",
   });
 
   beforeEach(() => {

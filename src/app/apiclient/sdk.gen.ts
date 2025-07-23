@@ -13,6 +13,36 @@ import type {
   LoginData,
   LoginResponses,
   LoginErrors,
+  ListBootSourcesData,
+  ListBootSourcesResponses,
+  ListBootSourcesErrors,
+  CreateBootSourceData,
+  CreateBootSourceResponses,
+  CreateBootSourceErrors,
+  ListBootSourceBootSourceSelectionData,
+  ListBootSourceBootSourceSelectionResponses,
+  ListBootSourceBootSourceSelectionErrors,
+  CreateBootSourceBootSourceSelectionData,
+  CreateBootSourceBootSourceSelectionResponses,
+  CreateBootSourceBootSourceSelectionErrors,
+  DeleteBootSourceData,
+  DeleteBootSourceResponses,
+  DeleteBootSourceErrors,
+  GetBootSourceData,
+  GetBootSourceResponses,
+  GetBootSourceErrors,
+  UpdateBootSourceData,
+  UpdateBootSourceResponses,
+  UpdateBootSourceErrors,
+  DeleteBootSourceBootSourceSelectionData,
+  DeleteBootSourceBootSourceSelectionResponses,
+  DeleteBootSourceBootSourceSelectionErrors,
+  GetBootSourceBootSourceSelectionData,
+  GetBootSourceBootSourceSelectionResponses,
+  GetBootSourceBootSourceSelectionErrors,
+  FetchBootSourcesData,
+  FetchBootSourcesResponses,
+  FetchBootSourcesErrors,
   GetConfigurationData,
   GetConfigurationResponses,
   GetConfigurationErrors,
@@ -262,6 +292,9 @@ import type {
   UpdateTagData,
   UpdateTagResponses,
   UpdateTagErrors,
+  EvaluateTagData,
+  EvaluateTagResponses,
+  EvaluateTagErrors,
   GetMeWithSummaryData,
   GetMeWithSummaryResponses,
   GetMeWithSummaryErrors,
@@ -328,6 +361,12 @@ import type {
   ListZonesWithSummaryData,
   ListZonesWithSummaryResponses,
   ListZonesWithSummaryErrors,
+  GetSubnetData,
+  GetSubnetResponses,
+  GetSubnetErrors,
+  ListSubnetsData,
+  ListSubnetsResponses,
+  ListSubnetsErrors,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 
@@ -386,6 +425,250 @@ export const login = <ThrowOnError extends boolean = false>(
     ...options,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * List Boot Sources
+ */
+export const listBootSources = <ThrowOnError extends boolean = false>(
+  options?: Options<ListBootSourcesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListBootSourcesResponses,
+    ListBootSourcesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources",
+    ...options,
+  });
+};
+
+/**
+ * Create Boot Source
+ */
+export const createBootSource = <ThrowOnError extends boolean = false>(
+  options: Options<CreateBootSourceData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateBootSourceResponses,
+    CreateBootSourceErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * List Boot Source Boot Source Selection
+ */
+export const listBootSourceBootSourceSelection = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ListBootSourceBootSourceSelectionData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    ListBootSourceBootSourceSelectionResponses,
+    ListBootSourceBootSourceSelectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections",
+    ...options,
+  });
+};
+
+/**
+ * Create Boot Source Boot Source Selection
+ */
+export const createBootSourceBootSourceSelection = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<CreateBootSourceBootSourceSelectionData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateBootSourceBootSourceSelectionResponses,
+    CreateBootSourceBootSourceSelectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete Boot Source
+ */
+export const deleteBootSource = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteBootSourceData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteBootSourceResponses,
+    DeleteBootSourceErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Boot Source
+ */
+export const getBootSource = <ThrowOnError extends boolean = false>(
+  options: Options<GetBootSourceData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetBootSourceResponses,
+    GetBootSourceErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Boot Source
+ */
+export const updateBootSource = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateBootSourceData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateBootSourceResponses,
+    UpdateBootSourceErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete Boot Source Boot Source Selection
+ */
+export const deleteBootSourceBootSourceSelection = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<DeleteBootSourceBootSourceSelectionData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteBootSourceBootSourceSelectionResponses,
+    DeleteBootSourceBootSourceSelectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Boot Source Boot Source Selection
+ */
+export const getBootSourceBootSourceSelection = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetBootSourceBootSourceSelectionData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetBootSourceBootSourceSelectionResponses,
+    GetBootSourceBootSourceSelectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Fetch Boot Sources
+ */
+export const fetchBootSources = <ThrowOnError extends boolean = false>(
+  options: Options<FetchBootSourcesData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    FetchBootSourcesResponses,
+    FetchBootSourcesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources:fetch",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
       ...options.headers,
     },
   });
@@ -2366,6 +2649,28 @@ export const updateTag = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Evaluate Tag
+ */
+export const evaluateTag = <ThrowOnError extends boolean = false>(
+  options: Options<EvaluateTagData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    EvaluateTagResponses,
+    EvaluateTagErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/tags/{tag_id}:evaluate",
+    ...options,
+  });
+};
+
+/**
  * Get user with a summary. ONLY FOR INTERNAL USAGE.
  * Get user with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
  */
@@ -2881,6 +3186,50 @@ export const listZonesWithSummary = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/zones_with_summary",
+    ...options,
+  });
+};
+
+/**
+ * Get Subnet
+ */
+export const getSubnet = <ThrowOnError extends boolean = false>(
+  options: Options<GetSubnetData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetSubnetResponses,
+    GetSubnetErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3ui/subnets/{subnet_id}",
+    ...options,
+  });
+};
+
+/**
+ * List Subnets
+ */
+export const listSubnets = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSubnetsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListSubnetsResponses,
+    ListSubnetsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3ui/subnets",
     ...options,
   });
 };

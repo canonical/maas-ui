@@ -6,8 +6,8 @@ import DiscoveryAddFormFields, {
   Labels as DiscoveryAddFormFieldsLabels,
 } from "./DiscoveryAddFormFields";
 
+import type { DiscoveryResponse } from "@/app/apiclient";
 import { DeviceMeta } from "@/app/store/device/types";
-import type { Discovery } from "@/app/store/discovery/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
@@ -19,16 +19,11 @@ import {
 
 describe("DiscoveryAddFormFields", () => {
   let state: RootState;
-  let discovery: Discovery;
+  let discovery: DiscoveryResponse;
 
   beforeEach(() => {
     discovery = factory.discovery();
-    state = factory.rootState({
-      discovery: factory.discoveryState({
-        loaded: true,
-        items: [discovery],
-      }),
-    });
+    state = factory.rootState({});
   });
 
   it("shows fields for a device", () => {
@@ -40,7 +35,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={vi.fn()}
         />
       </Formik>,
-      { route: "/network-discovery", state }
+      { route: "/network-discovery" }
     );
     expect(
       screen.getByRole("combobox", {
@@ -79,7 +74,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={vi.fn()}
         />
       </Formik>,
-      { route: "/network-discovery", state }
+      { route: "/network-discovery" }
     );
     expect(
       screen.queryByRole("combobox", {
@@ -119,7 +114,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={vi.fn()}
         />
       </Formik>,
-      { route: "/network-discovery", state }
+      { route: "/network-discovery" }
     );
 
     const ipAssignment = screen.getByRole("combobox", {
@@ -143,7 +138,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={vi.fn()}
         />
       </Formik>,
-      { route: "/network-discovery", state }
+      { route: "/network-discovery" }
     );
 
     const ipAssignment = screen.getByRole("combobox", {

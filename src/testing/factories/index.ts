@@ -15,7 +15,6 @@ export {
   deviceStatus,
   deviceStatuses,
   dhcpSnippetState,
-  discoveryState,
   domainState,
   eventState,
   fabricState,

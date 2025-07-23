@@ -24,6 +24,7 @@ const NetworkDiscoveryHeader = ({
 
   const buttons: React.ReactElement[] = [
     <Button
+      appearance="negative"
       data-testid="clear-all"
       disabled={discoveries.data?.total === 0}
       key="clear-all"

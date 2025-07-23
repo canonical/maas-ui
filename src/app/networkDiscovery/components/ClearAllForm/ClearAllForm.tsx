@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-
 import { ExternalLink } from "@canonical/maas-react-components";
 import {
   Notification,
@@ -7,13 +5,13 @@ import {
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { useClearNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
+import type { ClearAllDiscoveriesWithOptionalIpAndMacError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
 import type { EmptyObject } from "@/app/base/types";
 import configSelectors from "@/app/store/config/selectors";
 import { NetworkDiscovery } from "@/app/store/config/types";
-import { discoveryActions } from "@/app/store/discovery";
-import discoverySelectors from "@/app/store/discovery/selectors";
 import { messageActions } from "@/app/store/message";
 
 export enum Labels {
@@ -26,11 +24,8 @@ type Props = {
 
 const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const errors = useSelector(discoverySelectors.errors);
-  const saved = useSelector(discoverySelectors.saved);
-  const saving = useSelector(discoverySelectors.saving);
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
-  const cleanup = useCallback(() => discoveryActions.cleanup(), []);
+  const clearDiscovery = useClearNetworkDiscoveries();
   let content: React.ReactElement;
   if (networkDiscovery === NetworkDiscovery.ENABLED) {
     content = (
@@ -62,10 +57,9 @@ const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
     );
   }
   return (
-    <FormikForm<EmptyObject>
+    <FormikForm<EmptyObject, ClearAllDiscoveriesWithOptionalIpAndMacError>
       aria-label="Clear all discoveries"
-      cleanup={cleanup}
-      errors={errors}
+      errors={clearDiscovery.error}
       initialValues={{}}
       onCancel={closeForm}
       onSaveAnalytics={{
@@ -74,8 +68,7 @@ const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
         label: "Clear network discoveries button",
       }}
       onSubmit={() => {
-        dispatch(cleanup());
-        dispatch(discoveryActions.clear());
+        clearDiscovery.mutate({});
       }}
       onSuccess={() => {
         dispatch(
@@ -86,9 +79,10 @@ const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
         );
         closeForm();
       }}
-      saved={saved}
-      saving={saving}
+      saved={clearDiscovery.isSuccess}
+      saving={clearDiscovery.isPending}
       secondarySubmitLabel="Save and add another"
+      submitAppearance="negative"
       submitLabel={Labels.SubmitLabel}
     >
       <Notification severity={NotificationSeverity.CAUTION} title="Warning:">

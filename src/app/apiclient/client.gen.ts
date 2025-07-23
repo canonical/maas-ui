@@ -23,5 +23,9 @@ export type CreateClientConfig<T extends DefaultClientOptions = ClientOptions> =
   ) => Config<Required<DefaultClientOptions> & T>;
 
 export const client = createClient(
-  createClientConfig(createConfig<ClientOptions>())
+  createClientConfig(
+    createConfig<ClientOptions>({
+      baseUrl: "http://maas-ui-demo.internal:5240",
+    })
+  )
 );

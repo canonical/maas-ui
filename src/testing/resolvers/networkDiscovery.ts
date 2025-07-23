@@ -1,9 +1,10 @@
 import { http, HttpResponse } from "msw";
 
 import type {
+  ClearAllDiscoveriesWithOptionalIpAndMacError,
+  GetDiscoveryError,
   ListDiscoveriesError,
   ListDiscoveriesResponse,
-  ListZonesWithSummaryError,
 } from "@/app/apiclient";
 import { discovery as discoveryFactory } from "@/testing/factories";
 import { BASE_URL } from "@/testing/utils";
@@ -19,6 +20,12 @@ const mockListDiscoveriesError: ListDiscoveriesError = {
   kind: "Error", // This will always be 'Error' for every error response
 };
 
+const mockGetDiscoveriesError: GetDiscoveryError = {
+  message: "Not found",
+  code: 404,
+  kind: "Error",
+};
+
 const networkDiscoveryResolvers = {
   listNetworkDiscoveries: {
     resolved: false,
@@ -27,9 +34,24 @@ const networkDiscoveryResolvers = {
         networkDiscoveryResolvers.listNetworkDiscoveries.resolved = true;
         return HttpResponse.json(data);
       }),
-    error: (error: ListZonesWithSummaryError = mockListDiscoveriesError) =>
+    error: (error: ListDiscoveriesError = mockListDiscoveriesError) =>
       http.get(`${BASE_URL}MAAS/a/v3/discoveries`, () => {
         networkDiscoveryResolvers.listNetworkDiscoveries.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  clearNetworkDiscoveries: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/discoveries`, () => {
+        networkDiscoveryResolvers.clearNetworkDiscoveries.resolved = true;
+        return HttpResponse.json({}, { status: 204 });
+      }),
+    error: (
+      error: ClearAllDiscoveriesWithOptionalIpAndMacError = mockGetDiscoveriesError
+    ) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/discoveries`, () => {
+        networkDiscoveryResolvers.clearNetworkDiscoveries.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },

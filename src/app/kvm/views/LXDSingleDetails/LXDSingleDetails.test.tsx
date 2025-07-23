@@ -7,6 +7,7 @@ import { Label as LXDSingleVMsLabel } from "@/app/kvm/views/LXDSingleDetails/LXD
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
@@ -15,7 +16,12 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.getZone.handler(),
+  zoneResolvers.listZones.handler(),
+  poolsResolvers.getPool.handler(),
+  poolsResolvers.listPools.handler()
+);
 
 describe("LXDSingleDetails", () => {
   let state: RootState;
