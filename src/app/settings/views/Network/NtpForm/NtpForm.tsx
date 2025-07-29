@@ -19,7 +19,7 @@ const NtpSchema = Yup.object().shape({
 });
 
 const NtpForm = (): React.ReactElement => {
-  const { data, error, isPending } = useConfigurations({
+  const { data, error, isPending, isError } = useConfigurations({
     query: { name: [ConfigNames.NTP_EXTERNAL_ONLY, ConfigNames.NTP_SERVERS] },
   });
   const updateConfig = useBulkSetConfigurations();
@@ -30,7 +30,7 @@ const NtpForm = (): React.ReactElement => {
     return <Spinner text="Loading..." />;
   }
 
-  if (error) {
+  if (isError) {
     return (
       <Notification
         severity="negative"
