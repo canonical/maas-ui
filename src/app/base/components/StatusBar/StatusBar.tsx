@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 
 import TooltipButton from "../TooltipButton";
 
+import { useNotifications } from "@/app/api/query/notifications";
 import { useFetchActions, useUsabilla } from "@/app/base/hooks";
 import configSelectors from "@/app/store/config/selectors";
 import controllerSelectors from "@/app/store/controller/selectors";
@@ -118,6 +119,7 @@ export const StatusBar = (): React.ReactElement | null => {
   const { toggleListView, notifications, countBySeverity, isListView } =
     useToastNotification();
 
+  useNotifications();
   useEventListener("keydown", (e: KeyboardEvent) => {
     // Close notifications list if Escape pressed
     if (e.code === "Escape" && isListView) {
@@ -239,20 +241,20 @@ Site Manager as its upstream image source."
             {status}
           </div>
         )}
-        {hasNotifications && (
-          <Button
-            aria-label="Expand notifications list"
-            className={classNames("u-no-margin expand-button", {
-              "button-active": isListView,
-            })}
-            onClick={toggleListView}
-          >
-            {notificationIcons}
-            <span className="total-count">{notifications.length}</span>
-            <Icon name={isListView ? ICONS.chevronDown : ICONS.chevronUp} />
-          </Button>
-        )}
       </div>
+      {hasNotifications && (
+        <Button
+          aria-label="Expand notifications list"
+          className={classNames("u-no-margin expand-button", {
+            "button-active": isListView,
+          })}
+          onClick={toggleListView}
+        >
+          {notificationIcons}
+          <span className="total-count">{notifications.length}</span>
+          <Icon name={isListView ? ICONS.chevronDown : ICONS.chevronUp} />
+        </Button>
+      )}
     </AppStatus>
   );
 };
