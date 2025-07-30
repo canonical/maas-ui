@@ -43,3 +43,9 @@
 .main-toolbar {
   padding: $spv--medium 0;
 }
+
+// 29.07.2025 Kasia: When clicking the chevron button, horizontal and vertical scrool bars briefly appear.
+// https://github.com/canonical/maas-ui/pull/5757
+body {
+  overflow: hidden;
+}

@@ -33,6 +33,7 @@ export const Root = () => {
                 <RouterProvider router={router} />
               </SidePanelContextProvider>
               <ReactQueryDevtools
+                buttonPosition="bottom-left"
                 initialIsOpen={
                   import.meta.env.VITE_APP_REACT_QUERY_DEVTOOLS === "true"
                 }

@@ -37,7 +37,9 @@ export const useListNotifications = (
 };
 
 export const useNotifications = () => {
-  const backendNotifications = useListNotifications();
+  const backendNotifications = useListNotifications({
+    query: { only_active: true },
+  });
   const items = backendNotifications.data?.items;
   const notifications = useToastNotification();
   const dismissMutatation = useDismissNotification();
@@ -46,16 +48,20 @@ export const useNotifications = () => {
     items.forEach((item) => {
       switch (item.category) {
         case "success":
-          notifications.success(item.message, [
-            {
-              label: "Dismiss",
-              onClick: () => {
-                dismissMutatation.mutate({
-                  path: { notification_id: item.id },
-                });
+          notifications.success(
+            item.message,
+            [
+              {
+                label: "Dismiss",
+                onClick: () => {
+                  dismissMutatation.mutate({
+                    path: { notification_id: item.id },
+                  });
+                },
               },
-            },
-          ]);
+            ],
+            ""
+          );
           break;
         case "error":
           notifications.failure(item.message, [
@@ -95,6 +101,7 @@ export const useNotifications = () => {
           break;
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 };
 
