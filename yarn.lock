@@ -962,10 +962,10 @@
     "@types/sjcl" "1.0.30"
     macaroon "3.0.4"
 
-"@canonical/react-components@2.5.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-2.5.1.tgz#4ce4734c44fd75c45ea74865a0e877540f33c934"
-  integrity sha512-9LW9U1UNILsuf2pxJPYjXuf+UGCgB+zIgMYO51RHDVWkzRGixJFPaxPgwDvquIGVrtkwB3mFiwK6uF8YlOzc8g==
+"@canonical/react-components@2.11.0":
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-2.11.0.tgz#33fc07f962f1863a65b1959607521fdce616038e"
+  integrity sha512-erO67V4frwTQ3nna3KPW19y5qSyg+HFBhodKq0CKKjI2S5ZFEQe55cwWuUhP6oO7stfV+13C8tsUWmNUZvBjPw==
   dependencies:
     "@types/jest" "29.5.14"
     "@types/node" "20.17.19"
