@@ -17,15 +17,14 @@ This tutorial will take you through the process of setting up MAAS in a LXD cont
     ```
 
 
-2. Initialise LXD
+2. Initialize LXD
 
     ```sh
     sudo lxd init --auto
     ```
 
-   You can remove the `--auto` flag if you want to go through the initialisation steps yourself - the defaults are fine
-   for
-   the purpose of this setup.
+   You can remove the `--auto` flag if you want to go through the initialization steps yourself - the defaults are fine
+   for this setup.
 
 
 3. Check your network configuration and note the `lxdbr0` IP address
@@ -61,13 +60,13 @@ This tutorial will take you through the process of setting up MAAS in a LXD cont
    firewall configuration below.
 
 
-4. Configure your firewall. Either disable it completely:
+4. Configure your firewall. Either disable it completely
 
     ```sh
     sudo ufw disable
     ```
 
-   Or configure specific rules to allow LXD communication:
+   Or configure specific rules to allow LXD communication
 
     ```sh
     sudo ufw allow in on lxdbr0
@@ -80,7 +79,7 @@ This tutorial will take you through the process of setting up MAAS in a LXD cont
     sudo ufw route allow in on wlp0s20f3 out on lxdbr0
     ```
 
-   Replace `10.128.58.1` and `10.128.58.0/24` with your actual `lxdbr0` IP and network, and replace `wlp0s20f3` with
+   Replace "10.128.58.1" and "10.128.58.0/24" with your actual `lxdbr0` IP and network, and replace `wlp0s20f3` with
    your actual network interface name from step 3.
 
 
@@ -96,7 +95,7 @@ This tutorial will take you through the process of setting up MAAS in a LXD cont
 
 Now you need to decide what type of MAAS setup you want:
 
-- KVM Managing Instance: A MAAS setup that can provision virtual machines on your host system
+- [KVM Managing Instance](#kvm-managing-instance): A MAAS setup that can provision virtual machines on your host system
 - Sample Data Demo Instance: A MAAS setup with pre-populated sample data for testing and demonstration
 
 ---
@@ -198,7 +197,7 @@ This setup enables MAAS to provision virtual machines on your host system.
     sudo netplan apply
     ```
 
-### Install and initialise MAAS
+### Install and initialize MAAS
 
 12. Install the latest MAAS snap, and the test database
 
@@ -225,18 +224,18 @@ This setup enables MAAS to provision virtual machines on your host system.
 
 ### Configure your host machine as a KVM host in MAAS
 
-15. Paste the `maas-url` from step 15 into your browser, and log into MAAS UI. Make sure you import your SSH keys from
+15. Paste the `maas-url` from step 13 into your browser, and log into MAAS UI. Make sure you import your SSH keys from
     Launchpad or GitHub
-16. Click on "Subnets" in the navigation, and then click on "10.20.0.0/24". Make sure the gateway IP is "10.20.0.1"
+16. Click on "Subnets" in the navigation, and then click on "10.20.0.0/24." Make sure the gateway IP is "10.20.0.1"
 17. Go to the VLAN for this subnet (it should show up as "untagged"), and reserve a dynamic range from 10.20.0.100 to
     10.20.0.200
-18. Click "Configure DHCP", check "MAAS provides DHCP", and make sure the IP range you just reserved shows up in the
+18. Click "Configure DHCP," check "MAAS provides DHCP," and make sure the IP range you just reserved shows up in the
     form, then submit the form.
-19. Click on "LXD" in the navigation, then click "Add LXD host" and fill in the form. You can paste the IP address from
-    the step 3 into the "LXD address" field. Select "Generate new certificate and key", and click "Next".
+19. Click on "LXD" in the navigation, then click "Add LXD host" and fill in the form. You can paste the `lxdbr0` IP
+    address from step 3 into the "LXD address" field. Select "Generate new certificate and key," and click "Next."
 20. Run the command shown in the side panel on your host machine to add the newly generated certificate to LXD, then
-    click "Check authentication".
-21. Select "Add new project" and give it a name - this is where MAAS will deploy all new VMS created with this host.
+    click "Check authentication."
+21. Select "Add new project" and give it a name—this is where MAAS will deploy all new VMS created with this host.
     Then click "Save LXD host"
 
 And that's a wrap! You should now be able to compose virtual machines on your host using MAAS.
