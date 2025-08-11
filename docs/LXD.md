@@ -25,37 +25,11 @@ sudo lxd init --auto
 You can remove the `--auto` flag if you want to go through the initialization steps yourself - the defaults are fine
 for this setup.
 
-3. Check your network configuration and note the `lxdbr0` IP address
+3. Set the HTTPS address for LXD
 
 ```sh
-ip a
+lxc config set core.https_address [::]:8443
 ```
-
-The output should look something like this:
-
-```
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host noprefixroute 
-       valid_lft forever preferred_lft forever
-2: wlp0s20f3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 70:15:fb:9e:0f:de brd ff:ff:ff:ff:ff:ff
-    inet 192.168.1.72/24 brd 192.168.1.255 scope global dynamic noprefixroute wlp0s20f3
-       valid_lft 80972sec preferred_lft 80972sec
-    inet6 fe80::9379:e5b7:803e:2958/64 scope link noprefixroute 
-       valid_lft forever preferred_lft forever
-55: lxdbr0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
-    link/ether 00:16:3e:ce:4e:ff brd ff:ff:ff:ff:ff:ff
-    inet 10.128.58.1/24 scope global lxdbr0
-       valid_lft forever preferred_lft forever
-    inet6 fd42:6002:990e:aafc::1/64 scope global 
-       valid_lft forever preferred_lft forever
-```
-
-In this example, `lxdbr0` has IP "10.128.58.1" and the main network interface is `wlp0s20f3`. Use these values in the
-firewall configuration below.
 
 4. Configure your firewall. Either disable it completely
 
@@ -67,20 +41,8 @@ Or configure specific rules to allow LXD communication
 
 ```sh
 sudo ufw allow in on lxdbr0
-sudo ufw allow out on lxdbr0
-sudo ufw allow in on lxdbr0 proto udp to 10.128.58.1 port 53
-sudo ufw allow out on lxdbr0 proto udp from 10.128.58.1 port 53
-sudo ufw route allow in on lxdbr0 out on wlp0s20f3
-sudo ufw route allow in on wlp0s20f3 out on lxdbr0
-```
-
-Replace "10.128.58.1" with your actual `lxdbr0` IP and network, and replace `wlp0s20f3` with your actual network
-interface name from step 3.
-
-5. Set the HTTPS address for LXD
-
-```sh
-sudo lxc config set core.https_address [::]:8443
+sudo ufw route allow in on lxdbr0
+sudo ufw route allow out on lxdbr0
 ```
 
 ---
@@ -90,7 +52,8 @@ sudo lxc config set core.https_address [::]:8443
 Now you need to decide what type of MAAS setup you want:
 
 - [KVM Managing Instance](#kvm-managing-instance): A MAAS setup that can provision virtual machines on your host system
-- [Sample Data Demo Instance](#sample-data-demo-instance): A MAAS setup with pre-populated sample data for testing and demonstration
+- [Sample Data Demo Instance](#sample-data-demo-instance): A MAAS setup with pre-populated sample data for testing and
+  demonstration
 
 ---
 
@@ -100,11 +63,11 @@ This setup enables MAAS to provision virtual machines on your host system.
 
 ### Create KVM network and profile
 
-6. Create and configure the `maas-kvm` network for VM provisioning
+5. Create and configure the `maas-kvm` network for VM provisioning
 
 ```sh
-sudo lxc network create maas-kvm
-sudo lxc network edit maas-kvm
+lxc network create maas-kvm
+lxc network edit maas-kvm
 ```
 
 Paste the following config, and save
@@ -125,11 +88,11 @@ locations:
   - none
 ```
 
-7. Create and edit the `maas-container` profile
+6. Create and edit the `maas-container` profile
 
 ```sh
-sudo lxc profile create maas-container
-sudo lxc profile edit maas-container
+lxc profile create maas-container
+lxc profile edit maas-container
 ```
 
 Paste the following config, and save
@@ -151,21 +114,24 @@ devices:
     type: disk
 ```
 
+> _NOTE: If you haven't disabled the firewall in step 4, make sure to add the same rules added for `lxdbr0`
+for `maas-kvm`._
+
 ### Launch and configure container
 
-8. Launch an Ubuntu container with the `maas-container` profile
+7. Launch an Ubuntu container with the `maas-container` profile
 
 ```sh
-sudo lxc launch ubuntu:noble maas-kvm -p default -p maas-container
+lxc launch ubuntu:noble maas-kvm -p default -p maas-container
 ```
 
-9. Enter the shell for the container, and switch to the `ubuntu` user
+8. Enter the shell for the container, and switch to the `ubuntu` user
 
 ```shell
-sudo lxc exec maas-kvm -- su ubuntu
+lxc exec maas-kvm -- su ubuntu
 ```
 
-10. Inside the container, create a netplan config to give the container an address on the `maas-kvm` network
+9. Inside the container, create a netplan config to give the container an address on the `maas-kvm` network
 
 ```sh
 sudo nano /etc/netplan/99-maas-kvm-net.yaml
@@ -181,7 +147,7 @@ network:
   version: 2
 ```
 
-11. Apply the new netplan configuration
+10. Apply the new netplan configuration
 
 ```sh
 sudo netplan apply
@@ -189,14 +155,14 @@ sudo netplan apply
 
 ### Install and initialize MAAS
 
-12. Install the latest MAAS snap, and the test database
+11. Install the latest MAAS snap, and the test database
 
 ```sh 
 sudo snap install maas --channel=latest/edge
 sudo snap install maas-test-db --channel=latest/edge
 ```
 
-13. Initialise MAAS with the following command
+12. Initialise MAAS with the following command
 
 ```sh
 sudo maas init region+rack --maas-url="http://10.20.0.2:5240/MAAS" --database-uri maas-test-db:///
@@ -204,7 +170,7 @@ sudo maas init region+rack --maas-url="http://10.20.0.2:5240/MAAS" --database-ur
 
 Take note of the `maas-url` here, you'll need it to log into the UI later.
 
-14. Create your admin user
+13. Create your admin user
 
 ```sh
 sudo maas createadmin
@@ -212,15 +178,16 @@ sudo maas createadmin
 
 ### Configure your host machine as a KVM host in MAAS
 
-15. Paste the `maas-url` from step 13 into your browser, and log into MAAS UI. Make sure you import your SSH keys from
+14. Paste the `maas-url` from step 12 into your browser, and log into MAAS UI. Make sure you import your SSH keys from
     Launchpad or GitHub.
-16. Click on "Subnets" in the navigation, and then click on "10.20.0.0/24." Make sure the gateway IP is "10.20.0.1"
-17. Go to the VLAN for this subnet (it should show up as "untagged"), and reserve a dynamic range from 10.20.0.100 to
+15. Click on "Subnets" in the navigation, and then click on "10.20.0.0/24." Make sure the gateway IP is "10.20.0.1"
+16. Go to the VLAN for this subnet (it should show up as "untagged"), and reserve a dynamic range from 10.20.0.100 to
     10.20.0.200.
-18. Click "Configure DHCP," check "MAAS provides DHCP," and make sure the IP range you just reserved shows up in the
+17. Click "Configure DHCP," check "MAAS provides DHCP," and make sure the IP range you just reserved shows up in the
     form, then submit the form.
-19. Click on "LXD" in the navigation, then click "Add LXD host" and fill in the form. You can paste the `lxdbr0` IP
-    address from step 3 into the "LXD address" field. Select "Generate new certificate and key," and click "Next."
+18. On your host machine, enter `ip a` and note down the IP address of `lxdbr0`.
+19. Click on "LXD" in the navigation, then click "Add LXD host" and fill in the form. You can paste the IP address from
+    the previous step into the "LXD address" field. Select "Generate new certificate and key," and click "Next."
 20. Run the command shown in the side panel on your host machine to add the newly generated certificate to LXD, then
     click "Check authentication."
 21. Select "Add new project" and give it a name—this is where MAAS will deploy all new VMs created with this host.
@@ -236,14 +203,14 @@ This setup creates a MAAS instance pre-populated with sample data for testing an
 
 ### Create demo profile and container
 
-6. Create and edit the `maas-container` profile
+5. Create and edit the `maas-container` profile
 
 > _NOTE: If you have already set up a KVM managing MAAS instance, you can skip this step since KVM uses the same profile
 with an additional `maas-kvm` network._
 
 ```sh
-sudo lxc profile create maas-container
-sudo lxc profile edit maas-container
+lxc profile create maas-container
+lxc profile edit maas-container
 ```
 
 Paste the following config, and save
@@ -262,21 +229,21 @@ devices:
     type: disk
 ```
 
-7. Launch an Ubuntu container with the `maas-container` profile
+6. Launch an Ubuntu container with the `maas-container` profile
 
 ```sh
-sudo lxc launch ubuntu:noble maas-demo -p default -p maas-container
+lxc launch ubuntu:noble maas-demo -p default -p maas-container
 ```
 
 ### Install MAAS
 
-8. Enter the shell for the container, and switch to the `ubuntu` user
+7. Enter the shell for the container, and switch to the `ubuntu` user
 
 ```shell
-sudo lxc exec maas-demo -- su ubuntu
+lxc exec maas-demo -- su ubuntu
 ```
 
-9. Install the latest MAAS snap, and the test database
+8. Install the latest MAAS snap, and the test database
 
 ```sh 
 sudo snap install maas --channel=latest/edge
@@ -289,13 +256,13 @@ To use sample data with MAAS, you'll need to get a database dump. The easiest wa
 dump [from CI](http://maas-ci.internal:8080/view/maas-sampledata-dumper/), or alternatively you can create your
 own [dump](https://github.com/maas/maas/blob/master/HACKING.rst#creating-sample-data).
 
-10. Get your database dump from your host machine onto the container
+9. Get your database dump from your host machine onto the container
 
 ```sh
-sudo lxc file push /path/to/your/<dump_filename>.dump maas-demo/tmp/maasdb.dump
+lxc file push /path/to/your/<dump_filename>.dump maas-demo/tmp/maasdb.dump
 ```
 
-11. Inside the container, prepare and restore the sample data
+10. Inside the container, prepare and restore the sample data
 
 ```sh
 sudo cp /tmp/maasdb.dump /var/snap/maas-test-db/common/maasdb.dump
@@ -304,21 +271,21 @@ sudo snap run --shell maas-test-db.psql -c 'db-dump restore /var/snap/maas-test-
 
 ### Initialize MAAS with sample data
 
-12. Initialize MAAS
+11. Initialize MAAS
 
 ```sh
 sudo maas init region+rack --database-uri maas-test-db:///
 ```
 
-MAAS will display the default URL (e.g., http://10.128.58.207:5240/MAAS). Take note of this URL.
+MAAS will display the default URL. Take note of this URL.
 
-13. Configure MAAS to use the sample database
+12. Configure MAAS to use the sample database
 
 ```sh
 sudo sed -i "s/database_name: maasdb/database_name: maassampledata/" /var/snap/maas/current/regiond.conf
 ```
 
-14. Restart MAAS to apply the changes
+13. Restart MAAS to apply the changes
 
 ```sh
 sudo snap restart maas
@@ -330,5 +297,5 @@ sudo snap restart maas
 sudo maas createadmin
 ```
 
-Your sample data demo MAAS is ready! Open your browser and navigate to the MAAS URL from step 12 to access MAAS
+Your sample data demo MAAS is ready! Open your browser and navigate to the MAAS URL from step 11 to access MAAS
 populated with sample data.
