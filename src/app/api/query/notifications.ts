@@ -41,7 +41,7 @@ export const convertBackendItToToastNotificationId = (id: number): string => {
   return `notification-${id}`;
 };
 
-export const convertToastNotificationIdToBackendIt = (id: string): number => {
+export const convertToastNotificationIdToBackendId = (id: string): number => {
   const match = /notification-(\d+)/.exec(id);
   if (match && match[1]) {
     return Number(match[1]);
@@ -73,7 +73,7 @@ export const useNotifications = () => {
             "",
             item.message,
             [],
-            item.id.toString()
+            convertBackendItToToastNotificationId(item.id)
           );
           break;
         case "warning":
@@ -81,11 +81,16 @@ export const useNotifications = () => {
             item.message,
             [],
             "Warning",
-            item.id.toString()
+            convertBackendItToToastNotificationId(item.id)
           );
           break;
         case "info":
-          notifications.info(item.message, "", [], item.id.toString());
+          notifications.info(
+            item.message,
+            "",
+            [],
+            convertBackendItToToastNotificationId(item.id)
+          );
           break;
       }
     });
@@ -118,7 +123,7 @@ export const useDismissNotifications = () => {
       notifications.forEach((notification) => {
         dismissMutatation.mutate({
           path: {
-            notification_id: convertToastNotificationIdToBackendIt(
+            notification_id: convertToastNotificationIdToBackendId(
               notification.id
             ),
           },
