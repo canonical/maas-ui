@@ -208,22 +208,4 @@ describe("LicenseKeyForm", () => {
       });
     });
   });
-
-  it("adds a message when a license key is created", () => {
-    state.licensekeys.saved = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <LicenseKeyForm />
-        </MemoryRouter>
-      </Provider>
-    );
-    const actions = store.getActions();
-
-    expect(
-      actions.some((action) => action.type === "licensekeys/cleanup")
-    ).toBe(true);
-    expect(actions.some((action) => action.type === "message/add")).toBe(true);
-  });
 });

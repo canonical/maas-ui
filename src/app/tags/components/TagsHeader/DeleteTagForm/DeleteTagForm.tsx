@@ -1,13 +1,11 @@
-import { useState } from "react";
-
-import { Col, NotificationSeverity, Row } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useAddMessage, useScrollToTop } from "@/app/base/hooks";
+import { useScrollToTop } from "@/app/base/hooks";
 import type { EmptyObject, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
@@ -34,17 +32,8 @@ export const DeleteTagForm = ({
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
-  const [deletedTag, setDeletedTag] = useState<Tag["name"] | null>(
-    tag?.name || null
-  );
+
   useScrollToTop();
-  useAddMessage(
-    saved && !errors,
-    tagActions.cleanup,
-    `Deleted ${deletedTag || "tag"} from tag list.`,
-    onClose,
-    NotificationSeverity.POSITIVE
-  );
   const onCancel = () => {
     onClose();
     if (fromDetails) {
@@ -71,7 +60,6 @@ export const DeleteTagForm = ({
         label: "Delete tag",
       }}
       onSubmit={() => {
-        setDeletedTag(tag.name);
         dispatch(tagActions.cleanup());
         dispatch(tagActions.delete(tag.id));
       }}

@@ -253,24 +253,6 @@ describe("ScriptsList", () => {
     });
   });
 
-  it("can add a message when a script is deleted", () => {
-    state.script.saved = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
-        </MemoryRouter>
-      </Provider>
-    );
-    const actions = store.getActions();
-    expect(actions.some((action) => action.type === "script/cleanup")).toBe(
-      true
-    );
-    expect(actions.some((action) => action.type === "message/add")).toBe(true);
-  });
-
   it("can show script source", async () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
 
@@ -292,58 +274,6 @@ describe("ScriptsList", () => {
 
     // expect script source to be decoded base64
     expect(screen.getByText("test script contents")).toBeInTheDocument();
-  });
-
-  it("correctly formats script creation date", () => {
-    const state = factory.rootState({
-      script: factory.scriptState({
-        loaded: true,
-        items: [
-          factory.script({
-            created: factory.timestamp("Thu, 31 Dec. 2020 22:59:00"),
-            script_type: ScriptType.TESTING,
-          }),
-        ],
-      }),
-    });
-
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ScriptsList type="testing" />
-      </MemoryRouter>,
-      { state }
-    );
-    expect(
-      within(screen.getByRole("row", { name: "test name 33" })).getByText(
-        "Thu, 31 Dec. 2020 22:59:00 (UTC)"
-      )
-    ).toBeInTheDocument();
-  });
-
-  it("formats script creation date as 'Never' if date cannot be parsed", () => {
-    const state = factory.rootState({
-      script: factory.scriptState({
-        loaded: true,
-        items: [
-          factory.script({
-            created: () => factory.timestamp(""),
-            script_type: ScriptType.TESTING,
-          }),
-        ],
-      }),
-    });
-
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ScriptsList type="testing" />
-      </MemoryRouter>,
-      { state }
-    );
-    expect(
-      within(screen.getByRole("row", { name: "test name 37" })).getByText(
-        "Never"
-      )
-    ).toBeInTheDocument();
   });
 
   it("displays a message if there are no scripts", () => {

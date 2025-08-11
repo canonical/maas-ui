@@ -10,7 +10,7 @@ import DhcpSnippetType from "@/app/base/components/DhcpSnippetType";
 import TableActions from "@/app/base/components/TableActions";
 import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import docsUrls from "@/app/base/docsUrls";
-import { useWindowTitle, useAddMessage } from "@/app/base/hooks";
+import { useWindowTitle } from "@/app/base/hooks";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import settingsURLs from "@/app/settings/urls";
 import DhcpTarget from "@/app/settings/views/Dhcp/DhcpTarget";
@@ -72,7 +72,6 @@ const generateRows = (
   subnets: Subnet[],
   hideExpanded: () => void,
   dispatch: Dispatch,
-  setDeleting: (deletingName: DHCPSnippet["name"] | null) => void,
   saved: DHCPSnippetState["saved"],
   saving: DHCPSnippetState["saving"]
 ) =>
@@ -152,7 +151,6 @@ const generateRows = (
             onClose={hideExpanded}
             onConfirm={() => {
               dispatch(dhcpsnippetActions.delete(dhcpsnippet.id));
-              setDeleting(dhcpsnippet.name);
             }}
           />
         ) : (
@@ -188,9 +186,7 @@ const DhcpList = (): React.ReactElement => {
     null
   );
   const [searchText, setSearchText] = useState("");
-  const [deletingName, setDeleting] = useState<DHCPSnippet["name"] | null>(
-    null
-  );
+
   const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
   const dhcpsnippetLoaded = useSelector(dhcpsnippetSelectors.loaded);
   const dhcpsnippets = useSelector((state: RootState) =>
@@ -205,15 +201,6 @@ const DhcpList = (): React.ReactElement => {
   const dispatch = useDispatch();
 
   useWindowTitle("DHCP snippets");
-
-  useAddMessage(
-    saved && !!deletingName,
-    dhcpsnippetActions.cleanup,
-    `${deletingName} removed successfully.`,
-    () => {
-      setDeleting(null);
-    }
-  );
 
   const hideExpanded = () => {
     setExpandedId(null);
@@ -281,7 +268,6 @@ const DhcpList = (): React.ReactElement => {
             subnets,
             hideExpanded,
             dispatch,
-            setDeleting,
             saved,
             saving
           )}

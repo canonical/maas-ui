@@ -9,7 +9,7 @@ import ScriptDetails from "../ScriptDetails";
 import ColumnToggle from "@/app/base/components/ColumnToggle";
 import TableActions from "@/app/base/components/TableActions";
 import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import { useWindowTitle, useAddMessage } from "@/app/base/hooks";
+import { useWindowTitle } from "@/app/base/hooks";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import type { RootState } from "@/app/store/root/types";
 import { scriptActions } from "@/app/store/script";
@@ -38,7 +38,6 @@ const generateRows = (
   setExpandedType: (expandedType: "delete" | "details") => void,
   hideExpanded: () => void,
   dispatch: Dispatch,
-  setDeleting: (id: Script["name"] | null) => void,
   saved: boolean,
   saving: boolean
 ) =>
@@ -106,7 +105,6 @@ const generateRows = (
               onClose={hideExpanded}
               onConfirm={() => {
                 dispatch(scriptActions.delete(script.id));
-                setDeleting(script.name);
               }}
             />
           </div>
@@ -133,12 +131,9 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
     null
   );
   const [searchText, setSearchText] = useState("");
-  const [deletingScript, setDeleting] = useState<Script["name"] | null>(null);
 
   const scriptsLoading = useSelector(scriptSelectors.loading);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
-  const hasErrors = useSelector(scriptSelectors.hasErrors);
-  const errors = useSelector(scriptSelectors.errors);
   const saved = useSelector(scriptSelectors.saved);
   const saving = useSelector(scriptSelectors.saving);
 
@@ -147,23 +142,6 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
   );
 
   useWindowTitle(`${type[0].toUpperCase()}${type.slice(1)} scripts`);
-
-  useAddMessage(
-    saved,
-    scriptActions.cleanup,
-    `${deletingScript} removed successfully.`,
-    () => {
-      setDeleting(null);
-    }
-  );
-
-  useAddMessage(
-    hasErrors,
-    scriptActions.cleanup,
-    `Error removing ${deletingScript}: ${errors}`,
-    null,
-    "negative"
-  );
 
   const hideExpanded = () => {
     setExpandedId(null);
@@ -223,7 +201,6 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
             setExpandedType,
             hideExpanded,
             dispatch,
-            setDeleting,
             saved,
             saving
           )}

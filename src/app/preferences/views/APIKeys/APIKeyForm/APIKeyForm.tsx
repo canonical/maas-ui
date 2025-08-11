@@ -5,7 +5,6 @@ import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useAddMessage } from "@/app/base/hooks";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { tokenActions } from "@/app/store/token";
@@ -48,12 +47,6 @@ export const APIKeyForm = ({ token }: Props): React.ReactElement => {
   useOnEscapePressed(() => {
     onCancel();
   });
-
-  useAddMessage(
-    saved,
-    tokenActions.cleanup,
-    `API key successfully ${editing ? "updated" : "generated"}.`
-  );
 
   return (
     <FormikForm

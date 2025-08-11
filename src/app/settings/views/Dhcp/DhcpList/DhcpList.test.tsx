@@ -120,36 +120,6 @@ describe("DhcpList", () => {
     });
   });
 
-  it("can add a message when a dhcp snippet is deleted", async () => {
-    state.dhcpsnippet.saved = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
-        </MemoryRouter>
-      </Provider>
-    );
-    // Click on the delete button:
-    let row = screen.getAllByTestId("dhcp-row")[1];
-    expect(row).not.toHaveClass("is-active");
-
-    // Click on the delete button:
-    await userEvent.click(within(row).getByTestId("table-actions-delete"));
-
-    row = screen.getAllByTestId("dhcp-row")[1];
-    expect(row).toHaveClass("is-active");
-
-    // Click on the delete confirm button
-    await userEvent.click(within(row).getByTestId("action-confirm"));
-
-    const actions = store.getActions();
-    expect(
-      actions.some((action) => action.type === "dhcpsnippet/cleanup")
-    ).toBe(true);
-    expect(actions.some((action) => action.type === "message/add")).toBe(true);
-  });
-
   it("can show snippet details", async () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>

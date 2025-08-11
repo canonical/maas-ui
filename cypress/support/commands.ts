@@ -52,9 +52,7 @@ Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.get("select[name='power_type']").select("manual");
   cy.get("select[name='power_type']").blur();
   cy.findByRole("button", { name: /save machine/i }).click();
-  cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`, {
-    timeout: LONG_TIMEOUT,
-  });
+  cy.get("#aside-panel").should("not.be.visible");
 });
 
 Cypress.Commands.add("deleteMachine", (hostname: string) => {
@@ -102,7 +100,6 @@ Cypress.Commands.add("addMachines", (hostnames: string[]) => {
     } else {
       cy.findByRole("button", { name: /Save machine/i }).click();
     }
-    cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
   });
 });
 
