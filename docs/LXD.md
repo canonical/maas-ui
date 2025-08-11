@@ -90,7 +90,7 @@ sudo lxc config set core.https_address [::]:8443
 Now you need to decide what type of MAAS setup you want:
 
 - [KVM Managing Instance](#kvm-managing-instance): A MAAS setup that can provision virtual machines on your host system
-- Sample Data Demo Instance: A MAAS setup with pre-populated sample data for testing and demonstration
+- [Sample Data Demo Instance](#sample-data-demo-instance): A MAAS setup with pre-populated sample data for testing and demonstration
 
 ---
 
