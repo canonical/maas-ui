@@ -31,13 +31,7 @@ for this setup.
 lxc config set core.https_address [::]:8443
 ```
 
-4. Configure your firewall. Either disable it completely
-
-```sh
-sudo ufw disable
-```
-
-Or configure specific rules to allow LXD communication
+4. Configure your firewall
 
 ```sh
 sudo ufw allow in on lxdbr0
@@ -88,6 +82,8 @@ locations:
   - none
 ```
 
+> _NOTE: Make sure to add the same firewall rules as `lxdbr0` to all additional networks, including `maas-kvm`._
+
 6. Create and edit the `maas-container` profile
 
 ```sh
@@ -113,9 +109,6 @@ devices:
     pool: default
     type: disk
 ```
-
-> _NOTE: If you haven't disabled the firewall in step 4, make sure to add the same rules added for `lxdbr0`
-for `maas-kvm`._
 
 ### Launch and configure container
 
