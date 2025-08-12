@@ -97,6 +97,10 @@ Cypress.Commands.add("addMachines", (hostnames: string[]) => {
     cy.get("select[name='power_type']").blur();
     if (index < hostnames.length - 1) {
       cy.findByRole("button", { name: /Save and add another/i }).click();
+      cy.findByRole("textbox", { name: /Machine name/i }).should(
+        "have.value",
+        ""
+      );
     } else {
       cy.findByRole("button", { name: /Save machine/i }).click();
     }
