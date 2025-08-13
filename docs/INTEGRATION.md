@@ -223,7 +223,7 @@ You might need to restart your system after running this command. You'll also ne
 
 ## Running tests
 
-**Playwright expects a MAAS instance to be running at `http://0.0.0.0:5240` to test against.** If you've already got a local MAAS instance, then you should be good to go. If you followed the [LXD backend guide](./LXD.md) or have your MAAS running on another system, you'll need to change a few things before your tests will run.
+**Playwright expects a MAAS instance to be running at `http://0.0.0.0:5240` to test against.** If you've already got a local MAAS instance, then you should be good to go. If you followed the [LXD backend guide](./RUNNING_MAAS.md) or have your MAAS running on another system, you'll need to change a few things before your tests will run.
 
 1. In `[playwright.config.ts](../playwright.config.ts)`, change `baseUrl` to your MAAS URL.
 2. Some cookies are set at the top of test files - you'll need to change the URL of these to your MAAS URL.
