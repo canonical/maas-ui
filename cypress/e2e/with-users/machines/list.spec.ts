@@ -13,13 +13,13 @@ context("Machine listing", () => {
       .then((win) => win.localStorage.removeItem("grouping"));
   });
 
-  it.skip("renders the correct heading", () => {
+  it("renders the correct heading", () => {
     cy.findByRole("heading", {
       name: /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i,
     }).should("exist");
   });
 
-  it.skip("can group machines by all supported keys", () => {
+  it("can group machines by all supported keys", () => {
     const GROUP_BY_OPTIONS = [
       "No grouping",
       "Group by status",
