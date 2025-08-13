@@ -37,7 +37,6 @@
     -   [Upload the image](#upload-the-image)
     -   [License keys](#license-keys)
 -   [Show intro](#show-intro)
--   [Sample data](#sample-data)
 
 # Development setup
 
@@ -88,8 +87,8 @@ Performance tests use [Sitespeed.io](https://www.sitespeed.io/) and are run when
 PRs are merged.
 
 Sitespeed can also be run manually, though the tests expect a MAAS with a
-specific dataset. For best results a [local MAAS](#local-deployments) can be set
-up using [sample data](#sample-data).
+specific dataset. For best results a local MAAS can be set
+up using sample data.
 
 To run against a MAAS deployment you can use:
 
@@ -572,22 +571,3 @@ Then you reset the config to display the intro.
 ```shell
 maas $PROFILE maas set-config name=completed_intro value=false
 ```
-
-# Sample data
-
-To use sample data with MAAS you'll first need to set up a [local MAAS](#local-deployments).
-
-Next you'll need to get some sample data. The easiest way is to get a database dump [from CI](http://maas-ci.internal:8080/view/maas-sampledata-dumper/). Or alternatively you can [create a dump](https://github.com/maas/maas/blob/master/HACKING.rst#creating-sample-data).
-
-Put the database dump onto your container and then run the following commands inside that container:
-
-```shell
-sudo cp path/to.dump /var/snap/maas-test-db/common/maasdb.dump
-sudo snap run --shell maas-test-db.psql -c 'db-dump restore /var/snap/maas-test-db/common/maasdb.dump maassampledata'
-sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
-sudo sed -i "s/database_name: maasdb/database_name: maassampledata/" /var/snap/maas/current/regiond.conf
-sudo snap restart maas
-```
-
-Once MAAS has restarted you should be able to access the MAAS and see the data.
-
