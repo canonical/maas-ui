@@ -12,7 +12,7 @@ import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
-import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import { useFetchActions } from "@/app/base/hooks";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { domainActions } from "@/app/store/domain";
@@ -61,7 +61,6 @@ export const AddMachineForm = ({
 
   const [powerType, setPowerType] = useState<PowerType | null>(null);
   const [secondarySubmit, setSecondarySubmit] = useState(false);
-  const [savingMachine, setSavingMachine] = useState<string | null>(null);
 
   // Fetch all data required for the form.
   useFetchActions([
@@ -71,15 +70,6 @@ export const AddMachineForm = ({
     generalActions.fetchHweKernels,
     generalActions.fetchPowerTypes,
   ]);
-
-  useAddMessage(
-    machineSaved,
-    machineActions.cleanup,
-    `${savingMachine} added successfully.`,
-    () => {
-      setSavingMachine(null);
-    }
-  );
 
   const initialPowerParameters = useInitialPowerParameters();
   const AddMachineSchema = Yup.object().shape({
@@ -173,7 +163,6 @@ export const AddMachineForm = ({
               zone: { name: values.zone },
             };
             dispatch(machineActions.create(params));
-            setSavingMachine(values.hostname || "Machine");
           }}
           onSuccess={() => {
             if (!secondarySubmit) {

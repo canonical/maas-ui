@@ -177,23 +177,6 @@ describe("DhcpForm", () => {
     expect(onSave).not.toHaveBeenCalled();
   });
 
-  it("adds a message when a snippet is added", () => {
-    state.dhcpsnippet.saved = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm analyticsCategory="settings" />
-        </MemoryRouter>
-      </Provider>
-    );
-    const actions = store.getActions();
-    expect(
-      actions.some((action) => action.type === "dhcpsnippet/cleanup")
-    ).toBe(true);
-    expect(actions.some((action) => action.type === "message/add")).toBe(true);
-  });
-
   it("fetches models when editing", () => {
     const store = mockStore(state);
     render(

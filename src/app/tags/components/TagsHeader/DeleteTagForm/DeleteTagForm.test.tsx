@@ -1,4 +1,3 @@
-import { NotificationSeverity } from "@canonical/react-components";
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
@@ -7,7 +6,6 @@ import type { Mock } from "vitest";
 
 import DeleteTagForm from "./DeleteTagForm";
 
-import * as baseHooks from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
@@ -76,25 +74,6 @@ it("dispatches an action to delete a tag", async () => {
       store.getActions().find((action) => action.type === expected.type)
     ).toStrictEqual(expected);
   });
-});
-
-it("dispatches an action to add a notification when tag successfully deleted", async () => {
-  const useAddMessageMock = vi.spyOn(baseHooks, "useAddMessage");
-  state.tag.saved = true;
-  state.tag.errors = null;
-  state.tag.items[0].name = "tagalog";
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <DeleteTagForm id={1} onClose={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
-
-  const mockArgs = useAddMessageMock.mock.calls[0];
-  expect(mockArgs[2]).toBe("Deleted tagalog from tag list.");
-  expect(mockArgs[4]).toBe(NotificationSeverity.POSITIVE);
 });
 
 it("displays a message when deleting a tag on a machine", async () => {

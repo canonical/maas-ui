@@ -2,13 +2,10 @@ import type { HTMLProps, ReactNode } from "react";
 
 import { Col, Row } from "@canonical/react-components";
 
-import NotificationList from "@/app/base/components/NotificationList";
-
 export type Props = HTMLProps<HTMLDivElement> & {
   children?: ReactNode;
   header?: ReactNode;
   sidebar?: ReactNode;
-  isNotificationListHidden?: boolean;
 };
 
 export const MAIN_CONTENT_SECTION_ID = "main-content-section";
@@ -27,10 +24,7 @@ const MainContentSection = ({
           </header>
         ) : null}
         <Row>
-          <Col size={12}>
-            <NotificationList />
-            {children}
-          </Col>
+          <Col size={12}>{children}</Col>
         </Row>
       </div>
     </div>

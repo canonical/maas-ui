@@ -19,7 +19,7 @@ context("Machine add", () => {
     cy.get("select[name='power_type']").select("manual");
     cy.get("select[name='power_type']").blur();
     cy.get("button[type='submit']").click();
-    cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
+    cy.get("#aside-panel").should("not.be.visible");
   });
 
   it("closes the side panel on ESC key press", () => {

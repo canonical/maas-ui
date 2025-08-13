@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -9,7 +7,7 @@ import type { DHCPFormValues } from "./types";
 import DhcpFormFields from "@/app/base/components/DhcpFormFields";
 import FormikForm from "@/app/base/components/FormikForm";
 import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
-import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import { useFetchActions } from "@/app/base/hooks";
 import { useDhcpTarget } from "@/app/settings/hooks";
 import { controllerActions } from "@/app/store/controller";
 import { deviceActions } from "@/app/store/device";
@@ -57,7 +55,6 @@ export const DhcpForm = ({
   ...props
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const [savingDhcp, setSaving] = useState<DHCPSnippet["name"] | null>();
   const dhcpSnippet = useSelector((state: RootState) =>
     dhcpsnippetSelectors.getById(state, id)
   );
@@ -76,15 +73,6 @@ export const DhcpForm = ({
     editing ? dhcpSnippet?.iprange : null
   );
   useFetchMachines();
-
-  useAddMessage(
-    saved && !errors,
-    dhcpsnippetActions.cleanup,
-    `${savingDhcp} ${editing ? "updated" : "added"} successfully.`,
-    () => {
-      setSaving(null);
-    }
-  );
 
   useFetchActions([
     subnetActions.fetch,
@@ -160,7 +148,6 @@ export const DhcpForm = ({
         } else {
           dispatch(dhcpsnippetActions.create(params));
         }
-        setSaving(params.name);
       }}
       onSuccess={() => {
         if (onSave) {

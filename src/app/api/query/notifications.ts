@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import type { ToastNotificationType } from "@canonical/react-components";
 import { useToastNotification } from "@canonical/react-components";
 import {
   useMutation,
@@ -36,13 +37,24 @@ export const useListNotifications = (
   );
 };
 
+export const convertBackendItToToastNotificationId = (id: number): string => {
+  return `notification-${id}`;
+};
+
+export const convertToastNotificationIdToBackendId = (id: string): number => {
+  const match = /notification-(\d+)/.exec(id);
+  if (match && match[1]) {
+    return Number(match[1]);
+  }
+  throw new Error(`Invalid notification ID format: ${id}`);
+};
+
 export const useNotifications = () => {
   const backendNotifications = useListNotifications({
     query: { only_active: true },
   });
   const items = backendNotifications.data?.items;
   const notifications = useToastNotification();
-  const dismissMutatation = useDismissNotification();
   useEffect(() => {
     if (items === undefined) return;
     items.forEach((item) => {
@@ -50,54 +62,35 @@ export const useNotifications = () => {
         case "success":
           notifications.success(
             item.message,
-            [
-              {
-                label: "Dismiss",
-                onClick: () => {
-                  dismissMutatation.mutate({
-                    path: { notification_id: item.id },
-                  });
-                },
-              },
-            ],
-            ""
+            [],
+            "",
+            convertBackendItToToastNotificationId(item.id)
           );
           break;
         case "error":
-          notifications.failure(item.message, [
-            {
-              label: "Dismiss",
-              onClick: () => {
-                dismissMutatation.mutate({
-                  path: { notification_id: item.id },
-                });
-              },
-            },
-          ]);
+          notifications.failure(
+            "Error",
+            "",
+            item.message,
+            [],
+            convertBackendItToToastNotificationId(item.id)
+          );
           break;
         case "warning":
-          notifications.caution(item.message, [
-            {
-              label: "Dismiss",
-              onClick: () => {
-                dismissMutatation.mutate({
-                  path: { notification_id: item.id },
-                });
-              },
-            },
-          ]);
+          notifications.caution(
+            item.message,
+            [],
+            "Warning",
+            convertBackendItToToastNotificationId(item.id)
+          );
           break;
         case "info":
-          notifications.info(item.message, "", [
-            {
-              label: "Dismiss",
-              onClick: () => {
-                dismissMutatation.mutate({
-                  path: { notification_id: item.id },
-                });
-              },
-            },
-          ]);
+          notifications.info(
+            item.message,
+            "",
+            [],
+            convertBackendItToToastNotificationId(item.id)
+          );
           break;
       }
     });
@@ -121,4 +114,21 @@ export const useDismissNotification = (
       });
     },
   });
+};
+
+export const useDismissNotifications = () => {
+  const dismissMutatation = useDismissNotification();
+  return (notifications: ToastNotificationType[] | undefined) => {
+    if (notifications) {
+      notifications.forEach((notification) => {
+        dismissMutatation.mutate({
+          path: {
+            notification_id: convertToastNotificationIdToBackendId(
+              notification.id
+            ),
+          },
+        });
+      });
+    }
+  };
 };

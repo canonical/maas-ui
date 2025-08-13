@@ -9,7 +9,7 @@ import AddChassisFormFields from "../AddChassisFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
-import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import { useFetchActions } from "@/app/base/hooks";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
@@ -43,18 +43,8 @@ export const AddChassisForm = ({
 
   const [powerType, setPowerType] = useState<PowerType | null>(null);
   const [secondarySubmit, setSecondarySubmit] = useState(false);
-  const [savingChassis, setSavingChassis] = useState<string | null>(null);
 
   useFetchActions([domainActions.fetch, generalActions.fetchPowerTypes]);
-
-  useAddMessage(
-    machineSaved,
-    machineActions.cleanup,
-    `Attempting to add machines from ${savingChassis}.`,
-    () => {
-      setSavingChassis(null);
-    }
-  );
 
   const initialPowerParameters = useInitialPowerParameters({}, true);
   const powerParametersSchema = generatePowerParametersSchema(powerType, [
@@ -110,7 +100,6 @@ export const AddChassisForm = ({
               params[key] = value.toString();
             });
             dispatch(machineActions.addChassis(params));
-            setSavingChassis(params.hostname?.toString() || "chassis");
           }}
           onSuccess={() => {
             if (!secondarySubmit) {

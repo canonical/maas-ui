@@ -5,6 +5,8 @@ import {
   Application,
   AppStatus,
   Notification,
+  NotificationProvider,
+  ToastNotificationProvider,
 } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
@@ -13,6 +15,7 @@ import { Outlet } from "react-router";
 
 import packageInfo from "../../package.json";
 
+import { useDismissNotifications } from "./api/query/notifications";
 import { getMeWithSummaryQueryKey } from "./apiclient/@tanstack/react-query.gen";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import PageContent from "./base/components/PageContent/PageContent";
@@ -83,6 +86,7 @@ export const App = (): React.ReactElement => {
   const configLoading = useSelector(configSelectors.loading);
   const configErrors = useSelector(configSelectors.errors);
   const previousAuthenticated = usePrevious(authenticated, false);
+  const dismiss = useDismissNotifications();
 
   const user = useGetCurrentUser(undefined, {
     retry: false,
@@ -171,33 +175,37 @@ export const App = (): React.ReactElement => {
   return (
     <Application id={MAAS_UI_ID}>
       <ThemePreviewContextProvider>
-        <ConnectionStatus />
-        {isLoaded ? (
-          <AppSideNavigation />
-        ) : (
-          <header className="l-navigation-bar is-pinned">
-            <div className="p-panel is-dark is-maas-default">
-              <div className="p-panel__header">
-                <NavigationBanner />
-              </div>
-            </div>
-          </header>
-        )}
+        <ToastNotificationProvider onDismiss={dismiss}>
+          <NotificationProvider pathname={location.pathname}>
+            <ConnectionStatus />
+            {isLoaded ? (
+              <AppSideNavigation />
+            ) : (
+              <header className="l-navigation-bar is-pinned">
+                <div className="p-panel is-dark is-maas-default">
+                  <div className="p-panel__header">
+                    <NavigationBanner />
+                  </div>
+                </div>
+              </header>
+            )}
 
-        <Suspense
-          fallback={
-            <PageContent
-              header={<SectionHeader loading />}
-              sidePanelContent={null}
-              sidePanelTitle={null}
-            />
-          }
-        >
-          {content}
-        </Suspense>
-        <AppStatus>
-          <StatusBar />
-        </AppStatus>
+            <Suspense
+              fallback={
+                <PageContent
+                  header={<SectionHeader loading />}
+                  sidePanelContent={null}
+                  sidePanelTitle={null}
+                />
+              }
+            >
+              {content}
+            </Suspense>
+            <AppStatus>
+              <StatusBar />
+            </AppStatus>
+          </NotificationProvider>
+        </ToastNotificationProvider>
       </ThemePreviewContextProvider>
     </Application>
   );

@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { NotificationProps } from "@canonical/react-components";
-import { NotificationSeverity } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
 import type { KeyboardShortcut } from "../constants";
 
 import configSelectors from "@/app/store/config/selectors";
-import { messageActions } from "@/app/store/message";
 
 /**
  * Add a message in response to a state change e.g. when something is created.
@@ -20,30 +17,6 @@ import { messageActions } from "@/app/store/message";
  been displayed.
  * @param messageSeverity - The severity level of the notification message.
  */
-export const useAddMessage = (
-  addCondition: boolean,
-  cleanup: () => { type: string },
-  message: string,
-  onMessageAdded?: (() => void) | null,
-  messageSeverity: NotificationProps["severity"] = NotificationSeverity.INFORMATION
-): void => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (addCondition) {
-      dispatch(messageActions.add(message, messageSeverity));
-      onMessageAdded && onMessageAdded();
-      dispatch(cleanup());
-    }
-  }, [
-    addCondition,
-    cleanup,
-    dispatch,
-    message,
-    messageSeverity,
-    onMessageAdded,
-  ]);
-};
 
 /**
  * Set the browser window title.
