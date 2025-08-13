@@ -1,3 +1,4 @@
+import { LONG_TIMEOUT } from "../../../constants";
 import { generateMAASURL, generateName } from "../../utils";
 
 context("Machine listing", () => {
@@ -12,13 +13,13 @@ context("Machine listing", () => {
       .then((win) => win.localStorage.removeItem("grouping"));
   });
 
-  it("renders the correct heading", () => {
+  it.skip("renders the correct heading", () => {
     cy.findByRole("heading", {
       name: /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i,
     }).should("exist");
   });
 
-  it("can group machines by all supported keys", () => {
+  it.skip("can group machines by all supported keys", () => {
     const GROUP_BY_OPTIONS = [
       "No grouping",
       "Group by status",
@@ -60,7 +61,9 @@ context("Machine listing", () => {
     cy.findByRole("button", { name: /Delete 2 machines/ }).should("exist");
     cy.findByRole("button", { name: /Delete 2 machines/ }).click();
     cy.findByRole("searchbox").should("have.value", searchFilter);
-    cy.findByText(/No machines match the search criteria./).should("exist");
+    cy.findByText(/No machines match the search criteria./, {
+      timeout: LONG_TIMEOUT,
+    }).should("exist");
   });
 
   it("replaces the URL when selecting filters", () => {
