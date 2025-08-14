@@ -235,6 +235,9 @@ const SelectUpstreamImagesForm = (): ReactElement => {
             Object.entries(
               values as Record<string, { label: string; value: string }[]>
             ).forEach(([key, images]) => {
+              if (images.length === 0) {
+                return;
+              }
               const [osystem] = key.split("-", 1);
 
               if (osystem === "Ubuntu") {
