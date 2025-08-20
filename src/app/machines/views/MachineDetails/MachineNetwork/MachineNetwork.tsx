@@ -59,7 +59,6 @@ const MachineNetwork = ({
       interfaceTable={(_, setExpanded) => (
         <NetworkTable
           node={machine}
-          selected={selected}
           setExpanded={setExpanded}
           setSelected={setSelected}
         />
