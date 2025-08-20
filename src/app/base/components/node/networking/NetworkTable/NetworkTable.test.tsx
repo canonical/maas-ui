@@ -134,11 +134,10 @@ describe("NetworkTable", () => {
         name: "vlan-name",
       });
       state.vlan.items = [vlan];
-      const subnets = [
+      state.subnet.items = [
         factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" }),
         factory.subnet({ cidr: "subnet2-cidr", name: "subnet2-name" }),
       ];
-      state.subnet.items = subnets;
       machine = factory.machineDetails({
         interfaces: [
           factory.machineInterface({
