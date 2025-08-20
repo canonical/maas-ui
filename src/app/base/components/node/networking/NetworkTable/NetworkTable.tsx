@@ -44,25 +44,6 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
 import { getDHCPStatus } from "@/app/store/vlan/utils";
 
-export const Label = {
-  Actions: "Actions",
-  ActionsMenu: "Interface actions",
-  DHCP: "DHCP",
-  EmptyList: "No interfaces available",
-  Fabric: "Fabric",
-  IP: "IP Address",
-  MAC: "MAC",
-  Name: "Name",
-  NUMA: "NUMA node",
-  PXE: "PXE",
-  Speed: "Link/interface speed",
-  Status: "Status",
-  Subnet: "Subnet",
-  SubnetName: "Name",
-  Type: "Type",
-  VLAN: "VLAN",
-} as const;
-
 export type Network = {
   id: string;
   bondOrBridge: NetworkInterface["id"] | null;
@@ -285,12 +266,13 @@ const NetworkTable = ({
 
   return (
     <GenericTable
-      canSelect
+      canSelect={(_) => !isAllNetworkingDisabled}
       className={classNames("p-table-expanding--light", "network-table", {
         "network-table--has-actions": hasActions,
       })}
       columns={columns}
       data={data}
+      disabledSelectionTooltip={"Network can't be modified for this machine."}
       filterCells={!!setExpanded ? filterCells : filterCellsAndAction}
       filterHeaders={!!setExpanded ? filterHeaders : filterHeadersAndAction}
       getSubRows={(originalRow) => originalRow.children}
