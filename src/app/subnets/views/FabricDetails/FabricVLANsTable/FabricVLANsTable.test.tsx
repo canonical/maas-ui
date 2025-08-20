@@ -1,11 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import FabricVLANsTable from "./FabricVLANsTable";
 
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, within } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 it("renders correct details", () => {
   const fabric = factory.fabric({ id: 1, name: "test-fabric", vlan_ids: [2] });
