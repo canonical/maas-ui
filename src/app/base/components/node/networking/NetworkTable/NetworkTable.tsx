@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import type { ReactElement } from "react";
+import { useMemo, useEffect, useState } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
@@ -8,7 +9,9 @@ import { useSelector } from "react-redux";
 import type { SetExpanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import useNetworkTableColumns, {
   filterCells,
+  filterCellsAndAction,
   filterHeaders,
+  filterHeadersAndAction,
 } from "@/app/base/components/node/networking/NetworkTable/useNetworkTableColumns/useNetworkTableColumns";
 import type {
   Selected,
@@ -229,7 +232,7 @@ const NetworkTable = ({
   node,
   setExpanded,
   setSelected,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const fabrics = useSelector(fabricSelectors.all);
@@ -247,21 +250,38 @@ const NetworkTable = ({
   ]);
 
   const columns = useNetworkTableColumns({ node, setExpanded, setSelected });
-  const data = getNetworkTableData(
-    fabrics,
-    fabricsLoaded,
-    isAllNetworkingDisabled,
-    node,
-    subnets,
-    vlans,
-    vlansLoaded
+  const data = useMemo(
+    () =>
+      getNetworkTableData(
+        fabrics,
+        fabricsLoaded,
+        isAllNetworkingDisabled,
+        node,
+        subnets,
+        vlans,
+        vlansLoaded
+      ),
+    [
+      fabrics,
+      fabricsLoaded,
+      isAllNetworkingDisabled,
+      node,
+      subnets,
+      vlans,
+      vlansLoaded,
+    ]
   );
 
-  useEffect(() => {
-    if (setSelected) {
-      setSelected(extractSelected(data, rowSelection));
-    }
-  }, [rowSelection]);
+  useEffect(
+    () => {
+      if (setSelected) {
+        setSelected(extractSelected(data, rowSelection));
+      }
+    },
+    // adding missing dependencies causes infinite re-render, only row selection should update selected
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [rowSelection]
+  );
 
   return (
     <GenericTable
@@ -271,10 +291,10 @@ const NetworkTable = ({
       })}
       columns={columns}
       data={data}
-      filterCells={filterCells}
-      filterHeaders={filterHeaders}
+      filterCells={!!setExpanded ? filterCells : filterCellsAndAction}
+      filterHeaders={!!setExpanded ? filterHeaders : filterHeadersAndAction}
       getSubRows={(originalRow) => originalRow.children}
-      isLoading={false}
+      isLoading={!fabricsLoaded || !vlansLoaded}
       noData={"No interfaces available."}
       rowSelection={rowSelection}
       setRowSelection={setRowSelection}

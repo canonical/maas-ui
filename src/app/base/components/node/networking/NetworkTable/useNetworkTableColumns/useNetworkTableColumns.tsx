@@ -38,8 +38,19 @@ export const filterCells = (
   return !["bondOrBridge"].includes(column.id);
 };
 
+export const filterCellsAndAction = (
+  _: Row<Network>,
+  column: Column<Network>
+): boolean => {
+  return !["bondOrBridge", "action"].includes(column.id);
+};
+
 export const filterHeaders = (header: Header<Network, unknown>): boolean =>
   header.column.id !== "bondOrBridge";
+
+export const filterHeadersAndAction = (
+  header: Header<Network, unknown>
+): boolean => !["bondOrBridge", "action"].includes(header.column.id);
 
 const useNetworkTableColumns = ({
   node,
