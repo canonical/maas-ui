@@ -1,61 +1,22 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
-import type { MainTableProps } from "@canonical/react-components";
-import { Spinner, MainTable } from "@canonical/react-components";
+import { GenericTable } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FabricLink from "@/app/base/components/FabricLink";
-import SubnetLink from "@/app/base/components/SubnetLink";
 import TitledSection from "@/app/base/components/TitledSection";
-import VLANLink from "@/app/base/components/VLANLink";
 import type { RootState } from "@/app/store/root/types";
 import type { Space } from "@/app/store/space/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
-import type { Subnet } from "@/app/store/subnet/types";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
-import type { VLAN } from "@/app/store/vlan/types";
-import { getVlanById } from "@/app/store/vlan/utils";
+import useSpaceSubnetsColumns from "@/app/subnets/views/SpaceDetails/SpaceSubnets/useSpaceSubnetsColumns/useSpaceSubnetsColumns";
 import { simpleSortByKey } from "@/app/utils";
 
-const generateRows = ({
-  subnets,
-  vlans,
-}: {
-  vlans: VLAN[];
-  subnets: Subnet[];
-}) => {
-  const rows: MainTableProps["rows"] = [];
+import "./_index.scss";
 
-  if (subnets.length < 1) {
-    return [];
-  }
-  [...subnets].sort(simpleSortByKey("cidr")).forEach((subnet: Subnet) => {
-    const vlan = getVlanById(vlans, subnet.vlan);
-    rows.push({
-      columns: [
-        { "aria-label": "Subnet", content: <SubnetLink id={subnet.id} /> },
-        {
-          "aria-label": "Available IPs",
-          content: subnet.statistics.available_string,
-        },
-        {
-          "aria-label": "VLAN",
-          content: <VLANLink id={subnet.vlan} />,
-        },
-        {
-          "aria-label": "Fabric",
-          content: <FabricLink id={vlan?.fabric} />,
-        },
-      ],
-    });
-  });
-
-  return rows;
-};
-
-const SpaceSubnets = ({ space }: { space: Space }): React.ReactElement => {
+const SpaceSubnets = ({ space }: { space: Space }): ReactElement => {
   const vlans = useSelector(vlanSelectors.all);
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getBySpace(state, space.id)
@@ -71,26 +32,15 @@ const SpaceSubnets = ({ space }: { space: Space }): React.ReactElement => {
     if (!vlansLoaded) dispatch(vlanActions.fetch());
   }, [dispatch, subnetsLoaded, vlansLoaded]);
 
-  const loading = vlansLoading || subnetsLoading;
+  const columns = useSpaceSubnetsColumns(vlans);
 
   return (
     <TitledSection title="Subnets on this space">
-      <MainTable
-        emptyStateMsg={
-          loading ? (
-            <Spinner text="Loading..." />
-          ) : (
-            "There are no subnets on this space."
-          )
-        }
-        headers={[
-          { content: "Subnet" },
-          { content: "Available IPs" },
-          { content: "VLAN" },
-          { content: "Fabric" },
-        ]}
-        responsive
-        rows={generateRows({ subnets, vlans })}
+      <GenericTable
+        columns={columns}
+        data={subnets.sort(simpleSortByKey("cidr"))}
+        isLoading={vlansLoading || subnetsLoading}
+        noData="There are no subnets on this space."
       />
     </TitledSection>
   );

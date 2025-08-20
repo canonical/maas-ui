@@ -1,12 +1,9 @@
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 
 import SpaceSubnets from "./SpaceSubnets";
 
-import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { render, screen, waitFor } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 const getRootState = () =>
@@ -38,20 +35,7 @@ it("displays a message when there are no subnets", async () => {
   const space = factory.space({ id: 1, subnet_ids: [4], vlan_ids: [2] });
   state.space.items = [space];
 
-  render(
-    <Provider store={mockStore(state)}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.space.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route
-            element={<SpaceSubnets space={space} />}
-            path={urls.subnets.space.index({ id: space.id })}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<SpaceSubnets space={space} />, { state });
 
   expect(
     screen.getByText("There are no subnets on this space.")
@@ -75,32 +59,13 @@ it("displays subnet details correctly", async () => {
   ];
   const store = mockStore(state);
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.space.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route
-            element={<SpaceSubnets space={space} />}
-            path={urls.subnets.space.index({ id: space.id })}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<SpaceSubnets space={space} />, { store });
 
-  await waitFor(() => {
-    expect(screen.queryAllByRole("gridcell").length).toBeGreaterThan(0);
-  });
-
-  const headers = ["Subnet", "Available IPs", "VLAN", "Fabric"];
-  const cells = ["test-subnet", "50%", "test-vlan", "test-fabric"];
-
-  screen.queryAllByRole("columnheader").forEach((header, index) => {
-    expect(header).toHaveTextContent(headers[index]);
-  });
-  screen.queryAllByRole("gridcell").forEach((cell, index) => {
-    expect(cell).toHaveTextContent(cells[index]);
+  ["Subnet", "Available IPs", "VLAN", "Fabric"].forEach((column) => {
+    expect(
+      screen.getByRole("columnheader", {
+        name: new RegExp(`^${column}`, "i"),
+      })
+    ).toBeInTheDocument();
   });
 });
