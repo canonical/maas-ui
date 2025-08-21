@@ -5,20 +5,11 @@
     $subnets-width: 40%;
     $available-width: 10%;
 
-    @media only screen and (min-width: $breakpoint-large) {
-      .truncated-border {
-        overflow: visible;
-        position: relative;
+    tr.p-generic-table__nested-row {
+      border-top: none;
 
-        &::after {
-          background-color: $color-light;
-          content: "";
-          height: 1px;
-          left: 0;
-          position: absolute;
-          top: -1px;
-          width: $vlan-width + $space-width;
-        }
+      td.subnets, td.available {
+        border-top: 1px solid var(--vf-color-border-low-contrast);
       }
     }
 

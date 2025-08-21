@@ -29,7 +29,11 @@ const generateRows = (
     const vlanHasSubnets = subnetsInVlan.length > 0;
 
     if (!vlanHasSubnets) {
-      rows.push({ id: vlan.id, spaceId: vlan.space, isChildRow: false });
+      rows.push({
+        id: vlan.id,
+        spaceId: vlan.space,
+        isChildRow: false,
+      });
     } else {
       const newRow: FabricVLANsRowData = {
         id: vlan.id,
@@ -78,12 +82,13 @@ const FabricVLANsTable = ({
   return (
     <TitledSection title="VLANs on this fabric">
       <GenericTable<FabricVLANsRowData>
+        className="fabric-vlans"
         columns={columns}
         data={rowData}
         getSubRows={(originalRow) => originalRow.children}
         isLoading={loading}
         noData="No VLANs on this fabric."
-        sortBy={[{ id: "id", desc: false }]}
+        sortBy={[{ id: "id", desc: true }]}
       />
     </TitledSection>
   );
