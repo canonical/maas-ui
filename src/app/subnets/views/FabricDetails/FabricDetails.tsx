@@ -6,7 +6,7 @@ import FabricDetailsHeader from "./FabricDetailsHeader";
 import FabricDeleteForm from "./FabricDetailsHeader/FabricDeleteForm";
 import { FabricDetailsSidePanelViews } from "./FabricDetailsHeader/constants";
 import FabricSummary from "./FabricSummary";
-import FabricVLANs from "./FabricVLANs";
+import FabricVLANsTable from "./FabricVLANsTable";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
@@ -94,7 +94,7 @@ const FabricDetails = (): React.ReactElement => {
       sidePanelTitle={getSidePanelTitle("Fabric", sidePanelContent)}
     >
       <FabricSummary fabric={fabric} />
-      <FabricVLANs fabric={fabric} />
+      <FabricVLANsTable fabric={fabric} />
     </PageContent>
   );
 };
