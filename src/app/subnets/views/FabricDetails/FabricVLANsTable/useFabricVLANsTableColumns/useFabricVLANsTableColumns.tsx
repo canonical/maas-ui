@@ -10,6 +10,7 @@ import type { VLAN } from "@/app/store/vlan/types";
 
 export type FabricVLANsRowData = {
   id: VLAN["id"];
+  vid: VLAN["vid"];
   spaceId?: VLAN["space"];
   subnetId?: Subnet["id"];
   subnetAvailableIps?: Subnet["statistics"]["available_string"];
@@ -27,7 +28,7 @@ const useFabricVLANsTableColumns = (): FabricVLANsColumnDef[] => {
     () => [
       {
         id: "vlan",
-        accessorKey: "id",
+        accessorKey: "vid",
         enableSorting: false,
         header: "VLAN",
         cell: ({

@@ -31,12 +31,14 @@ const generateRows = (
     if (!vlanHasSubnets) {
       rows.push({
         id: vlan.id,
+        vid: vlan.vid,
         spaceId: vlan.space,
         isChildRow: false,
       });
     } else {
       const newRow: FabricVLANsRowData = {
         id: vlan.id,
+        vid: vlan.vid,
         spaceId: vlan.space,
         children: [],
         isChildRow: false,
@@ -48,6 +50,7 @@ const generateRows = (
         } else {
           newRow.children?.push({
             id: vlan.id,
+            vid: vlan.vid,
             isChildRow: true,
             subnetId: subnet.id,
             subnetAvailableIps: subnet.statistics.available_string,
@@ -88,7 +91,10 @@ const FabricVLANsTable = ({
         getSubRows={(originalRow) => originalRow.children}
         isLoading={loading}
         noData="No VLANs on this fabric."
-        sortBy={[{ id: "id", desc: true }]}
+        sortBy={[
+          { id: "vid", desc: false },
+          { id: "subnetAvailableIps", desc: false },
+        ]}
       />
     </TitledSection>
   );
