@@ -5,13 +5,11 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 import FabricLink from "@/app/base/components/FabricLink";
 import SubnetLink from "@/app/base/components/SubnetLink";
 import VLANLink from "@/app/base/components/VLANLink";
-import type { Subnet } from "@/app/store/subnet/types";
-import type { VLAN } from "@/app/store/vlan/types";
-import { getVlanById } from "@/app/store/vlan/utils";
+import type { SpaceSubnet } from "@/app/subnets/views/SpaceDetails/SpaceSubnets/SpaceSubnets";
 
-export type SubnetColumnDef = ColumnDef<Subnet, Partial<Subnet>>;
+export type SubnetColumnDef = ColumnDef<SpaceSubnet, Partial<SpaceSubnet>>;
 
-const useSpaceSubnetsColumns = (vlans: VLAN[]): SubnetColumnDef[] => {
+const useSpaceSubnetsColumns = (): SubnetColumnDef[] => {
   return useMemo(
     () => [
       {
@@ -24,7 +22,7 @@ const useSpaceSubnetsColumns = (vlans: VLAN[]): SubnetColumnDef[] => {
             original: { id },
           },
         }: {
-          row: Row<Subnet>;
+          row: Row<SpaceSubnet>;
         }) => <SubnetLink id={id} />,
       },
       {
@@ -34,44 +32,42 @@ const useSpaceSubnetsColumns = (vlans: VLAN[]): SubnetColumnDef[] => {
         header: "Available IPs",
         cell: ({
           row: {
-            original: {
-              statistics: { available_string },
-            },
+            original: { available_ips },
           },
         }: {
-          row: Row<Subnet>;
-        }) => available_string,
+          row: Row<SpaceSubnet>;
+        }) => `${available_ips}%`,
       },
       {
         id: "vlan",
         accessorKey: "vlan",
-        enableSorting: true,
+        enableSorting: false,
         header: "VLAN",
         cell: ({
           row: {
             original: { vlan },
           },
         }: {
-          row: Row<Subnet>;
+          row: Row<SpaceSubnet>;
         }) => <VLANLink id={vlan} />,
       },
       {
         id: "fabric",
         accessorKey: "fabric",
-        enableSorting: true,
+        enableSorting: false,
         header: "Fabric",
         cell: ({
           row: {
-            original: { vlan },
+            original: { fabric },
           },
         }: {
-          row: Row<Subnet>;
+          row: Row<SpaceSubnet>;
         }) => {
-          return <FabricLink id={getVlanById(vlans, vlan)?.fabric} />;
+          return <FabricLink id={fabric} />;
         },
       },
     ],
-    [vlans]
+    []
   );
 };
 

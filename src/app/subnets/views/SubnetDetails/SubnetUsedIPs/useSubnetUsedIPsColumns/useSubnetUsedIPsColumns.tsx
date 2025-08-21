@@ -3,13 +3,14 @@ import { useMemo } from "react";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import NodeLink from "@/app/base/components/node/NodeLink";
-import type { SubnetIP } from "@/app/store/subnet/types";
-import { getIPTypeDisplay, getIPUsageDisplay } from "@/app/store/subnet/utils";
 import type { SubnetUsedIP } from "@/app/subnets/views/SubnetDetails/SubnetUsedIPs/SubnetUsedIPs";
 
-export type SubnetIPColumnDef = ColumnDef<SubnetUsedIP, Partial<SubnetUsedIP>>;
+export type SubnetUsedIPColumnDef = ColumnDef<
+  SubnetUsedIP,
+  Partial<SubnetUsedIP>
+>;
 
-const useSubnetUsedIPsColumns = (): SubnetIPColumnDef[] => {
+const useSubnetUsedIPsColumns = (): SubnetUsedIPColumnDef[] => {
   return useMemo(
     () => [
       {
@@ -23,31 +24,21 @@ const useSubnetUsedIPsColumns = (): SubnetIPColumnDef[] => {
         accessorKey: "type",
         enableSorting: true,
         header: "Type",
-        cell: ({
-          row: {
-            original: { alloc_type },
-          },
-        }: {
-          row: Row<SubnetIP>;
-        }) => getIPTypeDisplay(alloc_type),
       },
       {
-        id: "node",
-        accessorKey: "node",
+        id: "nodeHostName",
+        accessorKey: "nodeHostName",
         enableSorting: true,
         header: "Node",
         cell: ({
           row: {
-            original: { node_summary },
+            original: { nodeSystemId, nodeType },
           },
         }: {
-          row: Row<SubnetIP>;
+          row: Row<SubnetUsedIP>;
         }) =>
-          node_summary ? (
-            <NodeLink
-              nodeType={node_summary.node_type}
-              systemId={node_summary.system_id}
-            />
+          nodeSystemId ? (
+            <NodeLink nodeType={nodeType!} systemId={nodeSystemId} />
           ) : (
             "—"
           ),
@@ -57,21 +48,14 @@ const useSubnetUsedIPsColumns = (): SubnetIPColumnDef[] => {
         accessorKey: "interface",
         enableSorting: true,
         header: "Interface",
-        cell: ({
-          row: {
-            original: { node_summary },
-          },
-        }: {
-          row: Row<SubnetIP>;
-        }) => node_summary?.via || "—",
+        cell: ({ row: { original } }: { row: Row<SubnetUsedIP> }) =>
+          original.interface || "—",
       },
       {
         id: "usage",
         accessorKey: "usage",
         enableSorting: true,
         header: "Usage",
-        cell: ({ row: { original } }: { row: Row<SubnetIP> }) =>
-          getIPUsageDisplay(original),
       },
       {
         id: "owner",
@@ -80,15 +64,15 @@ const useSubnetUsedIPsColumns = (): SubnetIPColumnDef[] => {
         header: "Owner",
         cell: ({
           row: {
-            original: { user },
+            original: { owner },
           },
         }: {
-          row: Row<SubnetIP>;
-        }) => user || "—",
+          row: Row<SubnetUsedIP>;
+        }) => owner || "—",
       },
       {
-        id: "updated",
-        accessorKey: "updated",
+        id: "lastSeen",
+        accessorKey: "lastSeen",
         enableSorting: false,
         header: "Last Seen",
       },
