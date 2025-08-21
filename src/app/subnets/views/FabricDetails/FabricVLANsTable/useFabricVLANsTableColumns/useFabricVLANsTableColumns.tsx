@@ -26,7 +26,7 @@ const useFabricVLANsTableColumns = (): FabricVLANsColumnDef[] => {
   return useMemo(
     () => [
       {
-        id: "vlan-col",
+        id: "vlan",
         accessorKey: "id",
         enableSorting: false,
         header: "VLAN",
@@ -37,7 +37,7 @@ const useFabricVLANsTableColumns = (): FabricVLANsColumnDef[] => {
         }) => (isChildRow ? "" : <VLANLink id={id} />),
       },
       {
-        id: "space-col",
+        id: "space",
         accessorKey: "spaceId",
         enableSorting: false,
         header: "Space",
@@ -48,7 +48,7 @@ const useFabricVLANsTableColumns = (): FabricVLANsColumnDef[] => {
         }) => (isChildRow ? "" : <SpaceLink id={spaceId} />),
       },
       {
-        id: "subnets-col",
+        id: "subnets",
         accessorKey: "subnetId",
         enableSorting: false,
         header: "Subnets",
@@ -59,7 +59,7 @@ const useFabricVLANsTableColumns = (): FabricVLANsColumnDef[] => {
         }) => (!subnetId ? "No subnets" : <SubnetLink id={subnetId} />),
       },
       {
-        id: "available-col",
+        id: "available",
         accessorKey: "subnetAvailableIps",
         enableSorting: false,
         header: "Available",
