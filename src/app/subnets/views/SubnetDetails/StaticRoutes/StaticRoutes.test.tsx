@@ -1,7 +1,7 @@
 import configureStore from "redux-mock-store";
 
 import { AddStaticRouteFormLabels } from "./AddStaticRouteForm/AddStaticRouteForm";
-import StaticRoutes, { Labels } from "./StaticRoutes";
+import StaticRoutes from "./StaticRoutes";
 
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
@@ -38,25 +38,8 @@ it("renders for a subnet", () => {
   const store = mockStore(state);
   renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { store });
 
-  expect(
-    screen.getAllByRole("gridcell", {
-      name: Labels.GatewayIp,
-    })
-  ).toHaveLength(2);
-  expect(
-    screen
-      .getAllByRole("gridcell", {
-        name: Labels.GatewayIp,
-      })
-      .find((td) => td.textContent === "11.1.1.1")
-  ).toBeInTheDocument();
-  expect(
-    screen
-      .getAllByRole("gridcell", {
-        name: Labels.GatewayIp,
-      })
-      .find((td) => td.textContent === "11.1.1.2")
-  ).toBeInTheDocument();
+  expect(screen.getByRole("row", { name: /^11.1.1.1/ }));
+  expect(screen.getByRole("row", { name: /^11.1.1.2/ }));
 });
 
 it("has a button to open the static route form", async () => {

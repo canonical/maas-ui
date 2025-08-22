@@ -65,7 +65,6 @@ context("Static Routes", () => {
     cy.findByRole("region", { name: /Static routes/i }).within(() => {
       cy.get("tbody tr")
         .first()
-        .findByRole("gridcell", { name: /actions/i })
         .findByRole("button", { name: /delete/i })
         .click();
     });

@@ -1,11 +1,9 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
-import SubnetUsedIPs, { Labels } from "./SubnetUsedIPs";
+import SubnetUsedIPs from "./SubnetUsedIPs";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -28,32 +26,10 @@ it("displays correct IP addresses", () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <SubnetUsedIPs subnetId={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.queryAllByRole("gridcell", {
-      name: Labels.IpAddresses,
-    })
-  ).toHaveLength(2);
-  expect(
-    screen
-      .getAllByRole("gridcell", {
-        name: Labels.IpAddresses,
-      })
-      .find((td) => td.textContent === "11.1.1.1")
-  ).toBeInTheDocument();
-  expect(
-    screen
-      .getAllByRole("gridcell", {
-        name: Labels.IpAddresses,
-      })
-      .find((td) => td.textContent === "11.1.1.2")
-  ).toBeInTheDocument();
+  renderWithProviders(<SubnetUsedIPs subnetId={subnet.id} />, { store });
+
+  expect(screen.getByRole("row", { name: /^11.1.1.1/ }));
+  expect(screen.getByRole("row", { name: /^11.1.1.2/ }));
 });
 
 it("displays an empty message for a subnet", () => {
@@ -66,13 +42,8 @@ it("displays an empty message for a subnet", () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <SubnetUsedIPs subnetId={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<SubnetUsedIPs subnetId={subnet.id} />, { store });
+
   expect(
     screen.getByText("No IP addresses for this subnet.")
   ).toBeInTheDocument();
