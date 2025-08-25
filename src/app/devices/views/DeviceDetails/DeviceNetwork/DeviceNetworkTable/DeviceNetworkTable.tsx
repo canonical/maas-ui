@@ -64,6 +64,7 @@ const generateRowData = ({
         rows.push({
           id: link.id,
           nic: linkNic,
+          mac_address: linkNic?.mac_address,
           link,
           ip_address: getInterfaceIPAddress(device, fabrics, vlans, nic, link),
           ip_mode: getLinkModeDisplay(link),
@@ -82,6 +83,7 @@ const generateRowData = ({
       );
       rows.push({
         id: nic.id,
+        mac_address: nic.mac_address,
         nic,
         ip_address: getInterfaceIPAddress(device, fabrics, vlans, nic),
         ip_mode: getLinkModeDisplay(null),

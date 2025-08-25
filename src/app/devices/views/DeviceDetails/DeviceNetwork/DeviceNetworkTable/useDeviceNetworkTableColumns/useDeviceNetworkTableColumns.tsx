@@ -14,6 +14,7 @@ import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 export type DeviceNetworkRowData = {
   id: NetworkInterface["id"];
   nic: NetworkInterface | null;
+  mac_address?: string;
   link?: NetworkLink;
   ip_address?: string | null;
   ip_mode: string | null;
@@ -42,9 +43,9 @@ const useDeviceNetworkTableColumns = ({
         enableSorting: true,
         cell: ({
           row: {
-            original: { nic },
+            original: { mac_address },
           },
-        }) => <MacAddressDisplay>{nic?.mac_address}</MacAddressDisplay>,
+        }) => <MacAddressDisplay>{mac_address}</MacAddressDisplay>,
       },
       {
         id: "subnet",
