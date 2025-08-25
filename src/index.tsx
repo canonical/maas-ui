@@ -12,6 +12,7 @@ import { createQueryClient } from "./app/api/query-client";
 import { store } from "./redux-store";
 
 import SidePanelContextProvider from "@/app/base/side-panel-context";
+import NewSidePanelContextProvider from "@/app/base/side-panel-context-new";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import "./scss/index.scss";
 import { router } from "@/router";
@@ -23,9 +24,11 @@ export const Root = () => {
     <Provider store={store}>
       <WebSocketProvider>
         <QueryClientProvider client={queryClient}>
-          <SidePanelContextProvider>
-            <RouterProvider router={router} />
-          </SidePanelContextProvider>
+          <NewSidePanelContextProvider>
+            <SidePanelContextProvider>
+              <RouterProvider router={router} />
+            </SidePanelContextProvider>
+          </NewSidePanelContextProvider>
           <ReactQueryDevtools
             buttonPosition="bottom-left"
             initialIsOpen={

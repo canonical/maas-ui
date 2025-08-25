@@ -1,55 +1,58 @@
-import type { ReactElement } from "react";
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import { AppAside, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
-import { useLocation } from "react-router";
 
+import type { SidePanelSize } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { history } from "@/redux-store";
+
+export type AppSidePanelProps = {
+  title: string | null;
+  content?: ReactNode;
+  size: SidePanelSize;
+};
 
 const useCloseSidePanelOnRouteChange = (): void => {
-  const location = useLocation();
-  const { close } = useSidePanel();
+  const { setSidePanelContent } = useSidePanel();
 
-  useEffect(
-    () => {
-      close();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [location.pathname, location.search, location.hash]
-  );
+  // close side panel on route change
+  useEffect(() => {
+    const unlisten = history.listen(() => {
+      setSidePanelContent(null);
+    });
+
+    return () => {
+      unlisten();
+    };
+  }, [setSidePanelContent]);
 };
 
 const useResetSidePanelOnUnmount = (): void => {
-  const { setSize } = useSidePanel();
+  const { setSidePanelSize } = useSidePanel();
 
-  // reset side panel size to default on unmounting
-  useEffect(
-    () => {
-      return () => {
-        setSize("regular");
-      };
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  // reset side panel size to default on unmount
+  useEffect(() => {
+    return () => {
+      setSidePanelSize("regular");
+    };
+  }, [setSidePanelSize]);
 };
 
 const useCloseSidePanelOnEscPressed = (): void => {
-  const { close } = useSidePanel();
+  const { setSidePanelContent } = useSidePanel();
   useOnEscapePressed(() => {
-    close();
+    setSidePanelContent(null);
   });
 };
 
-const AppSidePanel = (): ReactElement => {
-  useCloseSidePanelOnEscPressed();
-  useCloseSidePanelOnRouteChange();
-  useResetSidePanelOnUnmount();
-
-  const { isOpen, title, component: Component, props, size } = useSidePanel();
-
+// TODO: remove and replace with SidePanel.tsx when the migrations are complete
+const AppSidePanelContent = ({
+  title,
+  size,
+  content,
+}: AppSidePanelProps): React.ReactElement => {
   return (
     <AppAside
       aria-label={title ?? undefined}
@@ -58,7 +61,7 @@ const AppSidePanel = (): ReactElement => {
         "is-large": size === "large",
         "is-wide": size === "wide",
       })}
-      collapsed={!isOpen}
+      collapsed={!content}
       id="aside-panel"
     >
       <ContentSection>
@@ -71,10 +74,21 @@ const AppSidePanel = (): ReactElement => {
             </div>
           </div>
         ) : null}
-        {isOpen && Component && <Component {...props} />}
+        {content}
       </ContentSection>
     </AppAside>
   );
+};
+
+const AppSidePanel = (
+  props: Omit<AppSidePanelProps, "size">
+): React.ReactElement => {
+  useCloseSidePanelOnEscPressed();
+  useCloseSidePanelOnRouteChange();
+  useResetSidePanelOnUnmount();
+  const { sidePanelSize } = useSidePanel();
+
+  return <AppSidePanelContent {...props} size={sidePanelSize} />;
 };
 
 export default AppSidePanel;
