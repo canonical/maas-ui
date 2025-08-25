@@ -129,6 +129,7 @@ const DeviceNetworkTable = ({ systemId }: Props): React.ReactElement => {
   return (
     <>
       <GenericTable
+        aria-label="Interfaces"
         className="device-network-table"
         columns={columns}
         data={rowData}
