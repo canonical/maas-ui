@@ -1,4 +1,4 @@
-import type { HTMLProps, ReactNode } from "react";
+import type { HTMLProps, ReactElement, ReactNode } from "react";
 
 import { AppMain } from "@canonical/react-components";
 import classNames from "classnames";
@@ -10,7 +10,6 @@ import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import MainContentSection from "../MainContentSection";
 import SecondaryNavigation from "../SecondaryNavigation";
 
-import type { AppSidePanelProps } from "@/app/base/components/AppSidePanel";
 import { useThemeContext } from "@/app/base/theme-context";
 import { preferencesNavItems } from "@/app/preferences/constants";
 import { settingsNavItems } from "@/app/settings/constants";
@@ -21,19 +20,14 @@ export type Props = HTMLProps<HTMLDivElement> & {
   header?: ReactNode;
   sidebar?: ReactNode;
   isNotificationListHidden?: boolean;
-  sidePanelContent: AppSidePanelProps["content"];
-  sidePanelSize?: AppSidePanelProps["size"];
-  sidePanelTitle: AppSidePanelProps["title"];
 };
 
 const PageContent = ({
   children,
   header,
   sidebar,
-  sidePanelContent,
-  sidePanelTitle,
   ...props
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const { pathname } = useLocation();
   const isSettingsPage = !!matchPath("settings/*", pathname);
   const isPreferencesPage = !!matchPath("account/prefs/*", pathname);
@@ -63,7 +57,7 @@ const PageContent = ({
           </MainContentSection>
         </div>
       </AppMain>
-      <AppSidePanel content={sidePanelContent} title={sidePanelTitle} />
+      <AppSidePanel />
     </>
   );
 };
