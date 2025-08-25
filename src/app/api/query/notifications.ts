@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import type { ToastNotificationType } from "@canonical/react-components";
 import { useToastNotification } from "@canonical/react-components";
@@ -28,13 +28,14 @@ import {
 export const useListNotifications = (
   options?: Options<ListNotificationsData>
 ) => {
-  return useWebsocketAwareQuery(
-    listNotificationsOptions(options) as UseQueryOptions<
+  return useWebsocketAwareQuery({
+    ...(listNotificationsOptions(options) as UseQueryOptions<
       ListNotificationsData,
       ListNotificationsError,
       ListNotificationsResponse
-    >
-  );
+    >),
+    refetchInterval: 30000,
+  });
 };
 
 export const convertBackendItToToastNotificationId = (id: number): string => {
@@ -55,9 +56,13 @@ export const useNotifications = () => {
   });
   const items = backendNotifications.data?.items;
   const notifications = useToastNotification();
+  const shownIds = useRef(new Set<number>());
   useEffect(() => {
     if (items === undefined) return;
     items.forEach((item) => {
+      if (shownIds.current.has(item.id)) return;
+
+      shownIds.current.add(item.id);
       switch (item.category) {
         case "success":
           notifications.success(
