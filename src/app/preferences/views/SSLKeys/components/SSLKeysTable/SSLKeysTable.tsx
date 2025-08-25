@@ -9,7 +9,7 @@ import { AddSSLKey } from "@/app/preferences/views/SSLKeys/components";
 import useSSLKeysTableColumns from "@/app/preferences/views/SSLKeys/components/SSLKeysTable/useSSLKeysTableColumns/useSSLKeysTableColumns";
 
 const SSLKeysTable = (): ReactElement => {
-  const { open } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const { data, failureReason, isPending } = useGetSslKeys();
   const sslKeys = data?.items ?? [];
 
@@ -26,7 +26,7 @@ const SSLKeysTable = (): ReactElement => {
         <MainToolbar.Controls>
           <Button
             onClick={() => {
-              open(AddSSLKey, "Add SSL key");
+              openSidePanel({ component: AddSSLKey, title: "Add SSL key" });
             }}
           >
             Add SSL key

@@ -17,20 +17,55 @@ interface SidePanelState<TProps = Record<string, unknown>> {
 }
 
 interface SidePanelActions {
-  open: <TProps extends Record<string, unknown> = Record<string, unknown>>(
-    component: ComponentType<TProps>,
-    title: string,
-    props?: TProps,
-    size?: SidePanelSize
-  ) => void;
-  close: () => void;
-  setSize: (size: SidePanelSize) => void;
+  openSidePanel: <
+    TProps extends Record<string, unknown> = Record<string, unknown>,
+  >(params: {
+    component: ComponentType<TProps>;
+    title: string;
+    props?: TProps;
+    size?: SidePanelSize;
+  }) => void;
+  closeSidePanel: () => void;
+  setSidePanelSize: (size: SidePanelSize) => void;
 }
 
 type SidePanelContextValue = SidePanelActions & SidePanelState;
 
 const SidePanelContext = createContext<SidePanelContextValue | null>(null);
 
+/**
+ * Hook for managing side panel state and actions.
+ *
+ * Provides methods to open/close side panels with React components and manages
+ * panel size and visibility state.
+ *
+ * @returns Object containing:
+ *   - `isOpen`: Boolean indicating if the side panel is currently open
+ *   - `title`: Current panel title string
+ *   - `size`: Current panel size ('narrow' | 'regular' | 'wide' | 'large')
+ *   - `component`: Currently rendered component
+ *   - `props`: Props passed to the current component
+ *   - `open(component, title, props?, size?)`: Opens panel with given component
+ *   - `close()`: Closes the panel and resets state
+ *   - `setSize(size)`: Changes the panel width
+ *
+ * @throws Error when used outside SidePanelProvider
+ *
+ * @example
+ * ```tsx
+ * const { open, close, isOpen } = useSidePanel();
+ *
+ * // Open a panel with a form component
+ * const handleEdit = (userId: number) => {
+ *   open(EditUserForm, 'Edit User', { userId }, 'wide');
+ * };
+ *
+ * // Close the panel
+ * const handleCancel = () => {
+ *   close();
+ * };
+ * ```
+ */
 export const useSidePanel = (): SidePanelContextValue => {
   const context = useContext(SidePanelContext);
   if (!context) {
@@ -50,14 +85,19 @@ const SidePanelContextProvider = ({
     props: {},
   });
 
-  const open = <
+  const openSidePanel = <
     TProps extends Record<string, unknown> = Record<string, unknown>,
-  >(
-    component: ComponentType<TProps>,
-    title: string,
-    props: TProps = {} as TProps,
-    size: SidePanelSize = "regular"
-  ) => {
+  >({
+    component,
+    title,
+    props = {} as TProps,
+    size = "regular",
+  }: {
+    component: ComponentType<TProps>;
+    title: string;
+    props?: TProps;
+    size?: SidePanelSize;
+  }) => {
     setState({
       isOpen: true,
       title,
@@ -67,18 +107,17 @@ const SidePanelContextProvider = ({
     });
   };
 
-  const close = () => {
-    setState((prev) => ({
-      ...prev,
+  const closeSidePanel = () => {
+    setState({
       isOpen: false,
       title: "",
       size: "regular",
       component: null,
       props: {},
-    }));
+    });
   };
 
-  const setSize = (size: SidePanelSize) => {
+  const setSidePanelSize = (size: SidePanelSize) => {
     setState((prev) => ({ ...prev, size }));
   };
 
@@ -86,9 +125,9 @@ const SidePanelContextProvider = ({
     <SidePanelContext.Provider
       value={{
         ...state,
-        open,
-        close,
-        setSize,
+        openSidePanel,
+        closeSidePanel,
+        setSidePanelSize,
       }}
     >
       {children}

@@ -31,9 +31,9 @@ describe("AddSSHKey", () => {
       size: "regular",
       component: null,
       props: {},
-      open: vi.fn(),
-      close: mockClose,
-      setSize: vi.fn(),
+      openSidePanel: vi.fn(),
+      closeSidePanel: mockClose,
+      setSidePanelSize: vi.fn(),
     });
   });
   it("runs closeForm function when the cancel button is clicked", async () => {

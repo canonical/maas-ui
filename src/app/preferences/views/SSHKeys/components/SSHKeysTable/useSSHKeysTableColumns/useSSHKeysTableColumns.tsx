@@ -19,7 +19,7 @@ const formatKey = (key: SshKeyResponse["key"]) => {
 };
 
 const useSSHKeysTableColumns = (): SSHKeysColumnDef[] => {
-  const { open } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () =>
       [
@@ -73,8 +73,12 @@ const useSSHKeysTableColumns = (): SSHKeysColumnDef[] => {
               <TableActions
                 data-testid="ssh-key-actions"
                 onDelete={() => {
-                  open(DeleteSSHKey, "Delete SSH keys", {
-                    ids: keys.map((key) => key.id),
+                  openSidePanel({
+                    component: DeleteSSHKey,
+                    title: "Delete SSH keys",
+                    props: {
+                      ids: keys.map((key) => key.id),
+                    },
                   });
                 }}
               />
@@ -82,7 +86,7 @@ const useSSHKeysTableColumns = (): SSHKeysColumnDef[] => {
           },
         },
       ] as SSHKeysColumnDef[],
-    [open]
+    [openSidePanel]
   );
 };
 

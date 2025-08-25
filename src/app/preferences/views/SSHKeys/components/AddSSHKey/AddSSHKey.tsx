@@ -33,7 +33,7 @@ const SSHKeySchema = Yup.object().shape({
 });
 
 const AddSSHKey = (): ReactElement => {
-  const { close } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
   const uploadSshKey = useCreateSshKeys();
   const importSshKey = useImportSshKeys();
 
@@ -45,7 +45,7 @@ const AddSSHKey = (): ReactElement => {
       aria-label="Add SSH key"
       errors={uploadSshKey.error || importSshKey.error}
       initialValues={{ auth_id: "", protocol: "", key: "" }}
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Saved",
         category: "SSH keys preferences",
@@ -67,7 +67,7 @@ const AddSSHKey = (): ReactElement => {
           });
         }
       }}
-      onSuccess={close}
+      onSuccess={closeSidePanel}
       resetOnSave={true}
       saved={uploadSshKey.isSuccess || importSshKey.isSuccess}
       saving={uploadSshKey.isPending || importSshKey.isPending}

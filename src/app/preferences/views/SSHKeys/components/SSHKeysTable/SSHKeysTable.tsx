@@ -58,7 +58,7 @@ const groupBySource = (sshKeys: SshKeyResponse[]): SSHKeyValue[] => {
 };
 
 const SSHKeysTable = ({ isIntro = false }: SSHKeysTableProps): ReactElement => {
-  const { open } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const { data, failureReason, isPending } = useListSshKeys();
   const sshKeys = groupBySource(data?.items ?? []);
 
@@ -76,7 +76,7 @@ const SSHKeysTable = ({ isIntro = false }: SSHKeysTableProps): ReactElement => {
           <MainToolbar.Controls>
             <Button
               onClick={() => {
-                open(AddSSHKey, "Add SSH key");
+                openSidePanel({ component: AddSSHKey, title: "Add SSH key" });
               }}
             >
               Import SSH key

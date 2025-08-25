@@ -10,11 +10,11 @@ import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 const useCloseSidePanelOnRouteChange = (): void => {
   const location = useLocation();
-  const { close } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
 
   useEffect(
     () => {
-      close();
+      closeSidePanel();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [location.pathname, location.search, location.hash]
@@ -22,13 +22,13 @@ const useCloseSidePanelOnRouteChange = (): void => {
 };
 
 const useResetSidePanelOnUnmount = (): void => {
-  const { setSize } = useSidePanel();
+  const { setSidePanelSize } = useSidePanel();
 
   // reset side panel size to default on unmounting
   useEffect(
     () => {
       return () => {
-        setSize("regular");
+        setSidePanelSize("regular");
       };
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,9 +37,9 @@ const useResetSidePanelOnUnmount = (): void => {
 };
 
 const useCloseSidePanelOnEscPressed = (): void => {
-  const { close } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
   useOnEscapePressed(() => {
-    close();
+    closeSidePanel();
   });
 };
 

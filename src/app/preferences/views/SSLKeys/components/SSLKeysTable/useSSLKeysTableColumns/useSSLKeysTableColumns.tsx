@@ -10,7 +10,7 @@ import { DeleteSSLKey } from "@/app/preferences/views/SSLKeys/components";
 type SSLKeysColumnDef = ColumnDef<SslKeyResponse, Partial<SslKeyResponse>>;
 
 const useSSLKeysTableColumns = (): SSLKeysColumnDef[] => {
-  const { open } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () =>
       [
@@ -43,14 +43,18 @@ const useSSLKeysTableColumns = (): SSLKeysColumnDef[] => {
               <TableActions
                 data-testid="ssh-key-actions"
                 onDelete={() => {
-                  open(DeleteSSLKey, "Delete SSL key", { id });
+                  openSidePanel({
+                    component: DeleteSSLKey,
+                    title: "Delete SSL key",
+                    props: { id },
+                  });
                 }}
               />
             );
           },
         },
       ] as SSLKeysColumnDef[],
-    [open]
+    [openSidePanel]
   );
 };
 

@@ -21,7 +21,7 @@ const SSLKeySchema = Yup.object().shape({
 });
 
 export const AddSSLKey = (): ReactElement => {
-  const { close } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
   const uploadSslKey = useCreateSslKeys();
 
   return (
@@ -29,7 +29,7 @@ export const AddSSLKey = (): ReactElement => {
       aria-label="Add SSL key"
       errors={uploadSslKey.error}
       initialValues={{ key: "" }}
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Saved",
         category: "SSL keys preferences",
@@ -44,7 +44,7 @@ export const AddSSLKey = (): ReactElement => {
           });
         }
       }}
-      onSuccess={close}
+      onSuccess={closeSidePanel}
       resetOnSave={true}
       saved={uploadSslKey.isSuccess}
       saving={uploadSslKey.isPending}

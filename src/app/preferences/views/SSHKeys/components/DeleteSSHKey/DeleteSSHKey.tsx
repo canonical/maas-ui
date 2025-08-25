@@ -9,7 +9,7 @@ type DeleteSSHKeyProps = {
 };
 
 const DeleteSSHKey = ({ ids }: DeleteSSHKeyProps): ReactElement => {
-  const { close } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
   const deleteSshKey = useDeleteSshKey();
 
   return (
@@ -21,13 +21,13 @@ const DeleteSSHKey = ({ ids }: DeleteSSHKeyProps): ReactElement => {
         ids.length > 1 ? "these SSH keys" : "this SSH key"
       }?`}
       modelType="SSH key"
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         ids.forEach((id) => {
           deleteSshKey.mutate({ path: { id } });
         });
       }}
-      onSuccess={close}
+      onSuccess={closeSidePanel}
       saved={deleteSshKey.isSuccess}
       saving={deleteSshKey.isPending}
     />

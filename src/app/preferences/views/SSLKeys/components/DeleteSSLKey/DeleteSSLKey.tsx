@@ -9,7 +9,7 @@ type DeleteSSLKeyProps = {
 };
 
 const DeleteSSLKey = ({ id }: DeleteSSLKeyProps): ReactElement => {
-  const { close } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
   const deleteSSLKey = useDeleteSslKey();
 
   return (
@@ -19,11 +19,11 @@ const DeleteSSLKey = ({ id }: DeleteSSLKeyProps): ReactElement => {
       initialValues={{}}
       message="Are you sure you want to delete this SSL key?"
       modelType="SSL key"
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         deleteSSLKey.mutate({ path: { sslkey_id: id } });
       }}
-      onSuccess={close}
+      onSuccess={closeSidePanel}
       saved={deleteSSLKey.isSuccess}
       saving={deleteSSLKey.isPending}
     />
