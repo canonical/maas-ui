@@ -28,13 +28,14 @@ import {
 export const useListNotifications = (
   options?: Options<ListNotificationsData>
 ) => {
-  return useWebsocketAwareQuery(
-    listNotificationsOptions(options) as UseQueryOptions<
+  return useWebsocketAwareQuery({
+    ...(listNotificationsOptions(options) as UseQueryOptions<
       ListNotificationsData,
       ListNotificationsError,
       ListNotificationsResponse
-    >
-  );
+    >),
+    refetchInterval: 30000,
+  });
 };
 
 export const convertBackendItToToastNotificationId = (id: number): string => {
@@ -100,15 +101,6 @@ export const useNotifications = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      backendNotifications.refetch?.();
-    }, 30000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [backendNotifications]);
 };
 
 export const useDismissNotification = (
