@@ -1,15 +1,39 @@
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
 
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { DeviceDetails } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
+  within,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
+vi.mock("@/app/base/side-panel-context", async () => {
+  const actual = await vi.importActual("@/app/base/side-panel-context");
+  return {
+    ...actual,
+    useSidePanel: vi.fn(),
+  };
+});
+
 describe("DeviceNetworkTable", () => {
+  const mockSetSidePanelContent = vi.fn();
+
+  (useSidePanel as Mock).mockReturnValue({
+    setSidePanelContent: mockSetSidePanelContent,
+  });
+
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState({
@@ -32,63 +56,157 @@ describe("DeviceNetworkTable", () => {
     });
   });
 
-  it("displays a spinner when loading", () => {
-    state.device.items = [];
-    const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
-      store,
-    });
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
-
-  it("displays a table when loaded", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
-      store,
+  describe("display", () => {
+    it("displays a spinner when loading", () => {
+      state.device.items = [];
+      const store = mockStore(state);
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        store,
+      });
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
     });
 
-    expect(screen.getByRole("grid")).toBeInTheDocument();
-  });
+    it("displays a table when loaded", () => {
+      const store = mockStore(state);
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        store,
+      });
 
-  it("can display an interface that has no links", () => {
-    const fabric = factory.fabric({ name: "fabric-name" });
-    state.fabric.items = [fabric];
-    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    state.vlan.items = [vlan];
-    const subnets = [
-      factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" }),
-      factory.subnet({ cidr: "subnet2-cidr", name: "subnet2-name" }),
-    ];
-    state.subnet.items = subnets;
-    state.device.items = [
-      factory.deviceDetails({
-        interfaces: [
-          factory.deviceInterface({
-            discovered: null,
-            links: [],
-            type: NetworkInterfaceTypes.BOND,
-            vlan_id: vlan.id,
-          }),
-        ],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
-      store,
+      expect(screen.getByRole("grid")).toBeInTheDocument();
     });
-    expect(screen.getByTestId("ip-mode")).toHaveTextContent("Unconfigured");
+
+    it("displays the columns correctly", () => {
+      const store = mockStore(state);
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        store,
+      });
+
+      ["Mac", "Subnet", "IP address", "IP assignment", "Actions"].forEach(
+        (column) => {
+          expect(
+            screen.getByRole("columnheader", {
+              name: new RegExp(`^${column}`, "i"),
+            })
+          ).toBeInTheDocument();
+        }
+      );
+    });
+
+    it("can display an interface that has no links", () => {
+      const fabric = factory.fabric({ name: "fabric-name" });
+      state.fabric.items = [fabric];
+      const vlan = factory.vlan({
+        fabric: fabric.id,
+        vid: 2,
+        name: "vlan-name",
+      });
+      state.vlan.items = [vlan];
+      const subnets = [
+        factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" }),
+        factory.subnet({ cidr: "subnet2-cidr", name: "subnet2-name" }),
+      ];
+      state.subnet.items = subnets;
+      state.device.items = [
+        factory.deviceDetails({
+          interfaces: [
+            factory.deviceInterface({
+              discovered: null,
+              links: [],
+              type: NetworkInterfaceTypes.BOND,
+              vlan_id: vlan.id,
+            }),
+          ],
+          system_id: "abc123",
+        }),
+      ];
+      const store = mockStore(state);
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        store,
+      });
+      expect(
+        within(screen.getAllByRole("row")[1]).getAllByRole("cell")[3]
+      ).toHaveTextContent("Unconfigured");
+    });
+
+    it("can display an interface that has a link", () => {
+      const fabric = factory.fabric({ name: "fabric-name" });
+      state.fabric.items = [fabric];
+      const vlan = factory.vlan({
+        fabric: fabric.id,
+        vid: 2,
+        name: "vlan-name",
+      });
+      state.vlan.items = [vlan];
+      const subnet = factory.subnet({
+        cidr: "subnet-cidr",
+        name: "subnet-name",
+      });
+      state.subnet.items = [subnet];
+      state.device.items = [
+        factory.deviceDetails({
+          interfaces: [
+            factory.deviceInterface({
+              discovered: null,
+              links: [
+                factory.networkLink({
+                  subnet_id: subnet.id,
+                  ip_address: "1.2.3.99",
+                }),
+              ],
+              type: NetworkInterfaceTypes.BOND,
+              vlan_id: vlan.id,
+            }),
+          ],
+          system_id: "abc123",
+        }),
+      ];
+      const store = mockStore(state);
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        store,
+      });
+      expect(
+        screen.getByRole("link", { name: "subnet-cidr" })
+      ).toBeInTheDocument();
+      expect(screen.getByText("1.2.3.99")).toBeInTheDocument();
+    });
+
+    it("displays an empty table description", () => {
+      state.device.items = [
+        factory.deviceDetails({
+          interfaces: [],
+          system_id: "abc123",
+        }),
+      ];
+      const store = mockStore(state);
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        store,
+      });
+      expect(screen.getByText("No interfaces available.")).toBeInTheDocument();
+    });
   });
 
-  it("can display an interface that has a link", () => {
-    const fabric = factory.fabric({ name: "fabric-name" });
-    state.fabric.items = [fabric];
-    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    state.vlan.items = [vlan];
-    const subnet = factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" });
-    state.subnet.items = [subnet];
-    state.device.items = [
-      factory.deviceDetails({
+  describe("permissions", () => {
+    it.todo("enables the action buttons with correct permissions");
+
+    it.todo("disables the action buttons without permissions");
+  });
+
+  describe("actions", () => {
+    let device: DeviceDetails;
+    beforeEach(() => {
+      const fabric = factory.fabric({ name: "fabric-name" });
+      state.fabric.items = [fabric];
+      const vlan = factory.vlan({
+        fabric: fabric.id,
+        vid: 2,
+        name: "vlan-name",
+      });
+      state.vlan.items = [vlan];
+      const subnet = factory.subnet({
+        cidr: "subnet-cidr",
+        name: "subnet-name",
+      });
+      device = factory.deviceDetails({
         interfaces: [
           factory.deviceInterface({
             discovered: null,
@@ -103,29 +221,45 @@ describe("DeviceNetworkTable", () => {
           }),
         ],
         system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
-      store,
+      });
+      state.subnet.items = [subnet];
+      state.device.items = [device];
     });
-    expect(
-      screen.getByRole("link", { name: "subnet-cidr" })
-    ).toBeInTheDocument();
-    expect(screen.getByTestId("ip-address")).toHaveTextContent("1.2.3.99");
-  });
 
-  it("displays an empty table description", () => {
-    state.device.items = [
-      factory.deviceDetails({
-        interfaces: [],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
-      store,
+    it("opens the edit interface side panel", async () => {
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        state,
+      });
+
+      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+
+      await waitFor(() => {
+        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
+          view: DeviceSidePanelViews.EDIT_INTERFACE,
+          extras: {
+            nicId: device.interfaces[0].id,
+            linkId: device.interfaces[0].links[0].id,
+          },
+        });
+      });
     });
-    expect(screen.getByText("No interfaces available.")).toBeInTheDocument();
+
+    it("opens the delete interface side panel", async () => {
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        state,
+      });
+
+      await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+      await waitFor(() => {
+        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
+          view: DeviceSidePanelViews.REMOVE_INTERFACE,
+          extras: {
+            nicId: device.interfaces[0].id,
+            linkId: device.interfaces[0].links[0].id,
+          },
+        });
+      });
+    });
   });
 });
