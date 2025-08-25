@@ -45,9 +45,9 @@ const SidePanelContext = createContext<SidePanelContextValue | null>(null);
  *   - `size`: Current panel size ('narrow' | 'regular' | 'wide' | 'large')
  *   - `component`: Currently rendered component
  *   - `props`: Props passed to the current component
- *   - `open(component, title, props?, size?)`: Opens panel with given component
- *   - `close()`: Closes the panel and resets state
- *   - `setSize(size)`: Changes the panel width
+ *   - `openSidePanel({component, title, props?, size?})`: Opens panel with given component
+ *   - `closeSidePanel()`: Closes the panel and resets state
+ *   - `setSidePanelSize(size)`: Changes the panel width
  *
  * @throws Error when used outside SidePanelProvider
  *
