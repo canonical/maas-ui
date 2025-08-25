@@ -8,7 +8,11 @@ const SSLKeysList = (): ReactElement => {
   useWindowTitle("SSL keys");
 
   return (
-    <PageContent>
+    <PageContent
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
+    >
       <SSLKeysTable />
     </PageContent>
   );

@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 import { useDeleteSshKey } from "@/app/api/query/sshKeys";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 type DeleteSSHKeyProps = {
   ids: number[];

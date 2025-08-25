@@ -11,10 +11,31 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(sshKeyResolvers.deleteSshKey.handler());
+const mockUseSidePanel = vi.spyOn(
+  await import("@/app/base/side-panel-context-new"),
+  "useSidePanel"
+);
 
 describe("DeleteSSHKey", () => {
+  const mockClose = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    mockUseSidePanel.mockReturnValue({
+      isOpen: false,
+      title: "",
+      size: "regular",
+      component: null,
+      props: {},
+      open: vi.fn(),
+      close: mockClose,
+      setSize: vi.fn(),
+    });
+  });
+
   it("renders", () => {
-    renderWithProviders(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
+    renderWithProviders(<DeleteSSHKey ids={[2, 3]} />);
     expect(
       screen.getByRole("form", { name: "Confirm SSH key deletion" })
     ).toBeInTheDocument();
@@ -24,15 +45,14 @@ describe("DeleteSSHKey", () => {
   });
 
   it("calls closeForm on cancel click", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<DeleteSSHKey closeForm={closeForm} ids={[2]} />);
+    renderWithProviders(<DeleteSSHKey ids={[2]} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("can delete a group of SSH keys", async () => {
-    renderWithProviders(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
+    renderWithProviders(<DeleteSSHKey ids={[2, 3]} />);
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 
     await waitFor(() => {
@@ -44,7 +64,7 @@ describe("DeleteSSHKey", () => {
     mockServer.use(
       sshKeyResolvers.deleteSshKey.error({ message: "Uh oh!", code: 404 })
     );
-    renderWithProviders(<DeleteSSHKey closeForm={vi.fn()} ids={[2, 3]} />);
+    renderWithProviders(<DeleteSSHKey ids={[2, 3]} />);
 
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
 

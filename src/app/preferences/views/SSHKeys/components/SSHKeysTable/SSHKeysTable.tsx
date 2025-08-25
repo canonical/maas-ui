@@ -10,7 +10,7 @@ import { Button, Notification } from "@canonical/react-components";
 import { useListSshKeys } from "@/app/api/query/sshKeys";
 import type { SshKeyResponse } from "@/app/apiclient";
 import docsUrls from "@/app/base/docsUrls";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { AddSSHKey } from "@/app/preferences/views/SSHKeys/components";
 import useSSHKeysTableColumns from "@/app/preferences/views/SSHKeys/components/SSHKeysTable/useSSHKeysTableColumns/useSSHKeysTableColumns";
 

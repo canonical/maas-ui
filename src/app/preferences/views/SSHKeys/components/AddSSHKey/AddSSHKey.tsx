@@ -11,7 +11,7 @@ import type {
   SshKeysProtocolType,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import SSHKeyFormFields from "@/app/preferences/views/SSHKeys/components/AddSSHKey/SSHKeyFormFields";
 
 export type SSHKeyFormValues = {

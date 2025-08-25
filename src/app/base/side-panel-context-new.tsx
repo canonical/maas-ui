@@ -71,7 +71,9 @@ const SidePanelContextProvider = ({
     setState((prev) => ({
       ...prev,
       isOpen: false,
+      title: "",
       size: "regular",
+      component: null,
       props: {},
     }));
   };
