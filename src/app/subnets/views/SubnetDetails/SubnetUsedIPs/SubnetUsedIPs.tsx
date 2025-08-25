@@ -1,8 +1,10 @@
-import { MainTable, Spinner } from "@canonical/react-components";
+import type { ReactElement } from "react";
+
+import { GenericTable } from "@canonical/maas-react-components";
 import { useSelector } from "react-redux";
 
 import TitledSection from "@/app/base/components/TitledSection";
-import NodeLink from "@/app/base/components/node/NodeLink";
+import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
@@ -11,131 +13,79 @@ import {
   getIPUsageDisplay,
   isSubnetDetails,
 } from "@/app/store/subnet/utils";
+import type { UtcDatetime } from "@/app/store/types/model";
+import type { NodeType } from "@/app/store/types/node";
+import useSubnetUsedIPsColumns from "@/app/subnets/views/SubnetDetails/SubnetUsedIPs/useSubnetUsedIPsColumns/useSubnetUsedIPsColumns";
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK] | null;
 };
 
-export enum Labels {
-  IpAddresses = "IP addresses",
-  Type = "Type",
-  Node = "Node",
-  Interface = "interface",
-  Usage = "Usage",
-  Owner = "Owner",
-  LastSeen = "Last Seen",
-}
+export type SubnetUsedIP = {
+  id: number;
+  ip: string;
+  type: string;
+  nodeHostName?: string;
+  nodeSystemId?: string;
+  nodeType?: NodeType;
+  interface?: string;
+  usage: string;
+  owner?: string;
+  lastSeen: UtcDatetime;
+};
 
-const generateRows = (subnet: Subnet | null) => {
+const getSubnetUsedIPs = (subnet: Subnet | null): SubnetUsedIP[] => {
   if (!isSubnetDetails(subnet)) {
     return [];
   }
-  return subnet.ip_addresses.map((ip_address) => {
-    const { alloc_type, ip, node_summary, updated, user } = ip_address;
-    const type = getIPTypeDisplay(alloc_type);
-    const usage = getIPUsageDisplay(ip_address);
-    return {
-      columns: [
-        {
-          "aria-label": Labels.IpAddresses,
-          className: "u-break-word",
-          content: ip,
-        },
-        {
-          "aria-label": Labels.Type,
-          content: type,
-        },
-        {
-          "aria-label": Labels.Node,
-          content: node_summary ? (
-            <NodeLink
-              nodeType={node_summary.node_type}
-              systemId={node_summary.system_id}
-            />
-          ) : (
-            "—"
-          ),
-        },
-        {
-          "aria-label": Labels.Interface,
-          content: node_summary?.via || "—",
-        },
-        {
-          "aria-label": Labels.Usage,
-          content: usage,
-        },
-        {
-          "aria-label": Labels.Owner,
-          content: user || "—",
-        },
-        {
-          "aria-label": Labels.LastSeen,
-          content: updated,
-        },
-      ],
-      sortData: {
-        interface: node_summary?.via || "—",
-        ip,
-        node: node_summary?.hostname || "—",
-        type,
-        usage,
-        user: user || "—",
-      },
-    };
-  });
+
+  return subnet.ip_addresses.map(
+    (ip, index): SubnetUsedIP => ({
+      id: index,
+      ip: ip.ip,
+      type: getIPTypeDisplay(ip.alloc_type),
+      nodeHostName: ip.node_summary?.hostname,
+      nodeSystemId: ip.node_summary?.system_id,
+      nodeType: ip.node_summary?.node_type,
+      interface: ip.node_summary?.via,
+      usage: getIPUsageDisplay(ip),
+      owner: ip.user,
+      lastSeen: ip.updated,
+    })
+  );
 };
 
-const SubnetUsedIPs = ({ subnetId }: Props): React.ReactElement => {
+const SubnetUsedIPs = ({ subnetId }: Props): ReactElement => {
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, subnetId)
   );
   const loading = useSelector(subnetSelectors.loading);
 
+  const { page, size, handlePageSizeChange, setPage } = usePagination();
+  const columns = useSubnetUsedIPsColumns();
+  const data = getSubnetUsedIPs(subnet);
+
   return (
-    <TitledSection className="u-no-padding--top" title="Used IP addresses">
-      <MainTable
-        className="used-ip-table p-table-expanding--light"
-        defaultSort="ip"
-        defaultSortDirection="ascending"
-        emptyStateMsg={
-          loading ? (
-            <Spinner text="Loading..." />
-          ) : (
-            "No IP addresses for this subnet."
-          )
-        }
-        headers={[
-          {
-            content: Labels.IpAddresses,
-            sortKey: "ip",
-          },
-          {
-            content: Labels.Type,
-            sortKey: "type",
-          },
-          {
-            content: Labels.Node,
-            sortKey: "node",
-          },
-          {
-            content: Labels.Interface,
-            sortKey: "interface",
-          },
-          {
-            content: Labels.Usage,
-            sortKey: "usage",
-          },
-          {
-            content: Labels.Owner,
-            sortKey: "user",
-          },
-          {
-            content: Labels.LastSeen,
-          },
-        ]}
-        responsive
-        rows={generateRows(subnet)}
-        sortable
+    <TitledSection
+      className="u-no-padding--top u-no-padding--bottom"
+      title="Used IP addresses"
+    >
+      <GenericTable
+        className="used-ip-table"
+        columns={columns}
+        data={data.slice(size * (page - 1), size * page)}
+        isLoading={loading}
+        noData={"No IP addresses for this subnet."}
+        pagination={{
+          currentPage: page,
+          dataContext: "IP addresses",
+          handlePageSizeChange: handlePageSizeChange,
+          isPending: loading,
+          itemsPerPage: size,
+          setCurrentPage: setPage,
+          totalItems: data.length,
+        }}
+        sortBy={[{ id: "ip", desc: false }]}
       />
     </TitledSection>
   );

@@ -6,14 +6,17 @@ import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { networkDiscoveryResolvers } from "@/testing/resolvers/networkDiscovery";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   waitFor,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+setupMockServer(networkDiscoveryResolvers.clearNetworkDiscoveries.handler());
 
 describe("ClearAllForm", () => {
   let state: RootState;
@@ -28,21 +31,10 @@ describe("ClearAllForm", () => {
           },
         ],
       }),
-      discovery: factory.discoveryState({
-        loaded: true,
-        items: [
-          factory.discovery({
-            hostname: "my-discovery-test",
-          }),
-          factory.discovery({
-            hostname: "another-test",
-          }),
-        ],
-      }),
     });
   });
 
-  it("displays a message when discovery is enabled", () => {
+  it("displays a message when discovery is enabled", async () => {
     state.config = factory.configState({
       items: [
         {
@@ -55,7 +47,9 @@ describe("ClearAllForm", () => {
       route: "/network-discovery",
       state,
     });
-    expect(screen.getByTestId("enabled-message")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId("enabled-message")).toBeInTheDocument();
+    });
   });
 
   it("displays a message when discovery is disabled", () => {
@@ -83,9 +77,11 @@ describe("ClearAllForm", () => {
     await userEvent.click(
       screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
     );
-    expect(
-      store.getActions().some(({ type }) => type === "discovery/clear")
-    ).toBe(true);
+    await waitFor(() => {
+      expect(
+        networkDiscoveryResolvers.clearNetworkDiscoveries.resolved
+      ).toBeTruthy();
+    });
   });
 
   it("shows a success message when completed", async () => {

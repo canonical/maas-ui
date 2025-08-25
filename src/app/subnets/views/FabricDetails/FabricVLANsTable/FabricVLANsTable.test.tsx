@@ -1,14 +1,7 @@
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
-import configureStore from "redux-mock-store";
+import FabricVLANsTable from "./FabricVLANsTable";
 
-import FabricVLANs from "./FabricVLANs";
-
-import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { render, screen, within } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 it("renders correct details", () => {
   const fabric = factory.fabric({ id: 1, name: "test-fabric", vlan_ids: [2] });
@@ -21,22 +14,8 @@ it("renders correct details", () => {
     subnet: factory.subnetState({ items: [subnet] }),
     fabric: factory.fabricState({ items: [fabric] }),
   });
-  const store = mockStore(state);
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.fabric.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route
-            element={<FabricVLANs fabric={fabric} />}
-            path={urls.subnets.fabric.index({ id: fabric.id })}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<FabricVLANsTable fabric={fabric} />, { state });
 
   expect(
     screen.getByRole("heading", { name: "VLANs on this fabric" })
@@ -59,27 +38,19 @@ it("renders correct details", () => {
   ).toBeInTheDocument();
 
   expect(
-    within(screen.getByRole("gridcell", { name: "VLAN" })).getByText(
-      new RegExp(vlan.name)
-    )
+    screen.getByRole("cell", { name: new RegExp(vlan.name) })
   ).toBeInTheDocument();
 
   expect(
-    within(screen.getByRole("gridcell", { name: "Space" })).getByText(
-      new RegExp(space.name)
-    )
+    screen.getByRole("cell", { name: new RegExp(space.name) })
   ).toBeInTheDocument();
 
   expect(
-    within(screen.getByRole("gridcell", { name: "Subnet" })).getByText(
-      new RegExp(subnet.name)
-    )
+    screen.getByRole("cell", { name: new RegExp(subnet.name) })
   ).toBeInTheDocument();
 
   expect(
-    within(screen.getByRole("gridcell", { name: "Available" })).getByText(
-      new RegExp(subnet.statistics.available_string)
-    )
+    screen.getByRole("cell", { name: subnet.statistics.available_string })
   ).toBeInTheDocument();
 });
 
@@ -98,24 +69,9 @@ it("handles a VLAN without any subnets", () => {
     subnet: factory.subnetState({ items: [] }),
     vlan: factory.vlanState({ items: [vlan] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[
-          { pathname: urls.subnets.fabric.index({ id: fabric.id }) },
-        ]}
-      >
-        <FabricVLANs fabric={fabric} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<FabricVLANsTable fabric={fabric} />, { state });
 
-  expect(
-    within(screen.getByRole("gridcell", { name: "Subnet" })).getByText(
-      "No subnets"
-    )
-  ).toBeInTheDocument();
+  expect(screen.getByRole("cell", { name: "No subnets" })).toBeInTheDocument();
 });
 
 it("handles a VLAN with multiple subnets", () => {
@@ -139,35 +95,36 @@ it("handles a VLAN with multiple subnets", () => {
       vlan: vlan.id,
     }),
   ];
+
   const state = factory.rootState({
     fabric: factory.fabricState({ items: [fabric] }),
     space: factory.spaceState({ items: [space] }),
     subnet: factory.subnetState({ items: subnets }),
     vlan: factory.vlanState({ items: [vlan] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[
-          { pathname: urls.subnets.fabric.index({ id: fabric.id }) },
-        ]}
-      >
-        <FabricVLANs fabric={fabric} />
-      </MemoryRouter>
-    </Provider>
-  );
-  const subnetCells = screen.getAllByRole("gridcell", { name: "Subnet" });
-  const availableCells = screen.getAllByRole("gridcell", { name: "Available" });
 
-  subnetCells.forEach((cell, i) => {
-    expect(
-      within(cell).getByRole("link", { name: new RegExp(subnets[i].name) })
-    ).toBeInTheDocument();
-  });
-  availableCells.forEach((cell, i) => {
-    expect(
-      within(cell).getByText(subnets[i].statistics.available_string)
-    ).toBeInTheDocument();
-  });
+  renderWithProviders(<FabricVLANsTable fabric={fabric} />, { state });
+
+  const dataRows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole(
+    "row"
+  );
+
+  const firstRowCells = within(dataRows[0]).getAllByRole("cell");
+  const secondRowCells = within(dataRows[1]).getAllByRole("cell");
+
+  // first row for this vlan should contain name and space
+  expect(firstRowCells[0]).toHaveTextContent(new RegExp(vlan.name));
+  expect(firstRowCells[1]).toHaveTextContent(new RegExp(space.name));
+  expect(firstRowCells[2]).toHaveTextContent(new RegExp(subnets[0].name));
+  expect(firstRowCells[3]).toHaveTextContent(
+    subnets[0].statistics.available_string
+  );
+
+  // second row should only contain subnet name and available IPs
+  expect(secondRowCells[0].textContent).toBe("");
+  expect(secondRowCells[1].textContent).toBe("");
+  expect(secondRowCells[2]).toHaveTextContent(new RegExp(subnets[1].name));
+  expect(secondRowCells[3]).toHaveTextContent(
+    subnets[1].statistics.available_string
+  );
 });

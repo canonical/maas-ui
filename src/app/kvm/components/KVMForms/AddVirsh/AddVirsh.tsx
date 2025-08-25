@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import AddVirshFields from "./AddVirshFields";
 import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import { useFetchActions } from "@/app/base/hooks";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { generalActions } from "@/app/store/general";
 import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
@@ -49,20 +49,12 @@ export const AddVirsh = ({
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const resourcePools = usePools();
   const zones = useZones();
-  const [savingPod, setSavingPod] = useState<string | null>(null);
   const cleanup = useCallback(() => podActions.cleanup(), []);
   const initialPowerParameters = useInitialPowerParameters();
   const loaded =
     powerTypesLoaded && !resourcePools.isPending && !zones.isPending;
 
   useFetchActions([generalActions.fetchPowerTypes]);
-
-  useAddMessage(
-    podSaved,
-    cleanup,
-    `${savingPod} added successfully.`,
-    clearSidePanelContent
-  );
 
   const virshPowerType = powerTypes.find(
     (powerType) => powerType.name === PodType.VIRSH
@@ -121,7 +113,6 @@ export const AddVirsh = ({
             ]),
           };
           dispatch(podActions.create(params));
-          setSavingPod(values.name || "virsh KVM host");
         }
       }}
       saved={podSaved}

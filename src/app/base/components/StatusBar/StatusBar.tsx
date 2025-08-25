@@ -1,10 +1,23 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
-import { AppStatus, Button, Icon, Link } from "@canonical/react-components";
+import {
+  AppStatus,
+  Button,
+  Icon,
+  Link,
+  useToastNotification,
+  ICONS,
+} from "@canonical/react-components";
+import {
+  severityOrder,
+  iconLookup,
+} from "@canonical/react-components/dist/components/Notifications/ToastNotification/ToastNotificationList";
+import classNames from "classnames";
 import { useSelector } from "react-redux";
 
 import TooltipButton from "../TooltipButton";
 
+import { useNotifications } from "@/app/api/query/notifications";
 import { useFetchActions, useUsabilla } from "@/app/base/hooks";
 import configSelectors from "@/app/store/config/selectors";
 import controllerSelectors from "@/app/store/controller/selectors";
@@ -59,6 +72,17 @@ const findLastCommissioningTime = (
     : null;
 };
 
+function useEventListener<K extends keyof WindowEventMap>(
+  type: K,
+  listener: (event: WindowEventMap[K]) => void
+) {
+  useEffect(() => {
+    window.addEventListener(type, listener);
+    return () => {
+      window.removeEventListener(type, listener);
+    };
+  }, [type, listener]);
+}
 const formatLastCommissionedTime = (
   lastCommissioningTime: UtcDatetime
 ): string => {
@@ -92,6 +116,30 @@ export const StatusBar = (): React.ReactElement | null => {
   const maasName = useSelector(configSelectors.maasName);
   const allowUsabilla = useUsabilla();
   const msmRunning = useSelector(msmSelectors.running);
+  const { toggleListView, notifications, countBySeverity, isListView } =
+    useToastNotification();
+
+  useNotifications();
+  useEventListener("keydown", (e: KeyboardEvent) => {
+    // Close notifications list if Escape pressed
+    if (e.code === "Escape" && isListView) {
+      toggleListView();
+    }
+  });
+  const notificationIcons = severityOrder.map((severity) => {
+    if (countBySeverity[severity]) {
+      return (
+        <Icon
+          aria-label={`${severity} notification exists`}
+          key={severity}
+          name={iconLookup[severity]}
+        />
+      );
+    }
+    return null;
+  });
+
+  const hasNotifications = notifications.length > 0;
 
   useFetchActions([msmActions.fetch]);
 
@@ -194,6 +242,19 @@ Site Manager as its upstream image source."
           </div>
         )}
       </div>
+      {hasNotifications && (
+        <Button
+          aria-label="Expand notifications list"
+          className={classNames("u-no-margin expand-button", {
+            "button-active": isListView,
+          })}
+          onClick={toggleListView}
+        >
+          {notificationIcons}
+          <span className="total-count">{notifications.length}</span>
+          <Icon name={isListView ? ICONS.chevronDown : ICONS.chevronUp} />
+        </Button>
+      )}
     </AppStatus>
   );
 };

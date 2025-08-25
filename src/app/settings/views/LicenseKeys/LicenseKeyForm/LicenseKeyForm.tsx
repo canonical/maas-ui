@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,6 @@ import LicenseKeyFormFields from "../LicenseKeyFormFields";
 import type { LicenseKeyFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useAddMessage } from "@/app/base/hooks";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
 import { generalActions } from "@/app/store/general";
@@ -38,7 +37,6 @@ const LicenseKeySchema = Yup.object().shape({
 export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
-  const [savingLicenseKey, setSaving] = useState<string | null>(null);
   const saving = useSelector(licenseKeysSelectors.saving);
   const saved = useSelector(licenseKeysSelectors.saved);
   const errors = useSelector(licenseKeysSelectors.errors);
@@ -51,15 +49,6 @@ export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
   const title = licenseKey ? "Update license key" : "Add license key";
 
   const editing = !!licenseKey;
-
-  useAddMessage(
-    saved,
-    licenseKeysActions.cleanup,
-    `${savingLicenseKey} ${editing ? "updated" : "added"} successfully.`,
-    () => {
-      setSaving(null);
-    }
-  );
 
   useEffect(() => {
     if (!osInfoLoaded) {
@@ -112,7 +101,6 @@ export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
             } else {
               dispatch(licenseKeysActions.create(params));
             }
-            setSaving(`${params.osystem} (${params.distro_series})`);
           }}
           saved={saved}
           savedRedirect={settingsURLs.licenseKeys.index}

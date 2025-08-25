@@ -5,7 +5,6 @@ export {
   useUsabilla,
 } from "./analytics";
 export {
-  useAddMessage,
   useCycled,
   useProcessing,
   useScrollOnRender,

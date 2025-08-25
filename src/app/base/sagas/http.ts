@@ -115,10 +115,9 @@ export const api = {
       });
     },
     login: (credentials: LoginCredentials): Promise<void> => {
-      const params = {
-        username: credentials.username,
-        password: credentials.password,
-      };
+      const searchParams = new URLSearchParams();
+      searchParams.set("username", credentials.username);
+      searchParams.set("password", credentials.password);
 
       return fetch(LOGIN_API, {
         method: "POST",
@@ -129,7 +128,7 @@ export const api = {
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
           "X-Requested-With": "XMLHttpRequest",
         }),
-        body: new URLSearchParams(Object.entries(params)),
+        body: searchParams.toString(),
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {

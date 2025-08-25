@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
@@ -14,7 +14,6 @@ import type {
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useAddMessage } from "@/app/base/hooks";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
@@ -43,7 +42,6 @@ export const SelectProjectForm = ({
     podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)
   );
   const cleanup = useCallback(() => podActions.cleanup(), []);
-  const [savingPod, setSavingPod] = useState<string | null>(null);
   const SelectProjectSchema: SchemaOf<SelectProjectFormValues> = Yup.object()
     .shape({
       existingProject: Yup.string(),
@@ -89,13 +87,6 @@ export const SelectProjectForm = ({
     };
   }, [dispatch, cleanup]);
 
-  useAddMessage(
-    saved,
-    cleanup,
-    `${savingPod} added successfully.`,
-    clearSidePanelContent
-  );
-
   return (
     <FormikForm<SelectProjectFormValues>
       aria-label="Project selection"
@@ -123,7 +114,6 @@ export const SelectProjectForm = ({
           zone: Number(newPodValues.zone),
         });
         dispatch(podActions.create(params));
-        setSavingPod(newPodValues.name || "LXD KVM host");
       }}
       saved={saved}
       saving={saving}

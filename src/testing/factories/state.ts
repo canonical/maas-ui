@@ -27,7 +27,6 @@ import type {
   DeviceStatuses,
 } from "@/app/store/device/types";
 import type { DHCPSnippetState } from "@/app/store/dhcpsnippet/types";
-import type { DiscoveryState } from "@/app/store/discovery/types";
 import type { DomainState } from "@/app/store/domain/types";
 import type { EventState } from "@/app/store/event/types";
 import type { FabricState } from "@/app/store/fabric/types";
@@ -204,11 +203,6 @@ export const deviceState = define<DeviceState>({
 });
 
 export const dhcpSnippetState = define<DHCPSnippetState>({
-  ...defaultState,
-  errors: null,
-});
-
-export const discoveryState = define<DiscoveryState>({
   ...defaultState,
   errors: null,
 });
@@ -610,7 +604,6 @@ export const rootState = define<RootState>({
   config: configState,
   controller: controllerState,
   device: deviceState,
-  discovery: discoveryState,
   event: eventState,
   dhcpsnippet: dhcpSnippetState,
   domain: domainState,

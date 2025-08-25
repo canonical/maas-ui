@@ -15,7 +15,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { formatIpAddress } from "@/app/base/components/PrefixedIpInput";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
-import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import { useFetchActions } from "@/app/base/hooks";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { deviceActions } from "@/app/store/device";
@@ -132,19 +132,9 @@ export const AddDeviceForm = ({
   const zones = useZones();
 
   const [secondarySubmit, setSecondarySubmit] = useState(false);
-  const [savingDevice, setSavingDevice] = useState<string | null>(null);
 
   // Fetch all data required for the form.
   useFetchActions([domainActions.fetch, subnetActions.fetch]);
-
-  useAddMessage(
-    devicesSaved,
-    deviceActions.cleanup,
-    `${savingDevice} added successfully.`,
-    () => {
-      setSavingDevice(null);
-    }
-  );
 
   const loaded = domainsLoaded && subnetsLoaded && !zones.isPending;
 
@@ -229,7 +219,6 @@ export const AddDeviceForm = ({
           zone: { name: zone },
         };
         dispatch(deviceActions.create(params));
-        setSavingDevice(values.hostname || "Device");
       }}
       onSuccess={() => {
         if (!secondarySubmit) {

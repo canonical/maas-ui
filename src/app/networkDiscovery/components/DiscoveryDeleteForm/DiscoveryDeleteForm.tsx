@@ -1,11 +1,8 @@
 import type { ReactElement } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-
+import { useClearNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import type { DiscoveryResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { discoveryActions } from "@/app/store/discovery";
-import discoverySelectors from "@/app/store/discovery/selectors";
 
 type Props = {
   discovery: DiscoveryResponse;
@@ -13,9 +10,8 @@ type Props = {
 };
 
 const DiscoveryDeleteForm = ({ discovery, onClose }: Props): ReactElement => {
-  const dispatch = useDispatch();
-  const saving = useSelector(discoverySelectors.saving);
-  const saved = useSelector(discoverySelectors.saved);
+  const clearDiscovery = useClearNetworkDiscoveries();
+
   return (
     <ModelActionForm
       aria-label="Delete discovery"
@@ -26,15 +22,13 @@ const DiscoveryDeleteForm = ({ discovery, onClose }: Props): ReactElement => {
       modelType="discovery"
       onCancel={onClose}
       onSubmit={() => {
-        dispatch(
-          discoveryActions.delete({
-            ip: discovery.ip!,
-            mac: discovery.mac_address!,
-          })
-        );
+        clearDiscovery.mutate({
+          query: { ip: discovery.ip, mac: discovery.mac_address },
+        });
       }}
-      saved={saved}
-      saving={saving}
+      onSuccess={onClose}
+      saved={clearDiscovery.isSuccess}
+      saving={clearDiscovery.isPending}
     />
   );
 };

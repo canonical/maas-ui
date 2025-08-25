@@ -6,11 +6,7 @@ import type { Dispatch } from "redux";
 
 import TableActions from "@/app/base/components/TableActions";
 import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import {
-  useFetchActions,
-  useAddMessage,
-  useWindowTitle,
-} from "@/app/base/hooks";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import settingsURLs from "@/app/settings/urls";
 import { generalActions } from "@/app/store/general";
@@ -29,7 +25,6 @@ const generateRows = (
   setExpandedId: (expandedId: LicenseKeys["license_key"] | null) => void,
   hideExpanded: () => void,
   dispatch: Dispatch,
-  setDeleting: (deletingLicenseKey: LicenseKeys | null) => void,
   saved: LicenseKeysState["saved"],
   saving: LicenseKeysState["saving"]
 ) =>
@@ -71,7 +66,6 @@ const generateRows = (
           onClose={hideExpanded}
           onConfirm={() => {
             dispatch(licenseKeysActions.delete(licenseKey));
-            setDeleting(licenseKey);
           }}
         />
       ),
@@ -89,13 +83,10 @@ const LicenseKeyList = (): React.ReactElement => {
     LicenseKeys["license_key"] | null
   >(null);
   const [searchText, setSearchText] = useState("");
-  const [deletingLicenseKey, setDeleting] = useState<LicenseKeys | null>(null);
 
   const licenseKeysLoading = useSelector(licenseKeysSelectors.loading);
   const licenseKeysLoaded = useSelector(licenseKeysSelectors.loaded);
   const osystems = useSelector(osInfoSelectors.getLicensedOsystems);
-  const hasErrors = useSelector(licenseKeysSelectors.hasErrors);
-  const errors = useSelector(licenseKeysSelectors.errors);
   const saved = useSelector(licenseKeysSelectors.saved);
   const saving = useSelector(licenseKeysSelectors.saving);
 
@@ -103,28 +94,7 @@ const LicenseKeyList = (): React.ReactElement => {
     licenseKeysSelectors.search(state, searchText)
   );
 
-  const title = deletingLicenseKey
-    ? `${deletingLicenseKey.osystem} (${deletingLicenseKey.distro_series})`
-    : null;
-
   useWindowTitle("License keys");
-
-  useAddMessage(
-    saved,
-    licenseKeysActions.cleanup,
-    `License key ${title} removed successfully.`,
-    () => {
-      setDeleting(null);
-    }
-  );
-
-  useAddMessage(
-    hasErrors && typeof errors === "string",
-    licenseKeysActions.cleanup,
-    `Error removing license key ${title}: ${errors}`,
-    null,
-    "negative"
-  );
 
   const hideExpanded = () => {
     setExpandedId(null);
@@ -172,7 +142,6 @@ const LicenseKeyList = (): React.ReactElement => {
             setExpandedId,
             hideExpanded,
             dispatch,
-            setDeleting,
             saved,
             saving
           )}
