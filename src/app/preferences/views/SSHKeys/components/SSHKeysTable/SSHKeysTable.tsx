@@ -11,8 +11,8 @@ import { useListSshKeys } from "@/app/api/query/sshKeys";
 import type { SshKeyResponse } from "@/app/apiclient";
 import docsUrls from "@/app/base/docsUrls";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { AddSSHKey } from "@/app/preferences/views/SSHKeys/components";
 import useSSHKeysTableColumns from "@/app/preferences/views/SSHKeys/components/SSHKeysTable/useSSHKeysTableColumns/useSSHKeysTableColumns";
-import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
 
 type SSHKeysTableProps = {
   isIntro: boolean;
@@ -58,7 +58,7 @@ const groupBySource = (sshKeys: SshKeyResponse[]): SSHKeyValue[] => {
 };
 
 const SSHKeysTable = ({ isIntro = false }: SSHKeysTableProps): ReactElement => {
-  const { setSidePanelContent } = useSidePanel();
+  const { open } = useSidePanel();
   const { data, failureReason, isPending } = useListSshKeys();
   const sshKeys = groupBySource(data?.items ?? []);
 
@@ -76,9 +76,7 @@ const SSHKeysTable = ({ isIntro = false }: SSHKeysTableProps): ReactElement => {
           <MainToolbar.Controls>
             <Button
               onClick={() => {
-                setSidePanelContent({
-                  view: SSHKeyActionSidePanelViews.ADD_SSH_KEY,
-                });
+                open(AddSSHKey, "Add SSH key");
               }}
             >
               Import SSH key
