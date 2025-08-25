@@ -4,7 +4,7 @@ import DeviceNetwork from "./DeviceNetwork";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -38,9 +38,7 @@ describe("DeviceNetwork", () => {
     });
     expect(screen.getByLabelText("Device network")).toBeInTheDocument();
     expect(screen.getByRole("grid", { name: /DHCP/ })).toBeInTheDocument();
-    expect(
-      screen.getByRole("grid", { name: /Interfaces/ })
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText("Interfaces")).toBeInTheDocument();
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
 });
