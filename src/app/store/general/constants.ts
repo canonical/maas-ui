@@ -11,7 +11,6 @@ export const PowerTypeNames = {
   MICROSOFT_OCS: "msftocs",
   MOONSHOT: "moonshot",
   MSCM: "mscm",
-  NOVA: "nova",
   OPENBMC: "openbmc",
   PROXMOX: "proxmox",
   RECS_BOX: "recs_box",
