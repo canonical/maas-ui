@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import type { ToastNotificationType } from "@canonical/react-components";
 import { useToastNotification } from "@canonical/react-components";
@@ -55,9 +55,13 @@ export const useNotifications = () => {
   });
   const items = backendNotifications.data?.items;
   const notifications = useToastNotification();
+  const shownIds = useRef(new Set<number>());
   useEffect(() => {
     if (items === undefined) return;
     items.forEach((item) => {
+      if (shownIds.current.has(item.id)) return;
+
+      shownIds.current.add(item.id);
       switch (item.category) {
         case "success":
           notifications.success(
@@ -96,6 +100,15 @@ export const useNotifications = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      backendNotifications.refetch?.();
+    }, 30000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [backendNotifications]);
 };
 
 export const useDismissNotification = (
