@@ -5,12 +5,12 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { SslKeyResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { SSLKeyActionSidePanelViews } from "@/app/preferences/views/SSLKeys/constants";
+import { DeleteSSLKey } from "@/app/preferences/views/SSLKeys/components";
 
 type SSLKeysColumnDef = ColumnDef<SslKeyResponse, Partial<SslKeyResponse>>;
 
 const useSSLKeysTableColumns = (): SSLKeysColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { open } = useSidePanel();
   return useMemo(
     () =>
       [
@@ -43,19 +43,14 @@ const useSSLKeysTableColumns = (): SSLKeysColumnDef[] => {
               <TableActions
                 data-testid="ssh-key-actions"
                 onDelete={() => {
-                  setSidePanelContent({
-                    view: SSLKeyActionSidePanelViews.DELETE_SSL_KEY,
-                    extras: {
-                      sslKeyId: id,
-                    },
-                  });
+                  open(DeleteSSLKey, "Delete SSL key", { id });
                 }}
               />
             );
           },
         },
       ] as SSLKeysColumnDef[],
-    [setSidePanelContent]
+    [open]
   );
 };
 

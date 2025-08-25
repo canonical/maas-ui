@@ -8,10 +8,7 @@ import { useCreateSslKeys } from "@/app/api/query/sslKeys";
 import type { CreateUserSslkeyError, SslKeyRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-
-type AddSSLKeyProps = {
-  closeForm: () => void;
-};
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 // This can be removed when the autoComplete prop is supported:
 // https://github.com/canonical/react-components/issues/571
@@ -23,7 +20,8 @@ const SSLKeySchema = Yup.object().shape({
   key: Yup.string().required("SSL key is required"),
 });
 
-export const AddSSLKey = ({ closeForm }: AddSSLKeyProps): ReactElement => {
+export const AddSSLKey = (): ReactElement => {
+  const { close } = useSidePanel();
   const uploadSslKey = useCreateSslKeys();
 
   return (
@@ -31,7 +29,7 @@ export const AddSSLKey = ({ closeForm }: AddSSLKeyProps): ReactElement => {
       aria-label="Add SSL key"
       errors={uploadSslKey.error}
       initialValues={{ key: "" }}
-      onCancel={closeForm}
+      onCancel={close}
       onSaveAnalytics={{
         action: "Saved",
         category: "SSL keys preferences",
@@ -46,7 +44,7 @@ export const AddSSLKey = ({ closeForm }: AddSSLKeyProps): ReactElement => {
           });
         }
       }}
-      onSuccess={closeForm}
+      onSuccess={close}
       resetOnSave={true}
       saved={uploadSslKey.isSuccess}
       saving={uploadSslKey.isPending}
