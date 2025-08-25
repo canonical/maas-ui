@@ -14,18 +14,37 @@ const mockServer = setupMockServer(
   sshKeyResolvers.importSshKey.handler(),
   sshKeyResolvers.createSshKey.handler()
 );
+const mockUseSidePanel = vi.spyOn(
+  await import("@/app/base/side-panel-context-new"),
+  "useSidePanel"
+);
 
 describe("AddSSHKey", () => {
+  const mockClose = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    mockUseSidePanel.mockReturnValue({
+      isOpen: false,
+      title: "",
+      size: "regular",
+      component: null,
+      props: {},
+      openSidePanel: vi.fn(),
+      closeSidePanel: mockClose,
+      setSidePanelSize: vi.fn(),
+    });
+  });
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<AddSSHKey closeForm={closeForm} />);
+    renderWithProviders(<AddSSHKey />);
 
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls the import endpoint on save button click when LP or GH is chosen", async () => {
-    renderWithProviders(<AddSSHKey closeForm={vi.fn()} />);
+    renderWithProviders(<AddSSHKey />);
 
     await userEvent.selectOptions(screen.getByRole("combobox"), "lp");
 
@@ -44,7 +63,7 @@ describe("AddSSHKey", () => {
   });
 
   it("calls the create endpoint on save button click when Upload is chosen", async () => {
-    renderWithProviders(<AddSSHKey closeForm={vi.fn()} />);
+    renderWithProviders(<AddSSHKey />);
 
     await userEvent.selectOptions(screen.getByRole("combobox"), "upload");
 
@@ -67,7 +86,7 @@ describe("AddSSHKey", () => {
       sshKeyResolvers.importSshKey.error({ code: 400, message: "Uh oh!" })
     );
 
-    renderWithProviders(<AddSSHKey closeForm={vi.fn()} />);
+    renderWithProviders(<AddSSHKey />);
 
     await userEvent.selectOptions(screen.getByRole("combobox"), "lp");
 

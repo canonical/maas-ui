@@ -47,6 +47,7 @@ const useCloseSidePanelOnEscPressed = (): void => {
   });
 };
 
+// TODO: remove and replace with SidePanel.tsx when the migrations are complete
 const AppSidePanelContent = ({
   title,
   size,

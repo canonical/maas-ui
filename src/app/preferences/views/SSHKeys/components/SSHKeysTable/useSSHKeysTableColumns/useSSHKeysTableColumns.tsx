@@ -4,9 +4,9 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 import type { SshKeyResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { DeleteSSHKey } from "@/app/preferences/views/SSHKeys/components";
 import type { SSHKeyValue } from "@/app/preferences/views/SSHKeys/components/SSHKeysTable/SSHKeysTable";
-import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
 
 type SSHKeysColumnDef = ColumnDef<SSHKeyValue, Partial<SSHKeyValue>>;
 
@@ -19,7 +19,7 @@ const formatKey = (key: SshKeyResponse["key"]) => {
 };
 
 const useSSHKeysTableColumns = (): SSHKeysColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () =>
       [
@@ -73,10 +73,11 @@ const useSSHKeysTableColumns = (): SSHKeysColumnDef[] => {
               <TableActions
                 data-testid="ssh-key-actions"
                 onDelete={() => {
-                  setSidePanelContent({
-                    view: SSHKeyActionSidePanelViews.DELETE_SSH_KEY,
-                    extras: {
-                      sshKeyIds: keys.map((key) => key.id),
+                  openSidePanel({
+                    component: DeleteSSHKey,
+                    title: "Delete SSH keys",
+                    props: {
+                      ids: keys.map((key) => key.id),
                     },
                   });
                 }}
@@ -85,7 +86,7 @@ const useSSHKeysTableColumns = (): SSHKeysColumnDef[] => {
           },
         },
       ] as SSHKeysColumnDef[],
-    [setSidePanelContent]
+    [openSidePanel]
   );
 };
 

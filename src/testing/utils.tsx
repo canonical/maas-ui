@@ -30,6 +30,7 @@ import type {
   SidePanelSize,
 } from "@/app/base/side-panel-context";
 import SidePanelContextProvider from "@/app/base/side-panel-context";
+import NewSidePanelContextProvider from "@/app/base/side-panel-context-new";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
@@ -563,9 +564,11 @@ export const renderWithProviders = (
     result: render(
       <QueryClientProvider client={queryClient}>
         <WebSocketProvider>
-          <Provider store={store}>
-            <RouterProvider router={router} />
-          </Provider>
+          <NewSidePanelContextProvider>
+            <Provider store={store}>
+              <RouterProvider router={router} />
+            </Provider>
+          </NewSidePanelContextProvider>
         </WebSocketProvider>
       </QueryClientProvider>,
       options

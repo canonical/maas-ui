@@ -11,6 +11,7 @@ import MainContentSection from "../MainContentSection";
 import SecondaryNavigation from "../SecondaryNavigation";
 
 import type { AppSidePanelProps } from "@/app/base/components/AppSidePanel";
+import SidePanel from "@/app/base/components/SidePanel";
 import { useThemeContext } from "@/app/base/theme-context";
 import { preferencesNavItems } from "@/app/preferences/constants";
 import { settingsNavItems } from "@/app/settings/constants";
@@ -24,6 +25,7 @@ export type Props = HTMLProps<HTMLDivElement> & {
   sidePanelContent: AppSidePanelProps["content"];
   sidePanelSize?: AppSidePanelProps["size"];
   sidePanelTitle: AppSidePanelProps["title"];
+  useNewSidePanelContext?: boolean; // TODO: remove once the new side panel context is fully migrated
 };
 
 const PageContent = ({
@@ -32,6 +34,7 @@ const PageContent = ({
   sidebar,
   sidePanelContent,
   sidePanelTitle,
+  useNewSidePanelContext = false,
   ...props
 }: Props): React.ReactElement => {
   const { pathname } = useLocation();
@@ -63,7 +66,11 @@ const PageContent = ({
           </MainContentSection>
         </div>
       </AppMain>
-      <AppSidePanel content={sidePanelContent} title={sidePanelTitle} />
+      {useNewSidePanelContext ? (
+        <SidePanel />
+      ) : (
+        <AppSidePanel content={sidePanelContent} title={sidePanelTitle} />
+      )}
     </>
   );
 };

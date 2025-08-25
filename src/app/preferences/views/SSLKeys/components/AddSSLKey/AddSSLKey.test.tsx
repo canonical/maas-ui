@@ -13,14 +13,14 @@ setupMockServer(sslKeyResolvers.createSslKey.handler());
 
 describe("AddSSLKey", () => {
   it("can render", () => {
-    renderWithProviders(<AddSSLKey closeForm={vi.fn()} />);
+    renderWithProviders(<AddSSLKey />);
     expect(
       screen.getByRole("form", { name: "Add SSL key" })
     ).toBeInTheDocument();
   });
 
   it("can create a SSL key", async () => {
-    renderWithProviders(<AddSSLKey closeForm={vi.fn()} />);
+    renderWithProviders(<AddSSLKey />);
     await userEvent.type(
       screen.getByRole("textbox", { name: "SSL key" }),
       "--- begin cert ---..."
