@@ -4,34 +4,36 @@ import { useEffect } from "react";
 import { ContentSection } from "@canonical/maas-react-components";
 import { AppAside, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
+import { useLocation } from "react-router";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { history } from "@/redux-store";
 
 const useCloseSidePanelOnRouteChange = (): void => {
+  const location = useLocation();
   const { close } = useSidePanel();
 
-  // close side panel on route change
-  useEffect(() => {
-    const unlisten = history.listen(() => {
+  useEffect(
+    () => {
       close();
-    });
-
-    return () => {
-      unlisten();
-    };
-  }, [close]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [location.pathname, location.search, location.hash]
+  );
 };
 
 const useResetSidePanelOnUnmount = (): void => {
   const { setSize } = useSidePanel();
 
   // reset side panel size to default on unmounting
-  useEffect(() => {
-    return () => {
-      setSize("regular");
-    };
-  }, [setSize]);
+  useEffect(
+    () => {
+      return () => {
+        setSize("regular");
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 };
 
 const useCloseSidePanelOnEscPressed = (): void => {
