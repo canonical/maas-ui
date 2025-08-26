@@ -8,6 +8,7 @@ import {
   waitFor,
   setupMockServer,
   renderWithProviders,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -15,13 +16,13 @@ const mockServer = setupMockServer(
   usersResolvers.getUser.handler(),
   usersResolvers.updateUser.handler()
 );
+const { mockClose } = await mockSidePanel();
 
 describe("EditUser", () => {
   const testUserId = 1;
 
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<EditUser closeForm={closeForm} id={testUserId} />);
+    renderWithProviders(<EditUser id={testUserId} />);
 
     await waitFor(() => {
       expect(
@@ -30,11 +31,11 @@ describe("EditUser", () => {
     });
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("updates a user on save click", async () => {
-    renderWithProviders(<EditUser closeForm={vi.fn()} id={testUserId} />);
+    renderWithProviders(<EditUser id={testUserId} />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Username")).toBeInTheDocument();
@@ -64,11 +65,7 @@ describe("EditUser", () => {
 
   it("updates self-editing user on save click", async () => {
     renderWithProviders(
-      <EditUser
-        closeForm={vi.fn()}
-        id={mockUsers.items[0].id}
-        isSelfEditing={true}
-      />
+      <EditUser id={mockUsers.items[0].id} isSelfEditing={true} />
     );
 
     await waitFor(() => {
@@ -104,11 +101,7 @@ describe("EditUser", () => {
   it("displays authentication error when current password is wrong", async () => {
     mockServer.use(authResolvers.authenticate.error({ code: 401 }));
     renderWithProviders(
-      <EditUser
-        closeForm={vi.fn()}
-        id={mockUsers.items[0].id}
-        isSelfEditing={true}
-      />
+      <EditUser id={mockUsers.items[0].id} isSelfEditing={true} />
     );
 
     await waitFor(() => {
@@ -149,7 +142,7 @@ describe("EditUser", () => {
       usersResolvers.getUser.handler()
     );
 
-    renderWithProviders(<EditUser closeForm={vi.fn()} id={testUserId} />);
+    renderWithProviders(<EditUser id={testUserId} />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Username")).toBeInTheDocument();

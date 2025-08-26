@@ -1,10 +1,10 @@
-import React from "react";
+import type { ReactElement } from "react";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { ZonesListHeader, ZonesTable } from "@/app/zones/components";
 
-const ZonesList: React.FC = () => {
+const ZonesList = (): ReactElement => {
   useWindowTitle("Zones");
 
   return (

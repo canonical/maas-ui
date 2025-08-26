@@ -7,9 +7,9 @@ import type { UserWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import TableHeader from "@/app/base/components/TableHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
+import { DeleteUser, EditUser } from "@/app/settings/views/Users/components";
 
 type UsersColumnDef = ColumnDef<
   UserWithSummaryResponse,
@@ -17,7 +17,7 @@ type UsersColumnDef = ColumnDef<
 >;
 
 const useUsersTableColumns = (): UsersColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const authUser = useGetCurrentUser();
   const [isDisplayingUsername, setIsDisplayingUsername] = useState(true);
   return useMemo(
@@ -162,21 +162,19 @@ const useUsersTableColumns = (): UsersColumnDef[] => {
                 }
                 editPath={isAuthUser ? urls.preferences.details : undefined}
                 onDelete={() => {
-                  setSidePanelContent({
-                    view: UserActionSidePanelViews.DELETE_USER,
-                    extras: {
-                      userId: id,
-                    },
+                  openSidePanel({
+                    component: DeleteUser,
+                    title: "Delete user",
+                    props: { id },
                   });
                 }}
                 onEdit={
                   !isAuthUser
                     ? () => {
-                        setSidePanelContent({
-                          view: UserActionSidePanelViews.EDIT_USER,
-                          extras: {
-                            userId: id,
-                          },
+                        openSidePanel({
+                          component: EditUser,
+                          title: "Edit user",
+                          props: { id },
                         });
                       }
                     : undefined
@@ -186,7 +184,7 @@ const useUsersTableColumns = (): UsersColumnDef[] => {
           },
         },
       ] as UsersColumnDef[],
-    [authUser.data?.id, isDisplayingUsername, setSidePanelContent]
+    [authUser.data?.id, isDisplayingUsername, openSidePanel]
   );
 };
 

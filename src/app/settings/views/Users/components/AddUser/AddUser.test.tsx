@@ -1,5 +1,3 @@
-import { vi } from "vitest";
-
 import AddUser from "./AddUser";
 
 import { usersResolvers } from "@/testing/resolvers/users";
@@ -9,21 +7,22 @@ import {
   setupMockServer,
   renderWithProviders,
   waitFor,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(usersResolvers.createUser.handler());
+const { mockClose } = await mockSidePanel();
 
 describe("AddUser", () => {
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<AddUser closeForm={closeForm} />);
+    renderWithProviders(<AddUser />);
 
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls create user on save click", async () => {
-    renderWithProviders(<AddUser closeForm={vi.fn()} />);
+    renderWithProviders(<AddUser />);
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /username/i }),
@@ -51,7 +50,7 @@ describe("AddUser", () => {
       usersResolvers.createUser.error({ code: 400, message: "Uh oh!" })
     );
 
-    renderWithProviders(<AddUser closeForm={vi.fn()} />);
+    renderWithProviders(<AddUser />);
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /username/i }),
