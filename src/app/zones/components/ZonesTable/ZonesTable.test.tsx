@@ -1,9 +1,7 @@
-import type { Mock } from "vitest";
 import { describe } from "vitest";
 
 import ZonesTable from "./ZonesTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
@@ -22,21 +20,7 @@ const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler()
 );
 
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
-
 describe("ZonesTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   describe("display", () => {
     it("displays a loading component if zones are loading", async () => {
       mockIsPending();

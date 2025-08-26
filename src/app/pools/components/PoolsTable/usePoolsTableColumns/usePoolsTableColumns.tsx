@@ -5,9 +5,9 @@ import { Link } from "react-router";
 
 import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import { PoolActionSidePanelViews } from "@/app/pools/constants";
+import { DeletePool, EditPool } from "@/app/pools/components";
 import { FilterMachines } from "@/app/store/machine/utils";
 
 const getMachinesLabel = (row: Row<ResourcePoolWithSummaryResponse>) => {
@@ -30,7 +30,7 @@ export type PoolsColumnDef = ColumnDef<
 >;
 
 const usePoolsTableColumns = (): PoolsColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () =>
       [
@@ -78,19 +78,19 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
                 }
                 editDisabled={!row.original.permissions.includes("edit")}
                 onDelete={() => {
-                  setSidePanelContent({
-                    view: PoolActionSidePanelViews.DELETE_POOL,
-                    extras: {
-                      poolId: row.original.id,
+                  openSidePanel({
+                    component: DeletePool,
+                    title: "Delete pool",
+                    props: {
+                      id: row.original.id,
                     },
                   });
                 }}
                 onEdit={() => {
-                  setSidePanelContent({
-                    view: PoolActionSidePanelViews.EDIT_POOL,
-                    extras: {
-                      poolId: row.original.id,
-                    },
+                  openSidePanel({
+                    component: EditPool,
+                    title: "Edit pool",
+                    props: { id: row.original.id },
                   });
                 }}
               />
@@ -98,7 +98,7 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
           },
         },
       ] as PoolsColumnDef[],
-    [setSidePanelContent]
+    [openSidePanel]
   );
 };
 

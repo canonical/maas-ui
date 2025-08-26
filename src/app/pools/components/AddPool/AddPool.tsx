@@ -9,17 +9,15 @@ import type {
 } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-
-type AddPoolProps = {
-  closeForm: () => void;
-};
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 const PoolSchema = Yup.object().shape({
   name: Yup.string().required("name is required"),
   description: Yup.string(),
 });
 
-const AddPool = ({ closeForm }: AddPoolProps): ReactElement => {
+const AddPool = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const createPool = useCreatePool();
 
   return (
@@ -30,7 +28,7 @@ const AddPool = ({ closeForm }: AddPoolProps): ReactElement => {
         description: "",
         name: "",
       }}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={(values) => {
         createPool.mutate({
           body: {
@@ -39,7 +37,7 @@ const AddPool = ({ closeForm }: AddPoolProps): ReactElement => {
           },
         });
       }}
-      onSuccess={closeForm}
+      onSuccess={closeSidePanel}
       resetOnSave={true}
       saved={createPool.isSuccess}
       saving={createPool.isPending}

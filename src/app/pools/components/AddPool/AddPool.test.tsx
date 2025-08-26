@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/react";
-import { vi } from "vitest";
 
 import AddPool from "./AddPool";
 
@@ -9,21 +8,22 @@ import {
   renderWithProviders,
   userEvent,
   setupMockServer,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(poolsResolvers.createPool.handler());
+const { mockClose } = await mockSidePanel();
 
 describe("AddPool", () => {
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<AddPool closeForm={closeForm} />);
+    renderWithProviders(<AddPool />);
 
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls create pool on save click", async () => {
-    renderWithProviders(<AddPool closeForm={vi.fn()} />);
+    renderWithProviders(<AddPool />);
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /name/i }),
@@ -47,7 +47,7 @@ describe("AddPool", () => {
       poolsResolvers.createPool.error({ code: 400, message: "Uh oh!" })
     );
 
-    renderWithProviders(<AddPool closeForm={vi.fn()} />);
+    renderWithProviders(<AddPool />);
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /name/i }),

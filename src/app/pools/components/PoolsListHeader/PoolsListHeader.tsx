@@ -6,16 +6,13 @@ import pluralize from "pluralize";
 import { Link } from "react-router";
 
 import { usePoolCount } from "@/app/api/query/pools";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import { PoolActionSidePanelViews } from "@/app/pools/constants";
+import { AddPool } from "@/app/pools/components";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 
-const PoolsListHeader = ({
-  setSidePanelContent,
-}: {
-  setSidePanelContent: SetSidePanelContent;
-}): ReactNode => {
+const PoolsListHeader = (): ReactNode => {
+  const { openSidePanel } = useSidePanel();
   const { machineCount } = useFetchMachineCount();
   const resourcePoolsCount = usePoolCount();
   const count = resourcePoolsCount?.data ? resourcePoolsCount.data : 0;
@@ -31,7 +28,7 @@ const PoolsListHeader = ({
           data-testid="add-pool"
           key="add-pool"
           onClick={() => {
-            setSidePanelContent({ view: PoolActionSidePanelViews.CREATE_POOL });
+            openSidePanel({ component: AddPool, title: "Add pool" });
           }}
         >
           Add pool

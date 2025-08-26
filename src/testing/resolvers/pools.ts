@@ -33,10 +33,10 @@ const mockPools: ListResourcePoolsResponse = {
     resourcePool({
       name: "car",
       description: "a company car",
-      machine_ready_count: 1,
-      machine_total_count: 1,
+      machine_ready_count: 0,
+      machine_total_count: 0,
       is_default: false,
-      permissions: ["edit"],
+      permissions: ["edit", "delete"],
     }),
   ],
   total: 3,

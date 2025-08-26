@@ -1,11 +1,7 @@
-import userEvent from "@testing-library/user-event";
-import type { Mock } from "vitest";
 import { describe } from "vitest";
 
 import PoolsTable from "./PoolsTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
@@ -22,21 +18,7 @@ const mockServer = setupMockServer(
   poolsResolvers.getPool.handler()
 );
 
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
-
 describe("PoolsTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   describe("display", () => {
     it("displays a loading component if pools are loading", async () => {
       mockIsPending();
@@ -218,71 +200,6 @@ describe("PoolsTable", () => {
         expect(
           screen.getByRole("button", { name: "Delete" })
         ).toBeAriaDisabled();
-      });
-    });
-  });
-
-  describe("actions", () => {
-    it("opens edit pool side panel form", async () => {
-      mockServer.use(
-        poolsResolvers.listPools.handler({
-          items: [factory.resourcePool({ id: 1, permissions: ["edit"] })],
-          total: 1,
-        })
-      );
-
-      renderWithProviders(<PoolsTable />);
-
-      await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: "Edit" })
-        ).toBeInTheDocument();
-      });
-
-      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
-
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: PoolActionSidePanelViews.EDIT_POOL,
-          extras: {
-            poolId: 1,
-          },
-        });
-      });
-    });
-
-    it("opens delete pool side panel form", async () => {
-      mockServer.use(
-        poolsResolvers.listPools.handler({
-          items: [
-            factory.resourcePool({
-              id: 1,
-              machine_ready_count: 0,
-              machine_total_count: 0,
-              permissions: ["delete"],
-            }),
-          ],
-          total: 1,
-        })
-      );
-
-      renderWithProviders(<PoolsTable />);
-
-      await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: "Delete" })
-        ).toBeInTheDocument();
-      });
-
-      await userEvent.click(screen.getByRole("button", { name: "Delete" }));
-
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: PoolActionSidePanelViews.DELETE_POOL,
-          extras: {
-            poolId: 1,
-          },
-        });
       });
     });
   });

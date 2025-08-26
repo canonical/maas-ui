@@ -5,13 +5,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useDeletePool } from "@/app/api/query/pools";
 import { getResourcePoolQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 type DeletePoolProps = {
   id: number;
-  closeForm: () => void;
 };
 
-const DeletePool = ({ id, closeForm }: DeletePoolProps): ReactElement => {
+const DeletePool = ({ id }: DeletePoolProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const deletePool = useDeletePool();
 
@@ -21,7 +22,7 @@ const DeletePool = ({ id, closeForm }: DeletePoolProps): ReactElement => {
       errors={deletePool.error}
       initialValues={{}}
       modelType="resource pool"
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         deletePool.mutate({ path: { resource_pool_id: id } });
       }}
@@ -32,7 +33,7 @@ const DeletePool = ({ id, closeForm }: DeletePoolProps): ReactElement => {
               path: { resource_pool_id: id },
             }),
           })
-          .then(closeForm);
+          .then(closeSidePanel);
       }}
       saved={deletePool.isSuccess}
       saving={deletePool.isPending}

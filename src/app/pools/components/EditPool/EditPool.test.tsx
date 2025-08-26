@@ -7,19 +7,20 @@ import {
   screen,
   setupMockServer,
   renderWithProviders,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   poolsResolvers.getPool.handler(),
   poolsResolvers.updatePool.handler()
 );
+const { mockClose } = await mockSidePanel();
 
 describe("EditPool", () => {
   const testPoolId = 1;
 
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<EditPool closeForm={closeForm} id={testPoolId} />);
+    renderWithProviders(<EditPool id={testPoolId} />);
 
     await waitFor(() => {
       expect(
@@ -28,11 +29,11 @@ describe("EditPool", () => {
     });
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls update pool on save click", async () => {
-    renderWithProviders(<EditPool closeForm={vi.fn()} id={testPoolId} />);
+    renderWithProviders(<EditPool id={testPoolId} />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Name (required)")).toBeInTheDocument();
@@ -65,7 +66,7 @@ describe("EditPool", () => {
       poolsResolvers.updatePool.handler()
     );
 
-    renderWithProviders(<EditPool closeForm={vi.fn()} id={testPoolId} />);
+    renderWithProviders(<EditPool id={testPoolId} />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Name (required)")).toBeInTheDocument();

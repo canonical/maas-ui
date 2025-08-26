@@ -26,8 +26,6 @@ import {
   NetworkDiscoverySidePanelViews,
   type NetworkDiscoverySidePanelContent,
 } from "@/app/networkDiscovery/constants";
-import type { PoolSidePanelContent } from "@/app/pools/constants";
-import { PoolActionSidePanelViews } from "@/app/pools/constants";
 import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
 import type { UserSidePanelContent } from "@/app/settings/views/Users/constants";
 import type { NodeActions } from "@/app/store/types/node";
@@ -65,7 +63,6 @@ export type SidePanelContent =
   | KVMSidePanelContent
   | MachineSidePanelContent
   | NetworkDiscoverySidePanelContent
-  | PoolSidePanelContent
   | RepositorySidePanelContent
   | SpaceDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
@@ -100,7 +97,6 @@ export const SidePanelViews = {
   ...VLANDetailsSidePanelViews,
   ...FabricDetailsSidePanelViews,
   ...ImageSidePanelViews,
-  ...PoolActionSidePanelViews,
   ...SubnetDetailsSidePanelViews,
   ...SpaceDetailsSidePanelViews,
   ...RepositoryActionSidePanelViews,
@@ -154,9 +150,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.UNMOUNT_FILESYSTEM[1]]: "Unmount filesystem",
   [SidePanelViews.UPDATE_DATASTORE[1]]: "Update datastore",
   [SidePanelViews.UpdateTag[1]]: "Update Tag",
-  [SidePanelViews.CREATE_POOL[1]]: "Add pool",
-  [SidePanelViews.EDIT_POOL[1]]: "Edit pool",
-  [SidePanelViews.DELETE_POOL[1]]: "Delete pool",
   [SidePanelViews.CREATE_USER[1]]: "Add user",
   [SidePanelViews.EDIT_USER[1]]: "Edit user",
   [SidePanelViews.DELETE_USER[1]]: "Delete user",
