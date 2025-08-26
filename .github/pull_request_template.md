@@ -14,7 +14,7 @@
 
 ## Fixes
 
-Resolves [MAASENG-XXXX](https://warthogs.atlassian.net/browse/NAASENG-XXXX)
+Resolves [MAASENG-XXXX](https://warthogs.atlassian.net/browse/MAASENG-XXXX)
 
 <!-- Make sure you link the relevant Jira ticket or Launchpad bug above, if applicable. -->
 
