@@ -22,6 +22,7 @@ import {
 import { HistoryRouter } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
+import { vi } from "vitest";
 
 import type { QueryModel } from "@/app/api/query-client";
 import { client } from "@/app/apiclient/client.gen";
@@ -689,4 +690,35 @@ export const spyOnMutation = (obj: unknown, methodName: string) => {
   });
 
   return mockMutate;
+};
+
+/**
+ * Mocks the generic side panel context
+ * @returns A mock functions for opening and closing the side panel
+ */
+export const mockSidePanel = async () => {
+  const mockUseSidePanel = vi.spyOn(
+    await import("@/app/base/side-panel-context-new"),
+    "useSidePanel"
+  );
+
+  const mockOpen = vi.fn();
+  const mockClose = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    mockUseSidePanel.mockReturnValue({
+      isOpen: false,
+      title: "",
+      size: "regular",
+      component: null,
+      props: {},
+      openSidePanel: mockOpen,
+      closeSidePanel: mockClose,
+      setSidePanelSize: vi.fn(),
+    });
+  });
+
+  return { mockOpen, mockClose };
 };
