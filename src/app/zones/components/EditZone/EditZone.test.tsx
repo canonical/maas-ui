@@ -19,7 +19,7 @@ const { mockClose } = await mockSidePanel();
 describe("EditZone", () => {
   const testZoneId = 1;
 
-  it("runs closeForm function when the cancel button is clicked", async () => {
+  it("runs closeSidePanel function when the cancel button is clicked", async () => {
     renderWithProviders(<EditZone id={testZoneId} />);
 
     await waitFor(() => {

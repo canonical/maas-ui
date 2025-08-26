@@ -14,7 +14,7 @@ const mockServer = setupMockServer(zoneResolvers.createZone.handler());
 const { mockClose } = await mockSidePanel();
 
 describe("AddZone", () => {
-  it("runs closeForm function when the cancel button is clicked", async () => {
+  it("runs closeSidePanel function when the cancel button is clicked", async () => {
     renderWithProviders(<AddZone />);
 
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));

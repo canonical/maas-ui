@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/react";
-import { vi } from "vitest";
 
 import AddSSHKey from "@/app/preferences/views/SSHKeys/components/AddSSHKey/AddSSHKey";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
@@ -8,35 +7,17 @@ import {
   renderWithProviders,
   setupMockServer,
   userEvent,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   sshKeyResolvers.importSshKey.handler(),
   sshKeyResolvers.createSshKey.handler()
 );
-const mockUseSidePanel = vi.spyOn(
-  await import("@/app/base/side-panel-context-new"),
-  "useSidePanel"
-);
+const { mockClose } = await mockSidePanel();
 
 describe("AddSSHKey", () => {
-  const mockClose = vi.fn();
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-
-    mockUseSidePanel.mockReturnValue({
-      isOpen: false,
-      title: "",
-      size: "regular",
-      component: null,
-      props: {},
-      openSidePanel: vi.fn(),
-      closeSidePanel: mockClose,
-      setSidePanelSize: vi.fn(),
-    });
-  });
-  it("runs closeForm function when the cancel button is clicked", async () => {
+  it("runs closeSidePanel function when the cancel button is clicked", async () => {
     renderWithProviders(<AddSSHKey />);
 
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
