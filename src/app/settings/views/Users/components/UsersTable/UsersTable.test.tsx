@@ -3,6 +3,11 @@ import { describe } from "vitest";
 
 import UsersTable from "./UsersTable";
 
+import {
+  AddUser,
+  DeleteUser,
+  EditUser,
+} from "@/app/settings/views/Users/components";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { usersResolvers } from "@/testing/resolvers/users";
@@ -13,12 +18,14 @@ import {
   setupMockServer,
   mockIsPending,
   waitForLoading,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   usersResolvers.listUsers.handler(),
   usersResolvers.getUser.handler()
 );
+const { mockOpen } = await mockSidePanel();
 
 describe("UsersTable", () => {
   describe("display", () => {
@@ -117,6 +124,69 @@ describe("UsersTable", () => {
         expect(
           screen.getByRole("button", { name: "Delete" })
         ).toBeAriaDisabled();
+      });
+    });
+  });
+
+  describe("actions", () => {
+    it("displays the form when Add user is clicked", async () => {
+      renderWithProviders(<UsersTable />);
+
+      await userEvent.click(screen.getByRole("button", { name: "Add user" }));
+
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: AddUser,
+        title: "Add user",
+      });
+    });
+
+    it("opens edit user side panel form", async () => {
+      mockServer.use(
+        usersResolvers.listUsers.handler({
+          items: [factory.user({ id: 1 })],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<UsersTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Edit" })
+        ).toBeInTheDocument();
+      });
+
+      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: EditUser,
+        title: "Edit user",
+        props: { id: 1 },
+      });
+    });
+
+    it("opens delete user side panel form", async () => {
+      mockServer.use(
+        usersResolvers.listUsers.handler({
+          items: [factory.user({ id: 1 })],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<UsersTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Delete" })
+        ).toBeInTheDocument();
+      });
+
+      await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: DeleteUser,
+        title: "Delete user",
+        props: { id: 1 },
       });
     });
   });

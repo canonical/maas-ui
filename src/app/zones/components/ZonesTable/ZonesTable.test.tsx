@@ -1,7 +1,9 @@
+import userEvent from "@testing-library/user-event";
 import { describe } from "vitest";
 
 import ZonesTable from "./ZonesTable";
 
+import { DeleteZone, EditZone } from "@/app/zones/components";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
@@ -12,6 +14,7 @@ import {
   setupMockServer,
   within,
   mockIsPending,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -19,6 +22,7 @@ const mockServer = setupMockServer(
   zoneResolvers.getZone.handler(),
   authResolvers.getCurrentUser.handler()
 );
+const { mockOpen } = await mockSidePanel();
 
 describe("ZonesTable", () => {
   describe("display", () => {
@@ -172,6 +176,62 @@ describe("ZonesTable", () => {
         expect(
           screen.getByRole("button", { name: "Delete" })
         ).toBeAriaDisabled();
+      });
+    });
+  });
+
+  describe("actions", () => {
+    it("opens edit zones side panel form", async () => {
+      mockServer.use(
+        zoneResolvers.listZones.handler({
+          items: [factory.zone({ id: 1 })],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<ZonesTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Edit" })
+        ).toBeInTheDocument();
+      });
+
+      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: EditZone,
+        title: "Edit AZ",
+        props: { id: 1 },
+      });
+    });
+
+    it("opens delete zone side panel form", async () => {
+      mockServer.use(
+        zoneResolvers.listZones.handler({
+          items: [
+            factory.zone({
+              id: 2,
+            }),
+          ],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<ZonesTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Delete" })
+        ).toBeInTheDocument();
+      });
+
+      await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: DeleteZone,
+        title: "Delete AZ",
+        props: { id: 2 },
       });
     });
   });

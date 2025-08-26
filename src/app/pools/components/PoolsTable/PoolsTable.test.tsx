@@ -1,7 +1,9 @@
+import userEvent from "@testing-library/user-event";
 import { describe } from "vitest";
 
 import PoolsTable from "./PoolsTable";
 
+import { DeletePool, EditPool } from "@/app/pools/components";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
@@ -11,12 +13,14 @@ import {
   setupMockServer,
   within,
   mockIsPending,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   poolsResolvers.listPools.handler(),
   poolsResolvers.getPool.handler()
 );
+const { mockOpen } = await mockSidePanel();
 
 describe("PoolsTable", () => {
   describe("display", () => {
@@ -200,6 +204,65 @@ describe("PoolsTable", () => {
         expect(
           screen.getByRole("button", { name: "Delete" })
         ).toBeAriaDisabled();
+      });
+    });
+  });
+
+  describe("actions", () => {
+    it("opens edit pool side panel form", async () => {
+      mockServer.use(
+        poolsResolvers.listPools.handler({
+          items: [factory.resourcePool({ id: 1, permissions: ["edit"] })],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<PoolsTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Edit" })
+        ).toBeInTheDocument();
+      });
+
+      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: EditPool,
+        title: "Edit pool",
+        props: { id: 1 },
+      });
+    });
+
+    it("opens delete pool side panel form", async () => {
+      mockServer.use(
+        poolsResolvers.listPools.handler({
+          items: [
+            factory.resourcePool({
+              id: 1,
+              machine_ready_count: 0,
+              machine_total_count: 0,
+              permissions: ["delete"],
+            }),
+          ],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<PoolsTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Delete" })
+        ).toBeInTheDocument();
+      });
+
+      await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: DeletePool,
+        title: "Delete pool",
+        props: { id: 1 },
       });
     });
   });
