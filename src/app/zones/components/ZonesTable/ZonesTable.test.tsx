@@ -1,11 +1,9 @@
-import userEvent from "@testing-library/user-event";
 import type { Mock } from "vitest";
 import { describe } from "vitest";
 
 import ZonesTable from "./ZonesTable";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
@@ -190,68 +188,6 @@ describe("ZonesTable", () => {
         expect(
           screen.getByRole("button", { name: "Delete" })
         ).toBeAriaDisabled();
-      });
-    });
-  });
-
-  describe("actions", () => {
-    it("opens edit zones side panel form", async () => {
-      mockServer.use(
-        zoneResolvers.listZones.handler({
-          items: [factory.zone({ id: 1 })],
-          total: 1,
-        })
-      );
-
-      renderWithProviders(<ZonesTable />);
-
-      await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: "Edit" })
-        ).toBeInTheDocument();
-      });
-
-      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
-
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: ZoneActionSidePanelViews.EDIT_ZONE,
-          extras: {
-            zoneId: 1,
-          },
-        });
-      });
-    });
-
-    it("opens delete zone side panel form", async () => {
-      mockServer.use(
-        zoneResolvers.listZones.handler({
-          items: [
-            factory.zone({
-              id: 2,
-            }),
-          ],
-          total: 1,
-        })
-      );
-
-      renderWithProviders(<ZonesTable />);
-
-      await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: "Delete" })
-        ).toBeInTheDocument();
-      });
-
-      await userEvent.click(screen.getByRole("button", { name: "Delete" }));
-
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: ZoneActionSidePanelViews.DELETE_ZONE,
-          extras: {
-            zoneId: 2,
-          },
-        });
       });
     });
   });

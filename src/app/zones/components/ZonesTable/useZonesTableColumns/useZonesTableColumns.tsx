@@ -6,11 +6,11 @@ import { Link } from "react-router";
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import type { ZoneWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import { FilterDevices } from "@/app/store/device/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
-import { ZoneActionSidePanelViews } from "@/app/zones/constants";
+import { DeleteZone, EditZone } from "@/app/zones/components";
 
 export type ZoneColumnDef = ColumnDef<
   ZoneWithSummaryResponse,
@@ -28,7 +28,7 @@ const machinesFilter = (name: string) =>
   });
 
 const useZonesTableColumns = (): ZoneColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const isSuperUser = useGetIsSuperUser();
   return useMemo(
     () => [
@@ -104,19 +104,19 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
                 !canBeDeleted ? "Cannot delete the default zone." : null
               }
               onDelete={() => {
-                setSidePanelContent({
-                  view: ZoneActionSidePanelViews.DELETE_ZONE,
-                  extras: {
-                    zoneId: row.original.id,
+                openSidePanel({
+                  component: DeleteZone,
+                  title: "Delete AZ",
+                  props: {
+                    id: row.original.id,
                   },
                 });
               }}
               onEdit={() => {
-                setSidePanelContent({
-                  view: ZoneActionSidePanelViews.EDIT_ZONE,
-                  extras: {
-                    zoneId: row.original.id,
-                  },
+                openSidePanel({
+                  component: EditZone,
+                  title: "Edit AZ",
+                  props: { id: row.original.id },
                 });
               }}
             />
@@ -124,7 +124,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         },
       },
     ],
-    [isSuperUser.data, setSidePanelContent]
+    [isSuperUser.data, openSidePanel]
   );
 };
 

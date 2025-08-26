@@ -58,10 +58,6 @@ import {
 } from "@/app/subnets/views/VLANDetails/constants";
 import { TagSidePanelViews } from "@/app/tags/constants";
 import type { TagSidePanelContent } from "@/app/tags/types";
-import {
-  ZoneActionSidePanelViews,
-  type ZoneSidePanelContent,
-} from "@/app/zones/constants";
 
 export type SidePanelContent =
   | ControllerSidePanelContent
@@ -83,7 +79,6 @@ export type SidePanelContent =
   | TagSidePanelContent
   | UserSidePanelContent
   | VLANDetailsSidePanelContent
-  | ZoneSidePanelContent
   | null;
 
 export type SetSidePanelContent<T = SidePanelContent> = (
@@ -104,7 +99,6 @@ export const SidePanelViews = {
   ...KVMSidePanelViews,
   ...TagSidePanelViews,
   ...UserActionSidePanelViews,
-  ...ZoneActionSidePanelViews,
   ...SubnetSidePanelViews,
   ...DomainDetailsSidePanelViews,
   ...DomainListSidePanelViews,
@@ -155,9 +149,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.DELETE_VOLUME_GROUP[1]]: "Delete volume group",
   [SidePanelViews.DOWNLOAD_IMAGE[1]]: "Select upstream images to sync",
   [SidePanelViews.EDIT_INTERFACE[1]]: "Edit interface",
-  [SidePanelViews.CREATE_ZONE[1]]: "Add AZ",
-  [SidePanelViews.EDIT_ZONE[1]]: "Edit AZ",
-  [SidePanelViews.DELETE_ZONE[1]]: "Delete AZ",
   [SidePanelViews.EDIT_DISK[1]]: "Edit disk",
   [SidePanelViews.EDIT_PARTITION[1]]: "Edit partition",
   [SidePanelViews.EDIT_PHYSICAL[1]]: "Edit physical",

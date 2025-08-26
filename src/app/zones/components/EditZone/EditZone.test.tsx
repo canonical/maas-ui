@@ -7,19 +7,20 @@ import {
   waitFor,
   setupMockServer,
   renderWithProviders,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   zoneResolvers.getZone.handler(),
   zoneResolvers.updateZone.handler()
 );
+const { mockClose } = await mockSidePanel();
 
 describe("EditZone", () => {
   const testZoneId = 1;
 
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<EditZone closeForm={closeForm} id={testZoneId} />);
+    renderWithProviders(<EditZone id={testZoneId} />);
 
     await waitFor(() => {
       expect(
@@ -28,11 +29,11 @@ describe("EditZone", () => {
     });
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("updates a zone on save click", async () => {
-    renderWithProviders(<EditZone closeForm={vi.fn()} id={testZoneId} />);
+    renderWithProviders(<EditZone id={testZoneId} />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Name")).toBeInTheDocument();
@@ -65,7 +66,7 @@ describe("EditZone", () => {
       zoneResolvers.getZone.handler()
     );
 
-    renderWithProviders(<EditZone closeForm={vi.fn()} id={testZoneId} />);
+    renderWithProviders(<EditZone id={testZoneId} />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Name")).toBeInTheDocument();
