@@ -22,10 +22,6 @@ import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { KVMSidePanelContent } from "@/app/kvm/types";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineSidePanelContent } from "@/app/machines/types";
-import {
-  NetworkDiscoverySidePanelViews,
-  type NetworkDiscoverySidePanelContent,
-} from "@/app/networkDiscovery/constants";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import {
@@ -60,7 +56,6 @@ export type SidePanelContent =
   | ImageSidePanelContent
   | KVMSidePanelContent
   | MachineSidePanelContent
-  | NetworkDiscoverySidePanelContent
   | RepositorySidePanelContent
   | SpaceDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
@@ -89,7 +84,6 @@ export const SidePanelViews = {
   ...SubnetSidePanelViews,
   ...DomainDetailsSidePanelViews,
   ...DomainListSidePanelViews,
-  ...NetworkDiscoverySidePanelViews,
   ...VLANDetailsSidePanelViews,
   ...FabricDetailsSidePanelViews,
   ...ImageSidePanelViews,
@@ -104,7 +98,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.ADD_BRIDGE[1]]: "Create bridge",
   [SidePanelViews.ADD_CONTROLLER[1]]: "Add controller",
   [SidePanelViews.ADD_CHASSIS[1]]: "Add chassis",
-  [SidePanelViews.ADD_DISCOVERY[1]]: "Add discovery",
   [SidePanelViews.ADD_DOMAIN[1]]: "Add domains",
   [SidePanelViews.ADD_INTERFACE[1]]: "Add interface",
   [SidePanelViews.ADD_MACHINE[1]]: "Add machine",
@@ -113,7 +106,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.AddTag[1]]: "Create new tag",
   [SidePanelViews.ADD_VLAN[1]]: "Add VLAN",
   [SidePanelViews.APPLY_STORAGE_LAYOUT[1]]: "Change storage layout",
-  [SidePanelViews.CLEAR_ALL_DISCOVERIES[1]]: "Clear all discoveries",
   [SidePanelViews.CREATE_BCACHE[1]]: "Create bcache",
   [SidePanelViews.CREATE_CACHE_SET[1]]: "Create cache set",
   [SidePanelViews.CREATE_DATASTORE[1]]: "Create datastore",
@@ -121,7 +113,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.CREATE_PARTITION[1]]: "Create partition",
   [SidePanelViews.CREATE_RAID[1]]: "Create raid",
   [SidePanelViews.CREATE_VOLUME_GROUP[1]]: "Create volume group",
-  [SidePanelViews.DELETE_DISCOVERY[1]]: "Delete discovery",
   [SidePanelViews.DELETE_DISK[1]]: "Delete disk",
   [SidePanelViews.DELETE_FILESYSTEM[1]]: "Delete filesystem",
   [SidePanelViews.DELETE_SPECIAL_FILESYSTEM[1]]: "Delete special filesystem",

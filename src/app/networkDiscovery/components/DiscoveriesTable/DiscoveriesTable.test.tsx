@@ -1,11 +1,12 @@
 import userEvent from "@testing-library/user-event";
-import type { Mock } from "vitest";
 import { describe } from "vitest";
 
 import DiscoveriesTable from "./DiscoveriesTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/constants";
+import {
+  DiscoveryAddForm,
+  DiscoveryDeleteForm,
+} from "@/app/networkDiscovery/components";
 import { Labels } from "@/app/networkDiscovery/views/DiscoveriesList/DiscoveriesList";
 import { discovery } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
@@ -16,28 +17,16 @@ import {
   waitFor,
   setupMockServer,
   mockIsPending,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   networkDiscoveryResolvers.listNetworkDiscoveries.handler(),
   authResolvers.getCurrentUser.handler()
 );
-
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
+const { mockOpen } = await mockSidePanel();
 
 describe("DiscoveriesTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   describe("display", () => {
     it("displays a loading component if discoveries are loading", async () => {
       mockIsPending();
@@ -104,11 +93,10 @@ describe("DiscoveriesTable", () => {
       );
 
       await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: NetworkDiscoverySidePanelViews.ADD_DISCOVERY,
-          extras: {
-            discovery: mockDiscovery,
-          },
+        expect(mockOpen).toHaveBeenCalledWith({
+          component: DiscoveryAddForm,
+          title: "Add discovery",
+          props: { discovery: mockDiscovery },
         });
       });
     });
@@ -139,11 +127,10 @@ describe("DiscoveriesTable", () => {
       );
 
       await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: NetworkDiscoverySidePanelViews.DELETE_DISCOVERY,
-          extras: {
-            discovery: mockDiscovery,
-          },
+        expect(mockOpen).toHaveBeenCalledWith({
+          component: DiscoveryDeleteForm,
+          title: "Delete discovery",
+          props: { discovery: mockDiscovery },
         });
       });
     });
