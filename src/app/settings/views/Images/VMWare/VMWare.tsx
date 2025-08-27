@@ -5,6 +5,7 @@ import VMWareForm from "../VMWareForm";
 
 import { useConfigurations } from "@/app/api/query/configurations";
 import type { PublicConfigName } from "@/app/apiclient";
+import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { ConfigNames } from "@/app/store/config/types";
 
@@ -25,23 +26,25 @@ const VMWare = (): React.ReactElement => {
   useWindowTitle("VMWare");
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Title className="section-header__title">
-        VMware
-      </ContentSection.Title>
-      <ContentSection.Content>
-        {isPending && <Spinner text={Labels.Loading} />}
-        {error && (
-          <Notification
-            severity="negative"
-            title="Error while fetching image configurations"
-          >
-            {error.message}
-          </Notification>
-        )}
-        {isSuccess && <VMWareForm />}
-      </ContentSection.Content>
-    </ContentSection>
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          VMware
+        </ContentSection.Title>
+        <ContentSection.Content>
+          {isPending && <Spinner text={Labels.Loading} />}
+          {error && (
+            <Notification
+              severity="negative"
+              title="Error while fetching image configurations"
+            >
+              {error.message}
+            </Notification>
+          )}
+          {isSuccess && <VMWareForm />}
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 

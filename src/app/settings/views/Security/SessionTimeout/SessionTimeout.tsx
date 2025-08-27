@@ -10,6 +10,7 @@ import {
 import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useLogout } from "@/app/base/hooks/logout";
 import { configActions } from "@/app/store/config";
@@ -70,81 +71,83 @@ const SessionTimeout = (): React.ReactElement => {
   }
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Title className="section-header__title">
-        Session timeout
-      </ContentSection.Title>
-      <ContentSection.Content>
-        {error && (
-          <Notification
-            severity="negative"
-            title="Error while fetching setting security configurations session timeout"
-          >
-            {error.message}
-          </Notification>
-        )}
-        <FormikForm<SessionTimeoutFormValues, SetConfigurationsError>
-          aria-label={Labels.ConfigureSessionTimeout}
-          cleanup={configActions.cleanup}
-          errors={updateConfig.error}
-          initialValues={{
-            session_length: formatDuration(
-              secondsToDuration(session_length as number)
-            ),
-          }}
-          onSaveAnalytics={{
-            action: "Saved",
-            category: "Security settings",
-            label: "Session timeout form",
-          }}
-          onSubmit={(values, { resetForm }) => {
-            const sessionLengthInSeconds = humanReadableToSeconds(
-              values.session_length
-            );
-            sessionLengthInSeconds &&
-              updateConfig.mutate(
-                {
-                  body: {
-                    configurations: [
-                      {
-                        name: ConfigNames.SESSION_LENGTH,
-                        value: sessionLengthInSeconds,
-                      },
-                    ],
-                  },
-                },
-                {
-                  onSuccess: logout,
-                }
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          Session timeout
+        </ContentSection.Title>
+        <ContentSection.Content>
+          {error && (
+            <Notification
+              severity="negative"
+              title="Error while fetching setting security configurations session timeout"
+            >
+              {error.message}
+            </Notification>
+          )}
+          <FormikForm<SessionTimeoutFormValues, SetConfigurationsError>
+            aria-label={Labels.ConfigureSessionTimeout}
+            cleanup={configActions.cleanup}
+            errors={updateConfig.error}
+            initialValues={{
+              session_length: formatDuration(
+                secondsToDuration(session_length as number)
+              ),
+            }}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Security settings",
+              label: "Session timeout form",
+            }}
+            onSubmit={(values, { resetForm }) => {
+              const sessionLengthInSeconds = humanReadableToSeconds(
+                values.session_length
               );
+              sessionLengthInSeconds &&
+                updateConfig.mutate(
+                  {
+                    body: {
+                      configurations: [
+                        {
+                          name: ConfigNames.SESSION_LENGTH,
+                          value: sessionLengthInSeconds,
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    onSuccess: logout,
+                  }
+                );
 
-            resetForm({ values });
-          }}
-          resetOnSave
-          saved={updateConfig.isSuccess}
-          saving={updateConfig.isPending}
-          validationSchema={SessionTimeoutSchema}
-        >
-          <FormikField
-            help={
-              <span>
-                Maximum session length is 14 days / 2 weeks. Format options are
-                weeks, days, hours, and/or minutes.
-                <br />
-                <br />
-                <Icon name="warning" /> MAAS will automatically log out all
-                users after changing the session expiration time. New session
-                timeout applies after login.
-              </span>
-            }
-            label={Labels.Expiration}
-            name="session_length"
-            required={true}
-            type="text"
-          />
-        </FormikForm>
-      </ContentSection.Content>
-    </ContentSection>
+              resetForm({ values });
+            }}
+            resetOnSave
+            saved={updateConfig.isSuccess}
+            saving={updateConfig.isPending}
+            validationSchema={SessionTimeoutSchema}
+          >
+            <FormikField
+              help={
+                <span>
+                  Maximum session length is 14 days / 2 weeks. Format options
+                  are weeks, days, hours, and/or minutes.
+                  <br />
+                  <br />
+                  <Icon name="warning" /> MAAS will automatically log out all
+                  users after changing the session expiration time. New session
+                  timeout applies after login.
+                </span>
+              }
+              label={Labels.Expiration}
+              name="session_length"
+              required={true}
+              type="text"
+            />
+          </FormikForm>
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 

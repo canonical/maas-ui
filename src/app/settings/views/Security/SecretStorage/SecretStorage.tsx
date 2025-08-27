@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import VaultSettings from "./VaultSettings";
 
+import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";
@@ -19,14 +20,16 @@ const SecretStorage = (): React.ReactElement => {
   }
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Title className="section-header__title">
-        Secret storage
-      </ContentSection.Title>
-      <ContentSection.Content>
-        <VaultSettings />
-      </ContentSection.Content>
-    </ContentSection>
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          Secret storage
+        </ContentSection.Title>
+        <ContentSection.Content>
+          <VaultSettings />
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 

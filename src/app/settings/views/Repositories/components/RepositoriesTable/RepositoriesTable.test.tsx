@@ -29,7 +29,7 @@ vi.mock("@/app/base/side-panel-context", async () => {
   };
 });
 
-describe("RepositoryTable", () => {
+describe("RepositoriesTable", () => {
   const mockSetSidePanelContent = vi.fn();
 
   (useSidePanel as Mock).mockReturnValue({

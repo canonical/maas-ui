@@ -1,7 +1,7 @@
 import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
 import { Button, Notification } from "@canonical/react-components";
 
-import useRepositoriesTableColumns from "./useRepositoriesTableColumns";
+import useRepositoriesTableColumns from "./useRepositoriesTableColumns/useRepositoriesTableColumns";
 
 import { usePackageRepositories } from "@/app/api/query/packageRepositories";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";

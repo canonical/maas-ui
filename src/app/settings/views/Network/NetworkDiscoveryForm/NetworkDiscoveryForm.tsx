@@ -9,6 +9,7 @@ import NetworkDiscoveryFormFields from "./NetworkDiscoveryFormFields";
 import type { NetworkDiscoveryValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
@@ -43,42 +44,44 @@ const NetworkDiscoveryForm = (): React.ReactElement => {
   }, [dispatch, loaded]);
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Title className="section-header__title">
-        Network discovery
-      </ContentSection.Title>
-      <ContentSection.Content>
-        {loading && <Spinner text="Loading..." />}
-        {loaded && (
-          <FormikForm<NetworkDiscoveryValues>
-            cleanup={configActions.cleanup}
-            errors={errors}
-            initialValues={{
-              active_discovery_interval: activeDiscoveryInterval || "",
-              network_discovery: networkDiscovery || "",
-            }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Network settings",
-              label: "Network discovery form",
-            }}
-            onSubmit={(values, { resetForm }) => {
-              if (values.network_discovery === NetworkDiscovery.DISABLED) {
-                // Don't update the interval when the discovery is being disabled.
-                delete values.active_discovery_interval;
-              }
-              dispatch(updateConfig(values));
-              resetForm({ values });
-            }}
-            saved={saved}
-            saving={saving}
-            validationSchema={NetworkDiscoverySchema}
-          >
-            <NetworkDiscoveryFormFields />
-          </FormikForm>
-        )}
-      </ContentSection.Content>
-    </ContentSection>
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          Network discovery
+        </ContentSection.Title>
+        <ContentSection.Content>
+          {loading && <Spinner text="Loading..." />}
+          {loaded && (
+            <FormikForm<NetworkDiscoveryValues>
+              cleanup={configActions.cleanup}
+              errors={errors}
+              initialValues={{
+                active_discovery_interval: activeDiscoveryInterval || "",
+                network_discovery: networkDiscovery || "",
+              }}
+              onSaveAnalytics={{
+                action: "Saved",
+                category: "Network settings",
+                label: "Network discovery form",
+              }}
+              onSubmit={(values, { resetForm }) => {
+                if (values.network_discovery === NetworkDiscovery.DISABLED) {
+                  // Don't update the interval when the discovery is being disabled.
+                  delete values.active_discovery_interval;
+                }
+                dispatch(updateConfig(values));
+                resetForm({ values });
+              }}
+              saved={saved}
+              saving={saving}
+              validationSchema={NetworkDiscoverySchema}
+            >
+              <NetworkDiscoveryFormFields />
+            </FormikForm>
+          )}
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 

@@ -8,6 +8,7 @@
 // component as it alters the class ordering in Vanilla and may cause
 // regressions.
 @import "vanilla-framework";
+
 @include vanilla;
 @include vf-p-icon-back-to-top;
 @include vf-p-icon-begin-downloading;
@@ -273,7 +274,7 @@
 @import "@/app/settings/views/Configuration/GeneralForm/ThemedRadioButton";
 @import "@/app/settings/views/Security/SecurityProtocols/TLSEnabled/TLSEnabledFields";
 @import "@/app/settings/views/Dhcp/DhcpList";
-@import "@/app/settings/views/LicenseKeys/LicenseKeyList";
+@import "@/app/settings/views/LicenseKeys/views";
 @import "@/app/settings/views/Repositories/views";
 @import "@/app/settings/views/Repositories/components/RepositoryFormFields";
 @import "@/app/settings/views/Scripts/ScriptsList";

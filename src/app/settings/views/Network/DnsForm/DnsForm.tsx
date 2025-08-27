@@ -12,6 +12,7 @@ import {
 import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
@@ -53,82 +54,84 @@ const DnsForm = (): React.ReactElement => {
   }, [dispatch, isSuccess]);
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Title className="section-header__title">
-        DNS
-      </ContentSection.Title>
-      <ContentSection.Content>
-        {isPending && <Spinner text="Loading..." />}
-        {error && (
-          <Notification
-            severity="negative"
-            title="Error while fetching network configurations"
-          >
-            {error.message}
-          </Notification>
-        )}
-        {isSuccess && (
-          <FormikForm
-            cleanup={configActions.cleanup}
-            errors={updateConfig.error}
-            initialValues={{
-              dnssec_validation: dnssec_validation || "",
-              dns_trusted_acl: dns_trusted_acl || "",
-              upstream_dns: upstream_dns || "",
-            }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Network settings",
-              label: "DNS form",
-            }}
-            onSubmit={(values, { resetForm }) => {
-              updateConfig.mutate({
-                body: {
-                  configurations: [
-                    {
-                      name: ConfigNames.DNSSEC_VALIDATION,
-                      value: values.dnssec_validation,
-                    },
-                    {
-                      name: ConfigNames.DNS_TRUSTED_ACL,
-                      value: values.dns_trusted_acl,
-                    },
-                    {
-                      name: ConfigNames.UPSTREAM_DNS,
-                      value: [values.upstream_dns],
-                    },
-                  ],
-                },
-              });
-              resetForm({ values });
-            }}
-            saved={isSuccess}
-            saving={isPending}
-            validationSchema={DnsSchema}
-          >
-            <FormikField
-              help="Only used when MAAS is running its own DNS server. This value is used as the value of 'forwarders' in the DNS server config."
-              label="Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)"
-              name="upstream_dns"
-              type="text"
-            />
-            <FormikField
-              component={Select}
-              help="Only used when MAAS is running its own DNS server. This value is used as the value of 'dnssec_validation' in the DNS server config."
-              label="Enable DNSSEC validation of upstream zones"
-              name="dnssec_validation"
-              options={dnssecOptions}
-            />
-            <FormikField
-              help="MAAS keeps a list of networks that are allowed to use MAAS for DNS resolution. This option allows to add extra networks (not previously known) to the trusted ACL where this list of networks is kept. It also supports specifying IPs or ACL names."
-              label="List of external networks (not previously known), that will be allowed to use MAAS for DNS resolution"
-              name="dns_trusted_acl"
-              type="text"
-            />
-          </FormikForm>
-        )}
-      </ContentSection.Content>
-    </ContentSection>
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          DNS
+        </ContentSection.Title>
+        <ContentSection.Content>
+          {isPending && <Spinner text="Loading..." />}
+          {error && (
+            <Notification
+              severity="negative"
+              title="Error while fetching network configurations"
+            >
+              {error.message}
+            </Notification>
+          )}
+          {isSuccess && (
+            <FormikForm
+              cleanup={configActions.cleanup}
+              errors={updateConfig.error}
+              initialValues={{
+                dnssec_validation: dnssec_validation || "",
+                dns_trusted_acl: dns_trusted_acl || "",
+                upstream_dns: upstream_dns || "",
+              }}
+              onSaveAnalytics={{
+                action: "Saved",
+                category: "Network settings",
+                label: "DNS form",
+              }}
+              onSubmit={(values, { resetForm }) => {
+                updateConfig.mutate({
+                  body: {
+                    configurations: [
+                      {
+                        name: ConfigNames.DNSSEC_VALIDATION,
+                        value: values.dnssec_validation,
+                      },
+                      {
+                        name: ConfigNames.DNS_TRUSTED_ACL,
+                        value: values.dns_trusted_acl,
+                      },
+                      {
+                        name: ConfigNames.UPSTREAM_DNS,
+                        value: [values.upstream_dns],
+                      },
+                    ],
+                  },
+                });
+                resetForm({ values });
+              }}
+              saved={isSuccess}
+              saving={isPending}
+              validationSchema={DnsSchema}
+            >
+              <FormikField
+                help="Only used when MAAS is running its own DNS server. This value is used as the value of 'forwarders' in the DNS server config."
+                label="Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)"
+                name="upstream_dns"
+                type="text"
+              />
+              <FormikField
+                component={Select}
+                help="Only used when MAAS is running its own DNS server. This value is used as the value of 'dnssec_validation' in the DNS server config."
+                label="Enable DNSSEC validation of upstream zones"
+                name="dnssec_validation"
+                options={dnssecOptions}
+              />
+              <FormikField
+                help="MAAS keeps a list of networks that are allowed to use MAAS for DNS resolution. This option allows to add extra networks (not previously known) to the trusted ACL where this list of networks is kept. It also supports specifying IPs or ACL names."
+                label="List of external networks (not previously known), that will be allowed to use MAAS for DNS resolution"
+                name="dns_trusted_acl"
+                type="text"
+              />
+            </FormikForm>
+          )}
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 
