@@ -1,9 +1,6 @@
 import type { PropsWithChildren, ReactElement } from "react";
 import { createContext, useCallback, useContext, useState } from "react";
 
-import type { RepositorySidePanelContent } from "../settings/views/Repositories/constants";
-import { RepositoryActionSidePanelViews } from "../settings/views/Repositories/constants";
-
 import { ControllerSidePanelViews } from "@/app/controllers/constants";
 import type { ControllerSidePanelContent } from "@/app/controllers/types";
 import { DeviceSidePanelViews } from "@/app/devices/constants";
@@ -56,7 +53,6 @@ export type SidePanelContent =
   | ImageSidePanelContent
   | KVMSidePanelContent
   | MachineSidePanelContent
-  | RepositorySidePanelContent
   | SpaceDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
   | SubnetSidePanelContent
@@ -89,7 +85,6 @@ export const SidePanelViews = {
   ...ImageSidePanelViews,
   ...SubnetDetailsSidePanelViews,
   ...SpaceDetailsSidePanelViews,
-  ...RepositoryActionSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {
@@ -137,10 +132,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.UNMOUNT_FILESYSTEM[1]]: "Unmount filesystem",
   [SidePanelViews.UPDATE_DATASTORE[1]]: "Update datastore",
   [SidePanelViews.UpdateTag[1]]: "Update Tag",
-  [SidePanelViews.ADD_REPOSITORY[1]]: "Add repository",
-  [SidePanelViews.ADD_PPA[1]]: "Add PPA",
-  [SidePanelViews.EDIT_REPOSITORY[1]]: "Edit repository",
-  [SidePanelViews.DELETE_REPOSITORY[1]]: "Delete repository",
 };
 
 /**

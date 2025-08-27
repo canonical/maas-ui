@@ -2,11 +2,13 @@ import { useMemo } from "react";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
-import { RepositoryActionSidePanelViews } from "../../constants";
-
 import type { PackageRepositoryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import {
+  DeleteRepository,
+  EditRepository,
+} from "@/app/settings/views/Repositories/components";
 import {
   getIsDefaultRepo,
   getRepoDisplayName,
@@ -18,7 +20,7 @@ type RepositoriesColumnDef = ColumnDef<
 >;
 
 const useRepositoriesTableColumns = (): RepositoriesColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
 
   return useMemo(
     () => [
@@ -57,16 +59,20 @@ const useRepositoriesTableColumns = (): RepositoriesColumnDef[] => {
                 : null
             }
             onDelete={() => {
-              setSidePanelContent({
-                view: RepositoryActionSidePanelViews.DELETE_REPOSITORY,
-                extras: { repositoryId: original.id },
+              openSidePanel({
+                component: DeleteRepository,
+                title: "Delete repository",
+                props: {
+                  id: original.id,
+                },
               });
             }}
             onEdit={() => {
-              setSidePanelContent({
-                view: RepositoryActionSidePanelViews.EDIT_REPOSITORY,
-                extras: {
-                  repositoryId: original.id,
+              openSidePanel({
+                component: EditRepository,
+                title: "Delete repository",
+                props: {
+                  id: original.id,
                   type: original.url.startsWith("ppa:") ? "ppa" : "repository",
                 },
               });
@@ -75,7 +81,7 @@ const useRepositoriesTableColumns = (): RepositoriesColumnDef[] => {
         ),
       },
     ],
-    [setSidePanelContent]
+    [openSidePanel]
   );
 };
 
