@@ -38,7 +38,7 @@ export const useListNotifications = (
   });
 };
 
-export const convertBackendItToToastNotificationId = (id: number): string => {
+export const convertBackendIdToToastNotificationId = (id: number): string => {
   return `notification-${id}`;
 };
 
@@ -69,7 +69,7 @@ export const useNotifications = () => {
             item.message,
             [],
             "",
-            convertBackendItToToastNotificationId(item.id)
+            convertBackendIdToToastNotificationId(item.id)
           );
           break;
         case "error":
@@ -78,7 +78,7 @@ export const useNotifications = () => {
             "",
             item.message,
             [],
-            convertBackendItToToastNotificationId(item.id)
+            convertBackendIdToToastNotificationId(item.id)
           );
           break;
         case "warning":
@@ -86,7 +86,7 @@ export const useNotifications = () => {
             item.message,
             [],
             "Warning",
-            convertBackendItToToastNotificationId(item.id)
+            convertBackendIdToToastNotificationId(item.id)
           );
           break;
         case "info":
@@ -94,7 +94,7 @@ export const useNotifications = () => {
             item.message,
             "",
             [],
-            convertBackendItToToastNotificationId(item.id)
+            convertBackendIdToToastNotificationId(item.id)
           );
           break;
       }
@@ -121,12 +121,13 @@ export const useDismissNotification = (
   });
 };
 
-export const useDismissNotifications = () => {
-  const dismissMutatation = useDismissNotification();
+type DismissMutateFn = ReturnType<typeof useDismissNotification>["mutate"];
+
+export const useDismissNotifications = (dismissMutation: DismissMutateFn) => {
   return (notifications: ToastNotificationType[] | undefined) => {
     if (notifications) {
       notifications.forEach((notification) => {
-        dismissMutatation.mutate({
+        dismissMutation({
           path: {
             notification_id: convertToastNotificationIdToBackendId(
               notification.id
