@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFormFields";
@@ -15,7 +13,6 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  render,
   waitFor,
   renderWithProviders,
 } from "@/testing/utils";
@@ -50,13 +47,7 @@ describe("LicenseKeyForm", () => {
 
   it("can render", () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <LicenseKeyForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<LicenseKeyForm />, { store });
 
     expect(
       screen.getByRole("form", { name: LicenseKeyFormLabels.FormLabel })
@@ -66,13 +57,9 @@ describe("LicenseKeyForm", () => {
   it("cleans up when unmounting", async () => {
     const store = mockStore(state);
 
-    const { unmount } = render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <LicenseKeyForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    const {
+      result: { unmount },
+    } = renderWithProviders(<LicenseKeyForm />, { store });
 
     unmount();
 
@@ -84,13 +71,7 @@ describe("LicenseKeyForm", () => {
   it("fetches OsInfo if not loaded", () => {
     state.general.osInfo.loaded = false;
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <LicenseKeyForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<LicenseKeyForm />, { store });
 
     expect(
       store.getActions().some((action) => action.type === "general/fetchOsInfo")
@@ -100,13 +81,7 @@ describe("LicenseKeyForm", () => {
   it("fetches license keys if not loaded", () => {
     state.licensekeys.loaded = false;
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <LicenseKeyForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<LicenseKeyForm />, { store });
 
     expect(
       store.getActions().some((action) => action.type === "licensekeys/fetch")
@@ -124,13 +99,7 @@ describe("LicenseKeyForm", () => {
 
   it("can add a key", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <LicenseKeyForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<LicenseKeyForm />, { store });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: FormFieldsLabels.OperatingSystem }),
@@ -172,13 +141,7 @@ describe("LicenseKeyForm", () => {
       distro_series: "win2012",
       license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXY",
     });
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <LicenseKeyForm licenseKey={licenseKey} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<LicenseKeyForm licenseKey={licenseKey} />, { store });
 
     const licenseKeyInput = screen.getByRole("textbox", {
       name: FormFieldsLabels.LicenseKey,

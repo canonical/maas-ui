@@ -1,14 +1,15 @@
-import type { Mock } from "vitest";
-
-import { RepositoryActionSidePanelViews } from "../../constants";
-
 import RepositoriesTable from "./RepositoriesTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
+import {
+  AddRepository,
+  DeleteRepository,
+  EditRepository,
+} from "@/app/settings/views/Repositories/components";
 import { packageRepository as repoFactory } from "@/testing/factories";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
 import {
   mockIsPending,
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -20,22 +21,9 @@ import {
 const mockServer = setupMockServer(
   packageRepositoriesResolvers.listPackageRepositories.handler()
 );
-
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
+const { mockOpen } = await mockSidePanel();
 
 describe("RepositoriesTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   describe("display", () => {
     it("displays a loading compponent if package repositories are loading", async () => {
       mockIsPending();
@@ -125,10 +113,12 @@ describe("RepositoriesTable", () => {
         screen.getByRole("button", { name: "Add repository" })
       );
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: RepositoryActionSidePanelViews.ADD_REPOSITORY,
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: AddRepository,
+        title: "Add repository",
+        props: {
+          type: "repository",
+        },
       });
     });
 
@@ -138,10 +128,12 @@ describe("RepositoriesTable", () => {
       // Click the first edit button
       await userEvent.click(screen.getByRole("button", { name: "Add PPA" }));
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: RepositoryActionSidePanelViews.ADD_PPA,
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: AddRepository,
+        title: "Add PPA",
+        props: {
+          type: "ppa",
+        },
       });
     });
 
@@ -166,27 +158,25 @@ describe("RepositoriesTable", () => {
       // Click the first edit button
       await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: RepositoryActionSidePanelViews.EDIT_REPOSITORY,
-          extras: {
-            repositoryId: 1,
-            type: "ppa",
-          },
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: EditRepository,
+        title: "Edit repository",
+        props: {
+          id: 1,
+          type: "ppa",
+        },
       });
 
       // Click the second edit button
       await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[1]);
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: RepositoryActionSidePanelViews.EDIT_REPOSITORY,
-          extras: {
-            repositoryId: 2,
-            type: "repository",
-          },
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: EditRepository,
+        title: "Edit repository",
+        props: {
+          id: 2,
+          type: "repository",
+        },
       });
     });
 
@@ -204,13 +194,12 @@ describe("RepositoriesTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: RepositoryActionSidePanelViews.DELETE_REPOSITORY,
-          extras: {
-            repositoryId: 1,
-          },
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: DeleteRepository,
+        title: "Delete repository",
+        props: {
+          id: 1,
+        },
       });
     });
   });

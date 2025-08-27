@@ -70,7 +70,7 @@ const useRepositoriesTableColumns = (): RepositoriesColumnDef[] => {
             onEdit={() => {
               openSidePanel({
                 component: EditRepository,
-                title: "Delete repository",
+                title: "Edit repository",
                 props: {
                   id: original.id,
                   type: original.url.startsWith("ppa:") ? "ppa" : "repository",
