@@ -3,7 +3,7 @@ import CloneNetworkTable from "./CloneNetworkTable";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen, within } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 describe("CloneNetworkTable", () => {
   let state: RootState;
@@ -29,52 +29,28 @@ describe("CloneNetworkTable", () => {
   });
 
   it("renders empty table if neither loading machine nor machine provided", () => {
-    renderWithMockStore(<CloneNetworkTable machine={null} selected={false} />, {
+    renderWithProviders(<CloneNetworkTable machine={null} selected={false} />, {
       state,
     });
-    expect(screen.getAllByRole("row")).toHaveLength(1);
-    expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
-  });
 
-  it("renders placeholder content while details are loading", () => {
-    renderWithMockStore(
-      <CloneNetworkTable
-        loadingMachineDetails
-        machine={null}
-        selected={false}
-      />,
-      {
-        state,
-      }
-    );
-    const table = screen.getAllByRole("rowgroup")[1];
-    const rows = within(table).getAllByRole("row");
-    rows.forEach((row) => {
-      const placeholders = within(row).getAllByTestId("placeholder");
-      expect(placeholders[0]).toHaveTextContent("Name");
-      expect(placeholders[1]).toHaveTextContent("Subnet");
-      expect(placeholders[2]).toHaveTextContent("Fabric name");
-      expect(placeholders[3]).toHaveTextContent("VLAN");
-      expect(placeholders[4]).toHaveTextContent("Disk type");
-      expect(placeholders[5]).toHaveTextContent("X, X");
-      expect(placeholders[6]).toHaveTextContent("DHCP");
-    });
+    // should only be the single empty state cell from GenericTable
+    expect(screen.getAllByRole("cell")).toHaveLength(1);
   });
 
   it("renders machine network details if machine is provided", () => {
     const machine = factory.machineDetails({
-      interfaces: [factory.machineInterface()],
+      interfaces: [factory.machineInterface({ name: "eth0" })],
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <CloneNetworkTable machine={machine} selected={false} />,
       {
         state,
       }
     );
 
-    expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
     expect(screen.getAllByRole("row")).toHaveLength(2);
+    expect(screen.getByText("eth0")).toBeInTheDocument();
   });
 
   it("can display an interface that has no links", () => {
@@ -99,11 +75,13 @@ describe("CloneNetworkTable", () => {
     state.machine.items = [machine];
     state.subnet.items = subnets;
     state.vlan.items = [vlan];
-    renderWithMockStore(<CloneNetworkTable machine={machine} selected />, {
+
+    renderWithProviders(<CloneNetworkTable machine={machine} selected />, {
       state,
     });
+
     expect(
-      within(screen.getByTestId("name-subnet")).getByTestId("secondary")
+      within(screen.getAllByRole("row")[1]).getAllByRole("cell")[0]
     ).toHaveTextContent("Unconfigured");
   });
 
@@ -131,11 +109,13 @@ describe("CloneNetworkTable", () => {
     state.machine.items = [machine];
     state.subnet.items = [subnet];
     state.vlan.items = [vlan];
-    renderWithMockStore(<CloneNetworkTable machine={machine} selected />, {
+
+    renderWithProviders(<CloneNetworkTable machine={machine} selected />, {
       state,
     });
+
     expect(
-      within(screen.getByTestId("name-subnet")).getByTestId("secondary")
+      within(screen.getAllByRole("row")[1]).getAllByRole("cell")[0]
     ).toHaveTextContent("subnet-cidr");
   });
 
@@ -171,12 +151,15 @@ describe("CloneNetworkTable", () => {
     state.machine.items = [machine];
     state.subnet.items = subnets;
     state.vlan.items = [vlan];
-    renderWithMockStore(<CloneNetworkTable machine={machine} selected />, {
+
+    renderWithProviders(<CloneNetworkTable machine={machine} selected />, {
       state,
     });
-    const row = screen.getAllByTestId("name-subnet")[1];
-    expect(within(row).getByTestId("primary")).toHaveTextContent("alias:1");
-    expect(within(row).getByTestId("secondary")).toHaveTextContent(
+
+    const cell = within(screen.getAllByRole("row")[2]).getAllByRole("cell")[0];
+
+    expect(within(cell).getByTestId("primary")).toHaveTextContent("alias:1");
+    expect(within(cell).getByTestId("secondary")).toHaveTextContent(
       "subnet2-cidr"
     );
   });
@@ -225,12 +208,20 @@ describe("CloneNetworkTable", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<CloneNetworkTable machine={machine} selected />, {
+
+    renderWithProviders(<CloneNetworkTable machine={machine} selected />, {
       state,
     });
-    const names = screen
-      .getAllByTestId("name-subnet")
-      .map((doubleRow) => within(doubleRow).getByTestId("primary").textContent);
+
+    const dataRows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole(
+      "row"
+    );
+    const names = dataRows.map(
+      (row) =>
+        within(within(row).getAllByRole("cell")[0]).getByTestId("primary")
+          .textContent
+    );
+
     expect(names).toStrictEqual([
       // Bond group:
       "bond0",

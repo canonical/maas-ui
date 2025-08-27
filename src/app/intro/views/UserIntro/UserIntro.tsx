@@ -83,10 +83,7 @@ const UserIntro = (): React.ReactElement => {
             confirmLabel={Labels.Skip}
             errors={completeIntro.error?.message}
             finished={completeIntro.isSuccess}
-            inProgress={
-              !(user.data?.completed_intro || completeIntro.isSuccess) &&
-              showSkip
-            }
+            inProgress={completeIntro.isPending && showSkip}
             message={
               <>
                 <Icon className="is-inline" name="warning" />
