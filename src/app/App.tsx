@@ -15,7 +15,10 @@ import { Outlet } from "react-router";
 
 import packageInfo from "../../package.json";
 
-import { useDismissNotifications } from "./api/query/notifications";
+import {
+  useDismissNotification,
+  useDismissNotifications,
+} from "./api/query/notifications";
 import { getMeWithSummaryQueryKey } from "./apiclient/@tanstack/react-query.gen";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import PageContent from "./base/components/PageContent/PageContent";
@@ -86,7 +89,8 @@ export const App = (): React.ReactElement => {
   const configLoading = useSelector(configSelectors.loading);
   const configErrors = useSelector(configSelectors.errors);
   const previousAuthenticated = usePrevious(authenticated, false);
-  const dismiss = useDismissNotifications();
+  const dismissMutation = useDismissNotification();
+  const dismiss = useDismissNotifications(dismissMutation.mutate);
 
   const user = useGetCurrentUser(undefined, {
     retry: false,
