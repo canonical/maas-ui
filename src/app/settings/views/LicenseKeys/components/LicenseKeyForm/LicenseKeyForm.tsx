@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import LicenseKeyFormFields from "../LicenseKeyFormFields";
@@ -10,7 +9,7 @@ import LicenseKeyFormFields from "../LicenseKeyFormFields";
 import type { LicenseKeyFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import type { SyncNavigateFunction } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import settingsURLs from "@/app/settings/urls";
 import { generalActions } from "@/app/store/general";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
@@ -35,8 +34,9 @@ const LicenseKeySchema = Yup.object().shape({
 });
 
 export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
-  const navigate: SyncNavigateFunction = useNavigate();
+
   const saving = useSelector(licenseKeysSelectors.saving);
   const saved = useSelector(licenseKeysSelectors.saved);
   const errors = useSelector(licenseKeysSelectors.errors);
@@ -75,9 +75,7 @@ export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
               : releases[osystems[0][0]][0].value,
             license_key: licenseKey ? licenseKey.license_key : "",
           }}
-          onCancel={() => {
-            navigate({ pathname: settingsURLs.licenseKeys.index });
-          }}
+          onCancel={closeSidePanel}
           onSaveAnalytics={{
             action: "Saved",
             category: "License keys settings",
@@ -102,6 +100,7 @@ export const LicenseKeyForm = ({ licenseKey }: Props): React.ReactElement => {
               dispatch(licenseKeysActions.create(params));
             }
           }}
+          onSuccess={closeSidePanel}
           saved={saved}
           savedRedirect={settingsURLs.licenseKeys.index}
           saving={saving}

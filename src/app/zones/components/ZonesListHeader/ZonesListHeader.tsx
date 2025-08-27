@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 
@@ -5,14 +7,11 @@ import ZonesListTitle from "./ZonesListTitle";
 
 import { useZoneCount } from "@/app/api/query/zones";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
-import { ZoneActionSidePanelViews } from "@/app/zones/constants";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { AddZone } from "@/app/zones/components";
 
-const ZonesListHeader = ({
-  setSidePanelContent,
-}: {
-  setSidePanelContent: SetSidePanelContent;
-}): React.ReactElement => {
+const ZonesListHeader = (): ReactElement => {
+  const { openSidePanel } = useSidePanel();
   const zonesCount = useZoneCount();
 
   return (
@@ -30,7 +29,7 @@ const ZonesListHeader = ({
           data-testid="add-zone"
           key="add-zone"
           onClick={() => {
-            setSidePanelContent({ view: ZoneActionSidePanelViews.CREATE_ZONE });
+            openSidePanel({ component: AddZone, title: "Add AZ" });
           }}
         >
           Add AZ

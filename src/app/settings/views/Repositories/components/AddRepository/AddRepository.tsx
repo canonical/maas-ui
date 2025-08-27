@@ -16,7 +16,7 @@ import type {
   KnownComponentsEnum,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { generalActions } from "@/app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,
@@ -31,7 +31,7 @@ type Props = {
 
 const AddRepository = ({ type }: Props): ReactElement => {
   const dispatch = useDispatch();
-  const { setSidePanelContent } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
   const componentsToDisableLoaded = useSelector(
     componentsToDisableSelectors.loaded
   );
@@ -80,9 +80,7 @@ const AddRepository = ({ type }: Props): ReactElement => {
       aria-label={title}
       errors={createRepo.error}
       initialValues={initialValues}
-      onCancel={() => {
-        setSidePanelContent(null);
-      }}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Saved",
         category: "Package repos settings",
@@ -107,9 +105,7 @@ const AddRepository = ({ type }: Props): ReactElement => {
           body: { ...params },
         });
       }}
-      onSuccess={() => {
-        setSidePanelContent(null);
-      }}
+      onSuccess={closeSidePanel}
       saved={createRepo.isSuccess}
       saving={createRepo.isPending}
       submitLabel={`Save ${typeString}`}

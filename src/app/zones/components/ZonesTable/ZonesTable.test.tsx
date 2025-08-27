@@ -1,11 +1,9 @@
 import userEvent from "@testing-library/user-event";
-import type { Mock } from "vitest";
 import { describe } from "vitest";
 
 import ZonesTable from "./ZonesTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { ZoneActionSidePanelViews } from "@/app/zones/constants";
+import { DeleteZone, EditZone } from "@/app/zones/components";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
@@ -16,6 +14,7 @@ import {
   setupMockServer,
   within,
   mockIsPending,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -23,22 +22,9 @@ const mockServer = setupMockServer(
   zoneResolvers.getZone.handler(),
   authResolvers.getCurrentUser.handler()
 );
-
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
+const { mockOpen } = await mockSidePanel();
 
 describe("ZonesTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   describe("display", () => {
     it("displays a loading component if zones are loading", async () => {
       mockIsPending();
@@ -213,13 +199,10 @@ describe("ZonesTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Edit" }));
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: ZoneActionSidePanelViews.EDIT_ZONE,
-          extras: {
-            zoneId: 1,
-          },
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: EditZone,
+        title: "Edit AZ",
+        props: { id: 1 },
       });
     });
 
@@ -245,13 +228,10 @@ describe("ZonesTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: ZoneActionSidePanelViews.DELETE_ZONE,
-          extras: {
-            zoneId: 2,
-          },
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: DeleteZone,
+        title: "Delete AZ",
+        props: { id: 2 },
       });
     });
   });

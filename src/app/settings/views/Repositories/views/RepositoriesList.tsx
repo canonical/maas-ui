@@ -1,59 +1,16 @@
-import {
-  AddRepository,
-  EditRepository,
-  DeleteRepository,
-  RepositoriesTable,
-} from "../components";
-import { RepositoryActionSidePanelViews } from "../constants";
+import { RepositoriesTable } from "../components";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
-
-export enum Labels {
-  Actions = "Table actions",
-  SearchboxPlaceholder = "Search package repositories",
-}
 
 export const RepositoriesList = (): React.ReactElement => {
-  let content = null;
-  const { sidePanelContent } = useSidePanel();
-
-  if (sidePanelContent?.view) {
-    if (sidePanelContent.view === RepositoryActionSidePanelViews.ADD_PPA) {
-      content = <AddRepository type="ppa" />;
-    } else if (
-      sidePanelContent.view === RepositoryActionSidePanelViews.ADD_REPOSITORY
-    ) {
-      content = <AddRepository type="repository" />;
-    } else if (
-      sidePanelContent.view ===
-        RepositoryActionSidePanelViews.EDIT_REPOSITORY &&
-      sidePanelContent.extras &&
-      "repositoryId" in sidePanelContent.extras &&
-      "type" in sidePanelContent.extras
-    ) {
-      content = (
-        <EditRepository
-          id={sidePanelContent.extras.repositoryId}
-          type={sidePanelContent.extras.type}
-        />
-      );
-    } else if (
-      sidePanelContent.view ===
-        RepositoryActionSidePanelViews.DELETE_REPOSITORY &&
-      sidePanelContent.extras &&
-      "repositoryId" in sidePanelContent.extras
-    )
-      content = <DeleteRepository id={sidePanelContent.extras.repositoryId} />;
-  }
-
   useWindowTitle("Package repos");
 
   return (
     <PageContent
-      sidePanelContent={content}
-      sidePanelTitle={getSidePanelTitle("Repositories", sidePanelContent)}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       <RepositoriesTable />
     </PageContent>

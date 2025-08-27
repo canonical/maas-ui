@@ -14,6 +14,32 @@ import APIKeyList from "@/app/preferences/views/APIKeys/APIKeyList";
 import Details from "@/app/preferences/views/Details";
 import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
 import SSLKeysList from "@/app/preferences/views/SSLKeys/views";
+import Commissioning from "@/app/settings/views/Configuration/Commissioning";
+import Deploy from "@/app/settings/views/Configuration/Deploy";
+import General from "@/app/settings/views/Configuration/General";
+import KernelParameters from "@/app/settings/views/Configuration/KernelParameters";
+import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
+import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
+import DhcpList from "@/app/settings/views/Dhcp/DhcpList";
+import ChangeSource from "@/app/settings/views/Images/ChangeSource";
+import ThirdPartyDrivers from "@/app/settings/views/Images/ThirdPartyDrivers";
+import VMWare from "@/app/settings/views/Images/VMWare";
+import Windows from "@/app/settings/views/Images/Windows";
+import LicenseKeyList from "@/app/settings/views/LicenseKeys/views";
+import DnsForm from "@/app/settings/views/Network/DnsForm";
+import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryForm";
+import NtpForm from "@/app/settings/views/Network/NtpForm";
+import ProxyForm from "@/app/settings/views/Network/ProxyForm";
+import SyslogForm from "@/app/settings/views/Network/SyslogForm";
+import RepositoriesList from "@/app/settings/views/Repositories/views";
+import ScriptsList from "@/app/settings/views/Scripts/ScriptsList";
+import ScriptsUpload from "@/app/settings/views/Scripts/ScriptsUpload";
+import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
+import SecretStorage from "@/app/settings/views/Security/SecretStorage";
+import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
+import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
+import StorageForm from "@/app/settings/views/Storage/StorageForm";
+import UsersList from "@/app/settings/views/Users/views";
 import { getRelativeRoute } from "@/app/utils";
 
 const ControllerDetails = lazy(
@@ -49,7 +75,6 @@ const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
 const Tags = lazy(() => import("@/app/tags/views/Tags"));
 const ZonesList = lazy(() => import("@/app/zones/views"));
 
-const base = urls.preferences.index;
 export const router = createBrowserRouter(
   [
     {
@@ -198,7 +223,10 @@ export const router = createBrowserRouter(
               element: <Navigate replace to={urls.preferences.details} />,
             },
             {
-              path: getRelativeRoute(urls.preferences.details, base),
+              path: getRelativeRoute(
+                urls.preferences.details,
+                urls.preferences.index
+              ),
               element: (
                 <ErrorBoundary>
                   <PageContent
@@ -212,7 +240,10 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: getRelativeRoute(urls.preferences.apiKeys.index, base),
+              path: getRelativeRoute(
+                urls.preferences.apiKeys.index,
+                urls.preferences.index
+              ),
               element: (
                 <ErrorBoundary>
                   <PageContent sidePanelContent={null} sidePanelTitle={null}>
@@ -222,7 +253,10 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: getRelativeRoute(urls.preferences.apiKeys.add, base),
+              path: getRelativeRoute(
+                urls.preferences.apiKeys.add,
+                urls.preferences.index
+              ),
               element: (
                 <ErrorBoundary>
                   <PageContent
@@ -235,7 +269,10 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: getRelativeRoute(urls.preferences.apiKeys.edit(null), base),
+              path: getRelativeRoute(
+                urls.preferences.apiKeys.edit(null),
+                urls.preferences.index
+              ),
               element: (
                 <ErrorBoundary>
                   <PageContent
@@ -250,7 +287,7 @@ export const router = createBrowserRouter(
             {
               path: getRelativeRoute(
                 urls.preferences.apiKeys.delete(null),
-                base
+                urls.preferences.index
               ),
               element: (
                 <ErrorBoundary>
@@ -264,7 +301,10 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: getRelativeRoute(urls.preferences.sshKeys, base),
+              path: getRelativeRoute(
+                urls.preferences.sshKeys,
+                urls.preferences.index
+              ),
               element: (
                 <ErrorBoundary>
                   <SSHKeysList />
@@ -272,7 +312,10 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: getRelativeRoute(urls.preferences.sslKeys, base),
+              path: getRelativeRoute(
+                urls.preferences.sslKeys,
+                urls.preferences.index
+              ),
               element: (
                 <ErrorBoundary>
                   <SSLKeysList />
@@ -280,7 +323,7 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: getRelativeRoute("*", base),
+              path: getRelativeRoute("*", urls.preferences.index),
               element: <NotFound />,
             },
           ],
@@ -356,6 +399,384 @@ export const router = createBrowserRouter(
               <VLANDetails />
             </ErrorBoundary>
           ),
+        },
+        {
+          path: urls.settings.index,
+          element: <Settings />,
+          children: [
+            {
+              path: urls.settings.index,
+              element: (
+                <Navigate replace to={urls.settings.configuration.index} />
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.configuration.index,
+                urls.settings.index
+              ),
+              element: (
+                <Navigate replace to={urls.settings.configuration.general} />
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.security.index,
+                urls.settings.index
+              ),
+              element: (
+                <Navigate
+                  replace
+                  to={urls.settings.security.securityProtocols}
+                />
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.network.index,
+                urls.settings.index
+              ),
+              element: <Navigate replace to={urls.settings.network.proxy} />,
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.configuration.general,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <General />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.configuration.commissioning,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <Commissioning />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.configuration.kernelParameters,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <KernelParameters />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.configuration.deploy,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <Deploy />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.security.securityProtocols,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SecurityProtocols />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.security.secretStorage,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SecretStorage />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.security.sessionTimeout,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SessionTimeout />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.security.ipmiSettings,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <IpmiSettings />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.users.index,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <UsersList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.licenseKeys.index,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <LicenseKeyList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.storage,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <StorageForm />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.network.proxy,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <ProxyForm />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.network.dns,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <DnsForm />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.network.ntp,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <NtpForm />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.network.syslog,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SyslogForm />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.network.networkDiscovery,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <NetworkDiscoveryForm />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.scripts.commissioning.index,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <PageContent sidePanelContent={null} sidePanelTitle={null}>
+                    <ScriptsList type="commissioning" />
+                  </PageContent>
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.scripts.commissioning.upload,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <PageContent
+                    sidePanelContent={<ScriptsUpload type="commissioning" />}
+                    sidePanelTitle="Upload commissioning script"
+                  >
+                    <ScriptsList type="commissioning" />
+                  </PageContent>
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.scripts.testing.index,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <PageContent sidePanelContent={null} sidePanelTitle={null}>
+                    <ScriptsList type="testing" />
+                  </PageContent>
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.scripts.testing.upload,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <PageContent
+                    sidePanelContent={<ScriptsUpload type="testing" />}
+                    sidePanelTitle="Upload testing script"
+                  >
+                    <ScriptsList type="testing" />
+                  </PageContent>
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.dhcp.index,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <PageContent sidePanelContent={null} sidePanelTitle={null}>
+                    <DhcpList />
+                  </PageContent>
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.dhcp.add,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <PageContent
+                    sidePanelContent={<DhcpAdd />}
+                    sidePanelTitle="Add DHCP snippet"
+                  >
+                    <DhcpList />
+                  </PageContent>
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.dhcp.edit(null),
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <PageContent
+                    sidePanelContent={<DhcpEdit />}
+                    sidePanelTitle="Edit DHCP snippet"
+                  >
+                    <DhcpList />
+                  </PageContent>
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.repositories.index,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <RepositoriesList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.images.windows,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <Windows />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.images.vmware,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <VMWare />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.images.ubuntu,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <ThirdPartyDrivers />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.images.source,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <ChangeSource />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute("*", urls.settings.index),
+              element: <NotFound />,
+            },
+          ],
         },
         {
           path: "*",

@@ -1,16 +1,15 @@
 import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
 import { Button, Notification } from "@canonical/react-components";
 
-import { RepositoryActionSidePanelViews } from "../../constants";
-
-import useRepositoriesTableColumns from "./useRepositoriesTableColumns";
+import useRepositoriesTableColumns from "./useRepositoriesTableColumns/useRepositoriesTableColumns";
 
 import { usePackageRepositories } from "@/app/api/query/packageRepositories";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { AddRepository } from "@/app/settings/views/Repositories/components";
 
 const RepositoriesTable = () => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
 
@@ -30,8 +29,10 @@ const RepositoriesTable = () => {
         <MainToolbar.Controls>
           <Button
             onClick={() => {
-              setSidePanelContent({
-                view: RepositoryActionSidePanelViews.ADD_PPA,
+              openSidePanel({
+                component: AddRepository,
+                title: "Add PPA",
+                props: { type: "ppa" },
               });
             }}
           >
@@ -39,8 +40,10 @@ const RepositoriesTable = () => {
           </Button>
           <Button
             onClick={() => {
-              setSidePanelContent({
-                view: RepositoryActionSidePanelViews.ADD_REPOSITORY,
+              openSidePanel({
+                component: AddRepository,
+                title: "Add repository",
+                props: { type: "repository" },
               });
             }}
           >

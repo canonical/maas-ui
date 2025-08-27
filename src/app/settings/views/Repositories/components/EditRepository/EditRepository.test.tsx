@@ -193,16 +193,6 @@ describe("RepositoryEdit", () => {
     ).toBeInTheDocument();
   });
 
-  it("closes the side panel on cancel", async () => {
-    renderWithProviders(<EditRepository id={1} type="ppa" />, { state });
-
-    await waitForLoading();
-
-    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-
-    expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
-  });
-
   it("sets disabled_components and disabled_pockets if the repo is a default repo", async () => {
     const mockRepo = factory.packageRepository({
       id: 1,

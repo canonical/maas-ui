@@ -5,13 +5,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteZone } from "@/app/api/query/zones";
 import { getZoneQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 type DeleteZoneProps = {
   id: number;
-  closeForm: () => void;
 };
 
-const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
+const DeleteZone: React.FC<DeleteZoneProps> = ({ id }) => {
+  const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const deleteZone = useDeleteZone();
 
@@ -22,7 +23,7 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
       initialValues={{}}
       message="Are you sure you want to delete this AZ?"
       modelType="zone"
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         deleteZone.mutate({ path: { zone_id: id } });
       }}
@@ -33,7 +34,7 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
               path: { zone_id: id },
             }),
           })
-          .then(closeForm);
+          .then(closeSidePanel);
       }}
       saved={deleteZone.isSuccess}
       saving={deleteZone.isPending}

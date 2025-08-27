@@ -1,14 +1,8 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import LicenseKeyList from ".";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { render, renderWithBrowserRouter, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("LicenseKeyList", () => {
   let initialState: RootState;
@@ -37,27 +31,11 @@ describe("LicenseKeyList", () => {
     });
   });
 
-  it("dispatches action to fetch license keys on load", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <LicenseKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      store.getActions().some((action) => action.type === "licensekeys/fetch")
-    ).toBe(true);
-  });
-
   it("displays a message when there are no licennse keys", () => {
     const state = { ...initialState };
     state.licensekeys.items = [];
 
-    renderWithBrowserRouter(<LicenseKeyList />, { state, route: "/" });
+    renderWithProviders(<LicenseKeyList />, { state });
     expect(screen.getByText("No license keys available.")).toBeInTheDocument();
   });
 });

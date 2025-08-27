@@ -8,13 +8,14 @@ import type { UpdateZoneError, ZoneRequest } from "@/app/apiclient";
 import { getZoneQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 type EditZoneProps = {
   id: number;
-  closeForm: () => void;
 };
 
-const EditZone = ({ id, closeForm }: EditZoneProps): ReactElement => {
+const EditZone = ({ id }: EditZoneProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const zone = useGetZone({ path: { zone_id: id } });
 
@@ -36,7 +37,7 @@ const EditZone = ({ id, closeForm }: EditZoneProps): ReactElement => {
             description: zone.data.description,
             name: zone.data.name,
           }}
-          onCancel={closeForm}
+          onCancel={closeSidePanel}
           onSubmit={(values) => {
             editZone.mutate({
               body: { name: values.name, description: values.description },
@@ -50,7 +51,7 @@ const EditZone = ({ id, closeForm }: EditZoneProps): ReactElement => {
                   path: { zone_id: id },
                 }),
               })
-              .then(closeForm);
+              .then(closeSidePanel);
           }}
           saved={editZone.isSuccess}
           saving={editZone.isPending}

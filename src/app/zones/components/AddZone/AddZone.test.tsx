@@ -1,5 +1,3 @@
-import { vi } from "vitest";
-
 import AddZone from "./AddZone";
 
 import { zoneResolvers } from "@/testing/resolvers/zones";
@@ -9,21 +7,22 @@ import {
   setupMockServer,
   renderWithProviders,
   waitFor,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(zoneResolvers.createZone.handler());
+const { mockClose } = await mockSidePanel();
 
 describe("AddZone", () => {
-  it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<AddZone closeForm={closeForm} />);
+  it("runs closeSidePanel function when the cancel button is clicked", async () => {
+    renderWithProviders(<AddZone />);
 
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls create zone on save click", async () => {
-    renderWithProviders(<AddZone closeForm={vi.fn()} />);
+    renderWithProviders(<AddZone />);
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /name/i }),
@@ -47,7 +46,7 @@ describe("AddZone", () => {
       zoneResolvers.createZone.error({ code: 400, message: "Uh oh!" })
     );
 
-    renderWithProviders(<AddZone closeForm={vi.fn()} />);
+    renderWithProviders(<AddZone />);
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /name/i }),

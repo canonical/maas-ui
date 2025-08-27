@@ -6,13 +6,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteUser, useGetUser } from "@/app/api/query/users";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 type DeleteUserProps = {
   id: number;
-  closeForm: () => void;
 };
 
-const DeleteUser = ({ id, closeForm }: DeleteUserProps): ReactElement => {
+const DeleteUser = ({ id }: DeleteUserProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const user = useGetUser({ path: { user_id: id } });
   const deleteUser = useDeleteUser();
@@ -40,14 +41,14 @@ const DeleteUser = ({ id, closeForm }: DeleteUserProps): ReactElement => {
             </>
           }
           modelType="user"
-          onCancel={closeForm}
+          onCancel={closeSidePanel}
           onSubmit={() => {
             deleteUser.mutate({ path: { user_id: id } });
           }}
           onSuccess={async () => {
             // async with closeForm called first, because unlike
             // other delete forms, this one uses GET
-            closeForm();
+            closeSidePanel();
             return queryClient.invalidateQueries({
               queryKey: getUserQueryKey({
                 path: { user_id: id },

@@ -26,7 +26,7 @@ import type {
   UpdatePackageRepositoryError,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { generalActions } from "@/app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,
@@ -42,7 +42,7 @@ type Props = {
 
 export const EditRepository = ({ id, type }: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const { setSidePanelContent } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
   const componentsToDisableLoaded = useSelector(
     componentsToDisableSelectors.loaded
   );
@@ -118,9 +118,7 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
       aria-label={title}
       errors={updateRepo.error}
       initialValues={initialValues}
-      onCancel={() => {
-        setSidePanelContent(null);
-      }}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Saved",
         category: "Package repos settings",
@@ -153,9 +151,7 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
           body: { ...params },
         });
       }}
-      onSuccess={() => {
-        setSidePanelContent(null);
-      }}
+      onSuccess={closeSidePanel}
       saved={updateRepo.isSuccess}
       saving={updateRepo.isPending}
       submitLabel={`Save ${typeString}`}

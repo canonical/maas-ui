@@ -11,6 +11,7 @@ import {
 } from "@/app/api/query/configurations";
 import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
+import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
@@ -45,72 +46,75 @@ const StorageForm = (): React.ReactElement => {
   useWindowTitle("Storage");
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Title className="section-header__title">
-        Storage
-      </ContentSection.Title>
-      <ContentSection.Content>
-        {isPending && <Spinner text="Loading..." />}
-        {error && (
-          <Notification
-            severity="negative"
-            title="Error while fetching storage configurations"
-          >
-            {error.message}
-          </Notification>
-        )}
-        {isSuccess && (
-          <FormikForm<StorageFormValues, SetConfigurationsError>
-            cleanup={configActions.cleanup}
-            errors={updateConfig.error}
-            initialValues={{
-              default_storage_layout: (default_storage_layout as string) || "",
-              disk_erase_with_quick_erase:
-                (disk_erase_with_quick_erase as boolean) || false,
-              disk_erase_with_secure_erase:
-                (disk_erase_with_secure_erase as boolean) || false,
-              enable_disk_erasing_on_release:
-                (enable_disk_erasing_on_release as boolean) || false,
-            }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Storage settings",
-              label: "Storage form",
-            }}
-            onSubmit={(values, { resetForm }) => {
-              updateConfig.mutate({
-                body: {
-                  configurations: [
-                    {
-                      name: "default_storage_layout",
-                      value: values.default_storage_layout,
-                    },
-                    {
-                      name: "disk_erase_with_quick_erase",
-                      value: values.disk_erase_with_quick_erase,
-                    },
-                    {
-                      name: "disk_erase_with_secure_erase",
-                      value: values.disk_erase_with_secure_erase,
-                    },
-                    {
-                      name: "enable_disk_erasing_on_release",
-                      value: values.enable_disk_erasing_on_release,
-                    },
-                  ],
-                },
-              });
-              resetForm({ values });
-            }}
-            saved={updateConfig.isSuccess}
-            saving={updateConfig.isPending}
-            validationSchema={StorageSchema}
-          >
-            <StorageFormFields />
-          </FormikForm>
-        )}
-      </ContentSection.Content>
-    </ContentSection>
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          Storage
+        </ContentSection.Title>
+        <ContentSection.Content>
+          {isPending && <Spinner text="Loading..." />}
+          {error && (
+            <Notification
+              severity="negative"
+              title="Error while fetching storage configurations"
+            >
+              {error.message}
+            </Notification>
+          )}
+          {isSuccess && (
+            <FormikForm<StorageFormValues, SetConfigurationsError>
+              cleanup={configActions.cleanup}
+              errors={updateConfig.error}
+              initialValues={{
+                default_storage_layout:
+                  (default_storage_layout as string) || "",
+                disk_erase_with_quick_erase:
+                  (disk_erase_with_quick_erase as boolean) || false,
+                disk_erase_with_secure_erase:
+                  (disk_erase_with_secure_erase as boolean) || false,
+                enable_disk_erasing_on_release:
+                  (enable_disk_erasing_on_release as boolean) || false,
+              }}
+              onSaveAnalytics={{
+                action: "Saved",
+                category: "Storage settings",
+                label: "Storage form",
+              }}
+              onSubmit={(values, { resetForm }) => {
+                updateConfig.mutate({
+                  body: {
+                    configurations: [
+                      {
+                        name: "default_storage_layout",
+                        value: values.default_storage_layout,
+                      },
+                      {
+                        name: "disk_erase_with_quick_erase",
+                        value: values.disk_erase_with_quick_erase,
+                      },
+                      {
+                        name: "disk_erase_with_secure_erase",
+                        value: values.disk_erase_with_secure_erase,
+                      },
+                      {
+                        name: "enable_disk_erasing_on_release",
+                        value: values.enable_disk_erasing_on_release,
+                      },
+                    ],
+                  },
+                });
+                resetForm({ values });
+              }}
+              saved={updateConfig.isSuccess}
+              saving={updateConfig.isPending}
+              validationSchema={StorageSchema}
+            >
+              <StorageFormFields />
+            </FormikForm>
+          )}
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 

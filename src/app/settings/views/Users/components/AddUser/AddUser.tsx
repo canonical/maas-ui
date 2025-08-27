@@ -8,10 +8,7 @@ import { useCreateUser } from "@/app/api/query/users";
 import type { CreateUserError, UserCreateRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-
-type AddUserProps = {
-  closeForm: () => void;
-};
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 const UserSchema = Yup.object().shape({
   email: Yup.string()
@@ -32,7 +29,8 @@ const UserSchema = Yup.object().shape({
     .required("Username is required"),
 });
 
-const AddUser = ({ closeForm }: AddUserProps): ReactElement => {
+const AddUser = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const createUser = useCreateUser();
 
   return (
@@ -48,7 +46,7 @@ const AddUser = ({ closeForm }: AddUserProps): ReactElement => {
         last_name: "",
         email: "",
       }}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={(values) => {
         createUser.mutate({
           body: {
@@ -61,7 +59,7 @@ const AddUser = ({ closeForm }: AddUserProps): ReactElement => {
           } as UserCreateRequest,
         });
       }}
-      onSuccess={closeForm}
+      onSuccess={closeSidePanel}
       resetOnSave={true}
       saved={createUser.isSuccess}
       saving={createUser.isPending}

@@ -1,9 +1,8 @@
-import { vi } from "vitest";
-
 import DeletePool from "./DeletePool";
 
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -12,18 +11,18 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(poolsResolvers.deletePool.handler());
+const { mockClose } = await mockSidePanel();
 
 describe("DeletePool", () => {
   it("calls closeForm on cancel click", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<DeletePool closeForm={closeForm} id={2} />);
+    renderWithProviders(<DeletePool id={2} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls delete pool on save click", async () => {
-    renderWithProviders(<DeletePool closeForm={vi.fn()} id={2} />);
+    renderWithProviders(<DeletePool id={2} />);
 
     await userEvent.click(screen.getByRole("button", { name: /Delete/i }));
 
@@ -37,7 +36,7 @@ describe("DeletePool", () => {
       poolsResolvers.deletePool.error({ code: 400, message: "Uh oh!" })
     );
 
-    renderWithProviders(<DeletePool closeForm={vi.fn()} id={2} />);
+    renderWithProviders(<DeletePool id={2} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 

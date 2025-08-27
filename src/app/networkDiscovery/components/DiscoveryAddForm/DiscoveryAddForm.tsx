@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
@@ -14,6 +15,7 @@ import type { DiscoveryResponse } from "@/app/apiclient";
 import { listDiscoveriesQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions, useCycled } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import { hostnameValidation } from "@/app/base/validation";
 import { deviceActions } from "@/app/store/device";
@@ -40,7 +42,6 @@ export enum Labels {
 
 type Props = {
   discovery: DiscoveryResponse;
-  onClose: () => void;
 };
 
 const formSubmit = (
@@ -117,10 +118,9 @@ const DiscoveryAddSchema = Yup.object().shape({
   type: Yup.string(),
 });
 
-const DiscoveryAddForm = ({
-  discovery,
-  onClose,
-}: Props): React.ReactElement => {
+const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
+
   const dispatch = useDispatch();
   const [redirect, setRedirect] = useState<string | null>(null);
   const initialDeviceType = DeviceType.DEVICE;
@@ -198,7 +198,7 @@ const DiscoveryAddForm = ({
         parent: "",
         type: initialDeviceType,
       }}
-      onCancel={onClose}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Add discovery",
         category: "Dashboard",
@@ -216,7 +216,7 @@ const DiscoveryAddForm = ({
           queryKey: listDiscoveriesQueryKey(),
         });
         if (!redirect) {
-          onClose();
+          closeSidePanel();
           let device: string;
           if (values.hostname) {
             device = values.hostname;

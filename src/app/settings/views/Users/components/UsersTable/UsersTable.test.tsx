@@ -1,11 +1,13 @@
 import userEvent from "@testing-library/user-event";
-import type { Mock } from "vitest";
 import { describe } from "vitest";
 
 import UsersTable from "./UsersTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
+import {
+  AddUser,
+  DeleteUser,
+  EditUser,
+} from "@/app/settings/views/Users/components";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { usersResolvers } from "@/testing/resolvers/users";
@@ -16,28 +18,16 @@ import {
   setupMockServer,
   mockIsPending,
   waitForLoading,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   usersResolvers.listUsers.handler(),
   usersResolvers.getUser.handler()
 );
-
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
+const { mockOpen } = await mockSidePanel();
 
 describe("UsersTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   describe("display", () => {
     it("displays a loading component if users are loading", async () => {
       mockIsPending();
@@ -75,16 +65,6 @@ describe("UsersTable", () => {
             name: new RegExp(`^${column}`, "i"),
           })
         ).toBeInTheDocument();
-      });
-    });
-
-    it("displays the form when Add user is clicked", async () => {
-      renderWithProviders(<UsersTable />);
-
-      await userEvent.click(screen.getByRole("button", { name: "Add user" }));
-
-      expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-        view: UserActionSidePanelViews.CREATE_USER,
       });
     });
 
@@ -149,6 +129,17 @@ describe("UsersTable", () => {
   });
 
   describe("actions", () => {
+    it("displays the form when Add user is clicked", async () => {
+      renderWithProviders(<UsersTable />);
+
+      await userEvent.click(screen.getByRole("button", { name: "Add user" }));
+
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: AddUser,
+        title: "Add user",
+      });
+    });
+
     it("opens edit user side panel form", async () => {
       mockServer.use(
         usersResolvers.listUsers.handler({
@@ -167,13 +158,10 @@ describe("UsersTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Edit" }));
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: UserActionSidePanelViews.EDIT_USER,
-          extras: {
-            userId: 1,
-          },
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: EditUser,
+        title: "Edit user",
+        props: { id: 1 },
       });
     });
 
@@ -195,13 +183,10 @@ describe("UsersTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: UserActionSidePanelViews.DELETE_USER,
-          extras: {
-            userId: 1,
-          },
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: DeleteUser,
+        title: "Delete user",
+        props: { id: 1 },
       });
     });
   });

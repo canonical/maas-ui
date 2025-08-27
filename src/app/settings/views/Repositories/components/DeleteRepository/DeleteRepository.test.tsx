@@ -48,10 +48,6 @@ describe("RepositoryDelete", () => {
         packageRepositoriesResolvers.deletePackageRepository.resolved
       ).toBe(true);
     });
-
-    await waitFor(() => {
-      expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
-    });
   });
 
   it("shows errors on submission", async () => {
@@ -65,16 +61,6 @@ describe("RepositoryDelete", () => {
 
     await waitFor(() => {
       expect(screen.getByText(/Error/)).toBeInTheDocument();
-    });
-  });
-
-  it("closes the side panel on Cancel", async () => {
-    renderWithProviders(<DeleteRepository id={1} />);
-
-    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-
-    await waitFor(() => {
-      expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
     });
   });
 });

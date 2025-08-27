@@ -5,6 +5,7 @@ import NetworkDiscoveryHeader, {
 } from "./NetworkDiscoveryHeader";
 
 import urls from "@/app/base/urls";
+import { ClearAllForm } from "@/app/networkDiscovery/components";
 import {
   mockNetworkDiscoveries,
   networkDiscoveryResolvers,
@@ -14,15 +15,15 @@ import {
   renderWithProviders,
   userEvent,
   setupMockServer,
+  mockSidePanel,
 } from "@/testing/utils";
 
 setupMockServer(networkDiscoveryResolvers.listNetworkDiscoveries.handler());
+const { mockOpen } = await mockSidePanel();
 
 describe("NetworkDiscoveryHeader", () => {
   it("displays the discovery count in the header", async () => {
-    renderWithProviders(
-      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />
-    );
+    renderWithProviders(<NetworkDiscoveryHeader />);
 
     await waitFor(() => {
       expect(
@@ -35,9 +36,7 @@ describe("NetworkDiscoveryHeader", () => {
   });
 
   it("has a button to clear discoveries", () => {
-    renderWithProviders(
-      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />
-    );
+    renderWithProviders(<NetworkDiscoveryHeader />);
     expect(
       screen.getByRole("button", {
         name: NetworkDiscoveryHeaderLabels.ClearAll,
@@ -46,18 +45,16 @@ describe("NetworkDiscoveryHeader", () => {
   });
 
   it("opens the side panel when the 'Clear all discoveries' button is clicked", async () => {
-    const setSidePanelContent = vi.fn();
-    renderWithProviders(
-      <NetworkDiscoveryHeader setSidePanelContent={setSidePanelContent} />
-    );
+    renderWithProviders(<NetworkDiscoveryHeader />);
 
     await userEvent.click(
       screen.getByRole("button", {
         name: NetworkDiscoveryHeaderLabels.ClearAll,
       })
     );
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: ["", "clearAllDiscoveries"],
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: ClearAllForm,
+      title: "Clear all discoveries",
     });
   });
 });

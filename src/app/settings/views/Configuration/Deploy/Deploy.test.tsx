@@ -1,11 +1,10 @@
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import Deploy from "./Deploy";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { render } from "@/testing/utils";
+import { renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -20,11 +19,7 @@ it(`dispatches actions to fetch config and general os info if either has not
   state.config.loaded = false;
   const store = mockStore(state);
 
-  render(
-    <Provider store={store}>
-      <Deploy />
-    </Provider>
-  );
+  renderWithProviders(<Deploy />, { store });
 
   const fetchActions = store
     .getActions()

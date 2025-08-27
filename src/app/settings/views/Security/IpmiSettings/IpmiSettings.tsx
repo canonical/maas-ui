@@ -10,6 +10,7 @@ import {
 } from "@/app/api/query/configurations";
 import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
+import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
@@ -58,68 +59,70 @@ const IpmiSettings = (): React.ReactElement => {
   useWindowTitle("IPMI settings");
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Title className="section-header__title">
-        IPMI settings
-      </ContentSection.Title>
-      <ContentSection.Content>
-        {isPending && <Spinner text={Labels.Loading} />}
-        {error && (
-          <Notification
-            severity="negative"
-            title="Error while fetching security configurations ipmi settings"
-          >
-            {error.message}
-          </Notification>
-        )}
-        {isSuccess && (
-          <FormikForm<IpmiFormValues, SetConfigurationsError>
-            aria-label={Labels.FormLabel}
-            cleanup={configActions.cleanup}
-            errors={updateConfig.error}
-            initialValues={{
-              maas_auto_ipmi_user: (maas_auto_ipmi_user as string) || "maas",
-              maas_auto_ipmi_k_g_bmc_key:
-                (maas_auto_ipmi_k_g_bmc_key as string) || "",
-              maas_auto_ipmi_user_privilege_level:
-                (maas_auto_ipmi_user_privilege_level as AutoIpmiPrivilegeLevel) ||
-                AutoIpmiPrivilegeLevel.ADMIN,
-            }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Configuration settings",
-              label: "IPMI form",
-            }}
-            onSubmit={(values, { resetForm }) => {
-              updateConfig.mutate({
-                body: {
-                  configurations: [
-                    {
-                      name: ConfigNames.MAAS_AUTO_IPMI_USER,
-                      value: values.maas_auto_ipmi_user,
-                    },
-                    {
-                      name: ConfigNames.MAAS_AUTO_IPMI_K_G_BMC_KEY,
-                      value: values.maas_auto_ipmi_k_g_bmc_key,
-                    },
-                    {
-                      name: ConfigNames.MAAS_AUTO_IPMI_USER_PRIVILEGE_LEVEL,
-                      value: values.maas_auto_ipmi_user_privilege_level,
-                    },
-                  ],
-                },
-              });
-              resetForm({ values });
-            }}
-            saved={updateConfig.isSuccess}
-            saving={updateConfig.isPending}
-            validationSchema={IpmiSchema}
-          >
-            <Fields />
-          </FormikForm>
-        )}
-      </ContentSection.Content>
-    </ContentSection>
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          IPMI settings
+        </ContentSection.Title>
+        <ContentSection.Content>
+          {isPending && <Spinner text={Labels.Loading} />}
+          {error && (
+            <Notification
+              severity="negative"
+              title="Error while fetching security configurations ipmi settings"
+            >
+              {error.message}
+            </Notification>
+          )}
+          {isSuccess && (
+            <FormikForm<IpmiFormValues, SetConfigurationsError>
+              aria-label={Labels.FormLabel}
+              cleanup={configActions.cleanup}
+              errors={updateConfig.error}
+              initialValues={{
+                maas_auto_ipmi_user: (maas_auto_ipmi_user as string) || "maas",
+                maas_auto_ipmi_k_g_bmc_key:
+                  (maas_auto_ipmi_k_g_bmc_key as string) || "",
+                maas_auto_ipmi_user_privilege_level:
+                  (maas_auto_ipmi_user_privilege_level as AutoIpmiPrivilegeLevel) ||
+                  AutoIpmiPrivilegeLevel.ADMIN,
+              }}
+              onSaveAnalytics={{
+                action: "Saved",
+                category: "Configuration settings",
+                label: "IPMI form",
+              }}
+              onSubmit={(values, { resetForm }) => {
+                updateConfig.mutate({
+                  body: {
+                    configurations: [
+                      {
+                        name: ConfigNames.MAAS_AUTO_IPMI_USER,
+                        value: values.maas_auto_ipmi_user,
+                      },
+                      {
+                        name: ConfigNames.MAAS_AUTO_IPMI_K_G_BMC_KEY,
+                        value: values.maas_auto_ipmi_k_g_bmc_key,
+                      },
+                      {
+                        name: ConfigNames.MAAS_AUTO_IPMI_USER_PRIVILEGE_LEVEL,
+                        value: values.maas_auto_ipmi_user_privilege_level,
+                      },
+                    ],
+                  },
+                });
+                resetForm({ values });
+              }}
+              saved={updateConfig.isSuccess}
+              saving={updateConfig.isPending}
+              validationSchema={IpmiSchema}
+            >
+              <Fields />
+            </FormikForm>
+          )}
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 

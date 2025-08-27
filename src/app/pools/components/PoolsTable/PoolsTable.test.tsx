@@ -1,11 +1,9 @@
 import userEvent from "@testing-library/user-event";
-import type { Mock } from "vitest";
 import { describe } from "vitest";
 
 import PoolsTable from "./PoolsTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { PoolActionSidePanelViews } from "@/app/pools/constants";
+import { DeletePool, EditPool } from "@/app/pools/components";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
@@ -15,28 +13,16 @@ import {
   setupMockServer,
   within,
   mockIsPending,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   poolsResolvers.listPools.handler(),
   poolsResolvers.getPool.handler()
 );
-
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
+const { mockOpen } = await mockSidePanel();
 
 describe("PoolsTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   describe("display", () => {
     it("displays a loading component if pools are loading", async () => {
       mockIsPending();
@@ -241,13 +227,10 @@ describe("PoolsTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Edit" }));
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: PoolActionSidePanelViews.EDIT_POOL,
-          extras: {
-            poolId: 1,
-          },
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: EditPool,
+        title: "Edit pool",
+        props: { id: 1 },
       });
     });
 
@@ -276,13 +259,10 @@ describe("PoolsTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-      await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: PoolActionSidePanelViews.DELETE_POOL,
-          extras: {
-            poolId: 1,
-          },
-        });
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: DeletePool,
+        title: "Delete pool",
+        props: { id: 1 },
       });
     });
   });

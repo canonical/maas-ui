@@ -1,25 +1,22 @@
+import type { ReactElement } from "react";
+
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useLocation, Link } from "react-router";
 
-import { NetworkDiscoverySidePanelViews } from "../../constants";
-
 import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
+import { ClearAllForm } from "@/app/networkDiscovery/components";
 
 export enum Labels {
   ClearAll = "Clear all discoveries",
 }
 
-const NetworkDiscoveryHeader = ({
-  setSidePanelContent,
-}: {
-  setSidePanelContent: SetSidePanelContent;
-}): React.ReactElement => {
+const NetworkDiscoveryHeader = (): ReactElement => {
   const location = useLocation();
-
+  const { openSidePanel } = useSidePanel();
   const discoveries = useNetworkDiscoveries();
 
   const buttons: React.ReactElement[] = [
@@ -29,8 +26,9 @@ const NetworkDiscoveryHeader = ({
       disabled={discoveries.data?.total === 0}
       key="clear-all"
       onClick={() => {
-        setSidePanelContent({
-          view: NetworkDiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES,
+        openSidePanel({
+          component: ClearAllForm,
+          title: "Clear all discoveries",
         });
       }}
     >

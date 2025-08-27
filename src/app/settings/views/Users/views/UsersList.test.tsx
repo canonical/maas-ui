@@ -1,5 +1,5 @@
-import type { UserSidePanelContent } from "@/app/settings/views/Users/constants";
-import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
+import { waitFor } from "@testing-library/react";
+
 import UsersList from "@/app/settings/views/Users/views/UsersList";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
@@ -17,77 +17,51 @@ setupMockServer(
   authResolvers.getCurrentUser.handler()
 );
 
-let mockSidePanelContent: UserSidePanelContent | null = null;
-const mockSetSidePanelContent = vi.fn();
-
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: () => ({
-      sidePanelContent: mockSidePanelContent,
-      setSidePanelContent: mockSetSidePanelContent,
-      sidePanelSize: "regular",
-      setSidePanelSize: vi.fn(),
-    }),
-  };
-});
-
 describe("UsersList", () => {
   const state = factory.rootState({
     status: factory.statusState({ externalAuthURL: null }),
   });
-  beforeEach(() => {
-    mockSetSidePanelContent.mockClear();
-    mockSidePanelContent = null;
-  });
 
-  it("renders AddUser when view is CREATE_USER", () => {
-    mockSidePanelContent = {
-      view: UserActionSidePanelViews.CREATE_USER,
-    };
-
+  it("renders AddUser", async () => {
     renderWithProviders(<UsersList />, { state });
+    await userEvent.click(screen.getByRole("button", { name: "Add user" }));
     expect(
       screen.getByRole("complementary", { name: "Add user" })
     ).toBeInTheDocument();
   });
 
-  it("renders EditUser when view is EDIT_USER", () => {
-    mockSidePanelContent = {
-      view: UserActionSidePanelViews.EDIT_USER,
-      extras: { userId: 42 },
-    };
-
+  it("renders EditUser when a valid userId is provided", async () => {
     renderWithProviders(<UsersList />, { state });
+    await waitFor(() => {
+      expect(screen.getAllByRole("button", { name: "Edit" }));
+    });
+    await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
     expect(
       screen.getByRole("complementary", { name: "Edit user" })
     ).toBeInTheDocument();
   });
 
-  it("renders DeleteUser when view is DELETE_USER and valid sshKeyIds are provided", () => {
-    mockSidePanelContent = {
-      view: UserActionSidePanelViews.DELETE_USER,
-      extras: { userId: 42 },
-    };
-
+  it("renders DeleteUser when a valid userId is provided", async () => {
     renderWithProviders(<UsersList />, { state });
+    await waitFor(() => {
+      expect(screen.getAllByRole("button", { name: "Delete" }));
+    });
+    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
     expect(
       screen.getByRole("complementary", { name: "Delete user" })
     ).toBeInTheDocument();
   });
 
   it("closes side panel form when canceled", async () => {
-    mockSidePanelContent = {
-      view: UserActionSidePanelViews.CREATE_USER,
-    };
-
     renderWithProviders(<UsersList />, { state });
+    await userEvent.click(screen.getByRole("button", { name: "Add user" }));
     expect(
       screen.getByRole("complementary", { name: "Add user" })
     ).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
+    expect(
+      screen.queryByRole("complementary", { name: "Add user" })
+    ).not.toBeInTheDocument();
   });
 
   it("renders external user maintenance notification", () => {

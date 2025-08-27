@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { ExternalLink } from "@canonical/maas-react-components";
 import {
   Notification,
@@ -9,6 +11,7 @@ import { useClearNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import type { ClearAllDiscoveriesWithOptionalIpAndMacError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import configSelectors from "@/app/store/config/selectors";
 import { NetworkDiscovery } from "@/app/store/config/types";
@@ -18,15 +21,13 @@ export enum Labels {
   SubmitLabel = "Clear all discoveries",
 }
 
-type Props = {
-  closeForm: () => void;
-};
+const ClearAllForm = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
 
-const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const clearDiscovery = useClearNetworkDiscoveries();
-  let content: React.ReactElement;
+  let content: ReactElement;
   if (networkDiscovery === NetworkDiscovery.ENABLED) {
     content = (
       <>
@@ -61,7 +62,7 @@ const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
       aria-label="Clear all discoveries"
       errors={clearDiscovery.error}
       initialValues={{}}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Network discovery",
         category: "Clear network discoveries",
@@ -77,7 +78,7 @@ const ClearAllForm = ({ closeForm }: Props): React.ReactElement => {
             NotificationSeverity.INFORMATION
           )
         );
-        closeForm();
+        closeSidePanel();
       }}
       saved={clearDiscovery.isSuccess}
       saving={clearDiscovery.isPending}
