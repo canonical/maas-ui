@@ -1,5 +1,6 @@
 ## Done
-- 
+
+-
 
 <!--
 - Itemised list of what was changed by this PR.
@@ -7,15 +8,15 @@
 
 ## QA steps
 
-- [ ] 
+- [ ]
 
 <!-- Steps for QA. -->
 
 ## Fixes
 
-Fixes: 
+Resolves [MAASENG-XXXX](https://warthogs.atlassian.net/browse/MAASENG-XXXX)
 
-<!-- If there's an existing JIRA/launchpad issue/bug for your change, please link to it above. -->
+<!-- Make sure you link the relevant Jira ticket or Launchpad bug above, if applicable. -->
 
 ## Screenshots
 

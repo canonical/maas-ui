@@ -1,14 +1,16 @@
-import { MainTable } from "@canonical/react-components";
-import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
+import { GenericTable } from "@canonical/maas-react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
-import DoubleRow from "@/app/base/components/DoubleRow";
-import Placeholder from "@/app/base/components/Placeholder";
+import type { CloneNetworkRowData } from "./useCloneNetworkTableColumns/useCloneNetworkTableColumns";
+import useCloneNetworkTableColumns from "./useCloneNetworkTableColumns/useCloneNetworkTableColumns";
+
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import fabricSelectors from "@/app/store/fabric/selectors";
+import type { Fabric } from "@/app/store/fabric/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
 import { getSubnetDisplay } from "@/app/store/subnet/utils";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
@@ -22,12 +24,67 @@ import {
   isBondOrBridgeParent,
 } from "@/app/store/utils";
 import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN } from "@/app/store/vlan/types";
 import { getDHCPStatus, getVLANDisplay } from "@/app/store/vlan/utils";
 
 type Props = {
   loadingMachineDetails?: boolean;
   machine: MachineDetails | null;
   selected: boolean;
+};
+
+const generateRow = ({
+  fabrics,
+  isAllNetworkingDisabled,
+  isParent,
+  link,
+  machine,
+  nic,
+  subnets,
+  vlans,
+}: {
+  fabrics: Fabric[];
+  isAllNetworkingDisabled: boolean;
+  isParent: boolean;
+  link: NetworkLink | null;
+  machine: MachineDetails;
+  nic: NetworkInterface | null;
+  subnets: Subnet[];
+  vlans: VLAN[];
+}): CloneNetworkRowData => {
+  if (link && !nic) {
+    [nic] = getLinkInterface(machine, link);
+  }
+  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
+  const vlan = vlans.find(({ id }) => id === nic?.vlan_id);
+  const subnet = getInterfaceSubnet(
+    machine,
+    subnets,
+    fabrics,
+    vlans,
+    isAllNetworkingDisabled,
+    nic,
+    link
+  );
+  const nameDisplay = getInterfaceName(machine, nic, link);
+  const subnetDisplay = getSubnetDisplay(subnet, true);
+  const fabricDisplay = fabric?.name || "Unconfigured";
+  const vlanDisplay = getVLANDisplay(vlan);
+  const typeDisplay = getInterfaceTypeText(machine, nic, link, true);
+  const numaDisplay = (getInterfaceNumaNodes(machine, nic) || []).join(", ");
+  const dhcpDisplay = getDHCPStatus(vlan, vlans, fabrics);
+
+  return {
+    id: nic!.id,
+    name: nameDisplay,
+    subnet: subnetDisplay,
+    fabric: fabricDisplay,
+    vlan: vlanDisplay,
+    type: typeDisplay,
+    numaNodes: numaDisplay,
+    dhcp: dhcpDisplay,
+    isParent,
+  };
 };
 
 export const CloneNetworkTable = ({
@@ -39,124 +96,11 @@ export const CloneNetworkTable = ({
   const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
-  let rows: MainTableRow[] = [];
+  let rows: CloneNetworkRowData[] = [];
 
-  if (loadingMachineDetails) {
-    rows = Array.from(Array(4)).map(() => ({
-      columns: [
-        {
-          className: "name-col",
-          content: (
-            <DoubleRow
-              primary={<Placeholder>Name</Placeholder>}
-              secondary={<Placeholder>Subnet</Placeholder>}
-            />
-          ),
-        },
-        {
-          className: "fabric-col",
-          content: (
-            <DoubleRow
-              primary={<Placeholder>Fabric name</Placeholder>}
-              secondary={<Placeholder>VLAN</Placeholder>}
-            />
-          ),
-        },
-        {
-          className: "type-col",
-          content: (
-            <DoubleRow
-              primary={<Placeholder>Disk type</Placeholder>}
-              secondary={<Placeholder>X, X</Placeholder>}
-            />
-          ),
-        },
-        {
-          className: "dhcp-col",
-          content: <Placeholder>DHCP</Placeholder>,
-        },
-      ],
-    }));
-  } else if (machine) {
-    const generateRow = ({
-      isParent,
-      link,
-      nic,
-    }: {
-      isParent: boolean;
-      link: NetworkLink | null;
-      nic: NetworkInterface | null;
-    }) => {
-      if (link && !nic) {
-        [nic] = getLinkInterface(machine, link);
-      }
-      const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
-      const vlan = vlans.find(({ id }) => id === nic?.vlan_id);
-      const subnet = getInterfaceSubnet(
-        machine,
-        subnets,
-        fabrics,
-        vlans,
-        isAllNetworkingDisabled,
-        nic,
-        link
-      );
-      const nameDisplay = getInterfaceName(machine, nic, link);
-      const subnetDisplay = getSubnetDisplay(subnet, true);
-      const fabricDisplay = fabric?.name || "Unconfigured";
-      const vlanDisplay = getVLANDisplay(vlan);
-      const typeDisplay = getInterfaceTypeText(machine, nic, link, true);
-      const numaDisplay = (getInterfaceNumaNodes(machine, nic) || []).join(
-        ", "
-      );
-      const dhcpDisplay = getDHCPStatus(vlan, vlans, fabrics);
+  const columns = useCloneNetworkTableColumns();
 
-      return {
-        columns: [
-          {
-            className: "name-col",
-            content: (
-              <DoubleRow
-                primary={nameDisplay}
-                primaryTitle={nameDisplay}
-                secondary={!isParent ? subnetDisplay : null}
-                secondaryTitle={subnetDisplay}
-              />
-            ),
-            "data-testid": "name-subnet",
-          },
-          {
-            className: "fabric-col",
-            content: !isParent ? (
-              <DoubleRow
-                primary={fabricDisplay}
-                primaryTitle={fabricDisplay}
-                secondary={vlanDisplay}
-                secondaryTitle={vlanDisplay}
-              />
-            ) : null,
-            "data-testid": "fabric-vlan",
-          },
-          {
-            className: "type-col",
-            content: (
-              <DoubleRow
-                primary={typeDisplay}
-                primaryTitle={typeDisplay}
-                secondary={numaDisplay}
-                secondaryTitle={numaDisplay}
-              />
-            ),
-            "data-testid": "type-numa",
-          },
-          {
-            className: "dhcp-col",
-            content: !isParent ? dhcpDisplay : null,
-            "data-testid": "dhcp",
-          },
-        ],
-      };
-    };
+  if (machine) {
     rows = [];
     machine.interfaces.forEach((nic) => {
       // Childless nics are always rendered normally. Next, if the nic has any
@@ -166,18 +110,28 @@ export const CloneNetworkTable = ({
       if (!isBondOrBridgeParent(machine, nic)) {
         const firstLink = nic.links.length >= 1 ? nic.links[0] : null;
         const row = generateRow({
+          fabrics,
+          isAllNetworkingDisabled,
           isParent: false,
           link: firstLink,
+          machine,
           nic: firstLink ? null : nic,
+          subnets,
+          vlans,
         });
         rows.push(row);
 
         const parents = getBondOrBridgeParents(machine, nic);
         parents.forEach((parentNic) => {
           const row = generateRow({
+            fabrics,
+            isAllNetworkingDisabled,
             isParent: true,
             link: null,
+            machine,
             nic: parentNic,
+            subnets,
+            vlans,
           });
           rows.push(row);
         });
@@ -189,9 +143,14 @@ export const CloneNetworkTable = ({
           nic.links.forEach((link, i) => {
             if (i > 0) {
               const row = generateRow({
+                fabrics,
+                isAllNetworkingDisabled,
                 isParent: false,
                 link,
+                machine,
                 nic: null,
+                subnets,
+                vlans,
               });
               rows.push(row);
             }
@@ -202,46 +161,15 @@ export const CloneNetworkTable = ({
   }
 
   return (
-    <MainTable
+    <GenericTable
       aria-label="Clone network"
       className={classNames("clone-table--network", {
         "not-selected": !selected,
       })}
-      emptyStateMsg={machine ? "No network information detected." : null}
-      headers={[
-        {
-          className: "name-col",
-          content: (
-            <>
-              <div>Interface</div>
-              <div>Subnet</div>
-            </>
-          ),
-        },
-        {
-          className: "fabric-col",
-          content: (
-            <>
-              <div>Fabric</div>
-              <div>VLAN</div>
-            </>
-          ),
-        },
-        {
-          className: "type-col",
-          content: (
-            <>
-              <div>Type</div>
-              <div>NUMA node</div>
-            </>
-          ),
-        },
-        {
-          className: "dhcp-col",
-          content: "DHCP",
-        },
-      ]}
-      rows={rows}
+      columns={columns}
+      data={rows}
+      isLoading={loadingMachineDetails}
+      noData={machine ? "No network information detected." : null}
     />
   );
 };

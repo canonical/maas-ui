@@ -128,7 +128,7 @@ describe("CloneFormFields", () => {
       </Formik>,
       { state }
     );
-    let table = screen.getByRole("grid", { name: "Clone network" });
+    let table = screen.getByLabelText("Clone network");
     // Table has unselected styling by default
     expect(table).toHaveClass("not-selected");
 
@@ -138,7 +138,7 @@ describe("CloneFormFields", () => {
     );
 
     await waitFor(() => {
-      table = screen.getByRole("grid", { name: "Clone network" });
+      table = screen.getByLabelText("Clone network");
       expect(table).not.toHaveClass("not-selected");
     });
   });
