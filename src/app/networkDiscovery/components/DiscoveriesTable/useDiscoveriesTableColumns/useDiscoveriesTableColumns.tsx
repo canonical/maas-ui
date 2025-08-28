@@ -90,7 +90,7 @@ const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
         id: "action",
         accessorKey: "id",
         enableSorting: false,
-        header: "Action",
+        header: "Actions",
         cell: ({ row: { original } }) => {
           return (
             <ContextualMenu

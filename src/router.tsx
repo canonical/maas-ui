@@ -7,10 +7,7 @@ import ErrorBoundary from "@/app/base/components/ErrorBoundary";
 import PageContent from "@/app/base/components/PageContent";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
-import APIKeyAdd from "@/app/preferences/views/APIKeys/APIKeyAdd";
-import APIKeyDelete from "@/app/preferences/views/APIKeys/APIKeyDelete";
-import APIKeyEdit from "@/app/preferences/views/APIKeys/APIKeyEdit";
-import APIKeyList from "@/app/preferences/views/APIKeys/APIKeyList";
+import APIKeyList from "@/app/preferences/views/APIKeys/views";
 import Details from "@/app/preferences/views/Details";
 import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
 import SSLKeysList from "@/app/preferences/views/SSLKeys/views";
@@ -246,57 +243,7 @@ export const router = createBrowserRouter(
               ),
               element: (
                 <ErrorBoundary>
-                  <PageContent sidePanelContent={null} sidePanelTitle={null}>
-                    <APIKeyList />
-                  </PageContent>
-                </ErrorBoundary>
-              ),
-            },
-            {
-              path: getRelativeRoute(
-                urls.preferences.apiKeys.add,
-                urls.preferences.index
-              ),
-              element: (
-                <ErrorBoundary>
-                  <PageContent
-                    sidePanelContent={<APIKeyAdd />}
-                    sidePanelTitle="Generate MAAS API key"
-                  >
-                    <APIKeyList />
-                  </PageContent>
-                </ErrorBoundary>
-              ),
-            },
-            {
-              path: getRelativeRoute(
-                urls.preferences.apiKeys.edit(null),
-                urls.preferences.index
-              ),
-              element: (
-                <ErrorBoundary>
-                  <PageContent
-                    sidePanelContent={<APIKeyEdit />}
-                    sidePanelTitle="Edit MAAS API key"
-                  >
-                    <APIKeyList />
-                  </PageContent>
-                </ErrorBoundary>
-              ),
-            },
-            {
-              path: getRelativeRoute(
-                urls.preferences.apiKeys.delete(null),
-                urls.preferences.index
-              ),
-              element: (
-                <ErrorBoundary>
-                  <PageContent
-                    sidePanelContent={<APIKeyDelete />}
-                    sidePanelTitle="Delete MAAS API key"
-                  >
-                    <APIKeyList />
-                  </PageContent>
+                  <APIKeyList />
                 </ErrorBoundary>
               ),
             },

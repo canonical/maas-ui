@@ -46,7 +46,7 @@ const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
         id: "action",
         accessorKey: "id",
         enableSorting: false,
-        header: "Action",
+        header: "Actions",
         cell: ({
           row: {
             original: { id },

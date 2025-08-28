@@ -259,7 +259,7 @@
 @include TagForm;
 
 // preferences
-@import "@/app/preferences/views/APIKeys/APIKeyList";
+@import "@/app/preferences/views/APIKeys/views";
 @import "@/app/preferences/views/SSLKeys/components/AddSSLKey";
 @import "@/app/preferences/views/SSLKeys/views";
 @import "@/app/preferences/views/SSHKeys/components/SSHKeysTable";

@@ -33,7 +33,7 @@ const useSSLKeysTableColumns = (): SSLKeysColumnDef[] => {
           id: "action",
           accessorKey: "id",
           enableSorting: false,
-          header: "Action",
+          header: "Actions",
           cell: ({
             row: {
               original: { id },

@@ -1,7 +1,7 @@
 import APIKeyDelete from "./APIKeyDelete";
 
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 const state = factory.rootState({
   token: factory.tokenState({
@@ -21,10 +21,8 @@ const state = factory.rootState({
 });
 
 it("renders", () => {
-  renderWithBrowserRouter(<APIKeyDelete />, {
+  renderWithProviders(<APIKeyDelete id={1} />, {
     state,
-    route: "/account/prefs/api-keys/1/delete",
-    routePattern: "/account/prefs/api-keys/:id/delete",
   });
   expect(
     screen.getByRole("form", { name: "Delete API Key" })

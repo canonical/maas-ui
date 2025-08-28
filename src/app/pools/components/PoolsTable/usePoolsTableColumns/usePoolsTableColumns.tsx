@@ -59,7 +59,7 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
           id: "action",
           accessorKey: "id",
           enableSorting: false,
-          header: "Action",
+          header: "Actions",
           cell: ({ row }) => {
             return (
               <TableActions

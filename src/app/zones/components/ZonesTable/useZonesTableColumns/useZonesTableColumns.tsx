@@ -93,7 +93,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         id: "action",
         accessorKey: "id",
         enableSorting: false,
-        header: "Action",
+        header: "Actions",
         cell: ({ row }: { row: Row<ZoneWithSummaryResponse> }) => {
           const canBeDeleted = isSuperUser.data && row.original.id !== 1;
           return (
