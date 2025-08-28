@@ -1,6 +1,5 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 
 import LicenseKeyForm from "../LicenseKeyForm";
 
@@ -15,11 +14,15 @@ export enum Labels {
   KeyNotFound = "License key not found",
 }
 
-export const LicenseKeyEdit = (): React.ReactElement => {
-  const { osystem, distro_series } = useParams<{
-    osystem?: LicenseKeys["osystem"];
-    distro_series?: LicenseKeys["distro_series"];
-  }>();
+type LicenseKeyEditProps = {
+  osystem?: LicenseKeys["osystem"];
+  distro_series?: LicenseKeys["distro_series"];
+};
+
+export const LicenseKeyEdit = ({
+  osystem,
+  distro_series,
+}: LicenseKeyEditProps): React.ReactElement => {
   const loading = useSelector(licenseKeysSelectors.loading);
 
   const licenseKey = useSelector((state: RootState) =>

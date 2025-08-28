@@ -4,14 +4,14 @@ import { useDeletePackageRepository } from "@/app/api/query/packageRepositories"
 import type { PackageRepositoryResponse } from "@/app/apiclient";
 import { getPackageRepositoryQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 type Props = {
   id: PackageRepositoryResponse["id"];
 };
 
 const DeleteRepository = ({ id }: Props) => {
-  const { setSidePanelContent } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
   const deleteRepo = useDeletePackageRepository();
   const queryClient = useQueryClient();
 
@@ -21,9 +21,7 @@ const DeleteRepository = ({ id }: Props) => {
       errors={deleteRepo.error}
       initialValues={{}}
       modelType="repository"
-      onCancel={() => {
-        setSidePanelContent(null);
-      }}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         deleteRepo.mutate(
           { path: { package_repository_id: id } },
@@ -38,9 +36,7 @@ const DeleteRepository = ({ id }: Props) => {
           }
         );
       }}
-      onSuccess={() => {
-        setSidePanelContent(null);
-      }}
+      onSuccess={closeSidePanel}
       saved={deleteRepo.isSuccess}
       saving={deleteRepo.isPending}
     />

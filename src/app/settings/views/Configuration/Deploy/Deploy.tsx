@@ -4,6 +4,7 @@ import { ContentSection } from "@canonical/maas-react-components";
 import { Spinner } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 
+import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import DeployForm from "@/app/settings/views/Configuration/DeployForm";
 import { configActions } from "@/app/store/config";
@@ -30,15 +31,17 @@ const Deploy = (): React.ReactElement => {
   }, [dispatch, loaded]);
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Title className="section-header__title">
-        Deploy
-      </ContentSection.Title>
-      <ContentSection.Content>
-        {loading && <Spinner text="Loading..." />}
-        {loaded && <DeployForm />}
-      </ContentSection.Content>
-    </ContentSection>
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          Deploy
+        </ContentSection.Title>
+        <ContentSection.Content>
+          {loading && <Spinner text="Loading..." />}
+          {loaded && <DeployForm />}
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 

@@ -1,5 +1,3 @@
-import { vi } from "vitest";
-
 import DeleteUser from "./DeleteUser";
 
 import { usersResolvers } from "@/testing/resolvers/users";
@@ -10,24 +8,25 @@ import {
   waitFor,
   renderWithProviders,
   waitForLoading,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   usersResolvers.getUser.handler(),
   usersResolvers.deleteUser.handler()
 );
+const { mockClose } = await mockSidePanel();
 
 describe("DeleteUser", () => {
   it("calls closeForm on cancel click", async () => {
-    const closeForm = vi.fn();
-    renderWithProviders(<DeleteUser closeForm={closeForm} id={2} />);
+    renderWithProviders(<DeleteUser id={2} />);
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls delete user on save click", async () => {
-    renderWithProviders(<DeleteUser closeForm={vi.fn()} id={2} />);
+    renderWithProviders(<DeleteUser id={2} />);
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: /Delete/i }));
     await waitFor(() => {
@@ -40,7 +39,7 @@ describe("DeleteUser", () => {
       usersResolvers.deleteUser.error({ code: 400, message: "Uh oh!" })
     );
 
-    renderWithProviders(<DeleteUser closeForm={vi.fn()} id={2} />);
+    renderWithProviders(<DeleteUser id={2} />);
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
     await waitFor(() => {

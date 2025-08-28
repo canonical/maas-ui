@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import CommissioningForm from "../CommissioningForm";
 
+import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
@@ -35,15 +36,17 @@ const Commissioning = (): React.ReactElement => {
   }, [dispatch, loaded]);
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Title className="section-header__title">
-        Commissioning
-      </ContentSection.Title>
-      <ContentSection.Content>
-        {loading && <Spinner text={Labels.Loading} />}
-        {loaded && <CommissioningForm />}
-      </ContentSection.Content>
-    </ContentSection>
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          Commissioning
+        </ContentSection.Title>
+        <ContentSection.Content>
+          {loading && <Spinner text={Labels.Loading} />}
+          {loaded && <CommissioningForm />}
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 

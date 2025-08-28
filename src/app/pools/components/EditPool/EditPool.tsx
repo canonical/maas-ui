@@ -12,10 +12,10 @@ import type {
 import { getResourcePoolQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 type EditPoolProps = {
   id: number;
-  closeForm: () => void;
 };
 
 const PoolSchema = Yup.object().shape({
@@ -23,7 +23,8 @@ const PoolSchema = Yup.object().shape({
   description: Yup.string(),
 });
 
-const EditPool = ({ id, closeForm }: EditPoolProps): ReactElement => {
+const EditPool = ({ id }: EditPoolProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const pool = useGetPool({ path: { resource_pool_id: id } });
 
@@ -45,7 +46,7 @@ const EditPool = ({ id, closeForm }: EditPoolProps): ReactElement => {
             description: pool.data.description,
             name: pool.data.name,
           }}
-          onCancel={closeForm}
+          onCancel={closeSidePanel}
           onSubmit={(values) => {
             editPool.mutate({
               body: {
@@ -62,7 +63,7 @@ const EditPool = ({ id, closeForm }: EditPoolProps): ReactElement => {
                   path: { resource_pool_id: id },
                 }),
               })
-              .then(closeForm);
+              .then(closeSidePanel);
           }}
           saved={editPool.isSuccess}
           saving={editPool.isPending}

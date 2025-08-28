@@ -6,12 +6,12 @@ import { Button } from "@canonical/react-components";
 import { useUsers } from "@/app/api/query/users";
 import SearchBox from "@/app/base/components/SearchBox";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { AddUser } from "@/app/settings/views/Users/components";
 import useUsersTableColumns from "@/app/settings/views/Users/components/UsersTable/useUsersTableColumns/useUsersTableColumns";
-import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
 
 const UsersTable = () => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const [searchText, setSearchText] = useState("");
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
@@ -33,9 +33,7 @@ const UsersTable = () => {
           />
           <Button
             onClick={() => {
-              setSidePanelContent({
-                view: UserActionSidePanelViews.CREATE_USER,
-              });
+              openSidePanel({ component: AddUser, title: "Add user" });
             }}
           >
             Add user

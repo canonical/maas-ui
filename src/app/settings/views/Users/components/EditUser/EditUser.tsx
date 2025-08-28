@@ -13,10 +13,10 @@ import type { UpdateUserError, UserUpdateRequest } from "@/app/apiclient";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 type EditUserProps = {
   id: number;
-  closeForm?: () => void;
   isSelfEditing?: boolean;
 };
 
@@ -48,9 +48,9 @@ const SelfEditUserSchema = UserSchema.shape({
 
 const EditUser = ({
   id,
-  closeForm,
   isSelfEditing = false,
 }: EditUserProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -94,7 +94,7 @@ const EditUser = ({
             last_name: user.data.last_name || "",
             email: user.data.email,
           }}
-          onCancel={closeForm}
+          onCancel={closeSidePanel}
           onSubmit={async (values) => {
             setAuthError(null);
 
@@ -137,7 +137,7 @@ const EditUser = ({
                   path: { user_id: id },
                 }),
               })
-              .then(closeForm);
+              .then(closeSidePanel);
           }}
           resetOnSave={true}
           saved={updateUser.isSuccess}

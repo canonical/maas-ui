@@ -10,9 +10,9 @@ import { networkDiscoveryResolvers } from "@/testing/resolvers/networkDiscovery"
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
   waitFor,
   setupMockServer,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -43,8 +43,7 @@ describe("ClearAllForm", () => {
         },
       ],
     });
-    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
-      route: "/network-discovery",
+    renderWithProviders(<ClearAllForm />, {
       state,
     });
     await waitFor(() => {
@@ -61,8 +60,7 @@ describe("ClearAllForm", () => {
         },
       ],
     });
-    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
-      route: "/network-discovery",
+    renderWithProviders(<ClearAllForm />, {
       state,
     });
     expect(screen.getByTestId("disabled-message")).toBeInTheDocument();
@@ -70,8 +68,7 @@ describe("ClearAllForm", () => {
 
   it("dispatches an action to clear the discoveries", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
-      route: "/network-discovery",
+    renderWithProviders(<ClearAllForm />, {
       store,
     });
     await userEvent.click(
@@ -88,8 +85,7 @@ describe("ClearAllForm", () => {
     mockFormikFormSaved();
 
     const store = mockStore(state);
-    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
-      route: "/network-discovery",
+    renderWithProviders(<ClearAllForm />, {
       store,
     });
 

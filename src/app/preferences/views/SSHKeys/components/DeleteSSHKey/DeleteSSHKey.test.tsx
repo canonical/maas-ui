@@ -1,8 +1,7 @@
-import { vi } from "vitest";
-
 import DeleteSSHKey from "@/app/preferences/views/SSHKeys/components/DeleteSSHKey/DeleteSSHKey";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -11,29 +10,9 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(sshKeyResolvers.deleteSshKey.handler());
-const mockUseSidePanel = vi.spyOn(
-  await import("@/app/base/side-panel-context-new"),
-  "useSidePanel"
-);
+const { mockClose } = await mockSidePanel();
 
 describe("DeleteSSHKey", () => {
-  const mockClose = vi.fn();
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-
-    mockUseSidePanel.mockReturnValue({
-      isOpen: false,
-      title: "",
-      size: "regular",
-      component: null,
-      props: {},
-      openSidePanel: vi.fn(),
-      closeSidePanel: mockClose,
-      setSidePanelSize: vi.fn(),
-    });
-  });
-
   it("renders", () => {
     renderWithProviders(<DeleteSSHKey ids={[2, 3]} />);
     expect(
@@ -44,7 +23,7 @@ describe("DeleteSSHKey", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls closeForm on cancel click", async () => {
+  it("calls closeSidePanel on cancel click", async () => {
     renderWithProviders(<DeleteSSHKey ids={[2]} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));

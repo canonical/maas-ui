@@ -15,7 +15,6 @@ import {
   renderWithProviders,
   setupMockServer,
   waitForLoading,
-  waitFor,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -131,15 +130,5 @@ describe("AddRepository", () => {
     expect(packageRepositoriesResolvers.createPackageRepository.resolved).toBe(
       true
     );
-  });
-
-  it("closes the side panel on cancel", async () => {
-    renderWithProviders(<AddRepository type="ppa" />, { state });
-
-    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-
-    await waitFor(() => {
-      expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
-    });
   });
 });

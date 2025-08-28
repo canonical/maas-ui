@@ -6,8 +6,11 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { DiscoveryResponse } from "@/app/apiclient";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { NetworkDiscoverySidePanelViews } from "@/app/networkDiscovery/constants";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import {
+  DiscoveryAddForm,
+  DiscoveryDeleteForm,
+} from "@/app/networkDiscovery/components";
 import { Labels } from "@/app/networkDiscovery/views/DiscoveriesList/DiscoveriesList";
 import type { UtcDatetime } from "@/app/store/types/model";
 import { formatUtcDatetime } from "@/app/utils/time";
@@ -18,7 +21,7 @@ export type DiscoveryColumnDef = ColumnDef<
 >;
 
 const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () => [
       {
@@ -98,9 +101,10 @@ const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
                   children: Labels.AddDiscovery,
                   "data-testid": "add-discovery-link",
                   onClick: () => {
-                    setSidePanelContent({
-                      view: NetworkDiscoverySidePanelViews.ADD_DISCOVERY,
-                      extras: {
+                    openSidePanel({
+                      component: DiscoveryAddForm,
+                      title: "Add discovery",
+                      props: {
                         discovery: original,
                       },
                     });
@@ -110,11 +114,10 @@ const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
                   children: "Delete discovery...",
                   "data-testid": "delete-discovery-link",
                   onClick: () => {
-                    setSidePanelContent({
-                      view: NetworkDiscoverySidePanelViews.DELETE_DISCOVERY,
-                      extras: {
-                        discovery: original,
-                      },
+                    openSidePanel({
+                      component: DiscoveryDeleteForm,
+                      title: "Delete discovery",
+                      props: { discovery: original },
                     });
                   },
                 },
@@ -126,7 +129,7 @@ const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
         },
       },
     ],
-    [setSidePanelContent]
+    [openSidePanel]
   );
 };
 

@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 
 import { Labels as LicenseKeyFormLabels } from "../LicenseKeyForm/LicenseKeyForm";
@@ -9,7 +7,7 @@ import { LicenseKeyEdit, Labels as LicenseKeyLabels } from "./LicenseKeyEdit";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, render } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -60,59 +58,33 @@ describe("LicenseKeyEdit", () => {
     state.licensekeys.loading = true;
     state.licensekeys.loaded = false;
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: "/settings/license-keys/window/windows2012/edit",
-              key: "testKey",
-            },
-          ]}
-        >
-          <LicenseKeyEdit />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LicenseKeyEdit distro_series={"win2012"} osystem={"windows"} />,
+      {
+        store,
+      }
     );
     expect(screen.getByText(LicenseKeyLabels.Loading)).toBeInTheDocument();
   });
 
   it("handles license key not found", () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/license-keys/foo/bar/edit", key: "testKey" },
-          ]}
-        >
-          <LicenseKeyEdit />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LicenseKeyEdit distro_series={"foo"} osystem={"bar"} />,
+      {
+        store,
+      }
     );
     expect(screen.getByText(LicenseKeyLabels.KeyNotFound)).toBeInTheDocument();
   });
 
   it("can display a license key edit form", () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: "/settings/license-keys/windows/win2012/edit",
-              key: "testKey",
-            },
-          ]}
-        >
-          <Routes>
-            <Route
-              element={<LicenseKeyEdit />}
-              path="/settings/license-keys/:osystem/:distro_series/edit"
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <LicenseKeyEdit distro_series={"win2012"} osystem={"windows"} />,
+      {
+        store,
+      }
     );
 
     expect(
