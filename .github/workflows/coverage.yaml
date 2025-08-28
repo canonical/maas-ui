@@ -41,20 +41,6 @@ jobs:
           path: coverage
           retention-days: 1
 
-      # Generate a file list for TICS to analyze
-      - name: Generate file list for TICS
-        run: |
-          # Create a list of files to analyze
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            # For PRs, analyze only changed files
-            git diff --name-only origin/${{ github.base_ref }} > tics-file-list.txt
-          else
-            # For scheduled runs and pushes, analyze the whole project
-            echo "." > tics-file-list.txt
-          fi
-          echo "Files to analyze:"
-          cat tics-file-list.txt
-
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
         env:
@@ -67,8 +53,6 @@ jobs:
           ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
           installTics: true
           tmpdir: /tmp/tics
-          branchdir: ${{ github.workspace }}
-          filelist: ${{ github.workspace }}/tics-file-list.txt
 
       - name: Upload TICS Report
         uses: actions/upload-artifact@v4
