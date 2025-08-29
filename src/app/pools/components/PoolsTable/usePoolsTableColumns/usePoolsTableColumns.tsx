@@ -56,7 +56,7 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
           header: "Description",
         },
         {
-          id: "action",
+          id: "actions",
           accessorKey: "id",
           enableSorting: false,
           header: "Actions",

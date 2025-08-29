@@ -90,7 +90,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         },
       },
       {
-        id: "action",
+        id: "actions",
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",

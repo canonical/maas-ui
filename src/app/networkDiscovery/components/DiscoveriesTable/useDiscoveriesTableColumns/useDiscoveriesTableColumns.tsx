@@ -87,7 +87,7 @@ const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
         },
       },
       {
-        id: "action",
+        id: "actions",
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",

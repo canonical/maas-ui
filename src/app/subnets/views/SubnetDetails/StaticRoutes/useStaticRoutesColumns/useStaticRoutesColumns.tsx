@@ -43,7 +43,7 @@ const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
         header: "Metric",
       },
       {
-        id: "action",
+        id: "actions",
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",

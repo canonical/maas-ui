@@ -143,7 +143,7 @@ const useUsersTableColumns = (): UsersColumnDef[] => {
           header: "MAAS keys",
         },
         {
-          id: "action",
+          id: "actions",
           accessorKey: "id",
           enableSorting: false,
           header: "Actions",

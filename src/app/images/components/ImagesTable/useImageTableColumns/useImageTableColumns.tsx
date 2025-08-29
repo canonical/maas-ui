@@ -168,10 +168,10 @@ const useImageTableColumns = ({
           },
         },
         {
-          id: "action",
+          id: "actions",
           accessorKey: "id",
           enableSorting: false,
-          header: () => "Action",
+          header: () => "Actions",
           cell: ({ row }: { row: Row<Image> }) => {
             const isCommissioningImage =
               row.original.resource.name === `ubuntu/${commissioningRelease}`;

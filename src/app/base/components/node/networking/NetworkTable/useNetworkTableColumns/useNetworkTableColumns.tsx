@@ -218,7 +218,7 @@ const useNetworkTableColumns = ({
         }) => !isABondOrBridgeParent && <DHCPColumn nic={nic} />,
       },
       {
-        id: "action",
+        id: "actions",
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",

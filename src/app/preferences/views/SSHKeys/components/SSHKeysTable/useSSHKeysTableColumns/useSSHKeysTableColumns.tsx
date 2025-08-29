@@ -60,7 +60,7 @@ const useSSHKeysTableColumns = (): SSHKeysColumnDef[] => {
           ),
         },
         {
-          id: "action",
+          id: "actions",
           accessorKey: "id",
           enableSorting: false,
           header: "Actions",

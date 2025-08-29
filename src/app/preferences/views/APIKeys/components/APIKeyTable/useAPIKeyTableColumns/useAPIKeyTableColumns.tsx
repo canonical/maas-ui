@@ -28,6 +28,26 @@ const useAPIKeyTableColumns = (): APIKeyColumnDef[] => {
         header: "Name",
         enableSorting: true,
         cell: ({ row: { original: token } }) => token.consumer.name,
+        sortingFn: (
+          {
+            original: {
+              consumer: { name: nameA },
+            },
+          },
+          {
+            original: {
+              consumer: { name: nameB },
+            },
+          }
+        ) => {
+          if (nameA > nameB) {
+            return 1;
+          } else if (nameB > nameA) {
+            return -1;
+          } else {
+            return 0;
+          }
+        },
       },
       {
         id: "key",
@@ -42,7 +62,7 @@ const useAPIKeyTableColumns = (): APIKeyColumnDef[] => {
       },
       {
         id: "actions",
-        accessorKey: "actions",
+        accessorKey: "id",
         header: "Actions",
         enableSorting: false,
         cell: ({

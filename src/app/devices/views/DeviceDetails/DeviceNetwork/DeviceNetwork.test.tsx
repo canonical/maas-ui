@@ -38,7 +38,9 @@ describe("DeviceNetwork", () => {
     });
     expect(screen.getByLabelText("Device network")).toBeInTheDocument();
     expect(screen.getByRole("grid", { name: /DHCP/ })).toBeInTheDocument();
-    expect(screen.getByLabelText("Interfaces")).toBeInTheDocument();
+    expect(
+      screen.getByRole("grid", { name: "Interfaces" })
+    ).toBeInTheDocument();
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
 });
