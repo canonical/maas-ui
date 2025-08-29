@@ -165,7 +165,7 @@ export const TagFormChanges = ({
       {
         accessor: Column.Action,
         className: "action-col u-align-text--right u-no-padding--right",
-        header: "Actions",
+        Header: "Action",
       },
     ],
     []
