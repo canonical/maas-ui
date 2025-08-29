@@ -9,16 +9,22 @@ import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { Token } from "@/app/store/token/types";
 
-type APIKeyColumnDef = ColumnDef<Token, Partial<Token>>;
+export type TokenRowData = {
+  id: Token["id"];
+  name: Token["consumer"]["name"];
+  key: string;
+};
+
+type APIKeyColumnDef = ColumnDef<TokenRowData, Partial<TokenRowData>>;
+
+export const formatToken = (
+  consumerKey: Token["consumer"]["key"],
+  key: Token["key"],
+  secret: Token["secret"]
+): string => `${consumerKey}:${key}:${secret}`;
 
 const useAPIKeyTableColumns = (): APIKeyColumnDef[] => {
   const { openSidePanel } = useSidePanel();
-
-  const formatToken = (
-    consumerKey: Token["consumer"]["key"],
-    key: Token["key"],
-    secret: Token["secret"]
-  ): string => `${consumerKey}:${key}:${secret}`;
 
   return useMemo(
     (): APIKeyColumnDef[] => [
@@ -27,38 +33,12 @@ const useAPIKeyTableColumns = (): APIKeyColumnDef[] => {
         accessorKey: "name",
         header: "Name",
         enableSorting: true,
-        cell: ({ row: { original: token } }) => token.consumer.name,
-        sortingFn: (
-          {
-            original: {
-              consumer: { name: nameA },
-            },
-          },
-          {
-            original: {
-              consumer: { name: nameB },
-            },
-          }
-        ) => {
-          if (nameA > nameB) {
-            return 1;
-          } else if (nameB > nameA) {
-            return -1;
-          } else {
-            return 0;
-          }
-        },
       },
       {
         id: "key",
         accessorKey: "key",
         header: "Key",
         enableSorting: false,
-        cell: ({
-          row: {
-            original: { consumer, key, secret },
-          },
-        }) => formatToken(consumer.key, key, secret),
       },
       {
         id: "actions",
@@ -67,11 +47,11 @@ const useAPIKeyTableColumns = (): APIKeyColumnDef[] => {
         enableSorting: false,
         cell: ({
           row: {
-            original: { id, consumer, key, secret },
+            original: { id, key },
           },
         }) => (
           <TableActions
-            copyValue={formatToken(consumer.key, key, secret)}
+            copyValue={key}
             onDelete={() => {
               openSidePanel({
                 component: APIKeyDelete,

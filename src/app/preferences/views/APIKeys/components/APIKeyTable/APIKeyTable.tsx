@@ -2,16 +2,26 @@ import { GenericTable } from "@canonical/maas-react-components";
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import type { TokenRowData } from "./useAPIKeyTableColumns/useAPIKeyTableColumns";
 import useAPIKeyTableColumns from "./useAPIKeyTableColumns/useAPIKeyTableColumns";
 
 import { useFetchActions } from "@/app/base/hooks";
 import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
+import type { Token } from "@/app/store/token/types";
 
 export enum Label {
   Title = "API keys",
   EmptyList = "No API keys available.",
 }
+
+const generateRows = (tokens: Token[]): TokenRowData[] => {
+  return tokens.map((token) => ({
+    id: token.id,
+    name: token.consumer.name,
+    key: `${token.consumer.key}:${token.key}:${token.secret}`,
+  }));
+};
 
 const APIKeyList = (): React.ReactElement => {
   const errors = useSelector(tokenSelectors.errors);
@@ -32,7 +42,7 @@ const APIKeyList = (): React.ReactElement => {
         aria-label={Label.Title}
         className="apikey-list"
         columns={columns}
-        data={tokens}
+        data={generateRows(tokens)}
         isLoading={loading}
         noData={Label.EmptyList}
       />
