@@ -115,7 +115,7 @@ describe("NetworkTable", () => {
       });
     });
 
-    it("omits Action column when setExpanded is not provided", () => {
+    it("omits Actions column when setExpanded is not provided", () => {
       renderWithProviders(<NetworkTable node={machine} />);
 
       expect(
