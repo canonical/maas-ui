@@ -50,6 +50,6 @@ it("returns the correct number of columns", () => {
     "status",
     "lastDeployed",
     "machines",
-    "action",
+    "actions",
   ]);
 });
