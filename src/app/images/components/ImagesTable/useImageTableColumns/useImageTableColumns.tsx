@@ -168,7 +168,7 @@ const useImageTableColumns = ({
           },
         },
         {
-          id: "actions",
+          id: "action",
           accessorKey: "id",
           enableSorting: false,
           header: () => "Actions",
