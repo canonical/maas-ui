@@ -42,7 +42,7 @@ export const filterCellsAndAction = (
   _: Row<Network>,
   column: Column<Network>
 ): boolean => {
-  return !["bondOrBridge", "action"].includes(column.id);
+  return !["bondOrBridge", "actions"].includes(column.id);
 };
 
 export const filterHeaders = (header: Header<Network, unknown>): boolean =>
@@ -50,7 +50,7 @@ export const filterHeaders = (header: Header<Network, unknown>): boolean =>
 
 export const filterHeadersAndAction = (
   header: Header<Network, unknown>
-): boolean => !["bondOrBridge", "action"].includes(header.column.id);
+): boolean => !["bondOrBridge", "actions"].includes(header.column.id);
 
 const useNetworkTableColumns = ({
   node,
@@ -218,7 +218,7 @@ const useNetworkTableColumns = ({
         }) => !isABondOrBridgeParent && <DHCPColumn nic={nic} />,
       },
       {
-        id: "action",
+        id: "actions",
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",
