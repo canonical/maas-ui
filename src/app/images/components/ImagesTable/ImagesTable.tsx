@@ -71,9 +71,7 @@ const ImagesTable = ({
       isLoading={isPolling && images.length === 0}
       noData={
         <TableCaption.Description>
-          There are no images stored in Site Manager at the moment. You can
-          either upload images, or connect to an upstream image source to
-          download images from.
+          No images have been selected to sync.
         </TableCaption.Description>
       }
       pinGroup={[

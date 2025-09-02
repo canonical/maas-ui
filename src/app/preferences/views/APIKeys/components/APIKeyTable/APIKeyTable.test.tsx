@@ -1,14 +1,8 @@
-import { MemoryRouter } from "react-router";
-
-import APIKeyList, { Label as APIKeyListLabels } from "./APIKeyList";
+import APIKeyList, { Label as APIKeyListLabels } from "./APIKeyTable";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  screen,
-  renderWithMockStore,
-  renderWithBrowserRouter,
-} from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("APIKeyList", () => {
   let state: RootState;
@@ -33,16 +27,7 @@ describe("APIKeyList", () => {
   });
 
   it("can render the table", () => {
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[
-          { pathname: "/account/prefs/api-keys", key: "testKey" },
-        ]}
-      >
-        <APIKeyList />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<APIKeyList />, { state });
     expect(
       screen.getByRole("grid", { name: APIKeyListLabels.Title })
     ).toBeInTheDocument();
@@ -50,9 +35,8 @@ describe("APIKeyList", () => {
 
   it("can display an empty state message", () => {
     state.token.items = [];
-    renderWithBrowserRouter(<APIKeyList />, {
+    renderWithProviders(<APIKeyList />, {
       state,
-      route: "/account/prefs/api-keys",
     });
 
     expect(screen.getByText(APIKeyListLabels.EmptyList)).toBeInTheDocument();

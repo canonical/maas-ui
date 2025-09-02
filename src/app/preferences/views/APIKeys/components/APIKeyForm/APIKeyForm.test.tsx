@@ -1,17 +1,10 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import { APIKeyForm, Label as APIKeyFormLabels } from "./APIKeyForm";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  render,
-  renderWithMockStore,
-} from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -35,24 +28,13 @@ describe("APIKeyForm", () => {
   });
 
   it("can render", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={["/"]}>
-        <APIKeyForm />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<APIKeyForm />, { state });
     expect(screen.getByRole("form", { name: APIKeyFormLabels.AddFormLabel }));
   });
 
   it("can create an API key", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <APIKeyForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<APIKeyForm />, { store });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: APIKeyFormLabels.AddNameLabel }),
@@ -81,13 +63,7 @@ describe("APIKeyForm", () => {
 
   it("can update an API key", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <APIKeyForm token={state.token.items[0]} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<APIKeyForm token={state.token.items[0]} />, { store });
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: APIKeyFormLabels.EditNameLabel })

@@ -11,9 +11,9 @@ import {
 import { useWebsocketAwareQuery } from "./base";
 
 import type {
+  DismissNotificationData,
   DismissNotificationError,
   DismissNotificationResponse,
-  DismissNotificationData,
   ListNotificationsData,
   ListNotificationsError,
   ListNotificationsResponse,

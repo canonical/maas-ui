@@ -28,7 +28,7 @@ const useLicenseKeyTableColumns = (): LicenseKeysColumnDef[] => {
         header: "Distro Series",
       },
       {
-        id: "action",
+        id: "actions",
         accessorKey: "license_key",
         header: "Actions",
         cell: ({ row: { original } }) => (

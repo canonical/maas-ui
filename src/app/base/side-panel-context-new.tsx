@@ -1,5 +1,5 @@
 import type { ComponentType, PropsWithChildren, ReactElement } from "react";
-import { useContext, createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 // This new side panel context is meant to replace the old one over time. Since migrating all
 // panels will take some time, these two contexts will live together while the migrations are
@@ -16,7 +16,7 @@ interface SidePanelState<TProps = Record<string, unknown>> {
   props: TProps;
 }
 
-interface SidePanelActions {
+export interface SidePanelActions {
   openSidePanel: <
     TProps extends Record<string, unknown> = Record<string, unknown>,
   >(params: {

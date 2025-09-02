@@ -1,17 +1,15 @@
 import type { ReactElement } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import type { SyncNavigateFunction } from "@/app/base/types";
-import urls from "@/app/base/urls";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 
 const APIKeyDeleteForm = ({ id }: { id: number }): ReactElement => {
   const dispatch = useDispatch();
-  const navigate: SyncNavigateFunction = useNavigate();
+  const { closeSidePanel } = useSidePanel();
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
 
@@ -20,14 +18,12 @@ const APIKeyDeleteForm = ({ id }: { id: number }): ReactElement => {
       aria-label="Delete API Key"
       initialValues={{}}
       modelType="API key"
-      onCancel={() => {
-        navigate({ pathname: urls.preferences.apiKeys.index });
-      }}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         dispatch(tokenActions.delete(id));
       }}
+      onSuccess={closeSidePanel}
       saved={saved}
-      savedRedirect={urls.preferences.apiKeys.index}
       saving={saving}
       submitAppearance="negative"
       submitLabel="Delete"
