@@ -1,12 +1,10 @@
-import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import type { SyncNavigateFunction } from "@/app/base/types";
-import urls from "@/app/base/urls";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 import type { Token } from "@/app/store/token/types";
@@ -37,16 +35,10 @@ const APIKeyEditSchema = Yup.object().shape({
 export const APIKeyForm = ({ token }: Props): React.ReactElement => {
   const editing = !!token;
   const dispatch = useDispatch();
-  const navigate: SyncNavigateFunction = useNavigate();
+  const { closeSidePanel } = useSidePanel();
   const errors = useSelector(tokenSelectors.errors);
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
-  const onCancel = () => {
-    navigate({ pathname: urls.preferences.apiKeys.index });
-  };
-  useOnEscapePressed(() => {
-    onCancel();
-  });
 
   return (
     <FormikForm
@@ -57,7 +49,7 @@ export const APIKeyForm = ({ token }: Props): React.ReactElement => {
       initialValues={{
         name: token ? token.consumer.name : "",
       }}
-      onCancel={onCancel}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Saved",
         category: "API keys preferences",
@@ -77,8 +69,8 @@ export const APIKeyForm = ({ token }: Props): React.ReactElement => {
           dispatch(tokenActions.create(values));
         }
       }}
+      onSuccess={closeSidePanel}
       saved={saved}
-      savedRedirect={urls.preferences.apiKeys.index}
       saving={saving}
       submitLabel={editing ? Label.EditSubmit : Label.AddSubmit}
       validationSchema={editing ? APIKeyEditSchema : APIKeyAddSchema}

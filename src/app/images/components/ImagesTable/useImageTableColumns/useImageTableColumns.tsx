@@ -27,7 +27,7 @@ export const filterCells = (
   column: Column<Image>
 ): boolean => {
   if (row.getIsGrouped()) {
-    return ["name", "action"].includes(column.id);
+    return ["name", "actions"].includes(column.id);
   } else {
     return !["name"].includes(column.id);
   }
@@ -168,10 +168,10 @@ const useImageTableColumns = ({
           },
         },
         {
-          id: "action",
+          id: "actions",
           accessorKey: "id",
           enableSorting: false,
-          header: () => "Action",
+          header: () => "Actions",
           cell: ({ row }: { row: Row<Image> }) => {
             const isCommissioningImage =
               row.original.resource.name === `ubuntu/${commissioningRelease}`;

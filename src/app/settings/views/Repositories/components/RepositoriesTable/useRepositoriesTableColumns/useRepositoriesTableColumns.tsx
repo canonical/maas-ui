@@ -47,7 +47,7 @@ const useRepositoriesTableColumns = (): RepositoriesColumnDef[] => {
         cell: ({ row: { original } }) => (original.enabled ? "Yes" : "No"),
       },
       {
-        id: "action",
+        id: "actions",
         accessorKey: "id",
         header: "Actions",
         cell: ({ row: { original } }) => (
