@@ -1,4 +1,6 @@
-import { Icon, MainTable, Spinner } from "@canonical/react-components";
+import { GenericTable } from "@canonical/maas-react-components";
+import { Icon } from "@canonical/react-components";
+import type { ColumnDef } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
 import SubnetLink from "@/app/base/components/SubnetLink";
@@ -11,6 +13,67 @@ type Props = {
   id: VLAN[VLANMeta.PK] | null;
 };
 
+type SubnetRow = {
+  id: number;
+  cidr: string;
+  usage: number;
+  usage_string: string;
+  managed: boolean;
+  allow_proxy: boolean;
+  allow_dns: boolean;
+};
+
+const renderAccessibleCell = (label: string, content: React.ReactNode) => {
+  return <span aria-label={label}>{content}</span>;
+};
+
+const columns: ColumnDef<SubnetRow>[] = [
+  {
+    accessorKey: "cidr",
+    header: () => "Subnet",
+    cell: ({ row }) =>
+      renderAccessibleCell("Subnet", <SubnetLink id={row.original.id} />),
+  },
+  {
+    accessorKey: "usage",
+    header: () => "Usage",
+    cell: ({ row }) => renderAccessibleCell("Usage", row.original.usage_string),
+  },
+  {
+    accessorKey: "managed",
+    header: () => "Managed allocation",
+    cell: ({ row }) =>
+      renderAccessibleCell(
+        "Managed allocation",
+        <Icon name={row.original.managed ? "tick" : "close"}>
+          {row.original.managed ? "Yes" : "No"}
+        </Icon>
+      ),
+  },
+  {
+    accessorKey: "allow_proxy",
+    header: () => "Proxy access",
+    cell: ({ row }) =>
+      renderAccessibleCell(
+        "Proxy access",
+        <Icon name={row.original.allow_proxy ? "tick" : "close"}>
+          {row.original.allow_proxy ? "Yes" : "No"}
+        </Icon>
+      ),
+  },
+  {
+    accessorKey: "allow_dns",
+    header: () => "Allows DNS resolution",
+    cell: ({ row }) =>
+      renderAccessibleCell(
+        "Allows DNS resolution",
+        <Icon name={row.original.allow_dns ? "tick" : "close"}>
+          {row.original.allow_dns ? "Yes" : "No"}
+        </Icon>
+      ),
+  },
+];
+
 const VLANSubnets = ({ id }: Props): React.ReactElement | null => {
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getByVLAN(state, id)
@@ -19,105 +82,22 @@ const VLANSubnets = ({ id }: Props): React.ReactElement | null => {
 
   return (
     <TitledSection title="Subnets on this VLAN">
-      <MainTable
+      <GenericTable<SubnetRow>
         className="vlan-subnets"
-        defaultSort="cidr"
-        defaultSortDirection="ascending"
-        emptyStateMsg={
-          subnetsLoading ? (
-            <Spinner text="Loading..." />
-          ) : (
-            "There are no subnets on this VLAN"
-          )
-        }
-        headers={[
-          {
-            className: "subnet-col",
-            content: "Subnet",
-            sortKey: "cidr",
-          },
-          {
-            className: "usage-col",
-            content: "Usage",
-            sortKey: "usage",
-          },
-          {
-            className: "managed-col u-align--center",
-            content: "Managed allocation",
-            sortKey: "managed",
-          },
-          {
-            className: "proxy-col u-align--center",
-            content: "Proxy access",
-            sortKey: "allow_proxy",
-          },
-          {
-            className: "dns-col u-align--center",
-            content: "Allows DNS resolution",
-            sortKey: "allow_dns",
-          },
-        ]}
-        responsive
-        rows={subnets.map((subnet) => {
-          const {
-            allow_dns,
-            allow_proxy,
-            cidr,
-            id,
-            managed,
-            statistics: { usage, usage_string },
-          } = subnet;
-
-          return {
-            columns: [
-              {
-                "aria-label": "Subnet",
-                className: "subnet-col",
-                content: <SubnetLink id={id} />,
-              },
-              {
-                "aria-label": "Usage",
-                className: "used-col",
-                content: usage_string,
-              },
-              {
-                "aria-label": "Managed allocation",
-                className: "managed-col u-align--center",
-                content: (
-                  <Icon name={managed ? "tick" : "close"}>
-                    {managed ? "Yes" : "No"}
-                  </Icon>
-                ),
-              },
-              {
-                "aria-label": "Proxy access",
-                className: "proxy-col u-align--center",
-                content: (
-                  <Icon name={allow_proxy ? "tick" : "close"}>
-                    {allow_proxy ? "Yes" : "No"}
-                  </Icon>
-                ),
-              },
-              {
-                "aria-label": "Allows DNS resolution",
-                className: "dns-col u-align--center",
-                content: (
-                  <Icon name={allow_dns ? "tick" : "close"}>
-                    {allow_dns ? "Yes" : "No"}
-                  </Icon>
-                ),
-              },
-            ],
-            sortData: {
-              allow_dns,
-              allow_proxy,
-              cidr,
-              managed,
-              usage,
-            },
-          };
-        })}
-        sortable
+        columns={columns}
+        data={subnets.map((subnet) => ({
+          id: subnet.id,
+          cidr: subnet.cidr,
+          usage: subnet.statistics.usage,
+          usage_string: subnet.statistics.usage_string,
+          managed: subnet.managed,
+          allow_proxy: subnet.allow_proxy,
+          allow_dns: subnet.allow_dns,
+        }))}
+        isLoading={subnetsLoading}
+        noData="There are no subnets on this VLAN"
+        sortBy={[{ id: "cidr", desc: false }]}
+        variant="regular"
       />
     </TitledSection>
   );
