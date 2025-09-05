@@ -30,18 +30,18 @@ const renderAccessibleCell = (label: string, content: React.ReactNode) => {
 const columns: ColumnDef<SubnetRow>[] = [
   {
     accessorKey: "cidr",
-    header: () => "Subnet",
+    header: "Subnet",
     cell: ({ row }) =>
       renderAccessibleCell("Subnet", <SubnetLink id={row.original.id} />),
   },
   {
     accessorKey: "usage",
-    header: () => "Usage",
+    header: "Usage",
     cell: ({ row }) => renderAccessibleCell("Usage", row.original.usage_string),
   },
   {
     accessorKey: "managed",
-    header: () => "Managed allocation",
+    header: "Managed allocation",
     cell: ({ row }) =>
       renderAccessibleCell(
         "Managed allocation",
@@ -52,7 +52,7 @@ const columns: ColumnDef<SubnetRow>[] = [
   },
   {
     accessorKey: "allow_proxy",
-    header: () => "Proxy access",
+    header: "Proxy access",
     cell: ({ row }) =>
       renderAccessibleCell(
         "Proxy access",
@@ -63,7 +63,7 @@ const columns: ColumnDef<SubnetRow>[] = [
   },
   {
     accessorKey: "allow_dns",
-    header: () => "Allows DNS resolution",
+    header: "Allows DNS resolution",
     cell: ({ row }) =>
       renderAccessibleCell(
         "Allows DNS resolution",
