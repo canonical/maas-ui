@@ -1,7 +1,6 @@
 ## MAAS UI
 
 [![CI](https://github.com/canonical/maas-ui/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/test.yml?query=branch%3Amain)
-[![Playwright Tests](https://github.com/canonical/maas-ui/actions/workflows/playwright.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/playwright.yml?query=branch%3Amain)
 [![Accessibility](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml?query=branch%3Amain)
 [![Cypress](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml?query=branch%3Amain)
 [![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml?query=branch%3Amain)
