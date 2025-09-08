@@ -1,17 +1,18 @@
 import { SubnetsColumns } from "./constants";
 import type {
-  SubnetsTableRow,
-  SubnetsTableData,
+  FabricTableRow,
   GroupByKey,
   SortData,
-  FabricTableRow,
   SpaceTableRow,
+  SubnetsTableData,
+  SubnetsTableRow,
 } from "./types";
+import type { SubnetsRowData } from "./useSubnetsTableColumns/useSubnetsTableColumns";
 
 import type { Fabric } from "@/app/store/fabric/types";
 import { getFabricById, getFabricDisplay } from "@/app/store/fabric/utils";
 import type { Space } from "@/app/store/space/types";
-import { getSpaceDisplay, getSpaceById } from "@/app/store/space/utils";
+import { getSpaceById, getSpaceDisplay } from "@/app/store/space/utils";
 import type { Subnet } from "@/app/store/subnet/types";
 import {
   getAvailableIPs,
@@ -245,6 +246,23 @@ export const getTableData = (
 };
 
 export const filterSubnetsBySearchText = (
+  data: SubnetsRowData[],
+  searchText: string
+) => {
+  if (searchText.length === 0) {
+    return data;
+  } else {
+    return data.filter(
+      (subnet) =>
+        subnet.name.includes(searchText) ||
+        (subnet.vlan?.name && subnet.vlan.name.includes(searchText)) ||
+        (subnet.fabric?.name && subnet.fabric.name.includes(searchText)) ||
+        (subnet.space?.name && subnet.space.name.includes(searchText))
+    );
+  }
+};
+
+export const filterSubnetsBySearchText_LEGACY = (
   rows: SubnetsTableRow[],
   searchText: string
 ): SubnetsTableRow[] =>

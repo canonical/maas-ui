@@ -1,7 +1,3 @@
-import type { PropsWithChildren } from "react";
-import { useState } from "react";
-
-import { Button } from "@canonical/react-components";
 import classNames from "classnames";
 import { Link } from "react-router";
 
@@ -15,48 +11,6 @@ import type {
 } from "./types";
 
 import GroupRow from "@/app/base/components/GroupRow";
-
-export const SpaceCellContents = ({
-  value,
-}: PropsWithChildren<{
-  value: SubnetsTableColumn;
-}>): React.ReactElement => {
-  const [isWarningOpen, setIsWarningOpen] = useState(false);
-  return (
-    <>
-      <span
-        className={
-          value.isVisuallyHidden ? "subnets-table__visually-hidden" : ""
-        }
-      >
-        {value.label === "No space" ? (
-          <Button
-            appearance="base"
-            aria-label="No space - press to see more information"
-            dense
-            hasIcon
-            onClick={() => {
-              setIsWarningOpen(!isWarningOpen);
-            }}
-          >
-            <i className="p-icon--warning"></i> <span>No space</span>
-          </Button>
-        ) : value.href ? (
-          <Link to={value.href}>{value.label}</Link>
-        ) : (
-          value.label
-        )}
-        {isWarningOpen ? (
-          <div>
-            MAAS integrations require a space in order to determine the purpose
-            of a network. Define a space for each subnet by selecting the space
-            on the VLAN details page.
-          </div>
-        ) : null}
-      </span>
-    </>
-  );
-};
 
 export const CellContents = ({
   value,
