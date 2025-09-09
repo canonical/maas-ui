@@ -18,6 +18,7 @@ import type { Subnet } from "@/app/store/subnet/types";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
+import { getDHCPStatus } from "@/app/store/vlan/utils";
 
 type UseSubnetsTable = {
   data: SubnetsRowData[];
@@ -90,6 +91,7 @@ const generateTableData = ({
       cidr: subnet.cidr,
       name: subnet.name,
       vlan,
+      dhcpStatus: getDHCPStatus(vlan, vlans, fabrics, true),
       fabric,
       fabricName: fabric?.name,
       space,

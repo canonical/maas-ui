@@ -1,5 +1,6 @@
 import { GenericTable } from "@canonical/maas-react-components";
 
+import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
 import { useSubnetsTable, useSubnetsTableSearch } from "./hooks";
 import useSubnetsTableColumns from "./useSubnetsTableColumns/useSubnetsTableColumns";
 
@@ -14,19 +15,24 @@ const SubnetsTable = ({
 }): React.ReactElement | null => {
   const subnetsTable = useSubnetsTable(groupBy);
   const { data, loaded } = useSubnetsTableSearch(subnetsTable, searchText);
-  const columns = useSubnetsTableColumns();
-  const { page, size, handlePageSizeChange, setPage } = usePagination();
+  const columns = useSubnetsTableColumns(groupBy);
+  const { page, size, handlePageSizeChange, setPage } = usePagination(
+    SUBNETS_TABLE_ITEMS_PER_PAGE
+  );
 
   return (
     <GenericTable
+      aria-label={`Subnets by ${groupBy}`}
       columns={columns}
       data={data.slice((page - 1) * size, page * size)}
       filterCells={(row, column) =>
         row.getIsGrouped()
-          ? column.id === "groupName"
-          : column.id !== "groupName"
+          ? ["groupName", groupBy].includes(column.id)
+          : !["groupName", groupBy].includes(column.id)
       }
-      filterHeaders={(header) => header.column.id !== "groupName"}
+      filterHeaders={(header) =>
+        !["groupName", groupBy].includes(header.column.id)
+      }
       groupBy={["groupName"]}
       isLoading={!loaded}
       noData={"No results found"}

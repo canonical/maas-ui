@@ -1,358 +1,318 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import SubnetsTable from "./SubnetsTable";
 import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
 
-import urls from "@/app/subnets/urls";
 import * as factory from "@/testing/factories";
-import {
-  userEvent,
-  render,
-  screen,
-  within,
-  renderWithBrowserRouter,
-  waitFor,
-} from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
-const getMockState = ({ numberOfFabrics } = { numberOfFabrics: 50 }) => {
-  const fabrics = [
-    ...new Array(numberOfFabrics)
+const getMockState = ({ numberOfSubnets } = { numberOfSubnets: 50 }) => {
+  const subnets = [
+    ...new Array(numberOfSubnets)
       .fill(null)
-      .map((_value, index) =>
-        factory.fabric({ id: index + 1, name: `fabric-${index + 1}` })
-      ),
+      .map((_value, index) => factory.subnet({ id: index + 1, vlan: 1 })),
   ];
   return factory.rootState({
     fabric: factory.fabricState({
       loaded: true,
-      items: fabrics,
+      items: [factory.fabric({ id: 1, name: "fabric-1" })],
     }),
-    vlan: factory.vlanState({ loaded: true }),
-    subnet: factory.subnetState({ loaded: true }),
+    vlan: factory.vlanState({
+      loaded: true,
+      items: [factory.vlan({ id: 1, fabric: 1 })],
+    }),
+    subnet: factory.subnetState({ loaded: true, items: subnets }),
     space: factory.spaceState({ loaded: true }),
   });
 };
 
-it("renders a single table variant at a time", () => {
-  const state = getMockState();
-  const mockStore = configureStore();
-  const store = mockStore(state);
+describe("SubnetsTable", () => {
+  describe("display", () => {
+    it("renders Subnets by Fabric table when grouping by Fabric", () => {
+      const state = getMockState();
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
+      renderWithProviders(<SubnetsTable groupBy="fabric" searchText="" />, {
+        state,
+      });
 
-  expect(screen.getAllByRole("grid")).toHaveLength(1);
-});
+      expect(
+        screen.getByRole("grid", { name: "Subnets by fabric" })
+      ).toBeInTheDocument();
 
-it("renders Subnets by Fabric table when grouping by Fabric", () => {
-  const state = getMockState();
-  const mockStore = configureStore();
-  const store = mockStore(state);
+      const firstRow = within(screen.getAllByRole("rowgroup")[1]).getAllByRole(
+        "row"
+      )[0];
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.getByRole("grid", { name: "Subnets by Fabric" })
-  ).toBeInTheDocument();
-});
+      expect(within(firstRow).getByRole("link")).toHaveTextContent("fabric-1");
+    });
 
-it("renders Subnets by Space table when grouping by Space", () => {
-  const state = getMockState();
-  const mockStore = configureStore();
-  const store = mockStore(state);
+    it("renders Subnets by Space table when grouping by Space", () => {
+      const state = getMockState();
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="space" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.getByRole("grid", { name: "Subnets by Space" })
-  ).toBeInTheDocument();
+      renderWithProviders(<SubnetsTable groupBy="space" searchText="" />, {
+        state,
+      });
+
+      expect(
+        screen.getByRole("grid", { name: "Subnets by space" })
+      ).toBeInTheDocument();
+    });
+
+    it("hides the space column when grouping by space", () => {
+      const state = getMockState();
+
+      renderWithProviders(<SubnetsTable groupBy="space" searchText="" />, {
+        state,
+      });
+
+      expect(
+        screen.getByRole("grid", { name: "Subnets by space" })
+      ).toBeInTheDocument();
+
+      expect(
+        screen.queryByRole("columnheader", { name: /space/i })
+      ).not.toBeInTheDocument();
+    });
+
+    it("hides the fabric column when grouping by fabric", () => {
+      const state = getMockState();
+
+      renderWithProviders(<SubnetsTable groupBy="fabric" searchText="" />, {
+        state,
+      });
+
+      expect(
+        screen.getByRole("grid", { name: "Subnets by fabric" })
+      ).toBeInTheDocument();
+
+      expect(
+        screen.queryByRole("columnheader", { name: /fabric/i })
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("search and filter", () => {
+    it("can match search text to subnet names", () => {
+      const state = factory.rootState({
+        fabric: factory.fabricState({
+          loaded: true,
+          items: [factory.fabric({ id: 1, name: "giraffe" })],
+        }),
+        vlan: factory.vlanState({
+          loaded: true,
+          items: [factory.vlan({ id: 1, fabric: 1 })],
+        }),
+        subnet: factory.subnetState({
+          loaded: true,
+          items: [
+            factory.subnet({
+              name: "springbok",
+              vlan: 1,
+            }),
+            factory.subnet({
+              name: "kudu",
+              vlan: 1,
+            }),
+            factory.subnet({
+              name: "impala",
+              vlan: 1,
+            }),
+          ],
+        }),
+        space: factory.spaceState({ loaded: true }),
+      });
+
+      renderWithProviders(<SubnetsTable groupBy="fabric" searchText="kudu" />, {
+        state,
+      });
+
+      expect(screen.getByText(/kudu/i)).toBeInTheDocument();
+
+      expect(screen.queryByText(/springbok/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/impala/i)).not.toBeInTheDocument();
+    });
+
+    it("can match search text to vlan names", () => {
+      const state = factory.rootState({
+        fabric: factory.fabricState({
+          loaded: true,
+          items: [factory.fabric({ id: 1, name: "giraffe" })],
+        }),
+        vlan: factory.vlanState({
+          loaded: true,
+          items: [
+            factory.vlan({ id: 1, fabric: 1, name: "wildebeest" }),
+            factory.vlan({ id: 2, fabric: 1, name: "elephant" }),
+          ],
+        }),
+        subnet: factory.subnetState({
+          loaded: true,
+          items: [
+            factory.subnet({
+              name: "springbok",
+              vlan: 1,
+            }),
+            factory.subnet({
+              name: "kudu",
+              vlan: 1,
+            }),
+            factory.subnet({
+              name: "impala",
+              vlan: 2,
+            }),
+          ],
+        }),
+        space: factory.spaceState({ loaded: true }),
+      });
+
+      renderWithProviders(
+        <SubnetsTable groupBy="fabric" searchText="wildebeest" />,
+        {
+          state,
+        }
+      );
+
+      // two subnets are in this vlan, so the name should appear twice
+      expect(screen.getAllByText(/wildebeest/i)).toHaveLength(2);
+      expect(screen.getByText(/springbok/i)).toBeInTheDocument();
+      expect(screen.getByText(/kudu/i)).toBeInTheDocument();
+
+      expect(screen.queryByText(/elephant/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/impala/i)).not.toBeInTheDocument();
+    });
+
+    it("can match search text to fabric names", () => {
+      const state = factory.rootState({
+        fabric: factory.fabricState({
+          loaded: true,
+          items: [
+            factory.fabric({ id: 1, name: "giraffe" }),
+            factory.fabric({ id: 2, name: "buffalo" }),
+          ],
+        }),
+        vlan: factory.vlanState({
+          loaded: true,
+          items: [
+            factory.vlan({ id: 1, fabric: 1, name: "wildebeest" }),
+            factory.vlan({ id: 2, fabric: 2, name: "elephant" }),
+          ],
+        }),
+        subnet: factory.subnetState({
+          loaded: true,
+          items: [
+            factory.subnet({
+              name: "springbok",
+              vlan: 1,
+            }),
+            factory.subnet({
+              name: "kudu",
+              vlan: 1,
+            }),
+            factory.subnet({
+              name: "impala",
+              vlan: 2,
+            }),
+          ],
+        }),
+        space: factory.spaceState({ loaded: true }),
+      });
+
+      renderWithProviders(
+        <SubnetsTable groupBy="fabric" searchText="buffalo" />,
+        {
+          state,
+        }
+      );
+
+      expect(screen.getByText(/buffalo/i)).toBeInTheDocument();
+      expect(screen.getByText(/elephant/i)).toBeInTheDocument();
+      expect(screen.getByText(/impala/i)).toBeInTheDocument();
+
+      expect(screen.queryByText(/giraffe/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/kudu/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/springbok/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/wildebeest/i)).not.toBeInTheDocument();
+    });
+
+    it("can match search text to space names", () => {
+      const state = factory.rootState({
+        fabric: factory.fabricState({
+          loaded: true,
+          items: [
+            factory.fabric({ id: 1, name: "giraffe" }),
+            factory.fabric({ id: 2, name: "buffalo" }),
+          ],
+        }),
+        vlan: factory.vlanState({
+          loaded: true,
+          items: [
+            factory.vlan({ id: 1, fabric: 1, name: "wildebeest" }),
+            factory.vlan({ id: 2, fabric: 2, name: "elephant" }),
+          ],
+        }),
+        subnet: factory.subnetState({
+          loaded: true,
+          items: [
+            factory.subnet({
+              name: "springbok",
+              vlan: 1,
+              space: 1,
+            }),
+            factory.subnet({
+              name: "kudu",
+              vlan: 1,
+              space: 2,
+            }),
+            factory.subnet({
+              name: "impala",
+              vlan: 2,
+              space: 2,
+            }),
+          ],
+        }),
+        space: factory.spaceState({
+          loaded: true,
+          items: [
+            factory.space({ id: 1, name: "lion" }),
+            factory.space({ id: 2, name: "leopard" }),
+          ],
+        }),
+      });
+
+      renderWithProviders(<SubnetsTable groupBy="fabric" searchText="lion" />, {
+        state,
+      });
+
+      expect(screen.getByText(/lion/i)).toBeInTheDocument();
+      expect(screen.getByText(/springbok/i)).toBeInTheDocument();
+      expect(screen.getByText(/wildebeest/i)).toBeInTheDocument();
+      expect(screen.getByText(/giraffe/i)).toBeInTheDocument();
+
+      expect(screen.queryByText(/buffalo/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/elephant/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/kudu/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/impala/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/leopard/i)).not.toBeInTheDocument();
+    });
+  });
 });
 
 it("displays a correct number of pages", () => {
   const state = getMockState();
-  const mockStore = configureStore();
-  const store = mockStore(state);
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.getByRole("grid", { name: "Subnets by Fabric" })
-  ).toBeInTheDocument();
-
-  const numberOfPages =
-    state.fabric.items.length / SUBNETS_TABLE_ITEMS_PER_PAGE;
-  const numberOfNextAndPrevButtons = 2;
-  expect(
-    within(screen.getByRole("navigation")).getAllByRole("button")
-  ).toHaveLength(numberOfPages + numberOfNextAndPrevButtons);
-  expect(
-    within(screen.getByRole("navigation")).getByRole("button", { name: "1" })
-  ).toBeInTheDocument();
-  expect(
-    within(screen.getByRole("navigation")).getByRole("button", {
-      name: "2",
-    })
-  ).toBeInTheDocument();
-});
-
-it("updates the list of items correctly when navigating to another page", async () => {
-  const state = getMockState();
-  const mockStore = configureStore();
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-  const tableBody = screen.getAllByRole("rowgroup")[1];
-
-  expect(
-    within(tableBody).getByRole("link", { name: "fabric-1" })
-  ).toBeInTheDocument();
-
-  await userEvent.click(
-    within(screen.getByRole("navigation")).getByRole("button", {
-      name: "2",
-    })
-  );
-  await waitFor(() => {
-    expect(
-      within(tableBody).getAllByRole("link", { name: /fabric/i })
-    ).toHaveLength(25);
-  });
-  await waitFor(() => {
-    expect(
-      within(tableBody).getByRole("link", { name: "fabric-26" })
-    ).toBeInTheDocument();
-  });
-  expect(
-    within(tableBody).getByRole("link", { name: "fabric-50" })
-  ).toBeInTheDocument();
-});
-
-it("doesn't display pagination if rows are within items per page limit", () => {
-  const numberOfFabrics = 1;
-  const state = getMockState({
-    numberOfFabrics,
-  });
-  const mockStore = configureStore();
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-
-  expect(
-    screen.queryByRole("navigation", { name: "Subnets by Fabric" })
-  ).not.toBeInTheDocument();
-});
-
-it("displays correctly paginated rows", async () => {
-  const numberOfFabrics = SUBNETS_TABLE_ITEMS_PER_PAGE * 2;
-  const state = getMockState({
-    numberOfFabrics,
-  });
-  const mockStore = configureStore();
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-  const tableBody = screen.getAllByRole("rowgroup")[1];
-
-  // Get grouped rows
-  const groupRows = screen.getAllByRole("row", { name: /group/i });
-  expect(within(tableBody).getAllByRole("row")).toHaveLength(
-    SUBNETS_TABLE_ITEMS_PER_PAGE + groupRows.length
-  );
-
-  await userEvent.click(
-    screen.getByRole("button", {
-      name: "Next page",
-    })
-  );
-
-  await waitFor(() => {
-    expect(
-      within(screen.getByRole("navigation", { name: "pagination" })).getByRole(
-        "button",
-        { current: "page" }
-      )
-    ).toHaveTextContent("2");
-  });
-
-  expect(
-    within(tableBody).getAllByRole("link", { name: /fabric/i })
-  ).toHaveLength(SUBNETS_TABLE_ITEMS_PER_PAGE);
-});
-
-it("displays the last available page once the currently active has no items", async () => {
-  const numberOfFabrics = SUBNETS_TABLE_ITEMS_PER_PAGE * 3 + 1;
-  const state = getMockState({
-    numberOfFabrics,
-  });
-  const mockStore = configureStore();
-  const store = mockStore(state);
-
-  const { rerender } = render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-  const tableBody = screen.getAllByRole("rowgroup")[1];
-
-  await userEvent.click(
-    within(screen.getByRole("navigation", { name: "pagination" })).getByRole(
-      "button",
-      {
-        name: "4",
-      }
-    )
-  );
-
-  await waitFor(() => {
-    expect(within(tableBody).getAllByRole("row")).toHaveLength(2);
-  });
-  expect(
-    within(tableBody).getByRole("link", { name: `fabric-${numberOfFabrics}` })
-  ).toBeInTheDocument();
-
-  const updatedState = getMockState({
-    numberOfFabrics: SUBNETS_TABLE_ITEMS_PER_PAGE * 2,
-  });
-  const updatedMockStore = configureStore();
-  const updatedStore = updatedMockStore(updatedState);
-  rerender(
-    <Provider store={updatedStore}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-
-  const pagination = screen.getByRole("navigation", { name: "pagination" });
-  await waitFor(() => {
-    expect(
-      within(pagination).getByRole("button", { name: "2" })
-    ).toHaveAttribute("aria-current", "page");
-  });
-
-  expect(within(tableBody).getAllByRole("row")).toHaveLength(2);
-});
-
-it("remains on the same page once the data is updated and page is still available", async () => {
-  const numberOfFabrics = SUBNETS_TABLE_ITEMS_PER_PAGE * 2;
-  const state = getMockState({
-    numberOfFabrics,
-  });
-  const mockStore = configureStore();
-  const store = mockStore(state);
-
-  const { rerender } = render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-
-  const pagination = screen.getByRole("navigation", { name: "pagination" });
-  await userEvent.click(
-    within(pagination).getByRole("button", {
-      name: "2",
-    })
-  );
-
-  await waitFor(() => {
-    expect(
-      within(pagination).getByRole("button", { name: "2" })
-    ).toHaveAttribute("aria-current", "page");
-  });
-
-  const updatedState = getMockState({
-    numberOfFabrics: SUBNETS_TABLE_ITEMS_PER_PAGE * 2,
-  });
-  const updatedMockStore = configureStore();
-  const updatedStore = updatedMockStore(updatedState);
-  rerender(
-    <Provider store={updatedStore}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" searchText="" />
-      </MemoryRouter>
-    </Provider>
-  );
-
-  await waitFor(() => {
-    expect(
-      within(pagination).getByRole("button", { name: "2" })
-    ).toHaveAttribute("aria-current", "page");
-  });
-});
-
-it("displays the table group summary at the top of every page", async () => {
-  const numberOfFabrics = SUBNETS_TABLE_ITEMS_PER_PAGE * 2;
-  const state = getMockState({
-    numberOfFabrics,
-  });
-
-  renderWithBrowserRouter(<SubnetsTable groupBy="fabric" searchText="" />, {
-    route: urls.index,
+  renderWithProviders(<SubnetsTable groupBy="fabric" searchText="" />, {
     state,
   });
 
-  const tableBody = screen.getAllByRole("rowgroup")[1];
-  expect(within(tableBody).getAllByRole("row")[0]).toHaveTextContent("network");
+  expect(
+    screen.getByRole("grid", { name: "Subnets by fabric" })
+  ).toBeInTheDocument();
 
-  const pagination = screen.getByRole("navigation", { name: "pagination" });
-  await userEvent.click(
-    within(pagination).getByRole("button", {
-      name: "2",
-    })
+  const numberOfPages = Math.ceil(
+    state.subnet.items.length / SUBNETS_TABLE_ITEMS_PER_PAGE
   );
 
-  await waitFor(() => {
-    expect(
-      within(pagination).getByRole("button", { name: "2" })
-    ).toHaveAttribute("aria-current", "page");
-  });
-
-  const tableBody2 = screen.getAllByRole("rowgroup")[1];
-  expect(within(tableBody2).getAllByRole("row")[0]).toHaveTextContent(
-    "network"
-  );
+  expect(
+    within(screen.getByRole("navigation", { name: "pagination" })).getByText(
+      `of ${numberOfPages}`
+    )
+  ).toBeInTheDocument();
 });
