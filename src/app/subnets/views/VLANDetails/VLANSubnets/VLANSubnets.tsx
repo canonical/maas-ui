@@ -23,28 +23,26 @@ type SubnetRow = {
   allow_dns: boolean;
 };
 
-const renderAccessibleCell = (label: string, content: React.ReactNode) => {
-  return <span aria-label={label}>{content}</span>;
+const renderCell = (content: React.ReactNode) => {
+  return <span>{content}</span>;
 };
 
 const columns: ColumnDef<SubnetRow>[] = [
   {
     accessorKey: "cidr",
     header: "Subnet",
-    cell: ({ row }) =>
-      renderAccessibleCell("Subnet", <SubnetLink id={row.original.id} />),
+    cell: ({ row }) => renderCell(<SubnetLink id={row.original.id} />),
   },
   {
     accessorKey: "usage",
     header: "Usage",
-    cell: ({ row }) => renderAccessibleCell("Usage", row.original.usage_string),
+    cell: ({ row }) => renderCell(row.original.usage_string),
   },
   {
     accessorKey: "managed",
     header: "Managed allocation",
     cell: ({ row }) =>
-      renderAccessibleCell(
-        "Managed allocation",
+      renderCell(
         <Icon name={row.original.managed ? "tick" : "close"}>
           {row.original.managed ? "Yes" : "No"}
         </Icon>
@@ -54,8 +52,7 @@ const columns: ColumnDef<SubnetRow>[] = [
     accessorKey: "allow_proxy",
     header: "Proxy access",
     cell: ({ row }) =>
-      renderAccessibleCell(
-        "Proxy access",
+      renderCell(
         <Icon name={row.original.allow_proxy ? "tick" : "close"}>
           {row.original.allow_proxy ? "Yes" : "No"}
         </Icon>
@@ -65,8 +62,7 @@ const columns: ColumnDef<SubnetRow>[] = [
     accessorKey: "allow_dns",
     header: "Allows DNS resolution",
     cell: ({ row }) =>
-      renderAccessibleCell(
-        "Allows DNS resolution",
+      renderCell(
         <Icon name={row.original.allow_dns ? "tick" : "close"}>
           {row.original.allow_dns ? "Yes" : "No"}
         </Icon>

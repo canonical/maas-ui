@@ -42,16 +42,14 @@ it("renders correct details", () => {
     "href",
     urls.subnets.subnet.index({ id: subnet.id })
   );
-  expect(within(vlanSubnetsTable).getByLabelText("Usage").textContent).toBe(
+  expect(vlanSubnetsTable.querySelector("td.usage")!.textContent).toBe(
     subnet.statistics.usage_string
   );
-  expect(
-    within(vlanSubnetsTable).getByLabelText("Managed allocation").textContent
-  ).toBe("Yes");
-  expect(
-    within(vlanSubnetsTable).getByLabelText("Proxy access").textContent
-  ).toBe("No");
-  expect(
-    within(vlanSubnetsTable).getByLabelText("Allows DNS resolution").textContent
-  ).toBe("Yes");
+  expect(vlanSubnetsTable.querySelector("td.managed")!.textContent).toBe("Yes");
+  expect(vlanSubnetsTable.querySelector("td.allow_proxy")!.textContent).toBe(
+    "No"
+  );
+  expect(vlanSubnetsTable.querySelector("td.allow_dns")!.textContent).toBe(
+    "Yes"
+  );
 });
