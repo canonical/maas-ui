@@ -121,6 +121,12 @@ export const groupImagesByOS = (images: DownloadableImage[]): ImagesByOS => {
 
   Object.keys(imagesByOS).forEach((distro) => {
     imagesByOS[distro].sort((a, b) => {
+      const aIsLTS = a.release.endsWith("LTS");
+      const bIsLTS = b.release.endsWith("LTS");
+
+      if (aIsLTS && !bIsLTS) return -1;
+      if (!aIsLTS && bIsLTS) return 1;
+
       return b.release.localeCompare(a.release);
     });
   });
