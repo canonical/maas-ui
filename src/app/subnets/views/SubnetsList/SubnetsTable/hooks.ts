@@ -19,6 +19,7 @@ import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
 import { getDHCPStatus } from "@/app/store/vlan/utils";
+import { simpleSortByKey } from "@/app/utils";
 
 type UseSubnetsTable = {
   data: SubnetsRowData[];
@@ -82,24 +83,33 @@ const generateTableData = ({
   spaces: Space[];
   groupBy: GroupByKey;
 }): SubnetsRowData[] => {
-  return subnets.map((subnet) => {
-    const vlan = vlans.find((vlan) => vlan.id === subnet.vlan);
-    const fabric = fabrics.find((fabric) => fabric.id === vlan?.fabric);
-    const space = spaces.find((space) => space.id === subnet.space);
-    return {
-      id: subnet.id,
-      cidr: subnet.cidr,
-      name: subnet.name,
-      vlan,
-      dhcpStatus: getDHCPStatus(vlan, vlans, fabrics, true),
-      fabric,
-      fabricName: fabric?.name,
-      space,
-      available_string: subnet.statistics.available_string,
-      groupName:
-        groupBy === "fabric" ? fabric!.name : (space?.name ?? "No space"),
-    };
-  });
+  return subnets
+    .map((subnet) => {
+      const vlan = vlans.find((vlan) => vlan.id === subnet.vlan);
+      const fabric = fabrics.find((fabric) => fabric.id === vlan?.fabric);
+      const space = spaces.find((space) => space.id === subnet.space);
+      return {
+        id: subnet.id,
+        cidr: subnet.cidr,
+        name: subnet.name,
+        vlan,
+        dhcpStatus: getDHCPStatus(vlan, vlans, fabrics, true),
+        fabric,
+        space,
+        available_string: subnet.statistics.available_string,
+        groupId:
+          groupBy === "fabric"
+            ? fabric!.id.toString()
+            : (space?.id ?? 0).toString(),
+      };
+    })
+    .sort((a, b) =>
+      groupBy === "fabric"
+        ? a.fabric!.id - b.fabric!.id
+        : simpleSortByKey<Partial<Space>, keyof Space>("name", {
+            reverse: false,
+          })(a, b)
+    );
 };
 
 export const useSubnetsTableSearch = (

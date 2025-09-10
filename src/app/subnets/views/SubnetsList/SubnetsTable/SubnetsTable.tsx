@@ -27,13 +27,13 @@ const SubnetsTable = ({
       data={data.slice((page - 1) * size, page * size)}
       filterCells={(row, column) =>
         row.getIsGrouped()
-          ? ["groupName", groupBy].includes(column.id)
-          : !["groupName", groupBy].includes(column.id)
+          ? ["groupId", groupBy].includes(column.id)
+          : !["groupId", groupBy].includes(column.id)
       }
       filterHeaders={(header) =>
-        !["groupName", groupBy].includes(header.column.id)
+        !["groupId", groupBy].includes(header.column.id)
       }
-      groupBy={["groupName"]}
+      groupBy={["groupId"]}
       isLoading={!loaded}
       noData={"No results found"}
       pagination={{
@@ -45,6 +45,8 @@ const SubnetsTable = ({
         setCurrentPage: setPage,
         totalItems: data.length,
       }}
+      pinGroup={groupBy === "space" ? [{ value: "0", isTop: false }] : []}
+      variant="full-height"
     />
   );
 };

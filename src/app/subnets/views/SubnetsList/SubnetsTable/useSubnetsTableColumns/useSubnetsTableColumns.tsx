@@ -24,7 +24,7 @@ export type SubnetsRowData = {
   fabric: Fabric | undefined;
   space: Space | null | undefined;
   available_string: Subnet["statistics"]["available_string"];
-  groupName: string;
+  groupId: string;
 };
 
 export type SubnetsColumnDef = ColumnDef<
@@ -36,16 +36,22 @@ const useSubnetsTableColumns = (groupBy: GroupByKey): SubnetsColumnDef[] => {
   return useMemo(
     (): SubnetsColumnDef[] => [
       {
-        id: "groupName",
-        accessorKey: "groupName",
+        id: "groupId",
+        accessorKey: "groupId",
         enableSorting: false,
         cell: ({ row }: { row: Row<SubnetsRowData> }) => {
+          const display =
+            groupBy === "fabric"
+              ? row.original.fabric?.name
+              : row.original.space
+                ? row.original.space.name
+                : "No space";
           return (
             <div>
               <div>
                 <strong>
                   {groupBy === "space" && !row.original.space ? (
-                    row.original.groupName
+                    display
                   ) : (
                     <Link
                       to={
@@ -54,7 +60,7 @@ const useSubnetsTableColumns = (groupBy: GroupByKey): SubnetsColumnDef[] => {
                           : urls.space.index({ id: row.original.space!.id })
                       }
                     >
-                      {row.original.groupName}
+                      {display}
                     </Link>
                   )}
                 </strong>
