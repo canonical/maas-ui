@@ -21,7 +21,7 @@ context("Subnets", () => {
       "Space",
     ];
 
-    cy.findByRole("grid", { name: "Subnets by Fabric" }).within(() => {
+    cy.findByRole("grid", { name: "Subnets by fabric" }).within(() => {
       expectedHeaders.forEach((name) => {
         cy.findByRole("columnheader", { name }).should("exist");
       });
@@ -40,7 +40,7 @@ context("Subnets", () => {
   });
 
   it("allows grouping by fabric and space", () => {
-    cy.findByRole("grid", { name: "Subnets by Fabric" }).within(() => {
+    cy.findByRole("grid", { name: "Subnets by fabric" }).within(() => {
       cy.get("tbody tr").first().should("include.text", "fabric");
     });
 
@@ -58,7 +58,7 @@ context("Subnets", () => {
 
     cy.waitForPageToLoad();
 
-    cy.findByRole("grid", { name: "Subnets by Space" }).within(() => {
+    cy.findByRole("grid", { name: "Subnets by space" }).within(() => {
       cy.get("tbody tr").first().should("include.text", "space");
     });
 

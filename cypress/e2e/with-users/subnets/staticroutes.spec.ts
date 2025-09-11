@@ -10,8 +10,12 @@ context("Static Routes", () => {
   });
   it("allows adding, editing, and deleting a static route", () => {
     // Add static route
-    cy.findByRole("grid", { name: "Subnets by Fabric" }).within(() => {
-      cy.get("tbody").find('td[aria-label="subnet"]').find("a").first().click();
+    cy.findByRole("grid", { name: "Subnets by fabric" }).within(() => {
+      cy.get("tbody")
+        .find('tr[class="p-generic-table__individual-row"]')
+        .find("a")
+        .first()
+        .click();
     });
     cy.findByRole("heading", { level: 1 }).invoke("text").as("subnet");
 

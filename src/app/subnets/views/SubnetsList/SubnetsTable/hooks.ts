@@ -1,22 +1,28 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
-import type { SubnetsTableRow, GroupByKey } from "./types";
-import { filterSubnetsBySearchText, getTableData } from "./utils";
+import type { GroupByKey } from "./types";
+import type { SubnetsRowData } from "./useSubnetsTableColumns/useSubnetsTableColumns";
+import { filterSubnetsBySearchText } from "./utils";
 
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
+import type { Fabric } from "@/app/store/fabric/types";
 import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
+import type { Space } from "@/app/store/space/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN } from "@/app/store/vlan/types";
+import { getDHCPStatus } from "@/app/store/vlan/utils";
+import { simpleSortByKey } from "@/app/utils";
 
 type UseSubnetsTable = {
-  data: SubnetsTableRow[];
+  data: SubnetsRowData[];
   loaded: boolean;
 };
 
@@ -49,7 +55,13 @@ export const useSubnetsTable = (
   useEffect(() => {
     if (loaded) {
       setState({
-        data: getTableData({ fabrics, vlans, subnets, spaces }, groupBy),
+        data: generateTableData({
+          fabrics,
+          vlans,
+          subnets,
+          spaces,
+          groupBy,
+        }),
         loaded: true,
       });
     }
@@ -58,8 +70,56 @@ export const useSubnetsTable = (
   return state;
 };
 
+const generateTableData = ({
+  subnets,
+  vlans,
+  fabrics,
+  spaces,
+  groupBy,
+}: {
+  subnets: Subnet[];
+  vlans: VLAN[];
+  fabrics: Fabric[];
+  spaces: Space[];
+  groupBy: GroupByKey;
+}): SubnetsRowData[] => {
+  return subnets
+    .map((subnet) => {
+      const vlan = vlans.find((vlan) => vlan.id === subnet.vlan);
+      const fabric = fabrics.find((fabric) => fabric.id === vlan?.fabric);
+      const space = spaces.find((space) => space.id === subnet.space);
+      return {
+        id: subnet.id,
+        cidr: subnet.cidr,
+        name: subnet.name,
+        vlan,
+        dhcpStatus: getDHCPStatus(vlan, vlans, fabrics, true),
+        fabric,
+        space,
+        available_string: subnet.statistics.available_string,
+        groupId:
+          groupBy === "fabric"
+            ? fabric!.id.toString()
+            : (space?.id ?? 0).toString(),
+      };
+    })
+    .sort((a, b) => {
+      if (groupBy === "fabric") {
+        return a.fabric!.id - b.fabric!.id;
+      } else if (a.space && b.space) {
+        return simpleSortByKey<Partial<Space>, keyof Space>("name")(a, b);
+      } else if (a.space && !b.space) {
+        return -1;
+      } else if (!a.space && b.space) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+};
+
 export const useSubnetsTableSearch = (
-  subnetsTable: { data: SubnetsTableRow[]; loaded: boolean },
+  subnetsTable: UseSubnetsTable,
   searchText: string
 ): UseSubnetsTable => {
   const [state, setState] = useState<UseSubnetsTable>({
@@ -78,43 +138,3 @@ export const useSubnetsTableSearch = (
 
   return state;
 };
-
-export function usePagination<D>(
-  data: D[],
-  itemsPerPage = SUBNETS_TABLE_ITEMS_PER_PAGE
-): {
-  pageData: D[];
-  currentPage: number;
-  paginate: (pageNumber: number) => void;
-  itemsPerPage: number;
-  totalItems: number;
-} {
-  const totalItems = data.length;
-  const [pageIndex, setPageIndex] = useState(0);
-  const startIndex = pageIndex * itemsPerPage;
-  const paginate = (pageNumber: number) => {
-    setPageIndex(pageNumber - 1);
-  };
-
-  useEffect(() => {
-    // go to the last available page if the current page is out of bounds
-    if (startIndex >= totalItems) {
-      Math.floor(totalItems / itemsPerPage) > 0
-        ? setPageIndex(Math.floor(totalItems / itemsPerPage) - 1)
-        : setPageIndex(0);
-    }
-  }, [pageIndex, startIndex, setPageIndex, totalItems, itemsPerPage]);
-
-  const pageData = useMemo(
-    () => data?.slice(startIndex, startIndex + itemsPerPage),
-    [startIndex, data, itemsPerPage]
-  );
-
-  return {
-    pageData,
-    currentPage: pageIndex + 1,
-    paginate,
-    itemsPerPage,
-    totalItems,
-  };
-}
