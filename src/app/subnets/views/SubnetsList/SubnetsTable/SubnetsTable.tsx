@@ -12,7 +12,7 @@ const SubnetsTable = ({
   searchText,
 }: Pick<SubnetGroupByProps, "groupBy"> & {
   searchText: string;
-}): React.ReactElement | null => {
+}): React.ReactElement => {
   const subnetsTable = useSubnetsTable(groupBy);
   const { data, loaded } = useSubnetsTableSearch(subnetsTable, searchText);
   const columns = useSubnetsTableColumns(groupBy);

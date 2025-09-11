@@ -103,13 +103,19 @@ const generateTableData = ({
             : (space?.id ?? 0).toString(),
       };
     })
-    .sort((a, b) =>
-      groupBy === "fabric"
-        ? a.fabric!.id - b.fabric!.id
-        : simpleSortByKey<Partial<Space>, keyof Space>("name", {
-            reverse: false,
-          })(a, b)
-    );
+    .sort((a, b) => {
+      if (groupBy === "fabric") {
+        return a.fabric!.id - b.fabric!.id;
+      } else if (a.space && b.space) {
+        return simpleSortByKey<Partial<Space>, keyof Space>("name")(a, b);
+      } else if (a.space && !b.space) {
+        return -1;
+      } else if (!a.space && b.space) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
 };
 
 export const useSubnetsTableSearch = (
