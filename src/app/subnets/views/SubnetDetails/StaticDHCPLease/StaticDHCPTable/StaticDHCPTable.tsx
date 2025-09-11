@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { GenericTable, TableCaption } from "@canonical/maas-react-components";
+import { GenericTable } from "@canonical/maas-react-components";
 
 import useStaticDHCPTableColumns from "./useStaticDHCPTableColumns/useStaticDHCPTableColumns";
 
@@ -29,11 +29,7 @@ const StaticDHCPTable = ({ reservedIps, loading }: Props): ReactElement => {
       columns={columns}
       data={data}
       isLoading={loading}
-      noData={
-        <TableCaption.Description>
-          No static DHCP leases available
-        </TableCaption.Description>
-      }
+      noData="No static DHCP leases available"
       role="table"
     />
   );

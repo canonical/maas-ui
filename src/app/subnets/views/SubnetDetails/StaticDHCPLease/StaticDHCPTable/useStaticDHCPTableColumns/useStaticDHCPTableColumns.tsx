@@ -22,28 +22,23 @@ export type StaticDHCPTableData = {
   comment?: string;
 };
 
-export type StaticDHCPColunDef = ColumnDef<
+export type StaticDHCPColumnDef = ColumnDef<
   StaticDHCPTableData,
   Partial<StaticDHCPTableData>
 >;
 
-const useStaticDHCPTableColumns = (): StaticDHCPColunDef[] => {
+const useStaticDHCPTableColumns = (): StaticDHCPColumnDef[] => {
   const { setSidePanelContent } = useSidePanel();
   return useMemo(
-    (): StaticDHCPColunDef[] => [
+    (): StaticDHCPColumnDef[] => [
       {
-        accessorKey: "ip_address",
-        header: () => <span className="ip-col">IP Address</span>,
+        accessorKey: "ipAddress",
+        header: () => "IP Address",
         enableSorting: false,
-        cell: ({
-          row: {
-            original: { ipAddress },
-          },
-        }) => ipAddress,
       },
       {
-        accessorKey: "mac_address",
-        header: () => <span className="mac-col">MAC Address</span>,
+        accessorKey: "macAddress",
+        header: "MAC Address",
         enableSorting: false,
         cell: ({
           row: {
@@ -53,7 +48,7 @@ const useStaticDHCPTableColumns = (): StaticDHCPColunDef[] => {
       },
       {
         accessorKey: "node",
-        header: () => <span className="node-col">Node</span>,
+        header: "Node",
         enableSorting: false,
         cell: ({
           row: {
@@ -71,7 +66,7 @@ const useStaticDHCPTableColumns = (): StaticDHCPColunDef[] => {
       },
       {
         accessorKey: "interface",
-        header: () => <span className="interface-col">Interface</span>,
+        header: "Interface",
         enableSorting: false,
         cell: ({
           row: {
@@ -81,7 +76,7 @@ const useStaticDHCPTableColumns = (): StaticDHCPColunDef[] => {
       },
       {
         accessorKey: "usage",
-        header: () => <span className="usage-col">Usage</span>,
+        header: "Usage",
         enableSorting: false,
         cell: ({
           row: {
@@ -94,7 +89,7 @@ const useStaticDHCPTableColumns = (): StaticDHCPColunDef[] => {
       },
       {
         accessorKey: "comment",
-        header: () => <span className="comment-col">Comment</span>,
+        header: "Comment",
         enableSorting: false,
         cell: ({
           row: {
@@ -104,7 +99,8 @@ const useStaticDHCPTableColumns = (): StaticDHCPColunDef[] => {
       },
       {
         accessorKey: "actions",
-        header: () => <span className="actions-col">Actions</span>,
+        header: "Actions",
+        enableSorting: false,
         cell: ({
           row: {
             original: { id },
