@@ -3,7 +3,12 @@ import StaticDHCPTable from "./StaticDHCPTable";
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { SubnetActionTypes } from "@/app/subnets/views/SubnetDetails/constants";
 import { reservedIp } from "@/testing/factories/reservedip";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const setSidePanelContent = vi.fn();
 beforeAll(() => {
@@ -16,36 +21,44 @@ beforeAll(() => {
 });
 
 describe("StaticDHCPTable", () => {
-  it("renders a static DHCP table with no data", () => {
-    renderWithBrowserRouter(
-      <StaticDHCPTable loading={false} reservedIps={[]} />
-    );
-    expect(
-      screen.getByRole("table", { name: "Static DHCP leases" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("No static DHCP leases available")
-    ).toBeInTheDocument();
+  it("renders a loading component if table items are loading", async () => {
+    renderWithProviders(<StaticDHCPTable loading={true} reservedIps={[]} />);
+    await waitFor(() => {
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+    });
   });
 
-  it("renders a static DHCP table with the right action buttons when data is provided", () => {
-    const reservedIps = [reservedIp(), reservedIp()];
-    renderWithBrowserRouter(
-      <StaticDHCPTable loading={false} reservedIps={reservedIps} />
-    );
-    expect(
-      screen.getByRole("table", { name: "Static DHCP leases" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("cell", { name: reservedIps[0].ip })
-    ).toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: "Edit" }).length).toBe(2);
-    expect(screen.getAllByRole("button", { name: "Delete" }).length).toBe(2);
+  it("renders a message when table is empty", async () => {
+    renderWithProviders(<StaticDHCPTable loading={false} reservedIps={[]} />);
+    await waitFor(() => {
+      expect(
+        screen.getByText("No static DHCP leases available")
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("renders the columns correctly", async () => {
+    renderWithProviders(<StaticDHCPTable loading={false} reservedIps={[]} />);
+    [
+      "IP Address",
+      "MAC Address",
+      "Node",
+      "Interface",
+      "Usage",
+      "Comment",
+      "Actions",
+    ].forEach((column) => {
+      expect(
+        screen.getByRole("columnheader", {
+          name: new RegExp(`^${column}`, "i"),
+        })
+      ).toBeInTheDocument();
+    });
   });
 
   it("opens the side panel with the correct view when the edit button is clicked", async () => {
     const reservedIps = [reservedIp()];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <StaticDHCPTable loading={false} reservedIps={reservedIps} />
     );
 
@@ -59,7 +72,7 @@ describe("StaticDHCPTable", () => {
 
   it("opens the side panel with the correct view when the delete button is clicked", async () => {
     const reservedIps = [reservedIp()];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <StaticDHCPTable loading={false} reservedIps={reservedIps} />
     );
 
