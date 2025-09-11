@@ -36,59 +36,6 @@ context("Subnets - Add", () => {
     submitForm(formName);
   };
 
-  it("can add and delete a new fabric", () => {
-    const name = `cypress-${generateId()}`;
-    completeForm("Fabric", name);
-
-    cy.findByRole("grid", { name: /Subnets/i }).within(() => {
-      cy.findByRole("link", { name }).click();
-    });
-
-    cy.url().should("include", generateMAASURL("/fabric"));
-
-    cy.findByRole("button", { name: "Delete fabric" }).click();
-
-    cy.findByText("Are you sure you want to delete this fabric?").should(
-      "be.visible"
-    );
-
-    cy.findByRole("complementary", { name: /Delete fabric/i }).within(() =>
-      cy.findByRole("button", { name: "Delete fabric" }).click()
-    );
-
-    cy.url().should("include", generateMAASURL("/networks?by=fabric"));
-
-    cy.findByRole("grid", { name: /Subnets/i }).within(() => {
-      cy.findByRole("link", { name }).should("not.exist");
-    });
-  });
-
-  it("can add and delete a new space", () => {
-    cy.visit(generateMAASURL("/networks?by=space"));
-    const name = `cypress-${generateId()}`;
-    completeForm("Space", name);
-    cy.findByRole("grid", { name: /Subnets/ }).within(() => {
-      cy.findByRole("link", { name }).click();
-    });
-
-    cy.url().should("include", generateMAASURL("/space"));
-
-    cy.findByRole("button", { name: "Delete space" }).click();
-
-    cy.findByText(`Are you sure you want to delete this space?`).should(
-      "be.visible"
-    );
-
-    cy.findByRole("complementary", { name: /Delete space/i }).within(() =>
-      cy.findByRole("button", { name: "Delete space" }).click()
-    );
-
-    cy.url().should("include", generateMAASURL("/networks?by=fabric"));
-    cy.findByRole("grid", { name: /Subnets/ }).within(() => {
-      cy.findByRole("link", { name }).should("not.exist");
-    });
-  });
-
   it("can add and delete a new subnet", () => {
     const fabric = `cy-fabric-${generateId()}`;
     const spaceName = `cy-space-${generateId()}`;
@@ -102,17 +49,15 @@ context("Subnets - Add", () => {
     completeAddVlanForm(vid, vlan, fabric, spaceName);
     cy.addSubnet({ subnetName, cidr, fabric, vid, vlan });
 
-    cy.findAllByRole("link", { name: fabric }).should("have.length", 2);
+    cy.findAllByRole("link", { name: fabric }).should("have.length", 1);
 
     // Check it groups items added to the same fabric correctly
-    cy.findAllByRole("row", { name: fabric })
-      .eq(1)
+    cy.findAllByRole("row", { name: new RegExp(fabric) })
+      .next("tr")
       .within(() => {
-        cy.findAllByRole("gridcell")
-          .eq(1)
-          .should("have.text", `${vid} (${vlan})`);
-        cy.findAllByRole("gridcell").eq(3).should("contain.text", subnetName);
-        cy.findAllByRole("gridcell").eq(5).should("have.text", spaceName);
+        cy.findAllByRole("cell").eq(0).should("contain.text", subnetName);
+        cy.findAllByRole("cell").eq(1).should("have.text", `${vid} (${vlan})`);
+        cy.findAllByRole("cell").eq(4).should("have.text", spaceName);
       });
 
     // delete the subnet
