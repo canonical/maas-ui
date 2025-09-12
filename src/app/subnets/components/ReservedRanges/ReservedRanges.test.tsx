@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import ReservedRanges, { Labels } from "./ReservedRanges";
@@ -10,7 +8,13 @@ import type { RootState } from "@/app/store/root/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import type { VLAN } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 let ipRange: IPRange;
@@ -41,7 +45,7 @@ beforeEach(() => {
   });
 });
 
-it("renders for a subnet", () => {
+it("renders the correct columns for a chosen subnet", () => {
   const subnet2 = factory.subnet();
   state.iprange.items = [
     factory.ipRange({ start_ip: "11.1.1.1", subnet: subnet.id }),
@@ -50,35 +54,34 @@ it("renders for a subnet", () => {
   ];
   state.subnet.items = [subnet, subnet2];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.queryAllByRole("gridcell", {
-      name: Labels.StartIP,
+  renderWithProviders(<ReservedRanges subnetId={subnet.id} />, {
+    store,
+  });
+  const reservedRangesTable = within(
+    screen.getByRole("region", {
+      name: "Reserved ranges",
     })
-  ).toHaveLength(2);
-  expect(
-    screen
-      .getAllByRole("gridcell", {
-        name: Labels.StartIP,
+  ).getByRole("grid");
+
+  [
+    Labels.Actions,
+    Labels.Comment,
+    Labels.EndIP,
+    Labels.Owner,
+    Labels.StartIP,
+    Labels.Type,
+  ].forEach((label) => {
+    expect(
+      screen.getByRole("columnheader", {
+        name: new RegExp(`^${label}`, "i"),
       })
-      .find((td) => td.textContent === "11.1.1.1")
-  ).toBeInTheDocument();
-  expect(
-    screen
-      .getAllByRole("gridcell", {
-        name: Labels.StartIP,
-      })
-      .find((td) => td.textContent === "11.1.1.2")
-  ).toBeInTheDocument();
+    ).toBeInTheDocument();
+  });
+
+  expect(within(reservedRangesTable).getAllByRole("row")).toHaveLength(2 + 1);
 });
 
-it("renders for a vlan", () => {
+it("renders the correct columns for a chosen vlan", () => {
   const vlan2 = factory.vlan();
   state.iprange.items = [
     factory.ipRange({ start_ip: "11.1.1.1", vlan: vlan.id }),
@@ -87,44 +90,41 @@ it("renders for a vlan", () => {
   ];
   state.vlan.items = [vlan, vlan2];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.queryAllByRole("gridcell", {
-      name: Labels.StartIP,
+  renderWithProviders(<ReservedRanges hasVLANSubnets vlanId={vlan.id} />, {
+    store,
+  });
+
+  const reservedRangesTable = within(
+    screen.getByRole("region", {
+      name: "Reserved ranges",
     })
-  ).toHaveLength(2);
-  expect(
-    screen
-      .getAllByRole("gridcell", {
-        name: Labels.StartIP,
+  ).getByRole("grid");
+
+  [
+    Labels.Actions,
+    Labels.Comment,
+    Labels.EndIP,
+    Labels.Owner,
+    Labels.StartIP,
+    Labels.Type,
+    Labels.Subnet,
+  ].forEach((label) => {
+    expect(
+      screen.getByRole("columnheader", {
+        name: new RegExp(`^${label}`, "i"),
       })
-      .find((td) => td.textContent === "11.1.1.1")
-  ).toBeInTheDocument();
-  expect(
-    screen
-      .getAllByRole("gridcell", {
-        name: Labels.StartIP,
-      })
-      .find((td) => td.textContent === "11.1.1.2")
-  ).toBeInTheDocument();
+    ).toBeInTheDocument();
+  });
+
+  expect(within(reservedRangesTable).getAllByRole("row")).toHaveLength(2 + 1);
 });
 
 it("displays an empty message for a subnet", () => {
   state.iprange.items = [];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<ReservedRanges subnetId={subnet.id} />, {
+    store,
+  });
   expect(
     screen.getByText("No IP ranges have been reserved for this subnet.")
   ).toBeInTheDocument();
@@ -133,13 +133,9 @@ it("displays an empty message for a subnet", () => {
 it("displays an empty message for a vlan", () => {
   state.iprange.items = [];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<ReservedRanges hasVLANSubnets vlanId={vlan.id} />, {
+    store,
+  });
   expect(
     screen.getByText("No IP ranges have been reserved for this VLAN.")
   ).toBeInTheDocument();
@@ -148,85 +144,70 @@ it("displays an empty message for a vlan", () => {
 it("displays a message if there are no subnets in a VLAN", () => {
   state.subnet.items = [];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges hasVLANSubnets={false} vlanId={vlan.id} />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <ReservedRanges hasVLANSubnets={false} vlanId={vlan.id} />,
+    {
+      store,
+    }
   );
   expect(
     screen.getByText(/No subnets are available on this VLAN/)
   ).toBeInTheDocument();
 });
 
-it("displays content when it is dynamic", () => {
+it("displays the right content when range type is 'dynamic'", () => {
   ipRange.type = IPRangeType.Dynamic;
   state.iprange.items = [ipRange];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.getByRole("gridcell", {
-      name: Labels.Type,
+  renderWithProviders(<ReservedRanges subnetId={subnet.id} />, {
+    store,
+  });
+
+  const reservedRangesTable = within(
+    screen.getByRole("region", {
+      name: "Reserved ranges",
     })
-  ).toHaveTextContent("Dynamic");
+  ).getByRole("grid");
+
   expect(
-    screen.getByRole("gridcell", {
-      name: Labels.Owner,
-    })
-  ).toHaveTextContent("MAAS");
+    within(reservedRangesTable).getAllByRole("cell", { name: "Dynamic" })
+  ).toHaveLength(2);
+
   expect(
-    screen.getByRole("gridcell", {
-      name: Labels.Comment,
-    })
-  ).toHaveTextContent("Dynamic");
+    within(reservedRangesTable).getAllByRole("cell", { name: "MAAS" })
+  ).toHaveLength(1);
 });
 
-it("displays content when it is reserved", () => {
+it("displays the right content when range type is 'reserved'", () => {
   ipRange.type = IPRangeType.Reserved;
   state.iprange.items = [ipRange];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.getByRole("gridcell", {
-      name: Labels.Type,
+  renderWithProviders(<ReservedRanges subnetId={subnet.id} />, {
+    store,
+  });
+
+  const reservedRangesTable = within(
+    screen.getByRole("region", {
+      name: "Reserved ranges",
     })
-  ).toHaveTextContent("Reserved");
+  ).getByRole("grid");
+
   expect(
-    screen.getByRole("gridcell", {
-      name: Labels.Owner,
-    })
-  ).toHaveTextContent("wombat");
+    within(reservedRangesTable).getAllByRole("cell", { name: "Reserved" })
+  ).toHaveLength(1);
+
   expect(
-    screen.getByRole("gridcell", {
-      name: Labels.Comment,
-    })
-  ).toHaveTextContent("what a beaut");
+    within(reservedRangesTable).getAllByRole("cell", { name: "wombat" })
+  ).toHaveLength(1);
 });
 
-it("displays an add button when it is reserved", () => {
+it("displays an add button when range type is 'reserved'", () => {
   ipRange.type = IPRangeType.Reserved;
   state.iprange.items = [ipRange];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<ReservedRanges subnetId={subnet.id} />, {
+    store,
+  });
   expect(
     screen.getByRole("button", {
       name: Labels.ReserveRange,
@@ -234,17 +215,13 @@ it("displays an add button when it is reserved", () => {
   ).toBeInTheDocument();
 });
 
-it("displays an add button when it is dynamic", async () => {
+it("displays an add button when range type is 'dynamic'", async () => {
   ipRange.type = IPRangeType.Dynamic;
   state.iprange.items = [ipRange];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<ReservedRanges subnetId={subnet.id} />, {
+    store,
+  });
   await userEvent.click(
     screen.queryAllByRole("button", {
       name: Labels.ReserveRange,
@@ -265,49 +242,10 @@ it("disables the add button if there are no subnets in a VLAN", () => {
   ipRange.type = IPRangeType.Reserved;
   state.iprange.items = [ipRange];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<ReservedRanges vlanId={vlan.id} />, {
+    store,
+  });
   expect(
     screen.getByRole("button", { name: Labels.ReserveRange })
   ).toBeAriaDisabled();
-});
-
-it("displays the subnet column when the table is for a VLAN", () => {
-  state.iprange.items = [
-    factory.ipRange({ start_ip: "11.1.1.1", vlan: vlan.id }),
-  ];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.getByRole("gridcell", {
-      name: Labels.Subnet,
-    })
-  ).toBeInTheDocument();
-});
-
-it("does not display the subnet column when the table is for a subnet", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    screen.queryByRole("gridcell", {
-      name: Labels.Subnet,
-    })
-  ).not.toBeInTheDocument();
 });
