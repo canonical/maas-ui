@@ -7,8 +7,9 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useFetchActions, useCycled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { ImageSidePanelViews } from "@/app/images/constants";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import DeleteMultipleImagesForm from "@/app/images/components/ImagesForms/DeleteMultipleImagesForm";
+import SelectUpstreamImagesForm from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
@@ -63,7 +64,7 @@ const ImageListHeader = ({
   const canStopImport = (saving || imagesDownloading) && !stoppingImport;
   const cleanup = useCallback(() => bootResourceActions.cleanup(), []);
 
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel, closeSidePanel } = useSidePanel();
   const isDeleteDisabled = Object.keys(selectedRows).length <= 0;
 
   const sources = ubuntu?.sources || [];
@@ -124,12 +125,16 @@ const ImageListHeader = ({
             disabled={isDeleteDisabled}
             hasIcon
             onClick={() => {
-              setSidePanelContent({
-                view: ImageSidePanelViews.DELETE_MULTIPLE_IMAGES,
-                extras: {
+              openSidePanel({
+                component: DeleteMultipleImagesForm,
+                props: {
+                  closeForm: () => {
+                    closeSidePanel();
+                  },
                   rowSelection: selectedRows,
                   setRowSelection: setSelectedRows,
                 },
+                title: "Delete multiple images",
               });
             }}
             type="button"
@@ -141,8 +146,9 @@ const ImageListHeader = ({
             disabled={canStopImport || stoppingImport}
             hasIcon
             onClick={() => {
-              setSidePanelContent({
-                view: ImageSidePanelViews.DOWNLOAD_IMAGE,
+              openSidePanel({
+                component: SelectUpstreamImagesForm,
+                title: "Select upstream images to sync",
               });
             }}
             type="button"

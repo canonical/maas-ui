@@ -5,7 +5,7 @@ import ImageList, { Labels as ImageListLabels } from "./ImageList";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -23,11 +23,10 @@ describe("ImageList", () => {
       }),
     });
     const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(<ImageList />, {
-      route: "/images",
+    const { result } = renderWithProviders(<ImageList />, {
       store,
     });
-    unmount();
+    result.unmount();
     expect(
       store
         .getActions()
@@ -47,8 +46,7 @@ describe("ImageList", () => {
         loaded: true,
       }),
     });
-    renderWithBrowserRouter(<ImageList />, {
-      route: "/images",
+    renderWithProviders(<ImageList />, {
       state,
     });
 

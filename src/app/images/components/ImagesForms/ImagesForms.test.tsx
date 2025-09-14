@@ -3,7 +3,7 @@ import ImagesForms from "./ImagesForms";
 import { ImageSidePanelViews } from "@/app/images/constants";
 import type { ImageSidePanelContent } from "@/app/images/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("ImagesForms", () => {
   it("renders DeleteImage form", () => {
@@ -11,7 +11,7 @@ describe("ImagesForms", () => {
       view: ImageSidePanelViews.DELETE_IMAGE,
       extras: { bootResource: factory.bootResource() },
     };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImagesForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={sidePanelContent}
@@ -31,7 +31,7 @@ describe("ImagesForms", () => {
         setRowSelection: vi.fn,
       },
     };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImagesForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={sidePanelContent}
@@ -47,7 +47,7 @@ describe("ImagesForms", () => {
     const sidePanelContent: ImageSidePanelContent = {
       view: ImageSidePanelViews.DOWNLOAD_IMAGE,
     };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImagesForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={sidePanelContent}

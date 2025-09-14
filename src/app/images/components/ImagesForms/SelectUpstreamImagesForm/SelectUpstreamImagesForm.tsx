@@ -9,7 +9,7 @@ import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
 import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type {
@@ -198,10 +198,10 @@ const SelectUpstreamImagesForm = (): ReactElement => {
     };
   }, [dispatch]);
 
-  const { setSidePanelContent } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
 
   const resetForm = () => {
-    setSidePanelContent(null);
+    closeSidePanel();
   };
 
   return (
