@@ -1,10 +1,11 @@
+import type { ReactElement } from "react";
+
 import { Row, Col, Input } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { FormActionProps } from "../FormActions";
-
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 
@@ -13,10 +14,8 @@ type AddFabricValues = {
   description: string;
 };
 
-const AddFabric = ({
-  activeForm,
-  setActiveForm,
-}: FormActionProps): React.ReactElement => {
+const AddFabric = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const isSaving = useSelector(fabricSelectors.saving);
   const isSaved = useSelector(fabricSelectors.saved);
@@ -29,9 +28,7 @@ const AddFabric = ({
       cleanup={fabricActions.cleanup}
       errors={errors}
       initialValues={{ name: "", description: "" }}
-      onCancel={() => {
-        setActiveForm(null);
-      }}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Add fabric",
         category: "Subnets form actions",
@@ -41,12 +38,10 @@ const AddFabric = ({
         dispatch(fabricActions.cleanup());
         dispatch(fabricActions.create({ name, description }));
       }}
-      onSuccess={() => {
-        setActiveForm(null);
-      }}
+      onSuccess={closeSidePanel}
       saved={isSaved}
       saving={isSaving}
-      submitLabel={`Add ${activeForm}`}
+      submitLabel="Save"
     >
       <Row>
         <Col size={12}>

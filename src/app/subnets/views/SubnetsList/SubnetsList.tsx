@@ -1,127 +1,43 @@
-import { useEffect, useCallback } from "react";
+import type { ReactElement } from "react";
+import { useState } from "react";
 
-import { MainToolbar } from "@canonical/maas-react-components";
-import { ContextualMenu } from "@canonical/react-components";
-import { useNavigate } from "react-router";
-
-import SubnetsControls from "./SubnetsControls";
 import SubnetsTable from "./SubnetsTable";
 import type { GroupByKey } from "./SubnetsTable/types";
 
-import GroupSelect from "@/app/base/components/GroupSelect";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useQuery } from "@/app/base/hooks/urls";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import type { SyncNavigateFunction } from "@/app/base/types";
-import {
-  SubnetForms,
-  SubnetsUrlParams,
-  subnetGroupingOptions,
-} from "@/app/subnets/constants";
-import { SubnetSidePanelViews } from "@/app/subnets/types";
-import FormActions from "@/app/subnets/views/FormActions";
+import { SubnetsUrlParams } from "@/app/subnets/constants";
+import SubnetsListHeader from "@/app/subnets/views/SubnetsList/SubnetsListHeader/SubnetsListHeader";
 
-const SubnetsList = (): React.ReactElement => {
+const SubnetsList = (): ReactElement => {
   useWindowTitle("Subnets");
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const query = useQuery();
-  const navigate: SyncNavigateFunction = useNavigate();
-  const groupBy = query.get(SubnetsUrlParams.By);
-  const searchText = query.get(SubnetsUrlParams.Q) || "";
-  const setGroupBy = useCallback(
-    (group: GroupByKey | null) => {
-      navigate(
-        {
-          pathname: "/networks",
-          search: `?${SubnetsUrlParams.By}=${group}&${SubnetsUrlParams.Q}=${searchText}`,
-        },
-        { replace: true }
-      );
-    },
-    [navigate, searchText]
+  const [searchText, setSearchText] = useState<string>(
+    query.get(SubnetsUrlParams.Q) || ""
   );
-  const setSearchText = useCallback(
-    (searchText: string) => {
-      navigate(
-        {
-          pathname: "/networks",
-          search: `?${SubnetsUrlParams.By}=${groupBy}&${SubnetsUrlParams.Q}=${searchText}`,
-        },
-        { replace: true }
-      );
-    },
-    [navigate, groupBy]
-  );
+  const grouping = query.get(SubnetsUrlParams.By);
 
-  const hasValidGroupBy = groupBy && ["fabric", "space"].includes(groupBy);
-
-  useEffect(() => {
-    setSidePanelContent(null);
-    if (!hasValidGroupBy) {
-      setGroupBy("fabric");
-    }
-  }, [groupBy, setGroupBy, hasValidGroupBy, setSidePanelContent]);
-
-  const [, name] = sidePanelContent?.view || [];
-  const activeForm =
-    name && Object.keys(SubnetForms).includes(name)
-      ? SubnetForms[name as keyof typeof SubnetForms]
-      : null;
+  const hasValidGroupBy = grouping && ["fabric", "space"].includes(grouping);
 
   return (
     <PageContent
       header={
-        <MainToolbar>
-          <MainToolbar.Title>Subnets</MainToolbar.Title>
-          <MainToolbar.Controls>
-            <SubnetsControls
-              groupBy={groupBy as GroupByKey}
-              handleSearch={setSearchText}
-              searchText={searchText}
-            />
-            <GroupSelect
-              className="subnet-group__select"
-              groupOptions={subnetGroupingOptions}
-              grouping={groupBy as GroupByKey}
-              name="network-groupings"
-              setGrouping={setGroupBy}
-            />
-            <ContextualMenu
-              hasToggleIcon
-              links={[
-                SubnetSidePanelViews.Fabric,
-                SubnetSidePanelViews.VLAN,
-                SubnetSidePanelViews.Space,
-                SubnetSidePanelViews.Subnet,
-              ].map((view) => {
-                const [, name] = view;
-                return {
-                  children: name,
-                  onClick: () => {
-                    setSidePanelContent({ view });
-                  },
-                };
-              })}
-              position="right"
-              toggleAppearance="positive"
-              toggleLabel="Add"
-            />
-          </MainToolbar.Controls>
-        </MainToolbar>
+        <SubnetsListHeader
+          grouping={grouping}
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
       }
-      sidePanelContent={
-        activeForm ? (
-          <FormActions
-            activeForm={activeForm}
-            setActiveForm={setSidePanelContent}
-          />
-        ) : null
-      }
-      sidePanelTitle={activeForm ? `Add ${activeForm}` : ""}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       {hasValidGroupBy ? (
-        <SubnetsTable groupBy={groupBy as GroupByKey} searchText={searchText} />
+        <SubnetsTable
+          groupBy={grouping as GroupByKey}
+          searchText={searchText}
+        />
       ) : null}
     </PageContent>
   );

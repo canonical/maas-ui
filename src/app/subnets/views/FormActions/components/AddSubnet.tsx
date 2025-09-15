@@ -1,14 +1,15 @@
+import type { ReactElement } from "react";
+
 import { Row, Col, Input } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import type { FormActionProps } from "../FormActions";
-
 import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import VLANSelect from "@/app/base/components/VLANSelect";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { toFormikNumber } from "@/app/utils";
@@ -107,10 +108,8 @@ const addSubnetSchema = Yup.object()
   })
   .defined();
 
-const AddSubnet = ({
-  activeForm,
-  setActiveForm,
-}: FormActionProps): React.ReactElement => {
+const AddSubnet = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const isSaving = useSelector(subnetSelectors.saving);
   const isSaved = useSelector(subnetSelectors.saved);
@@ -129,9 +128,7 @@ const AddSubnet = ({
         dns_servers: "",
         fabric: "",
       }}
-      onCancel={() => {
-        setActiveForm(null);
-      }}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Add Subnet",
         category: "Subnets form actions",
@@ -150,12 +147,10 @@ const AddSubnet = ({
           })
         );
       }}
-      onSuccess={() => {
-        setActiveForm(null);
-      }}
+      onSuccess={closeSidePanel}
       saved={isSaved}
       saving={isSaving}
-      submitLabel={`Add ${activeForm}`}
+      submitLabel="Save"
       validationSchema={addSubnetSchema}
     >
       <AddSubnetFields isSaving={isSaving} />

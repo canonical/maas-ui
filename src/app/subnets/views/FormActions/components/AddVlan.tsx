@@ -1,15 +1,15 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
 import { Row, Col, Input } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import type { FormActionProps } from "../FormActions";
-
 import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import SpaceSelect from "@/app/base/components/SpaceSelect";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import { spaceActions } from "@/app/store/space";
@@ -41,10 +41,8 @@ const vlanSchema = Yup.object()
   })
   .defined();
 
-const AddVlan = ({
-  activeForm,
-  setActiveForm,
-}: FormActionProps): React.ReactElement => {
+const AddVlan = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const isSaving = useSelector(vlanSelectors.saving);
   const isSaved = useSelector(vlanSelectors.saved);
@@ -68,9 +66,7 @@ const AddVlan = ({
         fabric: "",
         space: "",
       }}
-      onCancel={() => {
-        setActiveForm(null);
-      }}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Add VLAN",
         category: "Subnets form actions",
@@ -87,12 +83,10 @@ const AddVlan = ({
           })
         );
       }}
-      onSuccess={() => {
-        setActiveForm(null);
-      }}
+      onSuccess={closeSidePanel}
       saved={isSaved}
       saving={isSaving}
-      submitLabel={`Add ${activeForm}`}
+      submitLabel="Save"
       validationSchema={vlanSchema}
     >
       <Row>
