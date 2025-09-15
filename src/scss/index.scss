@@ -298,7 +298,7 @@
 @import "@/app/subnets/views/SubnetDetails/StaticRoutes";
 @import "@/app/subnets/views/SubnetDetails/SubnetActionForms/components/EditBootArchitectures/BootArchitecturesTable";
 @import "@/app/subnets/views/SubnetDetails/SubnetUsedIPs";
-@import "@/app/subnets/views/SubnetsList";
+@import "@/app/subnets/views/Subnets/views/SubnetsList";
 @import "@/app/subnets/views/VLANDetails/VLANSubnets";
 @include BootArchitecturesTable;
 @include FabricVLANsTable;

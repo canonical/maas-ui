@@ -67,7 +67,9 @@ const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(() => import("@/app/subnets/views/FabricDetails"));
 const SpaceDetails = lazy(() => import("@/app/subnets/views/SpaceDetails"));
 const SubnetDetails = lazy(() => import("@/app/subnets/views/SubnetDetails"));
-const SubnetsList = lazy(() => import("@/app/subnets/views/SubnetsList"));
+const SubnetsList = lazy(
+  () => import("@/app/subnets/views/Subnets/views/SubnetsList")
+);
 const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
 const Tags = lazy(() => import("@/app/tags/views/Tags"));
 const ZonesList = lazy(() => import("@/app/zones/views"));

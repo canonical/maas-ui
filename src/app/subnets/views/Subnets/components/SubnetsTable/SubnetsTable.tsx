@@ -5,7 +5,7 @@ import { useSubnetsTable, useSubnetsTableSearch } from "./hooks";
 import useSubnetsTableColumns from "./useSubnetsTableColumns/useSubnetsTableColumns";
 
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import type { SubnetGroupByProps } from "@/app/subnets/views/SubnetsList/SubnetsTable/types";
+import type { SubnetGroupByProps } from "@/app/subnets/views/Subnets/components/SubnetsTable/types";
 
 const SubnetsTable = ({
   groupBy,

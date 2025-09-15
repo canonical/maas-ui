@@ -1,14 +1,18 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
-import SubnetsTable from "./SubnetsTable";
-import type { GroupByKey } from "./SubnetsTable/types";
+import SubnetsTable from "../../components/SubnetsTable";
 
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useQuery } from "@/app/base/hooks/urls";
-import { SubnetsUrlParams } from "@/app/subnets/constants";
-import SubnetsListHeader from "@/app/subnets/views/SubnetsList/SubnetsListHeader/SubnetsListHeader";
+import SubnetsListHeader from "@/app/subnets/views/Subnets/components/SubnetsListHeader/SubnetsListHeader";
+import type { GroupByKey } from "@/app/subnets/views/Subnets/components/SubnetsTable/types";
+
+export const SubnetsUrlParams = {
+  By: "by",
+  Q: "q",
+};
 
 const SubnetsList = (): ReactElement => {
   useWindowTitle("Subnets");

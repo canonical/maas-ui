@@ -8,15 +8,24 @@ import { useNavigate } from "react-router";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SyncNavigateFunction } from "@/app/base/types";
-import {
-  subnetGroupingOptions,
-  SubnetsUrlParams,
-} from "@/app/subnets/constants";
 import AddFabric from "@/app/subnets/views/FormActions/components/AddFabric";
 import AddSpace from "@/app/subnets/views/FormActions/components/AddSpace";
 import AddSubnet from "@/app/subnets/views/FormActions/components/AddSubnet";
 import AddVlan from "@/app/subnets/views/FormActions/components/AddVlan";
-import type { GroupByKey } from "@/app/subnets/views/SubnetsList/SubnetsTable/types";
+import { SubnetsColumns } from "@/app/subnets/views/Subnets/components/SubnetsTable/constants";
+import type { GroupByKey } from "@/app/subnets/views/Subnets/components/SubnetsTable/types";
+import { SubnetsUrlParams } from "@/app/subnets/views/Subnets/views/SubnetsList/SubnetsList";
+
+const subnetGroupingOptions = [
+  {
+    label: "Group by fabric",
+    value: SubnetsColumns.FABRIC,
+  },
+  {
+    label: "Group by space",
+    value: SubnetsColumns.SPACE,
+  },
+];
 
 type SubnetsListHeaderProps = {
   searchText: string;
