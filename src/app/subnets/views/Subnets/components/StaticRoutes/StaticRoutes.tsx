@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import {
   SubnetActionTypes,
   SubnetDetailsSidePanelViews,
-} from "../../views/SubnetDetails/constants";
+} from "../../views/constants";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import TitledSection from "@/app/base/components/TitledSection";

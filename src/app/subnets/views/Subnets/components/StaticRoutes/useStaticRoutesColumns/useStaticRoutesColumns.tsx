@@ -9,7 +9,7 @@ import type { StaticRoute } from "@/app/store/staticroute/types";
 import {
   SubnetActionTypes,
   SubnetDetailsSidePanelViews,
-} from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
+} from "@/app/subnets/views/Subnets/views/constants";
 
 export type StaticRouteColumnDef = ColumnDef<StaticRoute, Partial<StaticRoute>>;
 

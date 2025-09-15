@@ -7,7 +7,7 @@ import { isIP, isIPv4 } from "is-ip";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import type { SubnetActionProps } from "../../../views/SubnetDetails/types";
+import type { SubnetActionProps } from "../../../views/types";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";

@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import {
   SubnetActionTypes,
   SubnetDetailsSidePanelViews,
-} from "../../views/SubnetDetails/constants";
+} from "../../views/constants";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";

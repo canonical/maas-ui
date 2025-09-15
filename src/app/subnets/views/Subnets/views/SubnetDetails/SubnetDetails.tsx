@@ -3,13 +3,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router";
 
-import StaticDHCPLease from "../../components/StaticDHCPLease";
-import StaticRoutes from "../../components/StaticRoutes";
-import SubnetDetailsHeader from "../../components/SubnetDetailsHeader";
-import SubnetSummary from "../../components/SubnetSummary";
-import SubnetUsedIPs from "../../components/SubnetUsedIPs";
-import Utilisation from "../../components/Utilisation";
-
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
@@ -24,12 +17,20 @@ import { SubnetMeta } from "@/app/store/subnet/types";
 import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";
 import ReservedRanges from "@/app/subnets/components/ReservedRanges";
 import subnetURLs from "@/app/subnets/urls";
-import SubnetActionForms from "@/app/subnets/views/Subnets/components/SubnetActionForms/SubnetActionForms";
-import type { SubnetActionType } from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
+import {
+  StaticDHCPLease,
+  StaticRoutes,
+  SubnetActionForms,
+  SubnetDetailsHeader,
+  SubnetSummary,
+  SubnetUsedIPs,
+  SubnetUtilisation,
+} from "@/app/subnets/views/Subnets/components";
+import type { SubnetActionType } from "@/app/subnets/views/Subnets/views/constants";
 import {
   subnetActionLabels,
   SubnetActionTypes,
-} from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
+} from "@/app/subnets/views/Subnets/views/constants";
 import { getRelativeRoute, isId } from "@/app/utils";
 
 const SubnetDetails = (): React.ReactElement => {
@@ -110,7 +111,7 @@ const SubnetDetails = (): React.ReactElement => {
           element={
             <>
               <SubnetSummary id={id} />
-              <Utilisation statistics={subnet.statistics} />
+              <SubnetUtilisation statistics={subnet.statistics} />
             </>
           }
           path={getRelativeRoute(urls.subnets.subnet.summary(null), base)}

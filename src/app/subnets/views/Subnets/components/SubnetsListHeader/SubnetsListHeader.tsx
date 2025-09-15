@@ -8,10 +8,12 @@ import { useNavigate } from "react-router";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SyncNavigateFunction } from "@/app/base/types";
-import AddFabric from "@/app/subnets/views/FormActions/components/AddFabric";
-import AddSpace from "@/app/subnets/views/FormActions/components/AddSpace";
-import AddSubnet from "@/app/subnets/views/FormActions/components/AddSubnet";
-import AddVlan from "@/app/subnets/views/FormActions/components/AddVlan";
+import {
+  AddFabric,
+  AddSpace,
+  AddSubnet,
+  AddVlan,
+} from "@/app/subnets/views/Subnets/components";
 import { SubnetsColumns } from "@/app/subnets/views/Subnets/components/SubnetsTable/constants";
 import type { GroupByKey } from "@/app/subnets/views/Subnets/components/SubnetsTable/types";
 import { SubnetsUrlParams } from "@/app/subnets/views/Subnets/views/SubnetsList";

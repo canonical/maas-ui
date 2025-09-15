@@ -11,7 +11,7 @@ import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
-import type { SubnetActionProps } from "@/app/subnets/views/Subnets/views/SubnetDetails/types";
+import type { SubnetActionProps } from "@/app/subnets/views/Subnets/views/types";
 
 export const MapSubnet = ({
   subnetId,

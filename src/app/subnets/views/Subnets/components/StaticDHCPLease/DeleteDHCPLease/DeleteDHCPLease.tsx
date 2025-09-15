@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import type { SubnetActionProps } from "../../../views/SubnetDetails/types";
+import type { SubnetActionProps } from "../../../views/types";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { reservedIpActions } from "@/app/store/reservedip";

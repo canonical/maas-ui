@@ -32,7 +32,7 @@ import {
 import {
   SubnetDetailsSidePanelViews,
   type SubnetDetailsSidePanelContent,
-} from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
+} from "@/app/subnets/views/Subnets/views/constants";
 import {
   VLANDetailsSidePanelViews,
   type VLANDetailsSidePanelContent,

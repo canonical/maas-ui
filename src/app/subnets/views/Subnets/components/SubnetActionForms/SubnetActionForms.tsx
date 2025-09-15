@@ -9,11 +9,11 @@ import ReserveDHCPLease from "@/app/subnets/views/Subnets/components/StaticDHCPL
 import AddStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/AddStaticRouteForm";
 import DeleteStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/DeleteStaticRouteform";
 import EditStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/EditStaticRouteForm";
-import { SubnetActionTypes } from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
+import { SubnetActionTypes } from "@/app/subnets/views/Subnets/views/constants";
 import type {
   SubnetAction,
   SubnetActionProps,
-} from "@/app/subnets/views/Subnets/views/SubnetDetails/types";
+} from "@/app/subnets/views/Subnets/views/types";
 
 const FormComponents: Record<
   SubnetAction,

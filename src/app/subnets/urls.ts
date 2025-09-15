@@ -2,14 +2,13 @@ import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
 import type { Space, SpaceMeta } from "@/app/store/space/types";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
-import type { SubnetsUrlParams } from "@/app/subnets/views/Subnets/views/SubnetsList";
 import { argPath, isId } from "@/app/utils";
 
 const withSubnetId = argPath<{ id: Subnet[SubnetMeta.PK] }>;
 
 const urls = {
   index: "/networks",
-  indexWithParams: (options: typeof SubnetsUrlParams): string => {
+  indexWithParams: (options: { by?: string; q?: string }): string => {
     const defaults = { by: "fabric", q: "" };
     const { by, q } = { ...defaults, ...options };
     return `/networks?by=${by}&q=${q}`;

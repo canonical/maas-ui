@@ -33,7 +33,7 @@ import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import {
   SubnetActionTypes,
   SubnetDetailsSidePanelViews,
-} from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
+} from "@/app/subnets/views/Subnets/views/constants";
 import { generateEmptyStateMsg, getTableStatus, isId } from "@/app/utils";
 
 export type SubnetProps = {
