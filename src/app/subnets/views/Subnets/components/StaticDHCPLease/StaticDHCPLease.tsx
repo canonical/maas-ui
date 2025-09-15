@@ -4,7 +4,10 @@ import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
+import {
+  SubnetActionTypes,
+  SubnetDetailsSidePanelViews,
+} from "../../views/SubnetDetails/constants";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
@@ -12,7 +15,7 @@ import type { RootState } from "@/app/store/root/types";
 import { useReservedIps } from "@/app/store/subnet/hooks";
 import type { SubnetMeta } from "@/app/store/subnet/types";
 import type { Subnet } from "@/app/store/subnet/types/base";
-import StaticDHCPTable from "@/app/subnets/views/SubnetDetails/StaticDHCPLease/StaticDHCPTable";
+import StaticDHCPTable from "@/app/subnets/views/Subnets/components/StaticDHCPLease/StaticDHCPTable";
 
 type StaticDHCPLeaseProps = {
   subnetId: Subnet[SubnetMeta.PK];

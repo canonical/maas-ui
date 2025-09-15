@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import NodeLink from "@/app/base/components/node/NodeLink";
-import type { SubnetUsedIP } from "@/app/subnets/views/SubnetDetails/SubnetUsedIPs/SubnetUsedIPs";
+import type { SubnetUsedIP } from "@/app/subnets/views/Subnets/components/SubnetUsedIPs/SubnetUsedIPs";
 
 export type SubnetUsedIPColumnDef = ColumnDef<
   SubnetUsedIP,

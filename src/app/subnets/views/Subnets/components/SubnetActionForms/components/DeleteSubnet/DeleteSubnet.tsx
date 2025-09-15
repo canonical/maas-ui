@@ -9,7 +9,7 @@ import { subnetActions } from "@/app/store/subnet";
 import { useCanBeDeleted, useIsDHCPEnabled } from "@/app/store/subnet/hooks";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import subnetURLs from "@/app/subnets/urls";
-import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types";
+import type { SubnetActionProps } from "@/app/subnets/views/Subnets/views/SubnetDetails/types";
 
 export const DeleteSubnet = ({
   subnetId,

@@ -9,7 +9,7 @@ import {
   subnetActionLabels,
   SubnetActionTypes,
   SubnetDetailsSidePanelViews,
-} from "@/app/subnets/views/SubnetDetails/constants";
+} from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
 
 type Props = {
   subnet: Subnet;

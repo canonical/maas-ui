@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
-import { SubnetDetailsSidePanelViews } from "../../../constants";
+import { SubnetDetailsSidePanelViews } from "../../../../views/SubnetDetails/constants";
 
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";

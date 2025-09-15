@@ -1,7 +1,7 @@
 import StaticDHCPTable from "./StaticDHCPTable";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
-import { SubnetActionTypes } from "@/app/subnets/views/SubnetDetails/constants";
+import { SubnetActionTypes } from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
 import { reservedIp } from "@/testing/factories/reservedip";
 import {
   renderWithProviders,

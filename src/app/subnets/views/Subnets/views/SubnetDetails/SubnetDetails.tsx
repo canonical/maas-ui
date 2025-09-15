@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router";
 
-import StaticDHCPLease from "./StaticDHCPLease";
-import StaticRoutes from "./StaticRoutes";
-import SubnetDetailsHeader from "./SubnetDetailsHeader";
-import SubnetSummary from "./SubnetSummary";
-import SubnetUsedIPs from "./SubnetUsedIPs";
-import Utilisation from "./Utilisation";
+import StaticDHCPLease from "../../components/StaticDHCPLease";
+import StaticRoutes from "../../components/StaticRoutes";
+import SubnetDetailsHeader from "../../components/SubnetDetailsHeader";
+import SubnetSummary from "../../components/SubnetSummary";
+import SubnetUsedIPs from "../../components/SubnetUsedIPs";
+import Utilisation from "../../components/Utilisation";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
@@ -24,12 +24,12 @@ import { SubnetMeta } from "@/app/store/subnet/types";
 import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";
 import ReservedRanges from "@/app/subnets/components/ReservedRanges";
 import subnetURLs from "@/app/subnets/urls";
-import SubnetActionForms from "@/app/subnets/views/SubnetDetails/SubnetActionForms/SubnetActionForms";
-import type { SubnetActionType } from "@/app/subnets/views/SubnetDetails/constants";
+import SubnetActionForms from "@/app/subnets/views/Subnets/components/SubnetActionForms/SubnetActionForms";
+import type { SubnetActionType } from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
 import {
   subnetActionLabels,
   SubnetActionTypes,
-} from "@/app/subnets/views/SubnetDetails/constants";
+} from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
 import { getRelativeRoute, isId } from "@/app/utils";
 
 const SubnetDetails = (): React.ReactElement => {

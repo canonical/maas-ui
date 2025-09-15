@@ -14,7 +14,7 @@ import AddSubnet from "@/app/subnets/views/FormActions/components/AddSubnet";
 import AddVlan from "@/app/subnets/views/FormActions/components/AddVlan";
 import { SubnetsColumns } from "@/app/subnets/views/Subnets/components/SubnetsTable/constants";
 import type { GroupByKey } from "@/app/subnets/views/Subnets/components/SubnetsTable/types";
-import { SubnetsUrlParams } from "@/app/subnets/views/Subnets/views/SubnetsList/SubnetsList";
+import { SubnetsUrlParams } from "@/app/subnets/views/Subnets/views/SubnetsList";
 
 const subnetGroupingOptions = [
   {

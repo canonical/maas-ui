@@ -22,10 +22,6 @@ import type { MachineSidePanelContent } from "@/app/machines/types";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import {
-  SubnetSidePanelViews,
-  type SubnetSidePanelContent,
-} from "@/app/subnets/types";
-import {
   FabricDetailsSidePanelViews,
   type FabricDetailsSidePanelContent,
 } from "@/app/subnets/views/FabricDetails/FabricDetailsHeader/constants";
@@ -36,7 +32,7 @@ import {
 import {
   SubnetDetailsSidePanelViews,
   type SubnetDetailsSidePanelContent,
-} from "@/app/subnets/views/SubnetDetails/constants";
+} from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
 import {
   VLANDetailsSidePanelViews,
   type VLANDetailsSidePanelContent,
@@ -55,7 +51,6 @@ export type SidePanelContent =
   | MachineSidePanelContent
   | SpaceDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
-  | SubnetSidePanelContent
   | TagSidePanelContent
   | VLANDetailsSidePanelContent
   | null;
@@ -77,7 +72,6 @@ export const SidePanelViews = {
   ...DeviceSidePanelViews,
   ...KVMSidePanelViews,
   ...TagSidePanelViews,
-  ...SubnetSidePanelViews,
   ...DomainDetailsSidePanelViews,
   ...DomainListSidePanelViews,
   ...VLANDetailsSidePanelViews,

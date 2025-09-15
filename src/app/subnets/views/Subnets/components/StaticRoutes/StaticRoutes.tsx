@@ -2,7 +2,10 @@ import { GenericTable } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
+import {
+  SubnetActionTypes,
+  SubnetDetailsSidePanelViews,
+} from "../../views/SubnetDetails/constants";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import TitledSection from "@/app/base/components/TitledSection";
@@ -13,7 +16,7 @@ import staticRouteSelectors from "@/app/store/staticroute/selectors";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import useStaticRoutesColumns from "@/app/subnets/views/SubnetDetails/StaticRoutes/useStaticRoutesColumns/useStaticRoutesColumns";
+import useStaticRoutesColumns from "@/app/subnets/views/Subnets/components/StaticRoutes/useStaticRoutesColumns/useStaticRoutesColumns";
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK];

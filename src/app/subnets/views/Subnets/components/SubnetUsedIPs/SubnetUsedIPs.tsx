@@ -15,7 +15,7 @@ import {
 } from "@/app/store/subnet/utils";
 import type { UtcDatetime } from "@/app/store/types/model";
 import type { NodeType } from "@/app/store/types/node";
-import useSubnetUsedIPsColumns from "@/app/subnets/views/SubnetDetails/SubnetUsedIPs/useSubnetUsedIPsColumns/useSubnetUsedIPsColumns";
+import useSubnetUsedIPsColumns from "@/app/subnets/views/Subnets/components/SubnetUsedIPs/useSubnetUsedIPsColumns/useSubnetUsedIPsColumns";
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK] | null;

@@ -4,16 +4,16 @@ import MapSubnet from "./components/MapSubnet";
 
 import ReservedRangeDeleteForm from "@/app/subnets/components/ReservedRangeDeleteForm";
 import ReservedRangeForm from "@/app/subnets/components/ReservedRangeForm";
-import DeleteDHCPLease from "@/app/subnets/views/SubnetDetails/StaticDHCPLease/DeleteDHCPLease";
-import ReserveDHCPLease from "@/app/subnets/views/SubnetDetails/StaticDHCPLease/ReserveDHCPLease";
-import AddStaticRouteForm from "@/app/subnets/views/SubnetDetails/StaticRoutes/AddStaticRouteForm";
-import DeleteStaticRouteForm from "@/app/subnets/views/SubnetDetails/StaticRoutes/DeleteStaticRouteform";
-import EditStaticRouteForm from "@/app/subnets/views/SubnetDetails/StaticRoutes/EditStaticRouteForm";
-import { SubnetActionTypes } from "@/app/subnets/views/SubnetDetails/constants";
+import DeleteDHCPLease from "@/app/subnets/views/Subnets/components/StaticDHCPLease/DeleteDHCPLease";
+import ReserveDHCPLease from "@/app/subnets/views/Subnets/components/StaticDHCPLease/ReserveDHCPLease";
+import AddStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/AddStaticRouteForm";
+import DeleteStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/DeleteStaticRouteform";
+import EditStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/EditStaticRouteForm";
+import { SubnetActionTypes } from "@/app/subnets/views/Subnets/views/SubnetDetails/constants";
 import type {
   SubnetAction,
   SubnetActionProps,
-} from "@/app/subnets/views/SubnetDetails/types";
+} from "@/app/subnets/views/Subnets/views/SubnetDetails/types";
 
 const FormComponents: Record<
   SubnetAction,

@@ -66,7 +66,9 @@ const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(() => import("@/app/subnets/views/FabricDetails"));
 const SpaceDetails = lazy(() => import("@/app/subnets/views/SpaceDetails"));
-const SubnetDetails = lazy(() => import("@/app/subnets/views/SubnetDetails"));
+const SubnetDetails = lazy(
+  () => import("@/app/subnets/views/Subnets/views/SubnetDetails")
+);
 const SubnetsList = lazy(
   () => import("@/app/subnets/views/Subnets/views/SubnetsList")
 );

@@ -14,7 +14,7 @@ import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
-import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types";
+import type { SubnetActionProps } from "@/app/subnets/views/Subnets/views/SubnetDetails/types";
 
 export type FormValues = {
   disabled_boot_architectures: Subnet["disabled_boot_architectures"];
