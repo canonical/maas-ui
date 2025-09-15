@@ -7,9 +7,15 @@ import * as baseHooks from "@/app/base/hooks/base";
 import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  mockSidePanel,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const { mockClose } = await mockSidePanel();
 
 describe("RemoveInterface", () => {
   let state: RootState;
@@ -30,17 +36,15 @@ describe("RemoveInterface", () => {
   });
 
   it("sends an analytics event and closes the form when saved", () => {
-    const closeForm = vi.fn();
     const useSendMock = vi.spyOn(analyticsHooks, "useSendAnalyticsWhen");
     // Mock interface successfully being deleted.
     vi.spyOn(baseHooks, "useCycled").mockReturnValue([true, () => null]);
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <RemoveInterface closeForm={closeForm} nicId={1} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<RemoveInterface nicId={1} systemId="abc123" />, {
+      store,
+    });
 
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
     expect(useSendMock.mock.calls[0]).toEqual([
       true,
       "Device network",
@@ -73,10 +77,9 @@ describe("RemoveInterface", () => {
       }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <RemoveInterface closeForm={vi.fn()} nicId={1} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<RemoveInterface nicId={1} systemId="abc123" />, {
+      store,
+    });
 
     expect(
       screen.getByText("Delete interface error for this device")
@@ -85,10 +88,9 @@ describe("RemoveInterface", () => {
 
   it("correctly dispatches an action to delete an interface", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <RemoveInterface closeForm={vi.fn()} nicId={1} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<RemoveInterface nicId={1} systemId="abc123" />, {
+      store,
+    });
 
     await userEvent.click(screen.getByRole("button", { name: /remove/i }));
 

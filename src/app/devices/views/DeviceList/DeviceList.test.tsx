@@ -3,12 +3,15 @@ import DeviceList from "./DeviceList";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
+  mockSidePanel,
   renderWithBrowserRouter,
   renderWithProviders,
   screen,
   userEvent,
   waitFor,
 } from "@/testing/utils";
+
+await mockSidePanel();
 
 describe("DeviceList", () => {
   let state: RootState;

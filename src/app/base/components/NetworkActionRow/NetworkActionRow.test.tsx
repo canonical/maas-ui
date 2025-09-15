@@ -8,8 +8,8 @@ import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   screen,
-  renderWithBrowserRouter,
   expectTooltipOnHover,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -30,7 +30,7 @@ describe("NetworkActionRow", () => {
 
   it("can include extra actions", () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NetworkActionRow
         extraActions={[
           {
@@ -41,7 +41,7 @@ describe("NetworkActionRow", () => {
         ]}
         node={state.machine.items[0]}
       />,
-      { route: "/machine/abc123", store }
+      { store }
     );
     expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
   });
@@ -50,10 +50,9 @@ describe("NetworkActionRow", () => {
     it("disables the button when networking is disabled", async () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
       const store = mockStore(state);
-      renderWithBrowserRouter(
-        <NetworkActionRow node={state.machine.items[0]} />,
-        { route: "/machine/abc123", store }
-      );
+      renderWithProviders(<NetworkActionRow node={state.machine.items[0]} />, {
+        store,
+      });
       const addInterfaceButton = screen.getByRole("button", {
         name: "Add interface",
       });

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DeleteForm from "@/app/base/components/node/DeleteForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
 import SetZoneForm from "@/app/base/components/node/SetZoneForm";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
@@ -14,17 +14,16 @@ import { kebabToCamelCase } from "@/app/utils";
 
 type Props = {
   action: DeviceActions;
-  clearSidePanelContent: ClearSidePanelContent;
   devices: Device[];
   viewingDetails: boolean;
 };
 
 export const ActionFormWrapper = ({
   action,
-  clearSidePanelContent,
   devices,
   viewingDetails,
 }: Props): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const deleting = useSelector(deviceSelectors.deleting);
   const settingZone = useSelector(deviceSelectors.settingZone);
@@ -41,7 +40,7 @@ export const ActionFormWrapper = ({
     action === NodeActions.DELETE ? deleting.length : settingZone.length;
   const commonNodeFormProps = {
     cleanup: deviceActions.cleanup,
-    clearSidePanelContent,
+    clearSidePanelContent: closeSidePanel,
     errors,
     modelName: "device",
     nodes: devices,
@@ -52,7 +51,7 @@ export const ActionFormWrapper = ({
   return (
     <NodeActionFormWrapper
       action={action}
-      clearSidePanelContent={clearSidePanelContent}
+      clearSidePanelContent={closeSidePanel}
       nodeType="device"
       nodes={devices}
       onUpdateSelected={(deviceIDs) =>

@@ -7,7 +7,13 @@ import urls from "@/app/base/urls";
 import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  mockSidePanel,
+} from "@/testing/utils";
+
+await mockSidePanel();
 
 describe("DeviceDetails", () => {
   const device = factory.deviceDetails({ system_id: "abc123" });

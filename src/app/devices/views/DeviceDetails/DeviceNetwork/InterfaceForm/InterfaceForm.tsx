@@ -9,6 +9,7 @@ import type { FormikFormProps } from "@/app/base/components/FormikForm";
 import FormikForm from "@/app/base/components/FormikForm";
 import { TAG_SELECTOR_INPUT_NAME } from "@/app/base/components/TagSelector/TagSelector";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
@@ -37,7 +38,6 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = PropsWithSpread<
   {
-    closeForm: () => void;
     linkId?: NetworkLink["id"] | null;
     nicId?: DeviceNetworkInterface["id"] | null;
     onSubmit: FormikFormProps<InterfaceFormValues>["onSubmit"];
@@ -77,7 +77,6 @@ const InterfaceFormSchema = Yup.object().shape({
 });
 
 const InterfaceForm = ({
-  closeForm,
   linkId,
   showTitles,
   nicId,
@@ -85,6 +84,7 @@ const InterfaceForm = ({
   systemId,
   ...props
 }: Props): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
@@ -130,9 +130,9 @@ const InterfaceForm = ({
         tags: nic?.tags || [],
         [TAG_SELECTOR_INPUT_NAME]: "",
       }}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={onSubmit}
-      onSuccess={closeForm}
+      onSuccess={closeSidePanel}
       submitLabel="Save interface"
       validationSchema={InterfaceFormSchema}
       {...props}

@@ -7,23 +7,21 @@ import DeviceName from "./DeviceName";
 
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import SectionHeader from "@/app/base/components/SectionHeader";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import { DeviceSidePanelViews } from "@/app/devices/constants";
-import type { DeviceSetSidePanelContent } from "@/app/devices/types";
+import DeviceActionFormWrapper from "@/app/devices/components/DeviceActionFormWrapper";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device } from "@/app/store/device/types";
 import { isDeviceDetails } from "@/app/store/device/utils";
 import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 
 type Props = {
-  setSidePanelContent: DeviceSetSidePanelContent;
   systemId: Device["system_id"];
 };
 
-const DeviceDetailsHeader = ({
-  setSidePanelContent,
-  systemId,
-}: Props): React.ReactElement => {
+const DeviceDetailsHeader = ({ systemId }: Props): React.ReactElement => {
+  const { openSidePanel } = useSidePanel();
   const [editingName, setEditingName] = useState(false);
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
@@ -43,12 +41,16 @@ const DeviceDetailsHeader = ({
           nodeDisplay="device"
           nodes={[device]}
           onActionClick={(action) => {
-            const view = Object.values(DeviceSidePanelViews).find(
-              ([, actionName]) => actionName === action
-            );
-            if (view) {
-              setSidePanelContent({ view });
-            }
+            openSidePanel({
+              component: DeviceActionFormWrapper,
+              title: action === NodeActions.DELETE ? "Delete" : "Set zone",
+              props: {
+                action:
+                  action === NodeActions.DELETE ? action : NodeActions.SET_ZONE,
+                devices: [device],
+                viewingDetails: false,
+              },
+            });
           }}
         />,
       ]}

@@ -8,9 +8,7 @@ import DeviceListTable from "./DeviceListTable";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import type { SyncNavigateFunction } from "@/app/base/types";
-import DeviceHeaderForms from "@/app/devices/components/DeviceHeaderForms";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import { FilterDevices } from "@/app/store/device/utils";
@@ -22,7 +20,6 @@ const DeviceList = (): React.ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const currentFilters = FilterDevices.queryStringToFilters(location.search);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const [searchFilter, setFilter] = useState(
     // Initialise the filter state from the URL.
     FilterDevices.filtersToString(currentFilters)
@@ -33,7 +30,7 @@ const DeviceList = (): React.ReactElement => {
   );
   const devicesLoading = useSelector(deviceSelectors.loading);
   useWindowTitle("Devices");
-  const selectedDevices = useSelector(deviceSelectors.selected);
+  // const selectedDevices = useSelector(deviceSelectors.selected);
 
   useFetchActions([deviceActions.fetch, tagActions.fetch]);
 
@@ -53,19 +50,11 @@ const DeviceList = (): React.ReactElement => {
         <DeviceListHeader
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
-          setSidePanelContent={setSidePanelContent}
         />
       }
-      sidePanelContent={
-        sidePanelContent && (
-          <DeviceHeaderForms
-            devices={selectedDevices}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        )
-      }
-      sidePanelTitle={getSidePanelTitle("Devices", sidePanelContent)}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       <DeviceListTable
         devices={filteredDevices}

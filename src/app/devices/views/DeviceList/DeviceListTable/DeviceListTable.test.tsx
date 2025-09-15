@@ -5,7 +5,7 @@ import type { Device } from "@/app/store/device/types";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("DeviceListTable", () => {
   let device: Device;
@@ -31,7 +31,7 @@ describe("DeviceListTable", () => {
 
   it("links to a device's details page", () => {
     device.system_id = "def456";
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeviceListTable
         devices={[device]}
         onSelectedChange={vi.fn()}
@@ -49,7 +49,7 @@ describe("DeviceListTable", () => {
   it("can show when a device has more than one mac address", () => {
     device.primary_mac = "11:11:11:11:11:11";
     device.extra_macs = ["22:22:22:22:22:22", "33:33:33:33:33:33"];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeviceListTable
         devices={[device]}
         onSelectedChange={vi.fn()}
@@ -65,7 +65,7 @@ describe("DeviceListTable", () => {
 
   it("links to a device's zone's details page", () => {
     device.zone = { id: 101, name: "danger" };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeviceListTable
         devices={[device]}
         onSelectedChange={vi.fn()}
@@ -90,7 +90,7 @@ describe("DeviceListTable", () => {
         factory.device({ fqdn: "c", system_id: "c" }),
         factory.device({ fqdn: "a", system_id: "a" }),
       ];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <DeviceListTable
           devices={devices}
           onSelectedChange={vi.fn()}
@@ -128,7 +128,7 @@ describe("DeviceListTable", () => {
           system_id: "c",
         }),
       ];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <DeviceListTable
           devices={devices}
           onSelectedChange={vi.fn()}
@@ -160,7 +160,7 @@ describe("DeviceListTable", () => {
         factory.device({ system_id: "a", zone: { id: 2, name: "danger" } }),
         factory.device({ system_id: "b", zone: { id: 3, name: "forbidden" } }),
       ];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <DeviceListTable
           devices={devices}
           onSelectedChange={vi.fn()}
@@ -190,7 +190,7 @@ describe("DeviceListTable", () => {
         factory.device({ owner: "admin", system_id: "a" }),
         factory.device({ owner: "bob", system_id: "b" }),
       ];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <DeviceListTable
           devices={devices}
           onSelectedChange={vi.fn()}
@@ -219,7 +219,7 @@ describe("DeviceListTable", () => {
     it("handles selecting a single device", async () => {
       const devices = [factory.device({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <DeviceListTable
           devices={devices}
           onSelectedChange={onSelectedChange}
@@ -236,7 +236,7 @@ describe("DeviceListTable", () => {
     it("handles unselecting a single device", async () => {
       const devices = [factory.device({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <DeviceListTable
           devices={devices}
           onSelectedChange={onSelectedChange}
@@ -256,7 +256,7 @@ describe("DeviceListTable", () => {
         factory.device({ system_id: "def456" }),
       ];
       const onSelectedChange = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <DeviceListTable
           devices={devices}
           onSelectedChange={onSelectedChange}
@@ -276,7 +276,7 @@ describe("DeviceListTable", () => {
         factory.device({ system_id: "def456" }),
       ];
       const onSelectedChange = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <DeviceListTable
           devices={devices}
           onSelectedChange={onSelectedChange}
@@ -293,7 +293,7 @@ describe("DeviceListTable", () => {
 
   it("displays a message when empty", () => {
     const onSelectedChange = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeviceListTable
         devices={[]}
         onSelectedChange={onSelectedChange}

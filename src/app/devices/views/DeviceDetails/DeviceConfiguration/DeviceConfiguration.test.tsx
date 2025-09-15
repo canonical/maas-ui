@@ -12,7 +12,6 @@ import {
   userEvent,
   screen,
   waitFor,
-  renderWithBrowserRouter,
   setupMockServer,
   renderWithProviders,
 } from "@/testing/utils";
@@ -83,7 +82,7 @@ describe("DeviceConfiguration", () => {
   });
 
   it("correctly dispatches an action to update a device", async () => {
-    const { store } = renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <DeviceConfiguration systemId="abc123" />,
       {
         state,
@@ -121,7 +120,7 @@ describe("DeviceConfiguration", () => {
       description: "it's a device",
       tags: [1, 2],
       system_id: "abc123",
-      zone: { name: "1" },
+      zone: { name: "zone-1" },
     });
     const actualActions = store.getActions();
     await waitFor(() => {

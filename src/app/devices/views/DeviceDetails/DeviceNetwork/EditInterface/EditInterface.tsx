@@ -20,14 +20,12 @@ import type {
 import { preparePayload } from "@/app/utils";
 
 type Props = {
-  closeForm: () => void;
   linkId?: NetworkLink["id"] | null;
   nicId?: DeviceNetworkInterface["id"] | null;
   systemId: Device[DeviceMeta.PK];
 };
 
 const EditInterface = ({
-  closeForm,
   nicId,
   linkId,
   systemId,
@@ -54,7 +52,6 @@ const EditInterface = ({
   }
   return (
     <InterfaceForm
-      closeForm={closeForm}
       linkId={linkId}
       nicId={nicId}
       onSaveAnalytics={{

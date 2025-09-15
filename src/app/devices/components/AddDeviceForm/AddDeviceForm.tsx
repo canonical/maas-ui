@@ -16,7 +16,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { formatIpAddress } from "@/app/base/components/PrefixedIpInput";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 import { useFetchActions } from "@/app/base/hooks";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
@@ -26,10 +26,6 @@ import domainSelectors from "@/app/store/domain/selectors";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { isIpInSubnet } from "@/app/utils/subnetIpRange";
-
-type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-};
 
 const AddDeviceInterfaceSchema = Yup.object().shape({
   mac: Yup.string()
@@ -119,9 +115,8 @@ const AddDeviceSchema = Yup.object().shape({
   zone: Yup.string().required("Zone required"),
 });
 
-export const AddDeviceForm = ({
-  clearSidePanelContent,
-}: Props): React.ReactElement => {
+export const AddDeviceForm = (): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const devicesSaved = useSelector(deviceSelectors.saved);
   const devicesSaving = useSelector(deviceSelectors.saving);
@@ -168,7 +163,7 @@ export const AddDeviceForm = ({
         ],
         zone: zones.data?.items.length ? zones.data.items[0].name : "",
       }}
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Add device",
         category: "Device list",
@@ -222,7 +217,7 @@ export const AddDeviceForm = ({
       }}
       onSuccess={() => {
         if (!secondarySubmit) {
-          clearSidePanelContent();
+          closeSidePanel();
         }
         setSecondarySubmit(false);
       }}

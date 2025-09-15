@@ -11,7 +11,8 @@ import type {
 } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { DeviceSidePanelViews } from "@/app/devices/constants";
+import { useSidePanel as useNewSidePanel } from "@/app/base/side-panel-context-new";
+import AddInterface from "@/app/devices/views/DeviceDetails/DeviceNetwork/AddInterface";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { Node } from "@/app/store/types/node";
 
@@ -40,6 +41,8 @@ const NetworkActionRow = ({
   setSelected,
 }: Props): React.ReactElement | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
+  const { openSidePanel } = useNewSidePanel();
+  // TODO: Remove old side panel later for other components
   const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const { pathname } = useLocation();
   const isMachinesPage = pathname.startsWith("/machine");
@@ -63,7 +66,13 @@ const NetworkActionRow = ({
             });
           }
         : () => {
-            setSidePanelContent({ view: DeviceSidePanelViews.ADD_INTERFACE });
+            openSidePanel({
+              component: AddInterface,
+              title: "Add interface",
+              props: {
+                systemId: node.system_id,
+              },
+            });
           },
       [ExpandedState.ADD_BOND]: () => {
         setSidePanelContent({

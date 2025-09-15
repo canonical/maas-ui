@@ -156,7 +156,7 @@
 @include ControllerSummary;
 
 // devices
-@import "@/app/devices/components/DeviceHeaderForms/AddDeviceForm/AddDeviceInterfaces";
+@import "@/app/devices/components/AddDeviceForm/AddDeviceInterfaces";
 @import "@/app/devices/views/DeviceDetails/DeviceNetwork/DeviceNetworkTable";
 @import "@/app/devices/views/DeviceDetails/DeviceSummary";
 @import "@/app/devices/views/DeviceList/DeviceListTable";

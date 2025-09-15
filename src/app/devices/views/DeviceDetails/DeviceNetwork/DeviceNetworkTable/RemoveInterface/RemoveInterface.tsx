@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useCycled, useSendAnalyticsWhen } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type {
@@ -16,16 +17,12 @@ import type { RootState } from "@/app/store/root/types";
 import { formatErrors } from "@/app/utils";
 
 type Props = {
-  closeForm: () => void;
   nicId: DeviceNetworkInterface["id"];
   systemId: Device[DeviceMeta.PK];
 };
 
-const RemoveInterface = ({
-  closeForm,
-  nicId,
-  systemId,
-}: Props): React.ReactElement => {
+const RemoveInterface = ({ nicId, systemId }: Props): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const deletingInterface = useSelector((state: RootState) =>
     deviceSelectors.getStatusForDevice(state, systemId, "deletingInterface")
@@ -44,9 +41,9 @@ const RemoveInterface = ({
   );
   useEffect(() => {
     if (deletedInterface) {
-      closeForm();
+      closeSidePanel();
     }
-  }, [closeForm, deletedInterface]);
+  }, [closeSidePanel, deletedInterface]);
 
   return (
     <>
@@ -61,7 +58,7 @@ const RemoveInterface = ({
         aria-label="Remove interface"
         initialValues={{}}
         modelType="interface"
-        onCancel={closeForm}
+        onCancel={closeSidePanel}
         onSubmit={() => {
           dispatch(deviceActions.cleanup());
           dispatch(

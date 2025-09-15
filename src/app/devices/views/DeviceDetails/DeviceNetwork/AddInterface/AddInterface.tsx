@@ -16,11 +16,10 @@ import type { RootState } from "@/app/store/root/types";
 import { preparePayload } from "@/app/utils";
 
 type Props = {
-  closeForm: () => void;
   systemId: Device[DeviceMeta.PK];
 };
 
-const AddInterface = ({ closeForm, systemId }: Props): React.ReactElement => {
+const AddInterface = ({ systemId }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
@@ -44,7 +43,6 @@ const AddInterface = ({ closeForm, systemId }: Props): React.ReactElement => {
     <div ref={onRenderRef}>
       <InterfaceForm
         aria-label="Add interface"
-        closeForm={closeForm}
         onSaveAnalytics={{
           action: "Add interface",
           category: "Device details networking",
