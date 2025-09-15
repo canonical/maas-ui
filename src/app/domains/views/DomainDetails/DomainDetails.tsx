@@ -3,18 +3,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import DomainDetailsHeader from "./DomainDetailsHeader";
-import AddRecordForm from "./DomainDetailsHeader/AddRecordForm";
-import DeleteDomainForm from "./DomainDetailsHeader/DeleteDomainForm";
-import { Labels } from "./DomainDetailsHeader/DomainDetailsHeader";
 import DomainSummary from "./DomainSummary/DomainSummary";
 import ResourceRecords from "./ResourceRecords";
-import { DomainDetailsSidePanelViews } from "./constants";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { domainActions } from "@/app/store/domain";
 import domainsSelectors from "@/app/store/domain/selectors";
@@ -28,7 +23,6 @@ const DomainDetails = (): React.ReactElement => {
     domainsSelectors.getById(state, Number(id))
   );
   const domainsLoading = useSelector(domainsSelectors.loading);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   const dispatch = useDispatch();
   useWindowTitle(domain?.name ?? "Loading...");
@@ -51,35 +45,12 @@ const DomainDetails = (): React.ReactElement => {
     );
   }
 
-  const closeForm = () => {
-    setSidePanelContent(null);
-  };
-
-  let content = null;
-  let title = null;
-
-  if (sidePanelContent) {
-    if (sidePanelContent.view === DomainDetailsSidePanelViews.ADD_RECORD) {
-      content = <AddRecordForm closeForm={closeForm} id={id} />;
-      title = Labels.AddRecord;
-    } else if (
-      sidePanelContent.view === DomainDetailsSidePanelViews.DELETE_DOMAIN
-    ) {
-      content = <DeleteDomainForm closeForm={closeForm} id={id} />;
-      title = Labels.DeleteDomain;
-    }
-  }
-
   return (
     <PageContent
-      header={
-        <DomainDetailsHeader
-          id={id}
-          setSidePanelContent={setSidePanelContent}
-        />
-      }
-      sidePanelContent={content}
-      sidePanelTitle={title}
+      header={<DomainDetailsHeader id={id} />}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       <DomainSummary id={id} />
       <ResourceRecords id={id} />

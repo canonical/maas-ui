@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import type { SchemaOf } from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import RecordFields from "@/app/domains/components/RecordFields";
 import { domainActions } from "@/app/store/domain";
 import { MIN_TTL } from "@/app/store/domain/constants";
@@ -18,7 +19,6 @@ export enum Labels {
 }
 
 type Props = {
-  closeForm: () => void;
   id: Domain["id"];
 };
 
@@ -41,7 +41,8 @@ const CreateRecordSchema: SchemaOf<CreateRecordValues> = Yup.object()
   })
   .defined();
 
-const AddRecordForm = ({ closeForm, id }: Props): React.ReactElement => {
+const AddRecordForm = ({ id }: Props): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);
@@ -58,7 +59,7 @@ const AddRecordForm = ({ closeForm, id }: Props): React.ReactElement => {
         rrdata: "",
         ttl: "",
       }}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={(values) => {
         dispatch(cleanup());
         if (isAddressRecord(values.rrtype)) {
@@ -81,7 +82,7 @@ const AddRecordForm = ({ closeForm, id }: Props): React.ReactElement => {
         }
       }}
       onSuccess={() => {
-        closeForm();
+        closeSidePanel();
       }}
       saved={saved}
       saving={saving}

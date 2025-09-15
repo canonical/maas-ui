@@ -1,4 +1,4 @@
-import { DomainListSidePanelViews } from "../constants";
+import DomainListHeaderForm from "../DomainListHeaderForm";
 
 import DomainListHeader, {
   Labels as DomainListHeaderLabels,
@@ -6,7 +6,14 @@ import DomainListHeader, {
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  mockSidePanel,
+  renderWithProviders,
+} from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("DomainListHeader", () => {
   let initialState: RootState;
@@ -28,47 +35,35 @@ describe("DomainListHeader", () => {
     const state = { ...initialState };
     state.domain.loaded = false;
 
-    renderWithBrowserRouter(
-      <DomainListHeader setSidePanelContent={vi.fn()} />,
-      {
-        route: "/domains",
-        state,
-      }
-    );
+    renderWithProviders(<DomainListHeader />, {
+      state,
+    });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a domain count if domains have loaded", () => {
     const state = { ...initialState };
     state.domain.loaded = true;
-    renderWithBrowserRouter(
-      <DomainListHeader setSidePanelContent={vi.fn()} />,
-      {
-        route: "/domains",
-        state,
-      }
-    );
+    renderWithProviders(<DomainListHeader />, {
+      state,
+    });
 
     expect(screen.getByText("2 domains available")).toBeInTheDocument();
   });
 
   it("displays the form when Add domains is clicked", async () => {
     const state = { ...initialState };
-    const setSidePanelContent = vi.fn();
-    renderWithBrowserRouter(
-      <DomainListHeader setSidePanelContent={setSidePanelContent} />,
-      {
-        route: "/domains",
-        state,
-      }
-    );
+    renderWithProviders(<DomainListHeader />, {
+      state,
+    });
 
     await userEvent.click(
       screen.getByRole("button", { name: DomainListHeaderLabels.AddDomains })
     );
 
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: DomainListSidePanelViews.ADD_DOMAIN,
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DomainListHeaderForm,
+      title: "Add domains",
     });
   });
 });

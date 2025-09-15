@@ -5,7 +5,7 @@ import SetDefaultForm from "./SetDefaultForm";
 import { Labels as DomainTableLabels } from "@/app/domains/views/DomainsList/DomainsTable/DomainsTable";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 const domain = factory.domain({ name: "test" });
@@ -16,7 +16,7 @@ const state = factory.rootState({
 });
 
 it("renders", () => {
-  renderWithBrowserRouter(<SetDefaultForm id={domain.id} onClose={vi.fn()} />, {
+  renderWithProviders(<SetDefaultForm id={domain.id} />, {
     state,
   });
   expect(screen.getByRole("form", { name: DomainTableLabels.FormTitle }));
@@ -25,7 +25,7 @@ it("renders", () => {
 
 it("dispatches the set default action", async () => {
   const store = mockStore(state);
-  renderWithBrowserRouter(<SetDefaultForm id={domain.id} onClose={vi.fn()} />, {
+  renderWithProviders(<SetDefaultForm id={domain.id} />, {
     store,
   });
   await userEvent.click(

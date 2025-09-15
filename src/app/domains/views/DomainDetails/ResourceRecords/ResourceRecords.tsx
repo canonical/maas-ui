@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { MainToolbar } from "@canonical/maas-react-components";
 import {
   Col,
   ContextualMenu,
@@ -7,15 +8,19 @@ import {
   Row,
   Strip,
   Spinner,
+  Button,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
+import AddRecordForm from "../DomainDetailsHeader/AddRecordForm";
+
 import DeleteRecordForm from "./DeleteRecordForm";
 import EditRecordForm from "./EditRecordForm";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import domainsSelectors from "@/app/store/domain/selectors";
 import type { Domain, DomainResource } from "@/app/store/domain/types";
@@ -45,6 +50,7 @@ const generateRowId = (resource: DomainResource, i: number) =>
   `${resource.dnsresource_id}-${i}`;
 
 const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
+  const { openSidePanel } = useSidePanel();
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, id)
   );
@@ -219,7 +225,28 @@ const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
     <Strip shallow>
       <Row>
         <Col size={12}>
-          <h3 className="p-heading--4">Resource records</h3>
+          <MainToolbar>
+            <MainToolbar.Title className="p-heading--4">
+              Resource records
+            </MainToolbar.Title>
+            <MainToolbar.Controls>
+              <Button
+                data-testid="add-record"
+                key="add-record"
+                onClick={() => {
+                  openSidePanel({
+                    component: AddRecordForm,
+                    title: "Add record",
+                    props: {
+                      id,
+                    },
+                  });
+                }}
+              >
+                Add record
+              </Button>
+            </MainToolbar.Controls>
+          </MainToolbar>
           <MainTable
             className="p-table-expanding--light"
             defaultSort="name"

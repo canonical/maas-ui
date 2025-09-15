@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import DeleteDomainForm, {
@@ -10,29 +8,28 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  render,
-  renderWithBrowserRouter,
+  mockSidePanel,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
+const { mockClose } = await mockSidePanel();
 
 describe("DeleteDomainForm", () => {
   it("calls closeForm on cancel click", async () => {
-    const closeForm = vi.fn();
     const state = factory.rootState({
       domain: factory.domainState({
         items: [factory.domain({ id: 1, name: "domain-in-the-brain" })],
       }),
     });
-    renderWithBrowserRouter(<DeleteDomainForm closeForm={closeForm} id={1} />, {
+    renderWithProviders(<DeleteDomainForm id={1} />, {
       state,
     });
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("shows the correct text if the domain is deletable and dispatches the correct action when delete is clicked", async () => {
-    const closeForm = vi.fn();
     const state = factory.rootState({
       domain: factory.domainState({
         items: [
@@ -45,13 +42,7 @@ describe("DeleteDomainForm", () => {
       }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeleteDomainForm closeForm={closeForm} id={1} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<DeleteDomainForm id={1} />, { store });
 
     expect(
       screen.getByText(DeleteDomainFormLabels.AreYouSure)
@@ -78,7 +69,6 @@ describe("DeleteDomainForm", () => {
   });
 
   it("shows the correct text and disables the delete button if the domain has resource records", () => {
-    const closeForm = vi.fn();
     const state = factory.rootState({
       domain: factory.domainState({
         items: [
@@ -91,7 +81,7 @@ describe("DeleteDomainForm", () => {
       }),
     });
 
-    renderWithBrowserRouter(<DeleteDomainForm closeForm={closeForm} id={1} />, {
+    renderWithProviders(<DeleteDomainForm id={1} />, {
       state,
     });
 

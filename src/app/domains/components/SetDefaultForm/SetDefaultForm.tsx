@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { Labels } from "@/app/domains/views/DomainsList/DomainsTable/DomainsTable";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
@@ -10,9 +11,9 @@ import type { Domain, DomainMeta } from "@/app/store/domain/types";
 
 type Props = {
   id: Domain[DomainMeta.PK];
-  onClose: () => void;
 };
-const SetDefaultForm = ({ id, onClose }: Props): ReactElement => {
+const SetDefaultForm = ({ id }: Props): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const errors = useSelector(domainSelectors.errors);
   const saving = useSelector(domainSelectors.saving);
@@ -26,14 +27,14 @@ const SetDefaultForm = ({ id, onClose }: Props): ReactElement => {
       modelType="DNS"
       onCancel={() => {
         dispatch(domainActions.cleanup());
-        onClose();
+        closeSidePanel();
       }}
       onSubmit={() => {
         dispatch(domainActions.setDefault(id));
       }}
       onSuccess={() => {
         dispatch(domainActions.cleanup());
-        onClose();
+        closeSidePanel();
       }}
       saved={saved}
       saving={saving}

@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import DomainListHeaderForm, {
@@ -11,11 +9,12 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  render,
-  renderWithBrowserRouter,
+  mockSidePanel,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
+const { mockClose } = await mockSidePanel();
 
 describe("DomainListHeaderForm", () => {
   let state: RootState;
@@ -24,24 +23,17 @@ describe("DomainListHeaderForm", () => {
   });
 
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = vi.fn();
-    renderWithBrowserRouter(<DomainListHeaderForm closeForm={closeForm} />, {
+    renderWithProviders(<DomainListHeaderForm />, {
       state,
     });
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls domainActions.create on save click", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DomainListHeaderForm closeForm={vi.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<DomainListHeaderForm />, { store });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: DomainListHeaderFormLabels.Name }),
