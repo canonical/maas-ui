@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Col, Row, Spinner, Textarea } from "@canonical/react-components";
@@ -13,7 +14,7 @@ import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = {
+type EditFabricProps = {
   close: () => void;
   id: Fabric[FabricMeta.PK];
 };
@@ -28,7 +29,7 @@ const Schema = Yup.object().shape({
   description: Yup.string(),
 });
 
-const EditFabric = ({ close, id }: Props): React.ReactElement | null => {
+const EditFabric = ({ close, id }: EditFabricProps): ReactElement => {
   const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)

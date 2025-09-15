@@ -1,10 +1,11 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useCallback } from "react";
 
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
@@ -14,15 +15,12 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
-type Props = {
-  closeForm: () => void;
+type DeleteFabricProps = {
   id?: Fabric[FabricMeta.PK] | null;
 };
 
-const FabricDeleteForm = ({
-  closeForm,
-  id,
-}: Props): React.ReactElement | null => {
+const DeleteFabric = ({ id }: DeleteFabricProps): ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)
@@ -35,6 +33,7 @@ const FabricDeleteForm = ({
   const saving = useSelector(fabricSelectors.saving);
   const cleanup = useCallback(() => fabricActions.cleanup(), []);
 
+  // TODO: better error handling
   if (!isId(id) || !fabric) {
     return null;
   }
@@ -68,11 +67,12 @@ const FabricDeleteForm = ({
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         dispatch(cleanup());
         dispatch(fabricActions.delete(id));
       }}
+      onSuccess={closeSidePanel}
       saved={saved}
       savedRedirect={subnetURLs.indexWithParams({ by: "fabric" })}
       saving={saving}
@@ -85,4 +85,4 @@ const FabricDeleteForm = ({
   );
 };
 
-export default FabricDeleteForm;
+export default DeleteFabric;

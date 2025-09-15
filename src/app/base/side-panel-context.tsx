@@ -24,7 +24,7 @@ import { getNodeActionTitle } from "@/app/store/utils";
 import {
   FabricDetailsSidePanelViews,
   type FabricDetailsSidePanelContent,
-} from "@/app/subnets/views/FabricDetails/FabricDetailsHeader/constants";
+} from "@/app/subnets/views/Fabrics/components/FabricDetailsHeader/constants";
 import {
   SpaceDetailsSidePanelViews,
   type SpaceDetailsSidePanelContent,

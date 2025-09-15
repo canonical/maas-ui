@@ -64,7 +64,9 @@ const NetworkDiscoveryConfigurationForm = lazy(
 );
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
-const FabricDetails = lazy(() => import("@/app/subnets/views/FabricDetails"));
+const FabricDetails = lazy(
+  () => import("@/app/subnets/views/Fabrics/views/FabricDetails")
+);
 const SpaceDetails = lazy(() => import("@/app/subnets/views/SpaceDetails"));
 const SubnetDetails = lazy(
   () => import("@/app/subnets/views/Subnets/views/SubnetDetails")

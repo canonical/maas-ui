@@ -1,6 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import FabricDeleteForm from "./FabricDeleteForm";
+import DeleteFabric from "./DeleteFabric";
 
 import { fabricActions } from "@/app/store/fabric";
 import * as factory from "@/testing/factories";
@@ -21,7 +21,7 @@ it("does not allow deletion if the fabric is the default fabric", () => {
     }),
   });
   const store = mockStore(state);
-  renderWithProviders(<FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />, {
+  renderWithProviders(<DeleteFabric closeForm={vi.fn()} id={fabric.id} />, {
     store,
   });
 
@@ -44,7 +44,7 @@ it("does not allow deletion if the fabric has subnets attached", () => {
     }),
   });
   const store = mockStore(state);
-  renderWithProviders(<FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />, {
+  renderWithProviders(<DeleteFabric closeForm={vi.fn()} id={fabric.id} />, {
     store,
   });
 
@@ -62,7 +62,7 @@ it(`displays a delete confirmation if the fabric is not the default and has no
     fabric: factory.fabricState({ items: [fabric] }),
   });
   const store = mockStore(state);
-  renderWithProviders(<FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />, {
+  renderWithProviders(<DeleteFabric closeForm={vi.fn()} id={fabric.id} />, {
     store,
   });
 
@@ -77,7 +77,7 @@ it("deletes the fabric when confirmed", async () => {
     fabric: factory.fabricState({ items: [fabric] }),
   });
   const store = mockStore(state);
-  renderWithProviders(<FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />, {
+  renderWithProviders(<DeleteFabric closeForm={vi.fn()} id={fabric.id} />, {
     store,
   });
 

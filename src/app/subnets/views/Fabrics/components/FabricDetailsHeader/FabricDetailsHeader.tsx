@@ -1,21 +1,21 @@
-import { Button } from "@canonical/react-components";
+import type { ReactElement } from "react";
 
-import { FabricDetailsSidePanelViews } from "./constants";
+import { Button } from "@canonical/react-components";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { Fabric } from "@/app/store/fabric/types";
+import DeleteFabric from "@/app/subnets/views/Fabrics/components/FabricDeleteForm";
 
-type Props = {
-  fabric: Fabric;
-  setSidePanelContent: SetSidePanelContent;
+type FabricDetailsHeaderProps = {
+  fabric: Fabric | null;
 };
 
 const FabricDetailsHeader = ({
   fabric,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+}: FabricDetailsHeaderProps): ReactElement => {
+  const { openSidePanel } = useSidePanel();
   const isSuperUser = useGetIsSuperUser();
 
   return (
@@ -26,8 +26,10 @@ const FabricDetailsHeader = ({
               <Button
                 appearance="neutral"
                 onClick={() => {
-                  setSidePanelContent({
-                    view: FabricDetailsSidePanelViews.DELETE_FABRIC,
+                  openSidePanel({
+                    component: DeleteFabric,
+                    title: "Delete fabric",
+                    props: { id: fabric?.id },
                   });
                 }}
               >
@@ -36,7 +38,8 @@ const FabricDetailsHeader = ({
             ]
           : null
       }
-      title={fabric.name}
+      loading={!fabric}
+      title={fabric?.name}
     />
   );
 };

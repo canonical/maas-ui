@@ -1,14 +1,15 @@
-import { Col, Row } from "@canonical/react-components";
+import type { ReactElement } from "react";
 
-import EditFabric from "../EditFabric";
+import { Col, Row } from "@canonical/react-components";
 
 import FabricController from "./FabricController";
 
 import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import type { Fabric } from "@/app/store/fabric/types";
+import { EditFabric } from "@/app/subnets/views/Fabrics/components";
 
-const FabricSummary = ({ fabric }: { fabric: Fabric }): React.ReactElement => {
+const FabricSummary = ({ fabric }: { fabric: Fabric }): ReactElement => {
   return (
     <EditableSection
       hasSidebarTitle

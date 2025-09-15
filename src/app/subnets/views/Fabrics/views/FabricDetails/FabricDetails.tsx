@@ -1,18 +1,16 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FabricDetailsHeader from "./FabricDetailsHeader";
-import FabricDeleteForm from "./FabricDetailsHeader/FabricDeleteForm";
-import { FabricDetailsSidePanelViews } from "./FabricDetailsHeader/constants";
-import FabricSummary from "./FabricSummary";
-import FabricVLANsTable from "./FabricVLANsTable";
+import FabricDetailsHeader from "../../components/FabricDetailsHeader";
+import FabricSummary from "../../components/FabricSummary";
+import FabricVLANsTable from "../../components/FabricVLANsTable";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
-import SectionHeader from "@/app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import { FabricMeta } from "@/app/store/fabric/types";
@@ -21,16 +19,16 @@ import { subnetActions } from "@/app/store/subnet";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
-const FabricDetails = (): React.ReactElement => {
+const FabricDetails = (): ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(FabricMeta.PK);
+  console.log(window.location.pathname);
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)
   );
   const fabricsLoading = useSelector(fabricSelectors.loading);
   const isValidID = isId(id);
   useWindowTitle(`${fabric?.name || "Fabric"} details`);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     if (isValidID) {
@@ -57,44 +55,23 @@ const FabricDetails = (): React.ReactElement => {
         />
       );
     }
-    return (
-      <PageContent
-        header={<SectionHeader loading />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
-      />
-    );
-  }
-
-  let content = null;
-
-  if (
-    sidePanelContent &&
-    sidePanelContent.view === FabricDetailsSidePanelViews.DELETE_FABRIC
-  ) {
-    content = (
-      <FabricDeleteForm
-        closeForm={() => {
-          setSidePanelContent(null);
-        }}
-        id={fabric.id}
-      />
-    );
   }
 
   return (
     <PageContent
-      header={
-        <FabricDetailsHeader
-          fabric={fabric}
-          setSidePanelContent={setSidePanelContent}
-        />
-      }
-      sidePanelContent={content}
-      sidePanelTitle={getSidePanelTitle("Fabric", sidePanelContent)}
+      header={<FabricDetailsHeader fabric={fabric} />}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
-      <FabricSummary fabric={fabric} />
-      <FabricVLANsTable fabric={fabric} />
+      {!fabric ? (
+        <Spinner text="Loading..." />
+      ) : (
+        <>
+          <FabricSummary fabric={fabric} />
+          <FabricVLANsTable fabric={fabric} />
+        </>
+      )}
     </PageContent>
   );
 };

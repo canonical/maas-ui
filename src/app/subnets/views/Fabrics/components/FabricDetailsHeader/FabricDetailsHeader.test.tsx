@@ -1,14 +1,15 @@
 import { waitFor } from "@testing-library/react";
 
 import FabricDetailsHeader from "./FabricDetailsHeader";
-import { FabricDetailsSidePanelViews } from "./constants";
 
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
+import DeleteFabric from "@/app/subnets/views/Fabrics/components/FabricDeleteForm";
 import * as factory from "@/testing/factories";
 import { user } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -19,6 +20,7 @@ let state: RootState;
 let fabric: Fabric;
 
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const { mockOpen } = await mockSidePanel();
 
 describe("FabricDetailsHeader", () => {
   beforeEach(() => {
@@ -31,13 +33,10 @@ describe("FabricDetailsHeader", () => {
   });
 
   it("shows the delete button when the user is an admin", async () => {
-    renderWithProviders(
-      <FabricDetailsHeader fabric={fabric} setSidePanelContent={vi.fn()} />,
-      {
-        initialEntries: ["/fabric/1"],
-        state,
-      }
-    );
+    renderWithProviders(<FabricDetailsHeader fabric={fabric} />, {
+      initialEntries: ["/fabric/1"],
+      state,
+    });
 
     await waitFor(() => {
       expect(
@@ -50,29 +49,19 @@ describe("FabricDetailsHeader", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(user({ is_superuser: false }))
     );
-    renderWithProviders(
-      <FabricDetailsHeader fabric={fabric} setSidePanelContent={vi.fn()} />,
-      {
-        initialEntries: ["/fabric/1"],
-        state,
-      }
-    );
+    renderWithProviders(<FabricDetailsHeader fabric={fabric} />, {
+      initialEntries: ["/fabric/1"],
+      state,
+    });
 
     expect(screen.queryByRole("button", { name: "Delete fabric" })).toBeNull();
   });
 
   it("calls a function to open the Delete form when the button is clicked", async () => {
-    const setSidePanelContent = vi.fn();
-    renderWithProviders(
-      <FabricDetailsHeader
-        fabric={fabric}
-        setSidePanelContent={setSidePanelContent}
-      />,
-      {
-        initialEntries: ["/fabric/1"],
-        state,
-      }
-    );
+    renderWithProviders(<FabricDetailsHeader fabric={fabric} />, {
+      initialEntries: ["/fabric/1"],
+      state,
+    });
 
     await waitFor(() => {
       expect(
@@ -84,8 +73,10 @@ describe("FabricDetailsHeader", () => {
       screen.getByRole("button", { name: "Delete fabric" })
     );
 
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: FabricDetailsSidePanelViews.DELETE_FABRIC,
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DeleteFabric,
+      title: "Delete fabric",
+      props: { id: fabric.id },
     });
   });
 });
