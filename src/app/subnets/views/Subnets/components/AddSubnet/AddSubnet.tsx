@@ -150,7 +150,7 @@ const AddSubnet = (): ReactElement => {
       onSuccess={closeSidePanel}
       saved={isSaved}
       saving={isSaving}
-      submitLabel="Save"
+      submitLabel="Save subnet"
       validationSchema={addSubnetSchema}
     >
       <AddSubnetFields isSaving={isSaving} />

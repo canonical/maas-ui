@@ -40,7 +40,7 @@ const AddSpace = (): ReactElement => {
       onSuccess={closeSidePanel}
       saved={isSaved}
       saving={isSaving}
-      submitLabel="Save"
+      submitLabel="Save space"
     >
       <Row>
         <Col size={12}>

@@ -40,7 +40,7 @@ const SubnetsListHeader = ({
   setSearchText,
   grouping,
 }: SubnetsListHeaderProps): ReactElement => {
-  const { openSidePanel, closeSidePanel } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const navigate: SyncNavigateFunction = useNavigate();
 
   const setGrouping = useCallback(
@@ -72,11 +72,10 @@ const SubnetsListHeader = ({
   const hasValidGroupBy = grouping && ["fabric", "space"].includes(grouping);
 
   useEffect(() => {
-    closeSidePanel();
     if (!hasValidGroupBy) {
       setGrouping("fabric");
     }
-  }, [grouping, setGrouping, hasValidGroupBy, closeSidePanel]);
+  }, [grouping, setGrouping, hasValidGroupBy]);
 
   return (
     <MainToolbar>

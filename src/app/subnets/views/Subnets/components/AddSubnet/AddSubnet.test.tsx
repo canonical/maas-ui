@@ -1,14 +1,18 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import AddSubnet from "./AddSubnet";
 
 import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  mockSidePanel,
+  renderWithProviders,
+} from "@/testing/utils";
 
-it("correctly dispatches subnet cleanup and create actions on form submit", async () => {
+const { mockClose } = await mockSidePanel();
+
+describe("AddSubnet", () => {
   const vlan1 = factory.vlan({ id: 111, fabric: 5 });
   const vlan2 = factory.vlan({
     id: 222,
@@ -23,59 +27,98 @@ it("correctly dispatches subnet cleanup and create actions on form submit", asyn
     default_vlan_id: vlan1.id,
   });
 
-  const store = configureStore()(
-    factory.rootState({
-      fabric: factory.fabricState({
-        loaded: true,
-        items: [fabric],
-      }),
-      vlan: factory.vlanState({
-        loaded: true,
-        items: [vlan1, vlan2],
-      }),
-    })
-  );
-
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <AddSubnet activeForm="Subnet" setActiveForm={() => undefined} />
-      </MemoryRouter>
-    </Provider>
-  );
-
-  const cidr = "192.168.0.1";
-  const name = "Subnet name";
-
-  await userEvent.type(screen.getByRole("textbox", { name: /CIDR/ }), cidr);
-  await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
-
-  await waitFor(() => {
-    expect(screen.getByRole("combobox", { name: "VLAN" })).toBeInTheDocument();
+  const state = factory.rootState({
+    fabric: factory.fabricState({
+      loaded: true,
+      items: [fabric],
+    }),
+    vlan: factory.vlanState({
+      loaded: true,
+      items: [vlan1, vlan2],
+    }),
   });
-  await userEvent.selectOptions(
-    screen.getByRole("combobox", { name: "Fabric" }),
-    fabric.name
-  );
 
-  await userEvent.selectOptions(
-    screen.getByRole("combobox", { name: "VLAN" }),
-    `${vlan2.vid}`
-  );
+  it("runs closeSidePanel function when the cancel button is clicked", async () => {
+    renderWithProviders(<AddSubnet />);
 
-  await userEvent.click(screen.getByRole("button", { name: /Add Subnet/ }));
+    await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+    expect(mockClose).toHaveBeenCalled();
+  });
 
-  await waitFor(() => {
-    expect(store.getActions()).toStrictEqual([
-      subnetActions.cleanup(),
-      subnetActions.create({
-        cidr,
-        fabric: fabric.id,
-        name,
-        dns_servers: "",
-        gateway_ip: "",
-        vlan: vlan2.id,
-      }),
-    ]);
+  it("calls create subnet on save click", async () => {
+    const { store } = renderWithProviders(<AddSubnet />, { state });
+
+    const cidr = "192.168.0.1";
+    const name = "Subnet name";
+
+    await userEvent.type(screen.getByRole("textbox", { name: /CIDR/ }), cidr);
+    await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "VLAN" })
+      ).toBeInTheDocument();
+    });
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Fabric" }),
+      fabric.name
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "VLAN" }),
+      `${vlan2.vid}`
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Save subnet/i }));
+
+    await waitFor(() => {
+      expect(store.getActions()).toStrictEqual([
+        subnetActions.cleanup(),
+        subnetActions.create({
+          cidr,
+          fabric: fabric.id,
+          name,
+          dns_servers: "",
+          gateway_ip: "",
+          vlan: vlan2.id,
+        }),
+      ]);
+    });
+  });
+
+  it("displays error message when create subnet fails", async () => {
+    const errorState = factory.rootState({
+      ...state,
+      subnet: factory.subnetState({ errors: "Uh oh!" }),
+    });
+
+    renderWithProviders(<AddSubnet />, { state: errorState });
+
+    const cidr = "192.168.0.1";
+    const name = "Subnet name";
+
+    await userEvent.type(screen.getByRole("textbox", { name: /CIDR/ }), cidr);
+    await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "VLAN" })
+      ).toBeInTheDocument();
+    });
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Fabric" }),
+      fabric.name
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "VLAN" }),
+      `${vlan2.vid}`
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Save subnet/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
+    });
   });
 });

@@ -1,37 +1,54 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import AddSpace from "./AddSpace";
 
 import { spaceActions } from "@/app/store/space";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  mockSidePanel,
+  renderWithProviders,
+} from "@/testing/utils";
 
-test("correctly dispatches space cleanup and create actions on form submit", async () => {
-  const store = configureStore()(factory.rootState());
+const { mockClose } = await mockSidePanel();
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/networks", key: "testKey" }]}
-      >
-        <AddSpace activeForm="Space" setActiveForm={() => undefined} />
-      </MemoryRouter>
-    </Provider>
-  );
+describe("AddSpace", () => {
+  it("runs closeSidePanel function when the cancel button is clicked", async () => {
+    renderWithProviders(<AddSpace />);
 
-  expect(screen.getByRole("button", { name: "Cancel" })).toBeVisible();
+    await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+    expect(mockClose).toHaveBeenCalled();
+  });
 
-  const name = "Space name";
+  it("calls create space on save click", async () => {
+    const { store } = renderWithProviders(<AddSpace />);
 
-  await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
-  await userEvent.click(screen.getByRole("button", { name: /Add Space/ }));
+    const name = "Space name";
 
-  await waitFor(() => {
-    expect(store.getActions()).toStrictEqual([
-      spaceActions.cleanup(),
-      spaceActions.create({ name }),
-    ]);
+    await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
+    await userEvent.click(screen.getByRole("button", { name: /Save space/i }));
+
+    await waitFor(() => {
+      expect(store.getActions()).toStrictEqual([
+        spaceActions.cleanup(),
+        spaceActions.create({ name }),
+      ]);
+    });
+  });
+
+  it("displays error message when create space fails", async () => {
+    const state = factory.rootState({
+      space: factory.spaceState({ errors: "Uh oh!" }),
+    });
+
+    renderWithProviders(<AddSpace />, { state });
+
+    await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), "test");
+
+    await userEvent.click(screen.getByRole("button", { name: /Save space/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
+    });
   });
 });

@@ -86,7 +86,7 @@ const AddVlan = (): ReactElement => {
       onSuccess={closeSidePanel}
       saved={isSaved}
       saving={isSaving}
-      submitLabel="Save"
+      submitLabel="Save VLAN"
       validationSchema={vlanSchema}
     >
       <Row>
