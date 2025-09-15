@@ -3,7 +3,7 @@ import ResourceRecords, {
 } from "./ResourceRecords";
 
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ResourceRecords", () => {
   it("shows a message if domain has no records", () => {
@@ -13,7 +13,7 @@ describe("ResourceRecords", () => {
       }),
     });
 
-    renderWithBrowserRouter(<ResourceRecords id={1} />, {
+    renderWithProviders(<ResourceRecords id={1} />, {
       state,
     });
 
@@ -29,7 +29,7 @@ describe("ResourceRecords", () => {
         loading: true,
       }),
     });
-    renderWithBrowserRouter(<ResourceRecords id={1} />, {
+    renderWithProviders(<ResourceRecords id={1} />, {
       state,
     });
 

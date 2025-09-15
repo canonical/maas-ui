@@ -4,10 +4,10 @@ import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
-import { DomainDetailsSidePanelViews } from "../constants";
+import DeleteDomainForm from "./DeleteDomainForm";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";
@@ -27,7 +27,6 @@ const pluralizeString = (
 
 type Props = {
   id: Domain["id"];
-  setSidePanelContent: SetSidePanelContent;
 };
 
 export enum Labels {
@@ -35,10 +34,8 @@ export enum Labels {
   DeleteDomain = "Delete domain",
 }
 
-const DomainDetailsHeader = ({
-  id,
-  setSidePanelContent,
-}: Props): React.ReactElement | null => {
+const DomainDetailsHeader = ({ id }: Props): React.ReactElement | null => {
+  const { openSidePanel } = useSidePanel();
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
   );
@@ -52,26 +49,20 @@ const DomainDetailsHeader = ({
   const hostsCount = domain?.hosts ?? 0;
   const recordsCount = domain?.resource_count ?? 0;
 
-  const buttons = [
-    <Button
-      data-testid="add-record"
-      key="add-record"
-      onClick={() => {
-        setSidePanelContent({ view: DomainDetailsSidePanelViews.ADD_RECORD });
-      }}
-    >
-      {Labels.AddRecord}
-    </Button>,
-  ];
+  const buttons = [];
   if (!isDefaultDomain) {
-    buttons.unshift(
+    buttons.push(
       <Button
         appearance="negative"
         data-testid="delete-domain"
         key="delete-domain"
         onClick={() => {
-          setSidePanelContent({
-            view: DomainDetailsSidePanelViews.DELETE_DOMAIN,
+          openSidePanel({
+            component: DeleteDomainForm,
+            title: "Delete domain",
+            props: {
+              id,
+            },
           });
         }}
       >
@@ -85,7 +76,7 @@ const DomainDetailsHeader = ({
       buttons={buttons}
       loading={!domain}
       subtitle={`${pluralizeString("host", hostsCount, "")}${
-        hostsCount > 1 ? "; " : ""
+        hostsCount >= 1 ? "; " : ""
       }${pluralizeString(
         "resource record",
         recordsCount,
