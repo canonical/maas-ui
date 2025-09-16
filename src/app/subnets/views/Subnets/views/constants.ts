@@ -11,8 +11,6 @@ export const SubnetActionTypes = {
   AddStaticRoute: "AddStaticRoute",
   EditStaticRoute: "EditStaticRoute",
   DeleteStaticRoute: "DeleteStaticRoute",
-  ReserveRange: "ReserveRange",
-  DeleteReservedRange: "DeleteReservedRange",
   ReserveDHCPLease: "ReserveDHCPLease",
   EditDHCPLease: "EditDHCPLease",
   DeleteDHCPLease: "DeleteDHCPLease",
@@ -26,8 +24,6 @@ export const subnetActionLabels = {
   [SubnetActionTypes.AddStaticRoute]: "Add static route",
   [SubnetActionTypes.EditStaticRoute]: "Edit static route",
   [SubnetActionTypes.DeleteStaticRoute]: "Delete static route",
-  [SubnetActionTypes.ReserveRange]: "Reserve range",
-  [SubnetActionTypes.DeleteReservedRange]: "Delete Reserved Range",
   [SubnetActionTypes.ReserveDHCPLease]: "Reserve static DHCP lease",
   [SubnetActionTypes.EditDHCPLease]: "Edit static DHCP lease",
   [SubnetActionTypes.DeleteDHCPLease]: "Delete static DHCP lease",
@@ -45,11 +41,6 @@ export const SubnetDetailsSidePanelViews = {
   [SubnetActionTypes.DeleteStaticRoute]: [
     "",
     SubnetActionTypes.DeleteStaticRoute,
-  ],
-  [SubnetActionTypes.ReserveRange]: ["", SubnetActionTypes.ReserveRange],
-  [SubnetActionTypes.DeleteReservedRange]: [
-    "",
-    SubnetActionTypes.DeleteReservedRange,
   ],
   [SubnetActionTypes.ReserveDHCPLease]: [
     "",

@@ -49,7 +49,7 @@ const VLANDetails = (): ReactElement => {
 
   useFetchActions([vlanActions.fetch]);
 
-  if (!vlan) {
+  if (!vlan && !vlansLoading) {
     return (
       <ModelNotFound
         id={id}
@@ -79,7 +79,7 @@ const VLANDetails = (): ReactElement => {
           <VLANSubnetsTable id={id} />
           <DHCPSnippets
             modelName={VLANMeta.MODEL}
-            subnetIds={vlan.subnet_ids}
+            subnetIds={vlan!.subnet_ids}
           />
         </>
       )}

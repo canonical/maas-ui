@@ -2,8 +2,6 @@ import DeleteSubnet from "./components/DeleteSubnet";
 import EditBootArchitectures from "./components/EditBootArchitectures";
 import MapSubnet from "./components/MapSubnet";
 
-import ReservedRangeDeleteForm from "@/app/subnets/components/ReservedRangeDeleteForm";
-import ReservedRangeForm from "@/app/subnets/components/ReservedRangeForm";
 import DeleteDHCPLease from "@/app/subnets/views/Subnets/components/StaticDHCPLease/DeleteDHCPLease";
 import ReserveDHCPLease from "@/app/subnets/views/Subnets/components/StaticDHCPLease/ReserveDHCPLease";
 import AddStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/AddStaticRouteForm";
@@ -28,8 +26,6 @@ const FormComponents: Record<
   [SubnetActionTypes.AddStaticRoute]: AddStaticRouteForm,
   [SubnetActionTypes.EditStaticRoute]: EditStaticRouteForm,
   [SubnetActionTypes.DeleteStaticRoute]: DeleteStaticRouteForm,
-  [SubnetActionTypes.ReserveRange]: ReservedRangeForm,
-  [SubnetActionTypes.DeleteReservedRange]: ReservedRangeDeleteForm,
   [SubnetActionTypes.ReserveDHCPLease]: ReserveDHCPLease,
   [SubnetActionTypes.EditDHCPLease]: ReserveDHCPLease,
   [SubnetActionTypes.DeleteDHCPLease]: DeleteDHCPLease,

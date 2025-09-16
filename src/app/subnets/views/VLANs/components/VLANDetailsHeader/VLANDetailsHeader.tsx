@@ -17,7 +17,7 @@ import { isVLANDetails } from "@/app/store/vlan/utils";
 import { DeleteVLAN } from "@/app/subnets/views/VLANs/components";
 
 type Props = {
-  vlan: VLAN;
+  vlan: VLAN | null;
 };
 
 const generateTitle = (
@@ -60,7 +60,7 @@ const VLANDetailsHeader = ({ vlan }: Props): ReactElement => {
             component: DeleteVLAN,
             title: "Delete VLAN",
             props: {
-              id: vlan.id,
+              id: vlan!.id,
             },
           });
         }}
@@ -73,6 +73,7 @@ const VLANDetailsHeader = ({ vlan }: Props): ReactElement => {
   return (
     <SectionHeader
       buttons={buttons}
+      loading={!vlan}
       subtitleLoading={!isVLANDetails(vlan)}
       title={generateTitle(vlan, fabric)}
     />

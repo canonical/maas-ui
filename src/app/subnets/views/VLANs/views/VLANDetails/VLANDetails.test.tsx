@@ -102,32 +102,4 @@ describe("VLANDetails", () => {
 
     expect(screen.getByText("VLAN not found")).toBeInTheDocument();
   });
-
-  it("shows a spinner if the vlan has not loaded yet", () => {
-    const state = factory.rootState({
-      vlan: factory.vlanState({
-        items: [],
-        loading: true,
-      }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
-        >
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(
-      screen.getByTestId("section-header-title-spinner")
-    ).toBeInTheDocument();
-  });
 });

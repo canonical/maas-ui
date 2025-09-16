@@ -1,16 +1,16 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import EditVLAN from "./EditVLAN";
 
 import type { RootState } from "@/app/store/root/types";
 import { vlanActions } from "@/app/store/vlan";
 import type { VLAN } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  waitFor,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("EditVLAN", () => {
   let state: RootState;
@@ -36,30 +36,12 @@ describe("EditVLAN", () => {
 
   it("displays a spinner when data is loading", () => {
     state.vlan.items = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <EditVLAN close={vi.fn()} id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<EditVLAN id={vlan.id} />, { state });
     expect(screen.getByTestId("Spinner")).toBeInTheDocument();
   });
 
   it("initialises the vlan details", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <EditVLAN close={vi.fn()} id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<EditVLAN id={vlan.id} />, { state });
     expect(screen.getByRole("textbox", { name: "VID" })).toHaveAttribute(
       "value",
       vlan.vid.toString()
@@ -90,16 +72,7 @@ describe("EditVLAN", () => {
   });
 
   it("dispatches an action to update a VLAN", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <EditVLAN close={vi.fn()} id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<EditVLAN id={vlan.id} />, { state });
     const nameField = screen.getByRole("textbox", { name: "Name" });
     await userEvent.clear(nameField);
     await userEvent.type(nameField, "new-name");
@@ -121,17 +94,7 @@ describe("EditVLAN", () => {
   });
 
   it("allows the space to be unset", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <EditVLAN close={vi.fn()} id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    renderWithProviders(<EditVLAN id={vlan.id} />, { state });
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Space" }),
       ""

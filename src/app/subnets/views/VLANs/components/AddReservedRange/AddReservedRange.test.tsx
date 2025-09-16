@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import AddReservedRange, { Labels } from "./AddReservedRange";
@@ -11,11 +9,10 @@ import type { RootState } from "@/app/store/root/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  render,
+  renderWithProviders,
   screen,
+  userEvent,
   waitFor,
-  renderWithBrowserRouter,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -47,53 +44,35 @@ describe("AddReservedRange", () => {
   it("displays a spinner when it is editing and data is loading", () => {
     state.iprange.items = [];
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <AddReservedRange
-            ipRangeId={ipRange.id}
-            setSidePanelContent={vi.fn()}
-            subnetId={subnet.id}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AddReservedRange
+        createType={ipRange.type}
+        ipRangeId={ipRange.id}
+        subnetId={subnet.id}
+      />,
+      { store }
     );
     expect(screen.getByTestId("Spinner")).toBeInTheDocument();
   });
 
   it("does not display a spinner when it is not in edit mode", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <AddReservedRange
-            setSidePanelContent={vi.fn()}
-            subnetId={subnet.id}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AddReservedRange createType={ipRange.type} subnetId={subnet.id} />,
+      {
+        state,
+      }
     );
     expect(screen.queryByTestId("Spinner")).not.toBeInTheDocument();
   });
 
   it("initialises the reserved range details when editing", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <AddReservedRange
-            ipRangeId={ipRange.id}
-            setSidePanelContent={vi.fn()}
-            subnetId={subnet.id}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AddReservedRange
+        createType={ipRange.type}
+        ipRangeId={ipRange.id}
+        subnetId={subnet.id}
+      />,
+      { state }
     );
     expect(
       screen.getByRole("textbox", { name: Labels.StartIp })
@@ -111,18 +90,13 @@ describe("AddReservedRange", () => {
     ipRange.type = IPRangeType.Dynamic;
     state.iprange.items = [ipRange];
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <AddReservedRange
-            ipRangeId={ipRange.id}
-            setSidePanelContent={vi.fn()}
-            subnetId={subnet.id}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AddReservedRange
+        createType={ipRange.type}
+        ipRangeId={ipRange.id}
+        subnetId={subnet.id}
+      />,
+      { store }
     );
     expect(
       screen.getByRole("textbox", { name: Labels.Comment })
@@ -133,19 +107,9 @@ describe("AddReservedRange", () => {
   });
 
   it("dispatches an action to create a reserved range", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <AddReservedRange
-            createType={IPRangeType.Reserved}
-            setSidePanelContent={vi.fn()}
-            subnetId={subnet.id}
-          />
-        </MemoryRouter>
-      </Provider>
+    const { store } = renderWithProviders(
+      <AddReservedRange createType={ipRange.type} subnetId={subnet.id} />,
+      { state }
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.StartIp }),
@@ -175,19 +139,13 @@ describe("AddReservedRange", () => {
   });
 
   it("dispatches an action to update a reserved range", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <AddReservedRange
-            ipRangeId={ipRange.id}
-            setSidePanelContent={vi.fn()}
-            subnetId={subnet.id}
-          />
-        </MemoryRouter>
-      </Provider>
+    const { store } = renderWithProviders(
+      <AddReservedRange
+        createType={ipRange.type}
+        ipRangeId={ipRange.id}
+        subnetId={subnet.id}
+      />,
+      { state }
     );
     const startIpField = screen.getByRole("textbox", { name: Labels.StartIp });
     await userEvent.clear(startIpField);
@@ -209,19 +167,13 @@ describe("AddReservedRange", () => {
   it("resets the comment when updating a dynamic range", async () => {
     ipRange.type = IPRangeType.Dynamic;
     state.iprange.items = [ipRange];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <AddReservedRange
-            ipRangeId={ipRange.id}
-            setSidePanelContent={vi.fn()}
-            subnetId={subnet.id}
-          />
-        </MemoryRouter>
-      </Provider>
+    const { store } = renderWithProviders(
+      <AddReservedRange
+        createType={ipRange.type}
+        ipRangeId={ipRange.id}
+        subnetId={subnet.id}
+      />,
+      { state }
     );
     const startIpField = screen.getByRole("textbox", { name: Labels.StartIp });
     await userEvent.clear(startIpField);
@@ -244,19 +196,12 @@ describe("AddReservedRange", () => {
   });
 
   it("does not display the Comment field when creating a dynamic range", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <AddReservedRange
-            createType={IPRangeType.Dynamic}
-            setSidePanelContent={vi.fn()}
-            subnetId={subnet.id}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AddReservedRange
+        createType={IPRangeType.Dynamic}
+        subnetId={subnet.id}
+      />,
+      { state }
     );
     expect(
       screen.queryByRole("textbox", { name: Labels.Comment })
@@ -264,12 +209,9 @@ describe("AddReservedRange", () => {
   });
 
   it("displays an error when start and end IP addresses are not provided", async () => {
-    renderWithBrowserRouter(
-      <AddReservedRange setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
-      {
-        state,
-        route: "/machines",
-      }
+    renderWithProviders(
+      <AddReservedRange createType={ipRange.type} subnetId={subnet.id} />,
+      { state }
     );
     await userEvent.click(
       screen.getByRole("textbox", { name: Labels.StartIp })
@@ -285,12 +227,9 @@ describe("AddReservedRange", () => {
   });
 
   it("displays an error when an invalid IP address is entered", async () => {
-    renderWithBrowserRouter(
-      <AddReservedRange setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
-      {
-        state,
-        route: "/machines",
-      }
+    renderWithProviders(
+      <AddReservedRange createType={ipRange.type} subnetId={subnet.id} />,
+      { state }
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.StartIp }),
@@ -310,12 +249,9 @@ describe("AddReservedRange", () => {
   });
 
   it("displays an error when an out-of-range IP address is entered", async () => {
-    renderWithBrowserRouter(
-      <AddReservedRange setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
-      {
-        state,
-        route: "/machines",
-      }
+    renderWithProviders(
+      <AddReservedRange createType={ipRange.type} subnetId={subnet.id} />,
+      { state }
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.StartIp }),

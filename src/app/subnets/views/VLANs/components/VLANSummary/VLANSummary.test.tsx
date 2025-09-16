@@ -1,8 +1,6 @@
 import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
-import { VLANDetailsSidePanelViews } from "../../views/constants";
-
 import VLANSummary from "./VLANSummary";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
@@ -12,6 +10,7 @@ import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 import type { Space } from "@/app/store/space/types";
 import type { VLAN } from "@/app/store/vlan/types";
+import { EditVLAN } from "@/app/subnets/views/VLANs/components";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
@@ -20,10 +19,12 @@ import {
   within,
   setupMockServer,
   renderWithProviders,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
 setupMockServer(authResolvers.getCurrentUser.handler());
+const { mockOpen } = await mockSidePanel();
 
 describe("VLANSummary", () => {
   let controller: Controller;
@@ -96,8 +97,10 @@ describe("VLANSummary", () => {
     const button = screen.getByRole("button", { name: "Edit" });
     expect(button).toBeInTheDocument();
     await userEvent.click(button);
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: VLANDetailsSidePanelViews.EditVLAN,
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: EditVLAN,
+      title: "Edit VLAN",
+      props: { id: vlan.id },
     });
   });
 });

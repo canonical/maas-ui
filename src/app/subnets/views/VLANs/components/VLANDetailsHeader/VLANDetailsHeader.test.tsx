@@ -8,11 +8,7 @@ import { VlanVid } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
 import { user } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
-import {
-  renderWithBrowserRouter,
-  screen,
-  setupMockServer,
-} from "@/testing/utils";
+import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
@@ -35,8 +31,7 @@ describe("VLANDetailsHeader", () => {
   it("shows the title when the vlan has a name", () => {
     vlan = factory.vlanDetails({ name: "vlan-1", fabric: 2 });
     state.vlan.items = [vlan];
-    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
-      route: "/vlan/1234",
+    renderWithProviders(<VLANDetailsHeader vlan={vlan} />, {
       state,
     });
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
@@ -54,8 +49,7 @@ describe("VLANDetailsHeader", () => {
     state.fabric.items = [
       factory.fabric({ id: 2, name: "fabric1", default_vlan_id: vlan.id }),
     ];
-    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
-      route: "/vlan/1234",
+    renderWithProviders(<VLANDetailsHeader vlan={vlan} />, {
       state,
     });
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
@@ -69,8 +63,7 @@ describe("VLANDetailsHeader", () => {
     state.fabric.items = [
       factory.fabric({ id: 2, name: "fabric1", default_vlan_id: 99 }),
     ];
-    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
-      route: "/vlan/1234",
+    renderWithProviders(<VLANDetailsHeader vlan={vlan} />, {
       state,
     });
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
@@ -81,8 +74,7 @@ describe("VLANDetailsHeader", () => {
   it("shows a spinner subtitle if the vlan is loading details", () => {
     vlan = factory.vlan({ name: "vlan-1" });
     state.vlan.items = [vlan];
-    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
-      route: "/vlan/1234",
+    renderWithProviders(<VLANDetailsHeader vlan={vlan} />, {
       state,
     });
     expect(
@@ -91,8 +83,7 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("does not show a spinner subtitle if the vlan is detailed", () => {
-    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
-      route: "/vlan/1234",
+    renderWithProviders(<VLANDetailsHeader vlan={vlan} />, {
       state,
     });
     expect(
@@ -101,8 +92,7 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("shows the delete button when the user is an admin", async () => {
-    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
-      route: "/vlan/1234",
+    renderWithProviders(<VLANDetailsHeader vlan={vlan} />, {
       state,
     });
     await waitFor(() => {
@@ -116,8 +106,7 @@ describe("VLANDetailsHeader", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(user({ is_superuser: false }))
     );
-    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
-      route: "/vlan/1234",
+    renderWithProviders(<VLANDetailsHeader vlan={vlan} />, {
       state,
     });
     expect(
