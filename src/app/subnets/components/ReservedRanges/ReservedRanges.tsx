@@ -74,10 +74,7 @@ const ReservedRanges = ({
 
   useFetchActions([ipRangeActions.fetch]);
 
-  const columns = useReservedRangesColumns(
-    showSubnetColumn,
-    setSidePanelContent
-  );
+  const columns = useReservedRangesColumns(showSubnetColumn);
 
   const data: ReservedRangesTableData[] = ipRanges.map((ipRange) => ({
     id: ipRange.id,
@@ -156,7 +153,7 @@ const ReservedRanges = ({
         isLoading={ipRangeLoading}
         noData={`No IP ranges have been reserved for this ${isSubnet ? "subnet" : "VLAN"}.`}
         role="table"
-        sortBy={[{ id: "name", desc: true }]}
+        sortBy={[{ id: "startIp", desc: false }]}
       />
       <ExternalLink to={docsUrls.ipRanges}>About IP ranges</ExternalLink>
     </TitledSection>

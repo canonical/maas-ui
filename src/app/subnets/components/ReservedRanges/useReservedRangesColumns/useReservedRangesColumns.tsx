@@ -6,7 +6,7 @@ import { Labels } from "../ReservedRanges";
 
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   SubnetActionTypes,
   SubnetDetailsSidePanelViews,
@@ -29,9 +29,9 @@ export type ReservedRangesColumnsDef = ColumnDef<
 >;
 
 const useReservedRangesColumns = (
-  showSubnetColumn: boolean,
-  setSidePanelContent: SetSidePanelContent
+  showSubnetColumn: boolean
 ): ReservedRangesColumnsDef[] => {
+  const { setSidePanelContent } = useSidePanel();
   return useMemo((): ReservedRangesColumnsDef[] => {
     const columns: ReservedRangesColumnsDef[] = [
       {
