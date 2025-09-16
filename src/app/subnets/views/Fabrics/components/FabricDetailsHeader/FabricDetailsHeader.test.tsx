@@ -34,7 +34,6 @@ describe("FabricDetailsHeader", () => {
 
   it("shows the delete button when the user is an admin", async () => {
     renderWithProviders(<FabricDetailsHeader fabric={fabric} />, {
-      initialEntries: ["/fabric/1"],
       state,
     });
 
@@ -50,7 +49,6 @@ describe("FabricDetailsHeader", () => {
       authResolvers.getCurrentUser.handler(user({ is_superuser: false }))
     );
     renderWithProviders(<FabricDetailsHeader fabric={fabric} />, {
-      initialEntries: ["/fabric/1"],
       state,
     });
 
@@ -59,7 +57,6 @@ describe("FabricDetailsHeader", () => {
 
   it("calls a function to open the Delete form when the button is clicked", async () => {
     renderWithProviders(<FabricDetailsHeader fabric={fabric} />, {
-      initialEntries: ["/fabric/1"],
       state,
     });
 
