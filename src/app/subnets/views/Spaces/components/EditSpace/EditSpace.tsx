@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -14,13 +16,13 @@ const spaceSummaryFormSchema = Yup.object().shape({
   description: Yup.string(),
 });
 
-const SpaceSummaryForm = ({
+const EditSpace = ({
   space,
   handleDismiss,
 }: {
   space: Space;
   handleDismiss: () => void;
-}): React.ReactElement => {
+}): ReactElement => {
   const spaceErrors = useSelector(spaceSelectors.errors);
   const saving = useSelector(spaceSelectors.saving);
   const saved = useSelector(spaceSelectors.saved);
@@ -63,4 +65,4 @@ const SpaceSummaryForm = ({
   );
 };
 
-export default SpaceSummaryForm;
+export default EditSpace;

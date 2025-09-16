@@ -67,7 +67,9 @@ const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(
   () => import("@/app/subnets/views/Fabrics/views/FabricDetails")
 );
-const SpaceDetails = lazy(() => import("@/app/subnets/views/SpaceDetails"));
+const SpaceDetails = lazy(
+  () => import("@/app/subnets/views/Spaces/views/SpaceDetails")
+);
 const SubnetDetails = lazy(
   () => import("@/app/subnets/views/Subnets/views/SubnetDetails")
 );

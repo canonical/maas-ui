@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
-import SpaceSummary from "./SpaceSummary";
+import EditSpace from "./SpaceSummary";
 
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
@@ -25,7 +25,7 @@ it("displays space name and description", () => {
     name: "outer",
     description: "The cold, dark, emptiness of space.",
   });
-  render(<SpaceSummary space={space} />);
+  render(<EditSpace space={space} />);
   const spaceSummary = screen.getByRole("region", { name: "Space summary" });
 
   expect(within(spaceSummary).getByText("outer")).toBeInTheDocument();
@@ -45,7 +45,7 @@ it("can open and close the Edit space summary form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <SpaceSummary space={state.space.items[0]} />
+        <EditSpace space={state.space.items[0]} />
       </MemoryRouter>
     </Provider>
   );

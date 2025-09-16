@@ -1,10 +1,9 @@
 import { Col, Row } from "@canonical/react-components";
 
-import SpaceSummaryForm from "./SpaceSummaryForm";
-
 import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import type { Space } from "@/app/store/space/types";
+import { EditSpace } from "@/app/subnets/views/Spaces/components";
 
 const SpaceSummary = ({ space }: { space: Space }): React.ReactElement => {
   return (
@@ -12,7 +11,7 @@ const SpaceSummary = ({ space }: { space: Space }): React.ReactElement => {
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (
-          <SpaceSummaryForm
+          <EditSpace
             handleDismiss={() => {
               setEditing(false);
             }}

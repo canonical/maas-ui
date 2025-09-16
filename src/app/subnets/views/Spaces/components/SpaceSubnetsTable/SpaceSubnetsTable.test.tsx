@@ -1,6 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import SpaceSubnets from "./SpaceSubnets";
+import SpaceSubnetsTable from "./SpaceSubnetsTable";
 
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen } from "@/testing/utils";
@@ -35,7 +35,7 @@ it("displays a message when there are no subnets", async () => {
   const space = factory.space({ id: 1, subnet_ids: [4], vlan_ids: [2] });
   state.space.items = [space];
 
-  renderWithProviders(<SpaceSubnets space={space} />, { state });
+  renderWithProviders(<SpaceSubnetsTable space={space} />, { state });
 
   expect(
     screen.getByText("There are no subnets on this space.")
@@ -59,7 +59,7 @@ it("displays subnet details correctly", async () => {
   ];
   const store = mockStore(state);
 
-  renderWithProviders(<SpaceSubnets space={space} />, { store });
+  renderWithProviders(<SpaceSubnetsTable space={space} />, { store });
 
   ["Subnet", "Available IPs", "VLAN", "Fabric"].forEach((column) => {
     expect(

@@ -1,26 +1,25 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-
-import SpaceDetailsHeader from "./SpaceDetailsHeader";
-import SpaceDelete from "./SpaceDetailsHeader/SpaceDelete";
-import SpaceSubnets from "./SpaceSubnets";
-import SpaceSummary from "./SpaceSummary";
-import { SpaceDetailsSidePanelViews } from "./constants";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
-import SectionHeader from "@/app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
 import { SpaceMeta } from "@/app/store/space/types";
 import subnetURLs from "@/app/subnets/urls";
+import {
+  SpaceDetailsHeader,
+  SpaceSubnetsTable,
+  SpaceSummary,
+} from "@/app/subnets/views/Spaces/components";
 import { isId } from "@/app/utils";
 
-const SpaceDetails = (): React.ReactElement => {
+const SpaceDetails = (): ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(SpaceMeta.PK);
   const space = useSelector((state: RootState) =>
@@ -28,7 +27,6 @@ const SpaceDetails = (): React.ReactElement => {
   );
   const spacesLoading = useSelector(spaceSelectors.loading);
   const isValidID = isId(id);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useWindowTitle(`${space?.name || "Space"} details`);
 
@@ -41,9 +39,8 @@ const SpaceDetails = (): React.ReactElement => {
     return () => {
       dispatch(spaceActions.setActive(null));
       dispatch(spaceActions.cleanup());
-      setSidePanelContent(null);
     };
-  }, [dispatch, id, isValidID, setSidePanelContent]);
+  }, [dispatch, id, isValidID]);
 
   if (!space) {
     const spaceNotFound = !isValidID || !spacesLoading;
@@ -57,45 +54,23 @@ const SpaceDetails = (): React.ReactElement => {
         />
       );
     }
-    return (
-      <PageContent
-        header={<SectionHeader loading />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
-      />
-    );
-  }
-
-  let content = null;
-
-  if (
-    sidePanelContent &&
-    sidePanelContent.view === SpaceDetailsSidePanelViews.DELETE_SPACE
-  ) {
-    content = (
-      <SpaceDelete
-        handleClose={() => {
-          setSidePanelContent(null);
-        }}
-        space={space}
-      />
-    );
   }
 
   return (
     <PageContent
-      header={
-        <SpaceDetailsHeader
-          setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
-          space={space}
-        />
-      }
-      sidePanelContent={content}
-      sidePanelTitle={getSidePanelTitle("Space", sidePanelContent)}
+      header={<SpaceDetailsHeader space={space} />}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
-      <SpaceSummary space={space} />
-      <SpaceSubnets space={space} />
+      {!space ? (
+        <Spinner text="Loading..." />
+      ) : (
+        <>
+          <SpaceSummary space={space} />
+          <SpaceSubnetsTable space={space} />
+        </>
+      )}
     </PageContent>
   );
 };

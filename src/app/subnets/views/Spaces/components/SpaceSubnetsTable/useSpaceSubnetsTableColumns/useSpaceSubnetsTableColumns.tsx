@@ -5,11 +5,11 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 import FabricLink from "@/app/base/components/FabricLink";
 import SubnetLink from "@/app/base/components/SubnetLink";
 import VLANLink from "@/app/base/components/VLANLink";
-import type { SpaceSubnet } from "@/app/subnets/views/SpaceDetails/SpaceSubnets/SpaceSubnets";
+import type { SpaceSubnet } from "@/app/subnets/views/Spaces/components/SpaceSubnetsTable/SpaceSubnetsTable";
 
 export type SubnetColumnDef = ColumnDef<SpaceSubnet, Partial<SpaceSubnet>>;
 
-const useSpaceSubnetsColumns = (): SubnetColumnDef[] => {
+const useSpaceSubnetsTableColumns = (): SubnetColumnDef[] => {
   return useMemo(
     () => [
       {
@@ -71,4 +71,4 @@ const useSpaceSubnetsColumns = (): SubnetColumnDef[] => {
   );
 };
 
-export default useSpaceSubnetsColumns;
+export default useSpaceSubnetsTableColumns;

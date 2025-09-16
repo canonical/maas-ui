@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import configureStore from "redux-mock-store";
 
-import { SpaceDetailsSidePanelViews } from "../constants";
+import { SpaceDetailsSidePanelViews } from "../../constants";
 
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
 

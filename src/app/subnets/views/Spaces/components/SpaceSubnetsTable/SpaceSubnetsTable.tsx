@@ -14,7 +14,7 @@ import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
 import { getVlanById } from "@/app/store/vlan/utils";
-import useSpaceSubnetsColumns from "@/app/subnets/views/SpaceDetails/SpaceSubnets/useSpaceSubnetsColumns/useSpaceSubnetsColumns";
+import useSpaceSubnetsTableColumns from "@/app/subnets/views/Spaces/components/SpaceSubnetsTable/useSpaceSubnetsTableColumns/useSpaceSubnetsTableColumns";
 import { simpleSortByKey } from "@/app/utils";
 
 import "./_index.scss";
@@ -37,7 +37,7 @@ const getSpaceSubnets = (subnets: Subnet[], vlans: VLAN[]): SpaceSubnet[] => {
   }));
 };
 
-const SpaceSubnets = ({ space }: { space: Space }): ReactElement => {
+const SpaceSubnetsTable = ({ space }: { space: Space }): ReactElement => {
   const vlans = useSelector(vlanSelectors.all);
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getBySpace(state, space.id)
@@ -53,7 +53,7 @@ const SpaceSubnets = ({ space }: { space: Space }): ReactElement => {
     if (!vlansLoaded) dispatch(vlanActions.fetch());
   }, [dispatch, subnetsLoaded, vlansLoaded]);
 
-  const columns = useSpaceSubnetsColumns();
+  const columns = useSpaceSubnetsTableColumns();
   const data = useMemo(() => getSpaceSubnets(subnets, vlans), [subnets, vlans]);
 
   return (
@@ -69,4 +69,4 @@ const SpaceSubnets = ({ space }: { space: Space }): ReactElement => {
   );
 };
 
-export default SpaceSubnets;
+export default SpaceSubnetsTable;

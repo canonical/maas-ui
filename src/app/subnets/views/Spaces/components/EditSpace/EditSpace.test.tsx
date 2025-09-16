@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
-import SpaceSummaryForm from "./SpaceSummaryForm";
+import EditSpace from "./EditSpace";
 
 import { spaceActions } from "@/app/store/space";
 import * as factory from "@/testing/factories";
@@ -32,7 +32,7 @@ it("dispatches an update action on submit", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <SpaceSummaryForm handleDismiss={vi.fn()} space={space} />
+        <EditSpace handleDismiss={vi.fn()} space={space} />
       </MemoryRouter>
     </Provider>
   );
