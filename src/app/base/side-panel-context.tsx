@@ -28,7 +28,7 @@ import {
 import {
   VLANDetailsSidePanelViews,
   type VLANDetailsSidePanelContent,
-} from "@/app/subnets/views/VLANDetails/constants";
+} from "@/app/subnets/views/VLANs/views/constants";
 import { TagSidePanelViews } from "@/app/tags/constants";
 import type { TagSidePanelContent } from "@/app/tags/types";
 

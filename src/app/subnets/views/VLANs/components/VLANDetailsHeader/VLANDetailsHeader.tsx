@@ -1,7 +1,7 @@
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { VLANDetailsSidePanelViews } from "../constants";
+import { VLANDetailsSidePanelViews } from "../../views/constants";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";

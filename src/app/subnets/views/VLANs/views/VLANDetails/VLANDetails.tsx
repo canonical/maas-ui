@@ -2,16 +2,16 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import DHCPStatus from "./DHCPStatus";
-import VLANActionForms from "./VLANActionForms";
-import VLANDetailsHeader from "./VLANDetailsHeader";
-import VLANSubnets from "./VLANSubnets";
-import VLANSummary from "./VLANSummary";
+import DHCPStatus from "../../components/DHCPStatus";
+import VLANActionForms from "../../components/VLANActionForms";
+import VLANDetailsHeader from "../../components/VLANDetailsHeader";
+import VLANSubnets from "../../components/VLANSubnets";
+import VLANSummary from "../../components/VLANSummary";
 import {
   vlanActionLabels,
   type VLANActionType,
   VLANActionTypes,
-} from "./constants";
+} from "../constants";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";

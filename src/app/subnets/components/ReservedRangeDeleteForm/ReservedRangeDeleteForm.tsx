@@ -6,7 +6,7 @@ import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
-import type { VLANActionFormProps } from "@/app/subnets/views/VLANDetails/VLANActionForms/VLANActionForms";
+import type { VLANActionFormProps } from "@/app/subnets/views/VLANs/components/VLANActionForms/VLANActionForms";
 
 const ReservedRangeDeleteForm = ({
   setSidePanelContent,

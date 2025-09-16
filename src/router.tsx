@@ -76,7 +76,9 @@ const SubnetDetails = lazy(
 const SubnetsList = lazy(
   () => import("@/app/subnets/views/Subnets/views/SubnetsList")
 );
-const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
+const VLANDetails = lazy(
+  () => import("@/app/subnets/views/VLANs/views/VLANDetails")
+);
 const Tags = lazy(() => import("@/app/tags/views/Tags"));
 const ZonesList = lazy(() => import("@/app/zones/views"));
 

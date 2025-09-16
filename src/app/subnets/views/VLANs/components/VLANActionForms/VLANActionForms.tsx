@@ -8,9 +8,9 @@ import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import ReservedRangeDeleteForm from "@/app/subnets/components/ReservedRangeDeleteForm";
 import ReservedRangeForm from "@/app/subnets/components/ReservedRangeForm";
-import VLANDeleteForm from "@/app/subnets/views/VLANDetails/VLANDeleteForm";
-import type { VLANActionType } from "@/app/subnets/views/VLANDetails/constants";
-import { VLANActionTypes } from "@/app/subnets/views/VLANDetails/constants";
+import VLANDeleteForm from "@/app/subnets/views/VLANs/components/VLANDeleteForm";
+import type { VLANActionType } from "@/app/subnets/views/VLANs/views/constants";
+import { VLANActionTypes } from "@/app/subnets/views/VLANs/views/constants";
 
 const actionForms = {
   [VLANActionTypes.DeleteVLAN]: VLANDeleteForm,

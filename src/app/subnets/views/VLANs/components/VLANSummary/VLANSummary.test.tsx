@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
-import { VLANDetailsSidePanelViews } from "../constants";
+import { VLANDetailsSidePanelViews } from "../../views/constants";
 
 import VLANSummary from "./VLANSummary";
 
