@@ -8,7 +8,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import SubnetSelect from "@/app/base/components/SubnetSelect";
 import { useFetchActions } from "@/app/base/hooks";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { RootState } from "@/app/store/root/types";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
@@ -37,21 +37,18 @@ const addStaticRouteSchema = Yup.object().shape({
   metric: Yup.number().required("Metric is required"),
 });
 
-export type Props = {
+export type AddStaticRouteProps = {
   subnetId: Subnet[SubnetMeta.PK];
-  setSidePanelContent: SetSidePanelContent;
 };
+
 const AddStaticRouteForm = ({
   subnetId,
-  setSidePanelContent,
-}: Props): React.ReactElement | null => {
+}: AddStaticRouteProps): React.ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
   const saving = useSelector(staticRouteSelectors.saving);
   const saved = useSelector(staticRouteSelectors.saved);
   const dispatch = useDispatch();
-  const handleClose = () => {
-    setSidePanelContent(null);
-  };
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const loading = staticRoutesLoading || subnetsLoading;
@@ -76,7 +73,7 @@ const AddStaticRouteForm = ({
         destination: "",
         metric: "0",
       }}
-      onCancel={handleClose}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: AddStaticRouteFormLabels.Save,
         category: "Subnet",
@@ -93,9 +90,7 @@ const AddStaticRouteForm = ({
           })
         );
       }}
-      onSuccess={() => {
-        handleClose();
-      }}
+      onSuccess={closeSidePanel}
       resetOnSave
       saved={saved}
       saving={saving}

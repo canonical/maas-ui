@@ -1,29 +1,32 @@
+import type { ReactElement } from "react";
+
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import TitledSection from "@/app/base/components/TitledSection";
 import { useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import { subnetActions } from "@/app/store/subnet";
 import { useCanBeDeleted, useIsDHCPEnabled } from "@/app/store/subnet/hooks";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import subnetURLs from "@/app/subnets/urls";
-import type { SubnetActionProps } from "@/app/subnets/views/Subnets/views/types";
+
+type DeleteSubnetProps = {
+  id: number;
+};
 
 export const DeleteSubnet = ({
-  subnetId,
-  setSidePanelContent,
-}: Omit<SubnetActionProps, "activeForm">): React.ReactElement | null => {
+  id,
+}: DeleteSubnetProps): ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const errors = useSelector(subnetSelectors.errors);
   const saving = useSelector(subnetSelectors.saving);
   const saved = useSelector(subnetSelectors.saved);
-  const handleClose = () => {
-    setSidePanelContent(null);
-  };
-  const canBeDeleted = useCanBeDeleted(subnetId);
-  const dhcpEnabled = useIsDHCPEnabled(subnetId);
+  const canBeDeleted = useCanBeDeleted(id);
+  const dhcpEnabled = useIsDHCPEnabled(id);
 
   useFetchActions([subnetActions.fetch]);
 
@@ -38,10 +41,11 @@ export const DeleteSubnet = ({
         cleanup={subnetActions.cleanup}
         errors={errors}
         initialValues={{}}
-        onCancel={handleClose}
+        onCancel={closeSidePanel}
         onSubmit={() => {
-          dispatch(subnetActions.delete(subnetId));
+          dispatch(subnetActions.delete(id));
         }}
+        onSuccess={closeSidePanel}
         saved={saved}
         savedRedirect={subnetURLs.index}
         saving={saving}

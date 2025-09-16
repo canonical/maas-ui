@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
@@ -8,13 +9,13 @@ import BootArchitecturesTable from "./BootArchitecturesTable";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { generalActions } from "@/app/store/general";
 import { knownBootArchitectures as knownBootArchitecturesSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
-import type { SubnetActionProps } from "@/app/subnets/views/Subnets/views/types";
 
 export type FormValues = {
   disabled_boot_architectures: Subnet["disabled_boot_architectures"];
@@ -24,10 +25,14 @@ const Schema = Yup.object().shape({
   disabled_boot_architectures: Yup.array().of(Yup.string()),
 });
 
+type EditBootArchitecturesProps = {
+  subnetId: number;
+};
+
 export const EditBootArchitectures = ({
   subnetId,
-  setSidePanelContent,
-}: Omit<SubnetActionProps, "activeForm">): React.ReactElement | null => {
+}: EditBootArchitecturesProps): ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const architecturesLoading = useSelector(
     knownBootArchitecturesSelectors.loading
@@ -50,9 +55,6 @@ export const EditBootArchitectures = ({
     );
   }
 
-  const closeForm = () => {
-    setSidePanelContent(null);
-  };
   return (
     <FormikForm<FormValues>
       cleanup={cleanup}
@@ -60,7 +62,7 @@ export const EditBootArchitectures = ({
       initialValues={{
         disabled_boot_architectures: subnet.disabled_boot_architectures,
       }}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Edit boot architectures",
         category: "Subnet details",
@@ -76,7 +78,7 @@ export const EditBootArchitectures = ({
           })
         );
       }}
-      onSuccess={closeForm}
+      onSuccess={closeSidePanel}
       saved={saved}
       saving={saving}
       submitLabel="Save"

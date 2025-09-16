@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
 import type {
@@ -11,15 +11,14 @@ import type {
   StaticRouteMeta,
 } from "@/app/store/staticroute/types";
 
-type Props = {
+type DeleteStaticRouteFormProps = {
   staticRouteId?: StaticRoute[StaticRouteMeta.PK];
-  setSidePanelContent: SetSidePanelContent;
 };
 
 const DeleteStaticRouteForm = ({
   staticRouteId,
-  setSidePanelContent,
-}: Props): ReactElement | null => {
+}: DeleteStaticRouteFormProps): ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const saved = useSelector(staticRouteSelectors.saved);
   const saving = useSelector(staticRouteSelectors.saving);
@@ -32,15 +31,11 @@ const DeleteStaticRouteForm = ({
       aria-label="Confirm static route deletion"
       initialValues={{}}
       modelType="static route"
-      onCancel={() => {
-        setSidePanelContent(null);
-      }}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         dispatch(staticRouteActions.delete(staticRouteId));
       }}
-      onSuccess={() => {
-        setSidePanelContent(null);
-      }}
+      onSuccess={closeSidePanel}
       saved={saved}
       saving={saving}
     />

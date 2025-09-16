@@ -8,7 +8,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import SubnetSelect from "@/app/base/components/SubnetSelect";
 import { useFetchActions } from "@/app/base/hooks";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { RootState } from "@/app/store/root/types";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
@@ -38,21 +38,17 @@ const editStaticRouteSchema = Yup.object().shape({
   metric: Yup.number().required("Metric is required"),
 });
 
-export type Props = {
+export type EditStaticRouteFormProps = {
   staticRouteId?: StaticRoute[StaticRouteMeta.PK];
-  setSidePanelContent: SetSidePanelContent;
 };
 const EditStaticRouteForm = ({
   staticRouteId,
-  setSidePanelContent,
-}: Props): React.ReactElement | null => {
+}: EditStaticRouteFormProps): React.ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
   const saving = useSelector(staticRouteSelectors.saving);
   const saved = useSelector(staticRouteSelectors.saved);
   const dispatch = useDispatch();
-  const handleClose = () => {
-    setSidePanelContent(null);
-  };
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const loading = staticRoutesLoading || subnetsLoading;
@@ -82,7 +78,7 @@ const EditStaticRouteForm = ({
         destination: staticRoute.destination,
         metric: staticRoute.metric,
       }}
-      onCancel={handleClose}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: EditStaticRouteFormLabels.Save,
         category: "Subnet",
@@ -100,9 +96,7 @@ const EditStaticRouteForm = ({
           })
         );
       }}
-      onSuccess={() => {
-        handleClose();
-      }}
+      onSuccess={closeSidePanel}
       resetOnSave
       saved={saved}
       saving={saving}

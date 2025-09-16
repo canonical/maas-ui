@@ -1,24 +1,22 @@
+import type { ReactElement } from "react";
+
 import { GenericTable } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import {
-  SubnetActionTypes,
-  SubnetDetailsSidePanelViews,
-} from "../../views/constants";
-
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import TitledSection from "@/app/base/components/TitledSection";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import AddStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/AddStaticRouteForm";
 import useStaticRoutesColumns from "@/app/subnets/views/Subnets/components/StaticRoutes/useStaticRoutesColumns/useStaticRoutesColumns";
 
-export type Props = {
+export type StaticRoutesProps = {
   subnetId: Subnet[SubnetMeta.PK];
 };
 
@@ -29,17 +27,14 @@ export enum Labels {
   Actions = "Actions",
 }
 
-const StaticRoutes = ({ subnetId }: Props): React.ReactElement | null => {
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+const StaticRoutes = ({ subnetId }: StaticRoutesProps): ReactElement | null => {
+  const { openSidePanel, isOpen } = useSidePanel();
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const staticRoutes = useSelector(staticRouteSelectors.all).filter(
     (staticRoute) => staticRoute.source === subnetId
   );
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const isSuperUser = useGetIsSuperUser();
-  const isAddStaticRouteOpen =
-    sidePanelContent?.view ===
-    SubnetDetailsSidePanelViews[SubnetActionTypes.AddStaticRoute];
 
   useFetchActions([staticRouteActions.fetch, subnetActions.fetch]);
 
@@ -50,12 +45,14 @@ const StaticRoutes = ({ subnetId }: Props): React.ReactElement | null => {
       buttons={
         isSuperUser.data ? (
           <Button
-            disabled={isAddStaticRouteOpen}
+            disabled={isOpen}
             onClick={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.AddStaticRoute
-                ],
+              openSidePanel({
+                component: AddStaticRouteForm,
+                title: "Add static route",
+                props: {
+                  subnetId,
+                },
               });
             }}
           >

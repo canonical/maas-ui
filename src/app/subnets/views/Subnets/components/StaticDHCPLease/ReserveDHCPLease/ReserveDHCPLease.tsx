@@ -7,14 +7,13 @@ import { isIP, isIPv4 } from "is-ip";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import type { SubnetActionProps } from "../../../views/types";
-
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import PrefixedIpInput, {
   formatIpAddress,
 } from "@/app/base/components/PrefixedIpInput";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { reservedIpActions } from "@/app/store/reservedip";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
@@ -29,10 +28,10 @@ import {
 
 const MAX_COMMENT_LENGTH = 255;
 
-type Props = Pick<
-  SubnetActionProps,
-  "reservedIpId" | "setSidePanelContent" | "subnetId"
->;
+type ReserveDHCPLeaseProps = {
+  subnetId?: number;
+  reservedIpId?: number;
+};
 
 type FormValues = {
   ip_address: string;
@@ -42,9 +41,9 @@ type FormValues = {
 
 const ReserveDHCPLease = ({
   subnetId,
-  setSidePanelContent,
   reservedIpId,
-}: Props): ReactElement | null => {
+}: ReserveDHCPLeaseProps): ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, subnetId)
   );
@@ -109,10 +108,6 @@ const ReserveDHCPLease = ({
         comment: "",
       };
     }
-  };
-
-  const onClose = () => {
-    setSidePanelContent(null);
   };
 
   const ReserveDHCPLeaseSchema = Yup.object().shape({
@@ -191,9 +186,9 @@ const ReserveDHCPLease = ({
       enableReinitialize
       errors={errors}
       initialValues={getInitialValues()}
-      onCancel={onClose}
+      onCancel={closeSidePanel}
       onSubmit={handleSubmit}
-      onSuccess={onClose}
+      onSuccess={closeSidePanel}
       resetOnSave
       saved={saved}
       saving={saving}

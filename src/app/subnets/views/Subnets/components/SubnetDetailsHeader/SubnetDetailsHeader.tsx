@@ -1,22 +1,24 @@
+import type { ReactElement } from "react";
+
 import { ContextualMenu } from "@canonical/react-components";
 import { useLocation, Link } from "react-router";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { Subnet } from "@/app/store/subnet/types";
 import { isSubnetDetails } from "@/app/store/subnet/utils";
 import {
-  subnetActionLabels,
-  SubnetActionTypes,
-  SubnetDetailsSidePanelViews,
-} from "@/app/subnets/views/Subnets/views/constants";
+  DeleteSubnet,
+  EditBootArchitectures,
+  MapSubnet,
+} from "@/app/subnets/views/Subnets/components";
 
 type Props = {
   subnet: Subnet;
 };
 
-const SubnetDetailsHeader = ({ subnet }: Props): React.ReactElement => {
-  const { setSidePanelContent } = useSidePanel();
+const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
+  const { openSidePanel } = useSidePanel();
   const { pathname } = useLocation();
   const urlBase = `/subnet/${subnet.id}`;
   return (
@@ -25,15 +27,43 @@ const SubnetDetailsHeader = ({ subnet }: Props): React.ReactElement => {
         <ContextualMenu
           hasToggleIcon
           links={[
-            SubnetActionTypes.MapSubnet,
-            SubnetActionTypes.EditBootArchitectures,
-            SubnetActionTypes.DeleteSubnet,
-          ].map((view) => ({
-            children: subnetActionLabels[view],
-            onClick: () => {
-              setSidePanelContent({ view: SubnetDetailsSidePanelViews[view] });
+            {
+              children: "Map subnet",
+              onClick: () => {
+                openSidePanel({
+                  component: MapSubnet,
+                  title: "Map subnet",
+                  props: {
+                    subnetId: subnet.id,
+                  },
+                });
+              },
             },
-          }))}
+            {
+              children: "Edit boot architectures",
+              onClick: () => {
+                openSidePanel({
+                  component: EditBootArchitectures,
+                  title: "Edit boot architectures",
+                  props: {
+                    subnetId: subnet.id,
+                  },
+                });
+              },
+            },
+            {
+              children: "Delete subnet",
+              onClick: () => {
+                openSidePanel({
+                  component: DeleteSubnet,
+                  title: "Delete subnet",
+                  props: {
+                    id: subnet.id,
+                  },
+                });
+              },
+            },
+          ]}
           position="right"
           toggleAppearance="positive"
           toggleLabel="Take action"

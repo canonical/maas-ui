@@ -2,18 +2,19 @@ import type { ReactElement } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import type { SubnetActionProps } from "../../../views/types";
-
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { reservedIpActions } from "@/app/store/reservedip";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = Pick<SubnetActionProps, "reservedIpId" | "setSidePanelContent">;
+type DeleteDHCPLeaseProps = {
+  reservedIpId: number;
+};
 const DeleteDHCPLease = ({
-  setSidePanelContent,
   reservedIpId,
-}: Props): ReactElement => {
+}: DeleteDHCPLeaseProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const errors = useSelector(reservedIpSelectors.errors);
   const saving = useSelector(reservedIpSelectors.saving);
@@ -23,10 +24,6 @@ const DeleteDHCPLease = ({
     reservedIpSelectors.getById(state, reservedIpId)
   );
 
-  const handleClose = () => {
-    setSidePanelContent(null);
-  };
-
   return (
     <ModelActionForm
       aria-label="Delete static IP"
@@ -35,14 +32,14 @@ const DeleteDHCPLease = ({
       initialValues={{}}
       message={`Are you sure you want to delete ${reservedIp?.ip}? This action is permanent and cannot be undone.`}
       modelType="static IP"
-      onCancel={handleClose}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         reservedIp &&
           dispatch(
             reservedIpActions.delete({ id: reservedIp.id, ip: reservedIp.ip })
           );
       }}
-      onSuccess={handleClose}
+      onSuccess={closeSidePanel}
       saved={saved}
       saving={saving}
     />

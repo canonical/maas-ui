@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Notification, Spinner, Strip } from "@canonical/react-components";
@@ -6,17 +7,21 @@ import { Link } from "react-router";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useCycled } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
-import type { SubnetActionProps } from "@/app/subnets/views/Subnets/views/types";
+
+type MapSubnetProps = {
+  subnetId: number;
+};
 
 export const MapSubnet = ({
   subnetId,
-  setSidePanelContent,
-}: Omit<SubnetActionProps, "activeForm">): React.ReactElement | null => {
+}: MapSubnetProps): ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const cleanup = useCallback(() => subnetActions.cleanup(), []);
   const subnet = useSelector((state: RootState) =>
@@ -39,22 +44,19 @@ export const MapSubnet = ({
     );
   }
 
-  const closeForm = () => {
-    setSidePanelContent(null);
-  };
   const isIPv4 = subnet.version === 4;
   return (
     <FormikForm<EmptyObject>
       cleanup={cleanup}
       errors={scanError}
       initialValues={{}}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         resetScanned();
         dispatch(cleanup());
         dispatch(subnetActions.scan(subnetId));
       }}
-      onSuccess={closeForm}
+      onSuccess={closeSidePanel}
       saved={saved}
       saving={scanning}
       submitDisabled={!isIPv4}

@@ -4,17 +4,13 @@ import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import {
-  SubnetActionTypes,
-  SubnetDetailsSidePanelViews,
-} from "../../views/constants";
-
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { useReservedIps } from "@/app/store/subnet/hooks";
 import type { SubnetMeta } from "@/app/store/subnet/types";
 import type { Subnet } from "@/app/store/subnet/types/base";
+import ReserveDHCPLease from "@/app/subnets/views/Subnets/components/StaticDHCPLease/ReserveDHCPLease";
 import StaticDHCPTable from "@/app/subnets/views/Subnets/components/StaticDHCPLease/StaticDHCPTable";
 
 type StaticDHCPLeaseProps = {
@@ -22,7 +18,7 @@ type StaticDHCPLeaseProps = {
 };
 
 const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps): ReactElement => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const staticDHCPLeases = useReservedIps(subnetId);
   const loading = useSelector((state: RootState) =>
     reservedIpSelectors.loading(state)
@@ -36,10 +32,12 @@ const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps): ReactElement => {
           <Button
             appearance="positive"
             onClick={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.ReserveDHCPLease
-                ],
+              openSidePanel({
+                component: ReserveDHCPLease,
+                title: "Reserve DHCP lease",
+                props: {
+                  subnetId,
+                },
               });
             }}
           >
@@ -47,7 +45,11 @@ const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps): ReactElement => {
           </Button>
         </MainToolbar.Controls>
       </MainToolbar>
-      <StaticDHCPTable loading={loading} reservedIps={staticDHCPLeases} />
+      <StaticDHCPTable
+        loading={loading}
+        reservedIps={staticDHCPLeases}
+        subnetId={subnetId}
+      />
     </>
   );
 };

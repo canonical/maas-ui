@@ -22,10 +22,6 @@ import type { MachineSidePanelContent } from "@/app/machines/types";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import {
-  SubnetDetailsSidePanelViews,
-  type SubnetDetailsSidePanelContent,
-} from "@/app/subnets/views/Subnets/views/constants";
-import {
   VLANDetailsSidePanelViews,
   type VLANDetailsSidePanelContent,
 } from "@/app/subnets/views/VLANs/views/constants";
@@ -40,7 +36,6 @@ export type SidePanelContent =
   | ImageSidePanelContent
   | KVMSidePanelContent
   | MachineSidePanelContent
-  | SubnetDetailsSidePanelContent
   | TagSidePanelContent
   | VLANDetailsSidePanelContent
   | null;
@@ -66,7 +61,6 @@ export const SidePanelViews = {
   ...DomainListSidePanelViews,
   ...VLANDetailsSidePanelViews,
   ...ImageSidePanelViews,
-  ...SubnetDetailsSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {

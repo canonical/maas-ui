@@ -3,14 +3,14 @@ import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
-import { SubnetDetailsSidePanelViews } from "../../../../views/constants";
-
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { ReservedIpNodeSummary } from "@/app/store/reservedip/types/base";
 import { getNodeUrl } from "@/app/store/reservedip/utils";
 import type { NodeType } from "@/app/store/types/node";
 import { getNodeTypeDisplay } from "@/app/store/utils";
+import DeleteDHCPLease from "@/app/subnets/views/Subnets/components/StaticDHCPLease/DeleteDHCPLease";
+import ReserveDHCPLease from "@/app/subnets/views/Subnets/components/StaticDHCPLease/ReserveDHCPLease";
 
 export type StaticDHCPTableData = {
   id: number;
@@ -27,8 +27,12 @@ export type StaticDHCPColumnDef = ColumnDef<
   Partial<StaticDHCPTableData>
 >;
 
-const useStaticDHCPTableColumns = (): StaticDHCPColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+const useStaticDHCPTableColumns = ({
+  subnetId,
+}: {
+  subnetId: number;
+}): StaticDHCPColumnDef[] => {
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     (): StaticDHCPColumnDef[] => [
       {
@@ -108,22 +112,29 @@ const useStaticDHCPTableColumns = (): StaticDHCPColumnDef[] => {
         }) => (
           <TableActions
             onDelete={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews.DeleteDHCPLease,
-                extras: { reservedIpId: id },
+              openSidePanel({
+                component: DeleteDHCPLease,
+                title: "Delete DHCP lease",
+                props: {
+                  reservedIpId: id,
+                },
               });
             }}
             onEdit={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews.ReserveDHCPLease,
-                extras: { reservedIpId: id },
+              openSidePanel({
+                component: ReserveDHCPLease,
+                title: "Edit DHCP lease",
+                props: {
+                  reservedIpId: id,
+                  subnetId,
+                },
               });
             }}
           />
         ),
       },
     ],
-    [setSidePanelContent]
+    [openSidePanel, subnetId]
   );
 };
 

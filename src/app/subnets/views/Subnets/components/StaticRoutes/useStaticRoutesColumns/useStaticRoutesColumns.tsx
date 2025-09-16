@@ -4,17 +4,15 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { StaticRoute } from "@/app/store/staticroute/types";
-import {
-  SubnetActionTypes,
-  SubnetDetailsSidePanelViews,
-} from "@/app/subnets/views/Subnets/views/constants";
+import DeleteStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/DeleteStaticRouteform";
+import EditStaticRouteForm from "@/app/subnets/views/Subnets/components/StaticRoutes/EditStaticRouteForm";
 
 export type StaticRouteColumnDef = ColumnDef<StaticRoute, Partial<StaticRoute>>;
 
 const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () => [
       {
@@ -56,26 +54,28 @@ const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
         }) => (
           <TableActions
             onDelete={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.DeleteStaticRoute
-                ],
-                extras: { staticRouteId: id },
+              openSidePanel({
+                component: DeleteStaticRouteForm,
+                title: "Delete static route",
+                props: {
+                  staticRouteId: id,
+                },
               });
             }}
             onEdit={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.EditStaticRoute
-                ],
-                extras: { staticRouteId: id },
+              openSidePanel({
+                component: EditStaticRouteForm,
+                title: "Edit static route",
+                props: {
+                  staticRouteId: id,
+                },
               });
             }}
           />
         ),
       },
     ],
-    [setSidePanelContent]
+    [openSidePanel]
   );
 };
 

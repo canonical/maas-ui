@@ -2,17 +2,21 @@ import type { ReactElement } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
 
-import useStaticDHCPTableColumns from "./useStaticDHCPTableColumns/useStaticDHCPTableColumns";
-
 import type { ReservedIp } from "@/app/store/reservedip/types/base";
+import useStaticDHCPTableColumns from "@/app/subnets/views/Subnets/components/StaticDHCPLease/StaticDHCPTable/useStaticDHCPTableColumns/useStaticDHCPTableColumns";
 
 type Props = {
+  subnetId: number;
   reservedIps: ReservedIp[];
   loading: boolean;
 };
 
-const StaticDHCPTable = ({ reservedIps, loading }: Props): ReactElement => {
-  const columns = useStaticDHCPTableColumns();
+const StaticDHCPTable = ({
+  subnetId,
+  reservedIps,
+  loading,
+}: Props): ReactElement => {
+  const columns = useStaticDHCPTableColumns({ subnetId });
   const data = reservedIps.map((reservedIp) => ({
     id: reservedIp.id,
     ipAddress: reservedIp.ip,
@@ -29,7 +33,7 @@ const StaticDHCPTable = ({ reservedIps, loading }: Props): ReactElement => {
       columns={columns}
       data={data}
       isLoading={loading}
-      noData="No static DHCP leases available"
+      noData="No static DHCP leases available."
       role="table"
     />
   );
