@@ -4,13 +4,13 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type { BootResource } from "@/app/store/bootresource/types";
 import { BootResourceAction } from "@/app/store/bootresource/types";
 
 type Props = {
-  closeForm: () => void;
   resource: BootResource;
 };
 
@@ -18,10 +18,8 @@ export enum Labels {
   AreYouSure = "Are you sure you want to delete this image?",
 }
 
-const DeleteImageForm = ({
-  closeForm,
-  resource,
-}: Props): React.ReactElement | null => {
+const DeleteImageForm = ({ resource }: Props): React.ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const saving = useSelector(bootResourceSelectors.deletingImage);
   const previousSaving = usePrevious(saving);
@@ -44,14 +42,14 @@ const DeleteImageForm = ({
       initialValues={{}}
       message={Labels.AreYouSure}
       modelType="image"
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         dispatch(bootResourceActions.cleanup());
         dispatch(bootResourceActions.deleteImage({ id: resource.id }));
       }}
       onSuccess={() => {
         dispatch(bootResourceActions.poll({ continuous: false }));
-        closeForm();
+        closeSidePanel();
       }}
       saved={saved}
       saving={saving}

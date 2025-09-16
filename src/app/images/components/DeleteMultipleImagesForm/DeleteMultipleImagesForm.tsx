@@ -7,6 +7,7 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import { BootResourceAction } from "@/app/store/bootresource/types";
@@ -17,14 +18,13 @@ type DeleteImagesProps = {
     | Dispatch<SetStateAction<RowSelectionState>>
     | null
     | undefined;
-  closeForm: () => void;
 };
 
 const DeleteMultipleImagesForm = ({
   rowSelection,
   setRowSelection,
-  closeForm,
 }: DeleteImagesProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const saving = useSelector(bootResourceSelectors.deletingImage);
   const previousSaving = usePrevious(saving);
@@ -57,7 +57,7 @@ const DeleteMultipleImagesForm = ({
         </>
       }
       modelType="image"
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         dispatch(bootResourceActions.cleanup());
         Object.keys(rowSelection).forEach((key) => {
@@ -71,7 +71,7 @@ const DeleteMultipleImagesForm = ({
         if (setRowSelection) {
           setRowSelection({});
         }
-        closeForm();
+        closeSidePanel();
       }}
       saved={saved}
       saving={saving}

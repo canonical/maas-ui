@@ -159,6 +159,7 @@ export const groupArchesByRelease = (images: ImagesByOS): GroupedImages => {
 };
 
 const SelectUpstreamImagesForm = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const otherImages = useSelector(bootResourceSelectors.otherImages);
@@ -198,12 +199,6 @@ const SelectUpstreamImagesForm = (): ReactElement => {
     };
   }, [dispatch]);
 
-  const { closeSidePanel } = useSidePanel();
-
-  const resetForm = () => {
-    closeSidePanel();
-  };
-
   return (
     <div className="select-upstream-images-form">
       Select images to be imported and kept in sync daily. Images will be
@@ -224,7 +219,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
           enableReinitialize
           errors={error}
           initialValues={syncedImages}
-          onCancel={resetForm}
+          onCancel={closeSidePanel}
           onSubmit={(values) => {
             dispatch(cleanup());
             const ubuntuSystems: {
@@ -289,7 +284,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
               dispatch(bootResourceActions.saveOther(params));
               dispatch(bootResourceActions.saveOtherSuccess());
             }
-            resetForm();
+            closeSidePanel();
           }}
           onSuccess={() => {
             dispatch(bootResourceActions.poll({ continuous: false }));

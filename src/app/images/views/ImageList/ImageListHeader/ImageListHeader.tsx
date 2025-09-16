@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useFetchActions, useCycled } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import DeleteMultipleImagesForm from "@/app/images/components/ImagesForms/DeleteMultipleImagesForm";
-import SelectUpstreamImagesForm from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm";
+import DeleteMultipleImagesForm from "@/app/images/components/DeleteMultipleImagesForm";
+import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
@@ -64,7 +64,7 @@ const ImageListHeader = ({
   const canStopImport = (saving || imagesDownloading) && !stoppingImport;
   const cleanup = useCallback(() => bootResourceActions.cleanup(), []);
 
-  const { openSidePanel, closeSidePanel } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const isDeleteDisabled = Object.keys(selectedRows).length <= 0;
 
   const sources = ubuntu?.sources || [];
@@ -128,9 +128,6 @@ const ImageListHeader = ({
               openSidePanel({
                 component: DeleteMultipleImagesForm,
                 props: {
-                  closeForm: () => {
-                    closeSidePanel();
-                  },
                   rowSelection: selectedRows,
                   setRowSelection: setSelectedRows,
                 },

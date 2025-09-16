@@ -1,6 +1,7 @@
 import configureStore from "redux-mock-store";
 
-import SelectUpstreamImagesForm from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
+import SelectUpstreamImagesForm from "./SelectUpstreamImagesForm";
+
 import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import type { RootState } from "@/app/store/root/types";

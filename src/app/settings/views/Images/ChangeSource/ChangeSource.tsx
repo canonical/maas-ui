@@ -14,7 +14,7 @@ import type { APIError } from "@/app/base/types";
 import {
   getDownloadableImages,
   getSyncedImages,
-} from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
+} from "@/app/images/components/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
 import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";

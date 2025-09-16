@@ -9,7 +9,6 @@ import ImageListHeader from "./ImageListHeader";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
 import ImagesTable from "@/app/images/components/ImagesTable";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { configActions } from "@/app/store/config";
@@ -23,14 +22,12 @@ const ImageList = (): ReactElement => {
   const dispatch = useDispatch();
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const configLoaded = useSelector(configSelectors.loaded);
-  const { closeSidePanel } = useSidePanel();
 
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
 
   useWindowTitle("Images");
 
   useEffect(() => {
-    closeSidePanel();
     dispatch(bootResourceActions.poll({ continuous: true }));
     dispatch(configActions.fetch());
     return () => {
@@ -46,7 +43,7 @@ const ImageList = (): ReactElement => {
           setSelectedRows={setSelectedRows}
         />
       }
-      sidePanelContent={null}
+      sidePanelContent={undefined}
       sidePanelTitle={null}
       useNewSidePanelContext={true}
     >

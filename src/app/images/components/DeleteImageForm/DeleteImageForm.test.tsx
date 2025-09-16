@@ -1,31 +1,40 @@
 import { Formik } from "formik";
 import configureStore from "redux-mock-store";
 
-import DeleteMultipleImagesForm from "./DeleteMultipleImagesForm";
+import DeleteImageForm from "./DeleteImageForm";
 
 import { Labels as TableDeleteConfirmLabels } from "@/app/base/components/TableDeleteConfirm/TableDeleteConfirm";
 import { bootResourceActions } from "@/app/store/bootresource";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  mockSidePanel,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
-describe("DeleteMultipleImagesForm", () => {
+const { mockClose } = await mockSidePanel();
+
+describe("DeleteImageForm", () => {
   it("calls closeForm on cancel click", async () => {
-    const closeForm = vi.fn();
-    renderWithBrowserRouter(
+    const resource = factory.bootResource();
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        resources: [resource],
+      }),
+    });
+    renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteMultipleImagesForm
-          closeForm={closeForm}
-          rowSelection={{}}
-          setRowSelection={vi.fn}
-        />
-      </Formik>
+        <DeleteImageForm resource={resource} />
+      </Formik>,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("runs cleanup function on unmount", () => {
@@ -36,17 +45,13 @@ describe("DeleteMultipleImagesForm", () => {
       }),
     });
     const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(
+    const { result } = renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteMultipleImagesForm
-          closeForm={vi.fn}
-          rowSelection={{}}
-          setRowSelection={vi.fn}
-        />
+        <DeleteImageForm resource={resource} />
       </Formik>,
       { store }
     );
-    unmount();
+    result.unmount();
 
     const expectedAction = bootResourceActions.cleanup();
     const actualActions = store.getActions();
@@ -63,13 +68,9 @@ describe("DeleteMultipleImagesForm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteMultipleImagesForm
-          closeForm={vi.fn}
-          rowSelection={{ 1: true }}
-          setRowSelection={vi.fn}
-        />
+        <DeleteImageForm resource={resource} />
       </Formik>,
       { store }
     );

@@ -65,7 +65,6 @@ describe("ImagesIntro", () => {
     renderWithProviders(<ImagesIntro />, {
       state,
     });
-    screen.debug();
     expect(
       screen.getByRole("button", { name: ImagesIntroLabels.Continue })
     ).not.toBeAriaDisabled();

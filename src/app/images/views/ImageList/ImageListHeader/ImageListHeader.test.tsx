@@ -5,10 +5,8 @@ import ImageListHeader, {
   Labels as ImageListHeaderLabels,
 } from "./ImageListHeader";
 
-import * as sidePanelHooks from "@/app/base/side-panel-context";
-import * as newSidePanelHooks from "@/app/base/side-panel-context-new";
-import DeleteMultipleImagesForm from "@/app/images/components/ImagesForms/DeleteMultipleImagesForm";
-import SelectUpstreamImagesForm from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm";
+import DeleteMultipleImagesForm from "@/app/images/components/DeleteMultipleImagesForm";
+import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import type { RootState } from "@/app/store/root/types";
@@ -18,7 +16,10 @@ import {
   screen,
   within,
   renderWithProviders,
+  mockSidePanel,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("ImageListHeader", () => {
   it("sets the subtitle loading state when polling", () => {
@@ -82,17 +83,6 @@ describe("ImageListHeader", () => {
 });
 
 describe("Change sources", () => {
-  const setSidePanelContent = vi.fn();
-
-  beforeEach(() => {
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent,
-      sidePanelContent: null,
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
-  });
-
   it("renders the correct text for a single default source", () => {
     const state = factory.rootState({
       bootresource: factory.bootResourceState({
@@ -161,22 +151,6 @@ describe("Change sources", () => {
 });
 
 describe("Select upstream images", () => {
-  const openSidePanel = vi.fn();
-  const closeSidePanel = vi.fn();
-
-  beforeEach(() => {
-    vi.spyOn(newSidePanelHooks, "useSidePanel").mockReturnValue({
-      isOpen: false,
-      openSidePanel,
-      closeSidePanel,
-      setSidePanelSize: vi.fn,
-      size: "regular",
-      props: {},
-      title: "",
-      component: null,
-    });
-  });
-
   it("can trigger select upstream images side panel form", async () => {
     const state = factory.rootState({
       bootresource: factory.bootResourceState({
@@ -201,7 +175,7 @@ describe("Select upstream images", () => {
       screen.getByRole("button", { name: "Select upstream images" })
     );
 
-    expect(openSidePanel).toHaveBeenCalledWith({
+    expect(mockOpen).toHaveBeenCalledWith({
       component: SelectUpstreamImagesForm,
       title: "Select upstream images to sync",
     });
@@ -306,22 +280,6 @@ describe("Stop import", () => {
 });
 
 describe("Delete", () => {
-  const openSidePanel = vi.fn();
-  const closeSidePanel = vi.fn();
-
-  beforeEach(() => {
-    vi.spyOn(newSidePanelHooks, "useSidePanel").mockReturnValue({
-      isOpen: false,
-      openSidePanel,
-      closeSidePanel,
-      setSidePanelSize: vi.fn,
-      size: "regular",
-      props: {},
-      title: "",
-      component: null,
-    });
-  });
-
   it("disables the button to delete images if no rows are selected", async () => {
     const state = factory.rootState({
       bootresource: factory.bootResourceState({
@@ -365,12 +323,11 @@ describe("Delete", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    expect(openSidePanel).toHaveBeenCalledWith({
+    expect(mockOpen).toHaveBeenCalledWith({
       component: DeleteMultipleImagesForm,
       props: {
         rowSelection: { 1: true },
         setRowSelection: expect.any(Function),
-        closeForm: expect.any(Function),
       },
       title: "Delete multiple images",
     });
