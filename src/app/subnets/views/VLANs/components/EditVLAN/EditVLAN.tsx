@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Col, Row, Spinner, Textarea } from "@canonical/react-components";
@@ -10,6 +11,7 @@ import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import SpaceSelect from "@/app/base/components/SpaceSelect";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { RootState } from "@/app/store/root/types";
 import { getSpaceDisplay } from "@/app/store/space/utils";
 import { VLANMTURange, VLANVidRange } from "@/app/store/types/enum";
@@ -19,8 +21,7 @@ import type { VLAN } from "@/app/store/vlan/types";
 import { VLANMeta } from "@/app/store/vlan/types";
 import { isId } from "@/app/utils";
 
-type Props = {
-  close: () => void;
+type EditVLANProps = {
   id: VLAN[VLANMeta.PK];
 };
 
@@ -50,11 +51,8 @@ const Schema = Yup.object().shape({
     .required("VID is required"),
 });
 
-const EditVLAN = ({
-  close,
-  id,
-  ...props
-}: Props): React.ReactElement | null => {
+const EditVLAN = ({ id }: EditVLANProps): ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
@@ -86,7 +84,7 @@ const EditVLAN = ({
       cleanup={cleanup}
       errors={errors}
       initialValues={initialValues}
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Save VLAN",
         category: "VLAN details",
@@ -102,15 +100,12 @@ const EditVLAN = ({
           })
         );
       }}
-      onSuccess={() => {
-        close();
-      }}
+      onSuccess={closeSidePanel}
       resetOnSave
       saved={saved}
       saving={saving}
       submitLabel="Save summary"
       validationSchema={Schema}
-      {...props}
     >
       <Row>
         <Col size={12}>

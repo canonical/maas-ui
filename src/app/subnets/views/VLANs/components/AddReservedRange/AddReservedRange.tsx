@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Col, Row, Spinner } from "@canonical/react-components";
@@ -11,10 +12,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import PrefixedIpInput, {
   formatIpAddress,
 } from "@/app/base/components/PrefixedIpInput";
-import {
-  useSidePanel,
-  type SetSidePanelContent,
-} from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 import type { IPRange } from "@/app/store/iprange/types";
@@ -29,10 +27,9 @@ import {
   isIpInSubnet,
 } from "@/app/utils/subnetIpRange";
 
-type Props = {
-  createType?: IPRangeType;
+type AddReservedRangeProps = {
+  createType: IPRangeType;
   ipRangeId?: IPRange[IPRangeMeta.PK] | null;
-  setSidePanelContent: SetSidePanelContent;
   subnetId?: Subnet[SubnetMeta.PK] | null;
 };
 
@@ -50,24 +47,15 @@ export enum Labels {
   StartIp = "Start IP address",
 }
 
-const ReservedRangeForm = ({
+const AddReservedRange = ({
   createType,
   ipRangeId,
-  setSidePanelContent,
   subnetId,
-  ...props
-}: Props): React.ReactElement | null => {
+}: AddReservedRangeProps): ReactElement | null => {
   const dispatch = useDispatch();
-  const { sidePanelContent } = useSidePanel();
-  let computedIpRangeId = ipRangeId;
-  if (!ipRangeId) {
-    computedIpRangeId =
-      sidePanelContent?.extras && "ipRangeId" in sidePanelContent.extras
-        ? sidePanelContent.extras?.ipRangeId
-        : undefined;
-  }
+  const { closeSidePanel } = useSidePanel();
   const ipRange = useSelector((state: RootState) =>
-    ipRangeSelectors.getById(state, computedIpRangeId)
+    ipRangeSelectors.getById(state, ipRangeId)
   );
   const saved = useSelector(ipRangeSelectors.saved);
   const saving = useSelector(ipRangeSelectors.saving);
@@ -79,18 +67,8 @@ const ReservedRangeForm = ({
 
   const cleanup = useCallback(() => ipRangeActions.cleanup(), []);
 
-  const isEditing = isId(computedIpRangeId);
+  const isEditing = isId(ipRangeId);
   const showDynamicComment = isEditing && ipRange?.type === IPRangeType.Dynamic;
-  const onClose = () => {
-    setSidePanelContent(null);
-  };
-  let computedCreateType = createType;
-  if (!createType) {
-    computedCreateType =
-      sidePanelContent?.extras && "createType" in sidePanelContent.extras
-        ? sidePanelContent.extras?.createType
-        : undefined;
-  }
 
   if ((isEditing && !ipRange) || subnetLoading) {
     return (
@@ -227,7 +205,7 @@ const ReservedRangeForm = ({
       cleanup={cleanup}
       errors={errors}
       initialValues={getInitialValues()}
-      onCancel={onClose}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Save reserved range",
         category: "Reserved ranges table",
@@ -244,11 +222,11 @@ const ReservedRangeForm = ({
 
         // Clear the errors from the previous submission.
         dispatch(cleanup());
-        if (!isEditing && computedCreateType) {
+        if (!isEditing && createType) {
           dispatch(
             ipRangeActions.create({
               subnet: subnetId,
-              type: computedCreateType,
+              type: createType,
               start_ip: startIp,
               end_ip: endIp,
               comment: values.comment,
@@ -266,15 +244,12 @@ const ReservedRangeForm = ({
           );
         }
       }}
-      onSuccess={() => {
-        onClose();
-      }}
+      onSuccess={closeSidePanel}
       resetOnSave
       saved={saved}
       saving={saving}
       submitLabel={isEditing ? "Save" : "Reserve"}
       validationSchema={ReservedRangeSchema}
-      {...props}
     >
       <Row>
         {subnet ? (
@@ -318,7 +293,7 @@ const ReservedRangeForm = ({
             </Col>
           </>
         )}
-        {isEditing || computedCreateType === IPRangeType.Reserved ? (
+        {isEditing || createType === IPRangeType.Reserved ? (
           <Col size={12}>
             <FormikField
               disabled={showDynamicComment}
@@ -334,4 +309,4 @@ const ReservedRangeForm = ({
   );
 };
 
-export default ReservedRangeForm;
+export default AddReservedRange;

@@ -14,7 +14,7 @@ import Definition from "@/app/base/components/Definition";
 import TitledSection from "@/app/base/components/TitledSection";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
-import { SidePanelViews, useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
@@ -26,6 +26,7 @@ import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import { getFullVLANName } from "@/app/store/vlan/utils";
+import { ConfigureDHCP } from "@/app/subnets/views/VLANs/components";
 import { isId } from "@/app/utils";
 
 type Props = {
@@ -55,7 +56,7 @@ const getDHCPStatus = (vlan: VLAN, vlans: VLAN[], fabrics: Fabric[]) => {
 };
 
 const DHCPStatus = ({ id }: Props): React.ReactElement | null => {
-  const { setSidePanelContent, setSidePanelSize } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoading = useSelector(fabricSelectors.loading);
   const vlans = useSelector(vlanSelectors.all);
@@ -95,8 +96,14 @@ const DHCPStatus = ({ id }: Props): React.ReactElement | null => {
         <Button
           disabled={!hasVLANSubnets}
           onClick={() => {
-            setSidePanelSize("large");
-            setSidePanelContent({ view: SidePanelViews.ConfigureDHCP });
+            openSidePanel({
+              component: ConfigureDHCP,
+              title: "Configure DHCP",
+              size: "large",
+              props: {
+                vlan,
+              },
+            });
           }}
         >
           Configure DHCP

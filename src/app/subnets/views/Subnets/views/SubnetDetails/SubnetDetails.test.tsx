@@ -33,7 +33,7 @@ beforeEach(() => {
     title: "Static routes",
   },
   {
-    component: "ReservedRanges",
+    component: "ReservedRangesTable",
     path: urls.subnets.subnet.addressReservation({ id: 1 }),
     title: "Reserved ranges",
   },

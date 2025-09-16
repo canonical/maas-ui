@@ -1,35 +1,29 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-
-import DHCPStatus from "../../components/DHCPStatus";
-import VLANActionForms from "../../components/VLANActionForms";
-import VLANDetailsHeader from "../../components/VLANDetailsHeader";
-import VLANSubnets from "../../components/VLANSubnets";
-import VLANSummary from "../../components/VLANSummary";
-import {
-  vlanActionLabels,
-  type VLANActionType,
-  VLANActionTypes,
-} from "../constants";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
-import SectionHeader from "@/app/base/components/SectionHeader";
 import { useFetchActions, useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { VLANMeta } from "@/app/store/vlan/types";
-import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";
-import ReservedRanges from "@/app/subnets/components/ReservedRanges";
 import subnetURLs from "@/app/subnets/urls";
+import {
+  DHCPStatus,
+  VLANDetailsHeader,
+  VLANSubnetsTable,
+  VLANSummary,
+} from "@/app/subnets/views/VLANs/components";
+import DHCPSnippets from "@/app/subnets/views/VLANs/components/DHCPSnippets";
+import ReservedRangesTable from "@/app/subnets/views/VLANs/components/ReservedRangesTable";
 import { isId } from "@/app/utils";
 
-const VLANDetails = (): React.ReactElement => {
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+const VLANDetails = (): ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(VLANMeta.PK);
   const vlan = useSelector((state: RootState) =>
@@ -55,16 +49,6 @@ const VLANDetails = (): React.ReactElement => {
 
   useFetchActions([vlanActions.fetch]);
 
-  if (vlansLoading) {
-    return (
-      <PageContent
-        header={<SectionHeader loading />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
-      />
-    );
-  }
-
   if (!vlan) {
     return (
       <ModelNotFound
@@ -75,32 +59,30 @@ const VLANDetails = (): React.ReactElement => {
     );
   }
 
-  const [, name] = sidePanelContent?.view || [];
-  const activeForm =
-    name && Object.keys(VLANActionTypes).includes(name)
-      ? (name as VLANActionType)
-      : null;
-
   return (
     <PageContent
-      header={<VLANDetailsHeader id={id} />}
-      sidePanelContent={
-        activeForm ? (
-          <VLANActionForms
-            activeForm={activeForm}
-            setSidePanelContent={setSidePanelContent}
-            vlanId={vlan.id}
-            {...sidePanelContent?.extras}
-          />
-        ) : null
-      }
-      sidePanelTitle={activeForm ? vlanActionLabels[activeForm] : ""}
+      header={<VLANDetailsHeader vlan={vlan} />}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
-      <VLANSummary id={id} />
-      <DHCPStatus id={id} />
-      <ReservedRanges hasVLANSubnets={subnets.length > 0} vlanId={id} />
-      <VLANSubnets id={id} />
-      <DHCPSnippets modelName={VLANMeta.MODEL} subnetIds={vlan.subnet_ids} />
+      {vlansLoading ? (
+        <Spinner text="Loading..." />
+      ) : (
+        <>
+          <VLANSummary id={id} />
+          <DHCPStatus id={id} />
+          <ReservedRangesTable
+            hasVLANSubnets={subnets.length > 0}
+            vlanId={id}
+          />
+          <VLANSubnetsTable id={id} />
+          <DHCPSnippets
+            modelName={VLANMeta.MODEL}
+            subnetIds={vlan.subnet_ids}
+          />
+        </>
+      )}
     </PageContent>
   );
 };

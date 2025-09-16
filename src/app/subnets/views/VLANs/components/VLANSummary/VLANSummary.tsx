@@ -8,18 +8,19 @@ import Definition from "@/app/base/components/Definition";
 import FabricLink from "@/app/base/components/FabricLink";
 import SpaceLink from "@/app/base/components/SpaceLink";
 import TitledSection from "@/app/base/components/TitledSection";
-import { SidePanelViews, useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { RootState } from "@/app/store/root/types";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
+import { EditVLAN } from "@/app/subnets/views/VLANs/components";
 
 type Props = {
   id: VLAN[VLANMeta.PK] | null;
 };
 
 const VLANSummary = ({ id }: Props): React.ReactElement | null => {
+  const { openSidePanel } = useSidePanel();
   const isSuperUser = useGetIsSuperUser();
-  const { setSidePanelContent } = useSidePanel();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
@@ -34,7 +35,11 @@ const VLANSummary = ({ id }: Props): React.ReactElement | null => {
         isSuperUser.data && (
           <Button
             onClick={() => {
-              setSidePanelContent({ view: SidePanelViews.EditVLAN });
+              openSidePanel({
+                component: EditVLAN,
+                title: "Edit VLAN",
+                props: { id },
+              });
             }}
           >
             Edit

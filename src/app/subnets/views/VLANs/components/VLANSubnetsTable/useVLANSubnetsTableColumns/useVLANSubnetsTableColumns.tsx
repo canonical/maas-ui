@@ -20,7 +20,7 @@ export type VLANSubnetColumnDef = ColumnDef<
   Partial<VLANSubnetTableData>
 >;
 
-const useVLANSubnetsColumns = (): VLANSubnetColumnDef[] => {
+const useVLANSubnetsTableColumns = (): VLANSubnetColumnDef[] => {
   return useMemo(
     (): VLANSubnetColumnDef[] => [
       {
@@ -85,4 +85,4 @@ const useVLANSubnetsColumns = (): VLANSubnetColumnDef[] => {
   );
 };
 
-export default useVLANSubnetsColumns;
+export default useVLANSubnetsTableColumns;

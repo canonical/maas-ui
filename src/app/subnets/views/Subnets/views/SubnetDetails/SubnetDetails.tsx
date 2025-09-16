@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -7,34 +8,26 @@ import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { staticRouteActions } from "@/app/store/staticroute";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { SubnetMeta } from "@/app/store/subnet/types";
-import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";
-import ReservedRanges from "@/app/subnets/components/ReservedRanges";
 import subnetURLs from "@/app/subnets/urls";
 import {
   StaticDHCPLease,
   StaticRoutes,
-  SubnetActionForms,
   SubnetDetailsHeader,
   SubnetSummary,
   SubnetUsedIPs,
   SubnetUtilisation,
 } from "@/app/subnets/views/Subnets/components";
-import type { SubnetActionType } from "@/app/subnets/views/Subnets/views/constants";
-import {
-  subnetActionLabels,
-  SubnetActionTypes,
-} from "@/app/subnets/views/Subnets/views/constants";
+import DHCPSnippets from "@/app/subnets/views/VLANs/components/DHCPSnippets";
+import ReservedRangesTable from "@/app/subnets/views/VLANs/components/ReservedRangesTable";
 import { getRelativeRoute, isId } from "@/app/utils";
 
-const SubnetDetails = (): React.ReactElement => {
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+const SubnetDetails = (): ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(SubnetMeta.PK);
   const subnet = useSelector((state: RootState) =>
@@ -77,28 +70,14 @@ const SubnetDetails = (): React.ReactElement => {
     );
   }
 
-  const [, name] = sidePanelContent?.view || [];
-  const activeForm =
-    name && Object.keys(SubnetActionTypes).includes(name)
-      ? (name as SubnetActionType)
-      : null;
-
   const base = urls.subnets.subnet.index(null);
 
   return (
     <PageContent
       header={<SubnetDetailsHeader subnet={subnet} />}
-      sidePanelContent={
-        activeForm ? (
-          <SubnetActionForms
-            activeForm={activeForm}
-            setSidePanelContent={setSidePanelContent}
-            subnetId={subnet.id}
-            {...sidePanelContent?.extras}
-          />
-        ) : null
-      }
-      sidePanelTitle={activeForm ? subnetActionLabels[activeForm] : ""}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       <Routes>
         <Route
@@ -124,7 +103,7 @@ const SubnetDetails = (): React.ReactElement => {
           element={
             <>
               <StaticDHCPLease subnetId={id} />
-              <ReservedRanges subnetId={id} />
+              <ReservedRangesTable subnetId={id} />
             </>
           }
           path={getRelativeRoute(

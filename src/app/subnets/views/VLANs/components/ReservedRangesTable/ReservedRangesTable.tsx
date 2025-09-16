@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
 
 import { ExternalLink } from "@canonical/maas-react-components";
@@ -16,8 +16,8 @@ import TableActions from "@/app/base/components/TableActions";
 import TitledSection from "@/app/base/components/TitledSection";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import type { SidePanelActions } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 import type { IPRange } from "@/app/store/iprange/types";
@@ -31,9 +31,9 @@ import type { RootState } from "@/app/store/root/types";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import {
-  SubnetActionTypes,
-  SubnetDetailsSidePanelViews,
-} from "@/app/subnets/views/Subnets/views/constants";
+  AddReservedRange,
+  DeleteReservedRange,
+} from "@/app/subnets/views/VLANs/components";
 import { generateEmptyStateMsg, getTableStatus, isId } from "@/app/utils";
 
 export type SubnetProps = {
@@ -62,17 +62,10 @@ export enum Labels {
   Type = "Type",
 }
 
-export enum ExpandedType {
-  Create,
-  CreateDynamic,
-  Delete,
-  Update,
-}
-
 const generateRows = (
   ipRanges: IPRange[],
   showSubnetColumn: boolean,
-  setSidePanelContent: SetSidePanelContent
+  openSidePanel: SidePanelActions["openSidePanel"]
 ) =>
   ipRanges.map((ipRange: IPRange) => {
     const comment = getCommentDisplay(ipRange);
@@ -112,21 +105,20 @@ const generateRows = (
         content: (
           <TableActions
             onDelete={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.DeleteReservedRange
-                ],
-                extras: {
+              openSidePanel({
+                component: DeleteReservedRange,
+                title: "Delete reserved range",
+                props: {
                   ipRangeId: ipRange.id,
                 },
               });
             }}
             onEdit={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.ReserveRange
-                ],
-                extras: {
+              openSidePanel({
+                component: AddReservedRange,
+                title: "Edit reserved range",
+                props: {
+                  createType: ipRange.type,
                   ipRangeId: ipRange.id,
                 },
               });
@@ -156,13 +148,13 @@ const generateRows = (
     };
   });
 
-const ReservedRanges = ({
+const ReservedRangesTable = ({
   hasVLANSubnets,
   subnetId,
   vlanId,
-}: Props): React.ReactElement | null => {
+}: Props): ReactElement | null => {
   const [isAddingDynamic, setIsAddingDynamic] = useState(false);
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const isSubnet = isId(subnetId);
   const ipRangeLoading = useSelector(ipRangeSelectors.loading);
   const ipRanges = useSelector((state: RootState) =>
@@ -227,11 +219,10 @@ const ReservedRanges = ({
               children: Labels.ReserveRange,
               "data-testid": "reserve-range-menu-item",
               onClick: () => {
-                setSidePanelContent({
-                  view: SubnetDetailsSidePanelViews[
-                    SubnetActionTypes.ReserveRange
-                  ],
-                  extras: {
+                openSidePanel({
+                  component: AddReservedRange,
+                  title: "Reserve range",
+                  props: {
                     createType: IPRangeType.Reserved,
                   },
                 });
@@ -242,11 +233,10 @@ const ReservedRanges = ({
               children: Labels.ReserveDynamicRange,
               "data-testid": "reserve-dynamic-range-menu-item",
               onClick: () => {
-                setSidePanelContent({
-                  view: SubnetDetailsSidePanelViews[
-                    SubnetActionTypes.ReserveRange
-                  ],
-                  extras: {
+                openSidePanel({
+                  component: AddReservedRange,
+                  title: "Reserve dynamic range",
+                  props: {
                     createType: IPRangeType.Dynamic,
                   },
                 });
@@ -288,7 +278,7 @@ const ReservedRanges = ({
         expanding
         headers={headers}
         responsive
-        rows={generateRows(ipRanges, showSubnetColumn, setSidePanelContent)}
+        rows={generateRows(ipRanges, showSubnetColumn, openSidePanel)}
         sortable
       />
       <ExternalLink to={docsUrls.ipRanges}>About IP ranges</ExternalLink>
@@ -296,4 +286,4 @@ const ReservedRanges = ({
   );
 };
 
-export default ReservedRanges;
+export default ReservedRangesTable;

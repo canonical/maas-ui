@@ -1,12 +1,12 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { VLANActionFormProps } from "../VLANActionForms/VLANActionForms";
-
 import FabricLink from "@/app/base/components/FabricLink";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
@@ -15,16 +15,15 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
-const VLANDeleteForm = ({
-  setSidePanelContent,
-  vlanId,
-}: Pick<
-  VLANActionFormProps,
-  "setSidePanelContent" | "vlanId"
->): React.ReactElement | null => {
+type DeleteVLANProps = {
+  id: number;
+};
+
+const DeleteVLAN = ({ id }: DeleteVLANProps): ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, vlanId)
+    vlanSelectors.getById(state, id)
   );
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, vlan?.fabric)
@@ -34,7 +33,7 @@ const VLANDeleteForm = ({
   const saving = useSelector(vlanSelectors.saving);
   const cleanup = useCallback(() => vlanActions.cleanup(), []);
 
-  if (!isId(vlanId) || !vlan || !fabric) {
+  if (!isId(id) || !vlan || !fabric) {
     return null;
   }
 
@@ -44,16 +43,12 @@ const VLANDeleteForm = ({
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={() => {
-        setSidePanelContent(null);
-      }}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         dispatch(cleanup());
-        dispatch(vlanActions.delete(vlanId));
+        dispatch(vlanActions.delete(id));
       }}
-      onSuccess={() => {
-        setSidePanelContent(null);
-      }}
+      onSuccess={closeSidePanel}
       saved={saved}
       savedRedirect={subnetURLs.index}
       saving={saving}
@@ -75,4 +70,4 @@ const VLANDeleteForm = ({
   );
 };
 
-export default VLANDeleteForm;
+export default DeleteVLAN;

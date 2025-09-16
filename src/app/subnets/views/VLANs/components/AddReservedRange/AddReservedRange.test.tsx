@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
-import ReservedRangeForm, { Labels } from "./ReservedRangeForm";
+import AddReservedRange, { Labels } from "./AddReservedRange";
 
 import { ipRangeActions } from "@/app/store/iprange";
 import type { IPRange } from "@/app/store/iprange/types";
@@ -20,7 +20,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("ReservedRangeForm", () => {
+describe("AddReservedRange", () => {
   let state: RootState;
   let ipRange: IPRange;
   let subnet: Subnet;
@@ -52,7 +52,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
+          <AddReservedRange
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
             subnetId={subnet.id}
@@ -70,7 +70,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
+          <AddReservedRange
             setSidePanelContent={vi.fn()}
             subnetId={subnet.id}
           />
@@ -87,7 +87,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
+          <AddReservedRange
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
             subnetId={subnet.id}
@@ -116,7 +116,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
+          <AddReservedRange
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
             subnetId={subnet.id}
@@ -139,7 +139,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
+          <AddReservedRange
             createType={IPRangeType.Reserved}
             setSidePanelContent={vi.fn()}
             subnetId={subnet.id}
@@ -181,7 +181,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
+          <AddReservedRange
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
             subnetId={subnet.id}
@@ -215,7 +215,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
+          <AddReservedRange
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
             subnetId={subnet.id}
@@ -250,7 +250,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
+          <AddReservedRange
             createType={IPRangeType.Dynamic}
             setSidePanelContent={vi.fn()}
             subnetId={subnet.id}
@@ -265,7 +265,7 @@ describe("ReservedRangeForm", () => {
 
   it("displays an error when start and end IP addresses are not provided", async () => {
     renderWithBrowserRouter(
-      <ReservedRangeForm setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
+      <AddReservedRange setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
       {
         state,
         route: "/machines",
@@ -286,7 +286,7 @@ describe("ReservedRangeForm", () => {
 
   it("displays an error when an invalid IP address is entered", async () => {
     renderWithBrowserRouter(
-      <ReservedRangeForm setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
+      <AddReservedRange setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
       {
         state,
         route: "/machines",
@@ -311,7 +311,7 @@ describe("ReservedRangeForm", () => {
 
   it("displays an error when an out-of-range IP address is entered", async () => {
     renderWithBrowserRouter(
-      <ReservedRangeForm setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
+      <AddReservedRange setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
       {
         state,
         route: "/machines",

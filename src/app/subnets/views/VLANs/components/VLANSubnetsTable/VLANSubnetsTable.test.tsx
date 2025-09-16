@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
-import VLANSubnets from "./VLANSubnets";
+import VLANSubnetsTable from "./VLANSubnetsTable";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
@@ -28,7 +28,7 @@ it("renders correct details", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANSubnets id={vlan.id} />
+        <VLANSubnetsTable id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );

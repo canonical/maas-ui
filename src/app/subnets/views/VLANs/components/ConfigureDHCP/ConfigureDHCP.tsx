@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { ExternalLink } from "@canonical/maas-react-components";
@@ -11,6 +12,7 @@ import DHCPReservedRanges from "./DHCPReservedRanges";
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions, useCycled } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "@/app/store/controller/types";
@@ -30,10 +32,10 @@ import type {
   VLANMeta,
 } from "@/app/store/vlan/types";
 import { isId } from "@/app/utils";
+import "./_index.scss";
 
-type Props = {
-  closeForm: () => void;
-  id?: VLAN[VLANMeta.PK] | null;
+type ConfigureDHCPProps = {
+  vlan: VLAN;
 };
 
 export enum DHCPType {
@@ -53,7 +55,8 @@ export type ConfigureDHCPValues = {
   subnet: Subnet[SubnetMeta.PK] | "";
 };
 
-const ConfigureDHCP = ({ closeForm, id }: Props): React.ReactElement | null => {
+const ConfigureDHCP = ({ vlan }: ConfigureDHCPProps): ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const controllersLoading = useSelector(controllerSelectors.loading);
   const fabricsLoading = useSelector(fabricSelectors.loading);
@@ -61,18 +64,15 @@ const ConfigureDHCP = ({ closeForm, id }: Props): React.ReactElement | null => {
   const subnets = useSelector(subnetSelectors.all);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const vlansLoading = useSelector(vlanSelectors.loading);
-  const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, id)
-  );
   const configuringDHCP = useSelector((state: RootState) =>
-    vlanSelectors.getStatusForVLAN(state, id, "configuringDHCP")
+    vlanSelectors.getStatusForVLAN(state, vlan.id, "configuringDHCP")
   );
   const configureDHCPError = useSelector((state: RootState) =>
-    vlanSelectors.eventErrorsForVLANs(state, id, "configureDHCP")
+    vlanSelectors.eventErrorsForVLANs(state, vlan.id, "configureDHCP")
   )[0]?.error;
   const [configuredDHCP, resetConfiguredDHCP] = useCycled(!configuringDHCP);
   const ipRanges = useSelector((state: RootState) =>
-    ipRangeSelectors.getByVLAN(state, id)
+    ipRangeSelectors.getByVLAN(state, vlan.id)
   );
   const saved = configuredDHCP && !configureDHCPError;
   const cleanup = useCallback(() => vlanActions.cleanup(), []);
@@ -167,7 +167,9 @@ const ConfigureDHCP = ({ closeForm, id }: Props): React.ReactElement | null => {
           allowUnchanged
           aria-label="Configure DHCP"
           buttonsHelp={
-            <ExternalLink to={docsUrls.dhcp}>About DHCP</ExternalLink>
+            <p>
+              <ExternalLink to={docsUrls.dhcp}>About DHCP</ExternalLink>
+            </p>
           }
           cleanup={cleanup}
           errors={configureDHCPError}
@@ -184,7 +186,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): React.ReactElement | null => {
             startIP: "",
             subnet: "",
           }}
-          onCancel={closeForm}
+          onCancel={closeSidePanel}
           onSaveAnalytics={{
             action: "Configure DHCP",
             category: "VLAN details",
@@ -221,9 +223,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): React.ReactElement | null => {
             }
             dispatch(vlanActions.configureDHCP(params));
           }}
-          onSuccess={() => {
-            closeForm();
-          }}
+          onSuccess={closeSidePanel}
           saved={saved}
           saving={configuringDHCP}
           submitLabel="Configure DHCP"

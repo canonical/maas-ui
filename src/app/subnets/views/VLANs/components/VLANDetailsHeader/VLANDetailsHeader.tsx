@@ -1,23 +1,23 @@
+import type { ReactElement } from "react";
+
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-
-import { VLANDetailsSidePanelViews } from "../../views/constants";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
-import vlanSelectors from "@/app/store/vlan/selectors";
-import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
+import type { VLAN } from "@/app/store/vlan/types";
 import { VlanVid } from "@/app/store/vlan/types";
 import { isVLANDetails } from "@/app/store/vlan/utils";
+import { DeleteVLAN } from "@/app/subnets/views/VLANs/components";
 
 type Props = {
-  id?: VLAN[VLANMeta.PK] | null;
+  vlan: VLAN;
 };
 
 const generateTitle = (
@@ -38,12 +38,9 @@ const generateTitle = (
   return `${title} in ${fabric.name}`;
 };
 
-const VLANDetailsHeader = ({ id }: Props): React.ReactElement => {
-  const { setSidePanelContent } = useSidePanel();
+const VLANDetailsHeader = ({ vlan }: Props): ReactElement => {
+  const { openSidePanel } = useSidePanel();
 
-  const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, id)
-  );
   const fabricId = vlan?.fabric;
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, fabricId)
@@ -59,7 +56,13 @@ const VLANDetailsHeader = ({ id }: Props): React.ReactElement => {
         data-testid="delete-vlan"
         key="delete-vlan"
         onClick={() => {
-          setSidePanelContent({ view: VLANDetailsSidePanelViews.DeleteVLAN });
+          openSidePanel({
+            component: DeleteVLAN,
+            title: "Delete VLAN",
+            props: {
+              id: vlan.id,
+            },
+          });
         }}
       >
         Delete VLAN

@@ -1,6 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import VLANDeleteForm from "./VLANDeleteForm";
+import DeleteVLAN from "./DeleteVLAN";
 
 import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
@@ -30,7 +30,7 @@ it("does not allow deletion if the VLAN is the default VLAN in its fabric", () =
   });
   const store = mockStore(state);
   renderWithProviders(
-    <VLANDeleteForm setSidePanelContent={vi.fn()} vlanId={vlan.id} />,
+    <DeleteVLAN setSidePanelContent={vi.fn()} vlanId={vlan.id} />,
     { store }
   );
 
@@ -58,7 +58,7 @@ it("displays a delete confirmation if the VLAN is not the default for its fabric
   });
   const store = mockStore(state);
   renderWithProviders(
-    <VLANDeleteForm setSidePanelContent={vi.fn()} vlanId={vlan.id} />,
+    <DeleteVLAN setSidePanelContent={vi.fn()} vlanId={vlan.id} />,
     { store }
   );
 
@@ -84,7 +84,7 @@ it("deletes the VLAN when confirmed", async () => {
   });
   const store = mockStore(state);
   renderWithProviders(
-    <VLANDeleteForm setSidePanelContent={vi.fn()} vlanId={vlan.id} />,
+    <DeleteVLAN setSidePanelContent={vi.fn()} vlanId={vlan.id} />,
     { store }
   );
 
