@@ -15,7 +15,7 @@ import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 
 type EditFabricProps = {
-  close: () => void;
+  handleDismiss: () => void;
   id: Fabric[FabricMeta.PK];
 };
 
@@ -29,7 +29,7 @@ const Schema = Yup.object().shape({
   description: Yup.string(),
 });
 
-const EditFabric = ({ close, id }: EditFabricProps): ReactElement => {
+const EditFabric = ({ handleDismiss, id }: EditFabricProps): ReactElement => {
   const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)
@@ -55,7 +55,7 @@ const EditFabric = ({ close, id }: EditFabricProps): ReactElement => {
         name: fabric.name,
         description: fabric.description,
       }}
-      onCancel={close}
+      onCancel={handleDismiss}
       onSaveAnalytics={{
         action: "Save fabric",
         category: "Fabric details",
@@ -73,7 +73,7 @@ const EditFabric = ({ close, id }: EditFabricProps): ReactElement => {
         );
       }}
       onSuccess={() => {
-        close();
+        handleDismiss();
       }}
       resetOnSave
       saved={saved}

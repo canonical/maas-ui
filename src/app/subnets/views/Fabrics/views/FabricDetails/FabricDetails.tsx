@@ -22,7 +22,6 @@ import { isId } from "@/app/utils";
 const FabricDetails = (): ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(FabricMeta.PK);
-  console.log(window.location.pathname);
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)
   );

@@ -6,7 +6,7 @@ import { useGetIsSuperUser } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { Fabric } from "@/app/store/fabric/types";
-import DeleteFabric from "@/app/subnets/views/Fabrics/components/FabricDeleteForm";
+import DeleteFabric from "@/app/subnets/views/Fabrics/components/DeleteFabric";
 
 type FabricDetailsHeaderProps = {
   fabric: Fabric | null;

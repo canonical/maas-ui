@@ -32,7 +32,7 @@ it("dispatches an update action on submit", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <EditFabric close={vi.fn()} id={fabric.id} />
+        <EditFabric handleDismiss={vi.fn()} id={fabric.id} />
       </MemoryRouter>
     </Provider>
   );

@@ -16,7 +16,7 @@ const FabricSummary = ({ fabric }: { fabric: Fabric }): ReactElement => {
       renderContent={(editing, setEditing) =>
         editing ? (
           <EditFabric
-            close={() => {
+            handleDismiss={() => {
               setEditing(false);
             }}
             id={fabric.id}

@@ -4,7 +4,7 @@ import FabricDetailsHeader from "./FabricDetailsHeader";
 
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
-import DeleteFabric from "@/app/subnets/views/Fabrics/components/FabricDeleteForm";
+import DeleteFabric from "@/app/subnets/views/Fabrics/components/DeleteFabric";
 import * as factory from "@/testing/factories";
 import { user } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";

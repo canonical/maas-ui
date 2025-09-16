@@ -22,14 +22,6 @@ import type { MachineSidePanelContent } from "@/app/machines/types";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import {
-  FabricDetailsSidePanelViews,
-  type FabricDetailsSidePanelContent,
-} from "@/app/subnets/views/Fabrics/components/FabricDetailsHeader/constants";
-import {
-  SpaceDetailsSidePanelViews,
-  type SpaceDetailsSidePanelContent,
-} from "@/app/subnets/views/SpaceDetails/constants";
-import {
   SubnetDetailsSidePanelViews,
   type SubnetDetailsSidePanelContent,
 } from "@/app/subnets/views/Subnets/views/constants";
@@ -45,11 +37,9 @@ export type SidePanelContent =
   | DeviceSidePanelContent
   | DomainDetailsSidePanelContent
   | DomainListSidePanelContent
-  | FabricDetailsSidePanelContent
   | ImageSidePanelContent
   | KVMSidePanelContent
   | MachineSidePanelContent
-  | SpaceDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
   | TagSidePanelContent
   | VLANDetailsSidePanelContent
@@ -75,10 +65,8 @@ export const SidePanelViews = {
   ...DomainDetailsSidePanelViews,
   ...DomainListSidePanelViews,
   ...VLANDetailsSidePanelViews,
-  ...FabricDetailsSidePanelViews,
   ...ImageSidePanelViews,
   ...SubnetDetailsSidePanelViews,
-  ...SpaceDetailsSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {
@@ -114,8 +102,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.EDIT_PHYSICAL[1]]: "Edit physical",
   [SidePanelViews.DELETE_IMAGE[1]]: "Delete image",
   [SidePanelViews.DELETE_MULTIPLE_IMAGES[1]]: "Delete multiple images",
-  [SidePanelViews.DELETE_SPACE[1]]: "Delete space",
-  [SidePanelViews.DELETE_FABRIC[1]]: "Delete fabric",
   [SidePanelViews.MARK_CONNECTED[1]]: "Mark as connected",
   [SidePanelViews.MARK_DISCONNECTED[1]]: "Mark as disconnected",
   [SidePanelViews.REMOVE_INTERFACE[1]]: "Remove interface",
