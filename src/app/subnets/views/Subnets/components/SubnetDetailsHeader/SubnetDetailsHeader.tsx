@@ -14,13 +14,13 @@ import {
 } from "@/app/subnets/views/Subnets/components";
 
 type Props = {
-  subnet: Subnet;
+  subnet: Subnet | null;
 };
 
 const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
   const { openSidePanel } = useSidePanel();
   const { pathname } = useLocation();
-  const urlBase = `/subnet/${subnet.id}`;
+  const urlBase = `/subnet/${subnet?.id}`;
   return (
     <SectionHeader
       buttons={[
@@ -34,7 +34,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
                   component: MapSubnet,
                   title: "Map subnet",
                   props: {
-                    subnetId: subnet.id,
+                    subnetId: subnet!.id,
                   },
                 });
               },
@@ -46,7 +46,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
                   component: EditBootArchitectures,
                   title: "Edit boot architectures",
                   props: {
-                    subnetId: subnet.id,
+                    subnetId: subnet!.id,
                   },
                 });
               },
@@ -58,7 +58,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
                   component: DeleteSubnet,
                   title: "Delete subnet",
                   props: {
-                    id: subnet.id,
+                    subnet: subnet!,
                   },
                 });
               },
@@ -69,6 +69,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
           toggleLabel="Take action"
         />,
       ]}
+      loading={!subnet}
       subtitleLoading={!isSubnetDetails(subnet)}
       tabLinks={[
         {
@@ -102,7 +103,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
           to: `${urlBase}/used-ip-addresses`,
         },
       ]}
-      title={subnet.name}
+      title={subnet ? subnet.name : ""}
     />
   );
 };

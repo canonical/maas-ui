@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
 import { useEffect } from "react";
 
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
-import SectionHeader from "@/app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
@@ -50,17 +50,7 @@ const SubnetDetails = (): ReactElement => {
     };
   }, [dispatch, id, isValidID]);
 
-  if (subnetsLoading) {
-    return (
-      <PageContent
-        header={<SectionHeader loading />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
-      />
-    );
-  }
-
-  if (!subnet || !isValidID) {
+  if ((!subnet || !isValidID) && !subnetsLoading) {
     return (
       <ModelNotFound
         id={id}
@@ -79,58 +69,68 @@ const SubnetDetails = (): ReactElement => {
       sidePanelTitle={null}
       useNewSidePanelContext={true}
     >
-      <Routes>
-        <Route
-          element={
-            <Navigate replace to={urls.subnets.subnet.summary({ id })} />
-          }
-          index
-        />
-        <Route
-          element={
-            <>
-              <SubnetSummary id={id} />
-              <SubnetUtilisation statistics={subnet.statistics} />
-            </>
-          }
-          path={getRelativeRoute(urls.subnets.subnet.summary(null), base)}
-        />
-        <Route
-          element={<StaticRoutes subnetId={id} />}
-          path={getRelativeRoute(urls.subnets.subnet.staticRoutes(null), base)}
-        />
-        <Route
-          element={
-            <>
-              <StaticDHCPLease subnetId={id} />
-              <ReservedRangesTable subnetId={id} />
-            </>
-          }
-          path={getRelativeRoute(
-            urls.subnets.subnet.addressReservation(null),
-            base
-          )}
-        />
-        <Route
-          element={
-            <DHCPSnippets modelName={SubnetMeta.MODEL} subnetIds={[id]} />
-          }
-          path={getRelativeRoute(urls.subnets.subnet.dhcpSnippets(null), base)}
-        />
-        <Route
-          element={<SubnetUsedIPs subnetId={id} />}
-          path={getRelativeRoute(
-            urls.subnets.subnet.usedIpAddresses(null),
-            base
-          )}
-        />
-        <Route
-          element={
-            <Navigate replace to={urls.subnets.subnet.summary({ id })} />
-          }
-          path={base}
-        />
-      </Routes>
+      {!subnet || !isValidID ? (
+        <Spinner text="Loading..." />
+      ) : (
+        <Routes>
+          <Route
+            element={
+              <Navigate replace to={urls.subnets.subnet.summary({ id })} />
+            }
+            index
+          />
+          <Route
+            element={
+              <>
+                <SubnetSummary id={id} />
+                <SubnetUtilisation statistics={subnet.statistics} />
+              </>
+            }
+            path={getRelativeRoute(urls.subnets.subnet.summary(null), base)}
+          />
+          <Route
+            element={<StaticRoutes subnetId={id} />}
+            path={getRelativeRoute(
+              urls.subnets.subnet.staticRoutes(null),
+              base
+            )}
+          />
+          <Route
+            element={
+              <>
+                <StaticDHCPLease subnetId={id} />
+                <ReservedRangesTable subnetId={id} />
+              </>
+            }
+            path={getRelativeRoute(
+              urls.subnets.subnet.addressReservation(null),
+              base
+            )}
+          />
+          <Route
+            element={
+              <DHCPSnippets modelName={SubnetMeta.MODEL} subnetIds={[id]} />
+            }
+            path={getRelativeRoute(
+              urls.subnets.subnet.dhcpSnippets(null),
+              base
+            )}
+          />
+          <Route
+            element={<SubnetUsedIPs subnetId={id} />}
+            path={getRelativeRoute(
+              urls.subnets.subnet.usedIpAddresses(null),
+              base
+            )}
+          />
+          <Route
+            element={
+              <Navigate replace to={urls.subnets.subnet.summary({ id })} />
+            }
+            path={base}
+          />
+        </Routes>
+      )}
     </PageContent>
   );
 };
