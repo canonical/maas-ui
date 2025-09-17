@@ -1,9 +1,8 @@
 import MockDate from "mockdate";
 import { register, unregister } from "timezone-mock";
 
-import DeleteMultipleImagesForm from "../DeleteMultipleImagesForm";
-
 import * as sidePanelHooks from "@/app/base/side-panel-context";
+import DeleteImages from "@/app/images/components/DeleteImages";
 import ImagesTable from "@/app/images/components/ImagesTable/ImagesTable";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
@@ -153,8 +152,8 @@ describe("ImagesTable", () => {
 
     expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        component: DeleteMultipleImagesForm,
-        title: "Delete multiple images",
+        component: DeleteImages,
+        title: "Delete images",
         props: {
           rowSelection: { [resources[0].id]: true },
           setRowSelection: expect.any(Function),

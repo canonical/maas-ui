@@ -12,7 +12,7 @@ import type {
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
-import DeleteMultipleImagesForm from "../../DeleteMultipleImagesForm";
+import DeleteImages from "../../DeleteImages";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
@@ -199,8 +199,8 @@ const useImageTableColumns = ({
                       row.toggleSelected();
                     }
                     openSidePanel({
-                      component: DeleteMultipleImagesForm,
-                      title: "Delete multiple images",
+                      component: DeleteImages,
+                      title: "Delete images",
                       props: {
                         rowSelection: { ...selectedRows, [row.id]: true },
                         setRowSelection: setSelectedRows,

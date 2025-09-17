@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import configureStore from "redux-mock-store";
 
-import DeleteMultipleImagesForm from "./DeleteMultipleImagesForm";
+import DeleteImages from "./DeleteImages";
 
 import { Labels as TableDeleteConfirmLabels } from "@/app/base/components/TableDeleteConfirm/TableDeleteConfirm";
 import { bootResourceActions } from "@/app/store/bootresource";
@@ -18,11 +18,11 @@ const mockStore = configureStore<RootState>();
 
 const { mockClose } = await mockSidePanel();
 
-describe("DeleteMultipleImagesForm", () => {
+describe("DeleteImages", () => {
   it("calls closeForm on cancel click", async () => {
     renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteMultipleImagesForm rowSelection={{}} setRowSelection={vi.fn} />
+        <DeleteImages rowSelection={{}} setRowSelection={vi.fn} />
       </Formik>
     );
 
@@ -40,7 +40,7 @@ describe("DeleteMultipleImagesForm", () => {
     const store = mockStore(state);
     const { result } = renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteMultipleImagesForm rowSelection={{}} setRowSelection={vi.fn} />
+        <DeleteImages rowSelection={{}} setRowSelection={vi.fn} />
       </Formik>,
       { store }
     );
@@ -63,10 +63,7 @@ describe("DeleteMultipleImagesForm", () => {
     const store = mockStore(state);
     renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteMultipleImagesForm
-          rowSelection={{ 1: true }}
-          setRowSelection={vi.fn}
-        />
+        <DeleteImages rowSelection={{ 1: true }} setRowSelection={vi.fn} />
       </Formik>,
       { store }
     );

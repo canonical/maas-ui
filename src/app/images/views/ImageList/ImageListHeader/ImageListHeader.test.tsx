@@ -5,7 +5,7 @@ import ImageListHeader, {
   Labels as ImageListHeaderLabels,
 } from "./ImageListHeader";
 
-import DeleteMultipleImagesForm from "@/app/images/components/DeleteMultipleImagesForm";
+import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
@@ -324,12 +324,12 @@ describe("Delete", () => {
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
     expect(mockOpen).toHaveBeenCalledWith({
-      component: DeleteMultipleImagesForm,
+      component: DeleteImages,
       props: {
         rowSelection: { 1: true },
         setRowSelection: expect.any(Function),
       },
-      title: "Delete multiple images",
+      title: "Delete images",
     });
   });
 });

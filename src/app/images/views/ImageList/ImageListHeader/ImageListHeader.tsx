@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useFetchActions, useCycled } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import DeleteMultipleImagesForm from "@/app/images/components/DeleteMultipleImagesForm";
+import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
@@ -126,12 +126,12 @@ const ImageListHeader = ({
             hasIcon
             onClick={() => {
               openSidePanel({
-                component: DeleteMultipleImagesForm,
+                component: DeleteImages,
                 props: {
                   rowSelection: selectedRows,
                   setRowSelection: setSelectedRows,
                 },
-                title: "Delete multiple images",
+                title: "Delete images",
               });
             }}
             type="button"
