@@ -1,9 +1,9 @@
 import AllowDNSResolutionLabel from "./AllowDNSResolutionLabel";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 it("shows a tooltip when DNS is allowed", async () => {
-  render(<AllowDNSResolutionLabel allowDNS />);
+  renderWithProviders(<AllowDNSResolutionLabel allowDNS />);
 
   await userEvent.click(screen.getByRole("button"));
 
@@ -13,7 +13,7 @@ it("shows a tooltip when DNS is allowed", async () => {
 });
 
 it("shows a tooltip when DNS is not allowed", async () => {
-  render(<AllowDNSResolutionLabel allowDNS={false} />);
+  renderWithProviders(<AllowDNSResolutionLabel allowDNS={false} />);
 
   await userEvent.click(screen.getByRole("button"));
 

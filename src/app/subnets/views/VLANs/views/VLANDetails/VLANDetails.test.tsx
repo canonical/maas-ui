@@ -1,15 +1,11 @@
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
-import configureStore from "redux-mock-store";
+import { Route, Routes } from "react-router";
 
 import VLANDetails from "./VLANDetails";
 
 import urls from "@/app/base/urls";
 import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
-import { render, renderWithProviders, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("VLANDetails", () => {
   it("dispatches actions to fetch necessary data and set vlan as active on mount", async () => {
@@ -18,14 +14,13 @@ describe("VLANDetails", () => {
         items: [factory.vlan({ id: 1, space: 3 })],
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <Routes>
         <Route element={<VLANDetails />} path={urls.subnets.vlan.index(null)} />
       </Routes>,
       {
         initialEntries: [urls.subnets.vlan.index({ id: 1 })],
-        store,
+        state,
       }
     );
 
@@ -42,23 +37,14 @@ describe("VLANDetails", () => {
 
   it("dispatches actions to unset active vlan and clean up on unmount", () => {
     const state = factory.rootState();
-    const store = mockStore(state);
-    const { unmount } = render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
-        >
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+    const { result, store } = renderWithProviders(
+      <Routes>
+        <Route element={<VLANDetails />} path={urls.subnets.vlan.index(null)} />
+      </Routes>,
+      { state, initialEntries: [urls.subnets.vlan.index({ id: 1 })] }
     );
 
-    unmount();
+    result.unmount();
 
     const expectedActions = [
       vlanActions.setActive(null),
@@ -84,20 +70,11 @@ describe("VLANDetails", () => {
         loading: false,
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
-        >
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Routes>
+        <Route element={<VLANDetails />} path={urls.subnets.vlan.index(null)} />
+      </Routes>,
+      { state, initialEntries: [urls.subnets.vlan.index({ id: 1 })] }
     );
 
     expect(screen.getByText("VLAN not found")).toBeInTheDocument();

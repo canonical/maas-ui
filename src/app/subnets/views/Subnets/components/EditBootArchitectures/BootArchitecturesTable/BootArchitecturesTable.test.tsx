@@ -1,15 +1,12 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import type { FormValues } from "../EditBootArchitectures";
 
 import BootArchitecturesTable, { Headers } from "./BootArchitecturesTable";
 
 import * as factory from "@/testing/factories";
-import { render, screen, within } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
-const mockStore = configureStore();
 let initialValues: FormValues;
 
 beforeEach(() => {
@@ -27,13 +24,11 @@ it("renders a table of known boot architectures", () => {
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
-        <BootArchitecturesTable />
-      </Formik>
-    </Provider>
+  renderWithProviders(
+    <Formik initialValues={initialValues} onSubmit={vi.fn()}>
+      <BootArchitecturesTable />
+    </Formik>,
+    { state }
   );
 
   expect(

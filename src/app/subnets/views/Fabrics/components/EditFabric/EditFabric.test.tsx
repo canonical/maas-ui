@@ -1,12 +1,14 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import EditFabric from "./EditFabric";
 
 import { fabricActions } from "@/app/store/fabric";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const getRootState = () =>
   factory.rootState({
@@ -28,13 +30,9 @@ it("dispatches an update action on submit", async () => {
   });
   const state = getRootState();
   state.fabric.items = [fabric];
-  const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <EditFabric handleDismiss={vi.fn()} id={fabric.id} />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithProviders(
+    <EditFabric handleDismiss={vi.fn()} id={fabric.id} />,
+    { state }
   );
   const EditSummaryForm = screen.getByRole("form", {
     name: "Edit fabric summary",

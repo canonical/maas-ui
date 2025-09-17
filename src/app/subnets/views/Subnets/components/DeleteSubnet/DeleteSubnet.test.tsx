@@ -14,18 +14,16 @@ import {
 } from "@/testing/utils";
 
 describe("DeleteSubnet", () => {
-  const subnetId = 1;
+  const subnet = factory.subnetDetails({
+    id: 1,
+    vlan: 1,
+  });
   let state: RootState;
 
   beforeEach(() => {
     state = factory.rootState({
       subnet: factory.subnetState({
-        items: [
-          factory.subnetDetails({
-            id: subnetId,
-            vlan: 1,
-          }),
-        ],
+        items: [subnet],
         loading: false,
         loaded: true,
       }),
@@ -42,37 +40,39 @@ describe("DeleteSubnet", () => {
     });
   });
 
-  it("displays a correct error message for a subnet with IPs obtained through DHCP", () => {
+  it("displays a correct error message for a subnet with IPs obtained through DHCP", async () => {
     state.subnet.items = [
       factory.subnetDetails({
-        id: subnetId,
+        id: subnet.id,
         ip_addresses: [factory.subnetIP()],
         vlan: 1,
       }),
     ];
-    renderWithProviders(<DeleteSubnet id={subnetId} />, {
+    renderWithProviders(<DeleteSubnet subnet={state.subnet.items[0]} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
     });
-    const deleteSubnetSection = screen.getByRole("region", {
-      name: /Delete subnet?/,
+    const deleteSubnetSection = screen.getByRole("form", {
+      name: /Delete subnet/,
     });
 
-    expect(
-      within(deleteSubnetSection).getByText(
-        /This subnet cannot be deleted as there are nodes that have an IP address obtained through DHCP services on this subnet./
-      )
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        within(deleteSubnetSection).getByText(
+          /This subnet cannot be deleted as there are nodes that have an IP address obtained through DHCP services on this subnet./
+        )
+      ).toBeInTheDocument();
+    });
   });
 
   it("displays a message if DHCP is disabled on the VLAN", () => {
     state.vlan.items[0].dhcp_on = false;
-    renderWithProviders(<DeleteSubnet id={subnetId} />, {
+    renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
     });
-    const deleteSubnetSection = screen.getByRole("region", {
-      name: /Delete subnet?/,
+    const deleteSubnetSection = screen.getByRole("form", {
+      name: /Delete subnet/,
     });
 
     expect(
@@ -84,12 +84,12 @@ describe("DeleteSubnet", () => {
 
   it("does not display a message if DHCP is enabled on the VLAN", () => {
     state.vlan.items[0].dhcp_on = true;
-    renderWithProviders(<DeleteSubnet id={subnetId} />, {
+    renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
     });
-    const deleteSubnetSection = screen.getByRole("region", {
-      name: /Delete subnet?/,
+    const deleteSubnetSection = screen.getByRole("form", {
+      name: /Delete subnet/,
     });
 
     expect(
@@ -102,9 +102,9 @@ describe("DeleteSubnet", () => {
   it("dispatches an action to load vlans and subnets if not loaded", () => {
     state.vlan.loaded = false;
     state.subnet.loaded = false;
-    const { store } = renderWithProviders(<DeleteSubnet id={subnetId} />, {
+    const { store } = renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
     });
     const expectedActions = [vlanActions.fetch(), subnetActions.fetch()];
     const actualActions = store.getActions();
@@ -119,9 +119,9 @@ describe("DeleteSubnet", () => {
 
   it("dispatches a delete action on submit", async () => {
     state.vlan.items[0].dhcp_on = false;
-    const { store } = renderWithProviders(<DeleteSubnet id={subnetId} />, {
+    const { store } = renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
     });
 
     expect(
@@ -129,7 +129,7 @@ describe("DeleteSubnet", () => {
     ).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: /Delete/i }));
 
-    const expectedAction = subnetActions.delete(subnetId);
+    const expectedAction = subnetActions.delete(subnet.id);
     const actualAction = store
       .getActions()
       .find((actualAction) => actualAction.type === expectedAction.type);
@@ -139,16 +139,16 @@ describe("DeleteSubnet", () => {
   it("redirects on save", async () => {
     state.vlan.items[0].dhcp_on = false;
 
-    renderWithProviders(<DeleteSubnet id={subnetId} />, {
+    renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
     });
 
     state.subnet.saved = true;
 
-    const { router } = renderWithProviders(<DeleteSubnet id={subnetId} />, {
+    const { router } = renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnetId })],
+      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
     });
 
     await waitFor(() => {

@@ -4,6 +4,7 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useFetchActions } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import type { RootState } from "@/app/store/root/types";
@@ -11,7 +12,9 @@ import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
 import { getHasIPAddresses } from "@/app/store/subnet/utils";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
+import subnetURLs from "@/app/subnets/urls";
 
 type DeleteSubnetProps = {
   subnet: Subnet;
@@ -32,6 +35,8 @@ export const DeleteSubnet = ({
   const canBeDeleted =
     !isDHCPEnabled || (isDHCPEnabled && !getHasIPAddresses(subnet));
 
+  useFetchActions([vlanActions.fetch, subnetActions.fetch]);
+
   return (
     <FormikForm<EmptyObject>
       aria-label="Delete subnet"
@@ -44,6 +49,7 @@ export const DeleteSubnet = ({
       }}
       onSuccess={closeSidePanel}
       saved={saved}
+      savedRedirect={subnetURLs.index}
       saving={saving}
       submitAppearance="negative"
       submitDisabled={!canBeDeleted}

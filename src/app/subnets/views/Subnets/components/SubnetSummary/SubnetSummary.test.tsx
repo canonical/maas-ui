@@ -1,16 +1,9 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import SubnetSummary from "./SubnetSummary";
 
-import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 let state: RootState;
 let subnet: Subnet;
@@ -72,32 +65,14 @@ afterEach(() => {
 });
 
 it("renders correct section heading", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <SubnetSummary id={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<SubnetSummary id={subnet.id} />, { state });
   expect(
     screen.getByRole("heading", { name: "Subnet summary" })
   ).toBeInTheDocument();
 });
 
 it("renders current values for static fields", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <SubnetSummary id={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<SubnetSummary id={subnet.id} />, { state });
   expect(screen.getByLabelText("Name")).toHaveTextContent(subnet.name);
 
   expect(screen.getByLabelText("CIDR")).toHaveTextContent(subnet.cidr);
@@ -114,29 +89,13 @@ it("renders current values for static fields", async () => {
 });
 
 it("renders the correct value for 'VLAN'", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <SubnetSummary id={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<SubnetSummary id={subnet.id} />, {
+    state,
+  });
   expect(screen.getByLabelText("VLAN")).toHaveTextContent("Test VLAN");
 });
 
 it("renders the correct value for 'Fabric'", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <SubnetSummary id={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<SubnetSummary id={subnet.id} />, { state });
   expect(screen.getByLabelText("Fabric")).toHaveTextContent("Test fabric");
 });

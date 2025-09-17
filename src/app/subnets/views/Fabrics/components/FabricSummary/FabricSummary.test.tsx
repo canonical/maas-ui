@@ -1,13 +1,13 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import FabricSummary from "./FabricSummary";
 
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  within,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("renders correct details", () => {
   const controller = factory.controller({
@@ -25,16 +25,11 @@ it("renders correct details", () => {
       items: [controller],
     }),
   });
-  const store = mockStore(state);
   const fabric = factory.fabric({ id: 1, name: "test-fabric" });
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricSummary fabric={fabric} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<FabricSummary fabric={fabric} />, {
+    state,
+  });
 
   expect(
     screen.getByRole("heading", { name: "Fabric summary" })
@@ -53,14 +48,9 @@ it("can open and close the Edit fabric summary form", async () => {
       loading: false,
     }),
   });
-  const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricSummary fabric={fabric} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<FabricSummary fabric={fabric} />, {
+    state,
+  });
   const fabricSummary = screen.getByRole("region", { name: "Fabric summary" });
   await userEvent.click(
     within(fabricSummary).getAllByRole("button", { name: "Edit" })[0]

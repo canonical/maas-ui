@@ -1,12 +1,13 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import SubnetSummaryForm from "./SubnetSummaryForm";
 
 import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("can dispatch an action to update the subnet", async () => {
   const fabrics = [
@@ -35,13 +36,9 @@ it("can dispatch an action to update the subnet", async () => {
     subnet: factory.subnetState({ items: [subnet], loaded: true }),
     vlan: factory.vlanState({ items: vlans, loaded: true }),
   });
-  const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <SubnetSummaryForm handleDismiss={vi.fn()} id={subnet.id} />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithProviders(
+    <SubnetSummaryForm handleDismiss={vi.fn()} id={subnet.id} />,
+    { state }
   );
   const cidrField = screen.getByRole("textbox", { name: "CIDR" });
   const nameField = screen.getByRole("textbox", { name: "Name" });

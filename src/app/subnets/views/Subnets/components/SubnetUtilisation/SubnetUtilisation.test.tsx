@@ -1,7 +1,7 @@
 import SubnetUtilisation from "./SubnetUtilisation";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("renders subnet utilisation statistics", () => {
   const subnetStatistics = factory.subnetStatistics({
@@ -11,7 +11,7 @@ it("renders subnet utilisation statistics", () => {
     usage_string: "50%",
   });
 
-  render(<SubnetUtilisation statistics={subnetStatistics} />);
+  renderWithProviders(<SubnetUtilisation statistics={subnetStatistics} />);
 
   expect(screen.getByLabelText("Subnet addresses")).toHaveTextContent(
     subnetStatistics.total_addresses.toString()

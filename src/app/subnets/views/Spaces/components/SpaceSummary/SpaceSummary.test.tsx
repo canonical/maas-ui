@@ -1,11 +1,13 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import EditSpace from "./SpaceSummary";
 
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const getRootState = () =>
   factory.rootState({
@@ -25,7 +27,7 @@ it("displays space name and description", () => {
     name: "outer",
     description: "The cold, dark, emptiness of space.",
   });
-  render(<EditSpace space={space} />);
+  renderWithProviders(<EditSpace space={space} />);
   const spaceSummary = screen.getByRole("region", { name: "Space summary" });
 
   expect(within(spaceSummary).getByText("outer")).toBeInTheDocument();
@@ -41,14 +43,7 @@ it("can open and close the Edit space summary form", async () => {
   });
   const state = getRootState();
   state.space.items = [space];
-  const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <EditSpace space={state.space.items[0]} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<EditSpace space={state.space.items[0]} />, { state });
   const spaceSummary = screen.getByRole("region", { name: "Space summary" });
   await userEvent.click(
     within(spaceSummary).getAllByRole("button", { name: "Edit" })[0]

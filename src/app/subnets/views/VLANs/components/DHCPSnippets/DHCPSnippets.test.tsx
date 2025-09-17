@@ -1,6 +1,4 @@
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
-import configureStore from "redux-mock-store";
+import { Route, Routes } from "react-router";
 
 import DHCPSnippets from "./DHCPSnippets";
 
@@ -8,9 +6,8 @@ import type { Props as DHCPTableProps } from "@/app/base/components/DHCPTable/DH
 import urls from "@/app/base/urls";
 import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
-import { render } from "@/testing/utils";
+import { renderWithProviders } from "@/testing/utils";
 
-const mockStore = configureStore();
 const mockDHCPTable = vi.fn();
 vi.mock("@/app/base/components/DHCPTable", () => ({
   default: (props: DHCPTableProps) => mockDHCPTable(props),
@@ -22,15 +19,12 @@ afterEach(() => {
 
 it("dispatches an action to fetch the subnets on mount", () => {
   const state = factory.rootState();
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <DHCPSnippets modelName="subnet" subnetIds={[1, 2]} />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithProviders(
+    <DHCPSnippets modelName="subnet" subnetIds={[1, 2]} />,
+    {
+      state,
+      initialEntries: [urls.subnets.subnet.index({ id: 1 })],
+    }
   );
 
   const expectedActions = [subnetActions.fetch()];
@@ -52,25 +46,22 @@ it("selects the correct subnets to display in the table", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route
-            element={
-              <DHCPSnippets
-                modelName="subnet"
-                subnetIds={[subnets[0].id, subnets[2].id]}
-              />
-            }
-            path={urls.subnets.subnet.index(null)}
+  renderWithProviders(
+    <Routes>
+      <Route
+        element={
+          <DHCPSnippets
+            modelName="subnet"
+            subnetIds={[subnets[0].id, subnets[2].id]}
           />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
+        }
+        path={urls.subnets.subnet.index(null)}
+      />
+    </Routes>,
+    {
+      state,
+      initialEntries: [urls.subnets.subnet.index({ id: 1 })],
+    }
   );
   expect(mockDHCPTable).toHaveBeenCalledWith(
     expect.objectContaining({

@@ -1,11 +1,14 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import SubnetSummaryFormFields from "./SubnetSummaryFormFields";
 
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("updates to use the fabric's default VLAN on fabric change", async () => {
   const fabrics = [
@@ -21,13 +24,11 @@ it("updates to use the fabric's default VLAN on fabric change", async () => {
     fabric: factory.fabricState({ items: fabrics, loaded: true }),
     vlan: factory.vlanState({ items: vlans, loaded: true }),
   });
-  const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <Formik initialValues={{ fabric: 1, vlan: 3 }} onSubmit={vi.fn()}>
-        <SubnetSummaryFormFields />
-      </Formik>
-    </Provider>
+  renderWithProviders(
+    <Formik initialValues={{ fabric: 1, vlan: 3 }} onSubmit={vi.fn()}>
+      <SubnetSummaryFormFields />
+    </Formik>,
+    { state }
   );
 
   expect(screen.getByRole("combobox", { name: "VLAN" })).toHaveValue("3");

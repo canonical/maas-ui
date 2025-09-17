@@ -1,16 +1,10 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import VLANControllers from "./VLANControllers";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import type { VLAN } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 let state: RootState;
 let vlan: VLAN;
@@ -42,26 +36,12 @@ beforeEach(() => {
 
 it("displays a spinner when loading controllers", () => {
   state.controller.loading = true;
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <VLANControllers id={vlan.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<VLANControllers id={vlan.id} />, { state });
   expect(screen.getByTestId("Spinner")).toBeInTheDocument();
 });
 
 it("renders correct details", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <VLANControllers id={vlan.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<VLANControllers id={vlan.id} />, { state });
   expect(screen.getByRole("link", { name: /controller-abc/i })).toHaveAttribute(
     "href",
     urls.controllers.controller.index({ id: "abc123" })

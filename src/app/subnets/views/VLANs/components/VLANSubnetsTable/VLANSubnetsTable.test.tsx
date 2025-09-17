@@ -1,14 +1,8 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import VLANSubnetsTable from "./VLANSubnetsTable";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { render, screen, within } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 it("renders correct details", () => {
   const vlan = factory.vlan({ id: 5005, subnet_ids: [1] });
@@ -24,14 +18,7 @@ it("renders correct details", () => {
     subnet: factory.subnetState({ items: [subnet] }),
     vlan: factory.vlanState({ items: [vlan] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <VLANSubnetsTable id={vlan.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<VLANSubnetsTable id={vlan.id} />, { state });
   const vlanSubnetsTable = within(
     screen.getByRole("region", {
       name: "Subnets on this VLAN",

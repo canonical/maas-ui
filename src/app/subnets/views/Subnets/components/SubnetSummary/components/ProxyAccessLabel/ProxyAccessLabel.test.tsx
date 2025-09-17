@@ -1,9 +1,9 @@
 import ProxyAccessLabel from "./ProxyAccessLabel";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 it("shows a tooltip when proxy access is allowed", async () => {
-  render(<ProxyAccessLabel allowProxy />);
+  renderWithProviders(<ProxyAccessLabel allowProxy />);
 
   await userEvent.click(screen.getByRole("button"));
 
@@ -13,7 +13,7 @@ it("shows a tooltip when proxy access is allowed", async () => {
 });
 
 it("shows a tooltip when proxy access is not allowed", async () => {
-  render(<ProxyAccessLabel allowProxy={false} />);
+  renderWithProviders(<ProxyAccessLabel allowProxy={false} />);
 
   await userEvent.click(screen.getByRole("button"));
 

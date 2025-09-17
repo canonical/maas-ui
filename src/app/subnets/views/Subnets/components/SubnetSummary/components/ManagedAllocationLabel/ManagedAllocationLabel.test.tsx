@@ -1,9 +1,9 @@
 import ManagedAllocationLabel from "./ManagedAllocationLabel";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 it("shows a tooltip", async () => {
-  render(<ManagedAllocationLabel />);
+  renderWithProviders(<ManagedAllocationLabel />);
 
   await userEvent.click(screen.getByRole("button"));
 

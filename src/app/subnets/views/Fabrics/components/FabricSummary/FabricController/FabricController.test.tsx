@@ -1,13 +1,7 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import FabricControllers from "./FabricControllers";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("displays a spinner when loading controllers", () => {
   const controller = factory.controller({
@@ -19,16 +13,9 @@ it("displays a spinner when loading controllers", () => {
       items: [controller],
     }),
   });
-  const store = mockStore(state);
   const fabric = factory.fabric({ id: 1 });
 
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricControllers id={fabric.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<FabricControllers id={fabric.id} />, { state });
 
   expect(screen.getByTestId("Spinner")).toBeInTheDocument();
 });

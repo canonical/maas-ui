@@ -1,12 +1,14 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import EditSpace from "./EditSpace";
 
 import { spaceActions } from "@/app/store/space";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const getRootState = () =>
   factory.rootState({
@@ -28,13 +30,11 @@ it("dispatches an update action on submit", async () => {
   });
   const state = getRootState();
   state.space.items = [space];
-  const store = configureStore()(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <EditSpace handleDismiss={vi.fn()} space={space} />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithProviders(
+    <EditSpace handleDismiss={vi.fn()} space={space} />,
+    {
+      state,
+    }
   );
   const spaceSummaryForm = screen.getByRole("form", {
     name: "Edit space summary",

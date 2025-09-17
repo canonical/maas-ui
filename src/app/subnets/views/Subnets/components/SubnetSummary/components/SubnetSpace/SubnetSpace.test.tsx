@@ -1,21 +1,11 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import SubnetSpace from "./SubnetSpace";
 
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 it("shows a warning tooltip if the subnet is not in a space", async () => {
   const state = factory.rootState();
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <SubnetSpace spaceId={null} />
-    </Provider>
-  );
+  renderWithProviders(<SubnetSpace spaceId={null} />, { state });
 
   await userEvent.click(screen.getByRole("button"));
 
@@ -28,12 +18,7 @@ it("shows a warning tooltip if the subnet is not in a space", async () => {
 
 it("does not show a warning tooltip if the subnet is in a space", async () => {
   const state = factory.rootState();
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <SubnetSpace spaceId={1} />
-    </Provider>
-  );
+  renderWithProviders(<SubnetSpace spaceId={1} />, { state });
 
   expect(screen.queryByRole("button")).not.toBeInTheDocument();
 });
