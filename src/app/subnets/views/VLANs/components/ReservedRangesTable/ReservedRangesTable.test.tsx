@@ -1,15 +1,17 @@
-import ReservedRangesTable, { Labels } from "./ReservedRangesTable";
+import { Labels } from "./ReservedRangesTable";
 
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType } from "@/app/store/iprange/types";
 import type { RootState } from "@/app/store/root/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import type { VLAN } from "@/app/store/vlan/types";
+import { ReservedRangesTable } from "@/app/subnets/views/VLANs/components";
 import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
   waitFor,
+  within,
   renderWithProviders,
 } from "@/testing/utils";
 
@@ -42,7 +44,7 @@ describe("ReservedRangesTable", () => {
     });
   });
 
-  it("renders for a subnet", () => {
+  it("renders the correct columns for a chosen subnet", () => {
     const subnet2 = factory.subnet();
     state.iprange.items = [
       factory.ipRange({ start_ip: "11.1.1.1", subnet: subnet.id }),
@@ -53,28 +55,33 @@ describe("ReservedRangesTable", () => {
     renderWithProviders(<ReservedRangesTable subnetId={subnet.id} />, {
       state,
     });
-    expect(
-      screen.queryAllByRole("gridcell", {
-        name: Labels.StartIP,
+    const ReservedRangesTableTable = within(
+      screen.getByRole("region", {
+        name: "Reserved ranges",
       })
-    ).toHaveLength(2);
-    expect(
-      screen
-        .getAllByRole("gridcell", {
-          name: Labels.StartIP,
+    ).getByRole("grid");
+
+    [
+      Labels.Actions,
+      Labels.Comment,
+      Labels.EndIP,
+      Labels.Owner,
+      Labels.StartIP,
+      Labels.Type,
+    ].forEach((label) => {
+      expect(
+        screen.getByRole("columnheader", {
+          name: new RegExp(`^${label}`, "i"),
         })
-        .find((td) => td.textContent === "11.1.1.1")
-    ).toBeInTheDocument();
-    expect(
-      screen
-        .getAllByRole("gridcell", {
-          name: Labels.StartIP,
-        })
-        .find((td) => td.textContent === "11.1.1.2")
-    ).toBeInTheDocument();
+      ).toBeInTheDocument();
+    });
+
+    expect(within(ReservedRangesTableTable).getAllByRole("row")).toHaveLength(
+      2 + 1
+    );
   });
 
-  it("renders for a vlan", () => {
+  it("renders the correct columns for a chosen vlan", () => {
     const vlan2 = factory.vlan();
     state.iprange.items = [
       factory.ipRange({ start_ip: "11.1.1.1", vlan: vlan.id }),
@@ -88,25 +95,32 @@ describe("ReservedRangesTable", () => {
         state,
       }
     );
-    expect(
-      screen.queryAllByRole("gridcell", {
-        name: Labels.StartIP,
+
+    const ReservedRangesTableTable = within(
+      screen.getByRole("region", {
+        name: "Reserved ranges",
       })
-    ).toHaveLength(2);
-    expect(
-      screen
-        .getAllByRole("gridcell", {
-          name: Labels.StartIP,
+    ).getByRole("grid");
+
+    [
+      Labels.Actions,
+      Labels.Comment,
+      Labels.EndIP,
+      Labels.Owner,
+      Labels.StartIP,
+      Labels.Type,
+      Labels.Subnet,
+    ].forEach((label) => {
+      expect(
+        screen.getByRole("columnheader", {
+          name: new RegExp(`^${label}`, "i"),
         })
-        .find((td) => td.textContent === "11.1.1.1")
-    ).toBeInTheDocument();
-    expect(
-      screen
-        .getAllByRole("gridcell", {
-          name: Labels.StartIP,
-        })
-        .find((td) => td.textContent === "11.1.1.2")
-    ).toBeInTheDocument();
+      ).toBeInTheDocument();
+    });
+
+    expect(within(ReservedRangesTableTable).getAllByRole("row")).toHaveLength(
+      2 + 1
+    );
   });
 
   it("displays an empty message for a subnet", () => {
@@ -134,61 +148,64 @@ describe("ReservedRangesTable", () => {
 
   it("displays a message if there are no subnets in a VLAN", () => {
     state.subnet.items = [];
-    renderWithProviders(<ReservedRangesTable vlanId={vlan.id} />, {
-      state,
-    });
+    renderWithProviders(
+      <ReservedRangesTable hasVLANSubnets={false} vlanId={vlan.id} />,
+      {
+        state,
+      }
+    );
     expect(
       screen.getByText(/No subnets are available on this VLAN/)
     ).toBeInTheDocument();
   });
 
-  it("displays content when it is dynamic", () => {
+  it("displays the right content when range type is 'dynamic'", () => {
     ipRange.type = IPRangeType.Dynamic;
     state.iprange.items = [ipRange];
     renderWithProviders(<ReservedRangesTable subnetId={subnet.id} />, {
       state,
     });
-    expect(
-      screen.getByRole("gridcell", {
-        name: Labels.Type,
+
+    const ReservedRangesTableTable = within(
+      screen.getByRole("region", {
+        name: "Reserved ranges",
       })
-    ).toHaveTextContent("Dynamic");
+    ).getByRole("grid");
+
     expect(
-      screen.getByRole("gridcell", {
-        name: Labels.Owner,
-      })
-    ).toHaveTextContent("MAAS");
+      within(ReservedRangesTableTable).getAllByRole("cell", { name: "Dynamic" })
+    ).toHaveLength(2);
+
     expect(
-      screen.getByRole("gridcell", {
-        name: Labels.Comment,
-      })
-    ).toHaveTextContent("Dynamic");
+      within(ReservedRangesTableTable).getAllByRole("cell", { name: "MAAS" })
+    ).toHaveLength(1);
   });
 
-  it("displays content when it is reserved", () => {
+  it("displays the right content when range type is 'reserved'", () => {
     ipRange.type = IPRangeType.Reserved;
     state.iprange.items = [ipRange];
     renderWithProviders(<ReservedRangesTable subnetId={subnet.id} />, {
       state,
     });
-    expect(
-      screen.getByRole("gridcell", {
-        name: Labels.Type,
+
+    const ReservedRangesTableTable = within(
+      screen.getByRole("region", {
+        name: "Reserved ranges",
       })
-    ).toHaveTextContent("Reserved");
+    ).getByRole("grid");
+
     expect(
-      screen.getByRole("gridcell", {
-        name: Labels.Owner,
+      within(ReservedRangesTableTable).getAllByRole("cell", {
+        name: "Reserved",
       })
-    ).toHaveTextContent("wombat");
+    ).toHaveLength(1);
+
     expect(
-      screen.getByRole("gridcell", {
-        name: Labels.Comment,
-      })
-    ).toHaveTextContent("what a beaut");
+      within(ReservedRangesTableTable).getAllByRole("cell", { name: "wombat" })
+    ).toHaveLength(1);
   });
 
-  it("displays an add button when it is reserved", () => {
+  it("displays an add button when range type is 'reserved'", () => {
     ipRange.type = IPRangeType.Reserved;
     state.iprange.items = [ipRange];
     renderWithProviders(<ReservedRangesTable subnetId={subnet.id} />, {
@@ -201,7 +218,7 @@ describe("ReservedRangesTable", () => {
     ).toBeInTheDocument();
   });
 
-  it("displays an add button when it is dynamic", async () => {
+  it("displays an add button when range type is 'dynamic'", async () => {
     ipRange.type = IPRangeType.Dynamic;
     state.iprange.items = [ipRange];
     renderWithProviders(<ReservedRangesTable subnetId={subnet.id} />, {
@@ -234,33 +251,5 @@ describe("ReservedRangesTable", () => {
     expect(
       screen.getByRole("button", { name: Labels.ReserveRange })
     ).toBeAriaDisabled();
-  });
-
-  it("displays the subnet column when the table is for a VLAN", () => {
-    state.iprange.items = [
-      factory.ipRange({ start_ip: "11.1.1.1", vlan: vlan.id }),
-    ];
-    renderWithProviders(
-      <ReservedRangesTable hasVLANSubnets vlanId={vlan.id} />,
-      {
-        state,
-      }
-    );
-    expect(
-      screen.getByRole("gridcell", {
-        name: Labels.Subnet,
-      })
-    ).toBeInTheDocument();
-  });
-
-  it("does not display the subnet column when the table is for a subnet", () => {
-    renderWithProviders(<ReservedRangesTable subnetId={subnet.id} />, {
-      state,
-    });
-    expect(
-      screen.queryByRole("gridcell", {
-        name: Labels.Subnet,
-      })
-    ).not.toBeInTheDocument();
   });
 });

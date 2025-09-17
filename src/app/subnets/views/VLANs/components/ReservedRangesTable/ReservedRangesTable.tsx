@@ -1,26 +1,17 @@
-import type { ReactElement, ReactNode } from "react";
+import type { ReactElement } from "react";
 import { useState } from "react";
 
-import { ExternalLink } from "@canonical/maas-react-components";
-import {
-  ContextualMenu,
-  MainTable,
-  Notification,
-} from "@canonical/react-components";
-import type { MainTableCell } from "@canonical/react-components/dist/components/MainTable/MainTable";
+import { ExternalLink, GenericTable } from "@canonical/maas-react-components";
+import { ContextualMenu, Notification } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
-import SubnetLink from "@/app/base/components/SubnetLink";
-import TableActions from "@/app/base/components/TableActions";
 import TitledSection from "@/app/base/components/TitledSection";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
-import type { SidePanelActions } from "@/app/base/side-panel-context-new";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
-import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType } from "@/app/store/iprange/types";
 import {
   getCommentDisplay,
@@ -30,11 +21,10 @@ import {
 import type { RootState } from "@/app/store/root/types";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
-import {
-  AddReservedRange,
-  DeleteReservedRange,
-} from "@/app/subnets/views/VLANs/components";
-import { generateEmptyStateMsg, getTableStatus, isId } from "@/app/utils";
+import { AddReservedRange } from "@/app/subnets/views/VLANs/components";
+import type { ReservedRangesTableData } from "@/app/subnets/views/VLANs/components/ReservedRangesTable/useReservedRangesTableColumns/useReservedRangesTableColumns";
+import useReservedRangesColumns from "@/app/subnets/views/VLANs/components/ReservedRangesTable/useReservedRangesTableColumns/useReservedRangesTableColumns";
+import { isId } from "@/app/utils";
 
 export type SubnetProps = {
   subnetId: Subnet[SubnetMeta.PK] | null;
@@ -53,7 +43,7 @@ export type Props = SubnetProps | VLANProps;
 export enum Labels {
   Actions = "Actions",
   Comment = "Comment",
-  EndIp = "End IP Address",
+  EndIP = "End IP Address",
   Owner = "Owner",
   ReserveDynamicRange = "Reserve dynamic range",
   ReserveRange = "Reserve range",
@@ -61,92 +51,6 @@ export enum Labels {
   Subnet = "Subnet",
   Type = "Type",
 }
-
-const generateRows = (
-  ipRanges: IPRange[],
-  showSubnetColumn: boolean,
-  openSidePanel: SidePanelActions["openSidePanel"]
-) =>
-  ipRanges.map((ipRange: IPRange) => {
-    const comment = getCommentDisplay(ipRange);
-    const owner = getOwnerDisplay(ipRange);
-    const type = getTypeDisplay(ipRange);
-    const expandedContent: ReactNode | null = null;
-
-    const columns: MainTableCell[] = [
-      {
-        "aria-label": Labels.StartIP,
-        className: "start-ip-col",
-        content: ipRange.start_ip,
-      },
-      {
-        "aria-label": Labels.EndIp,
-        className: "end-ip-col",
-        content: ipRange.end_ip,
-      },
-      {
-        "aria-label": Labels.Owner,
-        className: "owner-col",
-        content: owner,
-      },
-      {
-        "aria-label": Labels.Type,
-        className: "type-col",
-        content: type,
-      },
-      {
-        "aria-label": Labels.Comment,
-        className: "comment-col",
-        content: comment,
-      },
-      {
-        "aria-label": Labels.Actions,
-        className: "actions-col u-align--right",
-        content: (
-          <TableActions
-            onDelete={() => {
-              openSidePanel({
-                component: DeleteReservedRange,
-                title: "Delete reserved range",
-                props: {
-                  ipRangeId: ipRange.id,
-                },
-              });
-            }}
-            onEdit={() => {
-              openSidePanel({
-                component: AddReservedRange,
-                title: "Edit reserved range",
-                props: {
-                  createType: ipRange.type,
-                  ipRangeId: ipRange.id,
-                },
-              });
-            }}
-          />
-        ),
-      },
-    ];
-    if (showSubnetColumn) {
-      columns.unshift({
-        "aria-label": Labels.Subnet,
-        className: "subnet-col",
-        content: <SubnetLink id={ipRange.subnet} />,
-      });
-    }
-    return {
-      columns,
-      expandedContent: expandedContent,
-      key: ipRange.id,
-      sortData: {
-        comment,
-        end_ip: ipRange.end_ip,
-        owner,
-        start_ip: ipRange.start_ip,
-        type: ipRange.type,
-      },
-    };
-  });
 
 const ReservedRangesTable = ({
   hasVLANSubnets,
@@ -167,47 +71,19 @@ const ReservedRangesTable = ({
 
   useFetchActions([ipRangeActions.fetch]);
 
-  const headers = [
-    {
-      content: Labels.StartIP,
-      className: "start-ip-col",
-      sortKey: "start_ip",
-    },
-    {
-      content: Labels.EndIp,
-      className: "end-ip-col",
-      sortKey: "end_ip",
-    },
-    {
-      content: Labels.Owner,
-      className: "owner-col",
-      sortKey: "owner",
-    },
-    {
-      content: Labels.Type,
-      className: "type-col",
-      sortKey: "type",
-    },
-    {
-      content: Labels.Comment,
-      className: "comment-col",
-      sortKey: "comment",
-    },
-    {
-      content: Labels.Actions,
-      className: "actions-col u-align--right",
-    },
-  ];
+  const columns = useReservedRangesColumns(showSubnetColumn);
 
-  if (showSubnetColumn) {
-    headers.unshift({
-      content: Labels.Subnet,
-      className: "subnet-col",
-      sortKey: "subnet",
-    });
-  }
-
-  const tableStatus = getTableStatus({ isLoading: ipRangeLoading });
+  const data: ReservedRangesTableData[] = ipRanges.map((ipRange) => ({
+    id: ipRange.id,
+    ipRangeId: ipRange.id,
+    subnet: ipRange.subnet,
+    startIp: ipRange.start_ip,
+    endIp: ipRange.end_ip,
+    comment: getCommentDisplay(ipRange),
+    type: getTypeDisplay(ipRange),
+    owner: getOwnerDisplay(ipRange),
+    createType: ipRange.type,
+  }));
 
   return (
     <TitledSection
@@ -260,7 +136,7 @@ const ReservedRangesTable = ({
           No subnets are available on this VLAN. Ranges cannot be reserved.
         </Notification>
       ) : null}
-      <MainTable
+      <GenericTable
         className={classNames(
           "reserved-ranges-table",
           "p-table-expanding--light",
@@ -268,18 +144,12 @@ const ReservedRangesTable = ({
             "reserved-ranges-table--has-subnet": showSubnetColumn,
           }
         )}
-        defaultSort="name"
-        defaultSortDirection="descending"
-        emptyStateMsg={generateEmptyStateMsg(tableStatus, {
-          default: `No IP ranges have been reserved for this ${
-            isSubnet ? "subnet" : "VLAN"
-          }.`,
-        })}
-        expanding
-        headers={headers}
-        responsive
-        rows={generateRows(ipRanges, showSubnetColumn, openSidePanel)}
-        sortable
+        columns={columns}
+        data={data}
+        isLoading={ipRangeLoading}
+        noData={`No IP ranges have been reserved for this ${isSubnet ? "subnet" : "VLAN"}.`}
+        role="table"
+        sortBy={[{ id: "startIp", desc: false }]}
       />
       <ExternalLink to={docsUrls.ipRanges}>About IP ranges</ExternalLink>
     </TitledSection>
