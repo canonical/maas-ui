@@ -12,11 +12,12 @@ import type {
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
+import DeleteImages from "../../DeleteImages";
+
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { ImageSidePanelViews } from "@/app/images/constants";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { Image } from "@/app/images/types";
 import { formatUtcDatetime, getTimeDistanceString } from "@/app/utils/time";
 
@@ -45,7 +46,7 @@ const useImageTableColumns = ({
   selectedRows: RowSelectionState;
   setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
 }): ImageColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () =>
       [
@@ -197,9 +198,10 @@ const useImageTableColumns = ({
                     if (!row.getIsSelected()) {
                       row.toggleSelected();
                     }
-                    setSidePanelContent({
-                      view: ImageSidePanelViews.DELETE_MULTIPLE_IMAGES,
-                      extras: {
+                    openSidePanel({
+                      component: DeleteImages,
+                      title: "Delete images",
+                      props: {
                         rowSelection: { ...selectedRows, [row.id]: true },
                         setRowSelection: setSelectedRows,
                       },
@@ -211,7 +213,7 @@ const useImageTableColumns = ({
           },
         },
       ] as ImageColumnDef[],
-    [commissioningRelease, selectedRows, setSelectedRows, setSidePanelContent]
+    [commissioningRelease, selectedRows, setSelectedRows, openSidePanel]
   );
 };
 

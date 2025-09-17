@@ -9,7 +9,7 @@ import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
 import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type {
@@ -159,6 +159,7 @@ export const groupArchesByRelease = (images: ImagesByOS): GroupedImages => {
 };
 
 const SelectUpstreamImagesForm = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const otherImages = useSelector(bootResourceSelectors.otherImages);
@@ -198,12 +199,6 @@ const SelectUpstreamImagesForm = (): ReactElement => {
     };
   }, [dispatch]);
 
-  const { setSidePanelContent } = useSidePanel();
-
-  const resetForm = () => {
-    setSidePanelContent(null);
-  };
-
   return (
     <div className="select-upstream-images-form">
       Select images to be imported and kept in sync daily. Images will be
@@ -224,7 +219,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
           enableReinitialize
           errors={error}
           initialValues={syncedImages}
-          onCancel={resetForm}
+          onCancel={closeSidePanel}
           onSubmit={(values) => {
             dispatch(cleanup());
             const ubuntuSystems: {
@@ -289,7 +284,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
               dispatch(bootResourceActions.saveOther(params));
               dispatch(bootResourceActions.saveOtherSuccess());
             }
-            resetForm();
+            closeSidePanel();
           }}
           onSuccess={() => {
             dispatch(bootResourceActions.poll({ continuous: false }));

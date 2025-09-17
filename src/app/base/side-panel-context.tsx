@@ -13,8 +13,6 @@ import {
   DomainListSidePanelViews,
   type DomainListSidePanelContent,
 } from "@/app/domains/views/DomainsList/constants";
-import { ImageSidePanelViews } from "@/app/images/constants";
-import type { ImageSidePanelContent } from "@/app/images/types";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { KVMSidePanelContent } from "@/app/kvm/types";
 import { MachineSidePanelViews } from "@/app/machines/constants";
@@ -33,7 +31,6 @@ export type SidePanelContent =
   | DeviceSidePanelContent
   | DomainDetailsSidePanelContent
   | DomainListSidePanelContent
-  | ImageSidePanelContent
   | KVMSidePanelContent
   | MachineSidePanelContent
   | TagSidePanelContent
@@ -60,7 +57,6 @@ export const SidePanelViews = {
   ...DomainDetailsSidePanelViews,
   ...DomainListSidePanelViews,
   ...VLANDetailsSidePanelViews,
-  ...ImageSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {
@@ -89,13 +85,10 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.DELETE_SPECIAL_FILESYSTEM[1]]: "Delete special filesystem",
   [SidePanelViews.DeleteTag[1]]: "Delete tag",
   [SidePanelViews.DELETE_VOLUME_GROUP[1]]: "Delete volume group",
-  [SidePanelViews.DOWNLOAD_IMAGE[1]]: "Select upstream images to sync",
   [SidePanelViews.EDIT_INTERFACE[1]]: "Edit interface",
   [SidePanelViews.EDIT_DISK[1]]: "Edit disk",
   [SidePanelViews.EDIT_PARTITION[1]]: "Edit partition",
   [SidePanelViews.EDIT_PHYSICAL[1]]: "Edit physical",
-  [SidePanelViews.DELETE_IMAGE[1]]: "Delete image",
-  [SidePanelViews.DELETE_MULTIPLE_IMAGES[1]]: "Delete multiple images",
   [SidePanelViews.MARK_CONNECTED[1]]: "Mark as connected",
   [SidePanelViews.MARK_DISCONNECTED[1]]: "Mark as disconnected",
   [SidePanelViews.REMOVE_INTERFACE[1]]: "Remove interface",

@@ -1,7 +1,9 @@
 import { vi } from "vitest";
 
 import useImageTableColumns from "@/app/images/components/ImagesTable/useImageTableColumns/useImageTableColumns";
-import { renderHook } from "@/testing/utils";
+import { mockSidePanel, renderHook } from "@/testing/utils";
+
+await mockSidePanel();
 
 vi.mock("@/context", async () => {
   const actual = await vi.importActual("@/context");

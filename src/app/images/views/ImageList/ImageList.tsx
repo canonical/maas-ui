@@ -9,8 +9,6 @@ import ImageListHeader from "./ImageListHeader";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
-import ImagesForms from "@/app/images/components/ImagesForms";
 import ImagesTable from "@/app/images/components/ImagesTable";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { configActions } from "@/app/store/config";
@@ -22,7 +20,6 @@ export enum Labels {
 
 const ImageList = (): ReactElement => {
   const dispatch = useDispatch();
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const configLoaded = useSelector(configSelectors.loaded);
 
@@ -31,13 +28,12 @@ const ImageList = (): ReactElement => {
   useWindowTitle("Images");
 
   useEffect(() => {
-    setSidePanelContent(null);
     dispatch(bootResourceActions.poll({ continuous: true }));
     dispatch(configActions.fetch());
     return () => {
       dispatch(bootResourceActions.pollStop());
     };
-  }, [dispatch, setSidePanelContent]);
+  }, [dispatch]);
 
   return (
     <PageContent
@@ -47,15 +43,9 @@ const ImageList = (): ReactElement => {
           setSelectedRows={setSelectedRows}
         />
       }
-      sidePanelContent={
-        sidePanelContent && (
-          <ImagesForms
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        )
-      }
-      sidePanelTitle={getSidePanelTitle("Images", sidePanelContent)}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       {configLoaded && (
         <>
