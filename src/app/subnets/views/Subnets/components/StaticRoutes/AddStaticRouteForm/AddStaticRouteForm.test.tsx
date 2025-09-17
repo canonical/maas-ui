@@ -31,10 +31,7 @@ it("dispatches a correct action on add static route form submit", async () => {
   });
 
   const store = mockStore(state);
-  renderWithProviders(
-    <AddStaticRouteForm setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
-    { store }
-  );
+  renderWithProviders(<AddStaticRouteForm subnetId={subnet.id} />, { store });
 
   await waitFor(() => {
     expect(

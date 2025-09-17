@@ -1,154 +1,98 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import { Headers } from "./BootArchitecturesTable";
 import EditBootArchitectures from "./EditBootArchitectures";
 
+import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
+  within,
+} from "@/testing/utils";
 
-const mockStore = configureStore();
+describe("EditBootArchitectures", () => {
+  let state: RootState;
 
-it("shows a spinner while data is loading", () => {
-  const state = factory.rootState({
-    general: factory.generalState({
-      knownBootArchitectures: factory.knownBootArchitecturesState({
-        loading: true,
+  beforeEach(() => {
+    state = factory.rootState({
+      general: factory.generalState({
+        knownBootArchitectures: factory.knownBootArchitecturesState({
+          data: [
+            factory.knownBootArchitecture({ name: "arch1" }),
+            factory.knownBootArchitecture({ name: "arch2" }),
+          ],
+          loading: false,
+        }),
       }),
-    }),
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <EditBootArchitectures setSidePanelContent={vi.fn()} subnetId={1} />
-      </MemoryRouter>
-    </Provider>
-  );
-
-  expect(screen.getByTestId("loading-data")).toBeInTheDocument();
-});
-
-it("initialises form data correctly", () => {
-  const knownBootArchitectures = [
-    factory.knownBootArchitecture({ name: "arch1" }),
-    factory.knownBootArchitecture({ name: "arch2" }),
-  ];
-  const subnet = factory.subnet({
-    disabled_boot_architectures: ["arch1"],
-  });
-  const state = factory.rootState({
-    general: factory.generalState({
-      knownBootArchitectures: factory.knownBootArchitecturesState({
-        data: knownBootArchitectures,
-        loading: false,
+      subnet: factory.subnetState({
+        items: [
+          factory.subnet({
+            id: 1,
+            disabled_boot_architectures: ["arch1"],
+          }),
+        ],
       }),
-    }),
-    subnet: factory.subnetState({ items: [subnet] }),
+    });
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <EditBootArchitectures
-          setSidePanelContent={vi.fn()}
-          subnetId={subnet.id}
-        />
-      </MemoryRouter>
-    </Provider>
-  );
-  const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
 
-  // First arch is disabled, second arch is not.
-  expect(within(nameCells[0]).getByRole("checkbox")).not.toBeChecked();
-  expect(within(nameCells[1]).getByRole("checkbox")).toBeChecked();
-});
+  it("shows a spinner while data is loading", () => {
+    state.general.knownBootArchitectures.loading = true;
+    renderWithProviders(<EditBootArchitectures subnetId={1} />, { state });
 
-it("can update the arches to disable", async () => {
-  const knownBootArchitectures = [
-    factory.knownBootArchitecture({ name: "arch1" }),
-    factory.knownBootArchitecture({ name: "arch2" }),
-  ];
-  const subnet = factory.subnet({
-    disabled_boot_architectures: ["arch1"],
+    expect(screen.getByTestId("loading-data")).toBeInTheDocument();
   });
-  const state = factory.rootState({
-    general: factory.generalState({
-      knownBootArchitectures: factory.knownBootArchitecturesState({
-        data: knownBootArchitectures,
-        loading: false,
+
+  it("initialises form data correctly", () => {
+    renderWithProviders(<EditBootArchitectures subnetId={1} />, { state });
+    const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
+
+    // First arch is disabled, second arch is not.
+    expect(within(nameCells[0]).getByRole("checkbox")).not.toBeChecked();
+    expect(within(nameCells[1]).getByRole("checkbox")).toBeChecked();
+  });
+
+  it("can update the arches to disable", async () => {
+    renderWithProviders(<EditBootArchitectures subnetId={1} />, { state });
+    const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
+
+    await userEvent.click(within(nameCells[0]).getByRole("checkbox"));
+    await userEvent.click(within(nameCells[1]).getByRole("checkbox"));
+
+    await waitFor(() => {
+      expect(within(nameCells[0]).getByRole("checkbox")).toBeChecked();
+    });
+    expect(within(nameCells[1]).getByRole("checkbox")).not.toBeChecked();
+  });
+
+  it("can dispatch an action to update subnet's disabled boot architectures", async () => {
+    state.subnet.items = [
+      factory.subnet({
+        id: 1,
       }),
-    }),
-    subnet: factory.subnetState({ items: [subnet] }),
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <EditBootArchitectures
-          setSidePanelContent={vi.fn()}
-          subnetId={subnet.id}
-        />
-      </MemoryRouter>
-    </Provider>
-  );
-  const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
+    ];
+    const { store } = renderWithProviders(
+      <EditBootArchitectures subnetId={1} />,
+      { state }
+    );
+    const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
 
-  await userEvent.click(within(nameCells[0]).getByRole("checkbox"));
-  await userEvent.click(within(nameCells[1]).getByRole("checkbox"));
+    await userEvent.click(within(nameCells[0]).getByRole("checkbox"));
+    await userEvent.click(within(nameCells[1]).getByRole("checkbox"));
 
-  await waitFor(() => {
-    expect(within(nameCells[0]).getByRole("checkbox")).toBeChecked();
-  });
-  expect(within(nameCells[1]).getByRole("checkbox")).not.toBeChecked();
-});
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
-it("can dispatch an action to update subnet's disabled boot architectures", async () => {
-  const knownBootArchitectures = [
-    factory.knownBootArchitecture({ name: "arch1" }),
-    factory.knownBootArchitecture({ name: "arch2" }),
-  ];
-  const subnet = factory.subnet({
-    disabled_boot_architectures: [],
-  });
-  const state = factory.rootState({
-    general: factory.generalState({
-      knownBootArchitectures: factory.knownBootArchitecturesState({
-        data: knownBootArchitectures,
-        loading: false,
-      }),
-    }),
-    subnet: factory.subnetState({ items: [subnet] }),
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <EditBootArchitectures
-          setSidePanelContent={vi.fn()}
-          subnetId={subnet.id}
-        />
-      </MemoryRouter>
-    </Provider>
-  );
-  const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
+    const expectedAction = subnetActions.update({
+      id: 1,
+      disabled_boot_architectures: "arch1, arch2",
+    });
 
-  await userEvent.click(within(nameCells[0]).getByRole("checkbox"));
-  await userEvent.click(within(nameCells[1]).getByRole("checkbox"));
-
-  await userEvent.click(screen.getByRole("button", { name: "Save" }));
-
-  const expectedAction = subnetActions.update({
-    id: subnet.id,
-    disabled_boot_architectures: "arch1, arch2",
-  });
-
-  await waitFor(() => {
-    const actualActions = store.getActions();
-    expect(
-      actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+    await waitFor(() => {
+      const actualActions = store.getActions();
+      expect(
+        actualActions.find((action) => action.type === expectedAction.type)
+      ).toStrictEqual(expectedAction);
+    });
   });
 });
