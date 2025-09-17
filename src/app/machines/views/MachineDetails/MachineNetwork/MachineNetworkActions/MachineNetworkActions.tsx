@@ -7,6 +7,7 @@ import type { Expanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkT
 import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useSendAnalytics } from "@/app/base/hooks";
+import SidePanelContextProvider from "@/app/base/side-panel-context-new";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineSetSidePanelContent } from "@/app/machines/types";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -132,31 +133,33 @@ const MachineNetworkActions = ({
   ];
 
   return (
-    <NetworkActionRow
-      extraActions={actions}
-      node={machine}
-      rightContent={
-        <Button
-          className="u-no-margin--bottom"
-          disabled={isAllNetworkingDisabled}
-          onClick={() => {
-            setSidePanelContent({
-              view: MachineSidePanelViews.TEST_MACHINE,
-              extras: { applyConfiguredNetworking: true },
-            });
-            sendAnalytics(
-              "Machine details",
-              "Validate network configuration",
-              "Network tab"
-            );
-          }}
-        >
-          Validate network configuration
-        </Button>
-      }
-      selected={selected}
-      setSelected={setSelected}
-    />
+    <SidePanelContextProvider>
+      <NetworkActionRow
+        extraActions={actions}
+        node={machine}
+        rightContent={
+          <Button
+            className="u-no-margin--bottom"
+            disabled={isAllNetworkingDisabled}
+            onClick={() => {
+              setSidePanelContent({
+                view: MachineSidePanelViews.TEST_MACHINE,
+                extras: { applyConfiguredNetworking: true },
+              });
+              sendAnalytics(
+                "Machine details",
+                "Validate network configuration",
+                "Network tab"
+              );
+            }}
+          >
+            Validate network configuration
+          </Button>
+        }
+        selected={selected}
+        setSelected={setSelected}
+      />
+    </SidePanelContextProvider>
   );
 };
 
