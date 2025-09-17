@@ -2,15 +2,15 @@ import { useMemo } from "react";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
-import { Labels } from "../ReservedRanges";
-
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import type { IPRangeType } from "@/app/store/iprange/types";
 import {
-  SubnetActionTypes,
-  SubnetDetailsSidePanelViews,
-} from "@/app/subnets/views/SubnetDetails/constants";
+  AddReservedRange,
+  DeleteReservedRange,
+} from "@/app/subnets/views/VLANs/components";
+import { Labels } from "@/app/subnets/views/VLANs/components/ReservedRangesTable/ReservedRangesTable";
 
 export type ReservedRangesTableData = {
   id: number | string;
@@ -21,6 +21,7 @@ export type ReservedRangesTableData = {
   owner: string;
   type: string;
   comment: string;
+  createType: IPRangeType;
 };
 
 export type ReservedRangesColumnsDef = ColumnDef<
@@ -31,7 +32,7 @@ export type ReservedRangesColumnsDef = ColumnDef<
 const useReservedRangesColumns = (
   showSubnetColumn: boolean
 ): ReservedRangesColumnsDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   return useMemo((): ReservedRangesColumnsDef[] => {
     const columns: ReservedRangesColumnsDef[] = [
       {
@@ -60,27 +61,26 @@ const useReservedRangesColumns = (
         enableSorting: false,
         cell: ({
           row: {
-            original: { ipRangeId },
+            original: { ipRangeId, createType },
           },
         }) => (
           <TableActions
             onDelete={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.DeleteReservedRange
-                ],
-                extras: {
-                  ipRangeId: ipRangeId,
+              openSidePanel({
+                component: DeleteReservedRange,
+                title: "Delete reserved range",
+                props: {
+                  ipRangeId: ipRangeId!,
                 },
               });
             }}
             onEdit={() => {
-              setSidePanelContent({
-                view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.ReserveRange
-                ],
-                extras: {
-                  ipRangeId: ipRangeId,
+              openSidePanel({
+                component: AddReservedRange,
+                title: "Edit reserved range",
+                props: {
+                  createType,
+                  ipRangeId: ipRangeId!,
                 },
               });
             }}
@@ -102,7 +102,7 @@ const useReservedRangesColumns = (
       });
     }
     return columns;
-  }, [setSidePanelContent, showSubnetColumn]);
+  }, [openSidePanel, showSubnetColumn]);
 };
 
 export default useReservedRangesColumns;
