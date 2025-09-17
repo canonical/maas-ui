@@ -1,9 +1,7 @@
-import { render } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
-import SelectUpstreamImagesForm from "@/app/images/components/ImagesForms/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
+import SelectUpstreamImagesForm from "./SelectUpstreamImagesForm";
+
 import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import type { RootState } from "@/app/store/root/types";
@@ -96,13 +94,9 @@ describe("SelectUpstreamImagesForm", () => {
   });
 
   it("can dispatch an action to save ubuntu images", async () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <SelectUpstreamImagesForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<SelectUpstreamImagesForm />, {
+      store,
+    });
 
     await userEvent.click(
       screen.getByRole("button", { name: "Save and sync" })

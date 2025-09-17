@@ -1,6 +1,3 @@
-import { render } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 import { vi } from "vitest";
 
@@ -8,8 +5,8 @@ import ImageListHeader, {
   Labels as ImageListHeaderLabels,
 } from "./ImageListHeader";
 
-import * as sidePanelHooks from "@/app/base/side-panel-context";
-import { ImageSidePanelViews } from "@/app/images/constants";
+import DeleteImages from "@/app/images/components/DeleteImages";
+import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import type { RootState } from "@/app/store/root/types";
@@ -17,9 +14,12 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
   within,
+  renderWithProviders,
+  mockSidePanel,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("ImageListHeader", () => {
   it("sets the subtitle loading state when polling", () => {
@@ -30,10 +30,9 @@ describe("ImageListHeader", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
       {
-        route: "/images",
         state,
       }
     );
@@ -46,10 +45,9 @@ describe("ImageListHeader", () => {
         rackImportRunning: true,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
       {
-        route: "/images",
         state,
       }
     );
@@ -68,10 +66,9 @@ describe("ImageListHeader", () => {
         regionImportRunning: true,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
       {
-        route: "/images",
         state,
       }
     );
@@ -86,17 +83,6 @@ describe("ImageListHeader", () => {
 });
 
 describe("Change sources", () => {
-  const setSidePanelContent = vi.fn();
-
-  beforeEach(() => {
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent,
-      sidePanelContent: null,
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
-  });
-
   it("renders the correct text for a single default source", () => {
     const state = factory.rootState({
       bootresource: factory.bootResourceState({
@@ -109,9 +95,11 @@ describe("Change sources", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
+      {
+        state,
+      }
     );
     const images_from = screen.getByText("Images synced from");
     expect(within(images_from).getByText("maas.io")).toBeInTheDocument();
@@ -130,9 +118,11 @@ describe("Change sources", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
+      {
+        state,
+      }
     );
     const images_from = screen.getByText("Images synced from");
     expect(within(images_from).getByText("www.url.com")).toBeInTheDocument();
@@ -149,9 +139,11 @@ describe("Change sources", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
+      {
+        state,
+      }
     );
     const images_from = screen.getByText("Images synced from");
     expect(within(images_from).getByText("sources")).toBeInTheDocument();
@@ -159,17 +151,6 @@ describe("Change sources", () => {
 });
 
 describe("Select upstream images", () => {
-  const setSidePanelContent = vi.fn();
-
-  beforeEach(() => {
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent,
-      sidePanelContent: null,
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
-  });
-
   it("can trigger select upstream images side panel form", async () => {
     const state = factory.rootState({
       bootresource: factory.bootResourceState({
@@ -182,17 +163,21 @@ describe("Select upstream images", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
+      {
+        state,
+      }
     );
 
     await userEvent.click(
       screen.getByRole("button", { name: "Select upstream images" })
     );
 
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: ImageSidePanelViews.DOWNLOAD_IMAGE,
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: SelectUpstreamImagesForm,
+      title: "Select upstream images to sync",
     });
   });
 
@@ -206,7 +191,7 @@ describe("Select upstream images", () => {
         ubuntu: factory.bootResourceUbuntu(),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
       {
         state,
@@ -232,7 +217,7 @@ describe("Stop import", () => {
         ubuntu: factory.bootResourceUbuntu(),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
       {
         state,
@@ -254,12 +239,11 @@ describe("Stop import", () => {
       }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
+      {
+        store,
+      }
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Stop image import" })
@@ -282,9 +266,11 @@ describe("Stop import", () => {
         statuses: factory.bootResourceStatuses({ savingUbuntu: true }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
+      {
+        state,
+      }
     );
     const stopImportButton = screen.getByRole("button", {
       name: "Stop image import",
@@ -294,17 +280,6 @@ describe("Stop import", () => {
 });
 
 describe("Delete", () => {
-  const setSidePanelContent = vi.fn();
-
-  beforeEach(() => {
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent,
-      sidePanelContent: null,
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
-  });
-
   it("disables the button to delete images if no rows are selected", async () => {
     const state = factory.rootState({
       bootresource: factory.bootResourceState({
@@ -317,9 +292,11 @@ describe("Delete", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
+      {
+        state,
+      }
     );
 
     expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
@@ -337,19 +314,22 @@ describe("Delete", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ImageListHeader selectedRows={{ 1: true }} setSelectedRows={vi.fn} />,
-      { state }
+      {
+        state,
+      }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: ImageSidePanelViews.DELETE_MULTIPLE_IMAGES,
-      extras: {
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DeleteImages,
+      props: {
         rowSelection: { 1: true },
-        setRowSelection: vi.fn,
+        setRowSelection: expect.any(Function),
       },
+      title: "Delete images",
     });
   });
 });

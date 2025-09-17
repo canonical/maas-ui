@@ -11,10 +11,8 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router";
 
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import ImagesForms from "@/app/images/components/ImagesForms";
 import ImagesTable from "@/app/images/components/ImagesTable";
 import { Labels as ImagesLabels } from "@/app/images/views/ImageList/ImageList";
 import ImageListHeader from "@/app/images/views/ImageList/ImageListHeader";
@@ -31,7 +29,6 @@ export enum Labels {
 
 const ImagesIntro = (): ReactElement => {
   const dispatch = useDispatch();
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const navigate: SyncNavigateFunction = useNavigate();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.resources);
@@ -54,15 +51,9 @@ const ImagesIntro = (): ReactElement => {
   return (
     <IntroSection
       loading={!ubuntu}
-      sidePanelContent={
-        sidePanelContent && (
-          <ImagesForms
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        )
-      }
-      sidePanelTitle={getSidePanelTitle("Images", sidePanelContent)}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
       windowTitle="Images"
     >
       <IntroCard complete={!incomplete} title="Images">

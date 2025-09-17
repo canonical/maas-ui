@@ -2,18 +2,21 @@ import MockDate from "mockdate";
 import { register, unregister } from "timezone-mock";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
+import DeleteImages from "@/app/images/components/DeleteImages";
 import ImagesTable from "@/app/images/components/ImagesTable/ImagesTable";
-import { ImageSidePanelViews } from "@/app/images/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
+  mockSidePanel,
   renderWithMockStore,
   screen,
   userEvent,
   waitFor,
   within,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("ImagesTable", () => {
   beforeEach(() => {
@@ -27,7 +30,6 @@ describe("ImagesTable", () => {
   });
 
   let state: RootState;
-
   beforeEach(() => {
     const ubuntu = factory.bootResourceUbuntu({
       arches: [
@@ -148,10 +150,11 @@ describe("ImagesTable", () => {
 
     await userEvent.click(delete_button);
 
-    expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        view: ImageSidePanelViews.DELETE_MULTIPLE_IMAGES,
-        extras: {
+        component: DeleteImages,
+        title: "Delete images",
+        props: {
           rowSelection: { [resources[0].id]: true },
           setRowSelection: expect.any(Function),
         },

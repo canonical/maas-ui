@@ -1,27 +1,29 @@
+import type { ReactElement, Dispatch, SetStateAction } from "react";
 import { useEffect } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
-import type { BootResource } from "@/app/store/bootresource/types";
 import { BootResourceAction } from "@/app/store/bootresource/types";
 
-type Props = {
-  closeForm: () => void;
-  resource: BootResource;
+type DeleteImagesProps = {
+  rowSelection: RowSelectionState;
+  setRowSelection:
+    | Dispatch<SetStateAction<RowSelectionState>>
+    | null
+    | undefined;
 };
 
-export enum Labels {
-  AreYouSure = "Are you sure you want to delete this image?",
-}
-
-const DeleteImageForm = ({
-  closeForm,
-  resource,
-}: Props): React.ReactElement | null => {
+const DeleteImages = ({
+  rowSelection,
+  setRowSelection,
+}: DeleteImagesProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const saving = useSelector(bootResourceSelectors.deletingImage);
   const previousSaving = usePrevious(saving);
@@ -37,21 +39,43 @@ const DeleteImageForm = ({
     };
   }, [dispatch]);
 
+  const imagesCount = Object.keys(rowSelection).filter(
+    (key: string) => !isNaN(Number(key))
+  ).length;
+
+  const deleteMessage =
+    imagesCount === 1 ? (
+      <>
+        Are you sure you want to delete <strong>this image</strong>?
+      </>
+    ) : (
+      <>
+        Are you sure you want to delete <strong>{imagesCount} images</strong>?
+      </>
+    );
+
   return (
     <ModelActionForm
       aria-label="Confirm image deletion"
       errors={error}
       initialValues={{}}
-      message={Labels.AreYouSure}
+      message={deleteMessage}
       modelType="image"
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         dispatch(bootResourceActions.cleanup());
-        dispatch(bootResourceActions.deleteImage({ id: resource.id }));
+        Object.keys(rowSelection).forEach((key) => {
+          if (!isNaN(Number(key))) {
+            dispatch(bootResourceActions.deleteImage({ id: Number(key) }));
+          }
+        });
       }}
       onSuccess={() => {
         dispatch(bootResourceActions.poll({ continuous: false }));
-        closeForm();
+        if (setRowSelection) {
+          setRowSelection({});
+        }
+        closeSidePanel();
       }}
       saved={saved}
       saving={saving}
@@ -59,4 +83,4 @@ const DeleteImageForm = ({
   );
 };
 
-export default DeleteImageForm;
+export default DeleteImages;
