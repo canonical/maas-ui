@@ -123,7 +123,7 @@ Cypress.Commands.add(
     cy.findByRole("textbox", { name: "Name" }).type(subnetName);
     cy.findByRole("combobox", { name: "Fabric" }).select(fabric);
     cy.findByRole("combobox", { name: "VLAN" }).select(`${vid} (${vlan})`);
-    cy.findByRole("button", { name: "Add Subnet" }).click();
+    cy.findByRole("button", { name: "Save subnet" }).click();
   }
 );
 
