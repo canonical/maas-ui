@@ -13,7 +13,9 @@ context("Subnets - Add", () => {
   };
 
   const submitForm = (formName: string) => {
-    cy.findByRole("button", { name: `Add ${formName}` }).click();
+    cy.findByRole("button", {
+      name: new RegExp(String.raw`Save ${formName}`, "i"),
+    }).click();
   };
 
   const completeAddVlanForm = (
@@ -27,7 +29,7 @@ context("Subnets - Add", () => {
     cy.findByRole("combobox", { name: "Fabric" }).select(fabricName || 1);
     cy.findByRole("combobox", { name: "Space" }).select(spaceName || 1);
     cy.findByRole("textbox", { name: "Name" }).type(name);
-    cy.findByRole("button", { name: "Add VLAN" }).click();
+    cy.findByRole("button", { name: "Save VLAN" }).click();
   };
 
   const completeForm = (formName: string, name: string) => {

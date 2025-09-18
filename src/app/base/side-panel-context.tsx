@@ -19,26 +19,6 @@ import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineSidePanelContent } from "@/app/machines/types";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
-import {
-  SubnetSidePanelViews,
-  type SubnetSidePanelContent,
-} from "@/app/subnets/types";
-import {
-  FabricDetailsSidePanelViews,
-  type FabricDetailsSidePanelContent,
-} from "@/app/subnets/views/FabricDetails/FabricDetailsHeader/constants";
-import {
-  SpaceDetailsSidePanelViews,
-  type SpaceDetailsSidePanelContent,
-} from "@/app/subnets/views/SpaceDetails/constants";
-import {
-  SubnetDetailsSidePanelViews,
-  type SubnetDetailsSidePanelContent,
-} from "@/app/subnets/views/SubnetDetails/constants";
-import {
-  VLANDetailsSidePanelViews,
-  type VLANDetailsSidePanelContent,
-} from "@/app/subnets/views/VLANDetails/constants";
 import { TagSidePanelViews } from "@/app/tags/constants";
 import type { TagSidePanelContent } from "@/app/tags/types";
 
@@ -47,14 +27,9 @@ export type SidePanelContent =
   | DeviceSidePanelContent
   | DomainDetailsSidePanelContent
   | DomainListSidePanelContent
-  | FabricDetailsSidePanelContent
   | KVMSidePanelContent
   | MachineSidePanelContent
-  | SpaceDetailsSidePanelContent
-  | SubnetDetailsSidePanelContent
-  | SubnetSidePanelContent
   | TagSidePanelContent
-  | VLANDetailsSidePanelContent
   | null;
 
 export type SetSidePanelContent<T = SidePanelContent> = (
@@ -74,13 +49,8 @@ export const SidePanelViews = {
   ...DeviceSidePanelViews,
   ...KVMSidePanelViews,
   ...TagSidePanelViews,
-  ...SubnetSidePanelViews,
   ...DomainDetailsSidePanelViews,
   ...DomainListSidePanelViews,
-  ...VLANDetailsSidePanelViews,
-  ...FabricDetailsSidePanelViews,
-  ...SubnetDetailsSidePanelViews,
-  ...SpaceDetailsSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {
@@ -113,8 +83,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.EDIT_DISK[1]]: "Edit disk",
   [SidePanelViews.EDIT_PARTITION[1]]: "Edit partition",
   [SidePanelViews.EDIT_PHYSICAL[1]]: "Edit physical",
-  [SidePanelViews.DELETE_SPACE[1]]: "Delete space",
-  [SidePanelViews.DELETE_FABRIC[1]]: "Delete fabric",
   [SidePanelViews.MARK_CONNECTED[1]]: "Mark as connected",
   [SidePanelViews.MARK_DISCONNECTED[1]]: "Mark as disconnected",
   [SidePanelViews.REMOVE_INTERFACE[1]]: "Remove interface",

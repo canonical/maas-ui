@@ -64,11 +64,21 @@ const NetworkDiscoveryConfigurationForm = lazy(
 );
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
-const FabricDetails = lazy(() => import("@/app/subnets/views/FabricDetails"));
-const SpaceDetails = lazy(() => import("@/app/subnets/views/SpaceDetails"));
-const SubnetDetails = lazy(() => import("@/app/subnets/views/SubnetDetails"));
-const SubnetsList = lazy(() => import("@/app/subnets/views/SubnetsList"));
-const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
+const FabricDetails = lazy(
+  () => import("@/app/subnets/views/Fabrics/views/FabricDetails")
+);
+const SpaceDetails = lazy(
+  () => import("@/app/subnets/views/Spaces/views/SpaceDetails")
+);
+const SubnetDetails = lazy(
+  () => import("@/app/subnets/views/Subnets/views/SubnetDetails")
+);
+const SubnetsList = lazy(
+  () => import("@/app/subnets/views/Subnets/views/SubnetsList")
+);
+const VLANDetails = lazy(
+  () => import("@/app/subnets/views/VLANs/views/VLANDetails")
+);
 const Tags = lazy(() => import("@/app/tags/views/Tags"));
 const ZonesList = lazy(() => import("@/app/zones/views"));
 
