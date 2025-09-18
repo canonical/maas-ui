@@ -2,10 +2,9 @@ import { MainTable, ContextualMenu } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 
-import { DomainListSidePanelViews } from "../constants";
-
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
+import SetDefaultForm from "@/app/domains/components/SetDefaultForm";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 
@@ -28,7 +27,7 @@ export const Labels = {
 
 const DomainsTable = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const domains = useSelector(domainSelectors.all);
   const headers = [
     {
@@ -95,9 +94,10 @@ const DomainsTable = (): React.ReactElement => {
                     children: Labels.SetDefault,
                     onClick: () => {
                       dispatch(domainActions.cleanup());
-                      setSidePanelContent({
-                        view: DomainListSidePanelViews.SET_DEFAULT,
-                        extras: {
+                      openSidePanel({
+                        component: SetDefaultForm,
+                        title: "Set default",
+                        props: {
                           id: domain.id,
                         },
                       });

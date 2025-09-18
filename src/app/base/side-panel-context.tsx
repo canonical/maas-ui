@@ -5,14 +5,6 @@ import { ControllerSidePanelViews } from "@/app/controllers/constants";
 import type { ControllerSidePanelContent } from "@/app/controllers/types";
 import { DeviceSidePanelViews } from "@/app/devices/constants";
 import type { DeviceSidePanelContent } from "@/app/devices/types";
-import {
-  DomainDetailsSidePanelViews,
-  type DomainDetailsSidePanelContent,
-} from "@/app/domains/views/DomainDetails/constants";
-import {
-  DomainListSidePanelViews,
-  type DomainListSidePanelContent,
-} from "@/app/domains/views/DomainsList/constants";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { KVMSidePanelContent } from "@/app/kvm/types";
 import { MachineSidePanelViews } from "@/app/machines/constants";
@@ -25,8 +17,6 @@ import type { TagSidePanelContent } from "@/app/tags/types";
 export type SidePanelContent =
   | ControllerSidePanelContent
   | DeviceSidePanelContent
-  | DomainDetailsSidePanelContent
-  | DomainListSidePanelContent
   | KVMSidePanelContent
   | MachineSidePanelContent
   | TagSidePanelContent
@@ -49,8 +39,6 @@ export const SidePanelViews = {
   ...DeviceSidePanelViews,
   ...KVMSidePanelViews,
   ...TagSidePanelViews,
-  ...DomainDetailsSidePanelViews,
-  ...DomainListSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {
@@ -59,7 +47,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.ADD_BRIDGE[1]]: "Create bridge",
   [SidePanelViews.ADD_CONTROLLER[1]]: "Add controller",
   [SidePanelViews.ADD_CHASSIS[1]]: "Add chassis",
-  [SidePanelViews.ADD_DOMAIN[1]]: "Add domains",
   [SidePanelViews.ADD_INTERFACE[1]]: "Add interface",
   [SidePanelViews.ADD_MACHINE[1]]: "Add machine",
   [SidePanelViews.ADD_DEVICE[1]]: "Add device",
@@ -89,7 +76,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.REMOVE_PARTITION[1]]: "Remove partition",
   [SidePanelViews.REMOVE_PHYSICAL[1]]: "Remove physical",
   [SidePanelViews.SET_BOOT_DISK[1]]: "Set boot disk",
-  [SidePanelViews.SET_DEFAULT[1]]: "Set default",
   [SidePanelViews.UNMOUNT_FILESYSTEM[1]]: "Unmount filesystem",
   [SidePanelViews.UPDATE_DATASTORE[1]]: "Update datastore",
   [SidePanelViews.UpdateTag[1]]: "Update Tag",

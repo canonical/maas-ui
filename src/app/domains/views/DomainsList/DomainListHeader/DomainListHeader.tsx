@@ -2,11 +2,11 @@ import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { DomainListSidePanelViews } from "../constants";
+import DomainListHeaderForm from "../DomainListHeaderForm";
 
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import { useFetchActions } from "@/app/base/hooks";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 
@@ -14,13 +14,11 @@ export enum Labels {
   AddDomains = "Add domains",
 }
 
-const DomainListHeader = ({
-  setSidePanelContent,
-}: {
-  setSidePanelContent: SetSidePanelContent;
-}): React.ReactElement => {
+const DomainListHeader = (): React.ReactElement => {
   const domainCount = useSelector(domainSelectors.count);
   const domainsLoaded = useSelector(domainSelectors.loaded);
+
+  const { openSidePanel } = useSidePanel();
 
   useFetchActions([domainActions.fetch]);
 
@@ -37,7 +35,10 @@ const DomainListHeader = ({
           data-testid="add-domain"
           key="add-domain"
           onClick={() => {
-            setSidePanelContent({ view: DomainListSidePanelViews.ADD_DOMAIN });
+            openSidePanel({
+              component: DomainListHeaderForm,
+              title: "Add domains",
+            });
           }}
         >
           {Labels.AddDomains}

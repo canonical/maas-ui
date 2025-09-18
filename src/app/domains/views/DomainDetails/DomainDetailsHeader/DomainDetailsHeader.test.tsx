@@ -1,11 +1,17 @@
-import { DomainDetailsSidePanelViews } from "../constants";
-
+import DeleteDomainForm from "./DeleteDomainForm";
 import DomainDetailsHeader, {
   Labels as DomainDetailsHeaderLabels,
 } from "./DomainDetailsHeader";
 
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
+import {
+  screen,
+  userEvent,
+  renderWithProviders,
+  mockSidePanel,
+} from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("DomainDetailsHeader", () => {
   it("shows a spinner if domain details has not loaded yet", () => {
@@ -13,12 +19,9 @@ describe("DomainDetailsHeader", () => {
       domain: factory.domainState({ items: [factory.domain({ id: 1 })] }),
     });
 
-    renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      {
-        state,
-      }
-    );
+    renderWithProviders(<DomainDetailsHeader id={1} />, {
+      state,
+    });
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -29,12 +32,10 @@ describe("DomainDetailsHeader", () => {
         items: [factory.domain({ id: 1, name: "domain-in-the-membrane" })],
       }),
     });
-    renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      {
-        state,
-      }
-    );
+
+    renderWithProviders(<DomainDetailsHeader id={1} />, {
+      state,
+    });
 
     expect(
       screen.getByRole("heading", { name: "domain-in-the-membrane" })
@@ -55,12 +56,10 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      {
-        state,
-      }
-    );
+
+    renderWithProviders(<DomainDetailsHeader id={1} />, {
+      state,
+    });
 
     expect(screen.getByText("5 hosts; 9 resource records")).toBeInTheDocument();
   });
@@ -79,12 +78,10 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      {
-        state,
-      }
-    );
+
+    renderWithProviders(<DomainDetailsHeader id={1} />, {
+      state,
+    });
 
     expect(screen.getByText("9 resource records")).toBeInTheDocument();
   });
@@ -103,12 +100,10 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      {
-        state,
-      }
-    );
+
+    renderWithProviders(<DomainDetailsHeader id={1} />, {
+      state,
+    });
 
     expect(
       screen.getByText("5 hosts; No resource records")
@@ -129,12 +124,10 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      {
-        state,
-      }
-    );
+
+    renderWithProviders(<DomainDetailsHeader id={1} />, {
+      state,
+    });
 
     expect(screen.getByText("No resource records")).toBeInTheDocument();
   });
@@ -150,47 +143,16 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(
-      <DomainDetailsHeader id={0} setSidePanelContent={vi.fn()} />,
-      {
-        state,
-      }
-    );
+
+    renderWithProviders(<DomainDetailsHeader id={0} />, {
+      state,
+    });
 
     expect(
       screen.queryByRole("button", {
         name: DomainDetailsHeaderLabels.DeleteDomain,
       })
     ).not.toBeInTheDocument();
-  });
-
-  it("calls a function to open the side panel when the 'Add record' button is clicked", async () => {
-    const state = factory.rootState({
-      domain: factory.domainState({
-        loaded: true,
-        items: [
-          factory.domainDetails({
-            id: 1,
-            name: "domain-in-the-membrane",
-            hosts: 5,
-            resource_count: 9,
-          }),
-        ],
-      }),
-    });
-    const setSidePanelContent = vi.fn();
-
-    renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={setSidePanelContent} />,
-      {
-        state,
-      }
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: "Add record" }));
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: DomainDetailsSidePanelViews.ADD_RECORD,
-    });
   });
 
   it("calls a function to open the side panel when the 'Delete domain' button is clicked", async () => {
@@ -207,20 +169,20 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const setSidePanelContent = vi.fn();
 
-    renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={setSidePanelContent} />,
-      {
-        state,
-      }
-    );
+    renderWithProviders(<DomainDetailsHeader id={1} />, {
+      state,
+    });
 
     await userEvent.click(
       screen.getByRole("button", { name: "Delete domain" })
     );
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: DomainDetailsSidePanelViews.DELETE_DOMAIN,
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DeleteDomainForm,
+      title: "Delete domain",
+      props: {
+        id: 1,
+      },
     });
   });
 });
