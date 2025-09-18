@@ -13,7 +13,9 @@ context("Subnets - Add", () => {
   };
 
   const submitForm = (formName: string) => {
-    cy.findByRole("button", { name: `Add ${formName}` }).click();
+    cy.findByRole("button", {
+      name: new RegExp(String.raw`Save ${formName}`, "i"),
+    }).click();
   };
 
   const completeAddVlanForm = (
