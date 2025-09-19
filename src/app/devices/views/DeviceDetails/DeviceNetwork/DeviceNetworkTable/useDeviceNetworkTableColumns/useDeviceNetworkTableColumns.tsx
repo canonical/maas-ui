@@ -2,12 +2,14 @@ import { useMemo } from "react";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
+import EditInterface from "../../EditInterface";
+import RemoveInterface from "../RemoveInterface";
+
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TableActions from "@/app/base/components/TableActions";
 import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { DeviceSidePanelViews } from "@/app/devices/constants";
-import type { Device } from "@/app/store/device/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import type { Device, DeviceMeta } from "@/app/store/device/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 
@@ -29,10 +31,12 @@ export type DeviceNetworkTableColumnDef = ColumnDef<
 
 const useDeviceNetworkTableColumns = ({
   isAllNetworkingDisabled,
+  systemId,
 }: {
   isAllNetworkingDisabled: boolean;
+  systemId: Device[DeviceMeta.PK];
 }): DeviceNetworkTableColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
 
   return useMemo(
     (): DeviceNetworkTableColumnDef[] => [
@@ -83,22 +87,31 @@ const useDeviceNetworkTableColumns = ({
             deleteDisabled={isAllNetworkingDisabled}
             editDisabled={isAllNetworkingDisabled}
             onDelete={() => {
-              setSidePanelContent({
-                view: DeviceSidePanelViews.REMOVE_INTERFACE,
-                extras: { nicId: nic?.id, linkId: link?.id },
+              openSidePanel({
+                component: RemoveInterface,
+                title: "Remove interface",
+                props: {
+                  nicId: nic!.id,
+                  systemId,
+                },
               });
             }}
             onEdit={() => {
-              setSidePanelContent({
-                view: DeviceSidePanelViews.EDIT_INTERFACE,
-                extras: { nicId: nic?.id, linkId: link?.id },
+              openSidePanel({
+                component: EditInterface,
+                title: "Edit interface",
+                props: {
+                  systemId,
+                  nicId: nic?.id,
+                  linkId: link?.id,
+                },
               });
             }}
           />
         ),
       },
     ],
-    [isAllNetworkingDisabled, setSidePanelContent]
+    [isAllNetworkingDisabled, openSidePanel, systemId]
   );
 };
 

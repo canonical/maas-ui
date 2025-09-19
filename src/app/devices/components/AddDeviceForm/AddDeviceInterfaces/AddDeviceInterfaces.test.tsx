@@ -10,7 +10,7 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   within,
 } from "@/testing/utils";
 
@@ -43,7 +43,7 @@ describe("AddDeviceInterfaces", () => {
   it("does not show subnet or IP address fields for dynamic IP assignment", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
@@ -57,7 +57,7 @@ describe("AddDeviceInterfaces", () => {
   it("shows the standard IP address field for external IP assignment", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.EXTERNAL;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
@@ -75,7 +75,7 @@ describe("AddDeviceInterfaces", () => {
   it("shows the subnet field when static IP assignment is selected", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.STATIC;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
@@ -93,7 +93,7 @@ describe("AddDeviceInterfaces", () => {
     interfaces[0].subnet = state.subnet.items[0].id.toString();
 
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
@@ -106,7 +106,7 @@ describe("AddDeviceInterfaces", () => {
 
   it("can add and remove interfaces", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,

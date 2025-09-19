@@ -112,7 +112,10 @@ const DeviceNetworkTable = ({ systemId }: Props): React.ReactElement => {
     vlanActions.fetch,
   ]);
 
-  const columns = useDeviceNetworkTableColumns({ isAllNetworkingDisabled });
+  const columns = useDeviceNetworkTableColumns({
+    isAllNetworkingDisabled,
+    systemId,
+  });
 
   if (!isDeviceDetails(device)) {
     return <Spinner text="Loading..." />;

@@ -6,10 +6,9 @@ import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-
 describe("DeviceActionFormWrapper", () => {
   it("can set selected devices to those that can perform action", async () => {
     const state = factory.rootState();
@@ -18,14 +17,13 @@ describe("DeviceActionFormWrapper", () => {
       factory.device({ system_id: "def456", actions: [] }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeviceActionFormWrapper
         action={NodeActions.DELETE}
-        clearSidePanelContent={vi.fn()}
         devices={devices}
         viewingDetails={false}
       />,
-      { route: "/devices", store }
+      { store }
     );
 
     await userEvent.click(screen.getByTestId("on-update-selected"));

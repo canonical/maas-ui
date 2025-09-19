@@ -11,10 +11,7 @@ import DeviceSummary from "./DeviceSummary";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import DeviceHeaderForms from "@/app/devices/components/DeviceHeaderForms";
-import DeviceNetworkForms from "@/app/devices/components/DeviceNetworkForms";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import { DeviceMeta } from "@/app/store/device/types";
@@ -23,7 +20,6 @@ import { tagActions } from "@/app/store/tag";
 import { isId, getRelativeRoute } from "@/app/utils";
 
 const DeviceDetails = (): React.ReactElement => {
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const dispatch = useDispatch();
   const id = useGetURLId(DeviceMeta.PK);
   const device = useSelector((state: RootState) =>
@@ -58,27 +54,10 @@ const DeviceDetails = (): React.ReactElement => {
       <Route
         element={
           <PageContent
-            header={
-              <DeviceDetailsHeader
-                setSidePanelContent={setSidePanelContent}
-                systemId={id}
-              />
-            }
-            sidePanelContent={
-              sidePanelContent &&
-              device && (
-                <DeviceHeaderForms
-                  devices={[device]}
-                  setSidePanelContent={setSidePanelContent}
-                  sidePanelContent={sidePanelContent}
-                  viewingDetails
-                />
-              )
-            }
-            sidePanelTitle={getSidePanelTitle(
-              device?.fqdn || "",
-              sidePanelContent
-            )}
+            header={<DeviceDetailsHeader systemId={id} />}
+            sidePanelContent={undefined}
+            sidePanelTitle={null}
+            useNewSidePanelContext={true}
           >
             <DeviceSummary systemId={id} />
           </PageContent>
@@ -88,25 +67,10 @@ const DeviceDetails = (): React.ReactElement => {
       <Route
         element={
           <PageContent
-            header={
-              <DeviceDetailsHeader
-                setSidePanelContent={setSidePanelContent}
-                systemId={id}
-              />
-            }
-            sidePanelContent={
-              sidePanelContent && (
-                <DeviceNetworkForms
-                  setSidePanelContent={setSidePanelContent}
-                  sidePanelContent={sidePanelContent}
-                  systemId={id}
-                />
-              )
-            }
-            sidePanelTitle={getSidePanelTitle(
-              device?.fqdn || "",
-              sidePanelContent
-            )}
+            header={<DeviceDetailsHeader systemId={id} />}
+            sidePanelContent={undefined}
+            sidePanelTitle={null}
+            useNewSidePanelContext={true}
           >
             <DeviceNetwork systemId={id} />
           </PageContent>
@@ -116,14 +80,10 @@ const DeviceDetails = (): React.ReactElement => {
       <Route
         element={
           <PageContent
-            header={
-              <DeviceDetailsHeader
-                setSidePanelContent={setSidePanelContent}
-                systemId={id}
-              />
-            }
-            sidePanelContent={null}
+            header={<DeviceDetailsHeader systemId={id} />}
+            sidePanelContent={undefined}
             sidePanelTitle={null}
+            useNewSidePanelContext={true}
           >
             <DeviceConfiguration systemId={id} />
           </PageContent>

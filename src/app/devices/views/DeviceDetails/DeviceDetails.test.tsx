@@ -1,3 +1,5 @@
+import { Route, Routes } from "react-router";
+
 import { Label as DeviceConfigurationLabel } from "./DeviceConfiguration/DeviceConfiguration";
 import DeviceDetails from "./DeviceDetails";
 import { Label as DeviceNetworkLabel } from "./DeviceNetwork/DeviceNetwork";
@@ -7,7 +9,7 @@ import urls from "@/app/base/urls";
 import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("DeviceDetails", () => {
   const device = factory.deviceDetails({ system_id: "abc123" });
@@ -38,32 +40,58 @@ describe("DeviceDetails", () => {
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, async () => {
-      renderWithBrowserRouter(<DeviceDetails />, {
-        route: path,
-        state,
-        routePattern: `${urls.devices.device.index(null)}/*`,
-      });
+      const { router } = renderWithProviders(
+        <Routes>
+          <Route
+            element={<DeviceDetails />}
+            path={`${urls.devices.device.index(null)}/*`}
+          />
+        </Routes>,
+        {
+          initialEntries: [urls.devices.device.index({ id: device.system_id })],
+          state,
+        }
+      );
+      router.navigate(path);
       expect(await screen.findByLabelText(label)).toBeInTheDocument();
     });
   });
 
   it("redirects to summary", () => {
-    renderWithBrowserRouter(<DeviceDetails />, {
-      route: urls.devices.device.index({ id: "abc123" }),
+    renderWithProviders(<DeviceDetails />, {
+      initialEntries: [urls.devices.device.index({ id: device.system_id })],
       state,
-      routePattern: `${urls.devices.device.index(null)}/*`,
     });
-    expect(window.location.pathname).toBe(
-      urls.devices.device.summary({ id: "abc123" })
+    const { router } = renderWithProviders(
+      <Routes>
+        <Route
+          element={<DeviceDetails />}
+          path={`${urls.devices.device.index(null)}/*`}
+        />
+      </Routes>,
+      {
+        initialEntries: [urls.devices.device.index({ id: device.system_id })],
+        state,
+      }
+    );
+    expect(router.state.location.pathname).toBe(
+      urls.devices.device.summary({ id: device.system_id })
     );
   });
 
   it("gets and sets the device as active", () => {
-    const { store } = renderWithBrowserRouter(<DeviceDetails />, {
-      route: urls.devices.device.index({ id: device.system_id }),
-      state,
-      routePattern: `${urls.devices.device.index(null)}/*`,
-    });
+    const { store } = renderWithProviders(
+      <Routes>
+        <Route
+          element={<DeviceDetails />}
+          path={`${urls.devices.device.index(null)}/*`}
+        />
+      </Routes>,
+      {
+        initialEntries: [urls.devices.device.index({ id: device.system_id })],
+        state,
+      }
+    );
 
     const expectedActions = [
       deviceActions.get(device.system_id),
@@ -80,13 +108,20 @@ describe("DeviceDetails", () => {
   });
 
   it("unsets active device and cleans up when unmounting", () => {
-    const { unmount, store } = renderWithBrowserRouter(<DeviceDetails />, {
-      route: urls.devices.device.index({ id: device.system_id }),
-      state,
-      routePattern: `${urls.devices.device.index(null)}/*`,
-    });
+    const { result, store } = renderWithProviders(
+      <Routes>
+        <Route
+          element={<DeviceDetails />}
+          path={`${urls.devices.device.index(null)}/*`}
+        />
+      </Routes>,
+      {
+        initialEntries: [urls.devices.device.index({ id: device.system_id })],
+        state,
+      }
+    );
 
-    unmount();
+    result.unmount();
 
     const expectedActions = [
       deviceActions.setActive(null),
@@ -107,11 +142,18 @@ describe("DeviceDetails", () => {
 
   it("displays a message if the device does not exist", () => {
     state.device.items = [];
-    renderWithBrowserRouter(<DeviceDetails />, {
-      route: urls.devices.device.index({ id: device.system_id }),
-      state,
-      routePattern: `${urls.devices.device.index(null)}/*`,
-    });
+    renderWithProviders(
+      <Routes>
+        <Route
+          element={<DeviceDetails />}
+          path={`${urls.devices.device.index(null)}/*`}
+        />
+      </Routes>,
+      {
+        initialEntries: [urls.devices.device.index({ id: device.system_id })],
+        state,
+      }
+    );
 
     expect(screen.getByTestId("not-found")).toBeInTheDocument();
   });

@@ -1,10 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import OwnerColumn from "./OwnerColumn";
 
 import * as factory from "@/testing/factories";
+import { renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -16,11 +16,7 @@ describe("OwnerColumn", () => {
       tag: factory.tagState({ loaded: false }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <OwnerColumn systemId={device.system_id} />
-      </Provider>
-    );
+    renderWithProviders(<OwnerColumn systemId={device.system_id} />, { store });
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
@@ -38,11 +34,7 @@ describe("OwnerColumn", () => {
       }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <OwnerColumn systemId={device.system_id} />
-      </Provider>
-    );
+    renderWithProviders(<OwnerColumn systemId={device.system_id} />, { store });
 
     expect(screen.getByTitle("tag1, tag2")).toBeInTheDocument();
   });

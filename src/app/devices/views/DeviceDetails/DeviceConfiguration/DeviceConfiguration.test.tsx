@@ -12,7 +12,6 @@ import {
   userEvent,
   screen,
   waitFor,
-  renderWithBrowserRouter,
   setupMockServer,
   renderWithProviders,
 } from "@/testing/utils";
@@ -83,7 +82,7 @@ describe("DeviceConfiguration", () => {
   });
 
   it("correctly dispatches an action to update a device", async () => {
-    const { store } = renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <DeviceConfiguration systemId="abc123" />,
       {
         state,

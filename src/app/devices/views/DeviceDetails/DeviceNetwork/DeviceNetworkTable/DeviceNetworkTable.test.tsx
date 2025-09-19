@@ -1,15 +1,16 @@
 import configureStore from "redux-mock-store";
-import type { Mock } from "vitest";
+
+import EditInterface from "../EditInterface";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
+import RemoveInterface from "./RemoveInterface";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { DeviceSidePanelViews } from "@/app/devices/constants";
 import type { DeviceDetails } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
+  mockSidePanel,
   renderWithProviders,
   screen,
   userEvent,
@@ -18,6 +19,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const { mockOpen } = await mockSidePanel();
 
 vi.mock("@/app/base/side-panel-context", async () => {
   const actual = await vi.importActual("@/app/base/side-panel-context");
@@ -28,12 +30,6 @@ vi.mock("@/app/base/side-panel-context", async () => {
 });
 
 describe("DeviceNetworkTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState({
@@ -234,11 +230,13 @@ describe("DeviceNetworkTable", () => {
       await userEvent.click(screen.getByRole("button", { name: "Edit" }));
 
       await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: DeviceSidePanelViews.EDIT_INTERFACE,
-          extras: {
+        expect(mockOpen).toHaveBeenCalledWith({
+          component: EditInterface,
+          title: "Edit interface",
+          props: {
             nicId: device.interfaces[0].id,
             linkId: device.interfaces[0].links[0].id,
+            systemId: device.system_id,
           },
         });
       });
@@ -252,11 +250,12 @@ describe("DeviceNetworkTable", () => {
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
       await waitFor(() => {
-        expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-          view: DeviceSidePanelViews.REMOVE_INTERFACE,
-          extras: {
+        expect(mockOpen).toHaveBeenCalledWith({
+          component: RemoveInterface,
+          title: "Remove interface",
+          props: {
             nicId: device.interfaces[0].id,
-            linkId: device.interfaces[0].links[0].id,
+            systemId: device.system_id,
           },
         });
       });

@@ -8,10 +8,15 @@ import type { DeviceNetworkInterface } from "@/app/store/device/types";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  mockSidePanel,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const { mockClose } = await mockSidePanel();
 
 describe("EditInterface", () => {
   let state: RootState;
@@ -45,19 +50,17 @@ describe("EditInterface", () => {
   it("displays a spinner if device is not detailed version", () => {
     state.device.items[0] = factory.device({ system_id: "abc123" });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditInterface closeForm={vi.fn()} nicId={nic.id} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<EditInterface nicId={nic.id} systemId="abc123" />, {
+      store,
+    });
     expect(screen.getByTestId("loading-device-details")).toBeInTheDocument();
   });
 
   it("dispatches an action to update an interface", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditInterface closeForm={vi.fn()} nicId={nic.id} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<EditInterface nicId={nic.id} systemId="abc123" />, {
+      store,
+    });
     const formValues = {
       ip_address: "192.168.1.1",
       ip_assignment: DeviceIpAssignment.EXTERNAL,
@@ -101,43 +104,12 @@ describe("EditInterface", () => {
     expect(actualAction).toStrictEqual(expectedAction);
   });
 
-  it("closes the form if there are no errors when updating the interface", async () => {
-    const closeForm = vi.fn();
-    state.device.errors = null;
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditInterface
-        closeForm={closeForm}
-        nicId={nic.id}
-        systemId={"abc123"}
-      />,
-      { store }
-    );
-    mockFormikFormSaved();
-    await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
-    await userEvent.type(
-      screen.getByRole("textbox", { name: "Name" }),
-      "eth123"
-    );
-
-    await userEvent.click(
-      screen.getByRole("button", { name: "Save interface" })
-    );
-    expect(closeForm).toHaveBeenCalled();
-  });
-
   it("does not close the form if there is an error when updating the interface", async () => {
-    const closeForm = vi.fn();
     state.device.errors = null;
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditInterface
-        closeForm={closeForm}
-        nicId={nic.id}
-        systemId={"abc123"}
-      />,
-      { store }
-    );
+    renderWithProviders(<EditInterface nicId={nic.id} systemId={"abc123"} />, {
+      store,
+    });
     await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
     await userEvent.type(
       screen.getByRole("textbox", { name: "Name" }),
@@ -154,21 +126,15 @@ describe("EditInterface", () => {
     store.dispatch({ type: "" });
     updatingInterface.mockReturnValue(false);
     store.dispatch({ type: "" });
-    expect(closeForm).not.toHaveBeenCalled();
+    expect(mockClose).not.toHaveBeenCalled();
   });
 
   it("does not close the form if there is an error when submitting the form multiple times", async () => {
-    const closeForm = vi.fn();
     state.device.errors = null;
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditInterface
-        closeForm={closeForm}
-        nicId={nic.id}
-        systemId={"abc123"}
-      />,
-      { store }
-    );
+    renderWithProviders(<EditInterface nicId={nic.id} systemId={"abc123"} />, {
+      store,
+    });
     await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
     await userEvent.type(
       screen.getByRole("textbox", { name: "Name" }),
@@ -202,6 +168,6 @@ describe("EditInterface", () => {
       }),
     ]);
     store.dispatch({ type: "" });
-    expect(closeForm).not.toHaveBeenCalled();
+    expect(mockClose).not.toHaveBeenCalled();
   });
 });

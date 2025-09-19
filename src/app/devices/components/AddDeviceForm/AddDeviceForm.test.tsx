@@ -13,7 +13,7 @@ import {
   userEvent,
   screen,
   within,
-  renderWithBrowserRouter,
+  renderWithProviders,
   waitFor,
   setupMockServer,
 } from "@/testing/utils";
@@ -45,12 +45,9 @@ describe("AddDeviceForm", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const { store } = renderWithBrowserRouter(
-      <AddDeviceForm clearSidePanelContent={vi.fn()} />,
-      {
-        state,
-      }
-    );
+    const { store } = renderWithProviders(<AddDeviceForm />, {
+      state,
+    });
 
     const expectedActions = [domainActions.fetch(), subnetActions.fetch()];
     const actualActions = store.getActions();
@@ -65,9 +62,8 @@ describe("AddDeviceForm", () => {
 
   it("displays a spinner if data has not loaded", () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddDeviceForm />, {
       store,
-      queryData: {},
     });
 
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
@@ -75,7 +71,7 @@ describe("AddDeviceForm", () => {
 
   it("can handle saving a device", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddDeviceForm />, {
       store,
     });
     await waitFor(() => {

@@ -1,9 +1,16 @@
 import DeviceListHeader from "./DeviceListHeader";
 
-import { DeviceSidePanelViews } from "@/app/devices/constants";
+import AddDeviceForm from "@/app/devices/components/AddDeviceForm";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  mockSidePanel,
+  renderWithProviders,
+  screen,
+  userEvent,
+} from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("DeviceListHeader", () => {
   let state: RootState;
@@ -22,12 +29,8 @@ describe("DeviceListHeader", () => {
 
   it("displays a spinner in the header subtitle if devices have not loaded", () => {
     state.device.loaded = false;
-    renderWithBrowserRouter(
-      <DeviceListHeader
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+    renderWithProviders(
+      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -35,12 +38,8 @@ describe("DeviceListHeader", () => {
 
   it("displays a devices count if devices have loaded", () => {
     state.device.loaded = true;
-    renderWithBrowserRouter(
-      <DeviceListHeader
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+    renderWithProviders(
+      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
     expect(screen.getByText("2 devices available")).toBeInTheDocument();
@@ -48,12 +47,8 @@ describe("DeviceListHeader", () => {
 
   it("disables the add device button if any devices are selected", () => {
     state.device.selected = ["abc123"];
-    renderWithBrowserRouter(
-      <DeviceListHeader
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+    renderWithProviders(
+      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
     expect(
@@ -62,39 +57,30 @@ describe("DeviceListHeader", () => {
   });
 
   it("can open the add device form", async () => {
-    const setSidePanelContent = vi.fn();
-    renderWithBrowserRouter(
-      <DeviceListHeader
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={setSidePanelContent}
-      />,
+    renderWithProviders(
+      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Add device" }));
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: DeviceSidePanelViews.ADD_DEVICE,
-    });
+    expect(mockOpen).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: AddDeviceForm,
+        title: "Add device",
+      })
+    );
   });
 
   it("changes the search text when the filters change", () => {
-    const { rerender } = renderWithBrowserRouter(
-      <DeviceListHeader
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+    const { result } = renderWithProviders(
+      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
 
     expect(screen.getByRole("searchbox")).toHaveValue("");
 
-    rerender(
-      <DeviceListHeader
-        searchFilter="free-text"
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />
+    result.unmount();
+    renderWithProviders(
+      <DeviceListHeader searchFilter="free-text" setSearchFilter={vi.fn()} />
     );
 
     expect(screen.getByRole("searchbox")).toHaveValue("free-text");

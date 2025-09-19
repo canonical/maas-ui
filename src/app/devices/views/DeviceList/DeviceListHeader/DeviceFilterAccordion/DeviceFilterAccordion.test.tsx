@@ -2,7 +2,7 @@ import DeviceFilterAccordion from "./DeviceFilterAccordion";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("DeviceFilterAccordion", () => {
   let state: RootState;
@@ -22,18 +22,18 @@ describe("DeviceFilterAccordion", () => {
   it("is disabled if devices haven't loaded yet", () => {
     state.device.loaded = false;
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeviceFilterAccordion searchText="" setSearchText={vi.fn()} />,
-      { route: "/devices", state }
+      { state }
     );
 
     expect(screen.getByRole("button", { name: "Filters" })).toBeAriaDisabled();
   });
 
   it("displays tags", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeviceFilterAccordion searchText="" setSearchText={vi.fn()} />,
-      { route: "/devices", state }
+      { state }
     );
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: "Filters" }));

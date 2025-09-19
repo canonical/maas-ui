@@ -1,7 +1,7 @@
 import MachineNetwork from "./MachineNetwork";
 
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("displays a spinner if machine is loading", () => {
   const state = factory.rootState({
@@ -9,7 +9,7 @@ it("displays a spinner if machine is loading", () => {
       items: [],
     }),
   });
-  renderWithBrowserRouter(
+  renderWithProviders(
     <MachineNetwork id="abc123" setSidePanelContent={vi.fn()} />,
     { state }
   );
@@ -23,7 +23,7 @@ it("displays the network tab when loaded", () => {
       items: [factory.machineDetails({ system_id: "abc123" })],
     }),
   });
-  renderWithBrowserRouter(
+  renderWithProviders(
     <MachineNetwork id="abc123" setSidePanelContent={vi.fn()} />,
     { state }
   );

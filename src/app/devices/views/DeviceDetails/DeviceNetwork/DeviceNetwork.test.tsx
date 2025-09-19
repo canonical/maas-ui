@@ -4,7 +4,7 @@ import DeviceNetwork from "./DeviceNetwork";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -16,8 +16,7 @@ describe("DeviceNetwork", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceNetwork systemId="abc123" />, {
-      route: "/device/abc123",
+    renderWithProviders(<DeviceNetwork systemId="abc123" />, {
       store,
     });
     expect(screen.queryByLabelText("Device network")).not.toBeInTheDocument();
@@ -32,8 +31,7 @@ describe("DeviceNetwork", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceNetwork systemId="abc123" />, {
-      route: "/device/abc123",
+    renderWithProviders(<DeviceNetwork systemId="abc123" />, {
       store,
     });
     expect(screen.getByLabelText("Device network")).toBeInTheDocument();
