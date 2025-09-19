@@ -30,7 +30,6 @@ const DeviceList = (): React.ReactElement => {
   );
   const devicesLoading = useSelector(deviceSelectors.loading);
   useWindowTitle("Devices");
-  // const selectedDevices = useSelector(deviceSelectors.selected);
 
   useFetchActions([deviceActions.fetch, tagActions.fetch]);
 

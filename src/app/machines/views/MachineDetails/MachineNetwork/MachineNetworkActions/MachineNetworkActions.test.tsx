@@ -8,7 +8,7 @@ import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   expectTooltipOnHover,
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
 } from "@/testing/utils";
@@ -42,7 +42,7 @@ describe("MachineNetworkActions", () => {
     it("disables the button when networking is disabled", () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[]}
@@ -50,7 +50,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       expect(
@@ -61,7 +61,7 @@ describe("MachineNetworkActions", () => {
     it("shows the test form when clicking the button", async () => {
       const setSidePanelContent = vi.fn();
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[]}
@@ -69,7 +69,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       await userEvent.click(
@@ -109,7 +109,7 @@ describe("MachineNetworkActions", () => {
         sidePanelSize: "regular",
       });
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
@@ -117,7 +117,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       await userEvent.click(
@@ -134,7 +134,7 @@ describe("MachineNetworkActions", () => {
     it("disables the button when networking is disabled", () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[]}
@@ -142,7 +142,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
       expect(
         screen.getByRole("button", { name: /Create bond/i })
@@ -150,7 +150,7 @@ describe("MachineNetworkActions", () => {
     });
 
     it("disables the button when no interfaces are selected", async () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[]}
@@ -158,7 +158,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
       await expectDisabledButtonWithTooltip(
         /Create bond/i,
@@ -183,7 +183,7 @@ describe("MachineNetworkActions", () => {
         }),
       ];
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }]}
@@ -191,7 +191,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       await expectDisabledButtonWithTooltip(
@@ -223,7 +223,7 @@ describe("MachineNetworkActions", () => {
         }),
       ];
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
@@ -231,7 +231,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
       await expectDisabledButtonWithTooltip(
         /Create bond/i,
@@ -258,7 +258,7 @@ describe("MachineNetworkActions", () => {
         }),
       ];
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
@@ -266,7 +266,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       await expectDisabledButtonWithTooltip(
@@ -297,7 +297,7 @@ describe("MachineNetworkActions", () => {
         sidePanelSize: "regular",
       });
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }]}
@@ -305,7 +305,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       await userEvent.click(
@@ -321,7 +321,7 @@ describe("MachineNetworkActions", () => {
     it("disables the button when networking is disabled", async () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[]}
@@ -329,7 +329,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       await expectDisabledButtonWithTooltip(
@@ -339,7 +339,7 @@ describe("MachineNetworkActions", () => {
     });
 
     it("disables the button when no interfaces are selected", () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[]}
@@ -347,7 +347,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       expect(
@@ -372,7 +372,7 @@ describe("MachineNetworkActions", () => {
         }),
       ];
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
@@ -380,7 +380,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       await expectDisabledButtonWithTooltip(
@@ -412,7 +412,7 @@ describe("MachineNetworkActions", () => {
         }),
       ];
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }]}
@@ -420,7 +420,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       await expectDisabledButtonWithTooltip(
@@ -446,7 +446,7 @@ describe("MachineNetworkActions", () => {
         }),
       ];
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
@@ -454,7 +454,7 @@ describe("MachineNetworkActions", () => {
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
-        { state, route: "/machine/abc123" }
+        { state, initialEntries: ["/machine/abc123"] }
       );
 
       await expectDisabledButtonWithTooltip(

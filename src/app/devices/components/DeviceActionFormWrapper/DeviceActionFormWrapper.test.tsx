@@ -6,15 +6,9 @@ import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  renderWithProviders,
-  mockSidePanel,
-} from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-await mockSidePanel();
 describe("DeviceActionFormWrapper", () => {
   it("can set selected devices to those that can perform action", async () => {
     const state = factory.rootState();
