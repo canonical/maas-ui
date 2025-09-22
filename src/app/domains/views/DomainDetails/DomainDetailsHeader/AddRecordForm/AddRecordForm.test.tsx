@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import AddRecordForm, { Labels as AddRecordFormLabels } from "./AddRecordForm";
@@ -10,30 +8,30 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  render,
-  renderWithBrowserRouter,
+  renderWithProviders,
+  mockSidePanel,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
 
+const { mockClose } = await mockSidePanel();
+
 describe("AddRecordForm", () => {
   it("calls closeForm on cancel click", async () => {
-    const closeForm = vi.fn();
     const state = factory.rootState({
       domain: factory.domainState({
         items: [factory.domain({ id: 1, name: "domain-in-the-brain" })],
       }),
     });
 
-    renderWithBrowserRouter(<AddRecordForm closeForm={closeForm} id={1} />, {
+    renderWithProviders(<AddRecordForm id={1} />, {
       state,
     });
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("Dispatches the correct action on submit", async () => {
-    const closeForm = vi.fn();
     const state = factory.rootState({
       domain: factory.domainState({
         items: [
@@ -47,13 +45,10 @@ describe("AddRecordForm", () => {
     });
 
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AddRecordForm closeForm={closeForm} id={1} />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<AddRecordForm id={1} />, {
+      store,
+    });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: RecordFieldsLabels.Name }),

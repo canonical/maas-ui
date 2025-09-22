@@ -7,6 +7,7 @@ import type { SchemaOf } from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { DOMAIN_NAME_REGEX } from "@/app/base/validation";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
@@ -20,17 +21,14 @@ export enum Labels {
   FormLabel = "Add domains",
 }
 
-type Props = {
-  closeForm: () => void;
-};
-
 export type CreateDomainValues = {
   name: Domain["name"];
   authoritative: Domain["authoritative"];
   ttl?: Domain["ttl"] | ""; // allow empty string for Formik initial values
 };
 
-const DomainListHeaderForm = ({ closeForm }: Props): React.ReactElement => {
+const DomainListHeaderForm = (): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);
@@ -67,14 +65,14 @@ const DomainListHeaderForm = ({ closeForm }: Props): React.ReactElement => {
         name: "",
         authoritative: true,
       }}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={(values) => {
         createDomain(values);
         setShouldClose(true);
       }}
       onSuccess={() => {
         if (shouldClose) {
-          closeForm();
+          closeSidePanel();
         }
       }}
       resetOnSave={!shouldClose}

@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import EditRecordForm, {
@@ -11,12 +9,7 @@ import { domainActions } from "@/app/store/domain";
 import { RecordType } from "@/app/store/domain/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  render,
-  renderWithBrowserRouter,
-} from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -54,7 +47,7 @@ describe("EditRecordForm", () => {
   it("closes the form when Cancel button is clicked", async () => {
     const closeForm = vi.fn();
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditRecordForm closeForm={closeForm} id={1} resource={resourceA} />,
       { state }
     );
@@ -66,12 +59,9 @@ describe("EditRecordForm", () => {
 
   it("dispatches an action to update the record", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <EditRecordForm closeForm={vi.fn()} id={1} resource={resourceA} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <EditRecordForm closeForm={vi.fn()} id={1} resource={resourceA} />,
+      { store }
     );
 
     const dataInputField = screen.getByRole("textbox", {

@@ -1,7 +1,7 @@
 import DomainDetails from "./DomainDetails";
 
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("DomainDetails", () => {
   it("renders 'Not Found' header if domains loaded and domain not found", () => {
@@ -11,8 +11,7 @@ describe("DomainDetails", () => {
         loading: false,
       }),
     });
-    renderWithBrowserRouter(<DomainDetails />, {
-      route: "/domain/1",
+    renderWithProviders(<DomainDetails />, {
       state,
     });
 

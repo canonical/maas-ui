@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import DeleteRecordForm, {
@@ -8,12 +6,7 @@ import DeleteRecordForm, {
 
 import { domainActions } from "@/app/store/domain";
 import * as factory from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  render,
-  renderWithBrowserRouter,
-} from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -28,7 +21,7 @@ describe("DeleteRecordForm", () => {
     });
     const closeForm = vi.fn();
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <DeleteRecordForm
         closeForm={closeForm}
         id={domain.id}
@@ -57,12 +50,9 @@ describe("DeleteRecordForm", () => {
       }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />,
+      { store }
     );
     await userEvent.click(
       screen.getByRole("button", { name: DeleteRecordFormLabels.SubmitLabel })
@@ -88,12 +78,9 @@ describe("DeleteRecordForm", () => {
       }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />,
+      { store }
     );
 
     await userEvent.click(
