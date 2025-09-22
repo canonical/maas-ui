@@ -9,26 +9,27 @@ import DeviceFilterAccordion from "./DeviceFilterAccordion";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
-import { DeviceSidePanelViews } from "@/app/devices/constants";
-import type { DeviceSetSidePanelContent } from "@/app/devices/types";
+import AddDeviceForm from "@/app/devices/components/AddDeviceForm";
+import DeviceActionFormWrapper from "@/app/devices/components/DeviceActionFormWrapper";
 import deviceSelectors from "@/app/store/device/selectors";
+import { NodeActions } from "@/app/store/types/node";
 
 type Props = {
   searchFilter: string;
-  setSidePanelContent: DeviceSetSidePanelContent;
   setSearchFilter: SetSearchFilter;
 };
 
 const DeviceListHeader = ({
   searchFilter,
-  setSidePanelContent,
   setSearchFilter,
 }: Props): React.ReactElement => {
   const devices = useSelector(deviceSelectors.all);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
   const selectedDevices = useSelector(deviceSelectors.selected);
   const [searchText, setSearchText] = useState(searchFilter);
+  const { openSidePanel } = useSidePanel();
 
   useEffect(() => {
     // If the filters change then update the search input text.
@@ -70,7 +71,11 @@ const DeviceListHeader = ({
           data-testid="add-device-button"
           disabled={selectedDevices.length > 0}
           onClick={() => {
-            setSidePanelContent({ view: DeviceSidePanelViews.ADD_DEVICE });
+            openSidePanel({
+              component: AddDeviceForm,
+              title: "Add device",
+              size: "regular",
+            });
           }}
         >
           Add device
@@ -81,12 +86,16 @@ const DeviceListHeader = ({
           nodeDisplay="device"
           nodes={selectedDevices}
           onActionClick={(action) => {
-            const view = Object.values(DeviceSidePanelViews).find(
-              ([, actionName]) => actionName === action
-            );
-            if (view) {
-              setSidePanelContent({ view });
-            }
+            openSidePanel({
+              component: DeviceActionFormWrapper,
+              title: action === NodeActions.DELETE ? "Delete" : "Set zone",
+              props: {
+                action:
+                  action === NodeActions.DELETE ? action : NodeActions.SET_ZONE,
+                devices: selectedDevices,
+                viewingDetails: false,
+              },
+            });
           }}
           showCount
         />

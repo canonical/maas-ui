@@ -3,7 +3,6 @@ import DeviceList from "./DeviceList";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
   renderWithProviders,
   screen,
   userEvent,
@@ -17,8 +16,8 @@ describe("DeviceList", () => {
   });
 
   it("sets the search text from the URL on load", () => {
-    renderWithBrowserRouter(<DeviceList />, {
-      route: "/devices?q=test+search",
+    renderWithProviders(<DeviceList />, {
+      initialEntries: ["/devices?q=test+search"],
       state,
     });
     expect(screen.getByRole("searchbox")).toHaveValue("test search");

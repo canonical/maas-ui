@@ -3,8 +3,6 @@ import { createContext, useCallback, useContext, useState } from "react";
 
 import { ControllerSidePanelViews } from "@/app/controllers/constants";
 import type { ControllerSidePanelContent } from "@/app/controllers/types";
-import { DeviceSidePanelViews } from "@/app/devices/constants";
-import type { DeviceSidePanelContent } from "@/app/devices/types";
 import {
   DomainDetailsSidePanelViews,
   type DomainDetailsSidePanelContent,
@@ -24,7 +22,6 @@ import type { TagSidePanelContent } from "@/app/tags/types";
 
 export type SidePanelContent =
   | ControllerSidePanelContent
-  | DeviceSidePanelContent
   | DomainDetailsSidePanelContent
   | DomainListSidePanelContent
   | KVMSidePanelContent
@@ -46,7 +43,6 @@ export const SidePanelViews = {
   ...ControllerSidePanelViews,
   ...MachineSidePanelViews,
   ...ControllerSidePanelViews,
-  ...DeviceSidePanelViews,
   ...KVMSidePanelViews,
   ...TagSidePanelViews,
   ...DomainDetailsSidePanelViews,
@@ -62,7 +58,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.ADD_DOMAIN[1]]: "Add domains",
   [SidePanelViews.ADD_INTERFACE[1]]: "Add interface",
   [SidePanelViews.ADD_MACHINE[1]]: "Add machine",
-  [SidePanelViews.ADD_DEVICE[1]]: "Add device",
   [SidePanelViews.ADD_SPECIAL_FILESYSTEM[1]]: "Add special filesystem",
   [SidePanelViews.AddTag[1]]: "Create new tag",
   [SidePanelViews.ADD_VLAN[1]]: "Add VLAN",
@@ -79,13 +74,11 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.DELETE_SPECIAL_FILESYSTEM[1]]: "Delete special filesystem",
   [SidePanelViews.DeleteTag[1]]: "Delete tag",
   [SidePanelViews.DELETE_VOLUME_GROUP[1]]: "Delete volume group",
-  [SidePanelViews.EDIT_INTERFACE[1]]: "Edit interface",
   [SidePanelViews.EDIT_DISK[1]]: "Edit disk",
   [SidePanelViews.EDIT_PARTITION[1]]: "Edit partition",
   [SidePanelViews.EDIT_PHYSICAL[1]]: "Edit physical",
   [SidePanelViews.MARK_CONNECTED[1]]: "Mark as connected",
   [SidePanelViews.MARK_DISCONNECTED[1]]: "Mark as disconnected",
-  [SidePanelViews.REMOVE_INTERFACE[1]]: "Remove interface",
   [SidePanelViews.REMOVE_PARTITION[1]]: "Remove partition",
   [SidePanelViews.REMOVE_PHYSICAL[1]]: "Remove physical",
   [SidePanelViews.SET_BOOT_DISK[1]]: "Set boot disk",

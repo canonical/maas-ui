@@ -1,4 +1,5 @@
 import { waitFor } from "@testing-library/react";
+import { Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -7,7 +8,7 @@ import MachineDetails from "./MachineDetails";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -105,11 +106,21 @@ describe("MachineDetails", () => {
     },
   ].forEach(({ component, path, title }) => {
     it(`Displays: ${component} at: ${path}`, async () => {
-      renderWithBrowserRouter(<MachineDetails />, {
-        route: path,
-        state,
-        routePattern: `${urls.machines.machine.index(null)}/*`,
-      });
+      const { router } = renderWithProviders(
+        <Routes>
+          <Route
+            element={<MachineDetails />}
+            path={`${urls.machines.machine.index(null)}/*`}
+          />
+        </Routes>,
+        {
+          state,
+          initialEntries: [
+            `${urls.machines.machine.index({ id: "abc123" })}/*`,
+          ],
+        }
+      );
+      router.navigate(path);
       await waitFor(() => {
         expect(document.title).toBe(
           `${state.machine.items[0].fqdn} ${title} | MAAS`
@@ -119,24 +130,38 @@ describe("MachineDetails", () => {
   });
 
   it("redirects to summary", () => {
-    renderWithBrowserRouter(<MachineDetails />, {
-      route: urls.machines.machine.index({ id: "abc123" }),
-      state,
-      routePattern: `${urls.machines.machine.index(null)}/*`,
-    });
+    const { router } = renderWithProviders(
+      <Routes>
+        <Route
+          element={<MachineDetails />}
+          path={`${urls.machines.machine.index(null)}/*`}
+        />
+      </Routes>,
+      {
+        state,
+        initialEntries: [`${urls.machines.machine.index({ id: "abc123" })}`],
+      }
+    );
 
-    expect(window.location.pathname).toBe(
+    expect(router.state.location.pathname).toBe(
       urls.machines.machine.summary({ id: "abc123" })
     );
   });
 
   it("dispatches an action to set the machine as active", () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<MachineDetails />, {
-      route: "/machine/abc123",
-      store,
-      routePattern: `${urls.machines.machine.index(null)}/*`,
-    });
+    renderWithProviders(
+      <Routes>
+        <Route
+          element={<MachineDetails />}
+          path={`${urls.machines.machine.index(null)}/*`}
+        />
+      </Routes>,
+      {
+        store,
+        initialEntries: ["/machine/abc123"],
+      }
+    );
 
     expect(
       store.getActions().find((action) => action.type === "machine/setActive")
@@ -156,8 +181,8 @@ describe("MachineDetails", () => {
 
   it("displays a message if the machine does not exist", () => {
     state.machine.loading = false;
-    renderWithBrowserRouter(<MachineDetails />, {
-      route: "/machine/not-valid-id",
+    renderWithProviders(<MachineDetails />, {
+      initialEntries: ["/machine/not-valid-id"],
       state,
     });
     expect(screen.getByTestId("not-found")).toBeInTheDocument();
@@ -165,12 +190,19 @@ describe("MachineDetails", () => {
 
   it("cleans up when unmounting", () => {
     const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(<MachineDetails />, {
-      route: "/machine/abc123",
-      store,
-      routePattern: `${urls.machines.machine.index(null)}/*`,
-    });
-    unmount();
+    const { result } = renderWithProviders(
+      <Routes>
+        <Route
+          element={<MachineDetails />}
+          path={`${urls.machines.machine.index(null)}/*`}
+        />
+      </Routes>,
+      {
+        store,
+        initialEntries: ["/machine/abc123"],
+      }
+    );
+    result.unmount();
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
@@ -178,11 +210,20 @@ describe("MachineDetails", () => {
 
   it("scrolls to the top when changing tabs", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<MachineDetails />, {
-      route: "/machine/abc123",
-      store,
-      routePattern: `${urls.machines.machine.index(null)}/*`,
-    });
+
+    renderWithProviders(
+      <Routes>
+        <Route
+          element={<MachineDetails />}
+          path={`${urls.machines.machine.index(null)}/*`}
+        />
+      </Routes>,
+      {
+        store,
+        initialEntries: ["/machine/abc123"],
+      }
+    );
+
     const linkTo = screen.getByRole("link", { name: "USB" });
     await userEvent.click(linkTo);
     await waitFor(() => {

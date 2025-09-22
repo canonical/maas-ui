@@ -2,10 +2,9 @@ import configureStore from "redux-mock-store";
 
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
 
-import { DeviceSidePanelViews } from "@/app/devices/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -23,10 +22,7 @@ describe("DeviceDetailsHeader", () => {
   it("displays a spinner as the title if device has not loaded yet", () => {
     state.device.items = [];
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { store });
 
     expect(
       screen.getByTestId("section-header-title-spinner")
@@ -36,10 +32,7 @@ describe("DeviceDetailsHeader", () => {
   it("displays a spinner as the subtitle if loaded device is not the detailed type", () => {
     state.device.items = [factory.device({ system_id: "abc123" })];
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { store });
 
     expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
       "Loading..."
@@ -54,10 +47,7 @@ describe("DeviceDetailsHeader", () => {
       factory.deviceDetails({ fqdn: "plot-device", system_id: "abc123" }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { store, sidePanelContent: { view: DeviceSidePanelViews.DELETE_DEVICE } }
-    );
+    renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { store });
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "plot-device"
     );
@@ -68,10 +58,7 @@ describe("DeviceDetailsHeader", () => {
       factory.deviceDetails({ fqdn: "plot-device", system_id: "abc123" }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { store });
 
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "plot-device"

@@ -4,7 +4,7 @@ import DeviceSummary from "./DeviceSummary";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -14,7 +14,7 @@ describe("DeviceSummary", () => {
       device: factory.deviceState({ items: [] }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceSummary systemId="abc123" />, { store });
+    renderWithProviders(<DeviceSummary systemId="abc123" />, { store });
 
     expect(screen.getByTestId("loading-device")).toBeInTheDocument();
     expect(screen.queryByTestId("device-summary")).not.toBeInTheDocument();
@@ -27,7 +27,7 @@ describe("DeviceSummary", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceSummary systemId="abc123" />, { store });
+    renderWithProviders(<DeviceSummary systemId="abc123" />, { store });
 
     expect(screen.getByTestId("device-summary")).toBeInTheDocument();
     expect(screen.queryByTestId("loading-device")).not.toBeInTheDocument();

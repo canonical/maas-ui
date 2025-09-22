@@ -7,8 +7,7 @@ import deviceSelectors from "@/app/store/device/selectors";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 const createNewInterface = async () => {
@@ -75,20 +74,14 @@ describe("AddInterface", () => {
   it("displays a spinner if device is not detailed version", () => {
     state.device.items[0] = factory.device({ system_id: "abc123" });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddInterface closeForm={vi.fn()} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<AddInterface systemId="abc123" />, { store });
 
     expect(screen.getByTestId("loading-device-details"));
   });
 
   it("correctly dispatches action to create an interface", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddInterface closeForm={vi.fn()} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<AddInterface systemId="abc123" />, { store });
 
     await createNewInterface();
 
@@ -107,29 +100,11 @@ describe("AddInterface", () => {
     expect(actualAction).toStrictEqual(expectedAction);
   });
 
-  it("closes the form if there are no errors when creating the interface", async () => {
-    const closeForm = vi.fn();
-    state.device.errors = null;
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddInterface closeForm={closeForm} systemId="abc123" />,
-      { store }
-    );
-
-    mockFormikFormSaved();
-    await createNewInterface();
-
-    expect(closeForm).toHaveBeenCalled();
-  });
-
   it("does not close the form if there is an error when creating the interface", async () => {
     const closeForm = vi.fn();
     state.device.errors = null;
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddInterface closeForm={closeForm} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<AddInterface systemId="abc123" />, { store });
     await createNewInterface();
     const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
@@ -149,10 +124,7 @@ describe("AddInterface", () => {
     const closeForm = vi.fn();
     state.device.errors = null;
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddInterface closeForm={closeForm} systemId="abc123" />,
-      { store }
-    );
+    renderWithProviders(<AddInterface systemId="abc123" />, { store });
     await createNewInterface();
     const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
