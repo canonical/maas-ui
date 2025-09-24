@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import type { ProfilerOnRenderCallback, ReactNode } from "react";
+import { Profiler } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -511,8 +512,24 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
 
   const mockServer = setupServer(...handlers);
 
+  mockServer.events.on("request:start", ({ request }) => {
+    console.log(
+      `[msw] → Request: ${request.method} ${request.url} @ ${performance.now().toFixed(2)}ms`
+    );
+  });
+
+  mockServer.events.on("request:end", ({ request }) => {
+    console.log(
+      `[msw] ← Response: ${request.method} ${request.url} @ ${performance.now().toFixed(2)}ms`
+    );
+  });
+
+  beforeEach(() =>
+    console.log(`Test started @ ${performance.now().toFixed(2)}ms`)
+  );
   beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
   afterEach(() => {
+    console.log(`Test ended @ ${performance.now().toFixed(2)}ms`);
     mockServer.resetHandlers();
   });
   afterAll(() => mockServer.close());
@@ -561,17 +578,34 @@ export const renderWithProviders = (
       ...options?.state,
     });
 
+  const onRender: ProfilerOnRenderCallback = (
+    _id,
+    phase,
+    actualDuration,
+    _baseDuration,
+    _startTime,
+    commitTime
+  ) => {
+    console.log(
+      `[profiler] phase=${phase} commit @ ${commitTime.toFixed(
+        2
+      )}ms, took ${actualDuration.toFixed(2)}ms`
+    );
+  };
+
   return {
     result: render(
-      <QueryClientProvider client={queryClient}>
-        <WebSocketProvider>
-          <NewSidePanelContextProvider>
-            <Provider store={store}>
-              <RouterProvider router={router} />
-            </Provider>
-          </NewSidePanelContextProvider>
-        </WebSocketProvider>
-      </QueryClientProvider>,
+      <Profiler id="TestComponent" onRender={onRender}>
+        <QueryClientProvider client={queryClient}>
+          <WebSocketProvider>
+            <NewSidePanelContextProvider>
+              <Provider store={store}>
+                <RouterProvider router={router} />
+              </Provider>
+            </NewSidePanelContextProvider>
+          </WebSocketProvider>
+        </QueryClientProvider>
+      </Profiler>,
       options
     ),
     router,
