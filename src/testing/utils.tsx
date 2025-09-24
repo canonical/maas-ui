@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+
 import type { ProfilerOnRenderCallback, ReactNode } from "react";
 import { Profiler } from "react";
 
@@ -6,8 +9,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen, renderHook } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { MemoryHistory, MemoryHistoryOptions } from "history";
-import { createMemoryHistory } from "history";
 import { produce } from "immer";
 import type { RequestHandler } from "msw";
 import { setupServer } from "msw/node";
@@ -20,7 +21,6 @@ import {
   RouterProvider,
   Routes,
 } from "react-router";
-import { HistoryRouter } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import { vi } from "vitest";
@@ -201,10 +201,6 @@ const WithMockStoreProvider = ({
   );
 };
 
-interface EnhancedRenderResult extends RenderResult {
-  store: MockStoreEnhanced<RootState | unknown, object>;
-}
-
 export interface WithRouterOptions extends RenderOptions, WrapperProps {
   route?: string;
   queryData?: Record<string, unknown>;
@@ -314,9 +310,6 @@ export const renderWithMockStore = (
       }),
   };
 };
-
-export const getUrlParam: URLSearchParams["get"] = (param: string) =>
-  new URLSearchParams(window.location.search).get(param);
 
 // Complete initial test state with all queryData loaded and no errors
 export const getTestState = (): RootState => {
@@ -455,51 +448,62 @@ export {
 } from "@testing-library/react";
 export { default as userEvent } from "@testing-library/user-event";
 
-interface WithHistoryRouterOptions
-  extends RenderOptions,
-    WrapperProps,
-    MemoryHistoryOptions {
-  history?: MemoryHistory;
-}
-
-export const renderWithHistoryRouter = (
-  ui: React.ReactElement,
-  options?: WithHistoryRouterOptions
-): EnhancedRenderResult & { history: MemoryHistory } => {
-  const {
-    state,
-    store: initialStore,
-    initialEntries,
-    ...renderOptions
-  } = options || {};
-  const history = options?.history || createMemoryHistory({ initialEntries });
-
-  const getMockStore = (state: RootState) => {
-    const mockStore = configureStore();
-    return mockStore(state);
-  };
-  const store = initialStore ?? getMockStore(state || rootStateFactory());
-
-  const rendered = render(
-    <QueryClientProvider client={setupQueryClient()}>
-      <WebSocketProvider>
-        <Provider store={store}>
-          <HistoryRouter history={history}>{ui}</HistoryRouter>
-        </Provider>
-      </WebSocketProvider>
-    </QueryClientProvider>,
-    renderOptions
-  );
-
-  return {
-    ...rendered,
-    store,
-    history,
-  };
-};
-
 /* New utils with easier use */
 export const BASE_URL = import.meta.env.VITE_APP_MAAS_URL;
+
+type LogEntry = {
+  testName: string;
+  time: number;
+  scope: string;
+  message: string;
+};
+
+const logsByFile: Record<string, LogEntry[]> = {};
+const testStart = performance.now();
+const logFile = path.join(process.cwd(), "test-timings.log");
+
+export function logEvent(
+  file: string,
+  testName: string,
+  scope: string,
+  message: string
+) {
+  if (!process.env.MEASURE_UNIT_PERFORMANCE) return;
+  const now = performance.now() - testStart;
+
+  if (!logsByFile[file]) {
+    logsByFile[file] = [];
+  }
+
+  logsByFile[file].push({ testName, time: now, scope, message });
+}
+
+export function flushAllLogs() {
+  if (!process.env.MEASURE_UNIT_PERFORMANCE) return;
+  const lines: string[] = [];
+
+  for (const [file, entries] of Object.entries(logsByFile)) {
+    lines.push(`######## ${file} ########`);
+
+    const groupedByTest: Record<string, LogEntry[]> = {};
+    for (const entry of entries) {
+      if (!groupedByTest[entry.testName]) {
+        groupedByTest[entry.testName] = [];
+      }
+      groupedByTest[entry.testName].push(entry);
+    }
+
+    for (const [testName, testEntries] of Object.entries(groupedByTest)) {
+      lines.push(`\n=== ${testName.split(">").at(-1)} ===`);
+      for (const e of testEntries) {
+        lines.push(`[+${e.time.toFixed(1)}ms] [${e.scope}] ${e.message}`);
+      }
+    }
+  }
+  lines.push("\n");
+
+  fs.appendFileSync(logFile, lines.join("\n"), "utf-8");
+}
 
 /**
  * A function for setting up the MSW with the base testing url.
@@ -513,26 +517,33 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
   const mockServer = setupServer(...handlers);
 
   mockServer.events.on("request:start", ({ request }) => {
-    console.log(
-      `[msw] → Request: ${request.method} ${request.url} @ ${performance.now().toFixed(2)}ms`
+    logEvent(
+      expect.getState().testPath?.split("/").pop() || "unknown file",
+      expect.getState().currentTestName || "unknown",
+      "request:start",
+      `[msw] → Request: ${request.method} ${request.url}`
     );
   });
 
   mockServer.events.on("request:end", ({ request }) => {
-    console.log(
-      `[msw] ← Response: ${request.method} ${request.url} @ ${performance.now().toFixed(2)}ms`
+    logEvent(
+      expect.getState().testPath?.split("/").pop() || "unknown file",
+      expect.getState().currentTestName || "unknown",
+      "request:end",
+      `[msw] ← Response: ${request.method} ${request.url}`
     );
   });
 
-  beforeEach(() =>
-    console.log(`Test started @ ${performance.now().toFixed(2)}ms`)
-  );
-  beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+  beforeAll(() => {
+    mockServer.listen({ onUnhandledRequest: "warn" });
+  });
   afterEach(() => {
-    console.log(`Test ended @ ${performance.now().toFixed(2)}ms`);
     mockServer.resetHandlers();
   });
-  afterAll(() => mockServer.close());
+  afterAll(() => {
+    mockServer.close();
+    flushAllLogs();
+  });
 
   return mockServer;
 };
@@ -584,12 +595,13 @@ export const renderWithProviders = (
     actualDuration,
     _baseDuration,
     _startTime,
-    commitTime
+    _commitTime
   ) => {
-    console.log(
-      `[profiler] phase=${phase} commit @ ${commitTime.toFixed(
-        2
-      )}ms, took ${actualDuration.toFixed(2)}ms`
+    logEvent(
+      expect.getState().testPath?.split("/").pop() || "unknown file",
+      expect.getState().currentTestName || "unknown",
+      "render",
+      `[${phase}], took ${actualDuration.toFixed(2)}ms`
     );
   };
 
