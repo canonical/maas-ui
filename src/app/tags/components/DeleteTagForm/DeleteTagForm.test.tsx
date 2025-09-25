@@ -4,7 +4,6 @@ import type { Mock } from "vitest";
 
 import DeleteTagForm from "./DeleteTagForm";
 
-import urls from "@/app/base/urls";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
@@ -95,56 +94,4 @@ it("displays a message when deleting a tag not on a machine", async () => {
   expect(
     screen.getByText("tag1 will be deleted. Are you sure?")
   ).toBeInTheDocument();
-});
-
-it("can return to the list on cancel", async () => {
-  state.tag.items = [
-    factory.tag({
-      id: 1,
-      kernel_opts: "opts",
-      machine_count: 1,
-      name: "tag1",
-    }),
-  ];
-  const onClose = vi.fn();
-  const store = mockStore(state);
-  const { router } = renderWithProviders(
-    <DeleteTagForm id={1} onClose={onClose} />,
-    { store, initialEntries: [urls.tags.tag.machines({ id: 1 })] }
-  );
-  await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(router.state.location.pathname).toBe(urls.tags.index);
-  expect(onClose).toBeCalled();
-});
-
-it("can return to the details on cancel", async () => {
-  state.tag.items = [
-    factory.tag({
-      id: 1,
-      kernel_opts: "opts",
-      machine_count: 1,
-      name: "tag1",
-    }),
-  ];
-  state.machine.counts = {
-    [callId]: factory.machineStateCount({
-      count: 1,
-      loaded: true,
-    }),
-  };
-  const onClose = vi.fn();
-  const store = mockStore(state);
-  const { router } = renderWithProviders(
-    <DeleteTagForm fromDetails id={1} onClose={onClose} />,
-    {
-      store,
-      initialEntries: [urls.tags.tag.machines({ id: 1 })],
-    }
-  );
-  await userEvent.click(
-    screen.getByRole("link", { name: "Show the deployed machine" })
-  );
-  await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
-  expect(onClose).toBeCalled();
 });

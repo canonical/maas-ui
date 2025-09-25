@@ -7,7 +7,6 @@ const urls = {
   index: "/tags",
   tag: {
     index: withId("/tag/:id"),
-    machines: withId("/tag/:id/machines"),
   },
 } as const;
 
