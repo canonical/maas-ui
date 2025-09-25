@@ -27,7 +27,7 @@ export enum Label {
   Update = "Last update",
 }
 
-const TagDetails = ({ id, narrow }: Props): React.ReactElement => {
+const TagSummary = ({ id, narrow }: Props): React.ReactElement => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
@@ -102,4 +102,4 @@ const TagDetails = ({ id, narrow }: Props): React.ReactElement => {
   );
 };
 
-export default TagDetails;
+export default TagSummary;

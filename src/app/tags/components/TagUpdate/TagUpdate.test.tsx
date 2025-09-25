@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 
 import TagUpdate from "./TagUpdate";
@@ -13,11 +11,10 @@ import { Label } from "@/app/tags/views/TagDetails";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
-  userEvent,
-  render,
-  screen,
-  waitFor,
   renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -38,20 +35,7 @@ beforeEach(() => {
 
 it("dispatches actions to fetch necessary data", () => {
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route
-            element={<TagUpdate id={1} onClose={vi.fn()} />}
-            path={urls.tags.tag.index(null)}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<TagUpdate id={1} onClose={vi.fn()} />, { store });
 
   const expectedActions = [tagActions.fetch()];
   const actualActions = store.getActions();
@@ -71,34 +55,14 @@ it("shows a spinner if the tag has not loaded yet", () => {
       loading: true,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route
-            element={<TagUpdate id={1} onClose={vi.fn()} />}
-            path={urls.tags.tag.index(null)}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<TagUpdate id={1} onClose={vi.fn()} />, { state });
 
   expect(screen.getByTestId("Spinner")).toBeInTheDocument();
 });
 
 it("can update the tag", async () => {
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <TagUpdate id={1} onClose={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<TagUpdate id={1} onClose={vi.fn()} />, { store });
   const nameInput = screen.getByRole("textbox", { name: Label.Name });
   await userEvent.clear(nameInput);
   await userEvent.type(nameInput, "name1");
@@ -150,13 +114,7 @@ it("shows a confirmation when a tag's definition is updated", async () => {
   const tag = factory.tag({ id: 1, definition: "abc", name: "baggage" });
   state.tag.items = [tag];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <TagUpdate id={1} onClose={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<TagUpdate id={1} onClose={vi.fn()} />, { store });
 
   const definitionInput = screen.getByRole("textbox", {
     name: Label.Definition,

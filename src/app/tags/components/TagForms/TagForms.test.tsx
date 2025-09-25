@@ -4,7 +4,7 @@ import TagForms from "./TagForms";
 
 import { TagSidePanelViews } from "@/app/tags/constants";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 let scrollToSpy: Mock;
 
@@ -19,12 +19,12 @@ afterEach(() => {
 });
 
 it("can display the add tag form", () => {
-  renderWithBrowserRouter(
+  renderWithProviders(
     <TagForms
       setSidePanelContent={vi.fn()}
       sidePanelContent={{ view: TagSidePanelViews.AddTag }}
     />,
-    { route: "/tags", state: factory.rootState() }
+    { initialEntries: ["/tags"], state: factory.rootState() }
   );
   expect(screen.getByRole("form", { name: "Create tag" })).toBeInTheDocument();
 });
@@ -39,7 +39,7 @@ it("can display the delete tag form", () => {
       ],
     }),
   });
-  renderWithBrowserRouter(
+  renderWithProviders(
     <TagForms
       setSidePanelContent={vi.fn()}
       sidePanelContent={{
@@ -47,7 +47,7 @@ it("can display the delete tag form", () => {
         extras: { id: 1 },
       }}
     />,
-    { route: "/tags", state }
+    { initialEntries: ["/tags"], state }
   );
   expect(screen.getByRole("form", { name: "Delete tag" })).toBeInTheDocument();
 });
@@ -62,7 +62,7 @@ it("can display the update tag form", () => {
       ],
     }),
   });
-  renderWithBrowserRouter(
+  renderWithProviders(
     <TagForms
       setSidePanelContent={vi.fn()}
       sidePanelContent={{
@@ -70,7 +70,7 @@ it("can display the update tag form", () => {
         extras: { id: 1 },
       }}
     />,
-    { route: "/tags", state }
+    { initialEntries: ["/tags"], state }
   );
   expect(screen.getByRole("form", { name: "Update tag" })).toBeInTheDocument();
 });

@@ -1,6 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -13,11 +11,10 @@ import { tagActions } from "@/app/store/tag";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  render,
-  screen,
-  waitFor,
   renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 const callId = "mocked-nanoid";
@@ -60,13 +57,7 @@ afterEach(() => {
 
 it("dispatches an action to delete a tag", async () => {
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <DeleteTagForm id={1} onClose={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<DeleteTagForm id={1} onClose={vi.fn()} />, { store });
   await userEvent.click(screen.getByRole("button", { name: "Delete" }));
   const expected = tagActions.delete(1);
   await waitFor(() => {
@@ -84,14 +75,7 @@ it("displays a message when deleting a tag on a machine", async () => {
       name: "tag1",
     }),
   ];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <DeleteTagForm id={1} onClose={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<DeleteTagForm id={1} onClose={vi.fn()} />, { state });
   expect(
     screen.getByText(
       "tag1 will be deleted and unassigned from every tagged machine. Are you sure?"
@@ -107,14 +91,7 @@ it("displays a message when deleting a tag not on a machine", async () => {
       name: "tag1",
     }),
   ];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <DeleteTagForm id={1} onClose={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<DeleteTagForm id={1} onClose={vi.fn()} />, { state });
   expect(
     screen.getByText("tag1 will be deleted. Are you sure?")
   ).toBeInTheDocument();

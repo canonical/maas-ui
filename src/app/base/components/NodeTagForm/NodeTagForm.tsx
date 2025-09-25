@@ -1,47 +1,51 @@
 import { useEffect, useState } from "react";
 
-import { Col, NotificationSeverity, Row } from "@canonical/react-components";
+import type { PropsWithSpread } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSendAnalytics } from "@/app/base/hooks";
-import type { SyncNavigateFunction } from "@/app/base/types";
-import urls from "@/app/base/urls";
-import { TAG_NAME_REGEX } from "@/app/base/validation";
-import { messageActions } from "@/app/store/message";
+import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { CreateParams, Tag } from "@/app/store/tag/types";
-import DefinitionField from "@/app/tags/components/DefinitionField";
 import KernelOptionsField from "@/app/tags/components/KernelOptionsField";
-import { NewDefinitionMessage } from "@/app/tags/constants";
+import type { Props as KernelOptionsFieldProps } from "@/app/tags/components/KernelOptionsField/KernelOptionsField";
 
-type Props = {
-  onClose: () => void;
-};
+type Props = PropsWithSpread<
+  {
+    deployedMachinesCount?: number;
+    generateDeployedMessage?: KernelOptionsFieldProps["generateDeployedMessage"];
+    name: string | null;
+    onTagCreated: (tag: Tag) => void;
+  },
+  Partial<FormikFormProps<CreateParams>>
+>;
 
 export enum Label {
   Comment = "Comment",
+  Form = "Create tag",
   Name = "Tag name",
-  NameValidation = "Tag names can only contain letters, numbers, dashes or underscores.",
+  Submit = "Create and add to tag changes",
 }
 
-const AddTagFormSchema = Yup.object().shape({
+const NodeTagFormSchema = Yup.object().shape({
   comment: Yup.string(),
-  definition: Yup.string(),
   kernel_opts: Yup.string(),
-  name: Yup.string()
-    .matches(TAG_NAME_REGEX, Label.NameValidation)
-    .required("Name is required."),
+  name: Yup.string().required("Name is required."),
 });
 
-export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
+export const NodeTagForm = ({
+  deployedMachinesCount,
+  generateDeployedMessage,
+  name,
+  onTagCreated,
+  ...props
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const navigate: SyncNavigateFunction = useNavigate();
   const [savedName, setSavedName] = useState<Tag["name"] | null>(null);
   const saved = useSelector(tagSelectors.saved);
   const saving = useSelector(tagSelectors.saving);
@@ -51,53 +55,39 @@ export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
     // provided in this form.
     tagSelectors.getByName(state, savedName)
   );
-  const sendAnalytics = useSendAnalytics();
 
   useEffect(() => {
     if (tag) {
-      navigate({ pathname: urls.tags.tag.index({ id: tag.id }) });
-      if (tag.definition) {
-        sendAnalytics("XPath tagging", "Valid XPath", "Save");
-      } else {
-        sendAnalytics("Create Tag form", "Manual tag created", "Save");
-      }
-      onClose();
+      onTagCreated(tag);
     }
-  }, [navigate, onClose, tag, sendAnalytics]);
+  }, [onTagCreated, tag]);
 
   return (
     <FormikForm<CreateParams>
-      aria-label="Create tag"
+      allowUnchanged
+      aria-label={Label.Form}
       cleanup={tagActions.cleanup}
       errors={errors}
       initialValues={{
         comment: "",
-        definition: "",
         kernel_opts: "",
-        name: "",
+        name: name ?? "",
       }}
-      onCancel={onClose}
       onSubmit={(values) => {
         dispatch(tagActions.cleanup());
         dispatch(tagActions.create(values));
       }}
-      onSuccess={({ definition, name }) => {
+      onSuccess={({ name }) => {
         setSavedName(name);
-        if (!!definition) {
-          dispatch(
-            messageActions.add(
-              `Created ${name}. ${NewDefinitionMessage}`,
-              NotificationSeverity.POSITIVE
-            )
-          );
-        }
       }}
       saved={saved}
       saving={saving}
-      submitLabel="Save"
-      validationSchema={AddTagFormSchema}
+      submitAppearance="neutral"
+      submitLabel={Label.Submit}
+      validationSchema={NodeTagFormSchema}
+      {...props}
     >
-      <Row>
+      <Row className="u-no-padding">
         <Col size={12}>
           <FormikField
             label={Label.Name}
@@ -112,14 +102,14 @@ export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
             placeholder="Add a comment as an explanation for this tag."
             type="text"
           />
-          <KernelOptionsField />
-        </Col>
-        <Col size={12}>
-          <DefinitionField />
+          <KernelOptionsField
+            deployedMachinesCount={deployedMachinesCount}
+            generateDeployedMessage={generateDeployedMessage}
+          />
         </Col>
       </Row>
     </FormikForm>
   );
 };
 
-export default AddTagForm;
+export default NodeTagForm;

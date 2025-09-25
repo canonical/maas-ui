@@ -309,5 +309,5 @@
 @include VLANSubnets;
 
 // tags
-@import "@/app/tags/components/TagsHeader/DeleteTagForm/DeleteTagFormWarnings/_index.scss";
+@import "@/app/tags/components/DeleteTagForm/DeleteTagFormWarnings";
 @include DeleteTagFormWarnings;

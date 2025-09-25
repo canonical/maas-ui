@@ -9,7 +9,7 @@ import type {
 import { Icon, MainTable, Strip } from "@canonical/react-components";
 import { Link } from "react-router";
 
-import { TAGS_PER_PAGE } from "../constants";
+import { TAGS_PER_PAGE } from "../../views/TagList/constants";
 
 import TableActions from "@/app/base/components/TableActions";
 import TableHeader from "@/app/base/components/TableHeader";

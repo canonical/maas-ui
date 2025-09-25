@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Route, Routes, useMatch } from "react-router";
 
+import TagForms from "../components/TagForms";
 import TagsHeader from "../components/TagsHeader";
-import TagForms from "../components/TagsHeader/TagForms";
 import { TagSidePanelViews } from "../constants";
 
 import TagDetails from "./TagDetails";
 import TagList from "./TagList";
-import TagMachines from "./TagMachines";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useId } from "@/app/base/hooks/base";
@@ -19,7 +18,6 @@ import NotFound from "@/app/base/views/NotFound";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
-import { getRelativeRoute } from "@/app/utils";
 
 const Tags = (): React.ReactElement => {
   const detailsMatch = useMatch(urls.tags.tag.index(null));
@@ -39,7 +37,6 @@ const Tags = (): React.ReactElement => {
       },
     });
   };
-  const base = urls.tags.tag.index(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(TagSearchFilter.All);
   const [searchText, setSearchText] = useState("");
@@ -95,10 +92,6 @@ const Tags = (): React.ReactElement => {
             )
           }
           path="/"
-        />
-        <Route
-          element={<TagMachines />}
-          path={getRelativeRoute(urls.tags.tag.machines(null), base)}
         />
         <Route element={<NotFound />} path="*" />
       </Routes>
