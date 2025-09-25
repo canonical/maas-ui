@@ -19,7 +19,7 @@ import { messageActions } from "@/app/store/message";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { NodeActions } from "@/app/store/types/node";
-import TagDetails from "@/app/tags/components/TagDetails";
+import TagSummary from "@/app/tags/components/TagSummary";
 
 type Props = MachineActionFormProps & {
   viewingMachineConfig?: boolean;
@@ -113,7 +113,7 @@ export const TagForm = ({
       {secondaryContent === "tagDetails" && tagDetails ? (
         <Col size={6}>
           <h4>{tagDetails.name}</h4>
-          <TagDetails id={tagDetails.id} narrow />
+          <TagSummary id={tagDetails.id} narrow />
         </Col>
       ) : null}
       <Col size={secondaryContent !== null ? 6 : 12}>

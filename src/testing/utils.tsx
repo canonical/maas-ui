@@ -7,7 +7,7 @@ import { Profiler } from "react";
 import type { ValueOf } from "@canonical/react-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
-import { render, screen, renderHook } from "@testing-library/react";
+import { render, renderHook, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { produce } from "immer";
 import type { RequestHandler } from "msw";
@@ -21,8 +21,8 @@ import {
   RouterProvider,
   Routes,
 } from "react-router";
-import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
+import configureStore from "redux-mock-store";
 import { vi } from "vitest";
 
 import type { QueryModel } from "@/app/api/query-client";
@@ -440,11 +440,11 @@ export {
   cleanup,
   fireEvent,
   getDefaultNormalizer,
-  screen,
   render,
   renderHook,
-  within,
+  screen,
   waitForElementToBeRemoved,
+  within,
 } from "@testing-library/react";
 export { default as userEvent } from "@testing-library/user-event";
 
@@ -553,7 +553,7 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
  *
  * @param ui The component to be rendered
  * @param options The rendering options
- * @returns { result, router, store }
+ * @returns { result, router, rerender, store }
  */
 export const renderWithProviders = (
   ui: ReactNode,
@@ -566,6 +566,14 @@ export const renderWithProviders = (
 ): {
   result: RenderResult;
   router: DataRouter;
+  rerender: (
+    ui: ReactNode,
+    {
+      state,
+    }?: {
+      state?: RootState;
+    }
+  ) => RenderResult;
   store: MockStoreEnhanced<RootState | unknown>;
 } => {
   const queryClient = new QueryClient({
@@ -582,9 +590,9 @@ export const renderWithProviders = (
     { initialEntries: options?.initialEntries || ["/"] }
   );
 
-  const store =
+  let store =
     options?.store ??
-    configureStore()({
+    getMockStore({
       ...factory.rootState(),
       ...options?.state,
     });
@@ -605,21 +613,42 @@ export const renderWithProviders = (
     );
   };
 
-  return {
-    result: render(
+  const Wrapper = ({ children }: { children: ReactNode }) => {
+    return (
       <Profiler id="TestComponent" onRender={onRender}>
         <QueryClientProvider client={queryClient}>
           <WebSocketProvider>
             <NewSidePanelContextProvider>
-              <Provider store={store}>
-                <RouterProvider router={router} />
-              </Provider>
+              <Provider store={store}>{children}</Provider>
             </NewSidePanelContextProvider>
           </WebSocketProvider>
         </QueryClientProvider>
-      </Profiler>,
-      options
-    ),
+      </Profiler>
+    );
+  };
+
+  const rendered = render(<RouterProvider router={router} />, {
+    wrapper: Wrapper,
+    ...options,
+  });
+
+  const customRerender = (
+    ui: ReactNode,
+    { state: newState }: { state?: RootState } = {}
+  ) => {
+    if (newState) {
+      store = getMockStore({ ...options?.state, ...newState });
+    }
+    return render(ui, {
+      container: rendered.container,
+      wrapper: Wrapper,
+      ...options,
+    });
+  };
+
+  return {
+    result: rendered,
+    rerender: customRerender,
     router,
     store,
   };

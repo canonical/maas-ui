@@ -3,18 +3,18 @@ import configureStore from "redux-mock-store";
 
 import NodeConfigurationFields, { Label } from "./NodeConfigurationFields";
 
+import { Label as AddTagFormLabel } from "@/app/base/components/NodeTagForm/NodeTagForm";
 import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
 import * as baseHooks from "@/app/base/hooks/base";
 import type { RootState } from "@/app/store/root/types";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
-import { Label as AddTagFormLabel } from "@/app/tags/components/AddTagForm/AddTagForm";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
-  userEvent,
+  renderWithProviders,
   screen,
+  userEvent,
   waitFor,
-  renderWithBrowserRouter,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -50,7 +50,7 @@ afterEach(() => {
 
 it("can open a create tag form", async () => {
   const store = mockStore(state);
-  renderWithBrowserRouter(
+  renderWithProviders(
     <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
       <NodeConfigurationFields />
     </Formik>,
@@ -76,7 +76,7 @@ it("does not display automatic tags on the list", async () => {
   });
   state.tag.items = [manualTag, automaticTag];
   const store = mockStore(state);
-  renderWithBrowserRouter(
+  renderWithProviders(
     <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
       <NodeConfigurationFields />
     </Formik>,
@@ -101,7 +101,7 @@ it("updates the new tags after creating a tag", async () => {
       <NodeConfigurationFields />
     </Formik>
   );
-  const { rerender } = renderWithBrowserRouter(<Form tags={[]} />, { state });
+  const { rerender } = renderWithProviders(<Form tags={[]} />, { state });
   expect(
     screen.queryByRole("button", { name: /new-tag/i })
   ).not.toBeInTheDocument();

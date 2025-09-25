@@ -1,6 +1,6 @@
 import { Pagination } from "@canonical/maas-react-components";
 
-import TagTable from "./TagTable";
+import TagTable from "../../components/TagTable";
 
 import ListDisplayCount from "@/app/base/components/ListDisplayCount";
 import { useWindowTitle } from "@/app/base/hooks";

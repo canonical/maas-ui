@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import urls from "@/app/base/urls";
+import { FilterMachines } from "@/app/store/machine/utils";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors from "@/app/store/tag/selectors";
@@ -53,7 +54,9 @@ export const DeleteTagFormWarnings = ({
             You are deleting a tag with kernel options.{" "}
             {generateDeployedMessage(deployedCount)}
           </span>
-          <Link to={urls.tags.tag.machines({ id })}>
+          <Link
+            to={`${urls.machines.index}${FilterMachines.filtersToQueryString({ tags: [`=${tag.name}`] })}`}
+          >
             Show the deployed {pluralize("machine", deployedCount)}
           </Link>
         </Notification>

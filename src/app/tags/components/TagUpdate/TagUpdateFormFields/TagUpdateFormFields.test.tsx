@@ -1,16 +1,12 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
 
 import TagUpdateFormFields from "./TagUpdateFormFields";
 
 import type { RootState } from "@/app/store/root/types";
 import { Label as DefinitionLabel } from "@/app/tags/components/DefinitionField";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
-const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
@@ -28,15 +24,11 @@ beforeEach(() => {
 
 it("hides the definition field if it is a manual tag", async () => {
   state.tag.items[0].definition = "";
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <Formik initialValues={{}} onSubmit={vi.fn()}>
-          <TagUpdateFormFields id={1} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <TagUpdateFormFields id={1} />
+    </Formik>,
+    { state }
   );
   expect(
     screen.queryByRole("textbox", { name: DefinitionLabel.Definition })
@@ -48,15 +40,11 @@ it("hides the definition field if it is a manual tag", async () => {
 
 it("displays the definition field if it is an automatic tag", async () => {
   state.tag.items[0].definition = "def1";
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <Formik initialValues={{}} onSubmit={vi.fn()}>
-          <TagUpdateFormFields id={1} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <TagUpdateFormFields id={1} />
+    </Formik>,
+    { state }
   );
   expect(
     screen.getByRole("textbox", { name: DefinitionLabel.Definition })

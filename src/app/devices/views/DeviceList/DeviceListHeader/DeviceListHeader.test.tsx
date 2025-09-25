@@ -71,15 +71,14 @@ describe("DeviceListHeader", () => {
   });
 
   it("changes the search text when the filters change", () => {
-    const { result } = renderWithProviders(
+    const { rerender } = renderWithProviders(
       <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
 
     expect(screen.getByRole("searchbox")).toHaveValue("");
 
-    result.unmount();
-    renderWithProviders(
+    rerender(
       <DeviceListHeader searchFilter="free-text" setSearchFilter={vi.fn()} />
     );
 

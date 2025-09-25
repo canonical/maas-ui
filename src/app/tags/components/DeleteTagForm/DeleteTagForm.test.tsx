@@ -1,23 +1,19 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
 import DeleteTagForm from "./DeleteTagForm";
 
-import urls from "@/app/base/urls";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  render,
-  screen,
-  waitFor,
   renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 const callId = "mocked-nanoid";
@@ -60,13 +56,7 @@ afterEach(() => {
 
 it("dispatches an action to delete a tag", async () => {
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <DeleteTagForm id={1} onClose={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<DeleteTagForm id={1} onClose={vi.fn()} />, { store });
   await userEvent.click(screen.getByRole("button", { name: "Delete" }));
   const expected = tagActions.delete(1);
   await waitFor(() => {
@@ -84,14 +74,7 @@ it("displays a message when deleting a tag on a machine", async () => {
       name: "tag1",
     }),
   ];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <DeleteTagForm id={1} onClose={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<DeleteTagForm id={1} onClose={vi.fn()} />, { state });
   expect(
     screen.getByText(
       "tag1 will be deleted and unassigned from every tagged machine. Are you sure?"
@@ -107,67 +90,8 @@ it("displays a message when deleting a tag not on a machine", async () => {
       name: "tag1",
     }),
   ];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <DeleteTagForm id={1} onClose={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<DeleteTagForm id={1} onClose={vi.fn()} />, { state });
   expect(
     screen.getByText("tag1 will be deleted. Are you sure?")
   ).toBeInTheDocument();
-});
-
-it("can return to the list on cancel", async () => {
-  state.tag.items = [
-    factory.tag({
-      id: 1,
-      kernel_opts: "opts",
-      machine_count: 1,
-      name: "tag1",
-    }),
-  ];
-  const onClose = vi.fn();
-  const store = mockStore(state);
-  const { router } = renderWithProviders(
-    <DeleteTagForm id={1} onClose={onClose} />,
-    { store, initialEntries: [urls.tags.tag.machines({ id: 1 })] }
-  );
-  await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(router.state.location.pathname).toBe(urls.tags.index);
-  expect(onClose).toBeCalled();
-});
-
-it("can return to the details on cancel", async () => {
-  state.tag.items = [
-    factory.tag({
-      id: 1,
-      kernel_opts: "opts",
-      machine_count: 1,
-      name: "tag1",
-    }),
-  ];
-  state.machine.counts = {
-    [callId]: factory.machineStateCount({
-      count: 1,
-      loaded: true,
-    }),
-  };
-  const onClose = vi.fn();
-  const store = mockStore(state);
-  const { router } = renderWithProviders(
-    <DeleteTagForm fromDetails id={1} onClose={onClose} />,
-    {
-      store,
-      initialEntries: [urls.tags.tag.machines({ id: 1 })],
-    }
-  );
-  await userEvent.click(
-    screen.getByRole("link", { name: "Show the deployed machine" })
-  );
-  await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
-  expect(onClose).toBeCalled();
 });

@@ -4,18 +4,18 @@ import { Col, Modal, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import usePortal from "react-useportal";
-import * as Yup from "yup";
 import type { SchemaOf } from "yup";
+import * as Yup from "yup";
 
 import type { NodeConfigurationValues } from "./types";
 
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
+import NodeTagForm from "@/app/base/components/NodeTagForm";
 import TagIdField from "@/app/base/components/TagIdField";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors from "@/app/store/tag/selectors";
-import AddTagForm from "@/app/tags/components/AddTagForm";
 
 export enum Label {
   AddTag = "Create a new tag",
@@ -72,7 +72,7 @@ const NodeConfigurationFields = (): React.ReactElement => {
             close={() => closePortal()}
             title={Label.AddTag}
           >
-            <AddTagForm
+            <NodeTagForm
               name={newTagName}
               onSaveAnalytics={{
                 action: "Manual tag created",

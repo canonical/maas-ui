@@ -1,7 +1,7 @@
+import NodeTagForm from "@/app/base/components/NodeTagForm";
 import type { MachineActionFormProps } from "@/app/machines/types";
 import { useFetchDeployedMachineCount } from "@/app/store/machine/utils/hooks";
 import type { Tag } from "@/app/store/tag/types";
-import BaseAddTagForm from "@/app/tags/components/AddTagForm";
 
 export type Props = Partial<MachineActionFormProps> & {
   name: string | null;
@@ -31,7 +31,7 @@ export const AddTagForm = ({
     useFetchDeployedMachineCount({ selectedMachines, searchFilter });
 
   return (
-    <BaseAddTagForm
+    <NodeTagForm
       deployedMachinesCount={deployedSelectedMachineCount}
       generateDeployedMessage={(count: number) =>
         count === 1

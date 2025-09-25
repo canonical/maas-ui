@@ -9,7 +9,7 @@ import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import { TagMeta } from "@/app/store/tag/types";
-import BaseTagDetails from "@/app/tags/components/TagDetails";
+import TagSummary from "@/app/tags/components/TagSummary";
 import { isId } from "@/app/utils";
 
 export enum Label {
@@ -49,7 +49,7 @@ const TagDetails = (): React.ReactElement => {
 
   return (
     <div aria-label={Label.Title}>
-      <BaseTagDetails id={id} />
+      <TagSummary id={id} />
     </div>
   );
 };
