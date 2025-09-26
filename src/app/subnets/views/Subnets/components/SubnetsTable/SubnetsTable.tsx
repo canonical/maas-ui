@@ -7,6 +7,8 @@ import useSubnetsTableColumns from "./useSubnetsTableColumns/useSubnetsTableColu
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import type { SubnetGroupByProps } from "@/app/subnets/views/Subnets/components/SubnetsTable/types";
 
+import "./_index.scss";
+
 const SubnetsTable = ({
   groupBy,
   searchText,
