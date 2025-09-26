@@ -1,3 +1,5 @@
+import type { RefObject } from "react";
+
 import { GenericTable } from "@canonical/maas-react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
@@ -28,6 +30,7 @@ import type { VLAN } from "@/app/store/vlan/types";
 import { getDHCPStatus, getVLANDisplay } from "@/app/store/vlan/utils";
 
 type Props = {
+  containerRef?: RefObject<HTMLElement | null>;
   loadingMachineDetails?: boolean;
   machine: MachineDetails | null;
   selected: boolean;
@@ -88,6 +91,7 @@ const generateRow = ({
 };
 
 export const CloneNetworkTable = ({
+  containerRef,
   loadingMachineDetails = false,
   machine,
   selected,
@@ -167,9 +171,11 @@ export const CloneNetworkTable = ({
         "not-selected": !selected,
       })}
       columns={columns}
+      containerRef={containerRef}
       data={rows}
       isLoading={loadingMachineDetails}
       noData={machine ? "No network information detected." : null}
+      variant="full-height"
     />
   );
 };
