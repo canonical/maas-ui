@@ -25,6 +25,7 @@ const SubnetsTable = ({
   return (
     <GenericTable
       aria-label={`Subnets by ${groupBy}`}
+      className="subnets-table"
       columns={columns}
       data={data.slice((page - 1) * size, page * size)}
       filterCells={(row, column) =>
