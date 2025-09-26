@@ -1,6 +1,5 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
-import { GroupRowActions } from "@canonical/maas-react-components";
 import { Icon, Spinner } from "@canonical/react-components";
 import type {
   Column,
@@ -180,9 +179,7 @@ const useImageTableColumns = ({
               !isCommissioningImage &&
               (row.original.resource.complete ||
                 !row.original.resource.downloading);
-            return row.getIsGrouped() ? (
-              <GroupRowActions row={row} />
-            ) : (
+            return row.getIsGrouped() ? null : (
               <TableActions
                 data-testid="image-actions"
                 deleteDisabled={!canBeDeleted}
