@@ -80,6 +80,7 @@ const ImagesTable = ({
       ]}
       rowSelection={selectedRows}
       setRowSelection={setSelectedRows}
+      showChevron
       sortBy={[{ id: "release", desc: true }]}
       variant={variant}
     />

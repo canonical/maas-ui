@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
@@ -32,6 +32,7 @@ export const CloneFormFields = ({
   setSelectedMachine,
 }: Props): React.ReactElement => {
   const { setFieldValue, values } = useFormikContext<CloneFormValues>();
+  const cloneNetworkTableContainerRef = useRef<HTMLDivElement>(null);
 
   const machineInState = useSelector((state: RootState) =>
     machineSelectors.getById(state, values.source)
@@ -111,8 +112,12 @@ export const CloneFormFields = ({
                 type="checkbox"
                 wrapperClassName="u-sv2"
               />
-              <div className="clone-table-container">
+              <div
+                className="clone-table-container"
+                ref={cloneNetworkTableContainerRef}
+              >
                 <CloneNetworkTable
+                  containerRef={cloneNetworkTableContainerRef}
                   loadingMachineDetails={loadingMachineDetails}
                   machine={selectedMachine}
                   selected={values.interfaces}
