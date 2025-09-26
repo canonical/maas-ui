@@ -46,6 +46,7 @@ const SubnetsTable = ({
         totalItems: data.length,
       }}
       pinGroup={groupBy === "space" ? [{ value: "0", isTop: false }] : []}
+      showChevron
       variant="full-height"
     />
   );

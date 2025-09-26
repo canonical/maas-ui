@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-import { GroupRowActions } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import pluralize from "pluralize";
 import { Link } from "react-router";
@@ -119,9 +118,7 @@ const useSubnetsTableColumns = (groupBy: GroupByKey): SubnetsColumnDef[] => {
         enableSorting: false,
         header: "Fabric",
         cell: ({ row }) =>
-          row.getIsGrouped() ? (
-            <GroupRowActions row={row} />
-          ) : row.original.fabric ? (
+          row.getIsGrouped() ? null : row.original.fabric ? (
             <Link to={urls.fabric.index({ id: row.original.fabric.id })}>
               {getFabricDisplay(row.original.fabric)}
             </Link>
@@ -135,9 +132,7 @@ const useSubnetsTableColumns = (groupBy: GroupByKey): SubnetsColumnDef[] => {
         enableSorting: false,
         header: "Space",
         cell: ({ row }) =>
-          row.getIsGrouped() ? (
-            <GroupRowActions row={row} />
-          ) : row.original.space ? (
+          row.getIsGrouped() ? null : row.original.space ? (
             <Link to={urls.space.index({ id: row.original.space.id })}>
               {row.original.space.name}
             </Link>
