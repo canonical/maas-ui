@@ -1,7 +1,7 @@
 import configureStore from "redux-mock-store";
 
-import AddTagForm from "./AddTagForm";
 import type { Props } from "./AddTagForm";
+import AddTagForm from "./AddTagForm";
 
 import { machineActions } from "@/app/store/machine";
 import type { FetchFilters } from "@/app/store/machine/types";
@@ -13,7 +13,7 @@ import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter } from "@/testing/utils";
 
 const mockBaseAddTagForm = vi.fn();
-vi.mock("@/app/tags/components/AddTagForm", () => ({
+vi.mock("@/app/base/components/NodeTagForm", () => ({
   default: (props: Props) => mockBaseAddTagForm(props),
 }));
 
