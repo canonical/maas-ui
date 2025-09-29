@@ -2,6 +2,9 @@ import { lazy } from "react";
 
 import { createBrowserRouter, Navigate } from "react-router";
 
+import TagDetails from "./app/tags/views/TagDetails";
+import TagList from "./app/tags/views/TagList";
+
 import App from "@/app/App";
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";
 import PageContent from "@/app/base/components/PageContent";
@@ -79,7 +82,6 @@ const SubnetsList = lazy(
 const VLANDetails = lazy(
   () => import("@/app/subnets/views/VLANs/views/VLANDetails")
 );
-const Tags = lazy(() => import("@/app/tags/views/Tags"));
 const ZonesList = lazy(() => import("@/app/zones/views"));
 
 export const router = createBrowserRouter(
@@ -178,7 +180,7 @@ export const router = createBrowserRouter(
           path: `${urls.tags.index}/*`,
           element: (
             <ErrorBoundary>
-              <Tags />
+              <TagList />
             </ErrorBoundary>
           ),
         },
@@ -186,7 +188,7 @@ export const router = createBrowserRouter(
           path: `${urls.tags.tag.index(null)}/*`,
           element: (
             <ErrorBoundary>
-              <Tags />
+              <TagDetails />
             </ErrorBoundary>
           ),
         },

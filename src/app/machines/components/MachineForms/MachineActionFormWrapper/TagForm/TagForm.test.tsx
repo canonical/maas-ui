@@ -1,25 +1,22 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import TagForm, { Label } from "./TagForm";
 import { Label as TagFormChangesLabel } from "./TagFormChanges";
 import { Label as TagFormFieldsLabel } from "./TagFormFields";
 
+import { Label as AddTagFormLabel } from "@/app/base/components/NodeTagForm/NodeTagForm";
 import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import { Label as AddTagFormLabel } from "@/app/tags/components/AddTagForm/AddTagForm";
 import * as factory from "@/testing/factories";
 import { tagStateListFactory } from "@/testing/factories/state";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
-  userEvent,
-  render,
+  renderWithProviders,
   screen,
+  userEvent,
   waitFor,
-  renderWithBrowserRouter,
   within,
 } from "@/testing/utils";
 
@@ -63,20 +60,15 @@ afterEach(() => {
 
 it("dispatches action to fetch tags on load", async () => {
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-      >
-        <TagForm
-          clearSidePanelContent={vi.fn()}
-          machines={[]}
-          processingCount={0}
-          selectedMachines={{ items: ["abc123"] }}
-          viewingDetails={false}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <TagForm
+      clearSidePanelContent={vi.fn()}
+      machines={[]}
+      processingCount={0}
+      selectedMachines={{ items: ["abc123"] }}
+      viewingDetails={false}
+    />,
+    { store }
   );
 
   expect(store.getActions().some((action) => action.type === "tag/fetch")).toBe(
@@ -90,22 +82,17 @@ it("correctly dispatches actions to tag machines", async () => {
     factory.machine({ system_id: "def456", tags: [] }),
   ];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-      >
-        <TagForm
-          clearSidePanelContent={vi.fn()}
-          machines={machines}
-          processingCount={0}
-          selectedMachines={{
-            items: machines.map((machine) => machine.system_id),
-          }}
-          viewingDetails={false}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <TagForm
+      clearSidePanelContent={vi.fn()}
+      machines={machines}
+      processingCount={0}
+      selectedMachines={{
+        items: machines.map((machine) => machine.system_id),
+      }}
+      viewingDetails={false}
+    />,
+    { store }
   );
 
   await userEvent.click(
@@ -146,22 +133,17 @@ it("correctly dispatches actions to untag machines", async () => {
     }),
   };
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-      >
-        <TagForm
-          clearSidePanelContent={vi.fn()}
-          machines={machines}
-          processingCount={0}
-          selectedMachines={{
-            items: machines.map((machine) => machine.system_id),
-          }}
-          viewingDetails={false}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <TagForm
+      clearSidePanelContent={vi.fn()}
+      machines={machines}
+      processingCount={0}
+      selectedMachines={{
+        items: machines.map((machine) => machine.system_id),
+      }}
+      viewingDetails={false}
+    />,
+    { store }
   );
 
   const deleteButtons = screen.getAllByRole("button", {
@@ -193,20 +175,15 @@ it("correctly dispatches actions to untag machines", async () => {
 it("correctly dispatches actions to tag and untag a machine", async () => {
   const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-      >
-        <TagForm
-          clearSidePanelContent={vi.fn()}
-          machines={machines}
-          processingCount={0}
-          selectedMachines={{ items: machines.map((item) => item.system_id) }}
-          viewingDetails={false}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <TagForm
+      clearSidePanelContent={vi.fn()}
+      machines={machines}
+      processingCount={0}
+      selectedMachines={{ items: machines.map((item) => item.system_id) }}
+      viewingDetails={false}
+    />,
+    { store }
   );
 
   await userEvent.click(
@@ -250,21 +227,15 @@ it("shows saving label if not viewing from machine config page", () => {
   state.machine.actions["mocked-nanoid"] = factory.machineActionState({
     status: "loading",
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-      >
-        <TagForm
-          clearSidePanelContent={vi.fn()}
-          machines={machines}
-          processingCount={1}
-          viewingDetails={false}
-          viewingMachineConfig={false}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <TagForm
+      clearSidePanelContent={vi.fn()}
+      machines={machines}
+      processingCount={1}
+      viewingDetails={false}
+      viewingMachineConfig={false}
+    />,
+    { state }
   );
 
   expect(screen.getByTestId("saving-label")).toBeInTheDocument();
@@ -276,21 +247,15 @@ it("does not show saving label if viewing from machine config page", () => {
     factory.machine({ system_id: "abc123", tags: [] }),
     factory.machine({ system_id: "def456", tags: [] }),
   ];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-      >
-        <TagForm
-          clearSidePanelContent={vi.fn()}
-          machines={machines}
-          processingCount={1}
-          viewingDetails
-          viewingMachineConfig
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <TagForm
+      clearSidePanelContent={vi.fn()}
+      machines={machines}
+      processingCount={1}
+      viewingDetails
+      viewingMachineConfig
+    />,
+    { state }
   );
 
   expect(screen.queryByTestId("saving-label")).not.toBeInTheDocument();
@@ -299,21 +264,16 @@ it("does not show saving label if viewing from machine config page", () => {
 it("shows a notification on success", async () => {
   const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-      >
-        <TagForm
-          clearSidePanelContent={vi.fn()}
-          machines={machines}
-          processingCount={0}
-          selectedCount={machines.length}
-          selectedMachines={{ items: machines.map((item) => item.system_id) }}
-          viewingDetails={false}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <TagForm
+      clearSidePanelContent={vi.fn()}
+      machines={machines}
+      processingCount={0}
+      selectedCount={machines.length}
+      selectedMachines={{ items: machines.map((item) => item.system_id) }}
+      viewingDetails={false}
+    />,
+    { store }
   );
   // Mock state.tag.saved transitioning from "false" to "true"
   mockFormikFormSaved();
@@ -338,7 +298,7 @@ it("shows a notification on success", async () => {
 
 it("can open a create tag form", async () => {
   const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
-  renderWithBrowserRouter(
+  renderWithProviders(
     <TagForm
       clearSidePanelContent={vi.fn()}
       machines={state.machine.items}
@@ -363,22 +323,16 @@ it("can open a create tag form", async () => {
 
 it("updates the new tags after creating a tag", async () => {
   const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-      >
-        <TagForm
-          clearSidePanelContent={vi.fn()}
-          machines={state.machine.items}
-          processingCount={0}
-          selectedCount={state.machine.items.length}
-          selectedMachines={{ items: machines.map((item) => item.system_id) }}
-          viewingDetails={false}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <TagForm
+      clearSidePanelContent={vi.fn()}
+      machines={state.machine.items}
+      processingCount={0}
+      selectedCount={state.machine.items.length}
+      selectedMachines={{ items: machines.map((item) => item.system_id) }}
+      viewingDetails={false}
+    />,
+    { state }
   );
   expect(
     screen.queryByRole("button", { name: /new-tag/i })
