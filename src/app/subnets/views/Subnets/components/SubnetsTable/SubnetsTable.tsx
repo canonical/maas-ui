@@ -7,6 +7,8 @@ import useSubnetsTableColumns from "./useSubnetsTableColumns/useSubnetsTableColu
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import type { SubnetGroupByProps } from "@/app/subnets/views/Subnets/components/SubnetsTable/types";
 
+import "./_index.scss";
+
 const SubnetsTable = ({
   groupBy,
   searchText,
@@ -23,6 +25,7 @@ const SubnetsTable = ({
   return (
     <GenericTable
       aria-label={`Subnets by ${groupBy}`}
+      className="subnets-table"
       columns={columns}
       data={data.slice((page - 1) * size, page * size)}
       filterCells={(row, column) =>
@@ -46,6 +49,7 @@ const SubnetsTable = ({
         totalItems: data.length,
       }}
       pinGroup={groupBy === "space" ? [{ value: "0", isTop: false }] : []}
+      showChevron
       variant="full-height"
     />
   );
