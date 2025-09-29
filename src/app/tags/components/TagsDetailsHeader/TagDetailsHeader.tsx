@@ -3,23 +3,16 @@ import { Button, Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
-import SearchBox from "@/app/base/components/SearchBox";
-import SegmentedControl from "@/app/base/components/SegmentedControl";
 import { useGetURLId } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
+import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
 import { TagMeta } from "@/app/store/tag/types";
 import { TagSidePanelViews } from "@/app/tags/constants";
 
 export type Props = {
-  filter: TagSearchFilter;
-  setFilter: (filter: TagSearchFilter) => void;
-  searchText: string;
-  setSearchText: (searchText: string) => void;
-  isDetails: boolean;
   setSidePanelContent: SetSidePanelContent;
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
   onUpdate: (id: Tag[TagMeta.PK]) => void;
@@ -35,12 +28,7 @@ export enum Label {
   Auto = "Automatic tags",
 }
 
-export const TagsHeader = ({
-  filter,
-  setFilter,
-  searchText,
-  setSearchText,
-  isDetails,
+export const TagsDetailsHeader = ({
   setSidePanelContent,
   onDelete,
   onUpdate,
@@ -53,13 +41,11 @@ export const TagsHeader = ({
   return (
     <MainToolbar>
       <MainToolbar.Title>Tags</MainToolbar.Title>
-      {isDetails ? (
-        <Link className="u-sv3" to={urls.tags.index}>
-          &lsaquo; Back to all tags
-        </Link>
-      ) : null}
+      <Link className="u-sv3" to={urls.tags.index}>
+        &lsaquo; Back to all tags
+      </Link>
       <MainToolbar.Controls>
-        {isDetails && tag ? (
+        {tag ? (
           <>
             <Button
               hasIcon
@@ -79,46 +65,19 @@ export const TagsHeader = ({
               <Icon className="is-light" name="delete" />{" "}
               <span>{Label.DeleteButton}</span>
             </Button>
+            <Button
+              appearance="positive"
+              onClick={() => {
+                setSidePanelContent({ view: TagSidePanelViews.AddTag });
+              }}
+            >
+              {Label.CreateButton}
+            </Button>
           </>
-        ) : (
-          <>
-            <SearchBox
-              externallyControlled
-              onChange={setSearchText}
-              value={searchText}
-            />
-            <SegmentedControl
-              aria-label="tag filter"
-              onSelect={setFilter}
-              options={[
-                {
-                  label: Label.All,
-                  value: TagSearchFilter.All,
-                },
-                {
-                  label: Label.Manual,
-                  value: TagSearchFilter.Manual,
-                },
-                {
-                  label: Label.Auto,
-                  value: TagSearchFilter.Auto,
-                },
-              ]}
-              selected={filter}
-            />
-          </>
-        )}
-        <Button
-          appearance="positive"
-          onClick={() => {
-            setSidePanelContent({ view: TagSidePanelViews.AddTag });
-          }}
-        >
-          {Label.CreateButton}
-        </Button>
+        ) : null}
       </MainToolbar.Controls>
     </MainToolbar>
   );
 };
 
-export default TagsHeader;
+export default TagsDetailsHeader;
