@@ -49,7 +49,10 @@ export const getDownloadableImages = (
     .filter((release) => !release.deleted)
     .map((image) => {
       return ubuntuArches
-        .filter((arche) => !arche.deleted)
+        .filter(
+          (arche) =>
+            !arche.deleted && !image.unsupported_arches.includes(arche.name)
+        )
         .map((arch) => {
           return {
             id: `ubuntu-${image.name}-${image.title}-${arch.name}`,
