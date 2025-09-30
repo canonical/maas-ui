@@ -1,163 +1,180 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { describe } from "vitest";
 
 import DatastoresTable from "./DatastoresTable";
 
-import { machineActions } from "@/app/store/machine";
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import type { Disk, Filesystem } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  mockIsPending,
+  renderWithProviders,
+  waitFor,
+} from "@/testing/utils";
 
-const mockStore = configureStore();
+const setSidePanelContent = vi.fn();
+beforeEach(() => {
+  vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+    setSidePanelContent,
+    sidePanelContent: null,
+    setSidePanelSize: vi.fn(),
+    sidePanelSize: "regular",
+  });
+});
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
-it("shows a message if no datastores are detected", () => {
-  const notDatastore = factory.nodeFilesystem({ fstype: "fat32" });
-  const machine = factory.machineDetails({
-    disks: [
+describe("DatastoresTable", () => {
+  let state: RootState;
+  let machine: MachineDetails;
+  let controller: ControllerDetails;
+  let datastore: Filesystem;
+  let notDatastore: Filesystem;
+  let dsDisk: Disk;
+  let notDsDisk: Disk;
+
+  beforeEach(() => {
+    [datastore, notDatastore] = [
+      factory.nodeFilesystem({ fstype: "vmfs6" }),
+      factory.nodeFilesystem({ fstype: "fat32" }),
+    ];
+    [dsDisk, notDsDisk] = [
+      factory.nodeDisk({ name: "datastore", filesystem: datastore }),
       factory.nodeDisk({ name: "not-datastore", filesystem: notDatastore }),
-    ],
-    system_id: "abc123",
-  });
-  const state = factory.rootState({
-    machine: factory.machineState({
-      items: [machine],
-    }),
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <DatastoresTable canEditStorage node={machine} />
-    </Provider>
-  );
-  expect(screen.getByTestId("no-datastores")).toHaveTextContent(
-    "No datastores detected."
-  );
-});
-
-it("only shows filesystems that are VMFS6 datastores", () => {
-  const [datastore, notDatastore] = [
-    factory.nodeFilesystem({ fstype: "vmfs6" }),
-    factory.nodeFilesystem({ fstype: "fat32" }),
-  ];
-  const [dsDisk, notDsDisk] = [
-    factory.nodeDisk({ name: "datastore", filesystem: datastore }),
-    factory.nodeDisk({ name: "not-datastore", filesystem: notDatastore }),
-  ];
-  const machine = factory.machineDetails({
-    disks: [dsDisk, notDsDisk],
-    system_id: "abc123",
-  });
-  const state = factory.rootState({
-    machine: factory.machineState({
-      items: [machine],
-    }),
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <DatastoresTable canEditStorage node={machine} />
-    </Provider>
-  );
-
-  expect(screen.getAllByRole("gridcell", { name: "Name" })).toHaveLength(1);
-  expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
-    dsDisk.name
-  );
-});
-
-it("does not show an action column if node is a controller", () => {
-  const controller = factory.controllerDetails({
-    disks: [
-      factory.nodeDisk({
-        name: "datastore",
-        filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
+    ];
+    controller = factory.controllerDetails({
+      disks: [
+        factory.nodeDisk({
+          name: "datastore",
+          filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
+        }),
+      ],
+      system_id: "abc123",
+    });
+    machine = factory.machineDetails({
+      disks: [dsDisk, notDsDisk],
+      system_id: "abc123",
+    });
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [machine],
       }),
-    ],
-    system_id: "abc123",
-  });
-  const state = factory.rootState({
-    controller: factory.controllerState({
-      items: [controller],
-    }),
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <DatastoresTable canEditStorage node={controller} />
-    </Provider>
-  );
-
-  expect(
-    screen.queryByRole("columnheader", { name: "Actions" })
-  ).not.toBeInTheDocument();
-});
-
-it("shows an action column if node is a machine", () => {
-  const machine = factory.machineDetails({
-    disks: [
-      factory.nodeDisk({
-        name: "datastore",
-        filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
+      controller: factory.controllerState({
+        items: [controller],
       }),
-    ],
-    system_id: "abc123",
+    });
   });
-  const state = factory.rootState({
-    machine: factory.machineState({
-      items: [machine],
-    }),
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <DatastoresTable canEditStorage node={machine} />
-    </Provider>
-  );
 
-  expect(
-    screen.getByRole("columnheader", { name: "Actions" })
-  ).toBeInTheDocument();
-});
+  describe("display", () => {
+    // TODO: enable test once datastores are fetched through v3
+    it.skip("displays a loading component if datastores are loading", async () => {
+      mockIsPending();
+      renderWithProviders(<DatastoresTable canEditStorage node={machine} />, {
+        state,
+      });
 
-it("can remove a datastore if node is a machine", async () => {
-  const datastore = factory.nodeFilesystem({ fstype: "vmfs6" });
-  const disk = factory.nodeDisk({ filesystem: datastore });
-  const machine = factory.machineDetails({
-    disks: [disk],
-    system_id: "abc123",
-  });
-  const state = factory.rootState({
-    machine: factory.machineState({
-      items: [machine],
-      statuses: factory.machineStatuses({
-        abc123: factory.machineStatus(),
-      }),
-    }),
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <DatastoresTable canEditStorage node={machine} />
-    </Provider>
-  );
+      await waitFor(() => {
+        expect(screen.getByText("Loading...")).toBeInTheDocument();
+      });
+    });
 
-  await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-  await userEvent.click(
-    screen.getByRole("button", { name: "Remove datastore..." })
-  );
-  expect(
-    screen.getByText(
-      "Are you sure you want to remove this datastore? ESXi requires at least one VMFS datastore to deploy."
-    )
-  ).toBeInTheDocument();
-  await userEvent.click(
-    screen.getByRole("button", { name: "Remove datastore" })
-  );
+    it("displays a message when rendering an empty list", async () => {
+      const notDatastore = factory.nodeFilesystem({ fstype: "fat32" });
+      const machine = factory.machineDetails({
+        disks: [
+          factory.nodeDisk({ name: "not-datastore", filesystem: notDatastore }),
+        ],
+        system_id: "abc123",
+      });
+      state.machine.items = [machine];
+      renderWithProviders(<DatastoresTable canEditStorage node={machine} />, {
+        state,
+      });
 
-  const expectedAction = machineActions.deleteDisk({
-    blockId: disk.id,
-    systemId: machine.system_id,
+      await waitFor(() => {
+        expect(screen.getByText("No datastores detected.")).toBeInTheDocument();
+      });
+    });
+
+    describe("displays the columns correctly", () => {
+      it("shows an action column if node is a machine", () => {
+        renderWithProviders(<DatastoresTable canEditStorage node={machine} />, {
+          state,
+        });
+
+        ["Name", "Size", "Filesystem", "Mount point", "Actions"].forEach(
+          (column) => {
+            expect(
+              screen.getByRole("columnheader", {
+                name: new RegExp(`^${column}`, "i"),
+              })
+            ).toBeInTheDocument();
+          }
+        );
+      });
+
+      it("does not show action column if node is a controller", () => {
+        renderWithProviders(
+          <DatastoresTable canEditStorage node={controller} />,
+          { state }
+        );
+
+        ["Name", "Size", "Filesystem", "Mount point"].forEach((column) => {
+          expect(
+            screen.getByRole("columnheader", {
+              name: new RegExp(`^${column}`, "i"),
+            })
+          ).toBeInTheDocument();
+        });
+
+        expect(
+          screen.queryByRole("columnheader", { name: "Actions" })
+        ).not.toBeInTheDocument();
+      });
+    });
+
+    it("only shows filesystems that are VMFS6 datastores", () => {
+      renderWithProviders(<DatastoresTable canEditStorage node={machine} />, {
+        state,
+      });
+
+      expect(screen.getByRole("cell", { name: dsDisk.name })).toHaveClass(
+        "name"
+      );
+      expect(
+        screen.queryByRole("cell", { name: notDsDisk.name })
+      ).not.toBeInTheDocument();
+    });
   });
-  expect(
-    store.getActions().find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+
+  describe("actions", () => {
+    it("can remove a datastore if node is a machine", async () => {
+      renderWithProviders(<DatastoresTable canEditStorage node={machine} />, {
+        state,
+      });
+
+      await userEvent.click(
+        screen.getByRole("button", { name: /Take action/ })
+      );
+      await userEvent.click(
+        screen.getByRole("button", { name: "Remove datastore..." })
+      );
+
+      expect(setSidePanelContent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          view: MachineSidePanelViews.REMOVE_DATASTORE,
+          extras: {
+            disk: dsDisk,
+            systemId: machine.system_id,
+          },
+        })
+      );
+    });
+  });
 });
