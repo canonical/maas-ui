@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { MainToolbar } from "@canonical/maas-react-components";
 import {
   Col,
@@ -10,7 +8,6 @@ import {
   Spinner,
   Button,
 } from "@canonical/react-components";
-import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
@@ -23,31 +20,18 @@ import { useGetIsSuperUser } from "@/app/api/query/auth";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import domainsSelectors from "@/app/store/domain/selectors";
-import type { Domain, DomainResource } from "@/app/store/domain/types";
+import type { Domain } from "@/app/store/domain/types";
 import { isDomainDetails } from "@/app/store/domain/utils";
 import type { RootState } from "@/app/store/root/types";
 import { NodeType } from "@/app/store/types/node";
-
-enum RecordActions {
-  DELETE = "delete",
-  EDIT = "edit",
-}
 
 export enum Labels {
   NoRecords = "Domain contains no records.",
 }
 
-type Expanded = {
-  content: RecordActions;
-  id: string;
-};
-
 type Props = {
   id: Domain["id"];
 };
-
-const generateRowId = (resource: DomainResource, i: number) =>
-  `${resource.dnsresource_id}-${i}`;
 
 const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
   const { openSidePanel } = useSidePanel();
@@ -57,8 +41,6 @@ const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
   const loading = useSelector(domainsSelectors.loading);
 
   const isSuperUser = useGetIsSuperUser();
-
-  const [expanded, setExpanded] = useState<Expanded | null>(null);
 
   if (loading) {
     return (
@@ -94,9 +76,7 @@ const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
     },
   ];
 
-  const rows = domain.rrsets.map((resource, i) => {
-    const rowId = generateRowId(resource, i);
-    const isExpanded = rowId === expanded?.id;
+  const rows = domain.rrsets.map((resource) => {
     let nameCell = <>{resource.name}</>;
 
     // We can't edit records that don't have a dnsresource_id.
@@ -138,7 +118,6 @@ const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
     }
 
     return {
-      className: classNames("p-table__row", { "is-active": isExpanded }),
       columns: [
         {
           content: nameCell,
@@ -160,18 +139,26 @@ const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
                 {
                   children: "Edit record...",
                   onClick: () => {
-                    setExpanded({
-                      content: RecordActions.EDIT,
-                      id: rowId,
+                    openSidePanel({
+                      component: EditRecordForm,
+                      title: "Edit Record",
+                      props: {
+                        id,
+                        resource,
+                      },
                     });
                   },
                 },
                 {
                   children: "Remove record...",
                   onClick: () => {
-                    setExpanded({
-                      content: RecordActions.DELETE,
-                      id: rowId,
+                    openSidePanel({
+                      component: DeleteRecordForm,
+                      title: "Delete Record",
+                      props: {
+                        id,
+                        resource,
+                      },
                     });
                   },
                 },
@@ -190,34 +177,6 @@ const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
         ttl: resource.ttl,
         data: resource.rrdata,
       },
-      expanded: isExpanded,
-      expandedContent: isExpanded ? (
-        <Row>
-          <Col size={12}>
-            <hr />
-            <>
-              {expanded?.content === RecordActions.EDIT && (
-                <EditRecordForm
-                  closeForm={() => {
-                    setExpanded(null);
-                  }}
-                  id={id}
-                  resource={resource}
-                />
-              )}
-              {expanded?.content === RecordActions.DELETE && (
-                <DeleteRecordForm
-                  closeForm={() => {
-                    setExpanded(null);
-                  }}
-                  id={id}
-                  resource={resource}
-                />
-              )}
-            </>
-          </Col>
-        </Row>
-      ) : null,
     };
   });
 

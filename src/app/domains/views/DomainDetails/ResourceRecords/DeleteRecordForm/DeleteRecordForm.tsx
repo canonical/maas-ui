@@ -4,6 +4,7 @@ import { Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
@@ -12,7 +13,6 @@ import { isDomainDetails } from "@/app/store/domain/utils";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  closeForm: () => void;
   id: Domain["id"];
   resource: DomainResource;
 };
@@ -24,10 +24,10 @@ export const Labels = {
 } as const;
 
 const DeleteRecordForm = ({
-  closeForm,
   id,
   resource,
 }: Props): React.ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
@@ -52,7 +52,7 @@ const DeleteRecordForm = ({
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={() => {
         dispatch(cleanup());
         const params = {
@@ -62,15 +62,16 @@ const DeleteRecordForm = ({
         };
         dispatch(domainActions.deleteRecord(params));
       }}
-      onSuccess={() => {
-        closeForm();
-      }}
+      onSuccess={closeSidePanel}
       saved={saved}
       saving={saving}
       submitAppearance="negative"
       submitLabel={Labels.SubmitLabel}
     >
-      <p className="u-no-margin--bottom u-no-max-width">
+      <p
+        className="u-no-margin--bottom u-no-max-width"
+        data-testid="delete-message"
+      >
         <Icon className="is-inline" name="error" />
         {Labels.AreYouSure}
       </p>

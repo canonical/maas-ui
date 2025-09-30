@@ -1,17 +1,21 @@
 import configureStore from "redux-mock-store";
 
-import EditRecordForm, {
-  Labels as EditRecordFormLabels,
-} from "./EditRecordForm";
+import EditRecordForm, { Labels } from "./EditRecordForm";
 
 import { Labels as RecordFieldsLabels } from "@/app/domains/components/RecordFields/RecordFields";
 import { domainActions } from "@/app/store/domain";
 import { RecordType } from "@/app/store/domain/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  mockSidePanel,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
+const { mockClose } = await mockSidePanel();
 
 describe("EditRecordForm", () => {
   let state: RootState;
@@ -45,24 +49,20 @@ describe("EditRecordForm", () => {
   });
 
   it("closes the form when Cancel button is clicked", async () => {
-    const closeForm = vi.fn();
-
-    renderWithProviders(
-      <EditRecordForm closeForm={closeForm} id={1} resource={resourceA} />,
-      { state }
-    );
+    renderWithProviders(<EditRecordForm id={1} resource={resourceA} />, {
+      state,
+    });
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
-    expect(closeForm).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("dispatches an action to update the record", async () => {
     const store = mockStore(state);
-    renderWithProviders(
-      <EditRecordForm closeForm={vi.fn()} id={1} resource={resourceA} />,
-      { store }
-    );
+    renderWithProviders(<EditRecordForm id={1} resource={resourceA} />, {
+      store,
+    });
 
     const dataInputField = screen.getByRole("textbox", {
       name: RecordFieldsLabels.Data,
@@ -77,7 +77,7 @@ describe("EditRecordForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: EditRecordFormLabels.SubmitLabel })
+      screen.getByRole("button", { name: Labels.SubmitLabel })
     );
 
     const expectedAction = domainActions.updateRecord({
