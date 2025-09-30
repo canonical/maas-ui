@@ -4,16 +4,13 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import { useGetURLId } from "@/app/base/hooks";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
 import { TagMeta } from "@/app/store/tag/types";
-import { TagSidePanelViews } from "@/app/tags/constants";
 
 export type Props = {
-  setSidePanelContent: SetSidePanelContent;
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
   onUpdate: (id: Tag[TagMeta.PK]) => void;
 };
@@ -29,7 +26,6 @@ export enum Label {
 }
 
 export const TagsDetailsHeader = ({
-  setSidePanelContent,
   onDelete,
   onUpdate,
 }: Props): React.ReactElement => {
@@ -64,14 +60,6 @@ export const TagsDetailsHeader = ({
             >
               <Icon className="is-light" name="delete" />{" "}
               <span>{Label.DeleteButton}</span>
-            </Button>
-            <Button
-              appearance="positive"
-              onClick={() => {
-                setSidePanelContent({ view: TagSidePanelViews.AddTag });
-              }}
-            >
-              {Label.CreateButton}
             </Button>
           </>
         ) : null}
