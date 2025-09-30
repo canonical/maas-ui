@@ -133,7 +133,7 @@ it("can change the sort order", async () => {
 
 it("shows an icon for automatic tags", () => {
   tags = [factory.tag({ definition: "automatic" })];
-  const { result } = renderWithProviders(
+  renderWithProviders(
     <TagTable
       filter={TagSearchFilter.All}
       onDelete={vi.fn()}
@@ -145,13 +145,13 @@ it("shows an icon for automatic tags", () => {
   );
 
   expect(
-    result.container.querySelector(".p-icon--success-grey")
-  ).toBeInTheDocument();
+    within(screen.getAllByRole("row")[1]).getAllByRole("cell")[2].firstChild
+  ).toHaveClass("p-icon--success-grey");
 });
 
 it("does not show an icon for manual tags", () => {
   tags = [factory.tag({ definition: undefined })];
-  const { result } = renderWithProviders(
+  renderWithProviders(
     <TagTable
       filter={TagSearchFilter.All}
       onDelete={vi.fn()}
@@ -163,13 +163,13 @@ it("does not show an icon for manual tags", () => {
   );
 
   expect(
-    result.container.querySelector(".p-icon--success-grey")
-  ).not.toBeInTheDocument();
+    within(screen.getAllByRole("row")[1]).queryAllByRole("cell")[2].firstChild
+  ).toBeNull();
 });
 
 it("shows an icon for kernel options", () => {
   tags = [factory.tag({ kernel_opts: "i'm a kernel option" })];
-  const { result } = renderWithProviders(
+  renderWithProviders(
     <TagTable
       filter={TagSearchFilter.All}
       onDelete={vi.fn()}
@@ -181,13 +181,13 @@ it("shows an icon for kernel options", () => {
   );
 
   expect(
-    result.container.querySelector(".p-icon--success-grey")
-  ).toBeInTheDocument();
+    within(screen.getAllByRole("row")[1]).getAllByRole("cell")[4].firstChild
+  ).toHaveClass("p-icon--success-grey");
 });
 
 it("does not show an icon for tags without kernel options", () => {
   tags = [factory.tag({ kernel_opts: undefined })];
-  const { result } = renderWithProviders(
+  renderWithProviders(
     <TagTable
       filter={TagSearchFilter.All}
       onDelete={vi.fn()}
@@ -199,8 +199,8 @@ it("does not show an icon for tags without kernel options", () => {
   );
 
   expect(
-    result.container.querySelector(".p-icon--success-grey")
-  ).not.toBeInTheDocument();
+    within(screen.getAllByRole("row")[1]).queryAllByRole("cell")[4].firstChild
+  ).toBeNull();
 });
 
 it("can link to nodes", () => {
