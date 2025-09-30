@@ -56,7 +56,7 @@ afterEach(() => {
 
 it("dispatches an action to delete a tag", async () => {
   const store = mockStore(state);
-  renderWithProviders(<DeleteTagForm id={1} onClose={vi.fn()} />, { store });
+  renderWithProviders(<DeleteTagForm id={1} />, { store });
   await userEvent.click(screen.getByRole("button", { name: "Delete" }));
   const expected = tagActions.delete(1);
   await waitFor(() => {
@@ -74,7 +74,7 @@ it("displays a message when deleting a tag on a machine", async () => {
       name: "tag1",
     }),
   ];
-  renderWithProviders(<DeleteTagForm id={1} onClose={vi.fn()} />, { state });
+  renderWithProviders(<DeleteTagForm id={1} />, { state });
   expect(
     screen.getByText(
       "tag1 will be deleted and unassigned from every tagged machine. Are you sure?"
@@ -90,7 +90,7 @@ it("displays a message when deleting a tag not on a machine", async () => {
       name: "tag1",
     }),
   ];
-  renderWithProviders(<DeleteTagForm id={1} onClose={vi.fn()} />, { state });
+  renderWithProviders(<DeleteTagForm id={1} />, { state });
   expect(
     screen.getByText("tag1 will be deleted. Are you sure?")
   ).toBeInTheDocument();

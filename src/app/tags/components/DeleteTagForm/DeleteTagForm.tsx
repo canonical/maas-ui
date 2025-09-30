@@ -6,6 +6,7 @@ import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useScrollToTop } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
@@ -16,14 +17,13 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 type Props = {
   fromDetails?: boolean;
   id: Tag[TagMeta.PK];
-  onClose: () => void;
 };
 
 export const DeleteTagForm = ({
   fromDetails = false,
   id,
-  onClose,
 }: Props): React.ReactElement | null => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
   const saved = useSelector(tagSelectors.saved);
@@ -35,7 +35,7 @@ export const DeleteTagForm = ({
 
   useScrollToTop();
   const onCancel = () => {
-    onClose();
+    closeSidePanel();
     if (fromDetails) {
       // Explicitly return to the page they user came from in case they have opened
       // the list of machines.
@@ -63,9 +63,7 @@ export const DeleteTagForm = ({
         dispatch(tagActions.cleanup());
         dispatch(tagActions.delete(tag.id));
       }}
-      onSuccess={() => {
-        onClose();
-      }}
+      onSuccess={closeSidePanel}
       saved={saved}
       savedRedirect={urls.tags.index}
       saving={saving}

@@ -35,7 +35,7 @@ beforeEach(() => {
 
 it("dispatches actions to fetch necessary data", () => {
   const store = mockStore(state);
-  renderWithProviders(<TagUpdate id={1} onClose={vi.fn()} />, { store });
+  renderWithProviders(<TagUpdate id={1} />, { store });
 
   const expectedActions = [tagActions.fetch()];
   const actualActions = store.getActions();
@@ -55,14 +55,14 @@ it("shows a spinner if the tag has not loaded yet", () => {
       loading: true,
     }),
   });
-  renderWithProviders(<TagUpdate id={1} onClose={vi.fn()} />, { state });
+  renderWithProviders(<TagUpdate id={1} />, { state });
 
   expect(screen.getByTestId("Spinner")).toBeInTheDocument();
 });
 
 it("can update the tag", async () => {
   const store = mockStore(state);
-  renderWithProviders(<TagUpdate id={1} onClose={vi.fn()} />, { store });
+  renderWithProviders(<TagUpdate id={1} />, { store });
   const nameInput = screen.getByRole("textbox", { name: Label.Name });
   await userEvent.clear(nameInput);
   await userEvent.type(nameInput, "name1");
@@ -92,7 +92,7 @@ it("can update the tag", async () => {
 it("goes to the tag details page if it can't go back", async () => {
   const store = mockStore(state);
   const { router } = renderWithProviders(
-    <TagUpdate id={1} onClose={vi.fn()} />,
+    <TagUpdate id={1} />,
     {
       store,
       initialEntries: [urls.tags.tag.index({ id: 1 })],
@@ -114,7 +114,7 @@ it("shows a confirmation when a tag's definition is updated", async () => {
   const tag = factory.tag({ id: 1, definition: "abc", name: "baggage" });
   state.tag.items = [tag];
   const store = mockStore(state);
-  renderWithProviders(<TagUpdate id={1} onClose={vi.fn()} />, { store });
+  renderWithProviders(<TagUpdate id={1} />, { store });
 
   const definitionInput = screen.getByRole("textbox", {
     name: Label.Definition,
