@@ -16,7 +16,7 @@ export enum FilesystemAction {
   UNMOUNT = "unmountFilesystem",
 }
 
-type Props = {
+type FilesystemsTableProps = {
   canEditStorage: boolean;
   node: ControllerDetails | MachineDetails;
 };
@@ -75,14 +75,14 @@ const generateFilesystemRowData = (
   return data;
 };
 
-const FilesystemsTable = ({ canEditStorage, node }: Props): ReactElement => {
+const FilesystemsTable = ({
+  canEditStorage,
+  node,
+}: FilesystemsTableProps): ReactElement => {
   const isMachine = nodeIsMachine(node);
   const { setSidePanelContent } = useSidePanel();
 
-  const columns = useFileSystemsTableColumns(
-    canEditStorage,
-    nodeIsMachine(node)
-  );
+  const columns = useFileSystemsTableColumns(canEditStorage, isMachine);
   const data = generateFilesystemRowData(node);
 
   return (
