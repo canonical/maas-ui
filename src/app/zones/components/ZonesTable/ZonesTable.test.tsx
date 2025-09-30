@@ -53,7 +53,7 @@ describe("ZonesTable", () => {
         "Machines",
         "Devices",
         "Controllers",
-        "Action",
+        "Actions",
       ].forEach((column) => {
         expect(
           screen.getByRole("columnheader", {
