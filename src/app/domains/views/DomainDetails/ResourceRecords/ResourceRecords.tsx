@@ -7,6 +7,7 @@ import {
   Strip,
   Spinner,
   Button,
+  Tooltip,
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
@@ -27,6 +28,7 @@ import { NodeType } from "@/app/store/types/node";
 
 export enum Labels {
   NoRecords = "Domain contains no records.",
+  DisabledActions = "This record cannot be changed because it is system-generated or you lack permission.",
 }
 
 type Props = {
@@ -133,40 +135,42 @@ const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
         },
         {
           content: (
-            <ContextualMenu
-              hasToggleIcon={true}
-              links={[
-                {
-                  children: "Edit record...",
-                  onClick: () => {
-                    openSidePanel({
-                      component: EditRecordForm,
-                      title: "Edit Record",
-                      props: {
-                        id,
-                        resource,
-                      },
-                    });
+            <Tooltip message={!canEdit ? Labels.DisabledActions : null}>
+              <ContextualMenu
+                hasToggleIcon={true}
+                links={[
+                  {
+                    children: "Edit record...",
+                    onClick: () => {
+                      openSidePanel({
+                        component: EditRecordForm,
+                        title: "Edit Record",
+                        props: {
+                          id,
+                          resource,
+                        },
+                      });
+                    },
                   },
-                },
-                {
-                  children: "Remove record...",
-                  onClick: () => {
-                    openSidePanel({
-                      component: DeleteRecordForm,
-                      title: "Delete Record",
-                      props: {
-                        id,
-                        resource,
-                      },
-                    });
+                  {
+                    children: "Remove record...",
+                    onClick: () => {
+                      openSidePanel({
+                        component: DeleteRecordForm,
+                        title: "Delete Record",
+                        props: {
+                          id,
+                          resource,
+                        },
+                      });
+                    },
                   },
-                },
-              ]}
-              toggleAppearance="base"
-              toggleClassName="u-no-margin--bottom is-small is-dense"
-              toggleDisabled={!canEdit}
-            />
+                ]}
+                toggleAppearance="base"
+                toggleClassName="u-no-margin--bottom is-small is-dense"
+                toggleDisabled={!canEdit}
+              />
+            </Tooltip>
           ),
           className: "u-align--right",
         },
