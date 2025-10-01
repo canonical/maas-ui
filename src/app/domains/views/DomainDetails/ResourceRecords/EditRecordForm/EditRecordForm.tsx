@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import type { SchemaOf } from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import RecordFields from "@/app/domains/components/RecordFields";
 import { domainActions } from "@/app/store/domain";
 import { MIN_TTL } from "@/app/store/domain/constants";
@@ -12,7 +13,6 @@ import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain, DomainResource } from "@/app/store/domain/types";
 
 type Props = {
-  closeForm: () => void;
   id: Domain["id"];
   resource: DomainResource;
 };
@@ -38,11 +38,8 @@ const EditRecordSchema: SchemaOf<EditRecordValues> = Yup.object()
   })
   .defined();
 
-const EditRecordForm = ({
-  closeForm,
-  id,
-  resource,
-}: Props): React.ReactElement => {
+const EditRecordForm = ({ id, resource }: Props): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const errors = useSelector(domainSelectors.errors);
   const saved = useSelector(domainSelectors.saved);
@@ -60,7 +57,7 @@ const EditRecordForm = ({
         rrdata: resource.rrdata || "",
         ttl: resource.ttl || "",
       }}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSubmit={(values) => {
         dispatch(cleanup());
         const params = {
@@ -72,9 +69,7 @@ const EditRecordForm = ({
         };
         dispatch(domainActions.updateRecord(params));
       }}
-      onSuccess={() => {
-        closeForm();
-      }}
+      onSuccess={closeSidePanel}
       saved={saved}
       saving={saving}
       submitDisabled={false}
