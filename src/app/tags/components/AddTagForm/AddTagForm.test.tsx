@@ -31,7 +31,7 @@ beforeEach(() => {
 it("dispatches an action to create a tag", async () => {
   const store = mockStore(state);
 
-  renderWithProviders(<AddTagForm onClose={vi.fn()} />, { store });
+  renderWithProviders(<AddTagForm />, { store });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
@@ -77,12 +77,11 @@ it("dispatches an action to create a tag", async () => {
 });
 
 it("redirects to the newly created tag on save", async () => {
-  const onClose = vi.fn();
   state.tag = factory.tagState({
     items: [factory.tag({ id: 8, name: "tag1" })],
     saved: true,
   });
-  const { router } = renderWithProviders(<AddTagForm onClose={onClose} />, {
+  const { router } = renderWithProviders(<AddTagForm />, {
     state,
     initialEntries: [urls.tags.index],
   });
@@ -99,7 +98,6 @@ it("redirects to the newly created tag on save", async () => {
   await waitFor(() => {
     expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 8 }));
   });
-  expect(onClose).toHaveBeenCalled();
 });
 
 it("sends analytics when there is a definition", async () => {
@@ -109,11 +107,9 @@ it("sends analytics when there is a definition", async () => {
     () => mockSendAnalytics
   );
 
-  const onClose = vi.fn();
-
   const store = mockStore(state);
 
-  renderWithProviders(<AddTagForm onClose={onClose} />, { store });
+  renderWithProviders(<AddTagForm />, { store });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
@@ -151,11 +147,9 @@ it("sends analytics when there is no definition", async () => {
     () => mockSendAnalytics
   );
 
-  const onClose = vi.fn();
-
   const store = mockStore(state);
 
-  renderWithProviders(<AddTagForm onClose={onClose} />, { store });
+  renderWithProviders(<AddTagForm />, { store });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
@@ -189,7 +183,7 @@ it("sends analytics when there is no definition", async () => {
 it("shows a confirmation when an automatic tag is added", async () => {
   const store = mockStore(state);
 
-  renderWithProviders(<AddTagForm onClose={vi.fn()} />, { store });
+  renderWithProviders(<AddTagForm />, { store });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
@@ -227,7 +221,7 @@ it("shows a confirmation when an automatic tag is added", async () => {
 it("shows an error if tag name is invalid", async () => {
   const store = mockStore(state);
 
-  renderWithProviders(<AddTagForm onClose={vi.fn()} />, { store });
+  renderWithProviders(<AddTagForm />, { store });
 
   const nameInput = screen.getByRole("textbox", { name: Label.Name });
 

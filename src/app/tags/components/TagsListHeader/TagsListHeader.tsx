@@ -1,18 +1,18 @@
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
+import AddTagForm from "../AddTagForm";
+
 import SearchBox from "@/app/base/components/SearchBox";
 import SegmentedControl from "@/app/base/components/SegmentedControl";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
-import { TagSidePanelViews } from "@/app/tags/constants";
 
 export type Props = {
   filter: TagSearchFilter;
   setFilter: (filter: TagSearchFilter) => void;
   searchText: string;
   setSearchText: (searchText: string) => void;
-  setSidePanelContent: SetSidePanelContent;
 };
 
 export enum Label {
@@ -30,8 +30,8 @@ export const TagsListHeader = ({
   setFilter,
   searchText,
   setSearchText,
-  setSidePanelContent,
 }: Props): React.ReactElement => {
+  const { openSidePanel } = useSidePanel();
   return (
     <MainToolbar>
       <MainToolbar.Title>Tags</MainToolbar.Title>
@@ -65,7 +65,10 @@ export const TagsListHeader = ({
         <Button
           appearance="positive"
           onClick={() => {
-            setSidePanelContent({ view: TagSidePanelViews.AddTag });
+            openSidePanel({
+              component: AddTagForm,
+              title: "Create new tag",
+            });
           }}
         >
           {Label.CreateButton}

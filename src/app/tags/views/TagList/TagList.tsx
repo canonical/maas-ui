@@ -2,14 +2,14 @@ import { useId, useState } from "react";
 
 import { useSelector } from "react-redux";
 
-import TagForms from "../../components/TagForms";
+import DeleteTagForm from "../../components/DeleteTagForm";
 import TagTable from "../../components/TagTable";
+import TagUpdate from "../../components/TagUpdate";
 import TagsListHeader from "../../components/TagsListHeader";
-import { TagSidePanelViews } from "../../constants";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
@@ -21,7 +21,7 @@ export enum Label {
 const TagList = (): React.ReactElement => {
   useWindowTitle("Tags");
 
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const [filter, setFilter] = useState(TagSearchFilter.All);
   const [searchText, setSearchText] = useState("");
   const tags = useSelector((state: RootState) =>
@@ -30,17 +30,17 @@ const TagList = (): React.ReactElement => {
 
   const tableId = useId();
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) => {
-    setSidePanelContent({
-      view: TagSidePanelViews.DeleteTag,
-      extras: { fromDetails, id },
+    openSidePanel({
+      component: DeleteTagForm,
+      title: "Delete tag",
+      props: { fromDetails, id },
     });
   };
   const onUpdate = (id: Tag[TagMeta.PK]) => {
-    setSidePanelContent({
-      view: TagSidePanelViews.UpdateTag,
-      extras: {
-        id,
-      },
+    openSidePanel({
+      component: TagUpdate,
+      title: "Update tag",
+      props: { id },
     });
   };
 
@@ -52,18 +52,11 @@ const TagList = (): React.ReactElement => {
           searchText={searchText}
           setFilter={setFilter}
           setSearchText={setSearchText}
-          setSidePanelContent={setSidePanelContent}
         />
       }
-      sidePanelContent={
-        sidePanelContent && (
-          <TagForms
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        )
-      }
-      sidePanelTitle={getSidePanelTitle("Tags", sidePanelContent)}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       <div aria-label={Label.Title}>
         <div className="u-nudge-down">

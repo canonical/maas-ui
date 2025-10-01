@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSendAnalytics } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { TAG_NAME_REGEX } from "@/app/base/validation";
@@ -19,10 +20,6 @@ import type { CreateParams, Tag } from "@/app/store/tag/types";
 import DefinitionField from "@/app/tags/components/DefinitionField";
 import KernelOptionsField from "@/app/tags/components/KernelOptionsField";
 import { NewDefinitionMessage } from "@/app/tags/constants";
-
-type Props = {
-  onClose: () => void;
-};
 
 export enum Label {
   Comment = "Comment",
@@ -39,7 +36,8 @@ const AddTagFormSchema = Yup.object().shape({
     .required("Name is required."),
 });
 
-export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
+export const AddTagForm = (): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
   const [savedName, setSavedName] = useState<Tag["name"] | null>(null);
@@ -61,9 +59,9 @@ export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
       } else {
         sendAnalytics("Create Tag form", "Manual tag created", "Save");
       }
-      onClose();
+      closeSidePanel();
     }
-  }, [navigate, onClose, tag, sendAnalytics]);
+  }, [navigate, tag, sendAnalytics]);
 
   return (
     <FormikForm<CreateParams>
@@ -76,7 +74,7 @@ export const AddTagForm = ({ onClose }: Props): React.ReactElement => {
         kernel_opts: "",
         name: "",
       }}
-      onCancel={onClose}
+      onCancel={closeSidePanel}
       onSubmit={(values) => {
         dispatch(tagActions.cleanup());
         dispatch(tagActions.create(values));
