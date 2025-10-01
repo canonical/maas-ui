@@ -2,6 +2,7 @@ import ResourceRecordsTable from "./ResourceRecordsTable";
 
 import type { DomainDetails } from "@/app/store/domain/types";
 import { RecordType } from "@/app/store/domain/types";
+import { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
@@ -11,11 +12,15 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
+import configureStore from "redux-mock-store";
 
+const mockStore = configureStore<RootState>();
+let state = factory.rootState();
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("ResourceRecordsTable", () => {
   let items: DomainDetails = factory.domainDetails();
+  const store = mockStore(state);
   beforeEach(() => {
     items = factory.domainDetails({
       id: 1,
@@ -51,7 +56,9 @@ describe("ResourceRecordsTable", () => {
   it("disables action dropdown when id is auto-generated", async () => {
     items.rrsets[0].dnsresource_id = null;
 
-    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />, {});
+    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />, {
+      store,
+    });
     const dropdownBtn = screen.getByRole("button", { name: "Toggle menu" });
 
     await waitFor(() => {
@@ -74,7 +81,9 @@ describe("ResourceRecordsTable", () => {
         factory.user({ is_superuser: false })
       )
     );
-    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />, {});
+    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />, {
+      store,
+    });
     const dropdownBtn = screen.getByRole("button", { name: "Toggle menu" });
     await waitFor(() => {
       expect(dropdownBtn).toHaveClass("is-disabled");
@@ -90,9 +99,14 @@ describe("ResourceRecordsTable", () => {
   });
 
   it("enables action dropdown only when user is a superuser and tag is not system-generated", async () => {
-    items.rrsets[0].dnsresource_id = null;
-    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />, {});
-
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(factory.user({ is_superuser: true }))
+    );
+    items.rrsets[0].dnsresource_id = 50;
+    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />, {
+      store,
+    });
+    screen.debug();
     expect(screen.getByRole("button", { name: "Toggle menu" })).not.toHaveClass(
       "is-disabled"
     );
