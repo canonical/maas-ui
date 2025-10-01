@@ -37,7 +37,7 @@ const UpdateAutoTagFormSchema = Yup.object().shape({
   name: Yup.string().required("Name is required."),
 });
 
-const TagUpdate = ({ id }: Props): React.ReactElement => {
+const UpdateTagForm = ({ id }: Props): React.ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const tag = useSelector((state: RootState) =>
@@ -98,4 +98,4 @@ const TagUpdate = ({ id }: Props): React.ReactElement => {
   );
 };
 
-export default TagUpdate;
+export default UpdateTagForm;

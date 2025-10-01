@@ -18,7 +18,7 @@ type Props = {
   id: Tag[TagMeta.PK];
 };
 
-export const TagUpdateFormFields = ({
+export const UpdateTagFormFields = ({
   id,
 }: Props): React.ReactElement | null => {
   const tag = useSelector((state: RootState) =>
@@ -87,4 +87,4 @@ export const TagUpdateFormFields = ({
   );
 };
 
-export default TagUpdateFormFields;
+export default UpdateTagFormFields;
