@@ -24,6 +24,7 @@ import DeleteVolumeGroup from "@/app/base/components/node/StorageTables/Availabl
 import EditDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/EditDisk";
 import EditPartition from "@/app/base/components/node/StorageTables/AvailableStorageTable/EditPartition";
 import SetBootDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/SetBootDisk";
+import RemoveDatastore from "@/app/base/components/node/StorageTables/DatastoresTable/RemoveDatastore/RemoveDatastore";
 import AddSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
 import DeleteFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/DeleteFilesystem";
 import DeleteSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/DeleteSpecialFilesystem";
@@ -386,6 +387,10 @@ export const MachineForms = ({
           systemId={systemId}
         />
       );
+    }
+    case MachineSidePanelViews.REMOVE_DATASTORE: {
+      if (!disk || !systemId) return null;
+      return <RemoveDatastore diskId={disk.id} systemId={systemId} />;
     }
 
     default:

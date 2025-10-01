@@ -64,6 +64,7 @@ export const MachineNonActionSidePanelViews = {
   SET_BOOT_DISK: ["machineNonActionForm", "setBootDisk"],
   UNMOUNT_FILESYSTEM: ["machineNonActionForm", "unmountFilesystem"],
   UPDATE_DATASTORE: ["machineNonActionForm", "updateDatastore"],
+  REMOVE_DATASTORE: ["machineNonActionForm", "removeDatastore"],
 } as const;
 
 export const MachineSidePanelViews = {

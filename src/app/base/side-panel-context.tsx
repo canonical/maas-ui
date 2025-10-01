@@ -71,6 +71,7 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.SET_BOOT_DISK[1]]: "Set boot disk",
   [SidePanelViews.UNMOUNT_FILESYSTEM[1]]: "Unmount filesystem",
   [SidePanelViews.UPDATE_DATASTORE[1]]: "Update datastore",
+  [SidePanelViews.REMOVE_DATASTORE[1]]: "Remove datastore",
   [SidePanelViews.UpdateTag[1]]: "Update Tag",
 };
 
