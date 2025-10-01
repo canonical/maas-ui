@@ -64,7 +64,7 @@ const ControllerDetails = (): React.ReactElement => {
   return (
     <PageContent
       header={<ControllerDetailsHeader systemId={id} />}
-      sidePanelContent={null}
+      sidePanelContent={undefined}
       sidePanelTitle={null}
       useNewSidePanelContext
     >
