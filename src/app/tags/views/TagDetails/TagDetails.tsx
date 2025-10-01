@@ -2,8 +2,8 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DeleteTagForm from "../../components/DeleteTagForm";
-import TagUpdate from "../../components/TagUpdate";
 import TagsDetailsHeader from "../../components/TagsDetailsHeader";
+import UpdateTagForm from "../../components/UpdateTagForm";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
@@ -51,7 +51,7 @@ const TagDetails = (): React.ReactElement => {
   };
   const onUpdate = (id: Tag[TagMeta.PK]) => {
     openSidePanel({
-      component: TagUpdate,
+      component: UpdateTagForm,
       title: "Update Tag",
       props: {
         id,

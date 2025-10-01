@@ -1,6 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import TagUpdate from "./TagUpdate";
+import TagUpdate from "./UpdateTagForm";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
@@ -91,13 +91,10 @@ it("can update the tag", async () => {
 
 it("goes to the tag details page if it can't go back", async () => {
   const store = mockStore(state);
-  const { router } = renderWithProviders(
-    <TagUpdate id={1} />,
-    {
-      store,
-      initialEntries: [urls.tags.tag.index({ id: 1 })],
-    }
-  );
+  const { router } = renderWithProviders(<TagUpdate id={1} />, {
+    store,
+    initialEntries: [urls.tags.tag.index({ id: 1 })],
+  });
   expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),

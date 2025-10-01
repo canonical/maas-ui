@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 
 import DeleteTagForm from "../../components/DeleteTagForm";
 import TagTable from "../../components/TagTable";
-import TagUpdate from "../../components/TagUpdate";
 import TagsListHeader from "../../components/TagsListHeader";
+import UpdateTagForm from "../../components/UpdateTagForm";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
@@ -38,7 +38,7 @@ const TagList = (): React.ReactElement => {
   };
   const onUpdate = (id: Tag[TagMeta.PK]) => {
     openSidePanel({
-      component: TagUpdate,
+      component: UpdateTagForm,
       title: "Update tag",
       props: { id },
     });

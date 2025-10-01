@@ -2,7 +2,7 @@ import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import TagUpdateFormFields from "./TagUpdateFormFields";
+import UpdateTagFormFields from "./UpdateTagFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
@@ -93,7 +93,7 @@ const TagUpdate = ({ id }: Props): React.ReactElement => {
       submitLabel="Save changes"
       validationSchema={isAuto ? UpdateAutoTagFormSchema : UpdateTagFormSchema}
     >
-      <TagUpdateFormFields id={id} />
+      <UpdateTagFormFields id={id} />
     </FormikForm>
   );
 };

@@ -31,13 +31,7 @@ it("displays edit and delete buttons, and a return link", () => {
   renderWithProviders(
     <Routes>
       <Route
-        element={
-          <TagsHeader
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            setSidePanelContent={vi.fn()}
-          />
-        }
+        element={<TagsHeader onDelete={vi.fn()} onUpdate={vi.fn()} />}
         path={urls.tags.tag.index(null)}
       />
     </Routes>,
@@ -71,13 +65,7 @@ it("triggers onUpdate with the correct tag ID", async () => {
   renderWithProviders(
     <Routes>
       <Route
-        element={
-          <TagsHeader
-            onDelete={vi.fn()}
-            onUpdate={onUpdate}
-            setSidePanelContent={vi.fn()}
-          />
-        }
+        element={<TagsHeader onDelete={vi.fn()} onUpdate={onUpdate} />}
         path={urls.tags.tag.index(null)}
       />
     </Routes>,

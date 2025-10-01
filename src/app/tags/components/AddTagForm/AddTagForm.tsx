@@ -59,7 +59,6 @@ export const AddTagForm = (): React.ReactElement => {
       } else {
         sendAnalytics("Create Tag form", "Manual tag created", "Save");
       }
-      closeSidePanel();
     }
   }, [navigate, tag, sendAnalytics]);
 
