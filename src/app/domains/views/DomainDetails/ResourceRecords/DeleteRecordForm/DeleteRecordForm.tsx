@@ -18,9 +18,9 @@ type Props = {
 };
 
 export const Labels = {
-  FormLabel: "Delete record",
-  SubmitLabel: "Delete record",
-  AreYouSure: "Are you sure you want to delete this record?",
+  FormLabel: "Remove record",
+  SubmitLabel: "Remove record",
+  AreYouSure: "Are you sure you want to remove this record?",
 } as const;
 
 const DeleteRecordForm = ({
