@@ -1,8 +1,6 @@
 import type { PropsWithChildren, ReactElement } from "react";
 import { createContext, useCallback, useContext, useState } from "react";
 
-import { ControllerSidePanelViews } from "@/app/controllers/constants";
-import type { ControllerSidePanelContent } from "@/app/controllers/types";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { KVMSidePanelContent } from "@/app/kvm/types";
 import { MachineSidePanelViews } from "@/app/machines/constants";
@@ -13,7 +11,6 @@ import { TagSidePanelViews } from "@/app/tags/constants";
 import type { TagSidePanelContent } from "@/app/tags/types";
 
 export type SidePanelContent =
-  | ControllerSidePanelContent
   | KVMSidePanelContent
   | MachineSidePanelContent
   | TagSidePanelContent
@@ -30,9 +27,7 @@ export type SidePanelContextType<T = SidePanelContent> = {
 };
 
 export const SidePanelViews = {
-  ...ControllerSidePanelViews,
   ...MachineSidePanelViews,
-  ...ControllerSidePanelViews,
   ...KVMSidePanelViews,
   ...TagSidePanelViews,
 } as const;
@@ -41,7 +36,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.ADD_ALIAS[1]]: "Add alias",
   [SidePanelViews.ADD_BOND[1]]: "Create bond",
   [SidePanelViews.ADD_BRIDGE[1]]: "Create bridge",
-  [SidePanelViews.ADD_CONTROLLER[1]]: "Add controller",
   [SidePanelViews.ADD_CHASSIS[1]]: "Add chassis",
   [SidePanelViews.ADD_INTERFACE[1]]: "Add interface",
   [SidePanelViews.ADD_MACHINE[1]]: "Add machine",
