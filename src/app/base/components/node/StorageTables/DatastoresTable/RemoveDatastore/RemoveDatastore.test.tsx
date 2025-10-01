@@ -4,7 +4,7 @@ import RemoveDatastore from "@/app/base/components/node/StorageTables/Datastores
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -25,7 +25,7 @@ describe("RemoveDatastore", () => {
   });
 
   it("renders a delete confirmation form", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <RemoveDatastore diskId={disk.id} systemId="abc123" />,
       { state }
     );
@@ -37,7 +37,7 @@ describe("RemoveDatastore", () => {
 
   it("can remove a disk's filesystem", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <RemoveDatastore diskId={disk.id} systemId="abc123" />,
       { store }
     );
