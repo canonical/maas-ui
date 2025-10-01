@@ -6,7 +6,7 @@ import type { ControllerActions } from "@/app/store/controller/types";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -17,10 +17,7 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
     }),
   });
   const store = mockStore(state);
-  renderWithProviders(
-    <ControllerDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-    { store }
-  );
+  renderWithProviders(<ControllerDetailsHeader systemId="abc123" />, { store });
 
   expect(
     screen.getByTestId("section-header-title-spinner")
@@ -36,10 +33,7 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
   });
   const store = mockStore(state);
   renderWithProviders(
-    <ControllerDetailsHeader
-      setSidePanelContent={vi.fn()}
-      systemId={controller.system_id}
-    />,
+    <ControllerDetailsHeader systemId={controller.system_id} />,
     { store }
   );
 
@@ -57,10 +51,7 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
   });
   const store = mockStore(state);
   renderWithProviders(
-    <ControllerDetailsHeader
-      setSidePanelContent={vi.fn()}
-      systemId={controllerDetails.system_id}
-    />,
+    <ControllerDetailsHeader systemId={controllerDetails.system_id} />,
     { store }
   );
 
@@ -85,10 +76,7 @@ it("displays actions in take action menu", async () => {
   });
   const store = mockStore(state);
   renderWithProviders(
-    <ControllerDetailsHeader
-      setSidePanelContent={vi.fn()}
-      systemId={controllerDetails.system_id}
-    />,
+    <ControllerDetailsHeader systemId={controllerDetails.system_id} />,
     { store }
   );
 

@@ -6,7 +6,7 @@ import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrap
 import SetZoneForm from "@/app/base/components/node/SetZoneForm";
 import TestForm from "@/app/base/components/node/TestForm";
 import type { HardwareType } from "@/app/base/enum";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {
@@ -24,7 +24,6 @@ import { kebabToCamelCase } from "@/app/utils";
 type Props = {
   action: ControllerActions;
   applyConfiguredNetworking?: boolean;
-  clearSidePanelContent: ClearSidePanelContent;
   hardwareType?: HardwareType;
   controllers: Controller[];
   viewingDetails: boolean;
@@ -45,7 +44,6 @@ const getProcessingCount = (
 export const ControllerActionFormWrapper = ({
   action,
   applyConfiguredNetworking,
-  clearSidePanelContent,
   hardwareType,
   controllers,
   viewingDetails,
@@ -55,6 +53,7 @@ export const ControllerActionFormWrapper = ({
   const processingControllers = useSelector(
     actionStatus ? statusSelectors[actionStatus] : () => []
   );
+  const { closeSidePanel } = useSidePanel();
   const controllerSystemIds = controllers.map(({ system_id }) => system_id);
   // The form expects one error, so we only show the latest error with the
   // assumption that all selected controllers fail in the same way.
@@ -71,7 +70,7 @@ export const ControllerActionFormWrapper = ({
   );
   const commonNodeFormProps = {
     cleanup: controllerActions.cleanup,
-    clearSidePanelContent,
+    clearSidePanelContent: closeSidePanel,
     errors,
     modelName: "controller",
     nodes: controllers,
@@ -147,7 +146,7 @@ export const ControllerActionFormWrapper = ({
   return (
     <NodeActionFormWrapper
       action={action}
-      clearSidePanelContent={clearSidePanelContent}
+      clearSidePanelContent={closeSidePanel}
       nodeType="controller"
       nodes={controllers}
       onUpdateSelected={(controllerIDs) =>

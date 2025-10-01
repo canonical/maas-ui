@@ -4,11 +4,14 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
+  mockSidePanel,
+  renderWithProviders,
   screen,
+  userEvent,
   within,
-  renderWithBrowserRouter,
 } from "@/testing/utils";
+
+const { mockClose } = await mockSidePanel();
 
 describe("AddController", () => {
   let state: RootState;
@@ -28,7 +31,7 @@ describe("AddController", () => {
   });
 
   it("includes the config in the instructions", () => {
-    renderWithBrowserRouter(<AddController clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddController />, {
       state,
     });
     const instructions = screen.getByTestId("register-snippet");
@@ -41,19 +44,15 @@ describe("AddController", () => {
   });
 
   it("can close the instructions", async () => {
-    const clearSidePanelContent = vi.fn();
-    renderWithBrowserRouter(
-      <AddController clearSidePanelContent={clearSidePanelContent} />,
-      {
-        state,
-      }
-    );
+    renderWithProviders(<AddController />, {
+      state,
+    });
     await userEvent.click(screen.getByRole("button", { name: "Close" }));
-    expect(clearSidePanelContent).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("uses a fixed version in both snap and packages instructions", async () => {
-    renderWithBrowserRouter(<AddController clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddController />, {
       state,
     });
     expect(

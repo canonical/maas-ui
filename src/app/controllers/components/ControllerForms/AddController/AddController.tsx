@@ -6,21 +6,16 @@ import { Button, CodeSnippet, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import docsUrls from "@/app/base/docsUrls";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import configSelectors from "@/app/store/config/selectors";
 import { version as versionSelectors } from "@/app/store/general/selectors";
 
-type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-};
-
-export const AddController = ({
-  clearSidePanelContent,
-}: Props): React.ReactElement => {
+export const AddController = (): React.ReactElement => {
   const maasUrl = useSelector(configSelectors.maasUrl);
   const rpcSharedSecret = useSelector(configSelectors.rpcSharedSecret);
   const minorVersion = useSelector(versionSelectors.minor);
   const [variant, setVariant] = useState("Snap");
+  const { closeSidePanel } = useSidePanel();
 
   const variantDropdown = {
     "aria-label": "version",
@@ -103,10 +98,7 @@ export const AddController = ({
           </ExternalLink>
         </Col>
         <Col className="u-align--right" size={6}>
-          <Button
-            data-testid="add-controller-close"
-            onClick={clearSidePanelContent}
-          >
+          <Button data-testid="add-controller-close" onClick={closeSidePanel}>
             Close
           </Button>
         </Col>
