@@ -5,11 +5,11 @@ import {
   ServiceStatus as ServiceStatusName,
 } from "@/app/store/service/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("correctly renders a running service", () => {
   const service = factory.service({ status: ServiceStatusName.RUNNING });
-  render(<ServiceStatus service={service} />);
+  renderWithProviders(<ServiceStatus service={service} />);
 
   expect(screen.getByTestId("service-status-icon")).toHaveClass(
     "p-icon--success"
@@ -21,7 +21,7 @@ it("correctly renders a running service", () => {
 
 it("correctly renders a degraded service", () => {
   const service = factory.service({ status: ServiceStatusName.DEGRADED });
-  render(<ServiceStatus service={service} />);
+  renderWithProviders(<ServiceStatus service={service} />);
 
   expect(screen.getByTestId("service-status-icon")).toHaveClass(
     "p-icon--warning"
@@ -33,7 +33,7 @@ it("correctly renders a degraded service", () => {
 
 it("correctly renders a dead service", () => {
   const service = factory.service({ status: ServiceStatusName.DEAD });
-  render(<ServiceStatus service={service} />);
+  renderWithProviders(<ServiceStatus service={service} />);
 
   expect(screen.getByTestId("service-status-icon")).toHaveClass(
     "p-icon--error"
@@ -45,7 +45,7 @@ it("correctly renders a dead service", () => {
 
 it("correctly renders an unknown service", () => {
   const service = factory.service({ status: ServiceStatusName.UNKNOWN });
-  render(<ServiceStatus service={service} />);
+  renderWithProviders(<ServiceStatus service={service} />);
 
   expect(screen.queryByTestId("service-status-icon")).not.toBeInTheDocument();
 });
@@ -56,7 +56,7 @@ it("renders additional status info if provided", () => {
     status: ServiceStatusName.UNKNOWN,
     status_info: "I have no idea what this is",
   });
-  render(<ServiceStatus service={service} />);
+  renderWithProviders(<ServiceStatus service={service} />);
 
   expect(screen.getByText(/I have no idea what this is/i)).toBeInTheDocument();
 });

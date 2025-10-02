@@ -6,10 +6,10 @@ import type { RootState } from "@/app/store/root/types";
 import { NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
+  renderWithProviders,
   screen,
+  userEvent,
   within,
-  renderWithBrowserRouter,
 } from "@/testing/utils";
 
 describe("ControllerListTable", () => {
@@ -27,7 +27,7 @@ describe("ControllerListTable", () => {
 
   it("links to a controller's details page", () => {
     controller.system_id = "def456";
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ControllerListTable
         controllers={[controller]}
         onSelectedChange={vi.fn()}
@@ -51,7 +51,7 @@ describe("ControllerListTable", () => {
         factory.controller({ fqdn: "c", system_id: "c" }),
         factory.controller({ fqdn: "a", system_id: "a" }),
       ];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={vi.fn()}
@@ -92,7 +92,7 @@ describe("ControllerListTable", () => {
           system_id: "b",
         }),
       ];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={vi.fn()}
@@ -125,7 +125,7 @@ describe("ControllerListTable", () => {
     it("handles selecting a single controller", async () => {
       const controllers = [factory.controller({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={onSelectedChange}
@@ -142,7 +142,7 @@ describe("ControllerListTable", () => {
     it("handles unselecting a single controller", async () => {
       const controllers = [factory.controller({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={onSelectedChange}
@@ -162,7 +162,7 @@ describe("ControllerListTable", () => {
         factory.controller({ system_id: "def456" }),
       ];
       const onSelectedChange = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={onSelectedChange}
@@ -182,7 +182,7 @@ describe("ControllerListTable", () => {
         factory.controller({ system_id: "def456" }),
       ];
       const onSelectedChange = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={onSelectedChange}
@@ -204,7 +204,7 @@ describe("ControllerListTable", () => {
         factory.controller({ system_id: "def456" }),
       ];
       state.controller.items = controllers;
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={vi.fn()}
@@ -231,7 +231,7 @@ describe("ControllerListTable", () => {
       ];
       state.controller.items = controllers;
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={vi.fn()}
@@ -296,7 +296,7 @@ describe("ControllerListTable", () => {
         }),
       });
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={vi.fn()}
@@ -348,7 +348,7 @@ describe("ControllerListTable", () => {
         }),
       });
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <ControllerListTable
           controllers={controllers}
           onSelectedChange={vi.fn()}
@@ -373,7 +373,7 @@ describe("ControllerListTable", () => {
   });
 
   it("displays message for empty state", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ControllerListTable
         controllers={[]}
         onSelectedChange={vi.fn()}

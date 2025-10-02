@@ -4,8 +4,8 @@ import type { RootState } from "@/app/store/root/types";
 import { ServiceStatus } from "@/app/store/service/types";
 import * as factory from "@/testing/factories";
 import {
+  renderWithProviders,
   screen,
-  renderWithBrowserRouter,
   userEvent,
   waitFor,
 } from "@/testing/utils";
@@ -40,8 +40,8 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--power-error");
@@ -64,8 +64,8 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--warning");
@@ -88,8 +88,8 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--success");
@@ -112,8 +112,8 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--power-off");
@@ -136,8 +136,8 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--power-unknown");

@@ -2,7 +2,7 @@ import { VLANsColumn } from "./VLANsColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("VLANsColumn", () => {
   let state: RootState;
@@ -24,16 +24,16 @@ describe("VLANsColumn", () => {
   });
 
   it("displays total number of vlans", () => {
-    renderWithBrowserRouter(<VLANsColumn systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<VLANsColumn systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(screen.getByTestId("vlan-count")).toHaveTextContent("3");
   });
 
   it("displays ha details", () => {
-    renderWithBrowserRouter(<VLANsColumn systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<VLANsColumn systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(screen.getByTestId("ha-vlans")).toHaveTextContent(

@@ -1,6 +1,4 @@
 import * as reactComponents from "@canonical/react-components";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import ControllerCommissioning from "./ControllerCommissioning";
@@ -10,7 +8,7 @@ import { scriptResultActions } from "@/app/store/scriptresult";
 import { ScriptResultType } from "@/app/store/scriptresult/types";
 import { TestStatusStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 vi.mock("@canonical/react-components", async () => {
   const components: typeof reactComponents = await vi.importActual(
@@ -31,13 +29,7 @@ it("renders a spinner while script results are loading", () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerCommissioning systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<ControllerCommissioning systemId="abc123" />, { store });
 
   expect(screen.getByLabelText("Loading script results")).toBeInTheDocument();
 });
@@ -59,12 +51,9 @@ it("fetches script results if they haven't been fetched", () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerCommissioning systemId={controller.system_id} />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <ControllerCommissioning systemId={controller.system_id} />,
+    { store }
   );
 
   const expectedAction = scriptResultActions.getByNodeId(controller.system_id);
@@ -101,12 +90,9 @@ it("fetches script results if the commissioning status changes to pending", () =
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerCommissioning systemId={controller.system_id} />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <ControllerCommissioning systemId={controller.system_id} />,
+    { store }
   );
 
   const expectedAction = scriptResultActions.getByNodeId(controller.system_id);
@@ -142,12 +128,9 @@ it(`does not fetch script results if script results exist and commissioning
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerCommissioning systemId={controller.system_id} />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <ControllerCommissioning systemId={controller.system_id} />,
+    { store }
   );
 
   const expectedAction = scriptResultActions.getByNodeId(controller.system_id);

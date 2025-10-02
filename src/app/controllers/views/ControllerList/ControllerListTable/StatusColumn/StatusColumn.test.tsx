@@ -4,7 +4,7 @@ import { ControllerVersionIssues } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 import { ServiceStatus } from "@/app/store/service/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("StatusColumn", () => {
   let state: RootState;
@@ -38,16 +38,16 @@ describe("StatusColumn", () => {
     state.controller.items[0].versions = factory.controllerVersions({
       issues: [ControllerVersionIssues.DIFFERENT_CHANNEL],
     });
-    renderWithBrowserRouter(<StatusColumn systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<StatusColumn systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(screen.getByTestId("version-error")).toBeInTheDocument();
   });
 
   it("displays the controller status if there are no errors", async () => {
-    renderWithBrowserRouter(<StatusColumn systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<StatusColumn systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
 

@@ -1,4 +1,3 @@
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import ServicesCard from "./ServicesCard";
@@ -8,7 +7,7 @@ import { ServiceName, ServiceStatus } from "@/app/store/service/types";
 import { getServiceDisplayName } from "@/app/store/service/utils";
 import { NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -21,11 +20,7 @@ it("fetches services on load", () => {
   });
   const store = mockStore(state);
 
-  render(
-    <Provider store={store}>
-      <ServicesCard controller={controller} />
-    </Provider>
-  );
+  renderWithProviders(<ServicesCard controller={controller} />, { store });
 
   const expectedAction = serviceActions.fetch();
   expect(
@@ -43,13 +38,8 @@ it("shows a spinner if services are loading", () => {
       loading: true,
     }),
   });
-  const store = mockStore(state);
 
-  render(
-    <Provider store={store}>
-      <ServicesCard controller={controller} />
-    </Provider>
-  );
+  renderWithProviders(<ServicesCard controller={controller} />, { state });
 
   expect(
     screen.getByRole("alert", { name: "Loading services" })
@@ -78,13 +68,8 @@ it("renders the title correctly when at least one service is dead", () => {
       items: services,
     }),
   });
-  const store = mockStore(state);
 
-  render(
-    <Provider store={store}>
-      <ServicesCard controller={controller} />
-    </Provider>
-  );
+  renderWithProviders(<ServicesCard controller={controller} />, { state });
 
   expect(screen.getByTestId("title")).toHaveTextContent(
     "1 dead, 2 degraded, 3 running"
@@ -111,13 +96,7 @@ it("renders the title corectly when at least one service is degraded and none ar
       items: services,
     }),
   });
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <ServicesCard controller={controller} />
-    </Provider>
-  );
+  renderWithProviders(<ServicesCard controller={controller} />, { state });
 
   expect(screen.getByTestId("title")).toHaveTextContent(
     "1 degraded, 2 running"
@@ -142,13 +121,7 @@ it("renders the title corectly when at least one service is running and none are
       items: services,
     }),
   });
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <ServicesCard controller={controller} />
-    </Provider>
-  );
+  renderWithProviders(<ServicesCard controller={controller} />, { state });
 
   expect(screen.getByTestId("title")).toHaveTextContent("1 running");
   expect(screen.getByTestId("title-icon")).toHaveAccessibleName("success");
@@ -172,13 +145,7 @@ it("only renders rack controller services for a rack controller", () => {
       items: services,
     }),
   });
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <ServicesCard controller={controller} />
-    </Provider>
-  );
+  renderWithProviders(<ServicesCard controller={controller} />, { state });
 
   expect(
     screen.getByText(getServiceDisplayName(ServiceName.RACKD))
@@ -209,13 +176,8 @@ it("only renders region controller services for a region controller", () => {
       items: services,
     }),
   });
-  const store = mockStore(state);
 
-  render(
-    <Provider store={store}>
-      <ServicesCard controller={controller} />
-    </Provider>
-  );
+  renderWithProviders(<ServicesCard controller={controller} />, { state });
 
   expect(
     screen.getByText(getServiceDisplayName(ServiceName.REGIOND))
@@ -246,13 +208,8 @@ it("renders both region and rack controller services for a region+rack controlle
       items: services,
     }),
   });
-  const store = mockStore(state);
 
-  render(
-    <Provider store={store}>
-      <ServicesCard controller={controller} />
-    </Provider>
-  );
+  renderWithProviders(<ServicesCard controller={controller} />, { state });
 
   expect(
     screen.getByText(getServiceDisplayName(ServiceName.REGIOND))
