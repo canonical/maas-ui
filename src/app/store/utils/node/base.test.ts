@@ -103,9 +103,9 @@ describe("node utils", () => {
     it("returns the correct title for a side panel", () => {
       expect(
         getSidePanelTitle("Controller", {
-          view: SidePanelViews.ADD_CONTROLLER,
+          view: SidePanelViews.ADD_MACHINE,
         })
-      ).toBe("Add controller");
+      ).toBe("Add machine");
     });
   });
 });

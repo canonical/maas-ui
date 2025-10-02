@@ -1,5 +1,4 @@
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
+import { Route, Routes } from "react-router";
 import configureStore from "redux-mock-store";
 
 import { ControllerDetailsTabLabels } from "../../constants";
@@ -9,7 +8,7 @@ import ControllerDetails from "./ControllerDetails";
 import urls from "@/app/base/urls";
 import { controllerActions } from "@/app/store/controller";
 import * as factory from "@/testing/factories";
-import { render, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -31,25 +30,23 @@ it("gets and sets the controller as active", () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[
-          {
-            pathname: urls.controllers.controller.index({
-              id: controller.system_id,
-            }),
-          },
-        ]}
-      >
-        <Routes>
-          <Route
-            element={<ControllerDetails />}
-            path={`${urls.controllers.controller.index(null)}/*`}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Routes>
+      <Route
+        element={<ControllerDetails />}
+        path={`${urls.controllers.controller.index(null)}/*`}
+      />
+    </Routes>,
+    {
+      store,
+      initialEntries: [
+        {
+          pathname: urls.controllers.controller.index({
+            id: controller.system_id,
+          }),
+        },
+      ],
+    }
   );
 
   const expectedActions = [
@@ -76,28 +73,26 @@ it("unsets active controller and cleans up when unmounting", () => {
     }),
   });
   const store = mockStore(state);
-  const { unmount } = render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[
-          {
-            pathname: urls.controllers.controller.index({
-              id: controller.system_id,
-            }),
-          },
-        ]}
-      >
-        <Routes>
-          <Route
-            element={<ControllerDetails />}
-            path={`${urls.controllers.controller.index(null)}/*`}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
+  const { result } = renderWithProviders(
+    <Routes>
+      <Route
+        element={<ControllerDetails />}
+        path={`${urls.controllers.controller.index(null)}/*`}
+      />
+    </Routes>,
+    {
+      store,
+      initialEntries: [
+        {
+          pathname: urls.controllers.controller.index({
+            id: controller.system_id,
+          }),
+        },
+      ],
+    }
   );
 
-  unmount();
+  result.unmount();
 
   const expectedActions = [
     controllerActions.setActive(null),
@@ -125,26 +120,23 @@ it("displays a message if the controller does not exist", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[
-          {
-            pathname: urls.controllers.controller.index({
-              id: "missing-id",
-            }),
-          },
-        ]}
-      >
-        <Routes>
-          <Route
-            element={<ControllerDetails />}
-            path={`${urls.controllers.controller.index(null)}/*`}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Routes>
+      <Route
+        element={<ControllerDetails />}
+        path={`${urls.controllers.controller.index(null)}/*`}
+      />
+    </Routes>,
+    {
+      state,
+      initialEntries: [
+        {
+          pathname: urls.controllers.controller.index({
+            id: "missing-id",
+          }),
+        },
+      ],
+    }
   );
 
   expect(
@@ -162,25 +154,24 @@ it("gets and sets the controller as active only once when navigating within the 
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[
-          {
-            pathname: urls.controllers.controller.index({
-              id: controller.system_id,
-            }),
-          },
-        ]}
-      >
-        <Routes>
-          <Route
-            element={<ControllerDetails />}
-            path={`${urls.controllers.controller.index(null)}/*`}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
+
+  renderWithProviders(
+    <Routes>
+      <Route
+        element={<ControllerDetails />}
+        path={`${urls.controllers.controller.index(null)}/*`}
+      />
+    </Routes>,
+    {
+      store,
+      initialEntries: [
+        {
+          pathname: urls.controllers.controller.index({
+            id: controller.system_id,
+          }),
+        },
+      ],
+    }
   );
 
   await userEvent.click(

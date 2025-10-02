@@ -3,7 +3,7 @@ import { VersionColumn } from "./VersionColumn";
 import { ControllerInstallType } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("VersionColumn", () => {
   let state: RootState;
@@ -24,8 +24,8 @@ describe("VersionColumn", () => {
     state.controller.items[0].versions = factory.controllerVersions({
       current: factory.controllerVersionInfo({ version: "1.2.3" }),
     });
-    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<VersionColumn systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(screen.getByTestId("version")).toHaveTextContent("1.2.3");
@@ -35,8 +35,8 @@ describe("VersionColumn", () => {
     state.controller.items[0].versions = factory.controllerVersions({
       current: factory.controllerVersionInfo({ version: undefined }),
     });
-    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<VersionColumn systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(screen.getByTestId("version")).toHaveTextContent(/Unknown/);
@@ -46,8 +46,8 @@ describe("VersionColumn", () => {
     state.controller.items[0].versions = factory.controllerVersions({
       origin: "latest/edge",
     });
-    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<VersionColumn systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(screen.getByTestId("origin")).toHaveTextContent("latest/edge");
@@ -58,8 +58,8 @@ describe("VersionColumn", () => {
       install_type: ControllerInstallType.DEB,
       origin: "stable",
     });
-    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<VersionColumn systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
     expect(screen.getByTestId("origin")).toHaveTextContent(/Deb/);
@@ -72,8 +72,8 @@ describe("VersionColumn", () => {
       snap_cohort:
         "MSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViMUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNTI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjVhM2ViNzQwZGZmYzk5OWFiYWU=",
     });
-    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
-      route: "/controllers",
+    renderWithProviders(<VersionColumn systemId="abc123" />, {
+      initialEntries: ["/controllers"],
       state,
     });
 

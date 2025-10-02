@@ -1,3 +1,5 @@
+import { Route, Routes } from "react-router";
+
 import ControllerLogs, { Label } from "./ControllerLogs";
 
 import { Label as EventLogsLabel } from "@/app/base/components/node/NodeLogs/EventLogs/EventLogs";
@@ -5,7 +7,7 @@ import { Label as InstallationOutputLabel } from "@/app/base/components/node/Nod
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("ControllerLogs", () => {
   let state: RootState;
@@ -24,7 +26,7 @@ describe("ControllerLogs", () => {
         items: [],
       }),
     });
-    renderWithBrowserRouter(<ControllerLogs systemId="abc123" />, {
+    renderWithProviders(<ControllerLogs systemId="abc123" />, {
       state,
     });
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
@@ -46,13 +48,21 @@ describe("ControllerLogs", () => {
       path: urls.controllers.controller.logs.events({ id: "abc123" }),
     },
   ].forEach(({ label, path }) => {
-    it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<ControllerLogs systemId="abc123" />, {
-        route: path,
-        state,
-        routePattern: `${urls.controllers.controller.logs.index(null)}/*`,
-      });
-      expect(screen.getByLabelText(label)).toBeInTheDocument();
+    it(`Displays: ${label} at: ${path}`, async () => {
+      const { router } = renderWithProviders(
+        <Routes>
+          <Route
+            element={<ControllerLogs systemId="abc123" />}
+            path={`${urls.controllers.controller.logs.index(null)}/*`}
+          />
+        </Routes>,
+        {
+          state,
+          initialEntries: [`${urls.controllers.controller.logs.index(null)}/*`],
+        }
+      );
+      router.navigate(path);
+      expect(await screen.findByLabelText(label)).toBeInTheDocument();
     });
   });
 });
