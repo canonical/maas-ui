@@ -2,12 +2,18 @@ import configureStore from "redux-mock-store";
 
 import ControllerListHeader from "./ControllerListHeader";
 
-import { ControllerSidePanelViews } from "@/app/controllers/constants";
+import AddController from "@/app/controllers/components/ControllerForms/AddController";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  mockSidePanel,
+  renderWithProviders,
+  screen,
+  userEvent,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const { mockOpen } = await mockSidePanel();
 
 describe("ControllerListHeader", () => {
   let state: RootState;
@@ -26,12 +32,8 @@ describe("ControllerListHeader", () => {
 
   it("displays a spinner in the header subtitle if controllers have not loaded", () => {
     state.controller.loaded = false;
-    renderWithBrowserRouter(
-      <ControllerListHeader
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+    renderWithProviders(
+      <ControllerListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
 
@@ -40,12 +42,8 @@ describe("ControllerListHeader", () => {
 
   it("displays a controllers count if controllers have loaded", () => {
     state.controller.loaded = true;
-    renderWithBrowserRouter(
-      <ControllerListHeader
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+    renderWithProviders(
+      <ControllerListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
     expect(screen.getByTestId("subtitle-string")).toHaveTextContent(
@@ -55,12 +53,8 @@ describe("ControllerListHeader", () => {
 
   it("disables the add controller button if any controllers are selected", () => {
     state.controller.selected = ["abc123"];
-    renderWithBrowserRouter(
-      <ControllerListHeader
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+    renderWithProviders(
+      <ControllerListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
     expect(
@@ -69,32 +63,24 @@ describe("ControllerListHeader", () => {
   });
 
   it("can open the add controller form", async () => {
-    const setSidePanelContent = vi.fn();
-    renderWithBrowserRouter(
-      <ControllerListHeader
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={setSidePanelContent}
-      />,
+    renderWithProviders(
+      <ControllerListHeader searchFilter="" setSearchFilter={vi.fn()} />,
       { state }
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Add rack controller" })
     );
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: ControllerSidePanelViews.ADD_CONTROLLER,
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: AddController,
+      title: "Add controller",
     });
   });
 
   it("changes the search text when the filters change", () => {
     const store = mockStore(state);
-    const { rerender } = renderWithBrowserRouter(
-      <ControllerListHeader
-        searchFilter={""}
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
-      { route: "/machines", store }
+    const { rerender } = renderWithProviders(
+      <ControllerListHeader searchFilter={""} setSearchFilter={vi.fn()} />,
+      { initialEntries: ["/machines"], store }
     );
     expect(screen.getByRole("searchbox")).toHaveValue("");
 
@@ -102,7 +88,6 @@ describe("ControllerListHeader", () => {
       <ControllerListHeader
         searchFilter={"free-text"}
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />
     );
 

@@ -4,7 +4,7 @@ import { ControllerVLANsColumns } from "./constants";
 import urls from "@/app/base/urls";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { screen, within, renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 const createNetwork = () => {
   const systemId = "abc123";
@@ -53,13 +53,15 @@ it("displays correct text when loading", function () {
     }),
   });
 
-  renderWithBrowserRouter(
+  renderWithProviders(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       state,
-      route: urls.controllers.controller.vlans({
-        id: net.controller.system_id,
-      }),
+      initialEntries: [
+        urls.controllers.controller.vlans({
+          id: net.controller.system_id,
+        }),
+      ],
     }
   );
 
@@ -80,13 +82,15 @@ it("displays correct text for no VLANs", function () {
     }),
   });
 
-  renderWithBrowserRouter(
+  renderWithProviders(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       state,
-      route: urls.controllers.controller.vlans({
-        id: net.controller.system_id,
-      }),
+      initialEntries: [
+        urls.controllers.controller.vlans({
+          id: net.controller.system_id,
+        }),
+      ],
     }
   );
 
@@ -107,13 +111,15 @@ it("displays a VLANs table with a single row", function () {
     }),
   });
 
-  renderWithBrowserRouter(
+  renderWithProviders(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       state,
-      route: urls.controllers.controller.vlans({
-        id: net.controller.system_id,
-      }),
+      initialEntries: [
+        urls.controllers.controller.vlans({
+          id: net.controller.system_id,
+        }),
+      ],
     }
   );
 
@@ -150,13 +156,15 @@ it("displays no duplicate vlans", function () {
     }),
   });
 
-  renderWithBrowserRouter(
+  renderWithProviders(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       state,
-      route: urls.controllers.controller.vlans({
-        id: net.controller.system_id,
-      }),
+      initialEntries: [
+        urls.controllers.controller.vlans({
+          id: net.controller.system_id,
+        }),
+      ],
     }
   );
 
@@ -178,13 +186,15 @@ it("displays correct text within each cell", () => {
     }),
   });
 
-  renderWithBrowserRouter(
+  renderWithProviders(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       state,
-      route: urls.controllers.controller.vlans({
-        id: net.controller.system_id,
-      }),
+      initialEntries: [
+        urls.controllers.controller.vlans({
+          id: net.controller.system_id,
+        }),
+      ],
     }
   );
 

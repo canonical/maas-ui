@@ -9,9 +9,7 @@ import ControllerListTable from "./ControllerListTable";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import VaultNotification from "@/app/base/components/VaultNotification";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import type { SyncNavigateFunction } from "@/app/base/types";
-import ControllerForms from "@/app/controllers/components/ControllerForms/ControllerForms";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import { FilterControllers } from "@/app/store/controller/utils";
@@ -27,8 +25,6 @@ const ControllerList = (): React.ReactElement => {
   const currentFilters = FilterControllers.queryStringToFilters(
     location.search
   );
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
-  const selectedControllers = useSelector(controllerSelectors.selected);
   const [searchFilter, setFilter] = useState(
     // Initialise the filter state from the URL.
     FilterControllers.filtersToString(currentFilters)
@@ -66,19 +62,11 @@ const ControllerList = (): React.ReactElement => {
         <ControllerListHeader
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
-          setSidePanelContent={setSidePanelContent}
         />
       }
-      sidePanelContent={
-        sidePanelContent && (
-          <ControllerForms
-            controllers={selectedControllers}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        )
-      }
-      sidePanelTitle={getSidePanelTitle("Controllers", sidePanelContent)}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       <VaultNotification />
       <ControllerListTable

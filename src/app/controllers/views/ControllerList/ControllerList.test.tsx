@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import ControllerList from "./ControllerList";
@@ -7,11 +5,10 @@ import ControllerList from "./ControllerList";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  screen,
-  render,
-  waitFor,
   renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -23,22 +20,15 @@ describe("ControllerList", () => {
   });
 
   it("sets the search text from the URL on load", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: "/controllers",
-              search: "?q=test+search",
-              key: "testKey",
-            },
-          ]}
-        >
-          <ControllerList />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<ControllerList />, {
+      initialEntries: [
+        {
+          pathname: "/controllers",
+          search: "?q=test+search",
+        },
+      ],
+      state,
+    });
 
     expect(screen.getByRole("searchbox")).toHaveValue("test search");
   });

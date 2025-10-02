@@ -10,20 +10,24 @@ import urls from "@/app/base/urls";
 import { controllerActions } from "@/app/store/controller";
 import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  userEvent,
+  renderWithProviders,
   screen,
-  waitFor,
-  renderWithBrowserRouter,
   setupMockServer,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 const controller = factory.controllerDetails({ system_id: "abc123" });
 const route = urls.controllers.controller.index({ id: controller.system_id });
 
 let state: ReturnType<typeof factory.rootState>;
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  authResolvers.getCurrentUser.handler()
+);
 
 describe("ControllerConfiguration", () => {
   beforeEach(() => {
@@ -61,11 +65,11 @@ describe("ControllerConfiguration", () => {
   });
 
   it("displays controller configuration sections", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ControllerConfiguration systemId={controller.system_id} />,
       {
         state,
-        route,
+        initialEntries: [route],
       }
     );
 
@@ -79,11 +83,11 @@ describe("ControllerConfiguration", () => {
 
   it("displays a loading indicator if the controller has not loaded", async () => {
     state.controller.items = [];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ControllerConfiguration systemId={controller.system_id} />,
       {
         state,
-        route,
+        initialEntries: [route],
       }
     );
     expect(
@@ -92,11 +96,11 @@ describe("ControllerConfiguration", () => {
   });
 
   it("displays non-editable controller details by default", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ControllerConfiguration systemId={controller.system_id} />,
       {
         state,
-        route,
+        initialEntries: [route],
       }
     );
 
@@ -115,11 +119,11 @@ describe("ControllerConfiguration", () => {
   });
 
   it("can switch to controller configuration forms", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ControllerConfiguration systemId={controller.system_id} />,
       {
         state,
-        route,
+        initialEntries: [route],
       }
     );
 
@@ -150,11 +154,11 @@ describe("ControllerConfiguration", () => {
   });
 
   it("correctly dispatches an action to update a controller", async () => {
-    const { store } = renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <ControllerConfiguration systemId={controller.system_id} />,
       {
         state,
-        route,
+        initialEntries: [route],
       }
     );
     await userEvent.click(
@@ -195,11 +199,11 @@ describe("ControllerConfiguration", () => {
 
   it("displays an alert on edit when controller manages more than 1 node", async () => {
     state.controller.items = [{ ...controller, power_bmc_node_count: 3 }];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ControllerConfiguration systemId={controller.system_id} />,
       {
         state,
-        route,
+        initialEntries: [route],
       }
     );
     await userEvent.click(

@@ -1,13 +1,7 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import ControllerStorage from "./ControllerStorage";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("displays a spinner if controller is loading", () => {
   const state = factory.rootState({
@@ -15,14 +9,7 @@ it("displays a spinner if controller is loading", () => {
       items: [],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerStorage systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<ControllerStorage systemId="abc123" />, { state });
 
   expect(
     screen.getByRole("alert", { name: "Loading controller" })

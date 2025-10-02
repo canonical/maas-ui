@@ -8,21 +8,21 @@ import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import { useSendAnalytics } from "@/app/base/hooks";
-import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
-import { ControllerSidePanelViews } from "@/app/controllers/constants";
+import AddController from "@/app/controllers/components/ControllerForms/AddController";
+import ControllerActionFormWrapper from "@/app/controllers/components/ControllerForms/ControllerActionFormWrapper";
 import controllerSelectors from "@/app/store/controller/selectors";
+import type { ControllerActions } from "@/app/store/controller/types";
 import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSidePanelContent: SetSidePanelContent;
 };
 
 const ControllerListHeader = ({
   searchFilter,
-  setSidePanelContent,
   setSearchFilter,
 }: Props): React.ReactElement => {
   const controllers = useSelector(controllerSelectors.all);
@@ -30,6 +30,8 @@ const ControllerListHeader = ({
   const selectedControllers = useSelector(controllerSelectors.selected);
   const sendAnalytics = useSendAnalytics();
   const [searchText, setSearchText] = useState(searchFilter);
+
+  const { openSidePanel } = useSidePanel();
 
   useEffect(() => {
     // If the filters change then update the search input text.
@@ -65,8 +67,9 @@ const ControllerListHeader = ({
           data-testid="add-controller-button"
           disabled={selectedControllers.length > 0}
           onClick={() => {
-            setSidePanelContent({
-              view: ControllerSidePanelViews.ADD_CONTROLLER,
+            openSidePanel({
+              component: AddController,
+              title: "Add controller",
             });
           }}
         >
@@ -78,17 +81,18 @@ const ControllerListHeader = ({
           nodeDisplay="controller"
           nodes={selectedControllers}
           onActionClick={(action) => {
-            sendAnalytics(
-              "Controller list action form",
-              getNodeActionTitle(action),
-              "Open"
-            );
-            const view = Object.values(ControllerSidePanelViews).find(
-              ([, actionName]) => actionName === action
-            );
-            if (view) {
-              setSidePanelContent({ view });
-            }
+            const title = getNodeActionTitle(action);
+            sendAnalytics("Controller list action form", title, "Open");
+            openSidePanel({
+              component: ControllerActionFormWrapper,
+              props: {
+                // action is a NodeAction, but is guarenteed to be a NodeAction that comprises ControllerActions.
+                action: action as ControllerActions,
+                controllers: selectedControllers,
+                viewingDetails: false,
+              },
+              title,
+            });
           }}
           showCount
         />

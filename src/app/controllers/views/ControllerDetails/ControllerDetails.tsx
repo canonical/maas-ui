@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Routes, Route } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 
 import ControllerCommissioning from "./ControllerCommissioning";
 import ControllerConfiguration from "./ControllerConfiguration";
@@ -19,9 +19,7 @@ import PageContent from "@/app/base/components/PageContent";
 import NodeTestDetails from "@/app/base/components/node/NodeTestDetails";
 import { useScrollToTop } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import ControllerForms from "@/app/controllers/components/ControllerForms/ControllerForms";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import { ControllerMeta } from "@/app/store/controller/types";
@@ -35,7 +33,6 @@ const ControllerDetails = (): React.ReactElement => {
     controllerSelectors.getById(state, id)
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   useScrollToTop();
 
   useEffect(() => {
@@ -66,23 +63,10 @@ const ControllerDetails = (): React.ReactElement => {
 
   return (
     <PageContent
-      header={
-        <ControllerDetailsHeader
-          setSidePanelContent={setSidePanelContent}
-          systemId={id}
-        />
-      }
-      sidePanelContent={
-        sidePanelContent && controller ? (
-          <ControllerForms
-            controllers={[controller]}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-            viewingDetails
-          />
-        ) : null
-      }
-      sidePanelTitle={getSidePanelTitle("Controller", sidePanelContent)}
+      header={<ControllerDetailsHeader systemId={id} />}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext
     >
       {controller && (
         <Routes>

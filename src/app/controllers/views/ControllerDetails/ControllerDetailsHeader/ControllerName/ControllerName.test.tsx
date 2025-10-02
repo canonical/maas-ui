@@ -1,12 +1,15 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import ControllerName from "./ControllerName";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -36,25 +39,23 @@ it("can update a controller with the new domain", async () => {
     }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[
-          {
-            pathname: urls.controllers.controller.index({
-              id: controller.system_id,
-            }),
-            key: "testKey",
-          },
-        ]}
-      >
-        <ControllerName
-          id={controller.system_id}
-          isEditing={true}
-          setIsEditing={vi.fn()}
-        />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <ControllerName
+      id={controller.system_id}
+      isEditing={true}
+      setIsEditing={vi.fn()}
+    />,
+    {
+      initialEntries: [
+        {
+          pathname: urls.controllers.controller.index({
+            id: controller.system_id,
+          }),
+          key: "testKey",
+        },
+      ],
+      store,
+    }
   );
 
   await userEvent.selectOptions(

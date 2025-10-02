@@ -6,7 +6,7 @@ import { controllerActions } from "@/app/store/controller";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -21,14 +21,13 @@ describe("ControllerActionFormWrapper", () => {
       factory.controller({ system_id: "def456", actions: [] }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ControllerActionFormWrapper
         action={NodeActions.DELETE}
-        clearSidePanelContent={vi.fn()}
         controllers={controllers}
         viewingDetails={false}
       />,
-      { route: "/controllers", store }
+      { initialEntries: ["/controllers"], store }
     );
 
     await userEvent.click(screen.getByTestId("on-update-selected"));
