@@ -1,8 +1,8 @@
 import ResourceRecordsTable from "./ResourceRecordsTable";
 
+import { Labels } from "@/app/domains/components/ResourceRecordsTable/useResourceRecordsColumns/useResourceRecordsColumns";
 import type { DomainDetails } from "@/app/store/domain/types";
 import { RecordType } from "@/app/store/domain/types";
-import { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
@@ -12,27 +12,23 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-import configureStore from "redux-mock-store";
 
-const mockStore = configureStore<RootState>();
-let state = factory.rootState();
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("ResourceRecordsTable", () => {
   let items: DomainDetails = factory.domainDetails();
-  const store = mockStore(state);
   beforeEach(() => {
     items = factory.domainDetails({
-      id: 1,
-      name: "b",
+      id: 3,
+      name: "sample_domain",
       is_default: true,
       rrsets: [
         {
           name: "abc",
           ttl: 20,
-          system_id: "1",
+          system_id: "132",
           user_id: null,
-          dnsdata_id: 1,
+          dnsdata_id: 15,
           dnsresource_id: 100,
           node_type: 0,
           rrdata: "",
@@ -53,12 +49,19 @@ describe("ResourceRecordsTable", () => {
     });
   });
 
-  it("disables action dropdown when id is auto-generated", async () => {
+  it("renders a link in the name column when id is auto-generated", () => {
+    items.rrsets[0].dnsresource_id = null;
+    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
+
+    expect(
+      screen.getByRole("cell", { name: "abc" }).firstChild
+    ).toHaveAttribute("href", "/machine/132");
+  });
+
+  it("disables action dropdown with the right tooltip when id is auto-generated", async () => {
     items.rrsets[0].dnsresource_id = null;
 
-    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />, {
-      store,
-    });
+    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
     const dropdownBtn = screen.getByRole("button", { name: "Toggle menu" });
 
     await waitFor(() => {
@@ -68,22 +71,20 @@ describe("ResourceRecordsTable", () => {
     await waitFor(() => {
       expect(
         screen.queryByRole("tooltip", {
-          name: "System-generated records cannot be edited",
+          name: Labels.SYSTEM_RECORD_NOT_EDITABLE,
         })
       );
     });
   });
 
-  it("disables action dropdown when id isn't auto-generated and user is not a superuser", async () => {
-    items.rrsets[0].dnsresource_id = null;
+  it("disables action dropdown with the right tooltip when user is not a superuser", async () => {
+    items.rrsets[0].dnsresource_id = 50;
     mockServer.use(
       authResolvers.getCurrentUser.handler(
         factory.user({ is_superuser: false })
       )
     );
-    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />, {
-      store,
-    });
+    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
     const dropdownBtn = screen.getByRole("button", { name: "Toggle menu" });
     await waitFor(() => {
       expect(dropdownBtn).toHaveClass("is-disabled");
@@ -92,7 +93,7 @@ describe("ResourceRecordsTable", () => {
     await waitFor(() => {
       expect(
         screen.queryByRole("tooltip", {
-          name: "You do not have permission to edit this record",
+          name: Labels.PERMISSION_DENIED_EDIT,
         })
       );
     });
@@ -102,14 +103,14 @@ describe("ResourceRecordsTable", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(factory.user({ is_superuser: true }))
     );
-    items.rrsets[0].dnsresource_id = 50;
-    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />, {
-      store,
+    items.rrsets[0].dnsresource_id = 100;
+    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Toggle menu" })
+      ).not.toHaveClass("is-disabled");
     });
-    screen.debug();
-    expect(screen.getByRole("button", { name: "Toggle menu" })).not.toHaveClass(
-      "is-disabled"
-    );
 
     await waitFor(() => {
       expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();

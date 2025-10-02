@@ -18,9 +18,7 @@ export enum Labels {
 }
 
 const ResourceRecordsTable = ({ id, domain }: Props): ReactElement => {
-  const columns = useResourceRecordsColumns({
-    id,
-  });
+  const columns = useResourceRecordsColumns({ id });
   const data: ResourceRecordsColumnData[] = domain.rrsets.map((record, i) => ({
     id: i,
     ...record,
