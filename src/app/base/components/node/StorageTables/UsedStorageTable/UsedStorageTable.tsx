@@ -12,6 +12,8 @@ import {
   nodeIsMachine,
 } from "@/app/store/utils";
 
+import "./_index.scss";
+
 type UsedStorageTableProps = {
   node: ControllerDetails | MachineDetails;
 };
@@ -46,6 +48,7 @@ const UsedStorageTable = ({ node }: UsedStorageTableProps): ReactElement => {
     <GenericTable
       columns={columns}
       data={data}
+      id="used-storage-table"
       isLoading={false}
       noData="No disk or partition has been fully utilised."
       variant="regular"

@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
-import TableHeader from "@/app/base/components/TableHeader";
 import TagLinks from "@/app/base/components/TagLinks";
 import DiskBootStatus from "@/app/base/components/node/DiskBootStatus";
 import DiskNumaNodes from "@/app/base/components/node/DiskNumaNodes";
@@ -25,12 +24,12 @@ const useUsedStorageTableColumns = (
         {
           id: "name",
           accessorKey: "name",
-          enableSorting: true,
+          enableSorting: false,
           header: () => (
-            <div className="p-double-row__header-spacer">
-              <TableHeader sortKey="name">Name</TableHeader>
-              <TableHeader>Serial</TableHeader>
-            </div>
+            <span>
+              <div>Name</div>
+              <div>Serial</div>
+            </span>
           ),
           cell: ({ row: { original: storage } }: { row: Row<UsedStorage> }) => (
             <DoubleRow
@@ -42,12 +41,12 @@ const useUsedStorageTableColumns = (
         {
           id: "model",
           accessorKey: "model",
-          enableSorting: true,
+          enableSorting: false,
           header: () => (
-            <div className="p-double-row__header-spacer">
-              <TableHeader sortKey="model">Model</TableHeader>
-              <TableHeader>Firmware</TableHeader>
-            </div>
+            <span>
+              <div>Model</div>
+              <div>Firmware</div>
+            </span>
           ),
           cell: ({ row: { original: storage } }: { row: Row<UsedStorage> }) => (
             <DoubleRow
@@ -61,7 +60,7 @@ const useUsedStorageTableColumns = (
         {
           id: "boot",
           accessorKey: "boot",
-          enableSorting: true,
+          enableSorting: false,
           header: "Boot",
           cell: ({ row: { original: storage } }: { row: Row<UsedStorage> }) =>
             "is_boot" in storage ? <DiskBootStatus disk={storage} /> : "—",
@@ -69,7 +68,7 @@ const useUsedStorageTableColumns = (
         {
           id: "size",
           accessorKey: "size",
-          enableSorting: true,
+          enableSorting: false,
           header: "Size",
           cell: ({
             row: {
@@ -84,10 +83,10 @@ const useUsedStorageTableColumns = (
           accessorKey: "type",
           enableSorting: false,
           header: () => (
-            <div className="p-double-row__header-spacer">
-              <TableHeader sortKey="type">Type</TableHeader>
-              <TableHeader>NUMA node</TableHeader>
-            </div>
+            <span>
+              <div>Type</div>
+              <div>NUMA node</div>
+            </span>
           ),
           cell: ({ row: { original: storage } }: { row: Row<UsedStorage> }) => (
             <DoubleRow
@@ -106,10 +105,10 @@ const useUsedStorageTableColumns = (
           accessorKey: "health",
           enableSorting: false,
           header: () => (
-            <div className="p-double-row__header-spacer">
-              <TableHeader sortKey="health">Health</TableHeader>
-              <TableHeader>Tags</TableHeader>
-            </div>
+            <span>
+              <div>Health</div>
+              <div>Tags</div>
+            </span>
           ),
           cell: ({ row: { original: storage } }: { row: Row<UsedStorage> }) => (
             <DoubleRow
@@ -144,7 +143,7 @@ const useUsedStorageTableColumns = (
         {
           id: "used_for",
           accessorKey: "used_for",
-          enableSorting: true,
+          enableSorting: false,
           header: "Used for",
         },
       ] as UsedStorageColumnDef[],
