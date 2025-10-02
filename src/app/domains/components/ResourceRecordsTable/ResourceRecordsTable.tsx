@@ -18,18 +18,18 @@ export enum Labels {
 }
 
 const ResourceRecordsTable = ({ id, domain }: Props): ReactElement => {
+  const { page, size, handlePageSizeChange, setPage } = usePagination(50);
   const columns = useResourceRecordsColumns({ id });
+
   const data: ResourceRecordsColumnData[] = domain.rrsets.map((record, i) => ({
     id: i,
     ...record,
   }));
 
-  const { page, size, handlePageSizeChange, setPage } = usePagination(50);
-
   return (
     <GenericTable
       columns={columns}
-      data={data ?? []}
+      data={data.slice((page - 1) * size, page * size) ?? []}
       isLoading={false}
       noData={Labels.NoRecords}
       pagination={{
@@ -39,7 +39,7 @@ const ResourceRecordsTable = ({ id, domain }: Props): ReactElement => {
         isPending: false,
         itemsPerPage: size,
         setCurrentPage: setPage,
-        totalItems: data.length ?? 0,
+        totalItems: domain.rrsets.length ?? 0,
       }}
       sortBy={[{ id: "name", desc: false }]}
     />

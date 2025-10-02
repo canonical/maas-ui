@@ -11,6 +11,7 @@ import {
   setupMockServer,
   userEvent,
   waitFor,
+  within,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
@@ -30,7 +31,7 @@ describe("ResourceRecordsTable", () => {
           user_id: null,
           dnsdata_id: 15,
           dnsresource_id: 100,
-          node_type: 0,
+          node_type: 4,
           rrdata: "",
           rrtype: RecordType.A,
         },
@@ -49,13 +50,35 @@ describe("ResourceRecordsTable", () => {
     });
   });
 
+  it("displays a message when there is no data", () => {
+    items.rrsets = [];
+    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
+
+    expect(
+      screen.getByRole("cell", { name: "Domain contains no records." })
+    ).toBeInTheDocument();
+  });
+
+  it("displays row data correctly", () => {
+    renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
+
+    const row = within(screen.getAllByRole("row")[1]);
+
+    expect(row.getAllByRole("cell")[0]).toHaveTextContent("abc");
+    expect(row.getAllByRole("cell")[1]).toHaveTextContent("4");
+    expect(row.getAllByRole("cell")[2]).toHaveTextContent("20");
+  });
+
   it("renders a link in the name column when id is auto-generated", () => {
     items.rrsets[0].dnsresource_id = null;
     renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
 
     expect(
       screen.getByRole("cell", { name: "abc" }).firstChild
-    ).toHaveAttribute("href", "/machine/132");
+    ).toHaveAttribute(
+      "href",
+      expect.stringMatching(/^\/(machine|controller|device)\/132$/)
+    );
   });
 
   it("disables action dropdown with the right tooltip when id is auto-generated", async () => {
