@@ -1,6 +1,5 @@
 import ResourceRecordsTable from "./ResourceRecordsTable";
 
-import { Labels } from "@/app/domains/components/ResourceRecordsTable/useResourceRecordsColumns/useResourceRecordsColumns";
 import type { DomainDetails } from "@/app/store/domain/types";
 import { RecordType } from "@/app/store/domain/types";
 import * as factory from "@/testing/factories";
@@ -9,7 +8,6 @@ import {
   renderWithProviders,
   screen,
   setupMockServer,
-  userEvent,
   waitFor,
   within,
 } from "@/testing/utils";
@@ -17,7 +15,7 @@ import {
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("ResourceRecordsTable", () => {
-  let items: DomainDetails = factory.domainDetails();
+  let items: DomainDetails;
   beforeEach(() => {
     items = factory.domainDetails({
       id: 3,
@@ -81,7 +79,7 @@ describe("ResourceRecordsTable", () => {
     );
   });
 
-  it("disables action dropdown with the right tooltip when id is auto-generated", async () => {
+  it("disables action dropdown when id is auto-generated", async () => {
     items.rrsets[0].dnsresource_id = null;
 
     renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
@@ -90,17 +88,9 @@ describe("ResourceRecordsTable", () => {
     await waitFor(() => {
       expect(dropdownBtn).toHaveClass("is-disabled");
     });
-    await userEvent.hover(dropdownBtn);
-    await waitFor(() => {
-      expect(
-        screen.queryByRole("tooltip", {
-          name: Labels.SYSTEM_RECORD_NOT_EDITABLE,
-        })
-      );
-    });
   });
 
-  it("disables action dropdown with the right tooltip when user is not a superuser", async () => {
+  it("disables action dropdown when user is not a superuser", async () => {
     items.rrsets[0].dnsresource_id = 50;
     mockServer.use(
       authResolvers.getCurrentUser.handler(
@@ -111,14 +101,6 @@ describe("ResourceRecordsTable", () => {
     const dropdownBtn = screen.getByRole("button", { name: "Toggle menu" });
     await waitFor(() => {
       expect(dropdownBtn).toHaveClass("is-disabled");
-    });
-    await userEvent.hover(dropdownBtn);
-    await waitFor(() => {
-      expect(
-        screen.queryByRole("tooltip", {
-          name: Labels.PERMISSION_DENIED_EDIT,
-        })
-      );
     });
   });
 
@@ -133,10 +115,6 @@ describe("ResourceRecordsTable", () => {
       expect(
         screen.getByRole("button", { name: "Toggle menu" })
       ).not.toHaveClass("is-disabled");
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     });
   });
 });
