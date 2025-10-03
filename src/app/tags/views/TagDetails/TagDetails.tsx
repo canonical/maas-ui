@@ -1,15 +1,15 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import TagForms from "../../components/TagForms";
+import DeleteTagForm from "../../components/DeleteTagForm";
 import TagsDetailsHeader from "../../components/TagsDetailsHeader";
-import { TagSidePanelViews } from "../../constants";
+import UpdateTagForm from "../../components/UpdateTagForm";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
@@ -32,23 +32,28 @@ export enum Label {
 }
 
 const TagDetails = (): React.ReactElement => {
+  const { openSidePanel } = useSidePanel();
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
   const tagsLoading = useSelector(tagSelectors.loading);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) => {
-    setSidePanelContent({
-      view: TagSidePanelViews.DeleteTag,
-      extras: { fromDetails, id },
+    openSidePanel({
+      component: DeleteTagForm,
+      title: "Delete tag",
+      props: {
+        fromDetails,
+        id,
+      },
     });
   };
   const onUpdate = (id: Tag[TagMeta.PK]) => {
-    setSidePanelContent({
-      view: TagSidePanelViews.UpdateTag,
-      extras: {
+    openSidePanel({
+      component: UpdateTagForm,
+      title: "Update Tag",
+      props: {
         id,
       },
     });
@@ -59,22 +64,10 @@ const TagDetails = (): React.ReactElement => {
 
   return (
     <PageContent
-      header={
-        <TagsDetailsHeader
-          onDelete={onDelete}
-          onUpdate={onUpdate}
-          setSidePanelContent={setSidePanelContent}
-        />
-      }
-      sidePanelContent={
-        sidePanelContent && (
-          <TagForms
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        )
-      }
-      sidePanelTitle={getSidePanelTitle("Tags", sidePanelContent)}
+      header={<TagsDetailsHeader onDelete={onDelete} onUpdate={onUpdate} />}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       {!isId(id) || (!tagsLoading && !tag) ? (
         <ModelNotFound id={id} linkURL={urls.tags.index} modelName="tag" />

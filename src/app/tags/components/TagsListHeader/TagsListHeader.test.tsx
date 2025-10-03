@@ -1,13 +1,20 @@
 import type { Mock } from "vitest";
 
+import AddTagForm from "../AddTagForm";
+
 import TagsListHeader, { Label } from "./TagsListHeader";
 
 import { TagSearchFilter } from "@/app/store/tag/selectors";
-import { TagSidePanelViews } from "@/app/tags/constants";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import {
+  mockSidePanel,
+  renderWithProviders,
+  screen,
+  userEvent,
+} from "@/testing/utils";
 
 let scrollToSpy: Mock;
+const { mockOpen } = await mockSidePanel();
 
 beforeEach(() => {
   // Mock the scrollTo method as jsdom doesn't support this and will error.
@@ -16,7 +23,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
 
 it("displays the searchbox and group select", () => {
@@ -26,7 +33,6 @@ it("displays the searchbox and group select", () => {
       searchText=""
       setFilter={vi.fn()}
       setSearchText={vi.fn()}
-      setSidePanelContent={vi.fn()}
     />,
     {
       initialEntries: ["/tags"],
@@ -49,14 +55,12 @@ it("displays the searchbox and group select", () => {
 });
 
 it("can call a function to display the add tag form", async () => {
-  const setSidePanelContent = vi.fn();
   renderWithProviders(
     <TagsListHeader
       filter={TagSearchFilter.All}
       searchText=""
       setFilter={vi.fn()}
       setSearchText={vi.fn()}
-      setSidePanelContent={setSidePanelContent}
     />,
     {
       initialEntries: ["/tags"],
@@ -64,9 +68,13 @@ it("can call a function to display the add tag form", async () => {
     }
   );
 
-  await userEvent.click(screen.getByRole("button", { name: "Create new tag" }));
-  expect(setSidePanelContent).toHaveBeenCalledWith({
-    view: TagSidePanelViews.AddTag,
+  await userEvent.click(
+    screen.getByRole("button", { name: Label.CreateButton })
+  );
+
+  expect(mockOpen).toHaveBeenCalledWith({
+    component: AddTagForm,
+    title: "Create new tag",
   });
 });
 
@@ -77,7 +85,6 @@ it("displays the default title", () => {
       searchText=""
       setFilter={vi.fn()}
       setSearchText={vi.fn()}
-      setSidePanelContent={vi.fn()}
     />,
     {
       initialEntries: ["/tags"],
@@ -98,7 +105,6 @@ it("can update the filter", async () => {
       searchText=""
       setFilter={setFilter}
       setSearchText={vi.fn()}
-      setSidePanelContent={vi.fn()}
     />,
     {
       initialEntries: ["/tags"],

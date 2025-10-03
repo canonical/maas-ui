@@ -7,13 +7,10 @@ import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineSidePanelContent } from "@/app/machines/types";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
-import { TagSidePanelViews } from "@/app/tags/constants";
-import type { TagSidePanelContent } from "@/app/tags/types";
 
 export type SidePanelContent =
   | KVMSidePanelContent
   | MachineSidePanelContent
-  | TagSidePanelContent
   | null;
 
 export type SetSidePanelContent<T = SidePanelContent> = (
@@ -29,7 +26,6 @@ export type SidePanelContextType<T = SidePanelContent> = {
 export const SidePanelViews = {
   ...MachineSidePanelViews,
   ...KVMSidePanelViews,
-  ...TagSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {
@@ -40,7 +36,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.ADD_INTERFACE[1]]: "Add interface",
   [SidePanelViews.ADD_MACHINE[1]]: "Add machine",
   [SidePanelViews.ADD_SPECIAL_FILESYSTEM[1]]: "Add special filesystem",
-  [SidePanelViews.AddTag[1]]: "Create new tag",
   [SidePanelViews.ADD_VLAN[1]]: "Add VLAN",
   [SidePanelViews.APPLY_STORAGE_LAYOUT[1]]: "Change storage layout",
   [SidePanelViews.CREATE_BCACHE[1]]: "Create bcache",
@@ -53,7 +48,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.DELETE_DISK[1]]: "Delete disk",
   [SidePanelViews.DELETE_FILESYSTEM[1]]: "Delete filesystem",
   [SidePanelViews.DELETE_SPECIAL_FILESYSTEM[1]]: "Delete special filesystem",
-  [SidePanelViews.DeleteTag[1]]: "Delete tag",
   [SidePanelViews.DELETE_VOLUME_GROUP[1]]: "Delete volume group",
   [SidePanelViews.EDIT_DISK[1]]: "Edit disk",
   [SidePanelViews.EDIT_PARTITION[1]]: "Edit partition",
@@ -65,8 +59,6 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.SET_BOOT_DISK[1]]: "Set boot disk",
   [SidePanelViews.UNMOUNT_FILESYSTEM[1]]: "Unmount filesystem",
   [SidePanelViews.UPDATE_DATASTORE[1]]: "Update datastore",
-  [SidePanelViews.REMOVE_DATASTORE[1]]: "Remove datastore",
-  [SidePanelViews.UpdateTag[1]]: "Update Tag",
 };
 
 /**

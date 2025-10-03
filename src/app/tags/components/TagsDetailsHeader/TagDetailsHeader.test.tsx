@@ -4,7 +4,6 @@ import type { Mock } from "vitest";
 import TagsHeader, { Label } from "./TagDetailsHeader";
 
 import urls from "@/app/base/urls";
-import { TagSidePanelViews } from "@/app/tags/constants";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
@@ -32,13 +31,7 @@ it("displays edit and delete buttons, and a return link", () => {
   renderWithProviders(
     <Routes>
       <Route
-        element={
-          <TagsHeader
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            setSidePanelContent={vi.fn()}
-          />
-        }
+        element={<TagsHeader onDelete={vi.fn()} onUpdate={vi.fn()} />}
         path={urls.tags.tag.index(null)}
       />
     </Routes>,
@@ -59,41 +52,6 @@ it("displays edit and delete buttons, and a return link", () => {
   ).toBeInTheDocument();
 });
 
-it("can call a function to display the add tag form", async () => {
-  const setSidePanelContent = vi.fn();
-  const tag = factory.tag({ id: 1 });
-  const state = factory.rootState({
-    tag: factory.tagState({
-      loaded: true,
-      loading: false,
-      items: [tag],
-    }),
-  });
-  renderWithProviders(
-    <Routes>
-      <Route
-        element={
-          <TagsHeader
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            setSidePanelContent={setSidePanelContent}
-          />
-        }
-        path={urls.tags.tag.index(null)}
-      />
-    </Routes>,
-    {
-      initialEntries: [urls.tags.tag.index({ id: 1 })],
-      state,
-    }
-  );
-
-  await userEvent.click(screen.getByRole("button", { name: "Create new tag" }));
-  expect(setSidePanelContent).toHaveBeenCalledWith({
-    view: TagSidePanelViews.AddTag,
-  });
-});
-
 it("triggers onUpdate with the correct tag ID", async () => {
   const onUpdate = vi.fn();
   const tag = factory.tag({ id: 1 });
@@ -107,13 +65,7 @@ it("triggers onUpdate with the correct tag ID", async () => {
   renderWithProviders(
     <Routes>
       <Route
-        element={
-          <TagsHeader
-            onDelete={vi.fn()}
-            onUpdate={onUpdate}
-            setSidePanelContent={vi.fn()}
-          />
-        }
+        element={<TagsHeader onDelete={vi.fn()} onUpdate={onUpdate} />}
         path={urls.tags.tag.index(null)}
       />
     </Routes>,

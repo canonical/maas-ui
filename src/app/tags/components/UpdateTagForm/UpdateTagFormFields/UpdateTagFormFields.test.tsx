@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 
-import TagUpdateFormFields from "./TagUpdateFormFields";
+import UpdateTagFormFields from "./UpdateTagFormFields";
 
 import type { RootState } from "@/app/store/root/types";
 import { Label as DefinitionLabel } from "@/app/tags/components/DefinitionField";
@@ -26,7 +26,7 @@ it("hides the definition field if it is a manual tag", async () => {
   state.tag.items[0].definition = "";
   renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
-      <TagUpdateFormFields id={1} />
+      <UpdateTagFormFields id={1} />
     </Formik>,
     { state }
   );
@@ -42,7 +42,7 @@ it("displays the definition field if it is an automatic tag", async () => {
   state.tag.items[0].definition = "def1";
   renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
-      <TagUpdateFormFields id={1} />
+      <UpdateTagFormFields id={1} />
     </Formik>,
     { state }
   );

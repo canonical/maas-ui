@@ -2,10 +2,11 @@ import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import TagUpdateFormFields from "./TagUpdateFormFields";
+import UpdateTagFormFields from "./UpdateTagFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { messageActions } from "@/app/store/message";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
@@ -15,7 +16,6 @@ import { NewDefinitionMessage } from "@/app/tags/constants";
 
 type Props = {
   id: Tag[TagMeta.PK];
-  onClose: () => void;
 };
 
 export enum Label {
@@ -37,7 +37,8 @@ const UpdateAutoTagFormSchema = Yup.object().shape({
   name: Yup.string().required("Name is required."),
 });
 
-const TagUpdate = ({ id, onClose }: Props): React.ReactElement => {
+const UpdateTagForm = ({ id }: Props): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
@@ -66,7 +67,7 @@ const TagUpdate = ({ id, onClose }: Props): React.ReactElement => {
         kernel_opts: tag.kernel_opts ?? "",
         name: tag.name,
       }}
-      onCancel={onClose}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Submit",
         category: "Update tag form",
@@ -85,16 +86,16 @@ const TagUpdate = ({ id, onClose }: Props): React.ReactElement => {
             )
           );
         }
-        onClose();
+        closeSidePanel();
       }}
       saved={saved}
       saving={saving}
       submitLabel="Save changes"
       validationSchema={isAuto ? UpdateAutoTagFormSchema : UpdateTagFormSchema}
     >
-      <TagUpdateFormFields id={id} />
+      <UpdateTagFormFields id={id} />
     </FormikForm>
   );
 };
 
-export default TagUpdate;
+export default UpdateTagForm;
