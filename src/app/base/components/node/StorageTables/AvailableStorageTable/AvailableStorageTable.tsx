@@ -86,7 +86,7 @@ const AvailableStorageTable = ({
     if (disk.partitions) {
       disk.partitions.forEach((partition) => {
         if (isAvailable(partition)) {
-          rows.push(partition);
+          rows.push({ ...partition, parentDisk: disk });
         }
       });
     }
@@ -121,6 +121,7 @@ const AvailableStorageTable = ({
         noData="No available disks or partitions."
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
+        variant="regular"
       />
       {isMachine && canEditStorage && (
         <BulkActions

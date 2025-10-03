@@ -18,7 +18,7 @@ import { FilterMachines } from "@/app/store/machine/utils";
 import type { Disk, Node, Partition } from "@/app/store/types/node";
 import { formatSize, formatType, isDisk, isPartition } from "@/app/store/utils";
 
-export type AvailableStorageRow = Disk | Partition;
+export type AvailableStorageRow = Disk | (Partition & { parentDisk?: Disk });
 type AvailableStorageColumnDef = ColumnDef<AvailableStorageRow>;
 
 const useAvailableStorageColumns = ({
@@ -183,9 +183,9 @@ const useAvailableStorageColumns = ({
                           extras: {
                             systemId,
                             disk:
-                              "parent_disk" in disk
-                                ? // if disk has parent_disk, then it's a partition, and parent_disk is guarenteed to be a Disk type
-                                  (disk.parent_disk as Disk)
+                              "parentDisk" in disk
+                                ? // if disk has parentDisk, then it's a partition, and parentDisk is guarenteed to be a Disk type
+                                  disk.parentDisk
                                 : undefined,
                             partition: disk,
                           },
