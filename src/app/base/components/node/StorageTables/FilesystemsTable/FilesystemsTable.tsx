@@ -94,6 +94,7 @@ const FilesystemsTable = ({
         noData="No filesystems defined."
         sortBy={[{ id: "name", desc: false }]}
         style={{ marginBottom: "1.5rem" }}
+        variant="regular"
       />
       {canEditStorage && (
         <Tooltip message="Create a tmpfs or ramfs filesystem.">

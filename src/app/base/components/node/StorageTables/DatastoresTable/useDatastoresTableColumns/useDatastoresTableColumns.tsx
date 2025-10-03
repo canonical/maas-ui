@@ -25,13 +25,13 @@ const useDatastoresTableColumns = (
         {
           id: "name",
           accessorKey: "name",
-          enableSorting: true,
+          enableSorting: false,
           header: "Name",
         },
         {
           id: "size",
           accessorKey: "size",
-          enableSorting: true,
+          enableSorting: false,
           header: "Size",
           cell: ({
             row: {
@@ -44,13 +44,13 @@ const useDatastoresTableColumns = (
         {
           id: "fstype",
           accessorKey: "fstype",
-          enableSorting: true,
+          enableSorting: false,
           header: "Filesystem",
         },
         {
           id: "mountPoint",
           accessorKey: "mount_point",
-          enableSorting: true,
+          enableSorting: false,
           header: "Mount point",
         },
         ...(isMachine

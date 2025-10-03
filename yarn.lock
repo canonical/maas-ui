@@ -949,10 +949,10 @@
     "@types/tough-cookie" "^4.0.5"
     tough-cookie "^4.1.4"
 
-"@canonical/maas-react-components@1.33.3":
-  version "1.33.3"
-  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-1.33.3.tgz#682f47ef14e9872b8b08356cdb6f392946fafb48"
-  integrity sha512-TEwpTRgPBw7BYJ7MDBtge2036NZkTieraxtQoG6YUDQNiF7k4lvrHeJpBt4fXOs4av3NxFngdZsHkBAkmYUeug==
+"@canonical/maas-react-components@1.33.4":
+  version "1.33.4"
+  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-1.33.4.tgz#1ce51c2dd86eb990156e6e2148a5035ea7c3e44d"
+  integrity sha512-D7u2A07GaF/cYBgM1mL8v2e+7kYTZbFYFN8GXWAvguBfPA4OwchpkoYUqNS0ASwgmtkfJy6ugE2B48mAvscOBQ==
 
 "@canonical/macaroon-bakery@1.3.2":
   version "1.3.2"
@@ -13017,6 +13017,7 @@ wordwrap@^1.0.0:
   integrity sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
