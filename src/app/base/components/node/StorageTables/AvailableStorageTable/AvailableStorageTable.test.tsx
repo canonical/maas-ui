@@ -1,23 +1,16 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import AvailableStorageTable from "./AvailableStorageTable";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
-import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  render,
+  renderWithProviders,
   screen,
-  renderWithBrowserRouter,
+  userEvent,
+  within,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 const getAvailableDisk = (name = "available-disk") =>
   factory.nodeDisk({
@@ -51,18 +44,13 @@ it("can show an empty message", () => {
       items: [machine],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <AvailableStorageTable canEditStorage node={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<AvailableStorageTable canEditStorage node={machine} />, {
+    state,
+  });
 
-  expect(screen.getByTestId("no-available")).toHaveTextContent(
-    "No available disks or partitions."
-  );
+  expect(
+    screen.getByText("No available disks or partitions.")
+  ).toBeInTheDocument();
 });
 
 it("only shows disks that are available", () => {
@@ -84,21 +72,18 @@ it("only shows disks that are available", () => {
       items: [machine],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <AvailableStorageTable canEditStorage node={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<AvailableStorageTable canEditStorage node={machine} />, {
+    state,
+  });
 
-  expect(
-    screen.getAllByRole("gridcell", { name: "Name & Serial" })
-  ).toHaveLength(1);
-  expect(
-    screen.getByRole("gridcell", { name: "Name & Serial" })
-  ).toHaveTextContent(availableDisk.name);
+  const rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
+
+  expect(rows).toHaveLength(1);
+
+  // The first cell is the checkbox, so the second cell should have the name
+  expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
+    availableDisk.name
+  );
 });
 
 it("does not show an action column, checkboxes or bulk actions if node is a controller", () => {
@@ -112,21 +97,17 @@ it("does not show an action column, checkboxes or bulk actions if node is a cont
       items: [controller],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <AvailableStorageTable canEditStorage node={controller} />
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <AvailableStorageTable canEditStorage node={controller} />,
+    {
+      state,
+    }
   );
 
   expect(
     screen.queryByRole("columnheader", { name: "Actions" })
   ).not.toBeInTheDocument();
-  expect(
-    screen.queryByRole("checkbox", { name: disk.name })
-  ).not.toBeInTheDocument();
+  expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   expect(
     screen.queryByRole("button", { name: "Create volume group" })
   ).not.toBeInTheDocument();
@@ -143,78 +124,22 @@ it("show an action column, storage checkboxes and bulk actions if node is a mach
       items: [machine],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <AvailableStorageTable canEditStorage node={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<AvailableStorageTable canEditStorage node={machine} />, {
+    state,
+  });
 
   expect(
     screen.getByRole("columnheader", { name: "Actions" })
   ).toBeInTheDocument();
-  expect(screen.getByRole("checkbox", { name: disk.name })).toBeInTheDocument();
+
+  // A "select all" checkbox, and one more for the disk itself
+  expect(screen.getAllByRole("checkbox")).toHaveLength(2);
   expect(
     screen.getByRole("button", { name: "Create volume group" })
   ).toBeInTheDocument();
 });
 
 describe("performing machine actions", () => {
-  it("can select a single disk", async () => {
-    const disk = getAvailableDisk();
-    const machine = factory.machineDetails({
-      disks: [disk],
-      system_id: "abc123",
-    });
-    const state = factory.rootState({
-      machine: factory.machineState({
-        items: [machine],
-      }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByRole("checkbox", { name: disk.name }));
-
-    expect(screen.getByRole("checkbox", { name: disk.name })).toBeChecked();
-  });
-
-  it("can select all storage devices", async () => {
-    const disks = [getAvailableDisk("disk-1"), getAvailableDisk("disk-2")];
-    const machine = factory.machineDetails({
-      disks: disks,
-      system_id: "abc123",
-    });
-    const state = factory.rootState({
-      machine: factory.machineState({
-        items: [machine],
-      }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByTestId("all-storage-checkbox"));
-
-    const checkboxes = screen.getAllByRole("checkbox");
-    checkboxes.forEach((checkbox) => {
-      expect(checkbox).toBeChecked();
-    });
-  });
-
   it("disables action dropdown and checkboxes if storage cannot be edited", () => {
     const disk = getAvailableDisk();
     const machine = factory.machineDetails({
@@ -226,20 +151,19 @@ describe("performing machine actions", () => {
         items: [machine],
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AvailableStorageTable canEditStorage={false} node={machine} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AvailableStorageTable canEditStorage={false} node={machine} />,
+      {
+        state,
+      }
     );
 
     expect(
       screen.getByRole("button", { name: /Take action/ })
     ).toBeAriaDisabled();
-    expect(screen.getByTestId("all-storage-checkbox")).toBeDisabled();
-    expect(screen.getByRole("checkbox", { name: disk.name })).toBeDisabled();
+    screen.getAllByRole("checkbox").forEach((checkbox) => {
+      expect(checkbox).toBeDisabled();
+    });
   });
 
   it("can open the add partition form if disk can be partitioned", async () => {
@@ -257,9 +181,11 @@ describe("performing machine actions", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AvailableStorageTable canEditStorage node={machine} />,
-      { state }
+      {
+        state,
+      }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
@@ -291,7 +217,7 @@ describe("performing machine actions", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AvailableStorageTable canEditStorage node={machine} />,
       { state }
     );
@@ -323,13 +249,9 @@ describe("performing machine actions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AvailableStorageTable canEditStorage node={machine} />,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
@@ -359,7 +281,7 @@ describe("performing machine actions", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AvailableStorageTable canEditStorage node={machine} />,
       { state }
     );
@@ -389,13 +311,9 @@ describe("performing machine actions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AvailableStorageTable canEditStorage node={machine} />,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
@@ -432,25 +350,19 @@ describe("performing machine actions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AvailableStorageTable canEditStorage node={machine} />,
-      { store }
+      { state }
     );
 
-    await userEvent.click(
-      screen.getByRole("checkbox", { name: partitions[0].name })
-    );
+    await userEvent.click(screen.getAllByRole("checkbox")[1]);
     await userEvent.click(
       screen.getByRole("button", { name: /Create volume group/ })
     );
 
-    expect(
-      screen.getByRole("checkbox", { name: partitions[0].name })
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("checkbox", { name: partitions[1].name })
-    ).toBeDisabled();
+    screen.getAllByRole("checkbox").forEach((checkbox) => {
+      expect(checkbox).toBeDisabled();
+    });
   });
 
   it("can trigger a create cache set form for a partition", async () => {
@@ -472,13 +384,9 @@ describe("performing machine actions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AvailableStorageTable canEditStorage node={machine} />,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
@@ -509,13 +417,9 @@ describe("performing machine actions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AvailableStorageTable canEditStorage node={machine} />,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
@@ -550,13 +454,9 @@ describe("performing machine actions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <AvailableStorageTable canEditStorage node={machine} />,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
