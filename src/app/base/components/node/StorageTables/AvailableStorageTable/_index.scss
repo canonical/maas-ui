@@ -1,0 +1,9 @@
+.p-generic-table__individual-row {
+
+  td:last-of-type.health {
+
+    .p-double-row__primary-row {
+      flex-direction: row-reverse;
+    }
+  }
+}
