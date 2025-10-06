@@ -205,9 +205,11 @@ export const App = (): React.ReactElement => {
             >
               {content}
             </Suspense>
-            <AppStatus>
-              <StatusBar />
-            </AppStatus>
+            {authenticated && (
+              <AppStatus>
+                <StatusBar />
+              </AppStatus>
+            )}
           </NotificationProvider>
         </ToastNotificationProvider>
       </ThemePreviewContextProvider>
