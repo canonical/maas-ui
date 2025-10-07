@@ -1,9 +1,15 @@
-.p-generic-table__individual-row {
-
-  td:last-of-type.health {
-
-    .p-double-row__primary-row {
-      flex-direction: row-reverse;
+@mixin AvailableStorageTable {
+  .p-generic-table {
+    margin-bottom: $spv--large;
+  
+    .p-generic-table__individual-row {
+    
+      td:last-of-type.health {
+    
+        .p-double-row__primary-row {
+          flex-direction: row-reverse;
+        }
+      }
     }
   }
 }

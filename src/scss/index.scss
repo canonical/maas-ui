@@ -100,6 +100,7 @@
 @import "@/app/base/components/node/NodeLogs/EventLogs/EventLogsTable";
 @import "@/app/base/components/node/NodeTestsTable";
 @import "@/app/base/components/node/OverviewCard";
+@import "@/app/base/components/node/StorageTables/AvailableStorageTable";
 @import "@/app/base/components/NodeActionMenuGroup";
 @import "@/app/base/components/NodeName";
 @import "@/app/base/components/NodeSummaryNetworkCard";
@@ -115,6 +116,7 @@
 @import "@/app/base/components/TableMenu";
 @import "@/app/base/components/TagSelector";
 @include ActionBar;
+@include AvailableStorageTable;
 @include AppSideNavigation;
 @include CertificateDownload;
 @include CertificateMetadata;
