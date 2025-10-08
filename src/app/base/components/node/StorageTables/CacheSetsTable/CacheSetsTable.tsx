@@ -36,15 +36,13 @@ const CacheSetsTable = ({
   });
 
   return (
-    <>
-      <GenericTable
-        columns={columns}
-        data={newRows}
-        isLoading={false}
-        noData={"No cache sets available."}
-        variant="regular"
-      />
-    </>
+    <GenericTable
+      columns={columns}
+      data={newRows}
+      isLoading={false}
+      noData={"No cache sets available."}
+      variant="regular"
+    />
   );
 };
 
