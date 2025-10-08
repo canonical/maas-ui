@@ -18,6 +18,7 @@ import CreateVolumeGroup from "@/app/base/components/node/StorageTables/Availabl
 import UpdateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/UpdateDatastore";
 import CreateBcache from "@/app/base/components/node/StorageTables/AvailableStorageTable/CreateBcache";
 import CreateCacheSet from "@/app/base/components/node/StorageTables/AvailableStorageTable/CreateCacheSet";
+import DeleteCacheSet from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteCacheSet";
 import DeleteDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteDisk";
 import DeletePartition from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeletePartition";
 import DeleteVolumeGroup from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteVolumeGroup";
@@ -235,6 +236,16 @@ export const MachineForms = ({
         <CreateVolumeGroup
           closeForm={clearSidePanelContent}
           selected={bulkActionSelected}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.DELETE_CACHE_SET: {
+      if (!disk || !systemId) return null;
+      return (
+        <DeleteCacheSet
+          close={clearSidePanelContent}
+          disk={disk}
           systemId={systemId}
         />
       );
