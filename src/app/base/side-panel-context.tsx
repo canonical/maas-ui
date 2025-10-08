@@ -45,6 +45,7 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.CREATE_PARTITION[1]]: "Create partition",
   [SidePanelViews.CREATE_RAID[1]]: "Create raid",
   [SidePanelViews.CREATE_VOLUME_GROUP[1]]: "Create volume group",
+  [SidePanelViews.DELETE_CACHE_SET[1]]: "Delete cache set",
   [SidePanelViews.DELETE_DISK[1]]: "Delete disk",
   [SidePanelViews.DELETE_FILESYSTEM[1]]: "Delete filesystem",
   [SidePanelViews.DELETE_SPECIAL_FILESYSTEM[1]]: "Delete special filesystem",

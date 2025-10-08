@@ -47,6 +47,7 @@ export const MachineNonActionSidePanelViews = {
   CREATE_PARTITION: ["machineNonActionForm", "createPartition"],
   CREATE_RAID: ["machineNonActionForm", "createRaid"],
   CREATE_VOLUME_GROUP: ["machineNonActionForm", "createVolumeGroup"],
+  DELETE_CACHE_SET: ["machineNonActionForm", "deleteCacheSet"],
   DELETE_DISK: ["machineNonActionForm", "deleteDisk"],
   DELETE_FILESYSTEM: ["machineNonActionForm", "deleteFilesystem"],
   DELETE_SPECIAL_FILESYSTEM: [

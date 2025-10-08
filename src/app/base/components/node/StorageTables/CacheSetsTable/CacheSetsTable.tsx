@@ -1,24 +1,15 @@
-import { useState } from "react";
+import { GenericTable } from "@canonical/maas-react-components";
 
-import { MainTable } from "@canonical/react-components";
-import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
-import { useDispatch } from "react-redux";
+import useCacheSetsColumns from "./useCacheSetsColumns/useCacheSetsColumns";
 
-import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
-import ActionConfirm from "@/app/base/components/node/ActionConfirm";
 import type { ControllerDetails } from "@/app/store/controller/types";
-import { machineActions } from "@/app/store/machine";
 import type { MachineDetails } from "@/app/store/machine/types";
-import { formatSize, isCacheSet, nodeIsMachine } from "@/app/store/utils";
+import type { Disk } from "@/app/store/types/node";
+import { isCacheSet, nodeIsMachine } from "@/app/store/utils";
 
 export enum CacheSetAction {
   DELETE = "deleteCacheSet",
 }
-
-type Expanded = {
-  content: CacheSetAction;
-  id: string;
-};
 
 type Props = {
   canEditStorage: boolean;
@@ -29,103 +20,31 @@ const CacheSetsTable = ({
   canEditStorage,
   node,
 }: Props): React.ReactElement => {
-  const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState<Expanded | null>(null);
-  const closeExpanded = () => {
-    setExpanded(null);
-  };
   const isMachine = nodeIsMachine(node);
 
-  const headers = [
-    { content: "Name" },
-    { content: "Size" },
-    { content: "Used for" },
-    {
-      className: "u-align--right",
-      content: "Actions",
-    },
-  ];
-
-  const rows = node.disks.reduce<MainTableRow[]>((rows, disk) => {
+  const newRows = node.disks.reduce<Disk[]>((rows, disk) => {
     if (isCacheSet(disk)) {
-      const rowId = `${disk.type}-${disk.id}`;
-      const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
-
-      rows.push({
-        className: isExpanded ? "p-table__row is-active" : null,
-        columns: [
-          { content: disk.name },
-          { content: formatSize(disk.size) },
-          { className: "u-break-spaces", content: disk.used_for },
-          ...(isMachine
-            ? [
-                {
-                  className: "u-align--right",
-                  content: (
-                    <TableActionsDropdown
-                      actions={[
-                        {
-                          label: "Remove cache set...",
-                          type: CacheSetAction.DELETE,
-                        },
-                      ]}
-                      disabled={!canEditStorage}
-                      onActionClick={(action: CacheSetAction) => {
-                        setExpanded({ content: action, id: rowId });
-                      }}
-                    />
-                  ),
-                },
-              ]
-            : []),
-        ].map((column, i) => ({
-          ...column,
-          "aria-label": headers[i].content,
-        })),
-        expanded: isExpanded,
-        expandedContent: isMachine ? (
-          <div className="u-flex--grow">
-            {expanded?.content === CacheSetAction.DELETE && (
-              <ActionConfirm
-                closeExpanded={closeExpanded}
-                confirmLabel="Remove cache set"
-                eventName="deleteCacheSet"
-                message="Are you sure you want to remove this cache set?"
-                onConfirm={() => {
-                  dispatch(machineActions.cleanup());
-                  dispatch(
-                    machineActions.deleteCacheSet({
-                      cacheSetId: disk.id,
-                      systemId: node.system_id,
-                    })
-                  );
-                }}
-                onSaveAnalytics={{
-                  action: "Delete cache set",
-                  category: "Machine storage",
-                  label: "Remove cache set",
-                }}
-                statusKey="deletingCacheSet"
-                systemId={node.system_id}
-              />
-            )}
-          </div>
-        ) : null,
-        key: rowId,
-      });
+      rows.push(disk);
     }
     return rows;
   }, []);
 
+  const columns = useCacheSetsColumns({
+    isMachine,
+    canEditStorage,
+    systemId: node.system_id,
+  });
+
   return (
-    <MainTable
-      className="p-table-expanding--light"
-      emptyStateMsg="No cache set available."
-      expanding
-      headers={isMachine ? headers : headers.slice(0, -1)}
-      responsive
-      rows={rows}
-    />
+    <>
+      <GenericTable
+        columns={columns}
+        data={newRows}
+        isLoading={false}
+        noData={"No cache sets available."}
+        variant="regular"
+      />
+    </>
   );
 };
 

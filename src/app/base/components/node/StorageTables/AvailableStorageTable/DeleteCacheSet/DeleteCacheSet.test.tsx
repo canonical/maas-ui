@@ -1,8 +1,9 @@
 import configureStore from "redux-mock-store";
 
-import DeleteDisk from "./DeleteDisk";
+import DeleteCacheSet from "./DeleteCacheSet";
 
 import type { RootState } from "@/app/store/root/types";
+import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
@@ -10,7 +11,7 @@ const mockStore = configureStore<RootState>();
 const disk = factory.nodeDisk({
   id: 1,
   name: "floppy-disk",
-  partitions: [factory.nodePartition(), factory.nodePartition()],
+  type: DiskTypes.CACHE_SET,
 });
 
 const state = factory.rootState({
@@ -24,25 +25,29 @@ const state = factory.rootState({
 
 it("should render the form", () => {
   renderWithProviders(
-    <DeleteDisk close={vi.fn()} disk={disk} systemId="abc123" />,
+    <DeleteCacheSet close={vi.fn()} disk={disk} systemId="abc123" />,
     { state }
   );
 
-  expect(screen.getByRole("form", { name: "Delete disk" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("form", { name: "Delete cache set" })
+  ).toBeInTheDocument();
 });
 
 it("should fire an action to delete a disk", async () => {
   const store = mockStore(state);
   renderWithProviders(
-    <DeleteDisk close={vi.fn()} disk={disk} systemId="abc123" />,
+    <DeleteCacheSet close={vi.fn()} disk={disk} systemId="abc123" />,
     { store }
   );
 
   await userEvent.click(
-    screen.getByRole("button", { name: "Remove physical disk" })
+    screen.getByRole("button", { name: "Remove cache set" })
   );
 
   expect(
-    store.getActions().some((action) => action.type === "machine/deleteDisk")
+    store
+      .getActions()
+      .some((action) => action.type === "machine/deleteCacheSet")
   ).toBe(true);
 });
