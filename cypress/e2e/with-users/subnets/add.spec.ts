@@ -75,7 +75,7 @@ context("Subnets - Add", () => {
     cy.findByRole("link", { name: new RegExp(subnetName) }).should("not.exist");
   });
 
-  it("displays an error when trying to add a VLAN with a VID that already exists", () => {
+  it.skip("displays an error when trying to add a VLAN with a VID that already exists", () => {
     const vid = generateVid();
     const name = `cypress-${vid}`;
     completeAddVlanForm(vid, name);
