@@ -127,7 +127,7 @@ export const useGoogleAnalytics = (): boolean => {
 export const useUsabilla = (): boolean => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const version = useSelector(versionSelectors.get);
-  const debug = import.meta.env.NODE_ENV === "development";
+  const debug = import.meta.env.DEV;
   const allowUsabilla = !!(analyticsEnabled && !debug);
 
   useEffect(() => {
