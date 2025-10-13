@@ -4,10 +4,10 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus, NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 let state: RootState;
-const originalEnv = process.env;
+const originalEnv = import.meta.env;
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -32,7 +32,7 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.useRealTimers();
-  process.env = originalEnv;
+  Object.assign(import.meta.env, { ...originalEnv });
 });
 
 it("can show if a machine is currently commissioning", () => {
@@ -203,7 +203,7 @@ it("displays last image sync timestamp for a rack or region+rack controller", ()
 });
 
 it("displays the feedback link when analytics enabled and not in development environment", () => {
-  process.env = { ...originalEnv, NODE_ENV: "production" };
+  Object.assign(import.meta.env, { ...originalEnv, DEV: false });
 
   state.config = factory.configState({
     items: [
@@ -220,7 +220,7 @@ it("displays the feedback link when analytics enabled and not in development env
 });
 
 it("hides the feedback link when analytics disabled", () => {
-  process.env = { ...originalEnv, NODE_ENV: "production" };
+  Object.assign(import.meta.env, { ...originalEnv, DEV: false });
   state.config = factory.configState({
     items: [
       ...state.config.items,
@@ -235,7 +235,7 @@ it("hides the feedback link when analytics disabled", () => {
 });
 
 it("hides the feedback link in development environment", () => {
-  process.env = { ...originalEnv, NODE_ENV: "development" };
+  Object.assign(import.meta.env, { ...originalEnv, DEV: true });
   state.config = factory.configState({
     items: [
       ...state.config.items,
