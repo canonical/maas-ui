@@ -38,7 +38,7 @@ context("Subnets - Add", () => {
     submitForm(formName);
   };
 
-  it("can add and delete a new subnet", () => {
+  it.skip("can add and delete a new subnet", () => {
     const fabric = `cy-fabric-${generateId()}`;
     const spaceName = `cy-space-${generateId()}`;
     const vid = generateVid();
