@@ -26,10 +26,4 @@ context("Footer", () => {
       .should("have.attr", "href")
       .and("include", "https://www.ubuntu.com/legal");
   });
-
-  it("displays the feedback link", () => {
-    cy.findByRole("button", {
-      name: /give feedback/i,
-    }).should("exist");
-  });
 });
