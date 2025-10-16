@@ -69,7 +69,7 @@ const StaticRoutes = ({ subnetId }: StaticRoutesProps): ReactElement | null => {
         data={staticRoutes}
         isLoading={staticRoutesLoading || subnetsLoading}
         noData="No static routes for this subnet."
-        sortBy={[{ id: "gateway_ip", desc: false }]}
+        sorting={[{ id: "gateway_ip", desc: false }]}
       />
     </TitledSection>
   );

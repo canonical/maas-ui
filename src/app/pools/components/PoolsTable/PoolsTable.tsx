@@ -32,7 +32,7 @@ const PoolsTable = (): ReactElement => {
         setCurrentPage: setPage,
         totalItems: pools.data?.total ?? 0,
       }}
-      sortBy={[{ id: "machine_ready_count", desc: true }]}
+      sorting={[{ id: "machine_ready_count", desc: true }]}
       variant="full-height"
     />
   );

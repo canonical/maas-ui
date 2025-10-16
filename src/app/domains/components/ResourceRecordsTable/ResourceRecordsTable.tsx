@@ -41,7 +41,7 @@ const ResourceRecordsTable = ({ id, domain }: Props): ReactElement => {
         setCurrentPage: setPage,
         totalItems: domain.rrsets.length ?? 0,
       }}
-      sortBy={[{ id: "name", desc: false }]}
+      sorting={[{ id: "name", desc: false }]}
     />
   );
 };

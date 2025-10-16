@@ -138,7 +138,7 @@ const DeviceNetworkTable = ({ systemId }: Props): React.ReactElement => {
         data={rowData}
         isLoading={loading && !device}
         noData="No interfaces available."
-        sortBy={[{ id: "mac_address", desc: true }]}
+        sorting={[{ id: "mac_address", desc: true }]}
       />
     </>
   );

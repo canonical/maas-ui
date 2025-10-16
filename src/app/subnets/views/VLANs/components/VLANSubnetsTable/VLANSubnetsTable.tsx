@@ -35,7 +35,7 @@ const VLANSubnetsTable = ({ id }: Props): React.ReactElement | null => {
         data={data}
         isLoading={subnetsLoading}
         noData="There are no subnets on this VLAN"
-        sortBy={[{ id: "cidr", desc: false }]}
+        sorting={[{ id: "cidr", desc: false }]}
         variant="regular"
       />
     </TitledSection>
