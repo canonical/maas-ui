@@ -32,7 +32,7 @@ const ZonesTable: React.FC = () => {
         setCurrentPage: setPage,
         totalItems: zones.data?.total ?? 0,
       }}
-      sortBy={[{ id: "machines_count", desc: true }]}
+      sorting={[{ id: "machines_count", desc: true }]}
     />
   );
 };

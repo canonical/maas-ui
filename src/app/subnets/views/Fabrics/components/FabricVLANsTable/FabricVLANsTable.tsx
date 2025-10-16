@@ -91,7 +91,7 @@ const FabricVLANsTable = ({
         getSubRows={(originalRow) => originalRow.children}
         isLoading={loading}
         noData="No VLANs on this fabric."
-        sortBy={[
+        sorting={[
           { id: "vid", desc: false },
           { id: "subnetAvailableIps", desc: false },
         ]}

@@ -280,7 +280,7 @@ const NetworkTable = ({
       noData={"No interfaces available."}
       rowSelection={rowSelection}
       setRowSelection={setRowSelection}
-      sortBy={[{ id: "name", desc: false }]}
+      sorting={[{ id: "name", desc: false }]}
     />
   );
 };
