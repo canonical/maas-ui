@@ -66,6 +66,7 @@ const NetworkDiscoveryConfigurationForm = lazy(
   () => import("@/app/networkDiscovery/views/NetworkDiscoveryConfigurationForm")
 );
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
+const RacksList = lazy(() => import("@/app/racks/views/RacksList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(
   () => import("@/app/subnets/views/Fabrics/views/FabricDetails")
@@ -356,6 +357,14 @@ export const router = createBrowserRouter(
           element: (
             <ErrorBoundary>
               <VLANDetails />
+            </ErrorBoundary>
+          ),
+        },
+        {
+          path: `${urls.racks.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <RacksList />
             </ErrorBoundary>
           ),
         },

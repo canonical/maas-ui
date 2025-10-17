@@ -8,6 +8,7 @@ import { default as machines } from "@/app/machines/urls";
 import { default as networkDiscovery } from "@/app/networkDiscovery/urls";
 import { default as pools } from "@/app/pools/urls";
 import { default as preferences } from "@/app/preferences/urls";
+import { default as racks } from "@/app/racks/urls";
 import { default as settings } from "@/app/settings/urls";
 import { default as subnets } from "@/app/subnets/urls";
 import { default as tags } from "@/app/tags/urls";
@@ -24,6 +25,7 @@ const urls = {
   kvm,
   machines,
   pools,
+  racks,
   preferences,
   settings,
   subnets,
