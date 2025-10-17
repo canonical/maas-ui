@@ -26,6 +26,15 @@ const navGroups: NavGroup[] = [
         label: "Controllers",
         url: urls.controllers.index,
       },
+      ...(import.meta.env.VITE_APP_AGENT_ENROLLMENT === "true"
+        ? [
+            {
+              highlight: [urls.racks.index],
+              label: "Racks",
+              url: urls.racks.index,
+            },
+          ]
+        : []),
     ],
   },
   {

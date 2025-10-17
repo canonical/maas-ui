@@ -4,6 +4,10 @@ import {
   type Options,
   accessToken,
   login,
+  deleteBootResourceById,
+  deleteAgent,
+  getAgent,
+  listAgents,
   listBootSources,
   createBootSource,
   listBootSourceBootSourceSelection,
@@ -13,7 +17,8 @@ import {
   updateBootSource,
   deleteBootSourceBootSourceSelection,
   getBootSourceBootSourceSelection,
-  fetchBootSources,
+  updateBootSourceBootSourceSelection,
+  fetchBootSourcesAvailableImages,
   getConfiguration,
   setConfiguration,
   getConfigurations,
@@ -35,6 +40,11 @@ import {
   deleteFabric,
   getFabric,
   updateFabric,
+  deleteFile,
+  listFiles,
+  createOrReplaceFile,
+  getFile,
+  getFileByKey,
   listInterfaces,
   listFabricVlanSubnetIprange,
   createFabricVlanSubnetIprange,
@@ -56,6 +66,11 @@ import {
   deletePackageRepository,
   getPackageRepository,
   updatePackageRepository,
+  listRacks,
+  createRack,
+  deleteRacks,
+  getRack,
+  updateRack,
   listFabricVlanSubnetReservedIps,
   createFabricVlanSubnetReservedIp,
   deleteFabricVlanSubnetReservedIp,
@@ -134,6 +149,16 @@ import type {
   LoginData,
   LoginError,
   LoginResponse,
+  DeleteBootResourceByIdData,
+  DeleteBootResourceByIdError,
+  DeleteBootResourceByIdResponse,
+  DeleteAgentData,
+  DeleteAgentError,
+  DeleteAgentResponse,
+  GetAgentData,
+  ListAgentsData,
+  ListAgentsError,
+  ListAgentsResponse,
   ListBootSourcesData,
   ListBootSourcesError,
   ListBootSourcesResponse,
@@ -157,9 +182,12 @@ import type {
   DeleteBootSourceBootSourceSelectionError,
   DeleteBootSourceBootSourceSelectionResponse,
   GetBootSourceBootSourceSelectionData,
-  FetchBootSourcesData,
-  FetchBootSourcesError,
-  FetchBootSourcesResponse,
+  UpdateBootSourceBootSourceSelectionData,
+  UpdateBootSourceBootSourceSelectionError,
+  UpdateBootSourceBootSourceSelectionResponse,
+  FetchBootSourcesAvailableImagesData,
+  FetchBootSourcesAvailableImagesError,
+  FetchBootSourcesAvailableImagesResponse,
   GetConfigurationData,
   SetConfigurationData,
   SetConfigurationError,
@@ -211,6 +239,15 @@ import type {
   UpdateFabricData,
   UpdateFabricError,
   UpdateFabricResponse,
+  DeleteFileData,
+  DeleteFileError,
+  DeleteFileResponse,
+  ListFilesData,
+  CreateOrReplaceFileData,
+  CreateOrReplaceFileError,
+  CreateOrReplaceFileResponse,
+  GetFileData,
+  GetFileByKeyData,
   ListInterfacesData,
   ListInterfacesError,
   ListInterfacesResponse,
@@ -266,6 +303,19 @@ import type {
   UpdatePackageRepositoryData,
   UpdatePackageRepositoryError,
   UpdatePackageRepositoryResponse,
+  ListRacksData,
+  ListRacksError,
+  ListRacksResponse,
+  CreateRackData,
+  CreateRackError,
+  CreateRackResponse,
+  DeleteRacksData,
+  DeleteRacksError,
+  DeleteRacksResponse,
+  GetRackData,
+  UpdateRackData,
+  UpdateRackError,
+  UpdateRackResponse,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsError,
   ListFabricVlanSubnetReservedIpsResponse,
@@ -537,19 +587,70 @@ export const loginMutation = (
   return mutationOptions;
 };
 
-export const listBootSourcesQueryKey = (
-  options?: Options<ListBootSourcesData>
-) => createQueryKey("listBootSources", options);
+/**
+ * Delete Boot Resource By Id
+ */
+export const deleteBootResourceByIdMutation = (
+  options?: Partial<Options<DeleteBootResourceByIdData>>
+): UseMutationOptions<
+  DeleteBootResourceByIdResponse,
+  DeleteBootResourceByIdError,
+  Options<DeleteBootResourceByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteBootResourceByIdResponse,
+    DeleteBootResourceByIdError,
+    Options<DeleteBootResourceByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteBootResourceById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
 
 /**
- * List Boot Sources
+ * Delete Agent
  */
-export const listBootSourcesOptions = (
-  options?: Options<ListBootSourcesData>
-) => {
+export const deleteAgentMutation = (
+  options?: Partial<Options<DeleteAgentData>>
+): UseMutationOptions<
+  DeleteAgentResponse,
+  DeleteAgentError,
+  Options<DeleteAgentData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteAgentResponse,
+    DeleteAgentError,
+    Options<DeleteAgentData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteAgent({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getAgentQueryKey = (options: Options<GetAgentData>) =>
+  createQueryKey("getAgent", options);
+
+/**
+ * Get Agent
+ */
+export const getAgentOptions = (options: Options<GetAgentData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listBootSources({
+      const { data } = await getAgent({
         ...options,
         ...queryKey[0],
         signal,
@@ -557,7 +658,28 @@ export const listBootSourcesOptions = (
       });
       return data;
     },
-    queryKey: listBootSourcesQueryKey(options),
+    queryKey: getAgentQueryKey(options),
+  });
+};
+
+export const listAgentsQueryKey = (options?: Options<ListAgentsData>) =>
+  createQueryKey("listAgents", options);
+
+/**
+ * List Agents
+ */
+export const listAgentsOptions = (options?: Options<ListAgentsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listAgents({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listAgentsQueryKey(options),
   });
 };
 
@@ -595,6 +717,81 @@ const createInfiniteParams = <
     };
   }
   return params as unknown as typeof page;
+};
+
+export const listAgentsInfiniteQueryKey = (
+  options?: Options<ListAgentsData>
+): QueryKey<Options<ListAgentsData>> =>
+  createQueryKey("listAgents", options, true);
+
+/**
+ * List Agents
+ */
+export const listAgentsInfiniteOptions = (
+  options?: Options<ListAgentsData>
+) => {
+  return infiniteQueryOptions<
+    ListAgentsResponse,
+    ListAgentsError,
+    InfiniteData<ListAgentsResponse>,
+    QueryKey<Options<ListAgentsData>>,
+    | Pick<
+        QueryKey<Options<ListAgentsData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListAgentsData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listAgents({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listAgentsInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const listBootSourcesQueryKey = (
+  options?: Options<ListBootSourcesData>
+) => createQueryKey("listBootSources", options);
+
+/**
+ * List Boot Sources
+ */
+export const listBootSourcesOptions = (
+  options?: Options<ListBootSourcesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listBootSources({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listBootSourcesQueryKey(options),
+  });
 };
 
 export const listBootSourcesInfiniteQueryKey = (
@@ -951,19 +1148,46 @@ export const getBootSourceBootSourceSelectionOptions = (
   });
 };
 
-export const fetchBootSourcesQueryKey = (
-  options: Options<FetchBootSourcesData>
-) => createQueryKey("fetchBootSources", options);
+/**
+ * Update Boot Source Boot Source Selection
+ */
+export const updateBootSourceBootSourceSelectionMutation = (
+  options?: Partial<Options<UpdateBootSourceBootSourceSelectionData>>
+): UseMutationOptions<
+  UpdateBootSourceBootSourceSelectionResponse,
+  UpdateBootSourceBootSourceSelectionError,
+  Options<UpdateBootSourceBootSourceSelectionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateBootSourceBootSourceSelectionResponse,
+    UpdateBootSourceBootSourceSelectionError,
+    Options<UpdateBootSourceBootSourceSelectionData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updateBootSourceBootSourceSelection({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const fetchBootSourcesAvailableImagesQueryKey = (
+  options: Options<FetchBootSourcesAvailableImagesData>
+) => createQueryKey("fetchBootSourcesAvailableImages", options);
 
 /**
- * Fetch Boot Sources
+ * Fetch Boot Sources Available Images
  */
-export const fetchBootSourcesOptions = (
-  options: Options<FetchBootSourcesData>
+export const fetchBootSourcesAvailableImagesOptions = (
+  options: Options<FetchBootSourcesAvailableImagesData>
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await fetchBootSources({
+      const { data } = await fetchBootSourcesAvailableImages({
         ...options,
         ...queryKey[0],
         signal,
@@ -971,27 +1195,27 @@ export const fetchBootSourcesOptions = (
       });
       return data;
     },
-    queryKey: fetchBootSourcesQueryKey(options),
+    queryKey: fetchBootSourcesAvailableImagesQueryKey(options),
   });
 };
 
 /**
- * Fetch Boot Sources
+ * Fetch Boot Sources Available Images
  */
-export const fetchBootSourcesMutation = (
-  options?: Partial<Options<FetchBootSourcesData>>
+export const fetchBootSourcesAvailableImagesMutation = (
+  options?: Partial<Options<FetchBootSourcesAvailableImagesData>>
 ): UseMutationOptions<
-  FetchBootSourcesResponse,
-  FetchBootSourcesError,
-  Options<FetchBootSourcesData>
+  FetchBootSourcesAvailableImagesResponse,
+  FetchBootSourcesAvailableImagesError,
+  Options<FetchBootSourcesAvailableImagesData>
 > => {
   const mutationOptions: UseMutationOptions<
-    FetchBootSourcesResponse,
-    FetchBootSourcesError,
-    Options<FetchBootSourcesData>
+    FetchBootSourcesAvailableImagesResponse,
+    FetchBootSourcesAvailableImagesError,
+    Options<FetchBootSourcesAvailableImagesData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await fetchBootSources({
+      const { data } = await fetchBootSourcesAvailableImages({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1789,6 +2013,123 @@ export const updateFabricMutation = (
     },
   };
   return mutationOptions;
+};
+
+/**
+ * Delete File
+ */
+export const deleteFileMutation = (
+  options?: Partial<Options<DeleteFileData>>
+): UseMutationOptions<
+  DeleteFileResponse,
+  DeleteFileError,
+  Options<DeleteFileData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteFileResponse,
+    DeleteFileError,
+    Options<DeleteFileData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteFile({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listFilesQueryKey = (options?: Options<ListFilesData>) =>
+  createQueryKey("listFiles", options);
+
+/**
+ * List Files
+ */
+export const listFilesOptions = (options?: Options<ListFilesData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listFiles({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listFilesQueryKey(options),
+  });
+};
+
+/**
+ * Create Or Replace File
+ */
+export const createOrReplaceFileMutation = (
+  options?: Partial<Options<CreateOrReplaceFileData>>
+): UseMutationOptions<
+  CreateOrReplaceFileResponse,
+  CreateOrReplaceFileError,
+  Options<CreateOrReplaceFileData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateOrReplaceFileResponse,
+    CreateOrReplaceFileError,
+    Options<CreateOrReplaceFileData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createOrReplaceFile({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getFileQueryKey = (options: Options<GetFileData>) =>
+  createQueryKey("getFile", options);
+
+/**
+ * Get File
+ */
+export const getFileOptions = (options: Options<GetFileData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFile({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFileQueryKey(options),
+  });
+};
+
+export const getFileByKeyQueryKey = (options: Options<GetFileByKeyData>) =>
+  createQueryKey("getFileByKey", options);
+
+/**
+ * Get File By Key
+ */
+export const getFileByKeyOptions = (options: Options<GetFileByKeyData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFileByKey({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFileByKeyQueryKey(options),
+  });
 };
 
 export const listInterfacesQueryKey = (options: Options<ListInterfacesData>) =>
@@ -2762,6 +3103,199 @@ export const updatePackageRepositoryMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await updatePackageRepository({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listRacksQueryKey = (options?: Options<ListRacksData>) =>
+  createQueryKey("listRacks", options);
+
+/**
+ * List Racks
+ */
+export const listRacksOptions = (options?: Options<ListRacksData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listRacks({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listRacksQueryKey(options),
+  });
+};
+
+export const listRacksInfiniteQueryKey = (
+  options?: Options<ListRacksData>
+): QueryKey<Options<ListRacksData>> =>
+  createQueryKey("listRacks", options, true);
+
+/**
+ * List Racks
+ */
+export const listRacksInfiniteOptions = (options?: Options<ListRacksData>) => {
+  return infiniteQueryOptions<
+    ListRacksResponse,
+    ListRacksError,
+    InfiniteData<ListRacksResponse>,
+    QueryKey<Options<ListRacksData>>,
+    | Pick<
+        QueryKey<Options<ListRacksData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListRacksData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listRacks({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listRacksInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createRackQueryKey = (options: Options<CreateRackData>) =>
+  createQueryKey("createRack", options);
+
+/**
+ * Create Rack
+ */
+export const createRackOptions = (options: Options<CreateRackData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createRack({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createRackQueryKey(options),
+  });
+};
+
+/**
+ * Create Rack
+ */
+export const createRackMutation = (
+  options?: Partial<Options<CreateRackData>>
+): UseMutationOptions<
+  CreateRackResponse,
+  CreateRackError,
+  Options<CreateRackData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateRackResponse,
+    CreateRackError,
+    Options<CreateRackData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createRack({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete Racks
+ */
+export const deleteRacksMutation = (
+  options?: Partial<Options<DeleteRacksData>>
+): UseMutationOptions<
+  DeleteRacksResponse,
+  DeleteRacksError,
+  Options<DeleteRacksData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteRacksResponse,
+    DeleteRacksError,
+    Options<DeleteRacksData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteRacks({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getRackQueryKey = (options: Options<GetRackData>) =>
+  createQueryKey("getRack", options);
+
+/**
+ * Get Rack
+ */
+export const getRackOptions = (options: Options<GetRackData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getRack({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getRackQueryKey(options),
+  });
+};
+
+/**
+ * Update Rack
+ */
+export const updateRackMutation = (
+  options?: Partial<Options<UpdateRackData>>
+): UseMutationOptions<
+  UpdateRackResponse,
+  UpdateRackError,
+  Options<UpdateRackData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateRackResponse,
+    UpdateRackError,
+    Options<UpdateRackData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updateRack({
         ...options,
         ...localOptions,
         throwOnError: true,

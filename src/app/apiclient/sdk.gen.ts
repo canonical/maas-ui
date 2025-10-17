@@ -5,6 +5,7 @@ import {
   type TDataShape,
   type Client,
   urlSearchParamsBodySerializer,
+  formDataBodySerializer,
 } from "./client";
 import type {
   AccessTokenData,
@@ -13,6 +14,18 @@ import type {
   LoginData,
   LoginResponses,
   LoginErrors,
+  DeleteBootResourceByIdData,
+  DeleteBootResourceByIdResponses,
+  DeleteBootResourceByIdErrors,
+  DeleteAgentData,
+  DeleteAgentResponses,
+  DeleteAgentErrors,
+  GetAgentData,
+  GetAgentResponses,
+  GetAgentErrors,
+  ListAgentsData,
+  ListAgentsResponses,
+  ListAgentsErrors,
   ListBootSourcesData,
   ListBootSourcesResponses,
   ListBootSourcesErrors,
@@ -40,9 +53,12 @@ import type {
   GetBootSourceBootSourceSelectionData,
   GetBootSourceBootSourceSelectionResponses,
   GetBootSourceBootSourceSelectionErrors,
-  FetchBootSourcesData,
-  FetchBootSourcesResponses,
-  FetchBootSourcesErrors,
+  UpdateBootSourceBootSourceSelectionData,
+  UpdateBootSourceBootSourceSelectionResponses,
+  UpdateBootSourceBootSourceSelectionErrors,
+  FetchBootSourcesAvailableImagesData,
+  FetchBootSourcesAvailableImagesResponses,
+  FetchBootSourcesAvailableImagesErrors,
   GetConfigurationData,
   GetConfigurationResponses,
   GetConfigurationErrors,
@@ -106,6 +122,21 @@ import type {
   UpdateFabricData,
   UpdateFabricResponses,
   UpdateFabricErrors,
+  DeleteFileData,
+  DeleteFileResponses,
+  DeleteFileErrors,
+  ListFilesData,
+  ListFilesResponses,
+  ListFilesErrors,
+  CreateOrReplaceFileData,
+  CreateOrReplaceFileResponses,
+  CreateOrReplaceFileErrors,
+  GetFileData,
+  GetFileResponses,
+  GetFileErrors,
+  GetFileByKeyData,
+  GetFileByKeyResponses,
+  GetFileByKeyErrors,
   ListInterfacesData,
   ListInterfacesResponses,
   ListInterfacesErrors,
@@ -169,6 +200,21 @@ import type {
   UpdatePackageRepositoryData,
   UpdatePackageRepositoryResponses,
   UpdatePackageRepositoryErrors,
+  ListRacksData,
+  ListRacksResponses,
+  ListRacksErrors,
+  CreateRackData,
+  CreateRackResponses,
+  CreateRackErrors,
+  DeleteRacksData,
+  DeleteRacksResponses,
+  DeleteRacksErrors,
+  GetRackData,
+  GetRackResponses,
+  GetRackErrors,
+  UpdateRackData,
+  UpdateRackResponses,
+  UpdateRackErrors,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsResponses,
   ListFabricVlanSubnetReservedIpsErrors,
@@ -431,6 +477,94 @@ export const login = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Delete Boot Resource By Id
+ */
+export const deleteBootResourceById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteBootResourceByIdData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteBootResourceByIdResponses,
+    DeleteBootResourceByIdErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_resources/{resource_id}",
+    ...options,
+  });
+};
+
+/**
+ * Delete Agent
+ */
+export const deleteAgent = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteAgentData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteAgentResponses,
+    DeleteAgentErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/agents/{agent_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Agent
+ */
+export const getAgent = <ThrowOnError extends boolean = false>(
+  options: Options<GetAgentData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetAgentResponses,
+    GetAgentErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/agents/{agent_id}",
+    ...options,
+  });
+};
+
+/**
+ * List Agents
+ */
+export const listAgents = <ThrowOnError extends boolean = false>(
+  options?: Options<ListAgentsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListAgentsResponses,
+    ListAgentsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/agents",
+    ...options,
+  });
+};
+
+/**
  * List Boot Sources
  */
 export const listBootSources = <ThrowOnError extends boolean = false>(
@@ -649,14 +783,44 @@ export const getBootSourceBootSourceSelection = <
 };
 
 /**
- * Fetch Boot Sources
+ * Update Boot Source Boot Source Selection
  */
-export const fetchBootSources = <ThrowOnError extends boolean = false>(
-  options: Options<FetchBootSourcesData, ThrowOnError>
+export const updateBootSourceBootSourceSelection = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<UpdateBootSourceBootSourceSelectionData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateBootSourceBootSourceSelectionResponses,
+    UpdateBootSourceBootSourceSelectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Fetch Boot Sources Available Images
+ */
+export const fetchBootSourcesAvailableImages = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<FetchBootSourcesAvailableImagesData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).post<
-    FetchBootSourcesResponses,
-    FetchBootSourcesErrors,
+    FetchBootSourcesAvailableImagesResponses,
+    FetchBootSourcesAvailableImagesErrors,
     ThrowOnError
   >({
     security: [
@@ -1167,6 +1331,121 @@ export const updateFabric = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Delete File
+ */
+export const deleteFile = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteFileData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteFileResponses,
+    DeleteFileErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/files",
+    ...options,
+  });
+};
+
+/**
+ * List Files
+ */
+export const listFiles = <ThrowOnError extends boolean = false>(
+  options?: Options<ListFilesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListFilesResponses,
+    ListFilesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/files",
+    ...options,
+  });
+};
+
+/**
+ * Create Or Replace File
+ */
+export const createOrReplaceFile = <ThrowOnError extends boolean = false>(
+  options: Options<CreateOrReplaceFileData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    CreateOrReplaceFileResponses,
+    CreateOrReplaceFileErrors,
+    ThrowOnError
+  >({
+    ...formDataBodySerializer,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/files",
+    ...options,
+    headers: {
+      "Content-Type": null,
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Get File
+ */
+export const getFile = <ThrowOnError extends boolean = false>(
+  options: Options<GetFileData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetFileResponses,
+    GetFileErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/files:get",
+    ...options,
+  });
+};
+
+/**
+ * Get File By Key
+ */
+export const getFileByKey = <ThrowOnError extends boolean = false>(
+  options: Options<GetFileByKeyData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetFileByKeyResponses,
+    GetFileByKeyErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/files/{key}",
+    ...options,
+  });
+};
+
+/**
  * List Interfaces
  */
 export const listInterfaces = <ThrowOnError extends boolean = false>(
@@ -1654,6 +1933,124 @@ export const updatePackageRepository = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * List Racks
+ */
+export const listRacks = <ThrowOnError extends boolean = false>(
+  options?: Options<ListRacksData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListRacksResponses,
+    ListRacksErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/racks",
+    ...options,
+  });
+};
+
+/**
+ * Create Rack
+ */
+export const createRack = <ThrowOnError extends boolean = false>(
+  options: Options<CreateRackData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateRackResponses,
+    CreateRackErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/racks",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete Racks
+ */
+export const deleteRacks = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteRacksData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteRacksResponses,
+    DeleteRacksErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/racks/{rack_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Rack
+ */
+export const getRack = <ThrowOnError extends boolean = false>(
+  options: Options<GetRackData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetRackResponses,
+    GetRackErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/racks/{rack_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Rack
+ */
+export const updateRack = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateRackData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateRackResponses,
+    UpdateRackErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/racks/{rack_id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
