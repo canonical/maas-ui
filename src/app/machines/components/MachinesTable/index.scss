@@ -4,6 +4,9 @@
   th,td {
     &.fqdn {
       width: 15%;
+      .p-double-row__secondary-row {
+        text-align: left;
+      }
     }
 
     &.power {
@@ -15,15 +18,24 @@
     }
 
     &.owner {
-      width: 9%;
+      width: 10%;
     }
 
-    &.pool, .zone, .fabric {
+    &.pool, &.zone, &.fabric {
       width: 8%;
     }
 
-    &.ram, .cores, .disks, .storage {
-      width: 5%;
+    &.ram, &.cores, &.disks, &.storage {
+      width: 6%;
+      text-align: right;
+    }
+  }
+
+  &.has-hidden-columns {
+    th,td {
+      &.fqdn {
+        width: auto;
+      }
     }
   }
 }

@@ -23,7 +23,6 @@ import PowerIcon from "@/app/base/components/PowerIcon";
 import TableHeader from "@/app/base/components/TableHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import type { MachineMenuAction } from "@/app/base/hooks/node";
-import type { Sort } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { useToggleMenu } from "@/app/machines/hooks";
 import MachineListGroupCount from "@/app/machines/views/MachineList/MachineListTable/MachineListGroupCount";
@@ -254,8 +253,7 @@ const getSpaces = (machine: Machine) => {
 const useMachinesTableColumns = (
   grouping: FetchGroupKey,
   group: MachineStateListGroup,
-  filter: FetchFilters,
-  sort: Sort
+  filter: FetchFilters
 ): MachineColumnDef[] => {
   const dispatch = useDispatch();
   const generalMachineActions = useSelector(machineActionsSelectors.get);
@@ -304,32 +302,29 @@ const useMachinesTableColumns = (
         {
           id: "fqdn",
           accessorKey: "fqdn",
-          enableSorting: true,
+          enableSorting: false,
           header: () => {
             return (
               <>
                 <TableHeader
-                  currentSort={sort}
                   data-testid="fqdn-header"
                   onClick={() => {
                     setShowMAC(false);
                   }}
-                  sortKey="hostname"
                 >
                   FQDN
                 </TableHeader>
                 &nbsp;<strong>|</strong>&nbsp;
                 <TableHeader
-                  currentSort={sort}
                   data-testid="mac-header"
                   onClick={() => {
                     setShowMAC(true);
                   }}
-                  sortKey="mac"
                 >
                   MAC
                 </TableHeader>
-                <TableHeader>IP</TableHeader>
+                <br />
+                <span>IP</span>
               </>
             );
           },
@@ -431,7 +426,7 @@ const useMachinesTableColumns = (
         {
           id: "power",
           accessorKey: "power",
-          enableSorting: true,
+          enableSorting: false,
           header: "Power",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             const powerState = machine.power_state || PowerState.UNKNOWN;
@@ -536,7 +531,7 @@ const useMachinesTableColumns = (
         {
           id: "status",
           accessorKey: "status",
-          enableSorting: true,
+          enableSorting: false,
           header: "Status",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             const statusText = getStatusText(
@@ -653,12 +648,11 @@ const useMachinesTableColumns = (
         {
           id: "owner",
           accessorKey: "owner",
-          enableSorting: true,
+          enableSorting: false,
           header: () => {
             return (
               <>
                 <TableHeader
-                  currentSort={sort}
                   data-testid="owner-header"
                   onClick={() => {
                     setShowFullName(false);
@@ -669,7 +663,6 @@ const useMachinesTableColumns = (
                 </TableHeader>
                 &nbsp;<strong>|</strong>&nbsp;
                 <TableHeader
-                  currentSort={sort}
                   data-testid="owner-name-header"
                   onClick={() => {
                     setShowFullName(true);
@@ -678,7 +671,8 @@ const useMachinesTableColumns = (
                 >
                   Name
                 </TableHeader>
-                <TableHeader>Tags</TableHeader>
+                <br />
+                <span>Tags</span>
               </>
             );
           },
@@ -722,18 +716,13 @@ const useMachinesTableColumns = (
         {
           id: "pool",
           accessorKey: "pool",
-          enableSorting: true,
+          enableSorting: false,
           header: () => {
             return (
               <>
-                <TableHeader
-                  currentSort={sort}
-                  data-testid="pool-header"
-                  sortKey="pool"
-                >
-                  Pool
-                </TableHeader>
-                <TableHeader>Note</TableHeader>
+                Pool
+                <br />
+                Note
               </>
             );
           },
@@ -768,15 +757,11 @@ const useMachinesTableColumns = (
         {
           id: "zone",
           accessorKey: "zone",
-          enableSorting: true,
+          enableSorting: false,
           header: () => {
             return (
               <>
-                <TableHeader
-                  currentSort={sort}
-                  data-testid="zone-header"
-                  sortKey="zone"
-                >
+                <TableHeader data-testid="zone-header" sortKey="zone">
                   Zone
                 </TableHeader>
                 <TableHeader>Spaces</TableHeader>
@@ -803,15 +788,11 @@ const useMachinesTableColumns = (
         {
           id: "fabric",
           accessorKey: "fabric",
-          enableSorting: false, // TODO: enable sorting with v3
+          enableSorting: false,
           header: () => {
             return (
               <>
-                <TableHeader
-                  currentSort={sort}
-                  data-testid="fabric-header"
-                  sortKey="fabric"
-                >
+                <TableHeader data-testid="fabric-header" sortKey="fabric">
                   Fabric
                 </TableHeader>
                 <TableHeader>VLAN</TableHeader>
@@ -854,17 +835,13 @@ const useMachinesTableColumns = (
           },
         },
         {
-          id: "cores",
+          id: "cpu",
           accessorKey: "cpu_count",
-          enableSorting: true,
+          enableSorting: false,
           header: () => {
             return (
               <>
-                <TableHeader
-                  currentSort={sort}
-                  data-testid="cores-header"
-                  sortKey="cpuCount"
-                >
+                <TableHeader data-testid="cores-header" sortKey="cpuCount">
                   Cores
                 </TableHeader>
                 <TableHeader>Arch</TableHeader>
@@ -901,9 +878,9 @@ const useMachinesTableColumns = (
           },
         },
         {
-          id: "ram",
+          id: "memory",
           accessorKey: "memory",
-          enableSorting: true,
+          enableSorting: false,
           header: "RAM",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             return (
@@ -925,7 +902,7 @@ const useMachinesTableColumns = (
         {
           id: "disks",
           accessorKey: "physical_disk_count",
-          enableSorting: true,
+          enableSorting: false,
           header: "Disks",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             return (
@@ -947,7 +924,7 @@ const useMachinesTableColumns = (
         {
           id: "storage",
           accessorKey: "storage",
-          enableSorting: true,
+          enableSorting: false,
           header: "Storage",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             const formattedStorage = formatBytes({
@@ -984,7 +961,6 @@ const useMachinesTableColumns = (
       resourcePools?.items,
       showFullName,
       showMAC,
-      sort,
       tags,
       toggleMenu,
       users?.items,
