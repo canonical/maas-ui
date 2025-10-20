@@ -7,7 +7,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 const RackSchema = Yup.object().shape({
-  name: Yup.string().required("name is required"),
+  name: Yup.string().required("'Name' is a required field."),
 });
 
 const AddRack = () => {
