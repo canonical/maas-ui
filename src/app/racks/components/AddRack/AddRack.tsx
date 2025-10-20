@@ -29,7 +29,9 @@ const AddRack = () => {
           },
         });
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={() => {
+        closeSidePanel();
+      }}
       resetOnSave={true}
       saved={createRack.isSuccess}
       saving={createRack.isPending}

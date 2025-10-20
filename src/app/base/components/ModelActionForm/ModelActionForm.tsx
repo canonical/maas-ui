@@ -33,7 +33,7 @@ const ModelActionForm = <V extends object, E = null>({
             ) : (
               <>
                 Are you sure you want to delete this {modelType}? This action is
-                permanent and can not be undone.
+                permanent and cannot be undone.
               </>
             )}
           </p>

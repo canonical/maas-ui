@@ -28,8 +28,8 @@ import {
   createRackMutation,
   deleteRacksMutation,
   getRackOptions,
-  listRacksInfiniteQueryKey,
   listRacksOptions,
+  listRacksQueryKey,
   updateRackMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
@@ -63,7 +63,7 @@ export const useCreateRack = (mutationOptions?: Options<CreateRackData>) => {
     ...createRackMutation(mutationOptions),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listRacksInfiniteQueryKey(),
+        queryKey: listRacksQueryKey(),
       });
     },
   });
@@ -79,7 +79,7 @@ export const useUpdateRack = (mutationOptions?: Options<UpdateRackData>) => {
     ...updateRackMutation(mutationOptions),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listRacksInfiniteQueryKey(),
+        queryKey: listRacksQueryKey(),
       });
     },
   });
@@ -95,7 +95,7 @@ export const useDeleteRack = (mutationOptions?: Options<DeleteRacksData>) => {
     ...deleteRacksMutation(mutationOptions),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listRacksInfiniteQueryKey(),
+        queryKey: listRacksQueryKey(),
       });
     },
   });
