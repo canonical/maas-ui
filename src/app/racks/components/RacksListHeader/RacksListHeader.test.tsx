@@ -12,8 +12,7 @@ import {
 const { mockOpen } = await mockSidePanel();
 
 describe("RacksListHeader", () => {
-  // TODO : Enable this test once this is completed https://warthogs.atlassian.net/browse/MAASENG-5429
-  it.skip("displays the form when Add Rack is clicked", async () => {
+  it("displays the form when Add Rack is clicked", async () => {
     renderWithProviders(
       <RacksListHeader searchFilter={""} setSearchFilter={vi.fn()} />
     );
