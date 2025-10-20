@@ -4,8 +4,12 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 import pluralize from "pluralize";
 import { Link } from "react-router";
 
+import DeleteRack from "../../DeleteRack";
+import EditRack from "../../EditRack";
+
 import type { RackResponse } from "@/app/apiclient";
 import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import { FilterControllers } from "@/app/store/controller/utils";
 
@@ -42,6 +46,7 @@ const getControllersLabel = (row: Row<RackWithSummaryResponse>) => {
 };
 
 const useRacksTableColumns = (): RacksColumnDef[] => {
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () => [
       {
@@ -64,17 +69,27 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",
-        cell: () => {
+        cell: ({ row }) => {
           return (
             <TableActionsDropdown
               actions={actions}
               onActionClick={(action: RackActions) => {
                 switch (action) {
                   case RackActions.Edit:
-                    // openSidePanel(<EditRack rack={row.original} />);
+                    openSidePanel({
+                      component: EditRack,
+                      title: "Edit rack",
+                      props: { id: row.original.id },
+                    });
                     break;
                   case RackActions.Delete:
-                    // openSidePanel(<DeleteRack rack={row.original} />);
+                    openSidePanel({
+                      component: DeleteRack,
+                      title: "Delete rack",
+                      props: {
+                        id: row.original.id,
+                      },
+                    });
                     break;
                   case RackActions.RegisterController:
                     // openSidePanel(<RegisterController rack={row.original} />);
@@ -91,7 +106,7 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
         },
       },
     ],
-    []
+    [openSidePanel]
   );
 };
 
