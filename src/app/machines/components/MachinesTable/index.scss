@@ -23,9 +23,12 @@
 
     &.pool, &.zone, &.fabric {
       width: 8%;
+      button {
+        text-align: left;
+      }
     }
 
-    &.ram, &.cores, &.disks, &.storage {
+    &.cpu, &.memory, &.disks, &.storage {
       width: 6%;
       text-align: right;
     }

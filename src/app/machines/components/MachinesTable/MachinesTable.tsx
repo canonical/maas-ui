@@ -2,12 +2,13 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
-import type { RowSelectionState } from "@tanstack/react-table";
+import type { RowSelectionState, SortingState } from "@tanstack/react-table";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
 import VaultNotification from "@/app/base/components/VaultNotification";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
+import type { Sort } from "@/app/base/types";
 import useMachinesTableColumns, {
   filterCells,
   filterHeaders,
@@ -31,6 +32,21 @@ type MachinesTableProps = {
   searchFilter: FetchFilters;
 };
 
+export const SortKeyMapping: Record<string, FetchGroupKey> = {
+  hostname: FetchGroupKey.Hostname,
+  mac: FetchGroupKey.Hostname,
+  power: FetchGroupKey.PowerState,
+  status: FetchGroupKey.Status,
+  owner: FetchGroupKey.Owner,
+  ownerName: FetchGroupKey.Owner,
+  pool: FetchGroupKey.Pool,
+  zone: FetchGroupKey.Zone,
+  cpuCount: FetchGroupKey.CpuCount,
+  ram: FetchGroupKey.Memory,
+  disks: FetchGroupKey.PhysicalDiskCount,
+  storage: FetchGroupKey.TotalStorage,
+};
+
 const MachinesTable = ({
   grouping,
   hiddenColumns,
@@ -42,6 +58,18 @@ const MachinesTable = ({
   const { page, size, handlePageSizeChange, setPage } = usePagination();
   const errors = useSelector(machineSelectors.errors);
 
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "hostname", desc: false },
+  ]);
+  const sort: Sort<FetchGroupKey> = {
+    key: sorting.length ? SortKeyMapping[sorting[0].id] : null,
+    direction: sorting.length
+      ? sorting[0].desc
+        ? "descending"
+        : "ascending"
+      : "none",
+  };
+
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const { groups, loading, machineCount, machines, machinesErrors } =
@@ -49,8 +77,8 @@ const MachinesTable = ({
       collapsedGroups: hiddenGroups,
       filters: searchFilter,
       grouping,
-      sortDirection: "ascending",
-      sortKey: FetchGroupKey.Hostname,
+      sortDirection: sort.direction,
+      sortKey: sort.key,
       pagination: {
         currentPage: page,
         setCurrentPage: setPage,
@@ -101,7 +129,9 @@ const MachinesTable = ({
         pinGroup={groups.map((g) => ({ value: g.name ?? "", isTop: true }))}
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
+        setSorting={setSorting}
         showChevron
+        sorting={sorting}
         variant="full-height"
       />
     </>

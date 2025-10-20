@@ -4,16 +4,16 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useMatch } from "react-router";
 import { useStorageState } from "react-storage-hooks";
 
-import MachineForms from "../components/MachineForms";
-
-import MachineListHeader from "./MachineList/MachineListHeader";
 import { useGrouping, useResponsiveColumns } from "./MachineList/hooks";
 
-import PageContent from "@/app/base/components/PageContent/PageContent";
+import PageContent from "@/app/base/components/PageContent";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
+import MachineForms from "@/app/machines/components/MachineForms";
+import MachinesList from "@/app/machines/components/MachinesTable/MachinesList";
 import MachineList from "@/app/machines/views/MachineList";
+import MachineListHeader from "@/app/machines/views/MachineList/MachineListHeader";
 import machineSelectors from "@/app/store/machine/selectors";
 import { selectedToFilters, FilterMachines } from "@/app/store/machine/utils";
 import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
@@ -68,47 +68,54 @@ const Machines = (): React.ReactElement => {
   );
 
   return (
-    <PageContent
-      header={
-        <MachineListHeader
-          grouping={grouping}
-          hiddenColumns={hiddenColumns}
-          searchFilter={searchFilter}
-          setGrouping={setGrouping}
-          setHiddenColumns={setHiddenColumns}
-          setHiddenGroups={setHiddenGroups}
-          setSearchFilter={setSearchFilter}
-          setSidePanelContent={setSidePanelContent}
-        />
-      }
-      sidePanelContent={
-        sidePanelContent && (
-          <MachineForms
+    // TODO: remove old machines components
+    <>
+      {true ? (
+        <MachinesList />
+      ) : (
+        <PageContent
+          header={
+            <MachineListHeader
+              grouping={grouping}
+              hiddenColumns={hiddenColumns}
+              searchFilter={searchFilter}
+              setGrouping={setGrouping}
+              setHiddenColumns={setHiddenColumns}
+              setHiddenGroups={setHiddenGroups}
+              setSearchFilter={setSearchFilter}
+              setSidePanelContent={setSidePanelContent}
+            />
+          }
+          sidePanelContent={
+            sidePanelContent && (
+              <MachineForms
+                searchFilter={searchFilter}
+                selectedCount={selectedCount}
+                selectedCountLoading={selectedCountLoading}
+                selectedMachines={selectedMachines}
+                setSearchFilter={setSearchFilter}
+                setSidePanelContent={setSidePanelContent}
+                sidePanelContent={sidePanelContent}
+              />
+            )
+          }
+          sidePanelTitle={
+            sidePanelContent
+              ? getSidePanelTitle("Machines", sidePanelContent)
+              : null
+          }
+        >
+          <MachineList
+            grouping={grouping}
+            headerFormOpen={!!sidePanelContent}
+            hiddenColumns={hiddenColumns}
+            hiddenGroups={hiddenGroups}
             searchFilter={searchFilter}
-            selectedCount={selectedCount}
-            selectedCountLoading={selectedCountLoading}
-            selectedMachines={selectedMachines}
-            setSearchFilter={setSearchFilter}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
+            setHiddenGroups={setHiddenGroups}
           />
-        )
-      }
-      sidePanelTitle={
-        sidePanelContent
-          ? getSidePanelTitle("Machines", sidePanelContent)
-          : null
-      }
-    >
-      <MachineList
-        grouping={grouping}
-        headerFormOpen={!!sidePanelContent}
-        hiddenColumns={hiddenColumns}
-        hiddenGroups={hiddenGroups}
-        searchFilter={searchFilter}
-        setHiddenGroups={setHiddenGroups}
-      />
-    </PageContent>
+        </PageContent>
+      )}
+    </>
   );
 };
 

@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { formatBytes } from "@canonical/maas-react-components";
 import type { MenuLink } from "@canonical/react-components";
-import { Button, Spinner, Tooltip } from "@canonical/react-components";
+import { Icon, Button, Spinner, Tooltip } from "@canonical/react-components";
 import type { Column, ColumnDef, Header, Row } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
@@ -20,7 +20,6 @@ import DoubleRow from "@/app/base/components/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import NonBreakingSpace from "@/app/base/components/NonBreakingSpace";
 import PowerIcon from "@/app/base/components/PowerIcon";
-import TableHeader from "@/app/base/components/TableHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import type { MachineMenuAction } from "@/app/base/hooks/node";
 import urls from "@/app/base/urls";
@@ -302,27 +301,46 @@ const useMachinesTableColumns = (
         {
           id: "fqdn",
           accessorKey: "fqdn",
-          enableSorting: false,
-          header: () => {
+          meta: { isInteractiveHeader: true },
+          // TODO: enable sorting by sub-headers (e.g. fqdn/pxe_mac, owner/ownerName) with v3
+          header: (header) => {
             return (
               <>
-                <TableHeader
+                <Button
+                  appearance="link"
+                  className="p-button--column-header"
                   data-testid="fqdn-header"
-                  onClick={() => {
-                    setShowMAC(false);
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const sortingFn = header.column.getToggleSortingHandler();
+                    if (!showMAC && sortingFn) {
+                      sortingFn(e);
+                    } else {
+                      setShowMAC(false);
+                    }
                   }}
+                  type="button"
                 >
                   FQDN
-                </TableHeader>
+                </Button>
                 &nbsp;<strong>|</strong>&nbsp;
-                <TableHeader
+                <Button
+                  appearance="link"
+                  className="p-button--column-header"
                   data-testid="mac-header"
                   onClick={() => {
-                    setShowMAC(true);
+                    if (!showMAC) {
+                      setShowMAC(true);
+                    }
                   }}
+                  type="button"
                 >
                   MAC
-                </TableHeader>
+                </Button>
+                {{
+                  asc: <Icon name={"chevron-up"}>ascending</Icon>,
+                  desc: <Icon name={"chevron-down"}>descending</Icon>,
+                }[header?.column?.getIsSorted() as string] ?? null}
                 <br />
                 <span>IP</span>
               </>
@@ -426,7 +444,6 @@ const useMachinesTableColumns = (
         {
           id: "power",
           accessorKey: "power",
-          enableSorting: false,
           header: "Power",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             const powerState = machine.power_state || PowerState.UNKNOWN;
@@ -531,7 +548,6 @@ const useMachinesTableColumns = (
         {
           id: "status",
           accessorKey: "status",
-          enableSorting: false,
           header: "Status",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             const statusText = getStatusText(
@@ -648,29 +664,45 @@ const useMachinesTableColumns = (
         {
           id: "owner",
           accessorKey: "owner",
-          enableSorting: false,
-          header: () => {
+          meta: { isInteractiveHeader: true },
+          header: (header) => {
             return (
               <>
-                <TableHeader
+                <Button
+                  appearance="link"
+                  className="p-button--column-header"
                   data-testid="owner-header"
-                  onClick={() => {
-                    setShowFullName(false);
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const sortingFn = header.column.getToggleSortingHandler();
+                    if (!showFullName && sortingFn) {
+                      sortingFn(e);
+                    } else {
+                      setShowFullName(false);
+                    }
                   }}
-                  sortKey="owner"
+                  type="button"
                 >
                   Owner
-                </TableHeader>
+                </Button>
                 &nbsp;<strong>|</strong>&nbsp;
-                <TableHeader
+                <Button
+                  appearance="link"
+                  className="p-button--column-header"
                   data-testid="owner-name-header"
                   onClick={() => {
-                    setShowFullName(true);
+                    if (!showFullName) {
+                      setShowFullName(true);
+                    }
                   }}
-                  sortKey="ownerName"
+                  type="button"
                 >
                   Name
-                </TableHeader>
+                </Button>
+                {{
+                  asc: <Icon name={"chevron-up"}>ascending</Icon>,
+                  desc: <Icon name={"chevron-down"}>descending</Icon>,
+                }[header?.column?.getIsSorted() as string] ?? null}
                 <br />
                 <span>Tags</span>
               </>
@@ -716,7 +748,6 @@ const useMachinesTableColumns = (
         {
           id: "pool",
           accessorKey: "pool",
-          enableSorting: false,
           header: () => {
             return (
               <>
@@ -757,14 +788,12 @@ const useMachinesTableColumns = (
         {
           id: "zone",
           accessorKey: "zone",
-          enableSorting: false,
           header: () => {
             return (
               <>
-                <TableHeader data-testid="zone-header" sortKey="zone">
-                  Zone
-                </TableHeader>
-                <TableHeader>Spaces</TableHeader>
+                Zone
+                <br />
+                Spaces
               </>
             );
           },
@@ -788,14 +817,14 @@ const useMachinesTableColumns = (
         {
           id: "fabric",
           accessorKey: "fabric",
+          // TODO: enable sorting by "fabric" when the API supports it
           enableSorting: false,
           header: () => {
             return (
               <>
-                <TableHeader data-testid="fabric-header" sortKey="fabric">
-                  Fabric
-                </TableHeader>
-                <TableHeader>VLAN</TableHeader>
+                Fabric
+                <br />
+                VLAN
               </>
             );
           },
@@ -837,14 +866,12 @@ const useMachinesTableColumns = (
         {
           id: "cpu",
           accessorKey: "cpu_count",
-          enableSorting: false,
           header: () => {
             return (
               <>
-                <TableHeader data-testid="cores-header" sortKey="cpuCount">
-                  Cores
-                </TableHeader>
-                <TableHeader>Arch</TableHeader>
+                Cores
+                <br />
+                Arch
               </>
             );
           },
@@ -880,7 +907,6 @@ const useMachinesTableColumns = (
         {
           id: "memory",
           accessorKey: "memory",
-          enableSorting: false,
           header: "RAM",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             return (
@@ -902,7 +928,6 @@ const useMachinesTableColumns = (
         {
           id: "disks",
           accessorKey: "physical_disk_count",
-          enableSorting: false,
           header: "Disks",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             return (
@@ -924,7 +949,6 @@ const useMachinesTableColumns = (
         {
           id: "storage",
           accessorKey: "storage",
-          enableSorting: false,
           header: "Storage",
           cell: ({ row: { original: machine } }: { row: Row<Machine> }) => {
             const formattedStorage = formatBytes({
