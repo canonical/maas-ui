@@ -87,7 +87,7 @@
     "typescript": "5.8.3",
     "unique-names-generator": "4.7.1",
     "vanilla-framework": "4.21.1",
-    "vite": "6.1.6",
+    "vite": "6.4.1",
     "vite-plugin-svgr": "4.3.0",
     "vite-tsconfig-paths": "5.1.4",
     "yup": "0.32.11"
