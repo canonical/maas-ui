@@ -1,6 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import NodeDevices from "./NodeDevices";
+import NodeDevicesTable from "./NodeDevicesTable";
 
 import { HardwareType } from "@/app/base/enum";
 import urls from "@/app/base/urls";
@@ -16,7 +16,7 @@ import {
 
 const mockStore = configureStore<RootState>();
 
-describe("NodeDevices", () => {
+describe("NodeDevicesTable", () => {
   it("fetches node devices by node id if not already loaded", () => {
     const machine = factory.machineDetails();
     const state = factory.rootState({
@@ -26,7 +26,7 @@ describe("NodeDevices", () => {
     });
     const store = mockStore(state);
     renderWithMockStore(
-      <NodeDevices
+      <NodeDevicesTable
         bus={NodeDeviceBus.PCIE}
         node={machine}
         setSidePanelContent={vi.fn()}
@@ -49,7 +49,7 @@ describe("NodeDevices", () => {
     });
     const store = mockStore(state);
     renderWithMockStore(
-      <NodeDevices
+      <NodeDevicesTable
         bus={NodeDeviceBus.PCIE}
         node={machine}
         setSidePanelContent={vi.fn()}
@@ -71,7 +71,7 @@ describe("NodeDevices", () => {
       }),
     });
     renderWithMockStore(
-      <NodeDevices
+      <NodeDevicesTable
         bus={NodeDeviceBus.PCIE}
         node={machine}
         setSidePanelContent={vi.fn()}
@@ -90,7 +90,7 @@ describe("NodeDevices", () => {
     const machine = factory.machineDetails();
     const state = factory.rootState();
     renderWithMockStore(
-      <NodeDevices
+      <NodeDevicesTable
         bus={NodeDeviceBus.PCIE}
         node={machine}
         setSidePanelContent={vi.fn()}
@@ -105,7 +105,7 @@ describe("NodeDevices", () => {
     const machine = factory.machineDetails();
     const state = factory.rootState();
     renderWithMockStore(
-      <NodeDevices
+      <NodeDevicesTable
         bus={NodeDeviceBus.USB}
         node={machine}
         setSidePanelContent={vi.fn()}
@@ -139,7 +139,7 @@ describe("NodeDevices", () => {
       }),
     });
     renderWithBrowserRouter(
-      <NodeDevices
+      <NodeDevicesTable
         bus={NodeDeviceBus.PCIE}
         node={machine}
         setSidePanelContent={vi.fn()}
@@ -172,7 +172,7 @@ describe("NodeDevices", () => {
       }),
     });
     renderWithBrowserRouter(
-      <NodeDevices
+      <NodeDevicesTable
         bus={NodeDeviceBus.PCIE}
         node={machine}
         setSidePanelContent={vi.fn()}
@@ -208,7 +208,7 @@ describe("NodeDevices", () => {
       }),
     });
     renderWithBrowserRouter(
-      <NodeDevices bus={NodeDeviceBus.PCIE} node={controller} />,
+      <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={controller} />,
       { route: "/controller/abc123/pci-devices", state }
     );
 
@@ -240,7 +240,7 @@ describe("NodeDevices", () => {
       }),
     });
     renderWithBrowserRouter(
-      <NodeDevices
+      <NodeDevicesTable
         bus={NodeDeviceBus.PCIE}
         node={machine}
         setSidePanelContent={vi.fn()}
