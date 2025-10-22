@@ -58,7 +58,7 @@ describe("NodeDevicesTable", () => {
       });
     });
 
-    describe("displays a message when rendering an empty list", () => {
+    describe("empty state", () => {
       it("prompts user to commission machine if no devices found and machine can be commissioned", async () => {
         const setSidePanelContent = vi.fn();
         const machine = factory.machineDetails({
