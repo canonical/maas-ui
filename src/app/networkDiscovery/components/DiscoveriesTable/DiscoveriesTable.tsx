@@ -54,7 +54,7 @@ const DiscoveriesTable = (): ReactElement => {
             ? "No discoveries match the search criteria."
             : "No discoveries available."
         }
-        sortBy={[{ id: "last_seen", desc: false }]}
+        sorting={[{ id: "last_seen", desc: false }]}
       />
     </div>
   );

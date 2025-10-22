@@ -54,7 +54,7 @@ const UsersTable = () => {
           setCurrentPage: setPage,
           totalItems: users.data?.total ?? 0,
         }}
-        sortBy={[{ id: "username", desc: false }]}
+        sorting={[{ id: "username", desc: false }]}
       />
     </div>
   );
