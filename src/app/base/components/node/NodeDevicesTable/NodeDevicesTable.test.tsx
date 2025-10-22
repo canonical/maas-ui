@@ -1,161 +1,31 @@
-import configureStore from "redux-mock-store";
+import { describe } from "vitest";
 
 import NodeDevicesTable from "./NodeDevicesTable";
 
 import { HardwareType } from "@/app/base/enum";
 import urls from "@/app/base/urls";
-import { nodeDeviceActions } from "@/app/store/nodedevice";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
 import { NodeDeviceBus } from "@/app/store/nodedevice/types";
 import type { RootState } from "@/app/store/root/types";
+import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
-  renderWithMockStore,
+  renderWithProviders,
   screen,
+  waitFor,
+  userEvent,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
-
 describe("NodeDevicesTable", () => {
-  it("fetches node devices by node id if not already loaded", () => {
-    const machine = factory.machineDetails();
-    const state = factory.rootState({
-      nodedevice: factory.nodeDeviceState({
-        items: [],
-      }),
-    });
-    const store = mockStore(state);
-    renderWithMockStore(
-      <NodeDevicesTable
-        bus={NodeDeviceBus.PCIE}
-        node={machine}
-        setSidePanelContent={vi.fn()}
-      />,
-      { store }
-    );
+  let state: RootState;
+  let machine: MachineDetails;
+  let controller: ControllerDetails;
 
-    const expectedAction = nodeDeviceActions.getByNodeId(machine.system_id);
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
-  });
-
-  it("does not fetch node devices if already loaded", () => {
-    const machine = factory.machineDetails();
-    const state = factory.rootState({
-      nodedevice: factory.nodeDeviceState({
-        items: [factory.nodeDevice({ node_id: machine.id })],
-      }),
-    });
-    const store = mockStore(state);
-    renderWithMockStore(
-      <NodeDevicesTable
-        bus={NodeDeviceBus.PCIE}
-        node={machine}
-        setSidePanelContent={vi.fn()}
-      />,
-      { store }
-    );
-
-    const expectedAction = nodeDeviceActions.getByNodeId(machine.system_id);
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toEqual(undefined);
-  });
-
-  it("shows placeholder rows while node devices are loading", () => {
-    const machine = factory.machineDetails();
-    const state = factory.rootState({
-      nodedevice: factory.nodeDeviceState({
-        loading: true,
-      }),
-    });
-    renderWithMockStore(
-      <NodeDevicesTable
-        bus={NodeDeviceBus.PCIE}
-        node={machine}
-        setSidePanelContent={vi.fn()}
-      />,
-      { state }
-    );
-    expect(screen.getAllByText("Group name")).toHaveLength(5);
-    expect(screen.getAllByText("X devices")).toHaveLength(5);
-    expect(screen.getAllByText("Example vendor")).toHaveLength(5);
-    expect(screen.getAllByText("0000")).toHaveLength(15);
-    expect(screen.getAllByText("Example product description")).toHaveLength(5);
-    expect(screen.getAllByText("0000:00:00.0")).toHaveLength(5);
-  });
-
-  it("shows a PCI address column if showing PCI devices", () => {
-    const machine = factory.machineDetails();
-    const state = factory.rootState();
-    renderWithMockStore(
-      <NodeDevicesTable
-        bus={NodeDeviceBus.PCIE}
-        node={machine}
-        setSidePanelContent={vi.fn()}
-      />,
-      { state }
-    );
-
-    expect(screen.getByTestId("pci-address-col")).toBeInTheDocument();
-  });
-
-  it("shows bus and device address columns if showing USB devices", () => {
-    const machine = factory.machineDetails();
-    const state = factory.rootState();
-    renderWithMockStore(
-      <NodeDevicesTable
-        bus={NodeDeviceBus.USB}
-        node={machine}
-        setSidePanelContent={vi.fn()}
-      />,
-      { state }
-    );
-
-    expect(screen.getByTestId("bus-address-col")).toBeInTheDocument();
-    expect(screen.getByTestId("device-address-col")).toBeInTheDocument();
-  });
-
-  it("groups node devices by hardware type", () => {
-    const machine = factory.machineDetails({ system_id: "abc123" });
-    const networkDevices = [
-      factory.nodeDevice({
-        bus: NodeDeviceBus.PCIE,
-        hardware_type: HardwareType.Network,
-        node_id: machine.id,
-      }),
-    ];
-    const storageDevices = Array.from(Array(3)).map(() =>
-      factory.nodeDevice({
-        bus: NodeDeviceBus.PCIE,
-        hardware_type: HardwareType.Storage,
-        node_id: machine.id,
-      })
-    );
-    const state = factory.rootState({
-      nodedevice: factory.nodeDeviceState({
-        items: [...networkDevices, ...storageDevices],
-      }),
-    });
-    renderWithBrowserRouter(
-      <NodeDevicesTable
-        bus={NodeDeviceBus.PCIE}
-        node={machine}
-        setSidePanelContent={vi.fn()}
-      />,
-      { route: "/machine/abc123/pci-devices", state }
-    );
-
-    expect(screen.getByText("Network")).toBeInTheDocument();
-    expect(screen.getByText("1 device")).toBeInTheDocument();
-
-    expect(screen.getByText("Storage")).toBeInTheDocument();
-    expect(screen.getByText("3 devices")).toBeInTheDocument();
-  });
-
-  it("can link to the machine network and storage tabs", () => {
-    const machine = factory.machineDetails({ system_id: "abc123" });
+  beforeEach(() => {
+    machine = factory.machineDetails({ system_id: "abc123" });
+    controller = factory.controllerDetails({ system_id: "abc123" });
     const networkDevice = factory.nodeDevice({
       bus: NodeDeviceBus.PCIE,
       hardware_type: HardwareType.Network,
@@ -166,88 +36,261 @@ describe("NodeDevicesTable", () => {
       hardware_type: HardwareType.Storage,
       node_id: machine.id,
     });
-    const state = factory.rootState({
+    state = factory.rootState({
       nodedevice: factory.nodeDeviceState({
         items: [networkDevice, storageDevice],
       }),
     });
-    renderWithBrowserRouter(
-      <NodeDevicesTable
-        bus={NodeDeviceBus.PCIE}
-        node={machine}
-        setSidePanelContent={vi.fn()}
-      />,
-      { route: "/machine/abc123/pci-devices", state }
-    );
-
-    expect(screen.getByRole("link", { name: "Network" })).toHaveAttribute(
-      "href",
-      urls.machines.machine.network({ id: machine.system_id })
-    );
-    expect(screen.getByRole("link", { name: "Storage" })).toHaveAttribute(
-      "href",
-      urls.machines.machine.storage({ id: machine.system_id })
-    );
   });
 
-  it("can link to the controller network and storage tabs", () => {
-    const controller = factory.controllerDetails({ system_id: "abc123" });
-    const networkDevice = factory.nodeDevice({
-      bus: NodeDeviceBus.PCIE,
-      hardware_type: HardwareType.Network,
-      node_id: controller.id,
-    });
-    const storageDevice = factory.nodeDevice({
-      bus: NodeDeviceBus.PCIE,
-      hardware_type: HardwareType.Storage,
-      node_id: controller.id,
-    });
-    const state = factory.rootState({
-      nodedevice: factory.nodeDeviceState({
-        items: [networkDevice, storageDevice],
-      }),
-    });
-    renderWithBrowserRouter(
-      <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={controller} />,
-      { route: "/controller/abc123/pci-devices", state }
-    );
+  describe("display", () => {
+    it("displays a loading component if pools are loading", async () => {
+      state.nodedevice.loading = true;
+      renderWithProviders(
+        <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
+        {
+          state,
+        }
+      );
 
-    expect(screen.getByRole("link", { name: "Network" })).toHaveAttribute(
-      "href",
-      urls.controllers.controller.network({ id: controller.system_id })
-    );
-    expect(screen.getByRole("link", { name: "Storage" })).toHaveAttribute(
-      "href",
-      urls.controllers.controller.storage({ id: controller.system_id })
-    );
-  });
+      await waitFor(() => {
+        expect(screen.getByText("Loading...")).toBeInTheDocument();
+      });
+    });
 
-  it("displays the NUMA node index of a node device", () => {
-    const numaNode = factory.machineNumaNode({ index: 128 });
-    const machine = factory.machineDetails({
-      numa_nodes: [numaNode, factory.machineNumaNode()],
-      system_id: "abc123",
-    });
-    const pciDevice = factory.nodeDevice({
-      bus: NodeDeviceBus.PCIE,
-      id: 1,
-      node_id: machine.id,
-      numa_node_id: numaNode.id,
-    });
-    const state = factory.rootState({
-      nodedevice: factory.nodeDeviceState({
-        items: [pciDevice],
-      }),
-    });
-    renderWithBrowserRouter(
-      <NodeDevicesTable
-        bus={NodeDeviceBus.PCIE}
-        node={machine}
-        setSidePanelContent={vi.fn()}
-      />,
-      { route: "/machine/abc123/pci-devices", state }
-    );
+    describe("displays a message when rendering an empty list", () => {
+      it("prompts user to commission machine if no devices found and machine can be commissioned", async () => {
+        const setSidePanelContent = vi.fn();
+        const machine = factory.machineDetails({
+          actions: [NodeActions.COMMISSION],
+        });
 
-    expect(screen.getByTestId("node-device-1-numa")).toHaveTextContent("128");
+        renderWithProviders(
+          <NodeDevicesTable
+            bus={NodeDeviceBus.PCIE}
+            node={machine}
+            setSidePanelContent={setSidePanelContent}
+          />,
+          { state }
+        );
+
+        await waitFor(() => {
+          expect(
+            screen.getByText(/Try commissioning this machine/i)
+          ).toBeInTheDocument();
+        });
+
+        await userEvent.click(
+          screen.getByRole("button", { name: "Commission" })
+        );
+
+        expect(setSidePanelContent).toHaveBeenCalledWith({
+          view: MachineSidePanelViews.COMMISSION_MACHINE,
+        });
+      });
+
+      it("shows a message if the machine has no node devices and is locked", () => {
+        const machine = factory.machineDetails({ locked: true });
+
+        renderWithProviders(
+          <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
+          { state }
+        );
+
+        expect(screen.getByText(/The machine is locked/i)).toBeInTheDocument();
+      });
+
+      it("shows a message if the machine has no node devices and is in failed testing state", () => {
+        const machine = factory.machineDetails({
+          status_code: NodeStatusCode.FAILED_TESTING,
+        });
+
+        renderWithProviders(
+          <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
+          { state }
+        );
+
+        expect(
+          screen.getByText(/Override failed testing/i)
+        ).toBeInTheDocument();
+      });
+
+      it("shows a message if the machine has no node devices and is deployed", () => {
+        const machine = factory.machineDetails({
+          status_code: NodeStatusCode.DEPLOYED,
+        });
+
+        renderWithProviders(
+          <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
+          { state }
+        );
+
+        expect(screen.getByText(/Release this machine/i)).toBeInTheDocument();
+      });
+
+      it("shows a message if the machine has no node devices and is commissioning", () => {
+        const machine = factory.machineDetails({
+          locked: false,
+          status_code: NodeStatusCode.COMMISSIONING,
+        });
+
+        renderWithProviders(
+          <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
+          { state }
+        );
+
+        expect(
+          screen.getByText(/Commissioning is currently in progress/i)
+        ).toBeInTheDocument();
+      });
+
+      it("shows a generic message if the machine has no node devices and cannot be commissioned", () => {
+        const machine = factory.machineDetails({
+          actions: [],
+          locked: false,
+          status_code: NodeStatusCode.NEW,
+        });
+
+        renderWithProviders(
+          <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
+          { state }
+        );
+
+        expect(
+          screen.getByText(/Commissioning cannot be run at this time/i)
+        ).toBeInTheDocument();
+      });
+
+      it("shows a message if the machine has PCI devices but no USB devices", () => {
+        const machine = factory.machineDetails();
+
+        renderWithProviders(
+          <NodeDevicesTable bus={NodeDeviceBus.USB} node={machine} />,
+          { state }
+        );
+
+        expect(
+          screen.getByText(/No USB devices discovered during commissioning./i)
+        ).toBeInTheDocument();
+      });
+
+      it("only shows the header without additional commissioning information", () => {
+        const controller = factory.controllerDetails();
+
+        renderWithProviders(
+          <NodeDevicesTable bus={NodeDeviceBus.USB} node={controller} />,
+          { state }
+        );
+
+        expect(screen.getByText(/No USB information/i)).toBeInTheDocument();
+        expect(
+          screen.queryByText(/No USB devices discovered during commissioning./i)
+        ).not.toBeInTheDocument();
+      });
+    });
+
+    describe("displays columns correctly", () => {
+      it("displays the PCI address column when bus is PCI", () => {
+        renderWithProviders(
+          <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
+          { state }
+        );
+
+        ["Vendor", "Product", "Driver", "NUMA node", "PCI address"].forEach(
+          (column) => {
+            expect(
+              screen.getByRole("columnheader", {
+                name: new RegExp(`^${column}`, "i"),
+              })
+            ).toBeInTheDocument();
+          }
+        );
+      });
+
+      it("displays the bus address column when bus is USB", () => {
+        renderWithProviders(
+          <NodeDevicesTable bus={NodeDeviceBus.USB} node={machine} />,
+          { state }
+        );
+
+        ["Vendor", "Product", "Driver", "NUMA node", "Bus address"].forEach(
+          (column) => {
+            expect(
+              screen.getByRole("columnheader", {
+                name: new RegExp(`^${column}`, "i"),
+              })
+            ).toBeInTheDocument();
+          }
+        );
+      });
+    });
+
+    it("can link to the machine network and storage tabs", () => {
+      renderWithProviders(
+        <NodeDevicesTable
+          bus={NodeDeviceBus.PCIE}
+          node={machine}
+          setSidePanelContent={vi.fn()}
+        />,
+        { state }
+      );
+
+      expect(screen.getByRole("link", { name: "Network" })).toHaveAttribute(
+        "href",
+        urls.machines.machine.network({ id: machine.system_id })
+      );
+      expect(screen.getByRole("link", { name: "Storage" })).toHaveAttribute(
+        "href",
+        urls.machines.machine.storage({ id: machine.system_id })
+      );
+    });
+
+    it("can link to the controller network and storage tabs", () => {
+      state.nodedevice.items.forEach((item) => {
+        item.node_id = controller.id;
+      });
+      renderWithProviders(
+        <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={controller} />,
+        { state }
+      );
+
+      expect(screen.getByRole("link", { name: "Network" })).toHaveAttribute(
+        "href",
+        urls.controllers.controller.network({ id: controller.system_id })
+      );
+      expect(screen.getByRole("link", { name: "Storage" })).toHaveAttribute(
+        "href",
+        urls.controllers.controller.storage({ id: controller.system_id })
+      );
+    });
+
+    it("displays the NUMA node index of a node device", () => {
+      const numaNode = factory.machineNumaNode({ index: 128 });
+      const machine = factory.machineDetails({
+        numa_nodes: [numaNode, factory.machineNumaNode()],
+        system_id: "abc123",
+      });
+      const pciDevice = factory.nodeDevice({
+        bus: NodeDeviceBus.PCIE,
+        id: 1,
+        node_id: machine.id,
+        numa_node_id: numaNode.id,
+      });
+      const state = factory.rootState({
+        nodedevice: factory.nodeDeviceState({
+          items: [pciDevice],
+        }),
+      });
+      renderWithProviders(
+        <NodeDevicesTable
+          bus={NodeDeviceBus.PCIE}
+          node={machine}
+          setSidePanelContent={vi.fn()}
+        />,
+        { state }
+      );
+
+      expect(screen.getByText(numaNode.index)).toHaveClass("numa_node");
+    });
   });
 });
