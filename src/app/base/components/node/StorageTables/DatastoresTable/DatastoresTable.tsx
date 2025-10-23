@@ -63,7 +63,7 @@ const DatastoresTable = ({ canEditStorage, node }: Props): ReactElement => {
       data={data}
       isLoading={false}
       noData="No datastores detected."
-      sortBy={[{ id: "name", desc: false }]}
+      sorting={[{ id: "name", desc: false }]}
       style={{ marginBottom: "1.5rem" }}
       variant="regular"
     />

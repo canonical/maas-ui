@@ -63,7 +63,7 @@ const SpaceSubnetsTable = ({ space }: { space: Space }): ReactElement => {
         data={data}
         isLoading={vlansLoading || subnetsLoading}
         noData="There are no subnets on this space."
-        sortBy={[{ id: "id", desc: true }]}
+        sorting={[{ id: "id", desc: true }]}
       />
     </TitledSection>
   );

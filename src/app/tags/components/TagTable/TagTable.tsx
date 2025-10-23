@@ -110,7 +110,7 @@ const TagTable = ({
         setCurrentPage: setPage,
         totalItems: tags.length ?? 0,
       }}
-      sortBy={[{ id: "name", desc: false }]}
+      sorting={[{ id: "name", desc: false }]}
     />
   );
 };

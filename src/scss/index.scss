@@ -95,9 +95,7 @@
 @import "@/app/base/components/ListDisplayCount";
 @import "@/app/base/components/node/HardwareCard";
 @import "@/app/base/components/node/networking/NetworkTable";
-@import "@/app/base/components/node/NodeDevices";
 @import "@/app/base/components/node/NodeLogs/DownloadMenu";
-@import "@/app/base/components/node/NodeLogs/EventLogs/EventLogsTable";
 @import "@/app/base/components/node/NodeTestsTable";
 @import "@/app/base/components/node/OverviewCard";
 @import "@/app/base/components/node/StorageTables/AvailableStorageTable";
@@ -125,7 +123,6 @@
 @include DHCPTable;
 @include DoughnutChart;
 @include DownloadMenu;
-@include EventLogsTable;
 @include FilterAccordion;
 @include FormCard;
 @include HardwareCard;
@@ -135,7 +132,6 @@
 @include NetworkCardTable;
 @include NetworkTable;
 @include NodeActionMenuGroup;
-@include NodeDevices;
 @include NodeName;
 @include NodeSummaryNetworkCard;
 @include NodeTestsTable;

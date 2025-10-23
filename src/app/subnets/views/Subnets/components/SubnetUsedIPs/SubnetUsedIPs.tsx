@@ -85,7 +85,7 @@ const SubnetUsedIPs = ({ subnetId }: Props): ReactElement => {
           setCurrentPage: setPage,
           totalItems: data.length,
         }}
-        sortBy={[{ id: "ip", desc: false }]}
+        sorting={[{ id: "ip", desc: false }]}
       />
     </TitledSection>
   );

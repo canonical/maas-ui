@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Link, Select, Spinner } from "@canonical/react-components";
+import { Link, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
@@ -165,8 +165,7 @@ const EventLogs = ({ node }: Props): React.ReactElement => {
         />
       </div>
       <hr />
-      <EventLogsTable events={paginatedEvents} />
-      {loading && <Spinner text="Loading..." />}
+      <EventLogsTable events={paginatedEvents} loading={loading} />
       {showBackToTop && (
         <Link data-testid="backToTop" href={`#${MAIN_CONTENT_SECTION_ID}`} top>
           {Label.BackToTop}
