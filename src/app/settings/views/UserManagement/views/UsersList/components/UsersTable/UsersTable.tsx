@@ -3,12 +3,13 @@ import { useState } from "react";
 import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
+import useUsersTableColumns from "./useUsersTableColumns/useUsersTableColumns";
+
 import { useUsers } from "@/app/api/query/users";
 import SearchBox from "@/app/base/components/SearchBox";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import { AddUser } from "@/app/settings/views/Users/components";
-import useUsersTableColumns from "@/app/settings/views/Users/components/UsersTable/useUsersTableColumns/useUsersTableColumns";
+import { AddUser } from "@/app/settings/views/UserManagement/views/UsersList/components";
 
 const UsersTable = () => {
   const { openSidePanel } = useSidePanel();

@@ -9,7 +9,10 @@ import TableHeader from "@/app/base/components/TableHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import { DeleteUser, EditUser } from "@/app/settings/views/Users/components";
+import {
+  DeleteUser,
+  EditUser,
+} from "@/app/settings/views/UserManagement/views/UsersList/components";
 
 type UsersColumnDef = ColumnDef<
   UserWithSummaryResponse,

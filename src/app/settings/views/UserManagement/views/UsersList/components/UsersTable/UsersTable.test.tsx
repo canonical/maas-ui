@@ -7,18 +7,18 @@ import {
   AddUser,
   DeleteUser,
   EditUser,
-} from "@/app/settings/views/Users/components";
+} from "@/app/settings/views/UserManagement/views/UsersList/components";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { usersResolvers } from "@/testing/resolvers/users";
 import {
+  mockIsPending,
+  mockSidePanel,
   renderWithProviders,
   screen,
-  waitFor,
   setupMockServer,
-  mockIsPending,
+  waitFor,
   waitForLoading,
-  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(

@@ -39,8 +39,8 @@ import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
 import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
-import SingleSignOn from "@/app/settings/views/Users/views/SingleSignOn";
-import UsersList from "@/app/settings/views/Users/views/UsersList/UsersList";
+import SingleSignOn from "@/app/settings/views/UserManagement/views/SingleSignOn";
+import UsersList from "@/app/settings/views/UserManagement/views/UsersList/UsersList";
 import { getRelativeRoute } from "@/app/utils";
 
 const ControllerDetails = lazy(

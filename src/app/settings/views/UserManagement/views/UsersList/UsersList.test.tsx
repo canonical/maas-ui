@@ -1,14 +1,14 @@
 import { waitFor } from "@testing-library/react";
 
-import UsersList from "@/app/settings/views/Users/views/UsersList";
+import UsersList from "@/app/settings/views/UserManagement/views/UsersList";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { usersResolvers } from "@/testing/resolvers/users";
 import {
   renderWithProviders,
   screen,
-  userEvent,
   setupMockServer,
+  userEvent,
 } from "@/testing/utils";
 
 setupMockServer(

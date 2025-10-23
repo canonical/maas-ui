@@ -2,13 +2,12 @@ import type { ReactElement } from "react";
 
 import * as Yup from "yup";
 
-import { Labels } from "../../constants";
-
 import { useCreateUser } from "@/app/api/query/users";
 import type { CreateUserError, UserCreateRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { Labels } from "@/app/settings/views/UserManagement/views/UsersList/constants";
 
 const UserSchema = Yup.object().shape({
   email: Yup.string()

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { UsersTable } from "@/app/settings/views/Users/components";
+import { UsersTable } from "@/app/settings/views/UserManagement/views/UsersList/components";
 import statusSelectors from "@/app/store/status/selectors";
 
 const UsersList = (): ReactElement => {
