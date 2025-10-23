@@ -11,6 +11,7 @@ import PageContent from "@/app/base/components/PageContent";
 
 const SingleSignOn = (): ReactElement => {
   const { data, error, isPending } = useActiveOauthProvider(undefined, {
+    refetchOnWindowFocus: false,
     retry: false,
     queryKey: getOauthProviderQueryKey(),
   });
