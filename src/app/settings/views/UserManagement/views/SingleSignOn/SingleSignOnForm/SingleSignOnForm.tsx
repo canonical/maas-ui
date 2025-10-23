@@ -92,6 +92,8 @@ const SingleSignOnForm = ({ provider }: Props): ReactElement => {
         handleCancel();
       }}
       onSubmit={handleSubmit}
+      saved={createOauthProvider.isSuccess || updateOauthProvider.isSuccess}
+      saving={createOauthProvider.isPending || updateOauthProvider.isPending}
       validationSchema={SingleSignOnSchema}
     >
       <FormikField
