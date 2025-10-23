@@ -105,6 +105,11 @@
     flex-shrink: 0;
   }
 
+  .u-flex--row {
+    @extend %display-flex;
+    flex-direction: row !important;
+  }
+
   .u-flex--vertically {
     @extend %display-flex;
     flex-direction: column !important;
@@ -120,6 +125,9 @@
     margin-bottom: $sp-x-small !important;
   }
 
+  .u-margin-bottom--medium {
+    margin-bottom: $spv--medium !important;
+  }
   .u-no-border {
     border: 0 !important;
   }

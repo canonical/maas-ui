@@ -11,21 +11,33 @@ import type {
   AccessTokenData,
   AccessTokenResponses,
   AccessTokenErrors,
+  CreateOauthProviderData,
+  CreateOauthProviderResponses,
+  CreateOauthProviderErrors,
+  DeleteOauthProviderData,
+  DeleteOauthProviderResponses,
+  DeleteOauthProviderErrors,
+  UpdateOauthProviderData,
+  UpdateOauthProviderResponses,
+  UpdateOauthProviderErrors,
   LoginData,
   LoginResponses,
   LoginErrors,
+  OauthInitiateData,
+  OauthInitiateResponses,
+  OauthInitiateErrors,
   DeleteBootResourceByIdData,
   DeleteBootResourceByIdResponses,
   DeleteBootResourceByIdErrors,
-  DeleteAgentData,
-  DeleteAgentResponses,
-  DeleteAgentErrors,
-  GetAgentData,
-  GetAgentResponses,
-  GetAgentErrors,
-  ListAgentsData,
-  ListAgentsResponses,
-  ListAgentsErrors,
+  GetBootResourceByIdData,
+  GetBootResourceByIdResponses,
+  GetBootResourceByIdErrors,
+  ListBootResourcesData,
+  ListBootResourcesResponses,
+  ListBootResourcesErrors,
+  UploadBootResourceData,
+  UploadBootResourceResponses,
+  UploadBootResourceErrors,
   ListBootSourcesData,
   ListBootSourcesResponses,
   ListBootSourcesErrors,
@@ -59,6 +71,12 @@ import type {
   FetchBootSourcesAvailableImagesData,
   FetchBootSourcesAvailableImagesResponses,
   FetchBootSourcesAvailableImagesErrors,
+  GetAllAvailableImagesData,
+  GetAllAvailableImagesResponses,
+  GetAllAvailableImagesErrors,
+  GetBootSourceAvailableImagesData,
+  GetBootSourceAvailableImagesResponses,
+  GetBootSourceAvailableImagesErrors,
   GetConfigurationData,
   GetConfigurationResponses,
   GetConfigurationErrors,
@@ -206,6 +224,12 @@ import type {
   CreateRackData,
   CreateRackResponses,
   CreateRackErrors,
+  DeleteRackAgentData,
+  DeleteRackAgentResponses,
+  DeleteRackAgentErrors,
+  GetRackAgentData,
+  GetRackAgentResponses,
+  GetRackAgentErrors,
   DeleteRacksData,
   DeleteRacksResponses,
   DeleteRacksErrors,
@@ -215,6 +239,12 @@ import type {
   UpdateRackData,
   UpdateRackResponses,
   UpdateRackErrors,
+  GenerateRackBootstrapTokenData,
+  GenerateRackBootstrapTokenResponses,
+  GenerateRackBootstrapTokenErrors,
+  ListRackAgentsData,
+  ListRackAgentsResponses,
+  ListRackAgentsErrors,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsResponses,
   ListFabricVlanSubnetReservedIpsErrors,
@@ -456,6 +486,62 @@ export const accessToken = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Create Oauth Provider
+ */
+export const createOauthProvider = <ThrowOnError extends boolean = false>(
+  options: Options<CreateOauthProviderData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateOauthProviderResponses,
+    CreateOauthProviderErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/auth/oauth",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete Oauth Provider
+ */
+export const deleteOauthProvider = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteOauthProviderData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteOauthProviderResponses,
+    DeleteOauthProviderErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/auth/oauth/{provider_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Oauth Provider
+ */
+export const updateOauthProvider = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateOauthProviderData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).put<
+    UpdateOauthProviderResponses,
+    UpdateOauthProviderErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/auth/oauth/{provider_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
  * Login
  */
 export const login = <ThrowOnError extends boolean = false>(
@@ -477,6 +563,22 @@ export const login = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Oauth Initiate
+ */
+export const oauthInitiate = <ThrowOnError extends boolean = false>(
+  options?: Options<OauthInitiateData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    OauthInitiateResponses,
+    OauthInitiateErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/auth/oauth/initiate",
+    ...options,
+  });
+};
+
+/**
  * Delete Boot Resource By Id
  */
 export const deleteBootResourceById = <ThrowOnError extends boolean = false>(
@@ -493,42 +595,20 @@ export const deleteBootResourceById = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/boot_resources/{resource_id}",
+    url: "/MAAS/a/v3/boot_resources/{boot_resource_id}",
     ...options,
   });
 };
 
 /**
- * Delete Agent
+ * Get Boot Resource By Id
  */
-export const deleteAgent = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteAgentData, ThrowOnError>
-) => {
-  return (options.client ?? _heyApiClient).delete<
-    DeleteAgentResponses,
-    DeleteAgentErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/agents/{agent_id}",
-    ...options,
-  });
-};
-
-/**
- * Get Agent
- */
-export const getAgent = <ThrowOnError extends boolean = false>(
-  options: Options<GetAgentData, ThrowOnError>
+export const getBootResourceById = <ThrowOnError extends boolean = false>(
+  options: Options<GetBootResourceByIdData, ThrowOnError>
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetAgentResponses,
-    GetAgentErrors,
+    GetBootResourceByIdResponses,
+    GetBootResourceByIdErrors,
     ThrowOnError
   >({
     security: [
@@ -537,20 +617,20 @@ export const getAgent = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/agents/{agent_id}",
+    url: "/MAAS/a/v3/boot_resources/{boot_resource_id}",
     ...options,
   });
 };
 
 /**
- * List Agents
+ * List Boot Resources
  */
-export const listAgents = <ThrowOnError extends boolean = false>(
-  options?: Options<ListAgentsData, ThrowOnError>
+export const listBootResources = <ThrowOnError extends boolean = false>(
+  options?: Options<ListBootResourcesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    ListAgentsResponses,
-    ListAgentsErrors,
+    ListBootResourcesResponses,
+    ListBootResourcesErrors,
     ThrowOnError
   >({
     security: [
@@ -559,8 +639,35 @@ export const listAgents = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/agents",
+    url: "/MAAS/a/v3/boot_resources",
     ...options,
+  });
+};
+
+/**
+ * Upload Boot Resource
+ */
+export const uploadBootResource = <ThrowOnError extends boolean = false>(
+  options: Options<UploadBootResourceData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    UploadBootResourceResponses,
+    UploadBootResourceErrors,
+    ThrowOnError
+  >({
+    bodySerializer: null,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_resources",
+    ...options,
+    headers: {
+      "Content-Type": "application/octet-stream",
+      ...options.headers,
+    },
   });
 };
 
@@ -835,6 +942,52 @@ export const fetchBootSourcesAvailableImages = <
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * Get All Available Images
+ */
+export const getAllAvailableImages = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAllAvailableImagesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetAllAvailableImagesResponses,
+    GetAllAvailableImagesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/available_images",
+    ...options,
+  });
+};
+
+/**
+ * Get Boot Source Available Images
+ */
+export const getBootSourceAvailableImages = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetBootSourceAvailableImagesData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetBootSourceAvailableImagesResponses,
+    GetBootSourceAvailableImagesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/available_images",
+    ...options,
   });
 };
 
@@ -1990,6 +2143,50 @@ export const createRack = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Delete Rack Agent
+ */
+export const deleteRackAgent = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteRackAgentData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteRackAgentResponses,
+    DeleteRackAgentErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Rack Agent
+ */
+export const getRackAgent = <ThrowOnError extends boolean = false>(
+  options: Options<GetRackAgentData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetRackAgentResponses,
+    GetRackAgentErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}",
+    ...options,
+  });
+};
+
+/**
  * Delete Racks
  */
 export const deleteRacks = <ThrowOnError extends boolean = false>(
@@ -2056,6 +2253,52 @@ export const updateRack = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * Generate Rack Bootstrap Token
+ */
+export const generateRackBootstrapToken = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GenerateRackBootstrapTokenData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    GenerateRackBootstrapTokenResponses,
+    GenerateRackBootstrapTokenErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/racks/{rack_id}/tokens:generate",
+    ...options,
+  });
+};
+
+/**
+ * List Rack Agents
+ */
+export const listRackAgents = <ThrowOnError extends boolean = false>(
+  options: Options<ListRackAgentsData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    ListRackAgentsResponses,
+    ListRackAgentsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/racks/{rack_id}/agents",
+    ...options,
   });
 };
 

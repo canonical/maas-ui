@@ -6,6 +6,7 @@ import { BASE_URL } from "../utils";
 import type {
   CreateRackError,
   DeleteRacksError,
+  GenerateRackBootstrapTokenError,
   GetRackError,
   ListRacksError,
   ListRacksResponse,
@@ -35,6 +36,12 @@ const mockCreateRackError: CreateRackError = {
 const mockUpdateRackError: UpdateRackError = {
   message: "Internal server error",
   code: 500,
+  kind: "Error",
+};
+
+const mockGenerateRackBootstrapTokenError: GenerateRackBootstrapTokenError = {
+  message: "Bad request",
+  code: 400,
   kind: "Error",
 };
 
@@ -108,6 +115,24 @@ const rackResolvers = {
         return HttpResponse.json(error, { status: error.code });
       }),
   },
+  generateToken: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/racks/:id/tokens:generate`, () => {
+        rackResolvers.generateToken.resolved = true;
+        return HttpResponse.json({
+          token: "generated-token",
+          kind: "RackBootstrapToken",
+        });
+      }),
+    error: (
+      error: GenerateRackBootstrapTokenError = mockGenerateRackBootstrapTokenError
+    ) =>
+      http.post(`${BASE_URL}MAAS/a/v3/racks/:id/tokens:generate`, () => {
+        rackResolvers.generateToken.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
 };
 
-export { rackResolvers, mockRacks };
+export { mockRacks, rackResolvers };

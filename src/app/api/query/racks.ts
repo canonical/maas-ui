@@ -13,6 +13,9 @@ import type {
   DeleteRacksData,
   DeleteRacksError,
   DeleteRacksResponse,
+  GenerateRackBootstrapTokenData,
+  GenerateRackBootstrapTokenError,
+  GenerateRackBootstrapTokenResponse,
   GetRackData,
   GetRackError,
   GetRackResponse,
@@ -27,6 +30,7 @@ import type {
 import {
   createRackMutation,
   deleteRacksMutation,
+  generateRackBootstrapTokenMutation,
   getRackOptions,
   listRacksOptions,
   listRacksQueryKey,
@@ -98,5 +102,17 @@ export const useDeleteRack = (mutationOptions?: Options<DeleteRacksData>) => {
         queryKey: listRacksQueryKey(),
       });
     },
+  });
+};
+
+export const useGenerateToken = (
+  mutationOptions?: Options<GenerateRackBootstrapTokenData>
+) => {
+  return useMutation<
+    GenerateRackBootstrapTokenResponse,
+    GenerateRackBootstrapTokenError,
+    Options<GenerateRackBootstrapTokenData>
+  >({
+    ...generateRackBootstrapTokenMutation(mutationOptions),
   });
 };
