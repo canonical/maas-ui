@@ -116,7 +116,7 @@
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
-    "@types/chance": "^1.1.7",
+    "@types/chance": "1.1.7",
     "@types/classnames": "2.3.4",
     "@types/clone-deep": "4.0.4",
     "@types/node": "22.16.2",
