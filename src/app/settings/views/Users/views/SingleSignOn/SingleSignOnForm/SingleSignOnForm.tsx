@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import { useState, type ReactElement } from "react";
 
 import { FormikField } from "@canonical/react-components";
 import * as Yup from "yup";
@@ -26,17 +26,32 @@ const SingleSignOnSchema = Yup.object().shape({
 });
 
 const SingleSignOnForm = ({ provider }: Props): ReactElement => {
-  const initialValues: SingleSignOnFormValues = provider ?? {
-    name: "",
-    client_id: "",
-    client_secret: "",
-    issuer_url: "",
-    redirect_uri: "",
-    scopes: "",
-  };
+  const [initialValues, setInitialValues] = useState<SingleSignOnFormValues>(
+    provider ?? {
+      name: "",
+      client_id: "",
+      client_secret: "",
+      issuer_url: "",
+      redirect_uri: "",
+      scopes: "",
+    }
+  );
 
   const createOauthProvider = useCreateOauthProvider();
   const updateOauthProvider = useUpdateOauthProvider();
+
+  const handleCancel = () => {
+    setInitialValues(
+      provider ?? {
+        name: "",
+        client_id: "",
+        client_secret: "",
+        issuer_url: "",
+        redirect_uri: "",
+        scopes: "",
+      }
+    );
+  };
 
   const handleSubmit = (values: SingleSignOnFormValues) => {
     if (provider) {
@@ -69,7 +84,13 @@ const SingleSignOnForm = ({ provider }: Props): ReactElement => {
 
   return (
     <FormikForm
+      aria-label="Single sign-on form"
+      errors={createOauthProvider.error || updateOauthProvider.error}
       initialValues={initialValues}
+      onCancel={(_, { resetForm }) => {
+        resetForm();
+        handleCancel();
+      }}
       onSubmit={handleSubmit}
       validationSchema={SingleSignOnSchema}
     >
@@ -81,7 +102,7 @@ const SingleSignOnForm = ({ provider }: Props): ReactElement => {
         type="text"
       />
       <FormikField
-        help="A unique, human-readable name identifying the OIDC provider."
+        help="The client ID issued by the OIDC provider to identify your application."
         label="Client ID"
         name="client_id"
         required

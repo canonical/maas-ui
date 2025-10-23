@@ -1,10 +1,17 @@
 import {
+  useActiveOauthProvider,
   useAuthenticate,
   useCompleteIntro,
-  useGetIsSuperUser,
+  useCreateOauthProvider,
   useGetCurrentUser,
+  useGetIsSuperUser,
+  useUpdateOauthProvider,
 } from "@/app/api/query/auth";
-import { authResolvers, mockAuth } from "@/testing/resolvers/auth";
+import {
+  authResolvers,
+  mockAuth,
+  mockOauthProvider,
+} from "@/testing/resolvers/auth";
 import {
   renderHookWithProviders,
   setupMockServer,
@@ -14,7 +21,10 @@ import {
 setupMockServer(
   authResolvers.authenticate.handler(),
   authResolvers.getCurrentUser.handler(),
-  authResolvers.completeIntro.handler()
+  authResolvers.completeIntro.handler(),
+  authResolvers.getActiveOauthProvider.handler(),
+  authResolvers.createOauthProvider.handler(),
+  authResolvers.updateOauthProvider.handler()
 );
 
 describe("useAuthenticate", () => {
@@ -58,6 +68,40 @@ describe("useCompleteIntro", () => {
   it("should complete intro", async () => {
     const { result } = renderHookWithProviders(() => useCompleteIntro());
     result.current.mutate({});
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useActiveOauthProvider", () => {
+  it("should return the active OAuth provider", async () => {
+    const expectedProvider = mockOauthProvider;
+    const { result } = renderHookWithProviders(() => useActiveOauthProvider());
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data).toStrictEqual(expectedProvider);
+  });
+});
+
+describe("useCreateOauthProvider", () => {
+  it("should create a new OAuth provider", async () => {
+    const { result } = renderHookWithProviders(() => useCreateOauthProvider());
+    result.current.mutate({ body: mockOauthProvider });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useUpdateOauthProvider", () => {
+  it("should update an OAuth provider", async () => {
+    const { result } = renderHookWithProviders(() => useUpdateOauthProvider());
+    result.current.mutate({
+      body: mockOauthProvider,
+      path: { provider_id: 1 },
+    });
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
