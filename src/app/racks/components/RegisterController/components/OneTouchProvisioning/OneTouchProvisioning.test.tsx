@@ -17,8 +17,8 @@ describe("OneTouchProvisioning", () => {
     expect(mockClose).toHaveBeenCalled();
   });
 
-  //will do when endpoint is ready
+  //TODO when endpoint is ready
   it.todo("calls  on save click");
-  //will do when endpoint is ready
+  //TODO when endpoint is ready
   it.todo("displays error message when create rack fails");
 });

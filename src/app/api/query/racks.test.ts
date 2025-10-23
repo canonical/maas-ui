@@ -91,7 +91,7 @@ describe("useDeleteRack", () => {
   });
 });
 
-describe("useGenerateTokeb", () => {
+describe("useGenerateToken", () => {
   it("should generate a bootstrap token", async () => {
     const { result } = renderHookWithProviders(() => useGenerateToken());
     result.current.mutate({ path: { rack_id: 1 } });

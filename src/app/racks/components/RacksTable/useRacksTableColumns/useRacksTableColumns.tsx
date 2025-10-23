@@ -70,6 +70,7 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",
+        //TODO Correctly disable actions when backend is ready
         cell: ({ row }) => {
           return (
             <TableActionsDropdown

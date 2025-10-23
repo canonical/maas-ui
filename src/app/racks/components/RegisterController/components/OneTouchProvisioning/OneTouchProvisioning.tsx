@@ -8,18 +8,19 @@ import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 
-//Will be changed once the endpoint is ready
+//TODO when endpoint is ready
 export type OneTouchProvisioning = {
   MAASagentsecret: string;
 };
 
+//TODO when endpoint is ready
 const OneTouchProvisioningSchema = Yup.object().shape({
   name: Yup.string().required("'MAAS Agent secret' is a required field."),
 });
 
 const OneTouchProvisioning = (): ReactElement => {
   const { closeSidePanel } = useSidePanel();
-  //Will be changed once the endpoint is ready
+  //TODO when endpoint is ready
   return (
     <div>
       To register a controller to the rack using one-touch provisioning,
