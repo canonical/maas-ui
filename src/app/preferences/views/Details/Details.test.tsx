@@ -2,7 +2,7 @@ import { waitFor } from "@testing-library/react";
 
 import { Details, Label as DetailsLabels } from "./Details";
 
-import { Labels as UserFormLabels } from "@/app/settings/views/UserManagement/constants";
+import { Labels as UserFormLabels } from "@/app/settings/views/UserManagement/views/UsersList/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
