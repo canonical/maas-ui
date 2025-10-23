@@ -8,6 +8,7 @@ import SingleSignOnForm from "./SingleSignOnForm";
 import { useActiveOauthProvider } from "@/app/api/query/auth";
 import { getOauthProviderQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import PageContent from "@/app/base/components/PageContent";
+import { useWindowTitle } from "@/app/base/hooks";
 
 const SingleSignOn = (): ReactElement => {
   const { data, error, isPending } = useActiveOauthProvider(undefined, {
@@ -15,6 +16,8 @@ const SingleSignOn = (): ReactElement => {
     retry: false,
     queryKey: getOauthProviderQueryKey(),
   });
+
+  useWindowTitle("OIDC/Single sign-on");
 
   return (
     <PageContent
