@@ -3,9 +3,11 @@
 import {
   type Options,
   accessToken,
+  listOauthProviders,
   createOauthProvider,
   deleteOauthProvider,
   updateOauthProvider,
+  getOauthProvider,
   login,
   oauthInitiate,
   deleteBootResourceById,
@@ -150,12 +152,15 @@ import {
 } from "../sdk.gen";
 import {
   queryOptions,
-  type UseMutationOptions,
   infiniteQueryOptions,
   type InfiniteData,
+  type UseMutationOptions,
 } from "@tanstack/react-query";
 import type {
   AccessTokenData,
+  ListOauthProvidersData,
+  ListOauthProvidersError,
+  ListOauthProvidersResponse,
   CreateOauthProviderData,
   CreateOauthProviderError,
   CreateOauthProviderResponse,
@@ -165,6 +170,7 @@ import type {
   UpdateOauthProviderData,
   UpdateOauthProviderError,
   UpdateOauthProviderResponse,
+  GetOauthProviderData,
   LoginData,
   LoginError,
   LoginResponse,
@@ -577,6 +583,117 @@ export const accessTokenOptions = (options?: Options<AccessTokenData>) => {
   });
 };
 
+export const listOauthProvidersQueryKey = (
+  options?: Options<ListOauthProvidersData>
+) => createQueryKey("listOauthProviders", options);
+
+/**
+ * List Oauth Providers
+ */
+export const listOauthProvidersOptions = (
+  options?: Options<ListOauthProvidersData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listOauthProviders({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listOauthProvidersQueryKey(options),
+  });
+};
+
+const createInfiniteParams = <
+  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
+>(
+  queryKey: QueryKey<Options>,
+  page: K
+) => {
+  const params = {
+    ...queryKey[0],
+  };
+  if (page.body) {
+    params.body = {
+      ...(queryKey[0].body as any),
+      ...(page.body as any),
+    };
+  }
+  if (page.headers) {
+    params.headers = {
+      ...queryKey[0].headers,
+      ...page.headers,
+    };
+  }
+  if (page.path) {
+    params.path = {
+      ...(queryKey[0].path as any),
+      ...(page.path as any),
+    };
+  }
+  if (page.query) {
+    params.query = {
+      ...(queryKey[0].query as any),
+      ...(page.query as any),
+    };
+  }
+  return params as unknown as typeof page;
+};
+
+export const listOauthProvidersInfiniteQueryKey = (
+  options?: Options<ListOauthProvidersData>
+): QueryKey<Options<ListOauthProvidersData>> =>
+  createQueryKey("listOauthProviders", options, true);
+
+/**
+ * List Oauth Providers
+ */
+export const listOauthProvidersInfiniteOptions = (
+  options?: Options<ListOauthProvidersData>
+) => {
+  return infiniteQueryOptions<
+    ListOauthProvidersResponse,
+    ListOauthProvidersError,
+    InfiniteData<ListOauthProvidersResponse>,
+    QueryKey<Options<ListOauthProvidersData>>,
+    | Pick<
+        QueryKey<Options<ListOauthProvidersData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListOauthProvidersData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listOauthProviders({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listOauthProvidersInfiniteQueryKey(options),
+    }
+  );
+};
+
 export const createOauthProviderQueryKey = (
   options: Options<CreateOauthProviderData>
 ) => createQueryKey("createOauthProvider", options);
@@ -680,6 +797,30 @@ export const updateOauthProviderMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getOauthProviderQueryKey = (
+  options?: Options<GetOauthProviderData>
+) => createQueryKey("getOauthProvider", options);
+
+/**
+ * Get Oauth Provider
+ */
+export const getOauthProviderOptions = (
+  options?: Options<GetOauthProviderData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getOauthProvider({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getOauthProviderQueryKey(options),
+  });
 };
 
 export const loginQueryKey = (options: Options<LoginData>) =>
@@ -820,42 +961,6 @@ export const listBootResourcesOptions = (
     },
     queryKey: listBootResourcesQueryKey(options),
   });
-};
-
-const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
->(
-  queryKey: QueryKey<Options>,
-  page: K
-) => {
-  const params = {
-    ...queryKey[0],
-  };
-  if (page.body) {
-    params.body = {
-      ...(queryKey[0].body as any),
-      ...(page.body as any),
-    };
-  }
-  if (page.headers) {
-    params.headers = {
-      ...queryKey[0].headers,
-      ...page.headers,
-    };
-  }
-  if (page.path) {
-    params.path = {
-      ...(queryKey[0].path as any),
-      ...(page.path as any),
-    };
-  }
-  if (page.query) {
-    params.query = {
-      ...(queryKey[0].query as any),
-      ...(page.query as any),
-    };
-  }
-  return params as unknown as typeof page;
 };
 
 export const listBootResourcesInfiniteQueryKey = (

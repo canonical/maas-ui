@@ -1,4 +1,3 @@
-import type { UserResponse } from "@/app/apiclient";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import type { PackageRepository } from "@/app/store/packagerepository/types";
@@ -67,11 +66,10 @@ const urls = {
     sessionTimeout: "/settings/security/session-timeout",
   },
   storage: "/settings/storage",
-  users: {
-    add: "/settings/users/add",
-    edit: argPath<{ id: UserResponse["id"] }>("/settings/users/:id/edit"),
-    delete: argPath<{ id: UserResponse["id"] }>("/settings/users/:id/delete"),
-    index: "/settings/users",
+  userManagement: {
+    index: "/settings/user-management",
+    users: "/settings/user-management/users",
+    singleSignOn: "/settings/user-management/single-sign-on",
   },
 } as const;
 

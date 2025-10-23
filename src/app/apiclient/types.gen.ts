@@ -2151,6 +2151,34 @@ export type OAuthProviderResponse = {
    */
   enabled: boolean;
   /**
+   * Id
+   */
+  id: number;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * OAuthProvidersListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type OAuthProvidersListResponse = {
+  /**
+   * Items
+   */
+  items: OAuthProviderResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
    * Kind
    */
   kind?: string;
@@ -4712,11 +4740,47 @@ export type AccessTokenResponses = {
 export type AccessTokenResponse2 =
   AccessTokenResponses[keyof AccessTokenResponses];
 
+export type ListOauthProvidersData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/auth/oauth/providers";
+};
+
+export type ListOauthProvidersErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListOauthProvidersError =
+  ListOauthProvidersErrors[keyof ListOauthProvidersErrors];
+
+export type ListOauthProvidersResponses = {
+  /**
+   * Successful Response
+   */
+  200: OAuthProvidersListResponse;
+};
+
+export type ListOauthProvidersResponse =
+  ListOauthProvidersResponses[keyof ListOauthProvidersResponses];
+
 export type CreateOauthProviderData = {
   body: OAuthProviderRequest;
   path?: never;
   query?: never;
-  url: "/MAAS/a/v3/auth/oauth";
+  url: "/MAAS/a/v3/auth/oauth/providers";
 };
 
 export type CreateOauthProviderErrors = {
@@ -4758,7 +4822,7 @@ export type DeleteOauthProviderData = {
     provider_id: number;
   };
   query?: never;
-  url: "/MAAS/a/v3/auth/oauth/{provider_id}";
+  url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}";
 };
 
 export type DeleteOauthProviderErrors = {
@@ -4798,7 +4862,7 @@ export type UpdateOauthProviderData = {
     provider_id: number;
   };
   query?: never;
-  url: "/MAAS/a/v3/auth/oauth/{provider_id}";
+  url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}";
 };
 
 export type UpdateOauthProviderErrors = {
@@ -4824,6 +4888,37 @@ export type UpdateOauthProviderResponses = {
 
 export type UpdateOauthProviderResponse =
   UpdateOauthProviderResponses[keyof UpdateOauthProviderResponses];
+
+export type GetOauthProviderData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/auth/oauth:is_active";
+};
+
+export type GetOauthProviderErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetOauthProviderError =
+  GetOauthProviderErrors[keyof GetOauthProviderErrors];
+
+export type GetOauthProviderResponses = {
+  /**
+   * Successful Response
+   */
+  200: OAuthProviderResponse;
+};
+
+export type GetOauthProviderResponse =
+  GetOauthProviderResponses[keyof GetOauthProviderResponses];
 
 export type LoginData = {
   body: BodyLogin;

@@ -39,7 +39,8 @@ import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
 import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
-import UsersList from "@/app/settings/views/Users/views";
+import SingleSignOn from "@/app/settings/views/UserManagement/views/SingleSignOn";
+import UsersList from "@/app/settings/views/UserManagement/views/UsersList/UsersList";
 import { getRelativeRoute } from "@/app/utils";
 
 const ControllerDetails = lazy(
@@ -496,12 +497,23 @@ export const router = createBrowserRouter(
             },
             {
               path: getRelativeRoute(
-                urls.settings.users.index,
+                urls.settings.userManagement.users,
                 urls.settings.index
               ),
               element: (
                 <ErrorBoundary>
                   <UsersList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.userManagement.singleSignOn,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SingleSignOn />
                 </ErrorBoundary>
               ),
             },

@@ -34,8 +34,12 @@ const settingsPages = [
     label: "IPMI settings",
   },
   {
-    path: "/settings/users",
+    path: "/settings/user-management/users",
     label: "Users",
+  },
+  {
+    path: "/settings/user-management/single-sign-on",
+    label: "OIDC/Single sign-on",
   },
   {
     path: "/settings/images/ubuntu",

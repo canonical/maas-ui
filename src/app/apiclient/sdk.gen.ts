@@ -11,6 +11,9 @@ import type {
   AccessTokenData,
   AccessTokenResponses,
   AccessTokenErrors,
+  ListOauthProvidersData,
+  ListOauthProvidersResponses,
+  ListOauthProvidersErrors,
   CreateOauthProviderData,
   CreateOauthProviderResponses,
   CreateOauthProviderErrors,
@@ -20,6 +23,9 @@ import type {
   UpdateOauthProviderData,
   UpdateOauthProviderResponses,
   UpdateOauthProviderErrors,
+  GetOauthProviderData,
+  GetOauthProviderResponses,
+  GetOauthProviderErrors,
   LoginData,
   LoginResponses,
   LoginErrors,
@@ -486,6 +492,28 @@ export const accessToken = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Oauth Providers
+ */
+export const listOauthProviders = <ThrowOnError extends boolean = false>(
+  options?: Options<ListOauthProvidersData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListOauthProvidersResponses,
+    ListOauthProvidersErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/auth/oauth/providers",
+    ...options,
+  });
+};
+
+/**
  * Create Oauth Provider
  */
 export const createOauthProvider = <ThrowOnError extends boolean = false>(
@@ -496,7 +524,13 @@ export const createOauthProvider = <ThrowOnError extends boolean = false>(
     CreateOauthProviderErrors,
     ThrowOnError
   >({
-    url: "/MAAS/a/v3/auth/oauth",
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/auth/oauth/providers",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -516,7 +550,13 @@ export const deleteOauthProvider = <ThrowOnError extends boolean = false>(
     DeleteOauthProviderErrors,
     ThrowOnError
   >({
-    url: "/MAAS/a/v3/auth/oauth/{provider_id}",
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}",
     ...options,
   });
 };
@@ -532,12 +572,40 @@ export const updateOauthProvider = <ThrowOnError extends boolean = false>(
     UpdateOauthProviderErrors,
     ThrowOnError
   >({
-    url: "/MAAS/a/v3/auth/oauth/{provider_id}",
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * Get Oauth Provider
+ */
+export const getOauthProvider = <ThrowOnError extends boolean = false>(
+  options?: Options<GetOauthProviderData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetOauthProviderResponses,
+    GetOauthProviderErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/auth/oauth:is_active",
+    ...options,
   });
 };
 

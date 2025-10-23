@@ -280,7 +280,7 @@
 @import "@/app/settings/views/Scripts/ScriptsList";
 @import "@/app/settings/views/Scripts/ScriptsUpload";
 @import "@/app/settings/views/Scripts/ScriptDetails";
-@import "@/app/settings/views/Users/components/UsersTable";
+@import "@/app/settings/views/UserManagement/views/UsersList/components/UsersTable";
 @include SettingsTable;
 @include DhcpList;
 @include LicenseKeyList;
