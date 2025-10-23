@@ -124,14 +124,10 @@ describe("EventLogs", () => {
     });
     const rows = screen.getAllByRole("row");
     expect(
-      within(rows[1]).getByRole("gridcell", {
-        name: "Tue, 17 Mar. 2021 03:04:00",
-      })
+      within(rows[1]).getByText("Tue, 17 Mar. 2021 03:04:00")
     ).toBeInTheDocument();
     expect(
-      within(rows[2]).getByRole("gridcell", {
-        name: "Tue, 16 Mar. 2021 03:04:00",
-      })
+      within(rows[2]).getByText("Tue, 16 Mar. 2021 03:04:00")
     ).toBeInTheDocument();
   });
 
@@ -160,15 +156,9 @@ describe("EventLogs", () => {
     const rows = screen.getAllByRole("row");
     expect(rows).toHaveLength(3);
     expect(
-      within(rows[1]).getByRole("gridcell", {
-        name: "Failed commissioning",
-      })
+      within(rows[1]).getByText("Failed commissioning")
     ).toBeInTheDocument();
-    expect(
-      within(rows[2]).getByRole("gridcell", {
-        name: "Failed install",
-      })
-    ).toBeInTheDocument();
+    expect(within(rows[2]).getByText("Failed install")).toBeInTheDocument();
   });
 
   it("can update the number of events per page", async () => {
