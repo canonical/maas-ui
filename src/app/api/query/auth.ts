@@ -9,19 +9,32 @@ import type {
   CompleteIntroData,
   CompleteIntroError,
   CompleteIntroResponse,
+  CreateOauthProviderData,
+  CreateOauthProviderError,
+  CreateOauthProviderResponse,
   GetMeWithSummaryData,
   GetMeWithSummaryError,
   GetMeWithSummaryResponse,
+  GetOauthProviderData,
+  GetOauthProviderError,
+  GetOauthProviderResponse,
   LoginData,
   LoginError,
   LoginResponse,
   Options,
+  UpdateOauthProviderData,
+  UpdateOauthProviderError,
+  UpdateOauthProviderResponse,
 } from "@/app/apiclient";
 import {
   completeIntroMutation,
+  createOauthProviderMutation,
   getMeWithSummaryOptions,
   getMeWithSummaryQueryKey,
+  getOauthProviderOptions,
+  getOauthProviderQueryKey,
   loginMutation,
+  updateOauthProviderMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
@@ -72,6 +85,58 @@ export const useCompleteIntro = (
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: getMeWithSummaryQueryKey(),
+      });
+    },
+  });
+};
+
+export const useActiveOauthProvider = (
+  options?: Options<GetOauthProviderData>,
+  queryOptions?: UseQueryOptions<
+    GetOauthProviderData,
+    GetOauthProviderError,
+    GetOauthProviderResponse
+  >
+) => {
+  return useWebsocketAwareQuery({
+    ...(getOauthProviderOptions(options) as UseQueryOptions<
+      GetOauthProviderData,
+      GetOauthProviderError,
+      GetOauthProviderResponse
+    >),
+    ...queryOptions,
+  });
+};
+
+export const useCreateOauthProvider = (
+  mutationOptions?: Options<CreateOauthProviderData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    CreateOauthProviderResponse,
+    CreateOauthProviderError,
+    Options<CreateOauthProviderData>
+  >({
+    ...createOauthProviderMutation(mutationOptions),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getOauthProviderQueryKey() });
+    },
+  });
+};
+
+export const useUpdateOauthProvider = (
+  mutationOptions?: Options<UpdateOauthProviderData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    UpdateOauthProviderResponse,
+    UpdateOauthProviderError,
+    Options<UpdateOauthProviderData>
+  >({
+    ...updateOauthProviderMutation(mutationOptions),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: getOauthProviderQueryKey(),
       });
     },
   });
