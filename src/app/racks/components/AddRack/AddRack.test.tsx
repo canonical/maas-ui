@@ -4,17 +4,17 @@ import AddRack from "./AddRack";
 
 import { rackResolvers } from "@/testing/resolvers/racks";
 import {
-  screen,
-  renderWithProviders,
-  userEvent,
-  setupMockServer,
   mockSidePanel,
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(rackResolvers.createRack.handler());
 const { mockClose } = await mockSidePanel();
 
-describe("AddPool", () => {
+describe("AddRack", () => {
   it("runs closeForm function when the cancel button is clicked", async () => {
     renderWithProviders(<AddRack />);
 
@@ -22,7 +22,7 @@ describe("AddPool", () => {
     expect(mockClose).toHaveBeenCalled();
   });
 
-  it("calls create pool on save click", async () => {
+  it("calls create rack on save click", async () => {
     renderWithProviders(<AddRack />);
 
     await userEvent.type(

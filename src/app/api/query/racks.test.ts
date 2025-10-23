@@ -1,6 +1,7 @@
 import {
   useCreateRack,
   useDeleteRack,
+  useGenerateToken,
   useGetRack,
   useRacks,
   useUpdateRack,
@@ -83,6 +84,16 @@ describe("useUpdateRack", () => {
 describe("useDeleteRack", () => {
   it("should delete a rack", async () => {
     const { result } = renderHookWithProviders(() => useDeleteRack());
+    result.current.mutate({ path: { rack_id: 1 } });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useGenerateToken", () => {
+  it("should generate a bootstrap token", async () => {
+    const { result } = renderHookWithProviders(() => useGenerateToken());
     result.current.mutate({ path: { rack_id: 1 } });
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);

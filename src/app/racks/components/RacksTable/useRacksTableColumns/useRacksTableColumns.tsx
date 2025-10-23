@@ -6,6 +6,7 @@ import { Link } from "react-router";
 
 import DeleteRack from "../../DeleteRack";
 import EditRack from "../../EditRack";
+import RegisterController from "../../RegisterController";
 
 import type { RackResponse } from "@/app/apiclient";
 import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
@@ -69,6 +70,7 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",
+        //TODO Correctly disable actions when backend is ready
         cell: ({ row }) => {
           return (
             <TableActionsDropdown
@@ -92,7 +94,13 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
                     });
                     break;
                   case RackActions.RegisterController:
-                    // openSidePanel(<RegisterController rack={row.original} />);
+                    openSidePanel({
+                      component: RegisterController,
+                      title: "Register controller",
+                      props: {
+                        id: row.original.id,
+                      },
+                    });
                     break;
                   case RackActions.RemoveControllers:
                     // openSidePanel(<RemoveControllers rack={row.original} />);
