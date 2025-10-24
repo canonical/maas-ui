@@ -11,8 +11,10 @@ import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
-import AddDeviceForm from "@/app/devices/components/AddDeviceForm";
-import DeviceActionFormWrapper from "@/app/devices/components/DeviceActionFormWrapper";
+import {
+  AddDeviceForm,
+  DeviceActionFormWrapper,
+} from "@/app/devices/components";
 import deviceSelectors from "@/app/store/device/selectors";
 import { NodeActions } from "@/app/store/types/node";
 

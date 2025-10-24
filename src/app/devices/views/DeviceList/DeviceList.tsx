@@ -3,12 +3,10 @@ import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 
-import DeviceListHeader from "../../components/DeviceListHeader";
-import DeviceListTable from "../../components/DeviceListTable";
-
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import type { SyncNavigateFunction } from "@/app/base/types";
+import { DeviceListHeader, DeviceListTable } from "@/app/devices/components";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import { FilterDevices } from "@/app/store/device/utils";
