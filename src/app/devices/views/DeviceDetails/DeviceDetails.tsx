@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router";
 
-import DeviceConfiguration from "./DeviceConfiguration";
-import DeviceDetailsHeader from "./DeviceDetailsHeader";
-import DeviceNetwork from "./DeviceNetwork";
-import DeviceSummary from "./DeviceSummary";
+import DeviceConfiguration from "../../components/DeviceConfiguration";
+import DeviceDetailsHeader from "../../components/DeviceDetailsHeader";
+import DeviceNetwork from "../../components/DeviceNetwork";
+import DeviceSummary from "../../components/DeviceSummary";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";

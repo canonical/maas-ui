@@ -3,8 +3,8 @@ import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 
-import DeviceListHeader from "./DeviceListHeader";
-import DeviceListTable from "./DeviceListTable";
+import DeviceListHeader from "../../components/DeviceListHeader";
+import DeviceListTable from "../../components/DeviceListTable";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
