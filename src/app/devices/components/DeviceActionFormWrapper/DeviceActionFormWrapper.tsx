@@ -1,3 +1,6 @@
+import type { Dispatch, SetStateAction } from "react";
+
+import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
 import DeleteForm from "@/app/base/components/node/DeleteForm";
@@ -16,12 +19,14 @@ type Props = {
   action: DeviceActions;
   devices: Device[];
   viewingDetails: boolean;
+  setRowSelection: Dispatch<SetStateAction<RowSelectionState>>;
 };
 
 export const ActionFormWrapper = ({
   action,
   devices,
   viewingDetails,
+  setRowSelection,
 }: Props): React.ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
@@ -54,9 +59,15 @@ export const ActionFormWrapper = ({
       clearSidePanelContent={closeSidePanel}
       nodeType="device"
       nodes={devices}
-      onUpdateSelected={(deviceIDs) =>
-        dispatch(deviceActions.setSelected(deviceIDs))
-      }
+      onUpdateSelected={(deviceIDs) => {
+        setRowSelection(
+          deviceIDs.reduce((acc, system_id): RowSelectionState => {
+            const id = devices.find((d) => d.system_id === system_id)?.id;
+            if (id === undefined) return acc;
+            return { ...acc, [id.toString()]: true };
+          }, {})
+        );
+      }}
       processingCount={processingCount}
       viewingDetails={viewingDetails}
     >
