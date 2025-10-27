@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router";
 
-import { Label as DeviceConfigurationLabel } from "./DeviceConfiguration/DeviceConfiguration";
 import DeviceDetails from "./DeviceDetails";
-import { Label as DeviceNetworkLabel } from "./DeviceNetwork/DeviceNetwork";
-import { Label as DeviceSummaryLabel } from "./DeviceSummary/DeviceSummary";
 
 import urls from "@/app/base/urls";
+import { Label as DeviceConfigurationLabel } from "@/app/devices/components/DeviceConfiguration/DeviceConfiguration";
+import { Label as DeviceNetworkLabel } from "@/app/devices/components/DeviceNetwork/DeviceNetwork";
+import { Label as DeviceSummaryLabel } from "@/app/devices/components/DeviceSummary/DeviceSummary";
 import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
