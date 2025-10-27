@@ -19,7 +19,7 @@ type Props = {
   action: DeviceActions;
   devices: Device[];
   viewingDetails: boolean;
-  setRowSelection: Dispatch<SetStateAction<RowSelectionState>>;
+  setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
 };
 
 export const ActionFormWrapper = ({
@@ -60,13 +60,14 @@ export const ActionFormWrapper = ({
       nodeType="device"
       nodes={devices}
       onUpdateSelected={(deviceIDs) => {
-        setRowSelection(
-          deviceIDs.reduce((acc, system_id): RowSelectionState => {
-            const id = devices.find((d) => d.system_id === system_id)?.id;
-            if (id === undefined) return acc;
-            return { ...acc, [id.toString()]: true };
-          }, {})
-        );
+        setRowSelection &&
+          setRowSelection(
+            deviceIDs.reduce((acc, system_id): RowSelectionState => {
+              const id = devices.find((d) => d.system_id === system_id)?.id;
+              if (id === undefined) return acc;
+              return { ...acc, [id.toString()]: true };
+            }, {})
+          );
       }}
       processingCount={processingCount}
       viewingDetails={viewingDetails}

@@ -5,8 +5,7 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import { useLocation, useNavigate } from "react-router";
 
 import PageContent from "@/app/base/components/PageContent";
-import { DeviceListHeader } from "@/app/devices/components";
-import DevicesTable from "@/app/devices/components/DevicesTable";
+import { DeviceListHeader, DevicesTable } from "@/app/devices/components";
 import { FilterDevices } from "@/app/store/device/utils";
 
 const DeviceList = (): ReactElement => {

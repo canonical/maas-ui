@@ -58,6 +58,7 @@ const DevicesTable = ({
         (device): DeviceRow => ({ ...device, zone: device.zone.name })
       )}
       isLoading={devicesLoading}
+      noData="No devices available."
       rowSelection={rowSelection}
       setRowSelection={setRowSelection}
       sorting={[{ id: "fqdn", desc: false }]}
