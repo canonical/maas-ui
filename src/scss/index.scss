@@ -157,9 +157,7 @@
 @import "@/app/devices/components/AddDeviceForm/AddDeviceInterfaces";
 @import "@/app/devices/components/DeviceNetwork/DeviceNetworkTable";
 @import "../app/devices/components/DeviceSummary";
-@import "../app/devices/components/DeviceListTable";
 @include AddDeviceInterfaces;
-@include DeviceListTable;
 @include DeviceNetworkTable;
 @include DeviceSummary;
 
