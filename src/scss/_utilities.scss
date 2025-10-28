@@ -23,6 +23,10 @@
     min-width: auto !important;
   }
 
+  .u-border {
+    border: $border;
+  }
+
   .u-break-spaces {
     white-space: break-spaces !important;
   }
@@ -128,6 +132,15 @@
   .u-margin-bottom--medium {
     margin-bottom: $spv--medium !important;
   }
+
+  .u-margin-top--x-small {
+    margin-top: $sp-x-small !important;
+  }
+
+  .u-margin-top--medium {
+    margin-top: $spv--medium !important;
+  }
+  
   .u-no-border {
     border: 0 !important;
   }
