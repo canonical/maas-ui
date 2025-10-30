@@ -12,6 +12,9 @@ import type {
   CreateOauthProviderData,
   CreateOauthProviderError,
   CreateOauthProviderResponse,
+  DeleteOauthProviderData,
+  DeleteOauthProviderError,
+  DeleteOauthProviderResponse,
   GetMeWithSummaryData,
   GetMeWithSummaryError,
   GetMeWithSummaryResponse,
@@ -29,6 +32,7 @@ import type {
 import {
   completeIntroMutation,
   createOauthProviderMutation,
+  deleteOauthProviderMutation,
   getMeWithSummaryOptions,
   getMeWithSummaryQueryKey,
   getOauthProviderOptions,
@@ -119,7 +123,9 @@ export const useCreateOauthProvider = (
   >({
     ...createOauthProviderMutation(mutationOptions),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: getOauthProviderQueryKey() });
+      return queryClient.invalidateQueries({
+        queryKey: getOauthProviderQueryKey(),
+      });
     },
   });
 };
@@ -127,13 +133,25 @@ export const useCreateOauthProvider = (
 export const useUpdateOauthProvider = (
   mutationOptions?: Options<UpdateOauthProviderData>
 ) => {
-  const queryClient = useQueryClient();
   return useMutation<
     UpdateOauthProviderResponse,
     UpdateOauthProviderError,
     Options<UpdateOauthProviderData>
   >({
     ...updateOauthProviderMutation(mutationOptions),
+  });
+};
+
+export const useDeleteOauthProvider = (
+  mutationOptions?: Options<DeleteOauthProviderData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    DeleteOauthProviderResponse,
+    DeleteOauthProviderError,
+    Options<DeleteOauthProviderData>
+  >({
+    ...deleteOauthProviderMutation(mutationOptions),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: getOauthProviderQueryKey(),

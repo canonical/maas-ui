@@ -573,7 +573,7 @@ export const renderWithProviders = (
     }?: {
       state?: RootState;
     }
-  ) => RenderResult;
+  ) => void;
   store: MockStoreEnhanced<RootState | unknown>;
 } => {
   const queryClient = new QueryClient({
@@ -639,11 +639,21 @@ export const renderWithProviders = (
     if (newState) {
       store = getMockStore({ ...options?.state, ...newState });
     }
-    return render(ui, {
-      container: rendered.container,
-      wrapper: Wrapper,
-      ...options,
-    });
+    const router = createMemoryRouter(
+      [
+        {
+          path: "*",
+          element: <SidePanelContextProvider>{ui}</SidePanelContextProvider>,
+        },
+      ],
+      { initialEntries: options?.initialEntries || ["/"] }
+    );
+
+    return rendered.rerender(
+      <Wrapper>
+        <RouterProvider router={router} />
+      </Wrapper>
+    );
   };
 
   return {
