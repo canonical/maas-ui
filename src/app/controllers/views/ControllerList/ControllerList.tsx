@@ -1,10 +1,11 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 
 import ControllerListHeader from "./ControllerListHeader";
-import ControllerListTable from "./ControllerListTable";
+import ControllersTable from "./components/ControllersTable";
 
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import VaultNotification from "@/app/base/components/VaultNotification";
@@ -29,6 +30,8 @@ const ControllerList = (): React.ReactElement => {
     // Initialise the filter state from the URL.
     FilterControllers.filtersToString(currentFilters)
   );
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
   const selectedIDs = useSelector(controllerSelectors.selectedIDs);
 
   const filteredControllers = useSelector((state: RootState) =>
@@ -44,6 +47,15 @@ const ControllerList = (): React.ReactElement => {
     generalActions.fetchVaultEnabled,
   ]);
 
+  useEffect(() => {
+    const selectedSystemIds = filteredControllers
+      .filter((controller) =>
+        Object.keys(rowSelection).includes(controller.id.toString())
+      )
+      .map((controller) => controller.system_id);
+
+    dispatch(controllerActions.setSelected(selectedSystemIds));
+  }, [dispatch, filteredControllers, rowSelection]);
   // Update the URL when filters are changed.
   const setSearchFilter = useCallback(
     (searchText: string) => {
@@ -69,7 +81,13 @@ const ControllerList = (): React.ReactElement => {
       useNewSidePanelContext={true}
     >
       <VaultNotification />
-      <ControllerListTable
+      <ControllersTable
+        controllers={filteredControllers}
+        isPending={controllersLoading || vaultEnabledLoading}
+        rowSelection={rowSelection}
+        setRowSelection={setRowSelection}
+      />
+      {/* <ControllerListTable
         controllers={filteredControllers}
         hasFilter={!!searchFilter}
         loading={controllersLoading || vaultEnabledLoading}
@@ -77,7 +95,7 @@ const ControllerList = (): React.ReactElement => {
           dispatch(controllerActions.setSelected(controllerIDs));
         }}
         selectedIDs={selectedIDs}
-      />
+      /> */}
     </PageContent>
   );
 };

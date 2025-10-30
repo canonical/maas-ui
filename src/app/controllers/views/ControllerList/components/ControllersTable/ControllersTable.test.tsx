@@ -1,4 +1,4 @@
-import ControllerListTable, { Label } from "./ControllerListTable";
+import ControllersTable from "./ControllersTable";
 
 import urls from "@/app/base/urls";
 import type { Controller } from "@/app/store/controller/types";
@@ -12,7 +12,7 @@ import {
   within,
 } from "@/testing/utils";
 
-describe("ControllerListTable", () => {
+describe("ControllersTable", () => {
   let controller: Controller;
   let state: RootState;
   beforeEach(() => {
@@ -25,13 +25,27 @@ describe("ControllerListTable", () => {
     });
   });
 
+  it("displays a spinner while loading", () => {
+    renderWithProviders(
+      <ControllersTable
+        controllers={[controller]}
+        isPending={true}
+        rowSelection={{}}
+        setRowSelection={vi.fn()}
+      />,
+      { state }
+    );
+    expect(screen.getByText("Loading")).toBeInTheDocument();
+  });
+
   it("links to a controller's details page", () => {
     controller.system_id = "def456";
     renderWithProviders(
-      <ControllerListTable
+      <ControllersTable
         controllers={[controller]}
-        onSelectedChange={vi.fn()}
-        selectedIDs={[]}
+        isPending={false}
+        rowSelection={{}}
+        setRowSelection={vi.fn()}
       />,
       { state }
     );
@@ -52,10 +66,11 @@ describe("ControllerListTable", () => {
         factory.controller({ fqdn: "a", system_id: "a" }),
       ];
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -93,10 +108,11 @@ describe("ControllerListTable", () => {
         }),
       ];
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -126,10 +142,11 @@ describe("ControllerListTable", () => {
       const controllers = [factory.controller({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={onSelectedChange}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -143,10 +160,11 @@ describe("ControllerListTable", () => {
       const controllers = [factory.controller({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={onSelectedChange}
-          selectedIDs={["abc123"]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -163,10 +181,11 @@ describe("ControllerListTable", () => {
       ];
       const onSelectedChange = vi.fn();
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={onSelectedChange}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -183,10 +202,11 @@ describe("ControllerListTable", () => {
       ];
       const onSelectedChange = vi.fn();
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={onSelectedChange}
-          selectedIDs={["abc123", "def456"]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -205,10 +225,11 @@ describe("ControllerListTable", () => {
       ];
       state.controller.items = controllers;
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -232,10 +253,11 @@ describe("ControllerListTable", () => {
       state.controller.items = controllers;
 
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -297,10 +319,11 @@ describe("ControllerListTable", () => {
       });
 
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -349,10 +372,11 @@ describe("ControllerListTable", () => {
       });
 
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -374,10 +398,11 @@ describe("ControllerListTable", () => {
 
   it("displays message for empty state", () => {
     renderWithProviders(
-      <ControllerListTable
+      <ControllersTable
         controllers={[]}
-        onSelectedChange={vi.fn()}
-        selectedIDs={[]}
+        isPending={false}
+        rowSelection={{}}
+        setRowSelection={vi.fn()}
       />,
       { state }
     );
