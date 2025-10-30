@@ -29,6 +29,7 @@ const RemoveControllers = ({ id }: RemoveControllersProps) => {
     ],
     []
   );
+  //TODO: change when backend is ready
   const fakeControllers = useMemo(() => {
     if (rack.data) {
       return [
