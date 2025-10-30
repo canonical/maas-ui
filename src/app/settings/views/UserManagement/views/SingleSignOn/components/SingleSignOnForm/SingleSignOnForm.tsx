@@ -20,11 +20,11 @@ type Props = {
 
 const SingleSignOnSchema = Yup.object().shape({
   name: Yup.string().required("Name is a required field."),
-  client_id: Yup.string().required("Name is a required field."),
-  client_secret: Yup.string().required("Name is a required field."),
-  issuer_url: Yup.string().required("Name is a required field."),
-  redirect_uri: Yup.string().required("Name is a required field."),
-  scopes: Yup.string().required("Name is a required field."),
+  client_id: Yup.string().required("Client ID is a required field."),
+  client_secret: Yup.string().required("Client secret is a required field."),
+  issuer_url: Yup.string().required("Issuer URL is a required field."),
+  redirect_uri: Yup.string().required("Redirect URL is a required field."),
+  scopes: Yup.string().required("Scopes is a required field."),
 });
 
 const SingleSignOnForm = ({ provider }: Props): ReactElement => {
