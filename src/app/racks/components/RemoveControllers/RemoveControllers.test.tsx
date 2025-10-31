@@ -19,10 +19,10 @@ describe("RemoveControllers", () => {
     expect(mockClose).toHaveBeenCalled();
   });
 
-  //TODO when endpoint is ready
+  // TODO when endpoint is ready: https://warthogs.atlassian.net/browse/MAASENG-5529
   it.todo(
     "calls remove controllers API when remove controllers button is clicked"
   );
-  //TODO when endpoint is ready
+  // TODO when endpoint is ready: https://warthogs.atlassian.net/browse/MAASENG-5529
   it.todo("displays error message when remove controller fails");
 });

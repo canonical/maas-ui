@@ -5,6 +5,7 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
 import { useGetRack } from "@/app/api/query/racks";
+import ControllerLink from "@/app/base/components/ControllerLink";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 
@@ -22,20 +23,39 @@ const RemoveControllers = ({ id }: RemoveControllersProps) => {
     () => [
       {
         id: "name",
-        accessorKey: "name",
+        accessorKey: "system_id",
         enableSorting: true,
         header: "CONTROLLER",
+        cell: ({
+          row: {
+            original: { system_id },
+          },
+        }: {
+          row: { original: { system_id: string } };
+        }) => <ControllerLink systemId={system_id} />,
       },
     ],
     []
   );
-  //TODO: change when backend is ready
+  // TODO when endpoint is ready: https://warthogs.atlassian.net/browse/MAASENG-5529
   const fakeControllers = useMemo(() => {
     if (rack.data) {
       return [
-        { id: rack.data.id, name: `controller-${rack.data.id}` },
-        { id: rack.data.id + 1, name: `controller-${rack.data.id + 1}` },
-        { id: rack.data.id + 2, name: `controller-${rack.data.id + 2}` },
+        {
+          id: rack.data.id,
+          system_id: "abcdef",
+          name: `controller-${rack.data.id}`,
+        },
+        {
+          id: rack.data.id + 1,
+          system_id: "ghijkl",
+          name: `controller-${rack.data.id + 1}`,
+        },
+        {
+          id: rack.data.id + 2,
+          system_id: "mnoprs",
+          name: `controller-${rack.data.id + 2}`,
+        },
       ];
     } else {
       return rack.data;
@@ -50,7 +70,7 @@ const RemoveControllers = ({ id }: RemoveControllersProps) => {
       submitAppearance="negative"
       submitLabel={`Remove ${Object.values(rowSelection).length} ${pluralize("controller", Object.values(rowSelection).length)}`}
     >
-      Are you sure you want to remove controller from this rack? You will have
+      Are you sure you want to remove controllers from this rack? You will have
       to re-register the controllers to revert this action.
       {fakeControllers && (
         <GenericTable
