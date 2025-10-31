@@ -3,6 +3,7 @@ import {
   useAuthenticate,
   useCompleteIntro,
   useCreateOauthProvider,
+  useDeleteOauthProvider,
   useGetCurrentUser,
   useGetIsSuperUser,
   useUpdateOauthProvider,
@@ -24,7 +25,8 @@ setupMockServer(
   authResolvers.completeIntro.handler(),
   authResolvers.getActiveOauthProvider.handler(),
   authResolvers.createOauthProvider.handler(),
-  authResolvers.updateOauthProvider.handler()
+  authResolvers.updateOauthProvider.handler(),
+  authResolvers.deleteOauthProvider.handler()
 );
 
 describe("useAuthenticate", () => {
@@ -102,6 +104,16 @@ describe("useUpdateOauthProvider", () => {
       body: mockOauthProvider,
       path: { provider_id: 1 },
     });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useDeleteOauthProvider", () => {
+  it("should delete an OAuth provider", async () => {
+    const { result } = renderHookWithProviders(() => useDeleteOauthProvider());
+    result.current.mutate({ path: { provider_id: 1 } });
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });

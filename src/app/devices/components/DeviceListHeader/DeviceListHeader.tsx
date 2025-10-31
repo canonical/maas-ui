@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Col, Spinner } from "@canonical/react-components";
+import type { RowSelectionState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
 import DeviceFilterAccordion from "./DeviceFilterAccordion";
@@ -11,23 +12,32 @@ import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
-import AddDeviceForm from "@/app/devices/components/AddDeviceForm";
-import DeviceActionFormWrapper from "@/app/devices/components/DeviceActionFormWrapper";
+import {
+  AddDeviceForm,
+  DeviceActionFormWrapper,
+} from "@/app/devices/components";
 import deviceSelectors from "@/app/store/device/selectors";
+import type { Device } from "@/app/store/device/types";
 import { NodeActions } from "@/app/store/types/node";
 
 type Props = {
+  rowSelection: RowSelectionState;
+  setRowSelection: Dispatch<SetStateAction<RowSelectionState>>;
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
 };
 
 const DeviceListHeader = ({
+  rowSelection,
+  setRowSelection,
   searchFilter,
   setSearchFilter,
 }: Props): React.ReactElement => {
   const devices = useSelector(deviceSelectors.all);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
-  const selectedDevices = useSelector(deviceSelectors.selected);
+  const selectedDevices = devices.filter((device: Device) =>
+    Object.keys(rowSelection).includes(device.id.toString())
+  );
   const [searchText, setSearchText] = useState(searchFilter);
   const { openSidePanel } = useSidePanel();
 
@@ -44,9 +54,6 @@ const DeviceListHeader = ({
       {devicesLoaded ? (
         <ModelListSubtitle
           available={devices.length}
-          filterSelected={() => {
-            setSearchFilter("in:(Selected)");
-          }}
           modelName="device"
           selected={selectedDevices.length}
         />
@@ -94,6 +101,7 @@ const DeviceListHeader = ({
                   action === NodeActions.DELETE ? action : NodeActions.SET_ZONE,
                 devices: selectedDevices,
                 viewingDetails: false,
+                setRowSelection,
               },
             });
           }}

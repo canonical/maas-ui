@@ -12,7 +12,7 @@ import type {
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { useSidePanel as useNewSidePanel } from "@/app/base/side-panel-context-new";
-import AddInterface from "@/app/devices/views/DeviceDetails/DeviceNetwork/AddInterface";
+import AddInterface from "@/app/devices/components/DeviceNetwork/AddInterface";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { Node } from "@/app/store/types/node";
 

@@ -9,7 +9,7 @@ import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import DeviceActionFormWrapper from "@/app/devices/components/DeviceActionFormWrapper";
+import { DeviceActionFormWrapper } from "@/app/devices/components";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device } from "@/app/store/device/types";
 import { isDeviceDetails } from "@/app/store/device/utils";

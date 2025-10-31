@@ -55,6 +55,12 @@ const mockupdateOauthProviderError: UpdateOauthProviderError = {
   kind: "Error",
 };
 
+const mockDeleteOauthProviderError = {
+  message: "Internal server error",
+  code: 500,
+  kind: "Error",
+};
+
 const authResolvers = {
   authenticate: {
     resolved: false,
@@ -134,6 +140,19 @@ const authResolvers = {
     error: (error = mockupdateOauthProviderError) =>
       http.put(`${BASE_URL}MAAS/a/v3/auth/oauth/providers/:id`, () => {
         authResolvers.updateOauthProvider.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  deleteOauthProvider: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/auth/oauth/providers/:id`, () => {
+        authResolvers.deleteOauthProvider.resolved = true;
+        return HttpResponse.json({});
+      }),
+    error: (error = mockDeleteOauthProviderError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/auth/oauth/providers/:id`, () => {
+        authResolvers.deleteOauthProvider.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },

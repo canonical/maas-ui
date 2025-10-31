@@ -217,4 +217,20 @@ describe("SingleSignOnForm", () => {
       expect(screen.getByRole("textbox", { name: /Name/i })).toHaveValue("");
     });
   });
+
+  it("resets the form to an empty state if 'provider' becomes undefined", async () => {
+    const { rerender } = renderWithProviders(
+      <SingleSignOnForm provider={mockAuthProvider} />
+    );
+
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(
+      mockAuthProvider.name
+    );
+
+    rerender(<SingleSignOnForm provider={undefined} />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("");
+    });
+  });
 });

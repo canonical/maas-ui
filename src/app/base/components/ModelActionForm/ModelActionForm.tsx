@@ -27,7 +27,7 @@ const ModelActionForm = <V extends object, E = null>({
     >
       <Row>
         <Col size={12}>
-          <p className="u-nudge-down--small">
+          <span className="u-nudge-down--small">
             {message ? (
               message
             ) : (
@@ -36,7 +36,7 @@ const ModelActionForm = <V extends object, E = null>({
                 permanent and cannot be undone.
               </>
             )}
-          </p>
+          </span>
         </Col>
       </Row>
     </FormikForm>

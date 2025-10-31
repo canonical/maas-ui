@@ -30,7 +30,12 @@ describe("DeviceListHeader", () => {
   it("displays a spinner in the header subtitle if devices have not loaded", () => {
     state.device.loaded = false;
     renderWithProviders(
-      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
+      <DeviceListHeader
+        rowSelection={{}}
+        searchFilter=""
+        setRowSelection={vi.fn()}
+        setSearchFilter={vi.fn()}
+      />,
       { state }
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -39,16 +44,25 @@ describe("DeviceListHeader", () => {
   it("displays a devices count if devices have loaded", () => {
     state.device.loaded = true;
     renderWithProviders(
-      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
+      <DeviceListHeader
+        rowSelection={{}}
+        searchFilter=""
+        setRowSelection={vi.fn()}
+        setSearchFilter={vi.fn()}
+      />,
       { state }
     );
     expect(screen.getByText("2 devices available")).toBeInTheDocument();
   });
 
   it("disables the add device button if any devices are selected", () => {
-    state.device.selected = ["abc123"];
     renderWithProviders(
-      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
+      <DeviceListHeader
+        rowSelection={{ [state.device.items[0].id]: true }}
+        searchFilter=""
+        setRowSelection={vi.fn()}
+        setSearchFilter={vi.fn()}
+      />,
       { state }
     );
     expect(
@@ -58,7 +72,12 @@ describe("DeviceListHeader", () => {
 
   it("can open the add device form", async () => {
     renderWithProviders(
-      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
+      <DeviceListHeader
+        rowSelection={{}}
+        searchFilter=""
+        setRowSelection={vi.fn()}
+        setSearchFilter={vi.fn()}
+      />,
       { state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Add device" }));
@@ -72,14 +91,24 @@ describe("DeviceListHeader", () => {
 
   it("changes the search text when the filters change", () => {
     const { rerender } = renderWithProviders(
-      <DeviceListHeader searchFilter="" setSearchFilter={vi.fn()} />,
+      <DeviceListHeader
+        rowSelection={{}}
+        searchFilter=""
+        setRowSelection={vi.fn()}
+        setSearchFilter={vi.fn()}
+      />,
       { state }
     );
 
     expect(screen.getByRole("searchbox")).toHaveValue("");
 
     rerender(
-      <DeviceListHeader searchFilter="free-text" setSearchFilter={vi.fn()} />
+      <DeviceListHeader
+        rowSelection={{}}
+        searchFilter="free-text"
+        setRowSelection={vi.fn()}
+        setSearchFilter={vi.fn()}
+      />
     );
 
     expect(screen.getByRole("searchbox")).toHaveValue("free-text");
