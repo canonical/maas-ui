@@ -7,6 +7,7 @@ import { Link } from "react-router";
 import DeleteRack from "../../DeleteRack";
 import EditRack from "../../EditRack";
 import RegisterController from "../../RegisterController";
+import RemoveControllers from "../../RemoveControllers";
 
 import type { RackResponse } from "@/app/apiclient";
 import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
@@ -103,7 +104,13 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
                     });
                     break;
                   case RackActions.RemoveControllers:
-                    // openSidePanel(<RemoveControllers rack={row.original} />);
+                    openSidePanel({
+                      component: RemoveControllers,
+                      title: "Remove controllers",
+                      props: {
+                        id: row.original.id,
+                      },
+                    });
                     break;
                   default:
                     break;
