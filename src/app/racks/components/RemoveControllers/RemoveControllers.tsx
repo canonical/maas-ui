@@ -1,26 +1,33 @@
 import { useMemo, useState } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
-import type { RowSelectionState } from "@tanstack/react-table";
+import type { ColumnDef, RowSelectionState } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
 import { useGetRack } from "@/app/api/query/racks";
 import ControllerLink from "@/app/base/components/ControllerLink";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-
+import type { Controller } from "@/app/store/controller/types";
 import "./_index.scss";
 
 type RemoveControllersProps = {
   id: number;
 };
 
+type RemoveControllersRow = Pick<Controller, "fqdn" | "id" | "system_id">;
+
+type RemoveControllersColumnDef = ColumnDef<
+  RemoveControllersRow,
+  Partial<RemoveControllersRow>
+>;
+
 const RemoveControllers = ({ id }: RemoveControllersProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const { closeSidePanel } = useSidePanel();
   const rack = useGetRack({ path: { rack_id: id } });
   const column = useMemo(
-    () => [
+    (): RemoveControllersColumnDef[] => [
       {
         id: "name",
         accessorKey: "system_id",
@@ -30,8 +37,6 @@ const RemoveControllers = ({ id }: RemoveControllersProps) => {
           row: {
             original: { system_id },
           },
-        }: {
-          row: { original: { system_id: string } };
         }) => <ControllerLink systemId={system_id} />,
       },
     ],
@@ -44,17 +49,17 @@ const RemoveControllers = ({ id }: RemoveControllersProps) => {
         {
           id: rack.data.id,
           system_id: "abcdef",
-          name: `controller-${rack.data.id}`,
+          fqdn: `controller-${rack.data.id}`,
         },
         {
           id: rack.data.id + 1,
           system_id: "ghijkl",
-          name: `controller-${rack.data.id + 1}`,
+          fqdn: `controller-${rack.data.id + 1}`,
         },
         {
           id: rack.data.id + 2,
           system_id: "mnoprs",
-          name: `controller-${rack.data.id + 2}`,
+          fqdn: `controller-${rack.data.id + 2}`,
         },
       ];
     } else {
