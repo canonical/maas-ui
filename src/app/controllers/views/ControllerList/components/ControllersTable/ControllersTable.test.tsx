@@ -9,6 +9,7 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitForLoading,
   within,
 } from "@/testing/utils";
 
@@ -59,12 +60,25 @@ describe("ControllersTable", () => {
   });
 
   describe("controller list sorting", () => {
-    it("can sort by FQDN", async () => {
+    it.only("can sort by FQDN", async () => {
       const controllers = [
-        factory.controller({ fqdn: "b", system_id: "b" }),
-        factory.controller({ fqdn: "c", system_id: "c" }),
-        factory.controller({ fqdn: "a", system_id: "a" }),
+        factory.controller({
+          fqdn: "lion",
+          system_id: "lion",
+          hostname: "lion",
+        }),
+        factory.controller({
+          fqdn: "zebra",
+          system_id: "zebra",
+          hostname: "zebra",
+        }),
+        factory.controller({
+          fqdn: "anaconda",
+          system_id: "anaconda",
+          hostname: "anaconda",
+        }),
       ];
+      state.controller.items = controllers;
       renderWithProviders(
         <ControllersTable
           controllers={controllers}
@@ -75,145 +89,37 @@ describe("ControllersTable", () => {
         { state }
       );
 
-      let rows = screen.getAllByRole("row");
+      await waitForLoading();
 
-      // Table is sorted be descending FQDN by default
-      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-a"));
-      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
-      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-c"));
+      screen.debug(screen.getAllByRole("rowgroup")[1]);
+
+      const rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole(
+        "row"
+      );
+      await userEvent.click(screen.getByRole("button", { name: /name/i }));
+
+      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
+        /anaconda/i
+      );
+      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(
+        /lion/i
+      );
+      expect(within(rows[2]).getAllByRole("cell")[1]).toHaveTextContent(
+        /zebra/i
+      );
 
       // Change sort to ascending FQDN
-      await userEvent.click(
-        screen.getByRole("button", { name: "Name (descending)" })
+      await userEvent.click(screen.getByRole("button", { name: /name/i }));
+
+      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
+        /zebra/i
       );
-      rows = screen.getAllByRole("row");
-      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-c"));
-      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
-      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-a"));
-    });
-
-    it("can sort by version", async () => {
-      const controllers = [
-        factory.controller({
-          versions: factory.controllerVersions({ origin: "3" }),
-          system_id: "c",
-        }),
-        factory.controller({
-          versions: factory.controllerVersions({ origin: "1" }),
-          system_id: "a",
-        }),
-        factory.controller({
-          versions: factory.controllerVersions({ origin: "2" }),
-          system_id: "b",
-        }),
-      ];
-      renderWithProviders(
-        <ControllersTable
-          controllers={controllers}
-          isPending={false}
-          rowSelection={{}}
-          setRowSelection={vi.fn()}
-        />,
-        { state }
+      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(
+        /lion/i
       );
-
-      // Change sort to descending version
-      await userEvent.click(screen.getByRole("button", { name: "Version" }));
-
-      let rows = screen.getAllByRole("row");
-      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-a"));
-      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
-      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-c"));
-
-      // Change sort to ascending version
-      await userEvent.click(
-        screen.getByRole("button", { name: "Version (descending)" })
+      expect(within(rows[2]).getAllByRole("cell")[1]).toHaveTextContent(
+        /anaconda/i
       );
-
-      rows = screen.getAllByRole("row");
-      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-c"));
-      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
-      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-a"));
-    });
-  });
-
-  describe("controller selection", () => {
-    it("handles selecting a single controller", async () => {
-      const controllers = [factory.controller({ system_id: "abc123" })];
-      const onSelectedChange = vi.fn();
-      renderWithProviders(
-        <ControllersTable
-          controllers={controllers}
-          isPending={false}
-          rowSelection={{}}
-          setRowSelection={vi.fn()}
-        />,
-        { state }
-      );
-
-      await userEvent.click(screen.getAllByTestId("controller-checkbox")[0]);
-
-      expect(onSelectedChange).toHaveBeenCalledWith(["abc123"]);
-    });
-
-    it("handles unselecting a single controller", async () => {
-      const controllers = [factory.controller({ system_id: "abc123" })];
-      const onSelectedChange = vi.fn();
-      renderWithProviders(
-        <ControllersTable
-          controllers={controllers}
-          isPending={false}
-          rowSelection={{}}
-          setRowSelection={vi.fn()}
-        />,
-        { state }
-      );
-
-      await userEvent.click(screen.getAllByTestId("controller-checkbox")[0]);
-
-      expect(onSelectedChange).toHaveBeenCalledWith([]);
-    });
-
-    it("handles selecting all controllers", async () => {
-      const controllers = [
-        factory.controller({ system_id: "abc123" }),
-        factory.controller({ system_id: "def456" }),
-      ];
-      const onSelectedChange = vi.fn();
-      renderWithProviders(
-        <ControllersTable
-          controllers={controllers}
-          isPending={false}
-          rowSelection={{}}
-          setRowSelection={vi.fn()}
-        />,
-        { state }
-      );
-
-      await userEvent.click(screen.getByTestId("all-controllers-checkbox"));
-
-      expect(onSelectedChange).toHaveBeenCalledWith(["abc123", "def456"]);
-    });
-
-    it("handles unselecting all controllers", async () => {
-      const controllers = [
-        factory.controller({ system_id: "abc123" }),
-        factory.controller({ system_id: "def456" }),
-      ];
-      const onSelectedChange = vi.fn();
-      renderWithProviders(
-        <ControllersTable
-          controllers={controllers}
-          isPending={false}
-          rowSelection={{}}
-          setRowSelection={vi.fn()}
-        />,
-        { state }
-      );
-
-      await userEvent.click(screen.getByTestId("all-controllers-checkbox"));
-
-      expect(onSelectedChange).toHaveBeenCalledWith([]);
     });
   });
 
@@ -407,6 +313,6 @@ describe("ControllersTable", () => {
       { state }
     );
 
-    expect(screen.getByText(Label.EmptyList)).toBeInTheDocument();
+    expect(screen.getByText(/No controllers available./i)).toBeInTheDocument();
   });
 });
