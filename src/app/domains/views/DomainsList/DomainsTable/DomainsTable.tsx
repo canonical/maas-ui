@@ -1,12 +1,14 @@
-import { MainTable, ContextualMenu } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router";
+import type { ReactElement } from "react";
 
-import { useSidePanel } from "@/app/base/side-panel-context-new";
-import urls from "@/app/base/urls";
-import SetDefaultForm from "@/app/domains/components/SetDefaultForm";
-import { domainActions } from "@/app/store/domain";
+import { GenericTable } from "@canonical/maas-react-components";
+import { useSelector } from "react-redux";
+
+import useDomainsTableColumns from "./useDomainsTableColumns/useDomainsTableColumns";
+
+import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import domainSelectors from "@/app/store/domain/selectors";
+
+import "./index.scss";
 
 export const Labels = {
   Domain: "Domain",
@@ -25,115 +27,31 @@ export const Labels = {
   FormTitle: "Set default",
 } as const;
 
-const DomainsTable = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const { openSidePanel } = useSidePanel();
+const DomainsTable = (): ReactElement => {
   const domains = useSelector(domainSelectors.all);
-  const headers = [
-    {
-      content: "Domain",
-      sortKey: "name",
-      "data-testid": "domain-name-header",
-    },
-    {
-      content: "Authoritative",
-      sortKey: "authoritative",
-    },
-    {
-      content: "Hosts",
-      sortKey: "hosts",
-      className: "u-align--right",
-    },
-    {
-      content: "Total records",
-      sortKey: "records",
-      className: "u-align--right",
-    },
-    {
-      content: "Actions",
-      className: "u-align--right",
-    },
-  ];
+  const { page, size, handlePageSizeChange, setPage } = usePagination(50);
 
-  const rows = domains.map((domain) => {
-    return {
-      // making sure we don't pass id directly as a key because of
-      // https://github.com/canonical/react-components/issues/476
-      key: `domain-row-${domain.id}`,
-      "aria-label": domain.name,
-      className: "p-table__row",
-      columns: [
-        {
-          content: (
-            <Link
-              data-testid="domain-name"
-              to={urls.domains.details({ id: domain.id })}
-            >
-              {domain.is_default ? `${domain.name} (default)` : domain.name}
-            </Link>
-          ),
-        },
-        {
-          content: domain.authoritative ? "Yes" : "No",
-        },
-        {
-          content: domain.hosts,
-          className: "u-align--right",
-        },
-        {
-          content: domain.resource_count,
-          className: "u-align--right",
-        },
-        {
-          content: (
-            <div aria-label={Labels.Actions}>
-              <ContextualMenu
-                hasToggleIcon={true}
-                links={[
-                  {
-                    children: Labels.SetDefault,
-                    onClick: () => {
-                      dispatch(domainActions.cleanup());
-                      openSidePanel({
-                        component: SetDefaultForm,
-                        title: "Set default",
-                        props: {
-                          id: domain.id,
-                        },
-                      });
-                    },
-                  },
-                ]}
-                toggleAppearance="base"
-                toggleClassName="u-no-margin--bottom is-small is-dense"
-                toggleDisabled={domain.is_default}
-              />
-            </div>
-          ),
-          className: "u-align--right",
-        },
-      ],
-      sortData: {
-        name: domain.name,
-        authoritative: domain.authoritative,
-        hosts: domain.hosts,
-        records: domain.resource_count,
-      },
-    };
-  });
+  const columns = useDomainsTableColumns();
 
   return (
-    <MainTable
+    <GenericTable
       aria-label={Labels.TableLable}
-      className="p-table-expanding--light"
+      className="domains-table"
+      columns={columns}
+      data={domains.slice(size * (page - 1), size * page)}
       data-testid="domains-table"
-      defaultSort="name"
-      defaultSortDirection="ascending"
-      emptyStateMsg={Labels.EmptyList}
-      headers={headers}
-      paginate={50}
-      rows={rows}
-      sortable
+      isLoading={false}
+      noData={Labels.EmptyList}
+      pagination={{
+        currentPage: page,
+        dataContext: "domains",
+        handlePageSizeChange: handlePageSizeChange,
+        isPending: false,
+        itemsPerPage: size,
+        setCurrentPage: setPage,
+        totalItems: domains.length,
+      }}
+      sorting={[{ id: "is_default", desc: true }]}
     />
   );
 };
