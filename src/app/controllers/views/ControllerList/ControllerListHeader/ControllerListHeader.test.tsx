@@ -30,7 +30,7 @@ describe("ControllerListHeader", () => {
     });
   });
 
-  it("displays a spinner in the Header rowSelection={{}}subtitle if controllers have not loaded", () => {
+  it("displays a spinner in the header subtitle if controllers have not loaded", () => {
     state.controller.loaded = false;
     renderWithProviders(
       <ControllerListHeader
