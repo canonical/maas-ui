@@ -1,5 +1,5 @@
 import { LONG_TIMEOUT } from "../../../constants";
-import { generateMAASURL, generateId } from "../../utils";
+import { generateId, generateMAASURL } from "../../utils";
 
 context("Controller details", () => {
   beforeEach(() => {
@@ -8,12 +8,7 @@ context("Controller details", () => {
 
     // navigate to controller details page of the first controller
     cy.findByRole("grid", { name: /controllers list/i }).within(() =>
-      cy
-        .findAllByRole("gridcell", { name: "Name" })
-        .first()
-        .within(() => {
-          cy.findByRole("link").click();
-        })
+      cy.findAllByRole("link").first().click()
     );
     cy.waitForPageToLoad();
     cy.findByText(/Summary/).should("exist");
