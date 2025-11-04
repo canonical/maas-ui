@@ -45,6 +45,7 @@ const ControllersTable = ({
 
   return (
     <GenericTable
+      aria-label="controllers list"
       canSelect
       className="controllers-table"
       columns={columns}
