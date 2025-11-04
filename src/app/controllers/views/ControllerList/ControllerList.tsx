@@ -87,15 +87,6 @@ const ControllerList = (): React.ReactElement => {
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
       />
-      {/* <ControllerListTable
-        controllers={filteredControllers}
-        hasFilter={!!searchFilter}
-        loading={controllersLoading || vaultEnabledLoading}
-        onSelectedChange={(controllerIDs) => {
-          dispatch(controllerActions.setSelected(controllerIDs));
-        }}
-        selectedIDs={selectedIDs}
-      /> */}
     </PageContent>
   );
 };

@@ -3,9 +3,9 @@ import { useMemo } from "react";
 import { ExternalLink } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
-import StatusColumn from "../../../ControllerListTable/StatusColumn";
-import VLANsColumn from "../../../ControllerListTable/VLANsColumn";
-import VersionColumn from "../../../ControllerListTable/VersionColumn";
+import StatusColumn from "../../StatusColumn";
+import VLANsColumn from "../../VLANsColumn";
+import VersionColumn from "../../VersionColumn";
 
 import ControllerLink from "@/app/base/components/ControllerLink";
 import DoubleRow from "@/app/base/components/DoubleRow";

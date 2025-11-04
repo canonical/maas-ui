@@ -36,7 +36,7 @@ describe("ControllersTable", () => {
       />,
       { state }
     );
-    expect(screen.getByText("Loading")).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("links to a controller's details page", () => {
@@ -59,8 +59,8 @@ describe("ControllersTable", () => {
     );
   });
 
-  describe("controller list sorting", () => {
-    it.only("can sort by FQDN", async () => {
+  describe("sorting", () => {
+    it("can sort by FQDN", async () => {
       const controllers = [
         factory.controller({
           fqdn: "lion",
@@ -91,12 +91,7 @@ describe("ControllersTable", () => {
 
       await waitForLoading();
 
-      screen.debug(screen.getAllByRole("rowgroup")[1]);
-
-      const rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole(
-        "row"
-      );
-      await userEvent.click(screen.getByRole("button", { name: /name/i }));
+      let rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
 
       expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
         /anaconda/i
@@ -110,6 +105,8 @@ describe("ControllersTable", () => {
 
       // Change sort to ascending FQDN
       await userEvent.click(screen.getByRole("button", { name: /name/i }));
+
+      rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
 
       expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
         /zebra/i
