@@ -141,7 +141,10 @@ const useControllersTableColumns = ({
           />
         ),
         accessorKey: "versions",
-        enableSorting: false,
+        accessorFn: (controller) => {
+          return controller.versions?.current.version;
+        },
+        enableSorting: true,
         cell: ({ row }) => <VersionColumn controller={row.original} />,
       },
       {
