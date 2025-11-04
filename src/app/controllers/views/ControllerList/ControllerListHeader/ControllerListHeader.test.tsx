@@ -30,10 +30,14 @@ describe("ControllerListHeader", () => {
     });
   });
 
-  it("displays a spinner in the header subtitle if controllers have not loaded", () => {
+  it("displays a spinner in the Header rowSelection={{}}subtitle if controllers have not loaded", () => {
     state.controller.loaded = false;
     renderWithProviders(
-      <ControllerListHeader searchFilter="" setSearchFilter={vi.fn()} />,
+      <ControllerListHeader
+        rowSelection={{}}
+        searchFilter=""
+        setSearchFilter={vi.fn()}
+      />,
       { state }
     );
 
@@ -43,7 +47,11 @@ describe("ControllerListHeader", () => {
   it("displays a controllers count if controllers have loaded", () => {
     state.controller.loaded = true;
     renderWithProviders(
-      <ControllerListHeader searchFilter="" setSearchFilter={vi.fn()} />,
+      <ControllerListHeader
+        rowSelection={{}}
+        searchFilter=""
+        setSearchFilter={vi.fn()}
+      />,
       { state }
     );
     expect(screen.getByTestId("subtitle-string")).toHaveTextContent(
@@ -52,9 +60,12 @@ describe("ControllerListHeader", () => {
   });
 
   it("disables the add controller button if any controllers are selected", () => {
-    state.controller.selected = ["abc123"];
     renderWithProviders(
-      <ControllerListHeader searchFilter="" setSearchFilter={vi.fn()} />,
+      <ControllerListHeader
+        rowSelection={{ [state.controller.items[0].id]: true }}
+        searchFilter=""
+        setSearchFilter={vi.fn()}
+      />,
       { state }
     );
     expect(
@@ -64,7 +75,11 @@ describe("ControllerListHeader", () => {
 
   it("can open the add controller form", async () => {
     renderWithProviders(
-      <ControllerListHeader searchFilter="" setSearchFilter={vi.fn()} />,
+      <ControllerListHeader
+        rowSelection={{}}
+        searchFilter=""
+        setSearchFilter={vi.fn()}
+      />,
       { state }
     );
     await userEvent.click(
@@ -79,13 +94,18 @@ describe("ControllerListHeader", () => {
   it("changes the search text when the filters change", () => {
     const store = mockStore(state);
     const { rerender } = renderWithProviders(
-      <ControllerListHeader searchFilter={""} setSearchFilter={vi.fn()} />,
+      <ControllerListHeader
+        rowSelection={{}}
+        searchFilter={""}
+        setSearchFilter={vi.fn()}
+      />,
       { initialEntries: ["/machines"], store }
     );
     expect(screen.getByRole("searchbox")).toHaveValue("");
 
     rerender(
       <ControllerListHeader
+        rowSelection={{}}
         searchFilter={"free-text"}
         setSearchFilter={vi.fn()}
       />

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
+import type { RowSelectionState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
@@ -17,17 +18,21 @@ import type { ControllerActions } from "@/app/store/controller/types";
 import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
+  rowSelection: RowSelectionState;
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
 };
 
 const ControllerListHeader = ({
+  rowSelection,
   searchFilter,
   setSearchFilter,
 }: Props): React.ReactElement => {
   const controllers = useSelector(controllerSelectors.all);
   const controllersLoaded = useSelector(controllerSelectors.loaded);
-  const selectedControllers = useSelector(controllerSelectors.selected);
+  const selectedControllers = controllers.filter((controller) =>
+    Object.keys(rowSelection).includes(controller.id.toString())
+  );
   const sendAnalytics = useSendAnalytics();
   const [searchText, setSearchText] = useState(searchFilter);
 

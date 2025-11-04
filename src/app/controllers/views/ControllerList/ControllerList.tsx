@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import type { RowSelectionState } from "@tanstack/react-table";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 
 import ControllerListHeader from "./ControllerListHeader";
@@ -20,7 +20,6 @@ import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 
 const ControllerList = (): React.ReactElement => {
-  const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const currentFilters = FilterControllers.queryStringToFilters(
@@ -47,15 +46,6 @@ const ControllerList = (): React.ReactElement => {
     generalActions.fetchVaultEnabled,
   ]);
 
-  useEffect(() => {
-    const selectedSystemIds = filteredControllers
-      .filter((controller) =>
-        Object.keys(rowSelection).includes(controller.id.toString())
-      )
-      .map((controller) => controller.system_id);
-
-    dispatch(controllerActions.setSelected(selectedSystemIds));
-  }, [dispatch, filteredControllers, rowSelection]);
   // Update the URL when filters are changed.
   const setSearchFilter = useCallback(
     (searchText: string) => {
@@ -72,6 +62,7 @@ const ControllerList = (): React.ReactElement => {
     <PageContent
       header={
         <ControllerListHeader
+          rowSelection={rowSelection}
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
         />
