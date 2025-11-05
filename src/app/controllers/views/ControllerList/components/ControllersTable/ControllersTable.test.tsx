@@ -1,4 +1,4 @@
-import ControllerListTable, { Label } from "./ControllerListTable";
+import ControllersTable from "./ControllersTable";
 
 import urls from "@/app/base/urls";
 import type { Controller } from "@/app/store/controller/types";
@@ -9,10 +9,11 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitForLoading,
   within,
 } from "@/testing/utils";
 
-describe("ControllerListTable", () => {
+describe("ControllersTable", () => {
   let controller: Controller;
   let state: RootState;
   beforeEach(() => {
@@ -25,13 +26,27 @@ describe("ControllerListTable", () => {
     });
   });
 
+  it("displays a spinner while loading", () => {
+    renderWithProviders(
+      <ControllersTable
+        controllers={[controller]}
+        isPending={true}
+        rowSelection={{}}
+        setRowSelection={vi.fn()}
+      />,
+      { state }
+    );
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
+
   it("links to a controller's details page", () => {
     controller.system_id = "def456";
     renderWithProviders(
-      <ControllerListTable
+      <ControllersTable
         controllers={[controller]}
-        onSelectedChange={vi.fn()}
-        selectedIDs={[]}
+        isPending={false}
+        rowSelection={{}}
+        setRowSelection={vi.fn()}
       />,
       { state }
     );
@@ -44,156 +59,64 @@ describe("ControllerListTable", () => {
     );
   });
 
-  describe("controller list sorting", () => {
+  describe("sorting", () => {
     it("can sort by FQDN", async () => {
       const controllers = [
-        factory.controller({ fqdn: "b", system_id: "b" }),
-        factory.controller({ fqdn: "c", system_id: "c" }),
-        factory.controller({ fqdn: "a", system_id: "a" }),
+        factory.controller({
+          fqdn: "lion",
+          system_id: "lion",
+          hostname: "lion",
+        }),
+        factory.controller({
+          fqdn: "zebra",
+          system_id: "zebra",
+          hostname: "zebra",
+        }),
+        factory.controller({
+          fqdn: "anaconda",
+          system_id: "anaconda",
+          hostname: "anaconda",
+        }),
       ];
+      state.controller.items = controllers;
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
 
-      let rows = screen.getAllByRole("row");
+      await waitForLoading();
 
-      // Table is sorted be descending FQDN by default
-      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-a"));
-      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
-      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-c"));
+      let rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
+
+      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
+        /anaconda/i
+      );
+      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(
+        /lion/i
+      );
+      expect(within(rows[2]).getAllByRole("cell")[1]).toHaveTextContent(
+        /zebra/i
+      );
 
       // Change sort to ascending FQDN
-      await userEvent.click(
-        screen.getByRole("button", { name: "Name (descending)" })
+      await userEvent.click(screen.getByRole("button", { name: /name/i }));
+
+      rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
+
+      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
+        /zebra/i
       );
-      rows = screen.getAllByRole("row");
-      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-c"));
-      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
-      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-a"));
-    });
-
-    it("can sort by version", async () => {
-      const controllers = [
-        factory.controller({
-          versions: factory.controllerVersions({ origin: "3" }),
-          system_id: "c",
-        }),
-        factory.controller({
-          versions: factory.controllerVersions({ origin: "1" }),
-          system_id: "a",
-        }),
-        factory.controller({
-          versions: factory.controllerVersions({ origin: "2" }),
-          system_id: "b",
-        }),
-      ];
-      renderWithProviders(
-        <ControllerListTable
-          controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
-        />,
-        { state }
+      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(
+        /lion/i
       );
-
-      // Change sort to descending version
-      await userEvent.click(screen.getByRole("button", { name: "Version" }));
-
-      let rows = screen.getAllByRole("row");
-      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-a"));
-      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
-      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-c"));
-
-      // Change sort to ascending version
-      await userEvent.click(
-        screen.getByRole("button", { name: "Version (descending)" })
+      expect(within(rows[2]).getAllByRole("cell")[1]).toHaveTextContent(
+        /anaconda/i
       );
-
-      rows = screen.getAllByRole("row");
-      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-c"));
-      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
-      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-a"));
-    });
-  });
-
-  describe("controller selection", () => {
-    it("handles selecting a single controller", async () => {
-      const controllers = [factory.controller({ system_id: "abc123" })];
-      const onSelectedChange = vi.fn();
-      renderWithProviders(
-        <ControllerListTable
-          controllers={controllers}
-          onSelectedChange={onSelectedChange}
-          selectedIDs={[]}
-        />,
-        { state }
-      );
-
-      await userEvent.click(screen.getAllByTestId("controller-checkbox")[0]);
-
-      expect(onSelectedChange).toHaveBeenCalledWith(["abc123"]);
-    });
-
-    it("handles unselecting a single controller", async () => {
-      const controllers = [factory.controller({ system_id: "abc123" })];
-      const onSelectedChange = vi.fn();
-      renderWithProviders(
-        <ControllerListTable
-          controllers={controllers}
-          onSelectedChange={onSelectedChange}
-          selectedIDs={["abc123"]}
-        />,
-        { state }
-      );
-
-      await userEvent.click(screen.getAllByTestId("controller-checkbox")[0]);
-
-      expect(onSelectedChange).toHaveBeenCalledWith([]);
-    });
-
-    it("handles selecting all controllers", async () => {
-      const controllers = [
-        factory.controller({ system_id: "abc123" }),
-        factory.controller({ system_id: "def456" }),
-      ];
-      const onSelectedChange = vi.fn();
-      renderWithProviders(
-        <ControllerListTable
-          controllers={controllers}
-          onSelectedChange={onSelectedChange}
-          selectedIDs={[]}
-        />,
-        { state }
-      );
-
-      await userEvent.click(screen.getByTestId("all-controllers-checkbox"));
-
-      expect(onSelectedChange).toHaveBeenCalledWith(["abc123", "def456"]);
-    });
-
-    it("handles unselecting all controllers", async () => {
-      const controllers = [
-        factory.controller({ system_id: "abc123" }),
-        factory.controller({ system_id: "def456" }),
-      ];
-      const onSelectedChange = vi.fn();
-      renderWithProviders(
-        <ControllerListTable
-          controllers={controllers}
-          onSelectedChange={onSelectedChange}
-          selectedIDs={["abc123", "def456"]}
-        />,
-        { state }
-      );
-
-      await userEvent.click(screen.getByTestId("all-controllers-checkbox"));
-
-      expect(onSelectedChange).toHaveBeenCalledWith([]);
     });
   });
 
@@ -205,10 +128,11 @@ describe("ControllerListTable", () => {
       ];
       state.controller.items = controllers;
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -232,10 +156,11 @@ describe("ControllerListTable", () => {
       state.controller.items = controllers;
 
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -297,10 +222,11 @@ describe("ControllerListTable", () => {
       });
 
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -349,10 +275,11 @@ describe("ControllerListTable", () => {
       });
 
       renderWithProviders(
-        <ControllerListTable
+        <ControllersTable
           controllers={controllers}
-          onSelectedChange={vi.fn()}
-          selectedIDs={[]}
+          isPending={false}
+          rowSelection={{}}
+          setRowSelection={vi.fn()}
         />,
         { state }
       );
@@ -374,14 +301,15 @@ describe("ControllerListTable", () => {
 
   it("displays message for empty state", () => {
     renderWithProviders(
-      <ControllerListTable
+      <ControllersTable
         controllers={[]}
-        onSelectedChange={vi.fn()}
-        selectedIDs={[]}
+        isPending={false}
+        rowSelection={{}}
+        setRowSelection={vi.fn()}
       />,
       { state }
     );
 
-    expect(screen.getByText(Label.EmptyList)).toBeInTheDocument();
+    expect(screen.getByText(/No controllers available./i)).toBeInTheDocument();
   });
 });

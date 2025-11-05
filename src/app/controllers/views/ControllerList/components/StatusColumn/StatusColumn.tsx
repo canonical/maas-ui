@@ -1,27 +1,17 @@
 import { ExternalLink } from "@canonical/maas-react-components";
 import { Icon } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 
 import TooltipButton from "@/app/base/components/TooltipButton";
 import ControllerStatus from "@/app/controllers/components/ControllerStatus";
-import controllerSelectors from "@/app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "@/app/store/controller/types";
-import type { RootState } from "@/app/store/root/types";
+import type { Controller } from "@/app/store/controller/types";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  controller: Controller;
 };
 
 export const StatusColumn = ({
-  systemId,
+  controller,
 }: Props): React.ReactElement | null => {
-  const controller = useSelector((state: RootState) =>
-    controllerSelectors.getById(state, systemId)
-  );
-
-  if (!controller) {
-    return null;
-  }
   // Map the issue id to the type of issue.
   const issues = (controller.versions?.issues || []).map((issue) =>
     issue.replace("different-", "")
@@ -50,7 +40,7 @@ export const StatusColumn = ({
       />
     </span>
   ) : (
-    <ControllerStatus systemId={systemId} />
+    <ControllerStatus controller={controller} />
   );
 };
 

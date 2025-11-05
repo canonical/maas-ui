@@ -13,6 +13,10 @@ import {
 const getIcon = () => screen.getByTestId("controller-status-icon");
 
 describe("ControllerStatus", () => {
+  const controller = factory.controller({
+    system_id: "abc123",
+    service_ids: [1, 2],
+  });
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState({
@@ -40,7 +44,7 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+    renderWithProviders(<ControllerStatus controller={controller} />, {
       initialEntries: ["/controllers"],
       state,
     });
@@ -64,7 +68,7 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+    renderWithProviders(<ControllerStatus controller={controller} />, {
       initialEntries: ["/controllers"],
       state,
     });
@@ -88,7 +92,7 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+    renderWithProviders(<ControllerStatus controller={controller} />, {
       initialEntries: ["/controllers"],
       state,
     });
@@ -112,7 +116,7 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+    renderWithProviders(<ControllerStatus controller={controller} />, {
       initialEntries: ["/controllers"],
       state,
     });
@@ -136,7 +140,7 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    renderWithProviders(<ControllerStatus systemId="abc123" />, {
+    renderWithProviders(<ControllerStatus controller={controller} />, {
       initialEntries: ["/controllers"],
       state,
     });
