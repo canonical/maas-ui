@@ -62,7 +62,6 @@ const ImagesTable = ({
 
   return (
     <GenericTable
-      canSelect
       columns={columns}
       data={images}
       filterCells={filterCells}
@@ -78,8 +77,11 @@ const ImagesTable = ({
         { value: "Ubuntu", isTop: true },
         { value: "Other", isTop: false },
       ]}
-      rowSelection={selectedRows}
-      setRowSelection={setSelectedRows}
+      selection={{
+        rowSelection: selectedRows,
+        setRowSelection: setSelectedRows,
+        rowSelectionLabelKey: "release",
+      }}
       showChevron
       sorting={[{ id: "release", desc: true }]}
       variant={variant}

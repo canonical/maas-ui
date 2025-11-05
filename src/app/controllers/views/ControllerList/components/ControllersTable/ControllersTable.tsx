@@ -46,14 +46,16 @@ const ControllersTable = ({
   return (
     <GenericTable
       aria-label="controllers list"
-      canSelect
       className="controllers-table"
       columns={columns}
       data={controllers}
       isLoading={isPending}
       noData="No controllers available."
-      rowSelection={rowSelection}
-      setRowSelection={setRowSelection}
+      selection={{
+        rowSelection,
+        setRowSelection,
+        rowSelectionLabelKey: "fqdn",
+      }}
       sorting={[{ id: "fqdn", desc: false }]}
       variant="regular"
     />
