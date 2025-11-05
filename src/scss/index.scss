@@ -148,9 +148,7 @@
 @include TagSelector;
 
 // controllers
-@import "@/app/controllers/views/ControllerList/ControllerListTable";
 @import "@/app/controllers/views/ControllerDetails/ControllerSummary";
-@include ControllerListTable;
 @include ControllerSummary;
 
 // devices

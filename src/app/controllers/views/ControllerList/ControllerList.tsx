@@ -1,10 +1,11 @@
 import { useCallback, useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import type { RowSelectionState } from "@tanstack/react-table";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 
 import ControllerListHeader from "./ControllerListHeader";
-import ControllerListTable from "./ControllerListTable";
+import ControllersTable from "./components/ControllersTable";
 
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import VaultNotification from "@/app/base/components/VaultNotification";
@@ -19,7 +20,6 @@ import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 
 const ControllerList = (): React.ReactElement => {
-  const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const currentFilters = FilterControllers.queryStringToFilters(
@@ -29,6 +29,8 @@ const ControllerList = (): React.ReactElement => {
     // Initialise the filter state from the URL.
     FilterControllers.filtersToString(currentFilters)
   );
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
   const selectedIDs = useSelector(controllerSelectors.selectedIDs);
 
   const filteredControllers = useSelector((state: RootState) =>
@@ -60,6 +62,7 @@ const ControllerList = (): React.ReactElement => {
     <PageContent
       header={
         <ControllerListHeader
+          rowSelection={rowSelection}
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
         />
@@ -69,14 +72,11 @@ const ControllerList = (): React.ReactElement => {
       useNewSidePanelContext={true}
     >
       <VaultNotification />
-      <ControllerListTable
+      <ControllersTable
         controllers={filteredControllers}
-        hasFilter={!!searchFilter}
-        loading={controllersLoading || vaultEnabledLoading}
-        onSelectedChange={(controllerIDs) => {
-          dispatch(controllerActions.setSelected(controllerIDs));
-        }}
-        selectedIDs={selectedIDs}
+        isPending={controllersLoading || vaultEnabledLoading}
+        rowSelection={rowSelection}
+        setRowSelection={setRowSelection}
       />
     </PageContent>
   );
