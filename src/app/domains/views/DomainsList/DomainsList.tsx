@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
-import DomainListHeader from "./DomainListHeader";
-import DomainsTable from "./DomainsTable";
+import DomainListHeader from "../../components/DomainListHeader";
+import DomainsTable from "../../components/DomainsTable";
 
 import { useZones } from "@/app/api/query/zones";
 import PageContent from "@/app/base/components/PageContent";
