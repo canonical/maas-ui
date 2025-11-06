@@ -27,16 +27,16 @@ const ModelActionForm = <V extends object, E = null>({
     >
       <Row>
         <Col size={12}>
-          <p className="u-nudge-down--small">
+          <span className="u-nudge-down--small">
             {message ? (
               message
             ) : (
               <>
                 Are you sure you want to delete this {modelType}? This action is
-                permanent and can not be undone.
+                permanent and cannot be undone.
               </>
             )}
-          </p>
+          </span>
         </Col>
       </Row>
     </FormikForm>

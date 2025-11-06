@@ -1,5 +1,6 @@
 import { lazy } from "react";
 
+import { MainToolbar } from "@canonical/maas-react-components";
 import { createBrowserRouter, Navigate } from "react-router";
 
 import TagDetails from "./app/tags/views/TagDetails";
@@ -39,7 +40,8 @@ import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
 import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
-import UsersList from "@/app/settings/views/Users/views";
+import SingleSignOn from "@/app/settings/views/UserManagement/views/SingleSignOn";
+import UsersList from "@/app/settings/views/UserManagement/views/UsersList/UsersList";
 import { getRelativeRoute } from "@/app/utils";
 
 const ControllerDetails = lazy(
@@ -66,6 +68,7 @@ const NetworkDiscoveryConfigurationForm = lazy(
   () => import("@/app/networkDiscovery/views/NetworkDiscoveryConfigurationForm")
 );
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
+const RacksList = lazy(() => import("@/app/racks/views/RacksList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(
   () => import("@/app/subnets/views/Fabrics/views/FabricDetails")
@@ -360,6 +363,14 @@ export const router = createBrowserRouter(
           ),
         },
         {
+          path: `${urls.racks.index}/*`,
+          element: (
+            <ErrorBoundary>
+              <RacksList />
+            </ErrorBoundary>
+          ),
+        },
+        {
           path: urls.settings.index,
           element: <Settings />,
           children: [
@@ -487,12 +498,23 @@ export const router = createBrowserRouter(
             },
             {
               path: getRelativeRoute(
-                urls.settings.users.index,
+                urls.settings.userManagement.users,
                 urls.settings.index
               ),
               element: (
                 <ErrorBoundary>
                   <UsersList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.settings.userManagement.singleSignOn,
+                urls.settings.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SingleSignOn />
                 </ErrorBoundary>
               ),
             },
@@ -569,7 +591,17 @@ export const router = createBrowserRouter(
               ),
               element: (
                 <ErrorBoundary>
-                  <NetworkDiscoveryForm />
+                  <PageContent
+                    header={
+                      <MainToolbar>
+                        <MainToolbar.Title>Network discovery</MainToolbar.Title>
+                      </MainToolbar>
+                    }
+                    sidePanelContent={null}
+                    sidePanelTitle={null}
+                  >
+                    <NetworkDiscoveryForm />
+                  </PageContent>
                 </ErrorBoundary>
               ),
             },

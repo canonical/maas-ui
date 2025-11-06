@@ -3,7 +3,7 @@ import { generateMAASURL } from "../../../utils";
 context("Settings - User list", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateMAASURL("/settings/users"));
+    cy.visit(generateMAASURL("/settings/user-management/users"));
   });
 
   it("the side nav highlights correctly", () => {

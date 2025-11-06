@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import NodeDevices from "@/app/base/components/node/NodeDevices";
+import NodeDevicesTable from "@/app/base/components/node/NodeDevicesTable";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import type { MachineSetSidePanelContent } from "@/app/machines/types";
@@ -23,7 +23,7 @@ const MachinePCIDevices = ({
 
   if (isMachineDetails(machine)) {
     return (
-      <NodeDevices
+      <NodeDevicesTable
         bus={NodeDeviceBus.PCIE}
         node={machine}
         setSidePanelContent={setSidePanelContent}

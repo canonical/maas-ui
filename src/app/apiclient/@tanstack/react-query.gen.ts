@@ -3,7 +3,17 @@
 import {
   type Options,
   accessToken,
+  listOauthProviders,
+  createOauthProvider,
+  deleteOauthProvider,
+  updateOauthProvider,
+  getOauthProvider,
   login,
+  oauthInitiate,
+  deleteBootResourceById,
+  getBootResourceById,
+  listBootResources,
+  uploadBootResource,
   listBootSources,
   createBootSource,
   listBootSourceBootSourceSelection,
@@ -13,7 +23,10 @@ import {
   updateBootSource,
   deleteBootSourceBootSourceSelection,
   getBootSourceBootSourceSelection,
-  fetchBootSources,
+  updateBootSourceBootSourceSelection,
+  fetchBootSourcesAvailableImages,
+  getAllAvailableImages,
+  getBootSourceAvailableImages,
   getConfiguration,
   setConfiguration,
   getConfigurations,
@@ -35,6 +48,11 @@ import {
   deleteFabric,
   getFabric,
   updateFabric,
+  deleteFile,
+  listFiles,
+  createOrReplaceFile,
+  getFile,
+  getFileByKey,
   listInterfaces,
   listFabricVlanSubnetIprange,
   createFabricVlanSubnetIprange,
@@ -56,6 +74,15 @@ import {
   deletePackageRepository,
   getPackageRepository,
   updatePackageRepository,
+  listRacks,
+  createRack,
+  deleteRackAgent,
+  getRackAgent,
+  deleteRacks,
+  getRack,
+  updateRack,
+  generateRackBootstrapToken,
+  listRackAgents,
   listFabricVlanSubnetReservedIps,
   createFabricVlanSubnetReservedIp,
   deleteFabricVlanSubnetReservedIp,
@@ -125,15 +152,39 @@ import {
 } from "../sdk.gen";
 import {
   queryOptions,
-  type UseMutationOptions,
   infiniteQueryOptions,
   type InfiniteData,
+  type UseMutationOptions,
 } from "@tanstack/react-query";
 import type {
   AccessTokenData,
+  ListOauthProvidersData,
+  ListOauthProvidersError,
+  ListOauthProvidersResponse,
+  CreateOauthProviderData,
+  CreateOauthProviderError,
+  CreateOauthProviderResponse,
+  DeleteOauthProviderData,
+  DeleteOauthProviderError,
+  DeleteOauthProviderResponse,
+  UpdateOauthProviderData,
+  UpdateOauthProviderError,
+  UpdateOauthProviderResponse,
+  GetOauthProviderData,
   LoginData,
   LoginError,
   LoginResponse,
+  OauthInitiateData,
+  DeleteBootResourceByIdData,
+  DeleteBootResourceByIdError,
+  DeleteBootResourceByIdResponse,
+  GetBootResourceByIdData,
+  ListBootResourcesData,
+  ListBootResourcesError,
+  ListBootResourcesResponse,
+  UploadBootResourceData,
+  UploadBootResourceError,
+  UploadBootResourceResponse,
   ListBootSourcesData,
   ListBootSourcesError,
   ListBootSourcesResponse,
@@ -157,9 +208,16 @@ import type {
   DeleteBootSourceBootSourceSelectionError,
   DeleteBootSourceBootSourceSelectionResponse,
   GetBootSourceBootSourceSelectionData,
-  FetchBootSourcesData,
-  FetchBootSourcesError,
-  FetchBootSourcesResponse,
+  UpdateBootSourceBootSourceSelectionData,
+  UpdateBootSourceBootSourceSelectionError,
+  UpdateBootSourceBootSourceSelectionResponse,
+  FetchBootSourcesAvailableImagesData,
+  FetchBootSourcesAvailableImagesError,
+  FetchBootSourcesAvailableImagesResponse,
+  GetAllAvailableImagesData,
+  GetBootSourceAvailableImagesData,
+  GetBootSourceAvailableImagesError,
+  GetBootSourceAvailableImagesResponse,
   GetConfigurationData,
   SetConfigurationData,
   SetConfigurationError,
@@ -211,6 +269,15 @@ import type {
   UpdateFabricData,
   UpdateFabricError,
   UpdateFabricResponse,
+  DeleteFileData,
+  DeleteFileError,
+  DeleteFileResponse,
+  ListFilesData,
+  CreateOrReplaceFileData,
+  CreateOrReplaceFileError,
+  CreateOrReplaceFileResponse,
+  GetFileData,
+  GetFileByKeyData,
   ListInterfacesData,
   ListInterfacesError,
   ListInterfacesResponse,
@@ -266,6 +333,29 @@ import type {
   UpdatePackageRepositoryData,
   UpdatePackageRepositoryError,
   UpdatePackageRepositoryResponse,
+  ListRacksData,
+  ListRacksError,
+  ListRacksResponse,
+  CreateRackData,
+  CreateRackError,
+  CreateRackResponse,
+  DeleteRackAgentData,
+  DeleteRackAgentError,
+  DeleteRackAgentResponse,
+  GetRackAgentData,
+  DeleteRacksData,
+  DeleteRacksError,
+  DeleteRacksResponse,
+  GetRackData,
+  UpdateRackData,
+  UpdateRackError,
+  UpdateRackResponse,
+  GenerateRackBootstrapTokenData,
+  GenerateRackBootstrapTokenError,
+  GenerateRackBootstrapTokenResponse,
+  ListRackAgentsData,
+  ListRackAgentsError,
+  ListRackAgentsResponse,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsError,
   ListFabricVlanSubnetReservedIpsResponse,
@@ -493,6 +583,246 @@ export const accessTokenOptions = (options?: Options<AccessTokenData>) => {
   });
 };
 
+export const listOauthProvidersQueryKey = (
+  options?: Options<ListOauthProvidersData>
+) => createQueryKey("listOauthProviders", options);
+
+/**
+ * List Oauth Providers
+ */
+export const listOauthProvidersOptions = (
+  options?: Options<ListOauthProvidersData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listOauthProviders({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listOauthProvidersQueryKey(options),
+  });
+};
+
+const createInfiniteParams = <
+  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
+>(
+  queryKey: QueryKey<Options>,
+  page: K
+) => {
+  const params = {
+    ...queryKey[0],
+  };
+  if (page.body) {
+    params.body = {
+      ...(queryKey[0].body as any),
+      ...(page.body as any),
+    };
+  }
+  if (page.headers) {
+    params.headers = {
+      ...queryKey[0].headers,
+      ...page.headers,
+    };
+  }
+  if (page.path) {
+    params.path = {
+      ...(queryKey[0].path as any),
+      ...(page.path as any),
+    };
+  }
+  if (page.query) {
+    params.query = {
+      ...(queryKey[0].query as any),
+      ...(page.query as any),
+    };
+  }
+  return params as unknown as typeof page;
+};
+
+export const listOauthProvidersInfiniteQueryKey = (
+  options?: Options<ListOauthProvidersData>
+): QueryKey<Options<ListOauthProvidersData>> =>
+  createQueryKey("listOauthProviders", options, true);
+
+/**
+ * List Oauth Providers
+ */
+export const listOauthProvidersInfiniteOptions = (
+  options?: Options<ListOauthProvidersData>
+) => {
+  return infiniteQueryOptions<
+    ListOauthProvidersResponse,
+    ListOauthProvidersError,
+    InfiniteData<ListOauthProvidersResponse>,
+    QueryKey<Options<ListOauthProvidersData>>,
+    | Pick<
+        QueryKey<Options<ListOauthProvidersData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListOauthProvidersData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listOauthProviders({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listOauthProvidersInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createOauthProviderQueryKey = (
+  options: Options<CreateOauthProviderData>
+) => createQueryKey("createOauthProvider", options);
+
+/**
+ * Create Oauth Provider
+ */
+export const createOauthProviderOptions = (
+  options: Options<CreateOauthProviderData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createOauthProvider({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createOauthProviderQueryKey(options),
+  });
+};
+
+/**
+ * Create Oauth Provider
+ */
+export const createOauthProviderMutation = (
+  options?: Partial<Options<CreateOauthProviderData>>
+): UseMutationOptions<
+  CreateOauthProviderResponse,
+  CreateOauthProviderError,
+  Options<CreateOauthProviderData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateOauthProviderResponse,
+    CreateOauthProviderError,
+    Options<CreateOauthProviderData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createOauthProvider({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete Oauth Provider
+ */
+export const deleteOauthProviderMutation = (
+  options?: Partial<Options<DeleteOauthProviderData>>
+): UseMutationOptions<
+  DeleteOauthProviderResponse,
+  DeleteOauthProviderError,
+  Options<DeleteOauthProviderData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteOauthProviderResponse,
+    DeleteOauthProviderError,
+    Options<DeleteOauthProviderData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteOauthProvider({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Update Oauth Provider
+ */
+export const updateOauthProviderMutation = (
+  options?: Partial<Options<UpdateOauthProviderData>>
+): UseMutationOptions<
+  UpdateOauthProviderResponse,
+  UpdateOauthProviderError,
+  Options<UpdateOauthProviderData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateOauthProviderResponse,
+    UpdateOauthProviderError,
+    Options<UpdateOauthProviderData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updateOauthProvider({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getOauthProviderQueryKey = (
+  options?: Options<GetOauthProviderData>
+) => createQueryKey("getOauthProvider", options);
+
+/**
+ * Get Oauth Provider
+ */
+export const getOauthProviderOptions = (
+  options?: Options<GetOauthProviderData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getOauthProvider({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getOauthProviderQueryKey(options),
+  });
+};
+
 export const loginQueryKey = (options: Options<LoginData>) =>
   createQueryKey("login", options);
 
@@ -537,6 +867,204 @@ export const loginMutation = (
   return mutationOptions;
 };
 
+export const oauthInitiateQueryKey = (options?: Options<OauthInitiateData>) =>
+  createQueryKey("oauthInitiate", options);
+
+/**
+ * Oauth Initiate
+ */
+export const oauthInitiateOptions = (options?: Options<OauthInitiateData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await oauthInitiate({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: oauthInitiateQueryKey(options),
+  });
+};
+
+/**
+ * Delete Boot Resource By Id
+ */
+export const deleteBootResourceByIdMutation = (
+  options?: Partial<Options<DeleteBootResourceByIdData>>
+): UseMutationOptions<
+  DeleteBootResourceByIdResponse,
+  DeleteBootResourceByIdError,
+  Options<DeleteBootResourceByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteBootResourceByIdResponse,
+    DeleteBootResourceByIdError,
+    Options<DeleteBootResourceByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteBootResourceById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getBootResourceByIdQueryKey = (
+  options: Options<GetBootResourceByIdData>
+) => createQueryKey("getBootResourceById", options);
+
+/**
+ * Get Boot Resource By Id
+ */
+export const getBootResourceByIdOptions = (
+  options: Options<GetBootResourceByIdData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBootResourceById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBootResourceByIdQueryKey(options),
+  });
+};
+
+export const listBootResourcesQueryKey = (
+  options?: Options<ListBootResourcesData>
+) => createQueryKey("listBootResources", options);
+
+/**
+ * List Boot Resources
+ */
+export const listBootResourcesOptions = (
+  options?: Options<ListBootResourcesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listBootResources({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listBootResourcesQueryKey(options),
+  });
+};
+
+export const listBootResourcesInfiniteQueryKey = (
+  options?: Options<ListBootResourcesData>
+): QueryKey<Options<ListBootResourcesData>> =>
+  createQueryKey("listBootResources", options, true);
+
+/**
+ * List Boot Resources
+ */
+export const listBootResourcesInfiniteOptions = (
+  options?: Options<ListBootResourcesData>
+) => {
+  return infiniteQueryOptions<
+    ListBootResourcesResponse,
+    ListBootResourcesError,
+    InfiniteData<ListBootResourcesResponse>,
+    QueryKey<Options<ListBootResourcesData>>,
+    | Pick<
+        QueryKey<Options<ListBootResourcesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListBootResourcesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listBootResources({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listBootResourcesInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const uploadBootResourceQueryKey = (
+  options: Options<UploadBootResourceData>
+) => createQueryKey("uploadBootResource", options);
+
+/**
+ * Upload Boot Resource
+ */
+export const uploadBootResourceOptions = (
+  options: Options<UploadBootResourceData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await uploadBootResource({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: uploadBootResourceQueryKey(options),
+  });
+};
+
+/**
+ * Upload Boot Resource
+ */
+export const uploadBootResourceMutation = (
+  options?: Partial<Options<UploadBootResourceData>>
+): UseMutationOptions<
+  UploadBootResourceResponse,
+  UploadBootResourceError,
+  Options<UploadBootResourceData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UploadBootResourceResponse,
+    UploadBootResourceError,
+    Options<UploadBootResourceData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await uploadBootResource({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const listBootSourcesQueryKey = (
   options?: Options<ListBootSourcesData>
 ) => createQueryKey("listBootSources", options);
@@ -559,42 +1087,6 @@ export const listBootSourcesOptions = (
     },
     queryKey: listBootSourcesQueryKey(options),
   });
-};
-
-const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
->(
-  queryKey: QueryKey<Options>,
-  page: K
-) => {
-  const params = {
-    ...queryKey[0],
-  };
-  if (page.body) {
-    params.body = {
-      ...(queryKey[0].body as any),
-      ...(page.body as any),
-    };
-  }
-  if (page.headers) {
-    params.headers = {
-      ...queryKey[0].headers,
-      ...page.headers,
-    };
-  }
-  if (page.path) {
-    params.path = {
-      ...(queryKey[0].path as any),
-      ...(page.path as any),
-    };
-  }
-  if (page.query) {
-    params.query = {
-      ...(queryKey[0].query as any),
-      ...(page.query as any),
-    };
-  }
-  return params as unknown as typeof page;
 };
 
 export const listBootSourcesInfiniteQueryKey = (
@@ -951,47 +1443,23 @@ export const getBootSourceBootSourceSelectionOptions = (
   });
 };
 
-export const fetchBootSourcesQueryKey = (
-  options: Options<FetchBootSourcesData>
-) => createQueryKey("fetchBootSources", options);
-
 /**
- * Fetch Boot Sources
+ * Update Boot Source Boot Source Selection
  */
-export const fetchBootSourcesOptions = (
-  options: Options<FetchBootSourcesData>
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await fetchBootSources({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: fetchBootSourcesQueryKey(options),
-  });
-};
-
-/**
- * Fetch Boot Sources
- */
-export const fetchBootSourcesMutation = (
-  options?: Partial<Options<FetchBootSourcesData>>
+export const updateBootSourceBootSourceSelectionMutation = (
+  options?: Partial<Options<UpdateBootSourceBootSourceSelectionData>>
 ): UseMutationOptions<
-  FetchBootSourcesResponse,
-  FetchBootSourcesError,
-  Options<FetchBootSourcesData>
+  UpdateBootSourceBootSourceSelectionResponse,
+  UpdateBootSourceBootSourceSelectionError,
+  Options<UpdateBootSourceBootSourceSelectionData>
 > => {
   const mutationOptions: UseMutationOptions<
-    FetchBootSourcesResponse,
-    FetchBootSourcesError,
-    Options<FetchBootSourcesData>
+    UpdateBootSourceBootSourceSelectionResponse,
+    UpdateBootSourceBootSourceSelectionError,
+    Options<UpdateBootSourceBootSourceSelectionData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await fetchBootSources({
+      const { data } = await updateBootSourceBootSourceSelection({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1000,6 +1468,156 @@ export const fetchBootSourcesMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const fetchBootSourcesAvailableImagesQueryKey = (
+  options: Options<FetchBootSourcesAvailableImagesData>
+) => createQueryKey("fetchBootSourcesAvailableImages", options);
+
+/**
+ * Fetch Boot Sources Available Images
+ */
+export const fetchBootSourcesAvailableImagesOptions = (
+  options: Options<FetchBootSourcesAvailableImagesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await fetchBootSourcesAvailableImages({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: fetchBootSourcesAvailableImagesQueryKey(options),
+  });
+};
+
+/**
+ * Fetch Boot Sources Available Images
+ */
+export const fetchBootSourcesAvailableImagesMutation = (
+  options?: Partial<Options<FetchBootSourcesAvailableImagesData>>
+): UseMutationOptions<
+  FetchBootSourcesAvailableImagesResponse,
+  FetchBootSourcesAvailableImagesError,
+  Options<FetchBootSourcesAvailableImagesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    FetchBootSourcesAvailableImagesResponse,
+    FetchBootSourcesAvailableImagesError,
+    Options<FetchBootSourcesAvailableImagesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await fetchBootSourcesAvailableImages({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getAllAvailableImagesQueryKey = (
+  options?: Options<GetAllAvailableImagesData>
+) => createQueryKey("getAllAvailableImages", options);
+
+/**
+ * Get All Available Images
+ */
+export const getAllAvailableImagesOptions = (
+  options?: Options<GetAllAvailableImagesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getAllAvailableImages({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getAllAvailableImagesQueryKey(options),
+  });
+};
+
+export const getBootSourceAvailableImagesQueryKey = (
+  options: Options<GetBootSourceAvailableImagesData>
+) => createQueryKey("getBootSourceAvailableImages", options);
+
+/**
+ * Get Boot Source Available Images
+ */
+export const getBootSourceAvailableImagesOptions = (
+  options: Options<GetBootSourceAvailableImagesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBootSourceAvailableImages({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBootSourceAvailableImagesQueryKey(options),
+  });
+};
+
+export const getBootSourceAvailableImagesInfiniteQueryKey = (
+  options: Options<GetBootSourceAvailableImagesData>
+): QueryKey<Options<GetBootSourceAvailableImagesData>> =>
+  createQueryKey("getBootSourceAvailableImages", options, true);
+
+/**
+ * Get Boot Source Available Images
+ */
+export const getBootSourceAvailableImagesInfiniteOptions = (
+  options: Options<GetBootSourceAvailableImagesData>
+) => {
+  return infiniteQueryOptions<
+    GetBootSourceAvailableImagesResponse,
+    GetBootSourceAvailableImagesError,
+    InfiniteData<GetBootSourceAvailableImagesResponse>,
+    QueryKey<Options<GetBootSourceAvailableImagesData>>,
+    | Pick<
+        QueryKey<Options<GetBootSourceAvailableImagesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetBootSourceAvailableImagesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getBootSourceAvailableImages({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getBootSourceAvailableImagesInfiniteQueryKey(options),
+    }
+  );
 };
 
 export const getConfigurationQueryKey = (
@@ -1789,6 +2407,123 @@ export const updateFabricMutation = (
     },
   };
   return mutationOptions;
+};
+
+/**
+ * Delete File
+ */
+export const deleteFileMutation = (
+  options?: Partial<Options<DeleteFileData>>
+): UseMutationOptions<
+  DeleteFileResponse,
+  DeleteFileError,
+  Options<DeleteFileData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteFileResponse,
+    DeleteFileError,
+    Options<DeleteFileData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteFile({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listFilesQueryKey = (options?: Options<ListFilesData>) =>
+  createQueryKey("listFiles", options);
+
+/**
+ * List Files
+ */
+export const listFilesOptions = (options?: Options<ListFilesData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listFiles({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listFilesQueryKey(options),
+  });
+};
+
+/**
+ * Create Or Replace File
+ */
+export const createOrReplaceFileMutation = (
+  options?: Partial<Options<CreateOrReplaceFileData>>
+): UseMutationOptions<
+  CreateOrReplaceFileResponse,
+  CreateOrReplaceFileError,
+  Options<CreateOrReplaceFileData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateOrReplaceFileResponse,
+    CreateOrReplaceFileError,
+    Options<CreateOrReplaceFileData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createOrReplaceFile({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getFileQueryKey = (options: Options<GetFileData>) =>
+  createQueryKey("getFile", options);
+
+/**
+ * Get File
+ */
+export const getFileOptions = (options: Options<GetFileData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFile({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFileQueryKey(options),
+  });
+};
+
+export const getFileByKeyQueryKey = (options: Options<GetFileByKeyData>) =>
+  createQueryKey("getFileByKey", options);
+
+/**
+ * Get File By Key
+ */
+export const getFileByKeyOptions = (options: Options<GetFileByKeyData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFileByKey({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFileByKeyQueryKey(options),
+  });
 };
 
 export const listInterfacesQueryKey = (options: Options<ListInterfacesData>) =>
@@ -2770,6 +3505,370 @@ export const updatePackageRepositoryMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const listRacksQueryKey = (options?: Options<ListRacksData>) =>
+  createQueryKey("listRacks", options);
+
+/**
+ * List Racks
+ */
+export const listRacksOptions = (options?: Options<ListRacksData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listRacks({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listRacksQueryKey(options),
+  });
+};
+
+export const listRacksInfiniteQueryKey = (
+  options?: Options<ListRacksData>
+): QueryKey<Options<ListRacksData>> =>
+  createQueryKey("listRacks", options, true);
+
+/**
+ * List Racks
+ */
+export const listRacksInfiniteOptions = (options?: Options<ListRacksData>) => {
+  return infiniteQueryOptions<
+    ListRacksResponse,
+    ListRacksError,
+    InfiniteData<ListRacksResponse>,
+    QueryKey<Options<ListRacksData>>,
+    | Pick<
+        QueryKey<Options<ListRacksData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListRacksData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listRacks({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listRacksInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createRackQueryKey = (options: Options<CreateRackData>) =>
+  createQueryKey("createRack", options);
+
+/**
+ * Create Rack
+ */
+export const createRackOptions = (options: Options<CreateRackData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createRack({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createRackQueryKey(options),
+  });
+};
+
+/**
+ * Create Rack
+ */
+export const createRackMutation = (
+  options?: Partial<Options<CreateRackData>>
+): UseMutationOptions<
+  CreateRackResponse,
+  CreateRackError,
+  Options<CreateRackData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateRackResponse,
+    CreateRackError,
+    Options<CreateRackData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createRack({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete Rack Agent
+ */
+export const deleteRackAgentMutation = (
+  options?: Partial<Options<DeleteRackAgentData>>
+): UseMutationOptions<
+  DeleteRackAgentResponse,
+  DeleteRackAgentError,
+  Options<DeleteRackAgentData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteRackAgentResponse,
+    DeleteRackAgentError,
+    Options<DeleteRackAgentData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteRackAgent({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getRackAgentQueryKey = (options: Options<GetRackAgentData>) =>
+  createQueryKey("getRackAgent", options);
+
+/**
+ * Get Rack Agent
+ */
+export const getRackAgentOptions = (options: Options<GetRackAgentData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getRackAgent({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getRackAgentQueryKey(options),
+  });
+};
+
+/**
+ * Delete Racks
+ */
+export const deleteRacksMutation = (
+  options?: Partial<Options<DeleteRacksData>>
+): UseMutationOptions<
+  DeleteRacksResponse,
+  DeleteRacksError,
+  Options<DeleteRacksData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteRacksResponse,
+    DeleteRacksError,
+    Options<DeleteRacksData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteRacks({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getRackQueryKey = (options: Options<GetRackData>) =>
+  createQueryKey("getRack", options);
+
+/**
+ * Get Rack
+ */
+export const getRackOptions = (options: Options<GetRackData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getRack({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getRackQueryKey(options),
+  });
+};
+
+/**
+ * Update Rack
+ */
+export const updateRackMutation = (
+  options?: Partial<Options<UpdateRackData>>
+): UseMutationOptions<
+  UpdateRackResponse,
+  UpdateRackError,
+  Options<UpdateRackData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateRackResponse,
+    UpdateRackError,
+    Options<UpdateRackData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await updateRack({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const generateRackBootstrapTokenQueryKey = (
+  options: Options<GenerateRackBootstrapTokenData>
+) => createQueryKey("generateRackBootstrapToken", options);
+
+/**
+ * Generate Rack Bootstrap Token
+ */
+export const generateRackBootstrapTokenOptions = (
+  options: Options<GenerateRackBootstrapTokenData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await generateRackBootstrapToken({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: generateRackBootstrapTokenQueryKey(options),
+  });
+};
+
+/**
+ * Generate Rack Bootstrap Token
+ */
+export const generateRackBootstrapTokenMutation = (
+  options?: Partial<Options<GenerateRackBootstrapTokenData>>
+): UseMutationOptions<
+  GenerateRackBootstrapTokenResponse,
+  GenerateRackBootstrapTokenError,
+  Options<GenerateRackBootstrapTokenData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    GenerateRackBootstrapTokenResponse,
+    GenerateRackBootstrapTokenError,
+    Options<GenerateRackBootstrapTokenData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await generateRackBootstrapToken({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listRackAgentsQueryKey = (options: Options<ListRackAgentsData>) =>
+  createQueryKey("listRackAgents", options);
+
+/**
+ * List Rack Agents
+ */
+export const listRackAgentsOptions = (options: Options<ListRackAgentsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listRackAgents({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listRackAgentsQueryKey(options),
+  });
+};
+
+export const listRackAgentsInfiniteQueryKey = (
+  options: Options<ListRackAgentsData>
+): QueryKey<Options<ListRackAgentsData>> =>
+  createQueryKey("listRackAgents", options, true);
+
+/**
+ * List Rack Agents
+ */
+export const listRackAgentsInfiniteOptions = (
+  options: Options<ListRackAgentsData>
+) => {
+  return infiniteQueryOptions<
+    ListRackAgentsResponse,
+    ListRackAgentsError,
+    InfiniteData<ListRackAgentsResponse>,
+    QueryKey<Options<ListRackAgentsData>>,
+    | Pick<
+        QueryKey<Options<ListRackAgentsData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListRackAgentsData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listRackAgents({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listRackAgentsInfiniteQueryKey(options),
+    }
+  );
 };
 
 export const listFabricVlanSubnetReservedIpsQueryKey = (

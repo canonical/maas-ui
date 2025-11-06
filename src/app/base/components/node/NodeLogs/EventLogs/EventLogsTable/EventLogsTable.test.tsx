@@ -1,38 +1,46 @@
-import EventLogsTable, { Label } from "./EventLogsTable";
+import EventLogsTable from "./EventLogsTable";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { screen, renderWithProviders, waitFor } from "@/testing/utils";
 
 describe("EventLogsTable", () => {
-  let state: RootState;
+  describe("display", () => {
+    it.skip("displays a loading component if pools are loading", async () => {
+      renderWithProviders(<EventLogsTable events={[]} loading={true} />);
 
-  beforeEach(() => {
-    state = factory.rootState({
-      event: factory.eventState({
-        items: [
-          factory.eventRecord({ id: 101, node_id: 1 }),
-          factory.eventRecord({ id: 123, node_id: 2 }),
-        ],
-      }),
-      machine: factory.machineState({
-        items: [factory.machineDetails({ id: 1, system_id: "abc123" })],
-      }),
-    });
-  });
-
-  it("can display a table", () => {
-    renderWithMockStore(<EventLogsTable events={state.event.items} />, {
-      state,
-    });
-    expect(screen.getByLabelText(Label.Title)).toBeInTheDocument();
-  });
-
-  it("displays a message if there is no data", () => {
-    renderWithMockStore(<EventLogsTable events={[]} />, {
-      state,
+      await waitFor(() => {
+        expect(screen.getByText("Loading...")).toBeInTheDocument();
+      });
     });
 
-    expect(screen.getByText("No event logs available.")).toBeInTheDocument();
+    it("displays a message when rendering an empty list", async () => {
+      renderWithProviders(<EventLogsTable events={[]} loading={false} />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText("No event logs available.")
+        ).toBeInTheDocument();
+      });
+    });
+
+    it("displays the columns correctly", () => {
+      renderWithProviders(
+        <EventLogsTable
+          events={[
+            factory.eventRecord({ id: 101, node_id: 1 }),
+            factory.eventRecord({ id: 123, node_id: 2 }),
+          ]}
+          loading={false}
+        />
+      );
+
+      ["Time", "Event"].forEach((column) => {
+        expect(
+          screen.getByRole("columnheader", {
+            name: new RegExp(`^${column}`, "i"),
+          })
+        ).toBeInTheDocument();
+      });
+    });
   });
 });

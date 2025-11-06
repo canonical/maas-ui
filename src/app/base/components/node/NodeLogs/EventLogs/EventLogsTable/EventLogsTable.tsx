@@ -1,77 +1,32 @@
-import type { ReactNode } from "react";
+import type { ReactElement } from "react";
 
-import { Icon, MainTable } from "@canonical/react-components";
+import { GenericTable } from "@canonical/maas-react-components";
 
+import useEventLogsTableColumns from "@/app/base/components/node/NodeLogs/EventLogs/EventLogsTable/useEventLogsTableColumns/useEventLogsTableColumns";
 import type { EventRecord } from "@/app/store/event/types";
 
-type Props = {
+import "./index.scss";
+
+type EventLogsTableProps = {
   events: EventRecord[];
+  loading: boolean;
 };
 
-type EventRow = {
-  className?: string | null;
-  columns: { className?: string; content: ReactNode }[];
-  key: EventRecord["id"];
-};
-
-export enum Label {
-  Title = "Event logs table",
-}
-
-const generateRow = (event: EventRecord): EventRow => {
-  let icon: string = event.type.level;
-  switch (icon) {
-    case "audit":
-    case "info":
-      icon = "information";
-      break;
-    case "critical":
-      icon = "error";
-      break;
-    case "debug":
-      icon = "inspector-debug";
-      break;
-  }
-  return {
-    columns: [
-      {
-        className: "time-col",
-        content: (
-          <>
-            <Icon name={icon} /> {event.created}
-          </>
-        ),
-      },
-      {
-        className: "event-col",
-        content: [event.type.description, event.description]
-          .filter(Boolean)
-          .join(" - "),
-      },
-    ],
-    key: event.id,
-  };
-};
-
-const EventLogsTable = ({ events }: Props): React.ReactElement => {
-  const rows = events?.map((event) => generateRow(event));
+const EventLogsTable = ({
+  events,
+  loading,
+}: EventLogsTableProps): ReactElement => {
+  const columns = useEventLogsTableColumns();
 
   return (
-    <MainTable
-      aria-label={Label.Title}
+    <GenericTable
+      aria-label="Event logs table"
       className="event-logs-table"
-      emptyStateMsg="No event logs available."
-      headers={[
-        {
-          content: "Time",
-          className: "time-col",
-        },
-        {
-          content: "Event",
-          className: "event-col",
-        },
-      ]}
-      rows={rows}
+      columns={columns}
+      data={events}
+      isLoading={loading}
+      noData="No event logs available."
+      variant="regular"
     />
   );
 };

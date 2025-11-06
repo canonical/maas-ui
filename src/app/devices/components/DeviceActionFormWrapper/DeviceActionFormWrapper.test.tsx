@@ -2,7 +2,6 @@ import configureStore from "redux-mock-store";
 
 import DeviceActionFormWrapper from "./DeviceActionFormWrapper";
 
-import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
@@ -17,10 +16,12 @@ describe("DeviceActionFormWrapper", () => {
       factory.device({ system_id: "def456", actions: [] }),
     ];
     const store = mockStore(state);
+    const setRowSelection = vi.fn();
     renderWithProviders(
       <DeviceActionFormWrapper
         action={NodeActions.DELETE}
         devices={devices}
+        setRowSelection={setRowSelection}
         viewingDetails={false}
       />,
       { store }
@@ -28,10 +29,8 @@ describe("DeviceActionFormWrapper", () => {
 
     await userEvent.click(screen.getByTestId("on-update-selected"));
 
-    const expectedAction = deviceActions.setSelected(["abc123"]);
-    const actualActions = store.getActions();
-    expect(
-      actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+    expect(setRowSelection).toHaveBeenCalledWith({
+      [devices[0].id]: true,
+    });
   });
 });

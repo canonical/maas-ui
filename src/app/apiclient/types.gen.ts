@@ -92,6 +92,83 @@ export type AccessTokenResponse = {
 };
 
 /**
+ * AgentListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type AgentListResponse = {
+  /**
+   * Items
+   */
+  items: AgentResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * AgentResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type AgentResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Rack Id
+   */
+  rack_id: number;
+  /**
+   * Rackcontroller Id
+   */
+  rackcontroller_id?: number;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * AuthProviderInfoResponse
+ * Content for a response returning info about a pre-configured OIDC provider
+ */
+export type AuthProviderInfoResponse = {
+  /**
+   * Auth Url
+   */
+  auth_url: string;
+  /**
+   * Provider Name
+   */
+  provider_name: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * BadRequestBodyResponse
  */
 export type BadRequestBodyResponse = {
@@ -153,6 +230,38 @@ export type BaseHref = {
 };
 
 /**
+ * BaseHrefWithId
+ */
+export type BaseHrefWithId = {
+  /**
+   * Href
+   */
+  href: string;
+  /**
+   * Id
+   */
+  id?: string;
+  /**
+   * Name
+   */
+  name?: string;
+};
+
+/**
+ * Body_create_or_replace_file
+ */
+export type BodyCreateOrReplaceFile = {
+  /**
+   * Filename
+   */
+  filename: string;
+  /**
+   * File
+   */
+  file: Blob | File;
+};
+
+/**
  * Body_login
  */
 export type BodyLogin = {
@@ -183,13 +292,142 @@ export type BodyLogin = {
 };
 
 /**
- * BootSourceFetchListResponse
+ * BootResourceFileTypeChoice
+ * An enumeration.
  */
-export type BootSourceFetchListResponse = {
+export type BootResourceFileTypeChoice =
+  | "ddbz2"
+  | "ddgz"
+  | "ddraw"
+  | "ddtar"
+  | "ddtbz"
+  | "ddtgz"
+  | "ddtxz"
+  | "ddxz"
+  | "tbz"
+  | "tgz"
+  | "txz";
+
+/**
+ * BootResourceListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type BootResourceListResponse = {
   /**
    * Items
    */
-  items: BootSourceFetchResponse[];
+  items: BootResourceResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * BootResourceResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type BootResourceResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Name
+   */
+  name: string;
+  /**
+   * Architecture
+   */
+  architecture: string;
+  /**
+   * Type
+   */
+  type: string;
+  /**
+   * Extra
+   */
+  extra: Record<string, unknown>;
+  /**
+   * Last Deployed
+   */
+  last_deployed?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * BootResourceStrType
+ * Possible selections for the type of `BootResource`.
+ */
+export type BootResourceStrType = "synced" | "uploaded";
+
+/**
+ * BootSourceAvailableImageListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type BootSourceAvailableImageListResponse = {
+  /**
+   * Items
+   */
+  items: BootSourceAvailableImageResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * BootSourceAvailableImageResponse
+ */
+export type BootSourceAvailableImageResponse = {
+  /**
+   * Os
+   */
+  os: string;
+  /**
+   * Release
+   */
+  release: string;
+  /**
+   * Architecture
+   */
+  architecture: string;
+  /**
+   * Kind
+   */
+  kind?: string;
 };
 
 /**
@@ -216,72 +454,6 @@ export type BootSourceFetchRequest = {
    * Whether to validate products in the boot sources.
    */
   validate_products?: boolean;
-};
-
-/**
- * BootSourceFetchResponse
- */
-export type BootSourceFetchResponse = {
-  /**
-   * Os
-   */
-  os: string;
-  /**
-   * Arch
-   */
-  arch: string;
-  /**
-   * Subarch
-   */
-  subarch: string;
-  /**
-   * Kflavor
-   */
-  kflavor: string;
-  /**
-   * Release
-   */
-  release: string;
-  /**
-   * Label
-   */
-  label?: string;
-  /**
-   * Content Id
-   */
-  content_id: string;
-  /**
-   * Product Name
-   */
-  product_name: string;
-  /**
-   * Version Name
-   */
-  version_name: string;
-  /**
-   * Path
-   */
-  path: string;
-  /**
-   * Subarches
-   */
-  subarches?: string;
-  /**
-   * Bootloader Type
-   */
-  bootloader_type?: string;
-  /**
-   * Release Title
-   */
-  release_title?: string;
-  /**
-   * Release Codename
-   */
-  release_codename?: string;
-  /**
-   * Support Eol
-   */
-  support_eol?: string;
 };
 
 /**
@@ -1171,6 +1343,100 @@ export type FabricsListResponse = {
 };
 
 /**
+ * FileListItemResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type FileListItemResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Filename
+   */
+  filename: string;
+  /**
+   * Key
+   */
+  key: string;
+  /**
+   * Owner Id
+   */
+  owner_id?: number;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * FileListResponse
+ */
+export type FileListResponse = {
+  /**
+   * Items
+   */
+  items: FileListItemResponse[];
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * FileResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type FileResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Filename
+   */
+  filename: string;
+  /**
+   * Content
+   */
+  content: string;
+  /**
+   * Key
+   */
+  key: string;
+  /**
+   * Owner Id
+   */
+  owner_id?: number;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * HardwareDeviceTypeEnum
  * An enumeration.
  */
@@ -1812,6 +2078,113 @@ export type NotificationsListResponse = {
 };
 
 /**
+ * OAuthProviderRequest
+ */
+export type OAuthProviderRequest = {
+  /**
+   * Name
+   * A unique, human-readable name identifying the OIDC provider.
+   */
+  name: string;
+  /**
+   * Client Id
+   * The client ID issued by the OIDC provider to identify your application.
+   */
+  client_id: string;
+  /**
+   * Client Secret
+   * The client secret issued by the OIDC provider, used to authenticate your application securely.
+   */
+  client_secret: string;
+  /**
+   * Issuer Url
+   * The base URL of the OIDC provider’s authorization server.
+   */
+  issuer_url: string;
+  /**
+   * Redirect Uri
+   * The callback URL in your application where the OIDC provider will redirect users after successful authentication.
+   */
+  redirect_uri: string;
+  /**
+   * Scopes
+   * A space-separated list of OIDC scopes defining the information requested from the provider.
+   */
+  scopes: string;
+  /**
+   * Enabled
+   * Specifies whether this provider should be enabled for user authentication.
+   */
+  enabled: boolean;
+};
+
+/**
+ * OAuthProviderResponse
+ */
+export type OAuthProviderResponse = {
+  /**
+   * Issuer Url
+   */
+  issuer_url: string;
+  /**
+   * Name
+   */
+  name: string;
+  /**
+   * Client Id
+   */
+  client_id: string;
+  /**
+   * Client Secret
+   */
+  client_secret: string;
+  /**
+   * Redirect Uri
+   */
+  redirect_uri: string;
+  /**
+   * Scopes
+   */
+  scopes: string;
+  /**
+   * Enabled
+   */
+  enabled: boolean;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * OAuthProvidersListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type OAuthProvidersListResponse = {
+  /**
+   * Items
+   */
+  items: OAuthProviderResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * PackageRepositoryCreateRequest
  */
 export type PackageRepositoryCreateRequest = {
@@ -2196,11 +2569,13 @@ export type PublicConfigName =
   | "dnssec_validation"
   | "enable_analytics"
   | "enable_disk_erasing_on_release"
+  | "enable_http_proxy"
   | "enable_kernel_crash_dump"
   | "enable_third_party_drivers"
   | "enlist_commissioning"
   | "force_v1_network_yaml"
   | "hardware_sync_interval"
+  | "http_proxy"
   | "kernel_opts"
   | "maas_auto_ipmi_cipher_suite_id"
   | "maas_auto_ipmi_k_g_bmc_key"
@@ -2237,7 +2612,87 @@ export type PublicConfigName =
   | "vcenter_datacenter"
   | "vcenter_password"
   | "vcenter_server"
-  | "vcenter_username";
+  | "vcenter_username"
+  | "windows_kms_host";
+
+/**
+ * RackBootstrapTokenResponse
+ */
+export type RackBootstrapTokenResponse = {
+  /**
+   * Token
+   */
+  token: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * RackListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type RackListResponse = {
+  /**
+   * Items
+   */
+  items: RackResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * RackRequest
+ */
+export type RackRequest = {
+  /**
+   * Name
+   * The unique name of the entity.
+   */
+  name: string;
+};
+
+/**
+ * RackResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type RackResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Name
+   */
+  name: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
 
 /**
  * RdnsMode
@@ -2728,6 +3183,46 @@ export type SslKeysWithSummaryListResponse = {
    * Next
    */
   next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * SourceAvailableImageListResponse
+ */
+export type SourceAvailableImageListResponse = {
+  /**
+   * Items
+   */
+  items: SourceAvailableImageResponse[];
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * SourceAvailableImageResponse
+ */
+export type SourceAvailableImageResponse = {
+  /**
+   * Os
+   */
+  os: string;
+  /**
+   * Release
+   */
+  release: string;
+  /**
+   * Architecture
+   */
+  architecture: string;
+  /**
+   * Release Title
+   */
+  release_title: string;
   /**
    * Kind
    */
@@ -3264,6 +3759,59 @@ export type TagsListResponse = {
 };
 
 /**
+ * UISourceAvailableImageListResponse
+ */
+export type UiSourceAvailableImageListResponse = {
+  /**
+   * Items
+   */
+  items: UiSourceAvailableImageResponse[];
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * UISourceAvailableImageResponse
+ */
+export type UiSourceAvailableImageResponse = {
+  /**
+   * Os
+   */
+  os: string;
+  /**
+   * Release
+   */
+  release: string;
+  /**
+   * Architecture
+   */
+  architecture: string;
+  /**
+   * Source Id
+   */
+  source_id?: number;
+  /**
+   * Source Name
+   */
+  source_name?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * UISubnetEmbeddedType
+ */
+export type UiSubnetEmbeddedType = {
+  fabric: BaseHrefWithId;
+  space: BaseHrefWithId;
+  vlan: VlanHref;
+};
+
+/**
  * UISubnetResponse
  * Base HAL response class that every response object must extend. The response object will look like
  * {
@@ -3275,10 +3823,7 @@ export type TagsListResponse = {
  */
 export type UiSubnetResponse = {
   _links?: BaseHal;
-  /**
-   *  Embedded
-   */
-  _embedded?: Record<string, unknown>;
+  _embedded: UiSubnetEmbeddedType;
   /**
    * Id
    */
@@ -3324,10 +3869,57 @@ export type UiSubnetResponse = {
    * Disabled Boot Architectures
    */
   disabled_boot_architectures: string[];
+  statistics: UiSubnetStatistics;
   /**
    * Kind
    */
   kind?: string;
+};
+
+/**
+ * UISubnetStatistics
+ */
+export type UiSubnetStatistics = {
+  /**
+   * Num Available
+   */
+  num_available: number;
+  /**
+   * Largest Available
+   */
+  largest_available: number;
+  /**
+   * Num Unavailable
+   */
+  num_unavailable: number;
+  /**
+   * Total Addresses
+   */
+  total_addresses: number;
+  /**
+   * Usage
+   */
+  usage: number;
+  /**
+   * Usage String
+   */
+  usage_string: string;
+  /**
+   * Available String
+   */
+  available_string: string;
+  /**
+   * First Address
+   */
+  first_address: string;
+  /**
+   * Last Address
+   */
+  last_address: string;
+  /**
+   * Ip Version
+   */
+  ip_version: number;
 };
 
 /**
@@ -3798,6 +4390,40 @@ export type VlanCreateRequest = {
 };
 
 /**
+ * VlanHref
+ */
+export type VlanHref = {
+  /**
+   * Href
+   */
+  href: string;
+  /**
+   * Id
+   */
+  id?: string;
+  /**
+   * Name
+   */
+  name?: string;
+  /**
+   * Vid
+   */
+  vid: string;
+  /**
+   * Dhcp On
+   */
+  dhcp_on: boolean;
+  /**
+   * External Dhcp
+   */
+  external_dhcp?: string;
+  /**
+   * Relay Vlan Id
+   */
+  relay_vlan_id?: string;
+};
+
+/**
  * VlanResponse
  * Base HAL response class that every response object must extend. The response object will look like
  * {
@@ -4114,6 +4740,186 @@ export type AccessTokenResponses = {
 export type AccessTokenResponse2 =
   AccessTokenResponses[keyof AccessTokenResponses];
 
+export type ListOauthProvidersData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/auth/oauth/providers";
+};
+
+export type ListOauthProvidersErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListOauthProvidersError =
+  ListOauthProvidersErrors[keyof ListOauthProvidersErrors];
+
+export type ListOauthProvidersResponses = {
+  /**
+   * Successful Response
+   */
+  200: OAuthProvidersListResponse;
+};
+
+export type ListOauthProvidersResponse =
+  ListOauthProvidersResponses[keyof ListOauthProvidersResponses];
+
+export type CreateOauthProviderData = {
+  body: OAuthProviderRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/auth/oauth/providers";
+};
+
+export type CreateOauthProviderErrors = {
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateOauthProviderError =
+  CreateOauthProviderErrors[keyof CreateOauthProviderErrors];
+
+export type CreateOauthProviderResponses = {
+  /**
+   * Successful Response
+   */
+  200: OAuthProviderResponse;
+};
+
+export type CreateOauthProviderResponse =
+  CreateOauthProviderResponses[keyof CreateOauthProviderResponses];
+
+export type DeleteOauthProviderData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Provider Id
+     */
+    provider_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}";
+};
+
+export type DeleteOauthProviderErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteOauthProviderError =
+  DeleteOauthProviderErrors[keyof DeleteOauthProviderErrors];
+
+export type DeleteOauthProviderResponses = {
+  /**
+   * OK
+   */
+  200: OAuthProviderResponse;
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteOauthProviderResponse =
+  DeleteOauthProviderResponses[keyof DeleteOauthProviderResponses];
+
+export type UpdateOauthProviderData = {
+  body: OAuthProviderRequest;
+  path: {
+    /**
+     * Provider Id
+     */
+    provider_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}";
+};
+
+export type UpdateOauthProviderErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateOauthProviderError =
+  UpdateOauthProviderErrors[keyof UpdateOauthProviderErrors];
+
+export type UpdateOauthProviderResponses = {
+  /**
+   * Successful Response
+   */
+  200: OAuthProviderResponse;
+};
+
+export type UpdateOauthProviderResponse =
+  UpdateOauthProviderResponses[keyof UpdateOauthProviderResponses];
+
+export type GetOauthProviderData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/auth/oauth:is_active";
+};
+
+export type GetOauthProviderErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetOauthProviderError =
+  GetOauthProviderErrors[keyof GetOauthProviderErrors];
+
+export type GetOauthProviderResponses = {
+  /**
+   * Successful Response
+   */
+  200: OAuthProviderResponse;
+};
+
+export type GetOauthProviderResponse =
+  GetOauthProviderResponses[keyof GetOauthProviderResponses];
+
 export type LoginData = {
   body: BodyLogin;
   path?: never;
@@ -4142,6 +4948,228 @@ export type LoginResponses = {
 };
 
 export type LoginResponse = LoginResponses[keyof LoginResponses];
+
+export type OauthInitiateData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/auth/oauth/initiate";
+};
+
+export type OauthInitiateErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type OauthInitiateError = OauthInitiateErrors[keyof OauthInitiateErrors];
+
+export type OauthInitiateResponses = {
+  /**
+   * Successful Response
+   */
+  200: AuthProviderInfoResponse;
+};
+
+export type OauthInitiateResponse =
+  OauthInitiateResponses[keyof OauthInitiateResponses];
+
+export type DeleteBootResourceByIdData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Boot Resource Id
+     */
+    boot_resource_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/boot_resources/{boot_resource_id}";
+};
+
+export type DeleteBootResourceByIdErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Precondition Failed
+   */
+  412: PreconditionFailedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteBootResourceByIdError =
+  DeleteBootResourceByIdErrors[keyof DeleteBootResourceByIdErrors];
+
+export type DeleteBootResourceByIdResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteBootResourceByIdResponse =
+  DeleteBootResourceByIdResponses[keyof DeleteBootResourceByIdResponses];
+
+export type GetBootResourceByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Boot Resource Id
+     */
+    boot_resource_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/boot_resources/{boot_resource_id}";
+};
+
+export type GetBootResourceByIdErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetBootResourceByIdError =
+  GetBootResourceByIdErrors[keyof GetBootResourceByIdErrors];
+
+export type GetBootResourceByIdResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootResourceResponse;
+};
+
+export type GetBootResourceByIdResponse =
+  GetBootResourceByIdResponses[keyof GetBootResourceByIdResponses];
+
+export type ListBootResourcesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Filter boot resources of a particular type
+     */
+    type?: BootResourceStrType;
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/boot_resources";
+};
+
+export type ListBootResourcesErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListBootResourcesError =
+  ListBootResourcesErrors[keyof ListBootResourcesErrors];
+
+export type ListBootResourcesResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootResourceListResponse;
+};
+
+export type ListBootResourcesResponse =
+  ListBootResourcesResponses[keyof ListBootResourcesResponses];
+
+export type UploadBootResourceData = {
+  /**
+   * Image content, presented as an `application/octet-stream` file upload.
+   */
+  body: Blob | File;
+  headers: {
+    /**
+     * Name
+     * Name of the boot resource.
+     */
+    name: string;
+    /**
+     * Sha256
+     * The `sha256` hash of the resource.
+     */
+    sha256: string;
+    /**
+     * Size
+     * The size of the resource in bytes.
+     */
+    size: number;
+    /**
+     * Architecture
+     * Architecture the boot resource supports.
+     */
+    architecture: string;
+    /**
+     * Filetype for uploaded content.
+     */
+    "file-type"?: BootResourceFileTypeChoice;
+    /**
+     * Title
+     * Title for the boot resource.
+     */
+    title?: string;
+    /**
+     * Base-Image
+     * The Base OS image a custom image is built on top of. Only required for custom image.
+     */
+    "base-image"?: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/boot_resources";
+};
+
+export type UploadBootResourceErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UploadBootResourceError =
+  UploadBootResourceErrors[keyof UploadBootResourceErrors];
+
+export type UploadBootResourceResponses = {
+  /**
+   * Successful Response
+   */
+  201: BootResourceResponse;
+};
+
+export type UploadBootResourceResponse =
+  UploadBootResourceResponses[keyof UploadBootResourceResponses];
 
 export type ListBootSourcesData = {
   body?: never;
@@ -4486,32 +5514,148 @@ export type GetBootSourceBootSourceSelectionResponses = {
 export type GetBootSourceBootSourceSelectionResponse =
   GetBootSourceBootSourceSelectionResponses[keyof GetBootSourceBootSourceSelectionResponses];
 
-export type FetchBootSourcesData = {
-  body: BootSourceFetchRequest;
-  path?: never;
+export type UpdateBootSourceBootSourceSelectionData = {
+  body: BootSourceSelectionRequest;
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+    /**
+     * Id
+     */
+    id: number;
+  };
   query?: never;
-  url: "/MAAS/a/v3/boot_sources:fetch";
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}";
 };
 
-export type FetchBootSourcesErrors = {
+export type UpdateBootSourceBootSourceSelectionErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type FetchBootSourcesError =
-  FetchBootSourcesErrors[keyof FetchBootSourcesErrors];
+export type UpdateBootSourceBootSourceSelectionError =
+  UpdateBootSourceBootSourceSelectionErrors[keyof UpdateBootSourceBootSourceSelectionErrors];
 
-export type FetchBootSourcesResponses = {
+export type UpdateBootSourceBootSourceSelectionResponses = {
   /**
    * Successful Response
    */
-  200: BootSourceFetchListResponse;
+  200: BootSourceResponse;
 };
 
-export type FetchBootSourcesResponse =
-  FetchBootSourcesResponses[keyof FetchBootSourcesResponses];
+export type UpdateBootSourceBootSourceSelectionResponse =
+  UpdateBootSourceBootSourceSelectionResponses[keyof UpdateBootSourceBootSourceSelectionResponses];
+
+export type FetchBootSourcesAvailableImagesData = {
+  body: BootSourceFetchRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources:fetch";
+};
+
+export type FetchBootSourcesAvailableImagesErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type FetchBootSourcesAvailableImagesError =
+  FetchBootSourcesAvailableImagesErrors[keyof FetchBootSourcesAvailableImagesErrors];
+
+export type FetchBootSourcesAvailableImagesResponses = {
+  /**
+   * Successful Response
+   */
+  200: SourceAvailableImageListResponse;
+};
+
+export type FetchBootSourcesAvailableImagesResponse =
+  FetchBootSourcesAvailableImagesResponses[keyof FetchBootSourcesAvailableImagesResponses];
+
+export type GetAllAvailableImagesData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/available_images";
+};
+
+export type GetAllAvailableImagesErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetAllAvailableImagesError =
+  GetAllAvailableImagesErrors[keyof GetAllAvailableImagesErrors];
+
+export type GetAllAvailableImagesResponses = {
+  /**
+   * Successful Response
+   */
+  200: UiSourceAvailableImageListResponse;
+};
+
+export type GetAllAvailableImagesResponse =
+  GetAllAvailableImagesResponses[keyof GetAllAvailableImagesResponses];
+
+export type GetBootSourceAvailableImagesData = {
+  body?: never;
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+  };
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/available_images";
+};
+
+export type GetBootSourceAvailableImagesErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetBootSourceAvailableImagesError =
+  GetBootSourceAvailableImagesErrors[keyof GetBootSourceAvailableImagesErrors];
+
+export type GetBootSourceAvailableImagesResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootSourceAvailableImageListResponse;
+};
+
+export type GetBootSourceAvailableImagesResponse =
+  GetBootSourceAvailableImagesResponses[keyof GetBootSourceAvailableImagesResponses];
 
 export type GetConfigurationData = {
   body?: never;
@@ -5242,6 +6386,189 @@ export type UpdateFabricResponses = {
 
 export type UpdateFabricResponse =
   UpdateFabricResponses[keyof UpdateFabricResponses];
+
+export type DeleteFileData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path?: never;
+  query: {
+    /**
+     * Filename
+     */
+    filename: string;
+  };
+  url: "/MAAS/a/v3/files";
+};
+
+export type DeleteFileErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteFileError = DeleteFileErrors[keyof DeleteFileErrors];
+
+export type DeleteFileResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteFileResponse = DeleteFileResponses[keyof DeleteFileResponses];
+
+export type ListFilesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Prefix
+     * An optional prefix used to filter matching files.
+     */
+    prefix?: string;
+  };
+  url: "/MAAS/a/v3/files";
+};
+
+export type ListFilesErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListFilesError = ListFilesErrors[keyof ListFilesErrors];
+
+export type ListFilesResponses = {
+  /**
+   * Successful Response
+   */
+  200: FileListResponse;
+};
+
+export type ListFilesResponse = ListFilesResponses[keyof ListFilesResponses];
+
+export type CreateOrReplaceFileData = {
+  body: BodyCreateOrReplaceFile;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/files";
+};
+
+export type CreateOrReplaceFileErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateOrReplaceFileError =
+  CreateOrReplaceFileErrors[keyof CreateOrReplaceFileErrors];
+
+export type CreateOrReplaceFileResponses = {
+  /**
+   * Successful Response
+   */
+  201: FileResponse;
+};
+
+export type CreateOrReplaceFileResponse =
+  CreateOrReplaceFileResponses[keyof CreateOrReplaceFileResponses];
+
+export type GetFileData = {
+  body?: never;
+  path?: never;
+  query: {
+    /**
+     * Filename
+     */
+    filename: string;
+  };
+  url: "/MAAS/a/v3/files:get";
+};
+
+export type GetFileErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetFileError = GetFileErrors[keyof GetFileErrors];
+
+export type GetFileResponses = {
+  /**
+   * Successful Response
+   */
+  200: FileResponse;
+};
+
+export type GetFileResponse = GetFileResponses[keyof GetFileResponses];
+
+export type GetFileByKeyData = {
+  body?: never;
+  path: {
+    /**
+     * Key
+     */
+    key: string;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/files/{key}";
+};
+
+export type GetFileByKeyErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetFileByKeyError = GetFileByKeyErrors[keyof GetFileByKeyErrors];
+
+export type GetFileByKeyResponses = {
+  /**
+   * Successful Response
+   */
+  200: FileResponse;
+};
+
+export type GetFileByKeyResponse =
+  GetFileByKeyResponses[keyof GetFileByKeyResponses];
 
 export type ListInterfacesData = {
   body?: never;
@@ -6096,6 +7423,340 @@ export type UpdatePackageRepositoryResponses = {
 
 export type UpdatePackageRepositoryResponse =
   UpdatePackageRepositoryResponses[keyof UpdatePackageRepositoryResponses];
+
+export type ListRacksData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/racks";
+};
+
+export type ListRacksErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListRacksError = ListRacksErrors[keyof ListRacksErrors];
+
+export type ListRacksResponses = {
+  /**
+   * Successful Response
+   */
+  200: RackListResponse;
+};
+
+export type ListRacksResponse = ListRacksResponses[keyof ListRacksResponses];
+
+export type CreateRackData = {
+  body: RackRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/racks";
+};
+
+export type CreateRackErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateRackError = CreateRackErrors[keyof CreateRackErrors];
+
+export type CreateRackResponses = {
+  /**
+   * Successful Response
+   */
+  201: RackResponse;
+};
+
+export type CreateRackResponse = CreateRackResponses[keyof CreateRackResponses];
+
+export type DeleteRackAgentData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Rack Id
+     */
+    rack_id: number;
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}";
+};
+
+export type DeleteRackAgentErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteRackAgentError =
+  DeleteRackAgentErrors[keyof DeleteRackAgentErrors];
+
+export type DeleteRackAgentResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteRackAgentResponse =
+  DeleteRackAgentResponses[keyof DeleteRackAgentResponses];
+
+export type GetRackAgentData = {
+  body?: never;
+  path: {
+    /**
+     * Rack Id
+     */
+    rack_id: number;
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}";
+};
+
+export type GetRackAgentErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetRackAgentError = GetRackAgentErrors[keyof GetRackAgentErrors];
+
+export type GetRackAgentResponses = {
+  /**
+   * Successful Response
+   */
+  200: AgentResponse;
+};
+
+export type GetRackAgentResponse =
+  GetRackAgentResponses[keyof GetRackAgentResponses];
+
+export type DeleteRacksData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Rack Id
+     */
+    rack_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/racks/{rack_id}";
+};
+
+export type DeleteRacksErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteRacksError = DeleteRacksErrors[keyof DeleteRacksErrors];
+
+export type DeleteRacksResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteRacksResponse =
+  DeleteRacksResponses[keyof DeleteRacksResponses];
+
+export type GetRackData = {
+  body?: never;
+  path: {
+    /**
+     * Rack Id
+     */
+    rack_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/racks/{rack_id}";
+};
+
+export type GetRackErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetRackError = GetRackErrors[keyof GetRackErrors];
+
+export type GetRackResponses = {
+  /**
+   * Successful Response
+   */
+  200: RackResponse;
+};
+
+export type GetRackResponse = GetRackResponses[keyof GetRackResponses];
+
+export type UpdateRackData = {
+  body: RackRequest;
+  path: {
+    /**
+     * Rack Id
+     */
+    rack_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/racks/{rack_id}";
+};
+
+export type UpdateRackErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateRackError = UpdateRackErrors[keyof UpdateRackErrors];
+
+export type UpdateRackResponses = {
+  /**
+   * Successful Response
+   */
+  200: RackResponse;
+};
+
+export type UpdateRackResponse = UpdateRackResponses[keyof UpdateRackResponses];
+
+export type GenerateRackBootstrapTokenData = {
+  body?: never;
+  path: {
+    /**
+     * Rack Id
+     */
+    rack_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/racks/{rack_id}/tokens:generate";
+};
+
+export type GenerateRackBootstrapTokenErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GenerateRackBootstrapTokenError =
+  GenerateRackBootstrapTokenErrors[keyof GenerateRackBootstrapTokenErrors];
+
+export type GenerateRackBootstrapTokenResponses = {
+  /**
+   * Successful Response
+   */
+  200: RackBootstrapTokenResponse;
+};
+
+export type GenerateRackBootstrapTokenResponse =
+  GenerateRackBootstrapTokenResponses[keyof GenerateRackBootstrapTokenResponses];
+
+export type ListRackAgentsData = {
+  body?: never;
+  path: {
+    /**
+     * Rack Id
+     */
+    rack_id: number;
+  };
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/racks/{rack_id}/agents";
+};
+
+export type ListRackAgentsErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListRackAgentsError =
+  ListRackAgentsErrors[keyof ListRackAgentsErrors];
+
+export type ListRackAgentsResponses = {
+  /**
+   * Successful Response
+   */
+  200: AgentListResponse;
+};
+
+export type ListRackAgentsResponse =
+  ListRackAgentsResponses[keyof ListRackAgentsResponses];
 
 export type ListFabricVlanSubnetReservedIpsData = {
   body?: never;
@@ -8664,9 +10325,17 @@ export type ListSubnetsData = {
      */
     space?: string[];
     /**
+     * Filter by subnet id
+     */
+    subnet_id?: number[];
+    /**
      * Properties to order by. You can wrap the property with `asc()` or `desc()` to modify the ordering
      */
     order_by?: string[];
+    /**
+     * Q
+     */
+    q?: string;
   };
   url: "/MAAS/a/v3ui/subnets";
 };

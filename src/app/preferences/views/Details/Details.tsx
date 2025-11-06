@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 import { useGetCurrentUser } from "@/app/api/query/auth";
 import { useWindowTitle } from "@/app/base/hooks";
-import { EditUser } from "@/app/settings/views/Users/components";
+import { EditUser } from "@/app/settings/views/UserManagement/views/UsersList/components";
 import statusSelectors from "@/app/store/status/selectors";
 
 export enum Label {

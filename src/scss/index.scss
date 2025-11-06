@@ -95,9 +95,7 @@
 @import "@/app/base/components/ListDisplayCount";
 @import "@/app/base/components/node/HardwareCard";
 @import "@/app/base/components/node/networking/NetworkTable";
-@import "@/app/base/components/node/NodeDevices";
 @import "@/app/base/components/node/NodeLogs/DownloadMenu";
-@import "@/app/base/components/node/NodeLogs/EventLogs/EventLogsTable";
 @import "@/app/base/components/node/NodeTestsTable";
 @import "@/app/base/components/node/OverviewCard";
 @import "@/app/base/components/node/StorageTables/AvailableStorageTable";
@@ -125,7 +123,6 @@
 @include DHCPTable;
 @include DoughnutChart;
 @include DownloadMenu;
-@include EventLogsTable;
 @include FilterAccordion;
 @include FormCard;
 @include HardwareCard;
@@ -135,7 +132,6 @@
 @include NetworkCardTable;
 @include NetworkTable;
 @include NodeActionMenuGroup;
-@include NodeDevices;
 @include NodeName;
 @include NodeSummaryNetworkCard;
 @include NodeTestsTable;
@@ -152,18 +148,14 @@
 @include TagSelector;
 
 // controllers
-@import "@/app/controllers/views/ControllerList/ControllerListTable";
 @import "@/app/controllers/views/ControllerDetails/ControllerSummary";
-@include ControllerListTable;
 @include ControllerSummary;
 
 // devices
 @import "@/app/devices/components/AddDeviceForm/AddDeviceInterfaces";
-@import "@/app/devices/views/DeviceDetails/DeviceNetwork/DeviceNetworkTable";
-@import "@/app/devices/views/DeviceDetails/DeviceSummary";
-@import "@/app/devices/views/DeviceList/DeviceListTable";
+@import "@/app/devices/components/DeviceNetwork/DeviceNetworkTable";
+@import "../app/devices/components/DeviceSummary";
 @include AddDeviceInterfaces;
-@include DeviceListTable;
 @include DeviceNetworkTable;
 @include DeviceSummary;
 
@@ -268,6 +260,10 @@
 @include SSLKeyList;
 @include SSHKeysTable;
 
+//racks
+@import "@/app/racks/components/RegisterController/components/GuidedProvisioning";
+@include GuidedProvisioning;
+
 // settings
 @import "@/app/settings/components/SettingsTable";
 @import "@/app/settings/views/Configuration/GeneralForm";
@@ -280,7 +276,7 @@
 @import "@/app/settings/views/Scripts/ScriptsList";
 @import "@/app/settings/views/Scripts/ScriptsUpload";
 @import "@/app/settings/views/Scripts/ScriptDetails";
-@import "@/app/settings/views/Users/components/UsersTable";
+@import "@/app/settings/views/UserManagement/views/UsersList/components/UsersTable";
 @include SettingsTable;
 @include DhcpList;
 @include LicenseKeyList;

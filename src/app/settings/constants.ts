@@ -39,8 +39,17 @@ export const settingsNavItems: NavItem[] = [
     ],
   },
   {
-    path: settingsURLs.users.index,
-    label: "Users",
+    label: "User management",
+    items: [
+      {
+        path: settingsURLs.userManagement.users,
+        label: "Users",
+      },
+      {
+        label: "OIDC/Single sign-on",
+        path: settingsURLs.userManagement.singleSignOn,
+      },
+    ],
   },
   {
     label: "Images",

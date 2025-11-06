@@ -4,26 +4,22 @@ import { useSelector } from "react-redux";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useFetchActions } from "@/app/base/hooks";
 import controllerSelectors from "@/app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { Controller } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 import { serviceActions } from "@/app/store/service";
-import { ServiceStatus } from "@/app/store/service/types";
 import type { Service } from "@/app/store/service/types";
+import { ServiceStatus } from "@/app/store/service/types";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  controller: Controller;
 };
 
 const countStatus = (services: Service[], status: ServiceStatus) =>
   services.filter((service) => service.status === status).length;
 
 export const ControllerStatus = ({
-  systemId,
+  controller,
 }: Props): React.ReactElement | null => {
-  const controller = useSelector((state: RootState) =>
-    controllerSelectors.getById(state, systemId)
-  );
-
   const services = useSelector((state: RootState) =>
     controllerSelectors.servicesForController(state, controller?.system_id)
   );
