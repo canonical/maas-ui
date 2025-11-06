@@ -49,4 +49,10 @@
       height: 3.5rem;
     }
   }
+
+  .is-dark .l-application {
+    .l-aside {
+      background-color: $colors--dark-theme--background-default;
+    }
+  }
 }

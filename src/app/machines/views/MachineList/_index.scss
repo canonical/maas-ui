@@ -88,7 +88,7 @@
   .machine-list__machine:focus-within,
   .machine-list__machine:hover:not(.machine-list__machine--inactive),
   .machine-list__machine--active {
-    background-color: $item-active-background;
+    background-color: $colors--light-theme--background-hover;
 
     .p-table-menu {
       display: block;
@@ -182,4 +182,27 @@
       margin-right: $spv--x-small;
     }
   }
+
+  .is-dark {
+
+    .machine-list__machine:focus-within,
+    .machine-list__machine:hover:not(.machine-list__machine--inactive),
+    .machine-list__machine--active {
+      background-color: $colors--dark-theme--background-hover;
+  
+      .p-table-menu {
+        display: block;
+  
+        .p-table-menu__toggle {
+          opacity: 0.25;
+        }
+      }
+  
+      .p-table-menu .p-table-menu__toggle:focus,
+      .p-table-menu .p-table-menu__toggle:active,
+      td:hover .p-table-menu .p-table-menu__toggle {
+        opacity: 1;
+      }
+    }
+  } 
 }

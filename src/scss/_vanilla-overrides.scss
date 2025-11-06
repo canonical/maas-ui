@@ -49,3 +49,12 @@
 body {
   overflow: hidden;
 }
+
+// Dark mode fixes
+
+body.is-dark {
+  
+  .p-button--link {
+    color: var(--vf-color-text--default)
+  }
+}
