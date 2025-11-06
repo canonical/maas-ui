@@ -56,14 +56,14 @@ const useDomainsTableColumns = (): DomainsColumnDef[] => {
       {
         id: "resource_count",
         accessorKey: "resource_count",
-        header: Labels.TotalRecords,
+        header: "Total records",
         cell: ({ row: { original: domain } }) => (
           <span aria-label={Labels.TotalRecords}>{domain.resource_count}</span>
         ),
       },
       {
         id: "actions",
-        header: Labels.Actions,
+        header: "Actions",
         enableSorting: false,
         cell: ({ row: { original: domain } }) => (
           <ContextualMenu

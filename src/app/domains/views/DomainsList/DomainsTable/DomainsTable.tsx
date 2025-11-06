@@ -29,6 +29,7 @@ export const Labels = {
 
 const DomainsTable = (): ReactElement => {
   const domains = useSelector(domainSelectors.all);
+  const domainsLoading = useSelector(domainSelectors.loading);
   const { page, size, handlePageSizeChange, setPage } = usePagination(50);
 
   const columns = useDomainsTableColumns();
@@ -40,7 +41,7 @@ const DomainsTable = (): ReactElement => {
       columns={columns}
       data={domains.slice(size * (page - 1), size * page)}
       data-testid="domains-table"
-      isLoading={false}
+      isLoading={domainsLoading}
       noData={Labels.EmptyList}
       pagination={{
         currentPage: page,
