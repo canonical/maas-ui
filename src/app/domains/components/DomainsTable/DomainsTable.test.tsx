@@ -78,7 +78,7 @@ describe("DomainsTable", () => {
       );
     });
 
-    it("has a (defaut) next to the default domain's title", () => {
+    it("has a (default) next to the default domain's title", () => {
       renderWithProviders(<DomainsTable />, {
         state,
       });

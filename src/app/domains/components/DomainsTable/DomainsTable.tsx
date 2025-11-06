@@ -52,7 +52,10 @@ const DomainsTable = (): ReactElement => {
         setCurrentPage: setPage,
         totalItems: domains.length,
       }}
-      sorting={[{ id: "is_default", desc: true }]}
+      sorting={[
+        { id: "is_default", desc: true },
+        { id: "name", desc: true },
+      ]}
     />
   );
 };
