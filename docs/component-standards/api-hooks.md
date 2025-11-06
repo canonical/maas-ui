@@ -3,12 +3,12 @@
 ## TL;DR
 
 - Auto-generated SDK lives in `src/app/apiclient`
-- Manually write hooks in `src/app/api/query/` using the generated SDK
+- Manually write hooks in `src/app/api/query/` using the generated react-query.ts hooks
 - Use `useWebsocketAwareQuery` for queries to auto-invalidate on websocket updates
 - Use `useMutation` with `invalidateQueries` in `onSuccess` for mutations
 - Create mock resolvers in `src/testing/resolvers/` using MSW (Mock Service Worker)
 - Test hooks using `renderHookWithProviders` and mock resolvers
-- Follow naming convention: `use<Resource>` for list queries, `useGet<Resource>` for single items
+- Follow naming convention: `use<Resource>` for list queries, `use<Action><Resource>` for single item and operation queries
 
 ## Overview
 
@@ -450,7 +450,8 @@ describe("useGetUser", () => {
 
    - List queries: `use<ResourcePlural>` (e.g., `useUsers`, `usePools`)
    - Single item: `useGet<Resource>` (e.g., `useGetUser`, `useGetPool`)
-   - Mutations: `useCreate<Resource>`, `useUpdate<Resource>`, `useDelete<Resource>`
+   - Mutations: `use<Mutation><Resource>` (e.g., `useCreate<Resource>`, `useUpdate<Resource>`, `useDelete<Resource>`)
+   - Derivations: `use<Resource><Derivation>` (e.g., `use<Resource>Count`)
 
 2. **Query Invalidation**:
 

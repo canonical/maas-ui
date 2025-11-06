@@ -27,6 +27,7 @@ import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
+// Only define custom data types if the API type is not a direct match with table columns
 type MyDataType = {
   id: number;
   name: string;
