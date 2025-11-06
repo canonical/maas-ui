@@ -79,14 +79,16 @@ const RemoveControllers = ({ id }: RemoveControllersProps) => {
       to re-register the controllers to revert this action.
       {fakeControllers && (
         <GenericTable
-          canSelect
           className="u-border u-margin-top--medium"
           columns={column}
           data={fakeControllers}
           isLoading={rack.isPending}
-          rowSelection={rowSelection}
-          setRowSelection={setRowSelection}
-        ></GenericTable>
+          selection={{
+            rowSelection,
+            setRowSelection,
+            rowSelectionLabelKey: "fqdn",
+          }}
+        />
       )}
     </FormikForm>
   );

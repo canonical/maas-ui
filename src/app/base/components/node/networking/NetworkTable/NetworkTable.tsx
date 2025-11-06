@@ -266,20 +266,23 @@ const NetworkTable = ({
 
   return (
     <GenericTable
-      canSelect={(_) => !isAllNetworkingDisabled}
       className={classNames("p-table-expanding--light", "network-table", {
         "network-table--has-actions": hasActions,
       })}
       columns={columns}
       data={data}
-      disabledSelectionTooltip={"Network can't be modified for this machine."}
       filterCells={!!setExpanded ? filterCells : filterCellsAndAction}
       filterHeaders={!!setExpanded ? filterHeaders : filterHeadersAndAction}
       getSubRows={(originalRow) => originalRow.children}
       isLoading={!fabricsLoaded || !vlansLoaded}
       noData={"No interfaces available."}
-      rowSelection={rowSelection}
-      setRowSelection={setRowSelection}
+      selection={{
+        rowSelection,
+        setRowSelection,
+        filterSelectable: (_) => !isAllNetworkingDisabled,
+        disabledSelectionTooltip: "Network can't be modified for this machine.",
+        rowSelectionLabelKey: "name",
+      }}
       sorting={[{ id: "name", desc: false }]}
     />
   );

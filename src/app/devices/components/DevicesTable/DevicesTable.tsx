@@ -51,7 +51,6 @@ const DevicesTable = ({
 
   return (
     <GenericTable
-      canSelect
       className="devices-table"
       columns={columns}
       data={devices.map(
@@ -59,8 +58,11 @@ const DevicesTable = ({
       )}
       isLoading={devicesLoading}
       noData="No devices available."
-      rowSelection={rowSelection}
-      setRowSelection={setRowSelection}
+      selection={{
+        rowSelection,
+        setRowSelection,
+        rowSelectionLabelKey: "fqdn",
+      }}
       sorting={[{ id: "fqdn", desc: false }]}
     />
   );
