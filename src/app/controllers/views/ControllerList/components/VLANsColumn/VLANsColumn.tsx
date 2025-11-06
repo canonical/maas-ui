@@ -1,14 +1,11 @@
-import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
-import controllerSelectors from "@/app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "@/app/store/controller/types";
-import type { RootState } from "@/app/store/root/types";
+import type { Controller } from "@/app/store/controller/types";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  controller: Controller;
 };
 
 // Get the HA VLAN info for a controller.
@@ -30,22 +27,16 @@ const getVlanCount = (controller: Controller) => {
   return (vlansHA?.false || 0) + (vlansHA?.true || 0);
 };
 
-export const VLANsColumn = ({ systemId }: Props): React.ReactElement | null => {
-  const controller = useSelector((state: RootState) =>
-    controllerSelectors.getById(state, systemId)
-  );
-
-  if (!controller) {
-    return null;
-  }
-
+export const VLANsColumn = ({
+  controller,
+}: Props): React.ReactElement | null => {
   const haVlans = getHaVlans(controller);
   return (
     <DoubleRow
       primary={
         <Link
           to={urls.controllers.controller.vlans({
-            id: systemId,
+            id: controller.system_id,
           })}
         >
           <span data-testid="vlan-count">{getVlanCount(controller)}</span>

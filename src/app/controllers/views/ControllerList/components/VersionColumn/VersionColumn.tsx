@@ -1,21 +1,14 @@
-import { useSelector } from "react-redux";
-
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import controllerSelectors from "@/app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "@/app/store/controller/types";
-import type { RootState } from "@/app/store/root/types";
+import type { Controller } from "@/app/store/controller/types";
 
 type Props = {
-  systemId: Controller[ControllerMeta.PK];
+  controller: Controller;
 };
 
 export const VersionColumn = ({
-  systemId,
+  controller,
 }: Props): React.ReactElement | null => {
-  const controller = useSelector((state: RootState) =>
-    controllerSelectors.getById(state, systemId)
-  );
   const versions = controller?.versions;
   if (!versions) {
     return null;

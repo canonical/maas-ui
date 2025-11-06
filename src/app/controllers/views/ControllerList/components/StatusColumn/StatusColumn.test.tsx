@@ -38,18 +38,24 @@ describe("StatusColumn", () => {
     state.controller.items[0].versions = factory.controllerVersions({
       issues: [ControllerVersionIssues.DIFFERENT_CHANNEL],
     });
-    renderWithProviders(<StatusColumn systemId="abc123" />, {
-      initialEntries: ["/controllers"],
-      state,
-    });
+    renderWithProviders(
+      <StatusColumn controller={state.controller.items[0]} />,
+      {
+        initialEntries: ["/controllers"],
+        state,
+      }
+    );
     expect(screen.getByTestId("version-error")).toBeInTheDocument();
   });
 
   it("displays the controller status if there are no errors", async () => {
-    renderWithProviders(<StatusColumn systemId="abc123" />, {
-      initialEntries: ["/controllers"],
-      state,
-    });
+    renderWithProviders(
+      <StatusColumn controller={state.controller.items[0]} />,
+      {
+        initialEntries: ["/controllers"],
+        state,
+      }
+    );
 
     await userEvent.click(screen.getByRole("button", { name: /success/i }));
     expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");

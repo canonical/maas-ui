@@ -1,5 +1,6 @@
 import { lazy } from "react";
 
+import { MainToolbar } from "@canonical/maas-react-components";
 import { createBrowserRouter, Navigate } from "react-router";
 
 import TagDetails from "./app/tags/views/TagDetails";
@@ -590,7 +591,17 @@ export const router = createBrowserRouter(
               ),
               element: (
                 <ErrorBoundary>
-                  <NetworkDiscoveryForm />
+                  <PageContent
+                    header={
+                      <MainToolbar>
+                        <MainToolbar.Title>Network discovery</MainToolbar.Title>
+                      </MainToolbar>
+                    }
+                    sidePanelContent={null}
+                    sidePanelTitle={null}
+                  >
+                    <NetworkDiscoveryForm />
+                  </PageContent>
                 </ErrorBoundary>
               ),
             },
