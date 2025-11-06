@@ -1,5 +1,6 @@
 @mixin AppSideNavigation {
   .l-navigation.is-maas {
+    box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.2);
     @include vf-transition(
       $property: #{width,
       box-shadow,
