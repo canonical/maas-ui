@@ -25,7 +25,6 @@ Our API layer follows a three-tier architecture:
 Use `useWebsocketAwareQuery` to automatically invalidate when websocket updates occur:
 
 ```typescript
-
 export const useUsers = (options?: Options<ListUsersWithSummaryData>) => {
   return useWebsocketAwareQuery(
     listUsersWithSummaryOptions(options) as UseQueryOptions<
@@ -75,18 +74,6 @@ export const useUserCount = (options?: Options<ListUsersWithSummaryData>) => {
 Always invalidate related queries in `onSuccess`:
 
 ```typescript
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type {
-  CreateUserData,
-  CreateUserError,
-  CreateUserResponse,
-  Options,
-} from "@/app/apiclient";
-import {
-  createUserMutation,
-  listUsersWithSummaryQueryKey,
-} from "@/app/apiclient/@tanstack/react-query.gen";
-
 export const useCreateUser = (mutationOptions?: Options<CreateUserData>) => {
   const queryClient = useQueryClient();
   return useMutation<
@@ -167,18 +154,6 @@ Each resolver file should follow this structure:
 ### Complete Example
 
 ```typescript
-import { http, HttpResponse } from "msw";
-import { BASE_URL } from "../utils";
-import type {
-  CreateUserError,
-  DeleteUserError,
-  GetUserError,
-  ListUsersError,
-  ListUsersWithSummaryResponse,
-  UpdateUserError,
-} from "@/app/apiclient";
-import { user as userFactory } from "@/testing/factories";
-
 // 1. Define default mock data using factories
 const mockUsers: ListUsersWithSummaryResponse = {
   items: [
@@ -333,14 +308,6 @@ await waitFor(() => {
 ### Test Structure
 
 ```typescript
-import { useUsers, useCreateUser } from "@/app/api/query/users";
-import { usersResolvers, mockUsers } from "@/testing/resolvers/users";
-import {
-  renderHookWithProviders,
-  setupMockServer,
-  waitFor,
-} from "@/testing/utils";
-
 const mockServer = setupMockServer(
   usersResolvers.listUsers.handler(),
   usersResolvers.createUser.handler()

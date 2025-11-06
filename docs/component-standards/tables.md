@@ -23,10 +23,6 @@ Column definitions should be extracted into a custom hook in a separate file for
 ### Example: useMyTableColumns.tsx
 
 ```tsx
-import { useMemo } from "react";
-import type { ColumnDef } from "@tanstack/react-table";
-import { Link } from "react-router";
-
 // Only define custom data types if the API type is not a direct match with table columns
 type MyDataType = {
   id: number;
@@ -107,8 +103,6 @@ import TableActions from "@/app/base/components/TableActions";
 For more complex actions, use `TableActionsDropdown`:
 
 ```tsx
-import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
-
 {
   id: "actions",
   accessorKey: "id",
@@ -133,11 +127,6 @@ import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
 ### Basic Structure
 
 ```tsx
-import { GenericTable } from "@canonical/maas-react-components";
-import useMyTableColumns from "./useMyTableColumns/useMyTableColumns";
-import { useMyData } from "@/app/api/query/mydata";
-import usePagination from "@/app/base/hooks/usePagination/usePagination";
-
 const MyTable = () => {
   const columns = useMyTableColumns();
   const { data, isPending } = useMyData();
@@ -218,10 +207,6 @@ Every table component should have comprehensive tests organized into separate `d
 ### Test Structure
 
 ```tsx
-import { describe, it, expect } from "vitest";
-import { screen, waitFor, within, renderWithProviders } from "@/testing/utils";
-import MyTable from "./MyTable";
-
 describe("MyTable", () => {
   describe("display", () => {
     // Display-related tests

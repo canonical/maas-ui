@@ -5,9 +5,8 @@
 - Use `FormikForm` for all forms, and extract field definitions into separate components or hooks for maintainability
 - Use `ModelActionForm` for simple confirmation forms (e.g., delete, archive)
 - Use Yup for validation schemas
-- Keep business logic (API calls, mutation hooks) outside the form component when possible
 - Always provide clear error, loading, and success states
-- Write tests in separate `describe` blocks for display, validation, permissions, and actions
+- Write tests in separate `describe` blocks for display, validation, and actions
 
 ## Overview
 
@@ -20,11 +19,6 @@ We use [FormikForm](/src/app/base/components/FormikForm/FormikForm.tsx) for all 
 Extract field definitions into their own components or hooks. Use Yup for validation. Example:
 
 ```tsx
-import * as Yup from "yup";
-import FormikForm from "@/app/base/components/FormikForm";
-import FormikField from "@/app/base/components/FormikField";
-import { useCreateUser } from "@/app/api/query/users";
-
 const UserSchema = Yup.object().shape({
   email: Yup.string().email().required(),
   username: Yup.string().required(),
@@ -56,14 +50,20 @@ const AddUserForm = () => {
 Use `ModelActionForm` for simple confirmation dialogs:
 
 ```tsx
-import ModelActionForm from "@/app/base/components/ModelActionForm";
-
 <ModelActionForm
+  aria-label="Confirm user deletion"
+  errors={deleteUser.error}
   modelType="user"
   initialValues={{}}
+  onCancel={closeSidePanel}
   onSubmit={handleDelete}
-  submitLabel="Delete"
-/>;
+  onSuccess={() =>
+    queryClient.invalidateQueries({ queryKey: listUsersQueryKey() })
+  }
+  saved={deleteUser.isSuccess}
+  saving={deleteUser.isPending}
+  submitLabel="Delete user"
+/>
 ```
 
 ### Validation
@@ -80,7 +80,6 @@ import ModelActionForm from "@/app/base/components/ModelActionForm";
 ### Business Logic
 
 - Use mutation/query hooks (e.g., `useCreateUser`, `useUpdateUser`) for API calls
-- Keep API logic outside the form component when possible
 - Pass mutation functions to `onSubmit`
 
 ## Testing Standards
@@ -97,9 +96,6 @@ describe("AddUserForm", () => {
   describe("validation", () => {
     // Validation tests
   });
-  describe("permissions", () => {
-    // Permission tests
-  });
   describe("actions", () => {
     // Action/interaction tests
   });
@@ -115,10 +111,6 @@ describe("AddUserForm", () => {
 
 - Test required fields and validation errors
 - Test that invalid input shows correct error messages
-
-### Permission Tests
-
-- Test that fields/buttons are disabled or hidden based on permissions
 
 ### Action Tests
 

@@ -26,9 +26,6 @@ We use [Vitest](https://vitest.dev/) as our test runner and [React Testing Libra
 `renderWithProviders` is the standard way to render components in tests. It provides all necessary context providers (React Query, Redux, Router, WebSocket, Side Panel), eliminating the need to manually wrap components in providers. This ensures your tests run in an environment that closely mirrors your application's runtime context.
 
 ```typescript
-import { renderWithProviders, screen, waitFor } from "@/testing/utils";
-import MyComponent from "./MyComponent";
-
 describe("MyComponent", () => {
   it("renders correctly", async () => {
     renderWithProviders(<MyComponent />);
@@ -45,10 +42,6 @@ describe("MyComponent", () => {
 Use `setupMockServer` at the top of your test file to configure MSW handlers. This function handles the complete lifecycle of the mock server.
 
 ```typescript
-import { setupMockServer, renderWithProviders } from "@/testing/utils";
-import { usersResolvers } from "@/testing/resolvers/users";
-import MyComponent from "./MyComponent";
-
 const mockServer = setupMockServer(
   usersResolvers.listUsers.handler(),
   usersResolvers.createUser.handler()
@@ -103,8 +96,6 @@ it("handles errors", async () => {
 Pass custom Redux state to `renderWithProviders` to test components in specific application states. This is useful for testing permission-based UI, user-specific content, or any component behavior that depends on Redux state.
 
 ```typescript
-import * as factory from "@/testing/factories";
-
 it("displays user-specific content", () => {
   renderWithProviders(<MyComponent />, {
     state: {
@@ -125,10 +116,6 @@ it("displays user-specific content", () => {
 Use `renderHookWithProviders` to test custom hooks in isolation. This wrapper provides all necessary context (React Query, Redux, WebSocket) that your hooks might depend on, allowing you to test hook logic independently from components.
 
 ```typescript
-import { renderHookWithProviders, waitFor } from "@/testing/utils";
-import { useUsers } from "@/app/api/query/users";
-import { usersResolvers, mockUsers } from "@/testing/resolvers/users";
-
 const mockServer = setupMockServer(usersResolvers.listUsers.handler());
 
 describe("useUsers", () => {
@@ -149,8 +136,6 @@ describe("useUsers", () => {
 Use `mockIsPending` to test loading states without waiting for actual API calls. This utility mocks React Query's `useQuery` to return a pending state, allowing you to verify that your loading UI renders correctly.
 
 ```typescript
-import { mockIsPending, renderWithProviders, screen, waitFor } from "@/testing/utils";
-
 it("displays loading state", async () => {
   mockIsPending();
   renderWithProviders(<MyComponent />);
@@ -166,8 +151,6 @@ it("displays loading state", async () => {
 Use `mockSidePanel` to mock side panel interactions and verify that your components correctly open and close side panels with the expected content and properties.
 
 ```typescript
-import { mockSidePanel, renderWithProviders, screen, userEvent } from "@/testing/utils";
-
 const { mockOpen, mockClose } = await mockSidePanel();
 
 describe("MyComponent", () => {
@@ -231,8 +214,6 @@ describe("MyComponent", () => {
 Use `userEvent` for simulating user actions. This library provides more realistic user interactions than the legacy `fireEvent` API, including proper focus management and keyboard event sequences.
 
 ```typescript
-import { userEvent, screen } from "@/testing/utils";
-
 // Clicking buttons
 await userEvent.click(screen.getByRole("button", { name: /save/i }));
 
@@ -283,8 +264,6 @@ screen.findByRole("button"); // Returns promise, waits for element
 Always use `waitFor` for async assertions to handle asynchronous state updates, API calls, and DOM changes. Never use arbitrary timeouts or delays in tests.
 
 ```typescript
-import { waitFor } from "@/testing/utils";
-
 // Wait for element to appear
 await waitFor(() => {
   expect(screen.getByText("Success")).toBeInTheDocument();
@@ -306,8 +285,6 @@ await waitFor(() => {
 Use `within` to query inside a specific element, which is particularly useful for testing table rows, list items, or any nested content where you need to scope your queries.
 
 ```typescript
-import { within } from "@/testing/utils";
-
 const row = screen.getByRole("row", { name: /john doe/i });
 expect(within(row).getByText("admin")).toBeInTheDocument();
 expect(within(row).getByRole("button", { name: /edit/i })).toBeInTheDocument();
@@ -333,9 +310,6 @@ Legacy tests may create Redux stores manually using `configureStore()` from `red
 
 ```typescript
 // ❌ Legacy pattern - avoid in new code
-import configureStore from "redux-mock-store";
-import * as factory from "@/testing/factories";
-
 const mockStore = configureStore();
 const store = mockStore(factory.rootState());
 
@@ -372,8 +346,6 @@ These utilities exist for legacy tests but should not be used in new code:
 Use `screen.debug()` to print the current DOM structure when debugging test failures. This helps you understand what's actually rendered versus what you expect.
 
 ```typescript
-import { screen } from "@/testing/utils";
-
 // Print the current DOM
 screen.debug();
 
