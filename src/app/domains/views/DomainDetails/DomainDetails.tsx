@@ -2,15 +2,16 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import DomainDetailsHeader from "../../components/DomainDetailsHeader";
-import DomainSummary from "@/app/domains/components/DomainSummary/DomainSummary";
-import ResourceRecords from "../../components/ResourceRecords";
-
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import urls from "@/app/base/urls";
+import {
+  DomainDetailsHeader,
+  DomainSummary,
+  ResourceRecords,
+} from "@/app/domains/components";
 import { domainActions } from "@/app/store/domain";
 import domainsSelectors from "@/app/store/domain/selectors";
 import { DomainMeta } from "@/app/store/domain/types";

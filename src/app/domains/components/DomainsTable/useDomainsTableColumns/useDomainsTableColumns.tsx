@@ -9,7 +9,7 @@ import { Labels } from "../DomainsTable";
 
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import SetDefaultForm from "@/app/domains/components/SetDefaultForm";
+import { SetDefaultForm } from "@/app/domains/components";
 import { domainActions } from "@/app/store/domain";
 import type { Domain } from "@/app/store/domain/types";
 

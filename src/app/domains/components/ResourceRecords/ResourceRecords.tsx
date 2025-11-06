@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import AddRecordForm from "../DomainDetailsHeader/AddRecordForm";
 
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import ResourceRecordsTable from "@/app/domains/components/ResourceRecordsTable/ResourceRecordsTable";
+import { ResourceRecordsTable } from "@/app/domains/components";
 import domainsSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";
 import { isDomainDetails } from "@/app/store/domain/utils";
