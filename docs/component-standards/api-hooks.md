@@ -25,15 +25,6 @@ Our API layer follows a three-tier architecture:
 Use `useWebsocketAwareQuery` to automatically invalidate when websocket updates occur:
 
 ```typescript
-import type { UseQueryOptions } from "@tanstack/react-query";
-import { useWebsocketAwareQuery } from "./base";
-import type {
-  ListUsersWithSummaryData,
-  ListUsersWithSummaryError,
-  ListUsersWithSummaryResponse,
-  Options,
-} from "@/app/apiclient";
-import { listUsersWithSummaryOptions } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useUsers = (options?: Options<ListUsersWithSummaryData>) => {
   return useWebsocketAwareQuery(
