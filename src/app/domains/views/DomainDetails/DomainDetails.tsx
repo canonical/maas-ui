@@ -2,9 +2,9 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import DomainDetailsHeader from "./DomainDetailsHeader";
-import DomainSummary from "./DomainSummary/DomainSummary";
-import ResourceRecords from "./ResourceRecords";
+import DomainDetailsHeader from "../../components/DomainDetailsHeader";
+import DomainSummary from "@/app/domains/components/DomainSummary/DomainSummary";
+import ResourceRecords from "../../components/ResourceRecords";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
