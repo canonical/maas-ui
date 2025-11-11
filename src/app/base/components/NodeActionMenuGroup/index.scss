@@ -30,4 +30,8 @@
       }
     }
   }
+
+  .is-dark .p-node-action-menu-group {
+    border: 1px solid $colors--dark-theme--border-high-contrast
+  }
 }

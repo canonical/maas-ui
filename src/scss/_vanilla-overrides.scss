@@ -49,3 +49,16 @@
 body {
   overflow: hidden;
 }
+
+// Dark mode fixes
+
+body.is-dark {
+  
+  .p-button--link {
+    color: var(--vf-color-text--default)
+  }
+
+  a:visited:not([class]), a.p-link__chevron, a[class=""]:visited {
+    color: var(--vf-color-link-default)
+  }
+}
