@@ -62,10 +62,19 @@ const ChangeSource = (): ReactElement => {
   const saved = !saving && previousSaving && !errors;
 
   useWindowTitle("Source");
+  useEffect(() => {
+    dispatch(bootResourceActions.poll({ continuous: false }));
+    dispatch(configActions.fetch());
+    return () => {
+      dispatch(bootResourceActions.pollStop());
+      dispatch(bootResourceActions.cleanup());
+    };
+  }, [dispatch]);
 
   const canChangeSource = resources.every((resource) => !resource.downloading);
   const source: BootResourceUbuntuSource =
     sources !== null &&
+    !!sources.sources[0].source_type &&
     sources.sources[0].source_type === BootResourceSourceType.CUSTOM
       ? sources.sources[0]
       : {
@@ -139,15 +148,6 @@ const ChangeSource = (): ReactElement => {
     }
   }, [sources, resources, otherImages]);
 
-  useEffect(() => {
-    dispatch(bootResourceActions.poll({ continuous: false }));
-    dispatch(configActions.fetch());
-    return () => {
-      dispatch(bootResourceActions.pollStop());
-      dispatch(bootResourceActions.cleanup());
-    };
-  }, [dispatch]);
-
   return (
     <ContentSection variant="narrow">
       <ContentSection.Title className="section-header__title">
@@ -180,6 +180,8 @@ const ChangeSource = (): ReactElement => {
                   boot_images_auto_import: values.autoSync,
                 })
               );
+            }}
+            onSuccess={(values) => {
               dispatch(
                 bootResourceActions.saveUbuntu({
                   keyring_data: values.keyring_data,
@@ -189,7 +191,6 @@ const ChangeSource = (): ReactElement => {
                   osystems: ubuntuSystems,
                 })
               );
-              dispatch(bootResourceActions.saveUbuntuSuccess());
               dispatch(
                 bootResourceActions.saveOther({
                   images: otherSystems.map(
@@ -198,7 +199,6 @@ const ChangeSource = (): ReactElement => {
                   ),
                 })
               );
-              dispatch(bootResourceActions.saveOtherSuccess());
             }}
             saved={saved}
             saving={saving}
