@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import type { APIError } from "@/app/base/types";
 import {
@@ -150,70 +149,68 @@ const ChangeSource = (): ReactElement => {
   }, [sources, resources, otherImages]);
 
   return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null}>
-      <ContentSection variant="narrow">
-        <ContentSection.Title className="section-header__title">
-          Source
-        </ContentSection.Title>
-        <ContentSection.Content>
-          {!canChangeSource && (
-            <Notification
-              data-testid="cannot-change-source-warning"
-              severity="caution"
-            >
-              Image import is in progress, cannot change source settings.
-            </Notification>
-          )}
-          {!pollingSources && (
-            <FormikForm<ChangeSourceValues>
-              allowUnchanged
-              aria-label="Choose source"
-              cleanup={cleanup}
-              errors={errors as APIError}
-              initialValues={{
-                ...source,
-                autoSync: autoImport || false,
-              }}
-              onSubmit={(values) => {
-                dispatch(cleanup());
-                dispatch(bootResourceActions.fetch(values));
-                dispatch(
-                  configActions.update({
-                    boot_images_auto_import: values.autoSync,
-                  })
-                );
-              }}
-              onSuccess={(values) => {
-                dispatch(
-                  bootResourceActions.saveUbuntu({
-                    keyring_data: values.keyring_data,
-                    keyring_filename: values.keyring_filename,
-                    source_type: values.source_type,
-                    url: values.url,
-                    osystems: ubuntuSystems,
-                  })
-                );
-                dispatch(
-                  bootResourceActions.saveOther({
-                    images: otherSystems.map(
-                      ({ arch, os, release, subArch = "" }) =>
-                        `${os}/${arch}/${subArch}/${release}`
-                    ),
-                  })
-                );
-              }}
-              saved={saved}
-              saving={saving}
-              submitDisabled={!canChangeSource}
-              submitLabel="Save"
-              validationSchema={ChangeSourceSchema}
-            >
-              <ChangeSourceFields />
-            </FormikForm>
-          )}
-        </ContentSection.Content>
-      </ContentSection>
-    </PageContent>
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        Source
+      </ContentSection.Title>
+      <ContentSection.Content>
+        {!canChangeSource && (
+          <Notification
+            data-testid="cannot-change-source-warning"
+            severity="caution"
+          >
+            Image import is in progress, cannot change source settings.
+          </Notification>
+        )}
+        {!pollingSources && (
+          <FormikForm<ChangeSourceValues>
+            allowUnchanged
+            aria-label="Choose source"
+            cleanup={cleanup}
+            errors={errors as APIError}
+            initialValues={{
+              ...source,
+              autoSync: autoImport || false,
+            }}
+            onSubmit={(values) => {
+              dispatch(cleanup());
+              dispatch(bootResourceActions.fetch(values));
+              dispatch(
+                configActions.update({
+                  boot_images_auto_import: values.autoSync,
+                })
+              );
+            }}
+            onSuccess={(values) => {
+              dispatch(
+                bootResourceActions.saveUbuntu({
+                  keyring_data: values.keyring_data,
+                  keyring_filename: values.keyring_filename,
+                  source_type: values.source_type,
+                  url: values.url,
+                  osystems: ubuntuSystems,
+                })
+              );
+              dispatch(
+                bootResourceActions.saveOther({
+                  images: otherSystems.map(
+                    ({ arch, os, release, subArch = "" }) =>
+                      `${os}/${arch}/${subArch}/${release}`
+                  ),
+                })
+              );
+            }}
+            saved={saved}
+            saving={saving}
+            submitDisabled={!canChangeSource}
+            submitLabel="Save"
+            validationSchema={ChangeSourceSchema}
+          >
+            <ChangeSourceFields />
+          </FormikForm>
+        )}
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 
