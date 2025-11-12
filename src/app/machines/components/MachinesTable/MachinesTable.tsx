@@ -103,7 +103,6 @@ const MachinesTable = ({
       {!headerFormOpen ? <ErrorsNotification errors={machinesErrors} /> : null}
       <VaultNotification />
       <GenericTable
-        canSelect
         className={classNames("machines-table", {
           "has-hidden-columns": hiddenColumns.length,
         })}
@@ -117,6 +116,11 @@ const MachinesTable = ({
         }
         groupBy={[grouping ?? "status"]}
         isLoading={loading}
+        noData={
+          searchFilter
+            ? "No machines match the search criteria."
+            : "No machines found."
+        }
         pagination={{
           currentPage: page,
           dataContext: "machines",
@@ -127,8 +131,10 @@ const MachinesTable = ({
           totalItems: machineCount ?? 0,
         }}
         pinGroup={groups.map((g) => ({ value: g.name ?? "", isTop: true }))}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
+        selection={{
+          rowSelection,
+          setRowSelection,
+        }}
         setSorting={setSorting}
         showChevron
         sorting={sorting}

@@ -60,7 +60,7 @@ const KVM = lazy(() => import("@/app/kvm/views/KVM"));
 const MachineDetails = lazy(
   () => import("@/app/machines/views/MachineDetails")
 );
-const Machines = lazy(() => import("@/app/machines/views/Machines"));
+const MachinesList = lazy(() => import("@/app/machines/views/Machines"));
 const DiscoveriesList = lazy(
   () => import("@/app/networkDiscovery/views/DiscoveriesList")
 );
@@ -101,7 +101,7 @@ export const router = createBrowserRouter(
           path: urls.machines.index,
           element: (
             <ErrorBoundary>
-              <Machines />
+              <MachinesList />
             </ErrorBoundary>
           ),
         },
