@@ -176,6 +176,16 @@
     @include vf-icon-help($color-mid-dark);
   }
 
+  .p-icon--highlight-on {
+    @extend %icon;
+    @include vf-icon-highlight-on($color-mid-dark);
+  }
+
+  .p-icon--highlight-off {
+    @extend %icon;
+    @include vf-icon-highlight-off($color-mid-dark);
+  }
+
   [class*="p-circle--"].is-inline,
   [class*="p-icon--"].is-inline {
     margin-right: $sph--small;

@@ -325,9 +325,10 @@ describe("NetworkTable", () => {
         />,
         { state }
       );
-      const rows = screen.getAllByRole("row");
-      const bondRow = rows[1];
-      await userEvent.click(within(bondRow).getByRole("checkbox"));
+
+      await userEvent.click(
+        screen.getByRole("checkbox", { name: "select bond0" })
+      );
       expect(setSelected).toHaveBeenCalledWith([{ linkId: null, nicId: 100 }]);
     });
 

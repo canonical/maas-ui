@@ -113,14 +113,22 @@ const AvailableStorageTable = ({
   return (
     <>
       <GenericTable
-        canSelect={isMachine ? (_) => !actionsDisabled : false}
         columns={columns}
         data={rows}
-        disabledSelectionTooltip={"This machine's disks cannot be modified."}
         isLoading={false}
         noData="No available disks or partitions."
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
+        selection={
+          isMachine
+            ? {
+                rowSelection,
+                setRowSelection,
+                filterSelectable: (_) => !actionsDisabled,
+                disabledSelectionTooltip:
+                  "This machine's disks cannot be modified.",
+                rowSelectionLabelKey: "name",
+              }
+            : undefined
+        }
         variant="regular"
       />
       {isMachine && canEditStorage && (
