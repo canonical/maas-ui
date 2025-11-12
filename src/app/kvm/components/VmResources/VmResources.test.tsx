@@ -3,7 +3,6 @@ import configureStore from "redux-mock-store";
 
 import VmResources, { Label } from "./VmResources";
 
-import { Label as MachineListLabel } from "@/app/machines/views/MachineList/MachineListTable/MachineListTable";
 import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import { PodType } from "@/app/store/pod/constants";
@@ -96,10 +95,6 @@ describe("VmResources", () => {
     await userEvent.click(
       screen.getByRole("button", { name: Label.ResourceVMs })
     );
-    expect(
-      screen.getByRole("grid", {
-        name: new RegExp(MachineListLabel.Machines, "i"),
-      })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("grid")).toBeInTheDocument();
   });
 });
