@@ -9,12 +9,12 @@ import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import MachineForms from "@/app/machines/components/MachineForms";
+import MachineListHeader from "@/app/machines/components/MachineListHeader";
 import MachinesTable from "@/app/machines/components/MachinesTable/MachinesTable";
-import MachineListHeader from "@/app/machines/views/MachineList/MachineListHeader";
 import {
   useGrouping,
   useResponsiveColumns,
-} from "@/app/machines/views/MachineList/hooks";
+} from "@/app/machines/views/MachinesList/hooks";
 import { controllerActions } from "@/app/store/controller";
 import { generalActions } from "@/app/store/general";
 import { machineActions } from "@/app/store/machine";

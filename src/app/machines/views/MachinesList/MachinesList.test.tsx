@@ -1,9 +1,8 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 
 import { MachineSidePanelViews } from "@/app/machines/constants";
-import { Label } from "@/app/machines/views/MachineList/MachineListTable/GroupColumn";
-import { DEFAULTS } from "@/app/machines/views/MachineList/MachineListTable/constants";
 import MachinesList from "@/app/machines/views/MachinesList/MachinesList";
+import { DEFAULTS } from "@/app/machines/views/MachinesList/constants";
 import { machineActions } from "@/app/store/machine";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import * as query from "@/app/store/machine/utils/query";
@@ -525,7 +524,7 @@ describe("MachinesList", () => {
     await userEvent.click(
       within(
         screen.getByRole("row", { name: "Failed testing machines group" })
-      ).getByRole("button", { name: Label.HideGroup })
+      ).getByRole("button", { name: "Hide group" })
     );
     await waitFor(() => {
       expect(getFetchActions()).toHaveLength(2);

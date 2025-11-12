@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 import type { SortDirection } from "@/app/base/types";
 import MachineListTable from "@/app/machines/views/MachineList/MachineListTable";
-import { DEFAULTS } from "@/app/machines/views/MachineList/MachineListTable/constants";
+import { DEFAULTS } from "@/app/machines/views/MachinesList/constants";
 import type { FetchFilters, FetchGroupKey } from "@/app/store/machine/types";
 import { FilterGroupKey } from "@/app/store/machine/types";
 import { useFetchedCount } from "@/app/store/machine/utils";

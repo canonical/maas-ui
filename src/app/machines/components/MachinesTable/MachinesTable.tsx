@@ -9,13 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import VaultNotification from "@/app/base/components/VaultNotification";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import type { Sort } from "@/app/base/types";
+import ErrorsNotification from "@/app/machines/components/ErrorsNotification";
 import useMachinesTableColumns, {
   filterCells,
   filterHeaders,
 } from "@/app/machines/components/MachinesTable/useMachinesTableColumns/useMachinesTableColumns";
-import ErrorsNotification from "@/app/machines/views/MachineList/ErrorsNotification";
-import { DEFAULTS } from "@/app/machines/views/MachineList/MachineListTable/constants";
-import type { useResponsiveColumns } from "@/app/machines/views/MachineList/hooks";
+import { DEFAULTS } from "@/app/machines/views/MachinesList/constants";
+import type { useResponsiveColumns } from "@/app/machines/views/MachinesList/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { FetchFilters } from "@/app/store/machine/types";

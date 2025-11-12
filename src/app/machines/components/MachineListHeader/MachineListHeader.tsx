@@ -2,8 +2,8 @@ import { useCallback } from "react";
 
 import { useDispatch } from "react-redux";
 
+import type { useResponsiveColumns } from "../../views/MachinesList/hooks";
 import MachineListControls from "../MachineListControls";
-import type { useResponsiveColumns } from "../hooks";
 
 import { usePoolCount } from "@/app/api/query/pools";
 import type { SetSearchFilter } from "@/app/base/types";

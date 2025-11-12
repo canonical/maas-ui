@@ -15,7 +15,7 @@ import DoubleRow from "@/app/base/components/DoubleRow";
 import Placeholder from "@/app/base/components/Placeholder";
 import TableHeader from "@/app/base/components/TableHeader";
 import { SortDirection } from "@/app/base/types";
-import AllCheckbox from "@/app/machines/views/MachineList/MachineListTable/AllCheckbox";
+import AllCheckbox from "@/app/machines/components/AllCheckbox";
 import type { Machine } from "@/app/store/machine/types";
 import { FilterGroupKey, FetchGroupKey } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";

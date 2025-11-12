@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
-import MachineCheckbox from "@/app/machines/views/MachineList/MachineListTable/MachineCheckbox";
+import MachineCheckbox from "@/app/machines/components/MachineCheckbox";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";

@@ -23,9 +23,9 @@ import PowerIcon from "@/app/base/components/PowerIcon";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import type { MachineMenuAction } from "@/app/base/hooks/node";
 import urls from "@/app/base/urls";
+import MachineListGroupCount from "@/app/machines/components/MachineListGroupCount";
+import MachineTestStatus from "@/app/machines/components/MachineTestStatus";
 import { useToggleMenu } from "@/app/machines/hooks";
-import MachineListGroupCount from "@/app/machines/views/MachineList/MachineListTable/MachineListGroupCount";
-import MachineTestStatus from "@/app/machines/views/MachineList/MachineListTable/MachineTestStatus";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import {
   machineActions as machineActionsSelectors,

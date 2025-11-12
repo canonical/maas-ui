@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react";
 
-import MachineActionMenu from ".";
+import MachineActionMenu from "./index";
 
 const meta: Meta<typeof MachineActionMenu> = {
   title: "Sections/Machine/MachineActionMenu",

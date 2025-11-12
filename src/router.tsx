@@ -60,7 +60,7 @@ const KVM = lazy(() => import("@/app/kvm/views/KVM"));
 const MachineDetails = lazy(
   () => import("@/app/machines/views/MachineDetails")
 );
-const MachinesList = lazy(() => import("@/app/machines/views/Machines"));
+const MachinesList = lazy(() => import("@/app/machines/views/MachinesList"));
 const DiscoveriesList = lazy(
   () => import("@/app/networkDiscovery/views/DiscoveriesList")
 );

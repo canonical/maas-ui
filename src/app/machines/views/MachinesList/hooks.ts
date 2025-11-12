@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
-import { DEFAULTS } from "./MachineListTable/constants";
+import { DEFAULTS } from "./constants";
 
 import type { MachineColumnToggle } from "@/app/machines/constants";
 import { machineActions } from "@/app/store/machine";
@@ -105,19 +105,4 @@ export const useGrouping = (): [
   );
 
   return [grouping, setGrouping];
-};
-
-export const usePageSize = () => {
-  const [storedPageSize, setPageSize] = useStorageState<number>(
-    localStorage,
-    "machineListPageSize",
-    DEFAULTS.pageSize
-  );
-  // fallback to default if the stored value is not valid
-  const pageSize =
-    storedPageSize && typeof storedPageSize === "number"
-      ? storedPageSize
-      : DEFAULTS.pageSize;
-
-  return [pageSize, setPageSize] as const;
 };
