@@ -3,8 +3,9 @@ import { useMemo, useState } from "react";
 
 import { formatBytes } from "@canonical/maas-react-components";
 import type { MenuLink } from "@canonical/react-components";
-import { Icon, Button, Spinner, Tooltip } from "@canonical/react-components";
+import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
 import type { Column, ColumnDef, Header, Row } from "@tanstack/react-table";
+import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 import type { UnknownAction } from "redux";
@@ -23,7 +24,6 @@ import PowerIcon from "@/app/base/components/PowerIcon";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import type { MachineMenuAction } from "@/app/base/hooks/node";
 import urls from "@/app/base/urls";
-import MachineListGroupCount from "@/app/machines/components/MachineListGroupCount";
 import MachineTestStatus from "@/app/machines/components/MachineTestStatus";
 import { useToggleMenu } from "@/app/machines/hooks";
 import { PowerTypeNames } from "@/app/store/general/constants";
@@ -34,12 +34,7 @@ import {
 import type { OSInfoOptions } from "@/app/store/general/selectors/osInfo";
 import type { MachineAction } from "@/app/store/general/types";
 import { machineActions } from "@/app/store/machine";
-import type {
-  FetchFilters,
-  FetchGroupKey,
-  Machine,
-  MachineStateListGroup,
-} from "@/app/store/machine/types";
+import type { Machine, FetchGroupKey } from "@/app/store/machine/types";
 import { isTransientStatus } from "@/app/store/machine/utils";
 import { isUnconfiguredPowerType } from "@/app/store/machine/utils/common";
 import type { RootState } from "@/app/store/root/types";
@@ -250,9 +245,7 @@ const getSpaces = (machine: Machine) => {
 };
 
 const useMachinesTableColumns = (
-  grouping: FetchGroupKey,
-  group: MachineStateListGroup,
-  filter: FetchFilters
+  grouping: FetchGroupKey
 ): MachineColumnDef[] => {
   const dispatch = useDispatch();
   const generalMachineActions = useSelector(machineActionsSelectors.get);
@@ -279,20 +272,20 @@ const useMachinesTableColumns = (
           enableSorting: false,
           cell: ({ row }: { row: Row<Machine> }) => {
             if (!row.getIsGrouped()) return null;
+            const groupField = row.original[grouping as keyof Machine]!;
             return (
               <DoubleRow
                 primary={
                   <strong>
-                    {row.original[grouping as keyof Machine]?.toString()}
+                    {typeof groupField === "object" && "name" in groupField
+                      ? groupField.name
+                      : groupField.toString()}
                   </strong>
                 }
                 secondary={
-                  <MachineListGroupCount
-                    count={row.getLeafRows().length}
-                    filter={filter}
-                    group={group?.value}
-                    grouping={grouping}
-                  />
+                  <span>
+                    {pluralize("machine", row.getLeafRows().length, true)}
+                  </span>
                 }
               />
             );
@@ -976,9 +969,7 @@ const useMachinesTableColumns = (
       ] as MachineColumnDef[],
     [
       dispatch,
-      filter,
       generalMachineActions,
-      group?.value,
       grouping,
       osReleases,
       osReleasesLoading,

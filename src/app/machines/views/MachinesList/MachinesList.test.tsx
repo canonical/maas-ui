@@ -283,22 +283,6 @@ describe("MachinesList", () => {
     ).toBe(true);
   });
 
-  it("displays a message if there are no search results", async () => {
-    state.machine.lists = {
-      "123456": factory.machineStateList({
-        count: 0,
-        groups: [],
-      }),
-    };
-    renderWithProviders(<MachinesList />, {
-      initialEntries: ["/machines"],
-      state,
-    });
-    expect(
-      screen.getByText("No machines match the search criteria.")
-    ).toBeInTheDocument();
-  });
-
   it("cleans up when unmounting", async () => {
     const {
       result: { unmount },
@@ -339,43 +323,6 @@ describe("MachinesList", () => {
     expect(fetches[fetches.length - 1].payload.params.filter).toStrictEqual(
       filter
     );
-  });
-
-  it("can change pages", async () => {
-    vi.spyOn(query, "generateCallId")
-      .mockReturnValueOnce("mocked-nanoid-1")
-      .mockReturnValueOnce("mocked-nanoid-2");
-    // Create two pages of machines.
-    state.machine.items = Array.from(Array(DEFAULTS.pageSize * 2)).map(() =>
-      factory.machine()
-    );
-    state.machine.lists = {
-      "mocked-nanoid-1": factory.machineStateList({
-        count: state.machine.items.length,
-        groups: [
-          factory.machineStateListGroup({
-            // Insert the ids of all machines in the list's group.
-            items: state.machine.items.map(({ system_id }) => system_id),
-          }),
-        ],
-      }),
-    };
-    const { store } = renderWithProviders(<MachinesList />, {
-      initialEntries: ["/machines"],
-      state,
-    });
-    // Using fireEvent instead of userEvent here,
-    // since using the latter seems to break every other test in this file
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.click(screen.getByRole("button", { name: "Next page" }));
-    const expected = machineActions.fetch("123456", {
-      page_number: 2,
-    });
-    const fetches = store
-      .getActions()
-      .filter((action) => action.type === expected.type);
-    expect(fetches).toHaveLength(2);
-    expect(fetches[fetches.length - 1].payload.params.page_number).toBe(2);
   });
 
   it("shows a warning notification if not all controllers are configured with Vault", async () => {
@@ -501,38 +448,6 @@ describe("MachinesList", () => {
     await waitFor(() => {
       expect(router.state.location.search).toBe("?status=new");
     });
-  });
-
-  it("can hide groups", async () => {
-    vi.spyOn(query, "generateCallId")
-      .mockReturnValueOnce("123456")
-      .mockReturnValueOnce("78910");
-    const { store } = renderWithProviders(<MachinesList />, {
-      initialEntries: ["/machines"],
-      state,
-    });
-    const expected = machineActions.fetch("123456", {
-      group_collapsed: ["failed_testing"],
-    });
-    const getFetchActions = () =>
-      store.getActions().filter((action) => action.type === expected.type);
-    const initialFetchActions = getFetchActions();
-    await waitFor(() => {
-      expect(initialFetchActions).toHaveLength(1);
-    });
-    // Click the button to toggle the group.
-    await userEvent.click(
-      within(
-        screen.getByRole("row", { name: "Failed testing machines group" })
-      ).getByRole("button", { name: "Hide group" })
-    );
-    await waitFor(() => {
-      expect(getFetchActions()).toHaveLength(2);
-    });
-    const finalFetchAction = getFetchActions()[1];
-    expect(finalFetchAction.payload.params.group_collapsed).toStrictEqual([
-      "failed_testing",
-    ]);
   });
 
   it("can change groups", async () => {
