@@ -2,9 +2,12 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
+import { Button, ButtonAppearance, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation, useMatch } from "react-router";
+import { useLocation, useMatch, useNavigate } from "react-router";
 import { useStorageState } from "react-storage-hooks";
+
+import useDarkMode from "../../hooks/useDarkMode/useDarkMode";
 
 import AppSideNavItems from "./AppSideNavItems";
 import NavigationBanner from "./NavigationBanner";
@@ -13,9 +16,9 @@ import { navGroups } from "./constants";
 import { useGetCurrentUser } from "@/app/api/query/auth";
 import type { UserWithSummaryResponse } from "@/app/apiclient";
 import {
-  useFetchActions,
   useCompletedIntro,
   useCompletedUserIntro,
+  useFetchActions,
   useGoogleAnalytics,
 } from "@/app/base/hooks";
 import { useGlobalKeyShortcut } from "@/app/base/hooks/base";
@@ -35,11 +38,13 @@ export type SideNavigationProps = {
   filteredGroups: typeof navGroups;
   isAuthenticated: boolean;
   isCollapsed: boolean;
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  isDarkMode: boolean;
   logout: () => void;
   path: string;
+  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   showLinks: boolean;
   theme: string;
+  toggleDarkMode: (isDark: boolean) => void;
   vaultIncomplete: boolean;
 };
 
@@ -48,11 +53,13 @@ export const AppSideNavigation = ({
   filteredGroups,
   isAuthenticated,
   isCollapsed,
-  setIsCollapsed,
+  isDarkMode,
   logout,
   path,
+  setIsCollapsed,
   showLinks,
   theme,
+  toggleDarkMode,
   vaultIncomplete,
 }: SideNavigationProps): ReactElement => (
   <>
@@ -102,6 +109,17 @@ export const AppSideNavigation = ({
             vaultIncomplete={vaultIncomplete}
           />
         </Navigation.Content>
+        <div className="u-flex--grow"></div>
+        <Button
+          appearance={ButtonAppearance.BASE}
+          className="dark-mode-toggle"
+          hasIcon
+          onClick={() => {
+            toggleDarkMode(isDarkMode);
+          }}
+        >
+          <Icon name={isDarkMode ? "highlight-on" : "highlight-off"} />
+        </Button>
       </Navigation.Drawer>
     </Navigation>
   </>
@@ -126,6 +144,8 @@ const AppSideNavigationContainer = (): React.ReactElement => {
     localStorage.removeItem("maas-config");
     dispatch(statusActions.logout());
   };
+
+  const [isDarkMode, toggleDarkMode] = useDarkMode();
 
   // Redirect to the intro pages if not completed.
   useEffect(() => {
@@ -200,11 +220,13 @@ const AppSideNavigationContainer = (): React.ReactElement => {
       filteredGroups={filteredGroups}
       isAuthenticated={isAuthenticated}
       isCollapsed={isCollapsed}
+      isDarkMode={isDarkMode}
       logout={logout}
       path={path}
       setIsCollapsed={setIsCollapsed}
       showLinks={showLinks}
       theme={theme}
+      toggleDarkMode={toggleDarkMode}
       vaultIncomplete={vaultIncomplete}
     />
   );

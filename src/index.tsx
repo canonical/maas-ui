@@ -9,13 +9,14 @@ import { RouterProvider } from "react-router";
 import packageInfo from "../package.json";
 
 import { createQueryClient } from "./app/api/query-client";
+import useDarkMode from "./app/base/hooks/useDarkMode/useDarkMode";
 import { store } from "./redux-store";
 
 import SidePanelContextProvider from "@/app/base/side-panel-context";
 import NewSidePanelContextProvider from "@/app/base/side-panel-context-new";
 import { WebSocketProvider } from "@/app/base/websocket-context";
-import "./scss/index.scss";
 import { router } from "@/router";
+import "./scss/index.scss";
 
 export const Root = () => {
   const queryClient = createQueryClient();
@@ -42,6 +43,8 @@ export const Root = () => {
 };
 
 const AppRoot = (): React.ReactElement => {
+  useDarkMode();
+
   return (
     <StrictMode>
       <Root />

@@ -2,19 +2,6 @@
   $grouped-subnet-indentation: $sph--x-large;
 
   .subnets-table {
-    tr:not(:first-child) {
-      border-top: 0 !important;
-    }
-    tbody tr:not(:first-child) td {
-      border-top: 1px solid $color-mid-light;
-    }
-
-    tbody {
-      tr:hover,
-      tr:focus {
-        background-color: $color-x-light;
-      }
-    }
 
     td {
       padding-top: $spv--x-small;
@@ -44,12 +31,6 @@
     .subnets-table__cell--dhcp {
       width: 20%;
     }
-  }
-
-  /* TODO: Remove select width when consistent layout has been implemented */
-  /* https://warthogs.atlassian.net/browse/MAASENG-2431 */
-  .subnet-group__select {
-    width: 9.375rem;
   }
 
   @media (min-width: 773px) {
