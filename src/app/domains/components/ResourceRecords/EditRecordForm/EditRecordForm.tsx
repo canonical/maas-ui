@@ -6,7 +6,7 @@ import type { SchemaOf } from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import RecordFields from "@/app/domains/components/RecordFields";
+import { RecordFields } from "@/app/domains/components";
 import { domainActions } from "@/app/store/domain";
 import { MIN_TTL } from "@/app/store/domain/constants";
 import domainSelectors from "@/app/store/domain/selectors";

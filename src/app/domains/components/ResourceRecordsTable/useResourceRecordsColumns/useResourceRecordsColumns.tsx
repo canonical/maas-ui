@@ -7,8 +7,8 @@ import { Link } from "react-router";
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import DeleteRecordForm from "@/app/domains/views/DomainDetails/ResourceRecords/DeleteRecordForm";
-import EditRecordForm from "@/app/domains/views/DomainDetails/ResourceRecords/EditRecordForm";
+import DeleteRecordForm from "@/app/domains/components/ResourceRecords/DeleteRecordForm";
+import EditRecordForm from "@/app/domains/components/ResourceRecords/EditRecordForm";
 import type { Domain, DomainResource } from "@/app/store/domain/types";
 import { NodeType } from "@/app/store/types/node";
 
