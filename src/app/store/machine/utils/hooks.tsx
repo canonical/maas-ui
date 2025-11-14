@@ -534,7 +534,7 @@ export const useFetchMachines = (
   options?: UseFetchMachinesOptions | null,
   queryOptions?: UseFetchQueryOptions
 ): UseFetchMachinesData & {
-  groups: MachineStateListGroup[] | null;
+  groups: MachineStateListGroup[];
   cleanup: () => void;
 } => {
   const { isEnabled } = queryOptions || { isEnabled: true };

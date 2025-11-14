@@ -1,0 +1,44 @@
+.p-generic-table.machines-table {
+  margin-bottom: 0;
+
+  th,td {
+    &.fqdn {
+      width: 15%;
+      .p-double-row__secondary-row {
+        text-align: left;
+      }
+    }
+
+    &.power {
+      width: 12%;
+    }
+
+    &.status {
+      width: 15%;
+    }
+
+    &.owner {
+      width: 10%;
+    }
+
+    &.pool, &.zone, &.fabric {
+      width: 8%;
+      button {
+        text-align: left;
+      }
+    }
+
+    &.cpu, &.memory, &.disks, &.storage {
+      width: 6%;
+      text-align: right;
+    }
+  }
+
+  &.has-hidden-columns {
+    th,td {
+      &.fqdn {
+        width: auto;
+      }
+    }
+  }
+}
