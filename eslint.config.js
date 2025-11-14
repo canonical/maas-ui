@@ -325,12 +325,12 @@ export default tseslint.config(
       "react/no-multi-comp": "off",
     },
   },
-  ...fixupConfigRules(
-    compat.extends("plugin:cypress/recommended", "plugin:prettier/recommended")
-  ).map((config) => ({
-    ...config,
-    files: ["cypress/**/*.spec.[jt]s?(x)", "cypress/support/*.ts"],
-  })),
+  ...fixupConfigRules(compat.extends("plugin:prettier/recommended")).map(
+    (config) => ({
+      ...config,
+      files: ["cypress/**/*.spec.[jt]s?(x)", "cypress/support/*.ts"],
+    })
+  ),
   {
     files: ["cypress/**/*.spec.[jt]s?(x)", "cypress/support/*.ts"],
 
@@ -340,6 +340,7 @@ export default tseslint.config(
     },
 
     rules: {
+      ...cypress.configs.recommended.rules,
       "no-only-tests/no-only-tests": "error",
       "cypress/no-force": "off",
       "prettier/prettier": "error",
