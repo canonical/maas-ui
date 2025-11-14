@@ -59,11 +59,7 @@ export default tseslint.config(
       },
 
       "import/resolver": {
-        typescript: {
-          alias: {
-            "@": path.resolve(__dirname, "src"),
-          },
-        },
+        typescript: true,
       },
     },
 
