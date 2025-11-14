@@ -2,7 +2,7 @@ import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import DomainListHeaderForm from "../DomainListHeaderForm";
+import DomainListHeaderForm from "./DomainListHeaderForm";
 
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import { useFetchActions } from "@/app/base/hooks";

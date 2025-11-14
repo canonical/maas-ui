@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import SetDefaultForm from "./SetDefaultForm";
 
-import { Labels as DomainTableLabels } from "@/app/domains/views/DomainsList/DomainsTable/DomainsTable";
+import { Labels as DomainTableLabels } from "@/app/domains/components/DomainsTable/DomainsTable";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";

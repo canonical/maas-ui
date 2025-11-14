@@ -144,7 +144,7 @@ const MachineHeader = ({
               >
                 {checkingPower
                   ? "Checking power"
-                  : `Power ${machine.power_state}`}
+                  : `Powered ${machine.power_state}`}
               </PowerIcon>
             </div>
           </div>

@@ -1,8 +1,7 @@
-import DomainListHeaderForm from "../DomainListHeaderForm";
-
 import DomainListHeader, {
   Labels as DomainListHeaderLabels,
 } from "./DomainListHeader";
+import DomainListHeaderForm from "./DomainListHeaderForm";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

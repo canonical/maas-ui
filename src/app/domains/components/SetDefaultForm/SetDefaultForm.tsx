@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import { Labels } from "@/app/domains/views/DomainsList/DomainsTable/DomainsTable";
+import { Labels } from "@/app/domains/components/DomainsTable/DomainsTable";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain, DomainMeta } from "@/app/store/domain/types";

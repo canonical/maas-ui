@@ -29,7 +29,9 @@ describe("ChangeSource", () => {
     });
 
     await userEvent
-      .click(screen.getByTestId("auto-sync-switch"))
+      .click(
+        screen.getByRole("checkbox", { name: /Automatically sync images/i })
+      )
       .then(async () => {
         await userEvent.click(screen.getByText("Save"));
       });
@@ -38,6 +40,7 @@ describe("ChangeSource", () => {
     const expectedAction = configActions.update({
       boot_images_auto_import: false,
     });
+
     expect(
       actualActions.find(
         (actualAction) => actualAction.type === expectedAction.type
