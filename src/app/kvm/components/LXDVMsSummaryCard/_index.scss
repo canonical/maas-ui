@@ -1,7 +1,6 @@
 @mixin LXDVMsSummaryCard {
   .lxd-vms-summary-card {
     @extend %vf-is-bordered;
-    @extend %vf-bg--x-light;
     display: grid;
     grid-template-areas:
       "ram ram ram ram"

@@ -178,12 +178,12 @@
 
   .p-icon--highlight-on {
     @extend %icon;
-    @include vf-icon-highlight-on($color-mid-dark);
+    @include vf-icon-highlight-on($colors--dark-theme--text-default);
   }
 
   .p-icon--highlight-off {
     @extend %icon;
-    @include vf-icon-highlight-off($color-mid-dark);
+    @include vf-icon-highlight-off($colors--dark-theme--text-default);
   }
 
   [class*="p-circle--"].is-inline,

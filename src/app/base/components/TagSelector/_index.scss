@@ -26,8 +26,9 @@
   }
 
   .tag-selector__dropdown {
-    @extend %vf-bg--x-light;
+    // @extend %vf-bg--x-light;
     @extend %vf-has-box-shadow;
+    background-color: var(--vf-color-background-default);
     left: 0;
     position: absolute;
     right: 0;
@@ -82,6 +83,10 @@
     border-bottom: 0;
     margin: 0;
     padding: $spv--x-small $sph--small;
+  }
+
+  .is-dark .tag-selector__selected-list {
+    background-color: $colors--dark-theme--background-inputs;
   }
 
   .is-error .tag-selector__selected-list {
