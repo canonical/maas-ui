@@ -142,7 +142,7 @@ export const TagFormChanges = ({
   const hasAddedTags = addedTags.length > 0;
   const hasRemovedTags = removedTags.length > 0;
 
-  const columns = useMemo<ColumnWithLooseAccessor[]>(
+  const columns = useMemo(
     () => [
       {
         accessor: Column.Label,
@@ -184,7 +184,7 @@ export const TagFormChanges = ({
         <ModularTable
           aria-label={Label.Table}
           className="tag-form__changes"
-          columns={columns}
+          columns={columns as ColumnWithLooseAccessor[]}
           data={[
             ...generateRows(
               RowType.Added,
