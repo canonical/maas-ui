@@ -962,10 +962,10 @@
     "@types/sjcl" "1.0.30"
     macaroon "3.0.4"
 
-"@canonical/react-components@2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-2.14.0.tgz#ba8a43447b805eab33f75d4ae050ec1dced0472f"
-  integrity sha512-3xnwIytfRCWTB6qX+wVKTFUwAidatRjywOSv/aen2mvhCX0cKi0/J4xFuMDGrVZIQo3cRZks6keH27UzE3gJWw==
+"@canonical/react-components@2.16.1":
+  version "2.16.1"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-2.16.1.tgz#4c814dd6b64549a4ccda94eb0df5d0ba0d35b41b"
+  integrity sha512-8qoTl/4cci8JzDX+XJXP0/dHJQXhY0skQDYX5jynFXS9lUnjdgAlVehiulghFRZWGXUKrinRqwVYIXR88xEZww==
   dependencies:
     "@types/jest" "29.5.14"
     "@types/node" "20.17.19"
@@ -978,17 +978,17 @@
     prop-types "15.8.1"
     react-table "7.8.0"
 
-"@canonical/typescript-config-base@^0.4.0-experimental.0":
-  version "0.4.0-experimental.0"
-  resolved "https://registry.yarnpkg.com/@canonical/typescript-config-base/-/typescript-config-base-0.4.0-experimental.0.tgz#91373dccb30a79a6f31270f3cd4d015ab8f3b9df"
-  integrity sha512-cmA0YBRkFCS5/envqwTcr+ROgBtaMUH0utMBpdSu+3+N5f4R93RWxlUXQ0uUSu5P9uW+GHAwAG3dKlo81hLgrw==
+"@canonical/typescript-config-base@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@canonical/typescript-config-base/-/typescript-config-base-0.9.0.tgz#96de6785dead93428d2a87f9f96e6eb87f1e9ec9"
+  integrity sha512-tvyi2gbxmZKR2TCRFnemn2h1GihuprR3wQxcGXfNquv5tqC6SRRILP6Vzle5zN7sz2pney9LWrBFm2mXzZuSbg==
 
-"@canonical/typescript-config-react@0.4.0-experimental.0":
-  version "0.4.0-experimental.0"
-  resolved "https://registry.yarnpkg.com/@canonical/typescript-config-react/-/typescript-config-react-0.4.0-experimental.0.tgz#d3b43c14bed84a193f9ebd52051f409dee775f7d"
-  integrity sha512-IBJcc1gRbd9xZ9X0HJAXvTTYKxxLYFyp2zgBaYQvgRNj5heU/C7t8H6/VFjE8ulE0ECxoYU6UIwo8uJkOau6Yg==
+"@canonical/typescript-config-react@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@canonical/typescript-config-react/-/typescript-config-react-0.9.0.tgz#d1f92003213658d1eb9876e57c4f99b19d5b5326"
+  integrity sha512-nlrHDtTUNTYvpMhOly7gnwtYJewQOG4PdwfWMCMGKfbeAMWQBD98bE6CGtJdJVExOssEUKrL9bCJY4GCHB7/Kw==
   dependencies:
-    "@canonical/typescript-config-base" "^0.4.0-experimental.0"
+    "@canonical/typescript-config-base" "^0.9.0"
 
 "@colors/colors@1.5.0":
   version "1.5.0"
@@ -12691,10 +12691,10 @@ validate-npm-package-name@^5.0.1:
   resolved "https://registry.yarnpkg.com/validate-npm-package-name/-/validate-npm-package-name-5.0.1.tgz#a316573e9b49f3ccd90dbb6eb52b3f06c6d604e8"
   integrity sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==
 
-vanilla-framework@4.21.1:
-  version "4.21.1"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.21.1.tgz#6a011d49cc028784d091d8745882a9343e9845ab"
-  integrity sha512-kf1l41iv9H4xhJrrpJC3TOF4SBiXJvtZsUFP20g8GVv6d4wgV4vAClD4zCF6sUEnGhxZ13kO/P9nK++DvWzdvQ==
+vanilla-framework@4.37.0:
+  version "4.37.0"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.37.0.tgz#9f76557bd427a5994249b9f146f20135cb66c8d0"
+  integrity sha512-9cyUYfpZ9VSqlgfyG5JVNV2kY1CZaV9EmojsXCsAzevYRU0w1TJSx1nGv4UTUUmHdCmLtqnaGpx9Jpdib3J6vw==
 
 vary@~1.1.2:
   version "1.1.2"
