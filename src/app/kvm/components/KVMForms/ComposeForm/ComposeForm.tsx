@@ -179,10 +179,10 @@ type Props = {
   hostId: Pod["id"];
 };
 
-// eslint-disable-next-line complexity
 const ComposeForm = ({
   clearSidePanelContent,
   hostId,
+  // eslint-disable-next-line complexity
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
