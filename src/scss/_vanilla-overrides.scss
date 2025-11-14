@@ -54,7 +54,7 @@ body {
 
 body.is-dark {
   
-  .p-button--link.p-button--table-header {
+  .p-button--link.p-button--table-header, .p-button--link.p-button--column-header {
     color: var(--vf-color-text-default)
   }
 
