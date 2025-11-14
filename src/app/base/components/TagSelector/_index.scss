@@ -26,7 +26,6 @@
   }
 
   .tag-selector__dropdown {
-    // @extend %vf-bg--x-light;
     @extend %vf-has-box-shadow;
     background-color: var(--vf-color-background-default);
     left: 0;
