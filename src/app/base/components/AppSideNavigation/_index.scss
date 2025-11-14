@@ -42,6 +42,10 @@
 
   .dark-mode-toggle {
     align-self: flex-end;
-    margin: 0 0.5rem 0.5rem 0 !important;
+    margin: 0 0.5rem 0.5rem 0;
+
+    .p-button--base {
+      margin-bottom: 0;
+    }
   }
 }

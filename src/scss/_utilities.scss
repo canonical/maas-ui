@@ -290,5 +290,18 @@
     .is-maas-#{$name}--accent {
       background-color: color.scale($color, $lightness: 5%) !important;
     }
+
+    .is-maas-#{$name}  {
+      .p-side-navigation__link:hover, [aria-current=page].p-side-navigation__link, .p-button--base:hover {
+        background-color: color.scale($color, $lightness: 8%) !important;
+      }
+    }
+
+    .is-maas-#{$name}--accent {
+      .p-side-navigation__link:hover, [aria-current=page].p-side-navigation__link {
+        background-color: color.scale($color, $lightness: 12%) !important;
+      }
+    }
+
   }
 }

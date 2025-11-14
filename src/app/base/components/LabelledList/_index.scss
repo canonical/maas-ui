@@ -12,7 +12,7 @@
     }
 
     .p-list__item-label {
-      color: $color-mid-dark;
+      color: var(--vf-color-text-muted);
       flex: 1 0 0;
       margin-right: $sph--small;
       text-align: right;
