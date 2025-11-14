@@ -4118,10 +4118,10 @@
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-19.0.4.tgz#bedba97f9346bd4c0fe5d39e689713804ec9ac89"
   integrity sha512-4fSQ8vWFkg+TGhePfUzVmat3eC14TXYSsiiDSLI0dVLsrm9gZFABjPy/Qu6TKgl1tq1Bu1yDsuQgY3A3DOjCcg==
 
-"@types/react-dom@19.1.3":
-  version "19.1.3"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-19.1.3.tgz#3f0c60804441bf34d19f8dd0d44405c0c0e21bfa"
-  integrity sha512-rJXC08OG0h3W6wDMFxQrZF00Kq6qQvw0djHRdzl3U5DnIERz0MRce3WVc7IS6JYBwtaP/DwYtRRjVlvivNveKg==
+"@types/react-dom@19.2.3":
+  version "19.2.3"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-19.2.3.tgz#c1e305d15a52a3e508d54dca770d202cb63abf2c"
+  integrity sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==
 
 "@types/react-redux@7.1.34":
   version "7.1.34"
@@ -4154,10 +4154,10 @@
   dependencies:
     csstype "^3.0.2"
 
-"@types/react@19.1.2":
-  version "19.1.2"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-19.1.2.tgz#11df86f66f188f212c90ecb537327ec68bfd593f"
-  integrity sha512-oxLPMytKchWGbnQM9O7D67uPa9paTNxO7jVoNMXgkkErULBPhPARCfkKL9ytcIJJRGjbsVwW4ugJzyFFvm/Tiw==
+"@types/react@19.2.4":
+  version "19.2.4"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-19.2.4.tgz#e38daaca05cf95459f5f797b1411bcf64c413dd2"
+  integrity sha512-tBFxBp9Nfyy5rsmefN+WXc1JeW/j2BpBHFdLZbEVfs9wn3E3NRFxwV0pJg8M1qQAexFpvz73hJXFofV0ZAu92A==
   dependencies:
     csstype "^3.0.2"
 
@@ -10723,12 +10723,12 @@ react-docgen@^7.0.0:
     resolve "^1.22.1"
     strip-indent "^4.0.0"
 
-react-dom@19.1.0:
-  version "19.1.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.1.0.tgz#133558deca37fa1d682708df8904b25186793623"
-  integrity sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==
+react-dom@19.2.0:
+  version "19.2.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.2.0.tgz#00ed1e959c365e9a9d48f8918377465466ec3af8"
+  integrity sha512-UlbRu4cAiGaIewkPyiRGJk0imDN2T3JjieT6spoL2UeSf5od4n5LB/mQ4ejmxhCFT1tYe8IvaFulzynWovsEFQ==
   dependencies:
-    scheduler "^0.26.0"
+    scheduler "^0.27.0"
 
 react-dropzone@14.3.8:
   version "14.3.8"
@@ -10810,14 +10810,13 @@ react-remove-scroll@2.5.5:
     use-callback-ref "^1.3.0"
     use-sidecar "^1.1.2"
 
-react-router@7.5.3:
-  version "7.5.3"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-7.5.3.tgz#9e5420832af8c3690740c1797d4fa54613fea06d"
-  integrity sha512-3iUDM4/fZCQ89SXlDa+Ph3MevBrozBAI655OAfWQlTm9nBR0IKlrmNwFow5lPHttbwvITZfkeeeZFP6zt3F7pw==
+react-router@7.9.6:
+  version "7.9.6"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-7.9.6.tgz#003c8de335fdd7390286a478dcfd9579c1826137"
+  integrity sha512-Y1tUp8clYRXpfPITyuifmSoE2vncSME18uVLgaqyxh9H35JWpIfzHo+9y3Fzh5odk/jxPW29IgLgzcdwxGqyNA==
   dependencies:
     cookie "^1.0.1"
     set-cookie-parser "^2.6.0"
-    turbo-stream "2.4.0"
 
 react-storage-hooks@4.0.1:
   version "4.0.1"
@@ -10844,10 +10843,10 @@ react-useportal@1.0.19:
   dependencies:
     use-ssr "^1.0.25"
 
-react@19.1.0:
-  version "19.1.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-19.1.0.tgz#926864b6c48da7627f004795d6cce50e90793b75"
-  integrity sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==
+react@19.2.0:
+  version "19.2.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-19.2.0.tgz#d33dd1721698f4376ae57a54098cb47fc75d93a5"
+  integrity sha512-tmbWg6W31tQLeB5cdIBOicJDJRR2KzXsV7uSK9iNfLWQ5bIZfxuPEHp7M8wiHyHnn0DD1i7w3Zmin0FtkrwoCQ==
 
 read-pkg-up@^7.0.1:
   version "7.0.1"
@@ -11311,10 +11310,10 @@ saxes@^6.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
-scheduler@^0.26.0:
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.26.0.tgz#4ce8a8c2a2095f13ea11bf9a445be50c555d6337"
-  integrity sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==
+scheduler@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.27.0.tgz#0c4ef82d67d1e5c1e359e8fc76d3a87f045fe5bd"
+  integrity sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==
 
 schema-utils@^3.1.1:
   version "3.3.0"
@@ -12272,11 +12271,6 @@ tunnel-agent@^0.6.0:
   integrity sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==
   dependencies:
     safe-buffer "^5.0.1"
-
-turbo-stream@2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/turbo-stream/-/turbo-stream-2.4.0.tgz#1e4fca6725e90fa14ac4adb782f2d3759a5695f0"
-  integrity sha512-FHncC10WpBd2eOmGwpmQsWLDoK4cqsA/UT/GqNoaKOQnT8uzhtCbg3EoUDMvqpOSAI0S26mr0rkjzbOO6S3v1g==
 
 tweetnacl-util@^0.15.0:
   version "0.15.1"
