@@ -21,6 +21,7 @@ export const ZoneSelect = ({
   disabled = false,
   label = Label.Zone,
   name,
+  valueKey,
   ...props
 }: Props): React.ReactElement => {
   const zones = useZones();

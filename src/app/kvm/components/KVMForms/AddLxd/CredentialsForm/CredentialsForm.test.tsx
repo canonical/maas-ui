@@ -10,16 +10,25 @@ import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, userEvent, renderWithBrowserRouter } from "@/testing/utils";
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import { zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  screen,
+  userEvent,
+  renderWithBrowserRouter,
+  setupMockServer,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+
+setupMockServer(
+  poolsResolvers.listPools.handler(),
+  zoneResolvers.listZones.handler()
+);
 
 describe("CredentialsForm", () => {
   let state: RootState;
   let newPodValues: NewPodValues;
-  const queryData = {
-    zones: [factory.zone()],
-  };
 
   beforeEach(() => {
     state = factory.rootState({
@@ -54,7 +63,7 @@ describe("CredentialsForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store, queryData }
+      { route: "/kvm/add", store }
     );
 
     // Submit form
@@ -99,7 +108,7 @@ describe("CredentialsForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store, queryData }
+      { route: "/kvm/add", store }
     );
     // Change radio to provide certificate instead of generating one.
     await userEvent.click(
@@ -165,7 +174,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store, queryData }
+      { route: "/kvm/add", store }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.AUTHENTICATION);
@@ -195,7 +204,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store, queryData }
+      { route: "/kvm/add", store }
     );
 
     expect(setStep).not.toHaveBeenCalled();
@@ -223,7 +232,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store, queryData }
+      { route: "/kvm/add", store }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
@@ -253,7 +262,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store, queryData }
+      { route: "/kvm/add", store }
     );
 
     expect(setStep).not.toHaveBeenCalled();
@@ -290,7 +299,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store, queryData }
+      { route: "/kvm/add", store }
     );
     expect(setStep).not.toHaveBeenCalled();
     expect(screen.getByTestId("notification-title")).toHaveTextContent(
@@ -322,7 +331,7 @@ describe("CredentialsForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={setSubmissionErrors}
       />,
-      { route: "/kvm/add", store, queryData }
+      { route: "/kvm/add", store }
     );
     unmount();
     expect(
