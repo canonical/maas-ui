@@ -12,17 +12,12 @@ import ResetSingleSignOn from "./components/ResetSingleSignOn";
 import SingleSignOnForm from "./components/SingleSignOnForm";
 
 import { useActiveOauthProvider } from "@/app/api/query/auth";
-import { getOauthProviderQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 
 const SingleSignOn = (): ReactElement => {
-  const { data, error, isPending } = useActiveOauthProvider(undefined, {
-    refetchOnWindowFocus: false,
-    retry: false,
-    queryKey: getOauthProviderQueryKey(),
-  });
+  const { data, error, isPending } = useActiveOauthProvider();
   const { openSidePanel } = useSidePanel();
 
   const queryData = useMemo(() => {

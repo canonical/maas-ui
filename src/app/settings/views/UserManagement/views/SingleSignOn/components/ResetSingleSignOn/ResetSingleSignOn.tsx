@@ -8,7 +8,6 @@ import {
   useUpdateOauthProvider,
 } from "@/app/api/query/auth";
 import type { OAuthProviderResponse } from "@/app/apiclient";
-import { getOauthProviderQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 
@@ -17,11 +16,7 @@ type Props = {
 };
 
 const ResetSingleSignOn = ({ id }: Props): ReactElement => {
-  const { data, error, isPending } = useActiveOauthProvider(undefined, {
-    refetchOnWindowFocus: false,
-    retry: false,
-    queryKey: getOauthProviderQueryKey(),
-  });
+  const { data, error, isPending } = useActiveOauthProvider();
   const updateProvider = useUpdateOauthProvider();
   const deleteProvider = useDeleteOauthProvider();
   const { closeSidePanel } = useSidePanel();
