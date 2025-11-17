@@ -2,7 +2,12 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
-import { Button, ButtonAppearance, Icon } from "@canonical/react-components";
+import {
+  Button,
+  ButtonAppearance,
+  Icon,
+  Tooltip,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useMatch, useNavigate } from "react-router";
 import { useStorageState } from "react-storage-hooks";
@@ -110,16 +115,21 @@ export const AppSideNavigation = ({
           />
         </Navigation.Content>
         <div className="u-flex--grow"></div>
-        <Button
-          appearance={ButtonAppearance.BASE}
+        <Tooltip
           className="dark-mode-toggle"
-          hasIcon
-          onClick={() => {
-            toggleDarkMode(isDarkMode);
-          }}
+          message={`${isDarkMode ? "Disable" : "Enable"} dark mode`}
+          position="right"
         >
-          <Icon name={isDarkMode ? "highlight-on" : "highlight-off"} />
-        </Button>
+          <Button
+            appearance={ButtonAppearance.BASE}
+            hasIcon
+            onClick={() => {
+              toggleDarkMode(isDarkMode);
+            }}
+          >
+            <Icon name={isDarkMode ? "highlight-on" : "highlight-off"} />
+          </Button>
+        </Tooltip>
       </Navigation.Drawer>
     </Navigation>
   </>
