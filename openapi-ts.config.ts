@@ -11,11 +11,14 @@ export default defineConfig({
   plugins: [
     {
       name: "@hey-api/client-fetch",
-      runtimeConfigPath: "./src/hey-api.ts",
+      runtimeConfigPath: "@/hey-api",
     },
     "@hey-api/client-fetch",
     "@hey-api/typescript",
     "@hey-api/sdk",
-    "@tanstack/react-query",
+    {
+      name: "@tanstack/react-query",
+      infiniteQueryOptions: { enabled: false },
+    },
   ],
 });

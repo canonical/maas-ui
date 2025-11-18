@@ -1,91 +1,89 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseQueryOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   CompleteIntroData,
-  CompleteIntroError,
-  CompleteIntroResponse,
+  CompleteIntroErrors,
+  CompleteIntroResponses,
   CreateOauthProviderData,
-  CreateOauthProviderError,
-  CreateOauthProviderResponse,
+  CreateOauthProviderErrors,
+  CreateOauthProviderResponses,
   DeleteOauthProviderData,
-  DeleteOauthProviderError,
-  DeleteOauthProviderResponse,
+  DeleteOauthProviderErrors,
+  DeleteOauthProviderResponses,
   GetMeWithSummaryData,
-  GetMeWithSummaryError,
-  GetMeWithSummaryResponse,
+  GetMeWithSummaryErrors,
+  GetMeWithSummaryResponses,
   GetOauthProviderData,
-  GetOauthProviderError,
-  GetOauthProviderResponse,
+  GetOauthProviderErrors,
+  GetOauthProviderResponses,
   LoginData,
-  LoginError,
-  LoginResponse,
+  LoginErrors,
+  LoginResponses,
   Options,
   UpdateOauthProviderData,
-  UpdateOauthProviderError,
-  UpdateOauthProviderResponse,
+  UpdateOauthProviderErrors,
+  UpdateOauthProviderResponses,
 } from "@/app/apiclient";
 import {
-  completeIntroMutation,
-  createOauthProviderMutation,
-  deleteOauthProviderMutation,
-  getMeWithSummaryOptions,
+  deleteOauthProvider,
+  updateOauthProvider,
+  createOauthProvider,
+  completeIntro,
+  getOauthProvider,
+  getMeWithSummary,
+  login,
+} from "@/app/apiclient";
+import {
   getMeWithSummaryQueryKey,
-  getOauthProviderOptions,
   getOauthProviderQueryKey,
-  loginMutation,
-  updateOauthProviderMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
-  return useMutation<LoginResponse, LoginError, Options<LoginData>>({
-    ...loginMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<LoginResponses, LoginErrors, LoginData>(
+      mutationOptions,
+      login
+    ),
   });
 };
 
-export const useGetCurrentUser = (
-  options?: Options<GetMeWithSummaryData>,
-  queryOptions?: UseQueryOptions<
-    GetMeWithSummaryData,
-    GetMeWithSummaryError,
-    GetMeWithSummaryResponse
-  >
-) => {
+export const useGetCurrentUser = (options?: Options<GetMeWithSummaryData>) => {
   return useWebsocketAwareQuery({
-    ...(getMeWithSummaryOptions(options) as UseQueryOptions<
-      GetMeWithSummaryData,
-      GetMeWithSummaryError,
-      GetMeWithSummaryResponse
-    >),
-    ...queryOptions,
+    ...queryOptionsWithHeaders<
+      GetMeWithSummaryResponses,
+      GetMeWithSummaryErrors,
+      GetMeWithSummaryData
+    >(options, getMeWithSummary, getMeWithSummaryQueryKey(options)),
+    retry: false, // explicitly set retry to false
   });
 };
 
 export const useGetIsSuperUser = (options?: Options<GetMeWithSummaryData>) => {
   return useWebsocketAwareQuery({
-    ...getMeWithSummaryOptions(options),
+    ...queryOptionsWithHeaders<
+      GetMeWithSummaryResponses,
+      GetMeWithSummaryErrors,
+      GetMeWithSummaryData
+    >(options, getMeWithSummary, getMeWithSummaryQueryKey(options)),
     select: (data) => data.is_superuser,
-  } as UseQueryOptions<
-    GetMeWithSummaryResponse,
-    GetMeWithSummaryError,
-    boolean
-  >);
+  });
 };
 
 export const useCompleteIntro = (
   mutationOptions?: Options<CompleteIntroData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CompleteIntroResponse,
-    CompleteIntroError,
-    Options<CompleteIntroData>
-  >({
-    ...completeIntroMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CompleteIntroResponses,
+      CompleteIntroErrors,
+      CompleteIntroData
+    >(mutationOptions, completeIntro),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: getMeWithSummaryQueryKey(),
@@ -95,20 +93,16 @@ export const useCompleteIntro = (
 };
 
 export const useActiveOauthProvider = (
-  options?: Options<GetOauthProviderData>,
-  queryOptions?: UseQueryOptions<
-    GetOauthProviderData,
-    GetOauthProviderError,
-    GetOauthProviderResponse
-  >
+  options?: Options<GetOauthProviderData>
 ) => {
   return useWebsocketAwareQuery({
-    ...(getOauthProviderOptions(options) as UseQueryOptions<
-      GetOauthProviderData,
-      GetOauthProviderError,
-      GetOauthProviderResponse
-    >),
-    ...queryOptions,
+    ...queryOptionsWithHeaders<
+      GetOauthProviderResponses,
+      GetOauthProviderErrors,
+      GetOauthProviderData
+    >(options, getOauthProvider, getOauthProviderQueryKey(options)),
+    refetchOnWindowFocus: false,
+    retry: false,
   });
 };
 
@@ -116,12 +110,12 @@ export const useCreateOauthProvider = (
   mutationOptions?: Options<CreateOauthProviderData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreateOauthProviderResponse,
-    CreateOauthProviderError,
-    Options<CreateOauthProviderData>
-  >({
-    ...createOauthProviderMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateOauthProviderResponses,
+      CreateOauthProviderErrors,
+      CreateOauthProviderData
+    >(mutationOptions, createOauthProvider),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: getOauthProviderQueryKey(),
@@ -133,12 +127,12 @@ export const useCreateOauthProvider = (
 export const useUpdateOauthProvider = (
   mutationOptions?: Options<UpdateOauthProviderData>
 ) => {
-  return useMutation<
-    UpdateOauthProviderResponse,
-    UpdateOauthProviderError,
-    Options<UpdateOauthProviderData>
-  >({
-    ...updateOauthProviderMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdateOauthProviderResponses,
+      UpdateOauthProviderErrors,
+      UpdateOauthProviderData
+    >(mutationOptions, updateOauthProvider),
   });
 };
 
@@ -146,12 +140,12 @@ export const useDeleteOauthProvider = (
   mutationOptions?: Options<DeleteOauthProviderData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DeleteOauthProviderResponse,
-    DeleteOauthProviderError,
-    Options<DeleteOauthProviderData>
-  >({
-    ...deleteOauthProviderMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteOauthProviderResponses,
+      DeleteOauthProviderErrors,
+      DeleteOauthProviderData
+    >(mutationOptions, deleteOauthProvider),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: getOauthProviderQueryKey(),

@@ -19,7 +19,6 @@ import {
   useDismissNotification,
   useDismissNotifications,
 } from "./api/query/notifications";
-import { getMeWithSummaryQueryKey } from "./apiclient/@tanstack/react-query.gen";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
@@ -92,10 +91,7 @@ export const App = (): React.ReactElement => {
   const dismissMutation = useDismissNotification();
   const dismiss = useDismissNotifications(dismissMutation.mutate);
 
-  const user = useGetCurrentUser(undefined, {
-    retry: false,
-    queryKey: getMeWithSummaryQueryKey(),
-  });
+  const user = useGetCurrentUser();
 
   useFetchActions([statusActions.checkAuthenticated]);
 

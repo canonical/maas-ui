@@ -150,6 +150,7 @@ const ReservedRangesTable = ({
         noData={`No IP ranges have been reserved for this ${isSubnet ? "subnet" : "VLAN"}.`}
         role="table"
         sorting={[{ id: "startIp", desc: false }]}
+        variant="regular"
       />
       <ExternalLink to={docsUrls.ipRanges}>About IP ranges</ExternalLink>
     </TitledSection>
