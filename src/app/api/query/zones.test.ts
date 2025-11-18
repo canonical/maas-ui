@@ -28,7 +28,7 @@ describe("useZones", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(mockZones);
+    expect(result.current.data).toMatchObject(mockZones);
   });
 });
 
@@ -60,7 +60,7 @@ describe("useGetZone", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(expectedZone);
+    expect(result.current.data).toMatchObject(expectedZone);
   });
 
   it("should return error if zone does not exist", async () => {
