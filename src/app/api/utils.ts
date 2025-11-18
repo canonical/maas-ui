@@ -25,7 +25,7 @@ export const queryOptionsWithHeaders = <
 >(
   options: Options<TData> | undefined,
   queryFn: <ThrowOnError extends boolean = true>(
-    options?: Options<TData, ThrowOnError>
+    options: Options<TData, ThrowOnError>
   ) => RequestResult<TResponses, TErrors, ThrowOnError>,
   queryKey: TQueryKey
 ): UseQueryOptions<
