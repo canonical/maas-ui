@@ -8,10 +8,22 @@ const withSubnetId = argPath<{ id: Subnet[SubnetMeta.PK] }>;
 
 const urls = {
   index: "/networks",
-  indexWithParams: (options: { by?: string; q?: string }): string => {
-    const defaults = { by: "fabric", q: "" };
-    const { by, q } = { ...defaults, ...options };
-    return `/networks?by=${by}&q=${q}`;
+  fabrics: {
+    index: "/networks/fabrics",
+  },
+  spaces: {
+    index: "/networks/spaces",
+  },
+  subnets: {
+    index: "/networks/subnets",
+    indexWithParams: (options: { by?: string; q?: string }): string => {
+      const defaults = { by: "fabric", q: "" };
+      const { by, q } = { ...defaults, ...options };
+      return `/networks?by=${by}&q=${q}`;
+    },
+  },
+  vlans: {
+    index: "/networks/vlans",
   },
   fabric: {
     index: argPath<{ id: Fabric[FabricMeta.PK] }>("/fabric/:id"),
@@ -42,4 +54,4 @@ const getSubnetLink = (id?: Subnet["id"]): string | null =>
   isId(id) ? urls.subnet.index({ id }) : null;
 
 export default urls;
-export { getFabricLink, getSpaceLink, getVLANLink, getSubnetLink };
+export { getFabricLink, getSpaceLink, getSubnetLink, getVLANLink };

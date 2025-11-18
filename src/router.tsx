@@ -67,6 +67,7 @@ const DiscoveriesList = lazy(
 const NetworkDiscoveryConfigurationForm = lazy(
   () => import("@/app/networkDiscovery/views/NetworkDiscoveryConfigurationForm")
 );
+const Networks = lazy(() => import("@/app/networks"));
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const RacksList = lazy(() => import("@/app/racks/views/RacksList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
@@ -339,12 +340,25 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.networks.index}/*`,
-          element: (
-            <ErrorBoundary>
-              <SubnetsList />
-            </ErrorBoundary>
-          ),
+          path: urls.networks.index,
+          element: <Networks />,
+          children: [
+            {
+              path: `${urls.networks.index}`,
+              element: <Navigate replace to={urls.networks.subnets.index} />,
+            },
+            {
+              path: getRelativeRoute(
+                urls.networks.subnets.index,
+                urls.networks.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SubnetsList />
+                </ErrorBoundary>
+              ),
+            },
+          ],
         },
         {
           path: `${urls.networks.subnet.index(null)}/*`,
