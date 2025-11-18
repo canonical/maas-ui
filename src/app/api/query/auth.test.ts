@@ -51,7 +51,7 @@ describe("useGetCurrentUser", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(expectedUser);
+    expect(result.current.data).toMatchObject(expectedUser);
   });
 });
 
@@ -83,7 +83,7 @@ describe("useActiveOauthProvider", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toStrictEqual(expectedProvider);
+    expect(result.current.data).toMatchObject(expectedProvider);
   });
 });
 

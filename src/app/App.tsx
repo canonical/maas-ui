@@ -91,7 +91,7 @@ export const App = (): React.ReactElement => {
   const dismissMutation = useDismissNotification();
   const dismiss = useDismissNotifications(dismissMutation.mutate);
 
-  const user = useGetCurrentUser({}, false);
+  const user = useGetCurrentUser();
 
   useFetchActions([statusActions.checkAuthenticated]);
 

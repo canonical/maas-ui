@@ -8,7 +8,7 @@ import {
 import type { Options } from "@/app/apiclient";
 import type { RequestResult, TDataShape } from "@/app/apiclient/client";
 
-export type WithHeaders<T> = T & { headers?: Headers };
+type WithHeaders<T> = T & { headers?: Headers };
 
 export const queryOptionsWithHeaders = <
   TResponses,

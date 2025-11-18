@@ -52,17 +52,14 @@ export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
   });
 };
 
-export const useGetCurrentUser = (
-  options?: Options<GetMeWithSummaryData>,
-  retry = true
-) => {
+export const useGetCurrentUser = (options?: Options<GetMeWithSummaryData>) => {
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
       GetMeWithSummaryResponses,
       GetMeWithSummaryErrors,
       GetMeWithSummaryData
     >(options, getMeWithSummary, getMeWithSummaryQueryKey(options)),
-    retry,
+    retry: false, // explicitly set retry to false
   });
 };
 
