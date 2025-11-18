@@ -10,6 +10,13 @@ import type { RequestResult, TDataShape } from "@/app/apiclient/client";
 
 type WithHeaders<T> = T & { headers?: Headers };
 
+/**
+ * Creates query options that include response headers in the returned data.
+ * @param options - Optional query configuration
+ * @param queryFn - API client SDK function that performs the query
+ * @param queryKey - React Query key for caching and invalidation
+ * @returns Query options with data augmented to include headers
+ */
 export const queryOptionsWithHeaders = <
   TResponses,
   TErrors,
@@ -49,6 +56,12 @@ export const queryOptionsWithHeaders = <
   });
 };
 
+/**
+ * Creates mutation options that include response headers in the returned data.
+ * @param mutationOptions - Optional mutation configuration
+ * @param mutationFn - API client SDK function that performs the mutation
+ * @returns Mutation options with data augmented to include headers
+ */
 export const mutationOptionsWithHeaders = <
   TResponses,
   TErrors,
