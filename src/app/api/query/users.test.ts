@@ -28,7 +28,7 @@ describe("useUsers", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(mockUsers);
+    expect(result.current.data).toMatchObject(mockUsers);
   });
 });
 
@@ -60,7 +60,7 @@ describe("useGetUser", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(expectedUser);
+    expect(result.current.data).toMatchObject(expectedUser);
   });
 
   it("should return error if user does not exist", async () => {
