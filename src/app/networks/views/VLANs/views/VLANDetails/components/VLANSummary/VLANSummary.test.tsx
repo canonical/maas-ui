@@ -46,10 +46,10 @@ describe("VLANSummary", () => {
     const vlanSummary = screen.getByRole("region", { name: "VLAN summary" });
     expect(
       within(vlanSummary).getByRole("link", { name: space.name })
-    ).toHaveAttribute("href", urls.subnets.space.index({ id: space.id }));
+    ).toHaveAttribute("href", urls.networks.space.index({ id: space.id }));
     expect(
       within(vlanSummary).getByRole("link", { name: fabric.name })
-    ).toHaveAttribute("href", urls.subnets.fabric.index({ id: fabric.id }));
+    ).toHaveAttribute("href", urls.networks.fabric.index({ id: fabric.id }));
     expect(
       within(vlanSummary).getByRole("link", { name: /controller-abc/i })
     ).toHaveAttribute(

@@ -50,7 +50,7 @@ describe("DeleteSubnet", () => {
     ];
     renderWithProviders(<DeleteSubnet subnet={state.subnet.items[0]} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
+      initialEntries: [urls.networks.subnet.index({ id: subnet.id })],
     });
     const deleteSubnetSection = screen.getByRole("form", {
       name: /Delete subnet/,
@@ -69,7 +69,7 @@ describe("DeleteSubnet", () => {
     state.vlan.items[0].dhcp_on = false;
     renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
+      initialEntries: [urls.networks.subnet.index({ id: subnet.id })],
     });
     const deleteSubnetSection = screen.getByRole("form", {
       name: /Delete subnet/,
@@ -86,7 +86,7 @@ describe("DeleteSubnet", () => {
     state.vlan.items[0].dhcp_on = true;
     renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
+      initialEntries: [urls.networks.subnet.index({ id: subnet.id })],
     });
     const deleteSubnetSection = screen.getByRole("form", {
       name: /Delete subnet/,
@@ -104,7 +104,7 @@ describe("DeleteSubnet", () => {
     state.subnet.loaded = false;
     const { store } = renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
+      initialEntries: [urls.networks.subnet.index({ id: subnet.id })],
     });
     const expectedActions = [vlanActions.fetch(), subnetActions.fetch()];
     const actualActions = store.getActions();
@@ -121,7 +121,7 @@ describe("DeleteSubnet", () => {
     state.vlan.items[0].dhcp_on = false;
     const { store } = renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
+      initialEntries: [urls.networks.subnet.index({ id: subnet.id })],
     });
 
     expect(
@@ -141,18 +141,18 @@ describe("DeleteSubnet", () => {
 
     renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
+      initialEntries: [urls.networks.subnet.index({ id: subnet.id })],
     });
 
     state.subnet.saved = true;
 
     const { router } = renderWithProviders(<DeleteSubnet subnet={subnet} />, {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: subnet.id })],
+      initialEntries: [urls.networks.subnet.index({ id: subnet.id })],
     });
 
     await waitFor(() => {
-      expect(router.state.location.pathname).toEqual(urls.subnets.index);
+      expect(router.state.location.pathname).toEqual(urls.networks.index);
     });
   });
 });

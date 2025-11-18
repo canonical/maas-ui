@@ -23,27 +23,27 @@ describe("SubnetDetails", () => {
   [
     {
       component: "SubnetSummary",
-      path: urls.subnets.subnet.summary({ id: 1 }),
+      path: urls.networks.subnet.summary({ id: 1 }),
       title: "Subnet summary",
     },
     {
       component: "StaticRoutes",
-      path: urls.subnets.subnet.staticRoutes({ id: 1 }),
+      path: urls.networks.subnet.staticRoutes({ id: 1 }),
       title: "Static routes",
     },
     {
       component: "ReservedRangesTable",
-      path: urls.subnets.subnet.addressReservation({ id: 1 }),
+      path: urls.networks.subnet.addressReservation({ id: 1 }),
       title: "Reserved ranges",
     },
     {
       component: "DHCPSnippets",
-      path: urls.subnets.subnet.dhcpSnippets({ id: 1 }),
+      path: urls.networks.subnet.dhcpSnippets({ id: 1 }),
       title: "DHCP snippets",
     },
     {
       component: "SubnetUsedIPs",
-      path: urls.subnets.subnet.usedIpAddresses({ id: 1 }),
+      path: urls.networks.subnet.usedIpAddresses({ id: 1 }),
       title: "Used IP addresses",
     },
   ].forEach(({ component, path, title }) => {
@@ -52,7 +52,7 @@ describe("SubnetDetails", () => {
         <Routes>
           <Route
             element={<SubnetDetails />}
-            path={`${urls.subnets.subnet.index(null)}/*`}
+            path={`${urls.networks.subnet.index(null)}/*`}
           />
         </Routes>,
         {
@@ -74,17 +74,17 @@ describe("SubnetDetails", () => {
       <Routes>
         <Route
           element={<SubnetDetails />}
-          path={`${urls.subnets.subnet.index(null)}/*`}
+          path={`${urls.networks.subnet.index(null)}/*`}
         />
       </Routes>,
       {
-        initialEntries: [urls.subnets.subnet.index({ id: 1 })],
+        initialEntries: [urls.networks.subnet.index({ id: 1 })],
         state,
       }
     );
 
     expect(router.state.location.pathname).toBe(
-      urls.subnets.subnet.summary({ id: 1 })
+      urls.networks.subnet.summary({ id: 1 })
     );
   });
 
@@ -93,11 +93,11 @@ describe("SubnetDetails", () => {
       <Routes>
         <Route
           element={<SubnetDetails />}
-          path={`${urls.subnets.subnet.index(null)}/*`}
+          path={`${urls.networks.subnet.index(null)}/*`}
         />
       </Routes>,
       {
-        initialEntries: [urls.subnets.subnet.index({ id: 1 })],
+        initialEntries: [urls.networks.subnet.index({ id: 1 })],
         state,
       }
     );
@@ -122,11 +122,11 @@ describe("SubnetDetails", () => {
       <Routes>
         <Route
           element={<SubnetDetails />}
-          path={`${urls.subnets.subnet.index(null)}/*`}
+          path={`${urls.networks.subnet.index(null)}/*`}
         />
       </Routes>,
       {
-        initialEntries: [urls.subnets.subnet.index({ id: 1 })],
+        initialEntries: [urls.networks.subnet.index({ id: 1 })],
         state,
       }
     );
@@ -159,11 +159,11 @@ describe("SubnetDetails", () => {
       <Routes>
         <Route
           element={<SubnetDetails />}
-          path={`${urls.subnets.subnet.index(null)}/*`}
+          path={`${urls.networks.subnet.index(null)}/*`}
         />
       </Routes>,
       {
-        initialEntries: [urls.subnets.subnet.index({ id: 1 })],
+        initialEntries: [urls.networks.subnet.index({ id: 1 })],
         state,
       }
     );
@@ -180,11 +180,11 @@ describe("SubnetDetails", () => {
       <Routes>
         <Route
           element={<SubnetDetails />}
-          path={`${urls.subnets.subnet.index(null)}/*`}
+          path={`${urls.networks.subnet.index(null)}/*`}
         />
       </Routes>,
       {
-        initialEntries: [urls.subnets.subnet.index({ id: 1 })],
+        initialEntries: [urls.networks.subnet.index({ id: 1 })],
         state,
       }
     );

@@ -8,11 +8,11 @@ import DHCPReservedRanges, { Headers } from "./DHCPReservedRanges";
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
+  renderWithProviders,
   screen,
+  userEvent,
   waitFor,
   within,
-  renderWithProviders,
 } from "@/testing/utils";
 
 let initialValues: ConfigureDHCPValues;
@@ -56,7 +56,7 @@ it("renders a table of IP ranges if the VLAN has any defined", () => {
     within(screen.getByRole("gridcell", { name: Headers.Subnet })).getByRole(
       "link"
     )
-  ).toHaveAttribute("href", urls.subnets.subnet.index({ id: subnet.id }));
+  ).toHaveAttribute("href", urls.networks.subnet.index({ id: subnet.id }));
   expect(
     screen.getByRole("gridcell", { name: Headers.StartIP }).textContent
   ).toBe(ipRange.start_ip);

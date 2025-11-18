@@ -14,11 +14,11 @@ describe("FabricDetails", () => {
       <Routes>
         <Route
           element={<FabricDetails />}
-          path={urls.subnets.fabric.index(null)}
+          path={urls.networks.fabric.index(null)}
         />
       </Routes>,
       {
-        initialEntries: [urls.subnets.fabric.index({ id: 1 })],
+        initialEntries: [urls.networks.fabric.index({ id: 1 })],
       }
     );
 
@@ -48,10 +48,10 @@ describe("FabricDetails", () => {
       <Routes>
         <Route
           element={<FabricDetails />}
-          path={urls.subnets.fabric.index(null)}
+          path={urls.networks.fabric.index(null)}
         />
       </Routes>,
-      { initialEntries: [urls.subnets.fabric.index({ id: 1 })], state }
+      { initialEntries: [urls.networks.fabric.index({ id: 1 })], state }
     );
 
     expect(screen.getByText("Fabric not found")).toBeInTheDocument();
@@ -68,10 +68,10 @@ describe("FabricDetails", () => {
       <Routes>
         <Route
           element={<FabricDetails />}
-          path={urls.subnets.fabric.index(null)}
+          path={urls.networks.fabric.index(null)}
         />
       </Routes>,
-      { initialEntries: [urls.subnets.fabric.index({ id: 1 })], state }
+      { initialEntries: [urls.networks.fabric.index({ id: 1 })], state }
     );
 
     expect(

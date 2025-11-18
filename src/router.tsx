@@ -196,7 +196,7 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.subnets.space.index(null)}/*`,
+          path: `${urls.networks.space.index(null)}/*`,
           element: (
             <ErrorBoundary>
               <SpaceDetails />
@@ -299,7 +299,7 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.subnets.fabric.index(null)}/*`,
+          path: `${urls.networks.fabric.index(null)}/*`,
           element: (
             <ErrorBoundary>
               <FabricDetails />
@@ -339,7 +339,7 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.subnets.index}/*`,
+          path: `${urls.networks.index}/*`,
           element: (
             <ErrorBoundary>
               <SubnetsList />
@@ -347,7 +347,7 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.subnets.subnet.index(null)}/*`,
+          path: `${urls.networks.subnet.index(null)}/*`,
           element: (
             <ErrorBoundary>
               <SubnetDetails />
@@ -355,7 +355,7 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.subnets.vlan.index(null)}/*`,
+          path: `${urls.networks.vlan.index(null)}/*`,
           element: (
             <ErrorBoundary>
               <VLANDetails />

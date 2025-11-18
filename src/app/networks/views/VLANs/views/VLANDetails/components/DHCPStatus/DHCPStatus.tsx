@@ -47,7 +47,7 @@ const getDHCPStatus = (vlan: VLAN, vlans: VLAN[], fabrics: Fabric[]) => {
     return (
       <span>
         Relayed via{" "}
-        <Link to={urls.subnets.vlan.index({ id: vlan.relay_vlan })}>
+        <Link to={urls.networks.vlan.index({ id: vlan.relay_vlan })}>
           {getFullVLANName(vlan.relay_vlan, vlans, fabrics)}
         </Link>
       </span>

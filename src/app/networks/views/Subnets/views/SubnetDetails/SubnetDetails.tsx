@@ -58,7 +58,7 @@ const SubnetDetails = (): ReactElement => {
     );
   }
 
-  const base = urls.subnets.subnet.index(null);
+  const base = urls.networks.subnet.index(null);
 
   return (
     <PageContent
@@ -73,7 +73,7 @@ const SubnetDetails = (): ReactElement => {
         <Routes>
           <Route
             element={
-              <Navigate replace to={urls.subnets.subnet.summary({ id })} />
+              <Navigate replace to={urls.networks.subnet.summary({ id })} />
             }
             index
           />
@@ -84,12 +84,12 @@ const SubnetDetails = (): ReactElement => {
                 <SubnetUtilisation statistics={subnet.statistics} />
               </>
             }
-            path={getRelativeRoute(urls.subnets.subnet.summary(null), base)}
+            path={getRelativeRoute(urls.networks.subnet.summary(null), base)}
           />
           <Route
             element={<StaticRoutes subnetId={id} />}
             path={getRelativeRoute(
-              urls.subnets.subnet.staticRoutes(null),
+              urls.networks.subnet.staticRoutes(null),
               base
             )}
           />
@@ -101,7 +101,7 @@ const SubnetDetails = (): ReactElement => {
               </>
             }
             path={getRelativeRoute(
-              urls.subnets.subnet.addressReservation(null),
+              urls.networks.subnet.addressReservation(null),
               base
             )}
           />
@@ -110,20 +110,20 @@ const SubnetDetails = (): ReactElement => {
               <DHCPSnippets modelName={SubnetMeta.MODEL} subnetIds={[id]} />
             }
             path={getRelativeRoute(
-              urls.subnets.subnet.dhcpSnippets(null),
+              urls.networks.subnet.dhcpSnippets(null),
               base
             )}
           />
           <Route
             element={<SubnetUsedIPs subnetId={id} />}
             path={getRelativeRoute(
-              urls.subnets.subnet.usedIpAddresses(null),
+              urls.networks.subnet.usedIpAddresses(null),
               base
             )}
           />
           <Route
             element={
-              <Navigate replace to={urls.subnets.subnet.summary({ id })} />
+              <Navigate replace to={urls.networks.subnet.summary({ id })} />
             }
             path={base}
           />

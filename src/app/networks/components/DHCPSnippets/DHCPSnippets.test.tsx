@@ -23,7 +23,7 @@ it("dispatches an action to fetch the subnets on mount", () => {
     <DHCPSnippets modelName="subnet" subnetIds={[1, 2]} />,
     {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: 1 })],
+      initialEntries: [urls.networks.subnet.index({ id: 1 })],
     }
   );
 
@@ -55,12 +55,12 @@ it("selects the correct subnets to display in the table", () => {
             subnetIds={[subnets[0].id, subnets[2].id]}
           />
         }
-        path={urls.subnets.subnet.index(null)}
+        path={urls.networks.subnet.index(null)}
       />
     </Routes>,
     {
       state,
-      initialEntries: [urls.subnets.subnet.index({ id: 1 })],
+      initialEntries: [urls.networks.subnet.index({ id: 1 })],
     }
   );
   expect(mockDHCPTable).toHaveBeenCalledWith(

@@ -19,10 +19,10 @@ describe("SpaceDetails", () => {
       <Routes>
         <Route
           element={<SpaceDetails />}
-          path={urls.subnets.space.index(null)}
+          path={urls.networks.space.index(null)}
         />
       </Routes>,
-      { initialEntries: [urls.subnets.space.index({ id: 1 })] }
+      { initialEntries: [urls.networks.space.index({ id: 1 })] }
     );
 
     const expectedActions = [spaceActions.get(1), spaceActions.setActive(1)];
@@ -47,10 +47,10 @@ describe("SpaceDetails", () => {
       <Routes>
         <Route
           element={<SpaceDetails />}
-          path={urls.subnets.space.index(null)}
+          path={urls.networks.space.index(null)}
         />
       </Routes>,
-      { initialEntries: [urls.subnets.space.index({ id: 1 })], state }
+      { initialEntries: [urls.networks.space.index({ id: 1 })], state }
     );
 
     expect(screen.getByText("Space not found")).toBeInTheDocument();
@@ -67,10 +67,10 @@ describe("SpaceDetails", () => {
       <Routes>
         <Route
           element={<SpaceDetails />}
-          path={urls.subnets.space.index(null)}
+          path={urls.networks.space.index(null)}
         />
       </Routes>,
-      { initialEntries: [urls.subnets.space.index({ id: 1 })], state }
+      { initialEntries: [urls.networks.space.index({ id: 1 })], state }
     );
 
     expect(
@@ -94,10 +94,10 @@ describe("SpaceDetails", () => {
       <Routes>
         <Route
           element={<SpaceDetails />}
-          path={urls.subnets.space.index(null)}
+          path={urls.networks.space.index(null)}
         />
       </Routes>,
-      { initialEntries: [urls.subnets.space.index({ id: 1 })], state }
+      { initialEntries: [urls.networks.space.index({ id: 1 })], state }
     );
 
     const spaceSummary = await screen.findByRole("region", {
@@ -125,10 +125,10 @@ describe("SpaceDetails", () => {
       <Routes>
         <Route
           element={<SpaceDetails />}
-          path={urls.subnets.space.index(null)}
+          path={urls.networks.space.index(null)}
         />
       </Routes>,
-      { initialEntries: [urls.subnets.space.index({ id: 1 })], state }
+      { initialEntries: [urls.networks.space.index({ id: 1 })], state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
     expect(
@@ -172,10 +172,10 @@ describe("SpaceDetails", () => {
       <Routes>
         <Route
           element={<SpaceDetails />}
-          path={urls.subnets.space.index(null)}
+          path={urls.networks.space.index(null)}
         />
       </Routes>,
-      { initialEntries: [urls.subnets.space.index({ id: 1 })], state }
+      { initialEntries: [urls.networks.space.index({ id: 1 })], state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
     expect(screen.getByText(/Space cannot be deleted/)).toBeInTheDocument();

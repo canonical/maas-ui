@@ -16,10 +16,13 @@ describe("VLANDetails", () => {
     });
     const { store } = renderWithProviders(
       <Routes>
-        <Route element={<VLANDetails />} path={urls.subnets.vlan.index(null)} />
+        <Route
+          element={<VLANDetails />}
+          path={urls.networks.vlan.index(null)}
+        />
       </Routes>,
       {
-        initialEntries: [urls.subnets.vlan.index({ id: 1 })],
+        initialEntries: [urls.networks.vlan.index({ id: 1 })],
         state,
       }
     );
@@ -39,9 +42,12 @@ describe("VLANDetails", () => {
     const state = factory.rootState();
     const { result, store } = renderWithProviders(
       <Routes>
-        <Route element={<VLANDetails />} path={urls.subnets.vlan.index(null)} />
+        <Route
+          element={<VLANDetails />}
+          path={urls.networks.vlan.index(null)}
+        />
       </Routes>,
-      { state, initialEntries: [urls.subnets.vlan.index({ id: 1 })] }
+      { state, initialEntries: [urls.networks.vlan.index({ id: 1 })] }
     );
 
     result.unmount();
@@ -72,9 +78,12 @@ describe("VLANDetails", () => {
     });
     renderWithProviders(
       <Routes>
-        <Route element={<VLANDetails />} path={urls.subnets.vlan.index(null)} />
+        <Route
+          element={<VLANDetails />}
+          path={urls.networks.vlan.index(null)}
+        />
       </Routes>,
-      { state, initialEntries: [urls.subnets.vlan.index({ id: 1 })] }
+      { state, initialEntries: [urls.networks.vlan.index({ id: 1 })] }
     );
 
     expect(screen.getByText("VLAN not found")).toBeInTheDocument();

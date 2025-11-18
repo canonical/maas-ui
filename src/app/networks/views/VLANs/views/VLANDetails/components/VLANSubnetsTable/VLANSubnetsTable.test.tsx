@@ -27,7 +27,7 @@ it("renders correct details", () => {
 
   expect(within(vlanSubnetsTable).getByRole("link")).toHaveAttribute(
     "href",
-    urls.subnets.subnet.index({ id: subnet.id })
+    urls.networks.subnet.index({ id: subnet.id })
   );
   expect(vlanSubnetsTable.querySelector("td.usage")!.textContent).toBe(
     subnet.statistics.usage_string
