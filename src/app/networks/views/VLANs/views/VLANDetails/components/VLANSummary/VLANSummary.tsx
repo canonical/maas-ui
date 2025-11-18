@@ -1,15 +1,16 @@
 import { Button, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import VLANControllers from "./VLANControllers";
-
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import Definition from "@/app/base/components/Definition";
 import FabricLink from "@/app/base/components/FabricLink";
 import SpaceLink from "@/app/base/components/SpaceLink";
 import TitledSection from "@/app/base/components/TitledSection";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import { EditVLAN } from "@/app/networks/views/VLANs/components";
+import {
+  EditVLAN,
+  VLANControllers,
+} from "@/app/networks/views/VLANs/components";
 import type { RootState } from "@/app/store/root/types";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";

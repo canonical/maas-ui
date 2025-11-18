@@ -3,9 +3,9 @@ import type { ReactElement } from "react";
 import { ContextualMenu } from "@canonical/react-components";
 import { Link, useLocation } from "react-router";
 
-import DeleteSubnet from "../../../../components/DeleteSubnet";
-import EditBootArchitectures from "../../../../components/EditBootArchitectures";
-import MapSubnet from "../../../../components/MapSubnet";
+import DeleteSubnet from "../DeleteSubnet";
+import EditBootArchitectures from "../EditBootArchitectures";
+import MapSubnet from "../MapSubnet";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
