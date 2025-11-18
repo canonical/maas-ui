@@ -4,19 +4,21 @@ import { useEffect } from "react";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FabricDetailsHeader from "../../components/FabricDetailsHeader";
-import FabricSummary from "../../components/FabricSummary";
-import FabricVLANsTable from "../../components/FabricVLANsTable";
+import {
+  FabricDetailsHeader,
+  FabricSummary,
+  FabricVLANsTable,
+} from "./components";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
+import subnetURLs from "@/app/networks/urls";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import { FabricMeta } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
-import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
 const FabricDetails = (): ReactElement => {

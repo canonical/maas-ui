@@ -5,7 +5,7 @@ import { Col, Row, Spinner, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import VLANControllers from "../VLANSummary/VLANControllers";
+import VLANControllers from "../VLANControllers";
 
 import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";

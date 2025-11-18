@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
+import urls from "@/app/networks/urls";
 import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
 import type { Space } from "@/app/store/space/types";
 import { getCanBeDeleted } from "@/app/store/space/utils";
-import urls from "@/app/subnets/urls";
 
 type DeleteSpaceProps = {
   space: Space;

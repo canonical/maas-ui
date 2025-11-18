@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
+import subnetURLs from "@/app/networks/urls";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
-import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
 type DeleteFabricProps = {

@@ -5,26 +5,24 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router";
 
+import { SubnetDetailsHeader } from "./components";
+import StaticDHCPLease from "./views/StaticDHCPLease";
+import StaticRoutes from "./views/StaticRoutes";
+import SubnetSummary from "./views/SubnetSummary";
+import SubnetUtilisation from "./views/SubnetSummary/components/SubnetUtilisation";
+import SubnetUsedIPs from "./views/SubnetUsedIPs";
+
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
+import { DHCPSnippets, ReservedRangesTable } from "@/app/networks/components";
+import subnetURLs from "@/app/networks/urls";
 import type { RootState } from "@/app/store/root/types";
 import { staticRouteActions } from "@/app/store/staticroute";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { SubnetMeta } from "@/app/store/subnet/types";
-import subnetURLs from "@/app/subnets/urls";
-import {
-  StaticDHCPLease,
-  StaticRoutes,
-  SubnetDetailsHeader,
-  SubnetSummary,
-  SubnetUsedIPs,
-  SubnetUtilisation,
-} from "@/app/subnets/views/Subnets/components";
-import DHCPSnippets from "@/app/subnets/views/VLANs/components/DHCPSnippets";
-import ReservedRangesTable from "@/app/subnets/views/VLANs/components/ReservedRangesTable";
 import { getRelativeRoute, isId } from "@/app/utils";
 
 const SubnetDetails = (): ReactElement => {

@@ -8,11 +8,11 @@ import FabricLink from "@/app/base/components/FabricLink";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
+import subnetURLs from "@/app/networks/urls";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
-import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
 type DeleteVLANProps = {

@@ -1,13 +1,13 @@
 import SubnetsList from "./SubnetsList";
 
-import urls from "@/app/subnets/urls";
+import urls from "@/app/networks/urls";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  screen,
-  within,
-  waitFor,
   renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
+  within,
 } from "@/testing/utils";
 
 describe("SubnetsList", () => {

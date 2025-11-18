@@ -4,19 +4,20 @@ import { useEffect } from "react";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import ModelNotFound from "@/app/base/components/ModelNotFound";
-import PageContent from "@/app/base/components/PageContent/PageContent";
-import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import type { RootState } from "@/app/store/root/types";
-import { spaceActions } from "@/app/store/space";
-import spaceSelectors from "@/app/store/space/selectors";
-import { SpaceMeta } from "@/app/store/space/types";
-import subnetURLs from "@/app/subnets/urls";
 import {
   SpaceDetailsHeader,
   SpaceSubnetsTable,
   SpaceSummary,
-} from "@/app/subnets/views/Spaces/components";
+} from "./components";
+
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import PageContent from "@/app/base/components/PageContent/PageContent";
+import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
+import subnetURLs from "@/app/networks/urls";
+import type { RootState } from "@/app/store/root/types";
+import { spaceActions } from "@/app/store/space";
+import spaceSelectors from "@/app/store/space/selectors";
+import { SpaceMeta } from "@/app/store/space/types";
 import { isId } from "@/app/utils";
 
 const SpaceDetails = (): ReactElement => {

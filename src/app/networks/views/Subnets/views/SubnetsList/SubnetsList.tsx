@@ -1,14 +1,12 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
+import { SubnetsListHeader, SubnetsTable } from "./components";
+import type { GroupByKey } from "./components/SubnetsTable/types";
+
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useQuery } from "@/app/base/hooks/urls";
-import {
-  SubnetsListHeader,
-  SubnetsTable,
-} from "@/app/subnets/views/Subnets/components";
-import type { GroupByKey } from "@/app/subnets/views/Subnets/components/SubnetsTable/types";
 
 export const SubnetsUrlParams = {
   By: "by",
