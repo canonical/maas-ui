@@ -1,18 +1,17 @@
-import { Labels } from "./ReservedRangesTable";
+import ReservedRangesTable, { Labels } from "./ReservedRangesTable";
 
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType } from "@/app/store/iprange/types";
 import type { RootState } from "@/app/store/root/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import type { VLAN } from "@/app/store/vlan/types";
-import { ReservedRangesTable } from "@/app/subnets/views/VLANs/components";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
+  renderWithProviders,
   screen,
+  userEvent,
   waitFor,
   within,
-  renderWithProviders,
 } from "@/testing/utils";
 
 let ipRange: IPRange;

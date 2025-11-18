@@ -71,19 +71,19 @@ const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const RacksList = lazy(() => import("@/app/racks/views/RacksList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(
-  () => import("@/app/subnets/views/Fabrics/views/FabricDetails")
+  () => import("@/app/networks/views/Fabrics/views/FabricDetails")
 );
 const SpaceDetails = lazy(
-  () => import("@/app/subnets/views/Spaces/views/SpaceDetails")
+  () => import("@/app/networks/views/Spaces/views/SpaceDetails")
 );
 const SubnetDetails = lazy(
-  () => import("@/app/subnets/views/Subnets/views/SubnetDetails")
+  () => import("@/app/networks/views/Subnets/views/SubnetDetails")
 );
 const SubnetsList = lazy(
-  () => import("@/app/subnets/views/Subnets/views/SubnetsList")
+  () => import("@/app/networks/views/Subnets/views/SubnetsList")
 );
 const VLANDetails = lazy(
-  () => import("@/app/subnets/views/VLANs/views/VLANDetails")
+  () => import("@/app/networks/views/VLANs/views/VLANDetails")
 );
 const ZonesList = lazy(() => import("@/app/zones/views"));
 

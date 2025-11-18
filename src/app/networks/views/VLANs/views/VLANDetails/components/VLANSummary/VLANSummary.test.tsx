@@ -1,17 +1,17 @@
 import VLANSummary from "./VLANSummary";
 
 import urls from "@/app/base/urls";
-import { EditVLAN } from "@/app/subnets/views/VLANs/components";
+import { EditVLAN } from "@/app/networks/views/VLANs/components";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  screen,
-  within,
-  setupMockServer,
-  renderWithProviders,
   mockSidePanel,
-  waitFor,
+  renderWithProviders,
+  screen,
+  setupMockServer,
   userEvent,
+  waitFor,
+  within,
 } from "@/testing/utils";
 
 setupMockServer(authResolvers.getCurrentUser.handler());

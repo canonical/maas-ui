@@ -6,6 +6,11 @@ import { ContextualMenu, Notification } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
+import AddReservedRange from "../AddReservedRange";
+
+import type { ReservedRangesTableData } from "./useReservedRangesTableColumns/useReservedRangesTableColumns";
+import useReservedRangesColumns from "./useReservedRangesTableColumns/useReservedRangesTableColumns";
+
 import TitledSection from "@/app/base/components/TitledSection";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
@@ -21,9 +26,6 @@ import {
 import type { RootState } from "@/app/store/root/types";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
-import { AddReservedRange } from "@/app/subnets/views/VLANs/components";
-import type { ReservedRangesTableData } from "@/app/subnets/views/VLANs/components/ReservedRangesTable/useReservedRangesTableColumns/useReservedRangesTableColumns";
-import useReservedRangesColumns from "@/app/subnets/views/VLANs/components/ReservedRangesTable/useReservedRangesTableColumns/useReservedRangesTableColumns";
 import { isId } from "@/app/utils";
 
 export type SubnetProps = {
