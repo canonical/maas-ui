@@ -24,7 +24,7 @@ const SpaceDetailsHeader = ({
             openSidePanel({
               component: DeleteSpace,
               title: "Delete space",
-              props: { space: space! },
+              props: { id: space!.id },
             });
           }}
         >

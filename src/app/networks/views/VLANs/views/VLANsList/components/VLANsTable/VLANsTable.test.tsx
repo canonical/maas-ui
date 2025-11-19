@@ -84,7 +84,7 @@ describe("VLANsTable", () => {
       });
     });
 
-    it("opens the Delete VLAN form when the Edit button is clicked", async () => {
+    it("opens the Delete VLAN form when the Delete button is clicked", async () => {
       renderWithProviders(<VLANsTable />, { state });
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));

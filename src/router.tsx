@@ -77,6 +77,9 @@ const FabricDetails = lazy(
 const SpaceDetails = lazy(
   () => import("@/app/networks/views/Spaces/views/SpaceDetails")
 );
+const SpacesList = lazy(
+  () => import("@/app/networks/views/Spaces/views/SpacesList")
+);
 const SubnetDetails = lazy(
   () => import("@/app/networks/views/Subnets/views/SubnetDetails")
 );
@@ -358,6 +361,17 @@ export const router = createBrowserRouter(
               element: (
                 <ErrorBoundary>
                   <SubnetsList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.networks.spaces.index,
+                urls.networks.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SpacesList />
                 </ErrorBoundary>
               ),
             },

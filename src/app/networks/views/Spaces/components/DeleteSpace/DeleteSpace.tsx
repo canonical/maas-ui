@@ -4,25 +4,32 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useFetchActions } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/networks/urls";
+import type { RootState } from "@/app/store/root/types";
 import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
 import type { Space } from "@/app/store/space/types";
 import { getCanBeDeleted } from "@/app/store/space/utils";
 
 type DeleteSpaceProps = {
-  space: Space;
+  id: Space["id"];
 };
 
-export const DeleteSpace = ({ space }: DeleteSpaceProps): ReactElement => {
+export const DeleteSpace = ({ id }: DeleteSpaceProps): ReactElement => {
   const { closeSidePanel } = useSidePanel();
+  const space = useSelector((state: RootState) =>
+    spaceSelectors.getById(state, id)
+  );
   const canBeDeleted = getCanBeDeleted(space);
   const dispatch = useDispatch();
   const errors = useSelector(spaceSelectors.errors);
   const saving = useSelector(spaceSelectors.saving);
   const saved = useSelector(spaceSelectors.saved);
+
+  useFetchActions([spaceActions.fetch]);
 
   return (
     <FormikForm<EmptyObject>
@@ -32,11 +39,11 @@ export const DeleteSpace = ({ space }: DeleteSpaceProps): ReactElement => {
       onCancel={closeSidePanel}
       onSubmit={() => {
         dispatch(spaceActions.cleanup());
-        dispatch(spaceActions.delete(space.id));
+        dispatch(spaceActions.delete(id));
       }}
       onSuccess={closeSidePanel}
       saved={saved}
-      savedRedirect={urls.indexWithParams({ by: "fabric" })}
+      savedRedirect={urls.spaces.index}
       saving={saving}
       submitAppearance="negative"
       submitDisabled={!canBeDeleted}
