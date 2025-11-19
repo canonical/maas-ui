@@ -9,13 +9,13 @@ import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  userEvent,
-  screen,
-  waitFor,
-  within,
   renderWithBrowserRouter,
   renderWithProviders,
+  screen,
   setupMockServer,
+  userEvent,
+  waitFor,
+  within,
 } from "@/testing/utils";
 
 const mockUseNavigate = vi.fn();
@@ -218,7 +218,7 @@ describe("GlobalSideNav", () => {
 
   it("can highlight a url with a query param", async () => {
     renderWithProviders(<AppSideNavigation />, {
-      initialEntries: ["/networks?by=fabric"],
+      initialEntries: ["/networks/subnets?by=fabric"],
       state,
     });
 
@@ -227,7 +227,7 @@ describe("GlobalSideNav", () => {
     });
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Subnets");
+    expect(currentMenuItem).toHaveTextContent("Networks");
   });
 
   it("highlights sub-urls", async () => {

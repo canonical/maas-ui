@@ -18,7 +18,7 @@ let space: Space;
 
 const { mockOpen } = await mockSidePanel();
 
-describe("FabricDetailsHeader", () => {
+describe("SpaceDetailsHeader", () => {
   beforeEach(() => {
     space = factory.space({
       id: 1,
@@ -59,7 +59,7 @@ describe("FabricDetailsHeader", () => {
     expect(mockOpen).toHaveBeenCalledWith({
       component: DeleteSpace,
       title: "Delete space",
-      props: { space: space },
+      props: { id: space.id },
     });
   });
 });
