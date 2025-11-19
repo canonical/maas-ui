@@ -74,14 +74,18 @@ export const ComposeFormFields = ({
         label="Use any available core(s)"
         onChange={() => {
           setPinningCores(false);
-          setFieldValue("cores", defaults.cores).catch((reason) => {
-            throw new FormikFieldChangeError("cores", "setFieldValue", reason);
+          setFieldValue("cores", defaults.cores).catch((reason: unknown) => {
+            throw new FormikFieldChangeError(
+              "cores",
+              "setFieldValue",
+              reason as string
+            );
           });
-          setFieldValue("pinnedCores", "").catch((reason) => {
+          setFieldValue("pinnedCores", "").catch((reason: unknown) => {
             throw new FormikFieldChangeError(
               "pinnedCores",
               "setFieldValue",
-              reason
+              reason as string
             );
           });
         }}
@@ -111,18 +115,18 @@ export const ComposeFormFields = ({
           label="Pin VM to specific core(s)"
           onChange={() => {
             setPinningCores(true);
-            setFieldValue("cores", "").catch((reason) => {
+            setFieldValue("cores", "").catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "cores",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
-            setFieldValue("pinnedCores", "").catch((reason) => {
+            setFieldValue("pinnedCores", "").catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "pinnedCores",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
           }}

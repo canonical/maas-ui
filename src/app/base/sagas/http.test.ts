@@ -368,7 +368,7 @@ describe("scriptresults", () => {
           ScriptResultNames.CURTIN_LOG,
           "txt"
         )
-        .catch((error) => error);
+        .catch((error: unknown) => error);
       expect(error).toBe(errorMessage);
     });
   });

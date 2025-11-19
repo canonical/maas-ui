@@ -226,7 +226,7 @@ export const AddDeviceForm = (): React.ReactElement => {
       saving={devicesSaving}
       secondarySubmit={(_, { submitForm }) => {
         setSecondarySubmit(true);
-        submitForm();
+        void submitForm();
       }}
       secondarySubmitLabel="Save and add another"
       submitLabel="Save device"

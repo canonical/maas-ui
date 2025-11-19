@@ -95,11 +95,11 @@ const NetworkFields = ({
         ({ id }) => id === toFormikNumber(values.subnet)
       );
       if (subnet) {
-        setFieldValue("subnet_cidr", subnet.cidr).catch((reason) => {
+        setFieldValue("subnet_cidr", subnet.cidr).catch((reason: unknown) => {
           throw new FormikFieldChangeError(
             "subnet_cidr",
             "setFieldValue",
-            reason
+            reason as string
           );
         });
       }
@@ -121,11 +121,11 @@ const NetworkFields = ({
         value =
           editing && hasSubnet ? NetworkLinkMode.AUTO : NetworkLinkMode.LINK_UP;
       }
-      setFieldValue(fieldOrder[i], value).catch((reason) => {
+      setFieldValue(fieldOrder[i], value).catch((reason: unknown) => {
         throw new FormikFieldChangeError(
           fieldOrder[i],
           "setFieldValue",
-          reason
+          reason as string
         );
       });
     }
@@ -146,9 +146,15 @@ const NetworkFields = ({
             );
             // Update the VLAN on the node to be the default VLAN for that
             // fabric.
-            setFieldValue("vlan", fabric?.default_vlan_id).catch((reason) => {
-              throw new FormikFieldChangeError("vlan", "setFieldValue", reason);
-            });
+            setFieldValue("vlan", fabric?.default_vlan_id).catch(
+              (reason: unknown) => {
+                throw new FormikFieldChangeError(
+                  "vlan",
+                  "setFieldValue",
+                  reason as string
+                );
+              }
+            );
             resetFollowingFields("vlan");
           }
         }}
@@ -221,22 +227,22 @@ const NetworkFields = ({
                       `${immutableOctets}.`,
                       ""
                     )
-                  ).catch((reason) => {
+                  ).catch((reason: unknown) => {
                     throw new FormikFieldChangeError(
                       "ip_address",
                       "setFieldValue",
-                      reason
+                      reason as string
                     );
                   });
                 } else {
                   setFieldValue(
                     "ip_address",
                     subnet.statistics.first_address.replace(`${ipv6Prefix}`, "")
-                  ).catch((reason) => {
+                  ).catch((reason: unknown) => {
                     throw new FormikFieldChangeError(
                       "ip_address",
                       "setFieldValue",
-                      reason
+                      reason as string
                     );
                   });
                 }
@@ -244,20 +250,20 @@ const NetworkFields = ({
                 setFieldValue(
                   "ip_address",
                   subnet?.statistics.first_address || ""
-                ).catch((reason) => {
+                ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "ip_address",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
               }
             } else {
-              setFieldValue("ip_address", "").catch((reason) => {
+              setFieldValue("ip_address", "").catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "ip_address",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             }

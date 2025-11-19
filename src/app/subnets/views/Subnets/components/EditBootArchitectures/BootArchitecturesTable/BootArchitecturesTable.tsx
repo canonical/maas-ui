@@ -36,11 +36,11 @@ export const BootArchitecturesTable = (): React.ReactElement => {
       isChecked(bootArchName)
         ? [...disabled_boot_architectures, bootArchName]
         : disabled_boot_architectures.filter((item) => item !== bootArchName)
-    ).catch((reason) => {
+    ).catch((reason: unknown) => {
       throw new FormikFieldChangeError(
         "disabled_boot_architectures",
         "setFieldValue",
-        reason
+        reason as string
       );
     });
   };

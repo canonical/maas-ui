@@ -19,18 +19,18 @@ export const ReleaseFormFields = (): React.ReactElement => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             handleChange(e);
             if (!e.target.checked) {
-              setFieldValue("quickErase", false).catch((reason) => {
+              setFieldValue("quickErase", false).catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "quickErase",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
-              setFieldValue("secureErase", false).catch((reason) => {
+              setFieldValue("secureErase", false).catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "secureErase",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             }

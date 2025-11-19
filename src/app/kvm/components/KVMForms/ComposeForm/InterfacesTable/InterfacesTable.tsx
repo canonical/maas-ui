@@ -118,8 +118,12 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
     setFieldValue("interfaces", [
       ...interfaces,
       generateNewInterface(id, firstPxeSubnet?.id),
-    ]).catch((reason) => {
-      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
+    ]).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "interfaces",
+        "setFieldValue",
+        reason as string
+      );
     });
   };
 
@@ -127,8 +131,12 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
     setFieldValue(
       "interfaces",
       interfaces.filter((iface) => iface.id !== id)
-    ).catch((reason) => {
-      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
+    ).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "interfaces",
+        "setFieldValue",
+        reason as string
+      );
     });
   };
 
@@ -182,11 +190,11 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   handleChange(e);
                   setFieldValue(`interfaces[${i}].subnet`, "").catch(
-                    (reason) => {
+                    (reason: unknown) => {
                       throw new FormikFieldChangeError(
                         `interfaces[${i}].subnet`,
                         "setFieldValue",
-                        reason
+                        reason as string
                       );
                     }
                   );
@@ -209,11 +217,11 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
                 index={i}
                 selectSubnet={(subnetID?: number) => {
                   setFieldValue(`interfaces[${i}].subnet`, subnetID).catch(
-                    (reason) => {
+                    (reason: unknown) => {
                       throw new FormikFieldChangeError(
                         `interfaces[${i}].subnet`,
                         "setFieldValue",
-                        reason
+                        reason as string
                       );
                     }
                   );

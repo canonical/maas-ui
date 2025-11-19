@@ -52,8 +52,8 @@ export const MachineSelect = ({
   );
   const handleSelect = (machine: Machine | null) => {
     handleClose();
-    setFieldValue(name, machine?.system_id || null).catch((reason) => {
-      throw new FormikFieldChangeError(name, "setFieldValue", reason);
+    setFieldValue(name, machine?.system_id || null).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(name, "setFieldValue", reason as string);
     });
   };
   useOnEscapePressed(handleClose);
@@ -81,11 +81,11 @@ export const MachineSelect = ({
             onClick={() => {
               setIsOpen(!isOpen);
               if (!isOpen) {
-                setFieldValue(name, "", false).catch((reason) => {
+                setFieldValue(name, "", false).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     name,
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
               }

@@ -79,7 +79,7 @@ export const useWebsocketAwareQuery = <
 
   useEffect(() => {
     if (connectedCount !== previousConnectedCount) {
-      queryClient.invalidateQueries({ queryKey: options?.queryKey });
+      void queryClient.invalidateQueries({ queryKey: options?.queryKey });
     }
   }, [connectedCount, previousConnectedCount, queryClient, options]);
 
@@ -91,7 +91,7 @@ export const useWebsocketAwareQuery = <
       const modelQueryKey = options?.queryKey[0];
 
       if (mappedKey && mappedKey === modelQueryKey) {
-        queryClient.invalidateQueries({ queryKey: options?.queryKey });
+        void queryClient.invalidateQueries({ queryKey: options?.queryKey });
       }
     });
   }, [queryClient, subscribe, options]);

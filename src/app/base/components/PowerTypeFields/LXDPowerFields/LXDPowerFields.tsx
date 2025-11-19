@@ -60,39 +60,39 @@ export const LXDPowerFields = <V extends AnyObject>({
       onShouldGenerateCert={(shouldGenerateCert) => {
         setShouldGenerateCert(shouldGenerateCert);
         if (shouldGenerateCert) {
-          setFieldValue(certFieldName, "").catch((reason) => {
+          setFieldValue(certFieldName, "").catch((reason: unknown) => {
             throw new FormikFieldChangeError(
               certFieldName,
               "setFieldValue",
-              reason
+              reason as string
             );
           });
-          setFieldValue(privateKeyFieldName, "").catch((reason) => {
+          setFieldValue(privateKeyFieldName, "").catch((reason: unknown) => {
             throw new FormikFieldChangeError(
               privateKeyFieldName,
               "setFieldValue",
-              reason
+              reason as string
             );
           });
         } else {
           setFieldValue(
             certFieldName,
             initialParameters[CustomFields.CERTIFICATE] || ""
-          ).catch((reason) => {
+          ).catch((reason: unknown) => {
             throw new FormikFieldChangeError(
               certFieldName,
               "setFieldValue",
-              reason
+              reason as string
             );
           });
           setFieldValue(
             privateKeyFieldName,
             initialParameters[CustomFields.KEY] || ""
-          ).catch((reason) => {
+          ).catch((reason: unknown) => {
             throw new FormikFieldChangeError(
               privateKeyFieldName,
               "setFieldValue",
-              reason
+              reason as string
             );
           });
         }

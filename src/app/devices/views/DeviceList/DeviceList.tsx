@@ -23,7 +23,7 @@ const DeviceList = (): ReactElement => {
   const setSearchFilter = useCallback(
     (searchText: string) => {
       _setSearchFilter(searchText);
-      navigate({
+      void navigate({
         search: FilterDevices.filtersToQueryString(
           FilterDevices.getCurrentFilters(searchText)
         ),

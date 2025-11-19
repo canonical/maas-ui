@@ -47,13 +47,15 @@ export const TestFormFields = ({
             const selectedScripts = tags.map((tag) =>
               scripts.find((script) => script.id === tag.id)
             );
-            setFieldValue("scripts", selectedScripts).catch((reason) => {
-              throw new FormikFieldChangeError(
-                "scripts",
-                "setFieldValue",
-                reason
-              );
-            });
+            setFieldValue("scripts", selectedScripts).catch(
+              (reason: unknown) => {
+                throw new FormikFieldChangeError(
+                  "scripts",
+                  "setFieldValue",
+                  reason as string
+                );
+              }
+            );
           }}
           placeholder="Select scripts"
           tags={scripts.map(({ id, name }) => ({
@@ -77,11 +79,11 @@ export const TestFormFields = ({
               setFieldValue(
                 `scriptInputs[${script.name}].url`,
                 e.target.value
-              ).catch((reason) => {
+              ).catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   `scriptInputs[${script.name}].url`,
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             }}

@@ -78,13 +78,15 @@ const DiscoveryAddFormFields = ({
             label={Labels.Type}
             name="type"
             onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
-              setFieldValue("type", evt.target.value).catch((reason) => {
-                throw new FormikFieldChangeError(
-                  "type",
-                  "setFieldValue",
-                  reason
-                );
-              });
+              setFieldValue("type", evt.target.value).catch(
+                (reason: unknown) => {
+                  throw new FormikFieldChangeError(
+                    "type",
+                    "setFieldValue",
+                    reason as string
+                  );
+                }
+              );
               setDeviceType(evt.target.value as DeviceType);
               // Clear the device in case it has been set previously.
               setDevice(null);
@@ -129,11 +131,11 @@ const DiscoveryAddFormFields = ({
               name={DeviceMeta.PK}
               onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
                 setFieldValue(DeviceMeta.PK, evt.target.value).catch(
-                  (reason) => {
+                  (reason: unknown) => {
                     throw new FormikFieldChangeError(
                       DeviceMeta.PK,
                       "setFieldValue",
-                      reason
+                      reason as string
                     );
                   }
                 );

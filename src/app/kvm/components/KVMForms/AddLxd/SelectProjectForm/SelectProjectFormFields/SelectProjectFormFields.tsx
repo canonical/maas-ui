@@ -74,11 +74,11 @@ export const SelectProjectFormFields = ({
           name="project-select"
           onChange={() => {
             setNewProject(true);
-            setFieldValue("existingProject", "").catch((reason) => {
+            setFieldValue("existingProject", "").catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "existingProject",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
           }}
@@ -101,19 +101,19 @@ export const SelectProjectFormFields = ({
           name="project-select"
           onChange={() => {
             setNewProject(false);
-            setFieldValue("newProject", "").catch((reason) => {
+            setFieldValue("newProject", "").catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "newProject",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
             setFieldValue("existingProject", freeProjects[0]?.name || "").catch(
-              (reason) => {
+              (reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "existingProject",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               }
             );

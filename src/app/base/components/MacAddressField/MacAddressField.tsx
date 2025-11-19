@@ -19,8 +19,12 @@ export const MacAddressField = ({
       name={name}
       onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
         setFieldValue(name, formatMacAddress(evt.target.value)).catch(
-          (reason) => {
-            throw new FormikFieldChangeError(name, "setFieldValue", reason);
+          (reason: unknown) => {
+            throw new FormikFieldChangeError(
+              name,
+              "setFieldValue",
+              reason as string
+            );
           }
         );
       }}

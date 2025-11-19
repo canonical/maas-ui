@@ -165,20 +165,32 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
     setFieldValue(
       "endIP",
       subnet?.statistics.suggested_dynamic_range?.end || ""
-    ).catch((reason) => {
-      throw new FormikFieldChangeError("endIP", "setFieldValue", reason);
+    ).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "endIP",
+        "setFieldValue",
+        reason as string
+      );
     });
     setFieldValue(
       "gatewayIP",
       subnet?.gateway_ip || subnet?.statistics.suggested_gateway || ""
-    ).catch((reason) => {
-      throw new FormikFieldChangeError("gatewayIP", "setFieldValue", reason);
+    ).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "gatewayIP",
+        "setFieldValue",
+        reason as string
+      );
     });
     setFieldValue(
       "startIP",
       subnet?.statistics.suggested_dynamic_range?.start || ""
-    ).catch((reason) => {
-      throw new FormikFieldChangeError("startIP", "setFieldValue", reason);
+    ).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "startIP",
+        "setFieldValue",
+        reason as string
+      );
     });
   };
 

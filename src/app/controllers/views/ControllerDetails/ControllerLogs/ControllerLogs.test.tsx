@@ -61,7 +61,7 @@ describe("ControllerLogs", () => {
           initialEntries: [`${urls.controllers.controller.logs.index(null)}/*`],
         }
       );
-      router.navigate(path);
+      await router.navigate(path);
       expect(await screen.findByLabelText(label)).toBeInTheDocument();
     });
   });

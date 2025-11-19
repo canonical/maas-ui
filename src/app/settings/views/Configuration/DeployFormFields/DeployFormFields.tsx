@@ -34,11 +34,11 @@ const DeployFormFields = (): React.ReactElement => {
           formikProps.handleChange(e);
           formikProps
             .setFieldTouched("default_osystem", true, true)
-            .catch((reason) => {
+            .catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "default_osystem",
                 "setFieldTouched",
-                reason
+                reason as string
               );
             });
           formikProps
@@ -46,20 +46,20 @@ const DeployFormFields = (): React.ReactElement => {
               "default_distro_series",
               allDistroSeries[e.target.value][0].value
             )
-            .catch((reason) => {
+            .catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "default_distro_series",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
           formikProps
             .setFieldTouched("default_distro_series", true, true)
-            .catch((reason) => {
+            .catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "default_distro_series",
                 "setFieldTouched",
-                reason
+                reason as string
               );
             });
         }}

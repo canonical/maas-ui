@@ -32,14 +32,18 @@ export const AddLogicalVolumeFields = ({
             const value =
               e.target.value !== "" ? parseFloat(e.target.value) : "";
             handleChange(e);
-            setFieldValue("size", value).catch((reason) => {
-              throw new FormikFieldChangeError("size", "setFieldValue", reason);
+            setFieldValue("size", value).catch((reason: unknown) => {
+              throw new FormikFieldChangeError(
+                "size",
+                "setFieldValue",
+                reason as string
+              );
             });
-            setFieldTouched("size", true, false).catch((reason) => {
+            setFieldTouched("size", true, false).catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "size",
                 "setFieldTouched",
-                reason
+                reason as string
               );
             });
           }}

@@ -35,11 +35,11 @@ const AddDeviceInterfaceFields = ({
   useEffect(() => {
     if (iface.ip_assignment === DeviceIpAssignment.STATIC && subnet) {
       setFieldValue(`interfaces[${iface.id}].subnet_cidr`, subnet.cidr).catch(
-        (reason) => {
+        (reason: unknown) => {
           throw new FormikFieldChangeError(
             `interfaces[${iface.id}].subnet_cidr`,
             "setFieldValue",
-            reason
+            reason as string
           );
         }
       );
@@ -65,20 +65,20 @@ const AddDeviceInterfaceFields = ({
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           handleChange(e);
           setFieldValue(`interfaces[${iface.id}].subnet`, "").catch(
-            (reason) => {
+            (reason: unknown) => {
               throw new FormikFieldChangeError(
                 `interfaces[${iface.id}].subnet`,
                 "setFieldValue",
-                reason
+                reason as string
               );
             }
           );
           setFieldValue(`interfaces[${iface.id}].ip_address`, "").catch(
-            (reason) => {
+            (reason: unknown) => {
               throw new FormikFieldChangeError(
                 `interfaces[${iface.id}].ip_address`,
                 "setFieldValue",
-                reason
+                reason as string
               );
             }
           );
@@ -147,8 +147,12 @@ export const AddDeviceInterfaces = (): React.ReactElement => {
         ),
         subnet: "",
       },
-    ]).catch((reason) => {
-      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
+    ]).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "interfaces",
+        "setFieldValue",
+        reason as string
+      );
     });
   };
 
@@ -156,8 +160,12 @@ export const AddDeviceInterfaces = (): React.ReactElement => {
     setFieldValue(
       "interfaces",
       interfaces.filter((iface) => iface.id !== id)
-    ).catch((reason) => {
-      throw new FormikFieldChangeError("interfaces", "setFieldValue", reason);
+    ).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "interfaces",
+        "setFieldValue",
+        reason as string
+      );
     });
   };
 

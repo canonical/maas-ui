@@ -34,18 +34,18 @@ export const AuthenticationFormFields = ({
           label="Add trust to LXD via command line"
           onChange={() => {
             setUseCertificate(true);
-            setFieldTouched("password", false).catch((reason) => {
+            setFieldTouched("password", false).catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "password",
                 "setFieldTouched",
-                reason
+                reason as string
               );
             });
-            setFieldValue("password", "").catch((reason) => {
+            setFieldValue("password", "").catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "password",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
           }}

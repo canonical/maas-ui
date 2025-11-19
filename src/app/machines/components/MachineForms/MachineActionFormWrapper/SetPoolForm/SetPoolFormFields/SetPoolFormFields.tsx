@@ -17,11 +17,19 @@ export const SetPoolFormFields = (): React.ReactElement => {
     handleChange(evt);
     // Reset the name field when changing the radio options otherwise the
     // selected/provided name will appear in the different name inputs.
-    setFieldValue("name", "").catch((reason) => {
-      throw new FormikFieldChangeError("name", "setFieldValue", reason);
+    setFieldValue("name", "").catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "name",
+        "setFieldValue",
+        reason as string
+      );
     });
-    setFieldTouched("name", false, false).catch((reason) => {
-      throw new FormikFieldChangeError("name", "setFieldTouched", reason);
+    setFieldTouched("name", false, false).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "name",
+        "setFieldTouched",
+        reason as string
+      );
     });
   };
 
