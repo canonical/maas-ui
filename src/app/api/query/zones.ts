@@ -1,73 +1,79 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   CreateZoneData,
-  CreateZoneError,
-  CreateZoneResponse,
+  CreateZoneErrors,
+  CreateZoneResponses,
   DeleteZoneData,
-  DeleteZoneError,
-  DeleteZoneResponse,
+  DeleteZoneErrors,
+  DeleteZoneResponses,
   GetZoneData,
-  GetZoneError,
-  GetZoneResponse,
+  GetZoneErrors,
+  GetZoneResponses,
   ListZonesWithSummaryData,
-  ListZonesWithSummaryError,
-  ListZonesWithSummaryResponse,
+  ListZonesWithSummaryErrors,
+  ListZonesWithSummaryResponses,
   Options,
   UpdateZoneData,
-  UpdateZoneError,
-  UpdateZoneResponse,
+  UpdateZoneErrors,
+  UpdateZoneResponses,
 } from "@/app/apiclient";
 import {
-  createZoneMutation,
-  deleteZoneMutation,
-  getZoneOptions,
-  listZonesWithSummaryOptions,
+  deleteZone,
+  updateZone,
+  createZone,
+  getZone,
+  listZonesWithSummary,
+} from "@/app/apiclient";
+import {
+  getZoneQueryKey,
   listZonesWithSummaryQueryKey,
-  updateZoneMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useZones = (options?: Options<ListZonesWithSummaryData>) => {
   return useWebsocketAwareQuery(
-    listZonesWithSummaryOptions(options) as UseQueryOptions<
-      ListZonesWithSummaryData,
-      ListZonesWithSummaryError,
-      ListZonesWithSummaryResponse
-    >
+    queryOptionsWithHeaders<
+      ListZonesWithSummaryResponses,
+      ListZonesWithSummaryErrors,
+      ListZonesWithSummaryData
+    >(options, listZonesWithSummary, listZonesWithSummaryQueryKey(options))
   );
 };
 
 export const useZoneCount = (options?: Options<ListZonesWithSummaryData>) => {
   return useWebsocketAwareQuery({
-    ...listZonesWithSummaryOptions(options),
+    ...queryOptionsWithHeaders<
+      ListZonesWithSummaryResponses,
+      ListZonesWithSummaryErrors,
+      ListZonesWithSummaryData
+    >(options, listZonesWithSummary, listZonesWithSummaryQueryKey(options)),
     select: (data) => data?.total ?? 0,
-  } as UseQueryOptions<
-    ListZonesWithSummaryResponse,
-    ListZonesWithSummaryResponse,
-    number
-  >);
+  });
 };
 
 export const useGetZone = (options: Options<GetZoneData>) => {
   return useWebsocketAwareQuery(
-    getZoneOptions(options) as UseQueryOptions<
-      GetZoneResponse,
-      GetZoneError,
-      GetZoneResponse
-    >
+    queryOptionsWithHeaders<GetZoneResponses, GetZoneErrors, GetZoneData>(
+      options,
+      getZone,
+      getZoneQueryKey(options)
+    )
   );
 };
 
 export const useCreateZone = (mutationOptions?: Options<CreateZoneData>) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreateZoneResponse,
-    CreateZoneError,
-    Options<CreateZoneData>
-  >({
-    ...createZoneMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateZoneResponses,
+      CreateZoneErrors,
+      CreateZoneData
+    >(mutationOptions, createZone),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listZonesWithSummaryQueryKey(),
@@ -78,12 +84,12 @@ export const useCreateZone = (mutationOptions?: Options<CreateZoneData>) => {
 
 export const useUpdateZone = (mutationOptions?: Options<UpdateZoneData>) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    UpdateZoneResponse,
-    UpdateZoneError,
-    Options<UpdateZoneData>
-  >({
-    ...updateZoneMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdateZoneResponses,
+      UpdateZoneErrors,
+      UpdateZoneData
+    >(mutationOptions, updateZone),
     onSuccess: async () => {
       return queryClient.invalidateQueries({
         queryKey: listZonesWithSummaryQueryKey(),
@@ -94,12 +100,12 @@ export const useUpdateZone = (mutationOptions?: Options<UpdateZoneData>) => {
 
 export const useDeleteZone = (mutationOptions?: Options<DeleteZoneData>) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DeleteZoneResponse,
-    DeleteZoneError,
-    Options<DeleteZoneData>
-  >({
-    ...deleteZoneMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteZoneResponses,
+      DeleteZoneErrors,
+      DeleteZoneData
+    >(mutationOptions, deleteZone),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listZonesWithSummaryQueryKey(),
