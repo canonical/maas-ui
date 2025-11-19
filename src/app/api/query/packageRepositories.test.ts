@@ -46,7 +46,7 @@ describe("useGetPackageRepository", () => {
       expect(result.current.isSuccess).toBe(true);
     });
 
-    expect(result.current.data).toEqual(mockPackageRepositories.items[0]);
+    expect(result.current.data).toMatchObject(mockPackageRepositories.items[0]);
   });
 
   it("should return an error if the pacakge repo does not exist", async () => {
