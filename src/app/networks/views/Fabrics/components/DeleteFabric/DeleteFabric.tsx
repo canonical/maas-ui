@@ -5,9 +5,10 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useFetchActions } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
-import subnetURLs from "@/app/networks/urls";
+import urls from "@/app/networks/urls";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
@@ -32,6 +33,8 @@ const DeleteFabric = ({ id }: DeleteFabricProps): ReactElement | null => {
   const saved = useSelector(fabricSelectors.saved);
   const saving = useSelector(fabricSelectors.saving);
   const cleanup = useCallback(() => fabricActions.cleanup(), []);
+
+  useFetchActions([fabricActions.fetch]);
 
   // TODO: better error handling
   if (!isId(id) || !fabric) {
@@ -74,7 +77,7 @@ const DeleteFabric = ({ id }: DeleteFabricProps): ReactElement | null => {
       }}
       onSuccess={closeSidePanel}
       saved={saved}
-      savedRedirect={subnetURLs.indexWithParams({ by: "fabric" })}
+      savedRedirect={urls.fabrics.index}
       saving={saving}
       submitAppearance="negative"
       submitDisabled={fabricIsDefault || hasSubnets}
