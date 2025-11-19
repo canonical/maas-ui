@@ -1,41 +1,41 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseQueryOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "./base";
 
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
-  CreateUserSshkeysError,
-  CreateUserSshkeysResponse,
   ImportUserSshkeysData,
-  ImportUserSshkeysError,
-  ImportUserSshkeysResponse,
   CreateUserSshkeysData,
   ListUserSshkeysData,
-  ListUserSshkeysError,
-  ListUserSshkeysResponse,
   DeleteUserSshkeyData,
-  DeleteUserSshkeyResponse,
-  DeleteUserSshkeyError,
   Options,
+  ListUserSshkeysResponses,
+  ListUserSshkeysErrors,
+  CreateUserSshkeysResponses,
+  CreateUserSshkeysErrors,
+  ImportUserSshkeysResponses,
+  ImportUserSshkeysErrors,
+  DeleteUserSshkeyResponses,
+  DeleteUserSshkeyErrors,
 } from "@/app/apiclient";
 import {
-  createUserSshkeysMutation,
-  deleteUserSshkeyMutation,
-  importUserSshkeysMutation,
-  listUserSshkeysOptions,
-  listUserSshkeysQueryKey,
-} from "@/app/apiclient/@tanstack/react-query.gen";
+  deleteUserSshkey,
+  importUserSshkeys,
+  createUserSshkeys,
+  listUserSshkeys,
+} from "@/app/apiclient";
+import { listUserSshkeysQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useListSshKeys = (options?: Options<ListUserSshkeysData>) => {
   return useWebsocketAwareQuery(
-    listUserSshkeysOptions(options) as UseQueryOptions<
-      ListUserSshkeysData,
-      ListUserSshkeysError,
-      ListUserSshkeysResponse
-    >
+    queryOptionsWithHeaders<
+      ListUserSshkeysResponses,
+      ListUserSshkeysErrors,
+      ListUserSshkeysData
+    >(options, listUserSshkeys, listUserSshkeysQueryKey(options))
   );
 };
 
@@ -43,12 +43,12 @@ export const useCreateSshKeys = (
   mutationOptions?: Options<CreateUserSshkeysData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreateUserSshkeysResponse,
-    CreateUserSshkeysError,
-    Options<CreateUserSshkeysData>
-  >({
-    ...createUserSshkeysMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateUserSshkeysResponses,
+      CreateUserSshkeysErrors,
+      CreateUserSshkeysData
+    >(mutationOptions, createUserSshkeys),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listUserSshkeysQueryKey(),
@@ -61,12 +61,12 @@ export const useImportSshKeys = (
   mutationOptions?: Options<ImportUserSshkeysData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    ImportUserSshkeysResponse,
-    ImportUserSshkeysError,
-    Options<ImportUserSshkeysData>
-  >({
-    ...importUserSshkeysMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      ImportUserSshkeysResponses,
+      ImportUserSshkeysErrors,
+      ImportUserSshkeysData
+    >(mutationOptions, importUserSshkeys),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listUserSshkeysQueryKey(),
@@ -79,12 +79,12 @@ export const useDeleteSshKey = (
   mutationOptions?: Options<DeleteUserSshkeyData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DeleteUserSshkeyResponse,
-    DeleteUserSshkeyError,
-    Options<DeleteUserSshkeyData>
-  >({
-    ...deleteUserSshkeyMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteUserSshkeyResponses,
+      DeleteUserSshkeyErrors,
+      DeleteUserSshkeyData
+    >(mutationOptions, deleteUserSshkey),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listUserSshkeysQueryKey(),

@@ -29,7 +29,7 @@ describe("useListSshKeys", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(mockSshKeys);
+    expect(result.current.data?.items).toEqual(mockSshKeys.items);
   });
 });
 
