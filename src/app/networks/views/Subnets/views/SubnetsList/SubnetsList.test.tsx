@@ -53,7 +53,9 @@ describe("SubnetsList", () => {
   it("sets the options from the URL on load", async () => {
     renderWithProviders(<SubnetsList />, {
       state,
-      initialEntries: [urls.indexWithParams({ by: "space", q: "fabric-1" })],
+      initialEntries: [
+        urls.subnets.indexWithParams({ by: "space", q: "fabric-1" }),
+      ],
     });
 
     await waitFor(() => {

@@ -86,6 +86,9 @@ const SubnetsList = lazy(
 const VLANDetails = lazy(
   () => import("@/app/networks/views/VLANs/views/VLANDetails")
 );
+const VLANsList = lazy(
+  () => import("@/app/networks/views/VLANs/views/VLANsList")
+);
 const ZonesList = lazy(() => import("@/app/zones/views"));
 
 export const router = createBrowserRouter(
@@ -355,6 +358,17 @@ export const router = createBrowserRouter(
               element: (
                 <ErrorBoundary>
                   <SubnetsList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.networks.vlans.index,
+                urls.networks.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <VLANsList />
                 </ErrorBoundary>
               ),
             },

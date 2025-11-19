@@ -13,7 +13,7 @@ import {
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import subnetURLs from "@/app/networks/urls";
+import urls from "@/app/networks/urls";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import { FabricMeta } from "@/app/store/fabric/types";
@@ -51,7 +51,7 @@ const FabricDetails = (): ReactElement => {
       return (
         <ModelNotFound
           id={id}
-          linkURL={subnetURLs.indexWithParams({ by: "fabric" })}
+          linkURL={urls.subnets.indexWithParams({ by: "fabric" })}
           modelName="fabric"
         />
       );
