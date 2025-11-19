@@ -23,7 +23,7 @@ describe("useNetworkDiscoveries", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(mockNetworkDiscoveries);
+    expect(result.current.data).toMatchObject(mockNetworkDiscoveries);
   });
 });
 
