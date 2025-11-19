@@ -13,7 +13,7 @@ import {
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import subnetURLs from "@/app/networks/urls";
+import urls from "@/app/networks/urls";
 import type { RootState } from "@/app/store/root/types";
 import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
@@ -48,11 +48,7 @@ const SpaceDetails = (): ReactElement => {
 
     if (spaceNotFound) {
       return (
-        <ModelNotFound
-          id={id}
-          linkURL={subnetURLs.indexWithParams({ by: "space" })}
-          modelName="space"
-        />
+        <ModelNotFound id={id} linkURL={urls.spaces.index} modelName="space" />
       );
     }
   }

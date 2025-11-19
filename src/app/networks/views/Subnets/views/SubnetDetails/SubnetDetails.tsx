@@ -15,9 +15,8 @@ import SubnetUsedIPs from "./views/SubnetUsedIPs";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import urls from "@/app/base/urls";
 import { DHCPSnippets, ReservedRangesTable } from "@/app/networks/components";
-import subnetURLs from "@/app/networks/urls";
+import urls from "@/app/networks/urls";
 import type { RootState } from "@/app/store/root/types";
 import { staticRouteActions } from "@/app/store/staticroute";
 import { subnetActions } from "@/app/store/subnet";
@@ -52,13 +51,13 @@ const SubnetDetails = (): ReactElement => {
     return (
       <ModelNotFound
         id={id}
-        linkURL={subnetURLs.indexWithParams({ by: "fabric" })}
+        linkURL={urls.subnets.indexWithParams({ by: "fabric" })}
         modelName="subnet"
       />
     );
   }
 
-  const base = urls.networks.subnet.index(null);
+  const base = urls.subnet.index(null);
 
   return (
     <PageContent
@@ -72,9 +71,7 @@ const SubnetDetails = (): ReactElement => {
       ) : (
         <Routes>
           <Route
-            element={
-              <Navigate replace to={urls.networks.subnet.summary({ id })} />
-            }
+            element={<Navigate replace to={urls.subnet.summary({ id })} />}
             index
           />
           <Route
@@ -84,14 +81,11 @@ const SubnetDetails = (): ReactElement => {
                 <SubnetUtilisation statistics={subnet.statistics} />
               </>
             }
-            path={getRelativeRoute(urls.networks.subnet.summary(null), base)}
+            path={getRelativeRoute(urls.subnet.summary(null), base)}
           />
           <Route
             element={<StaticRoutes subnetId={id} />}
-            path={getRelativeRoute(
-              urls.networks.subnet.staticRoutes(null),
-              base
-            )}
+            path={getRelativeRoute(urls.subnet.staticRoutes(null), base)}
           />
           <Route
             element={
@@ -100,31 +94,20 @@ const SubnetDetails = (): ReactElement => {
                 <ReservedRangesTable subnetId={id} />
               </>
             }
-            path={getRelativeRoute(
-              urls.networks.subnet.addressReservation(null),
-              base
-            )}
+            path={getRelativeRoute(urls.subnet.addressReservation(null), base)}
           />
           <Route
             element={
               <DHCPSnippets modelName={SubnetMeta.MODEL} subnetIds={[id]} />
             }
-            path={getRelativeRoute(
-              urls.networks.subnet.dhcpSnippets(null),
-              base
-            )}
+            path={getRelativeRoute(urls.subnet.dhcpSnippets(null), base)}
           />
           <Route
             element={<SubnetUsedIPs subnetId={id} />}
-            path={getRelativeRoute(
-              urls.networks.subnet.usedIpAddresses(null),
-              base
-            )}
+            path={getRelativeRoute(urls.subnet.usedIpAddresses(null), base)}
           />
           <Route
-            element={
-              <Navigate replace to={urls.networks.subnet.summary({ id })} />
-            }
+            element={<Navigate replace to={urls.subnet.summary({ id })} />}
             path={base}
           />
         </Routes>

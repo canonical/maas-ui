@@ -15,7 +15,7 @@ import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useGetURLId, useWindowTitle } from "@/app/base/hooks";
 import { DHCPSnippets, ReservedRangesTable } from "@/app/networks/components";
-import subnetURLs from "@/app/networks/urls";
+import urls from "@/app/networks/urls";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { vlanActions } from "@/app/store/vlan";
@@ -51,11 +51,7 @@ const VLANDetails = (): ReactElement => {
 
   if (!vlan && !vlansLoading) {
     return (
-      <ModelNotFound
-        id={id}
-        linkURL={subnetURLs.indexWithParams({ by: "fabric" })}
-        modelName="VLAN"
-      />
+      <ModelNotFound id={id} linkURL={urls.vlans.index} modelName="VLAN" />
     );
   }
 
