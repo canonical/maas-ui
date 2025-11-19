@@ -20,6 +20,7 @@ export const spaceV3 = Factory.define<SpaceResponse>(({ sequence }) => {
     dictionaries: [adjectives],
     style: "lowerCase",
     seed: sequence,
+    length: 1,
   });
 
   return {
