@@ -131,7 +131,7 @@ const AddAliasOrVlan = ({
         secondarySubmit={(_, { submitForm }) => {
           // Flag that the form was submitted by the secondary action.
           setSecondarySubmit(true);
-          void submitForm();
+          return submitForm();
         }}
         secondarySubmitDisabled={!canAddAnother}
         secondarySubmitLabel={Labels.SaveAndAdd}
