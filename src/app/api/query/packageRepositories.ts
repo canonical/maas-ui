@@ -1,47 +1,54 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseQueryOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "./base";
 
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   CreatePackageRepositoryData,
-  CreatePackageRepositoryError,
-  CreatePackageRepositoryResponse,
+  CreatePackageRepositoryErrors,
+  CreatePackageRepositoryResponses,
   DeletePackageRepositoryData,
-  DeletePackageRepositoryError,
-  DeletePackageRepositoryResponse,
+  DeletePackageRepositoryErrors,
+  DeletePackageRepositoryResponses,
   GetPackageRepositoryData,
-  GetPackageRepositoryError,
-  GetPackageRepositoryResponse,
+  GetPackageRepositoryErrors,
+  GetPackageRepositoryResponses,
   ListPackageRepositoriesData,
-  ListPackageRepositoriesError,
-  ListPackageRepositoriesResponse,
+  ListPackageRepositoriesErrors,
+  ListPackageRepositoriesResponses,
   Options,
   UpdatePackageRepositoryData,
-  UpdatePackageRepositoryError,
-  UpdatePackageRepositoryResponse,
+  UpdatePackageRepositoryErrors,
+  UpdatePackageRepositoryResponses,
 } from "@/app/apiclient";
 import {
-  createPackageRepositoryMutation,
-  deletePackageRepositoryMutation,
-  getPackageRepositoryOptions,
-  listPackageRepositoriesOptions,
+  createPackageRepository,
+  deletePackageRepository,
+  getPackageRepository,
+  listPackageRepositories,
+  updatePackageRepository,
+} from "@/app/apiclient";
+import {
+  getPackageRepositoryQueryKey,
   listPackageRepositoriesQueryKey,
-  updatePackageRepositoryMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const usePackageRepositories = (
   options?: Options<ListPackageRepositoriesData>
 ) => {
   return useWebsocketAwareQuery(
-    listPackageRepositoriesOptions(options) as UseQueryOptions<
-      ListPackageRepositoriesData,
-      ListPackageRepositoriesError,
-      ListPackageRepositoriesResponse
-    >
+    queryOptionsWithHeaders<
+      ListPackageRepositoriesResponses,
+      ListPackageRepositoriesErrors,
+      ListPackageRepositoriesData
+    >(
+      options,
+      listPackageRepositories,
+      listPackageRepositoriesQueryKey(options)
+    )
   );
 };
 
@@ -49,11 +56,11 @@ export const useGetPackageRepository = (
   options: Options<GetPackageRepositoryData>
 ) => {
   return useWebsocketAwareQuery(
-    getPackageRepositoryOptions(options) as UseQueryOptions<
-      GetPackageRepositoryData,
-      GetPackageRepositoryError,
-      GetPackageRepositoryResponse
-    >
+    queryOptionsWithHeaders<
+      GetPackageRepositoryResponses,
+      GetPackageRepositoryErrors,
+      GetPackageRepositoryData
+    >(options, getPackageRepository, getPackageRepositoryQueryKey(options))
   );
 };
 
@@ -61,12 +68,12 @@ export const useCreatePackageRepository = (
   mutationOptions?: Options<CreatePackageRepositoryData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreatePackageRepositoryResponse,
-    CreatePackageRepositoryError,
-    Options<CreatePackageRepositoryData>
-  >({
-    ...createPackageRepositoryMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreatePackageRepositoryResponses,
+      CreatePackageRepositoryErrors,
+      CreatePackageRepositoryData
+    >(mutationOptions, createPackageRepository),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listPackageRepositoriesQueryKey(),
@@ -79,12 +86,12 @@ export const useUpdatePackageRepository = (
   mutationOptions?: Options<UpdatePackageRepositoryData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    UpdatePackageRepositoryResponse,
-    UpdatePackageRepositoryError,
-    Options<UpdatePackageRepositoryData>
-  >({
-    ...updatePackageRepositoryMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdatePackageRepositoryResponses,
+      UpdatePackageRepositoryErrors,
+      UpdatePackageRepositoryData
+    >(mutationOptions, updatePackageRepository),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listPackageRepositoriesQueryKey(),
@@ -97,12 +104,12 @@ export const useDeletePackageRepository = (
   mutationOptions?: Options<DeletePackageRepositoryData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DeletePackageRepositoryResponse,
-    DeletePackageRepositoryError,
-    Options<DeletePackageRepositoryData>
-  >({
-    ...deletePackageRepositoryMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeletePackageRepositoryResponses,
+      DeletePackageRepositoryErrors,
+      DeletePackageRepositoryData
+    >(mutationOptions, deletePackageRepository),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listPackageRepositoriesQueryKey(),

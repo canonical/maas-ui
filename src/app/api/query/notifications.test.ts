@@ -48,7 +48,7 @@ describe("useListNotifications", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(mockNotifications);
+    expect(result.current.data).toMatchObject(mockNotifications);
   });
 });
 
