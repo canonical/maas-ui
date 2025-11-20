@@ -24,9 +24,7 @@ const DeletePool = ({ id }: DeletePoolProps): ReactElement => {
     <>
       {pool.isPending && <Spinner text="Loading..." />}
       {pool.isError && (
-        <Notification data-testid="no-such-pool-error" severity="negative">
-          {pool.error.message}
-        </Notification>
+        <Notification severity="negative">{pool.error.message}</Notification>
       )}
       {pool.isSuccess && pool.data && (
         <ModelActionForm

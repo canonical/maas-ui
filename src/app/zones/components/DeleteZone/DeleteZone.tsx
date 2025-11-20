@@ -23,9 +23,7 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ id }) => {
     <>
       {zone.isPending && <Spinner text="Loading..." />}
       {zone.isError && (
-        <Notification data-testid="no-such-zone-error" severity="negative">
-          {zone.error.message}
-        </Notification>
+        <Notification severity="negative">{zone.error.message}</Notification>
       )}
       {zone.isSuccess && zone.data && (
         <ModelActionForm

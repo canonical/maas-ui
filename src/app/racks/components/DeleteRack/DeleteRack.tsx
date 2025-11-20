@@ -19,9 +19,7 @@ const DeleteRack = ({ id }: DeleteRackProps): ReactElement => {
     <>
       {rack.isPending && <Spinner text="Loading..." />}
       {rack.isError && (
-        <Notification data-testid="no-such-rack-error" severity="negative">
-          {rack.error.message}
-        </Notification>
+        <Notification severity="negative">{rack.error.message}</Notification>
       )}
       {rack.isSuccess && rack.data && (
         <ModelActionForm
