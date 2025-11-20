@@ -8,7 +8,7 @@ import {
 import type { Options } from "@/app/apiclient";
 import type { RequestResult, TDataShape } from "@/app/apiclient/client";
 
-type WithHeaders<T> = T & { headers?: Headers };
+export type WithHeaders<T> = T & { headers?: Headers };
 
 /**
  * Creates query options that include response headers in the returned data.

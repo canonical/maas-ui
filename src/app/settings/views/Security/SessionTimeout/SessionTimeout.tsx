@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { ContentSection } from "@canonical/maas-react-components";
 import { Icon, Notification, Spinner } from "@canonical/react-components";
 import { formatDuration } from "date-fns";
@@ -56,11 +58,12 @@ const SessionTimeoutSchema = Yup.object().shape({
     ),
 });
 
-const SessionTimeout = (): React.ReactElement => {
+const SessionTimeout = (): ReactElement => {
   const names = [ConfigNames.SESSION_LENGTH] as PublicConfigName[];
   const { data, isPending, error } = useConfigurations({
     query: { name: names },
   });
+  const eTag = data?.headers?.get("ETag");
   const session_length = data?.items?.[0].value || {};
   const updateConfig = useBulkSetConfigurations();
   useWindowTitle("Session timeout");
@@ -106,6 +109,9 @@ const SessionTimeout = (): React.ReactElement => {
               sessionLengthInSeconds &&
                 updateConfig.mutate(
                   {
+                    headers: {
+                      ETag: eTag,
+                    },
                     body: {
                       configurations: [
                         {

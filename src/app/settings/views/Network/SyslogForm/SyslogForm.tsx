@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { ContentSection } from "@canonical/maas-react-components";
 import { Spinner, Notification } from "@canonical/react-components";
 import * as Yup from "yup";
@@ -17,10 +19,11 @@ const SyslogSchema = Yup.object().shape({
   remote_syslog: Yup.string(),
 });
 
-const SyslogForm = (): React.ReactElement => {
+const SyslogForm = (): ReactElement => {
   const { data, isPending, error, isSuccess } = useGetConfiguration({
     path: { name: ConfigNames.REMOTE_SYSLOG },
   });
+  const eTag = data?.headers?.get("ETag");
   const remote_syslog = data?.value || "";
   const updateConfig = useSetConfiguration();
 
@@ -56,6 +59,9 @@ const SyslogForm = (): React.ReactElement => {
               }}
               onSubmit={(values, { resetForm }) => {
                 updateConfig.mutate({
+                  headers: {
+                    ETag: eTag,
+                  },
                   body: {
                     value: values.remote_syslog,
                   },

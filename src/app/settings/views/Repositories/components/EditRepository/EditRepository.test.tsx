@@ -222,6 +222,9 @@ describe("RepositoryEdit", () => {
 
     await waitFor(() => {
       expect(mockMutate).toHaveBeenCalledWith({
+        headers: {
+          ETag: null,
+        },
         body: {
           arches: [],
           disable_sources: false,

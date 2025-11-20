@@ -28,15 +28,14 @@ const EditPool = ({ id }: EditPoolProps): ReactElement => {
   const queryClient = useQueryClient();
   const pool = useGetPool({ path: { resource_pool_id: id } });
 
+  const eTag = pool.data?.headers?.get("ETag");
   const editPool = useUpdatePool();
 
   return (
     <>
       {pool.isPending && <Spinner text="Loading..." />}
       {pool.isError && (
-        <Notification data-testid="no-such-pool-error" severity="negative">
-          {pool.error.message}
-        </Notification>
+        <Notification severity="negative">{pool.error.message}</Notification>
       )}
       {pool.isSuccess && pool.data && (
         <FormikForm<ResourcePoolRequest, UpdateResourcePoolError>
@@ -49,6 +48,9 @@ const EditPool = ({ id }: EditPoolProps): ReactElement => {
           onCancel={closeSidePanel}
           onSubmit={(values) => {
             editPool.mutate({
+              headers: {
+                ETag: eTag,
+              },
               body: {
                 name: values.name,
                 description: values.description,

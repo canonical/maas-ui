@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import * as Yup from "yup";
 
 import {
@@ -18,10 +20,11 @@ export enum Labels {
   CheckboxLabel = "Enable the installation of proprietary drivers (i.e. HPVSA)",
 }
 
-const ThirdPartyDriversForm = (): React.ReactElement => {
+const ThirdPartyDriversForm = (): ReactElement => {
   const { data, isPending, isSuccess } = useGetConfiguration({
     path: { name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS },
   });
+  const eTag = data?.headers?.get("ETag");
   const enable_third_party_drivers = data?.value || false;
   const updateConfig = useSetConfiguration();
 
@@ -40,6 +43,9 @@ const ThirdPartyDriversForm = (): React.ReactElement => {
       }}
       onSubmit={(values, { resetForm }) => {
         updateConfig.mutate({
+          headers: {
+            ETag: eTag,
+          },
           body: {
             value: values.enable_third_party_drivers,
           },

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { ContentSection } from "@canonical/maas-react-components";
 import { Notification, Spinner } from "@canonical/react-components";
 import * as Yup from "yup";
@@ -19,10 +21,11 @@ const NtpSchema = Yup.object().shape({
   ntp_servers: Yup.string(),
 });
 
-const NtpForm = (): React.ReactElement => {
+const NtpForm = (): ReactElement => {
   const { data, error, isPending, isError } = useConfigurations({
     query: { name: [ConfigNames.NTP_EXTERNAL_ONLY, ConfigNames.NTP_SERVERS] },
   });
+  const eTag = data?.headers?.get("ETag");
   const updateConfig = useBulkSetConfigurations();
 
   useWindowTitle("NTP");
@@ -70,6 +73,9 @@ const NtpForm = (): React.ReactElement => {
             onSubmit={(values, { resetForm }) => {
               updateConfig.mutate(
                 {
+                  headers: {
+                    ETag: eTag,
+                  },
                   body: {
                     configurations: [
                       {
