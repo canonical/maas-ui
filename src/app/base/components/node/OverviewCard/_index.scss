@@ -239,6 +239,12 @@
         }
       }
     }
+  
+    &__cpu, &__cpu-tests, &__memory, &__memory-tests, &__storage, &__storage-tests, &__details {
+      &::after, &::before {
+        background-color: var(--vf-color-border-default) !important;
+      }
+    }
   }
 
   .overview-card__placeholder {

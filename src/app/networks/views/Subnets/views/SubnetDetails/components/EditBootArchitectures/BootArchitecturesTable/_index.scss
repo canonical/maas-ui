@@ -22,16 +22,4 @@
       width: 20%;
     }
   }
-
-  .boot-architectures-table__row {
-    background-color: $color-x-light;
-
-    &:hover {
-      background-color: $color-light;
-
-      &.is-selected {
-        background-color: color.scale($color-link, $alpha: -85%);
-      }
-    }
-  }
 }

@@ -235,7 +235,7 @@
   }
 
   .u-text--light {
-    color: $color-mid-dark !important;
+    color: var(--vf-color-text-muted);
   }
 
   .u-upper-case--first:first-letter {
@@ -295,6 +295,12 @@
       .p-side-navigation__link:hover, [aria-current=page].p-side-navigation__link, .p-button--base:hover {
         background-color: color.scale($color, $lightness: 8%) !important;
       }
+
+      @media (min-width: $breakpoint-small) {
+        .p-side-navigation__item.has-active-child {
+          background-color: color.scale($color, $lightness: 8%);
+        }
+      } 
     }
 
     .is-maas-#{$name}--accent {
