@@ -3,13 +3,13 @@ import { generateMAASURL } from "../../utils";
 context("Subnets", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateMAASURL("/networks?by=fabric"));
+    cy.visit(generateMAASURL("/networks/suubnets?by=fabric"));
     cy.waitForPageToLoad();
     cy.viewport("macbook-11");
   });
 
   it("renders the correct heading", () => {
-    cy.findByRole("heading", { level: 1 }).contains("Subnets");
+    cy.findByRole("heading", { level: 1 }).contains("Networks");
   });
 
   it("displays the main networking view correctly", () => {
@@ -36,7 +36,7 @@ context("Subnets", () => {
       "fabric"
     );
 
-    cy.url().should("include", generateMAASURL("/networks?by=fabric"));
+    cy.url().should("include", generateMAASURL("/networks/subnets?by=fabric"));
   });
 
   it("allows grouping by fabric and space", () => {
@@ -62,6 +62,6 @@ context("Subnets", () => {
       cy.get("tbody tr").first().should("include.text", "space");
     });
 
-    cy.url().should("include", generateMAASURL("/networks?by=space"));
+    cy.url().should("include", generateMAASURL("/networks/subnets?by=space"));
   });
 });
