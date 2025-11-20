@@ -291,13 +291,13 @@
 @include ScriptDetails;
 
 // subnets
-@import "@/app/subnets/views/VLANs/components/ReservedRangesTable";
-@import "../app/subnets/views/Fabrics/components/FabricVLANsTable";
-@import "@/app/subnets/views/Subnets/components/StaticRoutes";
-@import "@/app/subnets/views/Subnets/components/EditBootArchitectures/BootArchitecturesTable";
-@import "@/app/subnets/views/Subnets/components/SubnetUsedIPs";
-@import "@/app/subnets/views/Subnets/views/SubnetsList";
-@import "@/app/subnets/views/VLANs/components/VLANSubnetsTable";
+@import "@/app/networks/components/ReservedRangesTable";
+@import "@/app/networks/views/Fabrics/views/FabricDetails/components/FabricVLANsTable";
+@import "@/app/networks/views/Subnets/views/SubnetDetails/views/StaticRoutes";
+@import "@/app/networks/views/Subnets/views/SubnetDetails/components/EditBootArchitectures/BootArchitecturesTable";
+@import "@/app/networks/views/Subnets/views/SubnetDetails/views/SubnetUsedIPs";
+@import "@/app/networks/views/Subnets/views/SubnetsList";
+@import "@/app/networks/views/VLANs/views/VLANDetails/components/VLANSubnetsTable";
 @include BootArchitecturesTable;
 @include FabricVLANsTable;
 @include ReservedRanges;

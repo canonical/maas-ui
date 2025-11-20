@@ -36,7 +36,7 @@ export const FabricColumn = ({
             {fabricName && (fabricID || fabricID === 0) ? (
               <Link
                 className="p-link--soft"
-                to={urls.subnets.fabric.index({ id: fabricID })}
+                to={urls.networks.fabric.index({ id: fabricID })}
               >
                 {fabricName}
               </Link>

@@ -29,12 +29,12 @@ jobs:
             kvm
             machines
             networkDiscovery
+            networks
             pools
             preferences
             racks
             settings
             store
-            subnets
             tags
             utils
             zones

@@ -30,7 +30,7 @@ const SubnetLink = ({ id }: Props): React.ReactElement => {
     return <>{subnetDisplay}</>;
   }
   return (
-    <Link to={urls.subnets.subnet.index({ id: subnet.id })}>
+    <Link to={urls.networks.subnet.index({ id: subnet.id })}>
       {subnetDisplay}
     </Link>
   );

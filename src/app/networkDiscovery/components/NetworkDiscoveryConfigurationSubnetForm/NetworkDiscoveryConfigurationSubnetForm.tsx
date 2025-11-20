@@ -79,7 +79,7 @@ const NetworkDiscoveryConfigurationSubnetForm = (): React.ReactElement => {
                     <>
                       <Link
                         data-testid="subnet-link"
-                        to={urls.subnets.subnet.index({ id: subnet.id })}
+                        to={urls.networks.subnet.index({ id: subnet.id })}
                       >
                         {subnet.cidr}
                       </Link>
@@ -88,7 +88,7 @@ const NetworkDiscoveryConfigurationSubnetForm = (): React.ReactElement => {
                           <span> on </span>
                           <Link
                             data-testid="fabric-link"
-                            to={urls.subnets.fabric.index({
+                            to={urls.networks.fabric.index({
                               id: targetFabric.id,
                             })}
                           >

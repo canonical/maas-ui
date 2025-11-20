@@ -45,7 +45,7 @@ const DhcpTarget = ({ nodeId, subnetId }: Props): React.ReactElement | null => {
   } else if (type === "device" && nodeId) {
     route = urls.devices.device.index({ id: nodeId });
   } else if (type === "subnet" && subnetId) {
-    route = urls.subnets.subnet.index({ id: subnetId });
+    route = urls.networks.subnet.index({ id: subnetId });
   }
   return route ? <Link to={route}>{name}</Link> : null;
 };

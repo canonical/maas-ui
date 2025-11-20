@@ -67,23 +67,33 @@ const DiscoveriesList = lazy(
 const NetworkDiscoveryConfigurationForm = lazy(
   () => import("@/app/networkDiscovery/views/NetworkDiscoveryConfigurationForm")
 );
+const Networks = lazy(() => import("@/app/networks"));
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const RacksList = lazy(() => import("@/app/racks/views/RacksList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(
-  () => import("@/app/subnets/views/Fabrics/views/FabricDetails")
+  () => import("@/app/networks/views/Fabrics/views/FabricDetails")
+);
+const FabricsList = lazy(
+  () => import("@/app/networks/views/Fabrics/views/FabricsList")
 );
 const SpaceDetails = lazy(
-  () => import("@/app/subnets/views/Spaces/views/SpaceDetails")
+  () => import("@/app/networks/views/Spaces/views/SpaceDetails")
+);
+const SpacesList = lazy(
+  () => import("@/app/networks/views/Spaces/views/SpacesList")
 );
 const SubnetDetails = lazy(
-  () => import("@/app/subnets/views/Subnets/views/SubnetDetails")
+  () => import("@/app/networks/views/Subnets/views/SubnetDetails")
 );
 const SubnetsList = lazy(
-  () => import("@/app/subnets/views/Subnets/views/SubnetsList")
+  () => import("@/app/networks/views/Subnets/views/SubnetsList")
 );
 const VLANDetails = lazy(
-  () => import("@/app/subnets/views/VLANs/views/VLANDetails")
+  () => import("@/app/networks/views/VLANs/views/VLANDetails")
+);
+const VLANsList = lazy(
+  () => import("@/app/networks/views/VLANs/views/VLANsList")
 );
 const ZonesList = lazy(() => import("@/app/zones/views"));
 
@@ -196,7 +206,7 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.subnets.space.index(null)}/*`,
+          path: `${urls.networks.space.index(null)}/*`,
           element: (
             <ErrorBoundary>
               <SpaceDetails />
@@ -299,7 +309,7 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.subnets.fabric.index(null)}/*`,
+          path: `${urls.networks.fabric.index(null)}/*`,
           element: (
             <ErrorBoundary>
               <FabricDetails />
@@ -339,15 +349,61 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.subnets.index}/*`,
-          element: (
-            <ErrorBoundary>
-              <SubnetsList />
-            </ErrorBoundary>
-          ),
+          path: urls.networks.index,
+          element: <Networks />,
+          children: [
+            {
+              path: `${urls.networks.index}`,
+              element: <Navigate replace to={urls.networks.subnets.index} />,
+            },
+            {
+              path: getRelativeRoute(
+                urls.networks.subnets.index,
+                urls.networks.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SubnetsList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.networks.spaces.index,
+                urls.networks.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <SpacesList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.networks.fabrics.index,
+                urls.networks.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <FabricsList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: getRelativeRoute(
+                urls.networks.vlans.index,
+                urls.networks.index
+              ),
+              element: (
+                <ErrorBoundary>
+                  <VLANsList />
+                </ErrorBoundary>
+              ),
+            },
+          ],
         },
         {
-          path: `${urls.subnets.subnet.index(null)}/*`,
+          path: `${urls.networks.subnet.index(null)}/*`,
           element: (
             <ErrorBoundary>
               <SubnetDetails />
@@ -355,7 +411,7 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: `${urls.subnets.vlan.index(null)}/*`,
+          path: `${urls.networks.vlan.index(null)}/*`,
           element: (
             <ErrorBoundary>
               <VLANDetails />

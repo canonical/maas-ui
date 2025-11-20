@@ -58,6 +58,6 @@ it("renders a link if fabrics have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    urls.subnets.fabric.index({ id: fabric.id })
+    urls.networks.fabric.index({ id: fabric.id })
   );
 });
