@@ -235,7 +235,7 @@
   }
 
   .u-text--light {
-    color: $color-mid-dark !important;
+    color: var(--vf-color-text-muted);
   }
 
   .u-upper-case--first:first-letter {
@@ -266,42 +266,5 @@
 
   .u-width--full {
     width: 100% !important;
-  }
-
-  $nav-theme-colors: (
-    "default": $colors--dark-theme--background-default,
-    "bark": #585841,
-    "sage": #4e5f51,
-    "olive": #3d5f11,
-    "viridian": #025a3d,
-    "prussian_green": #225d5c,
-    "blue": #0060bf,
-    "purple": #7764d8,
-    "magenta": #974097,
-    "red": #a71b33,
-  );
-  @each $name, $color in $nav-theme-colors {
-    .is-maas-#{$name} {
-      background-color: $color !important;
-    }
-  }
-
-  @each $name, $color in $nav-theme-colors {
-    .is-maas-#{$name}--accent {
-      background-color: color.scale($color, $lightness: 5%) !important;
-    }
-
-    .is-maas-#{$name}  {
-      .p-side-navigation__link:hover, [aria-current=page].p-side-navigation__link, .p-button--base:hover {
-        background-color: color.scale($color, $lightness: 8%) !important;
-      }
-    }
-
-    .is-maas-#{$name}--accent {
-      .p-side-navigation__link:hover, [aria-current=page].p-side-navigation__link {
-        background-color: color.scale($color, $lightness: 12%) !important;
-      }
-    }
-
   }
 }

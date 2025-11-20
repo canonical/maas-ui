@@ -6,7 +6,7 @@
 
   &::after,
   &::before {
-    background-color: $color-mid-light;
+    background-color: var(--vf-color-border-default);
     content: "";
     position: absolute;
   }

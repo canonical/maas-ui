@@ -59,6 +59,6 @@ it("renders a link if spaces have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    urls.subnets.space.index({ id: space.id })
+    urls.networks.space.index({ id: space.id })
   );
 });

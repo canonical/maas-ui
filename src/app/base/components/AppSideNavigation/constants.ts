@@ -87,14 +87,18 @@ const navGroups: NavGroup[] = [
     navLinks: [
       {
         highlight: [
-          urls.subnets.index,
-          urls.subnets.subnet.index(null),
-          urls.subnets.space.index(null),
-          urls.subnets.fabric.index(null),
-          urls.subnets.vlan.index(null),
+          urls.networks.index,
+          urls.networks.subnets.index,
+          urls.networks.fabrics.index,
+          urls.networks.spaces.index,
+          urls.networks.vlans.index,
+          urls.networks.subnet.index(null),
+          urls.networks.space.index(null),
+          urls.networks.fabric.index(null),
+          urls.networks.vlan.index(null),
         ],
-        label: "Subnets",
-        url: urls.subnets.index,
+        label: "Networks",
+        url: urls.networks.index,
       },
       {
         highlight: [urls.domains.index, urls.domains.details(null)],

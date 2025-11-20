@@ -22,6 +22,7 @@ const UserIntro = (): React.ReactElement => {
   const [showSkip, setShowSkip] = useState(false);
 
   const user = useGetCurrentUser();
+  const eTag = user.data?.headers?.get("ETag");
   const completeIntro = useCompleteIntro();
   const { data, isPending: sshKeyLoading } = useListSshKeys();
   const [markedIntroComplete] = useCycled(completeIntro.isPending);
@@ -70,7 +71,11 @@ const UserIntro = (): React.ReactElement => {
           disabled={!hasSSHKeys}
           loading={completeIntro.isPending && !showSkip}
           onClick={() => {
-            completeIntro.mutate({});
+            completeIntro.mutate({
+              headers: {
+                ETag: eTag,
+              },
+            });
           }}
           success={completeIntro.isSuccess}
         >

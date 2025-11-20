@@ -58,7 +58,7 @@ body.is-dark {
     color: var(--vf-color-text-default)
   }
 
-  a:visited:not([class]), a.p-link__chevron, a[class=""]:visited {
+  a.p-link__chevron {
     color: var(--vf-color-link-default)
   }
 }

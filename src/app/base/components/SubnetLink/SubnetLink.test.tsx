@@ -59,6 +59,6 @@ it("renders a link if subnets have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    urls.subnets.subnet.index({ id: subnet.id })
+    urls.networks.subnet.index({ id: subnet.id })
   );
 });

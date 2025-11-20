@@ -175,7 +175,7 @@ const DiscoveryAddFormFields = ({
             <p>{Labels.Fabric}</p>
             <p>
               <Link
-                to={urls.subnets.fabric.index({ id: discovery.fabric_id! })}
+                to={urls.networks.fabric.index({ id: discovery.fabric_id! })}
               >
                 {discovery.fabric_name}
               </Link>
@@ -185,7 +185,7 @@ const DiscoveryAddFormFields = ({
             <p>{Labels.Vlan}</p>
             <p>
               {vlanDisplay ? (
-                <Link to={urls.subnets.vlan.index({ id: discovery.vlan_id! })}>
+                <Link to={urls.networks.vlan.index({ id: discovery.vlan_id! })}>
                   {vlanDisplay}
                 </Link>
               ) : null}
@@ -196,7 +196,7 @@ const DiscoveryAddFormFields = ({
             {discovery.subnet_id && subnetDisplay ? (
               <p>
                 <Link
-                  to={urls.subnets.subnet.index({ id: discovery.subnet_id })}
+                  to={urls.networks.subnet.index({ id: discovery.subnet_id })}
                 >
                   {subnetDisplay}
                 </Link>
