@@ -17,10 +17,10 @@ const useVlansTableColumns = (): VLANsColumnDef[] => {
   return useMemo(
     (): VLANsColumnDef[] => [
       {
-        id: "name",
-        accessorKey: "name",
+        id: "vid",
+        accessorKey: "vid",
         enableSorting: true,
-        header: "Name",
+        header: "VID",
         cell: ({
           row: {
             original: { id },
