@@ -100,7 +100,6 @@ const RamResources = ({
         >
           <thead>
             <tr>
-              <th></th>
               <th className="u-align--right u-text--light u-truncate">
                 Allocated
                 <span className="u-nudge-right--small">

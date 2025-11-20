@@ -18,7 +18,7 @@ const getInitialDarkMode = (): boolean => {
 };
 
 const useDarkMode = (): [boolean, () => void] => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(getInitialDarkMode);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(getInitialDarkMode());
 
   useEffect(() => {
     // Apply or remove the dark mode class on the body

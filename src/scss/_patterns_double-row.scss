@@ -30,7 +30,7 @@
 
   .p-double-row__secondary-row {
     @extend %small-text;
-    color: $color-mid-dark;
+    color: var(--vf-color-text-muted);
     margin-bottom: 0;
   }
 
