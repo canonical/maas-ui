@@ -1,44 +1,54 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "./base";
 
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   CreateResourcePoolData,
-  CreateResourcePoolError,
-  CreateResourcePoolResponse,
+  CreateResourcePoolErrors,
+  CreateResourcePoolResponses,
   DeleteResourcePoolData,
-  DeleteResourcePoolError,
-  DeleteResourcePoolResponse,
+  DeleteResourcePoolErrors,
+  DeleteResourcePoolResponses,
   GetResourcePoolData,
-  GetResourcePoolError,
-  GetResourcePoolResponse,
+  GetResourcePoolErrors,
+  GetResourcePoolResponses,
   ListResourcePoolsWithSummaryData,
-  ListResourcePoolsWithSummaryError,
-  ListResourcePoolsWithSummaryResponse,
+  ListResourcePoolsWithSummaryErrors,
+  ListResourcePoolsWithSummaryResponses,
   Options,
   UpdateResourcePoolData,
-  UpdateResourcePoolError,
-  UpdateResourcePoolResponse,
+  UpdateResourcePoolErrors,
+  UpdateResourcePoolResponses,
 } from "@/app/apiclient";
 import {
-  createResourcePoolMutation,
-  deleteResourcePoolMutation,
-  getResourcePoolOptions,
-  listResourcePoolsWithSummaryOptions,
+  createResourcePool,
+  deleteResourcePool,
+  updateResourcePool,
+  getResourcePool,
+  listResourcePoolsWithSummary,
+} from "@/app/apiclient";
+import {
+  getResourcePoolQueryKey,
   listResourcePoolsWithSummaryQueryKey,
-  updateResourcePoolMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const usePools = (
   options?: Options<ListResourcePoolsWithSummaryData>
 ) => {
   return useWebsocketAwareQuery(
-    listResourcePoolsWithSummaryOptions(options) as UseQueryOptions<
-      ListResourcePoolsWithSummaryData,
-      ListResourcePoolsWithSummaryError,
-      ListResourcePoolsWithSummaryResponse
-    >
+    queryOptionsWithHeaders<
+      ListResourcePoolsWithSummaryResponses,
+      ListResourcePoolsWithSummaryErrors,
+      ListResourcePoolsWithSummaryData
+    >(
+      options,
+      listResourcePoolsWithSummary,
+      listResourcePoolsWithSummaryQueryKey(options)
+    )
   );
 };
 
@@ -46,22 +56,26 @@ export const usePoolCount = (
   options?: Options<ListResourcePoolsWithSummaryData>
 ) => {
   return useWebsocketAwareQuery({
-    ...listResourcePoolsWithSummaryOptions(options),
+    ...queryOptionsWithHeaders<
+      ListResourcePoolsWithSummaryResponses,
+      ListResourcePoolsWithSummaryErrors,
+      ListResourcePoolsWithSummaryData
+    >(
+      options,
+      listResourcePoolsWithSummary,
+      listResourcePoolsWithSummaryQueryKey(options)
+    ),
     select: (data) => data?.total ?? 0,
-  } as UseQueryOptions<
-    ListResourcePoolsWithSummaryResponse,
-    ListResourcePoolsWithSummaryError,
-    number
-  >);
+  });
 };
 
 export const useGetPool = (options: Options<GetResourcePoolData>) => {
   return useWebsocketAwareQuery(
-    getResourcePoolOptions(options) as UseQueryOptions<
-      GetResourcePoolData,
-      GetResourcePoolError,
-      GetResourcePoolResponse
-    >
+    queryOptionsWithHeaders<
+      GetResourcePoolResponses,
+      GetResourcePoolErrors,
+      GetResourcePoolData
+    >(options, getResourcePool, getResourcePoolQueryKey(options))
   );
 };
 
@@ -69,12 +83,12 @@ export const useCreatePool = (
   mutationOptions?: Options<CreateResourcePoolData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreateResourcePoolResponse,
-    CreateResourcePoolError,
-    Options<CreateResourcePoolData>
-  >({
-    ...createResourcePoolMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateResourcePoolResponses,
+      CreateResourcePoolErrors,
+      CreateResourcePoolData
+    >(mutationOptions, createResourcePool),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listResourcePoolsWithSummaryQueryKey(),
@@ -87,12 +101,12 @@ export const useUpdatePool = (
   mutationOptions?: Options<UpdateResourcePoolData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    UpdateResourcePoolResponse,
-    UpdateResourcePoolError,
-    Options<UpdateResourcePoolData>
-  >({
-    ...updateResourcePoolMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdateResourcePoolResponses,
+      UpdateResourcePoolErrors,
+      UpdateResourcePoolData
+    >(mutationOptions, updateResourcePool),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listResourcePoolsWithSummaryQueryKey(),
@@ -105,12 +119,12 @@ export const useDeletePool = (
   mutationOptions?: Options<DeleteResourcePoolData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DeleteResourcePoolResponse,
-    DeleteResourcePoolError,
-    Options<DeleteResourcePoolData>
-  >({
-    ...deleteResourcePoolMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteResourcePoolResponses,
+      DeleteResourcePoolErrors,
+      DeleteResourcePoolData
+    >(mutationOptions, deleteResourcePool),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listResourcePoolsWithSummaryQueryKey(),

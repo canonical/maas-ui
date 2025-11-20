@@ -75,7 +75,7 @@ describe("useGetPool", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(expectedPool);
+    expect(result.current.data).toMatchObject(expectedPool);
   });
 
   it("should return error if pool does not exist", async () => {

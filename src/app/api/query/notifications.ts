@@ -2,38 +2,35 @@ import { useEffect, useRef } from "react";
 
 import type { ToastNotificationType } from "@canonical/react-components";
 import { useToastNotification } from "@canonical/react-components";
-import {
-  useMutation,
-  useQueryClient,
-  type UseQueryOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "./base";
 
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   DismissNotificationData,
-  DismissNotificationError,
-  DismissNotificationResponse,
+  DismissNotificationErrors,
+  DismissNotificationResponses,
   ListNotificationsData,
-  ListNotificationsError,
-  ListNotificationsResponse,
+  ListNotificationsErrors,
+  ListNotificationsResponses,
   Options,
 } from "@/app/apiclient";
-import {
-  dismissNotificationMutation,
-  listNotificationsOptions,
-  listNotificationsQueryKey,
-} from "@/app/apiclient/@tanstack/react-query.gen";
+import { dismissNotification, listNotifications } from "@/app/apiclient";
+import { listNotificationsQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useListNotifications = (
   options?: Options<ListNotificationsData>
 ) => {
   return useWebsocketAwareQuery({
-    ...(listNotificationsOptions(options) as UseQueryOptions<
-      ListNotificationsData,
-      ListNotificationsError,
-      ListNotificationsResponse
-    >),
+    ...queryOptionsWithHeaders<
+      ListNotificationsResponses,
+      ListNotificationsErrors,
+      ListNotificationsData
+    >(options, listNotifications, listNotificationsQueryKey(options)),
     refetchInterval: 30000,
   });
 };
@@ -107,12 +104,12 @@ export const useDismissNotification = (
   mutationOptions?: Options<DismissNotificationData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DismissNotificationResponse,
-    DismissNotificationError,
-    Options<DismissNotificationData>
-  >({
-    ...dismissNotificationMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DismissNotificationResponses,
+      DismissNotificationErrors,
+      DismissNotificationData
+    >(mutationOptions, dismissNotification),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listNotificationsQueryKey(),

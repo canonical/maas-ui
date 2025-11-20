@@ -30,7 +30,7 @@ describe("useConfigurations", () => {
       expect(result.current.isSuccess).toBe(true);
     });
 
-    expect(result.current.data).toEqual(mockConfigurations);
+    expect(result.current.data).toMatchObject(mockConfigurations);
   });
 });
 
@@ -44,7 +44,7 @@ describe("useGetConfiguration", () => {
       expect(result.current.isSuccess).toBe(true);
     });
 
-    expect(result.current.data).toEqual(mockConfigurations.items[0]);
+    expect(result.current.data).toMatchObject(mockConfigurations.items[0]);
   });
 });
 

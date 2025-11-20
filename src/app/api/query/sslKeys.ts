@@ -1,37 +1,37 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseQueryOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "./base";
 
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   CreateUserSslkeyData,
-  CreateUserSslkeyError,
-  CreateUserSslkeyResponse,
+  CreateUserSslkeyErrors,
+  CreateUserSslkeyResponses,
   DeleteUserSslkeyData,
-  DeleteUserSslkeyError,
-  DeleteUserSslkeyResponse,
+  DeleteUserSslkeyErrors,
+  DeleteUserSslkeyResponses,
   GetUserSslkeysData,
-  GetUserSslkeysError,
-  GetUserSslkeysResponse,
+  GetUserSslkeysErrors,
+  GetUserSslkeysResponses,
   Options,
 } from "@/app/apiclient";
 import {
-  createUserSslkeyMutation,
-  deleteUserSslkeyMutation,
-  getUserSslkeysOptions,
-  getUserSslkeysQueryKey,
-} from "@/app/apiclient/@tanstack/react-query.gen";
+  deleteUserSslkey,
+  createUserSslkey,
+  getUserSslkeys,
+} from "@/app/apiclient";
+import { getUserSslkeysQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useGetSslKeys = (options?: Options<GetUserSslkeysData>) => {
   return useWebsocketAwareQuery(
-    getUserSslkeysOptions(options) as UseQueryOptions<
-      GetUserSslkeysData,
-      GetUserSslkeysError,
-      GetUserSslkeysResponse
-    >
+    queryOptionsWithHeaders<
+      GetUserSslkeysResponses,
+      GetUserSslkeysErrors,
+      GetUserSslkeysData
+    >(options, getUserSslkeys, getUserSslkeysQueryKey(options))
   );
 };
 
@@ -39,12 +39,12 @@ export const useCreateSslKeys = (
   mutationOptions?: Options<CreateUserSslkeyData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreateUserSslkeyResponse,
-    CreateUserSslkeyError,
-    Options<CreateUserSslkeyData>
-  >({
-    ...createUserSslkeyMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateUserSslkeyResponses,
+      CreateUserSslkeyErrors,
+      CreateUserSslkeyData
+    >(mutationOptions, createUserSslkey),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: getUserSslkeysQueryKey(),
@@ -57,12 +57,12 @@ export const useDeleteSslKey = (
   mutationOptions?: Options<DeleteUserSslkeyData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DeleteUserSslkeyResponse,
-    DeleteUserSslkeyError,
-    Options<DeleteUserSslkeyData>
-  >({
-    ...deleteUserSslkeyMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteUserSslkeyResponses,
+      DeleteUserSslkeyErrors,
+      DeleteUserSslkeyData
+    >(mutationOptions, deleteUserSslkey),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: getUserSslkeysQueryKey(),

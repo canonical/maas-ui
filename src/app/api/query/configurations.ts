@@ -1,50 +1,54 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseQueryOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "./base";
 
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   GetConfigurationData,
-  GetConfigurationError,
-  GetConfigurationResponse,
+  GetConfigurationErrors,
+  GetConfigurationResponses,
   GetConfigurationsData,
-  GetConfigurationsResponse,
+  GetConfigurationsErrors,
+  GetConfigurationsResponses,
+  Options,
   SetConfigurationData,
-  SetConfigurationError,
-  SetConfigurationResponse,
+  SetConfigurationErrors,
+  SetConfigurationResponses,
   SetConfigurationsData,
-  SetConfigurationsError,
-  SetConfigurationsResponse,
+  SetConfigurationsErrors,
+  SetConfigurationsResponses,
 } from "@/app/apiclient";
 import {
-  getConfigurationOptions,
-  getConfigurationsOptions,
+  getConfiguration,
+  getConfigurations,
+  setConfiguration,
+  setConfigurations,
+} from "@/app/apiclient";
+import {
+  getConfigurationQueryKey,
   getConfigurationsQueryKey,
-  setConfigurationMutation,
-  setConfigurationsMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
-import type { Options } from "@/app/apiclient/client";
 
 export const useConfigurations = (options?: Options<GetConfigurationsData>) => {
   return useWebsocketAwareQuery(
-    getConfigurationsOptions(options) as UseQueryOptions<
-      GetConfigurationsData,
-      GetConfigurationError,
-      GetConfigurationsResponse
-    >
+    queryOptionsWithHeaders<
+      GetConfigurationsResponses,
+      GetConfigurationsErrors,
+      GetConfigurationsData
+    >(options, getConfigurations, getConfigurationsQueryKey(options))
   );
 };
 
 export const useGetConfiguration = (options: Options<GetConfigurationData>) => {
   return useWebsocketAwareQuery(
-    getConfigurationOptions(options) as UseQueryOptions<
-      GetConfigurationData,
-      GetConfigurationError,
-      GetConfigurationResponse
-    >
+    queryOptionsWithHeaders<
+      GetConfigurationResponses,
+      GetConfigurationErrors,
+      GetConfigurationData
+    >(options, getConfiguration, getConfigurationQueryKey(options))
   );
 };
 
@@ -52,12 +56,12 @@ export const useSetConfiguration = (
   mutationOptions?: Options<SetConfigurationData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    SetConfigurationResponse,
-    SetConfigurationError,
-    Options<SetConfigurationData>
-  >({
-    ...setConfigurationMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      SetConfigurationResponses,
+      SetConfigurationErrors,
+      SetConfigurationData
+    >(mutationOptions, setConfiguration),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: getConfigurationsQueryKey(),
@@ -70,12 +74,12 @@ export const useBulkSetConfigurations = (
   mutationOptions?: Options<SetConfigurationsData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    SetConfigurationsResponse,
-    SetConfigurationsError,
-    Options<SetConfigurationsData>
-  >({
-    ...setConfigurationsMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      SetConfigurationsResponses,
+      SetConfigurationsErrors,
+      SetConfigurationsData
+    >(mutationOptions, setConfigurations),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: getConfigurationsQueryKey(),

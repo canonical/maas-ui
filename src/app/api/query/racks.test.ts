@@ -42,7 +42,7 @@ describe("useGetRack", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(expectedRack);
+    expect(result.current.data).toMatchObject(expectedRack);
   });
 
   it("should return error if rack does not exist", async () => {

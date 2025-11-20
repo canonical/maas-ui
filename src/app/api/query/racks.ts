@@ -1,70 +1,73 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseQueryOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "./base";
 
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   CreateRackData,
-  CreateRackError,
-  CreateRackResponse,
+  CreateRackErrors,
+  CreateRackResponses,
   DeleteRacksData,
-  DeleteRacksError,
-  DeleteRacksResponse,
+  DeleteRacksErrors,
+  DeleteRacksResponses,
   GenerateRackBootstrapTokenData,
-  GenerateRackBootstrapTokenError,
-  GenerateRackBootstrapTokenResponse,
+  GenerateRackBootstrapTokenErrors,
+  GenerateRackBootstrapTokenResponses,
   GetRackData,
-  GetRackError,
-  GetRackResponse,
+  GetRackErrors,
+  GetRackResponses,
   ListRacksData,
-  ListRacksError,
-  ListRacksResponse,
+  ListRacksErrors,
+  ListRacksResponses,
   Options,
   UpdateRackData,
-  UpdateRackError,
-  UpdateRackResponse,
+  UpdateRackErrors,
+  UpdateRackResponses,
 } from "@/app/apiclient";
 import {
-  createRackMutation,
-  deleteRacksMutation,
-  generateRackBootstrapTokenMutation,
-  getRackOptions,
-  listRacksOptions,
+  createRack,
+  deleteRacks,
+  generateRackBootstrapToken,
+  updateRack,
+  getRack,
+  listRacks,
+} from "@/app/apiclient";
+import {
+  getRackQueryKey,
   listRacksQueryKey,
-  updateRackMutation,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useRacks = (options?: Options<ListRacksData>) => {
   return useWebsocketAwareQuery(
-    listRacksOptions(options) as UseQueryOptions<
-      ListRacksData,
-      ListRacksError,
-      ListRacksResponse
-    >
+    queryOptionsWithHeaders<ListRacksResponses, ListRacksErrors, ListRacksData>(
+      options,
+      listRacks,
+      listRacksQueryKey(options)
+    )
   );
 };
 
 export const useGetRack = (options: Options<GetRackData>) => {
   return useWebsocketAwareQuery(
-    getRackOptions(options) as UseQueryOptions<
-      GetRackData,
-      GetRackError,
-      GetRackResponse
-    >
+    queryOptionsWithHeaders<GetRackResponses, GetRackErrors, GetRackData>(
+      options,
+      getRack,
+      getRackQueryKey(options)
+    )
   );
 };
 
 export const useCreateRack = (mutationOptions?: Options<CreateRackData>) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreateRackResponse,
-    CreateRackError,
-    Options<CreateRackData>
-  >({
-    ...createRackMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateRackResponses,
+      CreateRackErrors,
+      CreateRackData
+    >(mutationOptions, createRack),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listRacksQueryKey(),
@@ -75,12 +78,12 @@ export const useCreateRack = (mutationOptions?: Options<CreateRackData>) => {
 
 export const useUpdateRack = (mutationOptions?: Options<UpdateRackData>) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    UpdateRackResponse,
-    UpdateRackError,
-    Options<UpdateRackData>
-  >({
-    ...updateRackMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdateRackResponses,
+      UpdateRackErrors,
+      UpdateRackData
+    >(mutationOptions, updateRack),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listRacksQueryKey(),
@@ -91,12 +94,12 @@ export const useUpdateRack = (mutationOptions?: Options<UpdateRackData>) => {
 
 export const useDeleteRack = (mutationOptions?: Options<DeleteRacksData>) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DeleteRacksResponse,
-    DeleteRacksError,
-    Options<DeleteRacksData>
-  >({
-    ...deleteRacksMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteRacksResponses,
+      DeleteRacksErrors,
+      DeleteRacksData
+    >(mutationOptions, deleteRacks),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listRacksQueryKey(),
@@ -108,11 +111,11 @@ export const useDeleteRack = (mutationOptions?: Options<DeleteRacksData>) => {
 export const useGenerateToken = (
   mutationOptions?: Options<GenerateRackBootstrapTokenData>
 ) => {
-  return useMutation<
-    GenerateRackBootstrapTokenResponse,
-    GenerateRackBootstrapTokenError,
-    Options<GenerateRackBootstrapTokenData>
-  >({
-    ...generateRackBootstrapTokenMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      GenerateRackBootstrapTokenResponses,
+      GenerateRackBootstrapTokenErrors,
+      GenerateRackBootstrapTokenData
+    >(mutationOptions, generateRackBootstrapToken),
   });
 };
