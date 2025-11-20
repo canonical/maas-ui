@@ -30,7 +30,7 @@ const VLANLink = ({ id }: Props): React.ReactElement => {
     return <>{vlanDisplay}</>;
   }
   return (
-    <Link to={urls.subnets.vlan.index({ id: vlan.id })}>{vlanDisplay}</Link>
+    <Link to={urls.networks.vlan.index({ id: vlan.id })}>{vlanDisplay}</Link>
   );
 };
 

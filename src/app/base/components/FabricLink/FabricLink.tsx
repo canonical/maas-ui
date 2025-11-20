@@ -34,7 +34,7 @@ const FabricLink = ({ id }: Props): React.ReactElement => {
     return <>{fabricDisplay}</>;
   }
   return (
-    <Link to={urls.subnets.fabric.index({ id: fabric.id })}>
+    <Link to={urls.networks.fabric.index({ id: fabric.id })}>
       {fabricDisplay}
     </Link>
   );

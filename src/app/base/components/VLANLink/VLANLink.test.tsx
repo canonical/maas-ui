@@ -58,6 +58,6 @@ it("renders a link if VLANs have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    urls.subnets.vlan.index({ id: vlan.id })
+    urls.networks.vlan.index({ id: vlan.id })
   );
 });

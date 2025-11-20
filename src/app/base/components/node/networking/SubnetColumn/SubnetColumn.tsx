@@ -67,7 +67,7 @@ const SubnetColumn = ({
     primary = subnet ? (
       <Link
         className="p-link--soft"
-        to={urls.subnets.subnet.index({ id: subnet.id })}
+        to={urls.networks.subnet.index({ id: subnet.id })}
       >
         {subnetDisplay}
       </Link>
@@ -87,7 +87,7 @@ const SubnetColumn = ({
         showLinkSubnet && subnet ? (
           <Link
             className="p-link--muted"
-            to={urls.subnets.subnet.index({ id: subnet.id })}
+            to={urls.networks.subnet.index({ id: subnet.id })}
           >
             {subnet.name}
           </Link>

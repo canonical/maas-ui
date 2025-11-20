@@ -30,7 +30,7 @@ const SpaceLink = ({ id }: Props): React.ReactElement => {
     return <>{spaceDisplay}</>;
   }
   return (
-    <Link to={urls.subnets.space.index({ id: space.id })}>{spaceDisplay}</Link>
+    <Link to={urls.networks.space.index({ id: space.id })}>{spaceDisplay}</Link>
   );
 };
 
