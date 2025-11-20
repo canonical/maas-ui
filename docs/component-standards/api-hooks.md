@@ -4,8 +4,8 @@
 
 - Auto-generated SDK lives in `src/app/apiclient`
 - Manually write hooks in `src/app/api/query/` using the generated react-query.ts hooks
-- Use `useWebsocketAwareQuery` for queries to auto-invalidate on websocket updates
-- Use `useMutation` with `invalidateQueries` in `onSuccess` for mutations
+- Use `useWebsocketAwareQuery` with `queryOptionsWithHeaders` for queries to auto-invalidate on websocket updates and include response headers
+- Use `useMutation` with `mutationOptionsWithHeaders` and `invalidateQueries` in `onSuccess` for mutations
 - Create mock resolvers in `src/testing/resolvers/` using MSW (Mock Service Worker)
 - Test hooks using `renderHookWithProviders` and mock resolvers
 - Follow naming convention: `use<Resource>` for list queries, `use<Action><Resource>` for single item and operation queries
@@ -22,16 +22,16 @@ Our API layer follows a three-tier architecture:
 
 ### Basic List Query
 
-Use `useWebsocketAwareQuery` to automatically invalidate when websocket updates occur:
+Use `useWebsocketAwareQuery` with `queryOptionsWithHeaders` to automatically invalidate when websocket updates occur and include response headers:
 
 ```typescript
 export const useUsers = (options?: Options<ListUsersWithSummaryData>) => {
   return useWebsocketAwareQuery(
-    listUsersWithSummaryOptions(options) as UseQueryOptions<
-      ListUsersWithSummaryData,
-      ListUsersWithSummaryError,
-      ListUsersWithSummaryResponse
-    >
+    queryOptionsWithHeaders<
+      ListUsersWithSummaryResponses,
+      ListUsersWithSummaryErrors,
+      ListUsersWithSummaryData
+    >(options, listUsersWithSummary, listUsersWithSummaryQueryKey(options))
   );
 };
 ```
@@ -41,11 +41,11 @@ export const useUsers = (options?: Options<ListUsersWithSummaryData>) => {
 ```typescript
 export const useGetUser = (options: Options<GetUserData>) => {
   return useWebsocketAwareQuery(
-    getUserOptions(options) as UseQueryOptions<
-      GetUserData,
-      GetUserError,
-      GetUserResponse
-    >
+    queryOptionsWithHeaders<GetUserResponses, GetUserErrors, GetUserData>(
+      options,
+      getUser,
+      getUserQueryKey(options)
+    )
   );
 };
 ```
@@ -57,13 +57,13 @@ For queries that transform data, use the `select` option:
 ```typescript
 export const useUserCount = (options?: Options<ListUsersWithSummaryData>) => {
   return useWebsocketAwareQuery({
-    ...listUsersWithSummaryOptions(options),
+    ...queryOptionsWithHeaders<
+      ListUsersWithSummaryResponses,
+      ListUsersWithSummaryErrors,
+      ListUsersWithSummaryData
+    >(options, listUsersWithSummary, listUsersWithSummaryQueryKey(options)),
     select: (data) => data?.total ?? 0,
-  } as UseQueryOptions<
-    ListUsersWithSummaryResponse,
-    ListUsersWithSummaryError,
-    number
-  >);
+  });
 };
 ```
 
@@ -71,17 +71,17 @@ export const useUserCount = (options?: Options<ListUsersWithSummaryData>) => {
 
 ### Basic Mutation
 
-Always invalidate related queries in `onSuccess`:
+Always invalidate related queries in `onSuccess`. Use `mutationOptionsWithHeaders` to include response headers:
 
 ```typescript
 export const useCreateUser = (mutationOptions?: Options<CreateUserData>) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreateUserResponse,
-    CreateUserError,
-    Options<CreateUserData>
-  >({
-    ...createUserMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateUserResponses,
+      CreateUserErrors,
+      CreateUserData
+    >(mutationOptions, createUser),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listUsersWithSummaryQueryKey(),
@@ -96,12 +96,12 @@ export const useCreateUser = (mutationOptions?: Options<CreateUserData>) => {
 ```typescript
 export const useUpdateUser = (mutationOptions?: Options<UpdateUserData>) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    UpdateUserResponse,
-    UpdateUserError,
-    Options<UpdateUserData>
-  >({
-    ...updateUserMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdateUserResponses,
+      UpdateUserErrors,
+      UpdateUserData
+    >(mutationOptions, updateUser),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listUsersWithSummaryQueryKey(),
@@ -116,12 +116,12 @@ export const useUpdateUser = (mutationOptions?: Options<UpdateUserData>) => {
 ```typescript
 export const useDeleteUser = (mutationOptions?: Options<DeleteUserData>) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DeleteUserResponse,
-    DeleteUserError,
-    Options<DeleteUserData>
-  >({
-    ...deleteUserMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteUserResponses,
+      DeleteUserErrors,
+      DeleteUserData
+    >(mutationOptions, deleteUser),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listUsersWithSummaryQueryKey(),
@@ -418,13 +418,14 @@ describe("useGetUser", () => {
 
 3. **WebSocket Awareness**:
 
-   - Use `useWebsocketAwareQuery` for all queries to automatically invalidate on real-time updates
+   - Use `useWebsocketAwareQuery` with `queryOptionsWithHeaders` for all queries to automatically invalidate on real-time updates
    - Map websocket models to query keys in `base.ts` if needed
 
 4. **Type Safety**:
 
    - Always use the generated types from `@/app/apiclient`
-   - Cast query options to proper types with `as UseQueryOptions`
+   - Use `queryOptionsWithHeaders` and `mutationOptionsWithHeaders` with proper type parameters for automatic type inference
+   - Type parameters follow the pattern: `<Responses, Errors, Data>`
 
 5. **Error Handling**:
 
@@ -446,8 +447,9 @@ describe("useGetUser", () => {
 ## Common Pitfalls
 
 - **Don't** forget to invalidate queries after mutations - stale data is confusing for users
-- **Don't** use `useQuery` directly - always use `useWebsocketAwareQuery` for queries
+- **Don't** use `useQuery` directly - always use `useWebsocketAwareQuery` with `queryOptionsWithHeaders` for queries
+- **Don't** use `useMutation` directly without `mutationOptionsWithHeaders` - you'll miss response headers
 - **Don't** forget to export mock data from resolver files
 - **Don't** forget to set `resolved` flag in resolvers - it's useful for testing
 - **Don't** forget to handle empty states in tests
-- **Don't** forget to type cast query options - TypeScript won't catch type mismatches otherwise
+- **Don't** forget to provide all three type parameters (`Responses`, `Errors`, `Data`) to the utility functions
