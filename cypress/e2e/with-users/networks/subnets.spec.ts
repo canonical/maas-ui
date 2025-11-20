@@ -3,7 +3,7 @@ import { generateMAASURL } from "../../utils";
 context("Subnets", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateMAASURL("/networks/suubnets?by=fabric"));
+    cy.visit(generateMAASURL("/networks/subnets?by=fabric"));
     cy.waitForPageToLoad();
     cy.viewport("macbook-11");
   });
