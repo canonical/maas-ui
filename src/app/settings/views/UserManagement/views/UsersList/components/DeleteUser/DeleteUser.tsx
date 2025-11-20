@@ -16,6 +16,7 @@ const DeleteUser = ({ id }: DeleteUserProps): ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const user = useGetUser({ path: { user_id: id } });
+  const eTag = user.data?.headers?.get("ETag");
   const deleteUser = useDeleteUser();
 
   return (
@@ -43,7 +44,10 @@ const DeleteUser = ({ id }: DeleteUserProps): ReactElement => {
           modelType="user"
           onCancel={closeSidePanel}
           onSubmit={() => {
-            deleteUser.mutate({ path: { user_id: id } });
+            deleteUser.mutate({
+              headers: { ETag: eTag },
+              path: { user_id: id },
+            });
           }}
           onSuccess={async () => {
             // async with closeForm called first, because unlike

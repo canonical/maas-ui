@@ -18,7 +18,7 @@ const EditZone = ({ id }: EditZoneProps): ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const zone = useGetZone({ path: { zone_id: id } });
-
+  const eTag = zone.data?.headers?.get("ETag");
   const editZone = useUpdateZone();
 
   return (
@@ -40,6 +40,7 @@ const EditZone = ({ id }: EditZoneProps): ReactElement => {
           onCancel={closeSidePanel}
           onSubmit={(values) => {
             editZone.mutate({
+              headers: { ETag: eTag },
               body: { name: values.name, description: values.description },
               path: { zone_id: id },
             });

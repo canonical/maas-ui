@@ -28,6 +28,7 @@ const EditPool = ({ id }: EditPoolProps): ReactElement => {
   const queryClient = useQueryClient();
   const pool = useGetPool({ path: { resource_pool_id: id } });
 
+  const eTag = pool.data?.headers?.get("ETag");
   const editPool = useUpdatePool();
 
   return (
@@ -49,6 +50,9 @@ const EditPool = ({ id }: EditPoolProps): ReactElement => {
           onCancel={closeSidePanel}
           onSubmit={(values) => {
             editPool.mutate({
+              headers: {
+                ETag: eTag,
+              },
               body: {
                 name: values.name,
                 description: values.description,

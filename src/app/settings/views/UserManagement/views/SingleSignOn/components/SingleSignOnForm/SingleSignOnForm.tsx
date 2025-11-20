@@ -10,12 +10,13 @@ import {
   useCreateOauthProvider,
   useUpdateOauthProvider,
 } from "@/app/api/query/auth";
+import type { WithHeaders } from "@/app/api/utils";
 import type { OAuthProviderResponse } from "@/app/apiclient";
 import { getOauthProviderQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 
 type Props = {
-  provider: OAuthProviderResponse | undefined;
+  provider: WithHeaders<OAuthProviderResponse> | undefined;
 };
 
 const SingleSignOnSchema = Yup.object().shape({
@@ -39,6 +40,8 @@ const SingleSignOnForm = ({ provider }: Props): ReactElement => {
     }
   );
 
+  const eTag = provider?.headers?.get("ETag");
+
   const createOauthProvider = useCreateOauthProvider();
   const updateOauthProvider = useUpdateOauthProvider();
   const queryClient = useQueryClient();
@@ -60,6 +63,9 @@ const SingleSignOnForm = ({ provider }: Props): ReactElement => {
     if (provider) {
       updateOauthProvider.mutate(
         {
+          headers: {
+            ETag: eTag,
+          },
           body: {
             name: values.name,
             client_id: values.client_id,

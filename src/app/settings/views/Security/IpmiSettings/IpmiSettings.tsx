@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { ContentSection } from "@canonical/maas-react-components";
 import { Notification, Spinner } from "@canonical/react-components";
 import * as Yup from "yup";
@@ -41,7 +43,7 @@ export type IpmiFormValues = {
   maas_auto_ipmi_user_privilege_level: AutoIpmiPrivilegeLevel;
 };
 
-const IpmiSettings = (): React.ReactElement => {
+const IpmiSettings = (): ReactElement => {
   const names = [
     ConfigNames.MAAS_AUTO_IPMI_USER,
     ConfigNames.MAAS_AUTO_IPMI_K_G_BMC_KEY,
@@ -50,6 +52,7 @@ const IpmiSettings = (): React.ReactElement => {
   const { data, isPending, error, isSuccess } = useConfigurations({
     query: { name: names },
   });
+  const eTag = data?.headers?.get("ETag");
   const {
     maas_auto_ipmi_user,
     maas_auto_ipmi_k_g_bmc_key,
@@ -94,6 +97,9 @@ const IpmiSettings = (): React.ReactElement => {
               }}
               onSubmit={(values, { resetForm }) => {
                 updateConfig.mutate({
+                  headers: {
+                    ETag: eTag,
+                  },
                   body: {
                     configurations: [
                       {

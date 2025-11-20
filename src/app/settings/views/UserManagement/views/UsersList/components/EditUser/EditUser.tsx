@@ -57,6 +57,7 @@ const EditUser = ({
 
   const authenticate = useAuthenticate();
   const user = useGetUser({ path: { user_id: id } });
+  const eTag = user.data?.headers?.get("ETag");
   const updateUser = useUpdateUser();
 
   const combinedErrors = {
@@ -126,6 +127,7 @@ const EditUser = ({
             }
 
             updateUser.mutate({
+              headers: { ETag: eTag },
               path: { user_id: id },
               body: updateData,
             });

@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
@@ -27,7 +28,7 @@ const DnsSchema = Yup.object().shape({
   dns_trusted_acl: Yup.string(),
 });
 
-const DnsForm = (): React.ReactElement => {
+const DnsForm = (): ReactElement => {
   const dispatch = useDispatch();
   const names = [
     ConfigNames.DNSSEC_VALIDATION,
@@ -38,6 +39,7 @@ const DnsForm = (): React.ReactElement => {
   const { data, isPending, error, isSuccess } = useConfigurations({
     query: { name: names },
   });
+  const eTag = data?.headers?.get("ETag");
 
   const { dnssec_validation, dns_trusted_acl, upstream_dns } =
     getConfigsFromResponse(data?.items || [], names);
@@ -85,6 +87,9 @@ const DnsForm = (): React.ReactElement => {
               }}
               onSubmit={(values, { resetForm }) => {
                 updateConfig.mutate({
+                  headers: {
+                    ETag: eTag,
+                  },
                   body: {
                     configurations: [
                       {

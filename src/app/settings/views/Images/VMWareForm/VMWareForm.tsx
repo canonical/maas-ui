@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import * as Yup from "yup";
 
 import {
@@ -26,7 +28,7 @@ export enum Labels {
   DatacenterLabel = "VMware vCenter datacenter",
 }
 
-const VMWareForm = (): React.ReactElement => {
+const VMWareForm = (): ReactElement => {
   const names = [
     ConfigNames.VCENTER_SERVER,
     ConfigNames.VCENTER_USERNAME,
@@ -36,6 +38,7 @@ const VMWareForm = (): React.ReactElement => {
   const { data, isPending, isSuccess } = useConfigurations({
     query: { name: names },
   });
+  const eTag = data?.headers?.get("ETag");
   const {
     vcenter_server,
     vcenter_username,
@@ -61,6 +64,9 @@ const VMWareForm = (): React.ReactElement => {
       }}
       onSubmit={(values, { resetForm }) => {
         updateConfig.mutate({
+          headers: {
+            ETag: eTag,
+          },
           body: {
             configurations: [
               {
