@@ -93,7 +93,7 @@ const AddAliasOrVlan = ({
         initialValues={{
           ...networkFieldsInitialValues,
           ...(isAlias ? {} : { tags: [] }),
-          fabric: nicVLAN?.fabric || "",
+          fabric: nicVLAN?.fabric,
           vlan: nic.vlan_id,
         }}
         onCancel={close}

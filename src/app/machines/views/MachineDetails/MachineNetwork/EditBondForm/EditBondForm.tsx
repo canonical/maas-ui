@@ -180,7 +180,7 @@ const EditBondForm = ({
         bond_mode: nic.params?.bond_mode || BondMode.ACTIVE_BACKUP,
         bond_updelay: nic.params?.bond_updelay || 0,
         bond_xmit_hash_policy: nic.params?.bond_xmit_hash_policy || "",
-        fabric: vlan ? vlan.fabric : "",
+        fabric: vlan?.fabric,
         ip_address: ipAddress || "",
         linkMonitoring,
         mac_address: macAddress,
@@ -188,7 +188,7 @@ const EditBondForm = ({
         macNic: macAddress,
         mode: getLinkMode(link),
         name: nic.name,
-        subnet: subnet ? subnet.id : "",
+        subnet: subnet?.id,
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}

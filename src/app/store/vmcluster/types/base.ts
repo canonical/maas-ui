@@ -64,10 +64,10 @@ export type VMCluster = Model & {
   hosts: VMHost[];
   name: string;
   project: string;
-  resource_pool: ResourcePoolResponse["id"] | "";
+  resource_pool: ResourcePoolResponse["id"];
   total_resources: VMClusterResources;
   updated_at: string;
-  version: string | "";
+  version: string;
   virtual_machines: VirtualMachine[];
 };
 

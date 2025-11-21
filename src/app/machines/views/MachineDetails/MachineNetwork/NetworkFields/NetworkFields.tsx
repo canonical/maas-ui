@@ -32,10 +32,10 @@ import {
 export type NetworkValues = {
   ip_address?: NetworkLink["ip_address"];
   mode?: NetworkLinkMode | "";
-  fabric: NodeVlan["fabric_id"] | "";
-  subnet?: NetworkLink["subnet_id"] | "";
-  subnet_cidr?: Subnet["cidr"] | "";
-  vlan: NetworkInterface["vlan_id"] | "";
+  fabric?: NodeVlan["fabric_id"];
+  subnet?: NetworkLink["subnet_id"];
+  subnet_cidr?: Subnet["cidr"];
+  vlan?: NetworkInterface["vlan_id"];
 };
 
 export const networkFieldsSchema = {
@@ -49,10 +49,10 @@ export const networkFieldsSchema = {
 export const networkFieldsInitialValues = {
   ip_address: "",
   mode: "",
-  fabric: "",
-  subnet: "",
+  fabric: undefined,
+  subnet: undefined,
   subnet_cidr: "",
-  vlan: "",
+  vlan: undefined,
 } as NetworkValues;
 
 const fieldOrder = ["fabric", "vlan", "subnet", "mode", "ip_address"];
