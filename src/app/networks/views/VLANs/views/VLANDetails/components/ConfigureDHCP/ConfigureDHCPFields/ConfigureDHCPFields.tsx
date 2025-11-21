@@ -62,18 +62,18 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
                 setFieldValue(
                   "primaryRack",
                   connectedControllers[0]?.system_id || ""
-                ).catch((reason) => {
+                ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "primaryRack",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
-                setFieldValue("relayVLAN", "").catch((reason) => {
+                setFieldValue("relayVLAN", "").catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "relayVLAN",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
               }}
@@ -141,26 +141,26 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
                 // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
                 await handleChange(e);
                 setFieldValue("relayVLAN", vlansWithDHCP[0]?.id || "").catch(
-                  (reason) => {
+                  (reason: unknown) => {
                     throw new FormikFieldChangeError(
                       "relayVLAN",
                       "setFieldValue",
-                      reason
+                      reason as string
                     );
                   }
                 );
-                setFieldValue("primaryRack", "").catch((reason) => {
+                setFieldValue("primaryRack", "").catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "primaryRack",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
-                setFieldValue("secondaryRack", "").catch((reason) => {
+                setFieldValue("secondaryRack", "").catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "secondaryRack",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
               }}

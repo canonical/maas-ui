@@ -35,11 +35,11 @@ export const StorageTable = ({
   // Ensure initial disk is always validated correctly.
   useEffect(() => {
     if (disks.length && !(touched.disks?.length && touched.disks[0].size)) {
-      setFieldTouched("disks[0].size", true, true).catch((reason) => {
+      setFieldTouched("disks[0].size", true, true).catch((reason: unknown) => {
         throw new FormikFieldChangeError(
           "disks[0].size",
           "setFieldTouched",
-          reason
+          reason as string
         );
       });
     }
@@ -52,32 +52,46 @@ export const StorageTable = ({
       id++;
     }
     setFieldTouched(`disks[${disks.length}].size`, true, true).catch(
-      (reason) => {
+      (reason: unknown) => {
         throw new FormikFieldChangeError(
           `disks[${disks.length}].size`,
           "setFieldTouched",
-          reason
+          reason as string
         );
       }
     );
     setFieldValue("disks", [...disks, { ...defaultDisk, id }], true).catch(
-      (reason) => {
-        throw new FormikFieldChangeError("disks", "setFieldValue", reason);
+      (reason: unknown) => {
+        throw new FormikFieldChangeError(
+          "disks",
+          "setFieldValue",
+          reason as string
+        );
       }
     );
   };
 
   const removeDisk = (id: number) => {
     const filteredDisks = disks.filter((disk) => disk.id !== id);
-    setFieldValue("disks", filteredDisks).catch((reason) => {
-      throw new FormikFieldChangeError("disks", "setFieldValue", reason);
+    setFieldValue("disks", filteredDisks).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "disks",
+        "setFieldValue",
+        reason as string
+      );
     });
 
     // If boot disk is removed, set boot to first disk in the remaining array.
     if (!filteredDisks.some((disk) => disk.id === bootDisk)) {
-      setFieldValue("bootDisk", filteredDisks[0]?.id).catch((reason) => {
-        throw new FormikFieldChangeError("bootDisk", "setFieldValue", reason);
-      });
+      setFieldValue("bootDisk", filteredDisks[0]?.id).catch(
+        (reason: unknown) => {
+          throw new FormikFieldChangeError(
+            "bootDisk",
+            "setFieldValue",
+            reason as string
+          );
+        }
+      );
     }
   };
 
@@ -117,21 +131,23 @@ export const StorageTable = ({
                   if (value === "" || value >= 0) {
                     handleChange(e);
                     setFieldTouched(`disks[${i}].size`, true, true).catch(
-                      (reason) => {
+                      (reason: unknown) => {
                         throw new FormikFieldChangeError(
                           `disks[${i}].size`,
                           "setFieldTouched",
-                          reason
+                          reason as string
                         );
                       }
                     );
-                    setFieldValue(`disks[${i}].size`, value).catch((reason) => {
-                      throw new FormikFieldChangeError(
-                        `disks[${i}].size`,
-                        "setFieldValue",
-                        reason
-                      );
-                    });
+                    setFieldValue(`disks[${i}].size`, value).catch(
+                      (reason: unknown) => {
+                        throw new FormikFieldChangeError(
+                          `disks[${i}].size`,
+                          "setFieldValue",
+                          reason as string
+                        );
+                      }
+                    );
                   }
                 }}
                 step="any"
@@ -143,11 +159,11 @@ export const StorageTable = ({
                 hostId={hostId}
                 selectPool={(poolName?: string) => {
                   setFieldValue(`disks[${i}].location`, poolName).catch(
-                    (reason) => {
+                    (reason: unknown) => {
                       throw new FormikFieldChangeError(
                         `disks[${i}].location`,
                         "setFieldValue",
-                        reason
+                        reason as string
                       );
                     }
                   );
@@ -166,13 +182,15 @@ export const StorageTable = ({
                 name="bootDisk"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   handleChange(e);
-                  setFieldValue("bootDisk", disk.id).catch((reason) => {
-                    throw new FormikFieldChangeError(
-                      "bootDisk",
-                      "setFieldValue",
-                      reason
-                    );
-                  });
+                  setFieldValue("bootDisk", disk.id).catch(
+                    (reason: unknown) => {
+                      throw new FormikFieldChangeError(
+                        "bootDisk",
+                        "setFieldValue",
+                        reason as string
+                      );
+                    }
+                  );
                 }}
                 type="radio"
               />

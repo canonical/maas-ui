@@ -57,28 +57,28 @@ const BridgeFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             const { checked } = evt.target;
             // Manually set the value because we've overwritten the onChange.
-            setFieldValue("bridge_stp", checked).catch((reason) => {
+            setFieldValue("bridge_stp", checked).catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "bridge_stp",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
             // Set an initial value for the fd field or clear the current value.
             if (checked) {
-              setFieldValue("bridge_fd", 15).catch((reason) => {
+              setFieldValue("bridge_fd", 15).catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "bridge_fd",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             } else {
-              setFieldValue("bridge_fd", "").catch((reason) => {
+              setFieldValue("bridge_fd", "").catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "bridge_fd",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             }

@@ -60,11 +60,11 @@ export const CommissionFormFields = ({
           name="commissioningScripts"
           onTagsUpdate={(selectedScripts: Tag[]) => {
             setFieldValue("commissioningScripts", selectedScripts).catch(
-              (reason) => {
+              (reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "commissioningScripts",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               }
             );
@@ -80,13 +80,15 @@ export const CommissionFormFields = ({
           label="Testing scripts"
           name="tests"
           onTagsUpdate={(selectedScripts: Tag[]) => {
-            setFieldValue("testingScripts", selectedScripts).catch((reason) => {
-              throw new FormikFieldChangeError(
-                "testingScripts",
-                "setFieldValue",
-                reason
-              );
-            });
+            setFieldValue("testingScripts", selectedScripts).catch(
+              (reason: unknown) => {
+                throw new FormikFieldChangeError(
+                  "testingScripts",
+                  "setFieldValue",
+                  reason as string
+                );
+              }
+            );
           }}
           placeholder="Select additional scripts"
           tags={testingScripts}
@@ -108,11 +110,11 @@ export const CommissionFormFields = ({
               setFieldValue(
                 `scriptInputs[${script.name}].url`,
                 e.target.value
-              ).catch((reason) => {
+              ).catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   `scriptInputs[${script.name}].url`,
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             }}

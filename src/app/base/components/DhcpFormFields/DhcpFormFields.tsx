@@ -141,16 +141,20 @@ export const DhcpFormFields = ({ editing }: Props): React.ReactElement => {
         name="type"
         onChange={(e: React.FormEvent) => {
           formikProps.handleChange(e);
-          formikProps.setFieldValue("entity", "").catch((reason) => {
-            throw new FormikFieldChangeError("entity", "setFieldValue", reason);
+          formikProps.setFieldValue("entity", "").catch((reason: unknown) => {
+            throw new FormikFieldChangeError(
+              "entity",
+              "setFieldValue",
+              reason as string
+            );
           });
           formikProps
             .setFieldTouched("entity", false, false)
-            .catch((reason) => {
+            .catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "entity",
                 "setFieldTouched",
-                reason
+                reason as string
               );
             });
         }}

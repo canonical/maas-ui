@@ -77,18 +77,18 @@ const InterfaceFormFields = ({
             name="ip_assignment"
             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
               handleChange(e);
-              setFieldValue("subnet", "").catch((reason) => {
+              setFieldValue("subnet", "").catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "subnet",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
-              setFieldValue("ip_address", "").catch((reason) => {
+              setFieldValue("ip_address", "").catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "ip_address",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             }}

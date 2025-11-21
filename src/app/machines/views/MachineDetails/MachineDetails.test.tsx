@@ -120,7 +120,7 @@ describe("MachineDetails", () => {
           ],
         }
       );
-      router.navigate(path);
+      await router.navigate(path);
       await waitFor(() => {
         expect(document.title).toBe(
           `${state.machine.items[0].fqdn} ${title} | MAAS`

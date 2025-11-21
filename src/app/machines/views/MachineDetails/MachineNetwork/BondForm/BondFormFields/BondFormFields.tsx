@@ -92,13 +92,15 @@ const BondFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             handleChange(evt);
             // Reset the mac address field from the select box.
-            setFieldValue("mac_address", values.macNic).catch((reason) => {
-              throw new FormikFieldChangeError(
-                "mac_address",
-                "setFieldValue",
-                reason
-              );
-            });
+            setFieldValue("mac_address", values.macNic).catch(
+              (reason: unknown) => {
+                throw new FormikFieldChangeError(
+                  "mac_address",
+                  "setFieldValue",
+                  reason as string
+                );
+              }
+            );
           }}
           type="radio"
           value={MacSource.NIC}
@@ -112,13 +114,15 @@ const BondFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
             handleChange(evt);
             // Fill the mac addres field from the value of this select.
-            setFieldValue("mac_address", evt.target.value).catch((reason) => {
-              throw new FormikFieldChangeError(
-                "mac_address",
-                "setFieldValue",
-                reason
-              );
-            });
+            setFieldValue("mac_address", evt.target.value).catch(
+              (reason: unknown) => {
+                throw new FormikFieldChangeError(
+                  "mac_address",
+                  "setFieldValue",
+                  reason as string
+                );
+              }
+            );
           }}
           options={getMacOptions(machine, selected)}
           wrapperClassName="u-nudge-right--x-large u-sv2"
@@ -143,25 +147,25 @@ const BondFormFields = ({
           onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
             handleChange(evt);
             // Reset the link monitoring fields.
-            setFieldValue("bond_downdelay", 0).catch((reason) => {
+            setFieldValue("bond_downdelay", 0).catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "bond_downdelay",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
-            setFieldValue("bond_miimon", 0).catch((reason) => {
+            setFieldValue("bond_miimon", 0).catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "bond_miimon",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
-            setFieldValue("bond_updelay", 0).catch((reason) => {
+            setFieldValue("bond_updelay", 0).catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "bond_updelay",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
           }}

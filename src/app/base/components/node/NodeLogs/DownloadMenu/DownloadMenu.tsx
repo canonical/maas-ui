@@ -168,10 +168,10 @@ export const DownloadMenu = ({ node }: Props): React.ReactElement | null => {
                           `${node.fqdn}-curtin-${today}.tar`
                         );
                       })
-                      .catch((error) => {
+                      .catch((error: unknown) => {
                         dispatch(
                           messageActions.add(
-                            `curtin.tar could not be downloaded: ${error}`,
+                            `curtin.tar could not be downloaded: ${error as string}`,
                             NotificationSeverity.NEGATIVE
                           )
                         );

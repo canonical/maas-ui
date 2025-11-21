@@ -36,11 +36,11 @@ export const IPMIPowerFields = <V extends AnyObject>({
   useEffect(() => {
     if (isMultiChoice && workaroundsFieldValue.length === 0) {
       setFieldValue(workaroundsFieldName, [NONE_WORKAROUND_VALUE]).catch(
-        (reason) => {
+        (reason: unknown) => {
           throw new FormikFieldChangeError(
             workaroundsFieldName,
             "setFieldValue",
-            reason
+            reason as string
           );
         }
       );
@@ -89,11 +89,11 @@ export const IPMIPowerFields = <V extends AnyObject>({
                         setFieldValue(
                           workaroundsFieldName,
                           newFieldValue
-                        ).catch((reason) => {
+                        ).catch((reason: unknown) => {
                           throw new FormikFieldChangeError(
                             workaroundsFieldName,
                             "setFieldValue",
-                            reason
+                            reason as string
                           );
                         });
                       }}

@@ -55,8 +55,12 @@ export const DeployFormFields = (): React.ReactElement => {
   const noImages = osystems.length === 0 || releases.length === 0;
   const clearVmHostOptions = () => {
     setDeployVmHost(false);
-    setFieldValue("vmHostType", "").catch((reason) => {
-      throw new FormikFieldChangeError("vmHostType", "setFieldValue", reason);
+    setFieldValue("vmHostType", "").catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "vmHostType",
+        "setFieldValue",
+        reason as string
+      );
     });
   };
   const hardwareSyncInterval = useSelector(
@@ -68,12 +72,22 @@ export const DeployFormFields = (): React.ReactElement => {
   useEffect(() => {
     if (defaultMinHweKernel) {
       if (kernelOptions.find(({ value }) => value === defaultMinHweKernel)) {
-        setFieldValue("kernel", defaultMinHweKernel).catch((reason) => {
-          throw new FormikFieldChangeError("kernel", "setFieldValue", reason);
-        });
+        setFieldValue("kernel", defaultMinHweKernel).catch(
+          (reason: unknown) => {
+            throw new FormikFieldChangeError(
+              "kernel",
+              "setFieldValue",
+              reason as string
+            );
+          }
+        );
       } else {
-        setFieldValue("kernel", "").catch((reason) => {
-          throw new FormikFieldChangeError("kernel", "setFieldValue", reason);
+        setFieldValue("kernel", "").catch((reason: unknown) => {
+          throw new FormikFieldChangeError(
+            "kernel",
+            "setFieldValue",
+            reason as string
+          );
         });
       }
     }
@@ -99,11 +113,11 @@ export const DeployFormFields = (): React.ReactElement => {
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
                 const value = e.target.value;
-                setFieldValue("kernel", "").catch((reason) => {
+                setFieldValue("kernel", "").catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "kernel",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
                 if (
@@ -113,11 +127,11 @@ export const DeployFormFields = (): React.ReactElement => {
                   setFieldValue(
                     "release",
                     allReleaseOptions[value][0].value
-                  ).catch((reason) => {
+                  ).catch((reason: unknown) => {
                     throw new FormikFieldChangeError(
                       "release",
                       "setFieldValue",
-                      reason
+                      reason as string
                     );
                   });
                 }
@@ -136,11 +150,11 @@ export const DeployFormFields = (): React.ReactElement => {
               name="release"
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
-                setFieldValue("kernel", "").catch((reason) => {
+                setFieldValue("kernel", "").catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "kernel",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
                 if (!["bionic", "focal"].includes(e.target.value)) {
@@ -174,13 +188,15 @@ export const DeployFormFields = (): React.ReactElement => {
               label="Deploy to disk"
               name="ephemeralDeploy"
               onChange={() => {
-                setFieldValue("ephemeralDeploy", false).catch((reason) => {
-                  throw new FormikFieldChangeError(
-                    "ephemeralDeploy",
-                    "setFieldValue",
-                    reason
-                  );
-                });
+                setFieldValue("ephemeralDeploy", false).catch(
+                  (reason: unknown) => {
+                    throw new FormikFieldChangeError(
+                      "ephemeralDeploy",
+                      "setFieldValue",
+                      reason as string
+                    );
+                  }
+                );
               }}
               type="radio"
             />
@@ -190,13 +206,15 @@ export const DeployFormFields = (): React.ReactElement => {
               label="Deploy in memory"
               name="ephemeralDeploy"
               onChange={() => {
-                setFieldValue("ephemeralDeploy", true).catch((reason) => {
-                  throw new FormikFieldChangeError(
-                    "ephemeralDeploy",
-                    "setFieldValue",
-                    reason
-                  );
-                });
+                setFieldValue("ephemeralDeploy", true).catch(
+                  (reason: unknown) => {
+                    throw new FormikFieldChangeError(
+                      "ephemeralDeploy",
+                      "setFieldValue",
+                      reason as string
+                    );
+                  }
+                );
               }}
               type="radio"
             />
@@ -234,11 +252,11 @@ export const DeployFormFields = (): React.ReactElement => {
                     if (checked) {
                       setDeployVmHost(true);
                       setFieldValue("vmHostType", PodType.LXD).catch(
-                        (reason) => {
+                        (reason: unknown) => {
                           throw new FormikFieldChangeError(
                             "vmHostType",
                             "setFieldValue",
-                            reason
+                            reason as string
                           );
                         }
                       );

@@ -45,20 +45,22 @@ export const AddPartitionFields = ({
             const value =
               e.target.value !== "" ? parseFloat(e.target.value) : "";
             handleChange(e);
-            setFieldValue("partitionSize", value).catch((reason) => {
+            setFieldValue("partitionSize", value).catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "partitionSize",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
-            setFieldTouched("partitionSize", true, false).catch((reason) => {
-              throw new FormikFieldChangeError(
-                "partitionSize",
-                "setFieldTouched",
-                reason
-              );
-            });
+            setFieldTouched("partitionSize", true, false).catch(
+              (reason: unknown) => {
+                throw new FormikFieldChangeError(
+                  "partitionSize",
+                  "setFieldTouched",
+                  reason as string
+                );
+              }
+            );
           }}
           required
           step="any"

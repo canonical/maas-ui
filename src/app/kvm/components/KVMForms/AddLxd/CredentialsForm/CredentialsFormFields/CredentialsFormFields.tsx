@@ -32,15 +32,19 @@ export const CredentialsFormFields = ({
     // The validation schema changes depending on the state of
     // `shouldGenerateCert`. Here we touch the fields so that the new validation
     // is applied to the fields that changed.
-    setFieldTouched("certificate").catch((reason) => {
+    setFieldTouched("certificate").catch((reason: unknown) => {
       throw new FormikFieldChangeError(
         "certificate",
         "setFieldTouched",
-        reason
+        reason as string
       );
     });
-    setFieldTouched("key").catch((reason) => {
-      throw new FormikFieldChangeError("key", "setFieldTouched", reason);
+    setFieldTouched("key").catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        "key",
+        "setFieldTouched",
+        reason as string
+      );
     });
   }, [shouldGenerateCert, setFieldTouched]);
 
@@ -68,15 +72,19 @@ export const CredentialsFormFields = ({
         <CertificateFields
           onShouldGenerateCert={(shouldGenerateCert) => {
             setShouldGenerateCert(shouldGenerateCert);
-            setFieldValue("certificate", "").catch((reason) => {
+            setFieldValue("certificate", "").catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "certificate",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
-            setFieldValue("key", "").catch((reason) => {
-              throw new FormikFieldChangeError("key", "setFieldValue", reason);
+            setFieldValue("key", "").catch((reason: unknown) => {
+              throw new FormikFieldChangeError(
+                "key",
+                "setFieldValue",
+                reason as string
+              );
             });
           }}
           shouldGenerateCert={shouldGenerateCert}

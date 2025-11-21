@@ -199,11 +199,11 @@ export const TagFormChanges = ({
                 setFieldValue(
                   "added",
                   values.added.filter((id) => tag.id !== toFormikNumber(id))
-                ).catch((reason) => {
+                ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "added",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
               },
@@ -225,11 +225,11 @@ export const TagFormChanges = ({
                 setFieldValue(
                   "removed",
                   values.removed.filter((id) => tag.id !== toFormikNumber(id))
-                ).catch((reason) => {
+                ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "removed",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
               },
@@ -251,11 +251,11 @@ export const TagFormChanges = ({
                 setFieldValue(
                   "removed",
                   values.removed.concat([tag.id.toString()])
-                ).catch((reason) => {
+                ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "removed",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
               },

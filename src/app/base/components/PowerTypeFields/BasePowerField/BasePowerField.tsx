@@ -44,13 +44,15 @@ export const BasePowerField = <V extends AnyObject>({
                 const newFieldValue = checked
                   ? fieldValue.filter((val) => val !== checkboxValue)
                   : [...fieldValue, checkboxValue];
-                setFieldValue(fieldName, newFieldValue).catch((reason) => {
-                  throw new FormikFieldChangeError(
-                    fieldName,
-                    "setFieldValue",
-                    reason
-                  );
-                });
+                setFieldValue(fieldName, newFieldValue).catch(
+                  (reason: unknown) => {
+                    throw new FormikFieldChangeError(
+                      fieldName,
+                      "setFieldValue",
+                      reason as string
+                    );
+                  }
+                );
               }}
               type="checkbox"
               value={checkboxValue}

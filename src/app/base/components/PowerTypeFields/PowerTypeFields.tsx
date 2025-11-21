@@ -114,7 +114,7 @@ export const PowerTypeFields = <V extends AnyObject>({
             // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
             await handleChange(e);
             setErrors(initialErrors);
-            setTouched(initialTouched);
+            await setTouched(initialTouched);
 
             const powerType = getPowerTypeFromName(powerTypes, e.target.value);
             // Explicitly set the fields of the selected power type to defaults.
@@ -126,11 +126,11 @@ export const PowerTypeFields = <V extends AnyObject>({
                 setFieldValue(
                   `${powerParametersValueName}.${field.name}`,
                   field.default || ""
-                ).catch((reason) => {
+                ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     `${powerParametersValueName}.${field.name}`,
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
               });

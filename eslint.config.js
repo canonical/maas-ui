@@ -290,6 +290,7 @@ export default tseslint.config(
       "@typescript-eslint/sort-type-constituents": "error",
       // "@typescript-eslint/strict-boolean-expressions": "error",
       // "@typescript-eslint/switch-exhaustiveness-check": "error",
+      "@typescript-eslint/use-unknown-in-catch-callback-variable": "error",
     },
   },
   {

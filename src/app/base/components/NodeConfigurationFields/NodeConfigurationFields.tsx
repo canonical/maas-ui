@@ -81,11 +81,11 @@ const NodeConfigurationFields = (): React.ReactElement => {
               }}
               onTagCreated={(tag) => {
                 setFieldValue("tags", values.tags.concat([tag.id])).catch(
-                  (reason) => {
+                  (reason: unknown) => {
                     throw new FormikFieldChangeError(
                       "tags",
                       "setFieldValue",
-                      reason
+                      reason as string
                     );
                   }
                 );

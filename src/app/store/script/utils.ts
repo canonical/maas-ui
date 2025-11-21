@@ -2,10 +2,7 @@ import type { AnyObject } from "@/app/base/types";
 
 // The script parameters are parsed from a JSON object with any shape so we have
 // to do a bit more work to be sure we're retrieving valid values.
-export const getObjectValue = (
-  parameter: unknown,
-  key: string
-): unknown | null => {
+export const getObjectValue = (parameter: unknown, key: string): unknown => {
   if (parameter && typeof parameter === "object") {
     const obj = parameter as AnyObject;
     return key in obj ? obj[key] : null;
