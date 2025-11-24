@@ -4,9 +4,18 @@ import { useCallback, useEffect, useState } from "react";
 import { ContentSection } from "@canonical/maas-react-components";
 import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import {
+  useGetConfiguration,
+  useSetConfiguration,
+} from "@/app/api/query/configurations";
+import {
+  getConfigurationQueryKey,
+  getConfigurationsQueryKey,
+} from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
@@ -22,8 +31,7 @@ import {
   BootResourceSourceType,
   type BootResourceUbuntuSource,
 } from "@/app/store/bootresource/types";
-import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 const ChangeSourceSchema = Yup.object()
   .shape({
@@ -51,21 +59,27 @@ const ChangeSource = (): ReactElement => {
   const resources = useSelector(bootResourceSelectors.resources);
   const sources = useSelector(bootResourceSelectors.ubuntu);
   const otherImages = useSelector(bootResourceSelectors.otherImages);
-  const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const pollingSources = useSelector(bootResourceSelectors.polling);
   const errors = useSelector(bootResourceSelectors.fetchError);
   const saving = useSelector(bootResourceSelectors.fetching);
   const previousSaving = usePrevious(saving);
   const cleanup = useCallback(() => {
-    configActions.cleanup();
     return bootResourceActions.cleanup();
   }, []);
+
+  const queryClient = useQueryClient();
+  const { data, isPending: loadingSyncConfig } = useGetConfiguration({
+    path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+  });
+  const configETag = data?.headers?.get("ETag");
+  const autoImport = data?.value as boolean;
+  const updateConfig = useSetConfiguration();
+
   const saved = !saving && previousSaving && !errors;
 
   useWindowTitle("Source");
   useEffect(() => {
     dispatch(bootResourceActions.poll({ continuous: false }));
-    dispatch(configActions.fetch());
     return () => {
       dispatch(bootResourceActions.pollStop());
       dispatch(bootResourceActions.cleanup());
@@ -164,7 +178,7 @@ const ChangeSource = (): ReactElement => {
               Image import is in progress, cannot change source settings.
             </Notification>
           )}
-          {!pollingSources && (
+          {!pollingSources && !loadingSyncConfig && (
             <FormikForm<ChangeSourceValues>
               allowUnchanged
               aria-label="Choose source"
@@ -177,11 +191,15 @@ const ChangeSource = (): ReactElement => {
               onSubmit={(values) => {
                 dispatch(cleanup());
                 dispatch(bootResourceActions.fetch(values));
-                dispatch(
-                  configActions.update({
-                    boot_images_auto_import: values.autoSync,
-                  })
-                );
+                updateConfig.mutate({
+                  headers: {
+                    ETag: configETag,
+                  },
+                  body: {
+                    value: values.autoSync,
+                  },
+                  path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+                });
               }}
               onSuccess={(values) => {
                 dispatch(
@@ -201,6 +219,14 @@ const ChangeSource = (): ReactElement => {
                     ),
                   })
                 );
+                return queryClient.invalidateQueries({
+                  queryKey: [
+                    getConfigurationsQueryKey(),
+                    getConfigurationQueryKey({
+                      path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+                    }),
+                  ],
+                });
               }}
               saved={saved}
               saving={saving}
