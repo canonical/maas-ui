@@ -1,9 +1,8 @@
 import type { ReactElement } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Notification } from "@canonical/react-components";
-import { usePrevious } from "@canonical/react-components/dist/hooks";
+import { Notification, Spinner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -13,6 +12,11 @@ import {
   useSetConfiguration,
 } from "@/app/api/query/configurations";
 import {
+  useGetImageSource,
+  useImageSources,
+  useUpdateImageSource,
+} from "@/app/api/query/imageSources";
+import {
   getConfigurationQueryKey,
   getConfigurationsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -20,17 +24,10 @@ import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import type { APIError } from "@/app/base/types";
-import {
-  getDownloadableImages,
-  getSyncedImages,
-} from "@/app/images/components/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
 import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
-import {
-  BootResourceSourceType,
-  type BootResourceUbuntuSource,
-} from "@/app/store/bootresource/types";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import { ConfigNames } from "@/app/store/config/types";
 
 const ChangeSourceSchema = Yup.object()
@@ -57,25 +54,34 @@ export type ChangeSourceValues = {
 const ChangeSource = (): ReactElement => {
   const dispatch = useDispatch();
   const resources = useSelector(bootResourceSelectors.resources);
-  const sources = useSelector(bootResourceSelectors.ubuntu);
-  const otherImages = useSelector(bootResourceSelectors.otherImages);
   const pollingSources = useSelector(bootResourceSelectors.polling);
   const errors = useSelector(bootResourceSelectors.fetchError);
   const saving = useSelector(bootResourceSelectors.fetching);
-  const previousSaving = usePrevious(saving);
   const cleanup = useCallback(() => {
     return bootResourceActions.cleanup();
   }, []);
 
   const queryClient = useQueryClient();
-  const { data, isPending: loadingSyncConfig } = useGetConfiguration({
+  const sources = useImageSources();
+  // TODO: add support for multiple sources when v3 is ready
+  const source = useGetImageSource(
+    {
+      path: { boot_source_id: sources.data?.items[0].id ?? -1 },
+    },
+    sources.isSuccess
+  );
+  const importConfig = useGetConfiguration({
     path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
   });
-  const configETag = data?.headers?.get("ETag");
-  const autoImport = data?.value as boolean;
+  const configETag = importConfig.data?.headers?.get("ETag");
+  const autoImport = importConfig.data?.value as boolean;
   const updateConfig = useSetConfiguration();
+  const updateImageSource = useUpdateImageSource();
 
-  const saved = !saving && previousSaving && !errors;
+  const loading =
+    sources.isPending || source.isPending || importConfig.isPending;
+
+  const saved = updateConfig.isSuccess && updateImageSource.isSuccess;
 
   useWindowTitle("Source");
   useEffect(() => {
@@ -87,81 +93,11 @@ const ChangeSource = (): ReactElement => {
   }, [dispatch]);
 
   const canChangeSource = resources.every((resource) => !resource.downloading);
-  const source: BootResourceUbuntuSource =
-    sources !== null &&
-    !!sources.sources[0].source_type &&
-    sources.sources[0].source_type === BootResourceSourceType.CUSTOM
-      ? sources.sources[0]
-      : {
-          keyring_data: "",
-          keyring_filename: "",
-          source_type: BootResourceSourceType.MAAS_IO,
-          url: "",
-        };
-
-  const [ubuntuSystems, setUbuntuSystems] = useState<
-    {
-      arches: string[];
-      osystem: string;
-      release: string;
-    }[]
-  >([]);
-  const [otherSystems, setOtherSystems] = useState<
-    {
-      arch: string;
-      os: string;
-      release: string;
-      subArch: string;
-    }[]
-  >([]);
-
-  useEffect(() => {
-    if (sources && resources && otherImages) {
-      const downloadableImages = getDownloadableImages(
-        sources.releases,
-        sources.arches,
-        otherImages
-      );
-      const syncedImages = getSyncedImages(downloadableImages, resources);
-
-      const ubuntuList: {
-        arches: string[];
-        osystem: string;
-        release: string;
-      }[] = [];
-      const otherList: {
-        arch: string;
-        os: string;
-        release: string;
-        subArch: string;
-      }[] = [];
-      Object.entries(
-        syncedImages as Record<string, { label: string; value: string }[]>
-      ).forEach(([key, images]) => {
-        const [osystem] = key.split("-", 1);
-
-        if (osystem === "Ubuntu" || osystem === "Centos") {
-          const arches = images.map((image) => image.label);
-          const release = images[0].value.split("-")[1];
-          ubuntuList.push({
-            arches,
-            osystem: osystem.toLowerCase(),
-            release,
-          });
-        } else {
-          const [os, release, arch, subArch] = images[0].value.split("-");
-          otherList.push({
-            arch,
-            os,
-            release,
-            subArch,
-          });
-        }
-      });
-      setUbuntuSystems(ubuntuList);
-      setOtherSystems(otherList);
-    }
-  }, [sources, resources, otherImages]);
+  const sourceType = /^https?:\/\/images\.maas\.io\/.*\/stable\/?$/.test(
+    source.data?.url ?? ""
+  )
+    ? BootResourceSourceType.MAAS_IO
+    : BootResourceSourceType.CUSTOM;
 
   return (
     <PageContent sidePanelContent={null} sidePanelTitle={null}>
@@ -170,6 +106,7 @@ const ChangeSource = (): ReactElement => {
           Source
         </ContentSection.Title>
         <ContentSection.Content>
+          {loading && <Spinner text="Loading..." />}
           {!canChangeSource && (
             <Notification
               data-testid="cannot-change-source-warning"
@@ -178,19 +115,21 @@ const ChangeSource = (): ReactElement => {
               Image import is in progress, cannot change source settings.
             </Notification>
           )}
-          {!pollingSources && !loadingSyncConfig && (
+          {!pollingSources && !loading && (
             <FormikForm<ChangeSourceValues>
               allowUnchanged
               aria-label="Choose source"
               cleanup={cleanup}
               errors={errors as APIError}
               initialValues={{
-                ...source,
+                keyring_data: source.data?.keyring_data ?? "",
+                keyring_filename: source.data?.keyring_filename ?? "",
+                url: source.data?.url ?? "",
+                source_type: sourceType,
                 autoSync: autoImport || false,
               }}
               onSubmit={(values) => {
                 dispatch(cleanup());
-                dispatch(bootResourceActions.fetch(values));
                 updateConfig.mutate({
                   headers: {
                     ETag: configETag,
@@ -200,25 +139,18 @@ const ChangeSource = (): ReactElement => {
                   },
                   path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
                 });
+                updateImageSource.mutate({
+                  body: {
+                    ...values,
+                    // TODO: add priority field when multiple sources are supported
+                    priority: 10,
+                  },
+                  path: {
+                    boot_source_id: source.data?.id ?? -1,
+                  },
+                });
               }}
-              onSuccess={async (values) => {
-                dispatch(
-                  bootResourceActions.saveUbuntu({
-                    keyring_data: values.keyring_data,
-                    keyring_filename: values.keyring_filename,
-                    source_type: values.source_type,
-                    url: values.url,
-                    osystems: ubuntuSystems,
-                  })
-                );
-                dispatch(
-                  bootResourceActions.saveOther({
-                    images: otherSystems.map(
-                      ({ arch, os, release, subArch = "" }) =>
-                        `${os}/${arch}/${subArch}/${release}`
-                    ),
-                  })
-                );
+              onSuccess={async () => {
                 await queryClient.invalidateQueries({
                   queryKey: getConfigurationsQueryKey(),
                 });

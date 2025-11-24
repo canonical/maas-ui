@@ -37,14 +37,18 @@ export const useImageSources = (options?: Options<ListBootSourcesData>) => {
   );
 };
 
-export const useGetImageSource = (options: Options<GetBootSourceData>) => {
-  return useWebsocketAwareQuery(
-    queryOptionsWithHeaders<
+export const useGetImageSource = (
+  options: Options<GetBootSourceData>,
+  enabled: boolean
+) => {
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
       GetBootSourceResponses,
       GetBootSourceErrors,
       GetBootSourceData
-    >(options, getBootSource, getBootSourceQueryKey(options))
-  );
+    >(options, getBootSource, getBootSourceQueryKey(options)),
+    enabled,
+  });
 };
 
 export const useUpdateImageSource = (
