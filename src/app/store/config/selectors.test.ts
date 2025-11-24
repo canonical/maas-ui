@@ -545,22 +545,6 @@ describe("config selectors", () => {
     });
   });
 
-  describe("bootImagesAutoImport", () => {
-    it("returns MAAS config for boot images auto import", () => {
-      const state = factory.rootState({
-        config: factory.configState({
-          items: [
-            factory.config({
-              name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
-              value: true,
-            }),
-          ],
-        }),
-      });
-      expect(config.bootImagesAutoImport(state)).toBe(true);
-    });
-  });
-
   describe("maasUrl", () => {
     it("returns MAAS config for MAAS URL", () => {
       const state = factory.rootState({

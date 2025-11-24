@@ -201,7 +201,7 @@ const ChangeSource = (): ReactElement => {
                   path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
                 });
               }}
-              onSuccess={(values) => {
+              onSuccess={async (values) => {
                 dispatch(
                   bootResourceActions.saveUbuntu({
                     keyring_data: values.keyring_data,
@@ -219,13 +219,13 @@ const ChangeSource = (): ReactElement => {
                     ),
                   })
                 );
-                return queryClient.invalidateQueries({
-                  queryKey: [
-                    getConfigurationsQueryKey(),
-                    getConfigurationQueryKey({
-                      path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
-                    }),
-                  ],
+                await queryClient.invalidateQueries({
+                  queryKey: getConfigurationsQueryKey(),
+                });
+                await queryClient.invalidateQueries({
+                  queryKey: getConfigurationQueryKey({
+                    path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+                  }),
                 });
               }}
               saved={saved}

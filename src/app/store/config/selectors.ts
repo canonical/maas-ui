@@ -524,15 +524,6 @@ const rpcSharedSecret = createSelector([all], (configs) =>
   getValueFromName<string>(configs, ConfigNames.RPC_SHARED_SECRET)
 );
 
-/**
- * Returns the MAAS config for whether to automatically sync images.
- * @param state - The redux state.
- * @returns Whether the release notifications are enabled.
- */
-const bootImagesAutoImport = createSelector([all], (configs) =>
-  getValueFromName<boolean>(configs, ConfigNames.BOOT_IMAGES_AUTO_IMPORT)
-);
-
 const hardwareSyncInterval = createSelector([all], (configs) =>
   getValueFromName<TimeSpan>(configs, ConfigNames.HARDWARE_SYNC_INTERVAL)
 );
@@ -569,7 +560,6 @@ const config = {
   activeDiscoveryInterval,
   all,
   analyticsEnabled,
-  bootImagesAutoImport,
   commissioningDistroSeries,
   completedIntro,
   defaultDistroSeries,
