@@ -37,20 +37,20 @@ export const LicenseKeyFormFields = ({
           formikProps.handleChange(e);
           formikProps
             .setFieldTouched("distro_series", true, true)
-            .catch((reason) => {
+            .catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "distro_series",
                 "setFieldTouched",
-                reason
+                reason as string
               );
             });
           formikProps
             .setFieldValue("distro_series", releases[e.target.value][0])
-            .catch((reason) => {
+            .catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "distro_series",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
         }}
@@ -66,13 +66,15 @@ export const LicenseKeyFormFields = ({
         name="distro_series"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
-          formikProps.setFieldTouched("osystem", true, true).catch((reason) => {
-            throw new FormikFieldChangeError(
-              "osystem",
-              "setFieldTouched",
-              reason
-            );
-          });
+          formikProps
+            .setFieldTouched("osystem", true, true)
+            .catch((reason: unknown) => {
+              throw new FormikFieldChangeError(
+                "osystem",
+                "setFieldTouched",
+                reason as string
+              );
+            });
         }}
         options={distroSeriesOptions}
         required={true}

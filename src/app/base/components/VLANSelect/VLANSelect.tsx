@@ -76,8 +76,12 @@ export const VLANSelect = ({
     if (setDefaultValueFromFabric) {
       const vlan = selectedFabric?.default_vlan_id;
       if (isId(vlan)) {
-        setFieldValue("vlan", vlan).catch((reason) => {
-          throw new FormikFieldChangeError("vlan", "setFieldValue", reason);
+        setFieldValue("vlan", vlan).catch((reason: unknown) => {
+          throw new FormikFieldChangeError(
+            "vlan",
+            "setFieldValue",
+            reason as string
+          );
         });
       }
     }

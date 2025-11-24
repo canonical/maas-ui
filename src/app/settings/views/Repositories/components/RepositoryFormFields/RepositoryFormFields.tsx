@@ -53,11 +53,19 @@ const generateCheckboxGroup = (
           const temp = [...values, field];
           newFields = fields.filter((oldField) => temp.includes(oldField));
         }
-        setFieldValue(key, newFields).catch((reason) => {
-          throw new FormikFieldChangeError(key, "setFieldValue", reason);
+        setFieldValue(key, newFields).catch((reason: unknown) => {
+          throw new FormikFieldChangeError(
+            key,
+            "setFieldValue",
+            reason as string
+          );
         });
-        setFieldTouched(key, true).catch((reason) => {
-          throw new FormikFieldChangeError(key, "setFieldTouched", reason);
+        setFieldTouched(key, true).catch((reason: unknown) => {
+          throw new FormikFieldChangeError(
+            key,
+            "setFieldTouched",
+            reason as string
+          );
         });
       }}
       type="checkbox"
@@ -106,11 +114,11 @@ const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
               name="disable_sources"
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources).catch(
-                  (reason) => {
+                  (reason: unknown) => {
                     throw new FormikFieldChangeError(
                       "disable_sources",
                       "setFieldValue",
-                      reason
+                      reason as string
                     );
                   }
                 );
@@ -155,11 +163,11 @@ const RepositoryFormFields = ({ type }: Props): React.ReactElement => {
               name="disable_sources"
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources).catch(
-                  (reason) => {
+                  (reason: unknown) => {
                     throw new FormikFieldChangeError(
                       "disable_sources",
                       "setFieldValue",
-                      reason
+                      reason as string
                     );
                   }
                 );

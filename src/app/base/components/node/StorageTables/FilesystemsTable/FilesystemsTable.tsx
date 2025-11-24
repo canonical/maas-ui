@@ -43,8 +43,8 @@ const generateFilesystemRowData = (
   const addFilesystem = (storage: Disk | Partition) => {
     if (!isMounted(storage.filesystem)) return;
     data.push({
-      name: storage?.name,
-      size: storage?.size,
+      name: storage.name,
+      size: storage.size,
       node,
       storage,
       ...storage.filesystem,

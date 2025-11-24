@@ -42,29 +42,29 @@ const CommissioningFormFields = (): React.ReactElement => {
           formikProps.handleChange(e);
           formikProps
             .setFieldTouched("commissioning_distro_series", true, true)
-            .catch((reason) => {
+            .catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "commissioning_distro_series",
                 "setFieldTouched",
-                reason
+                reason as string
               );
             });
           formikProps
             .setFieldValue("default_min_hwe_kernel", kernelValue)
-            .catch((reason) => {
+            .catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "default_min_hwe_kernel",
                 "setFieldValue",
-                reason
+                reason as string
               );
             });
           formikProps
             .setFieldTouched("default_min_hwe_kernel", true, true)
-            .catch((reason) => {
+            .catch((reason: unknown) => {
               throw new FormikFieldChangeError(
                 "default_min_hwe_kernel",
                 "setFieldTouched",
-                reason
+                reason as string
               );
             });
         }}

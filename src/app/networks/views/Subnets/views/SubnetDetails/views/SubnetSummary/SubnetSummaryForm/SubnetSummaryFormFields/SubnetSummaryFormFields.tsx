@@ -34,8 +34,12 @@ const SubnetSummaryFormFields = (): React.ReactElement => {
     );
     if (fabric) {
       setFieldValue("vlan", fabric.default_vlan_id.toString()).catch(
-        (reason) => {
-          throw new FormikFieldChangeError("vlan", "setFieldValue", reason);
+        (reason: unknown) => {
+          throw new FormikFieldChangeError(
+            "vlan",
+            "setFieldValue",
+            reason as string
+          );
         }
       );
     }

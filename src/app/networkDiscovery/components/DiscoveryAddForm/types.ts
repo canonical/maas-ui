@@ -11,10 +11,10 @@ export enum DeviceType {
 }
 
 export type DiscoveryAddValues = {
-  [DeviceMeta.PK]: Device[DeviceMeta.PK] | "";
-  domain: Domain["name"] | "";
-  hostname: Device["hostname"] | "";
+  [DeviceMeta.PK]: Device[DeviceMeta.PK];
+  domain: Domain["name"];
+  hostname: Device["hostname"];
   ip_assignment: DeviceIpAssignment;
-  parent: Device["parent"] | "";
+  parent: Device["parent"];
   type: DeviceType | "";
 };

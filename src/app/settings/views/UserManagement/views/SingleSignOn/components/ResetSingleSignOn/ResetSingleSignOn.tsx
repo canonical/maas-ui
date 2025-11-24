@@ -17,6 +17,7 @@ type Props = {
 
 const ResetSingleSignOn = ({ id }: Props): ReactElement => {
   const { data, error, isPending } = useActiveOauthProvider();
+  const eTag = data?.headers?.get("ETag");
   const updateProvider = useUpdateOauthProvider();
   const deleteProvider = useDeleteOauthProvider();
   const { closeSidePanel } = useSidePanel();
@@ -59,6 +60,9 @@ const ResetSingleSignOn = ({ id }: Props): ReactElement => {
       onSubmit={() => {
         updateProvider.mutate(
           {
+            headers: {
+              ETag: eTag,
+            },
             path: { provider_id: id },
             body: { ...data, enabled: false },
           },

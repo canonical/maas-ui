@@ -113,10 +113,10 @@ const EditAliasOrVlanForm = ({
       cleanup={cleanup}
       errors={errors}
       initialValues={{
-        fabric: vlan?.fabric || "",
+        fabric: vlan?.fabric,
         ip_address: ipAddress || "",
         mode: getLinkMode(link),
-        subnet: subnet?.id || "",
+        subnet: subnet?.id,
         vlan: nic.vlan_id,
         ...(isVLAN ? { tags: nic.tags } : {}),
       }}

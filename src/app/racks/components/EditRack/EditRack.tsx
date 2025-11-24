@@ -20,6 +20,7 @@ const RackSchema = Yup.object().shape({
 const EditRack = ({ id }: EditRackProps): ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const rack = useGetRack({ path: { rack_id: id } });
+  const eTag = rack.data?.headers?.get("ETag");
 
   const editRack = useUpdateRack();
 
@@ -27,9 +28,7 @@ const EditRack = ({ id }: EditRackProps): ReactElement => {
     <>
       {rack.isPending && <Spinner text="Loading..." />}
       {rack.isError && (
-        <Notification data-testid="no-such-rack-error" severity="negative">
-          {rack.error.message}
-        </Notification>
+        <Notification severity="negative">{rack.error.message}</Notification>
       )}
       {rack.isSuccess && rack.data && (
         <FormikForm<RackRequest, UpdateRackError>
@@ -41,6 +40,7 @@ const EditRack = ({ id }: EditRackProps): ReactElement => {
           onCancel={closeSidePanel}
           onSubmit={(values) => {
             editRack.mutate({
+              headers: { ETag: eTag },
               body: {
                 name: values.name,
               },

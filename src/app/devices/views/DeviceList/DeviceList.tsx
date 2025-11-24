@@ -21,9 +21,9 @@ const DeviceList = (): ReactElement => {
   );
 
   const setSearchFilter = useCallback(
-    (searchText: string) => {
+    async (searchText: string) => {
       _setSearchFilter(searchText);
-      navigate({
+      await navigate({
         search: FilterDevices.filtersToQueryString(
           FilterDevices.getCurrentFilters(searchText)
         ),

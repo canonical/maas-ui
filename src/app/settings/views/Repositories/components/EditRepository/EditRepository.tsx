@@ -59,6 +59,7 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
   } = useGetPackageRepository({
     path: { package_repository_id: id },
   });
+  const eTag = repository?.headers?.get("ETag");
   const updateRepo = useUpdatePackageRepository();
 
   const allLoaded =
@@ -147,6 +148,7 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
         }
 
         updateRepo.mutate({
+          headers: { ETag: eTag },
           path: { package_repository_id: repository.id },
           body: { ...params },
         });

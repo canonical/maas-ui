@@ -41,8 +41,12 @@ export const UploadTextArea = <V extends AnyObject>({
     useFormikContext<V>();
 
   const handleUpload = (files: File[] | null) => {
-    setFieldTouched(name, true).catch((reason) => {
-      throw new FormikFieldChangeError(name, "setFieldTouched", reason);
+    setFieldTouched(name, true).catch((reason: unknown) => {
+      throw new FormikFieldChangeError(
+        name,
+        "setFieldTouched",
+        reason as string
+      );
     });
     setFileErrors(null);
 
@@ -70,8 +74,12 @@ export const UploadTextArea = <V extends AnyObject>({
     };
     reader.onloadend = () => {
       if (typeof reader.result === "string") {
-        setFieldValue(name, reader.result).catch((reason) => {
-          throw new FormikFieldChangeError(name, "setFieldValue", reason);
+        setFieldValue(name, reader.result).catch((reason: unknown) => {
+          throw new FormikFieldChangeError(
+            name,
+            "setFieldValue",
+            reason as string
+          );
         });
       } else {
         setFileErrors("Only text files are supported.");

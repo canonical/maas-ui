@@ -52,26 +52,26 @@ export const FilesystemFields = ({
             // Swap filesystems must be mounted at "none" instead of an empty
             // string in order to work with the API.
             if (e.target.value === "swap") {
-              setFieldTouched("mountPoint").catch((reason) => {
+              setFieldTouched("mountPoint").catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "mountPoint",
                   "setFieldTouched",
-                  reason
+                  reason as string
                 );
               });
-              setFieldValue("mountPoint", "none").catch((reason) => {
+              setFieldValue("mountPoint", "none").catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "mountPoint",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             } else {
-              setFieldValue("mountPoint", "").catch((reason) => {
+              setFieldValue("mountPoint", "").catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "mountPoint",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             }

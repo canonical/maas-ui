@@ -89,42 +89,42 @@ export const CreateRaidFields = ({
         setFieldValue("blockDeviceIds", [
           ...blockDeviceIds,
           storageDevice.id,
-        ]).catch((reason) => {
+        ]).catch((reason: unknown) => {
           throw new FormikFieldChangeError(
             "blockDeviceIds",
             "setFieldValue",
-            reason
+            reason as string
           );
         });
         setFieldValue(
           "spareBlockDeviceIds",
           spareBlockDeviceIds.filter((id) => id !== storageDevice.id)
-        ).catch((reason) => {
+        ).catch((reason: unknown) => {
           throw new FormikFieldChangeError(
             "spareBlockDeviceIds",
             "setFieldValue",
-            reason
+            reason as string
           );
         });
       } else {
         setFieldValue(
           "blockDeviceIds",
           blockDeviceIds.filter((id) => id !== storageDevice.id)
-        ).catch((reason) => {
+        ).catch((reason: unknown) => {
           throw new FormikFieldChangeError(
             "blockDeviceIds",
             "setFieldValue",
-            reason
+            reason as string
           );
         });
         setFieldValue("spareBlockDeviceIds", [
           ...spareBlockDeviceIds,
           storageDevice.id,
-        ]).catch((reason) => {
+        ]).catch((reason: unknown) => {
           throw new FormikFieldChangeError(
             "spareBlockDeviceIds",
             "setFieldValue",
-            reason
+            reason as string
           );
         });
       }
@@ -133,42 +133,42 @@ export const CreateRaidFields = ({
         setFieldValue("partitionIds", [
           ...partitionIds,
           storageDevice.id,
-        ]).catch((reason) => {
+        ]).catch((reason: unknown) => {
           throw new FormikFieldChangeError(
             "partitionIds",
             "setFieldValue",
-            reason
+            reason as string
           );
         });
         setFieldValue(
           "sparePartitionIds",
           sparePartitionIds.filter((id) => id !== storageDevice.id)
-        ).catch((reason) => {
+        ).catch((reason: unknown) => {
           throw new FormikFieldChangeError(
             "sparePartitionIds",
             "setFieldValue",
-            reason
+            reason as string
           );
         });
       } else {
         setFieldValue(
           "partitionIds",
           partitionIds.filter((id) => id !== storageDevice.id)
-        ).catch((reason) => {
+        ).catch((reason: unknown) => {
           throw new FormikFieldChangeError(
             "partitionIds",
             "setFieldValue",
-            reason
+            reason as string
           );
         });
         setFieldValue("sparePartitionIds", [
           ...sparePartitionIds,
           storageDevice.id,
-        ]).catch((reason) => {
+        ]).catch((reason: unknown) => {
           throw new FormikFieldChangeError(
             "sparePartitionIds",
             "setFieldValue",
-            reason
+            reason as string
           );
         });
       }
@@ -191,40 +191,40 @@ export const CreateRaidFields = ({
               setFieldValue(
                 "blockDeviceIds",
                 initialValues.blockDeviceIds
-              ).catch((reason) => {
+              ).catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "blockDeviceIds",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
               setFieldValue("partitionIds", initialValues.partitionIds).catch(
-                (reason) => {
+                (reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "partitionIds",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 }
               );
               setFieldValue(
                 "spareBlockDeviceIds",
                 initialValues.spareBlockDeviceIds
-              ).catch((reason) => {
+              ).catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "spareBlockDeviceIds",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
               setFieldValue(
                 "sparePartitionIds",
                 initialValues.sparePartitionIds
-              ).catch((reason) => {
+              ).catch((reason: unknown) => {
                 throw new FormikFieldChangeError(
                   "sparePartitionIds",
                   "setFieldValue",
-                  reason
+                  reason as string
                 );
               });
             }}

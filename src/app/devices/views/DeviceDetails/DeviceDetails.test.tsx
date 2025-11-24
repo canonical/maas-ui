@@ -52,7 +52,7 @@ describe("DeviceDetails", () => {
           state,
         }
       );
-      router.navigate(path);
+      await router.navigate(path);
       expect(await screen.findByLabelText(label)).toBeInTheDocument();
     });
   });

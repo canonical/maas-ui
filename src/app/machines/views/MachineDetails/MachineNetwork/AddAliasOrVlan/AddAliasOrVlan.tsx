@@ -93,7 +93,7 @@ const AddAliasOrVlan = ({
         initialValues={{
           ...networkFieldsInitialValues,
           ...(isAlias ? {} : { tags: [] }),
-          fabric: nicVLAN?.fabric || "",
+          fabric: nicVLAN?.fabric,
           vlan: nic.vlan_id,
         }}
         onCancel={close}
@@ -131,7 +131,7 @@ const AddAliasOrVlan = ({
         secondarySubmit={(_, { submitForm }) => {
           // Flag that the form was submitted by the secondary action.
           setSecondarySubmit(true);
-          submitForm();
+          return submitForm();
         }}
         secondarySubmitDisabled={!canAddAnother}
         secondarySubmitLabel={Labels.SaveAndAdd}

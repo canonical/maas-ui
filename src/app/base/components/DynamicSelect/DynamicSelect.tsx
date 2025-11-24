@@ -79,8 +79,12 @@ export const DynamicSelect = <V extends FormValues = FormValues>({
           name,
           currentOptionValues.length > 0 ? currentOptionValues[0] : "",
           false
-        ).catch((reason) => {
-          throw new FormikFieldChangeError(name, "setFieldValue", reason);
+        ).catch((reason: unknown) => {
+          throw new FormikFieldChangeError(
+            name,
+            "setFieldValue",
+            reason as string
+          );
         });
       }
     }

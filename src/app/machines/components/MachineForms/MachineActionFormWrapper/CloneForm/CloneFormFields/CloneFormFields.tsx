@@ -64,33 +64,35 @@ export const CloneFormFields = ({
           <SourceMachineSelect
             onMachineClick={(machine) => {
               if (machine) {
-                setFieldValue("source", machine.system_id).catch((reason) => {
-                  throw new FormikFieldChangeError(
-                    "source",
-                    "setFieldValue",
-                    reason
-                  );
-                });
+                setFieldValue("source", machine.system_id).catch(
+                  (reason: unknown) => {
+                    throw new FormikFieldChangeError(
+                      "source",
+                      "setFieldValue",
+                      reason as string
+                    );
+                  }
+                );
               } else {
-                setFieldValue("source", "").catch((reason) => {
+                setFieldValue("source", "").catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "source",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
-                setFieldValue("interfaces", false).catch((reason) => {
+                setFieldValue("interfaces", false).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "interfaces",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
-                setFieldValue("storage", false).catch((reason) => {
+                setFieldValue("storage", false).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "storage",
                     "setFieldValue",
-                    reason
+                    reason as string
                   );
                 });
                 setSelectedMachine(null);

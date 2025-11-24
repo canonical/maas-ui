@@ -16,15 +16,14 @@ const DeleteUser = ({ id }: DeleteUserProps): ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const user = useGetUser({ path: { user_id: id } });
+  const eTag = user.data?.headers?.get("ETag");
   const deleteUser = useDeleteUser();
 
   return (
     <>
       {user.isPending && <Spinner text="Loading..." />}
       {user.isError && (
-        <Notification data-testid="no-such-user-error" severity="negative">
-          {user.error.message}
-        </Notification>
+        <Notification severity="negative">{user.error.message}</Notification>
       )}
       {user.isSuccess && user.data && (
         <ModelActionForm
@@ -43,7 +42,10 @@ const DeleteUser = ({ id }: DeleteUserProps): ReactElement => {
           modelType="user"
           onCancel={closeSidePanel}
           onSubmit={() => {
-            deleteUser.mutate({ path: { user_id: id } });
+            deleteUser.mutate({
+              headers: { ETag: eTag },
+              path: { user_id: id },
+            });
           }}
           onSuccess={async () => {
             // async with closeForm called first, because unlike

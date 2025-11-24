@@ -67,7 +67,7 @@ export const vmCluster = extend<Model, VMCluster>(model, {
   name: "clusterA",
   project: "my-project",
   hosts: () => [],
-  resource_pool: "",
+  resource_pool: random,
   total_resources: vmClusterResources,
   version: "",
   virtual_machines: () => [],

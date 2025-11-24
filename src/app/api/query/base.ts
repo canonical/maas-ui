@@ -78,22 +78,28 @@ export const useWebsocketAwareQuery = <
   const previousConnectedCount = usePrevious(connectedCount);
 
   useEffect(() => {
-    if (connectedCount !== previousConnectedCount) {
-      queryClient.invalidateQueries({ queryKey: options?.queryKey });
-    }
+    const invalidate = async () => {
+      if (connectedCount !== previousConnectedCount) {
+        await queryClient.invalidateQueries({ queryKey: options?.queryKey });
+      }
+    };
+
+    void invalidate();
   }, [connectedCount, previousConnectedCount, queryClient, options]);
 
   useEffect(() => {
-    return subscribe(({ name: model }: { name: WebSocketEndpointModel }) => {
-      // This mapped key is the key for the websocket notifications
-      // TODO: replace with a function call to deduce the key/condition using the parameters
-      const mappedKey = wsToQueryKeyMapping[model];
-      const modelQueryKey = options?.queryKey[0];
+    return subscribe(
+      async ({ name: model }: { name: WebSocketEndpointModel }) => {
+        // This mapped key is the key for the websocket notifications
+        // TODO: replace with a function call to deduce the key/condition using the parameters
+        const mappedKey = wsToQueryKeyMapping[model];
+        const modelQueryKey = options?.queryKey[0];
 
-      if (mappedKey && mappedKey === modelQueryKey) {
-        queryClient.invalidateQueries({ queryKey: options?.queryKey });
+        if (mappedKey && mappedKey === modelQueryKey) {
+          await queryClient.invalidateQueries({ queryKey: options?.queryKey });
+        }
       }
-    });
+    );
   }, [queryClient, subscribe, options]);
 
   return useQuery<TQueryFnData, TError, TData>(options!);

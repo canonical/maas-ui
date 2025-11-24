@@ -63,13 +63,23 @@ const PrefixedIpInput = ({
     if (subnetIsIpv4) {
       const octets = pastedText.split(".");
       const trimmed = octets.slice(0 - editable.split(".").length);
-      formikProps.setFieldValue(name, trimmed.join(".")).catch((reason) => {
-        throw new FormikFieldChangeError(name, "setFieldValue", reason);
-      });
+      formikProps
+        .setFieldValue(name, trimmed.join("."))
+        .catch((reason: unknown) => {
+          throw new FormikFieldChangeError(
+            name,
+            "setFieldValue",
+            reason as string
+          );
+        });
     } else {
       const interfaceId = pastedText.replace(ipv6Prefix, "");
-      formikProps.setFieldValue(name, interfaceId).catch((reason) => {
-        throw new FormikFieldChangeError(name, "setFieldValue", reason);
+      formikProps.setFieldValue(name, interfaceId).catch((reason: unknown) => {
+        throw new FormikFieldChangeError(
+          name,
+          "setFieldValue",
+          reason as string
+        );
       });
     }
   };

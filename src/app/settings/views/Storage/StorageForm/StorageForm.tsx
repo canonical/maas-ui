@@ -36,6 +36,7 @@ const StorageForm = (): React.ReactElement => {
       name: names,
     },
   });
+  const eTag = data?.headers?.get("ETag");
   const {
     default_storage_layout,
     disk_erase_with_quick_erase,
@@ -82,6 +83,9 @@ const StorageForm = (): React.ReactElement => {
               }}
               onSubmit={(values, { resetForm }) => {
                 updateConfig.mutate({
+                  headers: {
+                    ETag: eTag,
+                  },
                   body: {
                     configurations: [
                       {
