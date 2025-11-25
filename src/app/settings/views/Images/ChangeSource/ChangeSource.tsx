@@ -56,7 +56,6 @@ const ChangeSource = (): ReactElement => {
   const resources = useSelector(bootResourceSelectors.resources);
   const pollingSources = useSelector(bootResourceSelectors.polling);
   const errors = useSelector(bootResourceSelectors.fetchError);
-  const saving = useSelector(bootResourceSelectors.fetching);
   const cleanup = useCallback(() => {
     return bootResourceActions.cleanup();
   }, []);
@@ -81,6 +80,7 @@ const ChangeSource = (): ReactElement => {
   const loading =
     sources.isPending || source.isPending || importConfig.isPending;
 
+  const saving = updateConfig.isPending || updateImageSource.isPending;
   const saved = updateConfig.isSuccess && updateImageSource.isSuccess;
 
   useWindowTitle("Source");
