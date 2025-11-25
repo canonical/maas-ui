@@ -99,6 +99,24 @@ const ChangeSource = (): ReactElement => {
     ? BootResourceSourceType.MAAS_IO
     : BootResourceSourceType.CUSTOM;
 
+  const initialValues: ChangeSourceValues = {
+    keyring_data: source.data?.keyring_data ?? "",
+    keyring_filename: source.data?.keyring_filename ?? "",
+    url: source.data?.url ?? "",
+    source_type: sourceType,
+    autoSync: autoImport || false,
+  };
+
+  const onlyAutoSyncChanged = (
+    values: ChangeSourceValues,
+    initial: ChangeSourceValues
+  ) =>
+    values.autoSync !== initial.autoSync &&
+    values.url === initial.url &&
+    values.keyring_data === initial.keyring_data &&
+    values.keyring_filename === initial.keyring_filename &&
+    values.source_type === initial.source_type;
+
   return (
     <PageContent sidePanelContent={null} sidePanelTitle={null}>
       <ContentSection variant="narrow">
@@ -121,13 +139,7 @@ const ChangeSource = (): ReactElement => {
               aria-label="Choose source"
               cleanup={cleanup}
               errors={errors as APIError}
-              initialValues={{
-                keyring_data: source.data?.keyring_data ?? "",
-                keyring_filename: source.data?.keyring_filename ?? "",
-                url: source.data?.url ?? "",
-                source_type: sourceType,
-                autoSync: autoImport || false,
-              }}
+              initialValues={initialValues}
               onSubmit={(values) => {
                 dispatch(cleanup());
                 updateConfig.mutate({
@@ -166,7 +178,34 @@ const ChangeSource = (): ReactElement => {
               submitLabel="Save"
               validationSchema={ChangeSourceSchema}
             >
-              <ChangeSourceFields />
+              {(formikContext: {
+                values: ChangeSourceValues;
+                initialValues: ChangeSourceValues;
+              }) => (
+                <>
+                  <ChangeSourceFields />
+                  {!onlyAutoSyncChanged(
+                    formikContext.values,
+                    formikContext.initialValues
+                  ) &&
+                    (formikContext.values.url !==
+                      formikContext.initialValues.url ||
+                      formikContext.values.keyring_data !==
+                        formikContext.initialValues.keyring_data ||
+                      formikContext.values.keyring_filename !==
+                        formikContext.initialValues.keyring_filename ||
+                      formikContext.values.source_type !==
+                        formikContext.initialValues.source_type) && (
+                      <Notification
+                        data-testid="source-change-warning"
+                        severity="caution"
+                      >
+                        Changing the image source will remove all currently
+                        downloaded images.
+                      </Notification>
+                    )}
+                </>
+              )}
             </FormikForm>
           )}
         </ContentSection.Content>
