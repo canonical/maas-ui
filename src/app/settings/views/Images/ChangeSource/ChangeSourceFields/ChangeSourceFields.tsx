@@ -29,17 +29,28 @@ const MAAS_IO_DEFAULTS = {
 };
 
 const ChangeSourceFields = (): ReactElement => {
-  const { handleChange, setFieldValue, values } =
+  const { handleChange, setFieldValue, validateForm, values } =
     useFormikContext<ChangeSourceValues>();
   const { keyring_data, keyring_filename, source_type, url } = values;
 
-  const customValuesRef = useRef({
-    url: "",
-    keyring_filename: "",
-    keyring_data: "",
-  });
+  const customValuesRef = useRef(
+    source_type === BootResourceSourceType.CUSTOM
+      ? { url, keyring_filename, keyring_data }
+      : { url: "", keyring_filename: "", keyring_data: "" }
+  );
+
+  const prevSourceTypeRef = useRef(source_type);
 
   useEffect(() => {
+    const switchedToCustom =
+      prevSourceTypeRef.current !== BootResourceSourceType.CUSTOM &&
+      source_type === BootResourceSourceType.CUSTOM;
+
+    prevSourceTypeRef.current = source_type;
+
+    if (switchedToCustom) {
+      return;
+    }
     if (source_type === BootResourceSourceType.CUSTOM) {
       customValuesRef.current = {
         url,
@@ -58,9 +69,9 @@ const ChangeSourceFields = (): ReactElement => {
               id="maas-source"
               label={Labels.MaasIo}
               name="source_type"
-              onChange={(e: React.FormEvent<HTMLInputElement>) => {
+              onChange={async (e: React.FormEvent<HTMLInputElement>) => {
                 handleChange(e);
-                setFieldValue("url", MAAS_IO_DEFAULTS.url).catch(
+                await setFieldValue("url", MAAS_IO_DEFAULTS.url).catch(
                   (reason: unknown) => {
                     throw new FormikFieldChangeError(
                       "url",
@@ -69,7 +80,7 @@ const ChangeSourceFields = (): ReactElement => {
                     );
                   }
                 );
-                setFieldValue(
+                await setFieldValue(
                   "keyring_filename",
                   MAAS_IO_DEFAULTS.keyring_filename
                 ).catch((reason: unknown) => {
@@ -79,7 +90,7 @@ const ChangeSourceFields = (): ReactElement => {
                     reason as string
                   );
                 });
-                setFieldValue(
+                await setFieldValue(
                   "keyring_data",
                   MAAS_IO_DEFAULTS.keyring_data
                 ).catch((reason: unknown) => {
@@ -99,9 +110,15 @@ const ChangeSourceFields = (): ReactElement => {
               id="custom-source"
               label={Labels.Custom}
               name="source_type"
-              onChange={(e: React.FormEvent<HTMLInputElement>) => {
+              onChange={async (e: React.FormEvent<HTMLInputElement>) => {
                 handleChange(e);
-                setFieldValue("url", customValuesRef.current.url).catch(
+                const restoredValues = {
+                  url: customValuesRef.current.url,
+                  keyring_filename: customValuesRef.current.keyring_filename,
+                  keyring_data: customValuesRef.current.keyring_data,
+                };
+
+                await setFieldValue("url", restoredValues.url).catch(
                   (reason: unknown) => {
                     throw new FormikFieldChangeError(
                       "url",
@@ -110,9 +127,9 @@ const ChangeSourceFields = (): ReactElement => {
                     );
                   }
                 );
-                setFieldValue(
+                await setFieldValue(
                   "keyring_filename",
-                  customValuesRef.current.keyring_filename
+                  restoredValues.keyring_filename
                 ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "keyring_filename",
@@ -120,9 +137,9 @@ const ChangeSourceFields = (): ReactElement => {
                     reason as string
                   );
                 });
-                setFieldValue(
+                await setFieldValue(
                   "keyring_data",
-                  customValuesRef.current.keyring_data
+                  restoredValues.keyring_data
                 ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "keyring_data",
@@ -130,6 +147,8 @@ const ChangeSourceFields = (): ReactElement => {
                     reason as string
                   );
                 });
+                await validateForm();
+                customValuesRef.current = restoredValues;
               }}
               type="radio"
               value={BootResourceSourceType.CUSTOM}

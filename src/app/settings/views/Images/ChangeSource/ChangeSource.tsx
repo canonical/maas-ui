@@ -133,7 +133,6 @@ const ChangeSource = (): ReactElement => {
           )}
           {!pollingSources && !loading && (
             <FormikForm
-              allowUnchanged
               aria-label="Choose source"
               cleanup={cleanup}
               errors={updateImageSource.error}
