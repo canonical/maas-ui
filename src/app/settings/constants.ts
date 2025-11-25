@@ -45,10 +45,14 @@ export const settingsNavItems: NavItem[] = [
         path: settingsURLs.userManagement.users,
         label: "Users",
       },
-      {
-        label: "OIDC/Single sign-on",
-        path: settingsURLs.userManagement.singleSignOn,
-      },
+      ...(import.meta.env.VITE_APP_SINGLE_SIGN_ON === "true"
+        ? [
+            {
+              label: "OIDC/Single sign-on",
+              path: settingsURLs.userManagement.singleSignOn,
+            },
+          ]
+        : []),
     ],
   },
   {
