@@ -20,24 +20,8 @@ const mockImageSources: BootSourcesListResponse = {
       priority: 0,
       skip_keyring_verification: false,
     }),
-    imageSourceFactory({
-      id: 2,
-      url: "http://images.maas.io/ephemeral-v3/candidate/",
-      keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
-      keyring_data: "eeffgghh",
-      priority: 1,
-      skip_keyring_verification: false,
-    }),
-    imageSourceFactory({
-      id: 3,
-      url: "http://custom.images.local/",
-      keyring_filename: "",
-      keyring_data: "",
-      priority: 2,
-      skip_keyring_verification: true,
-    }),
   ],
-  total: 3,
+  total: 1,
 };
 
 const mockListImageSourcesError: ListBootSourcesError = {

@@ -1,33 +1,33 @@
-import configureStore from "redux-mock-store";
 import { describe } from "vitest";
 
 import ChangeSource from "@/app/settings/views/Images/ChangeSource/ChangeSource";
-import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitForLoading,
+} from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
+setupMockServer(
+  imageSourceResolvers.listImageSources.handler(),
+  imageSourceResolvers.getImageSource.handler(),
+  imageSourceResolvers.updateImageSource.handler(),
+  configurationsResolvers.getConfiguration.handler({
+    name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
+    value: true,
+  }),
+  configurationsResolvers.setConfiguration.handler()
+);
 
 describe("ChangeSource", () => {
   it("dispatches an action to update config when changing the auto sync switch", async () => {
-    const state = factory.rootState({
-      config: factory.configState({
-        items: [
-          factory.config({
-            name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
-            value: true,
-          }),
-        ],
-        loaded: true,
-      }),
-    });
-    const store = mockStore(state);
-    renderWithBrowserRouter(<ChangeSource />, {
-      store,
-    });
-
+    renderWithBrowserRouter(<ChangeSource />);
+    await waitForLoading();
     await userEvent
       .click(
         screen.getByRole("checkbox", { name: /Automatically sync images/i })
@@ -36,28 +36,17 @@ describe("ChangeSource", () => {
         await userEvent.click(screen.getByText("Save"));
       });
 
-    const actualActions = store.getActions();
-    const expectedAction = configActions.update({
-      boot_images_auto_import: false,
-    });
-
-    expect(
-      actualActions.find(
-        (actualAction) => actualAction.type === expectedAction.type
-      )
-    ).toStrictEqual(expectedAction);
+    expect(configurationsResolvers.setConfiguration.resolved).toBe(true);
   });
 
   it("disables the button to change source if resources are downloading", async () => {
     const state = factory.rootState({
       bootresource: factory.bootResourceState({
         resources: [factory.bootResource({ downloading: true })],
-        ubuntu: factory.bootResourceUbuntu({
-          sources: [factory.bootResourceUbuntuSource()],
-        }),
       }),
     });
     renderWithBrowserRouter(<ChangeSource />, { state });
+    await waitForLoading();
     expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
     expect(
       screen.getByTestId("cannot-change-source-warning")

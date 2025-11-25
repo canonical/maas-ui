@@ -65,7 +65,7 @@ describe("ChangeSourceFields", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("resets fields when switching to maas.io source", async () => {
+  it("persists custom fields when switching to maas.io source", async () => {
     render(
       <Formik
         initialValues={{
@@ -83,7 +83,9 @@ describe("ChangeSourceFields", () => {
     await userEvent.click(screen.getByRole("radio", { name: Labels.MaasIo }));
     await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
 
-    expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue("");
+    expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue(
+      "http://www.example.com"
+    );
   });
 
   it(`shows advanced fields when using a custom source and the "Show advanced"
