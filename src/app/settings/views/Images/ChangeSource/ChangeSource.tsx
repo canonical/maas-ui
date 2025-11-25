@@ -23,7 +23,6 @@ import {
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import type { APIError } from "@/app/base/types";
 import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
@@ -55,7 +54,6 @@ const ChangeSource = (): ReactElement => {
   const dispatch = useDispatch();
   const resources = useSelector(bootResourceSelectors.resources);
   const pollingSources = useSelector(bootResourceSelectors.polling);
-  const errors = useSelector(bootResourceSelectors.fetchError);
   const cleanup = useCallback(() => {
     return bootResourceActions.cleanup();
   }, []);
@@ -134,11 +132,11 @@ const ChangeSource = (): ReactElement => {
             </Notification>
           )}
           {!pollingSources && !loading && (
-            <FormikForm<ChangeSourceValues>
+            <FormikForm
               allowUnchanged
               aria-label="Choose source"
               cleanup={cleanup}
-              errors={errors as APIError}
+              errors={updateImageSource.error}
               initialValues={initialValues}
               onSubmit={(values) => {
                 dispatch(cleanup());
@@ -184,10 +182,11 @@ const ChangeSource = (): ReactElement => {
               }) => (
                 <>
                   <ChangeSourceFields />
-                  {!onlyAutoSyncChanged(
-                    formikContext.values,
-                    formikContext.initialValues
-                  ) &&
+                  {!saved &&
+                    !onlyAutoSyncChanged(
+                      formikContext.values,
+                      formikContext.initialValues
+                    ) &&
                     (formikContext.values.url !==
                       formikContext.initialValues.url ||
                       formikContext.values.keyring_data !==
