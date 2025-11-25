@@ -91,7 +91,6 @@ export {
   bootResourceUbuntuArch,
   bootResourceUbuntuCoreImage,
   bootResourceUbuntuRelease,
-  bootResourceUbuntuSource,
 } from "./bootresource";
 export { config } from "./config";
 export { discovery } from "./discovery";
@@ -142,6 +141,7 @@ export {
 } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";
 export { fabric } from "./fabric";
+export { imageSource } from "./imageSource";
 export { licenseKeys } from "./licensekeys";
 export {
   architecture,
