@@ -18,7 +18,7 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     expect(
@@ -47,7 +47,7 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     expect(
@@ -76,7 +76,7 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     // Switch to maas.io source and back
@@ -100,7 +100,7 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     expect(
@@ -144,7 +144,7 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     // Click the "Hide advanced" button

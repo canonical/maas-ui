@@ -1,7 +1,14 @@
 import type { ReactElement } from "react";
 import React, { useEffect, useRef } from "react";
 
-import { Col, Icon, Row, Textarea, Tooltip } from "@canonical/react-components";
+import {
+  Col,
+  Icon,
+  Notification,
+  Row,
+  Textarea,
+  Tooltip,
+} from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import FormikField from "@/app/base/components/FormikField";
@@ -22,8 +29,16 @@ export enum Labels {
   HideAdvanced = "Hide advanced...",
 }
 
-const ChangeSourceFields = (): ReactElement => {
-  const { handleChange, setFieldValue, validateForm, values } =
+type ChangeSourceFieldsProps = {
+  saved: boolean;
+  saving: boolean;
+};
+
+const ChangeSourceFields = ({
+  saved,
+  saving,
+}: ChangeSourceFieldsProps): ReactElement => {
+  const { handleChange, setFieldValue, validateForm, values, initialValues } =
     useFormikContext<ChangeSourceValues>();
   const { keyring_data, keyring_filename, source_type, url } = values;
 
@@ -53,6 +68,22 @@ const ChangeSourceFields = (): ReactElement => {
       };
     }
   }, [source_type, url, keyring_filename, keyring_data]);
+
+  const onlyAutoSyncChanged =
+    values.autoSync !== initialValues.autoSync &&
+    values.url === initialValues.url &&
+    values.keyring_data === initialValues.keyring_data &&
+    values.keyring_filename === initialValues.keyring_filename &&
+    values.source_type === initialValues.source_type;
+
+  const sourceSettingsChanged =
+    values.url !== initialValues.url ||
+    values.keyring_data !== initialValues.keyring_data ||
+    values.keyring_filename !== initialValues.keyring_filename ||
+    values.source_type !== initialValues.source_type;
+
+  const showSourceChangeWarning =
+    !saved && !saving && !onlyAutoSyncChanged && sourceSettingsChanged;
 
   return (
     <Row>
@@ -149,6 +180,12 @@ const ChangeSourceFields = (): ReactElement => {
             />
           </li>
         </ul>
+        {showSourceChangeWarning && (
+          <Notification data-testid="source-change-warning" severity="caution">
+            Changing the image source will remove all currently downloaded
+            images.
+          </Notification>
+        )}
         {source_type === BootResourceSourceType.CUSTOM && (
           <>
             <FormikField
