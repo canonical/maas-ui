@@ -6,7 +6,7 @@ import * as factory from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -26,7 +26,7 @@ setupMockServer(
 
 describe("ChangeSource", () => {
   it("dispatches an action to update config when changing the auto sync switch", async () => {
-    renderWithBrowserRouter(<ChangeSource />);
+    renderWithProviders(<ChangeSource />);
     await waitForLoading();
     await userEvent
       .click(
@@ -45,7 +45,7 @@ describe("ChangeSource", () => {
         resources: [factory.bootResource({ downloading: true })],
       }),
     });
-    renderWithBrowserRouter(<ChangeSource />, { state });
+    renderWithProviders(<ChangeSource />, { state });
     await waitForLoading();
     expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
     expect(
