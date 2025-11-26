@@ -15,6 +15,12 @@ import type {
   ChangePasswordUserData,
   ChangePasswordUserErrors,
   ChangePasswordUserResponses,
+  CheckStatusBootsourceBootsourceselectionData,
+  CheckStatusBootsourceBootsourceselectionErrors,
+  CheckStatusBootsourceBootsourceselectionResponses,
+  CheckStatusesBootsourceBootsourceselectionData,
+  CheckStatusesBootsourceBootsourceselectionErrors,
+  CheckStatusesBootsourceBootsourceselectionResponses,
   ClearAllDiscoveriesWithOptionalIpAndMacData,
   ClearAllDiscoveriesWithOptionalIpAndMacErrors,
   ClearAllDiscoveriesWithOptionalIpAndMacResponses,
@@ -27,12 +33,12 @@ import type {
   CompleteIntroData,
   CompleteIntroErrors,
   CompleteIntroResponses,
-  CreateBootSourceBootSourceSelectionData,
-  CreateBootSourceBootSourceSelectionErrors,
-  CreateBootSourceBootSourceSelectionResponses,
-  CreateBootSourceData,
-  CreateBootSourceErrors,
-  CreateBootSourceResponses,
+  CreateBootsourceBootsourceselectionData,
+  CreateBootsourceBootsourceselectionErrors,
+  CreateBootsourceBootsourceselectionResponses,
+  CreateBootsourceData,
+  CreateBootsourceErrors,
+  CreateBootsourceResponses,
   CreateDomainData,
   CreateDomainErrors,
   CreateDomainResponses,
@@ -96,12 +102,12 @@ import type {
   DeleteBootResourceByIdData,
   DeleteBootResourceByIdErrors,
   DeleteBootResourceByIdResponses,
-  DeleteBootSourceBootSourceSelectionData,
-  DeleteBootSourceBootSourceSelectionErrors,
-  DeleteBootSourceBootSourceSelectionResponses,
-  DeleteBootSourceData,
-  DeleteBootSourceErrors,
-  DeleteBootSourceResponses,
+  DeleteBootsourceBootsourceselectionData,
+  DeleteBootsourceBootsourceselectionErrors,
+  DeleteBootsourceBootsourceselectionResponses,
+  DeleteBootsourceData,
+  DeleteBootsourceErrors,
+  DeleteBootsourceResponses,
   DeleteDomainData,
   DeleteDomainErrors,
   DeleteDomainResponses,
@@ -168,9 +174,9 @@ import type {
   EvaluateTagData,
   EvaluateTagErrors,
   EvaluateTagResponses,
-  FetchBootSourcesAvailableImagesData,
-  FetchBootSourcesAvailableImagesErrors,
-  FetchBootSourcesAvailableImagesResponses,
+  FetchBootsourcesAvailableImagesData,
+  FetchBootsourcesAvailableImagesErrors,
+  FetchBootsourcesAvailableImagesResponses,
   GenerateRackBootstrapTokenData,
   GenerateRackBootstrapTokenErrors,
   GenerateRackBootstrapTokenResponses,
@@ -183,15 +189,15 @@ import type {
   GetBootResourceByIdData,
   GetBootResourceByIdErrors,
   GetBootResourceByIdResponses,
-  GetBootSourceAvailableImagesData,
-  GetBootSourceAvailableImagesErrors,
-  GetBootSourceAvailableImagesResponses,
-  GetBootSourceBootSourceSelectionData,
-  GetBootSourceBootSourceSelectionErrors,
-  GetBootSourceBootSourceSelectionResponses,
-  GetBootSourceData,
-  GetBootSourceErrors,
-  GetBootSourceResponses,
+  GetBootsourceAvailableImagesData,
+  GetBootsourceAvailableImagesErrors,
+  GetBootsourceAvailableImagesResponses,
+  GetBootsourceBootsourceselectionData,
+  GetBootsourceBootsourceselectionErrors,
+  GetBootsourceBootsourceselectionResponses,
+  GetBootsourceData,
+  GetBootsourceErrors,
+  GetBootsourceResponses,
   GetConfigurationData,
   GetConfigurationErrors,
   GetConfigurationResponses,
@@ -294,12 +300,12 @@ import type {
   ListBootResourcesData,
   ListBootResourcesErrors,
   ListBootResourcesResponses,
-  ListBootSourceBootSourceSelectionData,
-  ListBootSourceBootSourceSelectionErrors,
-  ListBootSourceBootSourceSelectionResponses,
-  ListBootSourcesData,
-  ListBootSourcesErrors,
-  ListBootSourcesResponses,
+  ListBootsourceBootsourceselectionData,
+  ListBootsourceBootsourceselectionErrors,
+  ListBootsourceBootsourceselectionResponses,
+  ListBootsourcesData,
+  ListBootsourcesErrors,
+  ListBootsourcesResponses,
   ListDiscoveriesData,
   ListDiscoveriesErrors,
   ListDiscoveriesResponses,
@@ -399,12 +405,18 @@ import type {
   SetConfigurationsData,
   SetConfigurationsErrors,
   SetConfigurationsResponses,
-  UpdateBootSourceBootSourceSelectionData,
-  UpdateBootSourceBootSourceSelectionErrors,
-  UpdateBootSourceBootSourceSelectionResponses,
-  UpdateBootSourceData,
-  UpdateBootSourceErrors,
-  UpdateBootSourceResponses,
+  StopSyncBootsourceBootsourceselectionData,
+  StopSyncBootsourceBootsourceselectionErrors,
+  StopSyncBootsourceBootsourceselectionResponses,
+  SyncBootsourceBootsourceselectionData,
+  SyncBootsourceBootsourceselectionErrors,
+  SyncBootsourceBootsourceselectionResponses,
+  UpdateBootsourceBootsourceselectionData,
+  UpdateBootsourceBootsourceselectionErrors,
+  UpdateBootsourceBootsourceselectionResponses,
+  UpdateBootsourceData,
+  UpdateBootsourceErrors,
+  UpdateBootsourceResponses,
   UpdateFabricData,
   UpdateFabricErrors,
   UpdateFabricResponses,
@@ -745,14 +757,65 @@ export const uploadBootResource = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List Boot Sources
+ * Check Status Bootsource Bootsourceselection
  */
-export const listBootSources = <ThrowOnError extends boolean = false>(
-  options?: Options<ListBootSourcesData, ThrowOnError>
+export const checkStatusBootsourceBootsourceselection = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<CheckStatusBootsourceBootsourceselectionData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    CheckStatusBootsourceBootsourceselectionResponses,
+    CheckStatusBootsourceBootsourceselectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}:check_status",
+    ...options,
+  });
+};
+
+/**
+ * Check Statuses Bootsource Bootsourceselection
+ */
+export const checkStatusesBootsourceBootsourceselection = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<
+    CheckStatusesBootsourceBootsourceselectionData,
+    ThrowOnError
+  >
 ) => {
   return (options?.client ?? client).get<
-    ListBootSourcesResponses,
-    ListBootSourcesErrors,
+    CheckStatusesBootsourceBootsourceselectionResponses,
+    CheckStatusesBootsourceBootsourceselectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_source_selection_statuses",
+    ...options,
+  });
+};
+
+/**
+ * List Bootsources
+ */
+export const listBootsources = <ThrowOnError extends boolean = false>(
+  options?: Options<ListBootsourcesData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListBootsourcesResponses,
+    ListBootsourcesErrors,
     ThrowOnError
   >({
     security: [
@@ -767,14 +830,14 @@ export const listBootSources = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Create Boot Source
+ * Create Bootsource
  */
-export const createBootSource = <ThrowOnError extends boolean = false>(
-  options: Options<CreateBootSourceData, ThrowOnError>
+export const createBootsource = <ThrowOnError extends boolean = false>(
+  options: Options<CreateBootsourceData, ThrowOnError>
 ) => {
   return (options.client ?? client).post<
-    CreateBootSourceResponses,
-    CreateBootSourceErrors,
+    CreateBootsourceResponses,
+    CreateBootsourceErrors,
     ThrowOnError
   >({
     security: [
@@ -793,16 +856,16 @@ export const createBootSource = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List Boot Source Boot Source Selection
+ * List Bootsource Bootsourceselection
  */
-export const listBootSourceBootSourceSelection = <
+export const listBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ListBootSourceBootSourceSelectionData, ThrowOnError>
+  options: Options<ListBootsourceBootsourceselectionData, ThrowOnError>
 ) => {
   return (options.client ?? client).get<
-    ListBootSourceBootSourceSelectionResponses,
-    ListBootSourceBootSourceSelectionErrors,
+    ListBootsourceBootsourceselectionResponses,
+    ListBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
     security: [
@@ -817,16 +880,16 @@ export const listBootSourceBootSourceSelection = <
 };
 
 /**
- * Create Boot Source Boot Source Selection
+ * Create Bootsource Bootsourceselection
  */
-export const createBootSourceBootSourceSelection = <
+export const createBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<CreateBootSourceBootSourceSelectionData, ThrowOnError>
+  options: Options<CreateBootsourceBootsourceselectionData, ThrowOnError>
 ) => {
   return (options.client ?? client).post<
-    CreateBootSourceBootSourceSelectionResponses,
-    CreateBootSourceBootSourceSelectionErrors,
+    CreateBootsourceBootsourceselectionResponses,
+    CreateBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
     security: [
@@ -845,14 +908,14 @@ export const createBootSourceBootSourceSelection = <
 };
 
 /**
- * Delete Boot Source
+ * Delete Bootsource
  */
-export const deleteBootSource = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteBootSourceData, ThrowOnError>
+export const deleteBootsource = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteBootsourceData, ThrowOnError>
 ) => {
   return (options.client ?? client).delete<
-    DeleteBootSourceResponses,
-    DeleteBootSourceErrors,
+    DeleteBootsourceResponses,
+    DeleteBootsourceErrors,
     ThrowOnError
   >({
     security: [
@@ -867,14 +930,14 @@ export const deleteBootSource = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Get Boot Source
+ * Get Bootsource
  */
-export const getBootSource = <ThrowOnError extends boolean = false>(
-  options: Options<GetBootSourceData, ThrowOnError>
+export const getBootsource = <ThrowOnError extends boolean = false>(
+  options: Options<GetBootsourceData, ThrowOnError>
 ) => {
   return (options.client ?? client).get<
-    GetBootSourceResponses,
-    GetBootSourceErrors,
+    GetBootsourceResponses,
+    GetBootsourceErrors,
     ThrowOnError
   >({
     security: [
@@ -889,14 +952,14 @@ export const getBootSource = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Update Boot Source
+ * Update Bootsource
  */
-export const updateBootSource = <ThrowOnError extends boolean = false>(
-  options: Options<UpdateBootSourceData, ThrowOnError>
+export const updateBootsource = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateBootsourceData, ThrowOnError>
 ) => {
   return (options.client ?? client).put<
-    UpdateBootSourceResponses,
-    UpdateBootSourceErrors,
+    UpdateBootsourceResponses,
+    UpdateBootsourceErrors,
     ThrowOnError
   >({
     security: [
@@ -915,16 +978,16 @@ export const updateBootSource = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Delete Boot Source Boot Source Selection
+ * Delete Bootsource Bootsourceselection
  */
-export const deleteBootSourceBootSourceSelection = <
+export const deleteBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<DeleteBootSourceBootSourceSelectionData, ThrowOnError>
+  options: Options<DeleteBootsourceBootsourceselectionData, ThrowOnError>
 ) => {
   return (options.client ?? client).delete<
-    DeleteBootSourceBootSourceSelectionResponses,
-    DeleteBootSourceBootSourceSelectionErrors,
+    DeleteBootsourceBootsourceselectionResponses,
+    DeleteBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
     security: [
@@ -939,16 +1002,16 @@ export const deleteBootSourceBootSourceSelection = <
 };
 
 /**
- * Get Boot Source Boot Source Selection
+ * Get Bootsource Bootsourceselection
  */
-export const getBootSourceBootSourceSelection = <
+export const getBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<GetBootSourceBootSourceSelectionData, ThrowOnError>
+  options: Options<GetBootsourceBootsourceselectionData, ThrowOnError>
 ) => {
   return (options.client ?? client).get<
-    GetBootSourceBootSourceSelectionResponses,
-    GetBootSourceBootSourceSelectionErrors,
+    GetBootsourceBootsourceselectionResponses,
+    GetBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
     security: [
@@ -963,16 +1026,16 @@ export const getBootSourceBootSourceSelection = <
 };
 
 /**
- * Update Boot Source Boot Source Selection
+ * Update Bootsource Bootsourceselection
  */
-export const updateBootSourceBootSourceSelection = <
+export const updateBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateBootSourceBootSourceSelectionData, ThrowOnError>
+  options: Options<UpdateBootsourceBootsourceselectionData, ThrowOnError>
 ) => {
   return (options.client ?? client).put<
-    UpdateBootSourceBootSourceSelectionResponses,
-    UpdateBootSourceBootSourceSelectionErrors,
+    UpdateBootsourceBootsourceselectionResponses,
+    UpdateBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
     security: [
@@ -991,16 +1054,16 @@ export const updateBootSourceBootSourceSelection = <
 };
 
 /**
- * Fetch Boot Sources Available Images
+ * Fetch Bootsources Available Images
  */
-export const fetchBootSourcesAvailableImages = <
+export const fetchBootsourcesAvailableImages = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<FetchBootSourcesAvailableImagesData, ThrowOnError>
+  options: Options<FetchBootsourcesAvailableImagesData, ThrowOnError>
 ) => {
   return (options.client ?? client).post<
-    FetchBootSourcesAvailableImagesResponses,
-    FetchBootSourcesAvailableImagesErrors,
+    FetchBootsourcesAvailableImagesResponses,
+    FetchBootsourcesAvailableImagesErrors,
     ThrowOnError
   >({
     security: [
@@ -1041,16 +1104,16 @@ export const getAllAvailableImages = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Get Boot Source Available Images
+ * Get Bootsource Available Images
  */
-export const getBootSourceAvailableImages = <
+export const getBootsourceAvailableImages = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<GetBootSourceAvailableImagesData, ThrowOnError>
+  options: Options<GetBootsourceAvailableImagesData, ThrowOnError>
 ) => {
   return (options.client ?? client).get<
-    GetBootSourceAvailableImagesResponses,
-    GetBootSourceAvailableImagesErrors,
+    GetBootsourceAvailableImagesResponses,
+    GetBootsourceAvailableImagesErrors,
     ThrowOnError
   >({
     security: [
@@ -1060,6 +1123,54 @@ export const getBootSourceAvailableImages = <
       },
     ],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/available_images",
+    ...options,
+  });
+};
+
+/**
+ * Stop Sync Bootsource Bootsourceselection
+ */
+export const stopSyncBootsourceBootsourceselection = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<StopSyncBootsourceBootsourceselectionData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    StopSyncBootsourceBootsourceselectionResponses,
+    StopSyncBootsourceBootsourceselectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}:stop_sync",
+    ...options,
+  });
+};
+
+/**
+ * Sync Bootsource Bootsourceselection
+ */
+export const syncBootsourceBootsourceselection = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SyncBootsourceBootsourceselectionData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    SyncBootsourceBootsourceselectionResponses,
+    SyncBootsourceBootsourceselectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}:sync",
     ...options,
   });
 };
