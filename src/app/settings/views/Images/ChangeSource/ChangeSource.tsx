@@ -138,6 +138,7 @@ const ChangeSource = (): ReactElement => {
             <FormikForm
               aria-label="Choose source"
               cleanup={cleanup}
+              enableReinitialize
               errors={updateImageSource.error}
               initialValues={initialValues}
               onSubmit={(values) => {
