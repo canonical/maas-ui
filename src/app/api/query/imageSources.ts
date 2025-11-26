@@ -6,64 +6,64 @@ import {
   queryOptionsWithHeaders,
 } from "@/app/api/utils";
 import type {
-  GetBootSourceData,
-  GetBootSourceErrors,
-  GetBootSourceResponses,
-  ListBootSourcesData,
-  ListBootSourcesErrors,
-  ListBootSourcesResponses,
+  GetBootsourceData,
+  GetBootsourceErrors,
+  GetBootsourceResponses,
+  ListBootsourcesData,
+  ListBootsourcesErrors,
+  ListBootsourcesResponses,
   Options,
-  UpdateBootSourceData,
-  UpdateBootSourceErrors,
-  UpdateBootSourceResponses,
+  UpdateBootsourceData,
+  UpdateBootsourceErrors,
+  UpdateBootsourceResponses,
 } from "@/app/apiclient";
 import {
-  updateBootSource,
-  getBootSource,
-  listBootSources,
+  updateBootsource,
+  getBootsource,
+  listBootsources,
 } from "@/app/apiclient";
 import {
-  getBootSourceQueryKey,
-  listBootSourcesQueryKey,
+  getBootsourceQueryKey,
+  listBootsourcesQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
-export const useImageSources = (options?: Options<ListBootSourcesData>) => {
+export const useImageSources = (options?: Options<ListBootsourcesData>) => {
   return useWebsocketAwareQuery(
     queryOptionsWithHeaders<
-      ListBootSourcesResponses,
-      ListBootSourcesErrors,
-      ListBootSourcesData
-    >(options, listBootSources, listBootSourcesQueryKey(options))
+      ListBootsourcesResponses,
+      ListBootsourcesErrors,
+      ListBootsourcesData
+    >(options, listBootsources, listBootsourcesQueryKey(options))
   );
 };
 
 export const useGetImageSource = (
-  options: Options<GetBootSourceData>,
+  options: Options<GetBootsourceData>,
   enabled: boolean
 ) => {
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
-      GetBootSourceResponses,
-      GetBootSourceErrors,
-      GetBootSourceData
-    >(options, getBootSource, getBootSourceQueryKey(options)),
+      GetBootsourceResponses,
+      GetBootsourceErrors,
+      GetBootsourceData
+    >(options, getBootsource, getBootsourceQueryKey(options)),
     enabled,
   });
 };
 
 export const useUpdateImageSource = (
-  mutationOptions?: Options<UpdateBootSourceData>
+  mutationOptions?: Options<UpdateBootsourceData>
 ) => {
   const queryClient = useQueryClient();
   return useMutation({
     ...mutationOptionsWithHeaders<
-      UpdateBootSourceResponses,
-      UpdateBootSourceErrors,
-      UpdateBootSourceData
-    >(mutationOptions, updateBootSource),
+      UpdateBootsourceResponses,
+      UpdateBootsourceErrors,
+      UpdateBootsourceData
+    >(mutationOptions, updateBootsource),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listBootSourcesQueryKey(),
+        queryKey: listBootsourcesQueryKey(),
       });
     },
   });

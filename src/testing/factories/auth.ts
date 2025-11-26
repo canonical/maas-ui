@@ -22,6 +22,11 @@ export const oAuthProviderFactory = Factory.define<OAuthProviderResponse>(
     });
 
     return {
+      metadata: {
+        authorization_endpoint: "",
+        token_endpoint: "",
+        jwks_uri: "",
+      },
       id: sequence,
       name,
       client_id: chance.guid(),

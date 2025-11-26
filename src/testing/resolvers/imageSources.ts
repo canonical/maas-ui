@@ -5,9 +5,9 @@ import { BASE_URL } from "../utils";
 
 import type {
   BootSourcesListResponse,
-  GetBootSourceError,
-  ListBootSourcesError,
-  UpdateBootSourceError,
+  GetBootsourceError,
+  ListBootsourcesError,
+  UpdateBootsourceError,
 } from "@/app/apiclient";
 
 const mockImageSources: BootSourcesListResponse = {
@@ -24,19 +24,19 @@ const mockImageSources: BootSourcesListResponse = {
   total: 1,
 };
 
-const mockListImageSourcesError: ListBootSourcesError = {
+const mockListImageSourcesError: ListBootsourcesError = {
   message: "Unauthorized",
   code: 401,
   kind: "Error",
 };
 
-const mockGetImageSourceError: GetBootSourceError = {
+const mockGetImageSourceError: GetBootsourceError = {
   message: "Not found",
   code: 404,
   kind: "Error",
 };
 
-const mockUpdateImageSourceError: UpdateBootSourceError = {
+const mockUpdateImageSourceError: UpdateBootsourceError = {
   message: "Bad request",
   code: 400,
   kind: "Error",
@@ -50,7 +50,7 @@ const imageSourceResolvers = {
         imageSourceResolvers.listImageSources.resolved = true;
         return HttpResponse.json(data);
       }),
-    error: (error: ListBootSourcesError = mockListImageSourcesError) =>
+    error: (error: ListBootsourcesError = mockListImageSourcesError) =>
       http.get(`${BASE_URL}MAAS/a/v3/boot_sources`, () => {
         imageSourceResolvers.listImageSources.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -71,7 +71,7 @@ const imageSourceResolvers = {
           ? HttpResponse.json(imageSource)
           : HttpResponse.error();
       }),
-    error: (error: GetBootSourceError = mockGetImageSourceError) =>
+    error: (error: GetBootsourceError = mockGetImageSourceError) =>
       http.get(`${BASE_URL}MAAS/a/v3/boot_sources/:id`, () => {
         imageSourceResolvers.getImageSource.resolved = true;
         return HttpResponse.json(error, { status: error.code });
@@ -84,7 +84,7 @@ const imageSourceResolvers = {
         imageSourceResolvers.updateImageSource.resolved = true;
         return HttpResponse.json({});
       }),
-    error: (error: UpdateBootSourceError = mockUpdateImageSourceError) =>
+    error: (error: UpdateBootsourceError = mockUpdateImageSourceError) =>
       http.put(`${BASE_URL}MAAS/a/v3/boot_sources/:id`, () => {
         imageSourceResolvers.updateImageSource.resolved = true;
         return HttpResponse.json(error, { status: error.code });
