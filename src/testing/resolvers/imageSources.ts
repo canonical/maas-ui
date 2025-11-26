@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 
-import { imageSource as imageSourceFactory } from "../factories";
+import { imageSourceFactory } from "../factories";
 import { BASE_URL } from "../utils";
 
 import type {
@@ -12,7 +12,7 @@ import type {
 
 const mockImageSources: BootSourcesListResponse = {
   items: [
-    imageSourceFactory({
+    imageSourceFactory.build({
       id: 1,
       url: "http://images.maas.io/ephemeral-v3/stable/",
       keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",

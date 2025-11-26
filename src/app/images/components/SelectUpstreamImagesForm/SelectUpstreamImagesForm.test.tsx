@@ -133,7 +133,10 @@ describe("SelectUpstreamImagesForm", () => {
   it("disables form with a notification if more than one source detected", async () => {
     mockServer.use(
       imageSourceResolvers.listImageSources.handler({
-        items: [factory.imageSource(), factory.imageSource()],
+        items: [
+          factory.imageSourceFactory.build(),
+          factory.imageSourceFactory.build(),
+        ],
         total: 2,
       })
     );

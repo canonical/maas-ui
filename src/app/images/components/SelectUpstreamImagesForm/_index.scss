@@ -1,12 +1,4 @@
 @mixin DownloadImages {
-  .multi-select div {
-    background-color: var(--vf-color-background-default);
-  }
-
-  .multi-select__select-button[aria-expanded=true] {
-    background-color: var(--vf-color-background-default) !important;
-  }
-
   .select-upstream-images-form {
     footer.content-section__footer {
       z-index: 2;

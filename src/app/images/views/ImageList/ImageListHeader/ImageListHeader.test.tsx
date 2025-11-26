@@ -101,7 +101,7 @@ describe("Change sources", () => {
   it("renders the correct text for a single custom source", async () => {
     mockServer.use(
       imageSourceResolvers.listImageSources.handler({
-        items: [factory.imageSource({ url: "www.url.com" })],
+        items: [factory.imageSourceFactory.build({ url: "www.url.com" })],
         total: 1,
       })
     );
@@ -116,7 +116,10 @@ describe("Change sources", () => {
   it("renders the correct text for multiple sources", async () => {
     mockServer.use(
       imageSourceResolvers.listImageSources.handler({
-        items: [factory.imageSource(), factory.imageSource()],
+        items: [
+          factory.imageSourceFactory.build(),
+          factory.imageSourceFactory.build(),
+        ],
         total: 2,
       })
     );

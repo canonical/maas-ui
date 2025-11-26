@@ -7,6 +7,7 @@ import { useFormikContext } from "formik";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import ShowAdvanced from "@/app/base/components/ShowAdvanced";
+import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 
@@ -20,13 +21,6 @@ export enum Labels {
   ShowAdvanced = "Show advanced...",
   HideAdvanced = "Hide advanced...",
 }
-
-const MAAS_IO_DEFAULTS = {
-  url: "http://images.maas.io/ephemeral-v3/stable/",
-  keyring_filename:
-    "/snap/maas/current/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
-  keyring_data: "",
-};
 
 const ChangeSourceFields = (): ReactElement => {
   const { handleChange, setFieldValue, validateForm, values } =

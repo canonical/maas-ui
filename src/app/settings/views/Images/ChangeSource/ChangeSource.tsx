@@ -25,6 +25,7 @@ import {
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
+import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
 import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
@@ -93,12 +94,11 @@ const ChangeSource = (): ReactElement => {
   }, [dispatch]);
 
   const canChangeSource = resources.every((resource) => !resource.downloading);
-  const sourceType =
-    /^http:\/\/images\.maas\.io\/ephemeral-v3\/stable\/?$/.test(
-      source.data?.url ?? ""
-    )
-      ? BootResourceSourceType.MAAS_IO
-      : BootResourceSourceType.CUSTOM;
+  const sourceType = new RegExp(MAAS_IO_DEFAULTS.url).test(
+    source.data?.url ?? ""
+  )
+    ? BootResourceSourceType.MAAS_IO
+    : BootResourceSourceType.CUSTOM;
 
   const initialValues: ChangeSourceValues = {
     keyring_data: source.data?.keyring_data ?? "",

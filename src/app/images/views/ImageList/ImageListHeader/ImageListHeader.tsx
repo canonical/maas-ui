@@ -12,6 +12,7 @@ import { useFetchActions, useCycled } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
+import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
@@ -33,12 +34,11 @@ export enum Labels {
 const getImageSyncText = (sources: BootSourceResponse[]) => {
   if (sources.length === 1) {
     const mainSource = sources[0];
-    const sourceType =
-      /^http:\/\/images\.maas\.io\/ephemeral-v3\/stable\/?$/.test(
-        mainSource.url ?? ""
-      )
-        ? BootResourceSourceType.MAAS_IO
-        : BootResourceSourceType.CUSTOM;
+    const sourceType = new RegExp(MAAS_IO_DEFAULTS.url).test(
+      mainSource.url ?? ""
+    )
+      ? BootResourceSourceType.MAAS_IO
+      : BootResourceSourceType.CUSTOM;
     if (sourceType === BootResourceSourceType.MAAS_IO) {
       return "maas.io";
     }

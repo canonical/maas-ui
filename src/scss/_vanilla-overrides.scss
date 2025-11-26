@@ -62,3 +62,11 @@ body.is-dark {
     color: var(--vf-color-link-default)
   }
 }
+
+.multi-select div {
+  background-color: var(--vf-color-background-default);
+}
+
+.multi-select__select-button[aria-expanded=true] {
+  background-color: var(--vf-color-background-default) !important;
+}

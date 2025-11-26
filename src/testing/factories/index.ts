@@ -141,7 +141,7 @@ export {
 } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";
 export { fabric } from "./fabric";
-export { imageSource } from "./imageSource";
+export { imageSourceFactory } from "./imageSource";
 export { licenseKeys } from "./licensekeys";
 export {
   architecture,
