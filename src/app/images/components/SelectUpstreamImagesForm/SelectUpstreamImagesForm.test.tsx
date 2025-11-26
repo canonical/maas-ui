@@ -6,14 +6,20 @@ import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import {
   userEvent,
   screen,
   within,
   renderWithProviders,
+  setupMockServer,
+  waitForLoading,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const mockServer = setupMockServer(
+  imageSourceResolvers.listImageSources.handler()
+);
 
 describe("SelectUpstreamImagesForm", () => {
   const ubuntu = factory.bootResourceUbuntu({
@@ -77,7 +83,7 @@ describe("SelectUpstreamImagesForm", () => {
     renderWithProviders(<SelectUpstreamImagesForm />, {
       state,
     });
-
+    await waitForLoading();
     const rowUbuntu = within(
       screen.getByRole("row", { name: "16.04 LTS", hidden: true })
     ).getAllByRole("combobox", { hidden: true });
@@ -97,7 +103,7 @@ describe("SelectUpstreamImagesForm", () => {
     renderWithProviders(<SelectUpstreamImagesForm />, {
       store,
     });
-
+    await waitForLoading();
     await userEvent.click(
       screen.getByRole("button", { name: "Save and sync" })
     );
@@ -118,17 +124,22 @@ describe("SelectUpstreamImagesForm", () => {
     const actualActions = store.getActions();
     expect(
       actualActions.find((action) => action.type === expectedUbuntuAction.type)
-    ).toStrictEqual(expectedUbuntuAction);
+    ).toMatchObject(expectedUbuntuAction);
     expect(
       actualActions.find((action) => action.type === expectedOtherAction.type)
     ).toStrictEqual(expectedOtherAction);
   });
 
-  it("disables form with a notification if more than one source detected", () => {
-    const sources = [
-      factory.bootResourceUbuntuSource(),
-      factory.bootResourceUbuntuSource(),
-    ];
+  it("disables form with a notification if more than one source detected", async () => {
+    mockServer.use(
+      imageSourceResolvers.listImageSources.handler({
+        items: [
+          factory.imageSourceFactory.build(),
+          factory.imageSourceFactory.build(),
+        ],
+        total: 2,
+      })
+    );
     const state = factory.rootState({
       bootresource: factory.bootResourceState({
         resources: [
@@ -138,14 +149,14 @@ describe("SelectUpstreamImagesForm", () => {
           arches: [],
           commissioning_series: "focal",
           releases: [],
-          sources,
+          sources: [], // uses v3
         },
       }),
     });
     renderWithProviders(<SelectUpstreamImagesForm />, {
       state,
     });
-
+    await waitForLoading();
     expect(
       screen.getByText(
         "More than one image source exists. The UI does not support updating synced images when more than one source has been defined. Use the API to adjust your sources."

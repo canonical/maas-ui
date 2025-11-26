@@ -11,6 +11,8 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router";
 
+import { useGetConfiguration } from "@/app/api/query/configurations";
+import { useImageSources } from "@/app/api/query/imageSources";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import ImagesTable from "@/app/images/components/ImagesTable";
@@ -20,7 +22,7 @@ import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
-import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 export enum Labels {
   Continue = "Continue",
@@ -30,10 +32,13 @@ export enum Labels {
 const ImagesIntro = (): ReactElement => {
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
-  const ubuntu = useSelector(bootResourceSelectors.ubuntu);
   const resources = useSelector(bootResourceSelectors.resources);
-  const autoImport = useSelector(configSelectors.bootImagesAutoImport);
-  const configLoaded = useSelector(configSelectors.loaded);
+
+  const { data: sources, isPending: sourcesPending } = useImageSources();
+  const { data, isPending: configPending } = useGetConfiguration({
+    path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+  });
+  const autoImport = data?.value as boolean;
 
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
 
@@ -45,12 +50,12 @@ const ImagesIntro = (): ReactElement => {
     };
   }, [dispatch]);
 
-  const hasSources = (ubuntu?.sources || []).length > 0;
+  const hasSources = (sources?.total ?? 0) > 0;
   const incomplete = !hasSources || resources.length === 0;
 
   return (
     <IntroSection
-      loading={!ubuntu}
+      loading={sourcesPending}
       sidePanelContent={undefined}
       sidePanelTitle={null}
       useNewSidePanelContext={true}
@@ -61,7 +66,7 @@ const ImagesIntro = (): ReactElement => {
           selectedRows={selectedRows}
           setSelectedRows={setSelectedRows}
         />
-        {configLoaded && (
+        {!configPending && (
           <>
             {!autoImport && (
               <Notification

@@ -1,12 +1,20 @@
 import type { ReactElement } from "react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
-import { Col, Icon, Row, Textarea, Tooltip } from "@canonical/react-components";
+import {
+  Col,
+  Icon,
+  Notification,
+  Row,
+  Textarea,
+  Tooltip,
+} from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import ShowAdvanced from "@/app/base/components/ShowAdvanced";
+import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 
@@ -21,10 +29,61 @@ export enum Labels {
   HideAdvanced = "Hide advanced...",
 }
 
-const ChangeSourceFields = (): ReactElement => {
-  const { handleChange, setFieldValue, values } =
+type ChangeSourceFieldsProps = {
+  saved: boolean;
+  saving: boolean;
+};
+
+const ChangeSourceFields = ({
+  saved,
+  saving,
+}: ChangeSourceFieldsProps): ReactElement => {
+  const { handleChange, setFieldValue, validateForm, values, initialValues } =
     useFormikContext<ChangeSourceValues>();
-  const { keyring_data, keyring_filename, source_type } = values;
+  const { keyring_data, keyring_filename, source_type, url } = values;
+
+  const customValuesRef = useRef(
+    source_type === BootResourceSourceType.CUSTOM
+      ? { url, keyring_filename, keyring_data }
+      : { url: "", keyring_filename: "", keyring_data: "" }
+  );
+
+  const prevSourceTypeRef = useRef(source_type);
+
+  useEffect(() => {
+    const switchedToCustom =
+      prevSourceTypeRef.current !== BootResourceSourceType.CUSTOM &&
+      source_type === BootResourceSourceType.CUSTOM;
+
+    prevSourceTypeRef.current = source_type;
+
+    if (switchedToCustom) {
+      return;
+    }
+    if (source_type === BootResourceSourceType.CUSTOM) {
+      customValuesRef.current = {
+        url,
+        keyring_filename,
+        keyring_data,
+      };
+    }
+  }, [source_type, url, keyring_filename, keyring_data]);
+
+  const onlyAutoSyncChanged =
+    values.autoSync !== initialValues.autoSync &&
+    values.url === initialValues.url &&
+    values.keyring_data === initialValues.keyring_data &&
+    values.keyring_filename === initialValues.keyring_filename &&
+    values.source_type === initialValues.source_type;
+
+  const sourceSettingsChanged =
+    values.url !== initialValues.url ||
+    values.keyring_data !== initialValues.keyring_data ||
+    values.keyring_filename !== initialValues.keyring_filename ||
+    values.source_type !== initialValues.source_type;
+
+  const showSourceChangeWarning =
+    !saved && !saving && !onlyAutoSyncChanged && sourceSettingsChanged;
 
   return (
     <Row>
@@ -35,31 +94,37 @@ const ChangeSourceFields = (): ReactElement => {
               id="maas-source"
               label={Labels.MaasIo}
               name="source_type"
-              onChange={(e: React.FormEvent<HTMLInputElement>) => {
+              onChange={async (e: React.FormEvent<HTMLInputElement>) => {
                 handleChange(e);
-                setFieldValue("url", "").catch((reason: unknown) => {
+                await setFieldValue("url", MAAS_IO_DEFAULTS.url).catch(
+                  (reason: unknown) => {
+                    throw new FormikFieldChangeError(
+                      "url",
+                      "setFieldValue",
+                      reason as string
+                    );
+                  }
+                );
+                await setFieldValue(
+                  "keyring_filename",
+                  MAAS_IO_DEFAULTS.keyring_filename
+                ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
-                    "url",
+                    "keyring_filename",
                     "setFieldValue",
                     reason as string
                   );
                 });
-                setFieldValue("keyring_data", "").catch((reason: unknown) => {
+                await setFieldValue(
+                  "keyring_data",
+                  MAAS_IO_DEFAULTS.keyring_data
+                ).catch((reason: unknown) => {
                   throw new FormikFieldChangeError(
                     "keyring_data",
                     "setFieldValue",
                     reason as string
                   );
                 });
-                setFieldValue("keyring_filename", "").catch(
-                  (reason: unknown) => {
-                    throw new FormikFieldChangeError(
-                      "keyring_filename",
-                      "setFieldValue",
-                      reason as string
-                    );
-                  }
-                );
               }}
               type="radio"
               value={BootResourceSourceType.MAAS_IO}
@@ -70,11 +135,57 @@ const ChangeSourceFields = (): ReactElement => {
               id="custom-source"
               label={Labels.Custom}
               name="source_type"
+              onChange={async (e: React.FormEvent<HTMLInputElement>) => {
+                handleChange(e);
+                const restoredValues = {
+                  url: customValuesRef.current.url,
+                  keyring_filename: customValuesRef.current.keyring_filename,
+                  keyring_data: customValuesRef.current.keyring_data,
+                };
+
+                await setFieldValue("url", restoredValues.url).catch(
+                  (reason: unknown) => {
+                    throw new FormikFieldChangeError(
+                      "url",
+                      "setFieldValue",
+                      reason as string
+                    );
+                  }
+                );
+                await setFieldValue(
+                  "keyring_filename",
+                  restoredValues.keyring_filename
+                ).catch((reason: unknown) => {
+                  throw new FormikFieldChangeError(
+                    "keyring_filename",
+                    "setFieldValue",
+                    reason as string
+                  );
+                });
+                await setFieldValue(
+                  "keyring_data",
+                  restoredValues.keyring_data
+                ).catch((reason: unknown) => {
+                  throw new FormikFieldChangeError(
+                    "keyring_data",
+                    "setFieldValue",
+                    reason as string
+                  );
+                });
+                await validateForm();
+                customValuesRef.current = restoredValues;
+              }}
               type="radio"
               value={BootResourceSourceType.CUSTOM}
             />
           </li>
         </ul>
+        {showSourceChangeWarning && (
+          <Notification data-testid="source-change-warning" severity="caution">
+            Changing the image source will remove all currently downloaded
+            images.
+          </Notification>
+        )}
         {source_type === BootResourceSourceType.CUSTOM && (
           <>
             <FormikField

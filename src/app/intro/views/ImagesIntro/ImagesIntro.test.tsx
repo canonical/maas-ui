@@ -3,14 +3,23 @@ import configureStore from "redux-mock-store";
 import ImagesIntro, { Labels as ImagesIntroLabels } from "./ImagesIntro";
 
 import type { RootState } from "@/app/store/root/types";
+import { LONG_TIMEOUT } from "@/testing/constants";
 import * as factory from "@/testing/factories";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import {
   screen,
   expectTooltipOnHover,
   renderWithProviders,
+  setupMockServer,
+  waitForLoading,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
+const mockServer = setupMockServer(
+  imageSourceResolvers.listImageSources.handler(),
+  configurationsResolvers.getConfiguration.handler()
+);
 
 describe("ImagesIntro", () => {
   let state: RootState;
@@ -43,12 +52,14 @@ describe("ImagesIntro", () => {
   });
 
   it("disables the continue button if no image and source has been configured", async () => {
-    state.bootresource.ubuntu = factory.bootResourceUbuntu({ sources: [] });
+    mockServer.use(
+      imageSourceResolvers.listImageSources.handler({ items: [], total: 0 })
+    );
     state.bootresource.resources = [];
     renderWithProviders(<ImagesIntro />, {
       state,
     });
-
+    await waitForLoading();
     const button = screen.getByRole("button", {
       name: ImagesIntroLabels.Continue,
     });
@@ -57,16 +68,15 @@ describe("ImagesIntro", () => {
     await expectTooltipOnHover(button, ImagesIntroLabels.CantContinue);
   });
 
-  it("enables the continue button if an image and source has been configured", () => {
-    state.bootresource.ubuntu = factory.bootResourceUbuntu({
-      sources: [factory.bootResourceUbuntuSource()],
-    });
+  it("enables the continue button if an image and source has been configured", async () => {
     state.bootresource.resources = [factory.bootResource()];
     renderWithProviders(<ImagesIntro />, {
       state,
     });
-    expect(
-      screen.getByRole("button", { name: ImagesIntroLabels.Continue })
-    ).not.toBeAriaDisabled();
+    await waitForLoading("Loading...", { timeout: LONG_TIMEOUT });
+    const button = screen.getByRole("button", {
+      name: ImagesIntroLabels.Continue,
+    });
+    expect(button).not.toBeAriaDisabled();
   });
 });

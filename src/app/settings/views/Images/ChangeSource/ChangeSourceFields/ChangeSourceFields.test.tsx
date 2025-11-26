@@ -4,11 +4,11 @@ import ChangeSourceFields, {
   Labels,
 } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, renderWithProviders, screen } from "@/testing/utils";
 
 describe("ChangeSourceFields", () => {
   it("does not show extra fields if maas.io source is selected", async () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{
           keyring_data: "",
@@ -18,7 +18,7 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     expect(
@@ -37,7 +37,7 @@ describe("ChangeSourceFields", () => {
   });
 
   it("shows url fields if custom source is selected", async () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{
           keyring_data: "",
@@ -47,7 +47,7 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     expect(
@@ -65,8 +65,8 @@ describe("ChangeSourceFields", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("resets fields when switching to maas.io source", async () => {
-    render(
+  it("persists custom fields when switching to maas.io source", async () => {
+    renderWithProviders(
       <Formik
         initialValues={{
           keyring_data: "data",
@@ -76,19 +76,21 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     // Switch to maas.io source and back
     await userEvent.click(screen.getByRole("radio", { name: Labels.MaasIo }));
     await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
 
-    expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue("");
+    expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue(
+      "http://www.example.com"
+    );
   });
 
   it(`shows advanced fields when using a custom source and the "Show advanced"
     button is clicked`, async () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{
           keyring_data: "",
@@ -98,7 +100,7 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     expect(
@@ -132,7 +134,7 @@ describe("ChangeSourceFields", () => {
   });
 
   it("resets advanced field values when the Hide advanced button is clicked", async () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{
           keyring_data: "data",
@@ -142,7 +144,7 @@ describe("ChangeSourceFields", () => {
         }}
         onSubmit={vi.fn()}
       >
-        <ChangeSourceFields />
+        <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
     // Click the "Hide advanced" button

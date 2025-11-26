@@ -15,12 +15,8 @@ import type {
   BootResourceUbuntuArch,
   BootResourceUbuntuCoreImage,
   BootResourceUbuntuRelease,
-  BootResourceUbuntuSource,
 } from "@/app/store/bootresource/types";
-import {
-  BootResourceSourceType,
-  BootResourceAction,
-} from "@/app/store/bootresource/types";
+import { BootResourceAction } from "@/app/store/bootresource/types";
 import type { Model } from "@/app/store/types/model";
 
 export const bootResource = extend<Model, BootResource>(model, {
@@ -59,13 +55,6 @@ export const bootResourceUbuntuCoreImage = define<BootResourceUbuntuCoreImage>({
   deleted: false,
   name: "ubuntu/core",
   title: "Ubuntu Core",
-});
-
-export const bootResourceUbuntuSource = define<BootResourceUbuntuSource>({
-  source_type: BootResourceSourceType.MAAS_IO,
-  url: "http://images.maas.io/ephemeral-v3/stable/",
-  keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
-  keyring_data: "aabbccdd",
 });
 
 export const bootResourceUbuntuRelease = define<BootResourceUbuntuRelease>({

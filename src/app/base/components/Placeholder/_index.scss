@@ -1,12 +1,12 @@
 @mixin Placeholder {
   .p-placeholder {
     animation: shine 1.5s infinite ease-out;
-    background-color: $color-mid-x-light;
+    background-color: var(--vf-color-background-hover);
     background-image: linear-gradient(
-      to right,
-      $color-mid-x-light calc(50% - 2rem),
-      $color-light 50%,
-      $color-mid-x-light calc(50% + 2rem)
+                    to right,
+                    var(--vf-color-background-hover) calc(50% - 2rem),
+                    var(--vf-color-background-default) 50%,
+                    var(--vf-color-background-hover) calc(50% + 2rem)
     );
     background-size: 300% 100%;
     color: transparent;
