@@ -733,12 +733,18 @@ export const mockIsPending = () => {
  * Waits until the loading text is no longer present in the document.
  *
  * @param loadingText The text to query for. Defaults to "Loading".
+ * @param options
  */
-export const waitForLoading = async (loadingText = "Loading") =>
-  await waitFor(() =>
-    expect(
-      screen.queryByText(new RegExp(loadingText, "i"))
-    ).not.toBeInTheDocument()
+export const waitForLoading = async (
+  loadingText: string = "Loading",
+  options?: { interval?: number; timeout?: number }
+) =>
+  await waitFor(
+    () =>
+      expect(
+        screen.queryByText(new RegExp(loadingText, "i"))
+      ).not.toBeInTheDocument(),
+    options
   );
 
 /**

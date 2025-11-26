@@ -55,7 +55,7 @@ const ImagesIntro = (): ReactElement => {
 
   return (
     <IntroSection
-      loading={!sourcesPending}
+      loading={sourcesPending}
       sidePanelContent={undefined}
       sidePanelTitle={null}
       useNewSidePanelContext={true}

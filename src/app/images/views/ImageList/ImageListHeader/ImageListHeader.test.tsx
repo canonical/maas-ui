@@ -9,6 +9,7 @@ import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { bootResourceActions } from "@/app/store/bootresource";
 import type { RootState } from "@/app/store/root/types";
+import { LONG_TIMEOUT } from "@/testing/constants";
 import * as factory from "@/testing/factories";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import {
@@ -56,7 +57,7 @@ describe("ImageListHeader", () => {
         state,
       }
     );
-    await waitForLoading();
+    await waitForLoading("Loading...", { timeout: LONG_TIMEOUT });
     expect(
       screen.getByText(ImageListHeaderLabels.RackControllersImporting)
     ).toBeInTheDocument();
@@ -77,7 +78,7 @@ describe("ImageListHeader", () => {
         state,
       }
     );
-    await waitForLoading();
+    await waitForLoading("Loading...", { timeout: LONG_TIMEOUT });
     expect(
       screen.getByText(ImageListHeaderLabels.RegionControllerImporting)
     ).toBeInTheDocument();

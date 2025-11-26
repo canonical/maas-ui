@@ -3,6 +3,7 @@ import configureStore from "redux-mock-store";
 import ImagesIntro, { Labels as ImagesIntroLabels } from "./ImagesIntro";
 
 import type { RootState } from "@/app/store/root/types";
+import { LONG_TIMEOUT } from "@/testing/constants";
 import * as factory from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
@@ -72,9 +73,10 @@ describe("ImagesIntro", () => {
     renderWithProviders(<ImagesIntro />, {
       state,
     });
-    await waitForLoading();
-    expect(
-      screen.getByRole("button", { name: ImagesIntroLabels.Continue })
-    ).not.toBeAriaDisabled();
+    await waitForLoading("Loading...", { timeout: LONG_TIMEOUT });
+    const button = screen.getByRole("button", {
+      name: ImagesIntroLabels.Continue,
+    });
+    expect(button).not.toBeAriaDisabled();
   });
 });
