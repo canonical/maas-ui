@@ -79,22 +79,22 @@ const ImageListHeader = ({
 
   return (
     <MainToolbar>
-      {(polling && !hasPolled) || isPending ? (
-        <Spinner text="Loading..." />
-      ) : (
-        <>
-          <MainToolbar.Title>
-            Images synced from <strong>{getImageSyncText(sources)}</strong>
-          </MainToolbar.Title>
-          {configLoaded ? (
-            <div className="u-flex--align-baseline">
-              {configSaving && (
-                <div className="u-nudge-left--small">
-                  <Icon className="u-animation--spin" name="spinner" />
-                </div>
-              )}
-            </div>
-          ) : null}
+      <>
+        <MainToolbar.Title>
+          Images synced from <strong>{getImageSyncText(sources)}</strong>
+        </MainToolbar.Title>
+        {configLoaded ? (
+          <div className="u-flex--align-baseline">
+            {configSaving && (
+              <div className="u-nudge-left--small">
+                <Icon className="u-animation--spin" name="spinner" />
+              </div>
+            )}
+          </div>
+        ) : null}
+        {(polling && !hasPolled) || isPending ? (
+          <Spinner text="Loading..." />
+        ) : (
           <span className="u-text--muted">
             {regionImportRunning ? (
               <>
@@ -108,61 +108,59 @@ const ImageListHeader = ({
               </>
             ) : null}
           </span>
-          {canStopImport || stoppingImport ? (
-            <Button
-              appearance="link"
-              className="stop-image-import"
-              disabled={stoppingImport}
-              onClick={() => {
-                dispatch(cleanup());
-                dispatch(bootResourceActions.stopImport());
-                dispatch(bootResourceActions.saveUbuntuSuccess());
-                dispatch(bootResourceActions.poll({ continuous: false }));
-              }}
-            >
-              {stoppingImport
-                ? "Stopping image import..."
-                : "Stop image import"}
-            </Button>
-          ) : null}
-          <MainToolbar.Controls>
-            <Button
-              appearance="negative"
-              className="remove-btn"
-              disabled={isDeleteDisabled}
-              hasIcon
-              onClick={() => {
-                openSidePanel({
-                  component: DeleteImages,
-                  props: {
-                    rowSelection: selectedRows,
-                    setRowSelection: setSelectedRows,
-                  },
-                  title: "Delete images",
-                });
-              }}
-              type="button"
-            >
-              <i className="p-icon--delete is-light" />
-              <span>Delete</span>
-            </Button>
-            <Button
-              disabled={canStopImport || stoppingImport}
-              hasIcon
-              onClick={() => {
-                openSidePanel({
-                  component: SelectUpstreamImagesForm,
-                  title: "Select upstream images to sync",
-                });
-              }}
-              type="button"
-            >
-              <i className="p-icon--begin-downloading" />
-              <span>Select upstream images</span>
-            </Button>
-          </MainToolbar.Controls>
-        </>
-      )}
+        )}
+        {canStopImport || stoppingImport ? (
+          <Button
+            appearance="link"
+            className="stop-image-import"
+            disabled={stoppingImport}
+            onClick={() => {
+              dispatch(cleanup());
+              dispatch(bootResourceActions.stopImport());
+              dispatch(bootResourceActions.saveUbuntuSuccess());
+              dispatch(bootResourceActions.poll({ continuous: false }));
+            }}
+          >
+            {stoppingImport ? "Stopping image import..." : "Stop image import"}
+          </Button>
+        ) : null}
+        <MainToolbar.Controls>
+          <Button
+            appearance="negative"
+            className="remove-btn"
+            disabled={isDeleteDisabled}
+            hasIcon
+            onClick={() => {
+              openSidePanel({
+                component: DeleteImages,
+                props: {
+                  rowSelection: selectedRows,
+                  setRowSelection: setSelectedRows,
+                },
+                title: "Delete images",
+              });
+            }}
+            type="button"
+          >
+            <i className="p-icon--delete is-light" />
+            <span>Delete</span>
+          </Button>
+          <Button
+            disabled={canStopImport || stoppingImport}
+            hasIcon
+            onClick={() => {
+              openSidePanel({
+                component: SelectUpstreamImagesForm,
+                title: "Select upstream images to sync",
+              });
+            }}
+            type="button"
+          >
+            <i className="p-icon--begin-downloading" />
+            <span>Select upstream images</span>
+          </Button>
+        </MainToolbar.Controls>
+      </>
     </MainToolbar>
   );
 };
