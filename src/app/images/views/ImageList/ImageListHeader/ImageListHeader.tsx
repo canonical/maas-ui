@@ -33,11 +33,12 @@ export enum Labels {
 const getImageSyncText = (sources: BootSourceResponse[]) => {
   if (sources.length === 1) {
     const mainSource = sources[0];
-    const sourceType = /^https?:\/\/images\.maas\.io\/.*\/stable\/?$/.test(
-      mainSource.url ?? ""
-    )
-      ? BootResourceSourceType.MAAS_IO
-      : BootResourceSourceType.CUSTOM;
+    const sourceType =
+      /^http:\/\/images\.maas\.io\/ephemeral-v3\/stable\/?$/.test(
+        mainSource.url ?? ""
+      )
+        ? BootResourceSourceType.MAAS_IO
+        : BootResourceSourceType.CUSTOM;
     if (sourceType === BootResourceSourceType.MAAS_IO) {
       return "maas.io";
     }

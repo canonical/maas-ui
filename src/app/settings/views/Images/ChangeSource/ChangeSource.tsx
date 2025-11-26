@@ -17,8 +17,10 @@ import {
   useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import {
+  getBootSourceQueryKey,
   getConfigurationQueryKey,
   getConfigurationsQueryKey,
+  listBootSourcesQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
@@ -91,11 +93,12 @@ const ChangeSource = (): ReactElement => {
   }, [dispatch]);
 
   const canChangeSource = resources.every((resource) => !resource.downloading);
-  const sourceType = /^https?:\/\/images\.maas\.io\/.*\/stable\/?$/.test(
-    source.data?.url ?? ""
-  )
-    ? BootResourceSourceType.MAAS_IO
-    : BootResourceSourceType.CUSTOM;
+  const sourceType =
+    /^http:\/\/images\.maas\.io\/ephemeral-v3\/stable\/?$/.test(
+      source.data?.url ?? ""
+    )
+      ? BootResourceSourceType.MAAS_IO
+      : BootResourceSourceType.CUSTOM;
 
   const initialValues: ChangeSourceValues = {
     keyring_data: source.data?.keyring_data ?? "",
@@ -168,6 +171,14 @@ const ChangeSource = (): ReactElement => {
                     path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
                   }),
                 });
+                await queryClient.invalidateQueries({
+                  queryKey: listBootSourcesQueryKey(),
+                });
+                await queryClient.invalidateQueries({
+                  queryKey: getBootSourceQueryKey({
+                    path: { boot_source_id: source.data?.id ?? -1 },
+                  }),
+                });
               }}
               saved={saved}
               saving={saving}
@@ -180,8 +191,8 @@ const ChangeSource = (): ReactElement => {
                 initialValues: ChangeSourceValues;
               }) => (
                 <>
-                  <ChangeSourceFields />
                   {!saved &&
+                    !saving &&
                     !onlyAutoSyncChanged(
                       formikContext.values,
                       formikContext.initialValues
@@ -202,6 +213,7 @@ const ChangeSource = (): ReactElement => {
                         downloaded images.
                       </Notification>
                     )}
+                  <ChangeSourceFields />
                 </>
               )}
             </FormikForm>
