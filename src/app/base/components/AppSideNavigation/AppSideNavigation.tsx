@@ -8,10 +8,11 @@ import {
   Icon,
   Tooltip,
 } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useMatch, useNavigate } from "react-router";
 import { useStorageState } from "react-storage-hooks";
 
+import { useLogout } from "../../hooks/logout";
 import useDarkMode from "../../hooks/useDarkMode/useDarkMode";
 
 import AppSideNavItems from "./AppSideNavItems";
@@ -36,7 +37,6 @@ import controllerSelectors from "@/app/store/controller/selectors";
 import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { statusActions } from "@/app/store/status";
 
 export type SideNavigationProps = {
   authUser: UserWithSummaryResponse;
@@ -136,7 +136,6 @@ export const AppSideNavigation = ({
 );
 
 const AppSideNavigationContainer = (): React.ReactElement => {
-  const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const configLoaded = useSelector(configSelectors.loaded);
@@ -150,10 +149,7 @@ const AppSideNavigationContainer = (): React.ReactElement => {
   const showLinks = isAuthenticated && completedIntro && completedUserIntro;
   useGoogleAnalytics();
 
-  const logout = () => {
-    localStorage.removeItem("maas-config");
-    dispatch(statusActions.logout());
-  };
+  const logout = useLogout();
 
   const [isDarkMode, toggleDarkMode] = useDarkMode();
 

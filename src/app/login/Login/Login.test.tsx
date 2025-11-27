@@ -5,7 +5,12 @@ import Login, { Labels } from "./Login";
 import type { RootState } from "@/app/store/root/types";
 import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -24,12 +29,12 @@ describe("Login", () => {
     const authenticationError =
       "Please enter a correct username and password. Note that both fields may be case-sensitive.";
     state.status.authenticationError = authenticationError;
-    renderWithBrowserRouter(<Login />, { route: "/", state });
+    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
     expect(screen.getByRole("alert")).toHaveTextContent(authenticationError);
   });
 
   it("can render api login", () => {
-    renderWithBrowserRouter(<Login />, { route: "/", state });
+    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
 
     expect(
       screen.getByRole("form", { name: Labels.APILoginForm })
@@ -38,7 +43,7 @@ describe("Login", () => {
 
   it("can render external login link", () => {
     state.status.externalAuthURL = "http://login.example.com";
-    renderWithBrowserRouter(<Login />, { route: "/", state });
+    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
 
     expect(
       screen.getByRole("link", { name: Labels.ExternalLoginButton })
@@ -47,7 +52,7 @@ describe("Login", () => {
 
   it("can login via the api", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<Login />, { route: "/", store });
+    renderWithProviders(<Login />, { initialEntries: ["/login"], store });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.Username }),
@@ -67,10 +72,22 @@ describe("Login", () => {
 
   it("shows a warning if no users have been added yet", () => {
     state.status.noUsers = true;
-    renderWithBrowserRouter(<Login />, { route: "/", state });
+    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
 
     expect(
       screen.getByRole("heading", { name: Labels.NoUsers })
     ).toBeInTheDocument();
+  });
+
+  it("redirects to machines after login", async () => {
+    state.status.authenticated = true;
+    const { router } = renderWithProviders(<Login />, {
+      initialEntries: ["/login"],
+      state,
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/machines");
+    });
   });
 });

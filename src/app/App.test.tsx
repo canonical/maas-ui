@@ -9,10 +9,14 @@ import type { RootState } from "@/app/store/root/types";
 import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
+import { notificationResolvers } from "@/testing/resolvers/notifications";
 import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-setupMockServer(authResolvers.getCurrentUser.handler());
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  notificationResolvers.listNotifications.handler()
+);
 
 vi.mock("@canonical/react-components/dist/hooks", async () => {
   const actual: object = await vi.importActual(
@@ -96,11 +100,6 @@ describe("App", () => {
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("displays a loading message if fetching auth user", () => {
-    renderWithProviders(<App />, { initialEntries: ["/settings"], state });
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
-
   it("connects to the WebSocket", () => {
     state.status.authenticated = true;
     const store = mockStore(state);
@@ -119,15 +118,6 @@ describe("App", () => {
     renderWithProviders(<App />, { initialEntries: ["/settings"], store });
     await waitFor(() => {
       expect(authResolvers.getCurrentUser.resolved).toBe(true);
-    });
-  });
-
-  it("shows a login screen when logged out", async () => {
-    state.status.authenticated = false;
-    state.status.connected = true;
-    renderWithProviders(<App />, { initialEntries: ["/settings"], state });
-    await waitFor(() => {
-      expect(screen.getByText("Login")).toBeInTheDocument();
     });
   });
 
