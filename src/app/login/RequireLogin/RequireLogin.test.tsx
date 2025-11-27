@@ -82,6 +82,37 @@ describe("RequireLogin", () => {
     });
   });
 
+  it("doesn't render anything when not authenticated", async () => {
+    const router = createMemoryRouter(
+      [
+        {
+          element: <RequireLogin />,
+          children: [
+            {
+              path: "/machines",
+              element: <>Machines</>,
+            },
+          ],
+        },
+      ],
+      { initialEntries: ["/machines"] }
+    );
+
+    render(
+      <Provider store={mockStore(state)}>
+        <QueryClientProvider client={queryClient}>
+          <WebSocketProvider>
+            <RouterProvider router={router} />
+          </WebSocketProvider>
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByText("Machines")).not.toBeInTheDocument();
+    });
+  });
+
   it("renders child routes when logged in", async () => {
     state.status.authenticated = true;
     renderFn();

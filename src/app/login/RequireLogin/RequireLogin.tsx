@@ -36,6 +36,10 @@ const RequireLogin = () => {
     }
   }, [hasAuthError, isLoading, location, navigate]);
 
+  if (!authenticated) {
+    return null;
+  }
+
   return <Outlet />;
 };
 
