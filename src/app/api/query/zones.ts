@@ -1,4 +1,4 @@
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
 import {
@@ -15,6 +15,9 @@ import type {
   GetZoneData,
   GetZoneErrors,
   GetZoneResponses,
+  ListZonesData,
+  ListZonesErrors,
+  ListZonesResponses,
   ListZonesWithSummaryData,
   ListZonesWithSummaryErrors,
   ListZonesWithSummaryResponses,
@@ -24,24 +27,40 @@ import type {
   UpdateZoneResponses,
 } from "@/app/apiclient";
 import {
-  deleteZone,
-  updateZone,
   createZone,
+  deleteZone,
   getZone,
+  listZones,
   listZonesWithSummary,
+  updateZone,
 } from "@/app/apiclient";
 import {
   getZoneQueryKey,
+  listZonesQueryKey,
   listZonesWithSummaryQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
-export const useZones = (options?: Options<ListZonesWithSummaryData>) => {
-  return useWebsocketAwareQuery(
-    queryOptionsWithHeaders<
+export const useZones = (
+  options?: Options<ListZonesWithSummaryData>,
+  enabled?: boolean
+) => {
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
       ListZonesWithSummaryResponses,
       ListZonesWithSummaryErrors,
       ListZonesWithSummaryData
-    >(options, listZonesWithSummary, listZonesWithSummaryQueryKey(options))
+    >(options, listZonesWithSummary, listZonesWithSummaryQueryKey(options)),
+    enabled: enabled !== undefined ? enabled : true,
+  });
+};
+
+export const useBaseZones = (options?: Options<ListZonesData>) => {
+  return useWebsocketAwareQuery(
+    queryOptionsWithHeaders<ListZonesResponses, ListZonesErrors, ListZonesData>(
+      options,
+      listZones,
+      listZonesQueryKey(options)
+    )
   );
 };
 
