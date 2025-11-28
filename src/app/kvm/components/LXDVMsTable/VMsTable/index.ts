@@ -1,1 +1,1 @@
-export { default } from "./VMsTable";
+export { default } from "./components/VMsTable/VMsTable";
