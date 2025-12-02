@@ -4,7 +4,6 @@ on:
     branches:
       - main
       - "3.*"
-      - "fix-a11y-*"
 jobs:
   cypress-axe:
     name: cypress-axe
