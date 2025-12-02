@@ -4,7 +4,7 @@ export const pages: Page[] = [
   { heading: "SSH keys for admin", url: "/intro/user" },
   { heading: "Devices", url: "/devices" },
   { heading: "Controllers", url: "/controllers" },
-  { heading: "Subnets", url: "/networks" },
+  { heading: "Networks", url: "/networks" },
   { heading: "Machines", url: "/machines" },
   { heading: "LXD", url: "/kvm/lxd" },
   { heading: "Images", url: "/images" },
