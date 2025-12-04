@@ -22,10 +22,19 @@ import { statusActions } from "@/app/store/status";
 import statusSelectors from "@/app/store/status/selectors";
 import { formatErrors } from "@/app/utils";
 
-const LoginSchema = Yup.object().shape({
-  username: Yup.string(),
-  password: Yup.string(),
-});
+const generateSchema = (hasEnteredUsername: boolean) => {
+  if (hasEnteredUsername) {
+    return Yup.object().shape({
+      username: Yup.string().required("Username is required"),
+      password: Yup.string().required("Password is required"),
+    });
+  } else {
+    return Yup.object().shape({
+      username: Yup.string().required("Username is required"),
+      password: Yup.string(),
+    });
+  }
+};
 
 export type LoginValues = {
   password: string;
@@ -149,7 +158,7 @@ export const Login = (): React.ReactElement => {
                     saved={authenticated}
                     saving={authenticating}
                     submitLabel={hasEnteredUsername ? Labels.Submit : "Next"}
-                    validationSchema={LoginSchema}
+                    validationSchema={generateSchema(hasEnteredUsername)}
                   >
                     <FormikField
                       aria-hidden={hasEnteredUsername}
