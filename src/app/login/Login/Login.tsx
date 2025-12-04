@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   Button,
@@ -23,8 +23,8 @@ import statusSelectors from "@/app/store/status/selectors";
 import { formatErrors } from "@/app/utils";
 
 const LoginSchema = Yup.object().shape({
-  username: Yup.string().required("Username is required"),
-  password: Yup.string().required("Password is required"),
+  username: Yup.string(),
+  password: Yup.string(),
 });
 
 export type LoginValues = {
@@ -55,6 +55,9 @@ export const Login = (): React.ReactElement => {
   const authenticationError = useSelector(statusSelectors.authenticationError);
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirectTo");
+
+  // TODO: replace this state with a mutation to check if user is local or OIDC https://warthogs.atlassian.net/browse/MAASENG-5637
+  const [hasEnteredUsername, setHasEnteredUsername] = useState(false);
 
   const noUsers = useSelector(statusSelectors.noUsers);
 
@@ -137,24 +140,32 @@ export const Login = (): React.ReactElement => {
                       username: "",
                     }}
                     onSubmit={(values) => {
-                      dispatch(statusActions.login(values));
+                      if (!hasEnteredUsername) {
+                        setHasEnteredUsername(true);
+                      } else {
+                        dispatch(statusActions.login(values));
+                      }
                     }}
                     saved={authenticated}
                     saving={authenticating}
-                    submitLabel={Labels.Submit}
+                    submitLabel={hasEnteredUsername ? Labels.Submit : "Next"}
                     validationSchema={LoginSchema}
                   >
                     <FormikField
-                      label={Labels.Username}
+                      aria-hidden={hasEnteredUsername}
+                      hidden={hasEnteredUsername}
+                      label={hasEnteredUsername ? "" : Labels.Username}
                       name="username"
                       required={true}
                       takeFocus
                       type="text"
                     />
                     <FormikField
-                      label={Labels.Password}
+                      aria-hidden={!hasEnteredUsername}
+                      hidden={!hasEnteredUsername}
+                      label={!hasEnteredUsername ? "" : Labels.Password}
                       name="password"
-                      required={true}
+                      required={hasEnteredUsername}
                       type="password"
                     />
                   </FormikForm>

@@ -50,6 +50,33 @@ describe("Login", () => {
     ).toBeInTheDocument();
   });
 
+  it("hides the password field when a username has not been entered", async () => {
+    const store = mockStore(state);
+    renderWithProviders(<Login />, { initialEntries: ["/login"], store });
+
+    expect(
+      screen.getByRole("textbox", { name: Labels.Username })
+    ).toBeInTheDocument();
+    expect(screen.queryByLabelText(Labels.Password)).not.toBeInTheDocument();
+  });
+
+  it("shows the password field and hides the username field after entering a username and clicking 'Next'", async () => {
+    const store = mockStore(state);
+    renderWithProviders(<Login />, { initialEntries: ["/login"], store });
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.Username }),
+      "koala"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
+
+    expect(screen.getByLabelText(Labels.Password)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", { name: Labels.Username })
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button")).toHaveTextContent("Login");
+  });
+
   it("can login via the api", async () => {
     const store = mockStore(state);
     renderWithProviders(<Login />, { initialEntries: ["/login"], store });
@@ -58,6 +85,7 @@ describe("Login", () => {
       screen.getByRole("textbox", { name: Labels.Username }),
       "koala"
     );
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
     await userEvent.type(screen.getByLabelText(Labels.Password), "gumtree");
     await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
 
