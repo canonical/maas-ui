@@ -59,23 +59,26 @@ const VMsTable = ({
   }, [rowSelection, vms]);
 
   useEffect(() => {
-    if (!selected && getSystemIdsFromRowSelection().length > 0) {
+    const selectedSystemIds = getSystemIdsFromRowSelection();
+    if (selected === null && selectedSystemIds.length > 0) {
       dispatch(
         machineActions.setSelected({
-          items: getSystemIdsFromRowSelection(),
+          items: selectedSystemIds,
         })
       );
     }
-    if (
-      selected &&
-      "items" in selected &&
-      selected.items !== getSystemIdsFromRowSelection()
-    ) {
-      dispatch(
-        machineActions.setSelected({
-          items: getSystemIdsFromRowSelection(),
-        })
-      );
+
+    if (selected && "items" in selected && !!selected.items) {
+      const selectedCopy = [...selected.items];
+      if (
+        selectedCopy.sort().join(",") !== selectedSystemIds.sort().join(",")
+      ) {
+        dispatch(
+          machineActions.setSelected({
+            items: selectedSystemIds,
+          })
+        );
+      }
     }
   }, [dispatch, getSystemIdsFromRowSelection, selected]);
 

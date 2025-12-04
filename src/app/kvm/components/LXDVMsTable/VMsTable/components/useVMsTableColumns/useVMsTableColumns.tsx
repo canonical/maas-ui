@@ -44,7 +44,6 @@ type Props = {
 type VMsColumnDef = ColumnDef<Machine, Partial<Machine>>;
 
 const useVMsTableColumns = ({
-  callId,
   getHostColumn,
   getResources,
   tags,

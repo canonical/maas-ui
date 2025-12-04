@@ -6,7 +6,7 @@ import VMsTable from "./VMsTable";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -48,9 +48,9 @@ describe("VMsTable", () => {
         },
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <VMsTable getResources={getResources} isPending={false} vms={vms} />,
-      { state, route: "/kvm/1/project" }
+      { state, initialEntries: ["/kvm/1/project"] }
     );
     await waitForLoading();
     // Sorted ascending by hostname
@@ -80,9 +80,9 @@ describe("VMsTable", () => {
       pod: factory.podState({ items: [pod], loaded: true }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <VMsTable getResources={getResources} isPending={false} vms={vms} />,
-      { store, route: "/kvm/1/project" }
+      { store, initialEntries: ["/kvm/1/project"] }
     );
 
     await userEvent.click(
@@ -114,20 +114,16 @@ describe("VMsTable", () => {
     const state = factory.rootState({
       machine: factory.machineState({
         items: vms,
-        selected: null,
+        selected: { items: vms.map((vm) => vm.system_id) },
       }),
       pod: factory.podState({ items: [pod], loaded: true }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <VMsTable getResources={getResources} isPending={false} vms={vms} />,
-      { store, route: "/kvm/1/project" }
+      { store, initialEntries: ["/kvm/1/project"] }
     );
 
-    // click twice to select cnd deselect
-    await userEvent.click(
-      screen.getByRole("checkbox", { name: /select all/i })
-    );
     await userEvent.click(
       screen.getByRole("checkbox", { name: /select all/i })
     );
@@ -139,7 +135,7 @@ describe("VMsTable", () => {
           .find((action) => action.type === "machine/setSelected")
       ).toStrictEqual({
         type: "machine/setSelected",
-        payload: null,
+        payload: { items: [] },
       });
     });
   });
@@ -151,9 +147,9 @@ describe("VMsTable", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <VMsTable getResources={getResources} isPending={false} vms={[]} />,
-      { state, route: "/kvm/1/project" }
+      { state, initialEntries: ["/kvm/1/project"] }
     );
 
     expect(
@@ -168,14 +164,14 @@ describe("VMsTable", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <VMsTable
         displayForCluster
         getResources={getResources}
         isPending={false}
         vms={[]}
       />,
-      { state, route: "/kvm/1/project" }
+      { state, initialEntries: ["/kvm/1/project"] }
     );
 
     expect(
@@ -186,14 +182,14 @@ describe("VMsTable", () => {
   it("renders a column for the host if function provided to render it", () => {
     const state = factory.rootState();
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <VMsTable
         getHostColumn={vi.fn()}
         getResources={getResources}
         isPending={false}
         vms={[]}
       />,
-      { state, route: "/kvm/1/project" }
+      { state, initialEntries: ["/kvm/1/project"] }
     );
 
     expect(
@@ -204,14 +200,14 @@ describe("VMsTable", () => {
   it("does not render a column for the host if no function provided to render it", () => {
     const state = factory.rootState();
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <VMsTable
         getHostColumn={undefined}
         getResources={getResources}
         isPending={false}
         vms={[]}
       />,
-      { state, route: "/kvm/1/project" }
+      { state, initialEntries: ["/kvm/1/project"] }
     );
 
     expect(
@@ -233,9 +229,9 @@ describe("VMsTable", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <VMsTable getResources={getResources} isPending={false} vms={vms} />,
-      { state, route: "/kvm/1/project" }
+      { state, initialEntries: ["/kvm/1/project"] }
     );
 
     expect(screen.getByText("tag1, tag2")).toBeInTheDocument();
@@ -248,9 +244,9 @@ describe("VMsTable", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <VMsTable getResources={getResources} isPending={false} vms={[]} />,
-      { state, route: "/kvm/1/project" }
+      { state, initialEntries: ["/kvm/1/project"] }
     );
 
     expect(
