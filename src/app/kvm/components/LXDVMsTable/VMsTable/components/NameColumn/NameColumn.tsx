@@ -4,17 +4,15 @@ import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
-import MachineCheckbox from "@/app/machines/views/MachineList/MachineListTable/MachineCheckbox";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  callId?: string | null;
   systemId: Machine["system_id"];
 };
 
-const NameColumn = ({ callId, systemId }: Props): React.ReactElement => {
+const NameColumn = ({ systemId }: Props): React.ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -26,15 +24,9 @@ const NameColumn = ({ callId, systemId }: Props): React.ReactElement => {
     <DoubleRow
       data-testid="name-col"
       primary={
-        <MachineCheckbox
-          callId={callId}
-          label={
-            <Link to={urls.machines.machine.index({ id: machine.system_id })}>
-              <strong>{machine.hostname}</strong>
-            </Link>
-          }
-          systemId={systemId}
-        />
+        <Link to={urls.machines.machine.index({ id: machine.system_id })}>
+          <strong>{machine.hostname}</strong>
+        </Link>
       }
       primaryTitle={machine.hostname}
     />

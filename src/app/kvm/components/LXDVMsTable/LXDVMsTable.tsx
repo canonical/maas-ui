@@ -5,8 +5,11 @@ import { usePrevious } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
 import VMsActionBar from "./VMsActionBar";
-import VMsTable from "./VMsTable";
-import type { GetHostColumn, GetResources } from "./VMsTable/VMsTable";
+import type {
+  GetHostColumn,
+  GetResources,
+} from "./VMsTable/components/VMsTable/VMsTable";
+import VMsTable from "./VMsTable/components/VMsTable/VMsTable";
 
 import type { SetSearchFilter, SortDirection } from "@/app/base/types";
 import type { KVMSetSidePanelContent } from "@/app/kvm/types";
@@ -43,12 +46,10 @@ const LXDVMsTable = ({
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
-    DEFAULTS.sortKey
+  const [sortKey] = useState<FetchGroupKey | null>(DEFAULTS.sortKey);
+  const [sortDirection] = useState<ValueOf<typeof SortDirection>>(
+    DEFAULTS.sortDirection
   );
-  const [sortDirection, setSortDirection] = useState<
-    ValueOf<typeof SortDirection>
-  >(DEFAULTS.sortDirection);
   const {
     callId,
     loading,
@@ -99,13 +100,7 @@ const LXDVMsTable = ({
         displayForCluster={displayForCluster}
         getHostColumn={getHostColumn}
         getResources={getResources}
-        machinesLoading={loading}
-        pods={pods}
-        searchFilter={searchFilter}
-        setSortDirection={setSortDirection}
-        setSortKey={setSortKey}
-        sortDirection={sortDirection}
-        sortKey={sortKey}
+        isPending={loading}
         vms={vms}
       />
     </>
