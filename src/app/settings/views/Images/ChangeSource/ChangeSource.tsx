@@ -17,10 +17,10 @@ import {
   useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import {
-  getBootSourceQueryKey,
+  getBootsourceQueryKey,
   getConfigurationQueryKey,
   getConfigurationsQueryKey,
-  listBootSourcesQueryKey,
+  listBootsourcesQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
@@ -163,10 +163,10 @@ const ChangeSource = (): ReactElement => {
                   }),
                 });
                 await queryClient.invalidateQueries({
-                  queryKey: listBootSourcesQueryKey(),
+                  queryKey: listBootsourcesQueryKey(),
                 });
                 await queryClient.invalidateQueries({
-                  queryKey: getBootSourceQueryKey({
+                  queryKey: getBootsourceQueryKey({
                     path: { boot_source_id: source.data?.id ?? -1 },
                   }),
                 });

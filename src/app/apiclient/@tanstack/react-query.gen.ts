@@ -6,12 +6,14 @@ import { client } from "../client.gen";
 import {
   changePasswordAdmin,
   changePasswordUser,
+  checkStatusBootsourceBootsourceselection,
+  checkStatusesBootsourceBootsourceselection,
   clearAllDiscoveriesWithOptionalIpAndMac,
   clearNeighboursDiscoveries,
   clearRdnsAndMdnsDiscoveries,
   completeIntro,
-  createBootSource,
-  createBootSourceBootSourceSelection,
+  createBootsource,
+  createBootsourceBootsourceselection,
   createDomain,
   createDomainRrsets,
   createFabric,
@@ -33,8 +35,8 @@ import {
   createUserSslkey,
   createZone,
   deleteBootResourceById,
-  deleteBootSource,
-  deleteBootSourceBootSourceSelection,
+  deleteBootsource,
+  deleteBootsourceBootsourceselection,
   deleteDomain,
   deleteFabric,
   deleteFabricVlan,
@@ -57,14 +59,14 @@ import {
   deleteZone,
   dismissNotification,
   evaluateTag,
-  fetchBootSourcesAvailableImages,
+  fetchBootsourcesAvailableImages,
   generateRackBootstrapToken,
   getAccessToken,
   getAllAvailableImages,
   getBootResourceById,
-  getBootSource,
-  getBootSourceAvailableImages,
-  getBootSourceBootSourceSelection,
+  getBootsource,
+  getBootsourceAvailableImages,
+  getBootsourceBootsourceselection,
   getConfiguration,
   getConfigurations,
   getDiscovery,
@@ -82,6 +84,7 @@ import {
   getMeWithSummary,
   getNotification,
   getOauthProvider,
+  getOauthProviderById,
   getPackageRepository,
   getRack,
   getRackAgent,
@@ -96,11 +99,14 @@ import {
   getUserSslkeys,
   getUserSslkeysWithSummary,
   getZone,
+  importBootsources,
   importUserSshkeys,
   initiateOauthFlow,
+  listAllBootsourceselections,
   listBootResources,
-  listBootSourceBootSourceSelection,
-  listBootSources,
+  listBootsourceBootsourceselection,
+  listBootsources,
+  listCustomImagesStatus,
   listDiscoveries,
   listDomains,
   listEvents,
@@ -135,14 +141,18 @@ import {
   type Options,
   setConfiguration,
   setConfigurations,
-  updateBootSource,
-  updateBootSourceBootSourceSelection,
+  stopImportBootsources,
+  stopSyncBootsourceBootsourceselection,
+  syncBootsourceBootsourceselection,
+  updateBootsource,
+  updateBootsourceBootsourceselection,
   updateFabric,
   updateFabricVlan,
   updateFabricVlanSubnet,
   updateFabricVlanSubnetIprange,
   updateFabricVlanSubnetReservedIp,
   updateFabricVlanSubnetStaticroute,
+  updateManifestBootsources,
   updateNotification,
   updateOauthProvider,
   updatePackageRepository,
@@ -161,6 +171,12 @@ import type {
   ChangePasswordUserData,
   ChangePasswordUserError,
   ChangePasswordUserResponse,
+  CheckStatusBootsourceBootsourceselectionData,
+  CheckStatusBootsourceBootsourceselectionError,
+  CheckStatusBootsourceBootsourceselectionResponse,
+  CheckStatusesBootsourceBootsourceselectionData,
+  CheckStatusesBootsourceBootsourceselectionError,
+  CheckStatusesBootsourceBootsourceselectionResponse,
   ClearAllDiscoveriesWithOptionalIpAndMacData,
   ClearAllDiscoveriesWithOptionalIpAndMacError,
   ClearAllDiscoveriesWithOptionalIpAndMacResponse,
@@ -173,12 +189,12 @@ import type {
   CompleteIntroData,
   CompleteIntroError,
   CompleteIntroResponse,
-  CreateBootSourceBootSourceSelectionData,
-  CreateBootSourceBootSourceSelectionError,
-  CreateBootSourceBootSourceSelectionResponse,
-  CreateBootSourceData,
-  CreateBootSourceError,
-  CreateBootSourceResponse,
+  CreateBootsourceBootsourceselectionData,
+  CreateBootsourceBootsourceselectionError,
+  CreateBootsourceBootsourceselectionResponse,
+  CreateBootsourceData,
+  CreateBootsourceError,
+  CreateBootsourceResponse,
   CreateDomainData,
   CreateDomainError,
   CreateDomainResponse,
@@ -242,12 +258,12 @@ import type {
   DeleteBootResourceByIdData,
   DeleteBootResourceByIdError,
   DeleteBootResourceByIdResponse,
-  DeleteBootSourceBootSourceSelectionData,
-  DeleteBootSourceBootSourceSelectionError,
-  DeleteBootSourceBootSourceSelectionResponse,
-  DeleteBootSourceData,
-  DeleteBootSourceError,
-  DeleteBootSourceResponse,
+  DeleteBootsourceBootsourceselectionData,
+  DeleteBootsourceBootsourceselectionError,
+  DeleteBootsourceBootsourceselectionResponse,
+  DeleteBootsourceData,
+  DeleteBootsourceError,
+  DeleteBootsourceResponse,
   DeleteDomainData,
   DeleteDomainError,
   DeleteDomainResponse,
@@ -313,9 +329,9 @@ import type {
   DismissNotificationResponse,
   EvaluateTagData,
   EvaluateTagError,
-  FetchBootSourcesAvailableImagesData,
-  FetchBootSourcesAvailableImagesError,
-  FetchBootSourcesAvailableImagesResponse,
+  FetchBootsourcesAvailableImagesData,
+  FetchBootsourcesAvailableImagesError,
+  FetchBootsourcesAvailableImagesResponse,
   GenerateRackBootstrapTokenData,
   GenerateRackBootstrapTokenError,
   GenerateRackBootstrapTokenResponse,
@@ -328,15 +344,15 @@ import type {
   GetBootResourceByIdData,
   GetBootResourceByIdError,
   GetBootResourceByIdResponse,
-  GetBootSourceAvailableImagesData,
-  GetBootSourceAvailableImagesError,
-  GetBootSourceAvailableImagesResponse,
-  GetBootSourceBootSourceSelectionData,
-  GetBootSourceBootSourceSelectionError,
-  GetBootSourceBootSourceSelectionResponse,
-  GetBootSourceData,
-  GetBootSourceError,
-  GetBootSourceResponse,
+  GetBootsourceAvailableImagesData,
+  GetBootsourceAvailableImagesError,
+  GetBootsourceAvailableImagesResponse,
+  GetBootsourceBootsourceselectionData,
+  GetBootsourceBootsourceselectionError,
+  GetBootsourceBootsourceselectionResponse,
+  GetBootsourceData,
+  GetBootsourceError,
+  GetBootsourceResponse,
   GetConfigurationData,
   GetConfigurationError,
   GetConfigurationResponse,
@@ -385,6 +401,9 @@ import type {
   GetNotificationData,
   GetNotificationError,
   GetNotificationResponse,
+  GetOauthProviderByIdData,
+  GetOauthProviderByIdError,
+  GetOauthProviderByIdResponse,
   GetOauthProviderData,
   GetOauthProviderError,
   GetOauthProviderResponse,
@@ -430,21 +449,30 @@ import type {
   GetZoneData,
   GetZoneError,
   GetZoneResponse,
+  ImportBootsourcesData,
+  ImportBootsourcesError,
+  ImportBootsourcesResponse,
   ImportUserSshkeysData,
   ImportUserSshkeysError,
   ImportUserSshkeysResponse,
   InitiateOauthFlowData,
   InitiateOauthFlowError,
   InitiateOauthFlowResponse,
+  ListAllBootsourceselectionsData,
+  ListAllBootsourceselectionsError,
+  ListAllBootsourceselectionsResponse,
   ListBootResourcesData,
   ListBootResourcesError,
   ListBootResourcesResponse,
-  ListBootSourceBootSourceSelectionData,
-  ListBootSourceBootSourceSelectionError,
-  ListBootSourceBootSourceSelectionResponse,
-  ListBootSourcesData,
-  ListBootSourcesError,
-  ListBootSourcesResponse,
+  ListBootsourceBootsourceselectionData,
+  ListBootsourceBootsourceselectionError,
+  ListBootsourceBootsourceselectionResponse,
+  ListBootsourcesData,
+  ListBootsourcesError,
+  ListBootsourcesResponse,
+  ListCustomImagesStatusData,
+  ListCustomImagesStatusError,
+  ListCustomImagesStatusResponse,
   ListDiscoveriesData,
   ListDiscoveriesError,
   ListDiscoveriesResponse,
@@ -544,12 +572,20 @@ import type {
   SetConfigurationsData,
   SetConfigurationsError,
   SetConfigurationsResponse,
-  UpdateBootSourceBootSourceSelectionData,
-  UpdateBootSourceBootSourceSelectionError,
-  UpdateBootSourceBootSourceSelectionResponse,
-  UpdateBootSourceData,
-  UpdateBootSourceError,
-  UpdateBootSourceResponse,
+  StopImportBootsourcesData,
+  StopImportBootsourcesError,
+  StopImportBootsourcesResponse,
+  StopSyncBootsourceBootsourceselectionData,
+  StopSyncBootsourceBootsourceselectionError,
+  SyncBootsourceBootsourceselectionData,
+  SyncBootsourceBootsourceselectionError,
+  SyncBootsourceBootsourceselectionResponse,
+  UpdateBootsourceBootsourceselectionData,
+  UpdateBootsourceBootsourceselectionError,
+  UpdateBootsourceBootsourceselectionResponse,
+  UpdateBootsourceData,
+  UpdateBootsourceError,
+  UpdateBootsourceResponse,
   UpdateFabricData,
   UpdateFabricError,
   UpdateFabricResponse,
@@ -568,6 +604,8 @@ import type {
   UpdateFabricVlanSubnetStaticrouteData,
   UpdateFabricVlanSubnetStaticrouteError,
   UpdateFabricVlanSubnetStaticrouteResponse,
+  UpdateManifestBootsourcesData,
+  UpdateManifestBootsourcesError,
   UpdateNotificationData,
   UpdateNotificationError,
   UpdateNotificationResponse,
@@ -721,6 +759,34 @@ export const deleteOauthProviderMutation = (
   };
   return mutationOptions;
 };
+
+export const getOauthProviderByIdQueryKey = (
+  options: Options<GetOauthProviderByIdData>
+) => createQueryKey("getOauthProviderById", options);
+
+/**
+ * Get Oauth Provider By Id
+ */
+export const getOauthProviderByIdOptions = (
+  options: Options<GetOauthProviderByIdData>
+) =>
+  queryOptions<
+    GetOauthProviderByIdResponse,
+    GetOauthProviderByIdError,
+    GetOauthProviderByIdResponse,
+    ReturnType<typeof getOauthProviderByIdQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getOauthProviderById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getOauthProviderByIdQueryKey(options),
+  });
 
 /**
  * Update Oauth Provider
@@ -965,24 +1031,24 @@ export const uploadBootResourceMutation = (
   return mutationOptions;
 };
 
-export const listBootSourcesQueryKey = (
-  options?: Options<ListBootSourcesData>
-) => createQueryKey("listBootSources", options);
+export const listCustomImagesStatusQueryKey = (
+  options?: Options<ListCustomImagesStatusData>
+) => createQueryKey("listCustomImagesStatus", options);
 
 /**
- * List Boot Sources
+ * List Custom Images Status
  */
-export const listBootSourcesOptions = (
-  options?: Options<ListBootSourcesData>
+export const listCustomImagesStatusOptions = (
+  options?: Options<ListCustomImagesStatusData>
 ) =>
   queryOptions<
-    ListBootSourcesResponse,
-    ListBootSourcesError,
-    ListBootSourcesResponse,
-    ReturnType<typeof listBootSourcesQueryKey>
+    ListCustomImagesStatusResponse,
+    ListCustomImagesStatusError,
+    ListCustomImagesStatusResponse,
+    ReturnType<typeof listCustomImagesStatusQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listBootSources({
+      const { data } = await listCustomImagesStatus({
         ...options,
         ...queryKey[0],
         signal,
@@ -990,54 +1056,27 @@ export const listBootSourcesOptions = (
       });
       return data;
     },
-    queryKey: listBootSourcesQueryKey(options),
+    queryKey: listCustomImagesStatusQueryKey(options),
   });
 
-/**
- * Create Boot Source
- */
-export const createBootSourceMutation = (
-  options?: Partial<Options<CreateBootSourceData>>
-): UseMutationOptions<
-  CreateBootSourceResponse,
-  CreateBootSourceError,
-  Options<CreateBootSourceData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    CreateBootSourceResponse,
-    CreateBootSourceError,
-    Options<CreateBootSourceData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await createBootSource({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const listBootSourceBootSourceSelectionQueryKey = (
-  options: Options<ListBootSourceBootSourceSelectionData>
-) => createQueryKey("listBootSourceBootSourceSelection", options);
+export const checkStatusBootsourceBootsourceselectionQueryKey = (
+  options: Options<CheckStatusBootsourceBootsourceselectionData>
+) => createQueryKey("checkStatusBootsourceBootsourceselection", options);
 
 /**
- * List Boot Source Boot Source Selection
+ * Check Status Bootsource Bootsourceselection
  */
-export const listBootSourceBootSourceSelectionOptions = (
-  options: Options<ListBootSourceBootSourceSelectionData>
+export const checkStatusBootsourceBootsourceselectionOptions = (
+  options: Options<CheckStatusBootsourceBootsourceselectionData>
 ) =>
   queryOptions<
-    ListBootSourceBootSourceSelectionResponse,
-    ListBootSourceBootSourceSelectionError,
-    ListBootSourceBootSourceSelectionResponse,
-    ReturnType<typeof listBootSourceBootSourceSelectionQueryKey>
+    CheckStatusBootsourceBootsourceselectionResponse,
+    CheckStatusBootsourceBootsourceselectionError,
+    CheckStatusBootsourceBootsourceselectionResponse,
+    ReturnType<typeof checkStatusBootsourceBootsourceselectionQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listBootSourceBootSourceSelection({
+      const { data } = await checkStatusBootsourceBootsourceselection({
         ...options,
         ...queryKey[0],
         signal,
@@ -1045,160 +1084,27 @@ export const listBootSourceBootSourceSelectionOptions = (
       });
       return data;
     },
-    queryKey: listBootSourceBootSourceSelectionQueryKey(options),
+    queryKey: checkStatusBootsourceBootsourceselectionQueryKey(options),
   });
 
-/**
- * Create Boot Source Boot Source Selection
- */
-export const createBootSourceBootSourceSelectionMutation = (
-  options?: Partial<Options<CreateBootSourceBootSourceSelectionData>>
-): UseMutationOptions<
-  CreateBootSourceBootSourceSelectionResponse,
-  CreateBootSourceBootSourceSelectionError,
-  Options<CreateBootSourceBootSourceSelectionData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    CreateBootSourceBootSourceSelectionResponse,
-    CreateBootSourceBootSourceSelectionError,
-    Options<CreateBootSourceBootSourceSelectionData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await createBootSourceBootSourceSelection({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
+export const checkStatusesBootsourceBootsourceselectionQueryKey = (
+  options?: Options<CheckStatusesBootsourceBootsourceselectionData>
+) => createQueryKey("checkStatusesBootsourceBootsourceselection", options);
 
 /**
- * Delete Boot Source
+ * Check Statuses Bootsource Bootsourceselection
  */
-export const deleteBootSourceMutation = (
-  options?: Partial<Options<DeleteBootSourceData>>
-): UseMutationOptions<
-  DeleteBootSourceResponse,
-  DeleteBootSourceError,
-  Options<DeleteBootSourceData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    DeleteBootSourceResponse,
-    DeleteBootSourceError,
-    Options<DeleteBootSourceData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await deleteBootSource({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const getBootSourceQueryKey = (options: Options<GetBootSourceData>) =>
-  createQueryKey("getBootSource", options);
-
-/**
- * Get Boot Source
- */
-export const getBootSourceOptions = (options: Options<GetBootSourceData>) =>
-  queryOptions<
-    GetBootSourceResponse,
-    GetBootSourceError,
-    GetBootSourceResponse,
-    ReturnType<typeof getBootSourceQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getBootSource({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getBootSourceQueryKey(options),
-  });
-
-/**
- * Update Boot Source
- */
-export const updateBootSourceMutation = (
-  options?: Partial<Options<UpdateBootSourceData>>
-): UseMutationOptions<
-  UpdateBootSourceResponse,
-  UpdateBootSourceError,
-  Options<UpdateBootSourceData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    UpdateBootSourceResponse,
-    UpdateBootSourceError,
-    Options<UpdateBootSourceData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await updateBootSource({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-/**
- * Delete Boot Source Boot Source Selection
- */
-export const deleteBootSourceBootSourceSelectionMutation = (
-  options?: Partial<Options<DeleteBootSourceBootSourceSelectionData>>
-): UseMutationOptions<
-  DeleteBootSourceBootSourceSelectionResponse,
-  DeleteBootSourceBootSourceSelectionError,
-  Options<DeleteBootSourceBootSourceSelectionData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    DeleteBootSourceBootSourceSelectionResponse,
-    DeleteBootSourceBootSourceSelectionError,
-    Options<DeleteBootSourceBootSourceSelectionData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await deleteBootSourceBootSourceSelection({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const getBootSourceBootSourceSelectionQueryKey = (
-  options: Options<GetBootSourceBootSourceSelectionData>
-) => createQueryKey("getBootSourceBootSourceSelection", options);
-
-/**
- * Get Boot Source Boot Source Selection
- */
-export const getBootSourceBootSourceSelectionOptions = (
-  options: Options<GetBootSourceBootSourceSelectionData>
+export const checkStatusesBootsourceBootsourceselectionOptions = (
+  options?: Options<CheckStatusesBootsourceBootsourceselectionData>
 ) =>
   queryOptions<
-    GetBootSourceBootSourceSelectionResponse,
-    GetBootSourceBootSourceSelectionError,
-    GetBootSourceBootSourceSelectionResponse,
-    ReturnType<typeof getBootSourceBootSourceSelectionQueryKey>
+    CheckStatusesBootsourceBootsourceselectionResponse,
+    CheckStatusesBootsourceBootsourceselectionError,
+    CheckStatusesBootsourceBootsourceselectionResponse,
+    ReturnType<typeof checkStatusesBootsourceBootsourceselectionQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getBootSourceBootSourceSelection({
+      const { data } = await checkStatusesBootsourceBootsourceselection({
         ...options,
         ...queryKey[0],
         signal,
@@ -1206,26 +1112,109 @@ export const getBootSourceBootSourceSelectionOptions = (
       });
       return data;
     },
-    queryKey: getBootSourceBootSourceSelectionQueryKey(options),
+    queryKey: checkStatusesBootsourceBootsourceselectionQueryKey(options),
+  });
+
+export const listBootsourcesQueryKey = (
+  options?: Options<ListBootsourcesData>
+) => createQueryKey("listBootsources", options);
+
+/**
+ * List Bootsources
+ */
+export const listBootsourcesOptions = (
+  options?: Options<ListBootsourcesData>
+) =>
+  queryOptions<
+    ListBootsourcesResponse,
+    ListBootsourcesError,
+    ListBootsourcesResponse,
+    ReturnType<typeof listBootsourcesQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listBootsources({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listBootsourcesQueryKey(options),
   });
 
 /**
- * Update Boot Source Boot Source Selection
+ * Create Bootsource
  */
-export const updateBootSourceBootSourceSelectionMutation = (
-  options?: Partial<Options<UpdateBootSourceBootSourceSelectionData>>
+export const createBootsourceMutation = (
+  options?: Partial<Options<CreateBootsourceData>>
 ): UseMutationOptions<
-  UpdateBootSourceBootSourceSelectionResponse,
-  UpdateBootSourceBootSourceSelectionError,
-  Options<UpdateBootSourceBootSourceSelectionData>
+  CreateBootsourceResponse,
+  CreateBootsourceError,
+  Options<CreateBootsourceData>
 > => {
   const mutationOptions: UseMutationOptions<
-    UpdateBootSourceBootSourceSelectionResponse,
-    UpdateBootSourceBootSourceSelectionError,
-    Options<UpdateBootSourceBootSourceSelectionData>
+    CreateBootsourceResponse,
+    CreateBootsourceError,
+    Options<CreateBootsourceData>
   > = {
     mutationFn: async (fnOptions) => {
-      const { data } = await updateBootSourceBootSourceSelection({
+      const { data } = await createBootsource({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listBootsourceBootsourceselectionQueryKey = (
+  options: Options<ListBootsourceBootsourceselectionData>
+) => createQueryKey("listBootsourceBootsourceselection", options);
+
+/**
+ * List Bootsource Bootsourceselection
+ */
+export const listBootsourceBootsourceselectionOptions = (
+  options: Options<ListBootsourceBootsourceselectionData>
+) =>
+  queryOptions<
+    ListBootsourceBootsourceselectionResponse,
+    ListBootsourceBootsourceselectionError,
+    ListBootsourceBootsourceselectionResponse,
+    ReturnType<typeof listBootsourceBootsourceselectionQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listBootsourceBootsourceselection({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listBootsourceBootsourceselectionQueryKey(options),
+  });
+
+/**
+ * Create Bootsource Bootsourceselection
+ */
+export const createBootsourceBootsourceselectionMutation = (
+  options?: Partial<Options<CreateBootsourceBootsourceselectionData>>
+): UseMutationOptions<
+  CreateBootsourceBootsourceselectionResponse,
+  CreateBootsourceBootsourceselectionError,
+  Options<CreateBootsourceBootsourceselectionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateBootsourceBootsourceselectionResponse,
+    CreateBootsourceBootsourceselectionError,
+    Options<CreateBootsourceBootsourceselectionData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await createBootsourceBootsourceselection({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1237,22 +1226,183 @@ export const updateBootSourceBootSourceSelectionMutation = (
 };
 
 /**
- * Fetch Boot Sources Available Images
+ * Delete Bootsource
  */
-export const fetchBootSourcesAvailableImagesMutation = (
-  options?: Partial<Options<FetchBootSourcesAvailableImagesData>>
+export const deleteBootsourceMutation = (
+  options?: Partial<Options<DeleteBootsourceData>>
 ): UseMutationOptions<
-  FetchBootSourcesAvailableImagesResponse,
-  FetchBootSourcesAvailableImagesError,
-  Options<FetchBootSourcesAvailableImagesData>
+  DeleteBootsourceResponse,
+  DeleteBootsourceError,
+  Options<DeleteBootsourceData>
 > => {
   const mutationOptions: UseMutationOptions<
-    FetchBootSourcesAvailableImagesResponse,
-    FetchBootSourcesAvailableImagesError,
-    Options<FetchBootSourcesAvailableImagesData>
+    DeleteBootsourceResponse,
+    DeleteBootsourceError,
+    Options<DeleteBootsourceData>
   > = {
     mutationFn: async (fnOptions) => {
-      const { data } = await fetchBootSourcesAvailableImages({
+      const { data } = await deleteBootsource({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getBootsourceQueryKey = (options: Options<GetBootsourceData>) =>
+  createQueryKey("getBootsource", options);
+
+/**
+ * Get Bootsource
+ */
+export const getBootsourceOptions = (options: Options<GetBootsourceData>) =>
+  queryOptions<
+    GetBootsourceResponse,
+    GetBootsourceError,
+    GetBootsourceResponse,
+    ReturnType<typeof getBootsourceQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBootsource({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBootsourceQueryKey(options),
+  });
+
+/**
+ * Update Bootsource
+ */
+export const updateBootsourceMutation = (
+  options?: Partial<Options<UpdateBootsourceData>>
+): UseMutationOptions<
+  UpdateBootsourceResponse,
+  UpdateBootsourceError,
+  Options<UpdateBootsourceData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateBootsourceResponse,
+    UpdateBootsourceError,
+    Options<UpdateBootsourceData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await updateBootsource({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete Bootsource Bootsourceselection
+ */
+export const deleteBootsourceBootsourceselectionMutation = (
+  options?: Partial<Options<DeleteBootsourceBootsourceselectionData>>
+): UseMutationOptions<
+  DeleteBootsourceBootsourceselectionResponse,
+  DeleteBootsourceBootsourceselectionError,
+  Options<DeleteBootsourceBootsourceselectionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteBootsourceBootsourceselectionResponse,
+    DeleteBootsourceBootsourceselectionError,
+    Options<DeleteBootsourceBootsourceselectionData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await deleteBootsourceBootsourceselection({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getBootsourceBootsourceselectionQueryKey = (
+  options: Options<GetBootsourceBootsourceselectionData>
+) => createQueryKey("getBootsourceBootsourceselection", options);
+
+/**
+ * Get Bootsource Bootsourceselection
+ */
+export const getBootsourceBootsourceselectionOptions = (
+  options: Options<GetBootsourceBootsourceselectionData>
+) =>
+  queryOptions<
+    GetBootsourceBootsourceselectionResponse,
+    GetBootsourceBootsourceselectionError,
+    GetBootsourceBootsourceselectionResponse,
+    ReturnType<typeof getBootsourceBootsourceselectionQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBootsourceBootsourceselection({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBootsourceBootsourceselectionQueryKey(options),
+  });
+
+/**
+ * Update Bootsource Bootsourceselection
+ */
+export const updateBootsourceBootsourceselectionMutation = (
+  options?: Partial<Options<UpdateBootsourceBootsourceselectionData>>
+): UseMutationOptions<
+  UpdateBootsourceBootsourceselectionResponse,
+  UpdateBootsourceBootsourceselectionError,
+  Options<UpdateBootsourceBootsourceselectionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateBootsourceBootsourceselectionResponse,
+    UpdateBootsourceBootsourceselectionError,
+    Options<UpdateBootsourceBootsourceselectionData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await updateBootsourceBootsourceselection({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Fetch Bootsources Available Images
+ */
+export const fetchBootsourcesAvailableImagesMutation = (
+  options?: Partial<Options<FetchBootsourcesAvailableImagesData>>
+): UseMutationOptions<
+  FetchBootsourcesAvailableImagesResponse,
+  FetchBootsourcesAvailableImagesError,
+  Options<FetchBootsourcesAvailableImagesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    FetchBootsourcesAvailableImagesResponse,
+    FetchBootsourcesAvailableImagesError,
+    Options<FetchBootsourcesAvailableImagesData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await fetchBootsourcesAvailableImages({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1291,24 +1441,24 @@ export const getAllAvailableImagesOptions = (
     queryKey: getAllAvailableImagesQueryKey(options),
   });
 
-export const getBootSourceAvailableImagesQueryKey = (
-  options: Options<GetBootSourceAvailableImagesData>
-) => createQueryKey("getBootSourceAvailableImages", options);
+export const getBootsourceAvailableImagesQueryKey = (
+  options: Options<GetBootsourceAvailableImagesData>
+) => createQueryKey("getBootsourceAvailableImages", options);
 
 /**
- * Get Boot Source Available Images
+ * Get Bootsource Available Images
  */
-export const getBootSourceAvailableImagesOptions = (
-  options: Options<GetBootSourceAvailableImagesData>
+export const getBootsourceAvailableImagesOptions = (
+  options: Options<GetBootsourceAvailableImagesData>
 ) =>
   queryOptions<
-    GetBootSourceAvailableImagesResponse,
-    GetBootSourceAvailableImagesError,
-    GetBootSourceAvailableImagesResponse,
-    ReturnType<typeof getBootSourceAvailableImagesQueryKey>
+    GetBootsourceAvailableImagesResponse,
+    GetBootsourceAvailableImagesError,
+    GetBootsourceAvailableImagesResponse,
+    ReturnType<typeof getBootsourceAvailableImagesQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getBootSourceAvailableImages({
+      const { data } = await getBootsourceAvailableImages({
         ...options,
         ...queryKey[0],
         signal,
@@ -1316,8 +1466,171 @@ export const getBootSourceAvailableImagesOptions = (
       });
       return data;
     },
-    queryKey: getBootSourceAvailableImagesQueryKey(options),
+    queryKey: getBootsourceAvailableImagesQueryKey(options),
   });
+
+/**
+ * Import Bootsources
+ */
+export const importBootsourcesMutation = (
+  options?: Partial<Options<ImportBootsourcesData>>
+): UseMutationOptions<
+  ImportBootsourcesResponse,
+  ImportBootsourcesError,
+  Options<ImportBootsourcesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    ImportBootsourcesResponse,
+    ImportBootsourcesError,
+    Options<ImportBootsourcesData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await importBootsources({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listAllBootsourceselectionsQueryKey = (
+  options?: Options<ListAllBootsourceselectionsData>
+) => createQueryKey("listAllBootsourceselections", options);
+
+/**
+ * List All Bootsourceselections
+ */
+export const listAllBootsourceselectionsOptions = (
+  options?: Options<ListAllBootsourceselectionsData>
+) =>
+  queryOptions<
+    ListAllBootsourceselectionsResponse,
+    ListAllBootsourceselectionsError,
+    ListAllBootsourceselectionsResponse,
+    ReturnType<typeof listAllBootsourceselectionsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listAllBootsourceselections({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listAllBootsourceselectionsQueryKey(options),
+  });
+
+/**
+ * Stop Import Bootsources
+ */
+export const stopImportBootsourcesMutation = (
+  options?: Partial<Options<StopImportBootsourcesData>>
+): UseMutationOptions<
+  StopImportBootsourcesResponse,
+  StopImportBootsourcesError,
+  Options<StopImportBootsourcesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    StopImportBootsourcesResponse,
+    StopImportBootsourcesError,
+    Options<StopImportBootsourcesData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await stopImportBootsources({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Stop Sync Bootsource Bootsourceselection
+ */
+export const stopSyncBootsourceBootsourceselectionMutation = (
+  options?: Partial<Options<StopSyncBootsourceBootsourceselectionData>>
+): UseMutationOptions<
+  unknown,
+  StopSyncBootsourceBootsourceselectionError,
+  Options<StopSyncBootsourceBootsourceselectionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    StopSyncBootsourceBootsourceselectionError,
+    Options<StopSyncBootsourceBootsourceselectionData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await stopSyncBootsourceBootsourceselection({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Sync Bootsource Bootsourceselection
+ */
+export const syncBootsourceBootsourceselectionMutation = (
+  options?: Partial<Options<SyncBootsourceBootsourceselectionData>>
+): UseMutationOptions<
+  SyncBootsourceBootsourceselectionResponse,
+  SyncBootsourceBootsourceselectionError,
+  Options<SyncBootsourceBootsourceselectionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    SyncBootsourceBootsourceselectionResponse,
+    SyncBootsourceBootsourceselectionError,
+    Options<SyncBootsourceBootsourceselectionData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await syncBootsourceBootsourceselection({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Update Manifest Bootsources
+ */
+export const updateManifestBootsourcesMutation = (
+  options?: Partial<Options<UpdateManifestBootsourcesData>>
+): UseMutationOptions<
+  unknown,
+  UpdateManifestBootsourcesError,
+  Options<UpdateManifestBootsourcesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    UpdateManifestBootsourcesError,
+    Options<UpdateManifestBootsourcesData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await updateManifestBootsources({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
 
 export const getConfigurationQueryKey = (
   options: Options<GetConfigurationData>

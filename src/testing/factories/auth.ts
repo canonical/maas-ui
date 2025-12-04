@@ -35,6 +35,12 @@ export const oAuthProviderFactory = Factory.define<OAuthProviderResponse>(
         seed: sequence,
       }),
       enabled: true,
+      metadata: {
+        authorization_endpoint: chance.url() + "/authorize",
+        token_endpoint: chance.url() + "/token",
+        userinfo_endpoint: chance.url() + "/userinfo",
+        jwks_uri: chance.url() + "/jwks",
+      },
     };
   }
 );
