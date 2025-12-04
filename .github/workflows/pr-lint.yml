@@ -27,6 +27,7 @@ jobs:
             images
             intro
             kvm
+            login
             machines
             networkDiscovery
             networks
