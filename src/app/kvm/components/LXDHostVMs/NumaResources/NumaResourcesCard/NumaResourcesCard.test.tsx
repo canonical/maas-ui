@@ -68,7 +68,9 @@ describe("NumaResourcesCard", () => {
 
     renderWithMockStore(<NumaResourcesCard numaId={11} podId={1} />, { state });
 
-    const hugepagesData = screen.getByTestId("hugepages-data");
+    const hugepagesData = screen.getByRole("row", {
+      name: new RegExp(`^Hugepage`, "i"),
+    });
     expect(within(hugepagesData).getByText("(Size: 1KiB)")).toBeInTheDocument();
     expect(within(hugepagesData).getAllByRole("cell")[1]).toHaveTextContent(
       "5B"
