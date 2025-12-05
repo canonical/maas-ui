@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
+import { useRef } from "react";
 
+import { GenericTable } from "@canonical/maas-react-components";
 import classNames from "classnames";
 
 import KVMResourceMeter from "@/app/kvm/components/KVMResourceMeter";
+import useVfResourcesColumns from "@/app/kvm/components/VfResources/useVfResourcesColumns/useVfResourcesColumns";
 import type { PodNetworkInterface, PodResource } from "@/app/store/pod/types";
 import { simpleSortByKey } from "@/app/utils";
 
@@ -17,6 +20,10 @@ const VfResources = ({
   interfaces,
   showAggregated = false,
 }: Props): React.ReactElement => {
+  const columns = useVfResourcesColumns();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
   let content: ReactNode;
   if (showAggregated) {
     const [allocatedVFs, freeVFs, otherVFs] = interfaces.reduce<
@@ -51,78 +58,22 @@ const VfResources = ({
       </>
     );
   } else {
-    const noInterfaces = interfaces.length === 0;
     content = (
-      <div className="vf-resources__table-container" data-testid="iface-table">
+      <div
+        className="vf-resources__table-container"
+        data-testid="iface-table"
+        ref={containerRef}
+      >
         <h4 className="p-text--x-small-capitalised">Virtual Functions</h4>
-        <table className="vf-resources__table">
-          <thead>
-            <tr>
-              <th className="u-text--light">Interfaces</th>
-              <th className="u-align--right u-text--light">
-                Allocated
-                <span className="u-nudge-right--small">
-                  <i className="p-circle--link"></i>
-                </span>
-              </th>
-              <th className="u-align--right u-text--light">
-                Free
-                <span className="u-nudge-right--small">
-                  <i className="p-circle--link-faded"></i>
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {noInterfaces && (
-              <tr data-testid="no-interfaces">
-                <td>
-                  <p>
-                    <em>None</em>
-                  </p>
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-            )}
-            {[...interfaces].sort(simpleSortByKey("name")).map((iface) => {
-              const { id, name, virtual_functions } = iface;
-              const { allocated_other, allocated_tracked, free } =
-                virtual_functions;
-              const allocatedVfs = allocated_other + allocated_tracked;
-              const hasVfs = allocatedVfs + free > 0;
-
-              return (
-                <tr key={`interface-${id}`}>
-                  <td data-testid="interface-name">{name}:</td>
-                  {hasVfs ? (
-                    <>
-                      <td className="u-align--right" data-testid="has-vfs">
-                        {allocatedVfs}
-                        <span className="u-nudge-right--small">
-                          <i className="p-circle--link"></i>
-                        </span>
-                      </td>
-                      <td className="u-align--right">
-                        {free}
-                        <span className="u-nudge-right--small">
-                          <i className="p-circle--link-faded"></i>
-                        </span>
-                      </td>
-                    </>
-                  ) : (
-                    <>
-                      <td className="u-align--right" data-testid="has-no-vfs">
-                        &mdash;
-                      </td>
-                      <td></td>
-                    </>
-                  )}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <GenericTable
+          className="vf-resources__table"
+          columns={columns}
+          containerRef={containerRef}
+          data={interfaces.sort(simpleSortByKey("name"))}
+          isLoading={false}
+          noData="No interfaces available."
+          variant="full-height"
+        />
       </div>
     );
   }
