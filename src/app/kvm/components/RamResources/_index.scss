@@ -26,17 +26,12 @@
 
       th,
       td {
-        &:first-child {
-          padding-left: 0;
+        &.type {
           width: 6rem;
         }
 
-        &:nth-child(2) {
-          width: 6.5rem;
-        }
-
-        &:last-child {
-          padding-right: 0;
+        &.allocated, &.others, &.free {
+          text-align: right;
         }
       }
     }

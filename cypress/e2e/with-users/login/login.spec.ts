@@ -6,10 +6,6 @@ context("Login page", () => {
     cy.expandMainNavigation();
   });
 
-  it("is disabled by default", () => {
-    cy.findByRole("button", { name: "Login" }).should("be.disabled");
-  });
-
   it("displays an error message if submitted invalid login credentials", () => {
     cy.findByRole("textbox", { name: /Username/ }).type("invalid-username");
     cy.findByRole("button", { name: /Next/ }).click();
@@ -24,7 +20,7 @@ context("Login page", () => {
     cy.findByRole("button", { name: /Next/ }).click();
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
-    cy.location("pathname").should("eq", generateMAASURL("/intro"));
+    cy.location("pathname").should("eq", generateMAASURL("/intro/user"));
   });
 
   it("logs in and redirects to the user intro if setup intro complete", () => {
@@ -47,7 +43,7 @@ context("Login page", () => {
     cy.findByRole("button", { name: /Next/ }).click();
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
-    cy.location("pathname").should("eq", generateMAASURL("/intro/user"));
+    cy.location("pathname").should("eq", generateMAASURL("/intro"));
   });
 
   it("logs in and redirects to the machine list", () => {

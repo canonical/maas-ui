@@ -1,13 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import NumaResourcesCard from "./NumaResourcesCard";
 
 import { machineActions } from "@/app/store/machine";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen, within } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 describe("NumaResourcesCard", () => {
   afterEach(() => {
@@ -25,11 +20,12 @@ describe("NumaResourcesCard", () => {
     const state = factory.rootState({
       pod: factory.podState({ items: [pod] }),
     });
-    const store = mockStore(state);
-
-    renderWithMockStore(<NumaResourcesCard numaId={111} podId={1} />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <NumaResourcesCard numaId={111} podId={1} />,
+      {
+        state,
+      }
+    );
 
     const expectedAction = machineActions.fetch("mocked-nanoid");
     expect(
@@ -66,9 +62,11 @@ describe("NumaResourcesCard", () => {
       pod: factory.podState({ items: [pod] }),
     });
 
-    renderWithMockStore(<NumaResourcesCard numaId={11} podId={1} />, { state });
+    renderWithProviders(<NumaResourcesCard numaId={11} podId={1} />, { state });
 
-    const hugepagesData = screen.getByTestId("hugepages-data");
+    const hugepagesData = screen.getByRole("row", {
+      name: new RegExp(`^Hugepage`, "i"),
+    });
     expect(within(hugepagesData).getByText("(Size: 1KiB)")).toBeInTheDocument();
     expect(within(hugepagesData).getAllByRole("cell")[1]).toHaveTextContent(
       "5B"
@@ -96,7 +94,7 @@ describe("NumaResourcesCard", () => {
       pod: factory.podState({ items: [pod] }),
     });
 
-    renderWithMockStore(<NumaResourcesCard numaId={111} podId={1} />, {
+    renderWithProviders(<NumaResourcesCard numaId={111} podId={1} />, {
       state,
     });
 
@@ -138,9 +136,10 @@ describe("NumaResourcesCard", () => {
       machine: factory.machineState({ items: machines }),
       pod: factory.podState({ items: [pod] }),
     });
-    const store = mockStore(state);
-
-    renderWithMockStore(<NumaResourcesCard numaId={11} podId={1} />, { store });
+    const { store } = renderWithProviders(
+      <NumaResourcesCard numaId={11} podId={1} />,
+      { state }
+    );
 
     const expected = machineActions.fetch("mocked-nanoid");
     const result = store
