@@ -21,13 +21,9 @@ import type { VLAN } from "@/app/store/vlan/types";
 import { getDHCPStatus } from "@/app/store/vlan/utils";
 import { formatSpeedUnits } from "@/app/utils/formatSpeedUnits";
 
-export type NetworkCardColumnData = NetworkInterface & {
-  id: number;
-};
-
 export type NetwordCardColumnDef = ColumnDef<
-  NetworkCardColumnData,
-  Partial<NetworkCardColumnData>
+  NetworkInterface,
+  Partial<NetworkInterface>
 >;
 
 type Props = {
