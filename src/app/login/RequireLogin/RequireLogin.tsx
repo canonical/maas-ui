@@ -12,7 +12,6 @@ import {
 import { useGetCurrentUser } from "@/app/api/query/auth";
 import { useCompletedIntro, useCompletedUserIntro } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import configSelectors from "@/app/store/config/selectors";
 import status from "@/app/store/status/selectors";
 
 const RequireLogin = () => {
@@ -25,7 +24,6 @@ const RequireLogin = () => {
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
   const user = useGetCurrentUser();
-  const configLoaded = useSelector(configSelectors.loaded);
   const completedIntro = useCompletedIntro();
   const completedUserIntro = useCompletedUserIntro();
   const isAuthenticated = !!user.data;
@@ -52,8 +50,13 @@ const RequireLogin = () => {
     // there is a navigation change as the `navigate` function is regenerated
     // for every route change, see:
     // https://github.com/remix-run/react-router/issues/7634
-    if (!isAtIntro && configLoaded) {
-      if (!completedIntro) {
+    if (!isAtIntro && !isLoading) {
+      if (hasAuthError) {
+        navigate({
+          pathname: urls.login,
+          search: `?${createSearchParams({ redirectTo: location.pathname })}`,
+        });
+      } else if (!completedIntro) {
         navigate({ pathname: urls.intro.index }, { replace: true });
       } else if (isAuthenticated && !completedUserIntro) {
         navigate({ pathname: urls.intro.user }, { replace: true });
@@ -62,10 +65,12 @@ const RequireLogin = () => {
   }, [
     completedIntro,
     completedUserIntro,
-    configLoaded,
+    isLoading,
     isAtIntro,
     isAuthenticated,
     navigate,
+    hasAuthError,
+    location.pathname,
   ]);
 
   if (!authenticated) {
