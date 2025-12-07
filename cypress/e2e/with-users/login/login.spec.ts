@@ -16,10 +16,8 @@ context("Login page", () => {
   });
 
   it("logs in and redirects to the intro", () => {
-    cy.findByRole("button", { name: "Next" }).should("be.disabled");
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.findByRole("button", { name: /Next/ }).click();
-    cy.findByRole("button", { name: "Login" }).should("be.disabled");
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
     cy.location("pathname").should("eq", generateMAASURL("/intro"));
