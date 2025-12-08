@@ -101,7 +101,7 @@ describe("LXDClusterSummaryCard", () => {
     });
     renderWithMockStore(<LXDClusterSummaryCard clusterId={1} />, { state });
 
-    const ifaceMeter = screen.getByTestId("iface-meter");
+    const ifaceMeter = screen.getByLabelText("vf-resources-meter");
     expect(ifaceMeter).toBeInTheDocument();
     expect(
       within(ifaceMeter).getByTestId("kvm-resource-allocated")
