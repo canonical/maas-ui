@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-import { Tooltip } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import DoubleRow from "../../../DoubleRow";
@@ -61,11 +60,7 @@ export const useNetworkCardTableColumns = ({
         }) => (
           <DoubleRow
             primary={name}
-            secondary={
-              <Tooltip message={mac_address}>
-                <MacAddressDisplay>{mac_address}</MacAddressDisplay>
-              </Tooltip>
-            }
+            secondary={<MacAddressDisplay>{mac_address}</MacAddressDisplay>}
           />
         ),
       },
@@ -121,7 +116,6 @@ export const useNetworkCardTableColumns = ({
           <>
             Fabric
             <TooltipButton
-              className="u-nudge-right--small"
               message="Untagged traffic only"
               position="top-right"
             />

@@ -16,51 +16,53 @@ describe("NetworkCardTable", () => {
     });
   });
 
-  it("renders the right columns", () => {
-    renderWithProviders(
-      <NetworkCardTable interfaces={[]} node={state.device.items[0]} />
-    );
-    ["Name", "IP Address", "Link Speed", "Fabric", "DHCP", "SR-IOV"].forEach(
-      (column) => {
-        expect(
-          screen.getByRole("columnheader", {
-            name: new RegExp(`^${column}`, "i"),
-          })
-        ).toBeInTheDocument();
-      }
-    );
-  });
+  describe("display", () => {
+    it("displays the right columns", () => {
+      renderWithProviders(
+        <NetworkCardTable interfaces={[]} node={state.device.items[0]} />
+      );
+      ["Name", "IP Address", "Link Speed", "Fabric", "DHCP", "SR-IOV"].forEach(
+        (column) => {
+          expect(
+            screen.getByRole("columnheader", {
+              name: new RegExp(`^${column}`, "i"),
+            })
+          ).toBeInTheDocument();
+        }
+      );
+    });
 
-  it("displays a message when there is no data", () => {
-    renderWithProviders(
-      <NetworkCardTable interfaces={[]} node={state.device.items[0]} />
-    );
+    it("displays a message when there is no data", () => {
+      renderWithProviders(
+        <NetworkCardTable interfaces={[]} node={state.device.items[0]} />
+      );
 
-    expect(
-      screen.getByRole("cell", { name: "No interfaces available." })
-    ).toBeInTheDocument();
-  });
+      expect(
+        screen.getByRole("cell", { name: "No interfaces available." })
+      ).toBeInTheDocument();
+    });
 
-  it("can render the interface's fabric name", () => {
-    state.fabric.items = [factory.fabric({ id: 1, name: "fabric-name" })];
-    state.vlan.items = [factory.vlan({ fabric: 1, id: 2 })];
-    const iface = factory.machineInterface({ vlan_id: 2 });
-    renderWithProviders(
-      <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />,
-      { state }
-    );
+    it("can render the interface's fabric name", () => {
+      state.fabric.items = [factory.fabric({ id: 1, name: "fabric-name" })];
+      state.vlan.items = [factory.vlan({ fabric: 1, id: 2 })];
+      const iface = factory.machineInterface({ vlan_id: 2 });
+      renderWithProviders(
+        <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />,
+        { state }
+      );
 
-    expect(
-      screen.getByRole("cell", { name: /fabric-name/ })
-    ).toBeInTheDocument();
-  });
+      expect(
+        screen.getByRole("cell", { name: /fabric-name/ })
+      ).toBeInTheDocument();
+    });
 
-  it("formats link speed in Gbps if above 1000 Mbps", () => {
-    const iface = factory.machineInterface({ link_speed: 10000 });
-    renderWithProviders(
-      <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />
-    );
-    expect(screen.getByRole("cell", { name: "10 Gbps" })).toBeInTheDocument();
+    it("formats link speed in Gbps if above 1000 Mbps", () => {
+      const iface = factory.machineInterface({ link_speed: 10000 });
+      renderWithProviders(
+        <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />
+      );
+      expect(screen.getByRole("cell", { name: "10 Gbps" })).toBeInTheDocument();
+    });
   });
 
   describe("DHCP status", () => {

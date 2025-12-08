@@ -35,6 +35,7 @@ const NetworkCardTable = ({ interfaces, node }: Props): React.ReactElement => {
 
   return (
     <GenericTable
+      className="network-card-table"
       columns={columns}
       data={data}
       isLoading={false}
