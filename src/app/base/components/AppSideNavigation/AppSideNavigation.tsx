@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
 import {
@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation, useMatch, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import { useStorageState } from "react-storage-hooks";
 
 import { useLogout } from "../../hooks/logout";
@@ -29,9 +29,6 @@ import {
 } from "@/app/base/hooks";
 import { useGlobalKeyShortcut } from "@/app/base/hooks/base";
 import { useThemeContext } from "@/app/base/theme-context";
-import type { SyncNavigateFunction } from "@/app/base/types";
-import urls from "@/app/base/urls";
-import configSelectors from "@/app/store/config/selectors";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import { podActions } from "@/app/store/pod";
@@ -136,45 +133,18 @@ export const AppSideNavigation = ({
 );
 
 const AppSideNavigationContainer = (): React.ReactElement => {
-  const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
-  const configLoaded = useSelector(configSelectors.loaded);
   const path = location.pathname;
   const user = useGetCurrentUser();
   const completedIntro = useCompletedIntro();
   const completedUserIntro = useCompletedUserIntro();
   const isAuthenticated = !!user.data;
-  const introMatch = useMatch({ path: urls.intro.index, end: false });
-  const isAtIntro = !!introMatch;
   const showLinks = isAuthenticated && completedIntro && completedUserIntro;
   useGoogleAnalytics();
 
   const logout = useLogout();
 
   const [isDarkMode, toggleDarkMode] = useDarkMode();
-
-  // Redirect to the intro pages if not completed.
-  useEffect(() => {
-    // Check that we're not already at the intro to allow navigation through the
-    // intro pages. This is necessary beacuse this useEffect runs every time
-    // there is a navigation change as the `navigate` function is regenerated
-    // for every route change, see:
-    // https://github.com/remix-run/react-router/issues/7634
-    if (!isAtIntro && configLoaded) {
-      if (!completedIntro) {
-        navigate({ pathname: urls.intro.index }, { replace: true });
-      } else if (isAuthenticated && !completedUserIntro) {
-        navigate({ pathname: urls.intro.user }, { replace: true });
-      }
-    }
-  }, [
-    completedIntro,
-    completedUserIntro,
-    configLoaded,
-    isAtIntro,
-    isAuthenticated,
-    navigate,
-  ]);
 
   useFetchActions([controllerActions.fetch]);
 
