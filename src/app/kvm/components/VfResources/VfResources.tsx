@@ -43,7 +43,7 @@ const VfResources = ({
         <h4 className="vf-resources__header p-heading--small u-sv1">
           Virtual functions
         </h4>
-        <div className="vf-resources__meter" data-testid="iface-meter">
+        <div aria-label="vf-resources-meter" className="vf-resources__meter">
           <KVMResourceMeter
             allocated={allocatedVFs}
             detailed
@@ -59,6 +59,7 @@ const VfResources = ({
       <div className="vf-resources__table-container">
         <h4 className="p-text--x-small-capitalised">Virtual Functions</h4>
         <GenericTable
+          aria-label="vf-resources-table"
           className="vf-resources__table"
           columns={columns}
           data={interfaces.sort(simpleSortByKey("name"))}
