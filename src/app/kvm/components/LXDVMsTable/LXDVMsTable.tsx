@@ -64,7 +64,7 @@ const LXDVMsTable = ({
       // Set the filters to get results that belong to this single pod or pods in a cluster.
       [FilterGroupKey.Pod]: pods,
     },
-    sortDirection: sorting[0].desc ? "descending" : "ascending",
+    sortDirection: sorting[0]?.desc === true ? "descending" : "ascending",
     sortKey: sorting[0]?.id ?? null,
     pagination: { currentPage, setCurrentPage, pageSize: VMS_PER_PAGE },
   });
