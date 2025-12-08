@@ -1,10 +1,14 @@
+import type { ReactElement } from "react";
+
+import { GenericTable } from "@canonical/maas-react-components";
 import classNames from "classnames";
 
 import DoughnutChart from "@/app/base/components/DoughnutChart";
 import { COLOURS } from "@/app/base/constants";
+import useRamResourcesColumns from "@/app/kvm/components/RamResources/useRamResourcesColumns/useRamResourcesColumns";
 import { memoryWithUnit } from "@/app/kvm/utils";
 
-export type Props = {
+export type RamResourcesProps = {
   dynamicLayout?: boolean;
   generalAllocated: number; // B
   generalFree: number; // B
@@ -13,6 +17,14 @@ export type Props = {
   hugepagesFree?: number; // B
   hugepagesOther?: number; // B
   pageSize?: number; // B
+};
+
+export type RamResource = {
+  id: number;
+  type: "General" | "Hugepage";
+  allocated: number;
+  others: number;
+  free: number;
 };
 
 const getTooltipSubstring = (general: number, hugepages: number) =>
@@ -29,13 +41,35 @@ const RamResources = ({
   hugepagesFree = 0,
   hugepagesOther = 0,
   pageSize = 0,
-}: Props): React.ReactElement => {
+}: RamResourcesProps): ReactElement => {
   const totalGeneral = generalAllocated + generalFree + generalOther;
   const totalHugepages = hugepagesAllocated + hugepagesFree + hugepagesOther;
   const totalMemory = totalGeneral + totalHugepages;
   const overCommitted = generalFree < 0 || hugepagesFree < 0;
   const showOthers = generalOther > 0 || hugepagesOther > 0;
   const showHugepages = totalHugepages > 0;
+
+  const columns = useRamResourcesColumns({ pageSize, showOthers });
+  const data: RamResource[] = [
+    {
+      id: 0,
+      type: "General",
+      allocated: generalAllocated,
+      others: generalOther,
+      free: generalFree,
+    } as RamResource,
+    ...(showHugepages
+      ? [
+          {
+            id: 1,
+            type: "Hugepage",
+            allocated: hugepagesAllocated,
+            others: hugepagesOther,
+            free: hugepagesFree,
+          } as RamResource,
+        ]
+      : []),
+  ];
 
   return (
     <div
@@ -94,95 +128,13 @@ const RamResources = ({
         />
       </div>
       <div className="ram-resources__table-container">
-        <table
+        <GenericTable
           aria-label="ram resources table"
           className="ram-resources__table"
-        >
-          <thead>
-            <tr>
-              <th className="u-align--right u-text--light u-truncate">
-                Allocated
-                <span className="u-nudge-right--small">
-                  <i className="p-circle--link"></i>
-                </span>
-              </th>
-              {showOthers && (
-                <th
-                  className="u-align--right u-text--light u-truncate"
-                  data-testid="others-col"
-                >
-                  Others
-                  <span className="u-nudge-right--small">
-                    <i className="p-circle--positive"></i>
-                  </span>
-                </th>
-              )}
-              <th className="u-align--right u-text--light u-truncate">
-                Free
-                <span className="u-nudge-right--small">
-                  <i className="p-circle--link-faded"></i>
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>General</td>
-              <td className="u-align--right">
-                <span className="u-nudge-left">
-                  {memoryWithUnit(generalAllocated)}
-                </span>
-              </td>
-              {showOthers && (
-                <td className="u-align--right">
-                  <span className="u-nudge-left">
-                    {memoryWithUnit(generalOther)}
-                  </span>
-                </td>
-              )}
-              <td className="u-align--right">
-                <span className="u-nudge-left">
-                  {memoryWithUnit(generalFree)}
-                </span>
-              </td>
-            </tr>
-            {showHugepages && (
-              <tr data-testid="hugepages-data">
-                <td>
-                  Hugepage
-                  {pageSize > 0 && (
-                    <>
-                      <br />
-                      <strong
-                        className="p-text--x-small u-text--light"
-                        data-testid="page-size"
-                      >
-                        {`(Size: ${memoryWithUnit(pageSize)})`}
-                      </strong>
-                    </>
-                  )}
-                </td>
-                <td className="u-align--right">
-                  <span className="u-nudge-left">
-                    {memoryWithUnit(hugepagesAllocated)}
-                  </span>
-                </td>
-                {showOthers && (
-                  <td className="u-align--right">
-                    <span className="u-nudge-left">
-                      {memoryWithUnit(hugepagesOther)}
-                    </span>
-                  </td>
-                )}
-                <td className="u-align--right">
-                  <span className="u-nudge-left">
-                    {memoryWithUnit(hugepagesFree)}
-                  </span>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+          columns={columns}
+          data={data}
+          isLoading={false}
+        />
       </div>
     </div>
   );

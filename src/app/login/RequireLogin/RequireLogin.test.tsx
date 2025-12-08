@@ -5,18 +5,23 @@ import configureStore from "redux-mock-store";
 
 import RequireLogin from "./RequireLogin";
 
+import urls from "@/app/base/urls";
 import { WebSocketProvider } from "@/app/base/websocket-context";
+import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
 } from "@/testing/factories";
-import { render, screen, waitFor } from "@/testing/utils";
+import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
+import { render, screen, setupMockServer, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, staleTime: Infinity } },
 });
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("RequireLogin", () => {
   let state: RootState;
@@ -34,6 +39,10 @@ describe("RequireLogin", () => {
             {
               path: "/machines",
               element: <>Machines</>,
+            },
+            {
+              path: "/intro/*",
+              element: <>Intro</>,
             },
           ],
         },
@@ -55,6 +64,7 @@ describe("RequireLogin", () => {
   };
 
   beforeEach(() => {
+    queryClient.clear();
     state = rootStateFactory({
       status: statusStateFactory({
         authenticating: false,
@@ -115,10 +125,49 @@ describe("RequireLogin", () => {
 
   it("renders child routes when logged in", async () => {
     state.status.authenticated = true;
+    state.config.items = [
+      factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
+    ];
     renderFn();
 
     await waitFor(() => {
       expect(screen.getByText("Machines")).toBeInTheDocument();
+    });
+  });
+
+  it("redirects to the intro page if intro not completed", async () => {
+    state.status.authenticated = true;
+    state.config.items = [
+      factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+    ];
+    const { router } = renderFn();
+
+    await waitFor(() => {
+      expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    });
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(urls.intro.index);
+    });
+  });
+
+  it("redirects to the user intro page if user intro not completed", async () => {
+    state.status.authenticated = true;
+    state.config.items = [
+      factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
+    ];
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.user({ completed_intro: false })
+      )
+    );
+
+    const { router } = renderFn();
+
+    await waitFor(() => {
+      expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    });
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(urls.intro.user);
     });
   });
 });

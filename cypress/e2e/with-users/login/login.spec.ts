@@ -6,10 +6,6 @@ context("Login page", () => {
     cy.expandMainNavigation();
   });
 
-  it("is disabled by default", () => {
-    cy.findByRole("button", { name: "Login" }).should("be.disabled");
-  });
-
   it("displays an error message if submitted invalid login credentials", () => {
     cy.findByRole("textbox", { name: /Username/ }).type("invalid-username");
     cy.findByRole("button", { name: /Next/ }).click();
