@@ -3,11 +3,12 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
-    padding: $spv--medium $sph--large 0 $sph--large;
+    padding: 0 $sph--large;
   }
 
   .vf-resources__table-container {
     max-height: $sp-unit * 20;
+    margin-top: $spv--medium;
     padding-right: $sph--small;
   }
 
@@ -16,9 +17,12 @@
     margin-top: -$spv--small;
     position: relative;
 
+    th {
+      background-color: var(--vf-color-background-default);
+    }
+
     th,
     td {
-
       &.name {
         overflow-wrap: break-word;
         padding-left: 0;

@@ -1,5 +1,4 @@
-import type { ReactNode } from "react";
-import { useRef } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
 import classNames from "classnames";
@@ -19,10 +18,8 @@ const VfResources = ({
   dynamicLayout = false,
   interfaces,
   showAggregated = false,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const columns = useVfResourcesColumns();
-
-  const containerRef = useRef<HTMLDivElement>(null);
 
   let content: ReactNode;
   if (showAggregated) {
@@ -59,20 +56,15 @@ const VfResources = ({
     );
   } else {
     content = (
-      <div
-        className="vf-resources__table-container"
-        data-testid="iface-table"
-        ref={containerRef}
-      >
+      <div className="vf-resources__table-container">
         <h4 className="p-text--x-small-capitalised">Virtual Functions</h4>
         <GenericTable
           className="vf-resources__table"
           columns={columns}
-          containerRef={containerRef}
           data={interfaces.sort(simpleSortByKey("name"))}
           isLoading={false}
           noData="No interfaces available."
-          variant="full-height"
+          variant="regular"
         />
       </div>
     );
