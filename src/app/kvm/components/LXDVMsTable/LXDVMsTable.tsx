@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
@@ -8,8 +9,8 @@ import VMsActionBar from "./VMsActionBar";
 import VMsTable from "./VMsTable";
 import type { GetHostColumn, GetResources } from "./VMsTable/VMsTable";
 
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter, SortDirection } from "@/app/base/types";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import { DEFAULTS } from "@/app/machines/views/MachineList/MachineListTable/constants";
 import { machineActions } from "@/app/store/machine";
 import type { FetchGroupKey } from "@/app/store/machine/types";
@@ -26,7 +27,6 @@ type Props = {
   pods: Pod["name"][];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export const VMS_PER_PAGE = 10;
@@ -39,9 +39,10 @@ const LXDVMsTable = ({
   pods,
   searchFilter,
   setSearchFilter,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
     DEFAULTS.sortKey
@@ -70,10 +71,10 @@ const LXDVMsTable = ({
   useEffect(() => {
     // Clear machine selection and close the action form on filters change
     if (searchFilter !== previousSearchFilter) {
-      setSidePanelContent(null);
+      closeSidePanel();
       dispatch(machineActions.setSelected(null));
     }
-  }, [searchFilter, previousSearchFilter, setSidePanelContent, dispatch]);
+  }, [searchFilter, previousSearchFilter, closeSidePanel, dispatch]);
 
   useEffect(
     () => () => {
@@ -91,7 +92,6 @@ const LXDVMsTable = ({
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
         setSearchFilter={setSearchFilter}
-        setSidePanelContent={setSidePanelContent}
         vmCount={count}
       />
       <VMsTable

@@ -64,10 +64,10 @@ describe("ComposeForm", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], store }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      store,
+    });
     const expectedActions = [
       "FETCH_DOMAIN",
       "FETCH_FABRIC",
@@ -87,10 +87,10 @@ describe("ComposeForm", () => {
 
   it("displays a spinner if data has not loaded", () => {
     state.domain.loaded = false;
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], state }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      state,
+    });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
@@ -136,10 +136,10 @@ describe("ComposeForm", () => {
     state.space.items = [space];
     state.subnet.items = [subnet];
     const store = mockStore(state);
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], store }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      store,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "VM name" })
@@ -257,10 +257,10 @@ describe("ComposeForm", () => {
     state.space.items = [space];
     state.subnet.items = [subnet];
     const store = mockStore(state);
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], store }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      store,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "VM name" })

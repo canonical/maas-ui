@@ -1,11 +1,14 @@
+import type { ReactElement } from "react";
+
 import { Button, Icon, Tooltip } from "@canonical/react-components";
 
 import ActionBar from "@/app/base/components/ActionBar";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import DeleteForm from "@/app/base/components/node/DeleteForm";
 import { useSendAnalytics } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
 import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import { useHasSelection } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
@@ -18,7 +21,6 @@ type Props = {
   searchFilter: string;
   setCurrentPage: (page: number) => void;
   setSearchFilter: SetSearchFilter;
-  setSidePanelContent: KVMSetSidePanelContent;
   vmCount: number;
 };
 
@@ -29,9 +31,9 @@ const VMsActionBar = ({
   searchFilter,
   setCurrentPage,
   setSearchFilter,
-  setSidePanelContent,
   vmCount,
-}: Props): React.ReactElement | null => {
+}: Props): ReactElement => {
+  const { openSidePanel } = useSidePanel();
   const sendAnalytics = useSendAnalytics();
   const hasSelection = useHasSelection();
   const vmActionsDisabled = !hasSelection;
@@ -90,8 +92,9 @@ const VMsActionBar = ({
               disabled={vmActionsDisabled}
               hasIcon
               onClick={() => {
-                setSidePanelContent({
-                  view: MachineSidePanelViews.DELETE_MACHINE,
+                openSidePanel({
+                  component: DeleteForm,
+                  title: "Delete",
                 });
               }}
             >

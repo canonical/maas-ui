@@ -41,7 +41,6 @@ describe("SelectProjectForm", () => {
     };
     renderWithProviders(
       <SelectProjectForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
@@ -61,7 +60,6 @@ describe("SelectProjectForm", () => {
     };
     renderWithProviders(
       <SelectProjectForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
@@ -88,7 +86,6 @@ describe("SelectProjectForm", () => {
 
     const { store } = renderWithProviders(
       <SelectProjectForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
@@ -131,7 +128,6 @@ describe("SelectProjectForm", () => {
 
     const { store } = renderWithProviders(
       <SelectProjectForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
@@ -172,7 +168,6 @@ describe("SelectProjectForm", () => {
     state.pod.errors = "it didn't work";
     renderWithProviders(
       <SelectProjectForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={setStep}
         setSubmissionErrors={setSubmissionErrors}

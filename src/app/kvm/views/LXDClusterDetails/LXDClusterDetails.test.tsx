@@ -10,7 +10,7 @@ import { Label as LXDClusterVMsLabel } from "@/app/kvm/views/LXDClusterDetails/L
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("LXDClusterDetails", () => {
   let state: RootState;
@@ -55,10 +55,9 @@ describe("LXDClusterDetails", () => {
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<LXDClusterDetails />, {
-        route: path,
+      renderWithProviders(<LXDClusterDetails />, {
+        initialEntries: [path],
         state,
-        routePattern: `${urls.kvm.lxd.cluster.index(null)}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });

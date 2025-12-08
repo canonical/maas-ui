@@ -8,7 +8,7 @@ import { Label as VirshDetailsLabel } from "@/app/kvm/views/VirshDetails/VirshDe
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 let state: RootState;
 
@@ -57,10 +57,9 @@ describe("KVM", () => {
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<KVM />, {
-        route: path,
+      renderWithProviders(<KVM />, {
+        initialEntries: [path],
         state,
-        routePattern: `${urls.kvm.index}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });

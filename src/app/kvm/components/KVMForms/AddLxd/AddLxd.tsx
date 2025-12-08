@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { Stepper } from "@canonical/maas-react-components";
@@ -11,12 +12,7 @@ import type { AddLxdStepValues, NewPodValues } from "./types";
 
 import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
-import type { ClearSidePanelContent } from "@/app/base/types";
 import { podActions } from "@/app/store/pod";
-
-type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-};
 
 export const AddLxdSteps = {
   CREDENTIALS: "Credentials",
@@ -24,9 +20,7 @@ export const AddLxdSteps = {
   SELECT_PROJECT: "Project selection",
 } as const;
 
-export const AddLxd = ({
-  clearSidePanelContent,
-}: Props): React.ReactElement => {
+export const AddLxd = (): ReactElement => {
   const dispatch = useDispatch();
   const resourcePools = usePools();
   const zones = useZones();
@@ -70,7 +64,6 @@ export const AddLxd = ({
       ) : null}
       {step === AddLxdSteps.CREDENTIALS && (
         <CredentialsForm
-          clearSidePanelContent={clearSidePanelContent}
           newPodValues={newPodValues}
           setNewPodValues={setNewPodValues}
           setStep={setStep}
@@ -79,7 +72,6 @@ export const AddLxd = ({
       )}
       {step === AddLxdSteps.AUTHENTICATION && (
         <AuthenticationForm
-          clearSidePanelContent={clearSidePanelContent}
           newPodValues={newPodValues}
           setNewPodValues={setNewPodValues}
           setStep={setStep}
@@ -87,7 +79,6 @@ export const AddLxd = ({
       )}
       {step === AddLxdSteps.SELECT_PROJECT && (
         <SelectProjectForm
-          clearSidePanelContent={clearSidePanelContent}
           newPodValues={newPodValues}
           setStep={setStep}
           setSubmissionErrors={setSubmissionErrors}

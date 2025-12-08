@@ -49,13 +49,10 @@ describe("AddVirsh", () => {
   });
 
   it("fetches the necessary data on load", async () => {
-    const { store } = renderWithProviders(
-      <AddVirsh clearSidePanelContent={vi.fn()} />,
-      {
-        initialEntries: ["/kvm/add"],
-        state,
-      }
-    );
+    const { store } = renderWithProviders(<AddVirsh />, {
+      initialEntries: ["/kvm/add"],
+      state,
+    });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
     });
@@ -72,7 +69,7 @@ describe("AddVirsh", () => {
 
   it("displays a spinner if data hasn't loaded yet", () => {
     state.general.powerTypes.loaded = false;
-    renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddVirsh />, {
       initialEntries: ["/kvm/add"],
       state,
     });
@@ -82,7 +79,7 @@ describe("AddVirsh", () => {
   it("displays a message if virsh is not supported", async () => {
     state.general.powerTypes.data = [];
     state.general.powerTypes.loaded = true;
-    renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddVirsh />, {
       initialEntries: ["/kvm/add"],
       state,
     });
@@ -98,13 +95,10 @@ describe("AddVirsh", () => {
   });
 
   it("can handle saving a virsh KVM", async () => {
-    const { store } = renderWithProviders(
-      <AddVirsh clearSidePanelContent={vi.fn()} />,
-      {
-        initialEntries: ["/kvm/add"],
-        state,
-      }
-    );
+    const { store } = renderWithProviders(<AddVirsh />, {
+      initialEntries: ["/kvm/add"],
+      state,
+    });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
     });

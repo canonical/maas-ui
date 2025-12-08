@@ -4,7 +4,7 @@ import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 let state: RootState;
 
@@ -28,17 +28,17 @@ beforeEach(() => {
 
 describe("LXDClusterHostVMs", () => {
   it("renders the LXD host VM table if the host is part of the cluster", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostVMs
         clusterId={1}
         searchFilter=""
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       {
-        route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        initialEntries: [
+          urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        ],
         state,
-        routePattern: urls.kvm.lxd.cluster.vms.host(null),
       }
     );
     expect(screen.getByText("VMs on pod1")).toBeInTheDocument();
@@ -46,17 +46,17 @@ describe("LXDClusterHostVMs", () => {
 
   it("renders a spinner if cluster hasn't loaded", () => {
     state.pod.loaded = false;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostVMs
         clusterId={1}
         searchFilter=""
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       {
-        route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        initialEntries: [
+          urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        ],
         state,
-        routePattern: urls.kvm.lxd.cluster.vms.host(null),
       }
     );
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
@@ -64,17 +64,17 @@ describe("LXDClusterHostVMs", () => {
 
   it("displays a message if the host is not found", () => {
     state.pod.items = [];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDClusterHostVMs
         clusterId={1}
         searchFilter=""
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       {
-        route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        initialEntries: [
+          urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        ],
         state,
-        routePattern: urls.kvm.lxd.cluster.vms.host(null),
       }
     );
     expect(screen.getByText("LXD host not found")).toBeInTheDocument();

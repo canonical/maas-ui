@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
@@ -11,7 +12,7 @@ import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { generalActions } from "@/app/store/general";
 import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
 import { PowerFieldScope } from "@/app/store/general/types";
@@ -26,10 +27,6 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import type { PowerParameters } from "@/app/store/types/node";
 
-type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-};
-
 export type AddVirshValues = {
   name: string;
   pool: number | string;
@@ -38,10 +35,10 @@ export type AddVirshValues = {
   zone: number | string;
 };
 
-export const AddVirsh = ({
-  clearSidePanelContent,
-}: Props): React.ReactElement => {
+export const AddVirsh = (): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
+
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
   const podErrors = useSelector(podSelectors.errors);
@@ -95,7 +92,7 @@ export const AddVirsh = ({
         type: PodType.VIRSH,
         zone: zones.data?.items?.length ? zones.data.items[0].id : "",
       }}
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Save virsh KVM",
         category: "Add KVM form",

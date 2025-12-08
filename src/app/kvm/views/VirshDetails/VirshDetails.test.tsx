@@ -10,7 +10,7 @@ import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   setupMockServer,
   waitFor,
 } from "@/testing/utils";
@@ -37,10 +37,9 @@ describe("VirshDetails", () => {
   });
 
   it(`Displays: ${VirshResourcesLabel.Title} at: ${urls.kvm.virsh.details.resources({ id: 1 })}`, () => {
-    renderWithBrowserRouter(<VirshDetails />, {
-      route: urls.kvm.virsh.details.resources({ id: 1 }),
+    renderWithProviders(<VirshDetails />, {
+      initialEntries: [urls.kvm.virsh.details.resources({ id: 1 })],
       state,
-      routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
     expect(
       screen.getByLabelText(VirshResourcesLabel.Title)
@@ -48,10 +47,9 @@ describe("VirshDetails", () => {
   });
 
   it(`Displays: ${VirshSettingsLabel.Title} at: ${urls.kvm.virsh.details.edit({ id: 1 })}`, async () => {
-    renderWithBrowserRouter(<VirshDetails />, {
-      route: urls.kvm.virsh.details.edit({ id: 1 }),
+    renderWithProviders(<VirshDetails />, {
+      initialEntries: [urls.kvm.virsh.details.edit({ id: 1 })],
       state,
-      routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
@@ -60,12 +58,11 @@ describe("VirshDetails", () => {
   });
 
   it("redirects to resources", () => {
-    renderWithBrowserRouter(<VirshDetails />, {
-      route: urls.kvm.virsh.details.index({ id: 1 }),
+    const { router } = renderWithProviders(<VirshDetails />, {
+      initialEntries: [urls.kvm.virsh.details.index({ id: 1 })],
       state,
-      routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
-    expect(window.location.pathname).toBe(
+    expect(router.state.location.pathname).toBe(
       urls.kvm.virsh.details.resources({ id: 1 })
     );
   });

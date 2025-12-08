@@ -10,16 +10,13 @@ import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("AuthenticationForm", () => {
   let state: RootState;
   let newPodValues: NewPodValues;
-  const queryData = {
-    zones: [factory.zone()],
-  };
 
   beforeEach(() => {
     state = factory.rootState({
@@ -48,14 +45,13 @@ describe("AuthenticationForm", () => {
     state.pod.projects = {
       "192.168.1.1": [],
     };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AuthenticationForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={vi.fn()}
         setStep={vi.fn()}
       />,
-      { route: "/kvm/add", state, queryData }
+      { initialEntries: ["/kvm/add"], state }
     );
     // Trusting via certificate is selected by default, so spinner should show
     // after submitting the form.
@@ -78,14 +74,13 @@ describe("AuthenticationForm", () => {
     });
     state.general.generatedCertificate.data = generatedCert;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AuthenticationForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
         setStep={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Check authentication" })
@@ -114,14 +109,13 @@ describe("AuthenticationForm", () => {
     });
     state.general.generatedCertificate.data = generatedCert;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AuthenticationForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
         setStep={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
     // Change to trusting via password and submit the form.
     await userEvent.click(
@@ -153,14 +147,13 @@ describe("AuthenticationForm", () => {
     password results in error`, async () => {
     const setStep = vi.fn();
     state.pod.errors = "it didn't work";
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AuthenticationForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
-      { route: "/kvm/add", state, queryData }
+      { initialEntries: ["/kvm/add"], state }
     );
     // Change to trusting via password and submit the form.
     await userEvent.click(
@@ -177,14 +170,13 @@ describe("AuthenticationForm", () => {
   it("displays errors when it failed to trust the cert", async () => {
     const setStep = vi.fn();
     state.pod.errors = "it didn't work";
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AuthenticationForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
-      { route: "/kvm/add", state, queryData }
+      { initialEntries: ["/kvm/add"], state }
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Check authentication" })
@@ -197,14 +189,13 @@ describe("AuthenticationForm", () => {
   it("does not display errors when attempting to trust the cert", async () => {
     const setStep = vi.fn();
     state.pod.errors = "Certificate is not trusted and no password was given";
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AuthenticationForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
-      { route: "/kvm/add", state, queryData }
+      { initialEntries: ["/kvm/add"], state }
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Check authentication" })
@@ -221,14 +212,13 @@ describe("AuthenticationForm", () => {
     state.pod.projects = {
       "192.168.1.1": [factory.podProject()],
     };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AuthenticationForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
-      { route: "/kvm/add", state, queryData }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
@@ -236,14 +226,15 @@ describe("AuthenticationForm", () => {
 
   it("clears certificate and stops polling LXD server on unmount", () => {
     const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(
+    const {
+      result: { unmount },
+    } = renderWithProviders(
       <AuthenticationForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={vi.fn()}
         setStep={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
 
     unmount();

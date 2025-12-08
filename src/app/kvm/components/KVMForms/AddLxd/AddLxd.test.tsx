@@ -56,7 +56,7 @@ describe("AddLxd", () => {
   });
 
   it("shows the credentials form by default", () => {
-    renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddLxd />, {
       initialEntries: ["/kvm/add"],
       state,
     });
@@ -78,7 +78,7 @@ describe("AddLxd", () => {
       CN: "my-favourite-kvm@host",
     });
 
-    renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddLxd />, {
       initialEntries: ["/kvm/add"],
       state,
     });
@@ -133,7 +133,7 @@ describe("AddLxd", () => {
       "192.168.1.1": [factory.podProject()],
     };
 
-    renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddLxd />, {
       initialEntries: ["/kvm/add"],
       state,
     });
@@ -178,7 +178,7 @@ describe("AddLxd", () => {
 
     const {
       result: { unmount },
-    } = renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
+    } = renderWithProviders(<AddLxd />, {
       initialEntries: ["/kvm/add"],
       store,
     });
@@ -202,7 +202,7 @@ describe("AddLxd", () => {
     state.pod.projects = {
       "192.168.1.1": [factory.podProject()],
     };
-    renderWithProviders(<AddLxd clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddLxd />, {
       initialEntries: ["/kvm/add"],
       state,
     });

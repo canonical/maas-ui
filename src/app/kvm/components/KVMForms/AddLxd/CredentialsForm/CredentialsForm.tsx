@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +14,7 @@ import type {
 import CredentialsFormFields from "./CredentialsFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { generalActions } from "@/app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "@/app/store/general/selectors";
 import { splitCertificateName } from "@/app/store/general/utils";
@@ -23,7 +24,6 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
   newPodValues: NewPodValues;
   setNewPodValues: (values: NewPodValues) => void;
   setStep: (step: AddLxdStepValues) => void;
@@ -31,13 +31,14 @@ type Props = {
 };
 
 export const CredentialsForm = ({
-  clearSidePanelContent,
   newPodValues,
   setNewPodValues,
   setStep,
   setSubmissionErrors,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
+
   const projects = useSelector((state: RootState) =>
     podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)
   );
@@ -122,7 +123,7 @@ export const CredentialsForm = ({
         power_address: newPodValues.power_address,
         zone: newPodValues.zone,
       }}
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSubmit={(values) => {
         cleanup();
         setSubmissionErrors(null);

@@ -7,7 +7,7 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -27,10 +27,10 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm", store }
-    );
+    renderWithProviders(<DeleteForm hostId={1} />, {
+      initialEntries: ["/kvm"],
+      store,
+    });
 
     expect(screen.getByTestId("saving-label")).toHaveTextContent(
       "Removing KVM host..."
@@ -48,10 +48,10 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />,
-      { route: "/kvm", store }
-    );
+    renderWithProviders(<DeleteForm clusterId={1} />, {
+      initialEntries: ["/kvm"],
+      store,
+    });
     expect(screen.getByTestId("saving-label")).toHaveTextContent(
       "Removing cluster..."
     );
@@ -68,10 +68,10 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm", store }
-    );
+    renderWithProviders(<DeleteForm hostId={1} />, {
+      initialEntries: ["/kvm"],
+      store,
+    });
 
     expect(
       screen.getByRole("checkbox", {
@@ -91,10 +91,10 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />,
-      { route: "/kvm", store }
-    );
+    renderWithProviders(<DeleteForm clusterId={1} />, {
+      initialEntries: ["/kvm"],
+      store,
+    });
 
     expect(
       screen.getByRole("checkbox", {
@@ -114,10 +114,10 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm", store }
-    );
+    renderWithProviders(<DeleteForm hostId={1} />, {
+      initialEntries: ["/kvm"],
+      store,
+    });
 
     expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   });
@@ -133,10 +133,10 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm", store }
-    );
+    renderWithProviders(<DeleteForm hostId={1} />, {
+      initialEntries: ["/kvm"],
+      store,
+    });
 
     expect(
       screen.getByRole("button", { name: /Remove KVM Host/i })
@@ -173,10 +173,10 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />,
-      { route: "/kvm", store }
-    );
+    renderWithProviders(<DeleteForm clusterId={1} />, {
+      initialEntries: ["/kvm"],
+      store,
+    });
 
     expect(
       screen.getByRole("button", { name: /Remove cluster/i })
@@ -212,11 +212,9 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const Proxy = () => (
-      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />
-    );
-    const { rerender } = renderWithBrowserRouter(<Proxy />, {
-      route: "/kvm",
+    const Proxy = () => <DeleteForm clusterId={1} />;
+    const { rerender } = renderWithProviders(<Proxy />, {
+      initialEntries: ["/kvm"],
       store,
     });
 
@@ -228,7 +226,7 @@ describe("DeleteForm", () => {
     // Mock the change from deleting the cluster to no longer deleting the
     // cluster, then rerender the component.
     vi.spyOn(vmClusterSelectors, "status").mockReturnValue(false);
-    rerender(<DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />);
+    rerender(<DeleteForm clusterId={1} />);
 
     // Form should have saved successfully.
     expect(screen.queryByTestId("saving-label")).not.toBeInTheDocument();
@@ -245,11 +243,9 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const Proxy = () => (
-      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />
-    );
-    const { rerender } = renderWithBrowserRouter(<Proxy />, {
-      route: "/kvm",
+    const Proxy = () => <DeleteForm hostId={1} />;
+    const { rerender } = renderWithProviders(<Proxy />, {
+      initialEntries: ["/kvm"],
       store,
     });
 
@@ -261,7 +257,7 @@ describe("DeleteForm", () => {
     // Mock the change from deleting the pod to no longer deleting the pod, then
     // rerender the component.
     vi.spyOn(podSelectors, "deleting").mockReturnValue([]);
-    rerender(<DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />);
+    rerender(<DeleteForm hostId={1} />);
 
     // Form should have saved successfully.
     expect(screen.queryByTestId("saving-label")).not.toBeInTheDocument();
@@ -278,11 +274,9 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const Proxy = () => (
-      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />
-    );
-    const { rerender } = renderWithBrowserRouter(<Proxy />, {
-      route: "/kvm",
+    const Proxy = () => <DeleteForm clusterId={1} />;
+    const { rerender } = renderWithProviders(<Proxy />, {
+      initialEntries: ["/kvm"],
       store,
     });
 
@@ -300,7 +294,7 @@ describe("DeleteForm", () => {
         event: "delete",
       }),
     ]);
-    rerender(<DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />);
+    rerender(<DeleteForm clusterId={1} />);
 
     // Form should not have saved successfully.
     expect(screen.getByTestId("notification-title")).toHaveTextContent(
@@ -320,11 +314,9 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const Proxy = () => (
-      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />
-    );
-    const { rerender } = renderWithBrowserRouter(<Proxy />, {
-      route: "/kvm",
+    const Proxy = () => <DeleteForm hostId={1} />;
+    const { rerender } = renderWithProviders(<Proxy />, {
+      initialEntries: ["/kvm"],
       store,
     });
 
@@ -337,7 +329,7 @@ describe("DeleteForm", () => {
     // including an error, then rerender the component.
     vi.spyOn(podSelectors, "deleting").mockReturnValue([]);
     vi.spyOn(podSelectors, "errors").mockReturnValue("Uh oh");
-    rerender(<DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />);
+    rerender(<DeleteForm hostId={1} />);
 
     // Form should not have saved successfully.
     expect(screen.getByTestId("notification-title")).toHaveTextContent(

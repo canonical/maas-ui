@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { ExternalLink } from "@canonical/maas-react-components";
@@ -11,7 +12,7 @@ import type { AddLxdStepValues, NewPodValues } from "../types";
 import AuthenticationFormFields from "./AuthenticationFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { generalActions } from "@/app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "@/app/store/general/selectors";
 import { podActions } from "@/app/store/pod";
@@ -20,7 +21,6 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
   newPodValues: NewPodValues;
   setNewPodValues: (podValues: NewPodValues) => void;
   setStep: (step: AddLxdStepValues) => void;
@@ -35,12 +35,13 @@ const AuthenticationFormSchema = Yup.object().shape({
 });
 
 export const AuthenticationForm = ({
-  clearSidePanelContent,
   newPodValues,
   setNewPodValues,
   setStep,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
+
   const errors = useSelector(podSelectors.errors);
   const projects = useSelector((state: RootState) =>
     podSelectors.getProjectsByLxdServer(state, newPodValues.power_address)
@@ -100,7 +101,7 @@ export const AuthenticationForm = ({
       initialValues={{
         password: "",
       }}
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSubmit={(values) => {
         dispatch(podActions.cleanup());
         setAuthenticating(true);

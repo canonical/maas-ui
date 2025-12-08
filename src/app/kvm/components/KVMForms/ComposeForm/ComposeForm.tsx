@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { formatBytes } from "@canonical/maas-react-components";
@@ -17,7 +18,7 @@ import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import type { ResourcePoolResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { hostnameValidation, RANGE_REGEX } from "@/app/base/validation";
 import { useActivePod } from "@/app/kvm/hooks";
 import { domainActions } from "@/app/store/domain";
@@ -175,16 +176,16 @@ export const getDefaultPoolLocation = (pod: Pod): string => {
 };
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
   hostId: Pod["id"];
 };
 
 const ComposeForm = ({
-  clearSidePanelContent,
   hostId,
   // eslint-disable-next-line complexity
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
+
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
@@ -464,7 +465,7 @@ const ComposeForm = ({
           zone: `${zones.data?.items[0]?.id}` || "",
         }}
         modelName="machine"
-        onCancel={clearSidePanelContent}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Submit",
           category: "KVM details action form",
@@ -505,7 +506,7 @@ const ComposeForm = ({
             )
           );
           dispatch(machineActions.invalidateQueries());
-          clearSidePanelContent();
+          closeSidePanel();
         }}
         processingCount={composingPods.length}
         selectedCount={1}

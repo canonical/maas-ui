@@ -62,7 +62,7 @@ describe("AddVirshFields", () => {
       }),
     ];
 
-    renderWithProviders(<AddVirsh clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddVirsh />, {
       state,
       initialEntries: ["/machines/chassis/add"],
     });

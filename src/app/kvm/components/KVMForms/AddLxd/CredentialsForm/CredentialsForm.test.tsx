@@ -15,7 +15,7 @@ import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
   userEvent,
-  renderWithBrowserRouter,
+  renderWithProviders,
   setupMockServer,
 } from "@/testing/utils";
 
@@ -55,15 +55,14 @@ describe("CredentialsForm", () => {
   it("dispatches an action to generate certificate if not providing certificate and key", async () => {
     const setNewPodValues = vi.fn();
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CredentialsForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
 
     // Submit form
@@ -100,15 +99,14 @@ describe("CredentialsForm", () => {
     newPodValues.key = "key";
     newPodValues.zone = "4";
     newPodValues.pool = "3";
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CredentialsForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
     // Change radio to provide certificate instead of generating one.
     await userEvent.click(
@@ -158,9 +156,8 @@ describe("CredentialsForm", () => {
       CN: "my-favourite-kvm@host",
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CredentialsForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "",
           key: "",
@@ -174,7 +171,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.AUTHENTICATION);
@@ -188,9 +185,8 @@ describe("CredentialsForm", () => {
     });
     state.pod.errors = "Failed to connect to LXD.";
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CredentialsForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "",
           key: "",
@@ -204,7 +200,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
 
     expect(setStep).not.toHaveBeenCalled();
@@ -216,9 +212,8 @@ describe("CredentialsForm", () => {
       "192.168.1.1": [factory.podProject()],
     };
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CredentialsForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "certificate",
           key: "key",
@@ -232,7 +227,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
@@ -246,9 +241,8 @@ describe("CredentialsForm", () => {
     };
     state.pod.errors = "Failed to fetch projects.";
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CredentialsForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "certificate",
           key: "key",
@@ -262,7 +256,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
 
     expect(setStep).not.toHaveBeenCalled();
@@ -283,9 +277,8 @@ describe("CredentialsForm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CredentialsForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "certificate",
           key: "key",
@@ -299,7 +292,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
     expect(setStep).not.toHaveBeenCalled();
     expect(screen.getByTestId("notification-title")).toHaveTextContent(
@@ -315,9 +308,10 @@ describe("CredentialsForm", () => {
     };
     state.pod.errors = "Failed to fetch projects.";
     const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(
+    const {
+      result: { unmount },
+    } = renderWithProviders(
       <CredentialsForm
-        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "certificate",
           key: "key",
@@ -331,7 +325,7 @@ describe("CredentialsForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={setSubmissionErrors}
       />,
-      { route: "/kvm/add", store }
+      { initialEntries: ["/kvm/add"], store }
     );
     unmount();
     expect(

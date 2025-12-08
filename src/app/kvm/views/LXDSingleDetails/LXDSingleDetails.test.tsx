@@ -11,7 +11,7 @@ import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   setupMockServer,
   waitFor,
 } from "@/testing/utils";
@@ -39,19 +39,17 @@ describe("LXDSingleDetails", () => {
   });
 
   it(`Displays: ${LXDSingleVMsLabel.Title} at: ${urls.kvm.lxd.single.vms({ id: 1 })}`, async () => {
-    renderWithBrowserRouter(<LXDSingleDetails />, {
-      route: urls.kvm.lxd.single.vms({ id: 1 }),
+    renderWithProviders(<LXDSingleDetails />, {
+      initialEntries: [urls.kvm.lxd.single.vms({ id: 1 })],
       state,
-      routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
     expect(screen.getByLabelText(LXDSingleVMsLabel.Title)).toBeInTheDocument();
   });
 
   it(`Displays: ${LXDSingleResourcesLabel.Title} at: ${urls.kvm.lxd.single.resources({ id: 1 })}`, async () => {
-    renderWithBrowserRouter(<LXDSingleDetails />, {
-      route: urls.kvm.lxd.single.resources({ id: 1 }),
+    renderWithProviders(<LXDSingleDetails />, {
+      initialEntries: [urls.kvm.lxd.single.resources({ id: 1 })],
       state,
-      routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
     expect(
       screen.getByLabelText(LXDSingleResourcesLabel.Title)
@@ -59,10 +57,9 @@ describe("LXDSingleDetails", () => {
   });
 
   it(`Displays: ${LXDSingleSettingsLabel.Title} at: ${urls.kvm.lxd.single.edit({ id: 1 })}`, async () => {
-    renderWithBrowserRouter(<LXDSingleDetails />, {
-      route: urls.kvm.lxd.single.edit({ id: 1 }),
+    renderWithProviders(<LXDSingleDetails />, {
+      initialEntries: [urls.kvm.lxd.single.edit({ id: 1 })],
       state,
-      routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
@@ -73,11 +70,12 @@ describe("LXDSingleDetails", () => {
   });
 
   it("redirects to vms", async () => {
-    renderWithBrowserRouter(<LXDSingleDetails />, {
-      route: urls.kvm.lxd.single.index({ id: 1 }),
+    const { router } = renderWithProviders(<LXDSingleDetails />, {
+      initialEntries: [urls.kvm.lxd.single.index({ id: 1 })],
       state,
-      routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
-    expect(window.location.pathname).toBe(urls.kvm.lxd.single.vms({ id: 1 }));
+    expect(router.state.location.pathname).toBe(
+      urls.kvm.lxd.single.vms({ id: 1 })
+    );
   });
 });

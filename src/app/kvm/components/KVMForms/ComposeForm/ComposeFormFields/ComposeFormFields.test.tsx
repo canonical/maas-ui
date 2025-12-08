@@ -74,10 +74,10 @@ describe("ComposeFormFields", () => {
     });
     pod.cpu_over_commit_ratio = 3;
     const store = mockStore(state);
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], store }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      store,
+    });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
     });
@@ -112,10 +112,10 @@ describe("ComposeFormFields", () => {
     });
     pod.memory_over_commit_ratio = 2;
     const store = mockStore(state);
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], store }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      store,
+    });
     await waitFor(() => {
       expect(screen.getByText("15000MiB available.")).toBeInTheDocument();
     });
@@ -165,10 +165,10 @@ describe("ComposeFormFields", () => {
       }),
     ];
     const store = mockStore(state);
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], store }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      store,
+    });
     await waitFor(() => {
       expect(
         screen.getByText(
@@ -385,10 +385,10 @@ describe("ComposeFormFields", () => {
   it("can detect duplicate core indices", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], store }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      store,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
@@ -417,10 +417,10 @@ describe("ComposeFormFields", () => {
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], store }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      store,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
@@ -442,10 +442,10 @@ describe("ComposeFormFields", () => {
       cores: factory.podResource({ free: 1 }),
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], state }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      state,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
@@ -488,10 +488,10 @@ describe("ComposeFormFields", () => {
       ],
     });
     const store = mockStore(state);
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { initialEntries: ["/kvm/1"], store }
-    );
+    renderWithProviders(<ComposeForm hostId={1} />, {
+      initialEntries: ["/kvm/1"],
+      store,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("radio", { name: "Pin VM to specific core(s)" })

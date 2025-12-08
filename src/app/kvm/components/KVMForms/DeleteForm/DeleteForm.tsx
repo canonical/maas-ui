@@ -7,10 +7,8 @@ import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import FormikField from "@/app/base/components/FormikField";
-import type {
-  ClearSidePanelContent,
-  SyncNavigateFunction,
-} from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { machineActions } from "@/app/store/machine";
 import { messageActions } from "@/app/store/message";
@@ -28,7 +26,6 @@ type DeleteFormValues = {
 };
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
   clusterId?: VMCluster[VMClusterMeta.PK] | null;
   hostId?: Pod[PodMeta.PK] | null;
 };
@@ -38,12 +35,12 @@ const DeleteFormSchema = Yup.object().shape({
 });
 
 const DeleteForm = ({
-  clearSidePanelContent,
   clusterId,
   hostId,
 }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
+  const { closeSidePanel } = useSidePanel();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
@@ -85,7 +82,7 @@ const DeleteForm = ({
         decompose: false,
       }}
       modelName={pod ? "KVM host" : "cluster"}
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
@@ -118,7 +115,7 @@ const DeleteForm = ({
           )
         );
         navigate({ pathname: urls.kvm.index });
-        clearSidePanelContent();
+        closeSidePanel();
         dispatch(machineActions.invalidateQueries());
       }}
       processingCount={deletingCount}

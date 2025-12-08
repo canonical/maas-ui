@@ -25,10 +25,10 @@ setupMockServer(
 );
 
 const renderComposeForm = async (store: MockStore, pod: Pod) => {
-  const view = renderWithProviders(
-    <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-    { initialEntries: [`/kvm/${pod.id}`], store }
-  );
+  const view = renderWithProviders(<ComposeForm hostId={pod.id} />, {
+    initialEntries: [`/kvm/${pod.id}`],
+    store,
+  });
   await waitFor(() => {
     expect(zoneResolvers.listZones.resolved).toBeTruthy();
   });

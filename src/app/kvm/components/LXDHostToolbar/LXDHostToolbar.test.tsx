@@ -41,12 +41,7 @@ describe("LXDHostToolbar", () => {
   it("shows a spinner if pools haven't loaded yet", () => {
     const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
       { store }
     );
 
@@ -58,12 +53,7 @@ describe("LXDHostToolbar", () => {
   it("can show the host's pool's name", async () => {
     const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
       { store }
     );
     await waitFor(() => {
@@ -77,7 +67,6 @@ describe("LXDHostToolbar", () => {
       <LXDHostToolbar
         clusterId={2}
         hostId={1}
-        setSidePanelContent={vi.fn()}
         setViewByNuma={vi.fn()}
         viewByNuma={false}
       />,
@@ -94,12 +83,7 @@ describe("LXDHostToolbar", () => {
   it("does not show a link to host's settings page if in single host view", () => {
     const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
       { store }
     );
 
@@ -109,12 +93,7 @@ describe("LXDHostToolbar", () => {
   it("shows tags in single host view", () => {
     const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
       { store }
     );
 
@@ -127,12 +106,7 @@ describe("LXDHostToolbar", () => {
     });
     const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
       { store }
     );
     await waitFor(() => {
@@ -162,12 +136,7 @@ describe("LXDHostToolbar", () => {
     const useSendMock = vi.spyOn(hooks, "useSendAnalytics");
     const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
       { store }
     );
     await userEvent.click(screen.getByTestId("numa-switch"));

@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +15,7 @@ import type {
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import podSelectors from "@/app/store/pod/selectors";
@@ -22,19 +23,19 @@ import type { RootState } from "@/app/store/root/types";
 import { formatErrors, preparePayload } from "@/app/utils";
 
 type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
   newPodValues: NewPodValues;
   setStep: (step: AddLxdStepValues) => void;
   setSubmissionErrors: (submissionErrors: string | null) => void;
 };
 
 export const SelectProjectForm = ({
-  clearSidePanelContent,
   newPodValues,
   setStep,
   setSubmissionErrors,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
+
   const errors = useSelector(podSelectors.errors);
   const saved = useSelector(podSelectors.saved);
   const saving = useSelector(podSelectors.saving);
@@ -94,7 +95,7 @@ export const SelectProjectForm = ({
         existingProject: "",
         newProject: "",
       }}
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Save LXD KVM",
         category: "Add KVM form",

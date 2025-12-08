@@ -1,35 +1,29 @@
 import DangerZoneCard from "./DangerZoneCard";
 
-import { KVMSidePanelViews } from "@/app/kvm/constants";
-import { render, screen, userEvent } from "@/testing/utils";
+import DeleteForm from "@/app/kvm/components/KVMForms/DeleteForm";
+import { mockSidePanel, render, screen, userEvent } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("DangerZoneCard", () => {
   it("can open the delete KVM form", async () => {
-    const setSidePanelContent = vi.fn();
-    render(
-      <DangerZoneCard
-        hostId={1}
-        message="Delete KVM"
-        setSidePanelContent={setSidePanelContent}
-      />
-    );
+    render(<DangerZoneCard hostId={1} message="Delete KVM" />);
     await userEvent.click(screen.getByTestId("remove-kvm"));
 
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMSidePanelViews.DELETE_KVM,
-      extras: {
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DeleteForm,
+      title: "Delete KVM",
+      props: {
         hostId: 1,
       },
     });
   });
 
   it("can display message", () => {
-    const setSidePanelContent = vi.fn();
     render(
       <DangerZoneCard
         hostId={1}
         message={<span data-testid="message">Delete KVM</span>}
-        setSidePanelContent={setSidePanelContent}
       />
     );
     expect(screen.getByTestId("message")).toHaveTextContent("Delete KVM");

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
@@ -6,21 +8,18 @@ import { useLocation } from "react-router";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
 import { useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import { KVMSidePanelViews } from "@/app/kvm/constants";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import AddLxd from "@/app/kvm/components/KVMForms/AddLxd";
+import AddVirsh from "@/app/kvm/components/KVMForms/AddVirsh";
 import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 
-type Props = Required<Pick<SectionHeaderProps, "title">> & {
-  setSidePanelContent: KVMSetSidePanelContent;
-};
+type Props = Required<Pick<SectionHeaderProps, "title">>;
 
-const KVMListHeader = ({
-  setSidePanelContent,
-  title,
-}: Props): React.ReactElement => {
+const KVMListHeader = ({ title }: Props): ReactElement => {
   const location = useLocation();
+  const { openSidePanel } = useSidePanel();
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
   const lxdTabActive = location.pathname.endsWith(urls.kvm.lxd.index);
@@ -41,11 +40,17 @@ const KVMListHeader = ({
           data-testid="add-kvm"
           key="add-kvm"
           onClick={() => {
-            setSidePanelContent({
-              view: lxdTabActive
-                ? KVMSidePanelViews.ADD_LXD_HOST
-                : KVMSidePanelViews.ADD_VIRSH_HOST,
-            });
+            if (lxdTabActive) {
+              openSidePanel({
+                component: AddLxd,
+                title: "Add LXD host",
+              });
+            } else {
+              openSidePanel({
+                component: AddVirsh,
+                title: "Add Virsh host",
+              });
+            }
           }}
         >
           Add {lxdTabActive ? "LXD" : "Virsh"} host

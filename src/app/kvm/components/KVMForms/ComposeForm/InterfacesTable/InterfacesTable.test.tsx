@@ -65,10 +65,10 @@ describe("InterfacesTable", () => {
     const state = { ...initialState };
     state.pod.items = [pod];
 
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
-    );
+    renderWithProviders(<ComposeForm hostId={pod.id} />, {
+      state,
+      initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })],
+    });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
     });
@@ -97,10 +97,10 @@ describe("InterfacesTable", () => {
     state.pod.items = [pod];
     state.subnet.items = [subnet];
     state.vlan.items = [vlan];
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
-    );
+    renderWithProviders(<ComposeForm hostId={pod.id} />, {
+      state,
+      initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })],
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("button", { name: /define/i })
@@ -126,10 +126,10 @@ describe("InterfacesTable", () => {
     state.pod.statuses = { [pod.id]: factory.podStatus({ composing: true }) };
     state.subnet.items = [subnet];
 
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
-    );
+    renderWithProviders(<ComposeForm hostId={pod.id} />, {
+      state,
+      initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })],
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("button", { name: /define/i })
@@ -151,10 +151,10 @@ describe("InterfacesTable", () => {
     state.pod.items = [pod];
     state.subnet.items = [subnet];
 
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
-    );
+    renderWithProviders(<ComposeForm hostId={pod.id} />, {
+      state,
+      initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })],
+    });
     await waitFor(() => {
       expect(screen.getByTestId("undefined-interface")).toBeInTheDocument();
     });
@@ -194,10 +194,10 @@ describe("InterfacesTable", () => {
     state.pod.items = [pod];
     state.subnet.items = [subnet];
     state.vlan.items = [vlan];
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
-    );
+    renderWithProviders(<ComposeForm hostId={pod.id} />, {
+      state,
+      initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })],
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("button", { name: /Define/i })
@@ -237,10 +237,10 @@ describe("InterfacesTable", () => {
     state.pod.items = [pod];
     state.subnet.items = [nonBootSubnet, bootSubnet];
     state.vlan.items = [nonBootVlan, bootVlan];
-    renderWithProviders(
-      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
-      { state, initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })] }
-    );
+    renderWithProviders(<ComposeForm hostId={pod.id} />, {
+      state,
+      initialEntries: [urls.kvm.lxd.single.index({ id: pod.id })],
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("button", { name: /Define/i })

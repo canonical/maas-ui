@@ -8,7 +8,7 @@ import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 const callId = "mocked-nanoid";
 vi.mock("@reduxjs/toolkit", async () => {
@@ -60,14 +60,12 @@ describe("LXDClusterVMs", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <LXDClusterVMs
-        clusterId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
-      { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
+    renderWithProviders(
+      <LXDClusterVMs clusterId={1} searchFilter="" setSearchFilter={vi.fn()} />,
+      {
+        initialEntries: [urls.kvm.lxd.cluster.vms.index({ clusterId: 1 })],
+        store,
+      }
     );
     expect(screen.getByTestId("host-link")).toHaveAttribute(
       "href",
@@ -91,14 +89,12 @@ describe("LXDClusterVMs", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <LXDClusterVMs
-        clusterId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
-      { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
+    renderWithProviders(
+      <LXDClusterVMs clusterId={1} searchFilter="" setSearchFilter={vi.fn()} />,
+      {
+        initialEntries: [urls.kvm.lxd.cluster.vms.index({ clusterId: 1 })],
+        store,
+      }
     );
     const expected = machineActions.fetch(callId, {
       filter: { pod: ["host 1", "host 2"] },

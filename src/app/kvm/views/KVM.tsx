@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import type { ReactElement } from "react";
 
 import { Route, Routes } from "react-router";
 
@@ -7,17 +7,11 @@ import LXDClusterDetails from "./LXDClusterDetails";
 import LXDSingleDetails from "./LXDSingleDetails";
 import VirshDetails from "./VirshDetails";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { getRelativeRoute } from "@/app/utils";
 
-const KVM = (): React.ReactElement => {
-  const { setSidePanelContent } = useSidePanel();
+const KVM = (): ReactElement => {
   const base = urls.kvm.index;
-
-  useEffect(() => {
-    setSidePanelContent(null);
-  }, [setSidePanelContent]);
 
   return (
     <Routes>
