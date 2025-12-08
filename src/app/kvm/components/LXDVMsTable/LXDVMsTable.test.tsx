@@ -296,7 +296,7 @@ describe("LXDVMsTable", () => {
         group_key: null,
         page_number: 1,
         page_size: 10,
-        sort_direction: FetchSortDirection.Descending,
+        sort_direction: FetchSortDirection.Ascending,
         sort_key: FetchGroupKey.Hostname,
       };
       const expectedAction = machineActions.fetch(generateCallId(options), {

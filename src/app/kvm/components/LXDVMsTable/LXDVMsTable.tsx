@@ -50,7 +50,7 @@ const LXDVMsTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [sorting, setSorting] = useState<SortingState>([
-    { id: "hostname", desc: true },
+    { id: "hostname", desc: false },
   ]);
 
   const {
