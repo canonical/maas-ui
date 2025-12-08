@@ -1,6 +1,4 @@
 import { waitFor } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -11,12 +9,7 @@ import { FetchGroupKey, FetchSortDirection } from "@/app/store/machine/types";
 import * as query from "@/app/store/machine/utils/query";
 import { generateCallId } from "@/app/store/machine/utils/query";
 import * as factory from "@/testing/factories";
-import {
-  render,
-  renderWithProviders,
-  screen,
-  userEvent,
-} from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -47,23 +40,20 @@ describe("LXDVMsTable", () => {
     it("shows an add VM button if function provided", () => {
       const state = factory.rootState();
       const store = mockStore(state);
-      render(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-          >
-            <LXDVMsTable
-              getResources={vi.fn()}
-              onAddVMClick={vi.fn()}
-              pods={["pod1"]}
-              searchFilter=""
-              setSearchFilter={vi.fn()}
-              setSidePanelContent={vi.fn()}
-            />
-          </MemoryRouter>
-        </Provider>
+      renderWithProviders(
+        <LXDVMsTable
+          getResources={vi.fn()}
+          onAddVMClick={vi.fn()}
+          pods={["pod1"]}
+          searchFilter=""
+          setSearchFilter={vi.fn()}
+          setSidePanelContent={vi.fn()}
+        />,
+        {
+          store,
+          initialEntries: ["/kvm/1/project"],
+        }
       );
-
       expect(
         screen.getByRole("button", { name: "Add VM" })
       ).toBeInTheDocument();
@@ -72,20 +62,18 @@ describe("LXDVMsTable", () => {
     it("does not show an add VM button if no function provided", () => {
       const state = factory.rootState();
       const store = mockStore(state);
-      render(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-          >
-            <LXDVMsTable
-              getResources={vi.fn()}
-              pods={["pod1"]}
-              searchFilter=""
-              setSearchFilter={vi.fn()}
-              setSidePanelContent={vi.fn()}
-            />
-          </MemoryRouter>
-        </Provider>
+      renderWithProviders(
+        <LXDVMsTable
+          getResources={vi.fn()}
+          pods={["pod1"]}
+          searchFilter=""
+          setSearchFilter={vi.fn()}
+          setSidePanelContent={vi.fn()}
+        />,
+        {
+          store,
+          initialEntries: ["/kvm/1/project"],
+        }
       );
 
       expect(
@@ -274,20 +262,19 @@ describe("LXDVMsTable", () => {
     it("fetches machines on load", () => {
       const state = factory.rootState();
       const store = mockStore(state);
-      render(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-          >
-            <LXDVMsTable
-              getResources={vi.fn()}
-              pods={["pod1"]}
-              searchFilter=""
-              setSearchFilter={vi.fn()}
-              setSidePanelContent={vi.fn()}
-            />
-          </MemoryRouter>
-        </Provider>
+      renderWithProviders(
+        <LXDVMsTable
+          getResources={vi.fn()}
+          onAddVMClick={vi.fn()}
+          pods={["pod1"]}
+          searchFilter=""
+          setSearchFilter={vi.fn()}
+          setSidePanelContent={vi.fn()}
+        />,
+        {
+          store,
+          initialEntries: ["/kvm/1/project"],
+        }
       );
 
       const options = {
@@ -310,23 +297,22 @@ describe("LXDVMsTable", () => {
     it("clears machine selected state on unmount", async () => {
       const state = factory.rootState();
       const store = mockStore(state);
-      const { unmount } = render(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-          >
-            <LXDVMsTable
-              getResources={vi.fn()}
-              pods={["pod1"]}
-              searchFilter=""
-              setSearchFilter={vi.fn()}
-              setSidePanelContent={vi.fn()}
-            />
-          </MemoryRouter>
-        </Provider>
+      const { result } = renderWithProviders(
+        <LXDVMsTable
+          getResources={vi.fn()}
+          onAddVMClick={vi.fn()}
+          pods={["pod1"]}
+          searchFilter=""
+          setSearchFilter={vi.fn()}
+          setSidePanelContent={vi.fn()}
+        />,
+        {
+          store,
+          initialEntries: ["/kvm/1/project"],
+        }
       );
 
-      unmount();
+      result.unmount();
 
       const expectedAction = machineActions.setSelected(null);
       expect(

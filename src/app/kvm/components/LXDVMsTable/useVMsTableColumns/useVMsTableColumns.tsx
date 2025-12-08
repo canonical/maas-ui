@@ -5,8 +5,8 @@ import { formatBytes } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router";
 
-import IPColumn from "../IPColumn";
-import StatusColumn from "../StatusColumn";
+import IPColumn from "../components/IPColumn";
+import StatusColumn from "../components/StatusColumn";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";

@@ -5,12 +5,12 @@ import { usePrevious } from "@canonical/react-components";
 import type { RowSelectionState, SortingState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
-import VMsActionBar from "./VMsActionBar";
+import VMsActionBar from "./components/VMsActionBar";
 import type {
   GetHostColumn,
   GetResources,
-} from "./VMsTable/components/VMsTable/VMsTable";
-import useVMsTableColumns from "./VMsTable/components/useVMsTableColumns/useVMsTableColumns";
+} from "./useVMsTableColumns/useVMsTableColumns";
+import useVMsTableColumns from "./useVMsTableColumns/useVMsTableColumns";
 
 import type { SetSearchFilter } from "@/app/base/types";
 import type { KVMSetSidePanelContent } from "@/app/kvm/types";
@@ -147,7 +147,7 @@ const LXDVMsTable = ({
         selection={{
           rowSelection,
           setRowSelection,
-          rowSelectionLabelKey: "fqdn",
+          rowSelectionLabelKey: "hostname",
         }}
         setSorting={setSorting}
         sorting={sorting}
