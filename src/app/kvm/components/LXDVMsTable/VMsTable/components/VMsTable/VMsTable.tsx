@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
-import type { RowSelectionState } from "@tanstack/react-table";
+import type { RowSelectionState, SortingState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
 import useVMsTableColumns from "../useVMsTableColumns/useVMsTableColumns";
@@ -49,6 +49,9 @@ const VMsTable = ({
 }: Props) => {
   // VMsTable
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "fqdn", desc: true },
+  ]);
   const dispatch = useDispatch();
   const selected = useSelector(machineSelectors.selected);
   const getSystemIdsFromRowSelection = useCallback(() => {

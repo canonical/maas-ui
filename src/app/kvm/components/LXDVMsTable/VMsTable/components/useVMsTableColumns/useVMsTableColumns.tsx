@@ -3,17 +3,17 @@ import { useMemo } from "react";
 
 import { formatBytes } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
+import { Link } from "react-router";
 
-import CoresColumn from "../CoresColumn";
-import HugepagesColumn from "../HugepagesColumn";
 import IPColumn from "../IPColumn";
-import NameColumn from "../NameColumn";
 import StatusColumn from "../StatusColumn";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
+import urls from "@/app/base/urls";
 import type { Machine } from "@/app/store/machine/types";
 import type { Tag } from "@/app/store/tag/types";
 import { getTagNamesForIds } from "@/app/store/tag/utils";
+import { getRanges } from "@/app/utils";
 
 export enum Label {
   Name = "Name",
@@ -51,14 +51,21 @@ const useVMsTableColumns = ({
   return useMemo(
     () => [
       {
-        id: "fqdn",
+        id: "hostname",
         header: "VM name",
-        accessorKey: "fqdn",
+        accessorKey: "hostname",
         enableSorting: true,
         cell: ({ row }) => (
-          <NameColumn
-            aria-label={Label.Name}
-            systemId={row.original.system_id}
+          <DoubleRow
+            data-testid="name-col"
+            primary={
+              <Link
+                to={urls.machines.machine.index({ id: row.original.system_id })}
+              >
+                <strong>{row.original.hostname}</strong>
+              </Link>
+            }
+            primaryTitle={row.original.hostname}
           />
         ),
       },
@@ -91,6 +98,7 @@ const useVMsTableColumns = ({
         id: "ipv4",
         header: "IPV4",
         accessorKey: "ipv4",
+        enableSorting: false,
         cell: ({ row }) => (
           <IPColumn
             aria-label={Label.Ipv4}
@@ -103,6 +111,7 @@ const useVMsTableColumns = ({
         id: "ipv6",
         header: "IPV6",
         accessorKey: "ipv6",
+        enableSorting: false,
         cell: ({ row }) => (
           <IPColumn
             aria-label={Label.Ipv6}
@@ -115,30 +124,35 @@ const useVMsTableColumns = ({
         id: "hugepages",
         header: "HUGEPAGES",
         accessorKey: "hugepages",
+        enableSorting: false,
         cell: ({ row }) => (
-          <HugepagesColumn
-            aria-label={Label.Hugepages}
-            hugepagesBacked={getResources(row.original).hugepagesBacked}
-          />
+          <span>
+            {getResources(row.original).hugepagesBacked ? "Enabled" : ""}
+          </span>
         ),
       },
       {
         id: "cores",
         header: "CORES",
         accessorKey: "cores",
+        enableSorting: false,
         cell: ({ row }) => {
           const { pinnedCores, unpinnedCores } = getResources(row.original);
+          const pinnedRanges = getRanges(pinnedCores).join(", ");
+          const primaryText = pinnedRanges || `Any ${unpinnedCores}`;
+          const secondaryText = pinnedRanges && "pinned";
           return (
-            <CoresColumn
-              aria-label={Label.Cores}
-              pinnedCores={pinnedCores}
-              unpinnedCores={unpinnedCores}
+            <DoubleRow
+              primary={primaryText}
+              primaryTitle={primaryText}
+              secondary={secondaryText}
+              secondaryTitle={secondaryText}
             />
           );
         },
       },
       {
-        id: "ram",
+        id: "memory",
         header: () => (
           <DoubleRow
             primary="RAM"
@@ -147,7 +161,7 @@ const useVMsTableColumns = ({
             secondaryTitle="STORAGE"
           />
         ),
-        accessorKey: "ram",
+        accessorKey: "memory",
         enableSorting: true,
         cell: ({ row }) => {
           const memory = formatBytes(
