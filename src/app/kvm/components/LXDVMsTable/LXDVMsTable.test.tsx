@@ -47,7 +47,6 @@ describe("LXDVMsTable", () => {
           pods={["pod1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           store,
@@ -68,7 +67,6 @@ describe("LXDVMsTable", () => {
           pods={["pod1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           store,
@@ -94,7 +92,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -121,7 +118,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -144,7 +140,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -167,7 +162,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -220,7 +214,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           store,
@@ -244,7 +237,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -269,7 +261,6 @@ describe("LXDVMsTable", () => {
           pods={["pod1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           store,
@@ -304,7 +295,6 @@ describe("LXDVMsTable", () => {
           pods={["pod1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           store,
@@ -353,7 +343,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           store,
@@ -401,7 +390,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           store,
