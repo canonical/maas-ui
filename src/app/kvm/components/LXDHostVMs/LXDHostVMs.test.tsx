@@ -2,12 +2,18 @@ import configureStore from "redux-mock-store";
 
 import LXDHostVMs from "./LXDHostVMs";
 
-import { KVMSidePanelViews } from "@/app/kvm/constants";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  mockSidePanel,
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+} from "@/testing/utils";
 
+const { mockOpen } = await mockSidePanel();
 const mockStore = configureStore<RootState>();
 
 describe("LXDHostVMs", () => {
@@ -21,12 +27,7 @@ describe("LXDHostVMs", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
       { route: "/kvm/1/project", store }
     );
 
@@ -46,12 +47,7 @@ describe("LXDHostVMs", () => {
     });
 
     renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
       { route: "/kvm/1", state }
     );
 
@@ -75,7 +71,6 @@ describe("LXDHostVMs", () => {
         hostId={1}
         searchFilter=""
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { route: "/kvm/1", state }
     );
@@ -92,12 +87,7 @@ describe("LXDHostVMs", () => {
       }),
     });
     renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
       { route: "/kvm/1", state }
     );
     expect(screen.getByTestId("toolbar-title")).toHaveTextContent(
@@ -112,23 +102,18 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    const setSidePanelContent = vi.fn();
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={setSidePanelContent}
-      />,
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
       { route: "/kvm/1", store }
     );
 
     await userEvent.click(screen.getByTestId("add-vm"));
 
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMSidePanelViews.COMPOSE_VM,
-      extras: {
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: ComposeForm,
+      title: "Compose",
+      props: {
         hostId: 1,
       },
     });
@@ -144,12 +129,7 @@ describe("LXDHostVMs", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
       { store }
     );
     const expected = machineActions.fetch("123456", {

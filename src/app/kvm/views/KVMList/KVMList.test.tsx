@@ -6,11 +6,7 @@ import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  renderWithBrowserRouter,
-  renderWithProviders,
-  screen,
-} from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -83,13 +79,13 @@ describe("KVMList", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<KVMList />, {
-      route: urls.kvm.index,
+    const { router } = renderWithProviders(<KVMList />, {
+      initialEntries: [urls.kvm.index],
       store,
     });
 
     expect(document.title).toEqual(expect.stringContaining("LXD"));
-    expect(window.location.pathname).toEqual(urls.kvm.lxd.index);
+    expect(router.state.location.pathname).toEqual(urls.kvm.lxd.index);
   });
 
   it("displays a message if there are no LXD KVMs", () => {

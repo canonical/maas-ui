@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
@@ -10,12 +11,9 @@ import VirshSettings from "./VirshSettings";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import KVMForms from "@/app/kvm/components/KVMForms";
 import { useActivePod, useKVMDetailsRedirect } from "@/app/kvm/hooks";
-import { getFormTitle } from "@/app/kvm/utils";
 import podSelectors from "@/app/store/pod/selectors";
 import { PodMeta } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
@@ -25,7 +23,7 @@ export enum Label {
   Title = "Virsh details",
 }
 
-const VirshDetails = (): React.ReactElement => {
+const VirshDetails = (): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
   const id = useGetURLId(PodMeta.PK);
 
@@ -33,7 +31,7 @@ const VirshDetails = (): React.ReactElement => {
     podSelectors.getById(state, id)
   );
   const loading = useSelector(podSelectors.loading);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 
@@ -56,18 +54,10 @@ const VirshDetails = (): React.ReactElement => {
   return (
     <PageContent
       aria-label={Label.Title}
-      header={
-        <VirshDetailsHeader id={id} setSidePanelContent={setSidePanelContent} />
-      }
-      sidePanelContent={
-        sidePanelContent ? (
-          <KVMForms
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        ) : null
-      }
-      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : ""}
+      header={<VirshDetailsHeader id={id} />}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       {pod && (
         <Routes>

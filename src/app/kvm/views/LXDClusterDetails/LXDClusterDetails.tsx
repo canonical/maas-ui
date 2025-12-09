@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -21,11 +22,8 @@ import LXDClusterVMs from "./LXDClusterVMs";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import KVMForms from "@/app/kvm/components/KVMForms/KVMForms";
-import { getFormTitle } from "@/app/kvm/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { podActions } from "@/app/store/pod";
 import type { RootState } from "@/app/store/root/types";
@@ -38,7 +36,7 @@ export enum Label {
   Title = "LXD cluster details",
 }
 
-const LXDClusterDetails = (): React.ReactElement => {
+const LXDClusterDetails = (): ReactElement => {
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
@@ -56,7 +54,6 @@ const LXDClusterDetails = (): React.ReactElement => {
   const fetchedVmCluster = !gettingVmCluster && vmCluster;
 
   const loaded = clustersLoaded || fetchedVmCluster;
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   // Search filter is determined by the URL and used to initialise state.
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
@@ -95,32 +92,14 @@ const LXDClusterDetails = (): React.ReactElement => {
   return (
     <PageContent
       aria-label={Label.Title}
-      header={
-        <LXDClusterDetailsHeader
-          clusterId={clusterId}
-          setSidePanelContent={setSidePanelContent}
-        />
-      }
-      sidePanelContent={
-        sidePanelContent ? (
-          <KVMForms
-            searchFilter={searchFilter}
-            setSearchFilter={setSearchFilter}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        ) : null
-      }
-      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : ""}
+      header={<LXDClusterDetailsHeader clusterId={clusterId} />}
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       <Routes>
         <Route
-          element={
-            <LXDClusterHosts
-              clusterId={clusterId}
-              setSidePanelContent={setSidePanelContent}
-            />
-          }
+          element={<LXDClusterHosts clusterId={clusterId} />}
           path={getRelativeRoute(urls.kvm.lxd.cluster.hosts(null), base)}
         />
         <Route
@@ -129,7 +108,6 @@ const LXDClusterDetails = (): React.ReactElement => {
               clusterId={clusterId}
               searchFilter={searchFilter}
               setSearchFilter={setSearchFilter}
-              setSidePanelContent={setSidePanelContent}
             />
           }
           path={getRelativeRoute(urls.kvm.lxd.cluster.vms.index(null), base)}
@@ -139,12 +117,7 @@ const LXDClusterDetails = (): React.ReactElement => {
           path={getRelativeRoute(urls.kvm.lxd.cluster.resources(null), base)}
         />
         <Route
-          element={
-            <LXDClusterSettings
-              clusterId={clusterId}
-              setSidePanelContent={setSidePanelContent}
-            />
-          }
+          element={<LXDClusterSettings clusterId={clusterId} />}
           path={getRelativeRoute(urls.kvm.lxd.cluster.edit(null), base)}
         />
         <Route
@@ -153,7 +126,6 @@ const LXDClusterDetails = (): React.ReactElement => {
               clusterId={clusterId}
               searchFilter={searchFilter}
               setSearchFilter={setSearchFilter}
-              setSidePanelContent={setSidePanelContent}
             />
           }
           path={getRelativeRoute(urls.kvm.lxd.cluster.vms.host(null), base)}

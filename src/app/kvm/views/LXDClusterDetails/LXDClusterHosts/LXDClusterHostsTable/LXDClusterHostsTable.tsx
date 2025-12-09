@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import {
   Button,
   Col,
@@ -18,16 +20,17 @@ import type {
 } from "@/app/apiclient";
 import TableHeader from "@/app/base/components/TableHeader";
 import { useTableSort } from "@/app/base/hooks";
+import type { SidePanelActions } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { SortDirection } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import CPUColumn from "@/app/kvm/components/CPUColumn";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
 import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
 import NameColumn from "@/app/kvm/components/NameColumn";
 import RAMColumn from "@/app/kvm/components/RAMColumn";
 import StorageColumn from "@/app/kvm/components/StorageColumn";
 import TagsColumn from "@/app/kvm/components/TagsColumn";
-import { KVMSidePanelViews } from "@/app/kvm/constants";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import type { VMCluster } from "@/app/store/vmcluster/types";
@@ -38,7 +41,6 @@ type Props = {
   clusterId: VMCluster["id"];
   hosts: Pod[];
   searchFilter: string;
-  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
@@ -72,7 +74,7 @@ const generateRows = (
   clusterId: VMCluster["id"],
   clusterHosts: Pod[],
   pools: ResourcePoolWithSummaryResponse[],
-  setSidePanelContent: KVMSetSidePanelContent,
+  openSidePanel: SidePanelActions["openSidePanel"],
   location: Location
 ) =>
   clusterHosts.map((host) => {
@@ -141,9 +143,12 @@ const generateRows = (
                 data-testid="vm-host-compose"
                 hasIcon
                 onClick={() => {
-                  setSidePanelContent({
-                    view: KVMSidePanelViews.COMPOSE_VM,
-                    extras: { hostId: host.id },
+                  openSidePanel({
+                    component: ComposeForm,
+                    title: "Compose",
+                    props: {
+                      hostId: host.id,
+                    },
                   });
                 }}
               >
@@ -176,9 +181,9 @@ const LXDClusterHostsTable = ({
   clusterId,
   hosts,
   searchFilter,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const location = useLocation();
+  const { openSidePanel } = useSidePanel();
   const pools = usePools();
   const podsLoaded = useSelector(podSelectors.loaded);
   const loaded = !pools.isPending && podsLoaded;
@@ -314,7 +319,7 @@ const LXDClusterHostsTable = ({
                     clusterId,
                     paginatedClusterHosts,
                     pools.data!.items,
-                    setSidePanelContent,
+                    openSidePanel,
                     location
                   )
                 : []

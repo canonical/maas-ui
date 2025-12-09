@@ -7,10 +7,13 @@ import configureStore from "redux-mock-store";
 import KVMListHeader from "./KVMListHeader";
 
 import urls from "@/app/base/urls";
-import { KVMSidePanelViews } from "@/app/kvm/constants";
+import AddLxd from "@/app/kvm/components/AddLxd";
+import AddVirsh from "@/app/kvm/components/AddVirsh";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { mockSidePanel } from "@/testing/utils";
 
+const { mockOpen } = await mockSidePanel();
 const mockStore = configureStore();
 
 describe("KVMListHeader", () => {
@@ -35,7 +38,7 @@ describe("KVMListHeader", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
+          <KVMListHeader title="some text" />
         </MemoryRouter>
       </Provider>
     );
@@ -48,7 +51,7 @@ describe("KVMListHeader", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
+          <KVMListHeader title="some text" />
         </MemoryRouter>
       </Provider>
     );
@@ -56,17 +59,13 @@ describe("KVMListHeader", () => {
   });
 
   it("can open the add LXD form at the LXD URL", async () => {
-    const setSidePanelContent = vi.fn();
     const store = mockStore(state);
     render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
         >
-          <KVMListHeader
-            setSidePanelContent={setSidePanelContent}
-            title="LXD"
-          />
+          <KVMListHeader title="LXD" />
         </MemoryRouter>
       </Provider>
     );
@@ -77,23 +76,20 @@ describe("KVMListHeader", () => {
       screen.queryByRole("button", { name: "Add Virsh host" })
     ).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Add LXD host" }));
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMSidePanelViews.ADD_LXD_HOST,
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: AddLxd,
+      title: "Add LXD host",
     });
   });
 
   it("can open the add Virsh form at the Virsh URL", async () => {
-    const setSidePanelContent = vi.fn();
     const store = mockStore(state);
     render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: urls.kvm.virsh.index, key: "testKey" }]}
         >
-          <KVMListHeader
-            setSidePanelContent={setSidePanelContent}
-            title="Virsh"
-          />
+          <KVMListHeader title="Virsh" />
         </MemoryRouter>
       </Provider>
     );
@@ -106,8 +102,9 @@ describe("KVMListHeader", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Add Virsh host" })
     );
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMSidePanelViews.ADD_VIRSH_HOST,
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: AddVirsh,
+      title: "Add Virsh host",
     });
   });
 });

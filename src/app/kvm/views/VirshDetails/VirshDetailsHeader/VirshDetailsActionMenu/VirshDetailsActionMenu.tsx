@@ -1,18 +1,20 @@
+import type { ReactElement } from "react";
+
 import { ContextualMenu } from "@canonical/react-components";
 
-import { KVMSidePanelViews } from "@/app/kvm/constants";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
+import DeleteForm from "@/app/kvm/components/DeleteForm";
+import RefreshForm from "@/app/kvm/components/RefreshForm";
 import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
   hostId: Pod["id"];
-  setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const PodDetailsActionMenu = ({
-  hostId,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+const PodDetailsActionMenu = ({ hostId }: Props): ReactElement => {
+  const { openSidePanel } = useSidePanel();
+
   return (
     <ContextualMenu
       data-testid="action-dropdown"
@@ -21,27 +23,30 @@ const PodDetailsActionMenu = ({
         {
           children: "Compose",
           onClick: () => {
-            setSidePanelContent({
-              view: KVMSidePanelViews.COMPOSE_VM,
-              extras: { hostId },
+            openSidePanel({
+              component: ComposeForm,
+              title: "Compose",
+              props: { hostId },
             });
           },
         },
         {
           children: "Refresh",
           onClick: () => {
-            setSidePanelContent({
-              view: KVMSidePanelViews.REFRESH_KVM,
-              extras: { hostIds: [hostId] },
+            openSidePanel({
+              component: RefreshForm,
+              title: "Refresh",
+              props: { hostIds: [hostId] },
             });
           },
         },
         {
           children: "Delete",
           onClick: () => {
-            setSidePanelContent({
-              view: KVMSidePanelViews.DELETE_KVM,
-              extras: { hostId },
+            openSidePanel({
+              component: DeleteForm,
+              title: "Delete KVM",
+              props: { hostId },
             });
           },
         },
