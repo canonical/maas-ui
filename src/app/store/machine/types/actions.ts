@@ -456,7 +456,7 @@ export type FetchParams = {
   group_collapsed?: MachineStateListGroup["value"][] | null;
   page_size?: number;
   page_number?: number;
-  sort_key?: FetchGroupKey | null;
+  sort_key?: FetchGroupKey | string | null;
   sort_direction?: FetchSortDirection | null;
 };
 

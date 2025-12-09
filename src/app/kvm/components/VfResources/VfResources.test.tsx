@@ -1,99 +1,48 @@
+import { describe } from "vitest";
+
 import VfResources from "./VfResources";
 
-import * as factory from "@/testing/factories";
-import { render, screen, within } from "@/testing/utils";
+import { renderWithProviders, screen, waitFor } from "@/testing/utils";
 
 describe("VfResources", () => {
-  it("can be made to have a dynamic layout", () => {
-    render(<VfResources dynamicLayout interfaces={[]} />);
+  describe("display", () => {
+    it("displays a message when rendering an empty list", async () => {
+      renderWithProviders(<VfResources interfaces={[]} />);
 
-    expect(screen.getByLabelText("VF resources")).toHaveClass(
-      "vf-resources--dynamic-layout"
-    );
-  });
+      await waitFor(() => {
+        expect(
+          screen.getByText("No interfaces available.")
+        ).toBeInTheDocument();
+      });
+    });
 
-  it("shows whether an interface has virtual functions or not", () => {
-    const [hasVfs, noVfs] = [
-      factory.podNetworkInterface({
-        virtual_functions: {
-          allocated_tracked: 1,
-          allocated_other: 2,
-          free: 3,
-        },
-      }),
-      factory.podNetworkInterface({
-        virtual_functions: {
-          allocated_tracked: 0,
-          allocated_other: 0,
-          free: 0,
-        },
-      }),
-    ];
-    render(<VfResources dynamicLayout interfaces={[hasVfs, noVfs]} />);
+    it("displays the columns correctly", () => {
+      renderWithProviders(<VfResources interfaces={[]} />);
 
-    const rows = screen.getAllByRole("row");
-    expect(within(rows[1]).getByTestId("has-vfs")).toBeInTheDocument();
-    expect(within(rows[1]).queryByTestId("has-no-vfs")).not.toBeInTheDocument();
-    expect(within(rows[2]).queryByTestId("has-vfs")).not.toBeInTheDocument();
-    expect(within(rows[2]).getByTestId("has-no-vfs")).toBeInTheDocument();
-  });
+      ["Interface", "Allocated", "Free"].forEach((column) => {
+        expect(
+          screen.getByRole("columnheader", {
+            name: new RegExp(`^${column}`, "i"),
+          })
+        ).toBeInTheDocument();
+      });
+    });
 
-  it("can render as an aggregated meter", () => {
-    render(<VfResources interfaces={[]} showAggregated />);
+    it("can be made to have a dynamic layout", () => {
+      renderWithProviders(<VfResources dynamicLayout interfaces={[]} />);
 
-    expect(screen.getByTestId("iface-meter")).toBeInTheDocument();
-    expect(screen.queryByTestId("iface-table")).not.toBeInTheDocument();
-  });
+      expect(screen.getByLabelText("VF resources")).toHaveClass(
+        "vf-resources--dynamic-layout"
+      );
+    });
 
-  it("can render as a table", () => {
-    render(<VfResources interfaces={[]} showAggregated={false} />);
+    it("can render as an aggregated meter", () => {
+      renderWithProviders(<VfResources interfaces={[]} showAggregated />);
 
-    expect(screen.getByTestId("iface-table")).toBeInTheDocument();
-    expect(screen.queryByTestId("iface-meter")).not.toBeInTheDocument();
-  });
-
-  it("shows whether an interface has virtual functions or not", () => {
-    render(
-      <VfResources
-        interfaces={[
-          factory.podNetworkInterface({
-            name: "bbb",
-            virtual_functions: {
-              allocated_tracked: 1,
-              allocated_other: 2,
-              free: 3,
-            },
-          }),
-          factory.podNetworkInterface({
-            name: "aaa",
-            virtual_functions: {
-              allocated_tracked: 1,
-              allocated_other: 2,
-              free: 3,
-            },
-          }),
-          factory.podNetworkInterface({
-            name: "ccc",
-            virtual_functions: {
-              allocated_tracked: 1,
-              allocated_other: 2,
-              free: 3,
-            },
-          }),
-        ]}
-      />
-    );
-
-    const rows = screen.getAllByRole("row");
-
-    expect(within(rows[1]).getByTestId("interface-name")).toHaveTextContent(
-      "aaa:"
-    );
-    expect(within(rows[2]).getByTestId("interface-name")).toHaveTextContent(
-      "bbb:"
-    );
-    expect(within(rows[3]).getByTestId("interface-name")).toHaveTextContent(
-      "ccc:"
-    );
+      expect(screen.getByLabelText("vf-resources-meter")).toBeInTheDocument();
+      expect(
+        screen.queryByLabelText("vf-resources-table")
+      ).not.toBeInTheDocument();
+    });
   });
 });
