@@ -1,17 +1,12 @@
 import type { PropsWithChildren, ReactElement } from "react";
 import { createContext, useCallback, useContext, useState } from "react";
 
-import { KVMSidePanelViews } from "@/app/kvm/constants";
-import type { KVMSidePanelContent } from "@/app/kvm/types";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineSidePanelContent } from "@/app/machines/types";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 
-export type SidePanelContent =
-  | KVMSidePanelContent
-  | MachineSidePanelContent
-  | null;
+export type SidePanelContent = MachineSidePanelContent | null;
 
 export type SetSidePanelContent<T = SidePanelContent> = (
   sidePanelContent: T | null
@@ -25,7 +20,6 @@ export type SidePanelContextType<T = SidePanelContent> = {
 
 export const SidePanelViews = {
   ...MachineSidePanelViews,
-  ...KVMSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {
