@@ -40,6 +40,7 @@ describe("VirshDetails", () => {
     renderWithProviders(<VirshDetails />, {
       initialEntries: [urls.kvm.virsh.details.resources({ id: 1 })],
       state,
+      pattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
     expect(
       screen.getByLabelText(VirshResourcesLabel.Title)
@@ -50,6 +51,7 @@ describe("VirshDetails", () => {
     renderWithProviders(<VirshDetails />, {
       initialEntries: [urls.kvm.virsh.details.edit({ id: 1 })],
       state,
+      pattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
@@ -61,6 +63,7 @@ describe("VirshDetails", () => {
     const { router } = renderWithProviders(<VirshDetails />, {
       initialEntries: [urls.kvm.virsh.details.index({ id: 1 })],
       state,
+      pattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
     expect(router.state.location.pathname).toBe(
       urls.kvm.virsh.details.resources({ id: 1 })

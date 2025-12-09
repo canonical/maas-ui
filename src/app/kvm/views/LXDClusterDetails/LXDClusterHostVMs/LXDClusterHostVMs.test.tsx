@@ -39,6 +39,7 @@ describe("LXDClusterHostVMs", () => {
           urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
         ],
         state,
+        pattern: urls.kvm.lxd.cluster.vms.host(null),
       }
     );
     expect(screen.getByText("VMs on pod1")).toBeInTheDocument();

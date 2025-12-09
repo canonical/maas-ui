@@ -42,6 +42,7 @@ describe("LXDSingleDetails", () => {
     renderWithProviders(<LXDSingleDetails />, {
       initialEntries: [urls.kvm.lxd.single.vms({ id: 1 })],
       state,
+      pattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
     expect(screen.getByLabelText(LXDSingleVMsLabel.Title)).toBeInTheDocument();
   });
@@ -50,6 +51,7 @@ describe("LXDSingleDetails", () => {
     renderWithProviders(<LXDSingleDetails />, {
       initialEntries: [urls.kvm.lxd.single.resources({ id: 1 })],
       state,
+      pattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
     expect(
       screen.getByLabelText(LXDSingleResourcesLabel.Title)
@@ -60,6 +62,7 @@ describe("LXDSingleDetails", () => {
     renderWithProviders(<LXDSingleDetails />, {
       initialEntries: [urls.kvm.lxd.single.edit({ id: 1 })],
       state,
+      pattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
@@ -73,6 +76,7 @@ describe("LXDSingleDetails", () => {
     const { router } = renderWithProviders(<LXDSingleDetails />, {
       initialEntries: [urls.kvm.lxd.single.index({ id: 1 })],
       state,
+      pattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
     expect(router.state.location.pathname).toBe(
       urls.kvm.lxd.single.vms({ id: 1 })

@@ -562,6 +562,7 @@ export const renderWithProviders = (
       state?: Partial<RootState>;
       store?: MockStoreEnhanced<RootState | unknown>;
       initialEntries?: InitialEntry[];
+      pattern?: string;
     }>
 ): {
   result: RenderResult;
@@ -583,7 +584,7 @@ export const renderWithProviders = (
   const router = createMemoryRouter(
     [
       {
-        path: "*",
+        path: options?.pattern ?? "*",
         element: <SidePanelContextProvider>{ui}</SidePanelContextProvider>,
       },
     ],
@@ -642,7 +643,7 @@ export const renderWithProviders = (
     const router = createMemoryRouter(
       [
         {
-          path: "*",
+          path: options?.pattern ?? "*",
           element: <SidePanelContextProvider>{ui}</SidePanelContextProvider>,
         },
       ],

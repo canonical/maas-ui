@@ -58,6 +58,7 @@ describe("LXDClusterDetails", () => {
       renderWithProviders(<LXDClusterDetails />, {
         initialEntries: [path],
         state,
+        pattern: `${urls.kvm.lxd.cluster.index(null)}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
