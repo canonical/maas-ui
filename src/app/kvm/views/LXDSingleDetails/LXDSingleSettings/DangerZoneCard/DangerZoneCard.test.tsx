@@ -1,6 +1,6 @@
 import DangerZoneCard from "./DangerZoneCard";
 
-import DeleteForm from "@/app/kvm/components/KVMForms/DeleteForm";
+import DeleteForm from "@/app/kvm/components/DeleteForm";
 import { mockSidePanel, render, screen, userEvent } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();

@@ -1,7 +1,7 @@
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
 import urls from "@/app/base/urls";
-import ComposeForm from "@/app/kvm/components/KVMForms/ComposeForm";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
 import { PodType } from "@/app/store/pod/constants";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";

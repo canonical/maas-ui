@@ -3,9 +3,9 @@ import type { ReactElement } from "react";
 import { ContextualMenu } from "@canonical/react-components";
 
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import ComposeForm from "@/app/kvm/components/KVMForms/ComposeForm";
-import DeleteForm from "@/app/kvm/components/KVMForms/DeleteForm";
-import RefreshForm from "@/app/kvm/components/KVMForms/RefreshForm";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
+import DeleteForm from "@/app/kvm/components/DeleteForm";
+import RefreshForm from "@/app/kvm/components/RefreshForm";
 import type { Pod } from "@/app/store/pod/types";
 
 type Props = {

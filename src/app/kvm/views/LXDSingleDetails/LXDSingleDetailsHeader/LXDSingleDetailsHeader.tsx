@@ -9,7 +9,7 @@ import { useFetchActions } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
-import RefreshForm from "@/app/kvm/components/KVMForms/RefreshForm";
+import RefreshForm from "@/app/kvm/components/RefreshForm";
 import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";

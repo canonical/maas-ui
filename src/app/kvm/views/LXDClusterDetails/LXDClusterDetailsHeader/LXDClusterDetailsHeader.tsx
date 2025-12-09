@@ -9,7 +9,7 @@ import { useGetZone } from "@/app/api/query/zones";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
-import RefreshForm from "@/app/kvm/components/KVMForms/RefreshForm";
+import RefreshForm from "@/app/kvm/components/RefreshForm";
 import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";

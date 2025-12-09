@@ -7,8 +7,8 @@ import configureStore from "redux-mock-store";
 import KVMListHeader from "./KVMListHeader";
 
 import urls from "@/app/base/urls";
-import AddLxd from "@/app/kvm/components/KVMForms/AddLxd";
-import AddVirsh from "@/app/kvm/components/KVMForms/AddVirsh";
+import AddLxd from "@/app/kvm/components/AddLxd";
+import AddVirsh from "@/app/kvm/components/AddVirsh";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { mockSidePanel } from "@/testing/utils";

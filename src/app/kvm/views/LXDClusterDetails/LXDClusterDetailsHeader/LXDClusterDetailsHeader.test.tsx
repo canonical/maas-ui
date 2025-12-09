@@ -1,7 +1,7 @@
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 
 import urls from "@/app/base/urls";
-import RefreshForm from "@/app/kvm/components/KVMForms/RefreshForm";
+import RefreshForm from "@/app/kvm/components/RefreshForm";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";

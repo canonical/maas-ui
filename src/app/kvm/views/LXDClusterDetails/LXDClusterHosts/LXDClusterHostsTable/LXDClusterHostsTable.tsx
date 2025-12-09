@@ -25,7 +25,7 @@ import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { SortDirection } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import CPUColumn from "@/app/kvm/components/CPUColumn";
-import ComposeForm from "@/app/kvm/components/KVMForms/ComposeForm";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
 import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
 import NameColumn from "@/app/kvm/components/NameColumn";
 import RAMColumn from "@/app/kvm/components/RAMColumn";

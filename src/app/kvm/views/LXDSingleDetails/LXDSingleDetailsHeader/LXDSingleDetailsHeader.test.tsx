@@ -1,6 +1,6 @@
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
-import RefreshForm from "@/app/kvm/components/KVMForms/RefreshForm";
+import RefreshForm from "@/app/kvm/components/RefreshForm";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

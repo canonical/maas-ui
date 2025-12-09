@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import LXDHostVMs from "./LXDHostVMs";
 
-import ComposeForm from "@/app/kvm/components/KVMForms/ComposeForm";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

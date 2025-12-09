@@ -10,7 +10,7 @@ import NumaResources from "./NumaResources";
 
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
-import ComposeForm from "@/app/kvm/components/KVMForms/ComposeForm";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
 import LXDVMsSummaryCard from "@/app/kvm/components/LXDVMsSummaryCard";
 import LXDVMsTable from "@/app/kvm/components/LXDVMsTable";
 import podSelectors from "@/app/store/pod/selectors";

@@ -1,4 +1,4 @@
-@import "../index.scss";
+@import "../index";
 
 $ratio-total: $subnet-col-ratio + $fabric-col-ratio + $vlan-col-ratio;
 $ratio-multiplier: math.div($ratio-total, $subnet-col-ratio);
