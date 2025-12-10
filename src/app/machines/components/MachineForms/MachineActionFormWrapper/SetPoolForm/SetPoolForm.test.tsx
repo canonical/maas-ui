@@ -2,6 +2,7 @@ import configureStore from "redux-mock-store";
 
 import SetPoolForm from "./SetPoolForm";
 
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
@@ -15,6 +16,15 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 setupMockServer(
   poolsResolvers.listPools.handler(),
   poolsResolvers.createPool.handler()
@@ -22,21 +32,25 @@ setupMockServer(
 
 describe("SetPoolForm", () => {
   let state: RootState;
+  const machines = [
+    factory.machine({
+      system_id: "abc123",
+    }),
+    factory.machine({
+      system_id: "def456",
+    }),
+  ];
   beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue("123456");
     state = factory.rootState({
       machine: factory.machineState({
         errors: {},
         loading: false,
         loaded: true,
-        items: [
-          factory.machine({
-            system_id: "abc123",
-          }),
-          factory.machine({
-            system_id: "def456",
-          }),
-        ],
-        selected: null,
+        items: machines,
+        selected: {
+          items: machines.map((machine) => machine.system_id),
+        },
         statuses: {
           abc123: factory.machineStatus({ settingPool: false }),
           def456: factory.machineStatus({ settingPool: false }),
@@ -45,17 +59,11 @@ describe("SetPoolForm", () => {
     });
   });
 
-  it("correctly dispatches actions to set pools of given machines", async () => {
+  it("correctly dispatches actions to set pools of selected machines", async () => {
     const store = mockStore(state);
-    renderWithProviders(
-      <SetPoolForm
-        clearSidePanelContent={vi.fn()}
-        machines={state.machine.items}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: ["/machines"], store }
-    );
+    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
+      store,
+    });
 
     await waitFor(() => {
       expect(
@@ -79,10 +87,10 @@ describe("SetPoolForm", () => {
       store.getActions().filter((action) => action.type === "machine/setPool")
     ).toStrictEqual([
       {
-        type: "machine/setPool",
         meta: {
-          model: "machine",
+          callId: undefined,
           method: "action",
+          model: "machine",
         },
         payload: {
           params: {
@@ -90,40 +98,22 @@ describe("SetPoolForm", () => {
             extra: {
               pool_id: 1,
             },
-            system_id: "abc123",
-          },
-        },
-      },
-      {
-        type: "machine/setPool",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.SET_POOL,
-            extra: {
-              pool_id: 1,
+            filter: {
+              id: ["abc123", "def456"],
             },
-            system_id: "def456",
+            system_id: undefined,
           },
         },
+        type: "machine/setPool",
       },
     ]);
   });
 
-  it("correctly dispatches action to create and set pool of given machines", async () => {
+  it("correctly dispatches action to create and set pool of selected machines", async () => {
     const store = mockStore(state);
-    renderWithProviders(
-      <SetPoolForm
-        clearSidePanelContent={vi.fn()}
-        machines={state.machine.items}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: ["/machines"], store }
-    );
+    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
+      store,
+    });
 
     await waitFor(() => {
       expect(
@@ -141,23 +131,31 @@ describe("SetPoolForm", () => {
     });
     await userEvent.click(confirmButton);
 
+    expect(poolsResolvers.createPool.resolved).toBe(true);
+
     expect(
-      store.getActions().find((action) => action.type === "machine/setPool")
-    ).toStrictEqual({
-      meta: {
-        method: "action",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          action: "set-pool",
-          extra: {
-            pool_id: 1,
-          },
-          system_id: "abc123",
+      store.getActions().filter((action) => action.type === "machine/setPool")
+    ).toStrictEqual([
+      {
+        meta: {
+          callId: undefined,
+          method: "action",
+          model: "machine",
         },
+        payload: {
+          params: {
+            action: NodeActions.SET_POOL,
+            extra: {
+              pool_id: 1,
+            },
+            filter: {
+              id: ["abc123", "def456"],
+            },
+            system_id: undefined,
+          },
+        },
+        type: "machine/setPool",
       },
-      type: "machine/setPool",
-    });
+    ]);
   });
 });
