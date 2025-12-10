@@ -74,7 +74,6 @@ export type APIError<E = null> =
 export type DataTestElement<E> = E & { "data-testid"?: string };
 
 export type CommonActionFormProps<E = null> = {
-  clearSidePanelContent: ClearSidePanelContent;
   errors?: APIError<E>;
   viewingDetails: boolean;
 };
