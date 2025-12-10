@@ -6,13 +6,19 @@ import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
+import {
+  mockSidePanel,
+  renderWithProviders,
+  screen,
+  userEvent,
+} from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: vi.fn(),
 }));
 
 const mockStore = configureStore<RootState>();
+const { mockClose } = await mockSidePanel();
 
 describe("FieldlessForm", () => {
   let state: RootState;
@@ -44,39 +50,36 @@ describe("FieldlessForm", () => {
 
   it("can unset the selected action", async () => {
     const store = mockStore(state);
-    const clearSidePanelContent = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FieldlessForm
         action={NodeActions.ON}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={clearSidePanelContent}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { store }
     );
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
-    expect(clearSidePanelContent).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("can dispatch abort action on given machines", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FieldlessForm
         action={NodeActions.ABORT}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { store }
     );
 
     await userEvent.click(
@@ -104,18 +107,17 @@ describe("FieldlessForm", () => {
 
   it("can dispatch acquire action on given machines", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FieldlessForm
         action={NodeActions.ACQUIRE}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { store }
     );
 
     await userEvent.click(
@@ -143,18 +145,17 @@ describe("FieldlessForm", () => {
 
   it("can dispatch exit rescue mode action on given machines", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FieldlessForm
         action={NodeActions.EXIT_RESCUE_MODE}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { store }
     );
 
     await userEvent.click(
@@ -182,18 +183,17 @@ describe("FieldlessForm", () => {
 
   it("can dispatch lock action on given machines", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FieldlessForm
         action={NodeActions.LOCK}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { store }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Lock machine" }));
@@ -219,18 +219,17 @@ describe("FieldlessForm", () => {
 
   it("can dispatch mark fixed action on given machines", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FieldlessForm
         action={NodeActions.MARK_FIXED}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { store }
     );
 
     await userEvent.click(
@@ -258,18 +257,17 @@ describe("FieldlessForm", () => {
 
   it("can dispatch power off action on given machines", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FieldlessForm
         action={NodeActions.OFF}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machine", store }
+      { store }
     );
 
     await userEvent.click(
@@ -297,18 +295,17 @@ describe("FieldlessForm", () => {
 
   it("can dispatch power on action on given machines", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FieldlessForm
         action={NodeActions.ON}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { store }
     );
 
     await userEvent.click(
@@ -336,18 +333,17 @@ describe("FieldlessForm", () => {
 
   it("can dispatch unlock action on given machines", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FieldlessForm
         action={NodeActions.UNLOCK}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { store }
     );
 
     await userEvent.click(
