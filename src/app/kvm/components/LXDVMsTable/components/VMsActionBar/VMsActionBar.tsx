@@ -4,10 +4,10 @@ import { Button, Icon, Tooltip } from "@canonical/react-components";
 
 import ActionBar from "@/app/base/components/ActionBar";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
-import DeleteForm from "@/app/base/components/node/DeleteForm";
 import { useSendAnalytics } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
+import DeleteVM from "@/app/kvm/components/DeleteVM";
 import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import { useHasSelection } from "@/app/store/machine/utils/hooks";
@@ -93,8 +93,8 @@ const VMsActionBar = ({
               hasIcon
               onClick={() => {
                 openSidePanel({
-                  component: DeleteForm,
-                  title: "Delete",
+                  component: DeleteVM,
+                  title: "Delete VMs",
                 });
               }}
             >

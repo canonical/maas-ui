@@ -134,6 +134,7 @@ export const MachineActionForm = ({
       <OverrideTestForm {...commonMachineFormProps} />
     ),
     [NodeActions.RELEASE]: () => <ReleaseForm {...commonMachineFormProps} />,
+    // <====== REFACTORING CHANGES HANDS HERE ======>
     [NodeActions.SET_POOL]: () => <SetPoolForm {...commonMachineFormProps} />,
     [NodeActions.SET_ZONE]: () => (
       <SetZoneForm<MachineEventErrors>
