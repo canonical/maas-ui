@@ -60,7 +60,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { initialEntries: ["/machines"], store }
+      { store }
     );
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
@@ -79,7 +79,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { initialEntries: ["/machines"], store }
+      { store }
     );
 
     await userEvent.click(
@@ -117,7 +117,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { initialEntries: ["/machines"], store }
+      { store }
     );
 
     await userEvent.click(
@@ -155,7 +155,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { initialEntries: ["/machines"], store }
+      { store }
     );
 
     await userEvent.click(
@@ -193,7 +193,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { initialEntries: ["/machines"], store }
+      { store }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Lock machine" }));
@@ -229,7 +229,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { initialEntries: ["/machines"], store }
+      { store }
     );
 
     await userEvent.click(
@@ -267,7 +267,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { initialEntries: ["/machine"], store }
+      { store }
     );
 
     await userEvent.click(
@@ -305,7 +305,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { initialEntries: ["/machines"], store }
+      { store }
     );
 
     await userEvent.click(
@@ -343,7 +343,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { initialEntries: ["/machines"], store }
+      { store }
     );
 
     await userEvent.click(
