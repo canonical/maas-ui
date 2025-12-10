@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import { GenericTable } from "@canonical/maas-react-components";
+import type { SortingState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
 import useVirshTableColumns from "../useVirshTableColumns/useVirshTableColumns";
@@ -45,25 +48,30 @@ const getSortValue = (
 const VirshTable = () => {
   const virshKvms = useSelector(podSelectors.virsh);
   const pools = usePools();
-
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "name", desc: true },
+  ]);
   const columns = useVirshTableColumns();
-  const { currentSort, sortRows, updateSort } = useTableSort<
-    Pod,
-    SortKey,
-    ResourcePoolResponse[]
-  >(getSortValue, {
-    key: "name",
-    direction: SortDirection.DESCENDING,
-  });
+  const { sortRows } = useTableSort<Pod, SortKey, ResourcePoolResponse[]>(
+    getSortValue,
+    {
+      key: "name",
+      direction: SortDirection.DESCENDING,
+    }
+  );
   const sortedKVMs = sortRows(virshKvms, pools.data?.items);
 
   return (
-    <GenericTable
+    <GenericTable<Pod>
       aria-label="virsh table"
       className="virsh-table"
       columns={columns}
       data={sortedKVMs}
-      noData="No pods available.."
+      isLoading={false}
+      noData="No pods available."
+      setSorting={setSorting}
+      sorting={sorting}
+      variant="regular"
     />
   );
 };

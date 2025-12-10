@@ -19,7 +19,7 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
   return useMemo(
     () => [
       {
-        id: "fqdn",
+        id: "name",
         header: () => (
           <DoubleRow
             primary="Name"
@@ -28,7 +28,7 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
             secondaryTitle="Address"
           />
         ),
-        accessorKey: "fqdn",
+        accessorKey: "name",
         enableSorting: true,
         cell: ({ row }) => (
           <NameColumn
