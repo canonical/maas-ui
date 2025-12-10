@@ -136,7 +136,7 @@ export const MachineActionForm = ({
     [NodeActions.RELEASE]: () => <ReleaseForm {...commonMachineFormProps} />,
     // <====== REFACTORING CHANGES HANDS HERE ======>
     [NodeActions.SET_POOL]: () => (
-      <SetPoolForm viewingDetails={viewingDetails} />
+      <SetPoolForm isViewingDetails={viewingDetails} />
     ),
     [NodeActions.SET_ZONE]: () => (
       <SetZoneForm<MachineEventErrors>
