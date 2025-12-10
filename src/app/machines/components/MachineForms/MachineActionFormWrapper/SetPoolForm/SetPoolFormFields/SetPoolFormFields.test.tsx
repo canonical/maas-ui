@@ -15,6 +15,31 @@ setupMockServer(poolsResolvers.listPools.handler());
 
 describe("SetPoolFormFields", () => {
   let state: RootState;
+  const machines = [
+    factory.machine({
+      system_id: "abc123",
+    }),
+    factory.machine({
+      system_id: "def456",
+    }),
+  ];
+  beforeEach(() => {
+    state = factory.rootState({
+      machine: factory.machineState({
+        errors: {},
+        loading: false,
+        loaded: true,
+        items: machines,
+        selected: {
+          items: machines.map((machine) => machine.system_id),
+        },
+        statuses: {
+          abc123: factory.machineStatus({ settingPool: false }),
+          def456: factory.machineStatus({ settingPool: false }),
+        },
+      }),
+    });
+  });
   beforeEach(() => {
     state = factory.rootState({
       machine: factory.machineState({
