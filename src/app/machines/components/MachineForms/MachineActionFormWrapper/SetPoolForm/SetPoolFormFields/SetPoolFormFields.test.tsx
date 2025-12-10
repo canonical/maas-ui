@@ -34,15 +34,10 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows a select if select pool radio chosen", async () => {
-    renderWithProviders(
-      <SetPoolForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: route, state }
-    );
+    renderWithProviders(<SetPoolForm viewingDetails={false} />, {
+      initialEntries: route,
+      state,
+    });
 
     await waitFor(() => {
       expect(screen.getByLabelText("Create pool")).toBeInTheDocument();
@@ -58,15 +53,10 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows inputs for creating a pool if create pool radio chosen", async () => {
-    renderWithProviders(
-      <SetPoolForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: route, state }
-    );
+    renderWithProviders(<SetPoolForm viewingDetails={false} />, {
+      initialEntries: route,
+      state,
+    });
     await waitFor(() => {
       expect(screen.getByLabelText("Create pool")).toBeInTheDocument();
     });
