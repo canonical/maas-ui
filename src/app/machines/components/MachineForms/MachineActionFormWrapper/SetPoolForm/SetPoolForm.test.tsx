@@ -61,8 +61,7 @@ describe("SetPoolForm", () => {
 
   it("correctly dispatches actions to set pools of selected machines", async () => {
     const store = mockStore(state);
-    renderWithProviders(<SetPoolForm viewingDetails={false} />, {
-      initialEntries: ["/machines"],
+    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
       store,
     });
 
@@ -112,8 +111,7 @@ describe("SetPoolForm", () => {
 
   it("correctly dispatches action to create and set pool of selected machines", async () => {
     const store = mockStore(state);
-    renderWithProviders(<SetPoolForm viewingDetails={false} />, {
-      initialEntries: ["/machines"],
+    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
       store,
     });
 

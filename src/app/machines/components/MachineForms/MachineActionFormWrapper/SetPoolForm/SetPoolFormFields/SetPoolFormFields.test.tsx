@@ -15,7 +15,6 @@ setupMockServer(poolsResolvers.listPools.handler());
 
 describe("SetPoolFormFields", () => {
   let state: RootState;
-  const route = ["/machines"];
   beforeEach(() => {
     state = factory.rootState({
       machine: factory.machineState({
@@ -34,8 +33,7 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows a select if select pool radio chosen", async () => {
-    renderWithProviders(<SetPoolForm viewingDetails={false} />, {
-      initialEntries: route,
+    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
       state,
     });
 
@@ -53,8 +51,7 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows inputs for creating a pool if create pool radio chosen", async () => {
-    renderWithProviders(<SetPoolForm viewingDetails={false} />, {
-      initialEntries: route,
+    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
       state,
     });
     await waitFor(() => {

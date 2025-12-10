@@ -22,7 +22,7 @@ import {
 import { NodeActions } from "@/app/store/types/node";
 
 type Props = {
-  viewingDetails: boolean;
+  isViewingDetails: boolean;
 };
 
 const SetPoolSchema = Yup.object().shape({
@@ -31,7 +31,9 @@ const SetPoolSchema = Yup.object().shape({
   poolSelection: Yup.string().oneOf(["create", "select"]).required(),
 });
 
-export const SetPoolForm = ({ viewingDetails }: Props): React.ReactElement => {
+export const SetPoolForm = ({
+  isViewingDetails,
+}: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const searchFilter = FilterMachines.filtersToString(
     FilterMachines.queryStringToFilters(location.search)
@@ -78,7 +80,7 @@ export const SetPoolForm = ({ viewingDetails }: Props): React.ReactElement => {
       onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
+        category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
         label: "Set pool",
       }}
       onSubmit={async (values) => {
