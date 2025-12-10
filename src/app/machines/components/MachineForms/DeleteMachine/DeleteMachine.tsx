@@ -1,5 +1,4 @@
 import type { ReactElement } from "react";
-import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
@@ -31,10 +30,8 @@ export const DeleteMachine = ({
   const location = useLocation();
   const { closeSidePanel } = useSidePanel();
 
-  const [searchFilter, _] = useState(
-    FilterMachines.filtersToString(
-      FilterMachines.queryStringToFilters(location.search)
-    )
+  const searchFilter = FilterMachines.filtersToString(
+    FilterMachines.queryStringToFilters(location.search)
   );
 
   const selectedMachines = useSelector(machineSelectors.selected);
