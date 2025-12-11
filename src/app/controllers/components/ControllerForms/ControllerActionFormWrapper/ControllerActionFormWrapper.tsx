@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import SetZoneForm from "../SetZoneForm";
+import SetControllerZoneForm from "../SetControllerZoneForm";
 
 import DeleteForm from "@/app/base/components/node/DeleteForm";
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
@@ -86,7 +86,7 @@ export const ControllerActionFormWrapper = ({
         );
       case NodeActions.SET_ZONE:
         return (
-          <SetZoneForm
+          <SetControllerZoneForm
             controllers={controllers}
             isViewingDetails={viewingDetails}
           />

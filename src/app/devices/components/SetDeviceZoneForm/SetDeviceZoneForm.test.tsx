@@ -1,6 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import SetZoneForm from "./SetZoneForm";
+import SetDeviceZoneForm from "./SetDeviceZoneForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
@@ -41,7 +41,10 @@ describe("SetZoneForm", () => {
 
   it("renders the form with the correct count on the submit label", () => {
     renderWithProviders(
-      <SetZoneForm devices={state.device.items} isViewingDetails={false} />,
+      <SetDeviceZoneForm
+        devices={state.device.items}
+        isViewingDetails={false}
+      />,
       {
         state,
       }
@@ -56,7 +59,10 @@ describe("SetZoneForm", () => {
   it("dispatches actions to update device zones", async () => {
     const store = mockStore(state);
     renderWithProviders(
-      <SetZoneForm devices={state.device.items} isViewingDetails={false} />,
+      <SetDeviceZoneForm
+        devices={state.device.items}
+        isViewingDetails={false}
+      />,
       {
         store,
       }

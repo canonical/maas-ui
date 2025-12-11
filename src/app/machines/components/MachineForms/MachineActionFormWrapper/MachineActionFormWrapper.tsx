@@ -10,8 +10,8 @@ import DeployForm from "./DeployForm";
 import MarkBrokenForm from "./MarkBrokenForm";
 import OverrideTestForm from "./OverrideTestForm";
 import ReleaseForm from "./ReleaseForm";
+import SetMachineZoneForm from "./SetMachineZoneForm/SetMachineZoneForm";
 import SetPoolForm from "./SetPoolForm";
-import SetZoneForm from "./SetZoneForm/SetZoneForm";
 import TagForm from "./TagForm";
 
 import DeleteForm from "@/app/base/components/node/DeleteForm";
@@ -137,7 +137,7 @@ export const MachineActionForm = ({
       <SetPoolForm isViewingDetails={viewingDetails} />
     ),
     [NodeActions.SET_ZONE]: () => (
-      <SetZoneForm isViewingDetails={viewingDetails} />
+      <SetMachineZoneForm isViewingDetails={viewingDetails} />
     ),
     [NodeActions.TAG]: () => <TagForm {...commonMachineFormProps} />,
     [NodeActions.UNTAG]: () => <TagForm {...commonMachineFormProps} />,

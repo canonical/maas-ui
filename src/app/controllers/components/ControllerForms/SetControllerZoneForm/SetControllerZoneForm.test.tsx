@@ -1,8 +1,7 @@
 import configureStore from "redux-mock-store";
 
-import SetZoneForm from "./SetZoneForm";
+import SetControllerZoneForm from "./SetControllerZoneForm";
 
-import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
@@ -17,38 +16,22 @@ import {
 
 setupMockServer(zoneResolvers.listZones.handler());
 const mockStore = configureStore<RootState>();
-
-vi.mock("@reduxjs/toolkit", async () => {
-  const actual: object = await vi.importActual("@reduxjs/toolkit");
-  return {
-    ...actual,
-    nanoid: vi.fn(),
-  };
-});
+let state: RootState;
 
 describe("SetZoneForm", () => {
-  let state: RootState;
-  const machines = [
-    factory.machine({ system_id: "abc123" }),
-    factory.machine({ system_id: "def456" }),
-  ];
-
   beforeEach(() => {
-    vi.spyOn(query, "generateCallId").mockReturnValue("123456");
+    const controllers = [
+      factory.controller({ system_id: "abc123" }),
+      factory.controller({ system_id: "def456" }),
+    ];
     state = factory.rootState({
-      machine: factory.machineState({
-        errors: {},
-        loading: false,
-        loaded: true,
-        items: machines,
-        selected: {
-          items: machines.map((machine) => machine.system_id),
-        },
+      controller: factory.controllerState({
+        items: controllers,
         statuses: {
-          abc123: factory.machineStatus({
+          abc123: factory.controllerStatus({
             settingZone: false,
           }),
-          def456: factory.machineStatus({
+          def456: factory.controllerStatus({
             settingZone: false,
           }),
         },
@@ -57,21 +40,33 @@ describe("SetZoneForm", () => {
   });
 
   it("renders the form with the correct count on the submit label", () => {
-    renderWithProviders(<SetZoneForm isViewingDetails={false} />, {
-      state,
-    });
+    renderWithProviders(
+      <SetControllerZoneForm
+        controllers={state.controller.items}
+        isViewingDetails={false}
+      />,
+      {
+        state,
+      }
+    );
 
     expect(screen.getByRole("combobox", { name: "Zone" })).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Set zone for 2 machines" })
+      screen.getByRole("button", { name: "Set zone for 2 controllers" })
     ).toBeInTheDocument();
   });
 
-  it("dispatches actions to update machine zones", async () => {
+  it("dispatches actions to update controller zones", async () => {
     const store = mockStore(state);
-    renderWithProviders(<SetZoneForm isViewingDetails={false} />, {
-      store,
-    });
+    renderWithProviders(
+      <SetControllerZoneForm
+        controllers={state.controller.items}
+        isViewingDetails={false}
+      />,
+      {
+        store,
+      }
+    );
 
     await waitFor(() => {
       expect(
@@ -89,13 +84,9 @@ describe("SetZoneForm", () => {
 
     const expectedActions = [
       {
-        payload: undefined,
-        type: "machine/cleanup",
-      },
-      {
         meta: {
           method: "action",
-          model: "machine",
+          model: "controller",
         },
         payload: {
           params: {
@@ -103,13 +94,26 @@ describe("SetZoneForm", () => {
             extra: {
               zone_id: "1",
             },
-            filter: {
-              id: machines.map((machine) => machine.system_id),
-            },
-            system_id: undefined,
+            system_id: "abc123",
           },
         },
-        type: "machine/setZone",
+        type: "controller/setZone",
+      },
+      {
+        meta: {
+          method: "action",
+          model: "controller",
+        },
+        payload: {
+          params: {
+            action: NodeActions.SET_ZONE,
+            extra: {
+              zone_id: "1",
+            },
+            system_id: "def456",
+          },
+        },
+        type: "controller/setZone",
       },
     ];
 
