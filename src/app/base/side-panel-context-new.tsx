@@ -1,5 +1,5 @@
 import type { ComponentType, PropsWithChildren, ReactElement } from "react";
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 // This new side panel context is meant to replace the old one over time. Since migrating all
 // panels will take some time, these two contexts will live together while the migrations are
@@ -117,9 +117,9 @@ const SidePanelContextProvider = ({
     });
   };
 
-  const setSidePanelSize = (size: SidePanelSize) => {
+  const setSidePanelSize = useCallback((size: SidePanelSize) => {
     setState((prev) => ({ ...prev, size }));
-  };
+  }, []);
 
   return (
     <SidePanelContext.Provider

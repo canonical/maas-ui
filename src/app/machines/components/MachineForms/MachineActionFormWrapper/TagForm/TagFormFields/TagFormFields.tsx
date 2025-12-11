@@ -17,7 +17,7 @@ import type { TagFormValues } from "../types";
 import TagField from "@/app/base/components/TagField";
 import type { Tag as TagSelectorTag } from "@/app/base/components/TagSelector/TagSelector";
 import type { MachineActionFormProps } from "@/app/machines/types";
-import type { Machine, SelectedMachines } from "@/app/store/machine/types";
+import type { SelectedMachines } from "@/app/store/machine/types";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { getTagCounts } from "@/app/store/tag/utils";
@@ -26,12 +26,11 @@ const hasKernelOptions = (tags: Tag[], tag: TagSelectorTag) =>
   !!tags.find(({ id }) => tag.id === id)?.kernel_opts;
 
 type Props = Pick<MachineActionFormProps, "searchFilter"> & {
-  machines: Machine[];
   newTags: Tag[TagMeta.PK][];
   setNewTags: (tags: Tag[TagMeta.PK][]) => void;
   setNewTagName: (name: string) => void;
-  viewingDetails?: boolean;
-  viewingMachineConfig?: boolean;
+  isViewingDetails?: boolean;
+  isViewingMachineConfig?: boolean;
   selectedMachines?: SelectedMachines | null;
   selectedCount?: number | null;
   toggleTagDetails: (tag: Tag | null) => void;
