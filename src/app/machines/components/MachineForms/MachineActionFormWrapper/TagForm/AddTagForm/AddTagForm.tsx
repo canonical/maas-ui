@@ -1,9 +1,11 @@
 import NodeTagForm from "@/app/base/components/NodeTagForm";
-import type { MachineActionFormProps } from "@/app/machines/types";
+import type { SelectedMachines } from "@/app/store/machine/types";
 import { useFetchDeployedMachineCount } from "@/app/store/machine/utils/hooks";
 import type { Tag } from "@/app/store/tag/types";
 
-export type Props = Partial<MachineActionFormProps> & {
+export type Props = {
+  selectedMachines?: SelectedMachines | null;
+  searchFilter?: string;
   name: string | null;
   onTagCreated: (tag: Tag) => void;
   isViewingDetails?: boolean;
