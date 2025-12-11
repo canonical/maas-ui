@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import SetControllerZoneForm from "./SetControllerZoneForm";
 
 import type { RootState } from "@/app/store/root/types";
@@ -15,7 +13,6 @@ import {
 } from "@/testing/utils";
 
 setupMockServer(zoneResolvers.listZones.handler());
-const mockStore = configureStore<RootState>();
 let state: RootState;
 
 describe("SetZoneForm", () => {
@@ -57,14 +54,13 @@ describe("SetZoneForm", () => {
   });
 
   it("dispatches actions to update controller zones", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <SetControllerZoneForm
         controllers={state.controller.items}
         isViewingDetails={false}
       />,
       {
-        store,
+        state,
       }
     );
 

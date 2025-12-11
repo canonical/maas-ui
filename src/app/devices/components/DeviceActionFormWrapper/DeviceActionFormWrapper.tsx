@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
-import SetZoneForm from "../SetZoneForm";
+import SetZoneForm from "../SetDeviceZoneForm";
 
 import DeleteForm from "@/app/base/components/node/DeleteForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";

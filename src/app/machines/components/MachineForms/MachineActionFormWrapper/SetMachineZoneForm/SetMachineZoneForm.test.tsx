@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import SetMachineZoneForm from "./SetMachineZoneForm";
 
 import * as query from "@/app/store/machine/utils/query";
@@ -16,7 +14,6 @@ import {
 } from "@/testing/utils";
 
 setupMockServer(zoneResolvers.listZones.handler());
-const mockStore = configureStore<RootState>();
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -68,10 +65,12 @@ describe("SetMachineZoneForm", () => {
   });
 
   it("dispatches actions to update machine zones", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<SetMachineZoneForm isViewingDetails={false} />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <SetMachineZoneForm isViewingDetails={false} />,
+      {
+        state,
+      }
+    );
 
     await waitFor(() => {
       expect(
