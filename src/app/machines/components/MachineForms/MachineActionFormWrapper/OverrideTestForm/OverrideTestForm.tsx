@@ -1,19 +1,24 @@
+import type { ChangeEvent, ReactElement } from "react";
+
 import { Col, Row } from "@canonical/react-components";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router";
 import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import FormikField from "@/app/base/components/FormikField";
 import { useSendAnalytics } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
-import type { MachineActionFormProps } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineEventErrors } from "@/app/store/machine/types";
-import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import { FilterMachines } from "@/app/store/machine/utils";
+import {
+  useMachineSelectedCount,
+  useSelectedMachinesActionsDispatch,
+} from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
-
-type Props = MachineActionFormProps;
 
 export type OverrideTestFormValues = {
   suppressResults: boolean;
@@ -23,20 +28,36 @@ const OverrideTestFormSchema = Yup.object().shape({
   suppressResults: Yup.boolean(),
 });
 
+type OverrideTestFormProps = {
+  isViewingDetails: boolean;
+};
+
 export const OverrideTestForm = ({
-  clearSidePanelContent,
-  errors,
-  processingCount,
-  searchFilter,
-  selectedCount,
-  selectedMachines,
-  viewingDetails,
-}: Props): React.ReactElement => {
+  isViewingDetails,
+}: OverrideTestFormProps): ReactElement => {
   const sendAnalytics = useSendAnalytics();
-  const isSingleMachine = selectedCount === 1;
   const dispatch = useDispatch();
-  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
+  const location = useLocation();
+  const { closeSidePanel } = useSidePanel();
+
+  const searchFilter = FilterMachines.filtersToString(
+    FilterMachines.queryStringToFilters(location.search)
+  );
+
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const { selectedCount } = useMachineSelectedCount(
+    FilterMachines.parseFetchFilters(searchFilter)
+  );
+
+  const {
+    dispatch: dispatchForSelectedMachines,
+    actionErrors,
+    actionStatus,
+    ...actionProps
+  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
+
+  const isSingleMachine = selectedCount === 1;
+
   const machineID = isSingleMachine
     ? selectedMachines &&
       "items" in selectedMachines &&
@@ -48,15 +69,15 @@ export const OverrideTestForm = ({
       actionName={NodeActions.OVERRIDE_FAILED_TESTING}
       allowUnchanged
       cleanup={machineActions.cleanup}
-      errors={errors}
+      errors={actionErrors}
       initialValues={{
         suppressResults: false,
       }}
       modelName="machine"
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
+        category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
         label: "Override failed tests",
       }}
       onSubmit={(values) => {
@@ -66,8 +87,8 @@ export const OverrideTestForm = ({
           suppress_failed_script_results: suppressResults,
         });
       }}
-      onSuccess={clearSidePanelContent}
-      processingCount={processingCount}
+      onSuccess={closeSidePanel}
+      processingCount={actionStatus === "loading" ? selectedCount : 0}
       selectedCount={selectedCount}
       validationSchema={OverrideTestFormSchema}
       {...actionProps}
@@ -100,9 +121,9 @@ export const OverrideTestForm = ({
                 </span>
               }
               name="suppressResults"
-              onChangeCapture={(e: React.ChangeEvent<HTMLInputElement>) => {
+              onChangeCapture={(e: ChangeEvent<HTMLInputElement>) => {
                 sendAnalytics(
-                  `Machine ${viewingDetails ? "details" : "list"} action form`,
+                  `Machine ${isViewingDetails ? "details" : "list"} action form`,
                   "Suppress failed tests",
                   e.target.checked ? "Check" : "Uncheck"
                 );
