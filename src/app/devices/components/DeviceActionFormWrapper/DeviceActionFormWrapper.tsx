@@ -3,9 +3,10 @@ import type { Dispatch, SetStateAction } from "react";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
+import SetZoneForm from "../SetZoneForm";
+
 import DeleteForm from "@/app/base/components/node/DeleteForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
-import SetZoneForm from "@/app/base/components/node/SetZoneForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
 import { deviceActions } from "@/app/store/device";
@@ -84,20 +85,7 @@ export const ActionFormWrapper = ({
           {...commonNodeFormProps}
         />
       ) : (
-        <SetZoneForm
-          onSubmit={(zoneID) => {
-            dispatch(deviceActions.cleanup());
-            devices.forEach((device) => {
-              dispatch(
-                deviceActions.setZone({
-                  system_id: device.system_id,
-                  zone_id: zoneID,
-                })
-              );
-            });
-          }}
-          {...commonNodeFormProps}
-        />
+        <SetZoneForm devices={devices} isViewingDetails={viewingDetails} />
       )}
     </NodeActionFormWrapper>
   );

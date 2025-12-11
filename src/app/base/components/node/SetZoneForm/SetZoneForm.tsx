@@ -6,13 +6,16 @@ import type { NodeActionFormProps } from "../types";
 import type { ZoneResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { Node } from "@/app/store/types/node";
 import { NodeActions } from "@/app/store/types/node";
 import { nodeIsDevice, nodeIsMachine } from "@/app/store/utils";
 import { capitaliseFirst } from "@/app/utils";
 
-type Props<E = null> = NodeActionFormProps<E> & {
+type Props<E = null> = Omit<NodeActionFormProps<E>, "viewingDetails"> & {
   onSubmit: (zoneID: ZoneResponse["id"]) => void;
+  selectedCount?: number | null;
+  isViewingDetails: boolean;
 };
 
 export type SetZoneFormValues = {
@@ -34,7 +37,6 @@ const SetZoneSchema = Yup.object().shape({
 });
 
 export const SetZoneForm = <E,>({
-  clearSidePanelContent,
   cleanup,
   errors,
   actionStatus,
@@ -42,9 +44,10 @@ export const SetZoneForm = <E,>({
   modelName,
   onSubmit,
   processingCount,
-  viewingDetails,
+  isViewingDetails,
   selectedCount,
 }: Props<E>): React.ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   return (
     <ActionForm<SetZoneFormValues, E>
       actionName={NodeActions.SET_ZONE}
@@ -55,11 +58,11 @@ export const SetZoneForm = <E,>({
         zone: nodes ? getInitialZoneValue(nodes) : "",
       }}
       modelName={modelName}
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Submit",
         category: `${capitaliseFirst(modelName)} ${
-          viewingDetails ? "details" : "list"
+          isViewingDetails ? "details" : "list"
         } action form`,
         label: "Set zone",
       }}
@@ -68,7 +71,7 @@ export const SetZoneForm = <E,>({
           onSubmit(values.zone);
         }
       }}
-      onSuccess={clearSidePanelContent}
+      onSuccess={closeSidePanel}
       processingCount={processingCount}
       selectedCount={nodes ? nodes.length : (selectedCount ?? 0)}
       validationSchema={SetZoneSchema}

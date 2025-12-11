@@ -3,11 +3,11 @@ import SetZoneForm from "./SetZoneForm";
 import * as factory from "@/testing/factories";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  userEvent,
-  screen,
-  waitFor,
-  setupMockServer,
   renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 setupMockServer(zoneResolvers.listZones.handler());
@@ -17,12 +17,11 @@ describe("SetZoneForm", () => {
     const nodes = [factory.machine({ zone: factory.modelRef({ id: 1 }) })];
     renderWithProviders(
       <SetZoneForm
-        clearSidePanelContent={vi.fn()}
+        isViewingDetails={false}
         modelName="machine"
         nodes={nodes}
         onSubmit={vi.fn()}
         processingCount={0}
-        viewingDetails={false}
       />
     );
     await waitFor(() => {
@@ -41,12 +40,11 @@ describe("SetZoneForm", () => {
     ];
     renderWithProviders(
       <SetZoneForm
-        clearSidePanelContent={vi.fn()}
+        isViewingDetails={false}
         modelName="machine"
         nodes={nodes}
         onSubmit={vi.fn()}
         processingCount={0}
-        viewingDetails={false}
       />
     );
 
@@ -61,12 +59,11 @@ describe("SetZoneForm", () => {
     ];
     renderWithProviders(
       <SetZoneForm
-        clearSidePanelContent={vi.fn()}
+        isViewingDetails={false}
         modelName="machine"
         nodes={nodes}
         onSubmit={onSubmit} // Use the actual onSubmit function
         processingCount={0}
-        viewingDetails={false}
       />
     );
     await waitFor(() => {

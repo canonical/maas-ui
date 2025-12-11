@@ -11,13 +11,13 @@ import MarkBrokenForm from "./MarkBrokenForm";
 import OverrideTestForm from "./OverrideTestForm";
 import ReleaseForm from "./ReleaseForm";
 import SetPoolForm from "./SetPoolForm";
+import SetZoneForm from "./SetZoneForm/SetZoneForm";
 import TagForm from "./TagForm";
 
 import DeleteForm from "@/app/base/components/node/DeleteForm";
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
 import PowerOffForm from "@/app/base/components/node/PowerOffForm";
-import SetZoneForm from "@/app/base/components/node/SetZoneForm";
 import TestForm from "@/app/base/components/node/TestForm";
 import type { HardwareType } from "@/app/base/enum";
 import { useScrollOnRender } from "@/app/base/hooks";
@@ -46,10 +46,9 @@ type ContainerProps = Omit<MachineActionFormProps, "processingCount"> & {
 type Props = ContainerProps &
   Omit<
     ReturnType<typeof useSelectedMachinesActionsDispatch>,
-    "failedSystemIds" | "successCount"
+    "dispatch" | "failedSystemIds" | "successCount"
   > & {
     clearSelectedMachines: () => void;
-    dispatch: Dispatch<Action>;
     dispatchForSelectedMachines: ReturnType<
       typeof useSelectedMachinesActionsDispatch
     >["dispatch"];
@@ -64,7 +63,6 @@ export const MachineActionForm = ({
   applyConfiguredNetworking,
   clearSelectedMachines,
   clearSidePanelContent,
-  dispatch,
   dispatchForSelectedMachines,
   filter,
   hardwareType,
@@ -139,15 +137,7 @@ export const MachineActionForm = ({
       <SetPoolForm isViewingDetails={viewingDetails} />
     ),
     [NodeActions.SET_ZONE]: () => (
-      <SetZoneForm<MachineEventErrors>
-        onSubmit={(zoneID) => {
-          dispatch(machineActions.cleanup());
-          dispatchForSelectedMachines(machineActions.setZone, {
-            zone_id: zoneID,
-          });
-        }}
-        {...commonNodeFormProps}
-      />
+      <SetZoneForm isViewingDetails={viewingDetails} />
     ),
     [NodeActions.TAG]: () => <TagForm {...commonMachineFormProps} />,
     [NodeActions.UNTAG]: () => <TagForm {...commonMachineFormProps} />,
@@ -304,7 +294,6 @@ export const MachineActionFormWrapper = ({
       applyConfiguredNetworking={applyConfiguredNetworking}
       clearSelectedMachines={clearSelectedMachines}
       clearSidePanelContent={clearSidePanelContent}
-      dispatch={dispatch}
       dispatchForSelectedMachines={dispatchForSelectedMachines}
       filter={filter}
       hardwareType={hardwareType}
