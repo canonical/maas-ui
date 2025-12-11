@@ -14,12 +14,12 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 import * as factory from "@/testing/factories";
 import { tagStateListFactory } from "@/testing/factories/state";
 import {
-  userEvent,
   render,
+  renderWithBrowserRouter,
   screen,
+  userEvent,
   waitFor,
   within,
-  renderWithBrowserRouter,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -77,7 +77,6 @@ it("displays available tags in the dropdown", async () => {
     <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
       <TagFormFields
         {...commonProps}
-        machines={[]}
         newTags={[]}
         selectedCount={state.machine.items.length}
         selectedMachines={{
@@ -121,7 +120,6 @@ it("displays the tags to be added", () => {
     >
       <TagFormFields
         {...commonProps}
-        machines={[]}
         newTags={[]}
         selectedCount={state.machine.items.length}
         selectedMachines={{
@@ -153,14 +151,13 @@ it("updates the new tags after creating a tag", async () => {
         <Formik initialValues={{ added: tags, removed: [] }} onSubmit={vi.fn()}>
           <TagFormFields
             {...commonProps}
-            machines={state.machine.items}
+            isViewingDetails={false}
             newTags={tags}
             selectedCount={state.machine.items.length}
             selectedMachines={{
               items: machines.map((item) => item.system_id),
             }}
             setNewTags={setNewTags}
-            viewingDetails={false}
           />
         </Formik>
       </MemoryRouter>

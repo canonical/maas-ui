@@ -76,10 +76,10 @@ it("set the analytics category for the machine details", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
     <AddTagForm
+      isViewingDetails
       machines={[]}
       name="new-tag"
       onTagCreated={vi.fn()}
-      viewingDetails
     />,
     { route: "/tags", store }
   );
@@ -98,10 +98,10 @@ it("set the analytics category for the machine config", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
     <AddTagForm
+      isViewingMachineConfig
       machines={[]}
       name="new-tag"
       onTagCreated={vi.fn()}
-      viewingMachineConfig
     />,
     { route: "/tags", store }
   );

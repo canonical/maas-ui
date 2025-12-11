@@ -6,8 +6,8 @@ import type { Tag } from "@/app/store/tag/types";
 export type Props = Partial<MachineActionFormProps> & {
   name: string | null;
   onTagCreated: (tag: Tag) => void;
-  viewingDetails?: boolean;
-  viewingMachineConfig?: boolean;
+  isViewingDetails?: boolean;
+  isViewingMachineConfig?: boolean;
   onCancel?: () => void;
 };
 
@@ -16,14 +16,14 @@ export const AddTagForm = ({
   name,
   onTagCreated,
   searchFilter,
-  viewingDetails,
-  viewingMachineConfig,
+  isViewingDetails,
+  isViewingMachineConfig,
   onCancel,
 }: Props): React.ReactElement => {
   let location = "list";
-  if (viewingMachineConfig) {
+  if (isViewingMachineConfig) {
     location = "configuration";
-  } else if (viewingDetails) {
+  } else if (isViewingDetails) {
     location = "details";
   }
 

@@ -9,20 +9,24 @@ import TagFormFields from "./TagFormFields";
 import type { TagFormValues } from "./types";
 
 import ActionForm from "@/app/base/components/ActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import type { MachineActionFormProps } from "@/app/machines/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineEventErrors } from "@/app/store/machine/types";
-import { selectedToFilters } from "@/app/store/machine/utils";
-import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import { FilterMachines } from "@/app/store/machine/utils";
+import {
+  useMachineSelectedCount,
+  useSelectedMachinesActionsDispatch,
+} from "@/app/store/machine/utils/hooks";
 import { messageActions } from "@/app/store/message";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { NodeActions } from "@/app/store/types/node";
 import TagSummary from "@/app/tags/components/TagSummary";
 
-type Props = MachineActionFormProps & {
-  viewingMachineConfig?: boolean;
+type Props = {
+  isViewingDetails: boolean;
+  isViewingMachineConfig?: boolean;
 };
 
 export enum Label {
@@ -37,22 +41,25 @@ const TagFormSchema = Yup.object().shape({
 export type TagFormSecondaryContent = "addTag" | "tagDetails" | null;
 
 export const TagForm = ({
-  clearSidePanelContent,
-  errors,
-  machines,
-  processingCount,
-  searchFilter,
-  selectedCount,
-  selectedMachines,
-  viewingDetails,
-  viewingMachineConfig = false,
+  isViewingDetails,
+  isViewingMachineConfig = false,
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
+  const searchFilter = FilterMachines.filtersToString(
+    FilterMachines.queryStringToFilters(location.search)
+  );
+
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const { selectedCount } = useMachineSelectedCount(
+    FilterMachines.parseFetchFilters(searchFilter)
+  );
+  const {
+    dispatch: dispatchForSelectedMachines,
+    actionErrors: errors,
+    ...actionProps
+  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const tagsLoaded = useSelector(tagSelectors.loaded);
   const [newTags, setNewTags] = useState<Tag[TagMeta.PK][]>([]);
-  const filter = selectedToFilters(selectedMachines || null);
 
   let formErrors: Record<string, string[] | string> | null = null;
   if (errors && typeof errors === "object" && "name" in errors) {
@@ -64,7 +71,7 @@ export const TagForm = ({
   }
 
   const [newTagName, setNewTagName] = useState<string | null>(null);
-  const { setSidePanelSize } = useSidePanel();
+  const { setSidePanelSize, closeSidePanel } = useSidePanel();
 
   const [secondaryContent, setSecondaryContent] =
     useState<TagFormSecondaryContent>(null);
@@ -93,7 +100,8 @@ export const TagForm = ({
       {secondaryContent === "addTag" ? (
         <Col size={6}>
           <AddTagForm
-            machines={machines}
+            isViewingDetails={isViewingDetails}
+            isViewingMachineConfig={isViewingMachineConfig}
             name={newTagName}
             onCancel={() => {
               setSecondaryContent(null);
@@ -105,8 +113,6 @@ export const TagForm = ({
             }}
             searchFilter={searchFilter}
             selectedMachines={selectedMachines}
-            viewingDetails={viewingDetails}
-            viewingMachineConfig={viewingMachineConfig}
           />
         </Col>
       ) : null}
@@ -127,64 +133,42 @@ export const TagForm = ({
           }}
           loaded={tagsLoaded}
           modelName="machine"
-          onCancel={clearSidePanelContent}
+          onCancel={closeSidePanel}
           onSaveAnalytics={{
             action: "Submit",
             category: `Machine ${
-              viewingDetails ? "details" : "list"
+              isViewingDetails ? "details" : "list"
             } action form`,
             label: "Tag",
           }}
           onSubmit={(values) => {
             dispatch(machineActions.cleanup());
             if (values.added.length) {
-              if (filter) {
-                dispatchForSelectedMachines(machineActions.tag, {
-                  tags: values.added.map((id) => Number(id)),
-                });
-              } else {
-                machines?.forEach((machine) => {
-                  dispatch(
-                    machineActions.tag({
-                      system_id: machine.system_id,
-                      tags: values.added.map((id) => Number(id)),
-                    })
-                  );
-                });
-              }
+              dispatchForSelectedMachines(machineActions.tag, {
+                tags: values.added.map((id) => Number(id)),
+              });
             }
             if (values.removed.length) {
-              if (selectedMachines) {
-                dispatchForSelectedMachines(machineActions.untag, {
-                  tags: values.removed.map((id) => Number(id)),
-                });
-              } else {
-                machines?.forEach((machine) => {
-                  dispatch(
-                    machineActions.untag({
-                      system_id: machine.system_id,
-                      tags: values.removed.map((id) => Number(id)),
-                    })
-                  );
-                });
-              }
+              dispatchForSelectedMachines(machineActions.untag, {
+                tags: values.removed.map((id) => Number(id)),
+              });
             }
           }}
           onSuccess={() => {
-            clearSidePanelContent();
+            closeSidePanel();
             dispatch(
               messageActions.add(Label.Saved, NotificationSeverity.POSITIVE)
             );
           }}
-          processingCount={processingCount}
-          selectedCount={machines ? machines.length : (selectedCount ?? 0)}
-          showProcessingCount={!viewingMachineConfig}
+          selectedCount={selectedCount ?? 0}
+          showProcessingCount={!isViewingMachineConfig}
           submitLabel="Save tag changes"
           validationSchema={TagFormSchema}
           {...actionProps}
         >
           <TagFormFields
-            machines={machines || []}
+            isViewingDetails={isViewingDetails}
+            isViewingMachineConfig={isViewingMachineConfig}
             newTags={newTags}
             searchFilter={searchFilter}
             selectedCount={selectedCount}
@@ -193,8 +177,6 @@ export const TagForm = ({
             setNewTags={setNewTags}
             setSecondaryContent={setSecondaryContent}
             toggleTagDetails={toggleTagDetails}
-            viewingDetails={viewingDetails}
-            viewingMachineConfig={viewingMachineConfig}
           />
         </ActionForm>
       </Col>

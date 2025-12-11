@@ -139,8 +139,8 @@ export const MachineActionForm = ({
     [NodeActions.SET_ZONE]: () => (
       <SetMachineZoneForm isViewingDetails={viewingDetails} />
     ),
-    [NodeActions.TAG]: () => <TagForm {...commonMachineFormProps} />,
-    [NodeActions.UNTAG]: () => <TagForm {...commonMachineFormProps} />,
+    [NodeActions.TAG]: () => <TagForm isViewingDetails={false} />,
+    [NodeActions.UNTAG]: () => <TagForm isViewingDetails={false} />,
     [NodeActions.TEST]: () => (
       <TestForm<MachineEventErrors>
         applyConfiguredNetworking={applyConfiguredNetworking}
