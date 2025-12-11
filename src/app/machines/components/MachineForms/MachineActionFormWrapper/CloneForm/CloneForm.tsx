@@ -1,21 +1,29 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { ExternalLink } from "@canonical/maas-react-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import CloneFormFields from "./CloneFormFields";
 import CloneResults from "./CloneResults";
 
 import ActionForm from "@/app/base/components/ActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
-import type { MachineActionFormProps } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
-import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import { FilterMachines } from "@/app/store/machine/utils";
+import {
+  useMachineSelectedCount,
+  useSelectedMachinesActionsDispatch,
+} from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
 
-type Props = MachineActionFormProps & {
+type CloneMachineProps = {
+  isViewingDetails: boolean;
+  searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
 };
 
@@ -47,17 +55,21 @@ const CloneFormSchema = Yup.object()
   .defined();
 
 export const CloneForm = ({
-  clearSidePanelContent,
+  isViewingDetails,
   searchFilter,
-  selectedMachines,
-  selectedCount,
-  processingCount,
   setSearchFilter,
-  viewingDetails,
-}: Props): React.ReactElement => {
+}: CloneMachineProps): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
+
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const { selectedCount } = useMachineSelectedCount(
+    FilterMachines.parseFetchFilters(searchFilter ?? "")
+  );
+
   const {
     dispatch: dispatchForSelectedMachines,
+    actionStatus,
     actionErrors,
     ...actionProps
   } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
@@ -76,11 +88,11 @@ export const CloneForm = ({
 
   return showResults || actionErrors ? (
     <CloneResults
-      closeForm={clearSidePanelContent}
+      closeForm={closeSidePanel}
       selectedCount={selectedCount}
       setSearchFilter={setSearchFilter}
       sourceMachine={selectedMachine}
-      viewingDetails={viewingDetails}
+      viewingDetails={isViewingDetails}
     />
   ) : (
     <ActionForm<CloneFormValues>
@@ -101,10 +113,10 @@ export const CloneForm = ({
         storage: false,
       }}
       modelName="machine"
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
+        category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
         label: "Clone",
       }}
       onSubmit={(values) => {
@@ -120,7 +132,7 @@ export const CloneForm = ({
       onSuccess={() => {
         setShowResults(true);
       }}
-      processingCount={processingCount}
+      processingCount={actionStatus === "loading" ? selectedCount : 0}
       selectedCount={selectedCount}
       validationSchema={CloneFormSchema}
       {...actionProps}
