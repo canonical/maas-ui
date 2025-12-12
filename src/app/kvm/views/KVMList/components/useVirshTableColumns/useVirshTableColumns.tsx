@@ -4,8 +4,6 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 import type { VirshTableRow } from "../VirshTable/VirshTable";
 
-import DoubleRow from "@/app/base/components/DoubleRow";
-import TableHeader from "@/app/base/components/TableHeader";
 import urls from "@/app/base/urls";
 import CPUColumn from "@/app/kvm/components/CPUColumn";
 import NameColumn from "@/app/kvm/components/NameColumn";
@@ -23,10 +21,11 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
       {
         id: "name",
         header: () => (
-          <div>
-            <TableHeader sortKey="name">Name</TableHeader>
-            <TableHeader>Address</TableHeader>
-          </div>
+          <>
+            Name
+            <br />
+            Address
+          </>
         ),
         accessorKey: "name",
         enableSorting: true,
@@ -55,12 +54,11 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
       {
         id: "pool",
         header: () => (
-          <DoubleRow
-            primary="Resource Pool"
-            primaryTitle="Resource Pool"
-            secondary="AZ"
-            secondaryTitle="AZ"
-          />
+          <>
+            Resource pool
+            <br />
+            AZ
+          </>
         ),
         accessorKey: "pool",
         enableSorting: true,

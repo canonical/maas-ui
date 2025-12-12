@@ -9,6 +9,7 @@ import useVirshTableColumns from "../useVirshTableColumns/useVirshTableColumns";
 import { useGetPool } from "@/app/api/query/pools";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
+import "./_index.scss";
 
 export type VirshTableRow = {
   id: number;
