@@ -87,14 +87,14 @@ describe("VirshTable", () => {
       await userEvent.click(screen.getByRole("button", { name: /VMs/i }));
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
 
-      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(/1/i);
-      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(/2/i);
+      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(/2/i);
+      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(/1/i);
 
       await userEvent.click(screen.getByRole("button", { name: /VMs/i }));
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
 
-      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(/2/i);
-      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(/1/i);
+      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(/1/i);
+      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(/2/i);
     });
 
     it("can sort by pod resource pool", async () => {
@@ -116,15 +116,13 @@ describe("VirshTable", () => {
       await userEvent.click(
         screen.getByRole("button", { name: /Resource Pool/i })
       );
-      // screen.debug(undefined, 30000);
 
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
-      screen.debug(rows[0]);
       expect(within(rows[0]).getAllByRole("cell")[3]).toHaveTextContent(
-        /swimming/i
+        /gene/i
       );
       expect(within(rows[1]).getAllByRole("cell")[3]).toHaveTextContent(
-        /gene/i
+        /swimming/i
       );
 
       await userEvent.click(
@@ -132,10 +130,10 @@ describe("VirshTable", () => {
       );
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
       expect(within(rows[0]).getAllByRole("cell")[3]).toHaveTextContent(
-        /gene/i
+        /swimming/i
       );
       expect(within(rows[1]).getAllByRole("cell")[3]).toHaveTextContent(
-        /swimming/i
+        /gene/i
       );
     });
   });

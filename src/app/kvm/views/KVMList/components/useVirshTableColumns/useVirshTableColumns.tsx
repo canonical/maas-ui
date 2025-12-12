@@ -2,7 +2,10 @@ import { useMemo } from "react";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
+import type { VirshTableRow } from "../VirshTable/VirshTable";
+
 import DoubleRow from "@/app/base/components/DoubleRow";
+import TableHeader from "@/app/base/components/TableHeader";
 import urls from "@/app/base/urls";
 import CPUColumn from "@/app/kvm/components/CPUColumn";
 import NameColumn from "@/app/kvm/components/NameColumn";
@@ -11,9 +14,8 @@ import RAMColumn from "@/app/kvm/components/RAMColumn";
 import StorageColumn from "@/app/kvm/components/StorageColumn";
 import TagsColumn from "@/app/kvm/components/TagsColumn";
 import VMsColumn from "@/app/kvm/components/VMsColumn";
-import type { Pod } from "@/app/store/pod/types";
 
-type VirshColumnDef = ColumnDef<Pod, Partial<Pod>>;
+type VirshColumnDef = ColumnDef<VirshTableRow, Partial<VirshTableRow>>;
 
 const useVirshTableColumns = (): VirshColumnDef[] => {
   return useMemo(
@@ -21,19 +23,17 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
       {
         id: "name",
         header: () => (
-          <DoubleRow
-            primary="Name"
-            primaryTitle="Name"
-            secondary="Address"
-            secondaryTitle="Address"
-          />
+          <div>
+            <TableHeader sortKey="name">Name</TableHeader>
+            <TableHeader>Address</TableHeader>
+          </div>
         ),
         accessorKey: "name",
         enableSorting: true,
         cell: ({ row }) => (
           <NameColumn
             name={row.original.name}
-            secondary={row.original.power_parameters?.power_address}
+            secondary={row.original.kvm.power_parameters?.power_address}
             url={urls.kvm.virsh.details.index({ id: row.original.id })}
           />
         ),
@@ -42,13 +42,8 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
         id: "resources",
         header: "VMs",
         accessorKey: "resources",
-        accessorFn: (kvm) => {
-          return kvm.resources.vm_count.tracked;
-        },
-        enableSorting: true,
-        cell: ({ row }) => (
-          <VMsColumn vms={row.original.resources.vm_count.tracked} />
-        ),
+        enbleSorting: true,
+        cell: ({ row }) => <VMsColumn vms={row.original.resources} />,
       },
       {
         id: "tags",
@@ -70,7 +65,10 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
         accessorKey: "pool",
         enableSorting: true,
         cell: ({ row }) => (
-          <PoolColumn poolId={row.original.pool} zoneId={row.original.zone} />
+          <PoolColumn
+            poolId={row.original.kvm.pool}
+            zoneId={row.original.kvm.zone}
+          />
         ),
       },
       {
@@ -80,8 +78,8 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
         enableSorting: true,
         cell: ({ row }) => (
           <CPUColumn
-            cores={row.original.resources.cores}
-            overCommit={row.original.cpu_over_commit_ratio}
+            cores={row.original.kvm.resources.cores}
+            overCommit={row.original.kvm.cpu_over_commit_ratio}
           />
         ),
       },
@@ -92,8 +90,8 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
         enableSorting: true,
         cell: ({ row }) => (
           <RAMColumn
-            memory={row.original.resources.memory}
-            overCommit={row.original.memory_over_commit_ratio}
+            memory={row.original.kvm.resources.memory}
+            overCommit={row.original.kvm.memory_over_commit_ratio}
           />
         ),
       },
@@ -104,8 +102,8 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
         enableSorting: true,
         cell: ({ row }) => (
           <StorageColumn
-            pools={row.original.resources.storage_pools}
-            storage={row.original.resources.storage}
+            pools={row.original.kvm.resources.storage_pools}
+            storage={row.original.kvm.resources.storage}
           />
         ),
       },

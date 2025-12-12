@@ -6,26 +6,59 @@ import { useSelector } from "react-redux";
 
 import useVirshTableColumns from "../useVirshTableColumns/useVirshTableColumns";
 
+import { useGetPool } from "@/app/api/query/pools";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
+
+export type VirshTableRow = {
+  id: number;
+  name: string;
+  resources: number;
+  tags: string[];
+  pool: string | undefined;
+  cpu: number;
+  ram: number;
+  storage: number;
+  kvm: Pod;
+};
+
+const generateVirshTableRowData = (kvms: Pod[]): VirshTableRow[] => {
+  const data: VirshTableRow[] = [];
+
+  kvms.forEach((kvm) => {
+    if (!kvm) return;
+    data.push({
+      id: kvm.id,
+      name: kvm.name,
+      resources: kvm.resources.vm_count.tracked,
+      tags: kvm.tags,
+      pool: useGetPool({ path: { resource_pool_id: kvm.pool! } }).data?.name,
+      cpu: kvm.resources.cores.allocated_tracked,
+      ram:
+        kvm.resources.memory.general.allocated_tracked +
+        kvm.resources.memory.hugepages.allocated_tracked,
+      storage: kvm.resources.storage.allocated_tracked,
+      kvm,
+    });
+  });
+
+  return data;
+};
 
 const VirshTable = () => {
   const virshKvms = useSelector(podSelectors.virsh);
   const [sorting, setSorting] = useState<SortingState>([
     { id: "name", desc: true },
   ]);
-  console.log(sorting);
   const columns = useVirshTableColumns();
-  // const fakeKvms = virshKvms.map((virshKvm, i) => ({
-  //   ...virshKvm,
-  //   resources: factory.podResources({ vm_count: { tracked: i + 1, other: 0 } }),
-  // }));
+  const data = generateVirshTableRowData(virshKvms);
+
   return (
-    <GenericTable<Pod>
+    <GenericTable<VirshTableRow>
       aria-label="virsh table"
       className="virsh-table"
       columns={columns}
-      data={virshKvms}
+      data={data}
       isLoading={false}
       noData="No pods available."
       setSorting={setSorting}
