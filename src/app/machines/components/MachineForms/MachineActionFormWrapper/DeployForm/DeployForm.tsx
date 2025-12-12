@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { Spinner, Strip } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import DeployFormFields from "./DeployFormFields";
 
 import ActionForm from "@/app/base/components/ActionForm";
+import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
 import { useFetchActions, useSendAnalytics } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { configActions } from "@/app/store/config";
@@ -66,7 +67,7 @@ export const DeployForm = ({
   );
 
   const selectedMachines = useSelector(machineSelectors.selected);
-  const { selectedCount } = useMachineSelectedCount(
+  const { selectedCount, selectedCountLoading } = useMachineSelectedCount(
     FilterMachines.parseFetchFilters(searchFilter)
   );
 
@@ -95,12 +96,13 @@ export const DeployForm = ({
     configActions.fetch,
   ]);
 
-  if (!defaultMinHweKernelLoaded || !osInfoLoaded || !configLoaded) {
-    return (
-      <Strip data-testid="loading-deploy-data">
-        <Spinner text="Loading..." />
-      </Strip>
-    );
+  if (
+    !defaultMinHweKernelLoaded ||
+    !osInfoLoaded ||
+    !configLoaded ||
+    selectedCountLoading
+  ) {
+    return <Spinner text="Loading..." />;
   }
 
   // Default OS+release is set in the backend even if the image has not yet been
@@ -121,67 +123,76 @@ export const DeployForm = ({
   }
 
   return (
-    <ActionForm<DeployFormValues, MachineEventErrors>
-      actionName={NodeActions.DEPLOY}
-      actionStatus={actionStatus}
-      allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
-      cleanup={machineActions.cleanup}
-      errors={actionErrors}
-      initialValues={{
-        ephemeralDeploy: false,
-        oSystem: initialOS,
-        release: initialRelease,
-        kernel: defaultMinHweKernel || "",
-        includeUserData: false,
-        userData: "",
-        vmHostType: "",
-        enableHwSync: false,
-        enableKernelCrashDump: enableKernelCrashDump || false,
-      }}
-      modelName="machine"
-      onCancel={closeSidePanel}
-      onSaveAnalytics={{
-        action: "Submit",
-        category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
-        label: "Deploy",
-      }}
-      onSubmit={(values) => {
-        dispatch(machineActions.cleanup());
-        const hasUserData =
-          values.includeUserData && values.userData && values.userData !== "";
-        if (hasUserData) {
-          sendAnalytics(
-            "Machine list deploy form",
-            "Has cloud-init config",
-            "Cloud-init user data"
-          );
-        }
-        if (selectedMachines) {
-          dispatchForSelectedMachines(machineActions.deploy, {
-            distro_series: values.release,
-            ephemeral_deploy: values.ephemeralDeploy,
-            hwe_kernel: values.kernel,
-            osystem: values.oSystem,
-            enable_kernel_crash_dump: values.enableKernelCrashDump,
-            ...(values.enableHwSync && { enable_hw_sync: true }),
-            ...(values.vmHostType === PodType.LXD && {
-              register_vmhost: true,
-            }),
-            ...(values.vmHostType === PodType.VIRSH && {
-              install_kvm: true,
-            }),
-            ...(hasUserData && { user_data: values.userData }),
-          });
-        }
-      }}
-      onSuccess={closeSidePanel}
-      processingCount={actionStatus === "loading" ? selectedCount : 0}
-      selectedCount={selectedCount ?? 0}
-      showProcessingCount={false}
-      validationSchema={DeploySchema}
-    >
-      <DeployFormFields />
-    </ActionForm>
+    <>
+      {selectedCount === 0 ? (
+        <NodeActionWarning
+          action={NodeActions.COMMISSION}
+          nodeType="machine"
+          selectedCount={selectedCount}
+        />
+      ) : null}
+      <ActionForm<DeployFormValues, MachineEventErrors>
+        actionName={NodeActions.DEPLOY}
+        actionStatus={actionStatus}
+        allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
+        cleanup={machineActions.cleanup}
+        errors={actionErrors}
+        initialValues={{
+          ephemeralDeploy: false,
+          oSystem: initialOS,
+          release: initialRelease,
+          kernel: defaultMinHweKernel || "",
+          includeUserData: false,
+          userData: "",
+          vmHostType: "",
+          enableHwSync: false,
+          enableKernelCrashDump: enableKernelCrashDump || false,
+        }}
+        modelName="machine"
+        onCancel={closeSidePanel}
+        onSaveAnalytics={{
+          action: "Submit",
+          category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
+          label: "Deploy",
+        }}
+        onSubmit={(values) => {
+          dispatch(machineActions.cleanup());
+          const hasUserData =
+            values.includeUserData && values.userData && values.userData !== "";
+          if (hasUserData) {
+            sendAnalytics(
+              "Machine list deploy form",
+              "Has cloud-init config",
+              "Cloud-init user data"
+            );
+          }
+          if (selectedMachines) {
+            dispatchForSelectedMachines(machineActions.deploy, {
+              distro_series: values.release,
+              ephemeral_deploy: values.ephemeralDeploy,
+              hwe_kernel: values.kernel,
+              osystem: values.oSystem,
+              enable_kernel_crash_dump: values.enableKernelCrashDump,
+              ...(values.enableHwSync && { enable_hw_sync: true }),
+              ...(values.vmHostType === PodType.LXD && {
+                register_vmhost: true,
+              }),
+              ...(values.vmHostType === PodType.VIRSH && {
+                install_kvm: true,
+              }),
+              ...(hasUserData && { user_data: values.userData }),
+            });
+          }
+        }}
+        onSuccess={closeSidePanel}
+        processingCount={actionStatus === "loading" ? selectedCount : 0}
+        selectedCount={selectedCount ?? 0}
+        showProcessingCount={false}
+        validationSchema={DeploySchema}
+      >
+        <DeployFormFields />
+      </ActionForm>
+    </>
   );
 };
 
