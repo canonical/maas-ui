@@ -39,9 +39,12 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
         ),
       },
       {
-        id: "vms",
+        id: "resources",
         header: "VMs",
-        accessorKey: "vms",
+        accessorKey: "resources",
+        accessorFn: (kvm) => {
+          return kvm.resources.vm_count.tracked;
+        },
         enableSorting: true,
         cell: ({ row }) => (
           <VMsColumn vms={row.original.resources.vm_count.tracked} />
@@ -55,7 +58,7 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
         cell: ({ row }) => <TagsColumn tags={row.original.tags} />,
       },
       {
-        id: "pools",
+        id: "pool",
         header: () => (
           <DoubleRow
             primary="Resource Pool"
@@ -64,7 +67,7 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
             secondaryTitle="AZ"
           />
         ),
-        accessorKey: "pools",
+        accessorKey: "pool",
         enableSorting: true,
         cell: ({ row }) => (
           <PoolColumn poolId={row.original.pool} zoneId={row.original.zone} />

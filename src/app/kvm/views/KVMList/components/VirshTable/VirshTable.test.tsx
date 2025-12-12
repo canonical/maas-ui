@@ -37,6 +37,8 @@ describe("VirshTable", () => {
 
   describe("display", () => {
     it("shows pods sorted by descending name by default", async () => {
+      state.pod.items[0].name = "a";
+      state.pod.items[1].name = "b";
       renderWithProviders(<VirshTable />, {
         initialEntries: ["/kvm"],
         state,
@@ -114,7 +116,10 @@ describe("VirshTable", () => {
       await userEvent.click(
         screen.getByRole("button", { name: /Resource Pool/i })
       );
+      // screen.debug(undefined, 30000);
+
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
+      screen.debug(rows[0]);
       expect(within(rows[0]).getAllByRole("cell")[3]).toHaveTextContent(
         /swimming/i
       );
