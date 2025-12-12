@@ -126,7 +126,7 @@ export const DeployForm = ({
     <>
       {selectedCount === 0 ? (
         <NodeActionWarning
-          action={NodeActions.COMMISSION}
+          action={NodeActions.DEPLOY}
           nodeType="machine"
           selectedCount={selectedCount}
         />

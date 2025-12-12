@@ -3,7 +3,7 @@ import CommissionForm from "../CommissionForm";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("CommissionForm", () => {
   let state: RootState;
@@ -54,15 +54,7 @@ describe("CommissionForm", () => {
   });
 
   it("displays a field for URL if a selected script has url parameter", async () => {
-    renderWithBrowserRouter(
-      <CommissionForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines/add", state }
-    );
+    renderWithProviders(<CommissionForm isViewingDetails={false} />, { state });
     expect(screen.queryByTestId("url-script-input")).not.toBeInTheDocument();
     await userEvent.click(
       screen.getByRole("textbox", { name: "Testing scripts" })

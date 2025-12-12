@@ -71,7 +71,7 @@ export const MarkBrokenForm = ({
     <>
       {selectedCount === 0 ? (
         <NodeActionWarning
-          action={NodeActions.COMMISSION}
+          action={NodeActions.MARK_BROKEN}
           nodeType="machine"
           selectedCount={selectedCount}
         />

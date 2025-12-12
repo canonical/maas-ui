@@ -64,7 +64,7 @@ export const DeleteMachine = ({
     <>
       {selectedCount === 0 ? (
         <NodeActionWarning
-          action={NodeActions.COMMISSION}
+          action={NodeActions.DELETE}
           nodeType="machine"
           selectedCount={selectedCount}
         />

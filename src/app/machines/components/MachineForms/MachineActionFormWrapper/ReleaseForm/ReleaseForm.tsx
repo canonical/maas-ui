@@ -83,7 +83,7 @@ export const ReleaseForm = ({
     <>
       {selectedCount === 0 ? (
         <NodeActionWarning
-          action={NodeActions.COMMISSION}
+          action={NodeActions.RELEASE}
           nodeType="machine"
           selectedCount={selectedCount}
         />

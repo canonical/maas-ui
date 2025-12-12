@@ -73,7 +73,7 @@ export const OverrideTestForm = ({
     <>
       {selectedCount === 0 ? (
         <NodeActionWarning
-          action={NodeActions.COMMISSION}
+          action={NodeActions.OVERRIDE_FAILED_TESTING}
           nodeType="machine"
           selectedCount={selectedCount}
         />
