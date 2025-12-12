@@ -1,13 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 
+import SetControllerZoneForm from "../SetControllerZoneForm";
+
 import DeleteForm from "@/app/base/components/node/DeleteForm";
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
-import SetZoneForm from "@/app/base/components/node/SetZoneForm";
 import TestForm from "@/app/base/components/node/TestForm";
 import type { HardwareType } from "@/app/base/enum";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
+import { getProcessingCount } from "@/app/controllers/utils";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {
   statusSelectors,
@@ -27,18 +29,6 @@ type Props = {
   hardwareType?: HardwareType;
   controllers: Controller[];
   viewingDetails: boolean;
-};
-
-const getProcessingCount = (
-  selectedControllers: Controller[],
-  processingControllers: Controller[]
-) => {
-  return processingControllers.reduce<number>((count, processingController) => {
-    const controllerInSelection = selectedControllers.some(
-      (controller) => controller.system_id === processingController.system_id
-    );
-    return controllerInSelection ? count + 1 : count;
-  }, 0);
 };
 
 export const ControllerActionFormWrapper = ({
@@ -96,19 +86,9 @@ export const ControllerActionFormWrapper = ({
         );
       case NodeActions.SET_ZONE:
         return (
-          <SetZoneForm
-            onSubmit={(zoneID) => {
-              dispatch(controllerActions.cleanup());
-              controllers.forEach((controller) => {
-                dispatch(
-                  controllerActions.setZone({
-                    system_id: controller.system_id,
-                    zone_id: zoneID,
-                  })
-                );
-              });
-            }}
-            {...commonNodeFormProps}
+          <SetControllerZoneForm
+            controllers={controllers}
+            isViewingDetails={viewingDetails}
           />
         );
       case NodeActions.TEST:
