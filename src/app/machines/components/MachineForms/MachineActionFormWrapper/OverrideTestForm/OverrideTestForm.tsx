@@ -1,12 +1,13 @@
 import type { ChangeEvent, ReactElement } from "react";
 
-import { Col, Row } from "@canonical/react-components";
+import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router";
 import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import FormikField from "@/app/base/components/FormikField";
+import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
 import { useSendAnalytics } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
@@ -45,7 +46,7 @@ export const OverrideTestForm = ({
   );
 
   const selectedMachines = useSelector(machineSelectors.selected);
-  const { selectedCount } = useMachineSelectedCount(
+  const { selectedCount, selectedCountLoading } = useMachineSelectedCount(
     FilterMachines.parseFetchFilters(searchFilter)
   );
 
@@ -64,76 +65,89 @@ export const OverrideTestForm = ({
       selectedMachines?.items?.[0]
     : null;
 
+  if (selectedCountLoading) {
+    return <Spinner text={"Loading..."} />;
+  }
+
   return (
-    <ActionForm<OverrideTestFormValues, MachineEventErrors>
-      actionName={NodeActions.OVERRIDE_FAILED_TESTING}
-      allowUnchanged
-      cleanup={machineActions.cleanup}
-      errors={actionErrors}
-      initialValues={{
-        suppressResults: false,
-      }}
-      modelName="machine"
-      onCancel={closeSidePanel}
-      onSaveAnalytics={{
-        action: "Submit",
-        category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
-        label: "Override failed tests",
-      }}
-      onSubmit={(values) => {
-        dispatch(machineActions.cleanup());
-        const { suppressResults } = values;
-        dispatchForSelectedMachines(machineActions.overrideFailedTesting, {
-          suppress_failed_script_results: suppressResults,
-        });
-      }}
-      onSuccess={closeSidePanel}
-      processingCount={actionStatus === "loading" ? selectedCount : 0}
-      selectedCount={selectedCount}
-      validationSchema={OverrideTestFormSchema}
-      {...actionProps}
-    >
-      <Row>
-        <Col size={12}>
-          <>
-            <p className="u-sv1">
-              Overriding will allow the machines to be deployed, marked with a
-              warning.
-            </p>
-            <FormikField
-              label={
-                <span>
-                  Suppress test-failure icons in the machines list. Results
-                  remain visible in
-                  <br />
-                  {machineID ? (
-                    <Link
-                      to={urls.machines.machine.index({
-                        id: machineID,
-                      })}
-                    >
-                      Machine &gt; Hardware tests
-                    </Link>
-                  ) : (
-                    "Machine > Hardware tests"
-                  )}
-                  .
-                </span>
-              }
-              name="suppressResults"
-              onChangeCapture={(e: ChangeEvent<HTMLInputElement>) => {
-                sendAnalytics(
-                  `Machine ${isViewingDetails ? "details" : "list"} action form`,
-                  "Suppress failed tests",
-                  e.target.checked ? "Check" : "Uncheck"
-                );
-              }}
-              type="checkbox"
-            />
-          </>
-        </Col>
-      </Row>
-    </ActionForm>
+    <>
+      {selectedCount === 0 ? (
+        <NodeActionWarning
+          action={NodeActions.OVERRIDE_FAILED_TESTING}
+          nodeType="machine"
+          selectedCount={selectedCount}
+        />
+      ) : null}
+      <ActionForm<OverrideTestFormValues, MachineEventErrors>
+        actionName={NodeActions.OVERRIDE_FAILED_TESTING}
+        allowUnchanged
+        cleanup={machineActions.cleanup}
+        errors={actionErrors}
+        initialValues={{
+          suppressResults: false,
+        }}
+        modelName="machine"
+        onCancel={closeSidePanel}
+        onSaveAnalytics={{
+          action: "Submit",
+          category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
+          label: "Override failed tests",
+        }}
+        onSubmit={(values) => {
+          dispatch(machineActions.cleanup());
+          const { suppressResults } = values;
+          dispatchForSelectedMachines(machineActions.overrideFailedTesting, {
+            suppress_failed_script_results: suppressResults,
+          });
+        }}
+        onSuccess={closeSidePanel}
+        processingCount={actionStatus === "loading" ? selectedCount : 0}
+        selectedCount={selectedCount}
+        validationSchema={OverrideTestFormSchema}
+        {...actionProps}
+      >
+        <Row>
+          <Col size={12}>
+            <>
+              <p className="u-sv1">
+                Overriding will allow the machines to be deployed, marked with a
+                warning.
+              </p>
+              <FormikField
+                label={
+                  <span>
+                    Suppress test-failure icons in the machines list. Results
+                    remain visible in
+                    <br />
+                    {machineID ? (
+                      <Link
+                        to={urls.machines.machine.index({
+                          id: machineID,
+                        })}
+                      >
+                        Machine &gt; Hardware tests
+                      </Link>
+                    ) : (
+                      "Machine > Hardware tests"
+                    )}
+                    .
+                  </span>
+                }
+                name="suppressResults"
+                onChangeCapture={(e: ChangeEvent<HTMLInputElement>) => {
+                  sendAnalytics(
+                    `Machine ${isViewingDetails ? "details" : "list"} action form`,
+                    "Suppress failed tests",
+                    e.target.checked ? "Check" : "Uncheck"
+                  );
+                }}
+                type="checkbox"
+              />
+            </>
+          </Col>
+        </Row>
+      </ActionForm>
+    </>
   );
 };
 

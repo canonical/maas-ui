@@ -1,11 +1,13 @@
 import type { ReactElement } from "react";
 
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import type { Action, Dispatch } from "redux";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import NodeActionConfirmationText from "@/app/base/components/NodeActionConfirmationText";
+import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";
@@ -27,7 +29,7 @@ const DeleteVM = (): ReactElement => {
   );
 
   const selectedMachines = useSelector(machineSelectors.selected);
-  const { selectedCount } = useMachineSelectedCount(
+  const { selectedCount, selectedCountLoading } = useMachineSelectedCount(
     FilterMachines.parseFetchFilters(searchFilter)
   );
 
@@ -46,36 +48,49 @@ const DeleteVM = (): ReactElement => {
     dispatch(machineActions.invalidateQueries());
   };
 
+  if (selectedCountLoading) {
+    return <Spinner text={"Loading..."} />;
+  }
+
   return (
-    <ActionForm<EmptyObject>
-      actionName={NodeActions.DELETE}
-      actionStatus={actionStatus}
-      allowUnchanged
-      cleanup={machineActions.cleanup}
-      errors={actionErrors}
-      initialValues={{}}
-      modelName="VM"
-      onCancel={closeSidePanel}
-      onSaveAnalytics={{
-        action: "Submit",
-        category: "VM action form",
-        label: "Delete",
-      }}
-      onSubmit={handleSubmit}
-      onSuccess={() => {
-        closeSidePanel();
-        clearSelectedMachines();
-      }}
-      processingCount={actionStatus === "loading" ? selectedCount : 0}
-      selectedCount={selectedCount}
-      submitAppearance="negative"
-    >
-      <NodeActionConfirmationText
-        action={NodeActions.DELETE}
-        modelName="virtual machine"
+    <>
+      {selectedCount === 0 ? (
+        <NodeActionWarning
+          action={NodeActions.DELETE}
+          nodeType="machine"
+          selectedCount={selectedCount}
+        />
+      ) : null}
+      <ActionForm<EmptyObject>
+        actionName={NodeActions.DELETE}
+        actionStatus={actionStatus}
+        allowUnchanged
+        cleanup={machineActions.cleanup}
+        errors={actionErrors}
+        initialValues={{}}
+        modelName="VM"
+        onCancel={closeSidePanel}
+        onSaveAnalytics={{
+          action: "Submit",
+          category: "VM action form",
+          label: "Delete",
+        }}
+        onSubmit={handleSubmit}
+        onSuccess={() => {
+          closeSidePanel();
+          clearSelectedMachines();
+        }}
+        processingCount={actionStatus === "loading" ? selectedCount : 0}
         selectedCount={selectedCount}
-      />
-    </ActionForm>
+        submitAppearance="negative"
+      >
+        <NodeActionConfirmationText
+          action={NodeActions.DELETE}
+          modelName="virtual machine"
+          selectedCount={selectedCount}
+        />
+      </ActionForm>
+    </>
   );
 };
 

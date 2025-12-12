@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { ExternalLink } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,6 +10,7 @@ import CloneFormFields from "./CloneFormFields";
 import CloneResults from "./CloneResults";
 
 import ActionForm from "@/app/base/components/ActionForm";
+import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";
@@ -63,7 +65,7 @@ export const CloneForm = ({
   const { closeSidePanel } = useSidePanel();
 
   const selectedMachines = useSelector(machineSelectors.selected);
-  const { selectedCount } = useMachineSelectedCount(
+  const { selectedCount, selectedCountLoading } = useMachineSelectedCount(
     FilterMachines.parseFetchFilters(searchFilter ?? "")
   );
 
@@ -86,62 +88,77 @@ export const CloneForm = ({
     };
   }, [dispatch]);
 
-  return showResults || actionErrors ? (
-    <CloneResults
-      closeForm={closeSidePanel}
-      selectedCount={selectedCount}
-      setSearchFilter={setSearchFilter}
-      sourceMachine={selectedMachine}
-      viewingDetails={isViewingDetails}
-    />
-  ) : (
-    <ActionForm<CloneFormValues>
-      actionName={NodeActions.CLONE}
-      buttonsHelp={
-        <p>
-          The clone function allows you to apply storage and/or network
-          interface configuration from the source machine to selected
-          destination machines.{" "}
-          <ExternalLink to="https://discourse.maas.io/t/cloning-ui/4855">
-            Find out more
-          </ExternalLink>
-        </p>
-      }
-      initialValues={{
-        interfaces: false,
-        source: "",
-        storage: false,
-      }}
-      modelName="machine"
-      onCancel={closeSidePanel}
-      onSaveAnalytics={{
-        action: "Submit",
-        category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
-        label: "Clone",
-      }}
-      onSubmit={(values) => {
-        dispatch(machineActions.cleanup());
-        if (selectedMachines) {
-          dispatchForSelectedMachines(machineActions.clone, {
-            interfaces: values.interfaces,
-            storage: values.storage,
-            system_id: values.source,
-          });
-        }
-      }}
-      onSuccess={() => {
-        setShowResults(true);
-      }}
-      processingCount={actionStatus === "loading" ? selectedCount : 0}
-      selectedCount={selectedCount}
-      validationSchema={CloneFormSchema}
-      {...actionProps}
-    >
-      <CloneFormFields
-        selectedMachine={selectedMachine}
-        setSelectedMachine={setSelectedMachine}
-      />
-    </ActionForm>
+  if (selectedCountLoading) {
+    return <Spinner text={"Loading..."} />;
+  }
+
+  return (
+    <>
+      {selectedCount === 0 ? (
+        <NodeActionWarning
+          action={NodeActions.CLONE}
+          nodeType="machine"
+          selectedCount={selectedCount}
+        />
+      ) : null}
+      {showResults || actionErrors ? (
+        <CloneResults
+          closeForm={closeSidePanel}
+          selectedCount={selectedCount}
+          setSearchFilter={setSearchFilter}
+          sourceMachine={selectedMachine}
+          viewingDetails={isViewingDetails}
+        />
+      ) : (
+        <ActionForm<CloneFormValues>
+          actionName={NodeActions.CLONE}
+          buttonsHelp={
+            <p>
+              The clone function allows you to apply storage and/or network
+              interface configuration from the source machine to selected
+              destination machines.{" "}
+              <ExternalLink to="https://discourse.maas.io/t/cloning-ui/4855">
+                Find out more
+              </ExternalLink>
+            </p>
+          }
+          initialValues={{
+            interfaces: false,
+            source: "",
+            storage: false,
+          }}
+          modelName="machine"
+          onCancel={closeSidePanel}
+          onSaveAnalytics={{
+            action: "Submit",
+            category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
+            label: "Clone",
+          }}
+          onSubmit={(values) => {
+            dispatch(machineActions.cleanup());
+            if (selectedMachines) {
+              dispatchForSelectedMachines(machineActions.clone, {
+                interfaces: values.interfaces,
+                storage: values.storage,
+                system_id: values.source,
+              });
+            }
+          }}
+          onSuccess={() => {
+            setShowResults(true);
+          }}
+          processingCount={actionStatus === "loading" ? selectedCount : 0}
+          selectedCount={selectedCount}
+          validationSchema={CloneFormSchema}
+          {...actionProps}
+        >
+          <CloneFormFields
+            selectedMachine={selectedMachine}
+            setSelectedMachine={setSelectedMachine}
+          />
+        </ActionForm>
+      )}
+    </>
   );
 };
 
