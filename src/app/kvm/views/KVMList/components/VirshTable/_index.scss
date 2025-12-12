@@ -6,4 +6,9 @@
         text-align: left;
       }
     }
+
+}
+
+.p-generic-table .p-generic-table__table tbody tr:not(.p-generic-table__group-row)>td:last-child {
+text-align: left;
 }
