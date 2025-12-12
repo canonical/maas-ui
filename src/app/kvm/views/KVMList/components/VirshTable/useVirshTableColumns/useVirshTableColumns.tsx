@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
-import type { VirshTableRow } from "../VirshTable/VirshTable";
+import type { VirshTableRow } from "../VirshTable";
 
 import urls from "@/app/base/urls";
 import CPUColumn from "@/app/kvm/components/CPUColumn";

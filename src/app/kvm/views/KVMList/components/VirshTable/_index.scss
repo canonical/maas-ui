@@ -1,7 +1,9 @@
-th {
+.virsh-table {
+  th {
       button.p-button--column-header {
         display: flex;
         justify-content: left;
         text-align: left;
       }
     }
+}

@@ -4,7 +4,7 @@ import { GenericTable } from "@canonical/maas-react-components";
 import type { SortingState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
-import useVirshTableColumns from "../useVirshTableColumns/useVirshTableColumns";
+import useVirshTableColumns from "./useVirshTableColumns/useVirshTableColumns";
 
 import { useGetPool } from "@/app/api/query/pools";
 import podSelectors from "@/app/store/pod/selectors";
