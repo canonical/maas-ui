@@ -1,15 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import AddInterface from "./AddInterface";
 
-import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkLinkMode } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
-const route = urls.machines.index;
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("AddInterface", () => {
   let state: RootState;
@@ -50,11 +44,9 @@ describe("AddInterface", () => {
   });
 
   it("fetches the necessary data on load", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddInterface close={vi.fn()} systemId="abc123" />,
-      { route, store }
-    );
+    const { store } = renderWithProviders(<AddInterface systemId="abc123" />, {
+      state,
+    });
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
     expectedActions.forEach((expectedAction) => {
       expect(
@@ -66,20 +58,17 @@ describe("AddInterface", () => {
   it("displays a spinner when data is loading", async () => {
     state.vlan.loaded = false;
     state.fabric.loaded = false;
-    renderWithBrowserRouter(
-      <AddInterface close={vi.fn()} systemId="abc123" />,
-      { route, state }
-    );
+    renderWithProviders(<AddInterface systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("correctly dispatches actions to add a physical interface", async () => {
     state.machine.selected = { items: ["abc123", "def456"] };
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddInterface close={vi.fn()} systemId="abc123" />,
-      { route, store }
-    );
+    const { store } = renderWithProviders(<AddInterface systemId="abc123" />, {
+      state,
+    });
     await userEvent.type(
       screen.getByRole("textbox", { name: "MAC address" }),
       "28:21:c6:b9:1b:22"

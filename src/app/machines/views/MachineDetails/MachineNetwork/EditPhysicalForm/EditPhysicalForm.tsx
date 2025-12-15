@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -14,6 +15,7 @@ import type { EditPhysicalValues } from "./types";
 import FormikForm from "@/app/base/components/FormikForm";
 import { formatIpAddress } from "@/app/base/components/PrefixedIpInput";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { fabricActions } from "@/app/store/fabric";
@@ -47,8 +49,7 @@ import {
   isIpInSubnet,
 } from "@/app/utils/subnetIpRange";
 
-type Props = {
-  close: () => void;
+type EditPhysicalProps = {
   linkId?: NetworkLink["id"] | null;
   nicId?: NetworkInterface["id"] | null;
   systemId: MachineDetails["system_id"];
@@ -112,12 +113,12 @@ const InterfaceSchema = Yup.object().shape({
 });
 
 const EditPhysicalForm = ({
-  close,
   linkId,
   nicId,
   systemId,
-}: Props): React.ReactElement | null => {
+}: EditPhysicalProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -138,7 +139,7 @@ const EditPhysicalForm = ({
     "updatingInterface",
     "updateInterface",
     () => {
-      close();
+      closeSidePanel();
     }
   );
 
@@ -210,7 +211,7 @@ const EditPhysicalForm = ({
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Save physical interface",
         category: "Machine details networking",

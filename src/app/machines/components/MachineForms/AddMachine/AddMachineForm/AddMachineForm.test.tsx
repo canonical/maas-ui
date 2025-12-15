@@ -10,7 +10,7 @@ import {
   userEvent,
   screen,
   waitFor,
-  renderWithBrowserRouter,
+  renderWithProviders,
   setupMockServer,
 } from "@/testing/utils";
 
@@ -19,10 +19,9 @@ setupMockServer(
   zoneResolvers.listZones.handler()
 );
 
-let state: RootState;
-const queryData = { zones: [factory.zone({ id: 1, name: "twilight" })] };
-
 describe("AddMachineForm", () => {
+  let state: RootState;
+
   beforeEach(() => {
     state = factory.rootState({
       domain: factory.domainState({
@@ -79,14 +78,9 @@ describe("AddMachineForm", () => {
   });
 
   it("fetches the necessary data on load if not already loaded", () => {
-    const { store } = renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      {
-        state,
-        queryData,
-        route: "/machines/add",
-      }
-    );
+    const { store } = renderWithProviders(<AddMachineForm />, {
+      state,
+    });
     const expectedActions = [
       "FETCH_DOMAIN",
       "general/fetchArchitectures",
@@ -103,26 +97,16 @@ describe("AddMachineForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      {
-        state,
-        queryData,
-        route: "/machines/add",
-      }
-    );
+    renderWithProviders(<AddMachineForm />, {
+      state,
+    });
     expect(screen.getByTestId("loading")).toBeInTheDocument();
   });
 
   it("enables submit when a power type with no fields is chosen", async () => {
-    renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      {
-        state,
-        queryData,
-        route: "/machines/add",
-      }
-    );
+    renderWithProviders(<AddMachineForm />, {
+      state,
+    });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
     });
@@ -147,14 +131,9 @@ describe("AddMachineForm", () => {
   });
 
   it("can handle saving a machine", async () => {
-    const { store } = renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      {
-        state,
-        queryData,
-        route: "/machines/add",
-      }
-    );
+    const { store } = renderWithProviders(<AddMachineForm />, {
+      state,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "Machine name" })
@@ -219,14 +198,9 @@ describe("AddMachineForm", () => {
   });
 
   it("correctly trims power parameters before dispatching action", async () => {
-    const { store } = renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      {
-        state,
-        queryData,
-        route: "/machines/add",
-      }
-    );
+    const { store } = renderWithProviders(<AddMachineForm />, {
+      state,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "MAC address" })
@@ -280,14 +254,9 @@ describe("AddMachineForm", () => {
   });
 
   it("correctly filters empty extra mac fields", async () => {
-    const { store } = renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={vi.fn()} />,
-      {
-        state,
-        queryData,
-        route: "/machines/add",
-      }
-    );
+    const { store } = renderWithProviders(<AddMachineForm />, {
+      state,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("combobox", { name: "Power type" })

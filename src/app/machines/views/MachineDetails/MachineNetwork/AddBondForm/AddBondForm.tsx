@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -25,6 +26,7 @@ import type {
   SetSelected,
 } from "@/app/base/components/node/networking/types";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { fabricActions } from "@/app/store/fabric";
@@ -55,8 +57,7 @@ import {
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
-type Props = {
-  close: () => void;
+type AddBondProps = {
   selected: Selected[];
   setSelected: SetSelected;
   systemId: MachineDetails["system_id"];
@@ -78,11 +79,11 @@ const InterfaceSchema = Yup.object().shape({
 });
 
 const AddBondForm = ({
-  close,
   selected,
   setSelected,
   systemId,
-}: Props): React.ReactElement | null => {
+}: AddBondProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const [editingMembers, setEditingMembers] = useState(false);
   const [bondVLAN, setBondVLAN] = useState<NetworkInterface["vlan_id"] | null>(
     null
@@ -93,7 +94,7 @@ const AddBondForm = ({
   );
   const handleClose = () => {
     setSelected([]);
-    close();
+    closeSidePanel();
   };
   // Use the first selected interface as the canary for the fabric and VLAN.
   const firstSelected = machine ? getFirstSelected(machine, selected) : null;

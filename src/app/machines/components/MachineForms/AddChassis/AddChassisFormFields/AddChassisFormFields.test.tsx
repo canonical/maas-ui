@@ -4,7 +4,7 @@ import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("AddChassisFormFields", () => {
   let state: RootState;
@@ -24,10 +24,9 @@ describe("AddChassisFormFields", () => {
   });
 
   it("can render", () => {
-    renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={vi.fn()} />,
-      { route: "/machines/chassis/add", state }
-    );
+    renderWithProviders(<AddChassisForm />, {
+      state,
+    });
 
     expect(
       screen.getByRole("combobox", { name: "Domain" })
@@ -79,10 +78,9 @@ describe("AddChassisFormFields", () => {
       })
     );
 
-    renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={vi.fn()} />,
-      { route: "/machines/chassis/add", state }
-    );
+    renderWithProviders(<AddChassisForm />, {
+      state,
+    });
 
     const powerTypeSelect = screen.getByRole("combobox", {
       name: "Power type",

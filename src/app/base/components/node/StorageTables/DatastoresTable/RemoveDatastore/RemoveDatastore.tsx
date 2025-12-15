@@ -3,23 +3,22 @@ import type { ReactElement } from "react";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk } from "@/app/store/types/node";
 
-type Props = {
+type RemoveDatastoreProps = {
   systemId: Machine["system_id"];
   diskId: Disk["id"];
 };
 
-const RemoveDatastore = ({ systemId, diskId }: Props): ReactElement => {
-  const { setSidePanelContent } = useSidePanel();
+const RemoveDatastore = ({
+  systemId,
+  diskId,
+}: RemoveDatastoreProps): ReactElement => {
   const dispatch = useDispatch();
-
-  const closeForm = () => {
-    setSidePanelContent(null);
-  };
+  const { closeSidePanel } = useSidePanel();
 
   return (
     <ModelActionForm
@@ -32,7 +31,7 @@ const RemoveDatastore = ({ systemId, diskId }: Props): ReactElement => {
         </>
       }
       modelType="datastore"
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Delete datastore",
         category: "Machine storage",
@@ -47,7 +46,7 @@ const RemoveDatastore = ({ systemId, diskId }: Props): ReactElement => {
           })
         );
       }}
-      onSuccess={closeForm}
+      onSuccess={closeSidePanel}
       submitAppearance="negative"
       submitLabel="Remove"
     />

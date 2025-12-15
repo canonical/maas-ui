@@ -3,7 +3,7 @@ import CreateRaid from "../CreateRaid";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   within,
@@ -30,10 +30,9 @@ describe("CreateRaidFields", () => {
       disks,
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
-      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<CreateRaid selected={disks} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
@@ -56,10 +55,9 @@ describe("CreateRaidFields", () => {
       disks,
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
-      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<CreateRaid selected={disks} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
@@ -82,10 +80,9 @@ describe("CreateRaidFields", () => {
       disks,
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
-      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<CreateRaid selected={disks} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
@@ -110,10 +107,9 @@ describe("CreateRaidFields", () => {
       disks,
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
-      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<CreateRaid selected={disks} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
@@ -140,10 +136,9 @@ describe("CreateRaidFields", () => {
       disks,
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
-      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<CreateRaid selected={disks} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
@@ -169,10 +164,9 @@ describe("CreateRaidFields", () => {
       disks,
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
-      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<CreateRaid selected={disks} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
@@ -201,9 +195,8 @@ describe("CreateRaidFields", () => {
       disks,
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CreateRaid
-        closeForm={vi.fn()}
         selected={[disks[0], disks[1], ...partitions]}
         systemId="abc123"
       />,
@@ -267,9 +260,8 @@ describe("CreateRaidFields", () => {
       disks,
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CreateRaid
-        closeForm={vi.fn()}
         selected={[disks[0], disks[1], ...partitions]}
         systemId="abc123"
       />,

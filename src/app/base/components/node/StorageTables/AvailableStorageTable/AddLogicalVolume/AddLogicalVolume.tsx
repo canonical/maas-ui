@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { formatBytes } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -5,6 +7,7 @@ import * as Yup from "yup";
 import AddLogicalVolumeFields from "./AddLogicalVolumeFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
@@ -25,8 +28,7 @@ export type AddLogicalVolumeValues = {
   unit: string;
 };
 
-type Props = {
-  closeExpanded: () => void;
+type AddLogicalVolumeProps = {
   disk: Disk;
   systemId: Machine["system_id"];
 };
@@ -90,17 +92,17 @@ const generateSchema = (availableSize: number) =>
   });
 
 export const AddLogicalVolume = ({
-  closeExpanded,
   disk,
   systemId,
-}: Props): React.ReactElement | null => {
+}: AddLogicalVolumeProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "creatingLogicalVolume",
     "createLogicalVolume",
     () => {
-      closeExpanded();
+      closeSidePanel();
     }
   );
   const machine = useSelector((state: RootState) =>
@@ -135,7 +137,7 @@ export const AddLogicalVolume = ({
           tags: [],
           unit: "GB",
         }}
-        onCancel={closeExpanded}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Add logical volume",
           category: "Machine storage",
