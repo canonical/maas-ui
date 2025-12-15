@@ -1,14 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import UpdateDatastore from "./UpdateDatastore";
 
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
-import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("UpdateDatastore", () => {
   it("calculates the total size of the selected storage devices", () => {
@@ -42,13 +37,12 @@ describe("UpdateDatastore", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <UpdateDatastore
-        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
-      { route: "/", state }
+      { state }
     );
 
     expect(screen.getByTestId("size-to-add")).toHaveValue("1.5 GB");
@@ -75,14 +69,12 @@ describe("UpdateDatastore", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <UpdateDatastore
-        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
-      { route: "/", store }
+      { state }
     );
 
     await userEvent.click(

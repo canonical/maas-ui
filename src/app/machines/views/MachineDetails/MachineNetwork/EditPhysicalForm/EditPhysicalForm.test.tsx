@@ -1,13 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import EditPhysicalForm from "./EditPhysicalForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkLinkMode } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("EditPhysicalForm", () => {
   let state: RootState;
@@ -53,10 +49,11 @@ describe("EditPhysicalForm", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditPhysicalForm close={vi.fn()} nicId={1} systemId="abc123" />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <EditPhysicalForm nicId={1} systemId="abc123" />,
+      {
+        state,
+      }
     );
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
     expectedActions.forEach((expectedAction) => {
@@ -69,18 +66,16 @@ describe("EditPhysicalForm", () => {
   it("displays a spinner when data is loading", () => {
     state.vlan.loaded = false;
     state.fabric.loaded = false;
-    renderWithBrowserRouter(
-      <EditPhysicalForm close={vi.fn()} nicId={1} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<EditPhysicalForm nicId={1} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("displays an error if an IP address is not valid", async () => {
-    renderWithBrowserRouter(
-      <EditPhysicalForm close={vi.fn()} nicId={1} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<EditPhysicalForm nicId={1} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Subnet" }),
@@ -107,10 +102,9 @@ describe("EditPhysicalForm", () => {
   });
 
   it("displays an error if an IP address is out of range", async () => {
-    renderWithBrowserRouter(
-      <EditPhysicalForm close={vi.fn()} nicId={1} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<EditPhysicalForm nicId={1} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Subnet" }),
@@ -139,15 +133,9 @@ describe("EditPhysicalForm", () => {
   });
 
   it("correctly dispatches actions to edit a physical interface", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditPhysicalForm
-        close={vi.fn()}
-        linkId={1}
-        nicId={1}
-        systemId="abc123"
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <EditPhysicalForm linkId={1} nicId={1} systemId="abc123" />,
+      { state }
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));

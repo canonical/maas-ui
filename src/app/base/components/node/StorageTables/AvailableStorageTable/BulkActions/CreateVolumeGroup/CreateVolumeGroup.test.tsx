@@ -1,18 +1,13 @@
-import configureStore from "redux-mock-store";
-
 import CreateVolumeGroup from "./CreateVolumeGroup";
 
-import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   within,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("CreateVolumeGroup", () => {
   it("sets the initial name correctly", () => {
@@ -37,14 +32,9 @@ describe("CreateVolumeGroup", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <CreateVolumeGroup
-        closeForm={vi.fn()}
-        selected={[physicalDisk]}
-        systemId="abc123"
-      />,
-      { store }
+    renderWithProviders(
+      <CreateVolumeGroup selected={[physicalDisk]} systemId="abc123" />,
+      { state }
     );
 
     // Two volume groups already exist so the next one should be vg2
@@ -72,14 +62,13 @@ describe("CreateVolumeGroup", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+
+    renderWithProviders(
       <CreateVolumeGroup
-        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
 
     const rows = screen.getAllByRole("row");
@@ -110,14 +99,12 @@ describe("CreateVolumeGroup", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <CreateVolumeGroup
-        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(

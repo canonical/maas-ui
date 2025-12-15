@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import DeletePartition from ".";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const partition = factory.nodePartition();
 const disk = factory.nodeDisk({
   id: 1,
@@ -24,12 +20,8 @@ const state = factory.rootState({
 });
 
 it("should render the form", () => {
-  renderWithBrowserRouter(
-    <DeletePartition
-      close={vi.fn()}
-      partitionId={partition.id}
-      systemId="abc123"
-    />,
+  renderWithProviders(
+    <DeletePartition partitionId={partition.id} systemId="abc123" />,
     { state }
   );
 
@@ -39,14 +31,9 @@ it("should render the form", () => {
 });
 
 it("should fire an action to delete a partition", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <DeletePartition
-      close={vi.fn()}
-      partitionId={partition.id}
-      systemId="abc123"
-    />,
-    { store }
+  const { store } = renderWithProviders(
+    <DeletePartition partitionId={partition.id} systemId="abc123" />,
+    { state }
   );
 
   await userEvent.click(
