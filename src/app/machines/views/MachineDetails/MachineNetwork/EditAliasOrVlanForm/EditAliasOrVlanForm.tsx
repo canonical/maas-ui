@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Col, Row, Spinner } from "@canonical/react-components";
@@ -12,6 +13,7 @@ import type { NetworkValues } from "../NetworkFields/NetworkFields";
 import FormikForm from "@/app/base/components/FormikForm";
 import TagNameField from "@/app/base/components/TagNameField";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
@@ -39,8 +41,7 @@ import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { preparePayload } from "@/app/utils";
 
-type Props = {
-  close: () => void;
+type EditAliasOrVlanProps = {
   nic?: NetworkInterface | null;
   link?: NetworkLink | null;
   interfaceType: NetworkInterfaceTypes.ALIAS | NetworkInterfaceTypes.VLAN;
@@ -57,13 +58,13 @@ const AliasOrVlanSchema = Yup.object().shape({
 });
 
 const EditAliasOrVlanForm = ({
-  close,
   interfaceType,
   link,
   nic,
   systemId,
-}: Props): React.ReactElement | null => {
+}: EditAliasOrVlanProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -82,7 +83,7 @@ const EditAliasOrVlanForm = ({
     "updatingInterface",
     "updateInterface",
     () => {
-      close();
+      closeSidePanel();
     }
   );
 
@@ -120,7 +121,7 @@ const EditAliasOrVlanForm = ({
         vlan: nic.vlan_id,
         ...(isVLAN ? { tags: nic.tags } : {}),
       }}
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: `Save ${interfaceType}`,
         category: "Machine details networking",

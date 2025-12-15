@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Col, Input, Row, Spinner } from "@canonical/react-components";
@@ -16,6 +17,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import TagNameField from "@/app/base/components/TagNameField";
 import { useScrollOnRender } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
@@ -32,8 +34,7 @@ import type { NetworkInterface } from "@/app/store/types/node";
 import { getNextNicName } from "@/app/store/utils";
 import { preparePayload } from "@/app/utils";
 
-type Props = {
-  close: () => void;
+type AddInterfaceProps = {
   systemId: MachineDetails["system_id"];
 };
 
@@ -52,11 +53,9 @@ const InterfaceSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-const AddInterface = ({
-  close,
-  systemId,
-}: Props): React.ReactElement | null => {
+const AddInterface = ({ systemId }: AddInterfaceProps): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -67,7 +66,7 @@ const AddInterface = ({
     "creatingPhysical",
     "createPhysical",
     () => {
-      close();
+      closeSidePanel();
     }
   );
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
@@ -86,7 +85,7 @@ const AddInterface = ({
           name: nextName || "",
           tags: [],
         }}
-        onCancel={close}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Add interface",
           category: "Machine details networking",

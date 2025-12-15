@@ -1,9 +1,12 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import UpdateDatastoreFields from "./UpdateDatastoreFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -18,8 +21,7 @@ export type UpdateDatastoreValues = {
   datastore: number;
 };
 
-type Props = {
-  closeForm: () => void;
+type UpdateDatastoreProps = {
   selected: (Disk | Partition)[];
   systemId: Machine["system_id"];
 };
@@ -29,11 +31,11 @@ const UpdateDatastoreSchema = Yup.object().shape({
 });
 
 export const UpdateDatastore = ({
-  closeForm,
   selected,
   systemId,
-}: Props): React.ReactElement | null => {
+}: UpdateDatastoreProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -42,7 +44,7 @@ export const UpdateDatastore = ({
     "updatingVmfsDatastore",
     "updateVmfsDatastore",
     () => {
-      closeForm();
+      closeSidePanel();
     }
   );
 
@@ -54,7 +56,7 @@ export const UpdateDatastore = ({
     if (datastores.length === 0) {
       // Close the form if the last remaining datastore was deleted after the
       // form had already been opened.
-      closeForm();
+      closeSidePanel();
       return null;
     }
 
@@ -66,7 +68,7 @@ export const UpdateDatastore = ({
         initialValues={{
           datastore: datastores[0].id,
         }}
-        onCancel={closeForm}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Update datastore",
           category: "Machine storage",

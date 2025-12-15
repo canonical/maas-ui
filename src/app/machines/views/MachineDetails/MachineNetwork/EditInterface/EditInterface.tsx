@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
@@ -20,8 +20,7 @@ import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import { getInterfaceType, getLinkFromNic } from "@/app/store/utils";
 
-type Props = {
-  close: () => void;
+type EditInterfaceProps = {
   linkId?: NetworkLink["id"] | null;
   nicId?: NetworkInterface["id"] | null;
   selected: Selected[];
@@ -30,13 +29,12 @@ type Props = {
 };
 
 const EditInterface = ({
-  close,
   linkId,
   nicId,
   selected,
   setSelected,
   systemId,
-}: Props): React.ReactElement | null => {
+}: EditInterfaceProps): ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -51,12 +49,7 @@ const EditInterface = ({
   let form: ReactNode;
   if (interfaceType === NetworkInterfaceTypes.PHYSICAL) {
     form = (
-      <EditPhysicalForm
-        close={close}
-        linkId={linkId}
-        nicId={nicId}
-        systemId={systemId}
-      />
+      <EditPhysicalForm linkId={linkId} nicId={nicId} systemId={systemId} />
     );
   } else if (
     interfaceType === NetworkInterfaceTypes.ALIAS ||
@@ -64,7 +57,6 @@ const EditInterface = ({
   ) {
     form = (
       <EditAliasOrVlanForm
-        close={close}
         interfaceType={interfaceType}
         link={link}
         nic={nic}
@@ -72,13 +64,10 @@ const EditInterface = ({
       />
     );
   } else if (interfaceType === NetworkInterfaceTypes.BRIDGE) {
-    form = (
-      <EditBridgeForm close={close} link={link} nic={nic} systemId={systemId} />
-    );
+    form = <EditBridgeForm link={link} nic={nic} systemId={systemId} />;
   } else if (interfaceType === NetworkInterfaceTypes.BOND) {
     form = (
       <EditBondForm
-        close={close}
         link={link}
         nic={nic}
         selected={selected}

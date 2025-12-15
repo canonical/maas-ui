@@ -1,9 +1,12 @@
+import type { ReactElement } from "react";
+
 import { Col, Row, Select } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -24,22 +27,21 @@ type AddSpecialFilesystemValues = {
   mountPoint: string;
 };
 
-type Props = {
-  closeForm: () => void;
+type AddSpecialFilesystemProps = {
   machine: MachineDetails;
 };
 
 export const AddSpecialFilesystem = ({
-  closeForm,
   machine,
-}: Props): React.ReactElement | null => {
+}: AddSpecialFilesystemProps): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const { errors, saved, saving } = useMachineDetailsForm(
     machine.system_id,
     "mountingSpecial",
     "mountSpecial",
     () => {
-      closeForm();
+      closeSidePanel();
     }
   );
 
@@ -60,7 +62,7 @@ export const AddSpecialFilesystem = ({
         mountOptions: "",
         mountPoint: "",
       }}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Add special filesystem",
         category: "Machine storage",
