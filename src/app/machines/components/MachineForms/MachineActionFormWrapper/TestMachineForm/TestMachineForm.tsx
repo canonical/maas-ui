@@ -1,72 +1,60 @@
 import { useEffect } from "react";
 
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
-
-import type { NodeActionFormProps } from "../types";
-
-import TestFormFields from "./TestFormFields";
 
 import ActionForm from "@/app/base/components/ActionForm";
+import TestFormFields, {
+  TestFormSchema,
+  type TestFormValues,
+} from "@/app/base/components/node/TestFormFields/TestFormFields";
 import type { HardwareType } from "@/app/base/enum";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { MachineEventErrors } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import {
+  useMachineSelectedCount,
+  useSelectedMachinesActionsDispatch,
+} from "@/app/store/machine/utils/hooks";
 import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import type { Script } from "@/app/store/script/types";
 import { getObjectString } from "@/app/store/script/utils";
-import type { Node } from "@/app/store/types/node";
 import { NodeActions } from "@/app/store/types/node";
-import { capitaliseFirst } from "@/app/utils";
 
-const TestFormSchema = Yup.object().shape({
-  enableSSH: Yup.boolean(),
-  scripts: Yup.array()
-    .of(
-      Yup.object().shape({
-        name: Yup.string().required(),
-        displayName: Yup.string(),
-        description: Yup.string(),
-      })
-    )
-    .min(1, "You must select at least one script.")
-    .required(),
-  urls: Yup.object(),
-});
-
-export type FormValues = {
-  enableSSH: boolean;
-  scripts: Script[];
-  scriptInputs: Record<string, { url: string }>;
-};
-
-type Props<E = null> = NodeActionFormProps<E> & {
+type Props = {
   applyConfiguredNetworking?: Script["apply_configured_networking"];
-  cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
   hardwareType?: HardwareType;
-  onTest: (args: FormValues & { systemId?: Node["system_id"] }) => void;
+  isViewingDetails: boolean;
 };
 
-export const TestForm = <E,>({
+const TestMachineForm = ({
   applyConfiguredNetworking,
-  cleanup,
-  clearSidePanelContent,
-  actionStatus,
-  errors,
   hardwareType,
-  modelName,
-  nodes,
-  onTest,
-  processingCount,
-  selectedMachines,
-  selectedCount,
-  viewingDetails,
-}: Props<E>): React.ReactElement => {
+  isViewingDetails,
+}: Props) => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
   type FormattedScript = Script & {
     displayName: string;
   };
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const searchFilter = FilterMachines.filtersToString(
+    FilterMachines.queryStringToFilters(location.search)
+  );
+  const { selectedCount, selectedCountLoading } = useMachineSelectedCount(
+    FilterMachines.parseFetchFilters(searchFilter)
+  );
+  const {
+    dispatch: dispatchForSelectedMachines,
+    actionStatus,
+    actionErrors,
+  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
 
   const formattedScripts = scripts.map<FormattedScript>((script) => ({
     ...script,
@@ -91,7 +79,7 @@ export const TestForm = <E,>({
       preselected = [formattedScript];
     }
   }
-  const initialScriptInputs = urlScripts.reduce<FormValues["scriptInputs"]>(
+  const initialScriptInputs = urlScripts.reduce<TestFormValues["scriptInputs"]>(
     (scriptInputs, script) => {
       if (
         !(script.name in scriptInputs) &&
@@ -115,55 +103,47 @@ export const TestForm = <E,>({
     }
   }, [dispatch, scriptsLoaded]);
 
+  if (selectedCountLoading) {
+    return <Spinner text={"Loading..."} />;
+  }
+
   return (
-    <ActionForm<FormValues, E>
+    <ActionForm<TestFormValues, MachineEventErrors>
       actionName={NodeActions.TEST}
       actionStatus={actionStatus}
       allowUnchanged
-      cleanup={cleanup}
-      errors={errors}
+      cleanup={machineActions.cleanup}
+      errors={actionErrors}
       initialValues={{
         enableSSH: false,
         scripts: preselected,
         scriptInputs: initialScriptInputs,
       }}
       loaded={scriptsLoaded}
-      modelName={modelName}
-      onCancel={clearSidePanelContent}
+      modelName={"machine"}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Submit",
-        category: `${capitaliseFirst(modelName)} ${
-          viewingDetails ? "details" : "list"
+        category: `Machine ${
+          isViewingDetails ? "details" : "list"
         } action form`,
         label: "Test",
       }}
       onSubmit={(values) => {
-        dispatch(cleanup());
+        dispatch(machineActions.cleanup());
         const { enableSSH, scripts, scriptInputs } = values;
-        if (selectedMachines) {
-          onTest({
-            scripts,
-            enableSSH,
-            scriptInputs,
-          });
-        } else {
-          nodes?.forEach((node) => {
-            onTest({
-              systemId: node.system_id,
-              scripts,
-              enableSSH,
-              scriptInputs,
-            });
-          });
-        }
+        dispatchForSelectedMachines(machineActions.test, {
+          enable_ssh: enableSSH,
+          script_input: scriptInputs,
+          testing_scripts: scripts.map((script) => script.name),
+        });
       }}
-      onSuccess={clearSidePanelContent}
-      processingCount={processingCount}
-      selectedCount={nodes ? nodes.length : (selectedCount ?? 0)}
+      onSuccess={closeSidePanel}
+      selectedCount={selectedCount ?? 0}
       validationSchema={TestFormSchema}
     >
       <TestFormFields
-        modelName={modelName}
+        modelName={"machine"}
         preselected={preselected}
         scripts={formattedScripts}
       />
@@ -171,4 +151,4 @@ export const TestForm = <E,>({
   );
 };
 
-export default TestForm;
+export default TestMachineForm;

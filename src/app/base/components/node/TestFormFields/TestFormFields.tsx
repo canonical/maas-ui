@@ -2,8 +2,7 @@ import * as React from "react";
 
 import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-
-import type { FormValues } from "../TestForm";
+import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
@@ -12,19 +11,41 @@ import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
 import type { Script } from "@/app/store/script/types";
 import { getObjectString } from "@/app/store/script/utils";
 
+export type TestFormValues = {
+  enableSSH: boolean;
+  scripts: Script[];
+  scriptInputs: Record<string, { url: string }>;
+};
+
 type ScriptsDisplay = Script & { displayName: string };
 type Props = {
   modelName: string;
   preselected: ScriptsDisplay[];
   scripts: Script[];
 };
+
+export const TestFormSchema = Yup.object().shape({
+  enableSSH: Yup.boolean(),
+  scripts: Yup.array()
+    .of(
+      Yup.object().shape({
+        name: Yup.string().required(),
+        displayName: Yup.string(),
+        description: Yup.string(),
+      })
+    )
+    .min(1, "You must select at least one script.")
+    .required(),
+  urls: Yup.object(),
+});
+
 export const TestFormFields = ({
   modelName,
   preselected,
   scripts,
 }: Props): React.ReactElement => {
   const { handleChange, setFieldValue, values } =
-    useFormikContext<FormValues>();
+    useFormikContext<TestFormValues>();
   const urlScriptsSelected = values.scripts.filter((script) =>
     Object.keys(script.parameters).some((key) => key === "url")
   );

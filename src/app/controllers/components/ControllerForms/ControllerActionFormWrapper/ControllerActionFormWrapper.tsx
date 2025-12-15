@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import SetControllerZoneForm from "../SetControllerZoneForm";
+import TestControllerForm from "../TestControllerForm";
 
 import DeleteForm from "@/app/base/components/node/DeleteForm";
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
-import TestForm from "@/app/base/components/node/TestForm";
 import type { HardwareType } from "@/app/base/enum";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import urls from "@/app/base/urls";
@@ -93,20 +93,11 @@ export const ControllerActionFormWrapper = ({
         );
       case NodeActions.TEST:
         return (
-          <TestForm
+          <TestControllerForm
             applyConfiguredNetworking={applyConfiguredNetworking}
+            controllers={controllerSystemIds}
             hardwareType={hardwareType}
-            onTest={(args) => {
-              dispatch(
-                controllerActions.test({
-                  enable_ssh: args.enableSSH,
-                  script_input: args.scriptInputs,
-                  system_id: args.systemId as string,
-                  testing_scripts: args.scripts.map((script) => script.name),
-                })
-              );
-            }}
-            {...commonNodeFormProps}
+            isViewingDetails={viewingDetails}
           />
         );
       case NodeActions.IMPORT_IMAGES:

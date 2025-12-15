@@ -1,25 +1,27 @@
-import TestForm from "../TestForm";
-
-import { machineActions } from "@/app/store/machine";
+import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("TestForm", () => {
   let state: RootState;
 
   beforeEach(() => {
+    const machines = [
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
+    ];
     state = factory.rootState({
       machine: factory.machineState({
         loaded: true,
-        items: [
-          factory.machine({ system_id: "abc123" }),
-          factory.machine({ system_id: "def456" }),
-        ],
+        items: machines,
         statuses: {
           abc123: factory.machineStatus(),
           def456: factory.machineStatus(),
+        },
+        selected: {
+          items: machines.map((machine) => machine.system_id),
         },
       }),
       script: factory.scriptState({
@@ -55,18 +57,9 @@ describe("TestForm", () => {
   });
 
   it("displays a field for URL if a selected script has url parameter", async () => {
-    renderWithBrowserRouter(
-      <TestForm
-        cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
-        modelName="machine"
-        nodes={state.machine.items}
-        onTest={vi.fn()}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines/add", state }
-    );
+    renderWithProviders(<TestMachineForm isViewingDetails={false} />, {
+      state,
+    });
     expect(screen.queryByTestId("url-script-input")).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole("textbox", { name: "Tests" }));
     await userEvent.click(
