@@ -78,13 +78,11 @@ export const useWebsocketAwareQuery = <
   const previousConnectedCount = usePrevious(connectedCount);
 
   useEffect(() => {
-    const invalidate = async () => {
+    (async () => {
       if (connectedCount !== previousConnectedCount) {
         await queryClient.invalidateQueries({ queryKey: options?.queryKey });
       }
-    };
-
-    void invalidate();
+    })();
   }, [connectedCount, previousConnectedCount, queryClient, options]);
 
   useEffect(() => {

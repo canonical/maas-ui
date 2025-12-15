@@ -46,7 +46,7 @@ const NtpForm = (): ReactElement => {
   }
 
   const { ntp_external_only: ntpExternalOnly, ntp_servers: ntpServers } =
-    getConfigsFromResponse(data.items, [
+    getConfigsFromResponse(data?.items ?? [], [
       ConfigNames.NTP_EXTERNAL_ONLY,
       ConfigNames.NTP_SERVERS,
     ]);
