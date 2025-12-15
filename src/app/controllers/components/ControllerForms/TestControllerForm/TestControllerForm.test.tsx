@@ -1,30 +1,25 @@
-import configureStore from "redux-mock-store";
-
-import TestForm from "./TestForm";
+import TestControllerForm from "./TestControllerForm";
 
 import { HardwareType } from "@/app/base/enum";
-import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
-
-describe("TestForm", () => {
+describe("TestControllerForm", () => {
   let state: RootState;
 
   beforeEach(() => {
     state = factory.rootState({
-      machine: factory.machineState({
+      controller: factory.controllerState({
         loaded: true,
         items: [
-          factory.machine({ system_id: "abc123" }),
-          factory.machine({ system_id: "def456" }),
+          factory.controller({ system_id: "abc123" }),
+          factory.controller({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: factory.machineStatus(),
-          def456: factory.machineStatus(),
+          abc123: factory.controllerStatus(),
+          def456: factory.controllerStatus(),
         },
       }),
       script: factory.scriptState({
@@ -59,28 +54,22 @@ describe("TestForm", () => {
     });
   });
 
-  it("calls the action to test given machines", async () => {
+  it("calls the action to test given controllers", async () => {
     // load only the internet connectivity script
-    const script = state.script.items[1];
     state.script.items = [state.script.items[1]];
-    const store = mockStore(state);
-    const onTest = vi.fn();
-    renderWithBrowserRouter(
-      <TestForm
-        cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
-        modelName="machine"
-        nodes={state.machine.items}
-        onTest={onTest}
-        processingCount={0}
-        viewingDetails={false}
+    const { store } = renderWithProviders(
+      <TestControllerForm
+        controllers={state.controller.items.map(
+          (controller) => controller.system_id
+        )}
+        isViewingDetails={false}
       />,
-      { route: "/machines", store }
+      { state }
     );
 
     await userEvent.click(
       screen.getByRole("checkbox", {
-        name: "Allow SSH access and prevent machine powering off",
+        name: "Allow SSH access and prevent controller powering off",
       })
     );
     await userEvent.type(
@@ -92,33 +81,57 @@ describe("TestForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Start tests for 2 machines" })
+      screen.getByRole("button", { name: "Start tests for 2 controllers" })
     );
 
-    const expectedParameters = {
-      enableSSH: true,
-      scripts: [
-        {
-          ...script,
-          displayName:
-            "internet-connectivity (internet, network-validation, network)",
+    expect(
+      store.getActions().filter((action) => action.type === "controller/test")
+    ).toStrictEqual([
+      {
+        meta: {
+          method: "action",
+          model: "controller",
         },
-      ],
-      scriptInputs: {
-        "internet-connectivity": {
-          url: "https://connectivity-check.ubuntu.com",
+        payload: {
+          params: {
+            action: "test",
+            extra: {
+              enable_ssh: true,
+              script_input: {
+                "internet-connectivity": {
+                  url: "https://connectivity-check.ubuntu.com",
+                },
+              },
+              testing_scripts: ["internet-connectivity"],
+            },
+            system_id: "abc123",
+          },
         },
+        type: "controller/test",
       },
-    };
-
-    expect(onTest).toHaveBeenNthCalledWith(1, {
-      ...expectedParameters,
-      systemId: "abc123",
-    });
-    expect(onTest).toHaveBeenNthCalledWith(2, {
-      ...expectedParameters,
-      systemId: "def456",
-    });
+      {
+        meta: {
+          method: "action",
+          model: "controller",
+        },
+        payload: {
+          params: {
+            action: "test",
+            extra: {
+              enable_ssh: true,
+              script_input: {
+                "internet-connectivity": {
+                  url: "https://connectivity-check.ubuntu.com",
+                },
+              },
+              testing_scripts: ["internet-connectivity"],
+            },
+            system_id: "def456",
+          },
+        },
+        type: "controller/test",
+      },
+    ]);
   });
 
   it("prepopulates scripts of a given hardwareType", () => {
@@ -142,19 +155,15 @@ describe("TestForm", () => {
       }),
     ];
 
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <TestForm
-        cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
+    renderWithProviders(
+      <TestControllerForm
+        controllers={state.controller.items.map(
+          (controller) => controller.system_id
+        )}
         hardwareType={HardwareType.Network}
-        modelName="machine"
-        nodes={state.machine.items}
-        onTest={vi.fn()}
-        processingCount={0}
-        viewingDetails={false}
+        isViewingDetails={false}
       />,
-      { route: "/machines", store }
+      { state }
     );
 
     expect(screen.getByRole("button", { name: "test1" })).toHaveAttribute(
@@ -182,19 +191,15 @@ describe("TestForm", () => {
       }),
     ];
     state.script.items = scripts;
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <TestForm
+    renderWithProviders(
+      <TestControllerForm
         applyConfiguredNetworking={true}
-        cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
-        modelName="machine"
-        nodes={state.machine.items}
-        onTest={vi.fn()}
-        processingCount={0}
-        viewingDetails={false}
+        controllers={state.controller.items.map(
+          (controller) => controller.system_id
+        )}
+        isViewingDetails={false}
       />,
-      { route: "/machines", store }
+      { state }
     );
 
     expect(screen.getByRole("button", { name: "test1" })).toHaveAttribute(

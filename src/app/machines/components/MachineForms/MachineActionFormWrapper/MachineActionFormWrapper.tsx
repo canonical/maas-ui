@@ -13,22 +13,19 @@ import ReleaseForm from "./ReleaseForm";
 import SetMachineZoneForm from "./SetMachineZoneForm/SetMachineZoneForm";
 import SetPoolForm from "./SetPoolForm";
 import TagForm from "./TagForm";
+import TestMachineForm from "./TestMachineForm";
 
 import DeleteForm from "@/app/base/components/node/DeleteForm";
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
 import PowerOffForm from "@/app/base/components/node/PowerOffForm";
-import TestForm from "@/app/base/components/node/TestForm";
 import type { HardwareType } from "@/app/base/enum";
 import { useScrollOnRender } from "@/app/base/hooks";
 import type { ClearSidePanelContent, SetSearchFilter } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { MachineActionFormProps } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
-import type {
-  MachineActions,
-  MachineEventErrors,
-} from "@/app/store/machine/types";
+import type { MachineActions } from "@/app/store/machine/types";
 import { selectedToFilters } from "@/app/store/machine/utils";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
@@ -142,17 +139,10 @@ export const MachineActionForm = ({
     [NodeActions.TAG]: () => <TagForm isViewingDetails={false} />,
     [NodeActions.UNTAG]: () => <TagForm isViewingDetails={false} />,
     [NodeActions.TEST]: () => (
-      <TestForm<MachineEventErrors>
+      <TestMachineForm
         applyConfiguredNetworking={applyConfiguredNetworking}
         hardwareType={hardwareType}
-        onTest={(args) => {
-          dispatchForSelectedMachines(machineActions.test, {
-            enable_ssh: args.enableSSH,
-            script_input: args.scriptInputs,
-            testing_scripts: args.scripts.map((script) => script.name),
-          });
-        }}
-        {...commonNodeFormProps}
+        isViewingDetails={viewingDetails}
       />
     ),
     [NodeActions.ABORT]: () => (
