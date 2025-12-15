@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router";
 
 import KVMListHeader from "./KVMListHeader";
 import LxdTable from "./LxdTable";
-import VirshTable from "./VirshTable";
+import VirshTable from "./components/VirshTable/VirshTable";
 
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";

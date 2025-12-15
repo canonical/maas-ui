@@ -1,0 +1,14 @@
+.virsh-table {
+  th {
+      button.p-button--column-header {
+        display: flex;
+        justify-content: left;
+        text-align: left;
+      }
+    }
+
+}
+
+.p-generic-table .p-generic-table__table tbody tr:not(.p-generic-table__group-row)>td:last-child {
+text-align: left;
+}
