@@ -7,7 +7,7 @@ import SetZoneForm from "../SetDeviceZoneForm";
 
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import DeleteDevice from "@/app/devices/components/DeleteDevice/DeleteDevice";
+import DeleteDevice from "@/app/devices/components/DeleteDevice";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceActions } from "@/app/store/device/types";
 import { NodeActions } from "@/app/store/types/node";

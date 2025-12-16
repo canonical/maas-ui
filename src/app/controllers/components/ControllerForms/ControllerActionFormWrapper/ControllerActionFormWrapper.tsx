@@ -7,7 +7,7 @@ import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
 import type { HardwareType } from "@/app/base/enum";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import DeleteController from "@/app/controllers/components/ControllerForms/DeleteController/DeleteController";
+import DeleteController from "@/app/controllers/components/ControllerForms/DeleteController";
 import { getProcessingCount } from "@/app/controllers/utils";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {
