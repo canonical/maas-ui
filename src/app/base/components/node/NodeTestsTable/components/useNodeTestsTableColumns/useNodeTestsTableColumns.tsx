@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 
 import ScriptRunTime from "../../ScriptRunTime";
 import TestActions from "../../TestActions";
+import type { NodeTestRow } from "../NodeTestsTable/NodeTestsTable";
 
 import ScriptStatus from "@/app/base/components/ScriptStatus";
 import { useSendAnalytics } from "@/app/base/hooks";
@@ -34,7 +35,7 @@ export type Expanded = {
 
 export type SetExpanded = (expanded: Expanded) => void;
 
-type NodeTestsTableColumnDef = ColumnDef<ScriptResult, Partial<ScriptResult>>;
+type NodeTestsTableColumnDef = ColumnDef<NodeTestRow, Partial<NodeTestRow>>;
 
 const useNodeTestsTableColumns = ({
   node,
@@ -59,7 +60,7 @@ const useNodeTestsTableColumns = ({
               header: "Suppress",
               accessorKey: "suppress-col",
               enableSorting: false,
-              cell: ({ row }: { row: Row<ScriptResult> }) => {
+              cell: ({ row }: { row: Row<NodeTestRow> }) => {
                 const isSuppressible = canBeSuppressed(row.original);
                 return (
                   <Tooltip
