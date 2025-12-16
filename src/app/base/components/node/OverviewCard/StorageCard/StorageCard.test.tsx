@@ -44,7 +44,7 @@ it("renders test info if node is a machine", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <StorageCard node={machine} setSidePanelContent={vi.fn()} />
+        <StorageCard node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -66,7 +66,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
+          <StorageCard node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -88,7 +88,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
+          <StorageCard node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -109,7 +109,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
+          <StorageCard node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -130,7 +130,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
+          <StorageCard node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -149,7 +149,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
+          <StorageCard node={machine} />
         </MemoryRouter>
       </Provider>
     );

@@ -63,7 +63,6 @@ describe("MachineListHeader", () => {
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { state, initialEntries: [urls.machines.index] }
     );
@@ -82,7 +81,6 @@ describe("MachineListHeader", () => {
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { state, initialEntries: [urls.machines.index] }
     );
@@ -98,7 +96,6 @@ describe("MachineListHeader", () => {
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { state, initialEntries: [urls.machines.index] }
     );
@@ -122,7 +119,6 @@ describe("MachineListHeader", () => {
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { state, initialEntries: [urls.machines.index] }
     );
@@ -163,7 +159,6 @@ describe("MachineListHeader", () => {
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { state, initialEntries: [urls.machines.index] }
     );

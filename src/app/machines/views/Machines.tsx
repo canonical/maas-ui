@@ -1,24 +1,22 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useMatch } from "react-router";
 import { useStorageState } from "react-storage-hooks";
 
-import MachineForms from "../components/MachineForms";
-
 import MachineListHeader from "./MachineList/MachineListHeader";
 import { useGrouping, useResponsiveColumns } from "./MachineList/hooks";
 
 import PageContent from "@/app/base/components/PageContent/PageContent";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import MachineList from "@/app/machines/views/MachineList";
 import machineSelectors from "@/app/store/machine/selectors";
 import { selectedToFilters, FilterMachines } from "@/app/store/machine/utils";
-import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
 
-const Machines = (): React.ReactElement => {
+const Machines = (): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
@@ -26,7 +24,7 @@ const Machines = (): React.ReactElement => {
   const [searchFilter, setFilter] = useState(
     FilterMachines.filtersToString(currentFilters)
   );
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+  const { closeSidePanel } = useSidePanel();
 
   const machinesPathMatch = useMatch(urls.machines.index);
   const selectedMachines = useSelector(machineSelectors.selected);
@@ -34,11 +32,10 @@ const Machines = (): React.ReactElement => {
   // Close the side panel when there are no selected machines
   useEffect(() => {
     if (!machinesPathMatch || selectedToFilters(selectedMachines) === null) {
-      setSidePanelContent(null);
+      closeSidePanel();
     }
-  }, [machinesPathMatch, selectedMachines, setSidePanelContent]);
+  }, [closeSidePanel, machinesPathMatch, selectedMachines]);
 
-  const filter = FilterMachines.parseFetchFilters(searchFilter);
   const setSearchFilter = useCallback(
     (searchText: string) => {
       setFilter(searchText);
@@ -57,10 +54,6 @@ const Machines = (): React.ReactElement => {
 
   const [hiddenColumns, setHiddenColumns] = useResponsiveColumns();
 
-  // Get the count of selected machines that match the current filter
-  const { selectedCount, selectedCountLoading } =
-    useMachineSelectedCount(filter);
-
   const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
     localStorage,
     "hiddenGroups",
@@ -78,31 +71,14 @@ const Machines = (): React.ReactElement => {
           setHiddenColumns={setHiddenColumns}
           setHiddenGroups={setHiddenGroups}
           setSearchFilter={setSearchFilter}
-          setSidePanelContent={setSidePanelContent}
         />
       }
-      sidePanelContent={
-        sidePanelContent && (
-          <MachineForms
-            searchFilter={searchFilter}
-            selectedCount={selectedCount}
-            selectedCountLoading={selectedCountLoading}
-            selectedMachines={selectedMachines}
-            setSearchFilter={setSearchFilter}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        )
-      }
-      sidePanelTitle={
-        sidePanelContent
-          ? getSidePanelTitle("Machines", sidePanelContent)
-          : null
-      }
+      sidePanelContent={undefined}
+      sidePanelTitle={null}
+      useNewSidePanelContext={true}
     >
       <MachineList
         grouping={grouping}
-        headerFormOpen={!!sidePanelContent}
         hiddenColumns={hiddenColumns}
         hiddenGroups={hiddenGroups}
         searchFilter={searchFilter}

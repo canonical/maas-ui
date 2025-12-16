@@ -51,7 +51,6 @@ describe("MachineListControls", () => {
         setGrouping={vi.fn()}
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines?q=test+search", state: initialState }
     );
@@ -77,7 +76,6 @@ describe("MachineListControls", () => {
         setGrouping={vi.fn()}
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", state: initialState }
     );
@@ -123,7 +121,6 @@ describe("MachineListControls", () => {
         setGrouping={vi.fn()}
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", state: initialState }
     );
@@ -164,7 +161,6 @@ describe("MachineListControls", () => {
         setGrouping={vi.fn()}
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", store }
     );

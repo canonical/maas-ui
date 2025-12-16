@@ -17,7 +17,7 @@ describe("MachineSummary", () => {
 
   it("displays a spinner if machines are loading", () => {
     state.machine.items = [];
-    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+    renderWithBrowserRouter(<MachineSummary />, {
       route: "/machine/abc123/summary",
       routePattern: "/machine/:id/summary",
       state,
@@ -26,7 +26,7 @@ describe("MachineSummary", () => {
   });
 
   it("renders", () => {
-    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+    renderWithBrowserRouter(<MachineSummary />, {
       route: "/machine/abc123/summary",
       routePattern: "/machine/:id/summary",
       state,
@@ -57,7 +57,7 @@ describe("MachineSummary", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+    renderWithBrowserRouter(<MachineSummary />, {
       route: "/machine/abc123/summary",
       routePattern: "/machine/:id/summary",
       state,
@@ -72,7 +72,7 @@ describe("MachineSummary", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+    renderWithBrowserRouter(<MachineSummary />, {
       route: "/machine/abc123/summary",
       routePattern: "/machine/:id/summary",
       state,
@@ -87,7 +87,7 @@ describe("MachineSummary", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+    renderWithBrowserRouter(<MachineSummary />, {
       route: "/machine/abc123/summary",
       routePattern: "/machine/:id/summary",
       state,

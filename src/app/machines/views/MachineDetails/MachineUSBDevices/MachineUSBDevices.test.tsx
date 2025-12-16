@@ -21,14 +21,11 @@ describe("MachineUSBDevices", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MachineUSBDevices setSidePanelContent={vi.fn()} />,
-      {
-        route: "/machine/abc123/usb-devices",
-        routePattern: "/machine/:id/usb-devices",
-        store,
-      }
-    );
+    renderWithBrowserRouter(<MachineUSBDevices />, {
+      route: "/machine/abc123/usb-devices",
+      routePattern: "/machine/:id/usb-devices",
+      store,
+    });
 
     const expectedAction = nodeDeviceActions.getByNodeId("abc123");
     expect(

@@ -66,11 +66,7 @@ describe("NodeDevicesTable", () => {
         });
 
         renderWithProviders(
-          <NodeDevicesTable
-            bus={NodeDeviceBus.PCIE}
-            node={machine}
-            setSidePanelContent={setSidePanelContent}
-          />,
+          <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
           { state }
         );
 
@@ -227,11 +223,7 @@ describe("NodeDevicesTable", () => {
 
     it("can link to the machine network and storage tabs", () => {
       renderWithProviders(
-        <NodeDevicesTable
-          bus={NodeDeviceBus.PCIE}
-          node={machine}
-          setSidePanelContent={vi.fn()}
-        />,
+        <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
         { state }
       );
 
@@ -282,11 +274,7 @@ describe("NodeDevicesTable", () => {
         }),
       });
       renderWithProviders(
-        <NodeDevicesTable
-          bus={NodeDeviceBus.PCIE}
-          node={machine}
-          setSidePanelContent={vi.fn()}
-        />,
+        <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
         { state }
       );
 

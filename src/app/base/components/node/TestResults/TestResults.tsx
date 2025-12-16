@@ -1,19 +1,20 @@
+import type { ReactElement } from "react";
+
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router";
 
 import { HardwareType } from "@/app/base/enum";
 import { useSendAnalytics } from "@/app/base/hooks";
-import { MachineSidePanelViews } from "@/app/machines/constants";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { TestStatus } from "@/app/store/types/node";
 import { NodeActions } from "@/app/store/types/node";
 import { capitaliseFirst } from "@/app/utils";
 
-type Props = {
+type TestResultsProps = {
   machine: MachineDetails;
   hardwareType: HardwareType;
-  setSidePanelContent: MachineSetSidePanelContent;
 };
 
 const hasTestsRun = (testStatus: TestStatus) =>
@@ -26,8 +27,8 @@ const hasTestsRun = (testStatus: TestStatus) =>
 const TestResults = ({
   machine,
   hardwareType,
-  setSidePanelContent,
-}: Props): React.ReactElement | null => {
+}: TestResultsProps): ReactElement | null => {
+  const { openSidePanel } = useSidePanel();
   const sendAnalytics = useSendAnalytics();
 
   const testsTabUrl = `/machine/${machine.system_id}/testing`;
@@ -148,9 +149,13 @@ const TestResults = ({
                 className="u-no-margin--bottom u-no-padding--top"
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
-                  setSidePanelContent({
-                    view: MachineSidePanelViews.TEST_MACHINE,
-                    extras: { hardwareType: hardwareType },
+                  openSidePanel({
+                    component: TestMachineForm,
+                    title: "Test machine",
+                    props: {
+                      hardwareType,
+                      isViewingDetails: true,
+                    },
                   });
                   sendAnalytics(
                     "Machine details",

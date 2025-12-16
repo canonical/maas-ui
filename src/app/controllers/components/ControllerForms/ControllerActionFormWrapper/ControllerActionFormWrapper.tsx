@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import SetControllerZoneForm from "../SetControllerZoneForm";
 import TestControllerForm from "../TestControllerForm";
 
-import DeleteForm from "@/app/base/components/node/DeleteForm";
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
 import type { HardwareType } from "@/app/base/enum";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import urls from "@/app/base/urls";
+import DeleteController from "@/app/controllers/components/ControllerForms/DeleteController/DeleteController";
 import { getProcessingCount } from "@/app/controllers/utils";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {
@@ -72,16 +71,9 @@ export const ControllerActionFormWrapper = ({
     switch (action) {
       case NodeActions.DELETE:
         return (
-          <DeleteForm
-            onSubmit={() => {
-              controllers.forEach((controller) => {
-                dispatch(
-                  controllerActions.delete({ system_id: controller.system_id })
-                );
-              });
-            }}
-            redirectURL={urls.controllers.index}
-            {...commonNodeFormProps}
+          <DeleteController
+            controllers={controllers}
+            isViewingDetails={viewingDetails}
           />
         );
       case NodeActions.SET_ZONE:

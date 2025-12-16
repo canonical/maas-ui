@@ -23,20 +23,14 @@ const state = factory.rootState({
 });
 
 it("should render the form", () => {
-  renderWithProviders(
-    <DeleteDisk close={vi.fn()} disk={disk} systemId="abc123" />,
-    { state }
-  );
+  renderWithProviders(<DeleteDisk disk={disk} systemId="abc123" />, { state });
 
   expect(screen.getByRole("form", { name: "Delete disk" })).toBeInTheDocument();
 });
 
 it("should fire an action to delete a disk", async () => {
   const store = mockStore(state);
-  renderWithProviders(
-    <DeleteDisk close={vi.fn()} disk={disk} systemId="abc123" />,
-    { store }
-  );
+  renderWithProviders(<DeleteDisk disk={disk} systemId="abc123" />, { store });
 
   await userEvent.click(
     screen.getByRole("button", { name: "Remove physical disk" })

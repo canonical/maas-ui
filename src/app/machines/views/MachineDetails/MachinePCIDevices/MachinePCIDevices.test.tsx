@@ -21,14 +21,11 @@ describe("MachinePCIDevices", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MachinePCIDevices setSidePanelContent={vi.fn()} />,
-      {
-        route: "/machine/abc123/pci-devices",
-        routePattern: "/machine/:id/pci-devices",
-        store,
-      }
-    );
+    renderWithBrowserRouter(<MachinePCIDevices />, {
+      route: "/machine/abc123/pci-devices",
+      routePattern: "/machine/:id/pci-devices",
+      store,
+    });
 
     const expectedAction = nodeDeviceActions.getByNodeId("abc123");
     await waitFor(() => {

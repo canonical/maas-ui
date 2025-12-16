@@ -32,11 +32,7 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            hardwareType={HardwareType.CPU}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
+          <TestResults hardwareType={HardwareType.CPU} machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -58,11 +54,7 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            hardwareType={HardwareType.Memory}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
+          <TestResults hardwareType={HardwareType.Memory} machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -83,11 +75,7 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            hardwareType={HardwareType.Storage}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
+          <TestResults hardwareType={HardwareType.Storage} machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -108,11 +96,7 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            hardwareType={HardwareType.CPU}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
+          <TestResults hardwareType={HardwareType.CPU} machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -133,11 +117,7 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            hardwareType={HardwareType.Network}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
+          <TestResults hardwareType={HardwareType.Network} machine={machine} />
         </MemoryRouter>
       </Provider>
     );

@@ -2,8 +2,8 @@ import type { ReactElement } from "react";
 
 import { ContextualMenu } from "@canonical/react-components";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import ChangeStorageLayout from "@/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout";
 import type { Machine, StorageLayoutOption } from "@/app/store/machine/types";
 import { StorageLayout } from "@/app/store/types/enum";
 
@@ -39,12 +39,14 @@ export const storageLayoutOptions: StorageLayoutOption[][] = [
   ],
 ];
 
-type Props = {
+type ChangeStorageLayoutMenuProps = {
   systemId: Machine["system_id"];
 };
 
-const ChangeStorageLayoutMenu = ({ systemId }: Props): ReactElement => {
-  const { setSidePanelContent } = useSidePanel();
+const ChangeStorageLayoutMenu = ({
+  systemId,
+}: ChangeStorageLayoutMenuProps): ReactElement => {
+  const { openSidePanel } = useSidePanel();
   return (
     <div className="u-align--right">
       <ContextualMenu
@@ -53,9 +55,10 @@ const ChangeStorageLayoutMenu = ({ systemId }: Props): ReactElement => {
           group.map((option) => ({
             children: option.label,
             onClick: () => {
-              setSidePanelContent({
-                view: MachineSidePanelViews.APPLY_STORAGE_LAYOUT,
-                extras: {
+              openSidePanel({
+                component: ChangeStorageLayout,
+                title: "Change storage layout",
+                props: {
                   systemId,
                   selectedLayout: option,
                 },

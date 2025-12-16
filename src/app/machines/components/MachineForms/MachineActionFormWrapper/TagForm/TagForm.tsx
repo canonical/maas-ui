@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
@@ -24,9 +25,10 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { NodeActions } from "@/app/store/types/node";
 import TagSummary from "@/app/tags/components/TagSummary";
 
-type Props = {
+type TagFormProps = {
   isViewingDetails: boolean;
   isViewingMachineConfig?: boolean;
+  closeForm?: () => void;
 };
 
 export enum Label {
@@ -43,7 +45,8 @@ export type TagFormSecondaryContent = "addTag" | "tagDetails" | null;
 export const TagForm = ({
   isViewingDetails,
   isViewingMachineConfig = false,
-}: Props): React.ReactElement => {
+  closeForm,
+}: TagFormProps): ReactElement => {
   const dispatch = useDispatch();
   const searchFilter = FilterMachines.filtersToString(
     FilterMachines.queryStringToFilters(location.search)
@@ -133,7 +136,7 @@ export const TagForm = ({
           }}
           loaded={tagsLoaded}
           modelName="machine"
-          onCancel={closeSidePanel}
+          onCancel={closeForm ? closeForm : closeSidePanel}
           onSaveAnalytics={{
             action: "Submit",
             category: `Machine ${
@@ -155,7 +158,11 @@ export const TagForm = ({
             }
           }}
           onSuccess={() => {
-            closeSidePanel();
+            if (closeForm) {
+              closeForm();
+            } else {
+              closeSidePanel();
+            }
             dispatch(
               messageActions.add(Label.Saved, NotificationSeverity.POSITIVE)
             );
