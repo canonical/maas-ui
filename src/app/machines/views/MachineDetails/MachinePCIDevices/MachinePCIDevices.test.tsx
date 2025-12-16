@@ -1,13 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import MachinePCIDevices from "./MachinePCIDevices";
 
 import { nodeDeviceActions } from "@/app/store/nodedevice";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, waitFor } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, waitFor } from "@/testing/utils";
 
 describe("MachinePCIDevices", () => {
   it("fetches the machine's node devices on load", async () => {
@@ -20,11 +15,10 @@ describe("MachinePCIDevices", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(<MachinePCIDevices />, {
-      route: "/machine/abc123/pci-devices",
-      routePattern: "/machine/:id/pci-devices",
-      store,
+    const { store } = renderWithProviders(<MachinePCIDevices />, {
+      initialEntries: ["/machine/abc123/pci-devices"],
+      pattern: "/machine/:id/pci-devices",
+      state,
     });
 
     const expectedAction = nodeDeviceActions.getByNodeId("abc123");

@@ -1,8 +1,6 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
-import { MachineSidePanelViews } from "../constants";
-
 import { Label } from "./MachineList/MachineListTable/GroupColumn";
 import { DEFAULTS } from "./MachineList/MachineListTable/constants";
 import Machines from "./Machines";
@@ -26,7 +24,6 @@ import {
   within,
   screen,
   waitFor,
-  renderWithBrowserRouter,
   setupMockServer,
 } from "@/testing/utils";
 
@@ -436,24 +433,6 @@ describe("Machines", () => {
     expect(
       fetches2[fetches.length - 1].payload.params.group_collapsed
     ).toStrictEqual(["deployed"]);
-  });
-
-  it("displays the action title if an action is selected", () => {
-    state.machine.selected = { items: ["abc123"] };
-    renderWithBrowserRouter(<Machines />, {
-      state,
-      route: "/machines",
-      sidePanelContent: { view: MachineSidePanelViews.DEPLOY_MACHINE },
-    });
-
-    expect(screen.getByTestId("main-toolbar-heading")).toHaveTextContent(
-      "0 machines in 0 pools"
-    );
-    expect(
-      within(screen.getByRole("complementary")).getByRole("heading", {
-        level: 3,
-      })
-    ).toHaveTextContent("Deploy");
   });
 
   it("correctly sets the search text for workload annotation filters", async () => {

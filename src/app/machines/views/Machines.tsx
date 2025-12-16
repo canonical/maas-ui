@@ -1,40 +1,25 @@
 import type { ReactElement } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
-import { useSelector } from "react-redux";
-import { useLocation, useNavigate, useMatch } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useStorageState } from "react-storage-hooks";
 
 import MachineListHeader from "./MachineList/MachineListHeader";
 import { useGrouping, useResponsiveColumns } from "./MachineList/hooks";
 
 import PageContent from "@/app/base/components/PageContent/PageContent";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SyncNavigateFunction } from "@/app/base/types";
-import urls from "@/app/base/urls";
 import MachineList from "@/app/machines/views/MachineList";
-import machineSelectors from "@/app/store/machine/selectors";
-import { selectedToFilters, FilterMachines } from "@/app/store/machine/utils";
+import { FilterMachines } from "@/app/store/machine/utils";
 
 const Machines = (): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
-  // The filter state is initialised from the URL.
+
   const [searchFilter, setFilter] = useState(
     FilterMachines.filtersToString(currentFilters)
   );
-  const { closeSidePanel } = useSidePanel();
-
-  const machinesPathMatch = useMatch(urls.machines.index);
-  const selectedMachines = useSelector(machineSelectors.selected);
-
-  // Close the side panel when there are no selected machines
-  useEffect(() => {
-    if (!machinesPathMatch || selectedToFilters(selectedMachines) === null) {
-      closeSidePanel();
-    }
-  }, [closeSidePanel, machinesPathMatch, selectedMachines]);
 
   const setSearchFilter = useCallback(
     (searchText: string) => {

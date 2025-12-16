@@ -1,6 +1,7 @@
 import MachineNetworkActions from "./MachineNetworkActions";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
+import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
@@ -8,10 +9,13 @@ import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   expectTooltipOnHover,
+  mockSidePanel,
   renderWithProviders,
   screen,
   userEvent,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 const expectDisabledButtonWithTooltip = async (
   buttonLabel: RegExp | string,
@@ -58,8 +62,6 @@ describe("MachineNetworkActions", () => {
     });
 
     it("shows the test form when clicking the button", async () => {
-      const setSidePanelContent = vi.fn();
-
       renderWithProviders(
         <MachineNetworkActions
           expanded={null}
@@ -73,9 +75,13 @@ describe("MachineNetworkActions", () => {
       await userEvent.click(
         screen.getByRole("button", { name: /Validate network configuration/i })
       );
-      expect(setSidePanelContent).toHaveBeenCalledWith({
-        view: MachineSidePanelViews.TEST_MACHINE,
-        extras: { applyConfiguredNetworking: true },
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: TestMachineForm,
+        title: "Test machine",
+        props: {
+          applyConfiguredNetworking: true,
+          isViewingDetails: true,
+        },
       });
     });
   });

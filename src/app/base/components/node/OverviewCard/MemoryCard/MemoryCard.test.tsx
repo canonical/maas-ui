@@ -1,15 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
 
 import MemoryCard from "./MemoryCard";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithProviders } from "@/testing/utils";
 
 let state: RootState;
 beforeEach(() => {
@@ -27,15 +23,9 @@ it("does not render test info if node is a controller", () => {
   const controller = factory.controllerDetails();
   state.controller.items = [controller];
 
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <MemoryCard node={controller} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<MemoryCard node={controller} />, {
+    state,
+  });
 
   expect(screen.queryByText(/tests/i)).not.toBeInTheDocument();
   expect(screen.queryByText(/test memory/i)).not.toBeInTheDocument();
@@ -45,15 +35,9 @@ it("renders test info if node is a machine", async () => {
   const machine = factory.machineDetails();
   state.machine.items = [machine];
 
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <MemoryCard node={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<MemoryCard node={machine} />, {
+    state,
+  });
 
   await userEvent.click(screen.getByRole("button", { name: /test memory/i }));
   expect(screen.getByText(/tests/i)).toBeInTheDocument();
@@ -67,17 +51,9 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MemoryCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<MemoryCard node={machine} />, {
+      state,
+    });
 
     expect(screen.getByRole("link", { name: /2/i })).toBeInTheDocument();
   });
@@ -90,17 +66,9 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MemoryCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<MemoryCard node={machine} />, {
+      state,
+    });
 
     expect(screen.getByRole("link", { name: /3/i })).toBeInTheDocument();
   });
@@ -112,17 +80,9 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MemoryCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<MemoryCard node={machine} />, {
+      state,
+    });
 
     expect(screen.getByRole("link", { name: /5/i })).toBeInTheDocument();
   });
@@ -134,17 +94,9 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MemoryCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<MemoryCard node={machine} />, {
+      state,
+    });
 
     expect(
       screen.getByRole("link", { name: /view results/i })
@@ -156,17 +108,9 @@ describe("node is a machine", () => {
     machine.memory_test_status = factory.testStatus();
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MemoryCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<MemoryCard node={machine} />, {
+      state,
+    });
 
     expect(
       screen.getByRole("button", { name: /test memory/i })

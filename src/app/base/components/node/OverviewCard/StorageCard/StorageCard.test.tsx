@@ -1,14 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import StorageCard from "./StorageCard";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithProviders } from "@/testing/utils";
 
 let state: RootState;
 beforeEach(() => {
@@ -24,14 +20,7 @@ it("does not render test info if node is a controller", () => {
   const controller = factory.controllerDetails();
   state.controller.items = [controller];
 
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <StorageCard node={controller} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<StorageCard node={controller} />, { state });
 
   expect(screen.queryByTestId("tests")).not.toBeInTheDocument();
 });
@@ -40,14 +29,7 @@ it("renders test info if node is a machine", () => {
   const machine = factory.machineDetails();
   state.machine.items = [machine];
 
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <StorageCard node={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<StorageCard node={machine} />, { state });
 
   expect(screen.getByTestId("tests")).toBeInTheDocument();
 });
@@ -60,16 +42,7 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<StorageCard node={machine} />, { state });
 
     expect(screen.getByText(/2/i)).toBeInTheDocument();
   });
@@ -82,16 +55,7 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<StorageCard node={machine} />, { state });
 
     expect(screen.getByText(/3/i)).toBeInTheDocument();
   });
@@ -103,16 +67,7 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<StorageCard node={machine} />, { state });
 
     expect(screen.getByText(/5/i)).toBeInTheDocument();
   });
@@ -124,16 +79,7 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<StorageCard node={machine} />, { state });
 
     expect(screen.getByText(/view results/i)).toBeInTheDocument();
   });
@@ -143,16 +89,7 @@ describe("node is a machine", () => {
     machine.storage_test_status = factory.testStatus();
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageCard node={machine} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<StorageCard node={machine} />, { state });
 
     expect(screen.getByText(/test storage/i)).toBeInTheDocument();
   });

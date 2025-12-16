@@ -10,10 +10,10 @@ import type {
   SetSelected,
 } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { useSidePanel as useNewSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import AddInterface from "@/app/devices/components/DeviceNetwork/AddInterface";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
+import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";
 import type { Node } from "@/app/store/types/node";
 
 type Action = {
@@ -41,9 +41,7 @@ const NetworkActionRow = ({
   setSelected,
 }: Props): React.ReactElement | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
-  const { openSidePanel } = useNewSidePanel();
-  // TODO: Remove old side panel later for other components
-  const { setSidePanelContent, setSidePanelSize } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
   const { pathname } = useLocation();
   const isMachinesPage = pathname.startsWith("/machine");
 
@@ -60,9 +58,12 @@ const NetworkActionRow = ({
     const expandedStateMap: Partial<Record<ExpandedState, () => void>> = {
       [ExpandedState.ADD_PHYSICAL]: isMachinesPage
         ? () => {
-            setSidePanelContent({
-              view: MachineSidePanelViews.ADD_INTERFACE,
-              extras: { systemId: node.system_id },
+            openSidePanel({
+              component: AddInterface,
+              title: "Add interface",
+              props: {
+                systemId: node.system_id,
+              },
             });
           }
         : () => {
@@ -75,18 +76,28 @@ const NetworkActionRow = ({
             });
           },
       [ExpandedState.ADD_BOND]: () => {
-        setSidePanelContent({
-          view: MachineSidePanelViews.ADD_BOND,
-          extras: { systemId: node.system_id, selected: selected, setSelected },
+        openSidePanel({
+          component: AddBondForm,
+          title: "Add bond",
+          props: {
+            systemId: node.system_id,
+            selected: selected ?? [],
+            setSelected: setSelected ?? (() => {}),
+          },
+          size: "large",
         });
-        setSidePanelSize("large");
       },
       [ExpandedState.ADD_BRIDGE]: () => {
-        setSidePanelContent({
-          view: MachineSidePanelViews.ADD_BRIDGE,
-          extras: { systemId: node.system_id, selected: selected, setSelected },
+        openSidePanel({
+          component: AddBridgeForm,
+          title: "Add bridge",
+          props: {
+            systemId: node.system_id,
+            selected: selected ?? [],
+            setSelected: setSelected ?? (() => {}),
+          },
+          size: "large",
         });
-        setSidePanelSize("large");
       },
     };
     return expandedStateMap[state]?.();
