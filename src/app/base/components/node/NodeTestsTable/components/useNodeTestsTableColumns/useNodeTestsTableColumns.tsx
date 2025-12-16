@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import type { Dispatch } from "react";
+import { useMemo } from "react";
 
 import { Input, Tooltip } from "@canonical/react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
@@ -22,6 +23,7 @@ import { formatUtcDatetime } from "@/app/utils/time";
 type Props = {
   node: ControllerDetails | MachineDetails;
   scriptResults: ScriptResult[];
+  setExpanded: Dispatch<React.SetStateAction<Expanded | null>>;
 };
 export enum ScriptResultAction {
   VIEW_METRICS = "viewMetrics",
@@ -40,10 +42,10 @@ type NodeTestsTableColumnDef = ColumnDef<NodeTestRow, Partial<NodeTestRow>>;
 const useNodeTestsTableColumns = ({
   node,
   scriptResults,
+  setExpanded,
 }: Props): NodeTestsTableColumnDef[] => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
-  const [expanded, setExpanded] = useState<Expanded | null>(null);
 
   const containsTesting = scriptResults.some(
     (result) => result.result_type === ScriptResultType.TESTING
@@ -61,56 +63,60 @@ const useNodeTestsTableColumns = ({
               accessorKey: "suppress-col",
               enableSorting: false,
               cell: ({ row }: { row: Row<NodeTestRow> }) => {
-                const isSuppressible = canBeSuppressed(row.original);
-                return (
-                  <Tooltip
-                    data-testid="suppress-tooltip"
-                    message={
-                      isSuppressible
-                        ? null
-                        : "Only failed testing scripts can be suppressed."
-                    }
-                  >
-                    <Input
-                      checked={row.original.suppressed}
-                      data-testid="suppress-script-results"
-                      disabled={!isSuppressible}
-                      id={`suppress-${row.original.id}`}
-                      label=" "
-                      labelClassName="p-checkbox--inline u-no-padding--left"
-                      onChange={() => {
-                        if (showSuppressCol) {
-                          if (row.original.suppressed) {
-                            dispatch(
-                              machineActions.unsuppressScriptResults(
-                                node.system_id,
-                                [row.original]
-                              )
-                            );
-                            sendAnalytics(
-                              "Machine testing",
-                              "Unsuppress script result failure",
-                              "Unsuppress"
-                            );
-                          } else {
-                            dispatch(
-                              machineActions.suppressScriptResults(
-                                node.system_id,
-                                [row.original]
-                              )
-                            );
-                            sendAnalytics(
-                              "Machine testing",
-                              "Suppress script result failure",
-                              "Suppress"
-                            );
+                if (!row.original.isHistory) {
+                  const isSuppressible = canBeSuppressed(row.original);
+                  return (
+                    <Tooltip
+                      data-testid="suppress-tooltip"
+                      message={
+                        isSuppressible
+                          ? null
+                          : "Only failed testing scripts can be suppressed."
+                      }
+                    >
+                      <Input
+                        checked={row.original.suppressed}
+                        data-testid="suppress-script-results"
+                        disabled={!isSuppressible}
+                        id={`suppress-${row.original.id}`}
+                        label=" "
+                        labelClassName="p-checkbox--inline u-no-padding--left"
+                        onChange={() => {
+                          if (showSuppressCol) {
+                            if (row.original.suppressed) {
+                              dispatch(
+                                machineActions.unsuppressScriptResults(
+                                  node.system_id,
+                                  [row.original]
+                                )
+                              );
+                              sendAnalytics(
+                                "Machine testing",
+                                "Unsuppress script result failure",
+                                "Unsuppress"
+                              );
+                            } else {
+                              dispatch(
+                                machineActions.suppressScriptResults(
+                                  node.system_id,
+                                  [row.original]
+                                )
+                              );
+                              sendAnalytics(
+                                "Machine testing",
+                                "Suppress script result failure",
+                                "Suppress"
+                              );
+                            }
                           }
-                        }
-                      }}
-                      type="checkbox"
-                    />
-                  </Tooltip>
-                );
+                        }}
+                        type="checkbox"
+                      />
+                    </Tooltip>
+                  );
+                } else {
+                  return null;
+                }
               },
             },
           ]
@@ -120,14 +126,16 @@ const useNodeTestsTableColumns = ({
         header: "Name",
         accessorKey: "name",
         enableSorting: false,
-        cell: ({ row }) => <>{row.original.name}</>,
+        cell: ({ row }) =>
+          !row.original.isHistory ? <>{row.original.name}</> : null,
       },
       {
         id: "tags",
         header: "Tags",
         accessorKey: "tags",
         enableSorting: false,
-        cell: ({ row }) => <>{row.original.tags}</>,
+        cell: ({ row }) =>
+          !row.original.isHistory ? <>{row.original.tags}</> : null,
       },
       {
         id: "result",
@@ -159,21 +167,29 @@ const useNodeTestsTableColumns = ({
         header: "Actions",
         accessorKey: "actions",
         enableSorting: false,
-        cell: ({ row }) => (
-          <TestActions
-            node={node}
-            resultType={
-              containsTesting
-                ? ScriptResultType.TESTING
-                : ScriptResultType.COMMISSIONING
-            }
-            scriptResult={row.original}
-            setExpanded={setExpanded}
-          />
-        ),
+        cell: ({ row }) =>
+          !row.original.isHistory ? (
+            <TestActions
+              node={node}
+              resultType={
+                containsTesting
+                  ? ScriptResultType.TESTING
+                  : ScriptResultType.COMMISSIONING
+              }
+              scriptResult={row.original}
+              setExpanded={setExpanded}
+            />
+          ) : null,
       },
     ],
-    [containsTesting, dispatch, node, sendAnalytics, showSuppressCol]
+    [
+      containsTesting,
+      dispatch,
+      node,
+      sendAnalytics,
+      setExpanded,
+      showSuppressCol,
+    ]
   );
 };
 
