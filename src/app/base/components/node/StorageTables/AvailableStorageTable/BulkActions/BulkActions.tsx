@@ -1,8 +1,11 @@
 import { Button, List, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import CreateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateDatastore";
+import CreateRaid from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateRaid";
+import CreateVolumeGroup from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateVolumeGroup";
+import UpdateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/UpdateDatastore";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
@@ -28,7 +31,7 @@ const BulkActions = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
 
   if (!isMachineDetails(machine)) {
     return null;
@@ -68,9 +71,10 @@ const BulkActions = ({
               data-testid="create-datastore"
               disabled={!createDatastoreEnabled}
               onClick={() => {
-                setSidePanelContent({
-                  view: MachineSidePanelViews.CREATE_DATASTORE,
-                  extras: { bulkActionSelected: selected, systemId: systemId },
+                openSidePanel({
+                  component: CreateDatastore,
+                  title: "Create datastore",
+                  props: { selected, systemId: systemId },
                 });
               }}
             >
@@ -86,9 +90,10 @@ const BulkActions = ({
               data-testid="add-to-datastore"
               disabled={!updateDatastoreEnabled}
               onClick={() => {
-                setSidePanelContent({
-                  view: MachineSidePanelViews.UPDATE_DATASTORE,
-                  extras: { bulkActionSelected: selected, systemId: systemId },
+                openSidePanel({
+                  component: UpdateDatastore,
+                  title: "Update datastore",
+                  props: { selected, systemId: systemId },
                 });
               }}
             >
@@ -121,9 +126,10 @@ const BulkActions = ({
             data-testid="create-vg"
             disabled={!createVgEnabled}
             onClick={() => {
-              setSidePanelContent({
-                view: MachineSidePanelViews.CREATE_VOLUME_GROUP,
-                extras: { bulkActionSelected: selected, systemId: systemId },
+              openSidePanel({
+                component: CreateVolumeGroup,
+                title: "Create volume group",
+                props: { selected, systemId: systemId },
               });
             }}
           >
@@ -143,9 +149,10 @@ const BulkActions = ({
             data-testid="create-raid"
             disabled={!createRaidEnabled}
             onClick={() => {
-              setSidePanelContent({
-                view: MachineSidePanelViews.CREATE_RAID,
-                extras: { bulkActionSelected: selected, systemId: systemId },
+              openSidePanel({
+                component: CreateRaid,
+                title: "Create raid",
+                props: { selected, systemId: systemId },
               });
             }}
           >

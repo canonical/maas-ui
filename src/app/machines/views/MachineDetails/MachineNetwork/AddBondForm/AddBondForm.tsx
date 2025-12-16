@@ -78,6 +78,7 @@ const InterfaceSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
+// TODO: better prop typing, these are sometimes undefined
 const AddBondForm = ({
   selected,
   setSelected,
