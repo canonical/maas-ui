@@ -1,11 +1,7 @@
-import configureStore from "redux-mock-store";
-import type { Mock } from "vitest";
-
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
 import AddRepository from "./AddRepository";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
@@ -15,31 +11,18 @@ import {
   renderWithProviders,
   setupMockServer,
   waitForLoading,
+  mockSidePanel,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
+const { mockClose } = await mockSidePanel();
 
 setupMockServer(
   packageRepositoriesResolvers.createPackageRepository.handler(),
   packageRepositoriesResolvers.updatePackageRepository.handler()
 );
 
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
-
 describe("AddRepository", () => {
   let state: RootState;
-
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
 
   beforeEach(() => {
     state = factory.rootState({
@@ -57,12 +40,20 @@ describe("AddRepository", () => {
     });
   });
 
+  it("runs closeSidePanel function when the cancel button is clicked", async () => {
+    renderWithProviders(<AddRepository type="repository" />);
+
+    await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+    expect(mockClose).toHaveBeenCalled();
+  });
+
   it(`dispatches actions to fetch components to disable,
     known architectures and pockets to disable if not already loaded`, () => {
     state.general.componentsToDisable.loaded = false;
-    const store = mockStore(state);
 
-    renderWithProviders(<AddRepository type="repository" />, { store });
+    const { store } = renderWithProviders(<AddRepository type="repository" />, {
+      state,
+    });
 
     expect(store.getActions()).toEqual([
       {

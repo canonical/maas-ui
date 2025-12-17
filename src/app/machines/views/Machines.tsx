@@ -58,9 +58,6 @@ const Machines = (): ReactElement => {
           setSearchFilter={setSearchFilter}
         />
       }
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       <MachineList
         grouping={grouping}

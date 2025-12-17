@@ -62,7 +62,7 @@ const IpmiSettings = (): ReactElement => {
   useWindowTitle("IPMI settings");
 
   return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+    <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Title className="section-header__title">
           IPMI settings

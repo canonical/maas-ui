@@ -265,11 +265,7 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent
-                        aria-label={"My preferences"}
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
-                      >
+                      <PageContent aria-label={"My preferences"}>
                         <Details />
                       </PageContent>
                     </ErrorBoundary>
@@ -726,8 +722,6 @@ export const router = createBrowserRouter(
                             </MainToolbar.Title>
                           </MainToolbar>
                         }
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
                       >
                         <NetworkDiscoveryForm />
                       </PageContent>
@@ -741,10 +735,7 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
-                      >
+                      <PageContent>
                         <ScriptsList type="commissioning" />
                       </PageContent>
                     </ErrorBoundary>
@@ -775,10 +766,7 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
-                      >
+                      <PageContent>
                         <ScriptsList type="testing" />
                       </PageContent>
                     </ErrorBoundary>
@@ -807,10 +795,7 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
-                      >
+                      <PageContent>
                         <DhcpList />
                       </PageContent>
                     </ErrorBoundary>

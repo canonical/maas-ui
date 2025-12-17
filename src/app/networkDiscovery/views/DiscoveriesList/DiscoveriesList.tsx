@@ -30,21 +30,12 @@ const DiscoveriesList = (): ReactElement => {
 
   if (!isSuperUser.data) {
     return (
-      <PageContent
-        header={<SectionHeader title={Labels.Permissions} />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
-      />
+      <PageContent header={<SectionHeader title={Labels.Permissions} />} />
     );
   }
 
   return (
-    <PageContent
-      header={<NetworkDiscoveryHeader />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<NetworkDiscoveryHeader />}>
       {networkDiscovery === "disabled" && (
         <Notification severity="caution">{Labels.Disabled}</Notification>
       )}

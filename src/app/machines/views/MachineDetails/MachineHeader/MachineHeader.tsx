@@ -13,7 +13,6 @@ import ScriptStatus from "@/app/base/components/ScriptStatus";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useSendAnalytics } from "@/app/base/hooks";
-import { MachineSidePanelViews } from "@/app/machines/constants";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";

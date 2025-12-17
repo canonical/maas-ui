@@ -55,9 +55,6 @@ const VirshDetails = (): ReactElement => {
     <PageContent
       aria-label={Label.Title}
       header={<VirshDetailsHeader id={id} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       {pod && (
         <Routes>

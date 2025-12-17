@@ -66,12 +66,7 @@ const MachineDetails = (): React.ReactElement => {
   const base = urls.machines.machine.index(null);
 
   return (
-    <PageContent
-      header={<MachineHeader systemId={id} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<MachineHeader systemId={id} />}>
       {machine && (
         <Routes>
           <Route

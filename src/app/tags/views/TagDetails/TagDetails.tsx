@@ -65,9 +65,6 @@ const TagDetails = (): React.ReactElement => {
   return (
     <PageContent
       header={<TagsDetailsHeader onDelete={onDelete} onUpdate={onUpdate} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       {!isId(id) || (!tagsLoading && !tag) ? (
         <ModelNotFound id={id} linkURL={urls.tags.index} modelName="tag" />

@@ -8,12 +8,7 @@ const FabricsList = () => {
   useWindowTitle("Fabrics");
 
   return (
-    <PageContent
-      header={<NetworksHeader />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext
-    >
+    <PageContent header={<NetworksHeader />}>
       <FabricsTable />
     </PageContent>
   );

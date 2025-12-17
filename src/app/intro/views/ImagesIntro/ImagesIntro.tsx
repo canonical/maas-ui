@@ -54,13 +54,7 @@ const ImagesIntro = (): ReactElement => {
   const incomplete = !hasSources || resources.length === 0;
 
   return (
-    <IntroSection
-      loading={sourcesPending}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-      windowTitle="Images"
-    >
+    <IntroSection loading={sourcesPending} windowTitle="Images">
       <IntroCard complete={!incomplete} title="Images">
         <ImageListHeader
           selectedRows={selectedRows}
