@@ -41,8 +41,8 @@ describe("AddRepository", () => {
   });
 
   it("runs closeSidePanel function when the cancel button is clicked", async () => {
-    renderWithProviders(<AddRepository type="repository" />);
-
+    renderWithProviders(<AddRepository type="repository" />, { state });
+    await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
     expect(mockClose).toHaveBeenCalled();
   });

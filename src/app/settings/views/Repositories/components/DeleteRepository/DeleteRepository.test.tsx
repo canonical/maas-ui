@@ -21,7 +21,7 @@ const mockServer = setupMockServer(
 describe("RepositoryDelete", () => {
   it("runs closeSidePanel function when the cancel button is clicked", async () => {
     renderWithProviders(<DeleteRepository id={1} />);
-
+    await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
     expect(mockClose).toHaveBeenCalled();
   });

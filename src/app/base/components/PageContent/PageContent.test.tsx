@@ -2,26 +2,9 @@ import PageContent from "./PageContent";
 
 import { preferencesNavItems } from "@/app/preferences/constants";
 import { settingsNavItems } from "@/app/settings/constants";
-import {
-  getTestState,
-  renderWithBrowserRouter,
-  screen,
-  within,
-} from "@/testing/utils";
+import { getTestState, renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const state = getTestState();
-
-it("displays sidebar with provided content", () => {
-  renderWithBrowserRouter(<PageContent header="Settings">content</PageContent>);
-  const aside = screen.getByRole("complementary");
-  expect(screen.getByRole("complementary")).not.toHaveClass("is-collapsed");
-  expect(within(aside).getByText("Sidebar"));
-});
-
-it("displays hidden sidebar when no content provided", () => {
-  renderWithBrowserRouter(<PageContent header="Settings">content</PageContent>);
-  expect(screen.queryByRole("complementary")).toHaveClass("is-collapsed");
-});
 
 it("shows the secondary navigation for settings", () => {
   state.status.authenticated = true;

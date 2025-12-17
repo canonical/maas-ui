@@ -1,11 +1,9 @@
-import { MemoryRouter, Route, Routes } from "react-router";
-
 import { DhcpEdit } from "./DhcpEdit";
 
 import { Labels as DhcpFormFieldsLabels } from "@/app/base/components/DhcpFormFields/DhcpFormFields";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("DhcpEdit", () => {
   let state: RootState;
@@ -29,42 +27,17 @@ describe("DhcpEdit", () => {
   it("displays a loading component if loading", () => {
     state.dhcpsnippet.loading = true;
     state.dhcpsnippet.loaded = false;
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/settings/dhcp/1/edit", key: "testKey" }]}
-      >
-        <DhcpEdit />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpEdit id={1} />, { state });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("handles dhcp snippet not found", () => {
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[
-          { pathname: "/settings/dhcp/99999/edit", key: "testKey" },
-        ]}
-      >
-        <DhcpEdit />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpEdit id={99999} />, { state });
     expect(screen.getByText("DHCP snippet not found")).toBeInTheDocument();
   });
 
   it("can display a dhcp snippet edit form", () => {
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/settings/dhcp/1/edit", key: "testKey" }]}
-      >
-        <Routes>
-          <Route element={<DhcpEdit />} path="/settings/dhcp/:id/edit" />
-        </Routes>
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpEdit id={1} />, { state });
     expect(
       screen.getByRole("form", { name: "Editing `test snippet`" })
     ).toBeInTheDocument();
