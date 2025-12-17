@@ -4,7 +4,7 @@ import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 
-import NodeTestsTable from "@/app/base/components/node/NodeTestsTable";
+import NodeTestsTable from "@/app/base/components/node/NodeTestsTable/components/NodeTestsTable";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import machineSelectors from "@/app/store/machine/selectors";
