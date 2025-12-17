@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
-import { Code, Col, Row } from "@canonical/react-components";
+import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
+import {
+  Button,
+  Code,
+  Col,
+  Link as VanillaLink,
+  MainTable,
+  Row,
+  Spinner,
+} from "@canonical/react-components";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import ColumnToggle from "@/app/base/components/ColumnToggle";
 import DhcpSnippetType from "@/app/base/components/DhcpSnippetType";
+import SearchBox from "@/app/base/components/SearchBox";
 import TableActions from "@/app/base/components/TableActions";
 import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import docsUrls from "@/app/base/docsUrls";
 import { useWindowTitle } from "@/app/base/hooks";
-import SettingsTable from "@/app/settings/components/SettingsTable";
-import settingsURLs from "@/app/settings/urls";
+import type { SidePanelActions } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
+import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
 import DhcpTarget from "@/app/settings/views/Dhcp/DhcpTarget";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
@@ -61,6 +73,7 @@ const getTargetName = (
 };
 
 const generateRows = (
+  openSidePanel: SidePanelActions["openSidePanel"],
   dhcpsnippets: DHCPSnippet[],
   expandedId: DHCPSnippet[DHCPSnippetMeta.PK] | null,
   setExpandedId: (expandedId: DHCPSnippet[DHCPSnippetMeta.PK] | null) => void,
@@ -128,10 +141,18 @@ const generateRows = (
         {
           content: (
             <TableActions
-              editPath={settingsURLs.dhcp.edit({ id: dhcpsnippet.id })}
               onDelete={() => {
                 setExpandedId(dhcpsnippet.id);
                 setExpandedType("delete");
+              }}
+              onEdit={() => {
+                openSidePanel({
+                  component: DhcpEdit,
+                  title: "Edit DHCP snippet",
+                  props: {
+                    id: dhcpsnippet.id,
+                  },
+                });
               }}
             />
           ),
@@ -179,6 +200,7 @@ const generateRows = (
   });
 
 const DhcpList = (): React.ReactElement => {
+  const { openSidePanel } = useSidePanel();
   const [expandedId, setExpandedId] = useState<
     DHCPSnippet[DHCPSnippetMeta.PK] | null
   >(null);
@@ -219,64 +241,110 @@ const DhcpList = (): React.ReactElement => {
   return (
     <ContentSection>
       <ContentSection.Content>
-        <SettingsTable
-          buttons={[{ label: "Add snippet", url: settingsURLs.dhcp.add }]}
-          emptyStateMsg="No DHCP snippets available."
-          headers={[
-            {
-              content: "Snippet name",
-              sortKey: "name",
-            },
-            {
-              content: "Type",
-              sortKey: "type",
-            },
-            {
-              content: "Applies to",
-              sortKey: "target",
-            },
-            {
-              content: "Description",
-              sortKey: "description",
-            },
-            {
-              content: "Enabled",
-              sortKey: "enabled",
-            },
-            {
-              content: "Last edited",
-              sortKey: "updated",
-            },
-            {
-              content: "Actions",
-              className: "u-align--right",
-            },
-          ]}
-          helpLabel="About DHCP"
-          helpLink={docsUrls.dhcp}
-          loaded={dhcpsnippetLoaded}
-          loading={dhcpsnippetLoading}
-          rows={generateRows(
-            dhcpsnippets,
-            expandedId,
-            setExpandedId,
-            expandedType,
-            setExpandedType,
-            controllers,
-            devices,
-            machines,
-            subnets,
-            hideExpanded,
-            dispatch,
-            saved,
-            saving
+        <div className="settings-table">
+          <MainToolbar>
+            <MainToolbar.Title>DHCP snippets</MainToolbar.Title>
+            <MainToolbar.Controls>
+              <SearchBox
+                onChange={setSearchText}
+                placeholder="Search DHCP snippets"
+                value={searchText}
+              />
+              <Button
+                onClick={() => {
+                  openSidePanel({
+                    component: DhcpAdd,
+                    title: "Add DHCP snippet",
+                  });
+                }}
+              >
+                Add snippet
+              </Button>
+            </MainToolbar.Controls>
+          </MainToolbar>
+          {dhcpsnippetLoading && (
+            <div className="settings-table__loader">
+              <Spinner />
+            </div>
           )}
-          searchOnChange={setSearchText}
-          searchPlaceholder="Search DHCP snippets"
-          searchText={searchText}
-          tableClassName="dhcp-list"
-          title="DHCP snippets"
-        />
+          <MainTable
+            className={classNames(
+              "p-table-expanding--light u-nudge-down",
+              "dhcp-list",
+              {
+                "u-no-padding--bottom":
+                  dhcpsnippetLoading && !dhcpsnippetLoaded,
+              }
+            )}
+            defaultSortDirection="ascending"
+            emptyStateMsg="No DHCP snippets available."
+            expanding={true}
+            headers={[
+              {
+                content: "Snippet name",
+                sortKey: "name",
+              },
+              {
+                content: "Type",
+                sortKey: "type",
+              },
+              {
+                content: "Applies to",
+                sortKey: "target",
+              },
+              {
+                content: "Description",
+                sortKey: "description",
+              },
+              {
+                content: "Enabled",
+                sortKey: "enabled",
+              },
+              {
+                content: "Last edited",
+                sortKey: "updated",
+              },
+              {
+                content: "Actions",
+                className: "u-align--right",
+              },
+            ]}
+            paginate={20}
+            rows={
+              dhcpsnippetLoaded
+                ? generateRows(
+                    openSidePanel,
+                    dhcpsnippets,
+                    expandedId,
+                    setExpandedId,
+                    expandedType,
+                    setExpandedType,
+                    controllers,
+                    devices,
+                    machines,
+                    subnets,
+                    hideExpanded,
+                    dispatch,
+                    saved,
+                    saving
+                  )
+                : undefined
+            }
+            sortable
+          />
+          {dhcpsnippetLoading && !dhcpsnippetLoaded && (
+            <div className="settings-table__lines"></div>
+          )}
+          <p className="u-no-margin--bottom settings-table__help">
+            <VanillaLink
+              href={docsUrls.dhcp}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              About DHCP
+            </VanillaLink>
+          </p>
+        </div>
       </ContentSection.Content>
     </ContentSection>
   );

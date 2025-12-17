@@ -21,8 +21,6 @@ import Commissioning from "@/app/settings/views/Configuration/Commissioning";
 import Deploy from "@/app/settings/views/Configuration/Deploy";
 import General from "@/app/settings/views/Configuration/General";
 import KernelParameters from "@/app/settings/views/Configuration/KernelParameters";
-import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
-import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
 import DhcpList from "@/app/settings/views/Dhcp/DhcpList";
 import ChangeSource from "@/app/settings/views/Images/ChangeSource";
 import ThirdPartyDrivers from "@/app/settings/views/Images/ThirdPartyDrivers";
@@ -36,7 +34,6 @@ import ProxyForm from "@/app/settings/views/Network/ProxyForm";
 import SyslogForm from "@/app/settings/views/Network/SyslogForm";
 import RepositoriesList from "@/app/settings/views/Repositories/views";
 import ScriptsList from "@/app/settings/views/Scripts/ScriptsList";
-import ScriptsUpload from "@/app/settings/views/Scripts/ScriptsUpload";
 import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
 import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
@@ -743,24 +740,6 @@ export const router = createBrowserRouter(
                 },
                 {
                   path: getRelativeRoute(
-                    urls.settings.scripts.commissioning.upload,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={
-                          <ScriptsUpload type="commissioning" />
-                        }
-                        sidePanelTitle="Upload commissioning script"
-                      >
-                        <ScriptsList type="commissioning" />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
                     urls.settings.scripts.testing.index,
                     urls.settings.index
                   ),
@@ -772,22 +751,7 @@ export const router = createBrowserRouter(
                     </ErrorBoundary>
                   ),
                 },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.scripts.testing.upload,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={<ScriptsUpload type="testing" />}
-                        sidePanelTitle="Upload testing script"
-                      >
-                        <ScriptsList type="testing" />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
+
                 {
                   path: getRelativeRoute(
                     urls.settings.dhcp.index,
@@ -801,38 +765,7 @@ export const router = createBrowserRouter(
                     </ErrorBoundary>
                   ),
                 },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.dhcp.add,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={<DhcpAdd />}
-                        sidePanelTitle="Add DHCP snippet"
-                      >
-                        <DhcpList />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.dhcp.edit(null),
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={<DhcpEdit />}
-                        sidePanelTitle="Edit DHCP snippet"
-                      >
-                        <DhcpList />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
+
                 {
                   path: getRelativeRoute(
                     urls.settings.repositories.index,

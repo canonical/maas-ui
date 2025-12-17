@@ -263,7 +263,7 @@
 @include GuidedProvisioning;
 
 // settings
-@import "@/app/settings/components/SettingsTable";
+@import "@/app/settings";
 @import "@/app/settings/views/Configuration/GeneralForm";
 @import "@/app/settings/views/Configuration/GeneralForm/ThemedRadioButton";
 @import "@/app/settings/views/Security/SecurityProtocols/TLSEnabled/TLSEnabledFields";
