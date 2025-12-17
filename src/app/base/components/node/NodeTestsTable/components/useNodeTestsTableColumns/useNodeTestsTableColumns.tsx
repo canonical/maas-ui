@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { Input, Tooltip } from "@canonical/react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router";
 
 import ScriptRunTime from "../../ScriptRunTime";
 import TestActions from "../../TestActions";
@@ -23,6 +24,7 @@ import { formatUtcDatetime } from "@/app/utils/time";
 type Props = {
   node: ControllerDetails | MachineDetails;
   scriptResults: ScriptResult[];
+  expanded: Expanded | null;
   setExpanded: Dispatch<React.SetStateAction<Expanded | null>>;
 };
 export enum ScriptResultAction {
@@ -42,6 +44,7 @@ type NodeTestsTableColumnDef = ColumnDef<NodeTestRow, Partial<NodeTestRow>>;
 const useNodeTestsTableColumns = ({
   node,
   scriptResults,
+  expanded,
   setExpanded,
 }: Props): NodeTestsTableColumnDef[] => {
   const dispatch = useDispatch();
@@ -143,9 +146,26 @@ const useNodeTestsTableColumns = ({
         accessorKey: "result",
         enableSorting: false,
         cell: ({ row }) => (
-          <ScriptStatus status={row.original.status}>
-            {row.original.status_name}
-          </ScriptStatus>
+          <>
+            {expanded?.content === ScriptResultAction.VIEW_PREVIOUS_TESTS &&
+            row.original.isHistory ? (
+              <>
+                <ScriptStatus status={row.original.status}>
+                  {row.original.status_name}{" "}
+                  <Link
+                    data-testid="details-link"
+                    to={`${location.pathname}/${row.original.id}/details`}
+                  >
+                    View log
+                  </Link>
+                </ScriptStatus>
+              </>
+            ) : (
+              <ScriptStatus status={row.original.status}>
+                {row.original.status_name}
+              </ScriptStatus>
+            )}
+          </>
         ),
       },
       {
@@ -185,6 +205,7 @@ const useNodeTestsTableColumns = ({
     [
       containsTesting,
       dispatch,
+      expanded?.content,
       node,
       sendAnalytics,
       setExpanded,

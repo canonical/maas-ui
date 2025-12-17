@@ -5,8 +5,11 @@ import { Button } from "@canonical/react-components";
 import type { SortingState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
+import TestMetrics from "../../TestMetrics";
 import type { Expanded } from "../useNodeTestsTableColumns/useNodeTestsTableColumns";
-import useNodeTestsTableColumns from "../useNodeTestsTableColumns/useNodeTestsTableColumns";
+import useNodeTestsTableColumns, {
+  ScriptResultAction,
+} from "../useNodeTestsTableColumns/useNodeTestsTableColumns";
 
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -61,7 +64,7 @@ const useScriptResultHistory = (scriptResults: ScriptResult[]) => {
 
   useEffect(() => {
     scriptResults.forEach((scriptResult) => {
-      if (history[scriptResult.id].length === 0) {
+      if (history[scriptResult.id] && history[scriptResult.id].length === 0) {
         dispatch(scriptResultActions.getHistory(scriptResult.id));
       }
     });
@@ -75,6 +78,7 @@ const NodeTestsTable = ({ node, scriptResults }: Props) => {
   const columns = useNodeTestsTableColumns({
     node,
     scriptResults,
+    expanded,
     setExpanded,
   });
   const [sorting, setSorting] = useState<SortingState>([
@@ -100,14 +104,39 @@ const NodeTestsTable = ({ node, scriptResults }: Props) => {
         variant="regular"
       />
       <div className="u-align--right u-nudge-left--small">
-        <Button
-          className="u-no-margin--bottom"
-          onClick={() => {
-            setExpanded(null);
-          }}
-        >
-          Close
-        </Button>
+        {expanded?.content === ScriptResultAction.VIEW_PREVIOUS_TESTS ? (
+          <>
+            {!history || history[expanded.id]?.length <= 1 ? (
+              <p
+                className="u-align--center u-no-max-width"
+                data-testid="no-history"
+              >
+                {history[expanded.id]?.length === 1 ? (
+                  "This test has only been run once."
+                ) : (
+                  <></>
+                )}
+              </p>
+            ) : null}
+            <Button
+              className="u-no-margin--bottom"
+              onClick={() => {
+                setExpanded(null);
+              }}
+            >
+              Close
+            </Button>
+          </>
+        ) : expanded?.content === ScriptResultAction.VIEW_METRICS ? (
+          <TestMetrics
+            close={() => {
+              setExpanded(null);
+            }}
+            scriptResult={scriptResults.find(
+              (result) => result.id === expanded.id
+            )}
+          />
+        ) : null}
       </div>
     </>
   );
