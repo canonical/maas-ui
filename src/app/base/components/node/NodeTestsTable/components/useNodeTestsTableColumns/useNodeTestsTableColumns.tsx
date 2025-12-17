@@ -12,6 +12,7 @@ import type { NodeTestRow } from "../NodeTestsTable/NodeTestsTable";
 
 import ScriptStatus from "@/app/base/components/ScriptStatus";
 import { useSendAnalytics } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import { machineActions } from "@/app/store/machine";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -154,7 +155,19 @@ const useNodeTestsTableColumns = ({
                   {row.original.status_name}{" "}
                   <Link
                     data-testid="details-link"
-                    to={`${location.pathname}/${row.original.id}/details`}
+                    to={
+                      isMachine
+                        ? urls.machines.machine.testing.scriptResult({
+                            id: node.system_id,
+                            scriptResultId: row.original.id,
+                          })
+                        : urls.controllers.controller.commissioning.scriptResult(
+                            {
+                              id: node.system_id,
+                              scriptResultId: row.original.id,
+                            }
+                          )
+                    }
                   >
                     View log
                   </Link>
@@ -206,6 +219,7 @@ const useNodeTestsTableColumns = ({
       containsTesting,
       dispatch,
       expanded?.content,
+      isMachine,
       node,
       sendAnalytics,
       setExpanded,
