@@ -2,7 +2,7 @@ import StorageTables, { Labels } from "./StorageTables";
 
 import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("renders a list of cache sets if any exist", () => {
   const node = factory.machineDetails({
@@ -17,7 +17,7 @@ it("renders a list of cache sets if any exist", () => {
     }),
   });
 
-  renderWithBrowserRouter(<StorageTables canEditStorage node={node} />, {
+  renderWithProviders(<StorageTables canEditStorage node={node} />, {
     state,
   });
 
@@ -47,7 +47,7 @@ it("renders a list of datastores if the detected layout is VMFS6", () => {
     }),
   });
 
-  renderWithBrowserRouter(<StorageTables canEditStorage node={node} />, {
+  renderWithProviders(<StorageTables canEditStorage node={node} />, {
     state,
   });
 

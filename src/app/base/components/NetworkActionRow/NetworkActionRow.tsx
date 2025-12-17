@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
 import { useLocation } from "react-router";
@@ -11,9 +11,10 @@ import type {
 } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import AddInterface from "@/app/devices/components/DeviceNetwork/AddInterface";
+import { default as AddDeviceInterface } from "@/app/devices/components/DeviceNetwork/AddInterface";
 import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
 import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";
+import AddInterface from "@/app/machines/views/MachineDetails/MachineNetwork/AddInterface";
 import type { Node } from "@/app/store/types/node";
 
 type Action = {
@@ -22,7 +23,7 @@ type Action = {
   state: ExpandedState;
 };
 
-type Props = {
+type NetworkActionRowProps = {
   extraActions?: Action[];
   node: Node;
   rightContent?: ReactNode;
@@ -39,7 +40,7 @@ const NetworkActionRow = ({
   rightContent,
   selected,
   setSelected,
-}: Props): React.ReactElement | null => {
+}: NetworkActionRowProps): ReactElement | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
   const { openSidePanel } = useSidePanel();
   const { pathname } = useLocation();
@@ -68,7 +69,7 @@ const NetworkActionRow = ({
           }
         : () => {
             openSidePanel({
-              component: AddInterface,
+              component: AddDeviceInterface,
               title: "Add interface",
               props: {
                 systemId: node.system_id,

@@ -10,7 +10,6 @@ import type {
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
-import type { SetExpanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableHeader from "@/app/base/components/TableHeader";
 import DHCPColumn from "@/app/base/components/node/networking/DHCPColumn";
 import FabricColumn from "@/app/base/components/node/networking/FabricColumn";
@@ -20,10 +19,6 @@ import PXEColumn from "@/app/base/components/node/networking/NetworkTable/PXECol
 import SpeedColumn from "@/app/base/components/node/networking/NetworkTable/SpeedColumn";
 import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
 import TypeColumn from "@/app/base/components/node/networking/TypeColumn";
-import type {
-  Selected,
-  SetSelected,
-} from "@/app/base/components/node/networking/types";
 import NetworkTableActions from "@/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -54,12 +49,8 @@ export const filterHeadersAndAction = (
 
 const useNetworkTableColumns = ({
   node,
-  setExpanded,
-  setSelected,
 }: {
   node: ControllerDetails | MachineDetails;
-  setExpanded?: SetExpanded;
-  setSelected?: SetSelected;
 }): NetworkColumnDef[] => {
   return useMemo(
     () => [
@@ -226,31 +217,21 @@ const useNetworkTableColumns = ({
           row: {
             original: { isABondOrBridgeParent, nic, link },
           },
-          table,
         }: {
           row: Row<Network>;
           table: Table<Network>;
         }) => {
-          return !isABondOrBridgeParent &&
-            nodeIsMachine(node) &&
-            setExpanded ? (
+          return !isABondOrBridgeParent && nodeIsMachine(node) ? (
             <NetworkTableActions
               link={link}
               nic={nic}
-              selected={table.getSelectedRowModel().flatRows.map(
-                (row): Selected => ({
-                  linkId: row.original.link?.id,
-                  nicId: row.original.nic.id,
-                })
-              )}
-              setSelected={setSelected}
               systemId={node.system_id}
             />
           ) : null;
         },
       },
     ],
-    [node, setExpanded, setSelected]
+    [node]
   );
 };
 

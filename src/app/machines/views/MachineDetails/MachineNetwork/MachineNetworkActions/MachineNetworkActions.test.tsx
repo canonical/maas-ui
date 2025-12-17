@@ -1,8 +1,8 @@
 import MachineNetworkActions from "./MachineNetworkActions";
 
-import * as sidePanelHooks from "@/app/base/side-panel-context";
 import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
+import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
@@ -105,13 +105,6 @@ describe("MachineNetworkActions", () => {
           system_id: "abc123",
         }),
       ];
-      const setSidePanelContent = vi.fn();
-      vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-        setSidePanelContent,
-        sidePanelContent: null,
-        setSidePanelSize: vi.fn(),
-        sidePanelSize: "regular",
-      });
 
       renderWithProviders(
         <MachineNetworkActions
@@ -127,9 +120,9 @@ describe("MachineNetworkActions", () => {
         screen.getByRole("button", { name: /Create bond/i })
       );
 
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.ADD_BOND,
+          component: AddBondForm,
         })
       );
     });
@@ -287,13 +280,6 @@ describe("MachineNetworkActions", () => {
           system_id: "abc123",
         }),
       ];
-      const setSidePanelContent = vi.fn();
-      vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-        setSidePanelContent,
-        sidePanelContent: null,
-        setSidePanelSize: vi.fn(),
-        sidePanelSize: "regular",
-      });
 
       renderWithProviders(
         <MachineNetworkActions
@@ -308,9 +294,9 @@ describe("MachineNetworkActions", () => {
       await userEvent.click(
         screen.getByRole("button", { name: /create bridge/i })
       );
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.ADD_BRIDGE,
+          component: AddBridgeForm,
         })
       );
     });

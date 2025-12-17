@@ -797,11 +797,42 @@ export const mockSidePanel = async () => {
   const mockOpen = vi.fn();
   const mockClose = vi.fn();
 
+  let isOpen = false;
+
   beforeEach(() => {
     vi.clearAllMocks();
+    isOpen = false;
+
+    mockOpen.mockImplementation(() => {
+      isOpen = true;
+      mockUseSidePanel.mockReturnValue({
+        isOpen: true,
+        title: "",
+        size: "regular",
+        component: null,
+        props: {},
+        openSidePanel: mockOpen,
+        closeSidePanel: mockClose,
+        setSidePanelSize: vi.fn(),
+      });
+    });
+
+    mockClose.mockImplementation(() => {
+      isOpen = false;
+      mockUseSidePanel.mockReturnValue({
+        isOpen: false,
+        title: "",
+        size: "regular",
+        component: null,
+        props: {},
+        openSidePanel: mockOpen,
+        closeSidePanel: mockClose,
+        setSidePanelSize: vi.fn(),
+      });
+    });
 
     mockUseSidePanel.mockReturnValue({
-      isOpen: false,
+      isOpen,
       title: "",
       size: "regular",
       component: null,
