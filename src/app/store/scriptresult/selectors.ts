@@ -424,6 +424,18 @@ const getHistoryById = createSelector(
   }
 );
 
+const getHistoryByAllIds = createSelector(
+  [
+    history,
+    (_: RootState, scriptResultIds: ScriptResult["id"][]) => scriptResultIds,
+  ],
+  (history, scriptResultIds) => {
+    return scriptResultIds
+      .filter((id) => id in history)
+      .map((id) => history[id]);
+  }
+);
+
 const getLogById = createSelector(
   [
     logs,
@@ -446,6 +458,7 @@ const scriptResult = {
   getFailedTestingResultsByNodeIds,
   getHardwareTestingByNodeId,
   getHistoryById,
+  getHistoryByAllIds,
   getInstallationByNodeId,
   getInstallationLogsByNodeId,
   getLogById,
