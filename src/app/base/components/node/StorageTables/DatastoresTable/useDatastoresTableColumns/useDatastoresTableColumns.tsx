@@ -2,11 +2,10 @@ import { useMemo } from "react";
 
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
-import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
+import TableMenu from "@/app/base/components/TableMenu";
 import type { DatastoreRow } from "@/app/base/components/node/StorageTables/DatastoresTable/DatastoresTable";
-import { DatastoreAction } from "@/app/base/components/node/StorageTables/DatastoresTable/DatastoresTable";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import RemoveDatastore from "@/app/base/components/node/StorageTables/DatastoresTable/RemoveDatastore";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { formatSize } from "@/app/store/utils";
 
 export type DatastoresColumnDef = ColumnDef<
@@ -18,7 +17,8 @@ const useDatastoresTableColumns = (
   canEditStorage: boolean,
   isMachine: boolean
 ): DatastoresColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
+
   return useMemo(
     () =>
       [
@@ -67,27 +67,32 @@ const useDatastoresTableColumns = (
                 }: {
                   row: Row<DatastoreRow>;
                 }) => (
-                  <TableActionsDropdown
-                    actions={[
+                  <TableMenu
+                    disabled={!canEditStorage}
+                    links={[
                       {
-                        label: "Remove datastore...",
-                        type: DatastoreAction.DELETE,
+                        children: "Remove datastore...",
+                        onClick: () => {
+                          openSidePanel({
+                            component: RemoveDatastore,
+                            title: "Remove datastore",
+                            props: {
+                              diskId: disk.id,
+                              systemId,
+                            },
+                          });
+                        },
                       },
                     ]}
-                    disabled={!canEditStorage}
-                    onActionClick={() => {
-                      setSidePanelContent({
-                        view: MachineSidePanelViews.REMOVE_DATASTORE,
-                        extras: { disk, systemId: systemId },
-                      });
-                    }}
+                    position="right"
+                    title="Take action:"
                   />
                 ),
               },
             ]
           : []),
       ] as DatastoresColumnDef[],
-    [canEditStorage, isMachine, setSidePanelContent]
+    [canEditStorage, isMachine, openSidePanel]
   );
 };
 
