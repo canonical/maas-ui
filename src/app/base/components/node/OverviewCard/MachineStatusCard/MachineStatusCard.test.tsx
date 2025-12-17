@@ -12,7 +12,7 @@ import {
   userEvent,
   render,
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -211,9 +211,8 @@ describe("MachineStatusCard", () => {
     });
     const store = mockStore(state);
 
-    renderWithBrowserRouter(<MachineStatusCard machine={machine} />, {
+    renderWithProviders(<MachineStatusCard machine={machine} />, {
       store,
-      route: "/machines",
     });
 
     expect(

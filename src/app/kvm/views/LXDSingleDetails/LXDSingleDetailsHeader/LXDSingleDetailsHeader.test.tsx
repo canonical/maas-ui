@@ -8,7 +8,7 @@ import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   setupMockServer,
   waitFor,
   mockSidePanel,
@@ -45,8 +45,7 @@ describe("LXDSingleDetailsHeader", () => {
 
   it("displays a spinner if pod hasn't loaded", () => {
     state.pod.items = [];
-    renderWithBrowserRouter(<LXDSingleDetailsHeader id={1} />, {
-      route: "/kvm/1/resources",
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
       state,
     });
 
@@ -57,8 +56,7 @@ describe("LXDSingleDetailsHeader", () => {
     state.pod.items[0].power_parameters = factory.podPowerParameters({
       project: "Manhattan",
     });
-    renderWithBrowserRouter(<LXDSingleDetailsHeader id={1} />, {
-      route: "/kvm/1/resources",
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
       state,
     });
 
@@ -71,8 +69,7 @@ describe("LXDSingleDetailsHeader", () => {
     state.pod.items[0].resources = factory.podResources({
       vm_count: factory.podVmCount({ tracked: 5 }),
     });
-    renderWithBrowserRouter(<LXDSingleDetailsHeader id={1} />, {
-      route: "/kvm/1/resources",
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
       state,
     });
 
@@ -83,8 +80,7 @@ describe("LXDSingleDetailsHeader", () => {
 
   it("displays the pod's zone's name", async () => {
     state.pod.items[0].zone = 1;
-    renderWithBrowserRouter(<LXDSingleDetailsHeader id={1} />, {
-      route: "/kvm/1/resources",
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
       state,
     });
 
@@ -97,8 +93,7 @@ describe("LXDSingleDetailsHeader", () => {
 
   it("can open the refresh host form", async () => {
     state.pod.items[0].zone = 1;
-    renderWithBrowserRouter(<LXDSingleDetailsHeader id={1} />, {
-      route: "/kvm/1/resources",
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
       state,
     });
     await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));

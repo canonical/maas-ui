@@ -15,7 +15,7 @@ import * as factory from "@/testing/factories";
 import { tagStateListFactory } from "@/testing/factories/state";
 import {
   render,
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -73,7 +73,7 @@ afterEach(() => {
 });
 
 it("displays available tags in the dropdown", async () => {
-  renderWithBrowserRouter(
+  renderWithProviders(
     <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
       <TagFormFields
         {...commonProps}
@@ -113,7 +113,7 @@ it("displays available tags in the dropdown", async () => {
 });
 
 it("displays the tags to be added", () => {
-  renderWithBrowserRouter(
+  renderWithProviders(
     <Formik
       initialValues={{ added: [tags[0].id, tags[2].id], removed: [] }}
       onSubmit={vi.fn()}

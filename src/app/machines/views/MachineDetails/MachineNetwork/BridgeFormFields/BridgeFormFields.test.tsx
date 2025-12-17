@@ -5,18 +5,18 @@ import BridgeFormFields from "./BridgeFormFields";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("BridgeFormFields", () => {
   it("does not display the fd field if stp isn't on", async () => {
     const store = mockStore(factory.rootState());
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BridgeFormFields />
       </Formik>,
-      { route: "/machines", store }
+      { store }
     );
     expect(
       screen.queryByRole("textbox", { name: "Forward delay (ms)" })
@@ -25,11 +25,11 @@ describe("BridgeFormFields", () => {
 
   it("displays the fd field if stp is on", async () => {
     const store = mockStore(factory.rootState());
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BridgeFormFields />
       </Formik>,
-      { route: "/machines", store }
+      { store }
     );
 
     await userEvent.click(screen.getByRole("checkbox", { name: "STP" }));

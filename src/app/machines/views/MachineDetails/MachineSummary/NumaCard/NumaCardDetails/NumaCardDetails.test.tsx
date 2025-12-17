@@ -5,7 +5,7 @@ import NumaCardDetails, {
 import type { RootState } from "@/app/store/root/types";
 import type { NodeNumaNode } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("NumaCardDetails", () => {
   let state: RootState;
@@ -25,9 +25,9 @@ describe("NumaCardDetails", () => {
   });
 
   it("can display as expanded", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NumaCardDetails machineId="abc123" numaNode={numaNode} showExpanded />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     expect(
@@ -54,9 +54,9 @@ describe("NumaCardDetails", () => {
   });
 
   it("can display as collapsed", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NumaCardDetails machineId="abc123" numaNode={numaNode} />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     expect(screen.getByRole("button", { name: "Node 2" })).toBeInTheDocument();
@@ -66,9 +66,9 @@ describe("NumaCardDetails", () => {
   });
 
   it("can be expanded", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NumaCardDetails machineId="abc123" numaNode={numaNode} />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Node 3" }));

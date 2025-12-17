@@ -9,7 +9,7 @@ import {
   ScriptResultType,
 } from "@/app/store/scriptresult/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const openMenu = async () => {
   await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
@@ -36,7 +36,7 @@ describe("TestActions", () => {
     const scriptResult = factory.scriptResult({
       status: ScriptResultStatus.PASSED,
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <TestActions
         node={machine}
         resultType={ScriptResultType.COMMISSIONING}
@@ -61,7 +61,7 @@ describe("TestActions", () => {
     const scriptResult = factory.scriptResult({
       status: ScriptResultStatus.PASSED,
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <TestActions
         node={controller}
         resultType={ScriptResultType.COMMISSIONING}
@@ -85,7 +85,7 @@ describe("TestActions", () => {
     const scriptResult = factory.scriptResult({
       status: ScriptResultStatus.PASSED,
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <TestActions
         node={machine}
         resultType={ScriptResultType.TESTING}
@@ -110,7 +110,7 @@ describe("TestActions", () => {
     const scriptResult = factory.scriptResult({
       results: [factory.scriptResultResult()],
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <TestActions
         node={machine}
         resultType={ScriptResultType.TESTING}
@@ -128,7 +128,7 @@ describe("TestActions", () => {
   it("sends an analytics event when clicking the 'View previous tests' button", async () => {
     const machine = factory.machineDetails();
     const scriptResult = factory.scriptResult();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <TestActions
         node={machine}
         resultType={ScriptResultType.TESTING}
@@ -153,7 +153,7 @@ describe("TestActions", () => {
   it("sends an analytics event when clicking the 'View metrics' button", async () => {
     const machine = factory.machineDetails();
     const scriptResult = factory.scriptResult();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <TestActions
         node={machine}
         resultType={ScriptResultType.TESTING}

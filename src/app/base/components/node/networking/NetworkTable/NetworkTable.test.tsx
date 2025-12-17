@@ -6,7 +6,6 @@ import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
   mockSidePanel,
-  renderWithBrowserRouter,
   renderWithProviders,
   screen,
   userEvent,
@@ -135,7 +134,7 @@ describe("NetworkTable", () => {
         system_id: "abc123",
       });
       state.machine.items = [machine];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -183,7 +182,7 @@ describe("NetworkTable", () => {
         system_id: "abc123",
       });
       state.machine.items = [machine];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -237,7 +236,7 @@ describe("NetworkTable", () => {
         system_id: "abc123",
       });
       state.machine.items = [machine];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -284,7 +283,7 @@ describe("NetworkTable", () => {
     });
 
     it("does not display a checkbox for parent interfaces", () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -302,7 +301,7 @@ describe("NetworkTable", () => {
 
     it("does not include parent interfaces in the selection", async () => {
       const setSelected = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -318,7 +317,7 @@ describe("NetworkTable", () => {
     });
 
     it("does not display a boot icon for parent interfaces", () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -333,7 +332,7 @@ describe("NetworkTable", () => {
     });
 
     it("filters columns for parent interfaces", () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}

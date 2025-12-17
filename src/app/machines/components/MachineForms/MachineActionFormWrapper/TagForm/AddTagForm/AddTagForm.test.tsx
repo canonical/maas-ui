@@ -10,7 +10,7 @@ import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { FetchNodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithProviders } from "@/testing/utils";
 
 const mockBaseAddTagForm = vi.fn();
 vi.mock("@/app/base/components/NodeTagForm", () => ({
@@ -57,10 +57,9 @@ afterEach(() => {
 
 it("set the analytics category for the machine list", async () => {
   const store = mockStore(state);
-  renderWithBrowserRouter(
-    <AddTagForm name="new-tag" onTagCreated={vi.fn()} />,
-    { route: "/tags", store }
-  );
+  renderWithProviders(<AddTagForm name="new-tag" onTagCreated={vi.fn()} />, {
+    store,
+  });
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
       onSaveAnalytics: {
@@ -74,9 +73,9 @@ it("set the analytics category for the machine list", async () => {
 
 it("set the analytics category for the machine details", async () => {
   const store = mockStore(state);
-  renderWithBrowserRouter(
+  renderWithProviders(
     <AddTagForm isViewingDetails name="new-tag" onTagCreated={vi.fn()} />,
-    { route: "/tags", store }
+    { store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -91,9 +90,9 @@ it("set the analytics category for the machine details", async () => {
 
 it("set the analytics category for the machine config", async () => {
   const store = mockStore(state);
-  renderWithBrowserRouter(
+  renderWithProviders(
     <AddTagForm isViewingMachineConfig name="new-tag" onTagCreated={vi.fn()} />,
-    { route: "/tags", store }
+    { store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -108,10 +107,9 @@ it("set the analytics category for the machine config", async () => {
 
 it("generates a deployed message for a single machine", async () => {
   const store = mockStore(state);
-  renderWithBrowserRouter(
-    <AddTagForm name="new-tag" onTagCreated={vi.fn()} />,
-    { route: "/tags", store }
-  );
+  renderWithProviders(<AddTagForm name="new-tag" onTagCreated={vi.fn()} />, {
+    store,
+  });
   expect(
     mockBaseAddTagForm.mock.calls[0][0]
       .generateDeployedMessage(1)
@@ -121,10 +119,9 @@ it("generates a deployed message for a single machine", async () => {
 
 it("generates a deployed message for multiple machines", async () => {
   const store = mockStore(state);
-  renderWithBrowserRouter(
-    <AddTagForm name="new-tag" onTagCreated={vi.fn()} />,
-    { route: "/tags", store }
-  );
+  renderWithProviders(<AddTagForm name="new-tag" onTagCreated={vi.fn()} />, {
+    store,
+  });
   expect(
     mockBaseAddTagForm.mock.calls[0][0]
       .generateDeployedMessage(2)
@@ -135,13 +132,13 @@ it("generates a deployed message for multiple machines", async () => {
 it("fetches deployed machine count for selected machines", async () => {
   const store = mockStore(state);
   const selectedMachines = { items: ["abc", "def"] };
-  renderWithBrowserRouter(
+  renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", store }
+    { store }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
@@ -164,13 +161,13 @@ it("fetches deployed machine count separately for deployed group when selected",
     groups: [FetchNodeStatus.DEPLOYED],
     grouping: FetchGroupKey.Status,
   };
-  renderWithBrowserRouter(
+  renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", store }
+    { store }
   );
   const expected = [
     machineActions.count("mocked-nanoid-1", {
@@ -195,13 +192,13 @@ it("fetches deployed machine count when all machines are selected", async () => 
   const selectedMachines = {
     filter: {},
   };
-  renderWithBrowserRouter(
+  renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", store }
+    { store }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
@@ -221,13 +218,13 @@ it(`fetches deployed machine count only for selected items
     groups: [FetchNodeStatus.COMMISSIONING],
     grouping: FetchGroupKey.Status,
   };
-  renderWithBrowserRouter(
+  renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", store }
+    { store }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,

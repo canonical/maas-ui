@@ -7,7 +7,7 @@ import type { NetworkInterface } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   getByTextContent,
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
 } from "@/testing/utils";
@@ -48,7 +48,7 @@ describe("EditPhysicalFields", () => {
   });
 
   it("shows a warning if link speed is higher than interface speed", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik
         initialValues={{ interface_speed: 0, link_speed: 0 }}
         onSubmit={vi.fn()}
@@ -56,7 +56,6 @@ describe("EditPhysicalFields", () => {
         <EditPhysicalFields nic={nic} />
       </Formik>,
       {
-        route: "/machines",
         state,
       }
     );

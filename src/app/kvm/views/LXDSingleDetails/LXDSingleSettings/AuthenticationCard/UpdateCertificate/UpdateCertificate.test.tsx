@@ -7,7 +7,7 @@ import { podActions } from "@/app/store/pod";
 import type { PodDetails } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -32,9 +32,9 @@ describe("UpdateCertificate", () => {
 
   it("can dispatch an action to generate certificate if not providing certificate and key", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
-      { route: "/kvm/edit", store }
+      { store }
     );
 
     // Radio should be set to generate certificate by default.
@@ -51,7 +51,7 @@ describe("UpdateCertificate", () => {
 
   it("can generate a certificate with a custom object name", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <UpdateCertificate
         closeForm={vi.fn()}
         hasCertificateData
@@ -59,7 +59,6 @@ describe("UpdateCertificate", () => {
         pod={pod}
       />,
       {
-        route: "/kvm/edit",
         store,
       }
     );
@@ -83,10 +82,9 @@ describe("UpdateCertificate", () => {
     state.general.generatedCertificate.data = generatedCertificate;
     const store = mockStore(state);
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
       {
-        route: "/kvm/edit",
         store,
       }
     );
@@ -108,10 +106,9 @@ describe("UpdateCertificate", () => {
 
   it("can dispatch an action to update pod with provided certificate and key", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
       {
-        route: "/kvm/edit",
         store,
       }
     );
@@ -146,10 +143,9 @@ describe("UpdateCertificate", () => {
   it("closes the form on cancel if pod has a certificate", async () => {
     const closeForm = vi.fn();
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <UpdateCertificate closeForm={closeForm} hasCertificateData pod={pod} />,
       {
-        route: "/kvm/edit",
         store: mockStore(state),
       }
     );
@@ -165,14 +161,13 @@ describe("UpdateCertificate", () => {
     state.general.generatedCertificate.data = factory.generatedCertificate();
     const store = mockStore(state);
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <UpdateCertificate
         closeForm={closeForm}
         hasCertificateData={false}
         pod={pod}
       />,
       {
-        route: "/kvm/edit",
         store,
       }
     );
@@ -189,14 +184,13 @@ describe("UpdateCertificate", () => {
       has been generated`, () => {
     state.general.generatedCertificate.data = null;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <UpdateCertificate
         closeForm={vi.fn()}
         hasCertificateData={false}
         pod={pod}
       />,
       {
-        route: "/kvm/edit",
         store,
       }
     );

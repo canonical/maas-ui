@@ -9,7 +9,6 @@ import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  renderWithBrowserRouter,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -409,8 +408,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("persists collapsed state", async () => {
-    const { rerender } = renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/",
+    const { rerender } = renderWithProviders(<AppSideNavigation />, {
       state,
     });
 

@@ -16,9 +16,8 @@ import {
   userEvent,
   render,
   screen,
-  renderWithBrowserRouter,
-  renderWithMockStore,
   renderWithProviders,
+  renderWithMockStore,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -54,7 +53,7 @@ describe("FormikFormContent", () => {
   });
 
   it("disables cancel button while saving", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent onCancel={vi.fn()} saving>
           Content
@@ -68,7 +67,7 @@ describe("FormikFormContent", () => {
 
   it("can disable the submit button", async () => {
     const onSubmit = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={onSubmit}>
         <FormikFormContent
           aria-label="example"
@@ -85,7 +84,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can override disabling cancel button while saving", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent cancelDisabled={false} onCancel={vi.fn()} saving>
           Content
@@ -98,7 +97,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can display non-field errors from a string", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors="Uh oh!">Content</FormikFormContent>
       </Formik>,
@@ -109,7 +108,7 @@ describe("FormikFormContent", () => {
   });
 
   it("scrolls non-field errors into view when present", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors="Uh oh!">Content</FormikFormContent>
       </Formik>,
@@ -121,7 +120,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can display non-field errors from the __all__ key", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors={{ __all__: ["Uh oh!"] }}>
           Content
@@ -134,7 +133,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can display non-field errors from the unknown keys with strings", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors={{ username: "Wrong username" }}>
           Content
@@ -147,7 +146,7 @@ describe("FormikFormContent", () => {
   });
 
   it("does not display non-field errors for fields", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ username: "" }} onSubmit={vi.fn()}>
         <FormikFormContent errors={{ username: "Wrong username" }}>
           Content
@@ -160,7 +159,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can display non-field errors from the unknown keys with arrays", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent
           errors={{
@@ -178,7 +177,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can display custom components for non-field errors", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors={<div>Errors component text</div>}>
           Content
@@ -191,7 +190,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can be inline", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent aria-label="Fake form" inline>
           Content
@@ -205,7 +204,7 @@ describe("FormikFormContent", () => {
   });
 
   it("does not render buttons if editable is set to false", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent editable={false}>Content</FormikFormContent>
       </Formik>,
@@ -234,7 +233,9 @@ describe("FormikFormContent", () => {
       type: "CLEANUP",
     }));
 
-    const { unmount } = renderWithBrowserRouter(
+    const {
+      result: { unmount },
+    } = renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent cleanup={cleanup}>Content</FormikFormContent>
       </Formik>,
@@ -254,7 +255,7 @@ describe("FormikFormContent", () => {
     };
     const useSendMock = vi.spyOn(hooks, "useSendAnalyticsWhen");
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent
           onSaveAnalytics={eventData}
@@ -372,7 +373,7 @@ describe("FormikFormContent", () => {
 
   it("does not run onSuccess on first render", async () => {
     const onSuccess = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors={null} onSuccess={onSuccess} saved={true}>
           <Field name="val1" />

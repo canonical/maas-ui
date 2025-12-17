@@ -6,7 +6,6 @@ import {
   userEvent,
   screen,
   within,
-  renderWithBrowserRouter,
   renderWithProviders,
 } from "@/testing/utils";
 
@@ -131,7 +130,7 @@ describe("DhcpList", () => {
 
   it("displays a message when DHCP list is empty", () => {
     state.dhcpsnippet.items = [];
-    renderWithBrowserRouter(<DhcpList />, { state, route: "/" });
+    renderWithProviders(<DhcpList />, { state });
 
     expect(screen.getByText("No DHCP snippets available.")).toBeInTheDocument();
   });

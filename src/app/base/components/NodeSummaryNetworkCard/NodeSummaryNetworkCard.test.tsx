@@ -4,7 +4,7 @@ import NodeSummaryNetworkCard from "./NodeSummaryNetworkCard";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -22,7 +22,7 @@ describe("NodeSummaryNetworkCard", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={[]}
         networkURL="url"
@@ -38,7 +38,7 @@ describe("NodeSummaryNetworkCard", () => {
   });
 
   it("shows a spinner while network data is loading", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={null}
         networkURL="url"
@@ -63,7 +63,7 @@ describe("NodeSummaryNetworkCard", () => {
         vendor: null,
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={interfaces}
         networkURL="url"
@@ -115,7 +115,7 @@ describe("NodeSummaryNetworkCard", () => {
         vendor: "Vendor 2",
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={interfaces}
         networkURL="url"
@@ -133,7 +133,7 @@ describe("NodeSummaryNetworkCard", () => {
   });
 
   it("can render children", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={[]}
         networkURL="url"

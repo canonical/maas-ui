@@ -8,7 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   mockSidePanel,
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
 } from "@/testing/utils";
@@ -26,9 +26,9 @@ describe("LXDHostVMs", () => {
     });
     const store = mockStore(state);
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
-      { route: "/kvm/1/project", store }
+      { store }
     );
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -46,9 +46,9 @@ describe("LXDHostVMs", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
-      { route: "/kvm/1", state }
+      { state }
     );
 
     expect(screen.queryByTestId("numa-resources")).not.toBeInTheDocument();
@@ -65,14 +65,14 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDHostVMs
         clusterId={2}
         hostId={1}
         searchFilter=""
         setSearchFilter={vi.fn()}
       />,
-      { route: "/kvm/1", state }
+      { state }
     );
     expect(screen.getByTestId("toolbar-title")).toHaveTextContent(
       `VMs on ${pod.name}`
@@ -86,9 +86,9 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
-      { route: "/kvm/1", state }
+      { state }
     );
     expect(screen.getByTestId("toolbar-title")).toHaveTextContent(
       `VMs on this host`
@@ -103,9 +103,9 @@ describe("LXDHostVMs", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
-      { route: "/kvm/1", store }
+      { store }
     );
 
     await userEvent.click(screen.getByTestId("add-vm"));
@@ -128,7 +128,7 @@ describe("LXDHostVMs", () => {
     });
     const store = mockStore(state);
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
       { store }
     );

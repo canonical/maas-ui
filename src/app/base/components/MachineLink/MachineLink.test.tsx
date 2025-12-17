@@ -7,7 +7,7 @@ import MachineLink, { Labels } from "./MachineLink";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { render, renderWithBrowserRouter, screen } from "@/testing/utils";
+import { render, renderWithProviders, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -36,7 +36,7 @@ it("handles when machines are loading", async () => {
       },
     }),
   });
-  renderWithBrowserRouter(<MachineLink systemId="abc123" />, { state });
+  renderWithProviders(<MachineLink systemId="abc123" />, { state });
 
   expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
 

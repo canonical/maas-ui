@@ -1,7 +1,7 @@
 import SecurityProtocols from "./SecurityProtocols";
 
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("displays loading text if TLS certificate has not loaded", () => {
   const state = factory.rootState({
@@ -13,7 +13,7 @@ it("displays loading text if TLS certificate has not loaded", () => {
       }),
     }),
   });
-  renderWithBrowserRouter(<SecurityProtocols />, { state });
+  renderWithProviders(<SecurityProtocols />, { state });
 
   expect(screen.getByText(/Loading.../)).toBeInTheDocument();
 });
@@ -27,7 +27,7 @@ it("renders TLS disabled section if no TLS certificate is present", () => {
       }),
     }),
   });
-  renderWithBrowserRouter(<SecurityProtocols />, { state });
+  renderWithProviders(<SecurityProtocols />, { state });
 
   expect(screen.getByText(/TLS disabled/)).toBeInTheDocument();
   expect(screen.queryByText(/TLS enabled/)).not.toBeInTheDocument();
@@ -42,7 +42,7 @@ it("renders TLS enabled section if TLS certificate is present", () => {
       }),
     }),
   });
-  renderWithBrowserRouter(<SecurityProtocols />, { state });
+  renderWithProviders(<SecurityProtocols />, { state });
 
   expect(screen.getByText(/TLS enabled/)).toBeInTheDocument();
   expect(screen.queryByText(/TLS disabled/)).not.toBeInTheDocument();

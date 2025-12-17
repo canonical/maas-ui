@@ -11,7 +11,7 @@ import {
   fireEvent,
   screen,
   waitFor,
-  renderWithBrowserRouter,
+  renderWithProviders,
   setupMockServer,
 } from "@/testing/utils";
 
@@ -37,13 +37,9 @@ describe("KVMConfigurationCard", () => {
       tags: ["tag1", "tag2"],
       type: PodType.LXD,
     });
-    const { store } = renderWithBrowserRouter(
-      <KVMConfigurationCard pod={pod} />,
-      {
-        route: "/kvm/1/edit",
-        state,
-      }
-    );
+    const { store } = renderWithProviders(<KVMConfigurationCard pod={pod} />, {
+      state,
+    });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
     });
@@ -101,13 +97,9 @@ describe("KVMConfigurationCard", () => {
       tags: ["tag1", "tag2"],
       type: PodType.VIRSH,
     });
-    const { store } = renderWithBrowserRouter(
-      <KVMConfigurationCard pod={pod} />,
-      {
-        route: "/kvm/1/edit",
-        state,
-      }
-    );
+    const { store } = renderWithProviders(<KVMConfigurationCard pod={pod} />, {
+      state,
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("combobox", { name: "Zone" })
@@ -167,10 +159,9 @@ describe("KVMConfigurationCard", () => {
       cpu_over_commit_ratio: 1,
       id: 1,
     });
-    const { rerender } = renderWithBrowserRouter(
+    const { rerender } = renderWithProviders(
       <KVMConfigurationCard pod={pod} />,
       {
-        route: "/kvm/1/edit",
         state,
       }
     );

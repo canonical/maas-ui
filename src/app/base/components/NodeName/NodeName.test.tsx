@@ -4,7 +4,7 @@ import type { Props as NodeNameProps } from "./NodeName";
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("NodeName", () => {
   let state: RootState;
@@ -36,14 +36,14 @@ describe("NodeName", () => {
 
   it("displays a spinner when loading", () => {
     state.machine.items = [];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeName
         editingName={false}
         node={null}
         onSubmit={vi.fn()}
         setEditingName={vi.fn()}
       />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -51,28 +51,28 @@ describe("NodeName", () => {
 
   it("displays just the name when not editable", () => {
     state.machine.items[0].locked = true;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeName
         editingName={false}
         node={machine}
         onSubmit={vi.fn()}
         setEditingName={vi.fn()}
       />,
-      { route: "/machine/abc123", state }
+      { state }
     );
     expect(screen.getByText(state.machine.items[0].fqdn)).toBeInTheDocument();
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
   it("displays name in a button", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeName
         editingName={false}
         node={machine}
         onSubmit={vi.fn()}
         setEditingName={vi.fn()}
       />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     expect(
@@ -82,14 +82,14 @@ describe("NodeName", () => {
 
   it("changes the form state when clicking the name", async () => {
     const setEditingName = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeName
         editingName={false}
         node={machine}
         onSubmit={vi.fn()}
         setEditingName={setEditingName}
       />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     await userEvent.click(
@@ -99,14 +99,14 @@ describe("NodeName", () => {
   });
 
   it("can display the form", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeName
         editingName={true}
         node={machine}
         onSubmit={vi.fn()}
         setEditingName={vi.fn()}
       />,
-      { route: "/machine/abc123", state }
+      { state }
     );
     expect(screen.getByRole("textbox", { name: "Hostname" })).toHaveValue(
       state.machine.items[0].hostname
@@ -118,7 +118,7 @@ describe("NodeName", () => {
     state.machine.saving = true;
     const setEditingName = vi.fn();
     const ProxyNodeName = (props: NodeNameProps) => <NodeName {...props} />;
-    const { rerender } = renderWithBrowserRouter(
+    const { rerender } = renderWithProviders(
       <ProxyNodeName
         editingName={true}
         node={machine}
@@ -127,7 +127,7 @@ describe("NodeName", () => {
         saving={true}
         setEditingName={setEditingName}
       />,
-      { route: "/machine/abc123", state }
+      { state }
     );
     rerender(
       <ProxyNodeName
@@ -143,14 +143,14 @@ describe("NodeName", () => {
   });
 
   it("can display a hostname error", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeName
         editingName={true}
         node={machine}
         onSubmit={vi.fn()}
         setEditingName={vi.fn()}
       />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "Hostname" }));

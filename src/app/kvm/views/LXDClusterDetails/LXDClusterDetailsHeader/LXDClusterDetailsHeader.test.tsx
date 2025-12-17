@@ -8,7 +8,7 @@ import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   waitFor,
   setupMockServer,
   mockSidePanel,
@@ -36,8 +36,8 @@ describe("LXDClusterDetailsHeader", () => {
 
   it("displays a spinner if cluster hasn't loaded", () => {
     state.vmcluster.items = [];
-    renderWithBrowserRouter(<LXDClusterDetailsHeader clusterId={1} />, {
-      route: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
+    renderWithProviders(<LXDClusterDetailsHeader clusterId={1} />, {
+      initialEntries: [urls.kvm.lxd.cluster.index({ clusterId: 1 })],
       state,
     });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -46,8 +46,8 @@ describe("LXDClusterDetailsHeader", () => {
   it("displays the cluster member count", () => {
     state.vmcluster.items[0].hosts = [factory.vmHost(), factory.vmHost()];
 
-    renderWithBrowserRouter(<LXDClusterDetailsHeader clusterId={1} />, {
-      route: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
+    renderWithProviders(<LXDClusterDetailsHeader clusterId={1} />, {
+      initialEntries: [urls.kvm.lxd.cluster.index({ clusterId: 1 })],
       state,
     });
 
@@ -62,8 +62,8 @@ describe("LXDClusterDetailsHeader", () => {
       factory.virtualMachine(),
       factory.virtualMachine(),
     ];
-    renderWithBrowserRouter(<LXDClusterDetailsHeader clusterId={1} />, {
-      route: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
+    renderWithProviders(<LXDClusterDetailsHeader clusterId={1} />, {
+      initialEntries: [urls.kvm.lxd.cluster.index({ clusterId: 1 })],
       state,
     });
 
@@ -73,8 +73,8 @@ describe("LXDClusterDetailsHeader", () => {
   });
 
   it("displays the cluster's zone's name", async () => {
-    renderWithBrowserRouter(<LXDClusterDetailsHeader clusterId={1} />, {
-      route: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
+    renderWithProviders(<LXDClusterDetailsHeader clusterId={1} />, {
+      initialEntries: [urls.kvm.lxd.cluster.index({ clusterId: 1 })],
       state,
     });
 
@@ -86,8 +86,8 @@ describe("LXDClusterDetailsHeader", () => {
   });
 
   it("displays the cluster's project", () => {
-    renderWithBrowserRouter(<LXDClusterDetailsHeader clusterId={1} />, {
-      route: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
+    renderWithProviders(<LXDClusterDetailsHeader clusterId={1} />, {
+      initialEntries: [urls.kvm.lxd.cluster.index({ clusterId: 1 })],
       state,
     });
 
@@ -99,8 +99,8 @@ describe("LXDClusterDetailsHeader", () => {
   it("can open the refresh cluster form if it has hosts", async () => {
     const hosts = [factory.vmHost(), factory.vmHost()];
     state.vmcluster.items[0].hosts = hosts;
-    renderWithBrowserRouter(<LXDClusterDetailsHeader clusterId={1} />, {
-      route: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
+    renderWithProviders(<LXDClusterDetailsHeader clusterId={1} />, {
+      initialEntries: [urls.kvm.lxd.cluster.index({ clusterId: 1 })],
       state,
     });
 

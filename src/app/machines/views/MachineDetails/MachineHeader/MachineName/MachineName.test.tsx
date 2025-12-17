@@ -4,7 +4,7 @@ import MachineName from "./MachineName";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -37,9 +37,9 @@ describe("MachineName", () => {
 
   it("can update a machine with the new name and domain", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineName editingName={true} id="abc123" setEditingName={vi.fn()} />,
-      { route: "/machine/abc123", store }
+      { store }
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "Hostname" }));

@@ -12,7 +12,7 @@ import * as factory from "@/testing/factories";
 import {
   screen,
   render,
-  renderWithBrowserRouter,
+  renderWithProviders,
   userEvent,
   waitFor,
 } from "@/testing/utils";
@@ -83,7 +83,7 @@ describe("KernelParametersForm", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
-    renderWithBrowserRouter(<KernelParametersForm />, { store });
+    renderWithProviders(<KernelParametersForm />, { store });
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: FormLabels.GlobalBootParams })
@@ -118,7 +118,7 @@ describe("KernelParametersForm", () => {
   });
 
   it("shows a tooltip for minimum OS requirements", async () => {
-    renderWithBrowserRouter(<KernelParametersForm />, {
+    renderWithProviders(<KernelParametersForm />, {
       state: { ...initialState },
     });
 
@@ -134,7 +134,7 @@ describe("KernelParametersForm", () => {
   });
 
   it("shows a tooltip for minimum hardware requirements", async () => {
-    renderWithBrowserRouter(<KernelParametersForm />, {
+    renderWithProviders(<KernelParametersForm />, {
       state: { ...initialState },
     });
 

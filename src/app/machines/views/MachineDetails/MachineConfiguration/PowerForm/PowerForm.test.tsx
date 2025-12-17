@@ -15,7 +15,7 @@ import {
   render,
   screen,
   waitFor,
-  renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -141,7 +141,7 @@ it("renders read-only text fields until edit button is pressed", async () => {
 
 it("can validate IPv6 addresses with a port for IPMI power type", async () => {
   const store = mockStore(state);
-  renderWithBrowserRouter(<PowerForm systemId="def456" />, { store });
+  renderWithProviders(<PowerForm systemId="def456" />, { store });
 
   await userEvent.click(
     screen.getAllByRole("button", { name: Labels.EditButton })[0]
@@ -181,7 +181,7 @@ it("can validate IPv6 addresses with a port for IPMI power type", async () => {
 
 it("can validate IPv4 addresses with a port for IPMI power type", async () => {
   const store = mockStore(state);
-  renderWithBrowserRouter(<PowerForm systemId="def456" />, { store });
+  renderWithProviders(<PowerForm systemId="def456" />, { store });
 
   await userEvent.click(
     screen.getAllByRole("button", { name: Labels.EditButton })[0]

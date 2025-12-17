@@ -4,7 +4,7 @@ import NotificationGroup from "./NotificationGroup";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -17,7 +17,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );
@@ -40,7 +40,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );
@@ -58,7 +58,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );
@@ -78,7 +78,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );
@@ -100,7 +100,7 @@ describe("NotificationGroup", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { store }
     );
@@ -124,7 +124,7 @@ describe("NotificationGroup", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="caution" />,
       { store }
     );
@@ -147,7 +147,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );

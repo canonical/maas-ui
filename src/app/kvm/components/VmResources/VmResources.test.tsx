@@ -12,7 +12,7 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   renderWithMockStore,
 } from "@/testing/utils";
 
@@ -90,7 +90,7 @@ describe("VmResources", () => {
   });
 
   it("can display a list of VMs", async () => {
-    renderWithBrowserRouter(<VmResources podId={1} />, {
+    renderWithProviders(<VmResources podId={1} />, {
       state,
     });
     await userEvent.click(

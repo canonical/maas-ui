@@ -18,7 +18,6 @@ import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
-  renderWithBrowserRouter,
   renderWithProviders,
   screen,
   userEvent,
@@ -152,9 +151,9 @@ describe("DiscoveryAddForm", () => {
 
   it.skip("maps name errors to hostname", async () => {
     // Render the form with default state.
-    const { rerender } = renderWithBrowserRouter(
+    const { rerender } = renderWithProviders(
       <DiscoveryAddForm discovery={discovery} />,
-      { route: "/network-discovery", state }
+      { state }
     );
     const error = "Name is invalid";
     // Change the device state to included the errors (as if it has changed via an API response).

@@ -13,7 +13,7 @@ import {
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   userEvent,
   screen,
   within,
@@ -69,9 +69,9 @@ describe("StatusColumn", () => {
       machine.status = NodeStatus.NEW;
       machine.status_code = NodeStatusCode.NEW;
       const store = mockStore(state);
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
 
       expect(screen.getByTestId("status-text")).toHaveTextContent("New");
@@ -84,9 +84,9 @@ describe("StatusColumn", () => {
       machine.distro_series = "bionic";
       const store = mockStore(state);
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
 
       expect(screen.getByTestId("status-text")).toHaveTextContent(
@@ -101,9 +101,9 @@ describe("StatusColumn", () => {
       machine.distro_series = "centos70";
       const store = mockStore(state);
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
       expect(screen.getByTestId("status-text")).toHaveTextContent("CentOS 7");
     });
@@ -115,9 +115,9 @@ describe("StatusColumn", () => {
       machine.distro_series = "bionic";
       const store = mockStore(state);
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
       expect(screen.getByTestId("status-text")).toHaveTextContent(
         "Deploying Ubuntu 18.04 LTS"
@@ -130,9 +130,9 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.BROKEN;
       const store = mockStore(state);
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
 
       expect(screen.getByTestId("error-text")).toHaveTextContent(
@@ -147,9 +147,9 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.TESTING;
       machine.status_message = "2 of 6 tests complete";
       const store = mockStore(state);
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
 
       expect(screen.getByTestId("progress-text")).toHaveTextContent(
@@ -163,9 +163,9 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.ALLOCATED;
       machine.status_message = "This machine is allocated";
       const store = mockStore(state);
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
       expect(screen.getByTestId("progress-text")).toHaveTextContent("");
     });
@@ -176,9 +176,9 @@ describe("StatusColumn", () => {
       machine.status = NodeStatus.COMMISSIONING;
       machine.status_code = NodeStatusCode.COMMISSIONING;
       const store = mockStore(state);
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
       expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     });
@@ -189,9 +189,9 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.ALLOCATED;
       machine.testing_status = TestStatusStatus.FAILED;
       const store = mockStore(state);
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
       expect(screen.getByLabelText(/warning/i)).toBeInTheDocument();
     });
@@ -212,9 +212,9 @@ describe("StatusColumn", () => {
         NodeActions.TEST,
         NodeActions.UNLOCK,
       ];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { state, route: "/machines" }
+        { state }
       );
       await userEvent.click(
         screen.getByRole("button", { name: /take action/i })
@@ -232,9 +232,8 @@ describe("StatusColumn", () => {
     });
 
     it("does not render table menu if onToggleMenu not provided", () => {
-      renderWithBrowserRouter(<StatusColumn systemId="abc123" />, {
+      renderWithProviders(<StatusColumn systemId="abc123" />, {
         state,
-        route: "/machines",
       });
       expect(
         screen.queryByRole("button", { name: /take action/i })
@@ -245,9 +244,9 @@ describe("StatusColumn", () => {
       machine.power_state = PowerState.UNKNOWN;
       machine.status_code = NodeStatusCode.NEW;
       const store = mockStore(state);
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { store }
       );
 
       const button = screen.getByRole("button", {
@@ -267,9 +266,9 @@ describe("StatusColumn", () => {
     machine.status_code = NodeStatusCode.DEPLOYED;
     const store = mockStore(state);
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", store }
+      { store }
     );
 
     expect(screen.getByText(/deployed in memory/i)).toBeInTheDocument();

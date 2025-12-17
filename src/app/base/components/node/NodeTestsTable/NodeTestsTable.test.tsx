@@ -13,7 +13,7 @@ import {
 } from "@/app/store/scriptresult/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -71,9 +71,9 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeTestsTable node={machine} scriptResults={scriptResults} />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     expect(screen.getByTestId("suppress-script-results")).toBeInTheDocument();
@@ -90,9 +90,9 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeTestsTable node={machine} scriptResults={scriptResults} />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     expect(
@@ -111,9 +111,9 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeTestsTable node={controller} scriptResults={scriptResults} />,
-      { route: "/controller/abc123", state }
+      { state }
     );
 
     expect(
@@ -132,9 +132,9 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeTestsTable node={machine} scriptResults={scriptResults} />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     const checkbox = screen.getByTestId("suppress-script-results");
@@ -159,9 +159,9 @@ describe("NodeTestsTable", () => {
     ];
     state.scriptresult.items = scriptResults;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeTestsTable node={machine} scriptResults={scriptResults} />,
-      { route: "/machine/abc123", store }
+      { store }
     );
 
     const checkbox = screen.getByTestId("suppress-script-results");
@@ -187,9 +187,9 @@ describe("NodeTestsTable", () => {
     ];
     state.scriptresult.items = scriptResults;
     const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeTestsTable node={machine} scriptResults={scriptResults} />,
-      { route: "/machine/abc123", store }
+      { store }
     );
 
     const checkbox = screen.getByTestId("suppress-script-results");
@@ -214,9 +214,9 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeTestsTable node={machine} scriptResults={scriptResults} />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     const checkbox = screen.getByTestId("suppress-script-results");
@@ -242,9 +242,9 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeTestsTable node={machine} scriptResults={scriptResults} />,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     const checkbox = screen.getByTestId("suppress-script-results");
@@ -260,10 +260,9 @@ describe("NodeTestsTable", () => {
   });
 
   it("displays a message when there is no script result", () => {
-    renderWithBrowserRouter(
-      <NodeTestsTable node={machine} scriptResults={[]} />,
-      { route: "/machine/abc123", state }
-    );
+    renderWithProviders(<NodeTestsTable node={machine} scriptResults={[]} />, {
+      state,
+    });
 
     expect(screen.getByText("No results available.")).toBeInTheDocument();
   });
