@@ -4,7 +4,12 @@ import type { Props as NodeNameProps } from "./NodeName";
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import {
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 describe("NodeName", () => {
   let state: RootState;
@@ -114,8 +119,8 @@ describe("NodeName", () => {
     expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
   });
 
-  it("closes the form when it saves", () => {
-    state.machine.saving = true;
+  it("closes the form when it saves", async () => {
+    state.machine.saving = false;
     const setEditingName = vi.fn();
     const ProxyNodeName = (props: NodeNameProps) => <NodeName {...props} />;
     const { rerender } = renderWithProviders(
@@ -124,11 +129,23 @@ describe("NodeName", () => {
         node={machine}
         onSubmit={vi.fn()}
         saved={false}
-        saving={true}
+        saving={false}
         setEditingName={setEditingName}
       />,
       { state }
     );
+
+    rerender(
+      <ProxyNodeName
+        editingName={true}
+        node={machine}
+        onSubmit={vi.fn()}
+        saved={false}
+        saving={true}
+        setEditingName={setEditingName}
+      />
+    );
+
     rerender(
       <ProxyNodeName
         editingName={true}
@@ -139,7 +156,10 @@ describe("NodeName", () => {
         setEditingName={setEditingName}
       />
     );
-    expect(setEditingName).toHaveBeenCalledWith(false);
+
+    await waitFor(() => {
+      expect(setEditingName).toHaveBeenCalledWith(false);
+    });
   });
 
   it("can display a hostname error", async () => {

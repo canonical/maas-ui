@@ -6,7 +6,7 @@ import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { FetchNodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -31,7 +31,7 @@ it("can dispatch an action to select all machines using a dropdown", async () =>
     filter,
   };
   const store = mockStore(state);
-  renderWithMockStore(<AllDropdown callId={callId} filter={filter} />, {
+  renderWithProviders(<AllDropdown callId={callId} filter={filter} />, {
     store,
   });
   await userEvent.click(
@@ -70,7 +70,7 @@ it("can dispatch an action to select all machines on current page using a dropdo
     items: ["abc123"],
   };
   const store = mockStore(state);
-  renderWithMockStore(<AllDropdown callId={callId} filter={null} />, {
+  renderWithProviders(<AllDropdown callId={callId} filter={null} />, {
     store,
   });
   await userEvent.click(

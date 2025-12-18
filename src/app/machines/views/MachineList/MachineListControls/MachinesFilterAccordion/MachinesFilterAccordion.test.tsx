@@ -9,7 +9,7 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  renderWithMockStore,
+  renderWithProviders,
   waitFor,
 } from "@/testing/utils";
 
@@ -28,7 +28,7 @@ describe("MachinesFilterAccordion", () => {
 
   it("filter is disabled when filter have not loaded", async () => {
     state.machine.filtersLoaded = false;
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { state }
     );
@@ -40,7 +40,7 @@ describe("MachinesFilterAccordion", () => {
   it("does not fetch filters if filters have been loaded", async () => {
     state.machine.filtersLoaded = true;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { store }
     );
@@ -52,7 +52,7 @@ describe("MachinesFilterAccordion", () => {
   it("fetches filters if filters have not been loaded", async () => {
     state.machine.filtersLoaded = false;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { store }
     );
@@ -69,7 +69,7 @@ describe("MachinesFilterAccordion", () => {
         options: [{ key: "status1", label: "Status 1" }],
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { state }
     );

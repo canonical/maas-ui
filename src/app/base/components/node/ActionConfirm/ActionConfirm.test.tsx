@@ -6,7 +6,7 @@ import ActionConfirm from "./ActionConfirm";
 import * as maasUiHooks from "@/app/base/hooks/analytics";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -25,7 +25,7 @@ describe("ActionConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={vi.fn()}
         confirmLabel="Confirm"
@@ -68,7 +68,7 @@ describe("ActionConfirm", () => {
     });
     const store = mockStore(state);
     const closeExpanded = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
@@ -99,7 +99,7 @@ describe("ActionConfirm", () => {
     });
     const store = mockStore(state);
     const closeExpanded = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
@@ -141,7 +141,7 @@ describe("ActionConfirm", () => {
     });
     const store = mockStore(state);
     const closeExpanded = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
@@ -178,7 +178,7 @@ describe("ActionConfirm", () => {
     });
     const store = mockStore(state);
     const closeExpanded = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"

@@ -11,7 +11,7 @@ import {
   userEvent,
   screen,
   waitFor,
-  renderWithMockStore,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -38,7 +38,7 @@ describe("MachinesFilterOptions", () => {
     filterGroup.loaded = false;
     filterGroup.loading = false;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
@@ -57,7 +57,7 @@ describe("MachinesFilterOptions", () => {
     filterGroup.loaded = false;
     filterGroup.loading = true;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
@@ -76,7 +76,7 @@ describe("MachinesFilterOptions", () => {
     filterGroup.loaded = true;
     filterGroup.loading = false;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
@@ -95,7 +95,7 @@ describe("MachinesFilterOptions", () => {
     filterGroup.loaded = false;
     filterGroup.loading = true;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
@@ -107,7 +107,7 @@ describe("MachinesFilterOptions", () => {
 
   it("displays a message if there are no options", async () => {
     filterGroup.options = [];
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
@@ -118,7 +118,7 @@ describe("MachinesFilterOptions", () => {
   });
 
   it("displays options", async () => {
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
@@ -131,7 +131,7 @@ describe("MachinesFilterOptions", () => {
   });
 
   it("displays active options", async () => {
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         searchText="status:(=status1)"
@@ -144,7 +144,7 @@ describe("MachinesFilterOptions", () => {
 
   it("can set a filter", async () => {
     const setSearchText = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={setSearchText}
@@ -158,7 +158,7 @@ describe("MachinesFilterOptions", () => {
   it("can set a boolean filter", async () => {
     filterGroup.options = [{ key: true, label: "Yes" }];
     const setSearchText = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={setSearchText}
@@ -171,7 +171,7 @@ describe("MachinesFilterOptions", () => {
 
   it("can remove a filter", async () => {
     const setSearchText = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         searchText="status:(=status1)"
@@ -194,7 +194,7 @@ describe("MachinesFilterOptions", () => {
       ],
     });
     state.machine.filters = [filterGroup];
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Workloads}
         setSearchText={vi.fn()}
@@ -223,7 +223,7 @@ describe("MachinesFilterOptions", () => {
     });
     state.machine.filters = [filterGroup];
     const setSearchText = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Workloads}
         setSearchText={setSearchText}

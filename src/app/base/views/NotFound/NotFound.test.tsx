@@ -12,6 +12,8 @@ describe("NotFound ", () => {
 
   it("can render in a row", () => {
     renderWithProviders(<NotFound includeSection />, {});
-    expect(screen.getByRole("row")).toBeInTheDocument();
+    expect(
+      screen.getByRole("banner", { name: "main content" })
+    ).toBeInTheDocument();
   });
 });

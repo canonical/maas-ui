@@ -4,7 +4,7 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus, NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 let state: RootState;
 const originalEnv = import.meta.env;
@@ -44,7 +44,7 @@ it("can show if a machine is currently commissioning", () => {
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(screen.getByText(/Commissioning in progress.../)).toBeInTheDocument();
 });
@@ -58,7 +58,7 @@ it("can show if a machine has not been commissioned yet", () => {
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(screen.getByText(/Not yet commissioned/)).toBeInTheDocument();
 });
@@ -74,7 +74,7 @@ it("can show the last time a machine was commissioned", () => {
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(
     screen.getByText(/Last commissioned: 1 minute ago/)
@@ -92,7 +92,7 @@ it("can handle an incorrectly formatted commissioning timestamp", () => {
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(
     screen.getByText(/Unable to parse commissioning timestamp/)
@@ -112,7 +112,7 @@ it("displays Last and Next sync instead of Last commissioned date for deployed m
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, { state: state });
+  renderWithProviders(<StatusBar />, { state: state });
 
   expect(screen.getByTestId("status-bar-status")).not.toHaveTextContent(
     /Last commissioned/
@@ -141,7 +141,7 @@ it("doesn't display last or next sync for deploying machines with hardware sync 
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, {
+  renderWithProviders(<StatusBar />, {
     state,
   });
 
@@ -169,7 +169,7 @@ it("displays correct text for machines with hardware sync enabled and no last_sy
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, {
+  renderWithProviders(<StatusBar />, {
     state,
   });
 
@@ -195,7 +195,7 @@ it("displays last image sync timestamp for a rack or region+rack controller", ()
   state.controller.active = controller.system_id;
   state.controller.items = [controller];
 
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
     `Last image sync: Thu, 02 Jun. 2022 00:48:41 (UTC)`
@@ -212,7 +212,7 @@ it("displays the feedback link when analytics enabled and not in development env
     ],
   });
 
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(
     screen.getByRole("button", { name: "Give feedback" })
@@ -227,7 +227,7 @@ it("hides the feedback link when analytics disabled", () => {
       factory.config({ name: ConfigNames.ENABLE_ANALYTICS, value: false }),
     ],
   });
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(
     screen.queryByRole("button", { name: "Give feedback" })
@@ -242,7 +242,7 @@ it("hides the feedback link in development environment", () => {
       factory.config({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
     ],
   });
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(
     screen.queryByRole("button", { name: "Give feedback" })
@@ -256,21 +256,19 @@ it("displays the status message when connected to MAAS Site Manager", () => {
     }),
   });
 
-  const { rerender } = renderWithMockStore(<StatusBar />, { state });
+  const { rerender } = renderWithProviders(<StatusBar />, { state });
 
   expect(
     screen.queryByText("Connected to MAAS Site Manager")
   ).not.toBeInTheDocument();
 
-  rerender(<StatusBar />, {
-    state: (draft) => {
-      draft.msm = factory.msmState({
-        status: factory.msmStatus({
-          running: "connected",
-        }),
-      });
-    },
+  state.msm = factory.msmState({
+    status: factory.msmStatus({
+      running: "connected",
+    }),
   });
+
+  rerender(<StatusBar />, { state });
 
   expect(
     screen.getByText("Connected to MAAS Site Manager")
@@ -307,7 +305,7 @@ it("correctly calculates the last commissioned time when multiple commissioning 
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(
     screen.getByText(/Last commissioned: about 1 hour ago/)
@@ -332,7 +330,7 @@ it("handles invalid commissioning event timestamp", () => {
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, { state });
+  renderWithProviders(<StatusBar />, { state });
 
   expect(
     screen.getByText(/Unable to parse commissioning timestamp/)

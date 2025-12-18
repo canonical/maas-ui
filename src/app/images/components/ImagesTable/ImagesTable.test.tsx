@@ -8,7 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   mockSidePanel,
-  renderWithMockStore,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -66,7 +66,7 @@ describe("ImagesTable", () => {
   });
 
   it("renders the correct status for an image", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       { state }
     );
@@ -91,7 +91,7 @@ describe("ImagesTable", () => {
       lastUpdate,
     });
     state.bootresource.resources = [resource];
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,
@@ -127,7 +127,7 @@ describe("ImagesTable", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,
@@ -172,7 +172,7 @@ describe("ImagesTable", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,
@@ -204,7 +204,7 @@ describe("ImagesTable", () => {
         downloading: true,
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,
@@ -265,7 +265,7 @@ describe("ImagesTable", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,

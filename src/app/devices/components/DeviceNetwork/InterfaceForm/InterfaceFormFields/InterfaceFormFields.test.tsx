@@ -8,7 +8,7 @@ import InterfaceFormFields from "./InterfaceFormFields";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -35,7 +35,7 @@ describe("InterfaceFormFields", () => {
   it("can render without headings", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,
@@ -50,7 +50,7 @@ describe("InterfaceFormFields", () => {
   it("can render with headings", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields showTitles />
       </Formik>,
@@ -65,7 +65,7 @@ describe("InterfaceFormFields", () => {
   it("does not show subnet or IP address fields for dynamic IP assignment", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,
@@ -79,7 +79,7 @@ describe("InterfaceFormFields", () => {
   it("shows the IP address field for external IP assignment", () => {
     initialValues.ip_assignment = DeviceIpAssignment.EXTERNAL;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,
@@ -93,7 +93,7 @@ describe("InterfaceFormFields", () => {
   it("shows both the subnet and IP address fields for static IP assignment", () => {
     initialValues.ip_assignment = DeviceIpAssignment.STATIC;
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,
@@ -109,7 +109,7 @@ describe("InterfaceFormFields", () => {
     initialValues.subnet = 1;
     initialValues.ip_address = "192.168.1.1";
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,

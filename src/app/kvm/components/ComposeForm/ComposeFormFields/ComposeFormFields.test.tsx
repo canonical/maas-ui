@@ -14,7 +14,6 @@ import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
   renderWithProviders,
-  renderWithMockStore,
   userEvent,
   fireEvent,
   expectTooltipOnHover,
@@ -191,7 +190,7 @@ describe("ComposeFormFields", () => {
   it("does not allow hugepage backing non-LXD pods", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
@@ -231,7 +230,7 @@ describe("ComposeFormFields", () => {
   it("disables hugepage backing checkbox if no hugepages are free", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
@@ -267,7 +266,7 @@ describe("ComposeFormFields", () => {
   it("shows the input for any available cores by default", () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
@@ -304,7 +303,7 @@ describe("ComposeFormFields", () => {
   it("can switch to pinning specific cores to the VM if using a LXD KVM", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
@@ -347,7 +346,7 @@ describe("ComposeFormFields", () => {
   it("does not allow pinning cores for non-LXD pods", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}

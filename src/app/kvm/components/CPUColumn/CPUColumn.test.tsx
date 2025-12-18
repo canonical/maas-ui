@@ -3,7 +3,7 @@ import CPUColumn from "./CPUColumn";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("CPUColumn", () => {
   let state: RootState;
@@ -31,7 +31,7 @@ describe("CPUColumn", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <CPUColumn
         cores={pod.resources.cores}
         overCommit={pod.cpu_over_commit_ratio}
@@ -51,7 +51,7 @@ describe("CPUColumn", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <CPUColumn
         cores={pod.resources.cores}
         overCommit={pod.cpu_over_commit_ratio}
@@ -71,7 +71,7 @@ describe("CPUColumn", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <CPUColumn
         cores={pod.resources.cores}
         overCommit={pod.cpu_over_commit_ratio}
@@ -89,7 +89,7 @@ describe("CPUColumn", () => {
       free: 3,
     });
 
-    renderWithMockStore(<CPUColumn cores={resources} />, {
+    renderWithProviders(<CPUColumn cores={resources} />, {
       state,
     });
     expect(screen.getByText(/2 of 6/i)).toBeInTheDocument();

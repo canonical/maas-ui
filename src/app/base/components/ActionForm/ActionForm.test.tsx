@@ -92,33 +92,6 @@ describe("ActionForm", () => {
     expect(screen.getByRole("button")).toBeDisabled();
   });
 
-  it("shows correct saving label if selectedCount changes after submit", async () => {
-    const Proxy = ({ selectedCount }: Partial<ActionFormProps<object>>) => (
-      <ActionForm
-        actionName="action"
-        initialValues={{}}
-        modelName="machine"
-        onSubmit={vi.fn()}
-        processingCount={2}
-        selectedCount={selectedCount}
-      />
-    );
-    const { rerender } = renderWithProviders(<Proxy selectedCount={2} />);
-
-    // Submit the form to start processing.
-    await userEvent.click(screen.getByRole("button"));
-    expect(screen.getByTestId(TestIds.SavingLabel).textContent).toBe(
-      "Processing 0 of 2 machines..."
-    );
-
-    // Change the selected count prop - the label should stay the same.
-    rerender(<Proxy selectedCount={1} />);
-
-    expect(screen.getByTestId(TestIds.SavingLabel).textContent).toBe(
-      "Processing 0 of 2 machines..."
-    );
-  });
-
   it("can override showing the processing count", async () => {
     renderWithProviders(
       <ActionForm

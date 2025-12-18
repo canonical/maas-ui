@@ -3,7 +3,7 @@ import PXEColumn from "./PXEColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore } from "@/testing/utils";
+import { renderWithProviders } from "@/testing/utils";
 
 describe("PXEColumn", () => {
   let state: RootState;
@@ -29,7 +29,7 @@ describe("PXEColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<PXEColumn nic={nic} node={machine} />, { state });
+    renderWithProviders(<PXEColumn nic={nic} node={machine} />, { state });
 
     expect(document.querySelector(".p-icon--tick")).toBeInTheDocument();
   });
@@ -44,7 +44,7 @@ describe("PXEColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<PXEColumn nic={nic} node={machine} />, { state });
+    renderWithProviders(<PXEColumn nic={nic} node={machine} />, { state });
 
     expect(document.querySelector(".p-icon--tick")).not.toBeInTheDocument();
   });

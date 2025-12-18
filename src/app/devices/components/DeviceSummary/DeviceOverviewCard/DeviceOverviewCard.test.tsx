@@ -4,7 +4,7 @@ import DeviceOverviewCard from "./DeviceOverviewCard";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -15,7 +15,7 @@ describe("DeviceOverviewCard", () => {
       device: factory.deviceState({ items: [device] }),
     });
     const store = mockStore(state);
-    renderWithMockStore(<DeviceOverviewCard systemId={device.system_id} />, {
+    renderWithProviders(<DeviceOverviewCard systemId={device.system_id} />, {
       store,
     });
 
@@ -28,7 +28,7 @@ describe("DeviceOverviewCard", () => {
       device: factory.deviceState({ items: [device] }),
     });
     const store = mockStore(state);
-    renderWithMockStore(<DeviceOverviewCard systemId={device.system_id} />, {
+    renderWithProviders(<DeviceOverviewCard systemId={device.system_id} />, {
       store,
     });
 
@@ -43,7 +43,7 @@ describe("DeviceOverviewCard", () => {
       tag: factory.tagState({ loaded: false }),
     });
     const store = mockStore(state);
-    renderWithMockStore(<DeviceOverviewCard systemId={device.system_id} />, {
+    renderWithProviders(<DeviceOverviewCard systemId={device.system_id} />, {
       store,
     });
 
@@ -61,7 +61,7 @@ describe("DeviceOverviewCard", () => {
       tag: factory.tagState({ items: tags, loaded: true }),
     });
     const store = mockStore(state);
-    renderWithMockStore(<DeviceOverviewCard systemId={device.system_id} />, {
+    renderWithProviders(<DeviceOverviewCard systemId={device.system_id} />, {
       store,
     });
 

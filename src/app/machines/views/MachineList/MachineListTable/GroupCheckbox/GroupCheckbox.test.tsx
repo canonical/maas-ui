@@ -6,7 +6,7 @@ import { machineActions } from "@/app/store/machine";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -36,7 +36,7 @@ it("is disabled if all machines are selected", () => {
       owner: "admin",
     },
   };
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -57,7 +57,7 @@ it("is disabled if there are no machines in the group", () => {
     value: "admin-2",
   });
   state.machine.lists[callId].groups = [group];
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -79,7 +79,7 @@ it("is not disabled if there are machines in the group", () => {
       value: "admin-2",
     }),
   ];
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -95,7 +95,7 @@ it("is not disabled if there are machines in the group", () => {
 
 it("is unchecked if there are no filters, groups or items selected", () => {
   state.machine.selected = null;
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -115,7 +115,7 @@ it("is checked if all machines are selected", () => {
       owner: "admin",
     },
   };
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -133,7 +133,7 @@ it("is checked if the group is selected", () => {
   state.machine.selected = {
     items: ["machine1", "machine2", "machine3"],
   };
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -158,7 +158,7 @@ it("is partially checked if a machine in the group is selected", () => {
   state.machine.selected = {
     items: ["abc123"],
   };
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -190,7 +190,7 @@ it("is not checked if a selected machine is in another group", () => {
   state.machine.selected = {
     items: ["def456"],
   };
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -206,7 +206,7 @@ it("is not checked if a selected machine is in another group", () => {
 
 it("can dispatch an action to select the group", async () => {
   const store = mockStore(state);
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -250,7 +250,7 @@ it("does not overwrite selected machines in different groups", async () => {
   };
 
   const store = mockStore(state);
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -295,7 +295,7 @@ it("can dispatch an action to unselect the group", async () => {
   };
 
   const store = mockStore(state);
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
@@ -339,7 +339,7 @@ it("can dispatch an action to unselect the group when it's partially selected", 
   };
 
   const store = mockStore(state);
-  renderWithMockStore(
+  renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}

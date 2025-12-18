@@ -9,7 +9,7 @@ import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithMockStore,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -62,7 +62,7 @@ describe("CloneFormFields", () => {
 
   it("dispatches action to fetch data on load", async () => {
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
         onSubmit={vi.fn()}
@@ -93,7 +93,7 @@ describe("CloneFormFields", () => {
     const machine = factory.machineDetails({ system_id: "abc123" });
     state.machine.items = [machine];
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
         onSubmit={vi.fn()}
@@ -116,7 +116,7 @@ describe("CloneFormFields", () => {
   it("applies different styling depending on clone selection state", async () => {
     const machine = factory.machineDetails({ system_id: "abc123" });
     state.machine.items = [machine];
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
         onSubmit={vi.fn()}

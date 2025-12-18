@@ -1,7 +1,7 @@
 import StorageColumn from "./StorageColumn";
 
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("StorageColumn", () => {
   it("displays correct storage information for a pod", () => {
@@ -21,7 +21,7 @@ describe("StorageColumn", () => {
         items: [pod],
       }),
     });
-    renderWithMockStore(
+    renderWithProviders(
       <StorageColumn
         defaultPoolId={pod.default_storage_pool}
         pools={{}}
@@ -48,7 +48,7 @@ describe("StorageColumn", () => {
       free: 3,
     });
 
-    renderWithMockStore(<StorageColumn pools={{}} storage={resources} />);
+    renderWithProviders(<StorageColumn pools={{}} storage={resources} />);
     expect(screen.getByText(/2 of 6B allocated/i)).toBeInTheDocument();
 
     const segmentWidths = [

@@ -17,7 +17,6 @@ import {
   render,
   screen,
   renderWithProviders,
-  renderWithMockStore,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -501,7 +500,7 @@ describe("FormikFormContent", () => {
   });
 
   it("renders inline form correctly when inline prop is true", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent aria-label="inline form" inline>
           <Field aria-label="test field" name="testField" />

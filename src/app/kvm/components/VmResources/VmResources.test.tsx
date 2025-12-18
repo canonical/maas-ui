@@ -9,12 +9,7 @@ import * as query from "@/app/store/machine/utils/query";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  renderWithProviders,
-  renderWithMockStore,
-} from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -67,7 +62,7 @@ describe("VmResources", () => {
         name: "Deployed",
       }),
     ];
-    renderWithMockStore(<VmResources podId={1} />, { state });
+    renderWithProviders(<VmResources podId={1} />, { state });
     expect(
       screen.getByRole("button", { name: Label.ResourceVMs })
     ).toBeAriaDisabled();
@@ -75,7 +70,7 @@ describe("VmResources", () => {
 
   it("can pass additional filters to the request", () => {
     const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <VmResources filters={{ id: ["abc123"] }} podId={1} />,
       { store }
     );
