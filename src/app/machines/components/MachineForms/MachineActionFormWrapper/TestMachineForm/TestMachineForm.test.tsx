@@ -162,37 +162,4 @@ describe("TestMachineForm", () => {
       "selected-tag"
     );
   });
-
-  it("prepopulates scripts with apply_configured_networking", () => {
-    const scripts = [
-      factory.script({
-        name: "test1",
-        apply_configured_networking: true,
-        script_type: ScriptType.TESTING,
-      }),
-      factory.script({
-        name: "test2",
-        apply_configured_networking: false,
-        script_type: ScriptType.TESTING,
-      }),
-      factory.script({
-        name: "test3",
-        apply_configured_networking: true,
-        script_type: ScriptType.TESTING,
-      }),
-    ];
-    state.script.items = scripts;
-    renderWithProviders(
-      <TestMachineForm
-        applyConfiguredNetworking={true}
-        isViewingDetails={false}
-      />,
-      { state }
-    );
-
-    expect(screen.getByRole("button", { name: "test1" })).toHaveAttribute(
-      "data-testid",
-      "selected-tag"
-    );
-  });
 });

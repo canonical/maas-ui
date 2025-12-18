@@ -1,31 +1,25 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, Link } from "react-router";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router";
 
 import MachineName from "./MachineName";
 
-import NodeActionMenu from "@/app/base/components/NodeActionMenu";
-import NodeActionMenuGroup from "@/app/base/components/NodeActionMenuGroup";
 import PowerIcon from "@/app/base/components/PowerIcon";
 import ScriptStatus from "@/app/base/components/ScriptStatus";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useSendAnalytics } from "@/app/base/hooks";
-import { machineActions } from "@/app/store/machine";
+import MachineActions from "@/app/machines/components/MachineActions";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import { isUnconfiguredPowerType } from "@/app/store/machine/utils/common";
-import {
-  useFetchMachine,
-  useSelectedMachinesActionsDispatch,
-} from "@/app/store/machine/utils/hooks";
+import { useFetchMachine } from "@/app/store/machine/utils/hooks";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptResultStatus } from "@/app/store/scriptresult/types";
 import { NodeActions } from "@/app/store/types/node";
-import { getNodeActionTitle } from "@/app/store/utils";
+import { canOpenActionForm } from "@/app/store/utils";
 
 type MachineHeaderProps = {
   systemId: Machine["system_id"];
@@ -33,45 +27,15 @@ type MachineHeaderProps = {
 
 const MachineHeader = ({ systemId }: MachineHeaderProps): ReactElement => {
   const [editingName, setEditingName] = useState(false);
-  const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const sendAnalytics = useSendAnalytics();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
   const statuses = useSelector((state: RootState) =>
     machineSelectors.getStatuses(state, systemId)
   );
-  const { dispatch: dispatchForSelectedMachines } =
-    useSelectedMachinesActionsDispatch({
-      selectedMachines: { items: [systemId] },
-    });
   const isDetails = isMachineDetails(machine);
   useFetchMachine(systemId);
-
-  const handleActionClick = (action: NodeActions) => {
-    sendAnalytics(
-      "Machine details action form",
-      getNodeActionTitle(action),
-      "Open"
-    );
-
-    const isImmediateAction =
-      action === NodeActions.LOCK || action === NodeActions.UNLOCK;
-
-    if (isImmediateAction) {
-      dispatchForSelectedMachines(machineActions[action]);
-    } else if (action === NodeActions.CHECK_POWER) {
-      dispatch(machineActions.checkPower(systemId));
-    } else {
-      const view = Object.values(MachineSidePanelViews).find(
-        ([, actionName]) => actionName === action
-      );
-      if (view) {
-        setSidePanelContent({ view });
-      }
-    }
-  };
 
   if (!(machine && isDetails)) {
     return <SectionHeader loading />;
@@ -81,40 +45,24 @@ const MachineHeader = ({ systemId }: MachineHeaderProps): ReactElement => {
   const checkingPower = statuses?.checkingPower;
   const needsPowerConfiguration = isUnconfiguredPowerType(machine);
 
+  const disabledActions = [
+    NodeActions.ACQUIRE,
+    NodeActions.COMMISSION,
+    NodeActions.DEPLOY,
+    NodeActions.CLONE,
+    NodeActions.RELEASE,
+    NodeActions.ABORT,
+  ].filter((action) => !canOpenActionForm(machine, action));
+
   return (
     <SectionHeader
       renderButtons={() => (
-        <div>
-          <div className="u-hide--medium u-hide--small u-nudge-right">
-            <NodeActionMenuGroup
-              alwaysShowLifecycle
-              excludeActions={[NodeActions.IMPORT_IMAGES]}
-              filterActions
-              hasSelection={true}
-              isNodeLocked={machine.locked}
-              nodeDisplay="machine"
-              nodes={[machine]}
-              onActionClick={handleActionClick}
-              singleNode
-            />
-          </div>
-          <div className="u-hide--large u-nudge-right">
-            <NodeActionMenu
-              alwaysShowLifecycle
-              className="u-hide--large"
-              excludeActions={[NodeActions.IMPORT_IMAGES]}
-              filterActions
-              hasSelection={true}
-              key="action-dropdown"
-              nodeDisplay="machine"
-              nodes={[machine]}
-              onActionClick={handleActionClick}
-              toggleAppearance=""
-              toggleClassName="p-action-menu u-no-margin--bottom"
-              toggleLabel="Menu"
-            />
-          </div>
-        </div>
+        <MachineActions
+          disabledActions={disabledActions}
+          isMachineLocked={machine.locked}
+          isViewingDetails
+          systemId={machine.system_id}
+        />
       )}
       subtitle={
         editingName ? null : (
