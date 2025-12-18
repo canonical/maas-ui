@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -12,8 +13,6 @@ import ScriptStatus from "@/app/base/components/ScriptStatus";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useSendAnalytics } from "@/app/base/hooks";
-import { MachineSidePanelViews } from "@/app/machines/constants";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
@@ -28,15 +27,11 @@ import { ScriptResultStatus } from "@/app/store/scriptresult/types";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 
-type Props = {
-  setSidePanelContent: MachineSetSidePanelContent;
+type MachineHeaderProps = {
   systemId: Machine["system_id"];
 };
 
-const MachineHeader = ({
-  setSidePanelContent,
-  systemId,
-}: Props): React.ReactElement => {
+const MachineHeader = ({ systemId }: MachineHeaderProps): ReactElement => {
   const [editingName, setEditingName] = useState(false);
   const dispatch = useDispatch();
   const { pathname } = useLocation();

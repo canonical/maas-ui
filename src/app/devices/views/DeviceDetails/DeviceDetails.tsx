@@ -54,12 +54,7 @@ const DeviceDetails = (): React.ReactElement => {
     <Routes>
       <Route
         element={
-          <PageContent
-            header={<DeviceDetailsHeader systemId={id} />}
-            sidePanelContent={undefined}
-            sidePanelTitle={null}
-            useNewSidePanelContext={true}
-          >
+          <PageContent header={<DeviceDetailsHeader systemId={id} />}>
             <DeviceSummary systemId={id} />
           </PageContent>
         }
@@ -67,12 +62,7 @@ const DeviceDetails = (): React.ReactElement => {
       />
       <Route
         element={
-          <PageContent
-            header={<DeviceDetailsHeader systemId={id} />}
-            sidePanelContent={undefined}
-            sidePanelTitle={null}
-            useNewSidePanelContext={true}
-          >
+          <PageContent header={<DeviceDetailsHeader systemId={id} />}>
             <DeviceNetwork systemId={id} />
           </PageContent>
         }
@@ -80,12 +70,7 @@ const DeviceDetails = (): React.ReactElement => {
       />
       <Route
         element={
-          <PageContent
-            header={<DeviceDetailsHeader systemId={id} />}
-            sidePanelContent={undefined}
-            sidePanelTitle={null}
-            useNewSidePanelContext={true}
-          >
+          <PageContent header={<DeviceDetailsHeader systemId={id} />}>
             <DeviceConfiguration systemId={id} />
           </PageContent>
         }

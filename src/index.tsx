@@ -12,7 +12,6 @@ import { createQueryClient } from "./app/api/query-client";
 import useDarkMode from "./app/base/hooks/useDarkMode/useDarkMode";
 import { store } from "./redux-store";
 
-import SidePanelContextProvider from "@/app/base/side-panel-context";
 import NewSidePanelContextProvider from "@/app/base/side-panel-context-new";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import { router } from "@/router";
@@ -26,9 +25,7 @@ export const Root = () => {
       <WebSocketProvider>
         <QueryClientProvider client={queryClient}>
           <NewSidePanelContextProvider>
-            <SidePanelContextProvider>
-              <RouterProvider router={router} />
-            </SidePanelContextProvider>
+            <RouterProvider router={router} />
           </NewSidePanelContextProvider>
           <ReactQueryDevtools
             buttonPosition="bottom-left"

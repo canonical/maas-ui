@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import { Labels as WindowsFormLabels } from "../WindowsForm/WindowsForm";
 
 import Windows, { Labels as WindowsLabels } from "./Windows";
@@ -9,9 +5,7 @@ import Windows, { Labels as WindowsLabels } from "./Windows";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("Windows", () => {
   let state: RootState;
@@ -33,31 +27,13 @@ describe("Windows", () => {
 
   it("displays a spinner if config is loading", () => {
     state.config.loading = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Windows />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    renderWithProviders(<Windows />, { state });
     expect(screen.getByText(WindowsLabels.Loading)).toBeInTheDocument();
   });
 
   it("displays the Windows form if config is loaded", () => {
     state.config.loaded = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Windows />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    renderWithProviders(<Windows />, { state });
     expect(
       screen.getByRole("form", { name: WindowsFormLabels.FormLabel })
     ).toBeInTheDocument();
@@ -65,16 +41,7 @@ describe("Windows", () => {
 
   it("dispatches action to fetch config if not already loaded", () => {
     state.config.loaded = false;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Windows />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    const { store } = renderWithProviders(<Windows />, { state });
     const fetchActions = store
       .getActions()
       .filter((action) => action.type.endsWith("fetch"));

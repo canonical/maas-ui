@@ -24,10 +24,9 @@ const state = factory.rootState({
 });
 
 it("should render the form", () => {
-  renderWithProviders(
-    <DeleteCacheSet close={vi.fn()} disk={disk} systemId="abc123" />,
-    { state }
-  );
+  renderWithProviders(<DeleteCacheSet disk={disk} systemId="abc123" />, {
+    state,
+  });
 
   expect(
     screen.getByRole("form", { name: "Delete cache set" })
@@ -36,10 +35,9 @@ it("should render the form", () => {
 
 it("should fire an action to delete a disk", async () => {
   const store = mockStore(state);
-  renderWithProviders(
-    <DeleteCacheSet close={vi.fn()} disk={disk} systemId="abc123" />,
-    { store }
-  );
+  renderWithProviders(<DeleteCacheSet disk={disk} systemId="abc123" />, {
+    store,
+  });
 
   await userEvent.click(
     screen.getByRole("button", { name: "Remove cache set" })

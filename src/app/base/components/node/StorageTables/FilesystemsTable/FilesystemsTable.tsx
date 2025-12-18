@@ -3,18 +3,13 @@ import type { ReactElement } from "react";
 import { GenericTable } from "@canonical/maas-react-components";
 import { Button, Tooltip } from "@canonical/react-components";
 
+import AddSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
 import useFileSystemsTableColumns from "@/app/base/components/node/StorageTables/FilesystemsTable/useFilesystemsTableColumns/useFileSystemsTableColumns";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { Disk, Partition } from "@/app/store/types/node";
 import { isMounted, nodeIsMachine } from "@/app/store/utils";
-
-export enum FilesystemAction {
-  DELETE = "deleteFilesystem",
-  UNMOUNT = "unmountFilesystem",
-}
 
 type FilesystemsTableProps = {
   canEditStorage: boolean;
@@ -80,7 +75,7 @@ const FilesystemsTable = ({
   node,
 }: FilesystemsTableProps): ReactElement => {
   const isMachine = nodeIsMachine(node);
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
 
   const columns = useFileSystemsTableColumns(canEditStorage, isMachine);
   const data = generateFilesystemRowData(node);
@@ -102,9 +97,10 @@ const FilesystemsTable = ({
             data-testid="add-special-fs-button"
             onClick={() => {
               isMachine &&
-                setSidePanelContent({
-                  view: MachineSidePanelViews.ADD_SPECIAL_FILESYSTEM,
-                  extras: { node },
+                openSidePanel({
+                  component: AddSpecialFilesystem,
+                  title: "Add special filesystem",
+                  props: { machine: node },
                 });
             }}
           >

@@ -9,7 +9,6 @@ import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
 import DeleteVM from "@/app/kvm/components/DeleteVM";
 import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
-import { MachineSidePanelViews } from "@/app/machines/constants";
 import { useHasSelection } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";

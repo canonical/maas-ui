@@ -12,7 +12,6 @@ import { FilterMachines } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
-import { NodeActions } from "@/app/store/types/node";
 
 type Props = { systemId: MachineDetails["system_id"] };
 
@@ -24,11 +23,7 @@ const TagForm = ({ systemId }: Props): React.ReactElement | null => {
     tagSelectors.getByIDs(state, machine?.tags || null)
   );
   const tagsLoading = useSelector(tagSelectors.loading);
-  const taggingMachines = useSelector(machineSelectors.updatingTags);
-  const eventActions = [NodeActions.TAG, NodeActions.UNTAG];
-  const errors = useSelector((state: RootState) =>
-    machineSelectors.eventErrorsForIds(state, systemId, eventActions)
-  )[0]?.error;
+
   const canEdit = useCanEdit(machine, true);
 
   useFetchActions([tagActions.fetch]);
@@ -44,15 +39,11 @@ const TagForm = ({ systemId }: Props): React.ReactElement | null => {
       renderContent={(editing, setEditing) =>
         editing ? (
           <TagActionForm
-            clearSidePanelContent={() => {
+            closeForm={() => {
               setEditing(false);
             }}
-            errors={errors}
-            processingCount={taggingMachines.length}
-            selectedCount={1}
-            selectedMachines={{ items: [machine.system_id] }}
-            viewingDetails
-            viewingMachineConfig
+            isViewingDetails
+            isViewingMachineConfig
           />
         ) : (
           <p>

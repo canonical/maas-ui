@@ -76,9 +76,6 @@ const LXDSingleDetails = (): ReactElement => {
     <PageContent
       aria-label={Label.Title}
       header={<LXDSingleDetailsHeader id={id} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       {pod && (
         <Routes>

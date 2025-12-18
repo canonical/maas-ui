@@ -1,20 +1,16 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import type { RowSelectionState } from "@tanstack/react-table";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import SetZoneForm from "../SetDeviceZoneForm";
 
-import DeleteForm from "@/app/base/components/node/DeleteForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import urls from "@/app/base/urls";
-import { deviceActions } from "@/app/store/device";
+import DeleteDevice from "@/app/devices/components/DeleteDevice";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceActions } from "@/app/store/device/types";
-import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import { kebabToCamelCase } from "@/app/utils";
 
 type Props = {
   action: DeviceActions;
@@ -28,31 +24,14 @@ export const ActionFormWrapper = ({
   devices,
   viewingDetails,
   setRowSelection,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const { closeSidePanel } = useSidePanel();
-  const dispatch = useDispatch();
+
   const deleting = useSelector(deviceSelectors.deleting);
   const settingZone = useSelector(deviceSelectors.settingZone);
-  // The form expects one error, so we only show the latest error with the
-  // assumption that all selected machines fail in the same way.
-  const errors = useSelector((state: RootState) =>
-    deviceSelectors.eventErrorsForDevices(
-      state,
-      devices.map(({ system_id }) => system_id),
-      kebabToCamelCase(action)
-    )
-  )[0]?.error;
+
   const processingCount =
     action === NodeActions.DELETE ? deleting.length : settingZone.length;
-  const commonNodeFormProps = {
-    cleanup: deviceActions.cleanup,
-    clearSidePanelContent: closeSidePanel,
-    errors,
-    modelName: "device",
-    nodes: devices,
-    processingCount,
-    viewingDetails,
-  };
 
   return (
     <NodeActionFormWrapper
@@ -74,16 +53,7 @@ export const ActionFormWrapper = ({
       viewingDetails={viewingDetails}
     >
       {action === NodeActions.DELETE ? (
-        <DeleteForm
-          onSubmit={() => {
-            dispatch(deviceActions.cleanup());
-            devices.forEach((device) => {
-              dispatch(deviceActions.delete({ system_id: device.system_id }));
-            });
-          }}
-          redirectURL={urls.devices.index}
-          {...commonNodeFormProps}
-        />
+        <DeleteDevice devices={devices} isViewingDetails={viewingDetails} />
       ) : (
         <SetZoneForm devices={devices} isViewingDetails={viewingDetails} />
       )}

@@ -48,10 +48,10 @@ describe("MachineHeader", () => {
   it("displays a spinner when loading", () => {
     state.machine.items = [];
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { state, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      state,
+      route: "/machine/abc123",
+    });
 
     expect(
       screen.getByRole("heading", { name: /loading/i })
@@ -61,10 +61,10 @@ describe("MachineHeader", () => {
   it("displays a spinner when loading the details version of the machine", () => {
     state.machine.items = [factory.machine({ system_id: "abc123" })];
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { state, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      state,
+      route: "/machine/abc123",
+    });
 
     expect(
       screen.getByRole("heading", { name: /loading/i })
@@ -74,10 +74,10 @@ describe("MachineHeader", () => {
   it("displays an icon when locked", () => {
     state.machine.items[0].locked = true;
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { state, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      state,
+      route: "/machine/abc123",
+    });
 
     expect(screen.getByRole("button", { name: /locked/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /locked/i })).toHaveClass(
@@ -88,10 +88,10 @@ describe("MachineHeader", () => {
   it("displays an icon when locked", () => {
     state.machine.items[0].locked = true;
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { state, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      state,
+      route: "/machine/abc123",
+    });
 
     expect(screen.getByRole("button", { name: /locked/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /locked/i })).toHaveClass(
@@ -102,10 +102,10 @@ describe("MachineHeader", () => {
   it("displays machine status", () => {
     state.machine.items[0].status = NodeStatus.DEPLOYED;
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { state, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      state,
+      route: "/machine/abc123",
+    });
 
     expect(screen.getByText(/deployed/i)).toBeInTheDocument();
   });
@@ -115,10 +115,10 @@ describe("MachineHeader", () => {
       checkingPower: true,
     });
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { state, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      state,
+      route: "/machine/abc123",
+    });
 
     expect(screen.getByText(/checking power/i)).toBeInTheDocument();
   });
@@ -128,10 +128,10 @@ describe("MachineHeader", () => {
       state.machine.items[0].actions = [];
       const store = mockStore(state);
 
-      renderWithBrowserRouter(
-        <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-        { store, route: "/machine/abc123" }
-      );
+      renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+        store,
+        route: "/machine/abc123",
+      });
 
       await userEvent.click(screen.getByRole("button", { name: /Power/i }));
       await userEvent.click(
@@ -152,10 +152,10 @@ describe("MachineHeader", () => {
       system_id: "abc123",
     });
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { state, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      state,
+      route: "/machine/abc123",
+    });
 
     expect(
       screen.getByRole("link", { name: /instances/i })
@@ -181,10 +181,10 @@ describe("MachineHeader", () => {
       }),
     });
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { state, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      state,
+      route: "/machine/abc123",
+    });
 
     await userEvent.click(
       screen.getByRole("button", {
@@ -201,10 +201,10 @@ describe("MachineHeader", () => {
     state.machine.items[0].permissions = ["edit", "delete"];
     const store = mockStore(state);
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { store, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      store,
+      route: "/machine/abc123",
+    });
 
     await userEvent.click(screen.getByRole("switch", { name: /lock/i }));
 
@@ -230,10 +230,10 @@ describe("MachineHeader", () => {
     state.machine.items[0].status_code = NodeStatusCode.NEW;
     const store = mockStore(state);
 
-    renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
-      { store, route: "/machine/abc123" }
-    );
+    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+      store,
+      route: "/machine/abc123",
+    });
 
     expect(
       screen.getByRole("link", { name: /error configuration/i })

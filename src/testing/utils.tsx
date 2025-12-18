@@ -27,11 +27,6 @@ import { vi } from "vitest";
 
 import type { QueryModel } from "@/app/api/query-client";
 import { client } from "@/app/apiclient/client.gen";
-import type {
-  SidePanelContent,
-  SidePanelSize,
-} from "@/app/base/side-panel-context";
-import SidePanelContextProvider from "@/app/base/side-panel-context";
 import NewSidePanelContextProvider from "@/app/base/side-panel-context-new";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import { ConfigNames } from "@/app/store/config/types";
@@ -145,8 +140,6 @@ interface WrapperProps {
   state?: RootState;
   store?: MockStoreEnhanced<RootState | unknown, object>;
   queryData?: InitialData;
-  sidePanelContent?: SidePanelContent;
-  sidePanelSize?: SidePanelSize;
 }
 
 export const BrowserRouterWithProvider = ({
@@ -154,8 +147,6 @@ export const BrowserRouterWithProvider = ({
   queryData,
   parentRoute,
   routePattern,
-  sidePanelContent,
-  sidePanelSize,
   store,
 }: WrapperProps & { children: React.ReactNode }): React.ReactNode => {
   const route = <Route element={children} path={routePattern} />;
@@ -163,10 +154,7 @@ export const BrowserRouterWithProvider = ({
     <QueryClientProvider client={setupQueryClient(queryData)}>
       <WebSocketProvider>
         <Provider store={store ?? getMockStore()}>
-          <SidePanelContextProvider
-            initialSidePanelContent={sidePanelContent}
-            initialSidePanelSize={sidePanelSize}
-          >
+          <NewSidePanelContextProvider>
             <BrowserRouter>
               {routePattern ? (
                 <Routes>
@@ -180,7 +168,7 @@ export const BrowserRouterWithProvider = ({
                 children
               )}
             </BrowserRouter>
-          </SidePanelContextProvider>
+          </NewSidePanelContextProvider>
         </Provider>
       </WebSocketProvider>
     </QueryClientProvider>
@@ -195,7 +183,7 @@ const WithMockStoreProvider = ({
   return (
     <QueryClientProvider client={setupQueryClient()}>
       <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-        <SidePanelContextProvider>{children}</SidePanelContextProvider>
+        <NewSidePanelContextProvider>{children}</NewSidePanelContextProvider>
       </Provider>
     </QueryClientProvider>
   );
@@ -585,7 +573,7 @@ export const renderWithProviders = (
     [
       {
         path: options?.pattern ?? "*",
-        element: <SidePanelContextProvider>{ui}</SidePanelContextProvider>,
+        element: ui,
       },
     ],
     { initialEntries: options?.initialEntries || ["/"] }
@@ -644,7 +632,7 @@ export const renderWithProviders = (
       [
         {
           path: options?.pattern ?? "*",
-          element: <SidePanelContextProvider>{ui}</SidePanelContextProvider>,
+          element: ui,
         },
       ],
       { initialEntries: options?.initialEntries || ["/"] }
@@ -797,11 +785,42 @@ export const mockSidePanel = async () => {
   const mockOpen = vi.fn();
   const mockClose = vi.fn();
 
+  let isOpen = false;
+
   beforeEach(() => {
     vi.clearAllMocks();
+    isOpen = false;
+
+    mockOpen.mockImplementation(() => {
+      isOpen = true;
+      mockUseSidePanel.mockReturnValue({
+        isOpen: true,
+        title: "",
+        size: "regular",
+        component: null,
+        props: {},
+        openSidePanel: mockOpen,
+        closeSidePanel: mockClose,
+        setSidePanelSize: vi.fn(),
+      });
+    });
+
+    mockClose.mockImplementation(() => {
+      isOpen = false;
+      mockUseSidePanel.mockReturnValue({
+        isOpen: false,
+        title: "",
+        size: "regular",
+        component: null,
+        props: {},
+        openSidePanel: mockOpen,
+        closeSidePanel: mockClose,
+        setSidePanelSize: vi.fn(),
+      });
+    });
 
     mockUseSidePanel.mockReturnValue({
-      isOpen: false,
+      isOpen,
       title: "",
       size: "regular",
       component: null,

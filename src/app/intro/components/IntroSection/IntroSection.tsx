@@ -5,7 +5,7 @@ import { Notification, Spinner } from "@canonical/react-components";
 import { useNavigate } from "react-router";
 
 import PageContent from "@/app/base/components/PageContent";
-import type { Props as PageContentProps } from "@/app/base/components/PageContent/PageContent";
+import type { PageContentProps } from "@/app/base/components/PageContent/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import type { APIError, SyncNavigateFunction } from "@/app/base/types";
 import { useExitURL } from "@/app/intro/hooks";
@@ -29,8 +29,6 @@ const IntroSection = ({
   shouldExitIntro,
   titleLink,
   windowTitle,
-  sidePanelContent = null,
-  sidePanelTitle = null,
   ...props
 }: Props): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
@@ -46,11 +44,7 @@ const IntroSection = ({
   }, [navigate, exitURL, shouldExitIntro]);
 
   return (
-    <PageContent
-      sidePanelContent={sidePanelContent}
-      sidePanelTitle={sidePanelTitle}
-      {...props}
-    >
+    <PageContent {...props}>
       {errorMessage && (
         <Notification severity="negative" title="Error:">
           {errorMessage}

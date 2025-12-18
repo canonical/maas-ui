@@ -1,11 +1,8 @@
 import { useState } from "react";
 
-import { useNavigate } from "react-router";
-
 import BaseDhcpForm from "@/app/base/components/DhcpForm";
 import type { DHCPFormValues } from "@/app/base/components/DhcpForm/types";
-import type { SyncNavigateFunction } from "@/app/base/types";
-import settingsURLs from "@/app/settings/urls";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {
@@ -13,7 +10,7 @@ type Props = {
 };
 
 export const DhcpForm = ({ dhcpSnippet }: Props): React.ReactElement => {
-  const navigate: SyncNavigateFunction = useNavigate();
+  const { closeSidePanel } = useSidePanel();
   const [name, setName] = useState<DHCPFormValues["name"]>();
   const editing = !!dhcpSnippet;
   const title = editing ? `Editing \`${name}\`` : "Add DHCP snippet";
@@ -23,13 +20,11 @@ export const DhcpForm = ({ dhcpSnippet }: Props): React.ReactElement => {
       analyticsCategory="DHCP snippet settings"
       aria-label={title}
       id={dhcpSnippet?.id}
-      onCancel={() => {
-        navigate({ pathname: settingsURLs.dhcp.index });
-      }}
+      onCancel={closeSidePanel}
+      onSave={closeSidePanel}
       onValuesChanged={(values) => {
         setName(values.name);
       }}
-      savedRedirect={settingsURLs.dhcp.index}
     />
   );
 };

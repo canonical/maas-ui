@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { Row, NotificationSeverity } from "@canonical/react-components";
@@ -5,19 +6,18 @@ import classNames from "classnames";
 import type { FileRejection, FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import type { SyncNavigateFunction } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { messageActions } from "@/app/store/message";
 import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import { ScriptType } from "@/app/store/script/types";
 
-type Props = {
+type ScriptsUploadProps = {
   type: "commissioning" | "testing";
 };
 
@@ -26,7 +26,7 @@ export enum Labels {
   SubmitButton = "Upload script",
 }
 
-const ScriptsUpload = ({ type }: Props): React.ReactElement => {
+const ScriptsUpload = ({ type }: ScriptsUploadProps): ReactElement => {
   const MAX_SIZE_BYTES = 2000000; // 2MB
   const hasErrors = useSelector(scriptSelectors.hasErrors);
   const errors = useSelector(scriptSelectors.errors);
@@ -35,8 +35,7 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
   const [savedScript, setSavedScript] = useState<string | null>(null);
   const [script, setScript] = useState<ReadScriptResponse | null>(null);
   const dispatch = useDispatch();
-  const navigate: SyncNavigateFunction = useNavigate();
-  const listLocation = `/settings/scripts/${type}`;
+  const { closeSidePanel } = useSidePanel();
 
   useEffect(() => {
     if (hasErrors && errors && typeof errors === "object") {
@@ -113,13 +112,6 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
     }
   }, [dispatch, saved, savedScript]);
 
-  useEffect(() => {
-    if (saved) {
-      // The script was successfully uploaded so redirect to the scripts list.
-      navigate(listLocation, { replace: true });
-    }
-  }, [navigate, listLocation, saved]);
-
   const uploadedFile: FileWithPath = acceptedFiles[0];
 
   return (
@@ -147,9 +139,7 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
       <Row>
         <FormikForm
           initialValues={{}}
-          onCancel={() => {
-            navigate({ pathname: listLocation });
-          }}
+          onCancel={closeSidePanel}
           onSubmit={() => {
             dispatch(scriptActions.cleanup());
             if (script?.script) {
@@ -168,6 +158,7 @@ const ScriptsUpload = ({ type }: Props): React.ReactElement => {
               setSavedScript(script.name);
             }
           }}
+          onSuccess={closeSidePanel}
           saved={saved}
           saving={saving}
           submitDisabled={acceptedFiles.length === 0}

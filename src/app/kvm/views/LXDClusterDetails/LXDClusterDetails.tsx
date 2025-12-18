@@ -93,9 +93,6 @@ const LXDClusterDetails = (): ReactElement => {
     <PageContent
       aria-label={Label.Title}
       header={<LXDClusterDetailsHeader clusterId={clusterId} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       <Routes>
         <Route

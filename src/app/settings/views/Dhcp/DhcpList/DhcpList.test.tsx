@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import DhcpList from "./DhcpList";
 
 import type { RootState } from "@/app/store/root/types";
@@ -9,13 +5,10 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  render,
   within,
-  renderWithMockStore,
   renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("DhcpList", () => {
   let state: RootState;
@@ -67,12 +60,7 @@ describe("DhcpList", () => {
   });
 
   it("can show a delete confirmation", async () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <DhcpList />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpList />, { state });
     let row = screen.getAllByTestId("dhcp-row")[0];
     expect(row).not.toHaveClass("is-active");
 
@@ -84,14 +72,7 @@ describe("DhcpList", () => {
   });
 
   it("can delete a dhcp snippet", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<DhcpList />, { state });
     let row = screen.getAllByTestId("dhcp-row")[1];
     expect(row).not.toHaveClass("is-active");
 
@@ -121,12 +102,7 @@ describe("DhcpList", () => {
   });
 
   it("can show snippet details", async () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <DhcpList />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpList />, { state });
     let row = screen.getAllByTestId("dhcp-row")[0];
     expect(row).not.toHaveClass("is-active");
 
@@ -140,12 +116,7 @@ describe("DhcpList", () => {
   });
 
   it("can filter dhcp snippets", async () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <DhcpList />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpList />, { state });
     let rows = screen.getAllByTestId("dhcp-row");
     expect(rows.length).toBe(3);
 

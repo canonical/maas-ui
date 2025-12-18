@@ -58,7 +58,7 @@ afterEach(() => {
 it("set the analytics category for the machine list", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
+    <AddTagForm name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
@@ -75,12 +75,7 @@ it("set the analytics category for the machine list", async () => {
 it("set the analytics category for the machine details", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm
-      isViewingDetails
-      machines={[]}
-      name="new-tag"
-      onTagCreated={vi.fn()}
-    />,
+    <AddTagForm isViewingDetails name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
@@ -97,12 +92,7 @@ it("set the analytics category for the machine details", async () => {
 it("set the analytics category for the machine config", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm
-      isViewingMachineConfig
-      machines={[]}
-      name="new-tag"
-      onTagCreated={vi.fn()}
-    />,
+    <AddTagForm isViewingMachineConfig name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
@@ -119,7 +109,7 @@ it("set the analytics category for the machine config", async () => {
 it("generates a deployed message for a single machine", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
+    <AddTagForm name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(
@@ -132,7 +122,7 @@ it("generates a deployed message for a single machine", async () => {
 it("generates a deployed message for multiple machines", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
+    <AddTagForm name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(

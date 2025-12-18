@@ -1,17 +1,21 @@
+import type { ReactElement } from "react";
+
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DhcpForm from "../DhcpForm";
 
 import { useFetchActions } from "@/app/base/hooks";
-import { useGetURLId } from "@/app/base/hooks/urls";
 import { dhcpsnippetActions } from "@/app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
-import { DHCPSnippetMeta } from "@/app/store/dhcpsnippet/types";
+import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 import type { RootState } from "@/app/store/root/types";
 
-export const DhcpEdit = (): React.ReactElement => {
-  const id = useGetURLId(DHCPSnippetMeta.PK);
+type DhcpEditProps = {
+  id: DHCPSnippet["id"];
+};
+
+export const DhcpEdit = ({ id }: DhcpEditProps): ReactElement => {
   const loading = useSelector(dhcpsnippetSelectors.loading);
   const dhcpsnippet = useSelector((state: RootState) =>
     dhcpsnippetSelectors.getById(state, id)

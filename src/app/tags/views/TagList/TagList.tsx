@@ -54,9 +54,6 @@ const TagList = (): React.ReactElement => {
           setSearchText={setSearchText}
         />
       }
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       <div aria-label={Label.Title}>
         <div className="u-nudge-down">

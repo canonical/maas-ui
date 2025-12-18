@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Card } from "@canonical/react-components";
 
 import ControllerStatusCard from "./ControllerStatusCard";
@@ -7,20 +9,15 @@ import MachineStatusCard from "./MachineStatusCard";
 import MemoryCard from "./MemoryCard";
 import StorageCard from "./StorageCard";
 
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import { nodeIsMachine } from "@/app/store/utils";
 
-type Props = {
+type OverviewCardProps = {
   node: ControllerDetails | MachineDetails;
-  setSidePanelContent?: MachineSetSidePanelContent;
 };
 
-const OverviewCard = ({
-  node,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+const OverviewCard = ({ node }: OverviewCardProps): ReactElement => {
   const isMachine = nodeIsMachine(node);
   return (
     <Card className="u-no-padding">
@@ -30,9 +27,9 @@ const OverviewCard = ({
         ) : (
           <ControllerStatusCard controller={node} />
         )}
-        <CpuCard node={node} setSidePanelContent={setSidePanelContent} />
-        <MemoryCard node={node} setSidePanelContent={setSidePanelContent} />
-        <StorageCard node={node} setSidePanelContent={setSidePanelContent} />
+        <CpuCard node={node} />
+        <MemoryCard node={node} />
+        <StorageCard node={node} />
         <DetailsCard node={node} />
       </div>
     </Card>

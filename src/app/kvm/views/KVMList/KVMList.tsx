@@ -83,9 +83,6 @@ const KVMList = (): ReactElement => {
     <PageContent
       aria-label={Label.Title}
       header={<KVMListHeader title={title} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       {content}
     </PageContent>

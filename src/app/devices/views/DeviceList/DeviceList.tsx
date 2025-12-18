@@ -42,9 +42,6 @@ const DeviceList = (): ReactElement => {
           setSearchFilter={setSearchFilter}
         />
       }
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       <DevicesTable
         rowSelection={rowSelection}
