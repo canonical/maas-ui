@@ -21,7 +21,7 @@ it("handles when a fabric does not exist", () => {
 
   renderWithProviders(<FabricLink id={1} />, { state });
 
-  expect(screen).toBeEmptyDOMElement();
+  expect(screen.queryByText(/.+/)).not.toBeInTheDocument();
 });
 
 it("renders a link if fabrics have loaded and it exists", () => {

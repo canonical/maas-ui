@@ -23,7 +23,7 @@ it("handles when a device does not exist", () => {
     state,
   });
 
-  expect(screen).toBeEmptyDOMElement();
+  expect(screen.queryByText(/.+/)).not.toBeInTheDocument();
 });
 
 it("renders a link if devices have loaded and it exists", () => {

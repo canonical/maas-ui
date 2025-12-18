@@ -21,7 +21,7 @@ it("handles when a VLAN does not exist", () => {
 
   renderWithProviders(<VLANLink id={1} />, { state });
 
-  expect(screen).toBeEmptyDOMElement();
+  expect(screen.queryByText(/.+/)).not.toBeInTheDocument();
 });
 
 it("renders a link if VLANs have loaded and it exists", () => {

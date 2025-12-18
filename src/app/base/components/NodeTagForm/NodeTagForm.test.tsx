@@ -54,6 +54,11 @@ it("dispatches an action to create a tag", async () => {
 
 it("returns the newly created tag on save", async () => {
   const onTagCreated = vi.fn();
+  const newTag = factory.tag({ id: 8, name: "new-tag" });
+  state.tag = factory.tagState({
+    items: [newTag],
+    saved: true,
+  });
 
   renderWithProviders(
     <NodeTagForm name="new-tag" onTagCreated={onTagCreated} />,
@@ -61,11 +66,6 @@ it("returns the newly created tag on save", async () => {
   );
 
   mockFormikFormSaved();
-  const newTag = factory.tag({ id: 8, name: "new-tag" });
-  state.tag = factory.tagState({
-    items: [newTag],
-    saved: true,
-  });
   await userEvent.click(screen.getByRole("button", { name: Label.Submit }));
   await waitFor(() => {
     expect(onTagCreated).toHaveBeenCalledWith(newTag);

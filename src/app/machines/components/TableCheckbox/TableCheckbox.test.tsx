@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import TableCheckbox, { Checked } from "./TableCheckbox";
 
 import { machineActions } from "@/app/store/machine";
@@ -133,8 +131,7 @@ it("can add additional classes to the wrapping element", () => {
 
 it("can dispatch a generated selected state", async () => {
   const selected = { items: ["abc123", "def456"] };
-  const store = configureStore<RootState>()(state);
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <TableCheckbox
       callId={callId}
       extraClasses="extra-class"

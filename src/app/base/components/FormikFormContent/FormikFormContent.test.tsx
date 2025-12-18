@@ -1,4 +1,7 @@
 import { Field, Formik } from "formik";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router";
+import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 import * as Yup from "yup";
 
@@ -9,7 +12,14 @@ import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  render,
+} from "@/testing/utils";
+
+const mockStore = configureStore<RootState>();
 
 const mockUseNavigate = vi.fn();
 vi.mock("react-router", async () => {
@@ -269,6 +279,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can reset form on save if resetOnSave is true", async () => {
+    const store = mockStore(state);
     const initialValues = {
       val1: "initial",
     };
@@ -276,20 +287,21 @@ describe("FormikFormContent", () => {
 
     // Proxy component required to be able to change FormikForm saved prop.
     const Proxy = ({ saved }: { saved: boolean }) => (
-      <Formik
-        initialValues={initialValues}
-        onSubmit={vi.fn()}
-        validationSchema={Schema}
-      >
-        <FormikFormContent resetOnSave saved={saved}>
-          <Field name="val1" />
-        </FormikFormContent>
-      </Formik>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={vi.fn()}
+            validationSchema={Schema}
+          >
+            <FormikFormContent resetOnSave saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
     );
-    const { rerender } = renderWithProviders(<Proxy saved={false} />, {
-      initialEntries: [{ pathname: "/", key: "testKey" }],
-      state,
-    });
+    const { rerender } = render(<Proxy saved={false} />);
     const textbox = screen.getByRole("textbox");
 
     await userEvent.clear(textbox);
@@ -301,25 +313,28 @@ describe("FormikFormContent", () => {
   });
 
   it("does not reset the form more than once", async () => {
+    const store = mockStore(state);
     const initialValues = {
       val1: "initial",
     };
     const Schema = Yup.object().shape({ val1: Yup.string() });
+    // Proxy component required to be able to change FormikForm saved prop.
     const Proxy = ({ saved }: { saved: boolean }) => (
-      <Formik
-        initialValues={initialValues}
-        onSubmit={vi.fn()}
-        validationSchema={Schema}
-      >
-        <FormikFormContent resetOnSave saved={saved}>
-          <Field name="val1" />
-        </FormikFormContent>
-      </Formik>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={vi.fn()}
+            validationSchema={Schema}
+          >
+            <FormikFormContent resetOnSave saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
     );
-    const { rerender } = renderWithProviders(<Proxy saved={false} />, {
-      initialEntries: [{ pathname: "/", key: "testKey" }],
-      state,
-    });
+    const { rerender } = render(<Proxy saved={false} />);
     const textbox = screen.getByRole("textbox");
 
     await userEvent.clear(textbox);
@@ -337,18 +352,19 @@ describe("FormikFormContent", () => {
 
   it("runs onSuccess function if successfully saved with no errors", async () => {
     const onSuccess = vi.fn();
-
+    const store = mockStore(state);
     const Proxy = ({ saved }: { saved: boolean }) => (
-      <Formik initialValues={{}} onSubmit={vi.fn()}>
-        <FormikFormContent onSuccess={onSuccess} saved={saved}>
-          <Field name="val1" />
-        </FormikFormContent>
-      </Formik>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent onSuccess={onSuccess} saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
     );
-    const { rerender } = renderWithProviders(<Proxy saved={false} />, {
-      initialEntries: [{ pathname: "/", key: "testKey" }],
-      state,
-    });
+    const { rerender } = render(<Proxy saved={false} />);
     expect(onSuccess).not.toHaveBeenCalled();
 
     rerender(<Proxy saved={true} />);
@@ -394,7 +410,7 @@ describe("FormikFormContent", () => {
 
   it("does not run onSuccess function more than once", async () => {
     const onSuccess = vi.fn();
-
+    const store = mockStore(state);
     const Proxy = ({
       saved,
       errors,
@@ -402,19 +418,25 @@ describe("FormikFormContent", () => {
       saved: boolean;
       errors?: string | null;
     }) => (
-      <Formik initialValues={{}} onSubmit={vi.fn()}>
-        <FormikFormContent errors={errors} onSuccess={onSuccess} saved={saved}>
-          <Field name="val1" />
-        </FormikFormContent>
-      </Formik>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
     );
-    const { rerender } = renderWithProviders(<Proxy saved={false} />, {
-      initialEntries: [{ pathname: "/", key: "testKey" }],
-      state,
-    });
+    const { rerender } = render(<Proxy saved={false} />);
     rerender(<Proxy saved={true} />);
     expect(onSuccess).toHaveBeenCalledTimes(1);
 
+    // Cycle the errors so that the success conditions are met again:
     rerender(<Proxy errors="Uh oh" saved={true} />);
     rerender(<Proxy errors={null} saved={true} />);
     expect(onSuccess).toHaveBeenCalledTimes(1);
@@ -422,7 +444,7 @@ describe("FormikFormContent", () => {
 
   it("can run onSuccess again after resetting the form", async () => {
     const onSuccess = vi.fn();
-
+    const store = mockStore(state);
     const Proxy = ({
       saved,
       errors,
@@ -430,25 +452,27 @@ describe("FormikFormContent", () => {
       saved: boolean;
       errors?: string | null;
     }) => (
-      <Formik initialValues={{}} onSubmit={vi.fn()}>
-        <FormikFormContent
-          errors={errors}
-          onSuccess={onSuccess}
-          resetOnSave
-          saved={saved}
-        >
-          <Field name="val1" />
-        </FormikFormContent>
-      </Formik>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              resetOnSave
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
     );
-    const { rerender } = renderWithProviders(<Proxy saved={false} />, {
-      initialEntries: [{ pathname: "/", key: "testKey" }],
-      state,
-    });
+    const { rerender } = render(<Proxy saved={false} />);
 
     rerender(<Proxy saved={true} />);
     expect(onSuccess).toHaveBeenCalledTimes(1);
 
+    // Cycle the errors so that the success conditions are met again:
     rerender(<Proxy errors="Uh oh" saved={true} />);
     rerender(<Proxy errors={null} saved={true} />);
     expect(onSuccess).toHaveBeenCalledTimes(1);

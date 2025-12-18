@@ -47,7 +47,7 @@ it("handles when a machine does not exist", () => {
     state,
   });
 
-  expect(screen).toBeEmptyDOMElement();
+  expect(screen.queryByText(/.+/)).not.toBeInTheDocument();
 });
 
 it("renders a link if machines have loaded and it exists", () => {

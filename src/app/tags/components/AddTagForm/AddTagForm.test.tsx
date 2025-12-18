@@ -101,6 +101,12 @@ it("sends analytics when there is a definition", async () => {
     () => mockSendAnalytics
   );
 
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1", definition: "def1" })],
+
+    saved: true,
+  });
+
   renderWithProviders(<AddTagForm />, { state });
 
   await userEvent.type(
@@ -108,26 +114,14 @@ it("sends analytics when there is a definition", async () => {
 
     "tag1"
   );
-
   mockFormikFormSaved();
-
-  state.tag = factory.tagState({
-    items: [factory.tag({ id: 8, name: "tag1", definition: "def1" })],
-
-    saved: true,
-  });
-
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
-
   await waitFor(() => {
     expect(mockSendAnalytics).toHaveBeenCalled();
   });
-
   expect(mockSendAnalytics.mock.calls[0]).toEqual([
     "XPath tagging",
-
     "Valid XPath",
-
     "Save",
   ]);
 });
@@ -139,6 +133,12 @@ it("sends analytics when there is no definition", async () => {
     () => mockSendAnalytics
   );
 
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1" })],
+
+    saved: true,
+  });
+
   renderWithProviders(<AddTagForm />, { state });
 
   await userEvent.type(
@@ -146,26 +146,14 @@ it("sends analytics when there is no definition", async () => {
 
     "tag1"
   );
-
   mockFormikFormSaved();
-
-  state.tag = factory.tagState({
-    items: [factory.tag({ id: 8, name: "tag1" })],
-
-    saved: true,
-  });
-
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
-
   await waitFor(() => {
     expect(mockSendAnalytics).toHaveBeenCalled();
   });
-
   expect(mockSendAnalytics.mock.calls[0]).toEqual([
     "Create Tag form",
-
     "Manual tag created",
-
     "Save",
   ]);
 });

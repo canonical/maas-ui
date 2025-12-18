@@ -21,7 +21,7 @@ it("handles when a controller does not exist", () => {
 
   renderWithProviders(<ControllerLink systemId="abc123" />, { state });
 
-  expect(screen).toBeEmptyDOMElement();
+  expect(screen.queryByText(/.+/)).not.toBeInTheDocument();
 });
 
 it("renders a link if controllers have loaded and it exists", () => {
