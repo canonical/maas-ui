@@ -4,7 +4,6 @@ import path from "path";
 import type { ProfilerOnRenderCallback, ReactNode } from "react";
 import { Profiler } from "react";
 
-import type { ValueOf } from "@canonical/react-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, renderHook, screen } from "@testing-library/react";
@@ -43,60 +42,6 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "@/testing/factories";
-
-/**
- * Replace objects in an array with objects that have new values, given a match
- * criteria.
- * @param {Array} array - Array to be reduced.
- * @param {String} key - Object key to compare the match criteria e.g. "name".
- * @param {String} match - Match criteria e.g. "Bob".
- * @param {Object} newValues - Values to insert or update in the object.
- * @returns {Array} The reduced array.
- */
-export const reduceInitialState = <I,>(
-  array: I[],
-  key: keyof I,
-  match: ValueOf<I>,
-  newValues: Partial<I>
-): I[] => {
-  return array.reduce<I[]>((acc, item) => {
-    if (item[key] === match) {
-      acc.push({
-        ...item,
-        ...newValues,
-      });
-    } else {
-      acc.push(item);
-    }
-    return acc;
-  }, []);
-};
-
-/**
- * A matcher function to find elements by text that is broken up by multiple child elements
- * @param {string | RegExp} text The text content that you are looking for
- * @returns {HTMLElement} An element matching the text provided
- */
-export const getByTextContent = (text: string | RegExp): HTMLElement => {
-  return screen.getByText((_, element) => {
-    const hasText = (element: Element | null) => {
-      if (element) {
-        if (text instanceof RegExp && element.textContent) {
-          return text.test(element.textContent);
-        } else {
-          return element.textContent === text;
-        }
-      } else {
-        return false;
-      }
-    };
-    const elementHasText = hasText(element);
-    const childrenDontHaveText = Array.from(element?.children || []).every(
-      (child) => !hasText(child)
-    );
-    return elementHasText && childrenDontHaveText;
-  });
-};
 
 const getMockStore = (state = factory.rootState()) => {
   const mockStore = configureStore();

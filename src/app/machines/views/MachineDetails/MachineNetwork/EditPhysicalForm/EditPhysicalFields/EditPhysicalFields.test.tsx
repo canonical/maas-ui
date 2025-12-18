@@ -5,12 +5,7 @@ import EditPhysicalFields from "./EditPhysicalFields";
 import type { RootState } from "@/app/store/root/types";
 import type { NetworkInterface } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import {
-  getByTextContent,
-  renderWithProviders,
-  screen,
-  userEvent,
-} from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("EditPhysicalFields", () => {
   let nic: NetworkInterface;
@@ -73,7 +68,7 @@ describe("EditPhysicalFields", () => {
     await userEvent.tab();
 
     expect(
-      getByTextContent(/Link speed should not be higher than interface speed/i)
+      screen.getByText(/Link speed should not be higher than interface speed/i)
     ).toBeInTheDocument();
   });
 });

@@ -3,11 +3,7 @@ import ProxyForm from "./ProxyForm";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  screen,
-  reduceInitialState,
-  renderWithProviders,
-} from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ProxyForm", () => {
   let state: RootState;
@@ -41,12 +37,20 @@ describe("ProxyForm", () => {
   });
 
   it("displays a text input if http proxy is enabled", () => {
-    state.config.items = reduceInitialState(
-      state.config.items,
-      "name",
-      ConfigNames.ENABLE_HTTP_PROXY,
-      { value: true }
-    );
+    state.config.items = [
+      {
+        name: ConfigNames.HTTP_PROXY,
+        value: "http://www.url.com",
+      },
+      {
+        name: ConfigNames.ENABLE_HTTP_PROXY,
+        value: true,
+      },
+      {
+        name: ConfigNames.USE_PEER_PROXY,
+        value: false,
+      },
+    ];
     renderWithProviders(<ProxyForm />, { state });
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
