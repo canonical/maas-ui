@@ -1,4 +1,4 @@
-import { render, renderHook, screen, waitFor } from "@testing-library/react";
+import { renderHook, screen, waitFor } from "@testing-library/react";
 import type { Mock } from "vitest";
 
 import {
@@ -17,6 +17,7 @@ import {
   renderHookWithMockStore,
   renderHookWithProviders,
   userEvent,
+  renderWithProviders,
 } from "@/testing/utils";
 
 const mockUseLocationValue = {
@@ -388,7 +389,7 @@ describe("useGlobalKeyShortcut", () => {
   });
 
   it("does not call the callback if an input element is focused", async () => {
-    render(<TestInput />);
+    renderWithProviders(<TestInput />);
 
     await userEvent.type(screen.getByRole("textbox", { name: "Email" }), "/");
 
@@ -396,7 +397,7 @@ describe("useGlobalKeyShortcut", () => {
   });
 
   it("does not call the callback if a textarea element is focused", async () => {
-    render(<TestTextarea />);
+    renderWithProviders(<TestTextarea />);
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Description" }),

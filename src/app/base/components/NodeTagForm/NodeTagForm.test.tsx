@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import NodeTagForm, { Label } from "./NodeTagForm";
 
 import type { RootState } from "@/app/store/root/types";
@@ -14,8 +12,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
-
 let state: RootState;
 
 beforeEach(() => {
@@ -29,10 +25,12 @@ afterEach(() => {
 });
 
 it("dispatches an action to create a tag", async () => {
-  const store = mockStore(state);
-  renderWithProviders(<NodeTagForm name="new-tag" onTagCreated={vi.fn()} />, {
-    store,
-  });
+  const { store } = renderWithProviders(
+    <NodeTagForm name="new-tag" onTagCreated={vi.fn()} />,
+    {
+      state,
+    }
+  );
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Comment }),
     "comment1"
@@ -56,10 +54,10 @@ it("dispatches an action to create a tag", async () => {
 
 it("returns the newly created tag on save", async () => {
   const onTagCreated = vi.fn();
-  const store = mockStore(state);
+
   renderWithProviders(
     <NodeTagForm name="new-tag" onTagCreated={onTagCreated} />,
-    { store, initialEntries: ["/tags"] }
+    { state, initialEntries: ["/tags"] }
   );
 
   mockFormikFormSaved();

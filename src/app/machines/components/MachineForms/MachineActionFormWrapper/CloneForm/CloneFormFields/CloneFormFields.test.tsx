@@ -1,6 +1,5 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
-import configureStore from "redux-mock-store";
 
 import CloneFormFields from "./CloneFormFields";
 
@@ -15,7 +14,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const callId = "mocked-nanoid";
 
 vi.mock("@reduxjs/toolkit", async () => {
@@ -61,15 +59,14 @@ describe("CloneFormFields", () => {
   });
 
   it("dispatches action to fetch data on load", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
         onSubmit={vi.fn()}
       >
         <CloneFormFields selectedMachine={null} setSelectedMachine={vi.fn()} />
       </Formik>,
-      { store }
+      { state }
     );
 
     const expectedActions = [
@@ -92,15 +89,15 @@ describe("CloneFormFields", () => {
   it("dispatches action to get full machine details on machine click", async () => {
     const machine = factory.machineDetails({ system_id: "abc123" });
     state.machine.items = [machine];
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
         onSubmit={vi.fn()}
       >
         <CloneFormFields selectedMachine={null} setSelectedMachine={vi.fn()} />
       </Formik>,
-      { store }
+      { state }
     );
     await userEvent.click(screen.getAllByTestId("machine-select-row")[0]);
     const expectedAction = machineActions.get(machine.system_id, callId);

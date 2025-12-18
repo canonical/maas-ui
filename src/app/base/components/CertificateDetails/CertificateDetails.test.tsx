@@ -1,14 +1,9 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import CertificateDetails, { Labels } from "./CertificateDetails";
 
 import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("CertificateDetails", () => {
   it(`sends an analytics event when clicking the 'read more' link if analytics
@@ -24,15 +19,14 @@ describe("CertificateDetails", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <CertificateDetails
-          certificate="certificate"
-          eventCategory="eventCategory"
-          metadata={factory.certificateMetadata()}
-        />
-      </Provider>
+
+    renderWithProviders(
+      <CertificateDetails
+        certificate="certificate"
+        eventCategory="eventCategory"
+        metadata={factory.certificateMetadata()}
+      />,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("link", { name: Labels.ReadMore }));

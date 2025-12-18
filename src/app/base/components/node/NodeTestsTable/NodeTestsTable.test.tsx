@@ -1,4 +1,3 @@
-import configureStore from "redux-mock-store";
 import type { Mock, SpyInstance } from "vitest";
 
 import NodeTestsTable from "./NodeTestsTable";
@@ -18,8 +17,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("NodeTestsTable", () => {
   let controller: ControllerDetails;
@@ -158,10 +155,10 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <NodeTestsTable node={machine} scriptResults={scriptResults} />,
-      { store }
+      { state }
     );
 
     const checkbox = screen.getByTestId("suppress-script-results");
@@ -186,10 +183,10 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <NodeTestsTable node={machine} scriptResults={scriptResults} />,
-      { store }
+      { state }
     );
 
     const checkbox = screen.getByTestId("suppress-script-results");

@@ -1,5 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import VmResources, { Label } from "./VmResources";
 
@@ -19,7 +18,6 @@ vi.mock("@reduxjs/toolkit", async () => {
   };
 });
 const callId = "mocked-nanoid";
-const mockStore = configureStore<RootState>();
 
 describe("VmResources", () => {
   let state: RootState;
@@ -69,10 +67,9 @@ describe("VmResources", () => {
   });
 
   it("can pass additional filters to the request", () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <VmResources filters={{ id: ["abc123"] }} podId={1} />,
-      { store }
+      { state }
     );
     const expected = machineActions.fetch(callId);
     const result = store

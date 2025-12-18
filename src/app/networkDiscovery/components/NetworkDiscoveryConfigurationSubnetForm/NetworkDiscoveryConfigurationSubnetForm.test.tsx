@@ -1,16 +1,11 @@
-import configureStore from "redux-mock-store";
-
 import NetworkDiscoveryConfigurationSubnetForm, {
   Labels as SubnetFormLabels,
 } from "./NetworkDiscoveryConfigurationSubnetForm";
 
 import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
-import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("NetworkDiscoveryConfigurationSubnetForm", () => {
   it("displays a spinner if subnets have not loaded", () => {
@@ -105,10 +100,11 @@ describe("NetworkDiscoveryConfigurationSubnetForm", () => {
       fabric: factory.fabricState({ loaded: true }),
       subnet: factory.subnetState({ items: subnets, loaded: true }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<NetworkDiscoveryConfigurationSubnetForm />, {
-      store,
-    });
+
+    const { store } = renderWithProviders(
+      <NetworkDiscoveryConfigurationSubnetForm />,
+      { state }
+    );
 
     const checkboxes = screen.getAllByRole("checkbox");
 

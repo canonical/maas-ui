@@ -1,5 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
@@ -13,8 +12,6 @@ import {
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -120,11 +117,11 @@ describe("MachineHeader", () => {
   describe("power menu", () => {
     it("can dispatch the check power action", async () => {
       state.machine.items[0].actions = [];
-      const store = mockStore(state);
 
-      renderWithProviders(<MachineHeader systemId="abc123" />, {
-        store,
-      });
+      const { store } = renderWithProviders(
+        <MachineHeader systemId="abc123" />,
+        { state }
+      );
 
       await userEvent.click(screen.getByRole("button", { name: /Power/i }));
       await userEvent.click(
@@ -190,10 +187,9 @@ describe("MachineHeader", () => {
   it("shouldn't need confirmation before locking a machine", async () => {
     state.machine.items[0].actions = [NodeActions.LOCK];
     state.machine.items[0].permissions = ["edit", "delete"];
-    const store = mockStore(state);
 
-    renderWithProviders(<MachineHeader systemId="abc123" />, {
-      store,
+    const { store } = renderWithProviders(<MachineHeader systemId="abc123" />, {
+      state,
     });
 
     await userEvent.click(screen.getByRole("switch", { name: /lock/i }));
@@ -218,11 +214,8 @@ describe("MachineHeader", () => {
   it("displays an error icon with configuration tab link when power type is not set and status is unknown", () => {
     state.machine.items[0].power_state = PowerState.UNKNOWN;
     state.machine.items[0].status_code = NodeStatusCode.NEW;
-    const store = mockStore(state);
 
-    renderWithProviders(<MachineHeader systemId="abc123" />, {
-      store,
-    });
+    renderWithProviders(<MachineHeader systemId="abc123" />, { state });
 
     expect(
       screen.getByRole("link", { name: /error configuration/i })

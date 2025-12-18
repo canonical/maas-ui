@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import TestHistory from "./TestHistory";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("TestHistory", () => {
   let state: RootState;
@@ -32,10 +28,10 @@ describe("TestHistory", () => {
   it("fetches script result history on load", () => {
     const scriptResult = factory.scriptResult({ id: 1 });
     state.scriptresult.items = [scriptResult];
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
-      { store }
+      { state }
     );
     const actions = store.getActions();
 
@@ -60,10 +56,10 @@ describe("TestHistory", () => {
     const scriptResult = factory.scriptResult({ id: 1 });
     state.scriptresult.items = [scriptResult];
     state.scriptresult.history = {};
-    const store = mockStore(state);
+
     renderWithProviders(
       <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
-      { store }
+      { state }
     );
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -75,10 +71,10 @@ describe("TestHistory", () => {
     state.scriptresult.history = {
       1: [factory.partialScriptResult(), factory.partialScriptResult()],
     };
-    const store = mockStore(state);
+
     renderWithProviders(
       <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
-      { store }
+      { state }
     );
 
     expect(screen.getByTestId("history-table")).toBeInTheDocument();
@@ -90,10 +86,10 @@ describe("TestHistory", () => {
     state.scriptresult.history = {
       1: [factory.partialScriptResult(), factory.partialScriptResult()],
     };
-    const store = mockStore(state);
+
     renderWithProviders(
       <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
-      { store }
+      { state }
     );
 
     expect(screen.getAllByTestId("details-link")).toHaveLength(2);
@@ -105,10 +101,10 @@ describe("TestHistory", () => {
     state.scriptresult.history = {
       1: [factory.partialScriptResult()],
     };
-    const store = mockStore(state);
+
     renderWithProviders(
       <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
-      { store }
+      { state }
     );
 
     expect(screen.getByTestId("no-history")).toBeInTheDocument();

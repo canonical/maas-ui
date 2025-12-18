@@ -1,10 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import LXDHostVMs from "./LXDHostVMs";
 
 import ComposeForm from "@/app/kvm/components/ComposeForm";
 import { machineActions } from "@/app/store/machine";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   mockSidePanel,
@@ -14,7 +11,6 @@ import {
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
-const mockStore = configureStore<RootState>();
 
 describe("LXDHostVMs", () => {
   it("shows a spinner if pod has not loaded yet", () => {
@@ -24,11 +20,10 @@ describe("LXDHostVMs", () => {
         loaded: false,
       }),
     });
-    const store = mockStore(state);
 
     renderWithProviders(
       <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
-      { store }
+      { state }
     );
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -102,10 +97,10 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(
       <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
-      { store }
+      { state }
     );
 
     await userEvent.click(screen.getByTestId("add-vm"));
@@ -126,11 +121,10 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    const store = mockStore(state);
 
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
-      { store }
+      { state }
     );
     const expected = machineActions.fetch("123456", {
       filter: { pod: [pod.name] },

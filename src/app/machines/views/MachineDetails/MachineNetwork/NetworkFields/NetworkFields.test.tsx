@@ -1,7 +1,4 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
 
 import NetworkFields, {
   Label as NetworkFieldsLabel,
@@ -15,9 +12,13 @@ import { Label as VLANSelectLabel } from "@/app/base/components/VLANSelect/VLANS
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  waitFor,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("NetworkFields", () => {
   let state: RootState;
@@ -64,17 +65,12 @@ describe("NetworkFields", () => {
     ];
     fabric.default_vlan_id = state.vlan.items[1].id;
     state.fabric.items = [fabric];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     const vlanSelect = screen.getByRole("combobox", {
       name: VLANSelectLabel.Select,
@@ -96,17 +92,11 @@ describe("NetworkFields", () => {
   });
 
   it("resets all fields after vlan when the fabric is changed", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     const subnetSelect = screen.getByRole("combobox", {
       name: SubnetSelectLabel.Select,
@@ -152,17 +142,11 @@ describe("NetworkFields", () => {
   });
 
   it("resets all fields after vlan when it is changed", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     // Set the values of the fields so they're all visible and have values.
     await userEvent.selectOptions(
@@ -201,17 +185,11 @@ describe("NetworkFields", () => {
   });
 
   it("resets all fields after subnet when it is changed", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     // Set the values of the fields so they're all visible and have values.
     await userEvent.selectOptions(
@@ -250,17 +228,12 @@ describe("NetworkFields", () => {
         vlan: state.vlan.items[0].id,
       })
     );
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     // Set the values of the fields so they're all visible and have values.
     await userEvent.selectOptions(
@@ -279,17 +252,11 @@ describe("NetworkFields", () => {
   });
 
   it("does not display the mode field if a subnet has not been chosen", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     expect(
       screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
@@ -302,17 +269,11 @@ describe("NetworkFields", () => {
   });
 
   it("displays the mode field if a subnet has been chosen", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
@@ -332,20 +293,11 @@ describe("NetworkFields", () => {
   });
 
   it("reset the mode field to 'auto' when editing and changed subnet", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields
-              editing
-              interfaceType={NetworkInterfaceTypes.PHYSICAL}
-            />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields editing interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
@@ -365,32 +317,26 @@ describe("NetworkFields", () => {
   });
 
   it("reset the mode field to 'unconfigured' when editing and removed subnet", async () => {
-    const store = mockStore(state);
     const onSubmit = vi.fn();
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik
-            initialValues={{
-              ...networkFieldsInitialValues,
-              mode: NetworkLinkMode.AUTO,
-            }}
-            onSubmit={onSubmit}
-          >
-            {({ handleSubmit }) => (
-              <form aria-label="test form" onSubmit={handleSubmit}>
-                <NetworkFields
-                  editing
-                  interfaceType={NetworkInterfaceTypes.PHYSICAL}
-                />
-                <button type="submit">Save</button>
-              </form>
-            )}
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik
+        initialValues={{
+          ...networkFieldsInitialValues,
+          mode: NetworkLinkMode.AUTO,
+        }}
+        onSubmit={onSubmit}
+      >
+        {({ handleSubmit }) => (
+          <form aria-label="test form" onSubmit={handleSubmit}>
+            <NetworkFields
+              editing
+              interfaceType={NetworkInterfaceTypes.PHYSICAL}
+            />
+            <button type="submit">Save</button>
+          </form>
+        )}
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     // Remove the subnet.
     await userEvent.selectOptions(
@@ -407,17 +353,11 @@ describe("NetworkFields", () => {
   });
 
   it("does not display the ip address field if the mode has not been chosen", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     await waitFor(() => {
       expect(
@@ -427,17 +367,11 @@ describe("NetworkFields", () => {
   });
 
   it("does not display the ip address field if the chosen mode is not static", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
@@ -455,17 +389,11 @@ describe("NetworkFields", () => {
   });
 
   it("displays the ip address field if the mode is static", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
-            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
+        <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+      </Formik>,
+      { state, initialEntries: ["/machine/abc123"] }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),

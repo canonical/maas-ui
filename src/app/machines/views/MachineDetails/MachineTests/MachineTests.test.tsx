@@ -1,5 +1,4 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import configureStore from "redux-mock-store";
 
 import MachineTests from ".";
 
@@ -20,8 +19,6 @@ vi.mock("@canonical/react-components/dist/hooks", () => {
     usePrevious: vi.fn(),
   };
 });
-
-const mockStore = configureStore<RootState>();
 
 describe("MachineTests", () => {
   let state: RootState;
@@ -63,10 +60,9 @@ describe("MachineTests", () => {
         hardware_type: HardwareType.Node,
       }),
     ];
-    const store = mockStore(state);
 
     renderWithProviders(<MachineTests />, {
-      store,
+      state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
     });
@@ -105,10 +101,9 @@ describe("MachineTests", () => {
         },
       }),
     ];
-    const store = mockStore(state);
 
     renderWithProviders(<MachineTests />, {
-      store,
+      state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
     });
@@ -141,9 +136,9 @@ describe("MachineTests", () => {
         },
       }),
     ];
-    const store = mockStore(state);
+
     renderWithProviders(<MachineTests />, {
-      store,
+      state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
     });
@@ -172,9 +167,9 @@ describe("MachineTests", () => {
         },
       }),
     ];
-    const store = mockStore(state);
+
     renderWithProviders(<MachineTests />, {
-      store,
+      state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
     });
@@ -187,9 +182,9 @@ describe("MachineTests", () => {
   it("fetches script results if they haven't been fetched", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
-    const store = mockStore(state);
-    renderWithProviders(<MachineTests />, {
-      store,
+
+    const { store } = renderWithProviders(<MachineTests />, {
+      state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
     });
@@ -204,9 +199,9 @@ describe("MachineTests", () => {
   it("fetches script results on mount if they have already been loaded", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [factory.scriptResult()];
-    const store = mockStore(state);
-    renderWithProviders(<MachineTests />, {
-      store,
+
+    const { store } = renderWithProviders(<MachineTests />, {
+      state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
     });
@@ -241,9 +236,9 @@ describe("MachineTests", () => {
         hardware_type: HardwareType.CPU,
       }),
     ];
-    const store = mockStore(state);
-    renderWithProviders(<MachineTests />, {
-      store,
+
+    const { store } = renderWithProviders(<MachineTests />, {
+      state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
     });

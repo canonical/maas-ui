@@ -1,13 +1,13 @@
 import FormCard, { TestIds } from "./FormCard";
 
 import { COL_SIZES } from "@/app/base/constants";
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 const { CARD_TITLE, SIDEBAR, TOTAL } = COL_SIZES;
 
 describe("FormCard ", () => {
   it("can display the heading on a separate row", () => {
-    render(
+    renderWithProviders(
       <FormCard stacked title="Add user">
         Content
       </FormCard>
@@ -16,7 +16,7 @@ describe("FormCard ", () => {
   });
 
   it("occupies full width if neither sidebar or title is present", () => {
-    render(
+    renderWithProviders(
       <FormCard sidebar={false} title={null}>
         Content
       </FormCard>
@@ -26,7 +26,7 @@ describe("FormCard ", () => {
   });
 
   it("decreases column size if title is presnet", () => {
-    render(
+    renderWithProviders(
       <FormCard sidebar={false} title="Title">
         Content
       </FormCard>
@@ -38,7 +38,7 @@ describe("FormCard ", () => {
   });
 
   it("decreases column size if sidebar is presnet", () => {
-    render(
+    renderWithProviders(
       <FormCard sidebar title={null}>
         Content
       </FormCard>
@@ -50,7 +50,7 @@ describe("FormCard ", () => {
   });
 
   it("decreases column size if title and sidebar are present", () => {
-    render(
+    renderWithProviders(
       <FormCard sidebar title="Title">
         Content
       </FormCard>

@@ -1,10 +1,10 @@
 import NodeActionConfirmationText from "./NodeActionConfirmationText";
 
 import { NodeActions } from "@/app/store/types/node";
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("displays correct confirmation text for deleting a single node", () => {
-  render(
+  renderWithProviders(
     <NodeActionConfirmationText
       action={NodeActions.DELETE}
       modelName="machine"
@@ -17,7 +17,7 @@ it("displays correct confirmation text for deleting a single node", () => {
 });
 
 it("displays correct confirmation text for deleting multiple nodes", () => {
-  render(
+  renderWithProviders(
     <NodeActionConfirmationText
       action={NodeActions.DELETE}
       modelName="machine"

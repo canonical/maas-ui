@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import MachineListSelectedCount from "./MachineListSelectedCount";
 
 import { machineActions } from "@/app/store/machine";
@@ -10,8 +8,6 @@ import {
   getTestState,
   userEvent,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("MachineListSelectedCount", () => {
   let state: RootState;
@@ -77,14 +73,13 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("dispatches an action to select all machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <MachineListSelectedCount
         filter={""}
         machineCount={20}
         selectedCount={10}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -99,14 +94,13 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("dispatches an action to select all filtered machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <MachineListSelectedCount
         filter={"this-is-a-filter"}
         machineCount={20}
         selectedCount={10}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -123,14 +117,13 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("dispatches an action to clear the selection", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <MachineListSelectedCount
         filter={""}
         machineCount={20}
         selectedCount={20}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(

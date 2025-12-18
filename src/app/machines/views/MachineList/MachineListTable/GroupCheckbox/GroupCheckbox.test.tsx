@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import GroupCheckbox from "./GroupCheckbox";
 
 import { machineActions } from "@/app/store/machine";
@@ -7,8 +5,6 @@ import { FetchGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 let state: RootState;
 const callId = "123456";
@@ -205,17 +201,14 @@ it("is not checked if a selected machine is in another group", () => {
 });
 
 it("can dispatch an action to select the group", async () => {
-  const store = mockStore(state);
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
       groupName="admin2"
       grouping={FetchGroupKey.AgentName}
     />,
-    {
-      store,
-    }
+    { state }
   );
 
   await userEvent.click(screen.getByRole("checkbox"));
@@ -249,17 +242,14 @@ it("does not overwrite selected machines in different groups", async () => {
     items: ["def456"],
   };
 
-  const store = mockStore(state);
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
       groupName="admin2"
       grouping={FetchGroupKey.AgentName}
     />,
-    {
-      store,
-    }
+    { state }
   );
 
   await userEvent.click(screen.getByRole("checkbox"));
@@ -294,17 +284,14 @@ it("can dispatch an action to unselect the group", async () => {
     items: ["def456", "abc123"],
   };
 
-  const store = mockStore(state);
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
       groupName="admin2"
       grouping={FetchGroupKey.AgentName}
     />,
-    {
-      store,
-    }
+    { state }
   );
 
   await userEvent.click(screen.getByRole("checkbox"));
@@ -338,17 +325,14 @@ it("can dispatch an action to unselect the group when it's partially selected", 
     items: ["def456", "abc123"],
   };
 
-  const store = mockStore(state);
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <GroupCheckbox
       callId={callId}
       group={group}
       groupName="admin2"
       grouping={FetchGroupKey.AgentName}
     />,
-    {
-      store,
-    }
+    { state }
   );
 
   await userEvent.click(screen.getByRole("checkbox"));

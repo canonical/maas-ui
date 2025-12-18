@@ -1,5 +1,4 @@
 import { Formik } from "formik";
-import configureStore from "redux-mock-store";
 
 import NodeConfigurationFields, { Label } from "./NodeConfigurationFields";
 
@@ -17,7 +16,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 let state: RootState;
 let tags: Tag[];
 
@@ -49,12 +47,11 @@ afterEach(() => {
 });
 
 it("can open a create tag form", async () => {
-  const store = mockStore(state);
   renderWithProviders(
     <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
       <NodeConfigurationFields />
     </Formik>,
-    { store }
+    { state }
   );
   await userEvent.type(
     screen.getByRole("textbox", { name: TagFieldLabel.Input }),
@@ -75,12 +72,12 @@ it("does not display automatic tags on the list", async () => {
     definition: `//node[@class="system"]/vendor = "QEMU"`,
   });
   state.tag.items = [manualTag, automaticTag];
-  const store = mockStore(state);
+
   renderWithProviders(
     <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
       <NodeConfigurationFields />
     </Formik>,
-    { store }
+    { state }
   );
   await userEvent.click(
     screen.getByRole("textbox", { name: TagFieldLabel.Input })

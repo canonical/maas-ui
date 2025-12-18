@@ -2,11 +2,11 @@ import { Formik } from "formik";
 
 import TagNameField from "./TagNameField";
 
-import { render, screen, userEvent } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 describe("FormikField", () => {
   it("maps the initial value to the tag format", () => {
-    render(
+    renderWithProviders(
       <Formik initialValues={{ tags: ["koala", "wallaby"] }} onSubmit={vi.fn()}>
         <TagNameField />
       </Formik>
@@ -16,7 +16,7 @@ describe("FormikField", () => {
   });
 
   it("can override the field name", () => {
-    render(
+    renderWithProviders(
       <Formik initialValues={{ tags: null }} onSubmit={vi.fn()}>
         <TagNameField name="wombatTags" />
       </Formik>
@@ -29,7 +29,7 @@ describe("FormikField", () => {
   });
 
   it("can populate the list of tags", async () => {
-    render(
+    renderWithProviders(
       <Formik initialValues={{ tags: null }} onSubmit={vi.fn()}>
         <TagNameField tagList={["koala", "wallaby"]} />
       </Formik>

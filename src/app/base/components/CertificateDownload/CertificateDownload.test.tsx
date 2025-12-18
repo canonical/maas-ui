@@ -4,7 +4,7 @@ import CertificateDownload, { Labels, TestIds } from "./CertificateDownload";
 
 import type { GeneratedCertificate } from "@/app/store/general/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 vi.mock("js-file-download", () => {
   return {
@@ -27,7 +27,7 @@ describe("CertificateDownload", () => {
 
   it("can generate a download based on the certificate details", async () => {
     const downloadSpy = vi.spyOn(fileDownload, "default");
-    render(
+    renderWithProviders(
       <CertificateDownload
         certificate={certificate.certificate}
         filename={certificate.CN}
@@ -45,7 +45,7 @@ describe("CertificateDownload", () => {
   });
 
   it("shows as a code snippet if certificate was generated", () => {
-    render(
+    renderWithProviders(
       <CertificateDownload
         certificate={certificate.certificate}
         filename={certificate.CN}
@@ -58,7 +58,7 @@ describe("CertificateDownload", () => {
   });
 
   it("shows as a textarea if certificate was not generated", () => {
-    render(
+    renderWithProviders(
       <CertificateDownload
         certificate={certificate.certificate}
         filename={certificate.CN}

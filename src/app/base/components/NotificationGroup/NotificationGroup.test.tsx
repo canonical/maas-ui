@@ -1,12 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import NotificationGroup from "./NotificationGroup";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("NotificationGroup", () => {
   it("renders", () => {
@@ -99,10 +94,10 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
-      { store }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Dismiss all" }));
@@ -123,10 +118,10 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <NotificationGroup notifications={notifications} severity="caution" />,
-      { store }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Dismiss all" }));

@@ -1,4 +1,3 @@
-import configureStore from "redux-mock-store";
 import { describe } from "vitest";
 
 import DomainsTable, { Labels as DomainsTableLabels } from "./DomainsTable";
@@ -15,7 +14,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 const { mockOpen } = await mockSidePanel();
 
 describe("DomainsTable", () => {
@@ -91,9 +89,7 @@ describe("DomainsTable", () => {
 
   describe("actions", () => {
     it("triggers the setDefault sidepanel if set default is clicked", async () => {
-      const store = mockStore(state);
-
-      renderWithProviders(<DomainsTable />, { store });
+      renderWithProviders(<DomainsTable />, { state });
 
       const row = screen.getByRole("row", { name: /^a/ });
       // Only one button is rendered within the contextual menu (the button to open it),

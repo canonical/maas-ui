@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import DiscoveryAddForm, {
   Labels as DiscoveryAddFormLabels,
 } from "./DiscoveryAddForm";
@@ -24,8 +22,6 @@ import {
   waitFor,
   within,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 enableCallIdMocks();
 
@@ -118,10 +114,10 @@ describe("DiscoveryAddForm", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <DiscoveryAddForm discovery={discovery} />,
+      { state }
+    );
     const expectedActions = [
       "device/fetch",
       "domain/fetch",
@@ -142,10 +138,8 @@ describe("DiscoveryAddForm", () => {
     state.machine.loaded = false;
     state.subnet.loaded = false;
     state.vlan.loaded = false;
-    const store = mockStore(state);
-    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, {
-      store,
-    });
+
+    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, { state });
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
@@ -171,10 +165,10 @@ describe("DiscoveryAddForm", () => {
   });
 
   it("can dispatch to create a device", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <DiscoveryAddForm discovery={discovery} />,
+      { state }
+    );
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: FormFieldLabels.Domain }),
@@ -229,10 +223,10 @@ describe("DiscoveryAddForm", () => {
   });
 
   it("can dispatch to create a device interface", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <DiscoveryAddForm discovery={discovery} />,
+      { state }
+    );
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: FormFieldLabels.Type }),
@@ -287,10 +281,11 @@ describe("DiscoveryAddForm", () => {
 
   it("displays a success message when a hostname is provided", async () => {
     mockFormikFormSaved();
-    const store = mockStore(state);
-    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, {
-      store,
-    });
+
+    const { store } = renderWithProviders(
+      <DiscoveryAddForm discovery={discovery} />,
+      { state }
+    );
 
     await userEvent.click(
       screen.getByRole("button", { name: DiscoveryAddFormLabels.SubmitLabel })
@@ -304,10 +299,10 @@ describe("DiscoveryAddForm", () => {
 
   it("displays a success message for a device with no hostname", async () => {
     mockFormikFormSaved();
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <DiscoveryAddForm discovery={factory.discovery({ hostname: "" })} />,
-      { store }
+      { state }
     );
 
     await userEvent.clear(
@@ -327,10 +322,9 @@ describe("DiscoveryAddForm", () => {
   });
 
   it("displays a success message for an interface with no hostname", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <DiscoveryAddForm discovery={factory.discovery({ hostname: "" })} />,
-      { store }
+      { state }
     );
 
     await userEvent.selectOptions(

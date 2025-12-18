@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import type { Props } from "./AddTagForm";
 import AddTagForm from "./AddTagForm";
 
@@ -16,8 +14,6 @@ const mockBaseAddTagForm = vi.fn();
 vi.mock("@/app/base/components/NodeTagForm", () => ({
   default: (props: Props) => mockBaseAddTagForm(props),
 }));
-
-const mockStore = configureStore<RootState>();
 
 let state: RootState;
 
@@ -56,9 +52,8 @@ afterEach(() => {
 });
 
 it("set the analytics category for the machine list", async () => {
-  const store = mockStore(state);
   renderWithProviders(<AddTagForm name="new-tag" onTagCreated={vi.fn()} />, {
-    store,
+    state,
   });
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -72,10 +67,9 @@ it("set the analytics category for the machine list", async () => {
 });
 
 it("set the analytics category for the machine details", async () => {
-  const store = mockStore(state);
   renderWithProviders(
     <AddTagForm isViewingDetails name="new-tag" onTagCreated={vi.fn()} />,
-    { store }
+    { state }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -89,10 +83,9 @@ it("set the analytics category for the machine details", async () => {
 });
 
 it("set the analytics category for the machine config", async () => {
-  const store = mockStore(state);
   renderWithProviders(
     <AddTagForm isViewingMachineConfig name="new-tag" onTagCreated={vi.fn()} />,
-    { store }
+    { state }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -106,9 +99,8 @@ it("set the analytics category for the machine config", async () => {
 });
 
 it("generates a deployed message for a single machine", async () => {
-  const store = mockStore(state);
   renderWithProviders(<AddTagForm name="new-tag" onTagCreated={vi.fn()} />, {
-    store,
+    state,
   });
   expect(
     mockBaseAddTagForm.mock.calls[0][0]
@@ -118,9 +110,8 @@ it("generates a deployed message for a single machine", async () => {
 });
 
 it("generates a deployed message for multiple machines", async () => {
-  const store = mockStore(state);
   renderWithProviders(<AddTagForm name="new-tag" onTagCreated={vi.fn()} />, {
-    store,
+    state,
   });
   expect(
     mockBaseAddTagForm.mock.calls[0][0]
@@ -130,15 +121,14 @@ it("generates a deployed message for multiple machines", async () => {
 });
 
 it("fetches deployed machine count for selected machines", async () => {
-  const store = mockStore(state);
   const selectedMachines = { items: ["abc", "def"] };
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { store }
+    { state }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
@@ -155,19 +145,19 @@ it("fetches deployed machine count separately for deployed group when selected",
   vi.spyOn(query, "generateCallId")
     .mockReturnValueOnce("mocked-nanoid-1")
     .mockReturnValueOnce("mocked-nanoid-2");
-  const store = mockStore(state);
+
   const selectedMachines = {
     items: ["abc", "def"],
     groups: [FetchNodeStatus.DEPLOYED],
     grouping: FetchGroupKey.Status,
   };
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { store }
+    { state }
   );
   const expected = [
     machineActions.count("mocked-nanoid-1", {
@@ -188,17 +178,16 @@ it("fetches deployed machine count separately for deployed group when selected",
 });
 
 it("fetches deployed machine count when all machines are selected", async () => {
-  const store = mockStore(state);
   const selectedMachines = {
     filter: {},
   };
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { store }
+    { state }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
@@ -212,19 +201,18 @@ it("fetches deployed machine count when all machines are selected", async () => 
 
 it(`fetches deployed machine count only for selected items
     when grouping by status and group other than deployed is selected`, async () => {
-  const store = mockStore(state);
   const selectedMachines = {
     items: ["abc", "def"],
     groups: [FetchNodeStatus.COMMISSIONING],
     grouping: FetchGroupKey.Status,
   };
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { store }
+    { state }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,

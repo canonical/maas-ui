@@ -1,10 +1,10 @@
 import ArrowPagination, { Labels, TestIds } from "./ArrowPagination";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ArrowPagination", () => {
   it("disables both buttons when there are no items", () => {
-    render(
+    renderWithProviders(
       <ArrowPagination
         currentPage={1}
         itemCount={0}
@@ -22,7 +22,7 @@ describe("ArrowPagination", () => {
   });
 
   it("activates both buttons when between the start and end", () => {
-    render(
+    renderWithProviders(
       <ArrowPagination
         currentPage={2}
         itemCount={75}
@@ -40,7 +40,7 @@ describe("ArrowPagination", () => {
   });
 
   it("disables the back button when on the first page", () => {
-    render(
+    renderWithProviders(
       <ArrowPagination
         currentPage={1}
         itemCount={50}
@@ -58,7 +58,7 @@ describe("ArrowPagination", () => {
   });
 
   it("disables the forward button when on the last page", () => {
-    render(
+    renderWithProviders(
       <ArrowPagination
         currentPage={2}
         itemCount={50}
@@ -76,7 +76,7 @@ describe("ArrowPagination", () => {
   });
 
   it("can show the page bounds when there are no items", () => {
-    render(
+    renderWithProviders(
       <ArrowPagination
         currentPage={1}
         itemCount={0}
@@ -92,7 +92,7 @@ describe("ArrowPagination", () => {
   });
 
   it("can show the page bounds when there are more items than the current page shows", () => {
-    render(
+    renderWithProviders(
       <ArrowPagination
         currentPage={1}
         itemCount={26}
@@ -108,7 +108,7 @@ describe("ArrowPagination", () => {
   });
 
   it("can show the page bounds when there are less items than the current page shows", () => {
-    render(
+    renderWithProviders(
       <ArrowPagination
         currentPage={1}
         itemCount={24}
@@ -124,7 +124,7 @@ describe("ArrowPagination", () => {
   });
 
   it("shows a spinner in the page bound section if items are loading", () => {
-    render(
+    renderWithProviders(
       <ArrowPagination
         currentPage={1}
         itemCount={24}

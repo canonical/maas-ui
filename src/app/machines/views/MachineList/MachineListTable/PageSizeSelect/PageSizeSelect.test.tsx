@@ -2,13 +2,13 @@ import { DEFAULTS } from "../constants";
 
 import PageSizeSelect from "./PageSizeSelect";
 
-import { render, screen, userEvent } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 const DEFAULT_PAGE_SIZE = DEFAULTS.pageSize;
 
 describe("PageSizeSelect", () => {
   it("renders", () => {
-    render(
+    renderWithProviders(
       <PageSizeSelect
         pageSize={DEFAULT_PAGE_SIZE}
         paginate={vi.fn()}
@@ -23,8 +23,7 @@ describe("PageSizeSelect", () => {
   it("calls a function to update the page size and reset to the first page", async () => {
     const setPageSize = vi.fn();
     const setCurrentPage = vi.fn();
-
-    render(
+    renderWithProviders(
       <PageSizeSelect
         pageSize={DEFAULT_PAGE_SIZE}
         paginate={setCurrentPage}

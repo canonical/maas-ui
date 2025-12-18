@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import UpdateTagForm from "./UpdateTagForm";
 
 import urls from "@/app/base/urls";
@@ -17,7 +15,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
@@ -34,8 +31,7 @@ beforeEach(() => {
 });
 
 it("dispatches actions to fetch necessary data", () => {
-  const store = mockStore(state);
-  renderWithProviders(<UpdateTagForm id={1} />, { store });
+  const { store } = renderWithProviders(<UpdateTagForm id={1} />, { state });
 
   const expectedActions = [tagActions.fetch()];
   const actualActions = store.getActions();
@@ -61,8 +57,7 @@ it("shows a spinner if the tag has not loaded yet", () => {
 });
 
 it("can update the tag", async () => {
-  const store = mockStore(state);
-  renderWithProviders(<UpdateTagForm id={1} />, { store });
+  const { store } = renderWithProviders(<UpdateTagForm id={1} />, { state });
   const nameInput = screen.getByRole("textbox", { name: Label.Name });
   await userEvent.clear(nameInput);
   await userEvent.type(nameInput, "name1");
@@ -90,9 +85,8 @@ it("can update the tag", async () => {
 });
 
 it("goes to the tag details page if it can't go back", async () => {
-  const store = mockStore(state);
   const { router } = renderWithProviders(<UpdateTagForm id={1} />, {
-    store,
+    state,
     initialEntries: [urls.tags.tag.index({ id: 1 })],
   });
   expect(router.state.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
@@ -110,8 +104,8 @@ it("goes to the tag details page if it can't go back", async () => {
 it("shows a confirmation when a tag's definition is updated", async () => {
   const tag = factory.tag({ id: 1, definition: "abc", name: "baggage" });
   state.tag.items = [tag];
-  const store = mockStore(state);
-  renderWithProviders(<UpdateTagForm id={1} />, { store });
+
+  const { store } = renderWithProviders(<UpdateTagForm id={1} />, { state });
 
   const definitionInput = screen.getByRole("textbox", {
     name: Label.Definition,

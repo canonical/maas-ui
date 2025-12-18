@@ -1,13 +1,18 @@
 import DangerZoneCard from "./DangerZoneCard";
 
 import DeleteForm from "@/app/kvm/components/DeleteForm";
-import { mockSidePanel, render, screen, userEvent } from "@/testing/utils";
+import {
+  mockSidePanel,
+  screen,
+  userEvent,
+  renderWithProviders,
+} from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
 
 describe("DangerZoneCard", () => {
   it("can open the delete KVM form", async () => {
-    render(<DangerZoneCard hostId={1} message="Delete KVM" />);
+    renderWithProviders(<DangerZoneCard hostId={1} message="Delete KVM" />);
     await userEvent.click(screen.getByTestId("remove-kvm"));
 
     expect(mockOpen).toHaveBeenCalledWith({
@@ -20,7 +25,7 @@ describe("DangerZoneCard", () => {
   });
 
   it("can display message", () => {
-    render(
+    renderWithProviders(
       <DangerZoneCard
         hostId={1}
         message={<span data-testid="message">Delete KVM</span>}

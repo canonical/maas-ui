@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import ComposeForm, {
   createInterfaceConstraints,
   createStorageConstraints,
@@ -19,7 +17,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 setupMockServer(
   poolsResolvers.listPools.handler(),
   zoneResolvers.listZones.handler()
@@ -63,10 +60,9 @@ describe("ComposeForm", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithProviders(<ComposeForm hostId={1} />, {
+    const { store } = renderWithProviders(<ComposeForm hostId={1} />, {
       initialEntries: ["/kvm/1"],
-      store,
+      state,
     });
     const expectedActions = [
       "FETCH_DOMAIN",
@@ -135,10 +131,10 @@ describe("ComposeForm", () => {
     state.pod.items = [pod];
     state.space.items = [space];
     state.subnet.items = [subnet];
-    const store = mockStore(state);
-    renderWithProviders(<ComposeForm hostId={1} />, {
+
+    const { store } = renderWithProviders(<ComposeForm hostId={1} />, {
       initialEntries: ["/kvm/1"],
-      store,
+      state,
     });
     await waitFor(() => {
       expect(
@@ -256,10 +252,10 @@ describe("ComposeForm", () => {
     state.pod.items = [pod];
     state.space.items = [space];
     state.subnet.items = [subnet];
-    const store = mockStore(state);
-    renderWithProviders(<ComposeForm hostId={1} />, {
+
+    const { store } = renderWithProviders(<ComposeForm hostId={1} />, {
       initialEntries: ["/kvm/1"],
-      store,
+      state,
     });
     await waitFor(() => {
       expect(

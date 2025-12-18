@@ -1,14 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import FabricColumn from "./FabricColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithProviders } from "@/testing/utils";
 
 describe("FabricColumn", () => {
   let state: RootState;
@@ -36,13 +32,10 @@ describe("FabricColumn", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <FabricColumn nic={nic} node={state.machine.items[0]} />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <FabricColumn nic={nic} node={state.machine.items[0]} />,
+      { state }
     );
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
@@ -61,13 +54,10 @@ describe("FabricColumn", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <FabricColumn nic={nic} node={state.machine.items[0]} />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <FabricColumn nic={nic} node={state.machine.items[0]} />,
+      { state }
     );
     expect(screen.getByText("fabric-name")).toBeInTheDocument();
     expect(screen.getByText("2 (vlan-name)")).toBeInTheDocument();

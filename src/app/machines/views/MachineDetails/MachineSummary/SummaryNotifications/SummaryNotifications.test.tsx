@@ -1,16 +1,10 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import SummaryNotifications from "./SummaryNotifications";
 
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { render, screen, within } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, within, renderWithProviders } from "@/testing/utils";
 
 describe("SummaryNotifications", () => {
   let state: RootState;
@@ -38,16 +32,10 @@ describe("SummaryNotifications", () => {
   });
 
   it("handles no notifications", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <SummaryNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<SummaryNotifications id="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(
@@ -68,16 +56,11 @@ describe("SummaryNotifications", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <SummaryNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<SummaryNotifications id="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
     expect(screen.getByRole("alert")).toHaveTextContent(
       /Script - machine timed out/i
     );
@@ -85,16 +68,11 @@ describe("SummaryNotifications", () => {
 
   it("can display a rack connection error", () => {
     state.general.powerTypes.data = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <SummaryNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<SummaryNotifications id="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       /no rack controller is currently connected/i
@@ -103,16 +81,11 @@ describe("SummaryNotifications", () => {
 
   it("can display an architecture error", () => {
     state.machine.items[0].architecture = "";
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <SummaryNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<SummaryNotifications id="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
     expect(screen.getByRole("alert")).toHaveTextContent(
       /This machine currently has an invalid architecture/i
     );
@@ -123,16 +96,11 @@ describe("SummaryNotifications", () => {
       data: [],
       loaded: true,
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <SummaryNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<SummaryNotifications id="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       /No boot images have been imported/i
@@ -141,16 +109,11 @@ describe("SummaryNotifications", () => {
 
   it("can display a hardware status", () => {
     state.machine.items[0].cpu_count = 0;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <SummaryNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<SummaryNotifications id="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
     expect(screen.getByRole("status")).toHaveTextContent(
       /Commission this machine to get CPU/i
     );
@@ -165,16 +128,11 @@ describe("SummaryNotifications", () => {
         is_sync_healthy: false,
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <SummaryNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<SummaryNotifications id="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
     expect(screen.getByRole("status")).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent(
       /This machine was not synced when it was scheduled./i

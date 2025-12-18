@@ -1,12 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import NodeTestDetails from "./NodeTestDetails";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, within } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const getReturnPath = (id: string) => `/some/url/${id}`;
 
 describe("NodeTestDetails", () => {
@@ -55,12 +52,16 @@ describe("NodeTestDetails", () => {
     const scriptResults = [scriptResult];
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    renderWithProviders(<NodeTestDetails getReturnPath={getReturnPath} />, {
-      initialEntries: ["/machine/abc123/testing/1/details"],
-      pattern: "/machine/:id/testing/:scriptResultId/details",
-      store,
-    });
+
+    const { store } = renderWithProviders(
+      <NodeTestDetails getReturnPath={getReturnPath} />,
+      {
+        initialEntries: ["/machine/abc123/testing/1/details"],
+        pattern: "/machine/:id/testing/:scriptResultId/details",
+        state,
+      }
+    );
+
     expect(
       store.getActions().find((action) => action.type === "scriptresult/get")
     ).toStrictEqual({
@@ -155,13 +156,14 @@ describe("NodeTestDetails", () => {
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
 
-    const store = mockStore(state);
-
-    renderWithProviders(<NodeTestDetails getReturnPath={getReturnPath} />, {
-      initialEntries: ["/machine/abc123/testing/1/details"],
-      pattern: "/machine/:id/testing/:scriptResultId/details",
-      store,
-    });
+    const { store } = renderWithProviders(
+      <NodeTestDetails getReturnPath={getReturnPath} />,
+      {
+        initialEntries: ["/machine/abc123/testing/1/details"],
+        pattern: "/machine/:id/testing/:scriptResultId/details",
+        state,
+      }
+    );
     const actions = store
       .getActions()
       .filter((action) => action.type === "scriptresult/getLogs");

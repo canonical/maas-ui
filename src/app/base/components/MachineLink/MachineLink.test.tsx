@@ -1,15 +1,10 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
 
 import MachineLink, { Labels } from "./MachineLink";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { render, renderWithProviders, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -47,16 +42,12 @@ it("handles when a machine does not exist", () => {
   const state = factory.rootState({
     machine: factory.machineState({ items: [], loading: false }),
   });
-  const store = mockStore(state);
-  const { container } = render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <MachineLink systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
-  );
 
-  expect(container).toBeEmptyDOMElement();
+  renderWithProviders(<MachineLink systemId="abc123" />, {
+    state,
+  });
+
+  expect(screen).toBeEmptyDOMElement();
 });
 
 it("renders a link if machines have loaded and it exists", () => {
@@ -64,14 +55,8 @@ it("renders a link if machines have loaded and it exists", () => {
   const state = factory.rootState({
     machine: factory.machineState({ items: [machine], loading: false }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <MachineLink systemId={machine.system_id} />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<MachineLink systemId={machine.system_id} />, { state });
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",

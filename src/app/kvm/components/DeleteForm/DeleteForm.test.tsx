@@ -1,15 +1,10 @@
-import configureStore from "redux-mock-store";
-
 import DeleteForm from "./DeleteForm";
 
 import { PodType } from "@/app/store/pod/constants";
 import podSelectors from "@/app/store/pod/selectors";
-import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("DeleteForm", () => {
   afterEach(() => {
@@ -26,10 +21,10 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(<DeleteForm hostId={1} />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     expect(screen.getByTestId("saving-label")).toHaveTextContent(
@@ -47,10 +42,10 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(<DeleteForm clusterId={1} />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
     expect(screen.getByTestId("saving-label")).toHaveTextContent(
       "Removing cluster..."
@@ -67,10 +62,10 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(<DeleteForm hostId={1} />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     expect(
@@ -90,10 +85,10 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(<DeleteForm clusterId={1} />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     expect(
@@ -113,10 +108,10 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(<DeleteForm hostId={1} />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
@@ -132,10 +127,10 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<DeleteForm hostId={1} />, {
+
+    const { store } = renderWithProviders(<DeleteForm hostId={1} />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     expect(
@@ -172,10 +167,10 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<DeleteForm clusterId={1} />, {
+
+    const { store } = renderWithProviders(<DeleteForm clusterId={1} />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     expect(
@@ -211,11 +206,11 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     const Proxy = () => <DeleteForm clusterId={1} />;
     const { rerender } = renderWithProviders(<Proxy />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     // Cluster is being deleted - form shouldn't be saved yet.
@@ -242,11 +237,11 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     const Proxy = () => <DeleteForm hostId={1} />;
     const { rerender } = renderWithProviders(<Proxy />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     // Pod is being deleted - form shouldn't be saved yet.
@@ -273,11 +268,11 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     const Proxy = () => <DeleteForm clusterId={1} />;
     const { rerender } = renderWithProviders(<Proxy />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     // Cluster is being deleted - form shouldn't be saved yet.
@@ -313,11 +308,11 @@ describe("DeleteForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     const Proxy = () => <DeleteForm hostId={1} />;
     const { rerender } = renderWithProviders(<Proxy />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
 
     // Pod is being deleted - form shouldn't be saved yet.

@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import UpdateCertificate from "./UpdateCertificate";
 
 import { generalActions } from "@/app/store/general";
@@ -8,8 +6,6 @@ import type { PodDetails } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("UpdateCertificate", () => {
   let state: RootState;
@@ -31,10 +27,9 @@ describe("UpdateCertificate", () => {
   });
 
   it("can dispatch an action to generate certificate if not providing certificate and key", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
-      { store }
+      { state }
     );
 
     // Radio should be set to generate certificate by default.
@@ -50,8 +45,7 @@ describe("UpdateCertificate", () => {
   });
 
   it("can generate a certificate with a custom object name", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <UpdateCertificate
         closeForm={vi.fn()}
         hasCertificateData
@@ -59,7 +53,7 @@ describe("UpdateCertificate", () => {
         pod={pod}
       />,
       {
-        store,
+        state,
       }
     );
     // Radio should be set to generate certificate by default.
@@ -80,12 +74,11 @@ describe("UpdateCertificate", () => {
       private_key: "private-key",
     });
     state.general.generatedCertificate.data = generatedCertificate;
-    const store = mockStore(state);
 
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
       {
-        store,
+        state,
       }
     );
 
@@ -105,11 +98,10 @@ describe("UpdateCertificate", () => {
   });
 
   it("can dispatch an action to update pod with provided certificate and key", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
       {
-        store,
+        state,
       }
     );
 
@@ -145,9 +137,7 @@ describe("UpdateCertificate", () => {
 
     renderWithProviders(
       <UpdateCertificate closeForm={closeForm} hasCertificateData pod={pod} />,
-      {
-        store: mockStore(state),
-      }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -159,16 +149,15 @@ describe("UpdateCertificate", () => {
       certificate has been generated`, async () => {
     const closeForm = vi.fn();
     state.general.generatedCertificate.data = factory.generatedCertificate();
-    const store = mockStore(state);
 
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <UpdateCertificate
         closeForm={closeForm}
         hasCertificateData={false}
         pod={pod}
       />,
       {
-        store,
+        state,
       }
     );
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -183,7 +172,7 @@ describe("UpdateCertificate", () => {
   it(`does not show a cancel button if pod has no certificate and no certificate
       has been generated`, () => {
     state.general.generatedCertificate.data = null;
-    const store = mockStore(state);
+
     renderWithProviders(
       <UpdateCertificate
         closeForm={vi.fn()}
@@ -191,7 +180,7 @@ describe("UpdateCertificate", () => {
         pod={pod}
       />,
       {
-        store,
+        state,
       }
     );
     expect(

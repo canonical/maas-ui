@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import EditInterface from "../EditInterface";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
@@ -18,7 +16,6 @@ import {
   within,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const { mockOpen } = await mockSidePanel();
 
 vi.mock("@/app/base/side-panel-context", async () => {
@@ -55,27 +52,19 @@ describe("DeviceNetworkTable", () => {
   describe("display", () => {
     it("displays a spinner when loading", () => {
       state.device.items = [];
-      const store = mockStore(state);
-      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
-        store,
-      });
+
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, { state });
       expect(screen.getByText("Loading...")).toBeInTheDocument();
     });
 
     it("displays a table when loaded", () => {
-      const store = mockStore(state);
-      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
-        store,
-      });
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, { state });
 
       expect(screen.getByRole("grid")).toBeInTheDocument();
     });
 
     it("displays the columns correctly", () => {
-      const store = mockStore(state);
-      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
-        store,
-      });
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, { state });
 
       ["Mac", "Subnet", "IP address", "IP assignment", "Actions"].forEach(
         (column) => {
@@ -115,10 +104,8 @@ describe("DeviceNetworkTable", () => {
           system_id: "abc123",
         }),
       ];
-      const store = mockStore(state);
-      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
-        store,
-      });
+
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, { state });
       expect(
         within(screen.getAllByRole("row")[1]).getAllByRole("cell")[3]
       ).toHaveTextContent("Unconfigured");
@@ -156,10 +143,8 @@ describe("DeviceNetworkTable", () => {
           system_id: "abc123",
         }),
       ];
-      const store = mockStore(state);
-      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
-        store,
-      });
+
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, { state });
       expect(
         screen.getByRole("link", { name: "subnet-cidr" })
       ).toBeInTheDocument();
@@ -173,10 +158,8 @@ describe("DeviceNetworkTable", () => {
           system_id: "abc123",
         }),
       ];
-      const store = mockStore(state);
-      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
-        store,
-      });
+
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, { state });
       expect(screen.getByText("No interfaces available.")).toBeInTheDocument();
     });
   });

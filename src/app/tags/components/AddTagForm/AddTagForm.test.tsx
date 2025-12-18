@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AddTagForm, { Label } from "./AddTagForm";
 
 import * as analyticsHooks from "@/app/base/hooks/analytics";
@@ -18,8 +16,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
-
 let state: RootState;
 
 beforeEach(() => {
@@ -29,9 +25,7 @@ beforeEach(() => {
 });
 
 it("dispatches an action to create a tag", async () => {
-  const store = mockStore(state);
-
-  renderWithProviders(<AddTagForm />, { store });
+  const { store } = renderWithProviders(<AddTagForm />, { state });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
@@ -107,9 +101,7 @@ it("sends analytics when there is a definition", async () => {
     () => mockSendAnalytics
   );
 
-  const store = mockStore(state);
-
-  renderWithProviders(<AddTagForm />, { store });
+  renderWithProviders(<AddTagForm />, { state });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
@@ -147,9 +139,7 @@ it("sends analytics when there is no definition", async () => {
     () => mockSendAnalytics
   );
 
-  const store = mockStore(state);
-
-  renderWithProviders(<AddTagForm />, { store });
+  renderWithProviders(<AddTagForm />, { state });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
@@ -181,9 +171,7 @@ it("sends analytics when there is no definition", async () => {
 });
 
 it("shows a confirmation when an automatic tag is added", async () => {
-  const store = mockStore(state);
-
-  renderWithProviders(<AddTagForm />, { store });
+  const { store } = renderWithProviders(<AddTagForm />, { state });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
@@ -207,21 +195,15 @@ it("shows a confirmation when an automatic tag is added", async () => {
 
   await waitFor(() => {
     const action = store
-
       .getActions()
-
       .find((action) => action.type === "message/add");
-
     const strippedMessage = action.payload.message.replace(/\s+/g, " ").trim();
-
     expect(strippedMessage).toBe(`Created name1. ${NewDefinitionMessage}`);
   });
 });
 
 it("shows an error if tag name is invalid", async () => {
-  const store = mockStore(state);
-
-  renderWithProviders(<AddTagForm />, { store });
+  renderWithProviders(<AddTagForm />, { state });
 
   const nameInput = screen.getByRole("textbox", { name: Label.Name });
 

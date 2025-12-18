@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import MachineName from "./MachineName";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("MachineName", () => {
   let state: RootState;
@@ -36,10 +32,9 @@ describe("MachineName", () => {
   });
 
   it("can update a machine with the new name and domain", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <MachineName editingName={true} id="abc123" setEditingName={vi.fn()} />,
-      { store }
+      { state }
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "Hostname" }));

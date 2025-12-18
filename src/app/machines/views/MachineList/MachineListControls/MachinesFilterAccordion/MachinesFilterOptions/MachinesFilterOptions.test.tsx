@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import MachinesFilterOptions, { Label } from "./MachinesFilterOptions";
 
 import { machineActions } from "@/app/store/machine";
@@ -13,8 +11,6 @@ import {
   waitFor,
   renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("MachinesFilterOptions", () => {
   let state: RootState;
@@ -37,13 +33,13 @@ describe("MachinesFilterOptions", () => {
   it("fetches options if they haven't been loaded", async () => {
     filterGroup.loaded = false;
     filterGroup.loading = false;
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
       />,
-      { store }
+      { state }
     );
     const expected = machineActions.filterOptions(FilterGroupKey.Status);
     await waitFor(() => {
@@ -56,13 +52,13 @@ describe("MachinesFilterOptions", () => {
   it("does not fetch options if they're loading", async () => {
     filterGroup.loaded = false;
     filterGroup.loading = true;
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
       />,
-      { store }
+      { state }
     );
     const expected = machineActions.filterOptions(FilterGroupKey.Status);
     await waitFor(() => {
@@ -75,13 +71,13 @@ describe("MachinesFilterOptions", () => {
   it("does not fetch options if they have already loaded", async () => {
     filterGroup.loaded = true;
     filterGroup.loading = false;
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
       />,
-      { store }
+      { state }
     );
     const expected = machineActions.filterOptions(FilterGroupKey.Status);
     await waitFor(() => {
@@ -94,13 +90,13 @@ describe("MachinesFilterOptions", () => {
   it("displays a spinner while loading options", async () => {
     filterGroup.loaded = false;
     filterGroup.loading = true;
-    const store = mockStore(state);
+
     renderWithProviders(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         setSearchText={vi.fn()}
       />,
-      { store }
+      { state }
     );
     expect(screen.getByText(Label.Loading)).toBeInTheDocument();
   });

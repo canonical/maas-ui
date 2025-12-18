@@ -3,7 +3,12 @@ import NodeActionMenu, { Label } from "./NodeActionMenu";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("NodeActionMenu", () => {
   const openMenu = async () => {
@@ -26,7 +31,7 @@ describe("NodeActionMenu", () => {
     screen.getByTestId(`action-count-${action}`);
 
   it("is disabled if no nodes are selected", async () => {
-    render(
+    renderWithProviders(
       <NodeActionMenu
         hasSelection={false}
         nodes={[]}
@@ -42,7 +47,7 @@ describe("NodeActionMenu", () => {
 
   it("is enabled if nodes are selected", async () => {
     const nodes = [factory.machine()];
-    render(
+    renderWithProviders(
       <NodeActionMenu
         hasSelection
         nodes={nodes}
@@ -61,7 +66,7 @@ describe("NodeActionMenu", () => {
       factory.machine({ actions: [NodeActions.DELETE] }),
       factory.machine({ actions: [NodeActions.SET_ZONE] }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenu
         filterActions
         hasSelection
@@ -81,7 +86,7 @@ describe("NodeActionMenu", () => {
   it(`can be made to always show lifecycle actions, disabling the actions that
       cannot be performed`, async () => {
     const nodes = [factory.machine({ actions: [NodeActions.DEPLOY] })];
-    render(
+    renderWithProviders(
       <NodeActionMenu
         alwaysShowLifecycle
         hasSelection
@@ -101,7 +106,7 @@ describe("NodeActionMenu", () => {
 
   it(`disables the actions that cannot be performed when nodes are provided`, async () => {
     const nodes = [factory.machine({ actions: [NodeActions.DEPLOY] })];
-    render(
+    renderWithProviders(
       <NodeActionMenu
         alwaysShowLifecycle
         hasSelection
@@ -120,7 +125,9 @@ describe("NodeActionMenu", () => {
   });
 
   it("shows all actions that can be performed when nodes are not provided", async () => {
-    render(<NodeActionMenu hasSelection onActionClick={vi.fn()} />);
+    renderWithProviders(
+      <NodeActionMenu hasSelection onActionClick={vi.fn()} />
+    );
     await openMenu();
     expect(getActionButton(NodeActions.DELETE)).toBeInTheDocument();
     expect(queryActionButton(NodeActions.DELETE)).not.toBeAriaDisabled();
@@ -146,7 +153,7 @@ describe("NodeActionMenu", () => {
         actions: [NodeActions.COMMISSION],
       }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenu
         hasSelection
         nodes={nodes}
@@ -175,7 +182,7 @@ describe("NodeActionMenu", () => {
       }),
     ];
     const onActionClick = vi.fn();
-    render(
+    renderWithProviders(
       <NodeActionMenu
         hasSelection
         nodes={nodes}
@@ -196,7 +203,7 @@ describe("NodeActionMenu", () => {
         actions: [NodeActions.DEPLOY, NodeActions.DELETE],
       }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenu
         excludeActions={[NodeActions.DELETE]}
         hasSelection
@@ -213,7 +220,7 @@ describe("NodeActionMenu", () => {
   });
 
   it("can change the display text of the nodes in the disabled tooltip", async () => {
-    render(
+    renderWithProviders(
       <NodeActionMenu
         hasSelection={false}
         nodeDisplay="foobar"
@@ -232,7 +239,7 @@ describe("NodeActionMenu", () => {
   });
 
   it("can change the appearance of the menu toggle", async () => {
-    render(
+    renderWithProviders(
       <NodeActionMenu
         hasSelection
         nodes={[]}
@@ -253,7 +260,7 @@ describe("NodeActionMenu", () => {
         actions: [NodeActions.TAG],
       }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenu
         getTitle={() => "Overridden"}
         hasSelection

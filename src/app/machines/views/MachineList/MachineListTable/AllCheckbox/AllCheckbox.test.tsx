@@ -1,13 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import AllCheckbox, { Label } from "./AllCheckbox";
 
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 let state: RootState;
 const callId = "123456";
@@ -66,10 +62,13 @@ it("can dispatch an action to select all", async () => {
   const filter = {
     owner: ["admin1"],
   };
-  const store = mockStore(state);
-  renderWithProviders(<AllCheckbox callId={callId} filter={filter} />, {
-    store,
-  });
+
+  const { store } = renderWithProviders(
+    <AllCheckbox callId={callId} filter={filter} />,
+    {
+      state,
+    }
+  );
   await userEvent.click(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   );
@@ -88,10 +87,13 @@ it("can dispatch an action to unselect all", async () => {
   state.machine.selected = {
     filter,
   };
-  const store = mockStore(state);
-  renderWithProviders(<AllCheckbox callId={callId} filter={filter} />, {
-    store,
-  });
+
+  const { store } = renderWithProviders(
+    <AllCheckbox callId={callId} filter={filter} />,
+    {
+      state,
+    }
+  );
   await userEvent.click(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   );

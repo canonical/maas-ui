@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import MachinesFilterAccordion, { Label } from "./MachinesFilterAccordion";
 
 import { machineActions } from "@/app/store/machine";
@@ -12,8 +10,6 @@ import {
   renderWithProviders,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("MachinesFilterAccordion", () => {
   let state: RootState;
@@ -39,10 +35,10 @@ describe("MachinesFilterAccordion", () => {
 
   it("does not fetch filters if filters have been loaded", async () => {
     state.machine.filtersLoaded = true;
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
-      { store }
+      { state }
     );
     expect(store.getActions()).toEqual(
       expect.not.arrayContaining([machineActions.filterGroups()])
@@ -51,10 +47,10 @@ describe("MachinesFilterAccordion", () => {
 
   it("fetches filters if filters have not been loaded", async () => {
     state.machine.filtersLoaded = false;
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
-      { store }
+      { state }
     );
     await waitFor(() => {
       expect(store.getActions()).toEqual([machineActions.filterGroups()]);

@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AllDropdown, { AllDropdownLabel } from "./AllDropdown";
 
 import { machineActions } from "@/app/store/machine";
@@ -7,8 +5,6 @@ import type { RootState } from "@/app/store/root/types";
 import { FetchNodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 let state: RootState;
 const callId = "123456";
@@ -30,10 +26,13 @@ it("can dispatch an action to select all machines using a dropdown", async () =>
   state.machine.selected = {
     filter,
   };
-  const store = mockStore(state);
-  renderWithProviders(<AllDropdown callId={callId} filter={filter} />, {
-    store,
-  });
+
+  const { store } = renderWithProviders(
+    <AllDropdown callId={callId} filter={filter} />,
+    {
+      state,
+    }
+  );
   await userEvent.click(
     screen.getByRole("button", {
       name: AllDropdownLabel.AllMachinesOptions,
@@ -69,10 +68,11 @@ it("can dispatch an action to select all machines on current page using a dropdo
     groups: ["failed_testing"],
     items: ["abc123"],
   };
-  const store = mockStore(state);
-  renderWithProviders(<AllDropdown callId={callId} filter={null} />, {
-    store,
-  });
+
+  const { store } = renderWithProviders(
+    <AllDropdown callId={callId} filter={null} />,
+    { state }
+  );
   await userEvent.click(
     screen.getByRole("button", {
       name: AllDropdownLabel.AllMachinesOptions,

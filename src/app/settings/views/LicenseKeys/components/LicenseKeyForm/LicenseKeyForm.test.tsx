@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFormFields";
 
 import {
@@ -16,8 +14,6 @@ import {
   waitFor,
   renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("LicenseKeyForm", () => {
   let state: RootState;
@@ -46,8 +42,7 @@ describe("LicenseKeyForm", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    renderWithProviders(<LicenseKeyForm />, { store });
+    renderWithProviders(<LicenseKeyForm />, { state });
 
     expect(
       screen.getByRole("form", { name: LicenseKeyFormLabels.FormLabel })
@@ -55,11 +50,10 @@ describe("LicenseKeyForm", () => {
   });
 
   it("cleans up when unmounting", async () => {
-    const store = mockStore(state);
-
     const {
       result: { unmount },
-    } = renderWithProviders(<LicenseKeyForm />, { store });
+      store,
+    } = renderWithProviders(<LicenseKeyForm />, { state });
 
     unmount();
 
@@ -70,8 +64,8 @@ describe("LicenseKeyForm", () => {
 
   it("fetches OsInfo if not loaded", () => {
     state.general.osInfo.loaded = false;
-    const store = mockStore(state);
-    renderWithProviders(<LicenseKeyForm />, { store });
+
+    const { store } = renderWithProviders(<LicenseKeyForm />, { state });
 
     expect(
       store.getActions().some((action) => action.type === "general/fetchOsInfo")
@@ -80,8 +74,8 @@ describe("LicenseKeyForm", () => {
 
   it("fetches license keys if not loaded", () => {
     state.licensekeys.loaded = false;
-    const store = mockStore(state);
-    renderWithProviders(<LicenseKeyForm />, { store });
+
+    const { store } = renderWithProviders(<LicenseKeyForm />, { state });
 
     expect(
       store.getActions().some((action) => action.type === "licensekeys/fetch")
@@ -90,16 +84,15 @@ describe("LicenseKeyForm", () => {
 
   it("redirects when the snippet is saved", () => {
     state.licensekeys.saved = true;
-    const store = mockStore(state);
-    const { router } = renderWithProviders(<LicenseKeyForm />, { store });
+
+    const { router } = renderWithProviders(<LicenseKeyForm />, { state });
     expect(router.state.location.pathname).toEqual(
       settingsURLs.licenseKeys.index
     );
   });
 
   it("can add a key", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<LicenseKeyForm />, { store });
+    const { store } = renderWithProviders(<LicenseKeyForm />, { state });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: FormFieldsLabels.OperatingSystem }),
@@ -134,14 +127,16 @@ describe("LicenseKeyForm", () => {
   });
 
   it("can update a key", async () => {
-    const store = mockStore(state);
     const licenseKey = factory.licenseKeys({
       id: 1,
       osystem: "windows",
       distro_series: "win2012",
       license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXY",
     });
-    renderWithProviders(<LicenseKeyForm licenseKey={licenseKey} />, { store });
+    const { store } = renderWithProviders(
+      <LicenseKeyForm licenseKey={licenseKey} />,
+      { state }
+    );
 
     const licenseKeyInput = screen.getByRole("textbox", {
       name: FormFieldsLabels.LicenseKey,

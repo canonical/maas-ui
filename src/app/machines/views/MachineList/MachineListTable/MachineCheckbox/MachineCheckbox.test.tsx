@@ -1,13 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import MachineCheckbox, { getSelectedMachinesRange } from "./MachineCheckbox";
 
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 let state: RootState;
 const callId = "123456";
@@ -114,17 +110,14 @@ it("is checked if the machine is selected", () => {
 });
 
 it("can dispatch an action to select the machine", async () => {
-  const store = mockStore(state);
-  renderWithProviders(
+  const { store } = renderWithProviders(
     <MachineCheckbox
       callId={callId}
       groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,
-    {
-      store,
-    }
+    { state }
   );
   await userEvent.click(screen.getByRole("checkbox"));
   const expected = machineActions.setSelected({ items: ["abc123"] });
@@ -138,17 +131,15 @@ it("can dispatch an action to unselect a machine", async () => {
     groups: ["admin1"],
     items: ["abc123", "def456"],
   };
-  const store = mockStore(state);
-  renderWithProviders(
+
+  const { store } = renderWithProviders(
     <MachineCheckbox
       callId={callId}
       groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,
-    {
-      store,
-    }
+    { state }
   );
   await userEvent.click(screen.getByRole("checkbox"));
   const expected = machineActions.setSelected({

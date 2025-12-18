@@ -2,13 +2,15 @@ import PowerParameterDefinition from "./PowerParameterDefinition";
 
 import { PowerFieldType } from "@/app/store/general/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("renders the value of a power parameter", () => {
   const field = factory.powerField({
     field_type: PowerFieldType.STRING,
   });
-  render(<PowerParameterDefinition field={field} powerParameter="parameter" />);
+  renderWithProviders(
+    <PowerParameterDefinition field={field} powerParameter="parameter" />
+  );
 
   expect(screen.getByText(/parameter/)).toBeInTheDocument();
 });
@@ -21,7 +23,9 @@ it("handles 'choice' power fields", () => {
     ],
     field_type: PowerFieldType.CHOICE,
   });
-  render(<PowerParameterDefinition field={field} powerParameter="choice1" />);
+  renderWithProviders(
+    <PowerParameterDefinition field={field} powerParameter="choice1" />
+  );
 
   expect(screen.getByText(/Choice 1/)).toBeInTheDocument();
 });
@@ -35,7 +39,7 @@ it("handles 'multiple_choice' power fields", () => {
     ],
     field_type: PowerFieldType.MULTIPLE_CHOICE,
   });
-  render(
+  renderWithProviders(
     <PowerParameterDefinition
       field={field}
       powerParameter={["choice1", "choice2"]}
@@ -49,7 +53,9 @@ it("handles 'password' power fields", () => {
   const field = factory.powerField({
     field_type: PowerFieldType.PASSWORD,
   });
-  render(<PowerParameterDefinition field={field} powerParameter="password" />);
+  renderWithProviders(
+    <PowerParameterDefinition field={field} powerParameter="password" />
+  );
 
   expect(screen.getByText("********")).toBeInTheDocument();
 });

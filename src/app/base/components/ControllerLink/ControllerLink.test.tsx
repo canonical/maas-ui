@@ -1,27 +1,15 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import ControllerLink, { Labels } from "./ControllerLink";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("handles when controllers are loading", () => {
   const state = factory.rootState({
     controller: factory.controllerState({ items: [], loading: true }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerLink systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerLink systemId="abc123" />, { state });
 
   expect(screen.getByLabelText(Labels.LoadingControllers)).toBeInTheDocument();
 });
@@ -30,16 +18,10 @@ it("handles when a controller does not exist", () => {
   const state = factory.rootState({
     controller: factory.controllerState({ items: [], loading: false }),
   });
-  const store = mockStore(state);
-  const { container } = render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerLink systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
-  );
 
-  expect(container).toBeEmptyDOMElement();
+  renderWithProviders(<ControllerLink systemId="abc123" />, { state });
+
+  expect(screen).toBeEmptyDOMElement();
 });
 
 it("renders a link if controllers have loaded and it exists", () => {
@@ -53,14 +35,10 @@ it("renders a link if controllers have loaded and it exists", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerLink systemId={controller.system_id} />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerLink systemId={controller.system_id} />, {
+    state,
+  });
 
   const link = screen.getByRole("link");
   expect(link).toHaveTextContent("bolla.maas");

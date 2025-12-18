@@ -141,7 +141,7 @@ it("can dispatch a generated selected state", async () => {
       isChecked={Checked.Checked}
       onGenerateSelected={() => selected}
     />,
-    { store }
+    { state }
   );
   await userEvent.click(screen.getByRole("checkbox"));
   const expected = machineActions.setSelected(selected);

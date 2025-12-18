@@ -2,11 +2,11 @@ import { MemoryRouter } from "react-router";
 
 import TagLinks from "./TagLinks";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("TagLinks", () => {
   it("displays tag links", () => {
-    render(
+    renderWithProviders(
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
       >

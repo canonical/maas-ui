@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import ImagesIntro, { Labels as ImagesIntroLabels } from "./ImagesIntro";
 
 import type { RootState } from "@/app/store/root/types";
@@ -15,7 +13,6 @@ import {
   waitForLoading,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 const mockServer = setupMockServer(
   imageSourceResolvers.listImageSources.handler(),
   configurationsResolvers.getConfiguration.handler()
@@ -41,9 +38,11 @@ describe("ImagesIntro", () => {
   });
 
   it("stops polling when unmounted", async () => {
-    const store = mockStore(state);
-    const { result } = renderWithProviders(<ImagesIntro />, { store });
-    result.unmount();
+    const {
+      result: { unmount },
+      store,
+    } = renderWithProviders(<ImagesIntro />, { state });
+    unmount();
     expect(
       store
         .getActions()

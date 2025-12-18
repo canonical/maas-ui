@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import SetPoolForm from "./SetPoolForm";
 
 import * as query from "@/app/store/machine/utils/query";
@@ -14,8 +12,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -60,10 +56,12 @@ describe("SetPoolForm", () => {
   });
 
   it("correctly dispatches actions to set pools of selected machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <SetPoolForm isViewingDetails={false} />,
+      {
+        state,
+      }
+    );
 
     await waitFor(() => {
       expect(
@@ -110,10 +108,12 @@ describe("SetPoolForm", () => {
   });
 
   it("correctly dispatches action to create and set pool of selected machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <SetPoolForm isViewingDetails={false} />,
+      {
+        state,
+      }
+    );
 
     await waitFor(() => {
       expect(

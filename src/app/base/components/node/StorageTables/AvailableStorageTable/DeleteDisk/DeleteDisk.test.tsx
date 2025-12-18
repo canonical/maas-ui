@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import DeleteDisk from "./DeleteDisk";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const disk = factory.nodeDisk({
   id: 1,
   name: "floppy-disk",
@@ -29,8 +25,10 @@ it("should render the form", () => {
 });
 
 it("should fire an action to delete a disk", async () => {
-  const store = mockStore(state);
-  renderWithProviders(<DeleteDisk disk={disk} systemId="abc123" />, { store });
+  const { store } = renderWithProviders(
+    <DeleteDisk disk={disk} systemId="abc123" />,
+    { state }
+  );
 
   await userEvent.click(
     screen.getByRole("button", { name: "Remove physical disk" })

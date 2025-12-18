@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AppSideNavigation from "./AppSideNavigation";
 
 import urls from "@/app/base/urls";
@@ -26,7 +24,6 @@ vi.mock("react-router", async () => {
   };
 });
 
-const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 afterEach(() => {
@@ -89,8 +86,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("can dispatch an action to log out", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<AppSideNavigation />, { store });
+    const { store } = renderWithProviders(<AppSideNavigation />, { state });
 
     await waitFor(() => {
       expect(
@@ -363,9 +359,8 @@ describe("GlobalSideNav", () => {
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
     ];
 
-    const store = mockStore(state);
     const { router } = renderWithProviders(<AppSideNavigation />, {
-      store,
+      state,
       initialEntries: [urls.intro.images],
     });
     await waitFor(() => {

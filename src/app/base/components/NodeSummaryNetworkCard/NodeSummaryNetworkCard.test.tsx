@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import NodeSummaryNetworkCard from "./NodeSummaryNetworkCard";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, within } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("NodeSummaryNetworkCard", () => {
   let state: RootState;
@@ -21,14 +17,13 @@ describe("NodeSummaryNetworkCard", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={[]}
         networkURL="url"
         node={state.device.items[0]}
       />,
-      { store }
+      { state }
     );
     const actions = store.getActions();
 

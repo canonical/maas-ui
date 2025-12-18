@@ -1,6 +1,4 @@
 /* eslint-disable testing-library/prefer-presence-queries */
-import type { MockStore } from "redux-mock-store";
-import configureStore from "redux-mock-store";
 
 import ComposeForm from "../../ComposeForm";
 
@@ -18,16 +16,15 @@ import {
   within,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 setupMockServer(
   zoneResolvers.listZones.handler(),
   poolsResolvers.listPools.handler()
 );
 
-const renderComposeForm = async (store: MockStore, pod: Pod) => {
+const renderComposeForm = async (state: RootState, pod: Pod) => {
   const view = renderWithProviders(<ComposeForm hostId={pod.id} />, {
     initialEntries: [`/kvm/${pod.id}`],
-    store,
+    state,
   });
   await waitFor(() => {
     expect(zoneResolvers.listZones.resolved).toBeTruthy();
@@ -89,8 +86,8 @@ describe("PoolSelect", () => {
       }),
     });
     state.pod.items = [pod];
-    const store = mockStore(state);
-    await renderComposeForm(store, pod);
+
+    await renderComposeForm(state, pod);
 
     await waitFor(() =>
       expect(screen.getByRole("spinbutton", { name: "Size (GB)" }))
@@ -136,8 +133,8 @@ describe("PoolSelect", () => {
       storage_pools: [defaultPool, otherPool],
     });
     state.pod.items = [pod];
-    const store = mockStore(state);
-    await renderComposeForm(store, pod);
+
+    await renderComposeForm(state, pod);
 
     await waitFor(() => {
       expect(
@@ -198,8 +195,8 @@ describe("PoolSelect", () => {
       storage_pools: [poolWithSpace, poolWithoutSpace],
     });
     state.pod.items = [pod];
-    const store = mockStore(state);
-    await renderComposeForm(store, pod);
+
+    await renderComposeForm(state, pod);
 
     await waitFor(() => {
       expect(
