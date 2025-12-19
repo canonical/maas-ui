@@ -199,12 +199,9 @@ describe("MachineHeader", () => {
         name: /lock/i,
       })
     ).not.toBeInTheDocument();
-    const expectedAction = machineActions.lock(
-      {
-        filter: { id: [state.machine.items[0].system_id] },
-      },
-      "123456"
-    );
+    const expectedAction = machineActions.lock({
+      system_id: "abc123",
+    });
 
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)

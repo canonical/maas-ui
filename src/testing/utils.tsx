@@ -436,7 +436,9 @@ export const renderHookWithProviders = <T,>(
       wrapper: ({ children }) => (
         <QueryClientProvider client={queryClient}>
           <WebSocketProvider>
-            <Provider store={store}>{children}</Provider>
+            <NewSidePanelContextProvider>
+              <Provider store={store}>{children}</Provider>
+            </NewSidePanelContextProvider>
           </WebSocketProvider>
         </QueryClientProvider>
       ),

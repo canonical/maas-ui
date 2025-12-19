@@ -103,7 +103,7 @@ describe("LXDHostVMs", () => {
       { state }
     );
 
-    await userEvent.click(screen.getByTestId("add-vm"));
+    await userEvent.click(screen.getByRole("button", { name: "Add VM" }));
 
     expect(mockOpen).toHaveBeenCalledWith({
       component: ComposeForm,

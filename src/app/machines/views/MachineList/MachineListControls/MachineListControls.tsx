@@ -10,9 +10,9 @@ import { Link } from "react-router";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import GroupSelect from "@/app/base/components/GroupSelect";
 import urls from "@/app/base/urls";
+import MachineActions from "@/app/machines/components/MachineActions";
 import { groupOptions } from "@/app/machines/constants";
 import HiddenColumnsSelect from "@/app/machines/views/MachineList/MachineListControls/HiddenColumnsSelect";
-import MachineActionMenu from "@/app/machines/views/MachineList/MachineListControls/MachineActionMenu";
 import MachinesFilterAccordion from "@/app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
 import AddHardwareMenu from "@/app/machines/views/MachineList/MachineListHeader/AddHardwareMenu";
 import type { useResponsiveColumns } from "@/app/machines/views/MachineList/hooks";
@@ -87,7 +87,7 @@ const MachineListControls = ({
           </>
         ) : (
           <>
-            <MachineActionMenu hasSelection={hasSelection} />
+            <MachineActions isViewingDetails={false} />
             <Button
               appearance="link"
               onClick={() => dispatch(machineActions.setSelected(null))}

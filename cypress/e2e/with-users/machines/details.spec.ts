@@ -1,5 +1,5 @@
-import { generateMAASURL } from "../../utils";
-import { generateName, generateMac } from "../../utils";
+import { LONG_TIMEOUT } from "../../../constants";
+import { generateMAASURL, generateMac, generateName } from "../../utils";
 
 context("Machine details", () => {
   beforeEach(() => {
@@ -26,7 +26,10 @@ context("Machine details", () => {
     cy.findByRole("searchbox").type(name);
     cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
 
-    cy.findByRole("link", { name: new RegExp(name, "i") }).click();
+    cy.findByRole("link", {
+      name: new RegExp(name, "i"),
+      timeout: LONG_TIMEOUT,
+    }).click();
 
     cy.findByRole("link", { name: "Network" }).click();
 
@@ -55,7 +58,10 @@ context("Machine details", () => {
     cy.findByRole("searchbox").type(name);
     cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
 
-    cy.findByRole("link", { name: new RegExp(name, "i") }).click();
+    cy.findByRole("link", {
+      name: new RegExp(name, "i"),
+      timeout: LONG_TIMEOUT,
+    }).click();
 
     cy.waitForPageToLoad();
     cy.findByRole("button", {

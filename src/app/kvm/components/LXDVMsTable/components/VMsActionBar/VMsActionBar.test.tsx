@@ -1,12 +1,7 @@
 import VMsActionBar from "./VMsActionBar";
 
 import * as factory from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  within,
-  renderWithProviders,
-} from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("VMsActionBar", () => {
   it("executes onAddVMClick on add VM button click", async () => {
@@ -26,7 +21,7 @@ describe("VMsActionBar", () => {
       { state }
     );
 
-    await userEvent.click(screen.getByTestId("add-vm"));
+    await userEvent.click(screen.getByRole("button", { name: "Add VM" }));
 
     expect(onAddVMClick).toHaveBeenCalled();
   });
@@ -52,9 +47,11 @@ describe("VMsActionBar", () => {
     );
 
     expect(
-      within(screen.getByTestId("take-action-dropdown")).getByRole("button")
+      screen.getByRole("button", { name: "Take action" })
     ).toBeAriaDisabled();
-    expect(screen.getByTestId("delete-vm")).toBeAriaDisabled();
+    expect(
+      screen.getByRole("button", { name: "Delete VM" })
+    ).toBeAriaDisabled();
   });
 
   it("enables VM actions if at least one is selected", () => {
@@ -80,8 +77,10 @@ describe("VMsActionBar", () => {
     );
 
     expect(
-      within(screen.getByTestId("take-action-dropdown")).getByRole("button")
+      screen.getByRole("button", { name: "Take action" })
     ).not.toBeAriaDisabled();
-    expect(screen.getByTestId("delete-vm")).not.toBeAriaDisabled();
+    expect(
+      screen.getByRole("button", { name: "Delete VM" })
+    ).not.toBeAriaDisabled();
   });
 });
