@@ -3,7 +3,7 @@ import { RamColumn } from "./RamColumn";
 import type { RootState } from "@/app/store/root/types";
 import { TestStatusStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("RamColumn", () => {
   let state: RootState;
@@ -29,8 +29,7 @@ describe("RamColumn", () => {
   it("displays ram amount", () => {
     state.machine.items[0].memory = 16;
 
-    renderWithBrowserRouter(<RamColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<RamColumn systemId="abc123" />, {
       state,
     });
 
@@ -43,8 +42,7 @@ describe("RamColumn", () => {
       status: TestStatusStatus.FAILED,
     });
 
-    renderWithBrowserRouter(<RamColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<RamColumn systemId="abc123" />, {
       state,
     });
 

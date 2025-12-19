@@ -1,7 +1,4 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
 
 import KernelOptionsField, { Label } from "./KernelOptionsField";
 
@@ -11,8 +8,8 @@ import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { FetchNodeStatus, NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
-const mockStore = configureStore();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+
 let state: RootState;
 
 beforeEach(() => {
@@ -42,15 +39,11 @@ afterEach(() => {
 });
 
 it("does not display a deployed machines message if a tag is not supplied", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={vi.fn()}>
-          <KernelOptionsField />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <KernelOptionsField />
+    </Formik>,
+    { state }
   );
   expect(
     screen.queryByText(/The new kernel options will not be applied/i)
@@ -78,15 +71,12 @@ it("displays a deployed machines message when updating a tag", async () => {
       items: [factory.tag({ id: 1, machine_count: 1 })],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={vi.fn()}>
-          <KernelOptionsField id={1} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+
+  renderWithProviders(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <KernelOptionsField id={1} />
+    </Formik>,
+    { state }
   );
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.KernelOptions }),
@@ -102,15 +92,11 @@ it("displays a deployed machines message when updating a tag", async () => {
 });
 
 it("displays a deployed machines message when passed deployedMachinesCount", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={vi.fn()}>
-          <KernelOptionsField deployedMachinesCount={1} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <KernelOptionsField deployedMachinesCount={1} />
+    </Formik>,
+    { state }
   );
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.KernelOptions }),
@@ -122,15 +108,11 @@ it("displays a deployed machines message when passed deployedMachinesCount", asy
 });
 
 it("fetches deployed machine count for selected tag when not passed deployedMachinesCount", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={vi.fn()}>
-          <KernelOptionsField id={state.tag.items[0].id} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithProviders(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <KernelOptionsField id={state.tag.items[0].id} />
+    </Formik>,
+    { state }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
@@ -150,18 +132,14 @@ it("fetches deployed machine count for selected tag when not passed deployedMach
 });
 
 it("can display a provided deployed machines message", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={vi.fn()}>
-          <KernelOptionsField
-            deployedMachinesCount={1}
-            generateDeployedMessage={(count) => `${count} deployed machine`}
-          />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <KernelOptionsField
+        deployedMachinesCount={1}
+        generateDeployedMessage={(count) => `${count} deployed machine`}
+      />
+    </Formik>,
+    { state }
   );
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.KernelOptions }),

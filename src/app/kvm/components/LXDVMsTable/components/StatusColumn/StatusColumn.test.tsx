@@ -3,7 +3,7 @@ import StatusColumn from "./StatusColumn";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeStatusCode } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("StatusColumn", () => {
   it("shows a spinner if the machine is still loading", () => {
@@ -12,7 +12,7 @@ describe("StatusColumn", () => {
         items: [],
       }),
     });
-    renderWithMockStore(<StatusColumn systemId="abc123" />, { state });
+    renderWithProviders(<StatusColumn systemId="abc123" />, { state });
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
@@ -28,7 +28,7 @@ describe("StatusColumn", () => {
         ],
       }),
     });
-    renderWithMockStore(<StatusColumn systemId="abc123" />, { state });
+    renderWithProviders(<StatusColumn systemId="abc123" />, { state });
 
     const loadingIcon = screen.getByLabelText(/Loading/i);
     expect(loadingIcon).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe("StatusColumn", () => {
         ],
       }),
     });
-    renderWithMockStore(<StatusColumn systemId="abc123" />, { state });
+    renderWithProviders(<StatusColumn systemId="abc123" />, { state });
 
     const offIcon = screen.getByLabelText(/off/i);
     expect(offIcon).toBeInTheDocument();
@@ -74,7 +74,7 @@ describe("StatusColumn", () => {
         ],
       }),
     });
-    renderWithMockStore(<StatusColumn systemId="abc123" />, { state });
+    renderWithProviders(<StatusColumn systemId="abc123" />, { state });
 
     expect(screen.getByTestId("secondary").textContent).toBe(
       "Ubuntu 20.04 LTS"

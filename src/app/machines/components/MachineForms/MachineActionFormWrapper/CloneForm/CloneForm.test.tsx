@@ -1,11 +1,9 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import CloneForm from "./CloneForm";
 
 import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   renderWithProviders,
@@ -13,8 +11,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -150,10 +146,12 @@ describe("CloneForm", () => {
     state.subnet.loaded = true;
     state.vlan.loaded = true;
 
-    const store = mockStore(state);
-    renderWithProviders(<CloneForm isViewingDetails={false} />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <CloneForm isViewingDetails={false} />,
+      {
+        state,
+      }
+    );
 
     await userEvent.click(
       screen.getByRole("row", { name: machines[2].hostname })

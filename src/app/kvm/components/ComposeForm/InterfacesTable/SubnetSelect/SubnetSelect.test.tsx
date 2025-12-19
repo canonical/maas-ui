@@ -1,6 +1,3 @@
-import type { MockStore } from "redux-mock-store";
-import configureStore from "redux-mock-store";
-
 import ComposeForm from "../../ComposeForm";
 
 import type { Pod } from "@/app/store/pod/types";
@@ -17,16 +14,15 @@ import {
   within,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 setupMockServer(
   zoneResolvers.listZones.handler(),
   poolsResolvers.listPools.handler()
 );
 
-const renderComposeForm = async (store: MockStore, pod: Pod) => {
+const renderComposeForm = async (state: RootState, pod: Pod) => {
   const view = renderWithProviders(<ComposeForm hostId={pod.id} />, {
     initialEntries: [`/kvm/${pod.id}`],
-    store,
+    state,
   });
   await waitFor(() => {
     expect(zoneResolvers.listZones.resolved).toBeTruthy();
@@ -89,8 +85,8 @@ describe("SubnetSelect", () => {
     state.pod.items = [pod];
     state.space.items = spaces;
     state.subnet.items = subnets;
-    const store = mockStore(state);
-    await renderComposeForm(store, pod);
+
+    await renderComposeForm(state, pod);
 
     await waitFor(() =>
       screen.getByRole("button", { name: "Define (optional)" })
@@ -133,8 +129,8 @@ describe("SubnetSelect", () => {
     state.pod.items = [pod];
     state.space.items = [space];
     state.subnet.items = [subnetInSpace, subnetNotInSpace];
-    const store = mockStore(state);
-    await renderComposeForm(store, pod);
+
+    await renderComposeForm(state, pod);
 
     await waitFor(() => {
       expect(
@@ -203,8 +199,8 @@ describe("SubnetSelect", () => {
     state.space.items = [space];
     state.subnet.items = [pxeSubnet, nonPxeSubnet];
     state.vlan.items = [pxeVlan, nonPxeVlan];
-    const store = mockStore(state);
-    await renderComposeForm(store, pod);
+
+    await renderComposeForm(state, pod);
 
     await waitFor(() => {
       expect(

@@ -4,7 +4,7 @@ import type { Props as FilterAccordionProps } from "./FilterAccordion";
 import type { MachineDetails, MachineMeta } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("FilterAccordion", () => {
   let items: MachineDetails[];
@@ -56,7 +56,7 @@ describe("FilterAccordion", () => {
   });
 
   it("can mark an item as active", async () => {
-    render(
+    renderWithProviders(
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
@@ -85,7 +85,7 @@ describe("FilterAccordion", () => {
 
   it("can set a filter", async () => {
     const onUpdateFilterString = vi.fn();
-    render(
+    renderWithProviders(
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
@@ -112,7 +112,7 @@ describe("FilterAccordion", () => {
 
   it("hides filters if there are no values", async () => {
     delete items[0].pxe_mac;
-    render(
+    renderWithProviders(
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
@@ -136,7 +136,7 @@ describe("FilterAccordion", () => {
 
   it("hides filters if the value is an empty array", async () => {
     items[0].link_speeds = [];
-    render(
+    renderWithProviders(
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
@@ -159,7 +159,7 @@ describe("FilterAccordion", () => {
   });
 
   it("is disabled if there are no items to display", async () => {
-    render(
+    renderWithProviders(
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}

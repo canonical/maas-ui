@@ -3,7 +3,7 @@ import SpeedColumn from "./SpeedColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore } from "@/testing/utils";
+import { renderWithProviders } from "@/testing/utils";
 
 describe("SpeedColumn", () => {
   let state: RootState;
@@ -29,7 +29,7 @@ describe("SpeedColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<SpeedColumn nic={nic} node={machine} />, { state });
+    renderWithProviders(<SpeedColumn nic={nic} node={machine} />, { state });
 
     expect(document.querySelector(".p-icon--disconnected")).toBeInTheDocument();
   });
@@ -46,7 +46,7 @@ describe("SpeedColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<SpeedColumn nic={nic} node={machine} />, { state });
+    renderWithProviders(<SpeedColumn nic={nic} node={machine} />, { state });
 
     expect(document.querySelector(".p-icon--warning")).toBeInTheDocument();
   });
@@ -61,7 +61,7 @@ describe("SpeedColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<SpeedColumn nic={nic} node={machine} />, { state });
+    renderWithProviders(<SpeedColumn nic={nic} node={machine} />, { state });
 
     expect(
       document.querySelector("[class^='p-icon--']")

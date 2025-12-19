@@ -1,13 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import MachineCheckbox, { getSelectedMachinesRange } from "./MachineCheckbox";
 
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 let state: RootState;
 const callId = "123456";
@@ -36,7 +32,7 @@ it("is disabled if all machines are selected", () => {
       owner: "admin",
     },
   };
-  renderWithMockStore(
+  renderWithProviders(
     <MachineCheckbox
       callId={callId}
       groupValue="admin2"
@@ -52,7 +48,7 @@ it("is checked and disabled if the machine's group is selected", () => {
   state.machine.selected = {
     groups: ["admin2"],
   };
-  renderWithMockStore(
+  renderWithProviders(
     <MachineCheckbox
       callId={callId}
       groupValue="admin2"
@@ -69,7 +65,7 @@ it("is checked and disabled if the machine's group is selected and is nullish", 
   state.machine.selected = {
     groups: [""],
   };
-  renderWithMockStore(
+  renderWithProviders(
     <MachineCheckbox
       callId={callId}
       groupValue=""
@@ -84,7 +80,7 @@ it("is checked and disabled if the machine's group is selected and is nullish", 
 
 it("is unchecked and enabled if there are no filters or groups selected", () => {
   state.machine.selected = null;
-  renderWithMockStore(
+  renderWithProviders(
     <MachineCheckbox
       callId={callId}
       groupValue="admin2"
@@ -101,7 +97,7 @@ it("is checked if the machine is selected", () => {
   state.machine.selected = {
     items: ["abc123"],
   };
-  renderWithMockStore(
+  renderWithProviders(
     <MachineCheckbox
       callId={callId}
       groupValue="admin2"
@@ -114,17 +110,14 @@ it("is checked if the machine is selected", () => {
 });
 
 it("can dispatch an action to select the machine", async () => {
-  const store = mockStore(state);
-  renderWithMockStore(
+  const { store } = renderWithProviders(
     <MachineCheckbox
       callId={callId}
       groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,
-    {
-      store,
-    }
+    { state }
   );
   await userEvent.click(screen.getByRole("checkbox"));
   const expected = machineActions.setSelected({ items: ["abc123"] });
@@ -138,17 +131,15 @@ it("can dispatch an action to unselect a machine", async () => {
     groups: ["admin1"],
     items: ["abc123", "def456"],
   };
-  const store = mockStore(state);
-  renderWithMockStore(
+
+  const { store } = renderWithProviders(
     <MachineCheckbox
       callId={callId}
       groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,
-    {
-      store,
-    }
+    { state }
   );
   await userEvent.click(screen.getByRole("checkbox"));
   const expected = machineActions.setSelected({

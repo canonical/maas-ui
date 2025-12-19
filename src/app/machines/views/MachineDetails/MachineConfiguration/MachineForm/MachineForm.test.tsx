@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import MachineForm from "./MachineForm";
 
 import { Labels } from "@/app/base/components/EditableSection";
@@ -12,7 +10,6 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 describe("MachineForm", () => {
   let state: ReturnType<typeof factory.rootState>;
 
@@ -113,10 +110,9 @@ describe("MachineForm", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    const store = mockStore(state);
 
-    renderWithProviders(<MachineForm systemId="abc123" />, {
-      store,
+    const { store } = renderWithProviders(<MachineForm systemId="abc123" />, {
+      state,
       initialEntries: ["/machine/abc123"],
     });
 

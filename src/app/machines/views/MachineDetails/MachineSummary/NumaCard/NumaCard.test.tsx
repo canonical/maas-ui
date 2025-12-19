@@ -3,7 +3,7 @@ import { Labels as NumaCardDetailsLabels } from "./NumaCardDetails/NumaCardDetai
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, within, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, within, renderWithProviders } from "@/testing/utils";
 
 describe("NumaCard", () => {
   let state: RootState;
@@ -27,8 +27,7 @@ describe("NumaCard", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(<NumaCard id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<NumaCard id="abc123" />, {
       state,
     });
 
@@ -40,8 +39,7 @@ describe("NumaCard", () => {
   });
 
   it("renders with numa nodes", () => {
-    renderWithBrowserRouter(<NumaCard id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<NumaCard id="abc123" />, {
       state,
     });
     expect(screen.getByText("1 NUMA node")).toBeInTheDocument();

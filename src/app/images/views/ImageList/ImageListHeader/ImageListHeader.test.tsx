@@ -1,4 +1,3 @@
-import configureStore from "redux-mock-store";
 import { vi } from "vitest";
 
 import ImageListHeader, {
@@ -8,7 +7,6 @@ import ImageListHeader, {
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { bootResourceActions } from "@/app/store/bootresource";
-import type { RootState } from "@/app/store/root/types";
 import { LONG_TIMEOUT } from "@/testing/constants";
 import * as factory from "@/testing/factories";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
@@ -172,8 +170,6 @@ describe("Select upstream images", () => {
 });
 
 describe("Stop import", () => {
-  const mockStore = configureStore<RootState>();
-
   it("does not show a button to stop importing ubuntu images if none are downloading", async () => {
     const state = factory.rootState({
       bootresource: factory.bootResourceState({
@@ -205,12 +201,10 @@ describe("Stop import", () => {
         ubuntu: factory.bootResourceUbuntu(),
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      {
-        store,
-      }
+      { state }
     );
     await waitForLoading();
     await userEvent.click(

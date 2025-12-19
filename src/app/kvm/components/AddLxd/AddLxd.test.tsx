@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AddLxd from "./AddLxd";
 
 import { ConfigNames } from "@/app/store/config/types";
@@ -16,8 +14,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 setupMockServer(
   poolsResolvers.listPools.handler(),
@@ -174,13 +170,12 @@ describe("AddLxd", () => {
   });
 
   it("clears projects and runs cleanup on unmount", () => {
-    const store = mockStore(state);
-
     const {
       result: { unmount },
+      store,
     } = renderWithProviders(<AddLxd />, {
       initialEntries: ["/kvm/add"],
-      store,
+      state,
     });
 
     unmount();

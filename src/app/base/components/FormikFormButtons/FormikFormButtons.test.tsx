@@ -2,10 +2,15 @@ import { Formik } from "formik";
 
 import FormikFormButtons from "./FormikFormButtons";
 
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("can display a cancel button", () => {
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons onCancel={vi.fn()} submitLabel="Save user" />
     </Formik>
@@ -15,7 +20,7 @@ it("can display a cancel button", () => {
 
 it("can perform a secondary submit action if function and label provided", async () => {
   const secondarySubmit = vi.fn();
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons
         secondarySubmit={secondarySubmit}
@@ -35,7 +40,7 @@ it("can perform a secondary submit action if function and label provided", async
 
 it("can generate a secondary submit label via a function", async () => {
   const secondarySubmit = vi.fn();
-  render(
+  renderWithProviders(
     <Formik initialValues={{ name: "Koala" }} onSubmit={vi.fn()}>
       <FormikFormButtons
         secondarySubmit={secondarySubmit}
@@ -52,7 +57,7 @@ it("can generate a secondary submit label via a function", async () => {
 });
 
 it("can display a tooltip for the secondary submit action", async () => {
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons
         secondarySubmit={vi.fn()}
@@ -80,7 +85,7 @@ it("can display a tooltip for the secondary submit action", async () => {
 });
 
 it("displays inline if inline is true", () => {
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons inline submitLabel="Save" />
     </Formik>
@@ -90,7 +95,7 @@ it("displays inline if inline is true", () => {
 
 it("displays help text if provided", () => {
   const buttonsHelp = <p>Help!</p>;
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons buttonsHelp={buttonsHelp} submitLabel="Save" />
     </Formik>
@@ -101,7 +106,7 @@ it("displays help text if provided", () => {
 
 it("can fire custom onCancel function", async () => {
   const onCancel = vi.fn();
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons onCancel={onCancel} submitLabel="Save" />
     </Formik>
@@ -111,7 +116,7 @@ it("can fire custom onCancel function", async () => {
 });
 
 it("can display a saving label", () => {
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons saving savingLabel="Be patient!" submitLabel="Save" />
     </Formik>

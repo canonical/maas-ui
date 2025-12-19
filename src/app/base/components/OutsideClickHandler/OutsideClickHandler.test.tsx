@@ -1,10 +1,10 @@
 import OutsideClickHandler from "./OutsideClickHandler";
 
-import { userEvent, screen, render } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 it("calls the onClick handler when clicking outside of the component", async () => {
   const onClick = vi.fn();
-  render(
+  renderWithProviders(
     <div>
       <div>Outside</div>
       <OutsideClickHandler onClick={onClick}>

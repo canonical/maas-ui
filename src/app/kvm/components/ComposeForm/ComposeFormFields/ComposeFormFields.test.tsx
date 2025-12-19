@@ -1,5 +1,4 @@
 import { Formik } from "formik";
-import configureStore from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
 
@@ -14,7 +13,6 @@ import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
   renderWithProviders,
-  renderWithMockStore,
   userEvent,
   fireEvent,
   expectTooltipOnHover,
@@ -22,17 +20,16 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 setupMockServer(
   zoneResolvers.listZones.handler(),
   poolsResolvers.listPools.handler()
 );
 
 describe("ComposeFormFields", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = factory.rootState({
+    state = factory.rootState({
       domain: factory.domainState({
         loaded: true,
       }),
@@ -63,7 +60,6 @@ describe("ComposeFormFields", () => {
   });
 
   it("correctly displays the available cores", async () => {
-    const state = { ...initialState };
     const pod = state.pod.items[0];
     pod.resources = factory.podResources({
       cores: factory.podResource({
@@ -73,10 +69,10 @@ describe("ComposeFormFields", () => {
       }),
     });
     pod.cpu_over_commit_ratio = 3;
-    const store = mockStore(state);
+
     renderWithProviders(<ComposeForm hostId={1} />, {
       initialEntries: ["/kvm/1"],
-      store,
+      state,
     });
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
@@ -93,7 +89,6 @@ describe("ComposeFormFields", () => {
   });
 
   it("correctly displays the available memory", async () => {
-    const state = { ...initialState };
     const pod = state.pod.items[0];
     const toMiB = (num: number) => num * 1024 ** 2;
     pod.resources = factory.podResources({
@@ -111,10 +106,10 @@ describe("ComposeFormFields", () => {
       }),
     });
     pod.memory_over_commit_ratio = 2;
-    const store = mockStore(state);
+
     renderWithProviders(<ComposeForm hostId={1} />, {
       initialEntries: ["/kvm/1"],
-      store,
+      state,
     });
     await waitFor(() => {
       expect(screen.getByText("15000MiB available.")).toBeInTheDocument();
@@ -130,7 +125,6 @@ describe("ComposeFormFields", () => {
   });
 
   it("shows warnings if available cores/memory is less than the default", async () => {
-    const state = { ...initialState };
     const powerType = factory.powerType({
       defaults: { cores: 2, memory: 2048, storage: 2 },
       driver_type: DriverType.POD,
@@ -164,10 +158,10 @@ describe("ComposeFormFields", () => {
         }),
       }),
     ];
-    const store = mockStore(state);
+
     renderWithProviders(<ComposeForm hostId={1} />, {
       initialEntries: ["/kvm/1"],
-      store,
+      state,
     });
     await waitFor(() => {
       expect(
@@ -189,9 +183,7 @@ describe("ComposeFormFields", () => {
   });
 
   it("does not allow hugepage backing non-LXD pods", async () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
@@ -213,7 +205,7 @@ describe("ComposeFormFields", () => {
           podType={PodType.VIRSH}
         />
       </Formik>,
-      { store }
+      { state }
     );
 
     const enableHugepages = screen.getByLabelText("Enable hugepages");
@@ -229,9 +221,7 @@ describe("ComposeFormFields", () => {
   });
 
   it("disables hugepage backing checkbox if no hugepages are free", async () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
@@ -253,7 +243,7 @@ describe("ComposeFormFields", () => {
           podType={PodType.LXD}
         />
       </Formik>,
-      { store }
+      { state }
     );
 
     expect(screen.getByLabelText("Enable hugepages")).toBeDisabled();
@@ -265,9 +255,7 @@ describe("ComposeFormFields", () => {
   });
 
   it("shows the input for any available cores by default", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
@@ -289,7 +277,7 @@ describe("ComposeFormFields", () => {
           podType={PodType.LXD}
         />
       </Formik>,
-      { store }
+      { state }
     );
 
     expect(
@@ -302,9 +290,7 @@ describe("ComposeFormFields", () => {
   });
 
   it("can switch to pinning specific cores to the VM if using a LXD KVM", async () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
@@ -326,7 +312,7 @@ describe("ComposeFormFields", () => {
           podType={PodType.LXD}
         />
       </Formik>,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -345,9 +331,7 @@ describe("ComposeFormFields", () => {
   });
 
   it("does not allow pinning cores for non-LXD pods", async () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
@@ -369,7 +353,7 @@ describe("ComposeFormFields", () => {
           podType={PodType.VIRSH}
         />
       </Formik>,
-      { store }
+      { state }
     );
 
     expect(
@@ -383,11 +367,9 @@ describe("ComposeFormFields", () => {
   });
 
   it("can detect duplicate core indices", async () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
     renderWithProviders(<ComposeForm hostId={1} />, {
       initialEntries: ["/kvm/1"],
-      store,
+      state,
     });
     await waitFor(() => {
       expect(
@@ -411,15 +393,14 @@ describe("ComposeFormFields", () => {
   });
 
   it("shows an error if there are no cores available to pin", async () => {
-    const state = { ...initialState };
     state.pod.items[0].resources = factory.podResources({
       cores: factory.podResource({ free: 0 }),
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
-    const store = mockStore(state);
+
     renderWithProviders(<ComposeForm hostId={1} />, {
       initialEntries: ["/kvm/1"],
-      store,
+      state,
     });
     await waitFor(() => {
       expect(
@@ -437,7 +418,6 @@ describe("ComposeFormFields", () => {
   });
 
   it("shows an error if trying to pin more cores than are available", async () => {
-    const state = { ...initialState };
     state.pod.items[0].resources = factory.podResources({
       cores: factory.podResource({ free: 1 }),
     });
@@ -470,7 +450,6 @@ describe("ComposeFormFields", () => {
   });
 
   it("shows a warning if some of the selected pinned cores are already pinned", async () => {
-    const state = { ...initialState };
     state.pod.items[0].resources = factory.podResources({
       numa: [
         factory.podNuma({
@@ -487,10 +466,10 @@ describe("ComposeFormFields", () => {
         }),
       ],
     });
-    const store = mockStore(state);
+
     renderWithProviders(<ComposeForm hostId={1} />, {
       initialEntries: ["/kvm/1"],
-      store,
+      state,
     });
     await waitFor(() => {
       expect(

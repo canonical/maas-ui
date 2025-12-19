@@ -3,12 +3,7 @@ import { storageLayoutOptions } from "../ChangeStorageLayoutMenu/ChangeStorageLa
 import ChangeStorageLayout from "./ChangeStorageLayout";
 
 import * as factory from "@/testing/factories";
-import {
-  renderWithProviders,
-  screen,
-  userEvent,
-  getByTextContent,
-} from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("ChangeStorageLayout", () => {
   const sampleStoragelayout = storageLayoutOptions[0][0];
@@ -32,7 +27,7 @@ describe("ChangeStorageLayout", () => {
     );
 
     expect(
-      getByTextContent(
+      screen.getByText(
         "Are you sure you want to change the storage layout to flat?"
       )
     ).toBeInTheDocument();

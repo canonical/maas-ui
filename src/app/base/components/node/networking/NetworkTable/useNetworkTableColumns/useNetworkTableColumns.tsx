@@ -1,12 +1,6 @@
 import { useMemo } from "react";
 
-import type {
-  Column,
-  ColumnDef,
-  Header,
-  Row,
-  Table,
-} from "@tanstack/react-table";
+import type { Column, ColumnDef, Header, Row } from "@tanstack/react-table";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
@@ -219,7 +213,6 @@ const useNetworkTableColumns = ({
           },
         }: {
           row: Row<Network>;
-          table: Table<Network>;
         }) => {
           return !isABondOrBridgeParent && nodeIsMachine(node) ? (
             <NetworkTableActions

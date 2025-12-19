@@ -5,7 +5,7 @@ import BondModeSelect from "./BondModeSelect";
 import { BondMode } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, within, renderWithMockStore } from "@/testing/utils";
+import { screen, within, renderWithProviders } from "@/testing/utils";
 
 describe("BondModeSelect", () => {
   let state: RootState;
@@ -32,7 +32,7 @@ describe("BondModeSelect", () => {
 
   it("shows a spinner if the bond options haven't loaded", () => {
     state.general.bondOptions.loaded = false;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BondModeSelect name="mode" />
       </Formik>,
@@ -42,7 +42,7 @@ describe("BondModeSelect", () => {
   });
 
   it("displays the options", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BondModeSelect name="mode" />
       </Formik>,
@@ -94,7 +94,7 @@ describe("BondModeSelect", () => {
       label: "Default",
       value: "99",
     };
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BondModeSelect defaultOption={defaultOption} name="mode" />
       </Formik>,
@@ -113,7 +113,7 @@ describe("BondModeSelect", () => {
       data: undefined,
       loaded: true,
     });
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BondModeSelect defaultOption={null} name="mode" />
       </Formik>,

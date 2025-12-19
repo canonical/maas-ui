@@ -1,19 +1,14 @@
-import configureStore from "redux-mock-store";
-
 import DomainsList from "./DomainsList";
 
 import { Labels as DomainsTableLabels } from "@/app/domains/components/DomainsTable/DomainsTable";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("DomainsList", () => {
   it("correctly fetches the necessary data", () => {
     const state = factory.rootState();
-    const store = mockStore(state);
-    renderWithProviders(<DomainsList />, { store });
+
+    const { store } = renderWithProviders(<DomainsList />, { state });
     const expectedActions = ["domain/fetch"];
     const actualActions = store.getActions();
     expect(

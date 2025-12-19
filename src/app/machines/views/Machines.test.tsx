@@ -1,5 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import { Label } from "./MachineList/MachineListTable/GroupColumn";
 import { DEFAULTS } from "./MachineList/MachineListTable/constants";
@@ -27,7 +26,6 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 setupMockServer(
   poolsResolvers.listPools.handler(),
   usersResolvers.listUsers.handler()
@@ -243,10 +241,9 @@ describe("Machines", () => {
   });
 
   it("can set the search from the URL", async () => {
-    const store = mockStore(state);
     renderWithProviders(<Machines />, {
       initialEntries: ["/machines?q=test+search"],
-      store,
+      state,
     });
     await waitFor(() => {
       expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue(
@@ -256,10 +253,9 @@ describe("Machines", () => {
   });
 
   it("changes the URL when the search text changes", async () => {
-    const store = mockStore(state);
     const { router } = renderWithProviders(<Machines />, {
       initialEntries: ["/machines?q=test+search"],
-      store,
+      state,
     });
     await userEvent.clear(screen.getByRole("searchbox", { name: "Search" }));
     await userEvent.type(
@@ -275,8 +271,11 @@ describe("Machines", () => {
     vi.spyOn(query, "generateCallId")
       .mockReturnValueOnce("123456")
       .mockReturnValueOnce("78910");
-    const store = mockStore(state);
-    renderWithProviders(<Machines />, { initialEntries: ["/machines"], store });
+
+    const { store } = renderWithProviders(<Machines />, {
+      initialEntries: ["/machines"],
+      state,
+    });
     const expected = machineActions.fetch("123456", {
       group_collapsed: ["failed_testing"],
     });
@@ -320,13 +319,16 @@ describe("Machines", () => {
         ],
       }),
     };
-    const store = mockStore(state);
+
     const expected = machineActions.fetch("123456", {
       group_key: FetchGroupKey.Owner,
     });
+    const { store } = renderWithProviders(<Machines />, {
+      initialEntries: ["/machines"],
+      state,
+    });
     const getFetchActions = () =>
       store.getActions().filter((action) => action.type === expected.type);
-    renderWithProviders(<Machines />, { initialEntries: ["/machines"], store });
 
     const initialFetchActions = getFetchActions();
     await waitFor(() => {
@@ -345,12 +347,11 @@ describe("Machines", () => {
   });
 
   it("can store the group in local storage", async () => {
-    const store = mockStore(state);
     const {
       result: { unmount },
     } = renderWithProviders(<Machines />, {
       initialEntries: ["/machines"],
-      store,
+      state,
     });
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /Group by/i }),
@@ -359,10 +360,9 @@ describe("Machines", () => {
     unmount();
     // Render another machine list, this time it should restore the value
     // set by the select.
-    const store2 = mockStore(state);
     renderWithProviders(<Machines />, {
       initialEntries: ["/machines"],
-      store: store2,
+      state,
     });
 
     expect(localStorage.getItem("grouping")).toBe('"owner"');
@@ -371,8 +371,8 @@ describe("Machines", () => {
   it("uses the default fallback value for invalid stored grouping values", async () => {
     localStorage.setItem("grouping", '"invalid_value"');
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-    const store = mockStore(state);
-    renderWithProviders(<Machines />, { store });
+
+    const { store } = renderWithProviders(<Machines />, { state });
     expect(screen.getByRole("combobox", { name: /Group by/ })).toHaveValue(
       DEFAULTS.grouping
     );
@@ -394,12 +394,13 @@ describe("Machines", () => {
       "mocked-nanoid-1": machineList,
       "mocked-nanoid-2": machineList,
     };
-    const store = mockStore(state);
+
     const {
       result: { unmount },
+      store,
     } = renderWithProviders(<Machines />, {
       initialEntries: ["/machines"],
-      store,
+      state,
     });
     const expected = machineActions.fetch("123456", {
       group_collapsed: [],
@@ -419,10 +420,9 @@ describe("Machines", () => {
     // Render another machine list, this time it should restore the
     // hidden group state.
     unmount();
-    const store2 = mockStore(state);
-    renderWithProviders(<Machines />, {
+    const { store: store2 } = renderWithProviders(<Machines />, {
       initialEntries: ["/machines"],
-      store: store2,
+      state,
     });
     const expected2 = machineActions.fetch("123456", {
       group_collapsed: ["deployed"],

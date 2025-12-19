@@ -1,15 +1,11 @@
 import * as Sentry from "@sentry/browser";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import ErrorBoundary, { Labels } from "./ErrorBoundary";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ErrorBoundary", () => {
   let state: RootState;
@@ -29,17 +25,14 @@ describe("ErrorBoundary", () => {
   it("should display an ErrorMessage if wrapped component throws", () => {
     vi.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
 
-    const store = mockStore(state);
-
     const Component = () => {
       throw new Error("kerblam");
     };
-    render(
-      <Provider store={store}>
-        <ErrorBoundary>
-          <Component />
-        </ErrorBoundary>
-      </Provider>
+    renderWithProviders(
+      <ErrorBoundary>
+        <Component />
+      </ErrorBoundary>,
+      { state }
     );
 
     expect(screen.getByText(Labels.ErrorMessage)).toBeInTheDocument();
@@ -55,17 +48,15 @@ describe("ErrorBoundary", () => {
         value: false,
       },
     ];
-    const store = mockStore(state);
 
     const Component = () => {
       throw new Error("kerblam");
     };
-    render(
-      <Provider store={store}>
-        <ErrorBoundary>
-          <Component />
-        </ErrorBoundary>
-      </Provider>
+    renderWithProviders(
+      <ErrorBoundary>
+        <Component />
+      </ErrorBoundary>,
+      { state }
     );
 
     expect(Sentry.captureException).toHaveBeenCalledTimes(0);
@@ -81,17 +72,15 @@ describe("ErrorBoundary", () => {
         value: true,
       },
     ];
-    const store = mockStore(state);
 
     const Component = () => {
       throw new Error("kerblam");
     };
-    render(
-      <Provider store={store}>
-        <ErrorBoundary>
-          <Component />
-        </ErrorBoundary>
-      </Provider>
+    renderWithProviders(
+      <ErrorBoundary>
+        <Component />
+      </ErrorBoundary>,
+      { state }
     );
 
     expect(Sentry.captureException).toHaveBeenCalledTimes(1);

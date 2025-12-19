@@ -1,5 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
@@ -12,9 +11,7 @@ import {
   NodeStatusCode,
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -48,9 +45,8 @@ describe("MachineHeader", () => {
   it("displays a spinner when loading", () => {
     state.machine.items = [];
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+    renderWithProviders(<MachineHeader systemId="abc123" />, {
       state,
-      route: "/machine/abc123",
     });
 
     expect(
@@ -61,9 +57,8 @@ describe("MachineHeader", () => {
   it("displays a spinner when loading the details version of the machine", () => {
     state.machine.items = [factory.machine({ system_id: "abc123" })];
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+    renderWithProviders(<MachineHeader systemId="abc123" />, {
       state,
-      route: "/machine/abc123",
     });
 
     expect(
@@ -74,9 +69,8 @@ describe("MachineHeader", () => {
   it("displays an icon when locked", () => {
     state.machine.items[0].locked = true;
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+    renderWithProviders(<MachineHeader systemId="abc123" />, {
       state,
-      route: "/machine/abc123",
     });
 
     expect(screen.getByRole("button", { name: /locked/i })).toBeInTheDocument();
@@ -88,9 +82,8 @@ describe("MachineHeader", () => {
   it("displays an icon when locked", () => {
     state.machine.items[0].locked = true;
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+    renderWithProviders(<MachineHeader systemId="abc123" />, {
       state,
-      route: "/machine/abc123",
     });
 
     expect(screen.getByRole("button", { name: /locked/i })).toBeInTheDocument();
@@ -102,9 +95,8 @@ describe("MachineHeader", () => {
   it("displays machine status", () => {
     state.machine.items[0].status = NodeStatus.DEPLOYED;
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+    renderWithProviders(<MachineHeader systemId="abc123" />, {
       state,
-      route: "/machine/abc123",
     });
 
     expect(screen.getByText(/deployed/i)).toBeInTheDocument();
@@ -115,9 +107,8 @@ describe("MachineHeader", () => {
       checkingPower: true,
     });
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+    renderWithProviders(<MachineHeader systemId="abc123" />, {
       state,
-      route: "/machine/abc123",
     });
 
     expect(screen.getByText(/checking power/i)).toBeInTheDocument();
@@ -126,12 +117,11 @@ describe("MachineHeader", () => {
   describe("power menu", () => {
     it("can dispatch the check power action", async () => {
       state.machine.items[0].actions = [];
-      const store = mockStore(state);
 
-      renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
-        store,
-        route: "/machine/abc123",
-      });
+      const { store } = renderWithProviders(
+        <MachineHeader systemId="abc123" />,
+        { state }
+      );
 
       await userEvent.click(screen.getByRole("button", { name: /Power/i }));
       await userEvent.click(
@@ -152,9 +142,8 @@ describe("MachineHeader", () => {
       system_id: "abc123",
     });
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+    renderWithProviders(<MachineHeader systemId="abc123" />, {
       state,
-      route: "/machine/abc123",
     });
 
     expect(
@@ -181,9 +170,8 @@ describe("MachineHeader", () => {
       }),
     });
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
+    renderWithProviders(<MachineHeader systemId="abc123" />, {
       state,
-      route: "/machine/abc123",
     });
 
     await userEvent.click(
@@ -199,11 +187,9 @@ describe("MachineHeader", () => {
   it("shouldn't need confirmation before locking a machine", async () => {
     state.machine.items[0].actions = [NodeActions.LOCK];
     state.machine.items[0].permissions = ["edit", "delete"];
-    const store = mockStore(state);
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
-      store,
-      route: "/machine/abc123",
+    const { store } = renderWithProviders(<MachineHeader systemId="abc123" />, {
+      state,
     });
 
     await userEvent.click(screen.getByRole("switch", { name: /lock/i }));
@@ -228,12 +214,8 @@ describe("MachineHeader", () => {
   it("displays an error icon with configuration tab link when power type is not set and status is unknown", () => {
     state.machine.items[0].power_state = PowerState.UNKNOWN;
     state.machine.items[0].status_code = NodeStatusCode.NEW;
-    const store = mockStore(state);
 
-    renderWithBrowserRouter(<MachineHeader systemId="abc123" />, {
-      store,
-      route: "/machine/abc123",
-    });
+    renderWithProviders(<MachineHeader systemId="abc123" />, { state });
 
     expect(
       screen.getByRole("link", { name: /error configuration/i })

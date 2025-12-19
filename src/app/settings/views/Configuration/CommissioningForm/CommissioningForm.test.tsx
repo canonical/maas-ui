@@ -1,16 +1,10 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import CommissioningForm from "./CommissioningForm";
 
 import { Labels as FormikButtonLabels } from "@/app/base/components/FormikFormButtons/FormikFormButtons";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("CommissioningForm", () => {
   let initialState: RootState;
@@ -60,14 +54,8 @@ describe("CommissioningForm", () => {
 
   it("dispatched an action to update config on save button click", async () => {
     const state = { ...initialState };
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CommissioningForm />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    const { store } = renderWithProviders(<CommissioningForm />, { state });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", {

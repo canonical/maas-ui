@@ -1,5 +1,4 @@
 import { Formik } from "formik";
-import configureStore from "redux-mock-store";
 
 import AddDeviceInterfaces from "../AddDeviceInterfaces";
 import type { AddDeviceInterface } from "../types";
@@ -13,8 +12,6 @@ import {
   renderWithProviders,
   within,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("AddDeviceInterfaces", () => {
   let interfaces: AddDeviceInterface[];
@@ -42,12 +39,12 @@ describe("AddDeviceInterfaces", () => {
 
   it("does not show subnet or IP address fields for dynamic IP assignment", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.DYNAMIC;
-    const store = mockStore(state);
+
     renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
-      { store }
+      { state }
     );
 
     expect(screen.queryByTestId("subnet-field")).not.toBeInTheDocument();
@@ -56,12 +53,12 @@ describe("AddDeviceInterfaces", () => {
 
   it("shows the standard IP address field for external IP assignment", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.EXTERNAL;
-    const store = mockStore(state);
+
     renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
-      { store }
+      { state }
     );
 
     expect(screen.getByTestId("ip-address-field")).toBeInTheDocument();
@@ -74,12 +71,12 @@ describe("AddDeviceInterfaces", () => {
 
   it("shows the subnet field when static IP assignment is selected", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.STATIC;
-    const store = mockStore(state);
+
     renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
-      { store }
+      { state }
     );
 
     expect(screen.getByTestId("subnet-field")).toBeInTheDocument();
@@ -92,12 +89,11 @@ describe("AddDeviceInterfaces", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.STATIC;
     interfaces[0].subnet = state.subnet.items[0].id.toString();
 
-    const store = mockStore(state);
     renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
-      { store }
+      { state }
     );
 
     expect(screen.getByTestId("prefixed-ip-address-field")).toBeInTheDocument();
@@ -105,12 +101,11 @@ describe("AddDeviceInterfaces", () => {
   });
 
   it("can add and remove interfaces", async () => {
-    const store = mockStore(state);
     renderWithProviders(
       <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
-      { store }
+      { state }
     );
 
     const getCardCount = () => screen.getAllByTestId("interface-card").length;

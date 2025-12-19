@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { AddLxdSteps } from "../AddLxd";
 import type { NewPodValues } from "../types";
 
@@ -11,8 +9,6 @@ import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("AuthenticationForm", () => {
   let state: RootState;
@@ -73,14 +69,14 @@ describe("AuthenticationForm", () => {
       CN: "my-favourite-kvm@host",
     });
     state.general.generatedCertificate.data = generatedCert;
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <AuthenticationForm
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
         setStep={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Check authentication" })
@@ -108,14 +104,14 @@ describe("AuthenticationForm", () => {
       CN: "my-favourite-kvm@host",
     });
     state.general.generatedCertificate.data = generatedCert;
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <AuthenticationForm
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
         setStep={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
     // Change to trusting via password and submit the form.
     await userEvent.click(
@@ -225,16 +221,16 @@ describe("AuthenticationForm", () => {
   });
 
   it("clears certificate and stops polling LXD server on unmount", () => {
-    const store = mockStore(state);
     const {
       result: { unmount },
+      store,
     } = renderWithProviders(
       <AuthenticationForm
         newPodValues={newPodValues}
         setNewPodValues={vi.fn()}
         setStep={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     unmount();

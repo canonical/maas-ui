@@ -1,13 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import VirshResources from "./VirshResources";
 
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("VirshResources", () => {
   it("shows a spinner if pods have not loaded yet", () => {
@@ -17,16 +11,11 @@ describe("VirshResources", () => {
         loaded: false,
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <VirshResources id={1} />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<VirshResources id={1} />, {
+      initialEntries: [{ pathname: "/kvm/1/project", key: "testKey" }],
+      state,
+    });
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });

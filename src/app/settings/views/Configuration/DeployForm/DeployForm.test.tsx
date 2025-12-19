@@ -1,15 +1,15 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import DeployForm from "./DeployForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  within,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("DeployFormFields", () => {
   let state: RootState;
@@ -57,14 +57,7 @@ describe("DeployFormFields", () => {
   });
 
   it("displays the deploy configuration form with correct fields", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DeployForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<DeployForm />, { state });
 
     const form = screen.getByRole("form", { name: "deploy configuration" });
     expect(form).toBeInTheDocument();
@@ -93,14 +86,8 @@ describe("DeployFormFields", () => {
       name: ConfigNames.HARDWARE_SYNC_INTERVAL,
       value: syncIntervalValue,
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DeployForm />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<DeployForm />, { state });
 
     expect(
       screen.getByRole("textbox", { name: /Default hardware sync interval/ })
@@ -108,14 +95,7 @@ describe("DeployFormFields", () => {
   });
 
   it("adds a hardware_sync_interval field to the request on submit", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeployForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<DeployForm />, { state });
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: /Default hardware sync interval/ })
@@ -146,14 +126,7 @@ describe("DeployFormFields", () => {
   });
 
   it("displays an error message when providing an invalid hardware sync interval value", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeployForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<DeployForm />, { state });
 
     const hardwareSyncInput = screen.getByRole("textbox", {
       name: /Default hardware sync interval/,

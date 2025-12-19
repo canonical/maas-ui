@@ -3,7 +3,7 @@ import NodeNameFields from "./NodeNameFields";
 import FormikForm from "@/app/base/components/FormikForm";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("NodeNameFields", () => {
   let state: RootState;
@@ -27,7 +27,7 @@ describe("NodeNameFields", () => {
 
   it("displays a spinner when loading domains", () => {
     state.domain.loaded = false;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FormikForm
         initialValues={{
           domain: "",
@@ -38,7 +38,6 @@ describe("NodeNameFields", () => {
         <NodeNameFields setHostnameError={vi.fn()} />
       </FormikForm>,
       {
-        route: "/machine/abc123",
         state,
       }
     );
@@ -46,7 +45,7 @@ describe("NodeNameFields", () => {
   });
 
   it("displays the fields", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FormikForm
         initialValues={{
           domain: "",
@@ -56,7 +55,7 @@ describe("NodeNameFields", () => {
       >
         <NodeNameFields canEditHostname setHostnameError={vi.fn()} />
       </FormikForm>,
-      { route: "/machine/abc123", state }
+      { state }
     );
 
     expect(
@@ -68,7 +67,7 @@ describe("NodeNameFields", () => {
   });
 
   it("disables fields when saving", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FormikForm
         initialValues={{
           domain: "",
@@ -78,7 +77,7 @@ describe("NodeNameFields", () => {
       >
         <NodeNameFields canEditHostname saving setHostnameError={vi.fn()} />
       </FormikForm>,
-      { route: "/machine/abc123", state }
+      { state }
     );
     expect(screen.getByRole("textbox", { name: "Hostname" })).toBeDisabled();
     expect(screen.getByRole("combobox", { name: "Domain" })).toBeDisabled();
@@ -86,7 +85,7 @@ describe("NodeNameFields", () => {
 
   it("updates the hostname errors if they exist", () => {
     const setHostnameError = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FormikForm
         initialErrors={{ hostname: "Uh oh!" }}
         initialValues={{
@@ -101,7 +100,7 @@ describe("NodeNameFields", () => {
           setHostnameError={setHostnameError}
         />
       </FormikForm>,
-      { route: "/machine/abc123", state }
+      { state }
     );
     expect(setHostnameError).toHaveBeenCalledWith("Uh oh!");
   });

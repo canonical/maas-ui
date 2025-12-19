@@ -3,7 +3,7 @@ import RAMColumn from "./RAMColumn";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("RAMColumn", () => {
   let state: RootState;
@@ -38,7 +38,7 @@ describe("RAMColumn", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <RAMColumn
         memory={pod.resources.memory}
         overCommit={pod.memory_over_commit_ratio}
@@ -67,7 +67,7 @@ describe("RAMColumn", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <RAMColumn
         memory={pod.resources.memory}
         overCommit={pod.memory_over_commit_ratio}
@@ -97,7 +97,7 @@ describe("RAMColumn", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <RAMColumn
         memory={pod.resources.memory}
         overCommit={pod.memory_over_commit_ratio}
@@ -122,7 +122,7 @@ describe("RAMColumn", () => {
       }),
     });
 
-    renderWithMockStore(<RAMColumn memory={memory} />, {
+    renderWithProviders(<RAMColumn memory={memory} />, {
       state,
     });
     expect(screen.getByText(/7 of 21B allocated/i)).toBeInTheDocument();

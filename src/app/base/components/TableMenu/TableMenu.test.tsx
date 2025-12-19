@@ -1,10 +1,12 @@
 import TableMenu from "./TableMenu";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("TableMenu ", () => {
   it("expands the menu on click", async () => {
-    render(<TableMenu links={[{ children: "Item1" }]} title="Actions:" />);
+    renderWithProviders(
+      <TableMenu links={[{ children: "Item1" }]} title="Actions:" />
+    );
     const actionsButton = screen.getByRole("button", { name: "Actions:" });
     expect(actionsButton).toBeInTheDocument();
     expect(

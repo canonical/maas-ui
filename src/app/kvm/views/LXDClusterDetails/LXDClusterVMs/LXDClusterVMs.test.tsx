@@ -1,12 +1,10 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import LXDClusterVMs from "./LXDClusterVMs";
 
 import urls from "@/app/base/urls";
 import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen } from "@/testing/utils";
 
@@ -18,7 +16,6 @@ vi.mock("@reduxjs/toolkit", async () => {
     nanoid: vi.fn(),
   };
 });
-const mockStore = configureStore<RootState>();
 
 describe("LXDClusterVMs", () => {
   beforeEach(() => {
@@ -59,12 +56,12 @@ describe("LXDClusterVMs", () => {
         loaded: true,
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(
       <LXDClusterVMs clusterId={1} searchFilter="" setSearchFilter={vi.fn()} />,
       {
         initialEntries: [urls.kvm.lxd.cluster.vms.index({ clusterId: 1 })],
-        store,
+        state,
       }
     );
     expect(screen.getByTestId("host-link")).toHaveAttribute(
@@ -88,12 +85,12 @@ describe("LXDClusterVMs", () => {
         loaded: true,
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <LXDClusterVMs clusterId={1} searchFilter="" setSearchFilter={vi.fn()} />,
       {
         initialEntries: [urls.kvm.lxd.cluster.vms.index({ clusterId: 1 })],
-        store,
+        state,
       }
     );
     const expected = machineActions.fetch(callId, {

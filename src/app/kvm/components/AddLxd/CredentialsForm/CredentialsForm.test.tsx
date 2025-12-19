@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { AddLxdSteps } from "../AddLxd";
 import type { NewPodValues } from "../types";
 
@@ -18,8 +16,6 @@ import {
   renderWithProviders,
   setupMockServer,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 setupMockServer(
   poolsResolvers.listPools.handler(),
@@ -54,15 +50,15 @@ describe("CredentialsForm", () => {
 
   it("dispatches an action to generate certificate if not providing certificate and key", async () => {
     const setNewPodValues = vi.fn();
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <CredentialsForm
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     // Submit form
@@ -94,19 +90,19 @@ describe("CredentialsForm", () => {
 
   it("dispatches an action to fetch projects if providing certificate and key", async () => {
     const setNewPodValues = vi.fn();
-    const store = mockStore(state);
+
     newPodValues.certificate = "certificate";
     newPodValues.key = "key";
     newPodValues.zone = "4";
     newPodValues.pool = "3";
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <CredentialsForm
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
     // Change radio to provide certificate instead of generating one.
     await userEvent.click(
@@ -155,7 +151,7 @@ describe("CredentialsForm", () => {
     state.general.generatedCertificate.data = factory.generatedCertificate({
       CN: "my-favourite-kvm@host",
     });
-    const store = mockStore(state);
+
     renderWithProviders(
       <CredentialsForm
         newPodValues={{
@@ -171,7 +167,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.AUTHENTICATION);
@@ -184,7 +180,7 @@ describe("CredentialsForm", () => {
       CN: "my-favourite-kvm@host",
     });
     state.pod.errors = "Failed to connect to LXD.";
-    const store = mockStore(state);
+
     renderWithProviders(
       <CredentialsForm
         newPodValues={{
@@ -200,7 +196,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     expect(setStep).not.toHaveBeenCalled();
@@ -211,7 +207,7 @@ describe("CredentialsForm", () => {
     state.pod.projects = {
       "192.168.1.1": [factory.podProject()],
     };
-    const store = mockStore(state);
+
     renderWithProviders(
       <CredentialsForm
         newPodValues={{
@@ -227,7 +223,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
@@ -240,7 +236,7 @@ describe("CredentialsForm", () => {
       "192.168.1.1": [factory.podProject()],
     };
     state.pod.errors = "Failed to fetch projects.";
-    const store = mockStore(state);
+
     renderWithProviders(
       <CredentialsForm
         newPodValues={{
@@ -256,7 +252,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
 
     expect(setStep).not.toHaveBeenCalled();
@@ -276,7 +272,7 @@ describe("CredentialsForm", () => {
         errors: "name too long",
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(
       <CredentialsForm
         newPodValues={{
@@ -292,7 +288,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
     expect(setStep).not.toHaveBeenCalled();
     expect(screen.getByTestId("notification-title")).toHaveTextContent(
@@ -307,9 +303,10 @@ describe("CredentialsForm", () => {
       "192.168.1.1": [factory.podProject()],
     };
     state.pod.errors = "Failed to fetch projects.";
-    const store = mockStore(state);
+
     const {
       result: { unmount },
+      store,
     } = renderWithProviders(
       <CredentialsForm
         newPodValues={{
@@ -325,7 +322,7 @@ describe("CredentialsForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={setSubmissionErrors}
       />,
-      { initialEntries: ["/kvm/add"], store }
+      { initialEntries: ["/kvm/add"], state }
     );
     unmount();
     expect(

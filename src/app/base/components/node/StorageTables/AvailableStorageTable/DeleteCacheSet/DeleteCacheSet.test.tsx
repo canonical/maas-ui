@@ -1,13 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import DeleteCacheSet from "./DeleteCacheSet";
 
-import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const disk = factory.nodeDisk({
   id: 1,
   name: "floppy-disk",
@@ -34,10 +30,12 @@ it("should render the form", () => {
 });
 
 it("should fire an action to delete a disk", async () => {
-  const store = mockStore(state);
-  renderWithProviders(<DeleteCacheSet disk={disk} systemId="abc123" />, {
-    store,
-  });
+  const { store } = renderWithProviders(
+    <DeleteCacheSet disk={disk} systemId="abc123" />,
+    {
+      state,
+    }
+  );
 
   await userEvent.click(
     screen.getByRole("button", { name: "Remove cache set" })

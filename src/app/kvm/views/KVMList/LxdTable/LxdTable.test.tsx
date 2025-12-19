@@ -2,7 +2,7 @@ import LxdTable from "./LxdTable";
 
 import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("LxdTable", () => {
   it("displays a spinner while loading", () => {
@@ -12,7 +12,7 @@ describe("LxdTable", () => {
       }),
     });
 
-    renderWithBrowserRouter(<LxdTable />, { route: "/kvm", state });
+    renderWithProviders(<LxdTable />, { state });
     expect(screen.getByTestId("loading-table")).toBeInTheDocument();
   });
 
@@ -28,7 +28,7 @@ describe("LxdTable", () => {
         loaded: true,
       }),
     });
-    renderWithBrowserRouter(<LxdTable />, { route: "/kvm", state });
+    renderWithProviders(<LxdTable />, { state });
     expect(screen.getByRole("grid")).toBeInTheDocument();
   });
 });

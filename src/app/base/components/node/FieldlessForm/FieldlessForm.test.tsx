@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import FieldlessForm from "./FieldlessForm";
 
 import { machineActions } from "@/app/store/machine";
@@ -17,7 +15,6 @@ vi.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: vi.fn(),
 }));
 
-const mockStore = configureStore<RootState>();
 const { mockClose } = await mockSidePanel();
 
 describe("FieldlessForm", () => {
@@ -49,7 +46,6 @@ describe("FieldlessForm", () => {
   });
 
   it("can unset the selected action", async () => {
-    const store = mockStore(state);
     renderWithProviders(
       <FieldlessForm
         action={NodeActions.ON}
@@ -60,7 +56,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { store }
+      { state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
@@ -68,8 +64,7 @@ describe("FieldlessForm", () => {
   });
 
   it("can dispatch abort action on given machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <FieldlessForm
         action={NodeActions.ABORT}
         actions={machineActions}
@@ -79,7 +74,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -106,8 +101,7 @@ describe("FieldlessForm", () => {
   });
 
   it("can dispatch acquire action on given machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <FieldlessForm
         action={NodeActions.ACQUIRE}
         actions={machineActions}
@@ -117,7 +111,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -144,8 +138,7 @@ describe("FieldlessForm", () => {
   });
 
   it("can dispatch exit rescue mode action on given machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <FieldlessForm
         action={NodeActions.EXIT_RESCUE_MODE}
         actions={machineActions}
@@ -155,7 +148,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -182,8 +175,7 @@ describe("FieldlessForm", () => {
   });
 
   it("can dispatch lock action on given machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <FieldlessForm
         action={NodeActions.LOCK}
         actions={machineActions}
@@ -193,7 +185,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Lock machine" }));
@@ -218,8 +210,7 @@ describe("FieldlessForm", () => {
   });
 
   it("can dispatch mark fixed action on given machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <FieldlessForm
         action={NodeActions.MARK_FIXED}
         actions={machineActions}
@@ -229,7 +220,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -256,8 +247,7 @@ describe("FieldlessForm", () => {
   });
 
   it("can dispatch power off action on given machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <FieldlessForm
         action={NodeActions.OFF}
         actions={machineActions}
@@ -267,7 +257,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -294,8 +284,7 @@ describe("FieldlessForm", () => {
   });
 
   it("can dispatch power on action on given machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <FieldlessForm
         action={NodeActions.ON}
         actions={machineActions}
@@ -305,7 +294,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -332,8 +321,7 @@ describe("FieldlessForm", () => {
   });
 
   it("can dispatch unlock action on given machines", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <FieldlessForm
         action={NodeActions.UNLOCK}
         actions={machineActions}
@@ -343,7 +331,7 @@ describe("FieldlessForm", () => {
         processingCount={0}
         viewingDetails={false}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(

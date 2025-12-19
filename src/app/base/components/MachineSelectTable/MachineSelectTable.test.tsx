@@ -7,7 +7,7 @@ import {
   userEvent,
   screen,
   within,
-  renderWithMockStore,
+  renderWithProviders,
 } from "@/testing/utils";
 
 describe("MachineSelectTable", () => {
@@ -44,7 +44,7 @@ describe("MachineSelectTable", () => {
 
   it("shows a loading skeleton while data is loading", () => {
     state.machine.loading = true;
-    renderWithMockStore(
+    renderWithProviders(
       <MachineSelectTable
         machines={machines}
         onMachineClick={vi.fn()}
@@ -58,7 +58,7 @@ describe("MachineSelectTable", () => {
   });
 
   it("highlights the substring that matches the search text", async () => {
-    renderWithMockStore(
+    renderWithProviders(
       <MachineSelectTable
         machines={[machines[0]]}
         onMachineClick={vi.fn()}
@@ -79,7 +79,7 @@ describe("MachineSelectTable", () => {
   it("runs onMachineClick function on row click", async () => {
     const onMachineClick = vi.fn();
 
-    renderWithMockStore(
+    renderWithProviders(
       <MachineSelectTable
         machines={machines}
         onMachineClick={onMachineClick}
@@ -95,7 +95,7 @@ describe("MachineSelectTable", () => {
   });
 
   it("displays tag names", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <MachineSelectTable
         machines={machines}
         onMachineClick={vi.fn()}
@@ -114,7 +114,7 @@ describe("MachineSelectTable", () => {
   it("can select machine by pressing Enter key", async () => {
     const onMachineClick = vi.fn();
     const machine = machines[0];
-    renderWithMockStore(
+    renderWithProviders(
       <MachineSelectTable
         machines={machines}
         onMachineClick={onMachineClick}
@@ -135,7 +135,7 @@ describe("MachineSelectTable", () => {
 
   it("renders with partial search string", async () => {
     const onMachineClick = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <MachineSelectTable
         machines={machines}
         onMachineClick={onMachineClick}

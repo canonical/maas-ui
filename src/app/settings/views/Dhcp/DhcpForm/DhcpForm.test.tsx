@@ -1,12 +1,9 @@
-import { MemoryRouter } from "react-router";
-
 import { DhcpForm } from "./DhcpForm";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   screen,
-  renderWithMockStore,
   renderWithProviders,
   mockSidePanel,
   userEvent,
@@ -37,12 +34,7 @@ describe("DhcpForm", () => {
   });
 
   it("can render", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={["/"]}>
-        <DhcpForm />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpForm />, { state });
     expect(
       screen.getByRole("form", { name: "Add DHCP snippet" })
     ).toBeInTheDocument();
@@ -56,12 +48,9 @@ describe("DhcpForm", () => {
   });
 
   it("shows the snippet name in the title when editing", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={["/"]}>
-        <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />, {
+      state,
+    });
 
     expect(
       screen.getByRole("form", { name: "Editing `lease`" })

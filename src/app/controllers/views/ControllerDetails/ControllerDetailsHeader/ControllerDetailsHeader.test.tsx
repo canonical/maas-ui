@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import ControllerDetailsHeader from "./ControllerDetailsHeader";
 
 import type { ControllerActions } from "@/app/store/controller/types";
@@ -8,16 +6,14 @@ import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore();
-
 it("displays a spinner as the title if controller has not loaded yet", () => {
   const state = factory.rootState({
     controller: factory.controllerState({
       items: [],
     }),
   });
-  const store = mockStore(state);
-  renderWithProviders(<ControllerDetailsHeader systemId="abc123" />, { store });
+
+  renderWithProviders(<ControllerDetailsHeader systemId="abc123" />, { state });
 
   expect(
     screen.getByTestId("section-header-title-spinner")
@@ -31,10 +27,10 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
       items: [controller],
     }),
   });
-  const store = mockStore(state);
+
   renderWithProviders(
     <ControllerDetailsHeader systemId={controller.system_id} />,
-    { store }
+    { state }
   );
 
   expect(
@@ -49,10 +45,10 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
       items: [controllerDetails],
     }),
   });
-  const store = mockStore(state);
+
   renderWithProviders(
     <ControllerDetailsHeader systemId={controllerDetails.system_id} />,
-    { store }
+    { state }
   );
 
   expect(
@@ -74,10 +70,10 @@ it("displays actions in take action menu", async () => {
       items: [controllerDetails],
     }),
   });
-  const store = mockStore(state);
+
   renderWithProviders(
     <ControllerDetailsHeader systemId={controllerDetails.system_id} />,
-    { store }
+    { state }
   );
 
   const actionLabels = actions.map(getNodeActionTitle);

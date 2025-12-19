@@ -9,7 +9,7 @@ import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   within,
@@ -41,14 +41,14 @@ describe("SelectProjectFormFields", () => {
     state.pod.projects = {
       "192.168.1.1": [project],
     };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
         onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
-      { route: "/kvm/add", state }
+      { state }
     );
 
     const radio = screen.getByRole("radio", {
@@ -82,14 +82,14 @@ describe("SelectProjectFormFields", () => {
       },
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
         onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
-      { route: "/kvm/add", state }
+      { state }
     );
 
     const radio = screen.getByRole("radio", {
@@ -128,14 +128,14 @@ describe("SelectProjectFormFields", () => {
         ],
       },
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
         onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
-      { route: "/kvm/add", state }
+      { state }
     );
 
     expect(
@@ -161,14 +161,14 @@ describe("SelectProjectFormFields", () => {
         ],
       },
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
         onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
-      { route: "/kvm/add", state }
+      { state }
     );
 
     const radio = screen.getByRole("radio", {

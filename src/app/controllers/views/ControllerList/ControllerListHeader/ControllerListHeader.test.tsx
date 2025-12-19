@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import ControllerListHeader from "./ControllerListHeader";
 
 import AddController from "@/app/controllers/components/ControllerForms/AddController";
@@ -12,7 +10,6 @@ import {
   userEvent,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const { mockOpen } = await mockSidePanel();
 
 describe("ControllerListHeader", () => {
@@ -92,14 +89,13 @@ describe("ControllerListHeader", () => {
   });
 
   it("changes the search text when the filters change", () => {
-    const store = mockStore(state);
     const { rerender } = renderWithProviders(
       <ControllerListHeader
         rowSelection={{}}
         searchFilter={""}
         setSearchFilter={vi.fn()}
       />,
-      { initialEntries: ["/machines"], store }
+      { initialEntries: ["/machines"], state }
     );
     expect(screen.getByRole("searchbox")).toHaveValue("");
 

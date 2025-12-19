@@ -5,7 +5,7 @@ import { Label as InstallationOutputLabel } from "@/app/base/components/node/Nod
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("MachineLogs", () => {
   let state: RootState;
@@ -24,7 +24,7 @@ describe("MachineLogs", () => {
         items: [],
       }),
     });
-    renderWithBrowserRouter(<MachineLogs systemId="abc123" />, {
+    renderWithProviders(<MachineLogs systemId="abc123" />, {
       state,
     });
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
@@ -45,10 +45,10 @@ describe("MachineLogs", () => {
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<MachineLogs systemId="abc123" />, {
-        route: path,
+      renderWithProviders(<MachineLogs systemId="abc123" />, {
+        initialEntries: [path],
         state,
-        routePattern: `${urls.machines.machine.logs.index(null)}/*`,
+        pattern: `${urls.machines.machine.logs.index(null)}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });

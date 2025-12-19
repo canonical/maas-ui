@@ -2,7 +2,7 @@ import VirshSettings from "./VirshSettings";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("VirshSettings", () => {
   let state: RootState;
@@ -20,7 +20,7 @@ describe("VirshSettings", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const { store } = renderWithBrowserRouter(<VirshSettings id={1} />, {
+    const { store } = renderWithProviders(<VirshSettings id={1} />, {
       state,
     });
     const expectedActionTypes = [
@@ -39,7 +39,7 @@ describe("VirshSettings", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    renderWithBrowserRouter(<VirshSettings id={1} />, { state });
+    renderWithProviders(<VirshSettings id={1} />, { state });
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
   });
 });
