@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
@@ -10,7 +10,6 @@ import { useGetZone } from "@/app/api/query/zones";
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
@@ -18,13 +17,9 @@ import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   id: Pod["id"];
-  setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const VirshDetailsHeader = ({
-  id,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+const VirshDetailsHeader = ({ id }: Props): ReactElement => {
   const location = useLocation();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
@@ -44,17 +39,10 @@ const VirshDetailsHeader = ({
     <KVMDetailsHeader
       buttons={
         pod
-          ? [
-              <VirshDetailsActionMenu
-                hostId={pod.id}
-                key="action-dropdown"
-                setSidePanelContent={setSidePanelContent}
-              />,
-            ]
+          ? [<VirshDetailsActionMenu hostId={pod.id} key="action-dropdown" />]
           : null
       }
       loading={!pod}
-      setSidePanelContent={setSidePanelContent}
       tabLinks={[
         {
           active: location.pathname.endsWith(

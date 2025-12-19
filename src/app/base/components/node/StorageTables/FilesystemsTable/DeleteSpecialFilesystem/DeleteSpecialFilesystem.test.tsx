@@ -1,13 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import DeleteSpecialFilesystem from "./DeleteSpecialFilesystem";
 
 import { machineActions } from "@/app/store/machine";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const filesystem = factory.nodeFilesystem({ mount_point: "/disk-fs/path" });
 const disk = factory.nodeDisk({ filesystem, partitions: [] });
 const machine = factory.machineDetails({
@@ -24,9 +20,8 @@ const state = factory.rootState({
 });
 
 it("renders a delete confirmation form", () => {
-  renderWithBrowserRouter(
+  renderWithProviders(
     <DeleteSpecialFilesystem
-      close={vi.fn()}
       mountPoint={filesystem.mount_point}
       systemId="abc123"
     />,
@@ -39,14 +34,12 @@ it("renders a delete confirmation form", () => {
 });
 
 it("can remove a special filesystem", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
+  const { store } = renderWithProviders(
     <DeleteSpecialFilesystem
-      close={vi.fn()}
       mountPoint={filesystem.mount_point}
       systemId="abc123"
     />,
-    { store }
+    { state }
   );
 
   expect(

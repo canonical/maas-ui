@@ -2,8 +2,7 @@ import { describe } from "vitest";
 
 import DatastoresTable from "./DatastoresTable";
 
-import * as sidePanelHooks from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import RemoveDatastore from "@/app/base/components/node/StorageTables/DatastoresTable/RemoveDatastore";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
@@ -15,20 +14,10 @@ import {
   mockIsPending,
   renderWithProviders,
   waitFor,
+  mockSidePanel,
 } from "@/testing/utils";
 
-const setSidePanelContent = vi.fn();
-beforeEach(() => {
-  vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-    setSidePanelContent,
-    sidePanelContent: null,
-    setSidePanelSize: vi.fn(),
-    sidePanelSize: "regular",
-  });
-});
-afterEach(() => {
-  vi.restoreAllMocks();
-});
+const { mockOpen } = await mockSidePanel();
 
 describe("DatastoresTable", () => {
   let state: RootState;
@@ -166,11 +155,11 @@ describe("DatastoresTable", () => {
         screen.getByRole("button", { name: "Remove datastore..." })
       );
 
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.REMOVE_DATASTORE,
-          extras: {
-            disk: dsDisk,
+          component: RemoveDatastore,
+          props: {
+            diskId: dsDisk.id,
             systemId: machine.system_id,
           },
         })

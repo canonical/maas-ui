@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
+import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
+import { Button, MainTable, Spinner } from "@canonical/react-components";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import ScriptDetails from "../ScriptDetails";
 
 import ColumnToggle from "@/app/base/components/ColumnToggle";
+import SearchBox from "@/app/base/components/SearchBox";
 import TableActions from "@/app/base/components/TableActions";
 import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import { useWindowTitle } from "@/app/base/hooks";
-import SettingsTable from "@/app/settings/components/SettingsTable";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import ScriptsUpload from "@/app/settings/views/Scripts/ScriptsUpload";
 import type { RootState } from "@/app/store/root/types";
 import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
@@ -126,6 +130,7 @@ const generateRows = (
 
 const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
   const dispatch = useDispatch();
+  const { openSidePanel } = useSidePanel();
   const [expandedId, setExpandedId] = useState<Script["id"] | null>(null);
   const [expandedType, setExpandedType] = useState<"delete" | "details" | null>(
     null
@@ -164,54 +169,92 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
   return (
     <ContentSection>
       <ContentSection.Content>
-        <SettingsTable
-          buttons={[
-            { label: "Upload script", url: `/settings/scripts/${type}/upload` },
-          ]}
-          defaultSort="name"
-          emptyStateMsg={generateEmptyStateMsg(tableStatus, {
-            default: Labels.EmptyList,
-            filtered: Labels.NoResults,
-          })}
-          headers={[
-            {
-              content: "Script name",
-              sortKey: "name",
-            },
-            {
-              content: "Description",
-              sortKey: "description",
-            },
-            {
-              content: "Uploaded on",
-              sortKey: "uploaded_on",
-            },
-            {
-              content: "Actions",
-              className: "u-align--right",
-            },
-          ]}
-          loaded={scriptsLoaded}
-          loading={scriptsLoading}
-          rows={generateRows(
-            userScripts,
-            expandedId,
-            setExpandedId,
-            expandedType,
-            setExpandedType,
-            hideExpanded,
-            dispatch,
-            saved,
-            saving
+        <div className="settings-table">
+          <MainToolbar>
+            <MainToolbar.Title>
+              {`${type === "commissioning" ? "Commissioning" : "Testing"} scripts`}
+            </MainToolbar.Title>
+            <MainToolbar.Controls>
+              <SearchBox
+                onChange={setSearchText}
+                placeholder={`Search ${type} scripts`}
+                value={searchText}
+              />
+              <Button
+                onClick={() => {
+                  openSidePanel({
+                    component: ScriptsUpload,
+                    title: `Upload ${type} script`,
+                    props: {
+                      type,
+                    },
+                  });
+                }}
+              >
+                Upload script
+              </Button>
+            </MainToolbar.Controls>
+          </MainToolbar>
+          {scriptsLoading && (
+            <div className="settings-table__loader">
+              <Spinner />
+            </div>
           )}
-          searchOnChange={setSearchText}
-          searchPlaceholder={`Search ${type} scripts`}
-          searchText={searchText}
-          tableClassName="scripts-list"
-          title={`${
-            type === "commissioning" ? "Commissioning" : "Testing"
-          } scripts`}
-        />
+          <MainTable
+            className={classNames(
+              "p-table-expanding--light u-nudge-down",
+              "scripts-list",
+              {
+                "u-no-padding--bottom": scriptsLoading && !scriptsLoaded,
+              }
+            )}
+            defaultSort="name"
+            defaultSortDirection="ascending"
+            emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+              default: Labels.EmptyList,
+              filtered: Labels.NoResults,
+            })}
+            expanding={true}
+            headers={[
+              {
+                content: "Script name",
+                sortKey: "name",
+              },
+              {
+                content: "Description",
+                sortKey: "description",
+              },
+              {
+                content: "Uploaded on",
+                sortKey: "uploaded_on",
+              },
+              {
+                content: "Actions",
+                className: "u-align--right",
+              },
+            ]}
+            paginate={20}
+            rows={
+              scriptsLoaded
+                ? generateRows(
+                    userScripts,
+                    expandedId,
+                    setExpandedId,
+                    expandedType,
+                    setExpandedType,
+                    hideExpanded,
+                    dispatch,
+                    saved,
+                    saving
+                  )
+                : undefined
+            }
+            sortable
+          />
+          {scriptsLoading && !scriptsLoaded && (
+            <div className="settings-table__lines"></div>
+          )}
+        </div>
       </ContentSection.Content>
     </ContentSection>
   );

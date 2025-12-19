@@ -2,12 +2,12 @@ import { Formik } from "formik";
 
 import FormikField from "./FormikField";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("FormikField", () => {
   it("can set a different component", () => {
     const Component = () => <select />;
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikField component={Component} name="username" />
       </Formik>
@@ -18,7 +18,7 @@ describe("FormikField", () => {
   });
 
   it("can pass errors", () => {
-    render(
+    renderWithProviders(
       <Formik
         initialErrors={{ username: "Uh oh!" }}
         initialTouched={{ username: true }}
@@ -33,7 +33,7 @@ describe("FormikField", () => {
   });
 
   it("can hide the errors", () => {
-    render(
+    renderWithProviders(
       <Formik
         initialErrors={{ username: "Uh oh!" }}
         initialTouched={{ username: true }}

@@ -4,7 +4,7 @@ import SourceMachineDetails, {
 
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { screen, render } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("SourceMachineDetails", () => {
   it("renders a list of the source machine's details", () => {
@@ -23,7 +23,7 @@ describe("SourceMachineDetails", () => {
       storage: 8,
       zone: { id: 3, name: "zone" },
     });
-    render(<SourceMachineDetails machine={machine} />);
+    renderWithProviders(<SourceMachineDetails machine={machine} />);
     expect(
       screen.getByLabelText(SourceMachineDetailsLabels.Status)
     ).toHaveTextContent("Ready");

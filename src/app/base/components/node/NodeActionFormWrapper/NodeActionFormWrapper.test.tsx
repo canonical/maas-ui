@@ -6,7 +6,7 @@ import type { Node } from "@/app/store/types/node";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
-import { render, screen, waitFor } from "@/testing/utils";
+import { render, screen, waitFor, renderWithProviders } from "@/testing/utils";
 
 describe("NodeActionFormWrapper", () => {
   afterEach(() => {
@@ -18,7 +18,7 @@ describe("NodeActionFormWrapper", () => {
       factory.machine({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       factory.machine({ system_id: "def456", actions: [NodeActions.ABORT] }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={vi.fn()}
@@ -41,7 +41,7 @@ describe("NodeActionFormWrapper", () => {
       factory.machine({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       factory.machine({ system_id: "def456", actions: [] }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={vi.fn()}
@@ -67,7 +67,7 @@ describe("NodeActionFormWrapper", () => {
       factory.machine({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       factory.machine({ system_id: "def456", actions: [] }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={vi.fn()}
@@ -91,7 +91,7 @@ describe("NodeActionFormWrapper", () => {
       factory.machine({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       factory.machine({ system_id: "def456", actions: [] }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={vi.fn()}

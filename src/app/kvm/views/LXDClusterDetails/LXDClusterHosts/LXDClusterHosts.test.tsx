@@ -4,7 +4,7 @@ import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("LXDClusterHosts", () => {
   let state: RootState;
@@ -32,14 +32,10 @@ describe("LXDClusterHosts", () => {
 
   it("displays a spinner if pods haven't loaded", () => {
     state.pod.loaded = false;
-    renderWithBrowserRouter(
-      <LXDClusterHosts clusterId={1} setSidePanelContent={vi.fn()} />,
-      {
-        route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
-        routePattern: `${urls.kvm.index}/*`,
-        state,
-      }
-    );
+    renderWithProviders(<LXDClusterHosts clusterId={1} />, {
+      initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })],
+      state,
+    });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 });

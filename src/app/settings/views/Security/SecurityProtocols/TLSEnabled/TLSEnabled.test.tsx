@@ -1,15 +1,15 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import TLSEnabled, { Labels } from "./TLSEnabled";
 
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
-import { userEvent, fireEvent, render, screen, waitFor } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  fireEvent,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("displays a spinner while loading config", () => {
   const state = factory.rootState({
@@ -17,14 +17,7 @@ it("displays a spinner while loading config", () => {
       loading: true,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <TLSEnabled />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<TLSEnabled />, { state });
 
   expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
 });
@@ -37,14 +30,7 @@ it("displays a spinner while loading the certificate", () => {
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <TLSEnabled />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<TLSEnabled />, { state });
 
   expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
 });
@@ -59,14 +45,7 @@ it("renders certificate content", () => {
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <TLSEnabled />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<TLSEnabled />, { state });
 
   expect(screen.getByRole("textbox", { name: Labels.Textarea })).toHaveValue(
     tlsCertificate.certificate
@@ -95,14 +74,7 @@ it("disables the interval field if notification is not enabled", async () => {
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <TLSEnabled />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<TLSEnabled />, { state });
   const slider = screen.getByRole("slider", { name: Labels.Interval });
   expect(slider).toBeDisabled();
 
@@ -137,14 +109,7 @@ it("shows an error if TLS notification is enabled but interval is invalid", asyn
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <TLSEnabled />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<TLSEnabled />, { state });
   const intervalInput = screen.getByRole("spinbutton", {
     name: Labels.Interval,
   });
@@ -181,14 +146,7 @@ it("dispatches an action to update TLS notification config with notification ena
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <TLSEnabled />
-      </MemoryRouter>
-    </Provider>
-  );
+  const { store } = renderWithProviders(<TLSEnabled />, { state });
 
   await userEvent.click(
     screen.getByRole("checkbox", { name: Labels.NotificationCheckbox })
@@ -232,14 +190,7 @@ it("dispatches an action to update TLS notification config with notification dis
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <TLSEnabled />
-      </MemoryRouter>
-    </Provider>
-  );
+  const { store } = renderWithProviders(<TLSEnabled />, { state });
   const notificationCheckbox = screen.getByRole("checkbox", {
     name: Labels.NotificationCheckbox,
   });

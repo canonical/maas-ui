@@ -1,6 +1,6 @@
 import ErrorDetails from "./ErrorDetails";
 
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 const errorMessage = "error message text";
 const failedSystemIds = ["abc123", "def456"];
@@ -9,7 +9,7 @@ const failureDetails = {
 };
 
 it("displays correct count of failed machines", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <ErrorDetails
       failedSystemIds={failedSystemIds}
       failureDetails={failureDetails}
@@ -20,7 +20,7 @@ it("displays correct count of failed machines", () => {
 });
 
 it("displays error message with machine systemIds", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <ErrorDetails
       failedSystemIds={failedSystemIds}
       failureDetails={failureDetails}

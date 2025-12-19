@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { useDispatch } from "react-redux";
@@ -7,7 +8,6 @@ import type { useResponsiveColumns } from "../hooks";
 
 import { usePoolCount } from "@/app/api/query/pools";
 import type { SetSearchFilter } from "@/app/base/types";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
 import type { FetchGroupKey } from "@/app/store/machine/types";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
@@ -20,7 +20,6 @@ type Props = {
   setHiddenColumns: ReturnType<typeof useResponsiveColumns>[1];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSidePanelContent: MachineSetSidePanelContent;
 };
 
 export const MachineListHeader = ({
@@ -31,8 +30,7 @@ export const MachineListHeader = ({
   setHiddenColumns,
   searchFilter,
   setSearchFilter,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const dispatch = useDispatch();
   // Get the count of all machines
   const { machineCount: allMachineCount } = useFetchMachineCount();
@@ -62,7 +60,6 @@ export const MachineListHeader = ({
       setGrouping={setGrouping}
       setHiddenColumns={setHiddenColumns}
       setHiddenGroups={setHiddenGroups}
-      setSidePanelContent={setSidePanelContent}
     />
   );
 };

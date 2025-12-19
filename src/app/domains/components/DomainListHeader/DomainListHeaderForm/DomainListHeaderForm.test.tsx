@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import DomainListHeaderForm, {
   Labels as DomainListHeaderFormLabels,
 } from "./DomainListHeaderForm";
@@ -13,7 +11,6 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 const { mockClose } = await mockSidePanel();
 
 describe("DomainListHeaderForm", () => {
@@ -32,8 +29,7 @@ describe("DomainListHeaderForm", () => {
   });
 
   it("calls domainActions.create on save click", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<DomainListHeaderForm />, { store });
+    const { store } = renderWithProviders(<DomainListHeaderForm />, { state });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: DomainListHeaderFormLabels.Name }),

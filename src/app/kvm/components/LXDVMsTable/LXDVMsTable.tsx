@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
@@ -12,8 +13,9 @@ import type {
 } from "./useVMsTableColumns/useVMsTableColumns";
 import useVMsTableColumns from "./useVMsTableColumns/useVMsTableColumns";
 
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { SetSearchFilter } from "@/app/base/types";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import { SortDirection } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import { FilterGroupKey } from "@/app/store/machine/types";
@@ -30,7 +32,6 @@ type Props = {
   pods: Pod["name"][];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export const VMS_PER_PAGE = 10;
@@ -43,9 +44,10 @@ const LXDVMsTable = ({
   pods,
   searchFilter,
   setSearchFilter,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
+
   const tags = useSelector(tagSelectors.all);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -64,7 +66,10 @@ const LXDVMsTable = ({
       // Set the filters to get results that belong to this single pod or pods in a cluster.
       [FilterGroupKey.Pod]: pods,
     },
-    sortDirection: sorting[0]?.desc === true ? "descending" : "ascending",
+    sortDirection:
+      sorting[0]?.desc === true
+        ? SortDirection.DESCENDING
+        : SortDirection.ASCENDING,
     sortKey: sorting[0]?.id ?? null,
     pagination: { currentPage, setCurrentPage, pageSize: VMS_PER_PAGE },
   });
@@ -83,10 +88,10 @@ const LXDVMsTable = ({
   useEffect(() => {
     // Clear machine selection and close the action form on filters change
     if (searchFilter !== previousSearchFilter) {
-      setSidePanelContent(null);
+      closeSidePanel();
       dispatch(machineActions.setSelected(null));
     }
-  }, [searchFilter, previousSearchFilter, setSidePanelContent, dispatch]);
+  }, [searchFilter, previousSearchFilter, closeSidePanel, dispatch]);
 
   useEffect(
     () => () => {
@@ -134,7 +139,6 @@ const LXDVMsTable = ({
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
         setSearchFilter={setSearchFilter}
-        setSidePanelContent={setSidePanelContent}
         vmCount={count}
       />
       <GenericTable

@@ -1,12 +1,10 @@
 import SectionHeader from "./SectionHeader";
 
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("SectionHeader", () => {
   it("can render title and subtitle", () => {
-    renderWithBrowserRouter(
-      <SectionHeader subtitle="Subtitle" title="Title" />
-    );
+    renderWithProviders(<SectionHeader subtitle="Subtitle" title="Title" />);
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "Title"
     );
@@ -16,14 +14,14 @@ describe("SectionHeader", () => {
   });
 
   it("displays the title as a h1 by default", () => {
-    renderWithBrowserRouter(<SectionHeader title="Title" />);
+    renderWithProviders(<SectionHeader title="Title" />);
     const title = screen.getByRole("heading", { level: 1, name: "Title" });
     expect(title).toBeInTheDocument();
     expect(title).toHaveClass("p-heading--4");
   });
 
   it("can change the title element", () => {
-    renderWithBrowserRouter(<SectionHeader title="Title" titleElement="div" />);
+    renderWithProviders(<SectionHeader title="Title" titleElement="div" />);
     const title = screen.getByTestId("section-header-title");
     expect(
       screen.queryByRole("heading", { name: "Title" })
@@ -33,7 +31,7 @@ describe("SectionHeader", () => {
   });
 
   it("shows a spinner instead of title if loading", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SectionHeader loading subtitle="Subtitle" title="Title" />
     );
     expect(
@@ -45,7 +43,7 @@ describe("SectionHeader", () => {
   });
 
   it("shows a spinner instead of subtitle if subtitle loading", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SectionHeader subtitle="Subtitle" subtitleLoading title="Title" />
     );
     expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
@@ -58,7 +56,7 @@ describe("SectionHeader", () => {
       <button key="button-1">Button 1</button>,
       <button key="button-2">Button 2</button>,
     ];
-    renderWithBrowserRouter(<SectionHeader buttons={buttons} title="Title" />);
+    renderWithProviders(<SectionHeader buttons={buttons} title="Title" />);
     expect(
       screen.getByRole("button", { name: "Button 1" })
     ).toBeInTheDocument();
@@ -80,9 +78,7 @@ describe("SectionHeader", () => {
         path: "/path2",
       },
     ];
-    renderWithBrowserRouter(
-      <SectionHeader tabLinks={tabLinks} title="Title" />
-    );
+    renderWithProviders(<SectionHeader tabLinks={tabLinks} title="Title" />);
     expect(screen.getByTestId("section-header-tabs")).toBeInTheDocument();
   });
 });

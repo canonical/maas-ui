@@ -1,33 +1,19 @@
-import type { Mock } from "vitest";
-
 import CacheSetsTable from "./CacheSetsTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import DeleteCacheSet from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteCacheSet";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
+  mockSidePanel,
   renderWithProviders,
   screen,
   userEvent,
   within,
 } from "@/testing/utils";
 
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
+const { mockOpen } = await mockSidePanel();
 
 describe("CacheSetsTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   it("only shows disks that are cache sets", () => {
     const [cacheSet, notCacheSet] = [
       factory.nodeDisk({
@@ -135,12 +121,14 @@ describe("CacheSetsTable", () => {
       screen.getByRole("button", { name: "Remove cache set..." })
     );
 
-    expect(mockSetSidePanelContent).toHaveBeenCalledWith({
-      view: MachineSidePanelViews.DELETE_CACHE_SET,
-      extras: {
-        disk,
-        systemId: machine.system_id,
-      },
-    });
+    expect(mockOpen).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: DeleteCacheSet,
+        props: {
+          disk,
+          systemId: machine.system_id,
+        },
+      })
+    );
   });
 });

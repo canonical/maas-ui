@@ -1,13 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import UnmountFilesystem from "./UnmountFilesystem";
 
 import { machineActions } from "@/app/store/machine";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const filesystem = factory.nodeFilesystem({ mount_point: "/disk-fs/path" });
 const disk = factory.nodeDisk({ filesystem, partitions: [] });
 const machine = factory.machineDetails({
@@ -24,12 +20,8 @@ const state = factory.rootState({
 });
 
 it("renders a delete confirmation form", () => {
-  renderWithBrowserRouter(
-    <UnmountFilesystem
-      close={vi.fn()}
-      storageDevice={disk}
-      systemId="abc123"
-    />,
+  renderWithProviders(
+    <UnmountFilesystem storageDevice={disk} systemId="abc123" />,
 
     { state }
   );
@@ -43,14 +35,9 @@ it("renders a delete confirmation form", () => {
 });
 
 it("can remove a special filesystem", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <UnmountFilesystem
-      close={vi.fn()}
-      storageDevice={disk}
-      systemId="abc123"
-    />,
-    { store }
+  const { store } = renderWithProviders(
+    <UnmountFilesystem storageDevice={disk} systemId="abc123" />,
+    { state }
   );
 
   await userEvent.click(screen.getByRole("button", { name: "Remove" }));

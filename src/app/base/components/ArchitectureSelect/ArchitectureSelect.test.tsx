@@ -1,24 +1,19 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import ArchitectureSelect, { Labels } from "./ArchitectureSelect";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ArchitectureSelect", () => {
   it("dispatches action to fetch architectures on load", () => {
     const state = factory.rootState();
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ architecture: "" }} onSubmit={vi.fn()}>
-          <ArchitectureSelect name="architecture" />
-        </Formik>
-      </Provider>
+
+    const { store } = renderWithProviders(
+      <Formik initialValues={{ architecture: "" }} onSubmit={vi.fn()}>
+        <ArchitectureSelect name="architecture" />
+      </Formik>,
+      { state }
     );
 
     expect(
@@ -36,13 +31,12 @@ describe("ArchitectureSelect", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ architecture: "" }} onSubmit={vi.fn()}>
-          <ArchitectureSelect name="architecture" />
-        </Formik>
-      </Provider>
+
+    renderWithProviders(
+      <Formik initialValues={{ architecture: "" }} onSubmit={vi.fn()}>
+        <ArchitectureSelect name="architecture" />
+      </Formik>,
+      { state }
     );
 
     expect(

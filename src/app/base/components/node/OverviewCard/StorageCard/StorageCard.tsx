@@ -1,23 +1,20 @@
+import type { ReactElement } from "react";
+
 import pluralize from "pluralize";
 import { Link } from "react-router";
 
 import TestResults from "@/app/base/components/node/TestResults";
 import { HardwareType } from "@/app/base/enum";
 import urls from "@/app/base/urls";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import { nodeIsMachine } from "@/app/store/utils";
 
-type Props = {
+type StorageCardProps = {
   node: ControllerDetails | MachineDetails;
-  setSidePanelContent?: MachineSetSidePanelContent;
 };
 
-const StorageCard = ({
-  node,
-  setSidePanelContent,
-}: Props): React.ReactElement => (
+const StorageCard = ({ node }: StorageCardProps): ReactElement => (
   <>
     <div className="overview-card__storage">
       <strong className="p-muted-heading u-flex--between u-no-margin--bottom u-no-padding--top">
@@ -32,12 +29,8 @@ const StorageCard = ({
         ) : null}
       </h4>
     </div>
-    {nodeIsMachine(node) && setSidePanelContent ? (
-      <TestResults
-        hardwareType={HardwareType.Storage}
-        machine={node}
-        setSidePanelContent={setSidePanelContent}
-      />
+    {nodeIsMachine(node) ? (
+      <TestResults hardwareType={HardwareType.Storage} machine={node} />
     ) : (
       <div className="overview-card__storage-tests">
         <Link to={urls.controllers.controller.storage({ id: node.system_id })}>

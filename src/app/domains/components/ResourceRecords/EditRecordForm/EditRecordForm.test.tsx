@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import EditRecordForm, { Labels } from "./EditRecordForm";
 
 import { Labels as RecordFieldsLabels } from "@/app/domains/components/RecordFields/RecordFields";
@@ -14,7 +12,6 @@ import {
   mockSidePanel,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 const { mockClose } = await mockSidePanel();
 
 describe("EditRecordForm", () => {
@@ -59,10 +56,12 @@ describe("EditRecordForm", () => {
   });
 
   it("dispatches an action to update the record", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<EditRecordForm id={1} resource={resourceA} />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <EditRecordForm id={1} resource={resourceA} />,
+      {
+        state,
+      }
+    );
 
     const dataInputField = screen.getByRole("textbox", {
       name: RecordFieldsLabels.Data,

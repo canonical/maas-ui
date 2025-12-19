@@ -1,12 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import AddPartition from "./AddPartition";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("AddPartition", () => {
   it("sets the partition name correctly", () => {
@@ -23,10 +18,9 @@ describe("AddPartition", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
-      { route: "/", state }
-    );
+    renderWithProviders(<AddPartition disk={disk} systemId="abc123" />, {
+      state,
+    });
 
     expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(
       "floppy-disk-part3"
@@ -48,10 +42,9 @@ describe("AddPartition", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
-      { route: "/", state }
-    );
+    renderWithProviders(<AddPartition disk={disk} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByRole("spinbutton", { name: /Size/i })).toHaveValue(8);
   });
 
@@ -67,10 +60,9 @@ describe("AddPartition", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
-      { route: "/", state }
-    );
+    renderWithProviders(<AddPartition disk={disk} systemId="abc123" />, {
+      state,
+    });
 
     // Set partition size to 0.1MB
     const partitionSize = screen.getByRole("spinbutton", {
@@ -99,10 +91,9 @@ describe("AddPartition", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
-      { route: "/", state }
-    );
+    renderWithProviders(<AddPartition disk={disk} systemId="abc123" />, {
+      state,
+    });
 
     // Set logical volume size to 2GB
     const partitionSize = screen.getByRole("spinbutton", {
@@ -131,10 +122,11 @@ describe("AddPartition", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
-      { route: "/", store }
+    const { store } = renderWithProviders(
+      <AddPartition disk={disk} systemId="abc123" />,
+      {
+        state,
+      }
     );
 
     await userEvent.clear(screen.getByRole("spinbutton", { name: "Size" }));

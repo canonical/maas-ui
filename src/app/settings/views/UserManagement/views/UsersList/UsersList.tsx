@@ -22,11 +22,7 @@ const UsersList = (): ReactElement => {
   }
 
   return (
-    <PageContent
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent>
       <UsersTable />
     </PageContent>
   );

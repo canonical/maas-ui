@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 
 import { Labels as ConnectivityCardLabels } from "./ConnectivityCard/ConnectivityCard";
 import MaasIntro, { Labels as MaasIntroLabels } from "./MaasIntro";
@@ -18,7 +17,6 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 setupMockServer(
   authResolvers.getCurrentUser.handler(
     factory.user({ completed_intro: false, is_superuser: true })
@@ -67,8 +65,10 @@ describe("MaasIntro", () => {
   });
 
   it("can update just the config", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<MaasIntro />, { store, initialEntries: ["/intro"] });
+    const { store } = renderWithProviders(<MaasIntro />, {
+      state,
+      initialEntries: ["/intro"],
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: NameCardLabels.Name })
@@ -112,8 +112,10 @@ describe("MaasIntro", () => {
   });
 
   it("can dispatch actions to update the default package repository urls", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<MaasIntro />, { store, initialEntries: ["/intro"] });
+    const { store } = renderWithProviders(<MaasIntro />, {
+      state,
+      initialEntries: ["/intro"],
+    });
     await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: NameCardLabels.Name })
@@ -169,8 +171,10 @@ describe("MaasIntro", () => {
   });
 
   it("can skip the initial MAAS setup", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<MaasIntro />, { store, initialEntries: ["/intro"] });
+    const { store } = renderWithProviders(<MaasIntro />, {
+      state,
+      initialEntries: ["/intro"],
+    });
     await waitFor(() => {
       expect(
         screen.queryByText(MaasIntroLabels.AreYouSure)

@@ -1,7 +1,12 @@
 import type { Tag } from "./TagSelector";
 import TagSelector from "./TagSelector";
 
-import { render, screen, userEvent, within } from "@/testing/utils";
+import {
+  screen,
+  userEvent,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("TagSelector", () => {
   let tags: Tag[];
@@ -13,7 +18,7 @@ describe("TagSelector", () => {
   });
 
   it("doesn't show tags when closed", () => {
-    render(
+    renderWithProviders(
       <TagSelector
         label="Tags"
         onTagsUpdate={vi.fn()}
@@ -31,7 +36,7 @@ describe("TagSelector", () => {
   });
 
   it("shows tags when opened", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         label="Tags"
         onTagsUpdate={vi.fn()}
@@ -45,7 +50,7 @@ describe("TagSelector", () => {
   });
 
   it("shows tag descriptions if present", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         label="Tags"
         onTagsUpdate={vi.fn()}
@@ -70,7 +75,7 @@ describe("TagSelector", () => {
   });
 
   it("can have some tags preselected", () => {
-    render(
+    renderWithProviders(
       <TagSelector
         initialSelected={[tags[0]]}
         label="Tags"
@@ -83,7 +88,7 @@ describe("TagSelector", () => {
   });
 
   it("opens the dropdown when input is focused", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         label="Tags"
         onTagsUpdate={vi.fn()}
@@ -97,7 +102,7 @@ describe("TagSelector", () => {
   });
 
   it("can select existing tags from dropdown", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         label="Tags"
         onTagsUpdate={vi.fn()}
@@ -111,7 +116,7 @@ describe("TagSelector", () => {
   });
 
   it("can hide the tags that have been selected", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         label="Tags"
         onTagsUpdate={vi.fn()}
@@ -126,7 +131,7 @@ describe("TagSelector", () => {
   });
 
   it("can remove tags that have been selected", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         initialSelected={tags}
         label="Tags"
@@ -143,7 +148,7 @@ describe("TagSelector", () => {
   });
 
   it("can create and select a new tag", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         allowNewTags
         label="Tags"
@@ -164,7 +169,7 @@ describe("TagSelector", () => {
 
   it("can call a provide function to create a new tag", async () => {
     const onAddNewTag = vi.fn();
-    render(
+    renderWithProviders(
       <TagSelector
         allowNewTags
         label="Tags"
@@ -185,7 +190,7 @@ describe("TagSelector", () => {
   });
 
   it("sanitises text when creating new tag", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         allowNewTags
         label="Tags"
@@ -205,7 +210,7 @@ describe("TagSelector", () => {
   });
 
   it("can filter tag list", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         label="Tags"
         onTagsUpdate={vi.fn()}
@@ -220,7 +225,7 @@ describe("TagSelector", () => {
   });
 
   it("can highlight what matches the filter in existing tags", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         label="Tags"
         onTagsUpdate={vi.fn()}
@@ -250,7 +255,7 @@ describe("TagSelector", () => {
       { id: 1, name: "enabledTag" },
       { id: 2, name: "disabledTag" },
     ];
-    render(
+    renderWithProviders(
       <TagSelector
         disabledTags={[{ id: 2, name: "disabledTag" }]}
         initialSelected={tags}
@@ -263,7 +268,7 @@ describe("TagSelector", () => {
   });
 
   it("can display a dropdown header", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         header={<span data-testid="dropdown-header">A header</span>}
         label="Tags"
@@ -281,7 +286,7 @@ describe("TagSelector", () => {
   });
 
   it("can customise the dropdown items", async () => {
-    render(
+    renderWithProviders(
       <TagSelector
         generateDropdownEntry={() => (
           <span data-testid="dropdown-item">An item</span>
@@ -300,7 +305,7 @@ describe("TagSelector", () => {
   });
 
   it("can use an external list of selected tags", () => {
-    render(
+    renderWithProviders(
       <TagSelector
         externalSelectedTags={[tags[0]]}
         label="Tags"
@@ -313,7 +318,7 @@ describe("TagSelector", () => {
 
   it("handles selecting external tags", async () => {
     const onTagsUpdate = vi.fn();
-    render(
+    renderWithProviders(
       <TagSelector
         externalSelectedTags={[tags[0]]}
         label="Tags"

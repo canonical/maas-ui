@@ -4,7 +4,7 @@ import type { Controller } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("VaultSettings", () => {
   let controllers: Controller[];
@@ -44,13 +44,13 @@ describe("VaultSettings", () => {
     state.controller.loading = true;
     state.general.vaultEnabled.loaded = false;
 
-    renderWithMockStore(<VaultSettings />, { state });
+    renderWithProviders(<VaultSettings />, { state });
 
     expect(screen.getByText(VaultSettingsLabels.Loading)).toBeInTheDocument();
   });
 
   it("displays the vault setup instructions if Vault is not configured on any controllers", () => {
-    renderWithMockStore(<VaultSettings />, { state });
+    renderWithProviders(<VaultSettings />, { state });
 
     expect(
       screen.getByText(VaultSettingsLabels.IntegrateWithVault)
@@ -64,7 +64,7 @@ describe("VaultSettings", () => {
     controllers[0].vault_configured = true;
     state.controller.items = controllers;
 
-    renderWithMockStore(<VaultSettings />, { state });
+    renderWithProviders(<VaultSettings />, { state });
 
     expect(
       screen.getByText(
@@ -83,7 +83,7 @@ describe("VaultSettings", () => {
     controllers[1].vault_configured = true;
     state.controller.items = controllers;
 
-    renderWithMockStore(<VaultSettings />, { state });
+    renderWithProviders(<VaultSettings />, { state });
 
     expect(
       screen.getByText(VaultSettingsLabels.SecretMigrationInstructions)
@@ -99,7 +99,7 @@ describe("VaultSettings", () => {
     state.controller.items = controllers;
     state.general.vaultEnabled.data = true;
 
-    renderWithMockStore(<VaultSettings />, { state });
+    renderWithProviders(<VaultSettings />, { state });
 
     expect(
       screen.getByText(VaultSettingsLabels.VaultEnabled)

@@ -1,16 +1,17 @@
+import type { ReactElement } from "react";
+
 import { useSelector } from "react-redux";
 
-import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableMenu from "@/app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "@/app/base/components/TableMenu/TableMenu";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import type {
-  Selected,
-  SetSelected,
-} from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import AddAliasOrVlan from "@/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan";
+import EditPhysicalForm from "@/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm";
+import MarkConnectedForm from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm";
+import { ConnectionState } from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm/MarkConnectedForm";
+import RemovePhysicalForm from "@/app/machines/views/MachineDetails/MachineNetwork/RemovePhysicalForm";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import {
@@ -28,26 +29,18 @@ import {
   getLinkInterface,
 } from "@/app/store/utils";
 
-type Props = {
+type NetworkTableActionsProps = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
   systemId: Machine["system_id"];
-  selected?: Selected[];
-  setSelected?: SetSelected;
 };
-
-export enum Label {
-  Title = "Take action:",
-}
 
 const NetworkTableActions = ({
   link,
   nic,
   systemId,
-  selected,
-  setSelected,
-}: Props): React.ReactElement | null => {
-  const { setSidePanelContent, setSidePanelSize } = useSidePanel();
+}: NetworkTableActionsProps): ReactElement | null => {
+  const { openSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -67,123 +60,161 @@ const NetworkTableActions = ({
     nic,
     link
   );
-  let actions: TableMenuProps["links"] = [];
+  const actions: TableMenuProps["links"] = [];
   if (machine && nic) {
     const showDisconnectedWarning = isPhysical && !nic?.link_connected;
-    actions = [
-      {
-        inMenu: !nic.link_connected && isPhysical,
-        state: ExpandedState.MARK_CONNECTED,
-        label: "Mark as connected",
-        view: MachineSidePanelViews.MARK_CONNECTED,
-      },
-      {
-        inMenu: nic.link_connected && isPhysical,
-        state: ExpandedState.MARK_DISCONNECTED,
-        label: "Mark as disconnected",
-        view: MachineSidePanelViews.MARK_DISCONNECTED,
-      },
-      {
+    if (!nic.link_connected && isPhysical) {
+      actions.push({
+        children: "Mark as connected...",
+        onClick: () => {
+          openSidePanel({
+            component: MarkConnectedForm,
+            title: "Mark as connected",
+            props: {
+              systemId: machine.system_id,
+              link,
+              nic,
+              connectionState: ConnectionState.MARK_CONNECTED,
+            },
+          });
+        },
+      });
+    }
+    if (nic.link_connected && isPhysical) {
+      actions.push({
+        children: "Mark as disconnected...",
+        onClick: () => {
+          openSidePanel({
+            component: MarkConnectedForm,
+            title: "Mark as disconnected",
+            props: {
+              systemId: machine.system_id,
+              link,
+              nic,
+              connectionState: ConnectionState.MARK_DISCONNECTED,
+            },
+          });
+        },
+      });
+    }
+    if (
+      !isAllNetworkingDisabled &&
+      !hasInterfaceType([NetworkInterfaceTypes.ALIAS], machine, nic, link)
+    ) {
+      actions.push({
+        children: itCanAddAlias ? (
+          "Add alias..."
+        ) : (
+          <span className="u-flex">
+            <span className="u-flex--grow">Add alias...</span>
+            <TooltipButton
+              iconName="help"
+              message="IP mode needs to be configured for this interface."
+              position="top-right"
+            />
+          </span>
+        ),
         disabled: !itCanAddAlias,
-        inMenu:
-          !isAllNetworkingDisabled &&
-          !hasInterfaceType([NetworkInterfaceTypes.ALIAS], machine, nic, link),
-        tooltip: itCanAddAlias
-          ? null
-          : "IP mode needs to be configured for this interface.",
-        state: ExpandedState.ADD_ALIAS,
-        label: "Add alias",
-        view: MachineSidePanelViews.ADD_ALIAS,
-      },
-      {
+        onClick: () => {
+          openSidePanel({
+            component: AddAliasOrVlan,
+            title: "Add alias",
+            props: {
+              systemId: machine.system_id,
+              nic,
+              interfaceType: NetworkInterfaceTypes.ALIAS,
+            },
+          });
+        },
+      });
+    }
+    if (
+      !isAllNetworkingDisabled &&
+      !hasInterfaceType(
+        [NetworkInterfaceTypes.ALIAS, NetworkInterfaceTypes.VLAN],
+        machine,
+        nic,
+        link
+      )
+    ) {
+      actions.push({
+        children: canAddVLAN ? (
+          "Add VLAN..."
+        ) : (
+          <span className="u-flex">
+            <span className="u-flex--grow">Add VLAN...</span>
+            <TooltipButton
+              iconName="help"
+              message="There are no unused VLANS for this interface."
+              position="top-right"
+            />
+          </span>
+        ),
         disabled: !canAddVLAN,
-        inMenu:
-          !isAllNetworkingDisabled &&
-          !hasInterfaceType(
-            [NetworkInterfaceTypes.ALIAS, NetworkInterfaceTypes.VLAN],
-            machine,
-            nic,
-            link
-          ),
-        state: ExpandedState.ADD_VLAN,
-        tooltip: canAddVLAN
-          ? null
-          : "There are no unused VLANS for this interface.",
-        label: "Add VLAN",
-        view: MachineSidePanelViews.ADD_VLAN,
-      },
-      {
-        inMenu: true,
-        state: showDisconnectedWarning
-          ? ExpandedState.DISCONNECTED_WARNING
-          : ExpandedState.EDIT,
-        label: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
-        view: showDisconnectedWarning
-          ? MachineSidePanelViews.MARK_CONNECTED
-          : MachineSidePanelViews.EDIT_PHYSICAL,
-      },
-      {
-        inMenu: !isAllNetworkingDisabled,
-        state: ExpandedState.REMOVE,
-        label: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
-        view: MachineSidePanelViews.REMOVE_PHYSICAL,
-      },
-    ].reduce<TableMenuProps["links"]>((items, item) => {
-      if (item.inMenu && item.state) {
-        if (!items) {
-          items = [];
+        onClick: () => {
+          openSidePanel({
+            component: AddAliasOrVlan,
+            title: "Add VLAN",
+            props: {
+              systemId: machine.system_id,
+              nic,
+              interfaceType: NetworkInterfaceTypes.VLAN,
+            },
+          });
+        },
+      });
+    }
+    actions.push({
+      children: `Edit ${getInterfaceTypeText(machine, nic, link)}...`,
+      onClick: () => {
+        if (showDisconnectedWarning) {
+          openSidePanel({
+            component: MarkConnectedForm,
+            title: "Mark as connected",
+            props: {
+              systemId: machine.system_id,
+              link,
+              nic,
+              connectionState: ConnectionState.DISCONNECTED_WARNING,
+            },
+          });
+        } else {
+          openSidePanel({
+            component: EditPhysicalForm,
+            title: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
+            props: {
+              systemId: machine.system_id,
+              linkId: link?.id,
+              nicId: nic?.id,
+            },
+            size: nic.type === NetworkInterfaceTypes.BOND ? "large" : undefined,
+          });
         }
-        items.push({
-          children: item.tooltip ? (
-            <span className="u-flex">
-              <span className="u-flex--grow">{item.label}</span>
-              <TooltipButton
-                iconName="help"
-                message={item.tooltip}
-                position="top-right"
-              />
-            </span>
-          ) : (
-            item.label
-          ),
-          disabled: item.disabled,
-          onClick: () => {
-            item.state === ExpandedState.EDIT
-              ? (() => {
-                  setSidePanelContent({
-                    view: item.view,
-                    extras: {
-                      linkId: link?.id,
-                      nicId: nic?.id,
-                      selected,
-                      setSelected,
-                      systemId: machine.system_id,
-                    },
-                  });
-                  if (nic.type === NetworkInterfaceTypes.BOND) {
-                    setSidePanelSize("large");
-                  }
-                })()
-              : setSidePanelContent({
-                  view: item.view,
-                  extras: {
-                    link,
-                    nic,
-                    systemId: machine.system_id,
-                  },
-                });
-          },
-        });
-      }
-      return items;
-    }, []);
+      },
+    });
+    if (!isAllNetworkingDisabled) {
+      actions.push({
+        children: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
+        onClick: () => {
+          openSidePanel({
+            component: RemovePhysicalForm,
+            title: `Remove ${getInterfaceTypeText(machine, nic, link)}`,
+            props: {
+              systemId: machine.system_id,
+              link,
+              nic,
+            },
+          });
+        },
+      });
+    }
   }
   return (
     <TableMenu
       disabled={isAllNetworkingDisabled && !isLimitedEditingAllowed}
       links={actions}
       position="right"
-      title={Label.Title}
+      title="Take action:"
     />
   );
 };

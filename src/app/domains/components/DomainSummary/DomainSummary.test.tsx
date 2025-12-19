@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 
 import DomainSummary, { Labels as DomainSummaryLabels } from "./DomainSummary";
 
@@ -14,7 +13,6 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("DomainSummary", () => {
@@ -149,9 +147,9 @@ describe("DomainSummary", () => {
     });
 
     it("calls actions.update on save click", async () => {
-      const store = mockStore(state);
-
-      renderWithProviders(<DomainSummary id={1} />, { store });
+      const { store } = renderWithProviders(<DomainSummary id={1} />, {
+        state,
+      });
 
       await userEvent.click(
         screen.getAllByRole("button", {

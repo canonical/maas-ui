@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import TagTable, { Label, TestId } from "./TagTable";
 
 import urls from "@/app/base/urls";
@@ -20,7 +18,6 @@ vi.mock("../constants", () => ({
   TAGS_PER_PAGE: 2,
 }));
 
-const mockStore = configureStore();
 let state: RootState;
 let tags: Tag[];
 
@@ -319,7 +316,6 @@ it("displays a message if none match the filter and search terms", () => {
 });
 
 it("can trigger the tag edit sidepanel", async () => {
-  const store = mockStore(state);
   const onUpdate = vi.fn();
   renderWithProviders(
     <TagTable
@@ -329,7 +325,7 @@ it("can trigger the tag edit sidepanel", async () => {
       searchText=""
       tags={tags}
     />,
-    { store, initialEntries: [urls.tags.index] }
+    { state, initialEntries: [urls.tags.index] }
   );
   await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
   expect(onUpdate).toHaveBeenCalled();

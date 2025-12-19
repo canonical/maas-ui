@@ -1,8 +1,5 @@
 import type { FileWithPath } from "react-dropzone";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
 import type { Dispatch } from "redux";
-import configureStore from "redux-mock-store";
 
 import ScriptsUpload, { Labels as ScriptsUploadLabels } from "./ScriptsUpload";
 import * as readScript from "./readScript";
@@ -14,13 +11,13 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  render,
   waitFor,
   fireEvent,
   renderWithProviders,
+  mockSidePanel,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
+const { mockClose } = await mockSidePanel();
 
 vi.mock("./readScript", async () => {
   const actual: typeof readScript = await vi.importActual("./readScript");
@@ -74,16 +71,11 @@ describe("ScriptsUpload", () => {
   });
 
   it("displays an error if a file larger than 2MB is uploaded", async () => {
-    const store = mockStore(state);
     const files = [createFile("foo.sh", 3000000, "text/script")];
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<ScriptsUpload type="testing" />, {
+      state,
+    });
 
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
@@ -94,19 +86,14 @@ describe("ScriptsUpload", () => {
   });
 
   it("displays a single error if multiple files are uploaded", async () => {
-    const store = mockStore(state);
     const files = [
       createFile("foo.sh", 1000, "text/script"),
       createFile("bar.sh", 1000, "text/script"),
     ];
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<ScriptsUpload type="testing" />, {
+      state,
+    });
 
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     // necessary to use a fireEvent instead of userEvent, since userEvent doesn't support "drag n drop" multiple file upload
@@ -120,7 +107,6 @@ describe("ScriptsUpload", () => {
   });
 
   it("dispatches uploadScript without a name if script has metadata", async () => {
-    const store = mockStore(state);
     const contents = "# --- Start MAAS 1.0 script metadata ---";
     vi.spyOn(readScript, "readScript").mockImplementation(
       (
@@ -137,13 +123,9 @@ describe("ScriptsUpload", () => {
     );
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<ScriptsUpload type="testing" />, {
+      state,
+    });
 
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
@@ -162,7 +144,6 @@ describe("ScriptsUpload", () => {
   });
 
   it("dispatches uploadScript with a name if script has no metadata", async () => {
-    const store = mockStore(state);
     const contents = "#!/bin/bash\necho 'foo';\n";
     vi.spyOn(readScript, "readScript").mockImplementation(
       (
@@ -179,13 +160,9 @@ describe("ScriptsUpload", () => {
     );
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<ScriptsUpload type="testing" />, {
+      state,
+    });
 
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
@@ -204,23 +181,18 @@ describe("ScriptsUpload", () => {
   });
 
   it("can cancel and return to the commissioning list", async () => {
-    const { router } = renderWithProviders(
-      <ScriptsUpload type="commissioning" />,
-      {
-        state,
-      }
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(router.state.location.pathname).toBe(
-      "/settings/scripts/commissioning"
-    ); // linting errors occur if you use settingsUrls.scripts
-  });
-
-  it("can cancel and return to the testing list", async () => {
-    const { router } = renderWithProviders(<ScriptsUpload type="testing" />, {
+    renderWithProviders(<ScriptsUpload type="commissioning" />, {
       state,
     });
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(router.state.location.pathname).toBe("/settings/scripts/testing"); // linting errors occur if you use settingsUrls.scripts
+    expect(mockClose).toHaveBeenCalled();
+  });
+
+  it("can cancel and return to the testing list", async () => {
+    renderWithProviders(<ScriptsUpload type="testing" />, {
+      state,
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(mockClose).toHaveBeenCalled();
   });
 });

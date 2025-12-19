@@ -1,14 +1,20 @@
 import type { ReactNode } from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import type { NodeActionFormProps } from "../types";
 
 import ActionForm from "@/app/base/components/ActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { EmptyObject } from "@/app/base/types";
 import type { controllerActions } from "@/app/store/controller";
 import type { machineActions } from "@/app/store/machine";
-import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import machineSelectors from "@/app/store/machine/selectors";
+import { FilterMachines } from "@/app/store/machine/utils";
+import {
+  useMachineSelectedCount,
+  useSelectedMachinesActionsDispatch,
+} from "@/app/store/machine/utils/hooks";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import { capitaliseFirst, kebabToCamelCase } from "@/app/utils";
@@ -27,19 +33,23 @@ export const FieldlessForm = <E,>({
   buttonsHelp,
   buttonsHelpClassName,
   cleanup,
-  clearSidePanelContent,
   errors,
-  searchFilter,
-  selectedMachines,
   modelName,
   nodes,
   processingCount,
-  selectedCount,
   viewingDetails,
 }: FieldlessFormProps<E>): React.ReactElement => {
   const dispatch = useDispatch();
+  const currentFilters = FilterMachines.queryStringToFilters(location.search);
+  const searchFilter = FilterMachines.filtersToString(currentFilters);
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const { selectedCount } = useMachineSelectedCount(
+    FilterMachines.parseFetchFilters(searchFilter)
+  );
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
+
+  const { closeSidePanel } = useSidePanel();
 
   return (
     <ActionForm<EmptyObject, E>
@@ -51,7 +61,7 @@ export const FieldlessForm = <E,>({
       errors={errors}
       initialValues={{}}
       modelName={modelName}
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Submit",
         category: `${capitaliseFirst(modelName)} ${
@@ -76,7 +86,7 @@ export const FieldlessForm = <E,>({
           }
         }
       }}
-      onSuccess={clearSidePanelContent}
+      onSuccess={closeSidePanel}
       processingCount={processingCount}
       selectedCount={nodes ? nodes.length : (selectedCount ?? 0)}
       {...actionProps}

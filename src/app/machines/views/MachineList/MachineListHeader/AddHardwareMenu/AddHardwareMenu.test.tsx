@@ -1,14 +1,14 @@
 import AddHardwareMenu from "./AddHardwareMenu";
 
-import { screen, render } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("AddHardwareMenu", () => {
   it("can be enabled", () => {
-    render(<AddHardwareMenu setSidePanelContent={vi.fn()} />);
+    renderWithProviders(<AddHardwareMenu />);
     expect(screen.getByRole("button", { name: /Add hardware/i })).toBeEnabled();
   });
   it("can be disabled", () => {
-    render(<AddHardwareMenu disabled setSidePanelContent={vi.fn()} />);
+    renderWithProviders(<AddHardwareMenu disabled />);
     expect(
       screen.getByRole("button", { name: /Add hardware/i })
     ).toBeAriaDisabled();

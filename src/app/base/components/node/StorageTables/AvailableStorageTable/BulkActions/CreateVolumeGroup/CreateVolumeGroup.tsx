@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import {
   Col,
   Input,
@@ -12,6 +14,7 @@ import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -31,8 +34,7 @@ type CreateVolumeGroupValues = {
   name: string;
 };
 
-type Props = {
-  closeForm: () => void;
+type CreateVolumeGroupProps = {
   selected: (Disk | Partition)[];
   systemId: Machine["system_id"];
 };
@@ -53,11 +55,11 @@ const CreateVolumeGroupSchema = Yup.object().shape({
 });
 
 export const CreateVolumeGroup = ({
-  closeForm,
   selected,
   systemId,
-}: Props): React.ReactElement | null => {
+}: CreateVolumeGroupProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -66,7 +68,7 @@ export const CreateVolumeGroup = ({
     "creatingVolumeGroup",
     "createVolumeGroup",
     () => {
-      closeForm();
+      closeSidePanel();
     }
   );
   const totalSize = selected.reduce((sum, device) => (sum += device.size), 0);
@@ -80,7 +82,7 @@ export const CreateVolumeGroup = ({
         initialValues={{
           name: getInitialName(machine.disks),
         }}
-        onCancel={closeForm}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Create volume group",
           category: "Machine storage",

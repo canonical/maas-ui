@@ -1,16 +1,16 @@
 import MainContentSection from "./MainContentSection";
 
-import { renderWithMockStore, screen, within } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 it("renders", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <MainContentSection header="Settings">content</MainContentSection>
   );
   expect(screen.queryByRole("complementary")).not.toBeInTheDocument();
 });
 
 it("can render without a header", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <MainContentSection header={null}>content</MainContentSection>
   );
   expect(
@@ -19,7 +19,7 @@ it("can render without a header", () => {
 });
 
 it("can render a node as a title", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <MainContentSection header={<h5>Node title</h5>}>
       content
     </MainContentSection>

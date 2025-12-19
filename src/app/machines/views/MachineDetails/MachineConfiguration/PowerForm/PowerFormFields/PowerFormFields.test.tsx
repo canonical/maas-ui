@@ -5,7 +5,7 @@ import PowerFormFields from ".";
 import { PowerFieldScope } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("PowerFormFields", () => {
   let state: RootState;
@@ -49,7 +49,7 @@ describe("PowerFormFields", () => {
       system_id: "abc123",
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{
           powerParameters: {},

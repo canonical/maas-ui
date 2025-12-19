@@ -1,7 +1,7 @@
 import WorkloadCard from "./WorkloadCard";
 
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 describe("WorkloadCard", () => {
   it("displays a message if the machine has no workload annotations", () => {
@@ -15,8 +15,7 @@ describe("WorkloadCard", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<WorkloadCard id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<WorkloadCard id="abc123" />, {
       state,
     });
     expect(screen.getByTestId("no-workload-annotations")).toBeInTheDocument();
@@ -36,8 +35,7 @@ describe("WorkloadCard", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<WorkloadCard id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<WorkloadCard id="abc123" />, {
       state,
     });
 
@@ -65,8 +63,7 @@ describe("WorkloadCard", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<WorkloadCard id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<WorkloadCard id="abc123" />, {
       state,
     });
 
@@ -92,8 +89,7 @@ describe("WorkloadCard", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<WorkloadCard id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<WorkloadCard id="abc123" />, {
       state,
     });
 

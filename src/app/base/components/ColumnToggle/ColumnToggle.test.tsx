@@ -1,6 +1,6 @@
 import ColumnToggle from "./ColumnToggle";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const DOM_RECT = {
   height: 0,
@@ -20,7 +20,7 @@ describe("ColumnToggle ", () => {
 
   it("calls the close function when expanded", async () => {
     const onClose = vi.fn();
-    render(
+    renderWithProviders(
       <ColumnToggle
         isExpanded={true}
         label="maas.local"
@@ -36,7 +36,7 @@ describe("ColumnToggle ", () => {
 
   it("calls the open function when not expanded", async () => {
     const onOpen = vi.fn();
-    render(
+    renderWithProviders(
       <ColumnToggle
         isExpanded={false}
         label="maas.local"
@@ -75,7 +75,7 @@ describe("ColumnToggle ", () => {
         ...DOM_RECT,
         top: -20,
       }));
-      render(
+      renderWithProviders(
         <ColumnToggle
           isExpanded={false}
           label="maas.local"
@@ -94,7 +94,7 @@ describe("ColumnToggle ", () => {
         ...DOM_RECT,
         top: 20,
       }));
-      render(
+      renderWithProviders(
         <ColumnToggle
           isExpanded={false}
           label="maas.local"

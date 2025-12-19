@@ -1,42 +1,33 @@
-import type { HTMLProps, ReactNode } from "react";
+import type { HTMLProps, ReactElement, ReactNode } from "react";
 
 import { AppMain } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { matchPath, useLocation } from "react-router";
 
-import AppSidePanel from "../AppSidePanel";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import MainContentSection from "../MainContentSection";
 import SecondaryNavigation from "../SecondaryNavigation";
 
-import type { AppSidePanelProps } from "@/app/base/components/AppSidePanel";
 import SidePanel from "@/app/base/components/SidePanel";
 import { useThemeContext } from "@/app/base/theme-context";
 import { preferencesNavItems } from "@/app/preferences/constants";
 import { settingsNavItems } from "@/app/settings/constants";
 import status from "@/app/store/status/selectors";
 
-export type Props = HTMLProps<HTMLDivElement> & {
+export type PageContentProps = HTMLProps<HTMLDivElement> & {
   children?: ReactNode;
   header?: ReactNode;
   sidebar?: ReactNode;
   isNotificationListHidden?: boolean;
-  sidePanelContent: AppSidePanelProps["content"];
-  sidePanelSize?: AppSidePanelProps["size"];
-  sidePanelTitle: AppSidePanelProps["title"];
-  useNewSidePanelContext?: boolean; // TODO: remove once the new side panel context is fully migrated
 };
 
 const PageContent = ({
   children,
   header,
   sidebar,
-  sidePanelContent,
-  sidePanelTitle,
-  useNewSidePanelContext = false,
   ...props
-}: Props): React.ReactElement => {
+}: PageContentProps): ReactElement => {
   const { pathname } = useLocation();
   const isSettingsPage = !!matchPath("settings/*", pathname);
   const isPreferencesPage = !!matchPath("account/prefs/*", pathname);
@@ -66,11 +57,7 @@ const PageContent = ({
           </MainContentSection>
         </div>
       </AppMain>
-      {useNewSidePanelContext ? (
-        <SidePanel />
-      ) : (
-        <AppSidePanel content={sidePanelContent} title={sidePanelTitle} />
-      )}
+      <SidePanel />
     </>
   );
 };

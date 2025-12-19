@@ -2,11 +2,9 @@ import { useMemo } from "react";
 
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
-import { CacheSetAction } from "../CacheSetsTable";
-
-import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import TableMenu from "@/app/base/components/TableMenu";
+import DeleteCacheSet from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteCacheSet";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { Disk, Node } from "@/app/store/types/node";
 import { formatSize } from "@/app/store/utils";
 
@@ -23,7 +21,7 @@ const useCacheSetsColumns = ({
   canEditStorage,
   systemId,
 }: Props): CacheSetsColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
 
   return useMemo<CacheSetsColumnDef[]>(
     () => [
@@ -51,29 +49,32 @@ const useCacheSetsColumns = ({
               accessorKey: "actions",
               enableSorting: false,
               cell: ({ row: { original: disk } }: { row: Row<Disk> }) => (
-                <TableActionsDropdown
-                  actions={[
+                <TableMenu
+                  disabled={!canEditStorage}
+                  links={[
                     {
-                      label: "Remove cache set...",
-                      type: CacheSetAction.DELETE,
+                      children: "Remove cache set...",
+                      onClick: () => {
+                        openSidePanel({
+                          component: DeleteCacheSet,
+                          title: "Remove cache set",
+                          props: {
+                            systemId,
+                            disk,
+                          },
+                        });
+                      },
                     },
                   ]}
-                  disabled={!canEditStorage}
-                  onActionClick={(action: CacheSetAction) => {
-                    if (action === CacheSetAction.DELETE) {
-                      setSidePanelContent({
-                        view: MachineSidePanelViews.DELETE_CACHE_SET,
-                        extras: { systemId, disk },
-                      });
-                    }
-                  }}
+                  position="right"
+                  title="Take action:"
                 />
               ),
             },
           ]
         : []),
     ],
-    [canEditStorage, isMachine, setSidePanelContent, systemId]
+    [canEditStorage, isMachine, openSidePanel, systemId]
   );
 };
 

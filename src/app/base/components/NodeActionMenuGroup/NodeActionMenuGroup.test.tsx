@@ -3,7 +3,12 @@ import NodeActionMenuGroup, { Labels } from "./NodeActionMenuGroup";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("NodeActionMenuGroup", () => {
   const openMenu = async (name: string) => {
@@ -26,7 +31,7 @@ describe("NodeActionMenuGroup", () => {
     within(submenu).getByTestId(`action-count-${action}`);
 
   it("renders", () => {
-    render(
+    renderWithProviders(
       <NodeActionMenuGroup hasSelection={false} onActionClick={vi.fn()} />
     );
 
@@ -40,7 +45,7 @@ describe("NodeActionMenuGroup", () => {
       factory.machine({ actions: [NodeActions.DELETE], is_dpu: false }),
       factory.machine({ actions: [NodeActions.SET_ZONE], is_dpu: false }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenuGroup
         filterActions
         hasSelection
@@ -89,7 +94,7 @@ describe("NodeActionMenuGroup", () => {
     const nodes = [
       factory.machine({ actions: [NodeActions.DEPLOY], is_dpu: false }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenuGroup
         alwaysShowLifecycle
         hasSelection
@@ -120,7 +125,7 @@ describe("NodeActionMenuGroup", () => {
     const nodes = [
       factory.machine({ actions: [NodeActions.DEPLOY], is_dpu: false }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenuGroup
         alwaysShowLifecycle
         hasSelection
@@ -148,7 +153,9 @@ describe("NodeActionMenuGroup", () => {
   });
 
   it("shows all actions that can be performed when nodes are not provided", async () => {
-    render(<NodeActionMenuGroup hasSelection onActionClick={vi.fn()} />);
+    renderWithProviders(
+      <NodeActionMenuGroup hasSelection onActionClick={vi.fn()} />
+    );
 
     expect(
       screen.getByRole("button", { name: Labels.Delete })
@@ -197,7 +204,7 @@ describe("NodeActionMenuGroup", () => {
         is_dpu: false,
       }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenuGroup
         hasSelection
         nodes={nodes}
@@ -228,7 +235,7 @@ describe("NodeActionMenuGroup", () => {
       }),
     ];
     const onActionClick = vi.fn();
-    render(
+    renderWithProviders(
       <NodeActionMenuGroup
         hasSelection
         nodes={nodes}
@@ -251,7 +258,7 @@ describe("NodeActionMenuGroup", () => {
         is_dpu: false,
       }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenuGroup
         excludeActions={[NodeActions.DELETE]}
         hasSelection
@@ -271,7 +278,7 @@ describe("NodeActionMenuGroup", () => {
   });
 
   it("can change the display text of the nodes in the disabled tooltip", async () => {
-    render(
+    renderWithProviders(
       <NodeActionMenuGroup
         hasSelection={false}
         nodeDisplay="foobar"
@@ -297,7 +304,7 @@ describe("NodeActionMenuGroup", () => {
         is_dpu: false,
       }),
     ];
-    render(
+    renderWithProviders(
       <NodeActionMenuGroup
         getTitle={() => "Overridden"}
         hasSelection

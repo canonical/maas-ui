@@ -12,11 +12,7 @@ const APIKeyList = () => {
   const { openSidePanel } = useSidePanel();
 
   return (
-    <PageContent
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent>
       <ContentSection>
         <ContentSection.Header>
           <MainToolbar>

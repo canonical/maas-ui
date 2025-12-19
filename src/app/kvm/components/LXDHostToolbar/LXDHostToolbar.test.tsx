@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import LXDHostToolbar from "./LXDHostToolbar";
 
 import * as hooks from "@/app/base/hooks/analytics";
@@ -18,7 +16,6 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 setupMockServer(poolsResolvers.getPool.handler());
 
 describe("LXDHostToolbar", () => {
@@ -39,15 +36,9 @@ describe("LXDHostToolbar", () => {
   });
 
   it("shows a spinner if pools haven't loaded yet", () => {
-    const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
-      { store }
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
+      { state }
     );
 
     expect(
@@ -56,15 +47,9 @@ describe("LXDHostToolbar", () => {
   });
 
   it("can show the host's pool's name", async () => {
-    const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
-      { store }
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
+      { state }
     );
     await waitFor(() => {
       expect(screen.getByTestId("pod-pool").textContent).toEqual("swimming");
@@ -72,16 +57,14 @@ describe("LXDHostToolbar", () => {
   });
 
   it("can link to a host's settings page if in cluster view", () => {
-    const store = mockStore(state);
     renderWithProviders(
       <LXDHostToolbar
         clusterId={2}
         hostId={1}
-        setSidePanelContent={vi.fn()}
         setViewByNuma={vi.fn()}
         viewByNuma={false}
       />,
-      { store }
+      { state }
     );
 
     expect(
@@ -92,30 +75,18 @@ describe("LXDHostToolbar", () => {
   });
 
   it("does not show a link to host's settings page if in single host view", () => {
-    const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
-      { store }
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
+      { state }
     );
 
     expect(screen.queryByTestId("settings-link")).not.toBeInTheDocument();
   });
 
   it("shows tags in single host view", () => {
-    const store = mockStore(state);
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
-      { store }
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
+      { state }
     );
 
     expect(screen.getByTestId("pod-tags")).toBeInTheDocument();
@@ -125,15 +96,10 @@ describe("LXDHostToolbar", () => {
     state.pod.items[0].resources = factory.podResources({
       numa: [factory.podNuma()],
     });
-    const store = mockStore(state);
+
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
-      { store }
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
+      { state }
     );
     await waitFor(() => {
       expect(screen.getByTestId("numa-switch")).toBeInTheDocument();
@@ -160,15 +126,10 @@ describe("LXDHostToolbar", () => {
       }),
     });
     const useSendMock = vi.spyOn(hooks, "useSendAnalytics");
-    const store = mockStore(state);
+
     renderWithProviders(
-      <LXDHostToolbar
-        hostId={1}
-        setSidePanelContent={vi.fn()}
-        setViewByNuma={vi.fn()}
-        viewByNuma={false}
-      />,
-      { store }
+      <LXDHostToolbar hostId={1} setViewByNuma={vi.fn()} viewByNuma={false} />,
+      { state }
     );
     await userEvent.click(screen.getByTestId("numa-switch"));
     await waitFor(() => {
@@ -178,8 +139,7 @@ describe("LXDHostToolbar", () => {
   });
 
   it("can display a basic set of data", () => {
-    const store = mockStore(state);
-    renderWithProviders(<LXDHostToolbar hostId={1} showBasic />, { store });
+    renderWithProviders(<LXDHostToolbar hostId={1} showBasic />, { state });
 
     expect(screen.getByTestId("toolbar-title")).toBeInTheDocument();
     expect(screen.getByTestId("lxd-version")).toBeInTheDocument();

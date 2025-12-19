@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import EditBondForm from "./EditBondForm";
 
 import {
@@ -12,13 +10,11 @@ import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   within,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("EditBondForm", () => {
   let state: RootState;
@@ -79,15 +75,14 @@ describe("EditBondForm", () => {
       }),
     ];
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditBondForm
-        close={vi.fn()}
         nic={nic}
         selected={selected}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(screen.getByRole("grid")).toBeInTheDocument();
   });
@@ -112,15 +107,14 @@ describe("EditBondForm", () => {
       }),
     ];
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditBondForm
-        close={vi.fn()}
         nic={nic}
         selected={selected}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route: "/machines", state }
+      { state }
     );
     const rows = screen.getAllByRole("row");
     expect(within(rows[1]).getByTestId("name")).toHaveTextContent("eth0");
@@ -176,15 +170,14 @@ describe("EditBondForm", () => {
         interfaces,
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditBondForm
-        close={vi.fn()}
         nic={nic}
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route: "/machines", state }
+      { state }
     );
     await userEvent.click(screen.getByTestId("edit-members"));
 
@@ -220,15 +213,14 @@ describe("EditBondForm", () => {
         interfaces,
       }),
     ];
-    const { rerender } = renderWithBrowserRouter(
+    const { rerender } = renderWithProviders(
       <EditBondForm
-        close={vi.fn()}
         nic={nic}
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(
       screen.getByRole("button", { name: "Save interface" })
@@ -236,7 +228,6 @@ describe("EditBondForm", () => {
     await userEvent.click(screen.getByTestId("edit-members"));
     rerender(
       <EditBondForm
-        close={vi.fn()}
         nic={nic}
         selected={[]}
         setSelected={vi.fn()}
@@ -270,15 +261,14 @@ describe("EditBondForm", () => {
       }),
     ];
     nic.parents = [interfaces[0].id, interfaces[1].id];
-    const { rerender } = renderWithBrowserRouter(
+    const { rerender } = renderWithProviders(
       <EditBondForm
-        close={vi.fn()}
         nic={nic}
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(
       screen.getByRole("button", { name: "Save interface" })
@@ -287,7 +277,6 @@ describe("EditBondForm", () => {
     // Select an extra interface.
     rerender(
       <EditBondForm
-        close={vi.fn()}
         nic={nic}
         selected={[
           { nicId: interfaces[0].id },
@@ -304,16 +293,14 @@ describe("EditBondForm", () => {
   });
 
   it("fetches the necessary data on load", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <EditBondForm
-        close={vi.fn()}
         nic={nic}
         selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route: "/machines", store }
+      { state }
     );
     expect(store.getActions().some((action) => action.type === "fabric/fetch"));
     expect(store.getActions().some((action) => action.type === "subnet/fetch"));
@@ -324,15 +311,14 @@ describe("EditBondForm", () => {
     state.fabric.loaded = false;
     state.subnet.loaded = false;
     state.vlan.loaded = false;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditBondForm
-        close={vi.fn()}
         nic={nic}
         selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
@@ -383,17 +369,15 @@ describe("EditBondForm", () => {
       }),
     ];
     const link = { id: 1, subnet_id: 1, mode: NetworkLinkMode.AUTO };
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <EditBondForm
-        close={vi.fn()}
         link={link}
         nic={bond}
         selected={[{ nicId: 9 }, { nicId: 10 }]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route: "/machines", store }
+      { state }
     );
 
     await userEvent.selectOptions(

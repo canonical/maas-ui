@@ -2,7 +2,13 @@ import { useState } from "react";
 
 import DebounceSearchBox, { Labels } from "./DebounceSearchBox";
 
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("DebounceSearchBox", () => {
   it(`runs onDebounced fn when the search text changes via the input, after the
@@ -18,7 +24,7 @@ describe("DebounceSearchBox", () => {
         />
       );
     };
-    render(<Proxy />);
+    renderWithProviders(<Proxy />);
     const searchBox = screen.getByRole("searchbox");
 
     await userEvent.clear(searchBox);
@@ -48,7 +54,7 @@ describe("DebounceSearchBox", () => {
   });
 
   it("displays a spinner while debouncing search box input", async () => {
-    render(
+    renderWithProviders(
       <DebounceSearchBox
         onDebounced={vi.fn()}
         searchText="old-value"

@@ -1,13 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import MachineUSBDevices from "./MachineUSBDevices";
 
 import { nodeDeviceActions } from "@/app/store/nodedevice";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders } from "@/testing/utils";
 
 describe("MachineUSBDevices", () => {
   it("fetches the machine's node devices on load", () => {
@@ -20,15 +15,11 @@ describe("MachineUSBDevices", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MachineUSBDevices setSidePanelContent={vi.fn()} />,
-      {
-        route: "/machine/abc123/usb-devices",
-        routePattern: "/machine/:id/usb-devices",
-        store,
-      }
-    );
+    const { store } = renderWithProviders(<MachineUSBDevices />, {
+      initialEntries: ["/machine/abc123/usb-devices"],
+      pattern: "/machine/:id/usb-devices",
+      state,
+    });
 
     const expectedAction = nodeDeviceActions.getByNodeId("abc123");
     expect(

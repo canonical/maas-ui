@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import DeviceName from "./DeviceName";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("DeviceName", () => {
   let state: RootState;
@@ -37,10 +33,9 @@ describe("DeviceName", () => {
   });
 
   it("can update a device with the new name and domain", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <DeviceName editingName={true} id="abc123" setEditingName={vi.fn()} />,
-      { initialEntries: ["/device/abc123"], store }
+      { initialEntries: ["/device/abc123"], state }
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "Hostname" }));

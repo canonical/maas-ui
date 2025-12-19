@@ -2,7 +2,7 @@ import { StorageColumn } from "./StorageColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("StorageColumn", () => {
   let state: RootState;
@@ -22,9 +22,8 @@ describe("StorageColumn", () => {
 
   it("displays the storage value correctly", () => {
     state.machine.items[0].storage = 2000;
-    renderWithBrowserRouter(<StorageColumn systemId="abc123" />, {
+    renderWithProviders(<StorageColumn systemId="abc123" />, {
       state,
-      route: "/machines",
     });
 
     expect(screen.getByTestId("storage-value")).toHaveTextContent("2");

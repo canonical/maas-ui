@@ -4,7 +4,6 @@ import { LinkMonitoring, MacSource } from "../types";
 
 import BondFormFields from "./BondFormFields";
 
-import urls from "@/app/base/urls";
 import {
   BondLacpRate,
   BondMode,
@@ -13,9 +12,7 @@ import {
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
-
-const route = urls.machines.index;
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("BondFormFields", () => {
   let state: RootState;
@@ -86,11 +83,11 @@ describe("BondFormFields", () => {
   });
 
   it("does not display the hash policy field by default", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
 
     expect(
@@ -99,11 +96,11 @@ describe("BondFormFields", () => {
   });
 
   it("displays the hash policy field for some bond modes", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -117,11 +114,11 @@ describe("BondFormFields", () => {
   });
 
   it("does not display the lacp rate field by default", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
 
     expect(
@@ -130,11 +127,11 @@ describe("BondFormFields", () => {
   });
 
   it("displays the lacp rate field for some bond modes", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -148,11 +145,11 @@ describe("BondFormFields", () => {
   });
 
   it("does not display the monitoring fields by default", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
 
     const monitoringFieldNames = [
@@ -169,11 +166,11 @@ describe("BondFormFields", () => {
   });
 
   it("displays the monitoring fields when link monitoring is set", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -193,11 +190,11 @@ describe("BondFormFields", () => {
   });
 
   it("sets the mac address field when the nic field changes", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BondFormFields selected={[{ nicId: 17 }]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
     await userEvent.click(
       screen.getByRole("radio", { name: "Use MAC address from bond member" })
@@ -212,11 +209,11 @@ describe("BondFormFields", () => {
   });
 
   it("enables the mac address field when the radio is changed to manual", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
     await userEvent.click(
       screen.getByRole("radio", { name: "Manual MAC address" })
@@ -231,11 +228,11 @@ describe("BondFormFields", () => {
   });
 
   it("enables the mac nic field when the radio is changed to 'nic'", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
     await userEvent.click(
       screen.getByRole("radio", { name: "Use MAC address from bond member" })
@@ -248,7 +245,7 @@ describe("BondFormFields", () => {
   });
 
   it("resets the mac address field when the radio is changed to 'nic'", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik
         initialValues={{
           ...initialValues,
@@ -259,7 +256,7 @@ describe("BondFormFields", () => {
       >
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, state }
+      { state }
     );
     // Enable the mac address field so it can be changed.
     await userEvent.click(

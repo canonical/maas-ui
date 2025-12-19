@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { ZoneColumn } from "./ZoneColumn";
 
 import type { RootState } from "@/app/store/root/types";
@@ -95,11 +93,9 @@ describe("ZoneColumn", () => {
   });
 
   it("can change zones", async () => {
-    const mockStore = configureStore();
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { initialEntries: ["/machines"], state, store }
+      { initialEntries: ["/machines"], state }
     );
     await waitFor(() => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();

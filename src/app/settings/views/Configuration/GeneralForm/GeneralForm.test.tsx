@@ -1,15 +1,9 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import GeneralForm from "./GeneralForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("GeneralForm", () => {
   let state: RootState;
@@ -30,15 +24,7 @@ describe("GeneralForm", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <GeneralForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<GeneralForm />, { state });
 
     expect(
       screen.getByRole("form", { name: "Configuration - General" })
@@ -46,15 +32,7 @@ describe("GeneralForm", () => {
   });
 
   it("sets maas_name value", () => {
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <GeneralForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<GeneralForm />, { state });
 
     expect(screen.getByRole("textbox", { name: "MAAS name" })).toHaveValue(
       "bionic-maas"
@@ -62,15 +40,7 @@ describe("GeneralForm", () => {
   });
 
   it("sets theme value", () => {
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <GeneralForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<GeneralForm />, { state });
 
     expect(
       screen.getByRole("radio", {
@@ -80,15 +50,7 @@ describe("GeneralForm", () => {
   });
 
   it("sets enable_analytics value", () => {
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <GeneralForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<GeneralForm />, { state });
 
     expect(
       screen.getByRole("checkbox", {
@@ -98,15 +60,7 @@ describe("GeneralForm", () => {
   });
 
   it("sets release_notifications value", () => {
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <GeneralForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<GeneralForm />, { state });
 
     expect(
       screen.getByRole("checkbox", {
@@ -116,15 +70,7 @@ describe("GeneralForm", () => {
   });
 
   it("can change the MAAS theme colour", async () => {
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <GeneralForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<GeneralForm />, { state });
 
     const redRadioButton = screen.getByRole("radio", { name: "Red" });
     const saveButton = screen.getByRole("button", { name: "Save" });
@@ -136,15 +82,8 @@ describe("GeneralForm", () => {
   });
 
   it("can trigger usabilla when the notifications are turned off", async () => {
-    const store = mockStore(state);
     window.usabilla_live = vi.fn();
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <GeneralForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<GeneralForm />, { state });
 
     const release_notifications_checkbox = screen.getByRole("checkbox", {
       name: "Enable new release notifications",

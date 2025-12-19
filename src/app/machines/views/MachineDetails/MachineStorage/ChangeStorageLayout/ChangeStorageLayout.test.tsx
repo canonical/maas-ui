@@ -1,19 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import { storageLayoutOptions } from "../ChangeStorageLayoutMenu/ChangeStorageLayoutMenu";
 
 import ChangeStorageLayout from "./ChangeStorageLayout";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  renderWithBrowserRouter,
-  screen,
-  userEvent,
-  getByTextContent,
-} from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("ChangeStorageLayout", () => {
   const sampleStoragelayout = storageLayoutOptions[0][0];
@@ -26,9 +16,8 @@ describe("ChangeStorageLayout", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ChangeStorageLayout
-        clearSidePanelContent={vi.fn()}
         selectedLayout={sampleStoragelayout}
         systemId="abc123"
       />,
@@ -38,7 +27,7 @@ describe("ChangeStorageLayout", () => {
     );
 
     expect(
-      getByTextContent(
+      screen.getByText(
         "Are you sure you want to change the storage layout to flat?"
       )
     ).toBeInTheDocument();
@@ -64,9 +53,8 @@ describe("ChangeStorageLayout", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ChangeStorageLayout
-        clearSidePanelContent={vi.fn()}
         selectedLayout={sampleStoragelayout}
         systemId="abc123"
       />,
@@ -79,7 +67,6 @@ describe("ChangeStorageLayout", () => {
   });
 
   it("correctly dispatches an action to update a machine's storage layout", async () => {
-    const handleClearSidePanelContent = vi.fn();
     const state = factory.rootState({
       machine: factory.machineState({
         items: [factory.machineDetails({ system_id: "abc123" })],
@@ -88,15 +75,13 @@ describe("ChangeStorageLayout", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <ChangeStorageLayout
-        clearSidePanelContent={handleClearSidePanelContent}
         selectedLayout={sampleStoragelayout}
         systemId="abc123"
       />,
       {
-        store,
+        state,
       }
     );
 
@@ -122,6 +107,5 @@ describe("ChangeStorageLayout", () => {
       },
       type: "machine/applyStorageLayout",
     });
-    expect(handleClearSidePanelContent).toHaveBeenCalled();
   });
 });

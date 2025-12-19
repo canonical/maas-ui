@@ -3,7 +3,7 @@ import NumaResources, { TRUNCATION_POINT } from "./NumaResources";
 import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("NumaResources", () => {
   it("can expand truncated NUMA nodes if above truncation point", async () => {
@@ -19,9 +19,8 @@ describe("NumaResources", () => {
       pod: factory.podState({ items: [pod] }),
     });
 
-    renderWithBrowserRouter(<NumaResources id={pod.id} />, {
+    renderWithProviders(<NumaResources id={pod.id} />, {
       state,
-      route: "/kvm/1",
     });
 
     expect(screen.getByTestId("show-more-numas")).toBeInTheDocument();
@@ -49,9 +48,8 @@ describe("NumaResources", () => {
     const state = factory.rootState({
       pod: factory.podState({ items: [pod] }),
     });
-    renderWithBrowserRouter(<NumaResources id={pod.id} />, {
+    renderWithProviders(<NumaResources id={pod.id} />, {
       state,
-      route: "/kvm/1",
     });
 
     expect(screen.getByTestId("numa-resources")).toHaveClass("is-wide");
@@ -78,9 +76,8 @@ describe("NumaResources", () => {
       pod: factory.podState({ items: [pod] }),
     });
     const useSendMock = vi.spyOn(hooks, "useSendAnalytics");
-    renderWithBrowserRouter(<NumaResources id={pod.id} />, {
+    renderWithProviders(<NumaResources id={pod.id} />, {
       state,
-      route: "/kvm/1",
     });
 
     await userEvent.click(screen.getByTestId("show-more-numas"));

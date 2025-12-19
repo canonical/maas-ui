@@ -3,8 +3,9 @@ import { describe } from "vitest";
 
 import FilesystemsTable from "./FilesystemsTable";
 
-import * as sidePanelHooks from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import DeleteFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/DeleteFilesystem";
+import DeleteSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/DeleteSpecialFilesystem";
+import UnmountFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/UnmountFilesystem";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
@@ -12,23 +13,13 @@ import type { Disk, Filesystem, Partition } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   mockIsPending,
+  mockSidePanel,
   renderWithProviders,
   screen,
   waitFor,
 } from "@/testing/utils";
 
-const setSidePanelContent = vi.fn();
-beforeEach(() => {
-  vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-    setSidePanelContent,
-    sidePanelContent: null,
-    setSidePanelSize: vi.fn(),
-    sidePanelSize: "regular",
-  });
-});
-afterEach(() => {
-  vi.restoreAllMocks();
-});
+const { mockOpen } = await mockSidePanel();
 
 describe("FilesystemsTable", () => {
   let state: RootState;
@@ -265,9 +256,9 @@ describe("FilesystemsTable", () => {
       await userEvent.click(
         screen.getByRole("button", { name: "Remove filesystem..." })
       );
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.DELETE_FILESYSTEM,
+          component: DeleteFilesystem,
         })
       );
     });
@@ -300,9 +291,9 @@ describe("FilesystemsTable", () => {
       await userEvent.click(
         screen.getByRole("button", { name: "Remove filesystem..." })
       );
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.DELETE_FILESYSTEM,
+          component: DeleteFilesystem,
         })
       );
     });
@@ -332,9 +323,9 @@ describe("FilesystemsTable", () => {
       await userEvent.click(
         screen.getByRole("button", { name: "Remove filesystem..." })
       );
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.DELETE_SPECIAL_FILESYSTEM,
+          component: DeleteSpecialFilesystem,
         })
       );
     });
@@ -363,9 +354,9 @@ describe("FilesystemsTable", () => {
       await userEvent.click(
         screen.getByRole("button", { name: "Unmount filesystem..." })
       );
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.UNMOUNT_FILESYSTEM,
+          component: UnmountFilesystem,
         })
       );
     });
@@ -398,9 +389,9 @@ describe("FilesystemsTable", () => {
       await userEvent.click(
         screen.getByRole("button", { name: "Unmount filesystem..." })
       );
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.UNMOUNT_FILESYSTEM,
+          component: UnmountFilesystem,
         })
       );
     });

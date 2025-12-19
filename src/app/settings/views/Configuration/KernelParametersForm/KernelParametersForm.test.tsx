@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import KernelParametersForm, {
   Labels as FormLabels,
 } from "./KernelParametersForm";
@@ -11,19 +7,16 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   screen,
-  render,
-  renderWithBrowserRouter,
+  renderWithProviders,
   userEvent,
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
-
 describe("KernelParametersForm", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = factory.rootState({
+    state = factory.rootState({
       config: factory.configState({
         items: [
           {
@@ -40,16 +33,7 @@ describe("KernelParametersForm", () => {
   });
 
   it("sets kernel_opts value", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <KernelParametersForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<KernelParametersForm />, { state });
     expect(
       screen.getByRole("textbox", {
         name: FormLabels.GlobalBootParams,
@@ -58,21 +42,11 @@ describe("KernelParametersForm", () => {
   });
 
   it("sets enable_kernel_crash_dump value", () => {
-    const state = {
-      ...initialState,
-      config: {
-        items: [{ name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP, value: true }],
-      },
-    };
-    const store = mockStore(state);
+    state.config.items = [
+      { name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP, value: true },
+    ];
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <KernelParametersForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<KernelParametersForm />, { state });
 
     expect(
       screen.getByRole("checkbox", { name: FormLabels.KernelCrashDump })
@@ -80,10 +54,7 @@ describe("KernelParametersForm", () => {
   });
 
   it("dispatches an action to update kernel parameters", async () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-
-    renderWithBrowserRouter(<KernelParametersForm />, { store });
+    const { store } = renderWithProviders(<KernelParametersForm />, { state });
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: FormLabels.GlobalBootParams })
@@ -118,8 +89,8 @@ describe("KernelParametersForm", () => {
   });
 
   it("shows a tooltip for minimum OS requirements", async () => {
-    renderWithBrowserRouter(<KernelParametersForm />, {
-      state: { ...initialState },
+    renderWithProviders(<KernelParametersForm />, {
+      state,
     });
 
     await userEvent.hover(
@@ -134,8 +105,8 @@ describe("KernelParametersForm", () => {
   });
 
   it("shows a tooltip for minimum hardware requirements", async () => {
-    renderWithBrowserRouter(<KernelParametersForm />, {
-      state: { ...initialState },
+    renderWithProviders(<KernelParametersForm />, {
+      state,
     });
 
     await userEvent.hover(

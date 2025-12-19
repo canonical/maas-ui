@@ -3,7 +3,7 @@ import { CoresColumn } from "./CoresColumn";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -33,8 +33,7 @@ describe("CoresColumn", () => {
   it("displays the number of cores", () => {
     state.machine.items[0].cpu_count = 8;
 
-    renderWithBrowserRouter(<CoresColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<CoresColumn systemId="abc123" />, {
       state,
     });
     expect(screen.getByLabelText("Cores")).toHaveTextContent("8");
@@ -43,8 +42,7 @@ describe("CoresColumn", () => {
   it("truncates architecture", () => {
     state.machine.items[0].architecture = "i386/generic";
 
-    renderWithBrowserRouter(<CoresColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<CoresColumn systemId="abc123" />, {
       state,
     });
     expect(screen.getByTestId("arch")).toHaveTextContent("i386");
@@ -53,8 +51,7 @@ describe("CoresColumn", () => {
   it("displays a Tooltip with the full architecture", async () => {
     state.machine.items[0].architecture = "amd64/generic";
 
-    renderWithBrowserRouter(<CoresColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<CoresColumn systemId="abc123" />, {
       state,
     });
 

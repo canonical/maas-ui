@@ -319,14 +319,6 @@ renderWithProviders(<MyComponent />, {
 });
 ```
 
-### Other Legacy Utilities
-
-These utilities exist for legacy tests but should not be used in new code:
-
-- `renderWithBrowserRouter` - Use `renderWithProviders` instead
-- `WithMockStoreProvider` - Use `renderWithProviders` instead
-- Manual Redux store setup - Use `renderWithProviders` instead
-
 ## Common Pitfalls
 
 - **Don't** forget to use `await` with `userEvent` methods

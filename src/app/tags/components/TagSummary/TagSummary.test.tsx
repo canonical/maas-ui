@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import TagSummary from "./TagSummary";
 
 import type { RootState } from "@/app/store/root/types";
@@ -7,7 +5,6 @@ import { tagActions } from "@/app/store/tag";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen } from "@/testing/utils";
 
-const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
@@ -28,8 +25,7 @@ beforeEach(() => {
 });
 
 it("dispatches actions to fetch necessary data", () => {
-  const store = mockStore(state);
-  renderWithProviders(<TagSummary id={1} />, { store });
+  const { store } = renderWithProviders(<TagSummary id={1} />, { state });
 
   const expectedActions = [tagActions.fetch()];
   const actualActions = store.getActions();

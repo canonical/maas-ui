@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import { Labels as KPFormLabels } from "../KernelParametersForm/KernelParametersForm";
 
 import KernelParameters, {
@@ -11,9 +7,7 @@ import KernelParameters, {
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("KernelParameters", () => {
   let initialState: RootState;
@@ -34,16 +28,7 @@ describe("KernelParameters", () => {
   it("displays a spinner if config is loading", () => {
     const state = { ...initialState };
     state.config.loading = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <KernelParameters />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    renderWithProviders(<KernelParameters />, { state });
     expect(
       screen.getByText(KernelParametersLabels.Loading)
     ).toBeInTheDocument();
@@ -52,16 +37,7 @@ describe("KernelParameters", () => {
   it("displays the KernelParameters form if config is loaded", () => {
     const state = { ...initialState };
     state.config.loaded = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <KernelParameters />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    renderWithProviders(<KernelParameters />, { state });
     expect(
       screen.getByRole("form", { name: KPFormLabels.FormLabel })
     ).toBeInTheDocument();
@@ -70,16 +46,7 @@ describe("KernelParameters", () => {
   it("dispatches action to fetch config if not already loaded", () => {
     const state = { ...initialState };
     state.config.loaded = false;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <KernelParameters />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    const { store } = renderWithProviders(<KernelParameters />, { state });
     const fetchActions = store
       .getActions()
       .filter((action) => action.type.endsWith("fetch"));

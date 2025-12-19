@@ -26,7 +26,7 @@ const VMWare = (): React.ReactElement => {
   useWindowTitle("VMWare");
 
   return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+    <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Title className="section-header__title">
           VMware

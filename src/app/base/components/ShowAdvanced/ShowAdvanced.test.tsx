@@ -1,9 +1,9 @@
 import ShowAdvanced, { Labels } from "./ShowAdvanced";
 
-import { render, screen, userEvent } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 it("displays additional content on press", async () => {
-  render(<ShowAdvanced>additional content</ShowAdvanced>);
+  renderWithProviders(<ShowAdvanced>additional content</ShowAdvanced>);
 
   expect(screen.getByText("additional content")).toHaveAttribute(
     "aria-hidden",

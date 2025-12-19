@@ -6,7 +6,7 @@ import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   waitFor,
@@ -39,8 +39,7 @@ describe("KVMConfigurationCardFields", () => {
       type: PodType.VIRSH,
     });
     state.pod.items = [pod];
-    renderWithBrowserRouter(<KVMConfigurationCard pod={pod} />, {
-      route: "/kvm/1/edit",
+    renderWithProviders(<KVMConfigurationCard pod={pod} />, {
       state,
     });
     await waitFor(() => {
@@ -86,8 +85,7 @@ describe("KVMConfigurationCardFields", () => {
       type: PodType.LXD,
     });
     state.pod.items = [pod];
-    renderWithBrowserRouter(<KVMConfigurationCard pod={pod} />, {
-      route: "/kvm/1/edit",
+    renderWithProviders(<KVMConfigurationCard pod={pod} />, {
       state,
     });
     await waitFor(() => {
@@ -131,8 +129,7 @@ describe("KVMConfigurationCardFields", () => {
       type: PodType.LXD,
     });
     state.pod.items = [pod];
-    renderWithBrowserRouter(<KVMConfigurationCard pod={pod} zoneDisabled />, {
-      route: "/kvm/1/edit",
+    renderWithProviders(<KVMConfigurationCard pod={pod} zoneDisabled />, {
       state,
     });
     expect(screen.getByRole("combobox", { name: "Zone" })).toBeDisabled();

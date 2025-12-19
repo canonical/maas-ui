@@ -1,7 +1,11 @@
 import DiskNumaNodes from "./DiskNumaNodes";
 
 import * as factory from "@/testing/factories";
-import { expectTooltipOnHover, render, screen } from "@/testing/utils";
+import {
+  expectTooltipOnHover,
+  screen,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("DiskNumaNodes", () => {
   it("can show a single numa node", () => {
@@ -9,7 +13,7 @@ describe("DiskNumaNodes", () => {
       numa_node: 5,
       numa_nodes: undefined,
     });
-    render(<DiskNumaNodes disk={disk} />);
+    renderWithProviders(<DiskNumaNodes disk={disk} />);
     expect(screen.getByTestId("numa-nodes")).toHaveTextContent("5");
   });
 
@@ -18,7 +22,7 @@ describe("DiskNumaNodes", () => {
       numa_node: undefined,
       numa_nodes: [0, 1],
     });
-    render(<DiskNumaNodes disk={disk} />);
+    renderWithProviders(<DiskNumaNodes disk={disk} />);
     const numaNodes = screen.getByTestId("numa-nodes");
     expect(numaNodes).toHaveTextContent("0, 1");
     await expectTooltipOnHover(

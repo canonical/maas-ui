@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
@@ -17,12 +18,9 @@ import LXDSingleVMs from "./LXDSingleVMs";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import KVMForms from "@/app/kvm/components/KVMForms/KVMForms";
 import { useActivePod, useKVMDetailsRedirect } from "@/app/kvm/hooks";
-import { getFormTitle } from "@/app/kvm/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
 import podSelectors from "@/app/store/pod/selectors";
 import { PodMeta } from "@/app/store/pod/types";
@@ -33,7 +31,7 @@ export enum Label {
   Title = "LXD details",
 }
 
-const LXDSingleDetails = (): React.ReactElement => {
+const LXDSingleDetails = (): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
   const location = useLocation();
   const id = useGetURLId(PodMeta.PK);
@@ -46,7 +44,6 @@ const LXDSingleDetails = (): React.ReactElement => {
   const [searchFilter, setFilter] = useState<string>(
     FilterMachines.filtersToString(currentFilters)
   );
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 
@@ -78,23 +75,7 @@ const LXDSingleDetails = (): React.ReactElement => {
   return (
     <PageContent
       aria-label={Label.Title}
-      header={
-        <LXDSingleDetailsHeader
-          id={id}
-          setSidePanelContent={setSidePanelContent}
-        />
-      }
-      sidePanelContent={
-        sidePanelContent ? (
-          <KVMForms
-            searchFilter={searchFilter}
-            setSearchFilter={setSearchFilter}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        ) : null
-      }
-      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : ""}
+      header={<LXDSingleDetailsHeader id={id} />}
     >
       {pod && (
         <Routes>
@@ -104,7 +85,6 @@ const LXDSingleDetails = (): React.ReactElement => {
                 id={id}
                 searchFilter={searchFilter}
                 setSearchFilter={setSearchFilter}
-                setSidePanelContent={setSidePanelContent}
               />
             }
             path={getRelativeRoute(urls.kvm.lxd.single.vms(null), base)}
@@ -114,12 +94,7 @@ const LXDSingleDetails = (): React.ReactElement => {
             path={getRelativeRoute(urls.kvm.lxd.single.resources(null), base)}
           />
           <Route
-            element={
-              <LXDSingleSettings
-                id={id}
-                setSidePanelContent={setSidePanelContent}
-              />
-            }
+            element={<LXDSingleSettings id={id} />}
             path={getRelativeRoute(urls.kvm.lxd.single.edit(null), base)}
           />
           <Route

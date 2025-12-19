@@ -1,10 +1,10 @@
 import NodeActionWarning from "./NodeActionWarning";
 
 import { NodeActions } from "@/app/store/types/node";
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("displays a warning for selectedCount of 0", () => {
-  render(
+  renderWithProviders(
     <NodeActionWarning
       action={NodeActions.ABORT}
       nodeType="machine"
@@ -18,7 +18,7 @@ it("displays a warning for selectedCount of 0", () => {
 });
 
 it("displays a warning for an action with a selected count", () => {
-  render(
+  renderWithProviders(
     <NodeActionWarning
       action={NodeActions.COMMISSION}
       nodeType="node"

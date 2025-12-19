@@ -54,12 +54,7 @@ const SpaceDetails = (): ReactElement => {
   }
 
   return (
-    <PageContent
-      header={<SpaceDetailsHeader space={space} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<SpaceDetailsHeader space={space} />}>
       {!space ? (
         <Spinner text="Loading..." />
       ) : (

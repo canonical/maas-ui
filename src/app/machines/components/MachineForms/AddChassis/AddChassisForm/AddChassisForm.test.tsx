@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AddChassisForm from "./AddChassisForm";
 
 import { PowerTypeNames } from "@/app/store/general/constants";
@@ -10,9 +8,7 @@ import {
 } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("AddChassisForm", () => {
   let state: RootState;
@@ -134,11 +130,9 @@ describe("AddChassisForm", () => {
 
   it("fetches the necessary data on load if not already loaded", () => {
     state.domain.loaded = false;
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={vi.fn()} />,
-      { route: "/machines/chassis/add", store }
-    );
+    const { store } = renderWithProviders(<AddChassisForm />, {
+      state,
+    });
     const expectedActions = ["FETCH_DOMAIN", "general/fetchPowerTypes"];
     const actions = store.getActions();
     expectedActions.forEach((expectedAction) => {
@@ -149,19 +143,16 @@ describe("AddChassisForm", () => {
   it("displays a spinner if data has not loaded", () => {
     state.domain.loaded = false;
     state.general.powerTypes.loaded = false;
-    renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={vi.fn()} />,
-      { route: "/machines/chassis/add", state }
-    );
+    renderWithProviders(<AddChassisForm />, {
+      state,
+    });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("correctly dispatches action to add chassis", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={vi.fn()} />,
-      { route: "/machines/add", store }
-    );
+    const { store } = renderWithProviders(<AddChassisForm />, {
+      state,
+    });
 
     // Select vmware from power types dropdown
     await userEvent.selectOptions(

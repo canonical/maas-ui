@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import FilesystemFields from "./FilesystemFields";
 
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("FilesystemFields", () => {
   it("only shows filesystem types that require a storage device", () => {
@@ -20,7 +20,7 @@ describe("FilesystemFields", () => {
         ],
       }),
     });
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
         onSubmit={vi.fn()}
@@ -47,7 +47,7 @@ describe("FilesystemFields", () => {
         ],
       }),
     });
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
         onSubmit={vi.fn()}
@@ -72,7 +72,7 @@ describe("FilesystemFields", () => {
         ],
       }),
     });
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
         onSubmit={vi.fn()}

@@ -1,9 +1,13 @@
 import NonBreakingSpace from "./NonBreakingSpace";
 
-import { render, screen, getDefaultNormalizer } from "@/testing/utils";
+import {
+  screen,
+  getDefaultNormalizer,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("renders a non breaking space correctly", () => {
-  render(
+  renderWithProviders(
     <>
       1<NonBreakingSpace />2
     </>

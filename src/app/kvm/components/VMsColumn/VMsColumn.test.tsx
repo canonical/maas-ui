@@ -1,13 +1,8 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import VMsColumn from "./VMsColumn";
 
 import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("VMsColumn", () => {
   it("displays the pod's tracked VMs", () => {
@@ -22,11 +17,10 @@ describe("VMsColumn", () => {
         items: [pod],
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />
-      </Provider>
+
+    renderWithProviders(
+      <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />,
+      { state }
     );
     expect(screen.getByTestId("machines-count")).toHaveTextContent("10");
   });
@@ -39,11 +33,9 @@ describe("VMsColumn", () => {
       }),
     });
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />
-      </Provider>
+    renderWithProviders(
+      <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />,
+      { state }
     );
     expect(screen.getByTestId("version")).toHaveTextContent("1.2.3");
   });

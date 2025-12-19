@@ -1,9 +1,6 @@
-import configureStore from "redux-mock-store";
-
 import ImageList, { Labels as ImageListLabels } from "./ImageList";
 
 import { ConfigNames } from "@/app/store/config/types";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
@@ -13,7 +10,6 @@ import {
   waitForLoading,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(
   configurationsResolvers.getConfiguration.handler({
     name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
@@ -34,11 +30,12 @@ describe("ImageList", () => {
         loaded: true,
       }),
     });
-    const store = mockStore(state);
-    const { result } = renderWithProviders(<ImageList />, {
+
+    const {
+      result: { unmount },
       store,
-    });
-    result.unmount();
+    } = renderWithProviders(<ImageList />, { state });
+    unmount();
     expect(
       store
         .getActions()

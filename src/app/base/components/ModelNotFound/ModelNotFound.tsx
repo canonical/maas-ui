@@ -38,8 +38,6 @@ const ModelNotFound = ({
     <PageContent
       data-testid={TestIds.NotFound}
       header={<SectionHeader title={title} />}
-      sidePanelContent={null}
-      sidePanelTitle={null}
     >
       {content}
     </PageContent>

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import type { MockedFunction } from "vitest";
 
 import MachineListGroupCount from "./MachineListGroupCount";
@@ -6,6 +6,7 @@ import MachineListGroupCount from "./MachineListGroupCount";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 import { FetchNodeStatus } from "@/app/store/types/node";
+import { renderWithProviders } from "@/testing/utils";
 
 vi.mock("@/app/store/machine/utils/hooks");
 
@@ -23,8 +24,7 @@ it("renders placeholder when count is null and fetched machines count has not lo
     machineCountLoaded: false,
     machineCount: 0,
   });
-
-  render(
+  renderWithProviders(
     <MachineListGroupCount
       count={null}
       filter={null}
@@ -37,7 +37,7 @@ it("renders placeholder when count is null and fetched machines count has not lo
 });
 
 it("renders count when count is not null", () => {
-  render(
+  renderWithProviders(
     <MachineListGroupCount count={3} filter={null} group={""} grouping={null} />
   );
 
@@ -50,8 +50,7 @@ it("renders machineCount when count is null and fetched count has loaded", () =>
     machineCountLoaded: true,
     machineCount: 5,
   });
-
-  render(
+  renderWithProviders(
     <MachineListGroupCount
       count={null}
       filter={null}
@@ -69,8 +68,7 @@ it("calls useFetchMachineCount with correct parameters", () => {
     machineCountLoaded: false,
     machineCount: 0,
   });
-
-  render(
+  renderWithProviders(
     <MachineListGroupCount
       count={null}
       filter={{ owner: ["=admin"] }}

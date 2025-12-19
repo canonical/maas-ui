@@ -3,7 +3,7 @@ import KVMStorageCards, { TRUNCATION_POINT } from "./KVMStorageCards";
 import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("KVMStorageCards", () => {
   it("shows sort label as sorting by default then id if default pool id provided", () => {
@@ -11,10 +11,9 @@ describe("KVMStorageCards", () => {
       a: factory.podStoragePoolResource(),
     };
     const state = factory.rootState();
-    renderWithBrowserRouter(
-      <KVMStorageCards defaultPoolId="a" pools={pools} />,
-      { route: "/kvm/1", state }
-    );
+    renderWithProviders(<KVMStorageCards defaultPoolId="a" pools={pools} />, {
+      state,
+    });
     expect(screen.getByTestId("sort-label")).toHaveTextContent(
       "(Sorted by id, default first)"
     );
@@ -25,8 +24,7 @@ describe("KVMStorageCards", () => {
       a: factory.podStoragePoolResource(),
     };
     const state = factory.rootState();
-    renderWithBrowserRouter(<KVMStorageCards pools={pools} />, {
-      route: "/kvm/1",
+    renderWithProviders(<KVMStorageCards pools={pools} />, {
       state,
     });
     expect(screen.getByTestId("sort-label")).toHaveTextContent(
@@ -43,8 +41,7 @@ describe("KVMStorageCards", () => {
       e: factory.podStoragePoolResource(),
     };
     const state = factory.rootState();
-    renderWithBrowserRouter(<KVMStorageCards pools={pools} />, {
-      route: "/kvm/1",
+    renderWithProviders(<KVMStorageCards pools={pools} />, {
       state,
     });
     expect(
@@ -85,8 +82,7 @@ describe("KVMStorageCards", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<KVMStorageCards pools={pools} />, {
-      route: "/kvm/1",
+    renderWithProviders(<KVMStorageCards pools={pools} />, {
       state,
     });
     await userEvent.click(

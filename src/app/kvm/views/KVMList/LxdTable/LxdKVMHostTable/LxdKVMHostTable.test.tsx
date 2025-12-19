@@ -4,7 +4,7 @@ import LxdKVMHostTable from "./LxdKVMHostTable";
 
 import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("LxdKVMHostTable", () => {
   it("can update the LXD hosts sort order", async () => {
@@ -35,9 +35,9 @@ describe("LxdKVMHostTable", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />,
-      { route: "/kvm", state }
+      { state }
     );
     const getLxdVms = (rowNumber: number) =>
       screen.getAllByTestId("machines-count")[rowNumber];
@@ -89,9 +89,9 @@ describe("LxdKVMHostTable", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />,
-      { route: "/kvm", state }
+      { state }
     );
     const getLxdName = (rowNumber: number) =>
       screen.getAllByTestId("name")[rowNumber];
@@ -124,9 +124,9 @@ describe("LxdKVMHostTable", () => {
         items: [factory.pod()],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />,
-      { route: "/kvm", state }
+      { state }
     );
     expect(screen.getByTestId("host-type")).toHaveTextContent("Single host");
     expect(screen.queryByTestId("hosts-count")).toBeNull();
@@ -142,18 +142,16 @@ describe("LxdKVMHostTable", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LxdKVMHostTable rows={generateClusterRows(state.vmcluster.items)} />,
-      { route: "/kvm", state }
+      { state }
     );
     expect(screen.getByTestId("host-type")).toHaveTextContent("Cluster");
     expect(screen.getByTestId("hosts-count")).toHaveTextContent("2 KVM hosts");
   });
 
   it("displays a message when empty", () => {
-    renderWithBrowserRouter(<LxdKVMHostTable rows={[]} />, {
-      route: "/kvm",
-    });
+    renderWithProviders(<LxdKVMHostTable rows={[]} />, {});
 
     expect(screen.getByText("No hosts available.")).toBeInTheDocument();
   });

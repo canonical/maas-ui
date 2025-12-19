@@ -2,7 +2,7 @@ import InterfaceFormTable from "./InterfaceFormTable";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("InterfaceFormTable", () => {
   let state: RootState;
@@ -20,7 +20,7 @@ describe("InterfaceFormTable", () => {
 
   it("displays a spinner when loading", () => {
     state.machine.items = [];
-    renderWithMockStore(
+    renderWithProviders(
       <InterfaceFormTable interfaces={[]} systemId="abc123" />,
       { state }
     );
@@ -36,7 +36,7 @@ describe("InterfaceFormTable", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <InterfaceFormTable interfaces={[{ nicId: nic.id }]} systemId="abc123" />,
       { state }
     );
@@ -52,7 +52,7 @@ describe("InterfaceFormTable", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <InterfaceFormTable interfaces={[{ nicId: nic.id }]} systemId="abc123" />,
       { state }
     );
@@ -70,7 +70,7 @@ describe("InterfaceFormTable", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <InterfaceFormTable
         interfaces={[{ nicId: nic.id }]}
         selectedEditable
@@ -93,7 +93,7 @@ describe("InterfaceFormTable", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <InterfaceFormTable
         interfaces={[{ nicId: nic.id }]}
         selected={[]}

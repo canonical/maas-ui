@@ -1,10 +1,10 @@
 import GroupCheckbox from "./GroupCheckbox";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("GroupCheckbox", () => {
   it("shows as mixed when some items are checked", () => {
-    render(
+    renderWithProviders(
       <GroupCheckbox
         handleGroupCheckbox={vi.fn()}
         items={[1, 2, 3]}
@@ -17,7 +17,7 @@ describe("GroupCheckbox", () => {
   });
 
   it("can show a label", () => {
-    render(
+    renderWithProviders(
       <GroupCheckbox
         handleGroupCheckbox={vi.fn()}
         inputLabel="Check all"
@@ -32,7 +32,7 @@ describe("GroupCheckbox", () => {
   });
 
   it("can be disabled even if items exist", () => {
-    render(
+    renderWithProviders(
       <GroupCheckbox
         disabled
         handleGroupCheckbox={vi.fn()}
@@ -46,7 +46,7 @@ describe("GroupCheckbox", () => {
   });
 
   it("can check if it should be selected via a function", () => {
-    render(
+    renderWithProviders(
       <GroupCheckbox
         checkSelected={() => true}
         handleGroupCheckbox={vi.fn()}
@@ -59,7 +59,7 @@ describe("GroupCheckbox", () => {
   });
 
   it("can check if it should display as mixed via a function", () => {
-    render(
+    renderWithProviders(
       <GroupCheckbox
         checkAllSelected={() => false}
         handleGroupCheckbox={vi.fn()}

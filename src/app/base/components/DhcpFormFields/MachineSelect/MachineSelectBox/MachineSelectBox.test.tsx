@@ -1,10 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import MachineSelectBox from "./MachineSelectBox";
 
 import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   userEvent,
@@ -12,8 +9,6 @@ import {
   renderWithProviders,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("MachineSelectBox", () => {
   beforeEach(() => {
@@ -33,12 +28,14 @@ describe("MachineSelectBox", () => {
 
   it("fetches machines on mount", async () => {
     const state = factory.rootState();
-    const store = mockStore(state);
-    renderWithProviders(<MachineSelectBox onSelect={vi.fn()} />, {
-      store,
-    });
 
-    expect(screen.getByRole("listbox")).toBeInTheDocument();
+    const { store } = renderWithProviders(
+      <MachineSelectBox onSelect={vi.fn()} />,
+      {
+        state,
+      }
+    );
+
     expect(screen.getByRole("listbox")).toBeInTheDocument();
     const expectedAction = machineActions.fetch("mocked-nanoid-1", {
       filter: { free_text: "" },
@@ -56,10 +53,13 @@ describe("MachineSelectBox", () => {
 
   it("requests machines filtered by the free text input value", async () => {
     const state = factory.rootState();
-    const store = mockStore(state);
-    renderWithProviders(<MachineSelectBox onSelect={vi.fn()} />, {
-      store,
-    });
+
+    const { store } = renderWithProviders(
+      <MachineSelectBox onSelect={vi.fn()} />,
+      {
+        state,
+      }
+    );
 
     await userEvent.type(screen.getByRole("combobox"), "test-machine");
     const expectedActionParams = {

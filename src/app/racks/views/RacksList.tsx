@@ -19,9 +19,6 @@ const RacksList = (): ReactElement => {
           setSearchFilter={setSearchText}
         />
       }
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       <RacksTable />
     </PageContent>

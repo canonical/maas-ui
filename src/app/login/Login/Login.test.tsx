@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import Login, { Labels } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
@@ -11,8 +9,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("Login", () => {
   let state: RootState;
@@ -51,8 +47,7 @@ describe("Login", () => {
   });
 
   it("hides the password field when a username has not been entered", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<Login />, { initialEntries: ["/login"], store });
+    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
 
     expect(
       screen.getByRole("textbox", { name: Labels.Username })
@@ -61,8 +56,7 @@ describe("Login", () => {
   });
 
   it("shows the password field and hides the username field after entering a username and clicking 'Next'", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<Login />, { initialEntries: ["/login"], store });
+    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.Username }),
@@ -78,8 +72,10 @@ describe("Login", () => {
   });
 
   it("can login via the api", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<Login />, { initialEntries: ["/login"], store });
+    const { store } = renderWithProviders(<Login />, {
+      initialEntries: ["/login"],
+      state,
+    });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.Username }),

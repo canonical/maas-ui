@@ -6,10 +6,10 @@ import ConnectivityCard, {
   Labels as ConnectivityCardLabels,
 } from "./ConnectivityCard";
 
-import { userEvent, screen, render } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 const renderTestCase = () =>
-  render(
+  renderWithProviders(
     <Formik
       initialValues={{
         httpProxy: "http://www.website.com",

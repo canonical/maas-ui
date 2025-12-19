@@ -13,12 +13,7 @@ const DomainsList = (): React.ReactElement => {
   useZones();
 
   return (
-    <PageContent
-      header={<DomainListHeader />}
-      sidePanelContent={null}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<DomainListHeader />}>
       {domains.length > 0 && <DomainsTable />}
     </PageContent>
   );

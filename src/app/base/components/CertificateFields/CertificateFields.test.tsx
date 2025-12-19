@@ -2,11 +2,11 @@ import { Formik } from "formik";
 
 import CertificateFields, { Labels } from "./CertificateFields";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("CertificateFields", () => {
   it("does not render certificate and key fields if generating a certificate", () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
         onSubmit={vi.fn()}
@@ -24,7 +24,7 @@ describe("CertificateFields", () => {
   });
 
   it("renders certificate and key fields if not generating a certificate", () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
         onSubmit={vi.fn()}
@@ -45,7 +45,7 @@ describe("CertificateFields", () => {
   });
 
   it("can be given different field names", () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
         onSubmit={vi.fn()}

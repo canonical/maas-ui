@@ -67,9 +67,6 @@ const ControllerList = (): React.ReactElement => {
           setSearchFilter={setSearchFilter}
         />
       }
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       <VaultNotification />
       <ControllersTable

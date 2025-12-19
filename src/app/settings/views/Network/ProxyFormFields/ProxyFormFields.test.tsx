@@ -1,15 +1,9 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import ProxyForm from "../ProxyForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ProxyFormFields", () => {
   let state: RootState;
@@ -37,16 +31,7 @@ describe("ProxyFormFields", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
-        >
-          <ProxyForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<ProxyForm />, { state });
 
     const fields = ["Don't use a proxy", "MAAS built-in", "External", "Peer"];
 

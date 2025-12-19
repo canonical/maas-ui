@@ -3,16 +3,16 @@ import userEvent from "@testing-library/user-event";
 
 import TableActions from "./TableActions";
 
-import { expectTooltipOnHover, renderWithBrowserRouter } from "@/testing/utils";
+import { expectTooltipOnHover, renderWithProviders } from "@/testing/utils";
 
 describe("TableActions ", () => {
   it("renders a copy button if copy value provided", () => {
-    renderWithBrowserRouter(<TableActions copyValue="foo" />);
+    renderWithProviders(<TableActions copyValue="foo" />);
     expect(screen.getByText(/copy/i)).toBeInTheDocument();
   });
 
   it("renders an edit link if edit path provided", () => {
-    renderWithBrowserRouter(<TableActions editPath="/bar" />);
+    renderWithProviders(<TableActions editPath="/bar" />);
     expect(screen.getByRole("link", { name: /edit/i })).toHaveAttribute(
       "href",
       "/bar"
@@ -21,7 +21,7 @@ describe("TableActions ", () => {
 
   it("renders an edit button if edit on-click provided", async () => {
     const onEdit = vi.fn();
-    renderWithBrowserRouter(<TableActions onEdit={onEdit} />);
+    renderWithProviders(<TableActions onEdit={onEdit} />);
     await userEvent.click(screen.getByText(/edit/i));
     expect(onEdit).toHaveBeenCalled();
     expect(screen.getByRole("button", { name: /edit/i })).toBeInTheDocument();
@@ -29,14 +29,14 @@ describe("TableActions ", () => {
 
   it("renders a delete button if delete function provided", async () => {
     const onDelete = vi.fn();
-    renderWithBrowserRouter(<TableActions onDelete={onDelete} />);
+    renderWithProviders(<TableActions onDelete={onDelete} />);
     expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
     expect(onDelete).toHaveBeenCalled();
   });
 
   it("correctly renders tooltips", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <TableActions
         deleteTooltip="delete tooltip"
         editPath="/bar"
@@ -55,7 +55,7 @@ describe("TableActions ", () => {
   });
 
   it("correctly disables buttons", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <TableActions
         deleteDisabled
         editDisabled

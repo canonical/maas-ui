@@ -4,7 +4,7 @@ import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -38,27 +38,24 @@ describe("NameColumn", () => {
 
   it("can be locked", () => {
     state.machine.items[0].locked = true;
-    renderWithBrowserRouter(
-      <NameColumn groupValue={null} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<NameColumn groupValue={null} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByLabelText("Locked")).toHaveClass("p-icon--locked");
   });
 
   it("can show the FQDN", () => {
-    renderWithBrowserRouter(
-      <NameColumn groupValue={null} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<NameColumn groupValue={null} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByRole("link", { name: /koala*/i })).toBeInTheDocument();
   });
 
   it("can show a single ip address", () => {
     state.machine.items[0].ip_addresses = [{ ip: "127.0.0.1", is_boot: false }];
-    renderWithBrowserRouter(
-      <NameColumn groupValue={null} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<NameColumn groupValue={null} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
@@ -68,10 +65,9 @@ describe("NameColumn", () => {
       { ip: "127.0.0.1", is_boot: false },
       { ip: "127.0.0.2", is_boot: false },
     ];
-    renderWithBrowserRouter(
-      <NameColumn groupValue={null} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<NameColumn groupValue={null} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
     const button = screen.getByRole("button", { name: "+1" });
     expect(button).toBeInTheDocument();
@@ -84,10 +80,9 @@ describe("NameColumn", () => {
 
   it("can show a PXE ip address", () => {
     state.machine.items[0].ip_addresses = [{ is_boot: true, ip: "127.0.0.1" }];
-    renderWithBrowserRouter(
-      <NameColumn groupValue={null} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<NameColumn groupValue={null} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByTestId("ip-addresses")).toHaveTextContent(
       "127.0.0.1 (PXE)"
     );
@@ -98,10 +93,9 @@ describe("NameColumn", () => {
       { ip: "127.0.0.1", is_boot: false },
       { ip: "127.0.0.1", is_boot: false },
     ];
-    renderWithBrowserRouter(
-      <NameColumn groupValue={null} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<NameColumn groupValue={null} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
     expect(
       screen.queryByRole("button", { name: "+1" })
@@ -110,18 +104,18 @@ describe("NameColumn", () => {
   });
 
   it("can show a single mac address", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NameColumn groupValue={null} showMAC={true} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
     expect(screen.getByRole("link")).toHaveTextContent("00:11:22:33:44:55");
   });
 
   it("can show multiple mac address", () => {
     state.machine.items[0].extra_macs = ["aa:bb:cc:dd:ee:ff"];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NameColumn groupValue={null} showMAC={true} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
     expect(screen.getAllByRole("link")).toHaveLength(2);
     expect(screen.getAllByRole("link")[1]).toHaveTextContent(/\(\+1\)/);
@@ -136,10 +130,9 @@ describe("NameColumn", () => {
       hostname: "koala",
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
-      <NameColumn groupValue={null} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<NameColumn groupValue={null} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByRole("link", { name: /koala*/i })).toBeInTheDocument();
   });
 
@@ -152,9 +145,9 @@ describe("NameColumn", () => {
       pxe_mac: "00:11:22:33:44:55",
       system_id: "abc123",
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NameColumn groupValue={null} showMAC={true} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
 
     expect(
@@ -163,10 +156,9 @@ describe("NameColumn", () => {
   });
 
   it("does not render checkbox if onToggleMenu not provided", () => {
-    renderWithBrowserRouter(
-      <NameColumn groupValue={null} systemId="abc123" />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<NameColumn groupValue={null} systemId="abc123" />, {
+      state,
+    });
     expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   });
 });

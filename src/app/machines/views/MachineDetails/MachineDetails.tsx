@@ -22,9 +22,7 @@ import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import NodeTestDetails from "@/app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { getSidePanelTitle, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import MachineForms from "@/app/machines/components/MachineForms";
 import { machineActions } from "@/app/store/machine";
 import { MachineMeta } from "@/app/store/machine/types";
 import { useFetchMachine } from "@/app/store/machine/utils/hooks";
@@ -36,7 +34,6 @@ const MachineDetails = (): React.ReactElement => {
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
   const { machine, loaded: detailsLoaded } = useFetchMachine(id);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -69,29 +66,7 @@ const MachineDetails = (): React.ReactElement => {
   const base = urls.machines.machine.index(null);
 
   return (
-    <PageContent
-      header={
-        <MachineHeader
-          setSidePanelContent={setSidePanelContent}
-          systemId={id}
-        />
-      }
-      sidePanelContent={
-        sidePanelContent && machine ? (
-          <MachineForms
-            searchFilter=""
-            selectedCount={1}
-            selectedMachines={{ items: [machine.system_id] }}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-            viewingDetails
-          />
-        ) : null
-      }
-      sidePanelTitle={
-        machine && getSidePanelTitle(machine.hostname, sidePanelContent)
-      }
-    >
+    <PageContent header={<MachineHeader systemId={id} />}>
       {machine && (
         <Routes>
           <Route
@@ -104,7 +79,7 @@ const MachineDetails = (): React.ReactElement => {
             element={
               <>
                 <SummaryNotifications id={id} />
-                <MachineSummary setSidePanelContent={setSidePanelContent} />
+                <MachineSummary />
               </>
             }
             path={getRelativeRoute(urls.machines.machine.summary(null), base)}
@@ -117,10 +92,7 @@ const MachineDetails = (): React.ReactElement => {
             element={
               <>
                 <NetworkNotifications id={id} />
-                <MachineNetwork
-                  id={id}
-                  setSidePanelContent={setSidePanelContent}
-                />
+                <MachineNetwork id={id} />
               </>
             }
             path={getRelativeRoute(urls.machines.machine.network(null), base)}
@@ -135,18 +107,14 @@ const MachineDetails = (): React.ReactElement => {
             path={getRelativeRoute(urls.machines.machine.storage(null), base)}
           />
           <Route
-            element={
-              <MachinePCIDevices setSidePanelContent={setSidePanelContent} />
-            }
+            element={<MachinePCIDevices />}
             path={getRelativeRoute(
               urls.machines.machine.pciDevices(null),
               base
             )}
           />
           <Route
-            element={
-              <MachineUSBDevices setSidePanelContent={setSidePanelContent} />
-            }
+            element={<MachineUSBDevices />}
             path={getRelativeRoute(
               urls.machines.machine.usbDevices(null),
               base

@@ -1,7 +1,7 @@
 import SecondaryNavigation from "./SecondaryNavigation";
 import type { NavItem } from "./SecondaryNavigation";
 
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("SecondaryNavigation", () => {
   const navItems: NavItem[] = [
@@ -17,7 +17,7 @@ describe("SecondaryNavigation", () => {
   const title = "Test";
 
   it("renders correctly", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SecondaryNavigation isOpen items={navItems} title={title} />
     );
 
@@ -27,9 +27,9 @@ describe("SecondaryNavigation", () => {
   });
 
   it("can set an active item", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SecondaryNavigation isOpen items={navItems} title={title} />,
-      { route: "/item1" }
+      { initialEntries: ["/item1"] }
     );
 
     expect(screen.getByRole("link", { name: "Item 1" })).toHaveClass(

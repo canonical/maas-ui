@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AddReservedRange, { Labels } from "./AddReservedRange";
 
 import { ipRangeActions } from "@/app/store/iprange";
@@ -14,8 +12,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("AddReservedRange", () => {
   let state: RootState;
@@ -43,14 +39,14 @@ describe("AddReservedRange", () => {
 
   it("displays a spinner when it is editing and data is loading", () => {
     state.iprange.items = [];
-    const store = mockStore(state);
+
     renderWithProviders(
       <AddReservedRange
         createType={ipRange.type}
         ipRangeId={ipRange.id}
         subnetId={subnet.id}
       />,
-      { store }
+      { state }
     );
     expect(screen.getByTestId("Spinner")).toBeInTheDocument();
   });
@@ -89,14 +85,14 @@ describe("AddReservedRange", () => {
   it("initialises the details when editing a dynamic range", () => {
     ipRange.type = IPRangeType.Dynamic;
     state.iprange.items = [ipRange];
-    const store = mockStore(state);
+
     renderWithProviders(
       <AddReservedRange
         createType={ipRange.type}
         ipRangeId={ipRange.id}
         subnetId={subnet.id}
       />,
-      { store }
+      { state }
     );
     expect(
       screen.getByRole("textbox", { name: Labels.Comment })

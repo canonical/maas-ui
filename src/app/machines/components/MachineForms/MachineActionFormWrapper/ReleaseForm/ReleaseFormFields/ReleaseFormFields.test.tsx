@@ -2,11 +2,11 @@ import { Formik } from "formik";
 
 import ReleaseFormFields from "./ReleaseFormFields";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ReleaseFormFields", () => {
   it("enables checkboxes for quick/secure erase if erasing is enabled", () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{
           enableErase: true,
@@ -24,7 +24,7 @@ describe("ReleaseFormFields", () => {
   });
 
   it("disables checkboxes for quick/secure erase if erasing is disabled", () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{
           enableErase: false,

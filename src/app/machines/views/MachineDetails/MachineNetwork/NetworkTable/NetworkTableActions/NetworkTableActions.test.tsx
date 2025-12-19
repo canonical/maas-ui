@@ -1,7 +1,7 @@
 import NetworkTableActions from "./NetworkTableActions";
 
-import * as sidePanelHooks from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import EditPhysicalForm from "@/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm";
+import MarkConnectedForm from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
@@ -10,12 +10,15 @@ import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   expectTooltipOnHover,
-  renderWithMockStore,
+  mockSidePanel,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
   within,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 const openMenu = async () => {
   await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
@@ -24,15 +27,6 @@ const openMenu = async () => {
 describe("NetworkTableActions", () => {
   let nic: NetworkInterface;
   let state: RootState;
-  const setSidePanelContent = vi.fn();
-  beforeAll(() => {
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent,
-      sidePanelContent: null,
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
-  });
   beforeEach(() => {
     nic = factory.machineInterface();
     state = factory.rootState({
@@ -49,7 +43,7 @@ describe("NetworkTableActions", () => {
   });
 
   it("can display the menu", () => {
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     expect(
@@ -62,7 +56,7 @@ describe("NetworkTableActions", () => {
     state.machine.items[0].status = NodeStatus.NEW;
     nic.type = NetworkInterfaceTypes.VLAN;
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     expect(
@@ -74,14 +68,14 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = false;
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:
     await openMenu();
 
     expect(
-      screen.getByRole("button", { name: "Mark as connected" })
+      screen.getByRole("button", { name: /Mark as connected/ })
     ).toBeInTheDocument();
   });
 
@@ -89,14 +83,14 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = true;
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:
     await openMenu();
 
     expect(
-      screen.getByRole("button", { name: "Mark as disconnected" })
+      screen.getByRole("button", { name: /Mark as disconnected/ })
     ).toBeInTheDocument();
   });
 
@@ -106,7 +100,7 @@ describe("NetworkTableActions", () => {
     const link = factory.networkLink();
     nic.links = [factory.networkLink(), link];
 
-    renderWithMockStore(
+    renderWithProviders(
       <NetworkTableActions link={link} nic={nic} systemId="abc123" />,
       { state }
     );
@@ -123,7 +117,7 @@ describe("NetworkTableActions", () => {
     const link = factory.networkLink();
     nic.links = [factory.networkLink(), link];
 
-    renderWithMockStore(
+    renderWithProviders(
       <NetworkTableActions link={link} nic={nic} systemId="abc123" />,
       { state }
     );
@@ -137,7 +131,7 @@ describe("NetworkTableActions", () => {
   it("can display an item to remove the interface", async () => {
     nic.type = NetworkInterfaceTypes.BOND;
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:
@@ -150,19 +144,19 @@ describe("NetworkTableActions", () => {
   it("can display an item to edit the interface", async () => {
     nic.type = NetworkInterfaceTypes.BOND;
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:
     await openMenu();
     const editBondButton = screen.getByRole("button", {
-      name: "Edit Bond",
+      name: /Edit Bond/,
     });
     expect(editBondButton).toBeInTheDocument();
     await userEvent.click(editBondButton);
-    expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        view: MachineSidePanelViews.EDIT_PHYSICAL,
+        component: EditPhysicalForm,
       })
     );
   });
@@ -171,19 +165,19 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = false;
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:
     await openMenu();
     const editPhysicalButton = screen.getByRole("button", {
-      name: "Edit Physical",
+      name: /Edit Physical/,
     });
     expect(editPhysicalButton).toBeInTheDocument();
     await userEvent.click(editPhysicalButton);
-    expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        view: MachineSidePanelViews.MARK_CONNECTED,
+        component: MarkConnectedForm,
       })
     );
   });
@@ -192,7 +186,7 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.links = [factory.networkLink()];
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:
@@ -214,7 +208,7 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.links = [factory.networkLink({ mode: NetworkLinkMode.LINK_UP })];
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:
@@ -238,7 +232,7 @@ describe("NetworkTableActions", () => {
     state.vlan.items = [vlan];
     nic.vlan_id = vlan.id;
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:
@@ -257,7 +251,7 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     state.vlan.items = [];
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:
@@ -281,7 +275,7 @@ describe("NetworkTableActions", () => {
     state.machine.items[0].permissions = [];
     state.machine.items[0].status = NodeStatus.NEW;
 
-    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
     // Open the menu:

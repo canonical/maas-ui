@@ -1,14 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import IPColumn from "./IPColumn";
 
 import type { NodeIpAddress } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithProviders } from "@/testing/utils";
 
 describe("IPColumn", () => {
   let ipAddresses: NodeIpAddress[] = [];
@@ -30,16 +26,11 @@ describe("IPColumn", () => {
         items: [],
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <IPColumn systemId="abc123" version={4} />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<IPColumn systemId="abc123" version={4} />, {
+      state,
+      initialEntries: ["/kvm/1/project"],
+    });
 
     const spinner = screen.getByText(/loading/i);
 
@@ -57,16 +48,11 @@ describe("IPColumn", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <IPColumn systemId="abc123" version={4} />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<IPColumn systemId="abc123" version={4} />, {
+      state,
+      initialEntries: ["/kvm/1/project"],
+    });
 
     const ips = screen.getAllByTestId("ip");
 
@@ -86,16 +72,11 @@ describe("IPColumn", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <IPColumn systemId="abc123" version={6} />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<IPColumn systemId="abc123" version={6} />, {
+      state,
+      initialEntries: ["/kvm/1/project"],
+    });
 
     const ips = screen.getAllByTestId("ip");
 

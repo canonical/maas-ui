@@ -5,7 +5,7 @@ import LACPRateSelect from "./LACPRateSelect";
 import { BondLacpRate } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, within, renderWithMockStore } from "@/testing/utils";
+import { screen, within, renderWithProviders } from "@/testing/utils";
 
 describe("LACPRateSelect", () => {
   let state: RootState;
@@ -27,7 +27,7 @@ describe("LACPRateSelect", () => {
 
   it("shows a spinner if the bond options haven't loaded", () => {
     state.general.bondOptions.loaded = false;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LACPRateSelect name="lacp_rate" />
       </Formik>,
@@ -37,7 +37,7 @@ describe("LACPRateSelect", () => {
   });
 
   it("displays the options", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LACPRateSelect name="lacp_rate" />
       </Formik>,
@@ -69,7 +69,7 @@ describe("LACPRateSelect", () => {
       label: "Default",
       value: "99",
     };
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LACPRateSelect defaultOption={defaultOption} name="lacp_rate" />
       </Formik>,
@@ -88,7 +88,7 @@ describe("LACPRateSelect", () => {
       data: undefined,
       loaded: true,
     });
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LACPRateSelect defaultOption={null} name="lacp_rate" />
       </Formik>,

@@ -1,9 +1,9 @@
 import ListDisplayCount from "./ListDisplayCount";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("shows the true number of items on a page if it is under the maximum items per page limit.", () => {
-  render(
+  renderWithProviders(
     <ListDisplayCount count={135} currentPage={3} pageSize={50} type="tag" />
   );
 
@@ -11,7 +11,7 @@ it("shows the true number of items on a page if it is under the maximum items pe
 });
 
 it("shows the maximum number of items per page if that limit is reached", () => {
-  render(
+  renderWithProviders(
     <ListDisplayCount
       count={135}
       currentPage={2}

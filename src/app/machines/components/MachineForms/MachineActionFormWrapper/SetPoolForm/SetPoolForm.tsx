@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import SetPoolFormFields from "./SetPoolFormFields";
@@ -9,14 +9,21 @@ import type { SetPoolFormValues } from "./types";
 import { useCreatePool, usePools } from "@/app/api/query/pools";
 import type { ResourcePoolResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { APIError } from "@/app/base/types";
-import type { MachineActionFormProps } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineEventErrors } from "@/app/store/machine/types";
-import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import { FilterMachines } from "@/app/store/machine/utils";
+import {
+  useMachineSelectedCount,
+  useSelectedMachinesActionsDispatch,
+} from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
 
-type Props = MachineActionFormProps;
+type Props = {
+  isViewingDetails: boolean;
+};
 
 const SetPoolSchema = Yup.object().shape({
   description: Yup.string(),
@@ -25,18 +32,22 @@ const SetPoolSchema = Yup.object().shape({
 });
 
 export const SetPoolForm = ({
-  clearSidePanelContent,
-  errors,
-  machines,
-  processingCount,
-  selectedCount,
-  searchFilter,
-  selectedMachines,
-  viewingDetails,
+  isViewingDetails,
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
-  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
+  const searchFilter = FilterMachines.filtersToString(
+    FilterMachines.queryStringToFilters(location.search)
+  );
+
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const { selectedCount } = useMachineSelectedCount(
+    FilterMachines.parseFetchFilters(searchFilter)
+  );
+  const {
+    dispatch: dispatchForSelectedMachines,
+    actionErrors: errors,
+    ...actionProps
+  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const [initialValues, setInitialValues] = useState<SetPoolFormValues>({
     poolSelection: "select",
     description: "",
@@ -56,6 +67,8 @@ export const SetPoolForm = ({
     [dispatch]
   );
 
+  const { closeSidePanel } = useSidePanel();
+
   return (
     <ActionForm<SetPoolFormValues, MachineEventErrors>
       actionName={NodeActions.SET_POOL}
@@ -64,10 +77,10 @@ export const SetPoolForm = ({
       initialValues={initialValues}
       loaded={!resourcePools.isPending}
       modelName="machine"
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Submit",
-        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
+        category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
         label: "Set pool",
       }}
       onSubmit={async (values) => {
@@ -83,26 +96,16 @@ export const SetPoolForm = ({
 
         if (!pool) return;
 
-        selectedMachines
-          ? dispatchForSelectedMachines(machineActions.setPool, {
-              pool_id: pool.id,
-            })
-          : machines?.forEach((machine) =>
-              dispatch(
-                machineActions.setPool({
-                  pool_id: pool.id,
-                  system_id: machine.system_id,
-                })
-              )
-            );
+        dispatchForSelectedMachines(machineActions.setPool, {
+          pool_id: pool.id,
+        });
 
         // Store the values in case there are errors and the form needs to be
         // displayed again.
         setInitialValues(values);
       }}
-      onSuccess={clearSidePanelContent}
-      processingCount={processingCount}
-      selectedCount={machines ? machines.length : (selectedCount ?? 0)}
+      onSuccess={closeSidePanel}
+      selectedCount={selectedCount ?? 0}
       validationSchema={SetPoolSchema}
       {...actionProps}
     >

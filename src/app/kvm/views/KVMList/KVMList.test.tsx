@@ -1,26 +1,17 @@
-import configureStore from "redux-mock-store";
-
 import KVMList from "./KVMList";
 
 import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  renderWithBrowserRouter,
-  renderWithProviders,
-  screen,
-} from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("KVMList", () => {
   it("correctly fetches the necessary data", () => {
     const state = factory.rootState();
-    const store = mockStore(state);
-    renderWithProviders(<KVMList />, {
+
+    const { store } = renderWithProviders(<KVMList />, {
       initialEntries: ["/kvm"],
-      store,
+      state,
     });
     const expectedActions = ["pod/fetch", "vmcluster/fetch"];
     const actualActions = store.getActions();
@@ -37,10 +28,10 @@ describe("KVMList", () => {
         items: [factory.pod({ type: PodType.LXD })],
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(<KVMList />, {
       initialEntries: [urls.kvm.lxd.index],
-      store,
+      state,
     });
 
     expect(screen.getByTestId("lxd-table")).toBeInTheDocument();
@@ -52,10 +43,10 @@ describe("KVMList", () => {
         items: [factory.vmCluster()],
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(<KVMList />, {
       initialEntries: [urls.kvm.lxd.index],
-      store,
+      state,
     });
 
     expect(screen.getByTestId("lxd-table")).toBeInTheDocument();
@@ -67,10 +58,10 @@ describe("KVMList", () => {
         items: [factory.pod({ type: PodType.VIRSH })],
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(<KVMList />, {
       initialEntries: [urls.kvm.virsh.index],
-      store,
+      state,
     });
 
     expect(screen.getByTestId("virsh-table")).toBeInTheDocument();
@@ -82,14 +73,14 @@ describe("KVMList", () => {
         items: [factory.pod({ type: PodType.LXD })],
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(<KVMList />, {
-      route: urls.kvm.index,
-      store,
+
+    const { router } = renderWithProviders(<KVMList />, {
+      initialEntries: [urls.kvm.index],
+      state,
     });
 
     expect(document.title).toEqual(expect.stringContaining("LXD"));
-    expect(window.location.pathname).toEqual(urls.kvm.lxd.index);
+    expect(router.state.location.pathname).toEqual(urls.kvm.lxd.index);
   });
 
   it("displays a message if there are no LXD KVMs", () => {
@@ -98,10 +89,10 @@ describe("KVMList", () => {
         items: [],
       }),
     });
-    const store = mockStore(state);
+
     renderWithProviders(<KVMList />, {
       initialEntries: [urls.kvm.lxd.index],
-      store,
+      state,
     });
 
     expect(document.title).toEqual(expect.stringContaining("LXD"));

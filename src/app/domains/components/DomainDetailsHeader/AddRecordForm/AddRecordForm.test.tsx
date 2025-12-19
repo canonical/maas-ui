@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AddRecordForm, { Labels as AddRecordFormLabels } from "./AddRecordForm";
 
 import { Labels as RecordFieldsLabels } from "@/app/domains/components/RecordFields/RecordFields";
@@ -11,8 +9,6 @@ import {
   renderWithProviders,
   mockSidePanel,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 const { mockClose } = await mockSidePanel();
 
@@ -44,11 +40,7 @@ describe("AddRecordForm", () => {
       }),
     });
 
-    const store = mockStore(state);
-
-    renderWithProviders(<AddRecordForm id={1} />, {
-      store,
-    });
+    const { store } = renderWithProviders(<AddRecordForm id={1} />, { state });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: RecordFieldsLabels.Name }),

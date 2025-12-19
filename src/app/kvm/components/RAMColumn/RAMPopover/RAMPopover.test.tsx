@@ -1,11 +1,11 @@
 import RAMPopover from "./RAMPopover";
 
 import * as factory from "@/testing/factories";
-import { fireEvent, render, screen } from "@/testing/utils";
+import { fireEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("RAMPopover", () => {
   it("shows if memory is used by any other projects in the group", () => {
-    render(
+    renderWithProviders(
       <RAMPopover
         memory={factory.podMemoryResource({
           general: factory.podResource({
@@ -26,7 +26,7 @@ describe("RAMPopover", () => {
   });
 
   it("does not show other memory if no other projects in the group use them", () => {
-    render(
+    renderWithProviders(
       <RAMPopover
         memory={factory.podMemoryResource({
           general: factory.podResource({ allocated_other: 0 }),
@@ -43,7 +43,7 @@ describe("RAMPopover", () => {
   });
 
   it("shows memory over-commit ratio if it is not equal to 1", () => {
-    render(
+    renderWithProviders(
       <RAMPopover memory={factory.podMemoryResource()} overCommit={2}>
         Child
       </RAMPopover>
@@ -54,7 +54,7 @@ describe("RAMPopover", () => {
   });
 
   it("does not show memory over-commit ratio if it is equal to 1", () => {
-    render(
+    renderWithProviders(
       <RAMPopover memory={factory.podMemoryResource()} overCommit={1}>
         Child
       </RAMPopover>
@@ -76,7 +76,7 @@ describe("RAMPopover", () => {
         free: 6,
       }),
     });
-    render(<RAMPopover memory={memory}>Child</RAMPopover>);
+    renderWithProviders(<RAMPopover memory={memory}>Child</RAMPopover>);
 
     fireEvent.focus(screen.getByRole("button", { name: /child/i }));
     expect(screen.getByTestId("other")).toHaveTextContent("5B");

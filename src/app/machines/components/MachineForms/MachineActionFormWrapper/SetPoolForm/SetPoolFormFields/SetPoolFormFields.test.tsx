@@ -15,7 +15,31 @@ setupMockServer(poolsResolvers.listPools.handler());
 
 describe("SetPoolFormFields", () => {
   let state: RootState;
-  const route = ["/machines"];
+  const machines = [
+    factory.machine({
+      system_id: "abc123",
+    }),
+    factory.machine({
+      system_id: "def456",
+    }),
+  ];
+  beforeEach(() => {
+    state = factory.rootState({
+      machine: factory.machineState({
+        errors: {},
+        loading: false,
+        loaded: true,
+        items: machines,
+        selected: {
+          items: machines.map((machine) => machine.system_id),
+        },
+        statuses: {
+          abc123: factory.machineStatus({ settingPool: false }),
+          def456: factory.machineStatus({ settingPool: false }),
+        },
+      }),
+    });
+  });
   beforeEach(() => {
     state = factory.rootState({
       machine: factory.machineState({
@@ -34,15 +58,9 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows a select if select pool radio chosen", async () => {
-    renderWithProviders(
-      <SetPoolForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: route, state }
-    );
+    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
+      state,
+    });
 
     await waitFor(() => {
       expect(screen.getByLabelText("Create pool")).toBeInTheDocument();
@@ -58,15 +76,9 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows inputs for creating a pool if create pool radio chosen", async () => {
-    renderWithProviders(
-      <SetPoolForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: route, state }
-    );
+    renderWithProviders(<SetPoolForm isViewingDetails={false} />, {
+      state,
+    });
     await waitFor(() => {
       expect(screen.getByLabelText("Create pool")).toBeInTheDocument();
     });

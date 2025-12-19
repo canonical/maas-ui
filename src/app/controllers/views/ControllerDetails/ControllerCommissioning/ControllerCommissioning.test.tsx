@@ -1,5 +1,4 @@
 import * as reactComponents from "@canonical/react-components";
-import configureStore from "redux-mock-store";
 
 import ControllerCommissioning from "./ControllerCommissioning";
 
@@ -20,16 +19,14 @@ vi.mock("@canonical/react-components", async () => {
   };
 });
 
-const mockStore = configureStore();
-
 it("renders a spinner while script results are loading", () => {
   const state = factory.rootState({
     scriptresult: factory.scriptResultState({
       loading: true,
     }),
   });
-  const store = mockStore(state);
-  renderWithProviders(<ControllerCommissioning systemId="abc123" />, { store });
+
+  renderWithProviders(<ControllerCommissioning systemId="abc123" />, { state });
 
   expect(screen.getByLabelText("Loading script results")).toBeInTheDocument();
 });
@@ -50,10 +47,10 @@ it("fetches script results if they haven't been fetched", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  renderWithProviders(
+
+  const { store } = renderWithProviders(
     <ControllerCommissioning systemId={controller.system_id} />,
-    { store }
+    { state }
   );
 
   const expectedAction = scriptResultActions.getByNodeId(controller.system_id);
@@ -89,10 +86,10 @@ it("fetches script results if the commissioning status changes to pending", () =
       items: [scriptResult],
     }),
   });
-  const store = mockStore(state);
-  renderWithProviders(
+
+  const { store } = renderWithProviders(
     <ControllerCommissioning systemId={controller.system_id} />,
-    { store }
+    { state }
   );
 
   const expectedAction = scriptResultActions.getByNodeId(controller.system_id);
@@ -127,10 +124,10 @@ it(`does not fetch script results if script results exist and commissioning
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  renderWithProviders(
+
+  const { store } = renderWithProviders(
     <ControllerCommissioning systemId={controller.system_id} />,
-    { store }
+    { state }
   );
 
   const expectedAction = scriptResultActions.getByNodeId(controller.system_id);

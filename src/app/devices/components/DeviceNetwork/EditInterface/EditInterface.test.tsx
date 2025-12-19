@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import EditInterface from "./EditInterface";
 
 import { deviceActions } from "@/app/store/device";
@@ -15,7 +13,6 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const { mockClose } = await mockSidePanel();
 
 describe("EditInterface", () => {
@@ -49,18 +46,20 @@ describe("EditInterface", () => {
 
   it("displays a spinner if device is not detailed version", () => {
     state.device.items[0] = factory.device({ system_id: "abc123" });
-    const store = mockStore(state);
+
     renderWithProviders(<EditInterface nicId={nic.id} systemId="abc123" />, {
-      store,
+      state,
     });
     expect(screen.getByTestId("loading-device-details")).toBeInTheDocument();
   });
 
   it("dispatches an action to update an interface", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<EditInterface nicId={nic.id} systemId="abc123" />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <EditInterface nicId={nic.id} systemId="abc123" />,
+      {
+        state,
+      }
+    );
     const formValues = {
       ip_address: "192.168.1.1",
       ip_assignment: DeviceIpAssignment.EXTERNAL,
@@ -106,10 +105,13 @@ describe("EditInterface", () => {
 
   it("does not close the form if there is an error when updating the interface", async () => {
     state.device.errors = null;
-    const store = mockStore(state);
-    renderWithProviders(<EditInterface nicId={nic.id} systemId={"abc123"} />, {
-      store,
-    });
+
+    const { store } = renderWithProviders(
+      <EditInterface nicId={nic.id} systemId={"abc123"} />,
+      {
+        state,
+      }
+    );
     await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
     await userEvent.type(
       screen.getByRole("textbox", { name: "Name" }),
@@ -131,10 +133,13 @@ describe("EditInterface", () => {
 
   it("does not close the form if there is an error when submitting the form multiple times", async () => {
     state.device.errors = null;
-    const store = mockStore(state);
-    renderWithProviders(<EditInterface nicId={nic.id} systemId={"abc123"} />, {
-      store,
-    });
+
+    const { store } = renderWithProviders(
+      <EditInterface nicId={nic.id} systemId={"abc123"} />,
+      {
+        state,
+      }
+    );
     await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
     await userEvent.type(
       screen.getByRole("textbox", { name: "Name" }),

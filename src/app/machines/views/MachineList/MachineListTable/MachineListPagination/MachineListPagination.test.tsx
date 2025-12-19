@@ -1,7 +1,14 @@
 import MachineListPagination, { Label } from "./MachineListPagination";
 import type { Props as MachineListPaginationProps } from "./MachineListPagination";
 
-import { fireEvent, render, screen, userEvent, waitFor } from "@/testing/utils";
+import {
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("MachineListPagination", () => {
   let props: MachineListPaginationProps;
@@ -17,7 +24,7 @@ describe("MachineListPagination", () => {
   });
 
   it("displays pagination if there are machines", () => {
-    render(<MachineListPagination {...props} />);
+    renderWithProviders(<MachineListPagination {...props} />);
     expect(
       screen.getByRole("navigation", { name: Label.Pagination })
     ).toBeInTheDocument();
@@ -25,7 +32,7 @@ describe("MachineListPagination", () => {
 
   it("does not display pagination if there are no machines", () => {
     props.machineCount = 0;
-    render(<MachineListPagination {...props} />);
+    renderWithProviders(<MachineListPagination {...props} />);
     expect(
       screen.queryByRole("navigation", { name: Label.Pagination })
     ).not.toBeInTheDocument();
@@ -61,15 +68,14 @@ describe("MachineListPagination", () => {
   });
 
   it("calls a function to go to the next page when the 'Next page' button is clicked", async () => {
-    render(<MachineListPagination {...props} />);
+    renderWithProviders(<MachineListPagination {...props} />);
     await userEvent.click(screen.getByRole("button", { name: "Next page" }));
     expect(props.paginate).toHaveBeenCalledWith(2);
   });
 
   it("calls a function to go to the previous page when the 'Previous page' button is clicked", async () => {
     props.currentPage = 2;
-
-    render(<MachineListPagination {...props} />);
+    renderWithProviders(<MachineListPagination {...props} />);
     await userEvent.click(
       screen.getByRole("button", { name: "Previous page" })
     );
@@ -77,7 +83,7 @@ describe("MachineListPagination", () => {
   });
 
   it("takes an input for page number and calls a function to paginate if the number is valid", async () => {
-    render(<MachineListPagination {...props} />);
+    renderWithProviders(<MachineListPagination {...props} />);
 
     const pageInput = screen.getByRole("spinbutton", { name: "page number" });
 
@@ -92,7 +98,7 @@ describe("MachineListPagination", () => {
   });
 
   it("displays an error if no value is present in the page number input", async () => {
-    render(<MachineListPagination {...props} />);
+    renderWithProviders(<MachineListPagination {...props} />);
 
     const pageInput = screen.getByRole("spinbutton", { name: "page number" });
 
@@ -101,7 +107,7 @@ describe("MachineListPagination", () => {
   });
 
   it("displays an error if an invalid page number is entered", async () => {
-    render(<MachineListPagination {...props} />);
+    renderWithProviders(<MachineListPagination {...props} />);
 
     const pageInput = screen.getByRole("spinbutton", { name: "page number" });
 
@@ -115,7 +121,7 @@ describe("MachineListPagination", () => {
   });
 
   it("reverts the value to the current page number and hides error messages if the input is blurred", async () => {
-    render(<MachineListPagination {...props} />);
+    renderWithProviders(<MachineListPagination {...props} />);
 
     const pageInput = screen.getByRole("spinbutton", { name: "page number" });
 
@@ -139,7 +145,7 @@ describe("MachineListPagination", () => {
   // this is important if pagination is nested in a form that has a submit handler and does not use preventDefault
   it("does not trigger native form event when the pagination buttons are pressed", async () => {
     const handleSubmit = vi.fn();
-    render(
+    renderWithProviders(
       <form onSubmit={handleSubmit}>
         <MachineListPagination {...props} />
       </form>

@@ -1,12 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import NotificationGroup from "./NotificationGroup";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("NotificationGroup", () => {
   it("renders", () => {
@@ -17,7 +12,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );
@@ -40,7 +35,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );
@@ -58,7 +53,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );
@@ -78,7 +73,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );
@@ -99,10 +94,10 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+
+    const { store } = renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
-      { store }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Dismiss all" }));
@@ -123,10 +118,10 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+
+    const { store } = renderWithProviders(
       <NotificationGroup notifications={notifications} severity="caution" />,
-      { store }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Dismiss all" }));
@@ -147,7 +142,7 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NotificationGroup notifications={notifications} severity="negative" />,
       { state }
     );

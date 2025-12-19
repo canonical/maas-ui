@@ -31,11 +31,7 @@ const SingleSignOn = (): ReactElement => {
   useWindowTitle("OIDC/Single sign-on");
 
   return (
-    <PageContent
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Header>
           <MainToolbar>

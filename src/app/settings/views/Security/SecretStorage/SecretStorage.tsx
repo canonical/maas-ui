@@ -20,7 +20,7 @@ const SecretStorage = (): React.ReactElement => {
   }
 
   return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+    <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Title className="section-header__title">
           Secret storage

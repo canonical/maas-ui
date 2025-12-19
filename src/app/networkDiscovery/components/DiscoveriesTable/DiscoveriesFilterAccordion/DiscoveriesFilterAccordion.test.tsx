@@ -2,23 +2,19 @@ import DiscoveriesFilterAccordion, {
   Labels as DiscoveriesFilterAccordionLabels,
 } from "./DiscoveriesFilterAccordion";
 
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
-
-const route = "/discoveries";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("DiscoveriesFilterAccordion", () => {
   it("button is disabled when loading discoveries", () => {
-    renderWithBrowserRouter(
-      <DiscoveriesFilterAccordion searchText="" setSearchText={vi.fn()} />,
-      { route }
+    renderWithProviders(
+      <DiscoveriesFilterAccordion searchText="" setSearchText={vi.fn()} />
     );
     expect(screen.getByRole("button", { name: "Filters" })).toBeAriaDisabled();
   });
 
   it("displays a filter accordion", () => {
-    renderWithBrowserRouter(
-      <DiscoveriesFilterAccordion searchText="" setSearchText={vi.fn()} />,
-      { route }
+    renderWithProviders(
+      <DiscoveriesFilterAccordion searchText="" setSearchText={vi.fn()} />
     );
     expect(
       screen.getByLabelText(DiscoveriesFilterAccordionLabels.FilterDiscoveries)

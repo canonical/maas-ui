@@ -9,8 +9,8 @@ import useNodeDevicesTableColumns, {
   filterCells,
 } from "@/app/base/components/node/NodeDevicesTable/useNodeDevicesTableColumns/useNodeDevicesTableColumns";
 import { HardwareType } from "@/app/base/enum";
-import { MachineSidePanelViews } from "@/app/machines/constants";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import CommissionForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/CommissionForm";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import { nodeDeviceActions } from "@/app/store/nodedevice";
@@ -27,7 +27,6 @@ import "./index.scss";
 type NodeDevicesTableProps = {
   bus: NodeDeviceBus;
   node: ControllerDetails | MachineDetails;
-  setSidePanelContent?: MachineSetSidePanelContent;
 };
 
 type HardwareGroup = "Generic" | "GPU" | "Network" | "Storage";
@@ -40,9 +39,9 @@ export type GroupedNodeDevice = NodeDevice & {
 const NodeDevicesTable = ({
   bus,
   node,
-  setSidePanelContent,
 }: NodeDevicesTableProps): ReactElement => {
   const dispatch = useDispatch();
+  const { openSidePanel } = useSidePanel();
   const isMachine = nodeIsMachine(node);
   const canBeCommissioned =
     isMachine && node.actions.includes(NodeActions.COMMISSION);
@@ -130,13 +129,17 @@ const NodeDevicesTable = ({
                   {warningMessage}
                 </p>
               )}
-              {canBeCommissioned && setSidePanelContent && (
+              {canBeCommissioned && (
                 <Button
                   appearance="positive"
                   data-testid="commission-machine"
                   onClick={() => {
-                    setSidePanelContent({
-                      view: MachineSidePanelViews.COMMISSION_MACHINE,
+                    openSidePanel({
+                      component: CommissionForm,
+                      title: "Commission machine",
+                      props: {
+                        isViewingDetails: true,
+                      },
                     });
                   }}
                 >

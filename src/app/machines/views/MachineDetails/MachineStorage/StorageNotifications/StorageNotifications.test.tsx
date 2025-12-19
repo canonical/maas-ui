@@ -4,7 +4,7 @@ import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatusCode } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("StorageNotifications", () => {
   let state: RootState;
@@ -28,8 +28,7 @@ describe("StorageNotifications", () => {
   });
 
   it("handles no notifications", () => {
-    renderWithBrowserRouter(<StorageNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<StorageNotifications id="abc123" />, {
       state,
     });
 
@@ -40,8 +39,7 @@ describe("StorageNotifications", () => {
 
   it("can display a commissioning error", () => {
     machine.disks = [];
-    renderWithBrowserRouter(<StorageNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<StorageNotifications id="abc123" />, {
       state,
     });
 
@@ -54,8 +52,7 @@ describe("StorageNotifications", () => {
 
   it("can display a machine state error", () => {
     machine.status_code = NodeStatusCode.NEW;
-    renderWithBrowserRouter(<StorageNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<StorageNotifications id="abc123" />, {
       state,
     });
 
@@ -68,8 +65,7 @@ describe("StorageNotifications", () => {
 
   it("can display an OS storage configuration notification", () => {
     machine.osystem = "windows";
-    renderWithBrowserRouter(<StorageNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<StorageNotifications id="abc123" />, {
       state,
     });
 
@@ -82,8 +78,7 @@ describe("StorageNotifications", () => {
 
   it("can display a bcache ZFS error", () => {
     machine.osystem = "centos";
-    renderWithBrowserRouter(<StorageNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<StorageNotifications id="abc123" />, {
       state,
     });
 
@@ -94,8 +89,7 @@ describe("StorageNotifications", () => {
 
   it("can display a list of storage layout issues", () => {
     machine.storage_layout_issues = ["it's bad", "it won't work"];
-    renderWithBrowserRouter(<StorageNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<StorageNotifications id="abc123" />, {
       state,
     });
 

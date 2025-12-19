@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { Labels as LicenseKeyFormLabels } from "../LicenseKeyForm/LicenseKeyForm";
 import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFormFields";
 
@@ -8,8 +6,6 @@ import { LicenseKeyEdit, Labels as LicenseKeyLabels } from "./LicenseKeyEdit";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("LicenseKeyEdit", () => {
   let state: RootState;
@@ -57,34 +53,26 @@ describe("LicenseKeyEdit", () => {
   it("displays a loading component if loading", () => {
     state.licensekeys.loading = true;
     state.licensekeys.loaded = false;
-    const store = mockStore(state);
+
     renderWithProviders(
       <LicenseKeyEdit distro_series={"win2012"} osystem={"windows"} />,
-      {
-        store,
-      }
+      { state }
     );
     expect(screen.getByText(LicenseKeyLabels.Loading)).toBeInTheDocument();
   });
 
   it("handles license key not found", () => {
-    const store = mockStore(state);
     renderWithProviders(
       <LicenseKeyEdit distro_series={"foo"} osystem={"bar"} />,
-      {
-        store,
-      }
+      { state }
     );
     expect(screen.getByText(LicenseKeyLabels.KeyNotFound)).toBeInTheDocument();
   });
 
   it("can display a license key edit form", () => {
-    const store = mockStore(state);
     renderWithProviders(
       <LicenseKeyEdit distro_series={"win2012"} osystem={"windows"} />,
-      {
-        store,
-      }
+      { state }
     );
 
     expect(

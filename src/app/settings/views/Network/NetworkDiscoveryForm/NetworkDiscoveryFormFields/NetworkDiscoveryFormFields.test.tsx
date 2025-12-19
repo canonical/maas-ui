@@ -1,15 +1,11 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import NetworkDiscoveryFormFields from "./NetworkDiscoveryFormFields";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("NetworkDiscoveryFormFields", () => {
   let state: RootState;
@@ -49,14 +45,11 @@ describe("NetworkDiscoveryFormFields", () => {
 
   it("disables the interval field if discovery is disabled", async () => {
     state.config.loading = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={vi.fn()}>
-          <NetworkDiscoveryFormFields />
-        </Formik>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <NetworkDiscoveryFormFields />
+      </Formik>,
+      { state }
     );
 
     expect(

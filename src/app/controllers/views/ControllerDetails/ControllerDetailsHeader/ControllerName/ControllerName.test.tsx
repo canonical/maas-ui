@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import ControllerName from "./ControllerName";
 
 import urls from "@/app/base/urls";
@@ -10,8 +8,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 const domain0 = factory.domain();
 const domain1 = factory.domain({ id: 99, name: "domain1" });
@@ -38,8 +34,8 @@ it("can update a controller with the new domain", async () => {
       items: [controller],
     }),
   });
-  const store = mockStore(state);
-  renderWithProviders(
+
+  const { store } = renderWithProviders(
     <ControllerName
       id={controller.system_id}
       isEditing={true}
@@ -54,7 +50,7 @@ it("can update a controller with the new domain", async () => {
           key: "testKey",
         },
       ],
-      store,
+      state,
     }
   );
 

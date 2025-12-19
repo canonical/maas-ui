@@ -1,12 +1,10 @@
-import { Route, Routes } from "react-router";
-
 import { storageLayoutOptions } from "./ChangeStorageLayoutMenu/ChangeStorageLayoutMenu";
 import MachineStorage from "./MachineStorage";
 
 import * as hooks from "@/app/base/hooks/analytics";
 import { NodeStatusCode } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 it("displays a spinner if machine is loading", () => {
   const state = factory.rootState({
@@ -14,9 +12,9 @@ it("displays a spinner if machine is loading", () => {
       items: [],
     }),
   });
-  renderWithBrowserRouter(<MachineStorage />, {
+  renderWithProviders(<MachineStorage />, {
     state,
-    route: "/machine/abc123",
+    initialEntries: ["/machine/abc123"],
   });
   expect(screen.getByText(/Loading/i)).toBeInTheDocument();
 });
@@ -42,15 +40,11 @@ it("renders storage layout dropdown if machine's storage can be edited", async (
       }),
     }),
   });
-  renderWithBrowserRouter(
-    <Routes>
-      <Route element={<MachineStorage />} path="/machine/:id/storage" />
-    </Routes>,
-    {
-      state,
-      route: "/machine/abc123/storage",
-    }
-  );
+  renderWithProviders(<MachineStorage />, {
+    state,
+    initialEntries: ["/machine/abc123/storage"],
+    pattern: "/machine/:id/storage",
+  });
   expect(
     screen.getByRole("button", { name: "Change storage layout" })
   ).toBeInTheDocument();
@@ -78,15 +72,11 @@ it("sends an analytics event when clicking on the MAAS docs footer link", async 
   const mockUseSendAnalytics = vi
     .spyOn(hooks, "useSendAnalytics")
     .mockImplementation(() => mockSendAnalytics);
-  renderWithBrowserRouter(
-    <Routes>
-      <Route element={<MachineStorage />} path="/machine/:id/storage" />
-    </Routes>,
-    {
-      state,
-      route: "/machine/abc123/storage",
-    }
-  );
+  renderWithProviders(<MachineStorage />, {
+    state,
+    initialEntries: ["/machine/abc123/storage"],
+    pattern: "/machine/:id/storage",
+  });
   await userEvent.click(screen.getByTestId("docs-footer-link"));
   expect(mockSendAnalytics).toHaveBeenCalled();
   expect(mockSendAnalytics.mock.calls[0]).toEqual([

@@ -17,8 +17,6 @@ const Settings = (): React.ReactElement => {
         header={
           <SectionHeader title="You do not have permission to view this page." />
         }
-        sidePanelContent={null}
-        sidePanelTitle={null}
       />
     );
   }

@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import ClearAllForm, { Labels as ClearAllFormLabels } from "./ClearAllForm";
 
 import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
@@ -15,7 +13,6 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 setupMockServer(networkDiscoveryResolvers.clearNetworkDiscoveries.handler());
 
 describe("ClearAllForm", () => {
@@ -67,10 +64,7 @@ describe("ClearAllForm", () => {
   });
 
   it("dispatches an action to clear the discoveries", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<ClearAllForm />, {
-      store,
-    });
+    renderWithProviders(<ClearAllForm />, { state });
     await userEvent.click(
       screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
     );
@@ -84,10 +78,7 @@ describe("ClearAllForm", () => {
   it("shows a success message when completed", async () => {
     mockFormikFormSaved();
 
-    const store = mockStore(state);
-    renderWithProviders(<ClearAllForm />, {
-      store,
-    });
+    const { store } = renderWithProviders(<ClearAllForm />, { state });
 
     await userEvent.click(
       screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })

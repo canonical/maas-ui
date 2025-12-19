@@ -3,7 +3,7 @@ import NetworkNotifications from "./NetworkNotifications";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("NetworkNotifications", () => {
   let state: RootState;
@@ -39,8 +39,7 @@ describe("NetworkNotifications", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(<NetworkNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<NetworkNotifications id="abc123" />, {
       state,
     });
     expect(screen.queryByRole("notification")).not.toBeInTheDocument();
@@ -53,8 +52,7 @@ describe("NetworkNotifications", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(<NetworkNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<NetworkNotifications id="abc123" />, {
       state,
     });
     expect(
@@ -64,8 +62,7 @@ describe("NetworkNotifications", () => {
 
   it("can show a permissions message", () => {
     state.machine.items[0].status = NodeStatus.DEPLOYING;
-    renderWithBrowserRouter(<NetworkNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<NetworkNotifications id="abc123" />, {
       state,
     });
     expect(
@@ -75,8 +72,7 @@ describe("NetworkNotifications", () => {
 
   it("can display a custom image message", () => {
     state.machine.items[0].osystem = "custom";
-    renderWithBrowserRouter(<NetworkNotifications id="abc123" />, {
-      route: "/machine/abc123",
+    renderWithProviders(<NetworkNotifications id="abc123" />, {
       state,
     });
     expect(

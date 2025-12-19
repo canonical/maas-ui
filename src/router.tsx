@@ -21,8 +21,6 @@ import Commissioning from "@/app/settings/views/Configuration/Commissioning";
 import Deploy from "@/app/settings/views/Configuration/Deploy";
 import General from "@/app/settings/views/Configuration/General";
 import KernelParameters from "@/app/settings/views/Configuration/KernelParameters";
-import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
-import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
 import DhcpList from "@/app/settings/views/Dhcp/DhcpList";
 import ChangeSource from "@/app/settings/views/Images/ChangeSource";
 import ThirdPartyDrivers from "@/app/settings/views/Images/ThirdPartyDrivers";
@@ -36,7 +34,6 @@ import ProxyForm from "@/app/settings/views/Network/ProxyForm";
 import SyslogForm from "@/app/settings/views/Network/SyslogForm";
 import RepositoriesList from "@/app/settings/views/Repositories/views";
 import ScriptsList from "@/app/settings/views/Scripts/ScriptsList";
-import ScriptsUpload from "@/app/settings/views/Scripts/ScriptsUpload";
 import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
 import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
@@ -58,7 +55,12 @@ const DomainDetails = lazy(() => import("@/app/domains/views/DomainDetails"));
 const DomainsList = lazy(() => import("@/app/domains/views/DomainsList"));
 const ImageList = lazy(() => import("@/app/images/views/ImageList"));
 const Intro = lazy(() => import("@/app/intro/views/Intro"));
-const KVM = lazy(() => import("@/app/kvm/views/KVM"));
+const KVMList = lazy(() => import("@/app/kvm/views/KVMList"));
+const LXDClusterDetails = lazy(
+  () => import("@/app/kvm/views/LXDClusterDetails")
+);
+const LXDSingleDetails = lazy(() => import("@/app/kvm/views/LXDSingleDetails"));
+const VirshDetails = lazy(() => import("@/app/kvm/views/VirshDetails"));
 const MachineDetails = lazy(
   () => import("@/app/machines/views/MachineDetails")
 );
@@ -260,11 +262,7 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent
-                        aria-label={"My preferences"}
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
-                      >
+                      <PageContent aria-label={"My preferences"}>
                         <Details />
                       </PageContent>
                     </ErrorBoundary>
@@ -342,12 +340,62 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: `${urls.kvm.index}/*`,
-              element: (
-                <ErrorBoundary>
-                  <KVM />
-                </ErrorBoundary>
-              ),
+              path: urls.kvm.index,
+              children: [
+                {
+                  path: urls.kvm.index,
+                  element: <Navigate replace to={urls.kvm.lxd.index} />,
+                },
+                {
+                  path: getRelativeRoute(urls.kvm.lxd.index, urls.kvm.index),
+                  element: (
+                    <ErrorBoundary>
+                      <KVMList />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  path: getRelativeRoute(urls.kvm.virsh.index, urls.kvm.index),
+                  element: (
+                    <ErrorBoundary>
+                      <KVMList />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  path: `${getRelativeRoute(
+                    urls.kvm.lxd.cluster.index(null),
+                    urls.kvm.index
+                  )}/*`,
+                  element: (
+                    <ErrorBoundary>
+                      <LXDClusterDetails />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  path: `${getRelativeRoute(
+                    urls.kvm.lxd.single.index(null),
+                    urls.kvm.index
+                  )}/*`,
+                  element: (
+                    <ErrorBoundary>
+                      <LXDSingleDetails />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  path: `${getRelativeRoute(
+                    urls.kvm.virsh.details.index(null),
+                    urls.kvm.index
+                  )}/*`,
+                  element: (
+                    <ErrorBoundary>
+                      <VirshDetails />
+                    </ErrorBoundary>
+                  ),
+                },
+              ],
             },
             {
               path: `${urls.pools.index}/*`,
@@ -671,8 +719,6 @@ export const router = createBrowserRouter(
                             </MainToolbar.Title>
                           </MainToolbar>
                         }
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
                       >
                         <NetworkDiscoveryForm />
                       </PageContent>
@@ -686,28 +732,7 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
-                      >
-                        <ScriptsList type="commissioning" />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.scripts.commissioning.upload,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={
-                          <ScriptsUpload type="commissioning" />
-                        }
-                        sidePanelTitle="Upload commissioning script"
-                      >
+                      <PageContent>
                         <ScriptsList type="commissioning" />
                       </PageContent>
                     </ErrorBoundary>
@@ -720,31 +745,13 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
-                      >
+                      <PageContent>
                         <ScriptsList type="testing" />
                       </PageContent>
                     </ErrorBoundary>
                   ),
                 },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.scripts.testing.upload,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={<ScriptsUpload type="testing" />}
-                        sidePanelTitle="Upload testing script"
-                      >
-                        <ScriptsList type="testing" />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
+
                 {
                   path: getRelativeRoute(
                     urls.settings.dhcp.index,
@@ -752,47 +759,13 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={null}
-                        sidePanelTitle={null}
-                      >
+                      <PageContent>
                         <DhcpList />
                       </PageContent>
                     </ErrorBoundary>
                   ),
                 },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.dhcp.add,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={<DhcpAdd />}
-                        sidePanelTitle="Add DHCP snippet"
-                      >
-                        <DhcpList />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.dhcp.edit(null),
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent
-                        sidePanelContent={<DhcpEdit />}
-                        sidePanelTitle="Edit DHCP snippet"
-                      >
-                        <DhcpList />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
+
                 {
                   path: getRelativeRoute(
                     urls.settings.repositories.index,

@@ -1,13 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import DeleteStaticRouteForm from "./DeleteStaticRouteForm";
 
-import type { RootState } from "@/app/store/root/types";
 import { staticRouteActions } from "@/app/store/staticroute";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 const subnet = factory.subnet({ id: 1, cidr: "172.16.1.0/24" });
 const destinationSubnet = factory.subnet({ id: 2, cidr: "223.16.1.0/24" });
@@ -34,10 +29,9 @@ describe("DeleteStaticRouteForm", () => {
   });
 
   it("dispatches the correct action to delete a static route", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <DeleteStaticRouteForm staticRouteId={staticroute.id} />,
-      { store }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));

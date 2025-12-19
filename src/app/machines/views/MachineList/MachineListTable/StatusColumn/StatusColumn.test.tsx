@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { StatusColumn } from "./StatusColumn";
 
 import type { Machine } from "@/app/store/machine/types";
@@ -13,14 +11,12 @@ import {
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   userEvent,
   screen,
   within,
   expectTooltipOnHover,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("StatusColumn", () => {
   let state: RootState;
@@ -68,10 +64,10 @@ describe("StatusColumn", () => {
     it("displays the machine's status if not deploying or deployed", () => {
       machine.status = NodeStatus.NEW;
       machine.status_code = NodeStatusCode.NEW;
-      const store = mockStore(state);
-      renderWithBrowserRouter(
+
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
 
       expect(screen.getByTestId("status-text")).toHaveTextContent("New");
@@ -82,11 +78,10 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.DEPLOYED;
       machine.osystem = "ubuntu";
       machine.distro_series = "bionic";
-      const store = mockStore(state);
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
 
       expect(screen.getByTestId("status-text")).toHaveTextContent(
@@ -99,11 +94,10 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.DEPLOYED;
       machine.osystem = "centos";
       machine.distro_series = "centos70";
-      const store = mockStore(state);
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
       expect(screen.getByTestId("status-text")).toHaveTextContent("CentOS 7");
     });
@@ -113,11 +107,10 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.DEPLOYING;
       machine.osystem = "ubuntu";
       machine.distro_series = "bionic";
-      const store = mockStore(state);
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
       expect(screen.getByTestId("status-text")).toHaveTextContent(
         "Deploying Ubuntu 18.04 LTS"
@@ -128,11 +121,10 @@ describe("StatusColumn", () => {
       machine.error_description = "machine is on fire";
       machine.status = NodeStatus.BROKEN;
       machine.status_code = NodeStatusCode.BROKEN;
-      const store = mockStore(state);
 
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
 
       expect(screen.getByTestId("error-text")).toHaveTextContent(
@@ -146,10 +138,10 @@ describe("StatusColumn", () => {
       machine.status = NodeStatus.TESTING;
       machine.status_code = NodeStatusCode.TESTING;
       machine.status_message = "2 of 6 tests complete";
-      const store = mockStore(state);
-      renderWithBrowserRouter(
+
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
 
       expect(screen.getByTestId("progress-text")).toHaveTextContent(
@@ -162,10 +154,10 @@ describe("StatusColumn", () => {
       machine.status = NodeStatus.ALLOCATED;
       machine.status_code = NodeStatusCode.ALLOCATED;
       machine.status_message = "This machine is allocated";
-      const store = mockStore(state);
-      renderWithBrowserRouter(
+
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
       expect(screen.getByTestId("progress-text")).toHaveTextContent("");
     });
@@ -175,10 +167,10 @@ describe("StatusColumn", () => {
     it("shows a spinner if machine is in a transient state", () => {
       machine.status = NodeStatus.COMMISSIONING;
       machine.status_code = NodeStatusCode.COMMISSIONING;
-      const store = mockStore(state);
-      renderWithBrowserRouter(
+
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
       expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     });
@@ -188,10 +180,10 @@ describe("StatusColumn", () => {
       machine.status = NodeStatus.ALLOCATED;
       machine.status_code = NodeStatusCode.ALLOCATED;
       machine.testing_status = TestStatusStatus.FAILED;
-      const store = mockStore(state);
-      renderWithBrowserRouter(
+
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
       expect(screen.getByLabelText(/warning/i)).toBeInTheDocument();
     });
@@ -212,9 +204,9 @@ describe("StatusColumn", () => {
         NodeActions.TEST,
         NodeActions.UNLOCK,
       ];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { state, route: "/machines" }
+        { state }
       );
       await userEvent.click(
         screen.getByRole("button", { name: /take action/i })
@@ -232,9 +224,8 @@ describe("StatusColumn", () => {
     });
 
     it("does not render table menu if onToggleMenu not provided", () => {
-      renderWithBrowserRouter(<StatusColumn systemId="abc123" />, {
+      renderWithProviders(<StatusColumn systemId="abc123" />, {
         state,
-        route: "/machines",
       });
       expect(
         screen.queryByRole("button", { name: /take action/i })
@@ -244,10 +235,10 @@ describe("StatusColumn", () => {
     it("shows an error icon button and a tooltip if power type is not set and status is unknown", async () => {
       machine.power_state = PowerState.UNKNOWN;
       machine.status_code = NodeStatusCode.NEW;
-      const store = mockStore(state);
-      renderWithBrowserRouter(
+
+      renderWithProviders(
         <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-        { route: "/machines", store }
+        { state }
       );
 
       const button = screen.getByRole("button", {
@@ -265,11 +256,10 @@ describe("StatusColumn", () => {
   it('displays a "Deployed in memory" status for epmerally deployed machines', () => {
     machine.ephemeral_deploy = true;
     machine.status_code = NodeStatusCode.DEPLOYED;
-    const store = mockStore(state);
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", store }
+      { state }
     );
 
     expect(screen.getByText(/deployed in memory/i)).toBeInTheDocument();

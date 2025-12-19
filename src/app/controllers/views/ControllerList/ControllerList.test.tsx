@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import ControllerList from "./ControllerList";
 
 import type { RootState } from "@/app/store/root/types";
@@ -10,8 +8,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("ControllerList", () => {
   let state: RootState;
@@ -34,9 +30,8 @@ describe("ControllerList", () => {
   });
 
   it("changes the URL when the search text changes", async () => {
-    const store = mockStore(state);
     const { router } = renderWithProviders(<ControllerList />, {
-      store,
+      state,
       initialEntries: ["/machines?q=test+search"],
     });
 

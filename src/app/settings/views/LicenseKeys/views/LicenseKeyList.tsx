@@ -8,11 +8,7 @@ const LicenseKeyList = (): React.ReactElement => {
   useWindowTitle("License keys");
 
   return (
-    <PageContent
-      sidePanelContent={null}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent>
       <ContentSection>
         <ContentSection.Content>
           <LicenseKeyTable />

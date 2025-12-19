@@ -1,6 +1,5 @@
 import { waitFor } from "@testing-library/react";
 import { Route, Routes } from "react-router";
-import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
 import MachineDetails from "./MachineDetails";
@@ -9,8 +8,6 @@ import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("MachineDetails", () => {
   let state: RootState;
@@ -149,19 +146,11 @@ describe("MachineDetails", () => {
   });
 
   it("dispatches an action to set the machine as active", () => {
-    const store = mockStore(state);
-    renderWithProviders(
-      <Routes>
-        <Route
-          element={<MachineDetails />}
-          path={`${urls.machines.machine.index(null)}/*`}
-        />
-      </Routes>,
-      {
-        store,
-        initialEntries: ["/machine/abc123"],
-      }
-    );
+    const { store } = renderWithProviders(<MachineDetails />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: `${urls.machines.machine.index(null)}/*`,
+    });
 
     expect(
       store.getActions().find((action) => action.type === "machine/setActive")
@@ -189,40 +178,26 @@ describe("MachineDetails", () => {
   });
 
   it("cleans up when unmounting", () => {
-    const store = mockStore(state);
-    const { result } = renderWithProviders(
-      <Routes>
-        <Route
-          element={<MachineDetails />}
-          path={`${urls.machines.machine.index(null)}/*`}
-        />
-      </Routes>,
-      {
-        store,
-        initialEntries: ["/machine/abc123"],
-      }
-    );
-    result.unmount();
+    const {
+      result: { unmount },
+      store,
+    } = renderWithProviders(<MachineDetails />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: `${urls.machines.machine.index(null)}/*`,
+    });
+    unmount();
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
   });
 
   it("scrolls to the top when changing tabs", async () => {
-    const store = mockStore(state);
-
-    renderWithProviders(
-      <Routes>
-        <Route
-          element={<MachineDetails />}
-          path={`${urls.machines.machine.index(null)}/*`}
-        />
-      </Routes>,
-      {
-        store,
-        initialEntries: ["/machine/abc123"],
-      }
-    );
+    renderWithProviders(<MachineDetails />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: `${urls.machines.machine.index(null)}/*`,
+    });
 
     const linkTo = screen.getByRole("link", { name: "USB" });
     await userEvent.click(linkTo);

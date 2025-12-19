@@ -9,7 +9,7 @@ import {
 import { NetworkLinkMode } from "@/app/store/types/enum";
 import type { VLAN } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("IPColumn", () => {
   let state: RootState;
@@ -41,7 +41,7 @@ describe("IPColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<IPColumn link={links[0]} nic={nic} node={machine} />, {
+    renderWithProviders(<IPColumn link={links[0]} nic={nic} node={machine} />, {
       state,
     });
     expect(screen.getByText(discovered.ip_address)).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe("IPColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<IPColumn link={link} nic={nic} node={machine} />, {
+    renderWithProviders(<IPColumn link={link} nic={nic} node={machine} />, {
       state,
     });
     expect(screen.getByText(ip)).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe("IPColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<IPColumn nic={nic} node={machine} />, { state });
+    renderWithProviders(<IPColumn nic={nic} node={machine} />, { state });
     expect(screen.getByText("Unconfigured")).toBeInTheDocument();
   });
 
@@ -99,7 +99,7 @@ describe("IPColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<IPColumn link={links[0]} nic={nic} node={machine} />, {
+    renderWithProviders(<IPColumn link={links[0]} nic={nic} node={machine} />, {
       state,
     });
     expect(screen.getByText("Automatic")).toBeInTheDocument();
@@ -138,7 +138,7 @@ describe("IPColumn", () => {
     state.nodescriptresult = factory.nodeScriptResultState({
       items: { abc123: [1, 2] },
     });
-    renderWithMockStore(<IPColumn link={links[0]} nic={nic} node={machine} />, {
+    renderWithProviders(<IPColumn link={links[0]} nic={nic} node={machine} />, {
       state,
     });
     expect(screen.getByText("2 failed tests")).toBeInTheDocument();
@@ -171,7 +171,7 @@ describe("IPColumn", () => {
     state.nodescriptresult = factory.nodeScriptResultState({
       items: { abc123: [1, 2] },
     });
-    renderWithMockStore(<IPColumn link={links[0]} nic={nic} node={machine} />, {
+    renderWithProviders(<IPColumn link={links[0]} nic={nic} node={machine} />, {
       state,
     });
     expect(screen.getByText("nic test failed")).toBeInTheDocument();
@@ -188,7 +188,7 @@ describe("IPColumn", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    renderWithMockStore(<IPColumn nic={nic} node={machine} />, { state });
+    renderWithProviders(<IPColumn nic={nic} node={machine} />, { state });
     expect(screen.queryByText("failed")).not.toBeInTheDocument();
   });
 });

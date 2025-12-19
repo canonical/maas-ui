@@ -1,9 +1,9 @@
 import MachineNotifications from "./MachineNotifications";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("ignores inactive notifications", () => {
-  render(
+  renderWithProviders(
     <MachineNotifications
       notifications={[
         {
@@ -31,7 +31,7 @@ it("ignores inactive notifications", () => {
 });
 
 it("adds an 'alert' role to notifications with 'negative' severity", () => {
-  render(
+  renderWithProviders(
     <MachineNotifications
       notifications={[
         {
@@ -47,7 +47,7 @@ it("adds an 'alert' role to notifications with 'negative' severity", () => {
 });
 
 it("adds a 'status' role to notifications with 'caution', 'information' and 'positive' severity", () => {
-  render(
+  renderWithProviders(
     <MachineNotifications
       notifications={[
         {

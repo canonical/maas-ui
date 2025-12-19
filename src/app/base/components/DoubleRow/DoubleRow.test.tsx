@@ -1,16 +1,16 @@
 import DoubleRow, { TestIds } from "./DoubleRow";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("DoubleRow ", () => {
   it("can render without a secondary row", () => {
-    render(<DoubleRow primary="Top row" />);
+    renderWithProviders(<DoubleRow primary="Top row" />);
 
     expect(screen.queryByTestId(TestIds.Secondary)).not.toBeInTheDocument();
   });
 
   it("can display an icon", () => {
-    render(
+    renderWithProviders(
       <DoubleRow
         icon={<i className="p-icon"></i>}
         primary="Top row"
@@ -23,7 +23,7 @@ describe("DoubleRow ", () => {
   });
 
   it("can display the space for an icon", () => {
-    render(
+    renderWithProviders(
       <DoubleRow iconSpace={true} primary="Top row" secondary="Bottom row" />
     );
 
@@ -32,7 +32,7 @@ describe("DoubleRow ", () => {
   });
 
   it("can have a menu", () => {
-    render(
+    renderWithProviders(
       <DoubleRow
         menuLinks={[{ children: "Link1" }, { children: "Link2" }]}
         menuTitle="Take action:"

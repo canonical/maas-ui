@@ -2,7 +2,7 @@ import LXDClusterSummaryCard from "./LXDClusterSummaryCard";
 
 import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen, within } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 describe("LXDClusterSummaryCard", () => {
   it("can show the section for storage", () => {
@@ -14,7 +14,7 @@ describe("LXDClusterSummaryCard", () => {
         items: [factory.vmCluster({ id: 1 })],
       }),
     });
-    renderWithMockStore(<LXDClusterSummaryCard clusterId={1} showStorage />, {
+    renderWithProviders(<LXDClusterSummaryCard clusterId={1} showStorage />, {
       state,
     });
 
@@ -27,7 +27,7 @@ describe("LXDClusterSummaryCard", () => {
         loading: true,
       }),
     });
-    renderWithMockStore(<LXDClusterSummaryCard clusterId={1} showStorage />, {
+    renderWithProviders(<LXDClusterSummaryCard clusterId={1} showStorage />, {
       state,
     });
 
@@ -43,7 +43,7 @@ describe("LXDClusterSummaryCard", () => {
         items: [factory.vmCluster({ id: 1 })],
       }),
     });
-    renderWithMockStore(
+    renderWithProviders(
       <LXDClusterSummaryCard clusterId={1} showStorage={false} />,
       { state }
     );
@@ -99,7 +99,7 @@ describe("LXDClusterSummaryCard", () => {
         ],
       }),
     });
-    renderWithMockStore(<LXDClusterSummaryCard clusterId={1} />, { state });
+    renderWithProviders(<LXDClusterSummaryCard clusterId={1} />, { state });
 
     const ifaceMeter = screen.getByLabelText("vf-resources-meter");
     expect(ifaceMeter).toBeInTheDocument();

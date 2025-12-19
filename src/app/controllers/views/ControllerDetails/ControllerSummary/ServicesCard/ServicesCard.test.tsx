@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import ServicesCard from "./ServicesCard";
 
 import { serviceActions } from "@/app/store/service";
@@ -9,8 +7,6 @@ import { NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen } from "@/testing/utils";
 
-const mockStore = configureStore();
-
 it("fetches services on load", () => {
   const controller = factory.controllerDetails();
   const state = factory.rootState({
@@ -18,9 +14,11 @@ it("fetches services on load", () => {
       items: [controller],
     }),
   });
-  const store = mockStore(state);
 
-  renderWithProviders(<ServicesCard controller={controller} />, { store });
+  const { store } = renderWithProviders(
+    <ServicesCard controller={controller} />,
+    { state }
+  );
 
   const expectedAction = serviceActions.fetch();
   expect(

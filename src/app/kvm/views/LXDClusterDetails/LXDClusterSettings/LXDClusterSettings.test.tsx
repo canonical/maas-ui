@@ -1,13 +1,8 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import LXDClusterSettings from "./LXDClusterSettings";
 
 import { podActions } from "@/app/store/pod";
 import * as factory from "@/testing/factories";
-import { render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders } from "@/testing/utils";
 
 describe("LXDClusterSettings", () => {
   it("sets the cluster's first host as active", () => {
@@ -24,11 +19,9 @@ describe("LXDClusterSettings", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <LXDClusterSettings clusterId={1} setSidePanelContent={vi.fn()} />
-      </Provider>
+    const { store } = renderWithProviders(
+      <LXDClusterSettings clusterId={1} />,
+      { state }
     );
 
     const expectedAction = podActions.setActive(11);

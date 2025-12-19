@@ -1,10 +1,8 @@
-import { MemoryRouter } from "react-router";
-
 import DhcpTarget from "./DhcpTarget";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithMockStore } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("DhcpTarget", () => {
   let state: RootState;
@@ -61,22 +59,12 @@ describe("DhcpTarget", () => {
     state.dhcpsnippet.loading = true;
     state.machine.loading = true;
     state.subnet.loading = true;
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <DhcpTarget subnetId={808} />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpTarget subnetId={808} />, { state });
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("can display a subnet link", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <DhcpTarget subnetId={1} />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpTarget subnetId={1} />, { state });
     const link = screen.getByRole("link", { name: "10.0.0.99" });
 
     expect(link).toBeInTheDocument();
@@ -84,12 +72,7 @@ describe("DhcpTarget", () => {
   });
 
   it("can display a node link", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <DhcpTarget nodeId="xyz" />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpTarget nodeId="xyz" />, { state });
     const link = screen.getByRole("link", { name: "machine1 .test" });
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", "/machine/xyz");

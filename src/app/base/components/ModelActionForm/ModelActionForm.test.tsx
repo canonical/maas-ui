@@ -1,9 +1,9 @@
 import ModelActionForm from "./ModelActionForm";
 
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 it("renders", () => {
-  renderWithBrowserRouter(
+  renderWithProviders(
     <ModelActionForm
       initialValues={{}}
       modelType="machine"
@@ -21,7 +21,7 @@ it("renders", () => {
 
 it("can confirm", async () => {
   const onSubmit = vi.fn();
-  renderWithBrowserRouter(
+  renderWithProviders(
     <ModelActionForm
       initialValues={{}}
       modelType="machine"
@@ -36,7 +36,7 @@ it("can confirm", async () => {
 
 it("can cancel", async () => {
   const onCancel = vi.fn();
-  renderWithBrowserRouter(
+  renderWithProviders(
     <ModelActionForm
       cancelLabel="Cancel"
       initialValues={{}}

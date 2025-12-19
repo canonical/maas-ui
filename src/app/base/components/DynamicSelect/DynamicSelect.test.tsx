@@ -3,7 +3,14 @@ import { Formik } from "formik";
 import DynamicSelect from "./DynamicSelect";
 import type { Props as DynamicSelectProps } from "./DynamicSelect";
 
-import { userEvent, fireEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("DynamicSelect", () => {
   it("resets to the first option if the options change and the value no longer exists", async () => {
@@ -71,7 +78,7 @@ describe("DynamicSelect", () => {
   });
 
   it("accepts changing to a value that is a number", async () => {
-    render(
+    renderWithProviders(
       <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
         <DynamicSelect
           name="fabric"
@@ -123,7 +130,7 @@ describe("DynamicSelect", () => {
   });
 
   it("doesn't change the value on first render", async () => {
-    render(
+    renderWithProviders(
       <Formik initialValues={{ fabric: "2" }} onSubmit={vi.fn()}>
         <DynamicSelect
           name="fabric"

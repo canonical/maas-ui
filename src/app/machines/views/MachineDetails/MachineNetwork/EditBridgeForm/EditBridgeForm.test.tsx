@@ -1,5 +1,4 @@
 import userEvent from "@testing-library/user-event";
-import configureStore from "redux-mock-store";
 
 import EditBridgeForm from "./EditBridgeForm";
 
@@ -11,9 +10,7 @@ import {
 } from "@/app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("EditBridgeForm", () => {
   let nic: NetworkInterface;
@@ -59,15 +56,9 @@ describe("EditBridgeForm", () => {
   });
 
   it("fetches the necessary data on load", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditBridgeForm
-        close={vi.fn()}
-        link={link}
-        nic={nic}
-        systemId="abc123"
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <EditBridgeForm link={link} nic={nic} systemId="abc123" />,
+      { state }
     );
     expect(
       store.getActions().some((action) => action.type === "vlan/fetch")
@@ -77,29 +68,18 @@ describe("EditBridgeForm", () => {
   it("displays a spinner when data is loading", () => {
     state.vlan.loaded = false;
     state.vlan.loading = true;
-    renderWithBrowserRouter(
-      <EditBridgeForm
-        close={vi.fn()}
-        link={link}
-        nic={nic}
-        systemId="abc123"
-      />,
-      { route: "/machines", state }
+    renderWithProviders(
+      <EditBridgeForm link={link} nic={nic} systemId="abc123" />,
+      { state }
     );
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("can dispatch an action to update a bridge", async () => {
     state.machine.selected = { items: ["abc123", "def456"] };
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditBridgeForm
-        close={vi.fn()}
-        link={link}
-        nic={nic}
-        systemId="abc123"
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <EditBridgeForm link={link} nic={nic} systemId="abc123" />,
+      { state }
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "Bridge name" }));

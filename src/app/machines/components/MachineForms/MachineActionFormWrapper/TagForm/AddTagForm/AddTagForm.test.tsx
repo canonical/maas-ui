@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import type { Props } from "./AddTagForm";
 import AddTagForm from "./AddTagForm";
 
@@ -10,14 +8,12 @@ import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { FetchNodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithProviders } from "@/testing/utils";
 
 const mockBaseAddTagForm = vi.fn();
 vi.mock("@/app/base/components/NodeTagForm", () => ({
   default: (props: Props) => mockBaseAddTagForm(props),
 }));
-
-const mockStore = configureStore<RootState>();
 
 let state: RootState;
 
@@ -56,11 +52,9 @@ afterEach(() => {
 });
 
 it("set the analytics category for the machine list", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
-    { route: "/tags", store }
-  );
+  renderWithProviders(<AddTagForm name="new-tag" onTagCreated={vi.fn()} />, {
+    state,
+  });
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
       onSaveAnalytics: {
@@ -73,15 +67,9 @@ it("set the analytics category for the machine list", async () => {
 });
 
 it("set the analytics category for the machine details", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <AddTagForm
-      machines={[]}
-      name="new-tag"
-      onTagCreated={vi.fn()}
-      viewingDetails
-    />,
-    { route: "/tags", store }
+  renderWithProviders(
+    <AddTagForm isViewingDetails name="new-tag" onTagCreated={vi.fn()} />,
+    { state }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -95,15 +83,9 @@ it("set the analytics category for the machine details", async () => {
 });
 
 it("set the analytics category for the machine config", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <AddTagForm
-      machines={[]}
-      name="new-tag"
-      onTagCreated={vi.fn()}
-      viewingMachineConfig
-    />,
-    { route: "/tags", store }
+  renderWithProviders(
+    <AddTagForm isViewingMachineConfig name="new-tag" onTagCreated={vi.fn()} />,
+    { state }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -117,11 +99,9 @@ it("set the analytics category for the machine config", async () => {
 });
 
 it("generates a deployed message for a single machine", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
-    { route: "/tags", store }
-  );
+  renderWithProviders(<AddTagForm name="new-tag" onTagCreated={vi.fn()} />, {
+    state,
+  });
   expect(
     mockBaseAddTagForm.mock.calls[0][0]
       .generateDeployedMessage(1)
@@ -130,11 +110,9 @@ it("generates a deployed message for a single machine", async () => {
 });
 
 it("generates a deployed message for multiple machines", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
-    { route: "/tags", store }
-  );
+  renderWithProviders(<AddTagForm name="new-tag" onTagCreated={vi.fn()} />, {
+    state,
+  });
   expect(
     mockBaseAddTagForm.mock.calls[0][0]
       .generateDeployedMessage(2)
@@ -143,15 +121,14 @@ it("generates a deployed message for multiple machines", async () => {
 });
 
 it("fetches deployed machine count for selected machines", async () => {
-  const store = mockStore(state);
   const selectedMachines = { items: ["abc", "def"] };
-  renderWithBrowserRouter(
+  const { store } = renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", store }
+    { state }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
@@ -168,19 +145,19 @@ it("fetches deployed machine count separately for deployed group when selected",
   vi.spyOn(query, "generateCallId")
     .mockReturnValueOnce("mocked-nanoid-1")
     .mockReturnValueOnce("mocked-nanoid-2");
-  const store = mockStore(state);
+
   const selectedMachines = {
     items: ["abc", "def"],
     groups: [FetchNodeStatus.DEPLOYED],
     grouping: FetchGroupKey.Status,
   };
-  renderWithBrowserRouter(
+  const { store } = renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", store }
+    { state }
   );
   const expected = [
     machineActions.count("mocked-nanoid-1", {
@@ -201,17 +178,16 @@ it("fetches deployed machine count separately for deployed group when selected",
 });
 
 it("fetches deployed machine count when all machines are selected", async () => {
-  const store = mockStore(state);
   const selectedMachines = {
     filter: {},
   };
-  renderWithBrowserRouter(
+  const { store } = renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", store }
+    { state }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
@@ -225,19 +201,18 @@ it("fetches deployed machine count when all machines are selected", async () => 
 
 it(`fetches deployed machine count only for selected items
     when grouping by status and group other than deployed is selected`, async () => {
-  const store = mockStore(state);
   const selectedMachines = {
     items: ["abc", "def"],
     groups: [FetchNodeStatus.COMMISSIONING],
     grouping: FetchGroupKey.Status,
   };
-  renderWithBrowserRouter(
+  const { store } = renderWithProviders(
     <AddTagForm
       name="new-tag"
       onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", store }
+    { state }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,

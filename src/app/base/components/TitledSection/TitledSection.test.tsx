@@ -1,11 +1,11 @@
 import TitledSection from "./TitledSection";
 
-import { render, screen, within } from "@/testing/utils";
+import { screen, within, renderWithProviders } from "@/testing/utils";
 
 it("displays the provided title and content", () => {
   const title = "echidna says";
   const content = "G'day";
-  render(<TitledSection title={title}>{content}</TitledSection>);
+  renderWithProviders(<TitledSection title={title}>{content}</TitledSection>);
   expect(screen.getByText(content)).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
 });
@@ -13,7 +13,7 @@ it("displays the provided title and content", () => {
 it("displays a section correctly labelled with the provided title", () => {
   const title = "echidna says";
   const content = "G'day";
-  render(
+  renderWithProviders(
     <TitledSection title={title}>
       <p>{content}</p>
     </TitledSection>
@@ -23,7 +23,9 @@ it("displays a section correctly labelled with the provided title", () => {
 });
 
 it("sets the labelledby ids", () => {
-  render(<TitledSection title="echidna says">G'day</TitledSection>);
+  renderWithProviders(
+    <TitledSection title="echidna says">G'day</TitledSection>
+  );
   const sectionId = screen.getByRole("heading").id;
   expect(sectionId).toBeTruthy();
   expect(screen.getByTestId("titled-section")).toHaveAttribute(
@@ -33,7 +35,7 @@ it("sets the labelledby ids", () => {
 });
 
 it("can display buttons", () => {
-  render(
+  renderWithProviders(
     <TitledSection
       buttons={
         <>
@@ -50,7 +52,7 @@ it("can display buttons", () => {
 });
 
 it("displays a custom heading level", () => {
-  render(
+  renderWithProviders(
     <TitledSection
       headingElement="h4"
       headingVisuallyHidden={true}
@@ -64,7 +66,7 @@ it("displays a custom heading level", () => {
 });
 
 it("adds a custom heading className", () => {
-  render(
+  renderWithProviders(
     <TitledSection headingClassName="u-no-margin--bottom" title="echidna says">
       G'day
     </TitledSection>
@@ -76,14 +78,14 @@ it("adds a custom heading className", () => {
 });
 
 it("can display a full span title", () => {
-  render(<TitledSection hasSidebarTitle={false} title="Title" />);
+  renderWithProviders(<TitledSection hasSidebarTitle={false} title="Title" />);
 
   expect(screen.getByTestId("has-fullspan-title")).toBeInTheDocument();
   expect(screen.queryByTestId("has-sidebar-title")).not.toBeInTheDocument();
 });
 
 it("can display the title in a sidebar", () => {
-  render(<TitledSection hasSidebarTitle title="Title" />);
+  renderWithProviders(<TitledSection hasSidebarTitle title="Title" />);
 
   expect(screen.getByTestId("has-sidebar-title")).toBeInTheDocument();
   expect(screen.queryByTestId("has-fullspan-title")).not.toBeInTheDocument();

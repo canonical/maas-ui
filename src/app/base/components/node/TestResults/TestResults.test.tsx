@@ -1,15 +1,11 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import TestResults from "./TestResults";
 
 import { HardwareType } from "@/app/base/enum";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithProviders } from "@/testing/utils";
 
 describe("TestResults", () => {
   let state: RootState;
@@ -26,19 +22,11 @@ describe("TestResults", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <TestResults
-            hardwareType={HardwareType.CPU}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <TestResults hardwareType={HardwareType.CPU} machine={machine} />,
+      {
+        state,
+      }
     );
 
     expect(screen.getByRole("link", { name: "2" })).toBeInTheDocument();
@@ -52,19 +40,11 @@ describe("TestResults", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <TestResults
-            hardwareType={HardwareType.Memory}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <TestResults hardwareType={HardwareType.Memory} machine={machine} />,
+      {
+        state,
+      }
     );
 
     expect(screen.getByRole("link", { name: "3" })).toBeInTheDocument();
@@ -77,19 +57,11 @@ describe("TestResults", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <TestResults
-            hardwareType={HardwareType.Storage}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <TestResults hardwareType={HardwareType.Storage} machine={machine} />,
+      {
+        state,
+      }
     );
 
     expect(screen.getByRole("link", { name: "5" })).toBeInTheDocument();
@@ -102,19 +74,11 @@ describe("TestResults", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <TestResults
-            hardwareType={HardwareType.CPU}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <TestResults hardwareType={HardwareType.CPU} machine={machine} />,
+      {
+        state,
+      }
     );
 
     expect(
@@ -127,19 +91,11 @@ describe("TestResults", () => {
     machine.network_test_status = factory.testStatus();
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <TestResults
-            hardwareType={HardwareType.Network}
-            machine={machine}
-            setSidePanelContent={vi.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <TestResults hardwareType={HardwareType.Network} machine={machine} />,
+      {
+        state,
+      }
     );
 
     expect(

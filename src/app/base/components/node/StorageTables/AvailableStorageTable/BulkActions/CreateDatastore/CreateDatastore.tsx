@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import {
   Col,
   Input,
@@ -12,6 +14,7 @@ import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -31,8 +34,7 @@ type CreateDatastoreValues = {
   name: string;
 };
 
-type Props = {
-  closeForm: () => void;
+type CreateDatastoreProps = {
   selected: (Disk | Partition)[];
   systemId: Machine["system_id"];
 };
@@ -59,11 +61,11 @@ const CreateDatastoreSchema = Yup.object().shape({
 });
 
 export const CreateDatastore = ({
-  closeForm,
   selected,
   systemId,
-}: Props): React.ReactElement | null => {
+}: CreateDatastoreProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -72,7 +74,7 @@ export const CreateDatastore = ({
     "creatingVmfsDatastore",
     "createVmfsDatastore",
     () => {
-      closeForm();
+      closeSidePanel();
     }
   );
   const totalSize = selected.reduce((sum, device) => (sum += device.size), 0);
@@ -86,7 +88,7 @@ export const CreateDatastore = ({
         initialValues={{
           name: getInitialName(machine.disks),
         }}
-        onCancel={closeForm}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Create datastore",
           category: "Machine storage",

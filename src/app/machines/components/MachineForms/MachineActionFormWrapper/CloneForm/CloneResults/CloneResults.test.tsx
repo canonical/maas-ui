@@ -1,17 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import CloneResults, { CloneErrorCodes } from "./CloneResults";
 
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 describe("CloneResults", () => {
   let state: RootState;
@@ -26,19 +19,17 @@ describe("CloneResults", () => {
 
   it("handles a successful clone result", () => {
     state.machine.eventErrors = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CloneResults
-            closeForm={vi.fn()}
-            selectedCount={2}
-            sourceMachine={machine}
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <CloneResults
+        closeForm={vi.fn()}
+        selectedCount={2}
+        sourceMachine={machine}
+      />,
+      {
+        initialEntries: [{ pathname: "/machines", key: "testKey" }],
+        state,
+      }
     );
     expect(
       screen.getByText(/2 of 2 machines cloned successfully from/i)
@@ -54,19 +45,17 @@ describe("CloneResults", () => {
         id: machine.system_id,
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CloneResults
-            closeForm={vi.fn()}
-            selectedCount={2}
-            sourceMachine={machine}
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <CloneResults
+        closeForm={vi.fn()}
+        selectedCount={2}
+        sourceMachine={machine}
+      />,
+      {
+        initialEntries: [{ pathname: "/machines", key: "testKey" }],
+        state,
+      }
     );
     expect(
       screen.getByText(/0 of 2 machines cloned successfully from/i)
@@ -92,19 +81,17 @@ describe("CloneResults", () => {
         id: machine.system_id,
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CloneResults
-            closeForm={vi.fn()}
-            selectedCount={2}
-            sourceMachine={machine}
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <CloneResults
+        closeForm={vi.fn()}
+        selectedCount={2}
+        sourceMachine={machine}
+      />,
+      {
+        initialEntries: [{ pathname: "/machines", key: "testKey" }],
+        state,
+      }
     );
     expect(
       screen.getByText(/1 of 2 machines cloned successfully from/i)
@@ -131,19 +118,17 @@ describe("CloneResults", () => {
         id: machine.system_id,
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CloneResults
-            closeForm={vi.fn()}
-            selectedCount={2}
-            sourceMachine={machine}
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <CloneResults
+        closeForm={vi.fn()}
+        selectedCount={2}
+        sourceMachine={machine}
+      />,
+      {
+        initialEntries: [{ pathname: "/machines", key: "testKey" }],
+        state,
+      }
     );
     expect(
       screen.getByText(/0 of 2 machines cloned successfully from/i)
@@ -180,19 +165,17 @@ describe("CloneResults", () => {
         id: machine.system_id,
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CloneResults
-            closeForm={vi.fn()}
-            selectedCount={2}
-            sourceMachine={machine}
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <CloneResults
+        closeForm={vi.fn()}
+        selectedCount={2}
+        sourceMachine={machine}
+      />,
+      {
+        initialEntries: [{ pathname: "/machines", key: "testKey" }],
+        state,
+      }
     );
     expect(screen.getByTestId("errors-table")).toBeInTheDocument();
     expect(screen.getAllByTestId("error-row").length).toBe(2);
@@ -220,19 +203,17 @@ describe("CloneResults", () => {
         id: machine.system_id,
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CloneResults
-            closeForm={vi.fn()}
-            setSearchFilter={setSearchFilter}
-            sourceMachine={machine}
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <CloneResults
+        closeForm={vi.fn()}
+        setSearchFilter={setSearchFilter}
+        sourceMachine={machine}
+      />,
+      {
+        initialEntries: [{ pathname: "/machines", key: "testKey" }],
+        state,
+      }
     );
     await userEvent.click(screen.getByTestId("error-filter-link"));
     expect(setSearchFilter).toHaveBeenCalledWith("system_id:(def456,ghi789)");
@@ -260,20 +241,18 @@ describe("CloneResults", () => {
         id: machine.system_id,
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CloneResults
-            closeForm={vi.fn()}
-            setSearchFilter={setSearchFilter}
-            sourceMachine={machine}
-            viewingDetails
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <CloneResults
+        closeForm={vi.fn()}
+        setSearchFilter={setSearchFilter}
+        sourceMachine={machine}
+        viewingDetails
+      />,
+      {
+        initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+        state,
+      }
     );
     expect(screen.queryByTestId("error-filter-link")).not.toBeInTheDocument();
   });

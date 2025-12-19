@@ -1,5 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import TagForm, { Label } from "./TagForm";
 import { Label as TagFormChangesLabel } from "./TagFormChanges";
@@ -20,7 +19,6 @@ import {
   within,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
   return {
@@ -59,17 +57,17 @@ afterEach(() => {
 });
 
 it("dispatches action to fetch tags on load", async () => {
-  const store = mockStore(state);
-  renderWithProviders(
-    <TagForm
-      clearSidePanelContent={vi.fn()}
-      machines={[]}
-      processingCount={0}
-      selectedMachines={{ items: ["abc123"] }}
-      viewingDetails={false}
-    />,
-    { store }
-  );
+  const machines = [
+    factory.machine({ system_id: "abc123", tags: [] }),
+    factory.machine({ system_id: "def456", tags: [] }),
+  ];
+  state.machine.items = machines;
+  state.machine.selected = {
+    items: machines.map((machine) => machine.system_id),
+  };
+  const { store } = renderWithProviders(<TagForm isViewingDetails={false} />, {
+    state,
+  });
 
   expect(store.getActions().some((action) => action.type === "tag/fetch")).toBe(
     true
@@ -81,19 +79,13 @@ it("correctly dispatches actions to tag machines", async () => {
     factory.machine({ system_id: "abc123", tags: [] }),
     factory.machine({ system_id: "def456", tags: [] }),
   ];
-  const store = mockStore(state);
-  renderWithProviders(
-    <TagForm
-      clearSidePanelContent={vi.fn()}
-      machines={machines}
-      processingCount={0}
-      selectedMachines={{
-        items: machines.map((machine) => machine.system_id),
-      }}
-      viewingDetails={false}
-    />,
-    { store }
-  );
+  state.machine.items = machines;
+  state.machine.selected = {
+    items: machines.map((machine) => machine.system_id),
+  };
+  const { store } = renderWithProviders(<TagForm isViewingDetails={false} />, {
+    state,
+  });
 
   await userEvent.click(
     screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput })
@@ -132,19 +124,13 @@ it("correctly dispatches actions to untag machines", async () => {
       loaded: true,
     }),
   };
-  const store = mockStore(state);
-  renderWithProviders(
-    <TagForm
-      clearSidePanelContent={vi.fn()}
-      machines={machines}
-      processingCount={0}
-      selectedMachines={{
-        items: machines.map((machine) => machine.system_id),
-      }}
-      viewingDetails={false}
-    />,
-    { store }
-  );
+  state.machine.items = machines;
+  state.machine.selected = {
+    items: machines.map((machine) => machine.system_id),
+  };
+  const { store } = renderWithProviders(<TagForm isViewingDetails={false} />, {
+    state,
+  });
 
   const deleteButtons = screen.getAllByRole("button", {
     name: TagFormChangesLabel.Remove,
@@ -174,17 +160,13 @@ it("correctly dispatches actions to untag machines", async () => {
 
 it("correctly dispatches actions to tag and untag a machine", async () => {
   const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
-  const store = mockStore(state);
-  renderWithProviders(
-    <TagForm
-      clearSidePanelContent={vi.fn()}
-      machines={machines}
-      processingCount={0}
-      selectedMachines={{ items: machines.map((item) => item.system_id) }}
-      viewingDetails={false}
-    />,
-    { store }
-  );
+  state.machine.items = machines;
+  state.machine.selected = {
+    items: machines.map((machine) => machine.system_id),
+  };
+  const { store } = renderWithProviders(<TagForm isViewingDetails={false} />, {
+    state,
+  });
 
   await userEvent.click(
     screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput })
@@ -227,15 +209,15 @@ it("shows saving label if not viewing from machine config page", () => {
   state.machine.actions["mocked-nanoid"] = factory.machineActionState({
     status: "loading",
   });
+  state.machine.items = machines;
+  state.machine.selected = {
+    items: machines.map((machine) => machine.system_id),
+  };
   renderWithProviders(
-    <TagForm
-      clearSidePanelContent={vi.fn()}
-      machines={machines}
-      processingCount={1}
-      viewingDetails={false}
-      viewingMachineConfig={false}
-    />,
-    { state }
+    <TagForm isViewingDetails={false} isViewingMachineConfig={false} />,
+    {
+      state,
+    }
   );
 
   expect(screen.getByTestId("saving-label")).toBeInTheDocument();
@@ -247,15 +229,15 @@ it("does not show saving label if viewing from machine config page", () => {
     factory.machine({ system_id: "abc123", tags: [] }),
     factory.machine({ system_id: "def456", tags: [] }),
   ];
+  state.machine.items = machines;
+  state.machine.selected = {
+    items: machines.map((machine) => machine.system_id),
+  };
   renderWithProviders(
-    <TagForm
-      clearSidePanelContent={vi.fn()}
-      machines={machines}
-      processingCount={1}
-      viewingDetails
-      viewingMachineConfig
-    />,
-    { state }
+    <TagForm isViewingDetails={false} isViewingMachineConfig />,
+    {
+      state,
+    }
   );
 
   expect(screen.queryByTestId("saving-label")).not.toBeInTheDocument();
@@ -263,18 +245,13 @@ it("does not show saving label if viewing from machine config page", () => {
 
 it("shows a notification on success", async () => {
   const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
-  const store = mockStore(state);
-  renderWithProviders(
-    <TagForm
-      clearSidePanelContent={vi.fn()}
-      machines={machines}
-      processingCount={0}
-      selectedCount={machines.length}
-      selectedMachines={{ items: machines.map((item) => item.system_id) }}
-      viewingDetails={false}
-    />,
-    { store }
-  );
+  state.machine.items = machines;
+  state.machine.selected = {
+    items: machines.map((machine) => machine.system_id),
+  };
+  const { store } = renderWithProviders(<TagForm isViewingDetails={false} />, {
+    state,
+  });
   // Mock state.tag.saved transitioning from "false" to "true"
   mockFormikFormSaved();
   await userEvent.click(
@@ -298,17 +275,13 @@ it("shows a notification on success", async () => {
 
 it("can open a create tag form", async () => {
   const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
-  renderWithProviders(
-    <TagForm
-      clearSidePanelContent={vi.fn()}
-      machines={state.machine.items}
-      processingCount={0}
-      selectedCount={state.machine.items.length}
-      selectedMachines={{ items: machines.map((item) => item.system_id) }}
-      viewingDetails={false}
-    />,
-    { state }
-  );
+  state.machine.items = machines;
+  state.machine.selected = {
+    items: machines.map((machine) => machine.system_id),
+  };
+  renderWithProviders(<TagForm isViewingDetails={false} />, {
+    state,
+  });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput }),
@@ -323,17 +296,13 @@ it("can open a create tag form", async () => {
 
 it("updates the new tags after creating a tag", async () => {
   const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
-  renderWithProviders(
-    <TagForm
-      clearSidePanelContent={vi.fn()}
-      machines={state.machine.items}
-      processingCount={0}
-      selectedCount={state.machine.items.length}
-      selectedMachines={{ items: machines.map((item) => item.system_id) }}
-      viewingDetails={false}
-    />,
-    { state }
-  );
+  state.machine.items = machines;
+  state.machine.selected = {
+    items: machines.map((machine) => machine.system_id),
+  };
+  renderWithProviders(<TagForm isViewingDetails={false} />, {
+    state,
+  });
   expect(
     screen.queryByRole("button", { name: /new-tag/i })
   ).not.toBeInTheDocument();

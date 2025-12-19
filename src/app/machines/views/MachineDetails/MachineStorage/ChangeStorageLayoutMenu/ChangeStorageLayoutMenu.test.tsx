@@ -1,14 +1,10 @@
-import configureStore from "redux-mock-store";
-
 import ChangeStorageLayoutMenu, {
   storageLayoutOptions,
 } from "./ChangeStorageLayoutMenu";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 let state: RootState;
 
@@ -24,9 +20,8 @@ beforeAll(() => {
 });
 
 it("renders", () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(<ChangeStorageLayoutMenu systemId="abc123" />, {
-    store,
+  renderWithProviders(<ChangeStorageLayoutMenu systemId="abc123" />, {
+    state,
   });
 
   expect(
@@ -35,10 +30,9 @@ it("renders", () => {
 });
 
 it("displays sub options when clicked", async () => {
-  const store = mockStore(state);
   const testStorageOptions = storageLayoutOptions[0];
-  renderWithBrowserRouter(<ChangeStorageLayoutMenu systemId="abc123" />, {
-    store,
+  renderWithProviders(<ChangeStorageLayoutMenu systemId="abc123" />, {
+    state,
   });
 
   const storageBtn = screen.getByRole("button", {

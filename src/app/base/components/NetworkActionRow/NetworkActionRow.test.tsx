@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import NetworkActionRow from "./NetworkActionRow";
 
 import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
@@ -11,8 +9,6 @@ import {
   expectTooltipOnHover,
   renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("NetworkActionRow", () => {
   let state: RootState;
@@ -29,7 +25,6 @@ describe("NetworkActionRow", () => {
   });
 
   it("can include extra actions", () => {
-    const store = mockStore(state);
     renderWithProviders(
       <NetworkActionRow
         extraActions={[
@@ -41,7 +36,7 @@ describe("NetworkActionRow", () => {
         ]}
         node={state.machine.items[0]}
       />,
-      { store }
+      { state }
     );
     expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
   });
@@ -49,9 +44,9 @@ describe("NetworkActionRow", () => {
   describe("add physical", () => {
     it("disables the button when networking is disabled", async () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
-      const store = mockStore(state);
+
       renderWithProviders(<NetworkActionRow node={state.machine.items[0]} />, {
-        store,
+        state,
       });
       const addInterfaceButton = screen.getByRole("button", {
         name: "Add interface",

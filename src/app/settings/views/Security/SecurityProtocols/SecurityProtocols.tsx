@@ -17,7 +17,7 @@ const SecurityProtocols = (): React.ReactElement => {
   useFetchActions([generalActions.fetchTlsCertificate]);
 
   return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+    <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Title className="section-header__title">
           Security protocols

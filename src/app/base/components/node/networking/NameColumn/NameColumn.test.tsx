@@ -1,15 +1,10 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import NameColumn from "./NameColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;
@@ -36,17 +31,16 @@ describe("NameColumn", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <NameColumn
-          handleRowCheckbox={vi.fn()}
-          nic={nic}
-          node={state.machine.items[0]}
-          selected={[]}
-          showCheckbox={true}
-        />
-      </Provider>
+
+    renderWithProviders(
+      <NameColumn
+        handleRowCheckbox={vi.fn()}
+        nic={nic}
+        node={state.machine.items[0]}
+        selected={[]}
+        showCheckbox={true}
+      />,
+      { state }
     );
     const checkbox: HTMLInputElement = screen.getByRole("checkbox");
     expect(checkbox.disabled).toBe(true);
@@ -63,17 +57,16 @@ describe("NameColumn", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <NameColumn
-          handleRowCheckbox={vi.fn()}
-          nic={nic}
-          node={state.machine.items[0]}
-          selected={[]}
-          showCheckbox={false}
-        />
-      </Provider>
+
+    renderWithProviders(
+      <NameColumn
+        handleRowCheckbox={vi.fn()}
+        nic={nic}
+        node={state.machine.items[0]}
+        selected={[]}
+        showCheckbox={false}
+      />,
+      { state }
     );
     expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
     expect(screen.getByTestId("name")).toBeInTheDocument();

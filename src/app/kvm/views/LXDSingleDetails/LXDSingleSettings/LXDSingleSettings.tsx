@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -9,7 +11,6 @@ import { useZones } from "@/app/api/query/zones";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import KVMConfigurationCard from "@/app/kvm/components/KVMConfigurationCard";
 import LXDHostToolbar from "@/app/kvm/components/LXDHostToolbar";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import { isPodDetails } from "@/app/store/pod/utils";
@@ -19,17 +20,13 @@ import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {
   id: Pod["id"];
-  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export enum Label {
   Title = "LXD settings",
 }
 
-const LXDSingleSettings = ({
-  id,
-  setSidePanelContent,
-}: Props): React.ReactElement | null => {
+const LXDSingleSettings = ({ id }: Props): ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -62,7 +59,6 @@ const LXDSingleSettings = ({
             </p>
           </>
         }
-        setSidePanelContent={setSidePanelContent}
       />
     </Strip>
   );

@@ -45,13 +45,6 @@ export type AnalyticsEvent = {
   label: string;
 };
 
-export type SidePanelContent<V extends readonly [string, string], E = never> = {
-  view: V;
-  extras?: E;
-};
-
-export type SetSidePanelContent<H> = (sidePanelContent: H | null) => void;
-
 export type ClearSidePanelContent = () => void;
 
 export type SetSearchFilter = (searchFilter: string) => void;
@@ -74,7 +67,6 @@ export type APIError<E = null> =
 export type DataTestElement<E> = E & { "data-testid"?: string };
 
 export type CommonActionFormProps<E = null> = {
-  clearSidePanelContent: ClearSidePanelContent;
   errors?: APIError<E>;
   viewingDetails: boolean;
 };

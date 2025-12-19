@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
 import LXDVMsTable from "./LXDVMsTable";
@@ -10,8 +9,6 @@ import * as query from "@/app/store/machine/utils/query";
 import { generateCallId } from "@/app/store/machine/utils/query";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -39,7 +36,7 @@ describe("LXDVMsTable", () => {
   describe("display", () => {
     it("shows an add VM button if function provided", () => {
       const state = factory.rootState();
-      const store = mockStore(state);
+
       renderWithProviders(
         <LXDVMsTable
           getResources={vi.fn()}
@@ -47,12 +44,8 @@ describe("LXDVMsTable", () => {
           pods={["pod1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
-        {
-          store,
-          initialEntries: ["/kvm/1/project"],
-        }
+        { state, initialEntries: ["/kvm/1/project"] }
       );
       expect(
         screen.getByRole("button", { name: "Add VM" })
@@ -61,19 +54,15 @@ describe("LXDVMsTable", () => {
 
     it("does not show an add VM button if no function provided", () => {
       const state = factory.rootState();
-      const store = mockStore(state);
+
       renderWithProviders(
         <LXDVMsTable
           getResources={vi.fn()}
           pods={["pod1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
-        {
-          store,
-          initialEntries: ["/kvm/1/project"],
-        }
+        { state, initialEntries: ["/kvm/1/project"] }
       );
 
       expect(
@@ -94,7 +83,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -121,7 +109,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -144,7 +131,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -167,7 +153,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -212,7 +197,6 @@ describe("LXDVMsTable", () => {
         }),
         pod: factory.podState({ items: [pod], loaded: true }),
       });
-      const store = mockStore(state);
 
       renderWithProviders(
         <LXDVMsTable
@@ -220,12 +204,8 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
-        {
-          store,
-          initialEntries: ["/kvm/1/project"],
-        }
+        { state, initialEntries: ["/kvm/1/project"] }
       );
 
       expect(screen.getByText("tag1, tag2")).toBeInTheDocument();
@@ -244,7 +224,6 @@ describe("LXDVMsTable", () => {
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
         {
           state,
@@ -261,20 +240,16 @@ describe("LXDVMsTable", () => {
   describe("actions", () => {
     it("fetches machines on load", () => {
       const state = factory.rootState();
-      const store = mockStore(state);
-      renderWithProviders(
+
+      const { store } = renderWithProviders(
         <LXDVMsTable
           getResources={vi.fn()}
           onAddVMClick={vi.fn()}
           pods={["pod1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
-        {
-          store,
-          initialEntries: ["/kvm/1/project"],
-        }
+        { state, initialEntries: ["/kvm/1/project"] }
       );
 
       const options = {
@@ -296,23 +271,22 @@ describe("LXDVMsTable", () => {
 
     it("clears machine selected state on unmount", async () => {
       const state = factory.rootState();
-      const store = mockStore(state);
-      const { result } = renderWithProviders(
+
+      const {
+        result: { unmount },
+        store,
+      } = renderWithProviders(
         <LXDVMsTable
           getResources={vi.fn()}
           onAddVMClick={vi.fn()}
           pods={["pod1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
-        {
-          store,
-          initialEntries: ["/kvm/1/project"],
-        }
+        { state, initialEntries: ["/kvm/1/project"] }
       );
 
-      result.unmount();
+      unmount();
 
       const expectedAction = machineActions.setSelected(null);
       expect(
@@ -346,19 +320,15 @@ describe("LXDVMsTable", () => {
         }),
         pod: factory.podState({ items: [pod], loaded: true }),
       });
-      const store = mockStore(state);
-      renderWithProviders(
+
+      const { store } = renderWithProviders(
         <LXDVMsTable
           getResources={getResources}
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
-        {
-          store,
-          initialEntries: ["/kvm/1/project"],
-        }
+        { state, initialEntries: ["/kvm/1/project"] }
       );
 
       await userEvent.click(
@@ -394,19 +364,15 @@ describe("LXDVMsTable", () => {
         }),
         pod: factory.podState({ items: [pod], loaded: true }),
       });
-      const store = mockStore(state);
-      renderWithProviders(
+
+      const { store } = renderWithProviders(
         <LXDVMsTable
           getResources={getResources}
           pods={["pod-1"]}
           searchFilter=""
           setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
         />,
-        {
-          store,
-          initialEntries: ["/kvm/1/project"],
-        }
+        { state, initialEntries: ["/kvm/1/project"] }
       );
 
       await userEvent.click(

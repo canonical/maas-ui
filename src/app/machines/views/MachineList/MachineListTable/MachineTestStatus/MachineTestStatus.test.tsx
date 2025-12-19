@@ -1,11 +1,11 @@
 import MachineTestStatus from "./MachineTestStatus";
 
 import { TestStatusStatus } from "@/app/store/types/node";
-import { render, screen, userEvent } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 describe("MachineTestStatus", () => {
   it("renders", () => {
-    render(
+    renderWithProviders(
       <MachineTestStatus status={TestStatusStatus.PENDING}>
         Tests are pending
       </MachineTestStatus>
@@ -14,7 +14,7 @@ describe("MachineTestStatus", () => {
   });
 
   it("does not display an icon if tests have passed", () => {
-    render(
+    renderWithProviders(
       <MachineTestStatus status={TestStatusStatus.PASSED}>
         Tests have passed
       </MachineTestStatus>
@@ -23,7 +23,7 @@ describe("MachineTestStatus", () => {
   });
 
   it("shows a failed icon with tooltip if tests have failed", async () => {
-    render(
+    renderWithProviders(
       <MachineTestStatus status={TestStatusStatus.FAILED}>
         Tests have failed
       </MachineTestStatus>

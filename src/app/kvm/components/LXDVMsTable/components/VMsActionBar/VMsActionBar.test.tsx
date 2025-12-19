@@ -1,31 +1,29 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import VMsActionBar from "./VMsActionBar";
 
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("VMsActionBar", () => {
   it("executes onAddVMClick on add VM button click", async () => {
     const onAddVMClick = vi.fn();
     const state = factory.rootState();
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <VMsActionBar
-          currentPage={1}
-          machinesLoading={false}
-          onAddVMClick={onAddVMClick}
-          searchFilter=""
-          setCurrentPage={vi.fn()}
-          setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
-          vmCount={2}
-        />
-      </Provider>
+
+    renderWithProviders(
+      <VMsActionBar
+        currentPage={1}
+        machinesLoading={false}
+        onAddVMClick={onAddVMClick}
+        searchFilter=""
+        setCurrentPage={vi.fn()}
+        setSearchFilter={vi.fn()}
+        vmCount={2}
+      />,
+      { state }
     );
 
     await userEvent.click(screen.getByTestId("add-vm"));
@@ -39,20 +37,18 @@ describe("VMsActionBar", () => {
         selected: null,
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <VMsActionBar
-          currentPage={1}
-          machinesLoading={false}
-          onAddVMClick={vi.fn()}
-          searchFilter=""
-          setCurrentPage={vi.fn()}
-          setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
-          vmCount={2}
-        />
-      </Provider>
+
+    renderWithProviders(
+      <VMsActionBar
+        currentPage={1}
+        machinesLoading={false}
+        onAddVMClick={vi.fn()}
+        searchFilter=""
+        setCurrentPage={vi.fn()}
+        setSearchFilter={vi.fn()}
+        vmCount={2}
+      />,
+      { state }
     );
 
     expect(
@@ -69,20 +65,18 @@ describe("VMsActionBar", () => {
         selected: { items: ["abc123"] },
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <VMsActionBar
-          currentPage={1}
-          machinesLoading={false}
-          onAddVMClick={vi.fn()}
-          searchFilter=""
-          setCurrentPage={vi.fn()}
-          setSearchFilter={vi.fn()}
-          setSidePanelContent={vi.fn()}
-          vmCount={2}
-        />
-      </Provider>
+
+    renderWithProviders(
+      <VMsActionBar
+        currentPage={1}
+        machinesLoading={false}
+        onAddVMClick={vi.fn()}
+        searchFilter=""
+        setCurrentPage={vi.fn()}
+        setSearchFilter={vi.fn()}
+        vmCount={2}
+      />,
+      { state }
     );
 
     expect(

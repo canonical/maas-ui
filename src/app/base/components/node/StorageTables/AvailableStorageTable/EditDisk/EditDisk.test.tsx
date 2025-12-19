@@ -1,14 +1,10 @@
-import configureStore from "redux-mock-store";
-
 import EditDisk from "./EditDisk";
 
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import type { Disk } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("EditDisk", () => {
   let state: RootState;
@@ -35,10 +31,9 @@ describe("EditDisk", () => {
   });
 
   it("shows filesystem fields if the disk is not the boot disk", () => {
-    renderWithBrowserRouter(
-      <EditDisk closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<EditDisk disk={disk} systemId="abc123" />, {
+      state,
+    });
 
     expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: "Type" })).toBeInTheDocument();
@@ -63,10 +58,11 @@ describe("EditDisk", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditDisk closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
-      { store }
+    const { store } = renderWithProviders(
+      <EditDisk disk={disk} systemId="abc123" />,
+      {
+        state,
+      }
     );
 
     await userEvent.type(screen.getByRole("textbox", { name: "Tags" }), "tag1");

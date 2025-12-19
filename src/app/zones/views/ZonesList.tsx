@@ -8,12 +8,7 @@ const ZonesList = (): ReactElement => {
   useWindowTitle("Zones");
 
   return (
-    <PageContent
-      header={<ZonesListHeader />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<ZonesListHeader />}>
       <ZonesTable />
     </PageContent>
   );

@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -19,6 +20,7 @@ import type {
   SetSelected,
 } from "@/app/base/components/node/networking/types";
 import { useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
@@ -48,27 +50,26 @@ const InterfaceSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-type Props = {
-  close: () => void;
+type AddBridgeProps = {
   selected: Selected[];
   systemId: MachineDetails["system_id"];
   setSelected: SetSelected;
 };
 
 const AddBridgeForm = ({
-  close,
   selected,
   systemId,
   setSelected,
-}: Props): React.ReactElement | null => {
+}: AddBridgeProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const handleClose = () => {
     setSelected([]);
-    close();
+    closeSidePanel();
   };
   const nextName = getNextNicName(machine, NetworkInterfaceTypes.BRIDGE);
   const [{ linkId, nicId }] = selected;

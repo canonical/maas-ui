@@ -2,12 +2,12 @@ import VaultNotification from "./VaultNotification";
 
 import { NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("does not display a notification when data has not loaded", async () => {
   const state = factory.rootState();
   state.controller.loaded = false;
-  renderWithBrowserRouter(<VaultNotification />, {
+  renderWithProviders(<VaultNotification />, {
     state,
   });
   expect(
@@ -30,7 +30,7 @@ it("displays a notification when data has loaded and not all controllers are con
       node_type: NodeType.REGION_CONTROLLER,
     }),
   ];
-  renderWithBrowserRouter(<VaultNotification />, {
+  renderWithProviders(<VaultNotification />, {
     state,
   });
   expect(screen.getByText(/Incomplete Vault integration/)).toBeInTheDocument();
@@ -51,7 +51,7 @@ it("displays a notification when data has loaded and secrets are not migrated to
       node_type: NodeType.REGION_CONTROLLER,
     }),
   ];
-  renderWithBrowserRouter(<VaultNotification />, {
+  renderWithProviders(<VaultNotification />, {
     state,
   });
   expect(screen.getByText(/Incomplete Vault integration/)).toBeInTheDocument();
@@ -72,7 +72,7 @@ it("doesn't display a notification if vault setup is complete", async () => {
       node_type: NodeType.REGION_CONTROLLER,
     }),
   ];
-  renderWithBrowserRouter(<VaultNotification />, {
+  renderWithProviders(<VaultNotification />, {
     state,
   });
   expect(
@@ -95,7 +95,7 @@ it("doesn't display a notification if vault setup has not been started", async (
       node_type: NodeType.REGION_CONTROLLER,
     }),
   ];
-  renderWithBrowserRouter(<VaultNotification />, {
+  renderWithProviders(<VaultNotification />, {
     state,
   });
   expect(

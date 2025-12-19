@@ -59,12 +59,7 @@ const FabricDetails = (): ReactElement => {
   }
 
   return (
-    <PageContent
-      header={<FabricDetailsHeader fabric={fabric} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<FabricDetailsHeader fabric={fabric} />}>
       {!fabric ? (
         <Spinner text="Loading..." />
       ) : (

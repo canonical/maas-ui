@@ -1,15 +1,9 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import CommissioningForm from "../CommissioningForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("CommissioningFormFields", () => {
   let initialState: RootState;
@@ -73,15 +67,8 @@ describe("CommissioningFormFields", () => {
 
   it("updates value for default distro series", () => {
     const state = { ...initialState };
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CommissioningForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<CommissioningForm />, { state });
 
     const bionic_option: HTMLOptionElement = screen.getByRole("option", {
       name: 'Ubuntu 18.04 LTS "Bionic Beaver"',
@@ -91,15 +78,8 @@ describe("CommissioningFormFields", () => {
 
   it("updates value for default min kernel", () => {
     const state = { ...initialState };
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CommissioningForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<CommissioningForm />, { state });
 
     const hwe_18_lowlatency_option: HTMLOptionElement = screen.getByRole(
       "option",

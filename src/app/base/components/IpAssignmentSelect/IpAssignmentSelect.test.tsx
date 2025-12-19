@@ -4,13 +4,13 @@ import IpAssignmentSelect from "./IpAssignmentSelect";
 
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import { getIpAssignmentDisplay } from "@/app/store/device/utils";
-import { screen, render } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 const staticDisplay = getIpAssignmentDisplay(DeviceIpAssignment.STATIC);
 
 describe("IpAssignmentSelect", () => {
   it("includes static IP assignment as an option by default", () => {
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <IpAssignmentSelect name="ipAssignment" />
       </Formik>
@@ -22,7 +22,7 @@ describe("IpAssignmentSelect", () => {
   });
 
   it("can omit static IP assignment as an option", () => {
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <IpAssignmentSelect includeStatic={false} name="ipAssignment" />
       </Formik>

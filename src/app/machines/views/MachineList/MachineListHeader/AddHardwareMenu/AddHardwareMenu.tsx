@@ -1,17 +1,19 @@
+import type { ReactElement } from "react";
+
 import { ContextualMenu } from "@canonical/react-components";
 
-import { MachineSidePanelViews } from "@/app/machines/constants";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import { useSidePanel } from "@/app/base/side-panel-context-new";
+import AddChassisForm from "@/app/machines/components/MachineForms/AddChassis/AddChassisForm";
+import AddMachineForm from "@/app/machines/components/MachineForms/AddMachine/AddMachineForm";
 
-type Props = {
+type AddHardwareMenuProps = {
   disabled?: boolean;
-  setSidePanelContent: MachineSetSidePanelContent;
 };
 
 export const AddHardwareMenu = ({
   disabled = false,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+}: AddHardwareMenuProps): ReactElement => {
+  const { openSidePanel } = useSidePanel();
   return (
     <ContextualMenu
       className="is-maas-select"
@@ -21,13 +23,19 @@ export const AddHardwareMenu = ({
         {
           children: "Machine",
           onClick: () => {
-            setSidePanelContent({ view: MachineSidePanelViews.ADD_MACHINE });
+            openSidePanel({
+              component: AddMachineForm,
+              title: "Add machine",
+            });
           },
         },
         {
           children: "Chassis",
           onClick: () => {
-            setSidePanelContent({ view: MachineSidePanelViews.ADD_CHASSIS });
+            openSidePanel({
+              component: AddChassisForm,
+              title: "Add chassis",
+            });
           },
         },
       ]}

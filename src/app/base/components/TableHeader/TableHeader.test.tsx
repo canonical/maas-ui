@@ -3,7 +3,12 @@
 import TableHeader from "./TableHeader";
 
 import { SortDirection } from "@/app/base/types";
-import { render, screen, userEvent } from "@/testing/utils";
+import {
+  render,
+  screen,
+  userEvent,
+  renderWithProviders,
+} from "@/testing/utils";
 
 describe("TableHeader ", () => {
   it("renders a div if no onClick prop is present", () => {
@@ -14,7 +19,7 @@ describe("TableHeader ", () => {
 
   it("renders a Button if onClick prop is present", async () => {
     const mockFn = vi.fn();
-    render(<TableHeader onClick={mockFn}>Text</TableHeader>);
+    renderWithProviders(<TableHeader onClick={mockFn}>Text</TableHeader>);
     expect(screen.getByRole("button")).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole("button"));

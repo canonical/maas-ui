@@ -3,7 +3,7 @@ import EditInterface from "./EditInterface";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("EditInterface", () => {
   let state: RootState;
@@ -24,15 +24,9 @@ describe("EditInterface", () => {
 
   it("displays a spinner when data is loading", () => {
     state.machine.items = [];
-    renderWithBrowserRouter(
-      <EditInterface
-        close={vi.fn()}
-        selected={[]}
-        setSelected={vi.fn()}
-        systemId="abc123"
-      />,
+    renderWithProviders(
+      <EditInterface selected={[]} setSelected={vi.fn()} systemId="abc123" />,
       {
-        route: "/machines",
         state,
       }
     );
@@ -49,16 +43,14 @@ describe("EditInterface", () => {
         interfaces: [nic],
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditInterface
-        close={vi.fn()}
         nicId={nic.id}
         selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
       {
-        route: "/machines",
         state,
       }
     );
@@ -82,9 +74,8 @@ describe("EditInterface", () => {
         interfaces: [nic],
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditInterface
-        close={vi.fn()}
         linkId={link.id}
         nicId={nic.id}
         selected={[]}
@@ -92,7 +83,6 @@ describe("EditInterface", () => {
         systemId="abc123"
       />,
       {
-        route: "/machines",
         state,
       }
     );
@@ -114,16 +104,14 @@ describe("EditInterface", () => {
         interfaces: [nic],
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditInterface
-        close={vi.fn()}
         nicId={nic.id}
         selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
       {
-        route: "/machines",
         state,
       }
     );
@@ -143,16 +131,14 @@ describe("EditInterface", () => {
         interfaces: [nic],
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditInterface
-        close={vi.fn()}
         nicId={nic.id}
         selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
       {
-        route: "/machines",
         state,
       }
     );

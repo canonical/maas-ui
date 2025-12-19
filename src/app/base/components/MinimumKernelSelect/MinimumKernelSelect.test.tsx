@@ -1,24 +1,19 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import MinimumKernelSelect, { Labels } from "./MinimumKernelSelect";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("MinimumKernelSelect", () => {
   it("dispatches action to fetch hwe kernels on load", () => {
     const state = factory.rootState();
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ minKernel: "" }} onSubmit={vi.fn()}>
-          <MinimumKernelSelect name="minKernel" />
-        </Formik>
-      </Provider>
+
+    const { store } = renderWithProviders(
+      <Formik initialValues={{ minKernel: "" }} onSubmit={vi.fn()}>
+        <MinimumKernelSelect name="minKernel" />
+      </Formik>,
+      { state }
     );
 
     expect(
@@ -36,13 +31,12 @@ describe("MinimumKernelSelect", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ minKernel: "" }} onSubmit={vi.fn()}>
-          <MinimumKernelSelect name="minKernel" />
-        </Formik>
-      </Provider>
+
+    renderWithProviders(
+      <Formik initialValues={{ minKernel: "" }} onSubmit={vi.fn()}>
+        <MinimumKernelSelect name="minKernel" />
+      </Formik>,
+      { state }
     );
 
     expect(

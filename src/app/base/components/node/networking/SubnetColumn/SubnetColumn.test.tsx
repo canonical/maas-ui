@@ -3,7 +3,7 @@ import SubnetColumn from "./SubnetColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("SubnetColumn", () => {
   let state: RootState;
@@ -34,7 +34,7 @@ describe("SubnetColumn", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />,
       { state }
     );
@@ -66,7 +66,7 @@ describe("SubnetColumn", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SubnetColumn link={link} nic={nic} node={state.device.items[0]} />,
       { state }
     );
@@ -96,7 +96,7 @@ describe("SubnetColumn", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />,
       { state }
     );
@@ -124,7 +124,7 @@ describe("SubnetColumn", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <SubnetColumn nic={nic} node={state.machine.items[0]} />,
       { state }
     );

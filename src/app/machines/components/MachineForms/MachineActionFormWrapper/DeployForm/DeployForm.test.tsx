@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import DeployForm from "./DeployForm";
 
 import * as hooks from "@/app/base/hooks/analytics";
@@ -7,9 +5,7 @@ import { ConfigNames } from "@/app/store/config/types";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("DeployForm", () => {
   let state: RootState;
@@ -88,20 +84,15 @@ describe("DeployForm", () => {
           abc123: factory.machineStatus(),
           def456: factory.machineStatus(),
         },
+        selected: { items: ["abc123"] },
       }),
     });
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
     const expectedActions = [
       "general/fetchDefaultMinHweKernel",
@@ -127,31 +118,17 @@ describe("DeployForm", () => {
         loaded: false,
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
 
-    expect(screen.getByTestId("loading-deploy-data")).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
   });
 
   it("correctly dispatches actions to deploy given machines", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={state.machine.items}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    state.machine.selected = { items: ["abc123", "def456"] };
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -165,36 +142,25 @@ describe("DeployForm", () => {
 
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
-    ).toStrictEqual([
+    ).toMatchObject([
       machineActions.deploy({
         distro_series: "bionic",
         ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
-        system_id: "abc123",
-        enable_kernel_crash_dump: false,
-      }),
-      machineActions.deploy({
-        distro_series: "bionic",
-        ephemeral_deploy: false,
-        hwe_kernel: "",
-        osystem: "ubuntu",
-        system_id: "def456",
+        system_id: undefined,
+        filter: {
+          id: ["abc123", "def456"],
+        },
         enable_kernel_crash_dump: false,
       }),
     ]);
   });
 
   it("can deploy with user-data", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -219,13 +185,16 @@ describe("DeployForm", () => {
 
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
-    ).toStrictEqual([
+    ).toMatchObject([
       machineActions.deploy({
         distro_series: "bionic",
         ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
-        system_id: "abc123",
+        system_id: undefined,
+        filter: {
+          id: ["abc123"],
+        },
         enable_kernel_crash_dump: false,
         user_data: "test script",
       }),
@@ -233,15 +202,9 @@ describe("DeployForm", () => {
   });
 
   it("ignores enable_hw_sync if checkbox is not checked", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -255,28 +218,25 @@ describe("DeployForm", () => {
 
     expect(
       store.getActions().find((action) => action.type === "machine/deploy")
-    ).toStrictEqual(
+    ).toMatchObject(
       machineActions.deploy({
         distro_series: "bionic",
         ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
         enable_kernel_crash_dump: false,
-        system_id: "abc123",
+        system_id: undefined,
+        filter: {
+          id: ["abc123"],
+        },
       })
     );
   });
 
   it("adds enable_hw_sync if checkbox is checked", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -293,29 +253,26 @@ describe("DeployForm", () => {
     );
     expect(
       store.getActions().find((action) => action.type === "machine/deploy")
-    ).toStrictEqual(
+    ).toMatchObject(
       machineActions.deploy({
         distro_series: "bionic",
         ephemeral_deploy: false,
         enable_hw_sync: true,
         hwe_kernel: "",
         osystem: "ubuntu",
-        system_id: "abc123",
+        system_id: undefined,
+        filter: {
+          id: ["abc123"],
+        },
         enable_kernel_crash_dump: false,
       })
     );
   });
 
   it("ignores user-data if the cloud-init option is not checked", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -327,13 +284,16 @@ describe("DeployForm", () => {
     );
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
-    ).toStrictEqual([
+    ).toMatchObject([
       machineActions.deploy({
         distro_series: "bionic",
         ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
-        system_id: "abc123",
+        system_id: undefined,
+        filter: {
+          id: ["abc123"],
+        },
         enable_kernel_crash_dump: false,
       }),
     ]);
@@ -344,16 +304,7 @@ describe("DeployForm", () => {
     const mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Kernel" }),
@@ -385,15 +336,9 @@ describe("DeployForm", () => {
   });
 
   it("can register a LXD KVM host", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -417,15 +362,9 @@ describe("DeployForm", () => {
   });
 
   it("can register a libvirt KVM host", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -450,15 +389,10 @@ describe("DeployForm", () => {
   });
 
   it("can deploy machines ephemerally", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={state.machine.items}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    state.machine.selected = { items: ["abc123", "def456"] };
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.selectOptions(
@@ -476,21 +410,16 @@ describe("DeployForm", () => {
 
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
-    ).toStrictEqual([
+    ).toMatchObject([
       machineActions.deploy({
         distro_series: "bionic",
         ephemeral_deploy: true,
         hwe_kernel: "",
         osystem: "ubuntu",
-        system_id: "abc123",
-        enable_kernel_crash_dump: false,
-      }),
-      machineActions.deploy({
-        distro_series: "bionic",
-        ephemeral_deploy: true,
-        hwe_kernel: "",
-        osystem: "ubuntu",
-        system_id: "def456",
+        system_id: undefined,
+        filter: {
+          id: ["abc123", "def456"],
+        },
         enable_kernel_crash_dump: false,
       }),
     ]);
@@ -500,16 +429,7 @@ describe("DeployForm", () => {
     state.config.items = [
       { name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP, value: true },
     ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={state.machine.items}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
 
     expect(
       screen.getByRole("checkbox", {

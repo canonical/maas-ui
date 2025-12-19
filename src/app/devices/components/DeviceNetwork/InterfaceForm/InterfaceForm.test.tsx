@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import InterfaceForm from "./InterfaceForm";
 
 import type { DeviceNetworkInterface } from "@/app/store/device/types";
@@ -8,8 +6,6 @@ import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import { screen, renderWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("InterfaceForm", () => {
   let state: RootState;
@@ -41,10 +37,10 @@ describe("InterfaceForm", () => {
 
   it("displays a spinner if device is not detailed version", () => {
     state.device.items[0] = factory.device({ system_id: "abc123" });
-    const store = mockStore(state);
+
     renderWithProviders(
       <InterfaceForm nicId={nic.id} onSubmit={vi.fn()} systemId="abc123" />,
-      { store }
+      { state }
     );
 
     expect(screen.getByTestId("loading-device-details")).toBeInTheDocument();
@@ -78,7 +74,7 @@ describe("InterfaceForm", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
+
     renderWithProviders(
       <InterfaceForm
         linkId={link.id}
@@ -86,7 +82,7 @@ describe("InterfaceForm", () => {
         onSubmit={vi.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("eth123");
     expect(screen.getByRole("textbox", { name: "Type" })).toHaveValue(
@@ -113,10 +109,10 @@ describe("InterfaceForm", () => {
       interfaces: [factory.deviceInterface({ name: "eth20" })],
       system_id: "abc123",
     });
-    const store = mockStore(state);
+
     renderWithProviders(
       <InterfaceForm onSubmit={vi.fn()} systemId="abc123" />,
-      { store }
+      { state }
     );
     expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("eth21");
     expect(screen.getByRole("textbox", { name: "Type" })).toHaveValue(

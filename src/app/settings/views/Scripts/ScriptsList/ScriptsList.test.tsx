@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import { Labels as ScriptsListLabels } from "./ScriptsList";
 
 import ScriptsList from ".";
@@ -13,13 +9,9 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  render,
   within,
-  renderWithMockStore,
-  renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("ScriptsList", () => {
   afterEach(() => {
@@ -61,16 +53,7 @@ describe("ScriptsList", () => {
 
   it("fetches scripts if they haven't been loaded yet", () => {
     state.script.loaded = false;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    const { store } = renderWithProviders(<ScriptsList />, { state });
     expect(
       store.getActions().some((action) => action.type === "script/fetch")
     ).toBe(true);
@@ -78,15 +61,7 @@ describe("ScriptsList", () => {
 
   it("does not fetch scripts if they've already been loaded", () => {
     state.script.loaded = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<ScriptsList />, { state });
 
     expect(
       store.getActions().some((action) => action.type === "script/fetch")
@@ -94,12 +69,7 @@ describe("ScriptsList", () => {
   });
 
   it("Displays commissioning scripts by default", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ScriptsList />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<ScriptsList />, { state });
 
     expect(screen.getAllByTestId("script-row")).toHaveLength(1);
 
@@ -116,12 +86,7 @@ describe("ScriptsList", () => {
   });
 
   it("Displays testing scripts", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ScriptsList type="testing" />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<ScriptsList type="testing" />, { state });
 
     expect(screen.getAllByTestId("script-row")).toHaveLength(2);
 
@@ -149,12 +114,7 @@ describe("ScriptsList", () => {
   });
 
   it("can show a delete confirmation", async () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ScriptsList />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<ScriptsList />, { state });
 
     let row = screen.getByRole("row", { name: "commissioning-script" });
     expect(row).not.toHaveClass("is-active");
@@ -186,12 +146,7 @@ describe("ScriptsList", () => {
       }),
     });
 
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ScriptsList type="testing" />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<ScriptsList type="testing" />, { state });
 
     expect(
       within(
@@ -213,14 +168,7 @@ describe("ScriptsList", () => {
   });
 
   it("can delete a script", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<ScriptsList />, { state });
     const row = screen.getByRole("row", { name: "commissioning-script" });
     expect(row).not.toHaveClass("is-active");
     // Click on the delete button:
@@ -256,12 +204,7 @@ describe("ScriptsList", () => {
   it("can show script source", async () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
 
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ScriptsList />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<ScriptsList />, { state });
     let row = screen.getByRole("row", { name: "commissioning-script" });
     expect(row).not.toHaveClass("is-active");
 
@@ -284,10 +227,7 @@ describe("ScriptsList", () => {
       }),
     });
 
-    renderWithBrowserRouter(<ScriptsList type="testing" />, {
-      state,
-      route: "/",
-    });
+    renderWithProviders(<ScriptsList type="testing" />, { state });
 
     expect(screen.getByText(ScriptsListLabels.EmptyList)).toBeInTheDocument();
   });

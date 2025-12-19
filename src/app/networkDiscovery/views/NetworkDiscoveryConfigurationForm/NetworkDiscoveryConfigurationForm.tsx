@@ -27,22 +27,11 @@ const NetworkDiscoveryConfigurationForm = (): ReactElement => {
   useWindowTitle(Label.Title);
 
   if (!isSuperUser.data) {
-    return (
-      <PageContent
-        header={<SectionHeader title={Label.Permissions} />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
-      />
-    );
+    return <PageContent header={<SectionHeader title={Label.Permissions} />} />;
   }
 
   return (
-    <PageContent
-      header={<NetworkDiscoveryHeader />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<NetworkDiscoveryHeader />}>
       {networkDiscovery === "disabled" && (
         <Notification severity="caution">{Label.Disabled}</Notification>
       )}

@@ -1,14 +1,10 @@
-import configureStore from "redux-mock-store";
-
 import EditAliasOrVlanForm from "./EditAliasOrVlanForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("EditAliasOrVlanForm", () => {
   let nic: NetworkInterface;
@@ -46,15 +42,13 @@ describe("EditAliasOrVlanForm", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <EditAliasOrVlanForm
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", store }
+      { state }
     );
     const expectedActions = ["fabric/fetch", "subnet/fetch", "vlan/fetch"];
     expectedActions.forEach((expectedAction) => {
@@ -69,28 +63,25 @@ describe("EditAliasOrVlanForm", () => {
     state.subnet.loaded = false;
     state.vlan.loaded = false;
     state.machine.items = [];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditAliasOrVlanForm
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a tag field for a VLAN", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    renderWithProviders(
       <EditAliasOrVlanForm
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", store }
+      { state }
     );
     expect(screen.getByRole("textbox", { name: "Tags" })).toBeInTheDocument();
   });
@@ -98,16 +89,14 @@ describe("EditAliasOrVlanForm", () => {
   it("dispatches an action to update an alias", async () => {
     const link = factory.networkLink({});
     nic.links = [factory.networkLink(), link];
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <EditAliasOrVlanForm
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         link={link}
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", store }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save Alias" }));
@@ -137,16 +126,14 @@ describe("EditAliasOrVlanForm", () => {
   it("dispatches an action to update a VLAN", async () => {
     const link = factory.networkLink({ id: 101 });
     nic.links = [factory.networkLink(), link];
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <EditAliasOrVlanForm
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         link={link}
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", store }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save Alias" }));

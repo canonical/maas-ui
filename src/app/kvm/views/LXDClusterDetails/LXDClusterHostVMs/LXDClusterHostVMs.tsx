@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -10,7 +11,6 @@ import type { SetSearchFilter, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import LXDHostVMs from "@/app/kvm/components/LXDHostVMs";
 import { useActivePod, useKVMDetailsRedirect } from "@/app/kvm/hooks";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import podSelectors from "@/app/store/pod/selectors";
 import { PodMeta } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
@@ -21,7 +21,6 @@ import { isId } from "@/app/utils";
 type Props = {
   clusterId: VMCluster["id"];
   searchFilter: string;
-  setSidePanelContent: KVMSetSidePanelContent;
   setSearchFilter: SetSearchFilter;
 };
 
@@ -33,9 +32,8 @@ export enum Label {
 const LXDClusterHostVMs = ({
   clusterId,
   searchFilter,
-  setSidePanelContent,
   setSearchFilter,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
   const hostId = useGetURLId(PodMeta.PK, "hostId");
   const cluster = useSelector((state: RootState) =>
@@ -87,7 +85,6 @@ const LXDClusterHostVMs = ({
       hostId={hostId}
       searchFilter={searchFilter}
       setSearchFilter={setSearchFilter}
-      setSidePanelContent={setSidePanelContent}
     />
   );
 };

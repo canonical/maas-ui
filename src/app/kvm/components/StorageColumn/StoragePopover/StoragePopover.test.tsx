@@ -1,7 +1,7 @@
 import StoragePopover from "./StoragePopover";
 
 import * as factory from "@/testing/factories";
-import { fireEvent, render, screen } from "@/testing/utils";
+import { fireEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("StoragePopover", () => {
   const body = document.querySelector("body");
@@ -21,7 +21,7 @@ describe("StoragePopover", () => {
         total: 15000,
       }),
     };
-    render(<StoragePopover pools={pools}>Child</StoragePopover>);
+    renderWithProviders(<StoragePopover pools={pools}>Child</StoragePopover>);
 
     fireEvent.focus(screen.getByTestId("popover-container"));
 
@@ -43,7 +43,7 @@ describe("StoragePopover", () => {
         total: 15000,
       }),
     };
-    render(<StoragePopover pools={pools}>Child</StoragePopover>);
+    renderWithProviders(<StoragePopover pools={pools}>Child</StoragePopover>);
     fireEvent.focus(screen.getByTestId("popover-container"));
     expect(screen.queryByTestId("others-col")).not.toBeInTheDocument();
     expect(screen.queryByTestId("pool-others")).not.toBeInTheDocument();
@@ -53,8 +53,7 @@ describe("StoragePopover", () => {
     const pools = {
       poolio: factory.podStoragePoolResource({ id: "abc123" }),
     };
-
-    render(
+    renderWithProviders(
       <StoragePopover defaultPoolId="abc123" pools={pools}>
         Child
       </StoragePopover>

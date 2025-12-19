@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -10,22 +11,17 @@ import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
 import NetworkTable from "@/app/base/components/node/networking/NetworkTable";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useWindowTitle } from "@/app/base/hooks";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
 import machineSelectors from "@/app/store/machine/selectors";
 import { MachineMeta } from "@/app/store/machine/types";
 import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = {
+type MachineNetworkProps = {
   id: Machine[MachineMeta.PK];
-  setSidePanelContent: MachineSetSidePanelContent;
 };
 
-const MachineNetwork = ({
-  id,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+const MachineNetwork = ({ id }: MachineNetworkProps): ReactElement => {
   const [selected, setSelected] = useState<Selected[]>([]);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -44,7 +40,6 @@ const MachineNetwork = ({
           expanded={expanded}
           selected={selected}
           setSelected={setSelected}
-          setSidePanelContent={setSidePanelContent}
           systemId={id}
         />
       )}

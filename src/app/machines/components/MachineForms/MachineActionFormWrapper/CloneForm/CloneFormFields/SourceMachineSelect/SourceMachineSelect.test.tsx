@@ -5,7 +5,7 @@ import type { Machine } from "@/app/store/machine/types";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("SourceMachineSelect", () => {
   let machines: Machine[];
@@ -61,14 +61,14 @@ describe("SourceMachineSelect", () => {
       loading: false,
       count: 0,
     });
-    renderWithMockStore(<SourceMachineSelect onMachineClick={vi.fn()} />, {
+    renderWithProviders(<SourceMachineSelect onMachineClick={vi.fn()} />, {
       state,
     });
     expect(screen.getByText(Label.NoSourceMachines)).toBeInTheDocument();
   });
 
   it("does not show an error if machines are available to select", () => {
-    renderWithMockStore(<SourceMachineSelect onMachineClick={vi.fn()} />, {
+    renderWithProviders(<SourceMachineSelect onMachineClick={vi.fn()} />, {
       state,
     });
     expect(
@@ -79,7 +79,7 @@ describe("SourceMachineSelect", () => {
   it("shows the machine's details when selected", () => {
     const selectedMachine = factory.machineDetails();
 
-    renderWithMockStore(
+    renderWithProviders(
       <SourceMachineSelect
         onMachineClick={vi.fn()}
         selectedMachine={selectedMachine}
@@ -96,7 +96,7 @@ describe("SourceMachineSelect", () => {
     const selectedMachine = factory.machineDetails();
     const onMachineClick = vi.fn();
 
-    renderWithMockStore(
+    renderWithProviders(
       <SourceMachineSelect
         onMachineClick={onMachineClick}
         selectedMachine={selectedMachine}

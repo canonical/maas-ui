@@ -1,7 +1,7 @@
 import SecretStorage from "./SecretStorage";
 
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("displays loading text if Vault Status has not loaded", () => {
   const state = factory.rootState({
@@ -13,7 +13,7 @@ it("displays loading text if Vault Status has not loaded", () => {
       }),
     }),
   });
-  renderWithBrowserRouter(<SecretStorage />, { state });
+  renderWithProviders(<SecretStorage />, { state });
 
   expect(screen.getByText(/Loading.../)).toBeInTheDocument();
 });
@@ -32,7 +32,7 @@ it("renders the Vault section", () => {
     }),
   });
 
-  renderWithBrowserRouter(<SecretStorage />, { state });
+  renderWithProviders(<SecretStorage />, { state });
 
   expect(screen.getByText(/Integrate with Vault/)).toBeInTheDocument();
 });

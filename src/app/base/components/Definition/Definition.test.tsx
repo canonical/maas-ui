@@ -1,16 +1,20 @@
 import Definition from "./Definition";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("renders term and description correctly", () => {
-  render(<Definition description="description text" label="Term" />);
+  renderWithProviders(
+    <Definition description="description text" label="Term" />
+  );
   expect(screen.getByText("description text")).toBeInTheDocument();
   expect(screen.getByText("Term")).toBeInTheDocument();
   expect(screen.getByText("description text")).toHaveAccessibleName("Term");
 });
 
 it("renders description provided as children correctly", () => {
-  render(<Definition label="Term">description child text</Definition>);
+  renderWithProviders(
+    <Definition label="Term">description child text</Definition>
+  );
   expect(screen.getByText("description child text")).toBeInTheDocument();
   expect(screen.getByText("Term")).toBeInTheDocument();
   expect(screen.getByText("description child text")).toHaveAccessibleName(
@@ -19,7 +23,7 @@ it("renders description provided as children correctly", () => {
 });
 
 it("renders multiple children correctly", () => {
-  render(
+  renderWithProviders(
     <Definition label="Term">
       <a href="#1">link1</a>
       <a href="#2">link2</a>
@@ -31,7 +35,7 @@ it("renders multiple children correctly", () => {
 });
 
 it("displays alternative text with no description provided", () => {
-  render(
+  renderWithProviders(
     <Definition label="Term">
       {undefined}
       {null}
@@ -42,7 +46,7 @@ it("displays alternative text with no description provided", () => {
 });
 
 it("displays alternative text for empty string as description", () => {
-  render(<Definition label="Term">{""}</Definition>);
+  renderWithProviders(<Definition label="Term">{""}</Definition>);
   expect(screen.getByText("Term")).toBeInTheDocument();
   expect(screen.getByText("—")).toBeInTheDocument();
 });

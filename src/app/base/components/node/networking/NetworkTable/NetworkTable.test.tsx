@@ -1,15 +1,11 @@
-import type { Mock } from "vitest";
-import { describe } from "vitest";
-
 import NetworkTable from "@/app/base/components/node/networking/NetworkTable/NetworkTable";
 import { Label as PXEColumnLabel } from "@/app/base/components/node/networking/NetworkTable/PXEColumn/PXEColumn";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  mockSidePanel,
   renderWithProviders,
   screen,
   userEvent,
@@ -17,21 +13,9 @@ import {
   within,
 } from "@/testing/utils";
 
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
+await mockSidePanel();
 
 describe("NetworkTable", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-
   let state: RootState;
   let machine: MachineDetails;
   beforeEach(() => {
@@ -150,7 +134,7 @@ describe("NetworkTable", () => {
         system_id: "abc123",
       });
       state.machine.items = [machine];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -198,7 +182,7 @@ describe("NetworkTable", () => {
         system_id: "abc123",
       });
       state.machine.items = [machine];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -252,7 +236,7 @@ describe("NetworkTable", () => {
         system_id: "abc123",
       });
       state.machine.items = [machine];
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -299,7 +283,7 @@ describe("NetworkTable", () => {
     });
 
     it("does not display a checkbox for parent interfaces", () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -317,7 +301,7 @@ describe("NetworkTable", () => {
 
     it("does not include parent interfaces in the selection", async () => {
       const setSelected = vi.fn();
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -333,7 +317,7 @@ describe("NetworkTable", () => {
     });
 
     it("does not display a boot icon for parent interfaces", () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}
@@ -348,7 +332,7 @@ describe("NetworkTable", () => {
     });
 
     it("filters columns for parent interfaces", () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NetworkTable
           node={machine}
           setExpanded={vi.fn()}

@@ -1,11 +1,13 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import NodeNetworkTab, { ExpandedState } from "./NodeNetworkTab";
 
+import { renderWithProviders } from "@/testing/utils";
+
 describe("NodeNetworkTab", () => {
   it("displays the actions and interface and DHCP tables", () => {
-    render(
+    renderWithProviders(
       <NodeNetworkTab
         actions={() => <div data-testid="actions"></div>}
         addInterface={() => <div data-testid="add-interface"></div>}
@@ -22,7 +24,7 @@ describe("NodeNetworkTab", () => {
   });
 
   it("displays the add interface form when expanded", async () => {
-    render(
+    renderWithProviders(
       <NodeNetworkTab
         actions={(_, setExpanded) => (
           <button
@@ -44,7 +46,7 @@ describe("NodeNetworkTab", () => {
   });
 
   it("displays a form when expanded", async () => {
-    render(
+    renderWithProviders(
       <NodeNetworkTab
         actions={(_, setExpanded) => (
           <button

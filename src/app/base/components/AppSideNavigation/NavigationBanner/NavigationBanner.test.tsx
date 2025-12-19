@@ -1,6 +1,6 @@
 import NavigationBanner from "./NavigationBanner";
 
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 afterEach(() => {
   vi.resetModules();
@@ -8,7 +8,7 @@ afterEach(() => {
 });
 
 it("displays a link to the homepage", () => {
-  renderWithBrowserRouter(<NavigationBanner />, { route: "/" });
+  renderWithProviders(<NavigationBanner />, {});
 
   expect(screen.getByRole("link", { name: /Homepage/ })).toBeInTheDocument();
 });

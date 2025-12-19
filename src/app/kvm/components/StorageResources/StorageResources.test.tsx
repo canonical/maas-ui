@@ -1,7 +1,7 @@
 import StorageResources from "./StorageResources";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("StorageResources", () => {
   it("displays as a meter if there is only one pool", () => {
@@ -13,8 +13,9 @@ describe("StorageResources", () => {
         total: 7,
       }),
     };
-
-    render(<StorageResources allocated={3} free={4} pools={storagePools} />);
+    renderWithProviders(
+      <StorageResources allocated={3} free={4} pools={storagePools} />
+    );
 
     expect(screen.getByLabelText("storage meter")).toBeInTheDocument();
     expect(screen.queryByLabelText("storage cards")).not.toBeInTheDocument();
@@ -36,8 +37,9 @@ describe("StorageResources", () => {
         total: 4,
       }),
     };
-
-    render(<StorageResources allocated={5} free={6} pools={storagePools} />);
+    renderWithProviders(
+      <StorageResources allocated={5} free={6} pools={storagePools} />
+    );
 
     expect(screen.getByLabelText("storage cards")).toBeInTheDocument();
     expect(screen.getByTestId("storage-summary")).toBeInTheDocument();

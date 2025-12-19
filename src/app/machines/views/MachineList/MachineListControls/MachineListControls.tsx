@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
@@ -10,7 +11,6 @@ import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import GroupSelect from "@/app/base/components/GroupSelect";
 import urls from "@/app/base/urls";
 import { groupOptions } from "@/app/machines/constants";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
 import HiddenColumnsSelect from "@/app/machines/views/MachineList/MachineListControls/HiddenColumnsSelect";
 import MachineActionMenu from "@/app/machines/views/MachineList/MachineListControls/MachineActionMenu";
 import MachinesFilterAccordion from "@/app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
@@ -30,7 +30,6 @@ export type MachineListControlsProps = {
   setHiddenGroups: (groups: string[]) => void;
   hiddenColumns: string[];
   setHiddenColumns: ReturnType<typeof useResponsiveColumns>[1];
-  setSidePanelContent: MachineSetSidePanelContent;
 };
 
 const MachineListControls = ({
@@ -43,8 +42,7 @@ const MachineListControls = ({
   setHiddenGroups,
   hiddenColumns,
   setHiddenColumns,
-  setSidePanelContent,
-}: MachineListControlsProps): React.ReactElement => {
+}: MachineListControlsProps): ReactElement => {
   const [searchText, setSearchText] = useState(filter);
   const hasSelection = useHasSelection();
   const dispatch = useDispatch();
@@ -89,10 +87,7 @@ const MachineListControls = ({
           </>
         ) : (
           <>
-            <MachineActionMenu
-              hasSelection={hasSelection}
-              setSidePanelContent={setSidePanelContent}
-            />
+            <MachineActionMenu hasSelection={hasSelection} />
             <Button
               appearance="link"
               onClick={() => dispatch(machineActions.setSelected(null))}
@@ -103,10 +98,7 @@ const MachineListControls = ({
         )}
         {!hasSelection ? (
           <span className="u-hide--small u-hide--medium">
-            <AddHardwareMenu
-              key="add-hardware"
-              setSidePanelContent={setSidePanelContent}
-            />
+            <AddHardwareMenu key="add-hardware" />
           </span>
         ) : null}
         <HiddenColumnsSelect

@@ -1,8 +1,5 @@
-import type { Mock } from "vitest";
-
 import DeleteRepository from "./DeleteRepository";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
 import {
   screen,
@@ -11,33 +8,22 @@ import {
   setupMockServer,
   waitFor,
   waitForLoading,
+  mockSidePanel,
 } from "@/testing/utils";
+
+const { mockClose } = await mockSidePanel();
 
 const mockServer = setupMockServer(
   packageRepositoriesResolvers.getPackageRepository.handler(),
   packageRepositoriesResolvers.deletePackageRepository.handler()
 );
 
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
-
 describe("RepositoryDelete", () => {
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
-  it("renders", async () => {
+  it("runs closeSidePanel function when the cancel button is clicked", async () => {
     renderWithProviders(<DeleteRepository id={1} />);
     await waitForLoading();
-    expect(
-      screen.getByRole("form", { name: "Confirm repository deletion" })
-    ).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("can delete a repository and close the side panel", async () => {

@@ -1,10 +1,10 @@
 import IntroCard from "./IntroCard";
 
-import { screen, render } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("IntroCard", () => {
   it("displays a title link if supplied", () => {
-    render(
+    renderWithProviders(
       <IntroCard
         title="Setup MAAS"
         titleLink={
@@ -20,7 +20,7 @@ describe("IntroCard", () => {
   });
 
   it("can display a green tick icon", () => {
-    render(
+    renderWithProviders(
       <IntroCard complete title="Setup MAAS">
         Card content
       </IntroCard>
@@ -31,7 +31,7 @@ describe("IntroCard", () => {
   });
 
   it("can display an error icon", () => {
-    render(
+    renderWithProviders(
       <IntroCard hasErrors title="Setup MAAS">
         Card content
       </IntroCard>
@@ -42,7 +42,7 @@ describe("IntroCard", () => {
   });
 
   it("can display a grey tick icon", () => {
-    render(
+    renderWithProviders(
       <IntroCard complete={false} title="Setup MAAS">
         Card content
       </IntroCard>

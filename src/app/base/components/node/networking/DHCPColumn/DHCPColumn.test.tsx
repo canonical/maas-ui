@@ -1,13 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import DHCPColumn from "./DHCPColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithProviders } from "@/testing/utils";
 
 describe("DHCPColumn", () => {
   let state: RootState;
@@ -26,12 +23,8 @@ describe("DHCPColumn", () => {
     state.fabric.loaded = false;
     state.vlan.loaded = false;
     const nic = factory.machineInterface();
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <DHCPColumn nic={nic} />
-      </Provider>
-    );
+
+    renderWithProviders(<DHCPColumn nic={nic} />, { state });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
@@ -49,12 +42,8 @@ describe("DHCPColumn", () => {
     const nic = factory.machineInterface({
       vlan_id: vlan.id,
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <DHCPColumn nic={nic} />
-      </Provider>
-    );
+
+    renderWithProviders(<DHCPColumn nic={nic} />, { state });
     expect(screen.getByText(/MAAS-provided/i)).toBeInTheDocument();
   });
 
@@ -71,12 +60,8 @@ describe("DHCPColumn", () => {
     const nic = factory.machineInterface({
       vlan_id: vlan.id,
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <DHCPColumn nic={nic} />
-      </Provider>
-    );
+
+    renderWithProviders(<DHCPColumn nic={nic} />, { state });
     expect(screen.getByTestId("icon")).toBeInTheDocument();
   });
 });

@@ -2,10 +2,10 @@ import { Formik } from "formik";
 
 import MachineSelect, { Labels } from "./MachineSelect";
 
-import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 it("can open select box on click", async () => {
-  renderWithMockStore(
+  renderWithProviders(
     <Formik initialValues={{ machine: "" }} onSubmit={vi.fn()}>
       <MachineSelect name="machine" />
     </Formik>
@@ -19,7 +19,7 @@ it("can open select box on click", async () => {
 });
 
 it("sets focus on the input field on open", async () => {
-  renderWithMockStore(
+  renderWithProviders(
     <Formik initialValues={{ machine: "" }} onSubmit={vi.fn()}>
       <MachineSelect name="machine" />
     </Formik>

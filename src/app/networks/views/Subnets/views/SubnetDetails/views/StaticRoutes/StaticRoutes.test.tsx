@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { AddStaticRouteFormLabels } from "./AddStaticRouteForm/AddStaticRouteForm";
 import StaticRoutes from "./StaticRoutes";
 
@@ -12,7 +10,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 setupMockServer(authResolvers.getCurrentUser.handler());
 
 it("renders for a subnet", () => {
@@ -35,8 +32,7 @@ it("renders for a subnet", () => {
     }),
   });
 
-  const store = mockStore(state);
-  renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { store });
+  renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { state });
 
   expect(screen.getByRole("row", { name: /^11.1.1.1/ }));
   expect(screen.getByRole("row", { name: /^11.1.1.2/ }));
@@ -53,8 +49,7 @@ it("has a button to open the static route form", async () => {
     }),
   });
 
-  const store = mockStore(state);
-  renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { store });
+  renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { state });
 
   await waitFor(() => {
     expect(authResolvers.getCurrentUser.resolved).toBe(true);
@@ -84,8 +79,7 @@ it("has a button to open the edit static route form", async () => {
     }),
   });
 
-  const store = mockStore(state);
-  renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { store });
+  renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { state });
 
   expect(
     screen.getByRole("button", {

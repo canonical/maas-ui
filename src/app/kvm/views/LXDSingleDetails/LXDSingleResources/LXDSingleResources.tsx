@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -16,7 +18,7 @@ export enum Label {
   Title = "LXD resources",
 }
 
-const LXDSingleResources = ({ id }: Props): React.ReactElement => {
+const LXDSingleResources = ({ id }: Props): ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );

@@ -62,12 +62,7 @@ const ControllerDetails = (): React.ReactElement => {
   const base = urls.controllers.controller.index(null);
 
   return (
-    <PageContent
-      header={<ControllerDetailsHeader systemId={id} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext
-    >
+    <PageContent header={<ControllerDetailsHeader systemId={id} />}>
       {controller && (
         <Routes>
           <Route

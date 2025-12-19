@@ -1,11 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import SubnetUsedIPs from "./SubnetUsedIPs";
 
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 it("displays correct IP addresses", () => {
   const subnet = factory.subnetDetails({
@@ -25,8 +21,8 @@ it("displays correct IP addresses", () => {
       items: [subnet],
     }),
   });
-  const store = mockStore(state);
-  renderWithProviders(<SubnetUsedIPs subnetId={subnet.id} />, { store });
+
+  renderWithProviders(<SubnetUsedIPs subnetId={subnet.id} />, { state });
 
   expect(screen.getByRole("row", { name: /^11.1.1.1/ }));
   expect(screen.getByRole("row", { name: /^11.1.1.2/ }));
@@ -41,8 +37,8 @@ it("displays an empty message for a subnet", () => {
       items: [subnet],
     }),
   });
-  const store = mockStore(state);
-  renderWithProviders(<SubnetUsedIPs subnetId={subnet.id} />, { store });
+
+  renderWithProviders(<SubnetUsedIPs subnetId={subnet.id} />, { state });
 
   expect(
     screen.getByText("No IP addresses for this subnet.")

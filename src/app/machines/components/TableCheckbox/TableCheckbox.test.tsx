@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import TableCheckbox, { Checked } from "./TableCheckbox";
 
 import { machineActions } from "@/app/store/machine";
@@ -9,7 +7,7 @@ import {
   userEvent,
   screen,
   waitFor,
-  renderWithMockStore,
+  renderWithProviders,
 } from "@/testing/utils";
 
 let state: RootState;
@@ -28,7 +26,7 @@ beforeEach(() => {
 });
 
 it("can be unchecked", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Unchecked}
@@ -40,7 +38,7 @@ it("can be unchecked", () => {
 });
 
 it("can be checked", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Checked}
@@ -52,7 +50,7 @@ it("can be checked", () => {
 });
 
 it("can be partially checked", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Mixed}
@@ -64,7 +62,7 @@ it("can be partially checked", () => {
 });
 
 it("can show a label", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <TableCheckbox
       callId={callId}
       inputLabel="Check all"
@@ -80,7 +78,7 @@ it("can show a label", () => {
 
 it("is disabled if there are no machines", () => {
   state.machine.lists[callId].count = 0;
-  renderWithMockStore(
+  renderWithProviders(
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Checked}
@@ -93,7 +91,7 @@ it("is disabled if there are no machines", () => {
 
 it("is not disabled if there are machines", () => {
   state.machine.lists[callId].count = 20;
-  renderWithMockStore(
+  renderWithProviders(
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Checked}
@@ -105,7 +103,7 @@ it("is not disabled if there are machines", () => {
 });
 
 it("can be manually disabled", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Checked}
@@ -118,7 +116,7 @@ it("can be manually disabled", () => {
 });
 
 it("can add additional classes to the wrapping element", () => {
-  renderWithMockStore(
+  renderWithProviders(
     <TableCheckbox
       callId={callId}
       extraClasses="extra-class"
@@ -133,15 +131,14 @@ it("can add additional classes to the wrapping element", () => {
 
 it("can dispatch a generated selected state", async () => {
   const selected = { items: ["abc123", "def456"] };
-  const store = configureStore<RootState>()(state);
-  renderWithMockStore(
+  const { store } = renderWithProviders(
     <TableCheckbox
       callId={callId}
       extraClasses="extra-class"
       isChecked={Checked.Checked}
       onGenerateSelected={() => selected}
     />,
-    { store }
+    { state }
   );
   await userEvent.click(screen.getByRole("checkbox"));
   const expected = machineActions.setSelected(selected);

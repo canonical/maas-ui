@@ -47,7 +47,7 @@ const StorageForm = (): React.ReactElement => {
   useWindowTitle("Storage");
 
   return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+    <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Title className="section-header__title">
           Storage

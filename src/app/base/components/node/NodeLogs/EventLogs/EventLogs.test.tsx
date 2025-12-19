@@ -1,4 +1,3 @@
-import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
 import EventLogs, { Label } from "./EventLogs";
@@ -15,8 +14,6 @@ import {
   renderWithProviders,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("EventLogs", () => {
   let state: RootState;
@@ -52,9 +49,8 @@ describe("EventLogs", () => {
   });
 
   it("fetches events up to the preload amount", () => {
-    const store = mockStore(state);
-    renderWithProviders(<EventLogs node={machine} />, {
-      store,
+    const { store } = renderWithProviders(<EventLogs node={machine} />, {
+      state,
       initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
     });
     const dispatches = store
@@ -80,9 +76,9 @@ describe("EventLogs", () => {
         })
       );
     }
-    const store = mockStore(state);
-    renderWithProviders(<EventLogs node={machine} />, {
-      store,
+
+    const { store } = renderWithProviders(<EventLogs node={machine} />, {
+      state,
       initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
     });
     let dispatches = store
@@ -188,9 +184,9 @@ describe("EventLogs", () => {
         })
       );
     }
-    const store = mockStore(state);
+
     renderWithProviders(<EventLogs node={machine} />, {
-      store,
+      state,
       initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
     });
     await userEvent.selectOptions(screen.getByRole("combobox"), "100");

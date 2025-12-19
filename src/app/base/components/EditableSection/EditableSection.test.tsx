@@ -1,9 +1,9 @@
 import EditableSection, { Labels } from "./EditableSection";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 it("can toggle showing content depending on editing state", async () => {
-  render(
+  renderWithProviders(
     <EditableSection
       canEdit
       renderContent={(editing) => (editing ? <div>Is editing</div> : null)}
@@ -27,7 +27,7 @@ it("can toggle showing content depending on editing state", async () => {
 });
 
 it("does not show an edit button if content cannot be edited", () => {
-  render(
+  renderWithProviders(
     <EditableSection canEdit={false} renderContent={() => null} title="Title" />
   );
 

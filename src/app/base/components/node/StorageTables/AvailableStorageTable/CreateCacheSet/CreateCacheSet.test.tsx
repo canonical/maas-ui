@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import CreateCacheSet from "./CreateCacheSet";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const partition = factory.nodePartition();
 const disk = factory.nodeDisk({
   id: 1,
@@ -24,10 +20,9 @@ const state = factory.rootState({
 });
 
 it("should render the form", () => {
-  renderWithBrowserRouter(
-    <CreateCacheSet close={vi.fn()} diskId={disk.id} systemId="abc123" />,
-    { state }
-  );
+  renderWithProviders(<CreateCacheSet diskId={disk.id} systemId="abc123" />, {
+    state,
+  });
 
   expect(
     screen.getByRole("form", { name: "Create cache set" })
@@ -35,10 +30,11 @@ it("should render the form", () => {
 });
 
 it("should fire an action to create cache set", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <CreateCacheSet close={vi.fn()} diskId={disk.id} systemId="abc123" />,
-    { store }
+  const { store } = renderWithProviders(
+    <CreateCacheSet diskId={disk.id} systemId="abc123" />,
+    {
+      state,
+    }
   );
 
   await userEvent.click(
@@ -53,14 +49,9 @@ it("should fire an action to create cache set", async () => {
 });
 
 it("should fire an action to create a cache set given a partition ID", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <CreateCacheSet
-      close={vi.fn()}
-      partitionId={partition.id}
-      systemId="abc123"
-    />,
-    { store }
+  const { store } = renderWithProviders(
+    <CreateCacheSet partitionId={partition.id} systemId="abc123" />,
+    { state }
   );
 
   await userEvent.click(

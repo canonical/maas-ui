@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import DeleteRecordForm, {
   Labels as DeleteRecordFormLabels,
 } from "./DeleteRecordForm";
@@ -13,7 +11,6 @@ import {
   mockSidePanel,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 const { mockClose } = await mockSidePanel();
 
 describe("DeleteRecordForm", () => {
@@ -50,10 +47,13 @@ describe("DeleteRecordForm", () => {
         items: [domain],
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<DeleteRecordForm id={1} resource={resource} />, {
-      store,
-    });
+
+    const { store } = renderWithProviders(
+      <DeleteRecordForm id={1} resource={resource} />,
+      {
+        state,
+      }
+    );
     await userEvent.click(
       screen.getByRole("button", { name: DeleteRecordFormLabels.SubmitLabel })
     );
@@ -77,10 +77,13 @@ describe("DeleteRecordForm", () => {
         items: [domain],
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<DeleteRecordForm id={1} resource={resource} />, {
-      store,
-    });
+
+    const { store } = renderWithProviders(
+      <DeleteRecordForm id={1} resource={resource} />,
+      {
+        state,
+      }
+    );
 
     await userEvent.click(
       screen.getByRole("button", { name: DeleteRecordFormLabels.SubmitLabel })

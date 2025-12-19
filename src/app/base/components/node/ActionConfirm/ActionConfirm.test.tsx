@@ -1,14 +1,10 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import configureStore from "redux-mock-store";
 
 import ActionConfirm from "./ActionConfirm";
 
 import * as maasUiHooks from "@/app/base/hooks/analytics";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: vi.fn(),
@@ -24,8 +20,8 @@ describe("ActionConfirm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithMockStore(
+
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={vi.fn()}
         confirmLabel="Confirm"
@@ -40,7 +36,7 @@ describe("ActionConfirm", () => {
         statusKey="deletingFilesystem"
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
 
     const actionButton = screen.getByRole("button", {
@@ -66,9 +62,9 @@ describe("ActionConfirm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     const closeExpanded = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
@@ -82,7 +78,7 @@ describe("ActionConfirm", () => {
         statusKey="deletingFilesystem"
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
 
     expect(screen.getByTestId("error-message")).toHaveTextContent("uh oh");
@@ -97,9 +93,9 @@ describe("ActionConfirm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     const closeExpanded = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
@@ -114,7 +110,7 @@ describe("ActionConfirm", () => {
         submitAppearance="positive"
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
 
     expect(screen.getByRole("button", { name: "Confirm" })).toHaveClass(
@@ -139,9 +135,9 @@ describe("ActionConfirm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     const closeExpanded = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
@@ -152,7 +148,7 @@ describe("ActionConfirm", () => {
         statusKey="deletingFilesystem"
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
 
     expect(useSendMock).toHaveBeenCalled();
@@ -176,9 +172,9 @@ describe("ActionConfirm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
+
     const closeExpanded = vi.fn();
-    renderWithMockStore(
+    renderWithProviders(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
@@ -193,7 +189,7 @@ describe("ActionConfirm", () => {
         statusKey="deletingFilesystem"
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
 
     expect(closeExpanded).toHaveBeenCalled();

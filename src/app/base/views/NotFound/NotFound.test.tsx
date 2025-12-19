@@ -1,22 +1,19 @@
-/* eslint-disable testing-library/no-container */
 import NotFound from "./NotFound";
 
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("NotFound ", () => {
   it("can render", () => {
-    const { container } = renderWithBrowserRouter(<NotFound />, {
-      route: "/404",
-    });
+    renderWithProviders(<NotFound />, {});
     expect(screen.getByText(/Page not found/i)).toBeInTheDocument();
 
-    expect(container.querySelector("section")).not.toBeInTheDocument();
+    expect(screen.queryByRole("section")).not.toBeInTheDocument();
   });
 
   it("can render in a row", () => {
-    const { container } = renderWithBrowserRouter(<NotFound includeSection />, {
-      route: "/404",
-    });
-    expect(container.querySelector(".row")).toBeInTheDocument();
+    renderWithProviders(<NotFound includeSection />, {});
+    expect(
+      screen.getByRole("banner", { name: "main content" })
+    ).toBeInTheDocument();
   });
 });

@@ -7,11 +7,7 @@ export const RepositoriesList = (): React.ReactElement => {
   useWindowTitle("Package repos");
 
   return (
-    <PageContent
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent>
       <RepositoriesTable />
     </PageContent>
   );

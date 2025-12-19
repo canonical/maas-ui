@@ -1,10 +1,10 @@
 import DoughnutChart, { TestIds } from "./DoughnutChart";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("DoughnutChart", () => {
   it("can render with a label", () => {
-    render(
+    renderWithProviders(
       <DoughnutChart
         label="Label!"
         segmentHoverWidth={20}
@@ -27,7 +27,7 @@ describe("DoughnutChart", () => {
   });
 
   it("can render without a label", () => {
-    render(
+    renderWithProviders(
       <DoughnutChart
         segmentHoverWidth={20}
         segmentWidth={15}

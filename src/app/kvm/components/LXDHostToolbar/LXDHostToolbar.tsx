@@ -6,7 +6,6 @@ import { useGetPool } from "@/app/api/query/pools";
 import Switch from "@/app/base/components/Switch";
 import { useSendAnalytics } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
@@ -15,7 +14,6 @@ import type { VMCluster } from "@/app/store/vmcluster/types";
 type Props = {
   clusterId?: VMCluster["id"];
   hostId: Pod["id"];
-  setSidePanelContent?: KVMSetSidePanelContent;
   setViewByNuma?: (viewByNuma: boolean) => void;
   showBasic?: boolean;
   title?: string;
@@ -25,7 +23,6 @@ type Props = {
 const LXDHostToolbar = ({
   clusterId,
   hostId,
-  setSidePanelContent,
   setViewByNuma,
   showBasic,
   title,
@@ -84,7 +81,7 @@ const LXDHostToolbar = ({
         <p className="u-text--muted u-no-margin u-no-padding">LXD version:</p>
         <p className="u-no-margin u-no-padding">{pod.version}</p>
       </div>
-      {setSidePanelContent && !showBasic ? (
+      {!showBasic ? (
         <>
           <div className="lxd-host-toolbar__block u-nudge-down--x-small">
             <p className="u-text--muted u-no-margin u-no-padding">

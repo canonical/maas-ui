@@ -1,12 +1,10 @@
 import { waitFor } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 
 import NotificationGroupNotification from "./Notification";
 
 import type { ConfigState } from "@/app/store/config/types";
 import { ConfigNames } from "@/app/store/config/types";
 import { NotificationIdent } from "@/app/store/notification/types";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
@@ -16,7 +14,6 @@ import {
   userEvent,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("NotificationGroupNotification", () => {
@@ -67,13 +64,13 @@ describe("NotificationGroupNotification", () => {
         items: [notification],
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <NotificationGroupNotification
         id={notification.id}
         severity="negative"
       />,
-      { initialEntries: ["/"], store }
+      { initialEntries: ["/"], state }
     );
     await userEvent.click(screen.getByTestId("notification-close-button"));
     expect(store.getActions().length).toEqual(1);

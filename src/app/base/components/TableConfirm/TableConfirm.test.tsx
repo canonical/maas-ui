@@ -2,11 +2,11 @@ import userEvent from "@testing-library/user-event";
 
 import TableConfirm from "./TableConfirm";
 
-import { render, screen } from "@/testing/utils";
+import { render, screen, renderWithProviders } from "@/testing/utils";
 
 describe("TableConfirm", () => {
   it("renders", () => {
-    render(
+    renderWithProviders(
       <TableConfirm
         confirmLabel="Yes I am"
         finished={false}
@@ -25,7 +25,7 @@ describe("TableConfirm", () => {
 
   it("can confirm", async () => {
     const onConfirm = vi.fn();
-    render(
+    renderWithProviders(
       <TableConfirm
         confirmLabel="save"
         finished={false}
@@ -42,7 +42,7 @@ describe("TableConfirm", () => {
 
   it("can cancel", async () => {
     const onClose = vi.fn();
-    render(
+    renderWithProviders(
       <TableConfirm
         confirmLabel="save"
         finished={false}
@@ -117,7 +117,7 @@ describe("TableConfirm", () => {
 
   it("can display an error", () => {
     const onClose = vi.fn();
-    render(
+    renderWithProviders(
       <TableConfirm
         confirmLabel="save"
         errors="It didn't work"
@@ -133,7 +133,7 @@ describe("TableConfirm", () => {
 
   it("can display an error for a field", () => {
     const onClose = vi.fn();
-    render(
+    renderWithProviders(
       <TableConfirm
         confirmLabel="save"
         errorKey="delete"

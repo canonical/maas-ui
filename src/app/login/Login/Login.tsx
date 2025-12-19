@@ -95,7 +95,7 @@ export const Login = (): React.ReactElement => {
   }, [dispatch, externalAuthURL]);
 
   return (
-    <PageContent sidePanelContent={undefined} sidePanelTitle={null}>
+    <PageContent>
       <Strip>
         <Row>
           <Col emptyLarge={4} size={6}>

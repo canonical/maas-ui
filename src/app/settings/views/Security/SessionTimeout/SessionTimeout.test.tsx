@@ -10,11 +10,10 @@ import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   userEvent,
-  renderWithBrowserRouter,
+  renderWithProviders,
   getTestState,
   setupMockServer,
   mockIsPending,
-  renderWithProviders,
   waitForLoading,
   waitFor,
   spyOnMutation,
@@ -34,7 +33,7 @@ describe("SessionTimeout", () => {
 
   it("displays a spinner while loading", () => {
     mockIsPending();
-    renderWithBrowserRouter(<SessionTimeout />, { state });
+    renderWithProviders(<SessionTimeout />, { state });
 
     expect(screen.getByText(SessionTimeoutLabels.Loading)).toBeInTheDocument();
   });
@@ -139,7 +138,7 @@ describe("SessionTimeout", () => {
       configurationsQueryHooks,
       "useBulkSetConfigurations"
     );
-    renderWithBrowserRouter(<SessionTimeout />, { state });
+    renderWithProviders(<SessionTimeout />, { state });
     await waitForLoading();
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })

@@ -8,12 +8,7 @@ const VLANsList = () => {
   useWindowTitle("VLANs");
 
   return (
-    <PageContent
-      header={<NetworksHeader />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<NetworksHeader />}>
       <VLANsTable />
     </PageContent>
   );

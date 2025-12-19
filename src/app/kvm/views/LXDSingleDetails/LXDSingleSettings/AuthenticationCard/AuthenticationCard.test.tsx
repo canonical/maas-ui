@@ -4,7 +4,7 @@ import { PodType } from "@/app/store/pod/constants";
 import type { PodDetails, PodPowerParameters } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("AuthenticationCard", () => {
   let state: RootState;
@@ -27,16 +27,14 @@ describe("AuthenticationCard", () => {
 
   it("shows a spinner if pod is not PodDetails type", () => {
     state.pod.items[0] = factory.pod({ id: 1 });
-    renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
-      route: "/kvm/1/edit",
+    renderWithProviders(<AuthenticationCard hostId={pod.id} />, {
       state,
     });
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("can open the update certificate form", async () => {
-    renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
-      route: "/kvm/1/edit",
+    renderWithProviders(<AuthenticationCard hostId={pod.id} />, {
       state,
     });
     expect(screen.queryByText("Update Certificate")).not.toBeInTheDocument();
@@ -55,8 +53,7 @@ describe("AuthenticationCard", () => {
     const power_parameters = pod.power_parameters as PodPowerParameters;
     power_parameters.certificate = undefined;
     power_parameters.key = undefined;
-    renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
-      route: "/kvm/1/edit",
+    renderWithProviders(<AuthenticationCard hostId={pod.id} />, {
       state,
     });
 
