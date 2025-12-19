@@ -8,7 +8,7 @@ import usePagination from "@/app/base/hooks/usePagination/usePagination";
 
 const SpacesTable = () => {
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
-    usePagination(50);
+    usePagination();
   const { data, isPending, error, isError } = useSpaces({
     query: { page: debouncedPage, size },
   });
