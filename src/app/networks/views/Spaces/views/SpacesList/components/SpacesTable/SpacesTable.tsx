@@ -7,8 +7,11 @@ import { useSpaces } from "@/app/api/query/spaces";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 
 const SpacesTable = () => {
-  const { page, size, handlePageSizeChange, setPage } = usePagination(50);
-  const { data, isPending, error, isError } = useSpaces();
+  const { page, debouncedPage, size, handlePageSizeChange, setPage } =
+    usePagination(50);
+  const { data, isPending, error, isError } = useSpaces({
+    query: { page: debouncedPage, size },
+  });
   const columns = useSpacesTableColumns();
 
   if (isError) {
