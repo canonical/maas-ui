@@ -205,7 +205,7 @@ export const useMachineActionMenus = (
           onClick: () => {
             openSidePanel({
               component: PowerOffForm,
-              title: "Power off",
+              title: "Soft power off",
               props: {
                 action: NodeActions.SOFT_OFF,
                 actions: machineActions,
