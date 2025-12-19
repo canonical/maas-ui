@@ -110,4 +110,23 @@ describe("MachineActionMenu", () => {
 
     expect(screen.getByRole("button", { name: "Menu" })).toBeAriaDisabled();
   });
+
+  it("can display a custom label", () => {
+    renderWithProviders(
+      <MachineActionMenu label="A fun label or something" />,
+      { state }
+    );
+
+    expect(
+      screen.getByRole("button", { name: "A fun label or something" })
+    ).toBeInTheDocument();
+  });
+
+  it("can use different button appearances", () => {
+    renderWithProviders(<MachineActionMenu appearance="positive" />, { state });
+
+    expect(screen.getByRole("button", { name: "Menu" })).toHaveClass(
+      "p-button--positive"
+    );
+  });
 });
