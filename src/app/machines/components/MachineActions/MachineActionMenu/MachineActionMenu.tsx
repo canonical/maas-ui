@@ -1,6 +1,10 @@
 import type { ReactElement } from "react";
 
-import type { ButtonProps } from "@canonical/react-components";
+import type {
+  ButtonAppearance,
+  ButtonProps,
+  ValueOf,
+} from "@canonical/react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -12,14 +16,21 @@ import machineSelectors from "@/app/store/machine/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { canOpenActionForm } from "@/app/store/utils";
 
-type MachineActionMenuProps = MachineActionsProps;
+type MachineActionMenuProps = MachineActionsProps & {
+  appearance?: ValueOf<typeof ButtonAppearance>;
+  disabled?: boolean;
+  label?: string;
+};
 
 type ActionLink = DataTestElement<ButtonProps>;
 
 const MachineActionMenu = ({
+  appearance = "base",
+  disabled = false,
   disabledActions,
   isMachineLocked,
   isViewingDetails = false,
+  label = "Menu",
   systemId,
 }: MachineActionMenuProps): ReactElement => {
   const actionMenus = useMachineActionMenus(
@@ -68,9 +79,10 @@ const MachineActionMenu = ({
         links.push(groupLinks);
         return links;
       }, [])}
-      toggleAppearance=""
+      toggleAppearance={appearance}
       toggleClassName="p-action-menu"
-      toggleLabel={"Menu"}
+      toggleDisabled={disabled}
+      toggleLabel={label}
     />
   );
 };

@@ -104,4 +104,10 @@ describe("MachineActionMenu", () => {
 
     expect(getActionButton(NodeActions.CHECK_POWER)).toBeInTheDocument();
   });
+
+  it("can be disabled", () => {
+    renderWithProviders(<MachineActionMenu disabled={true} />, { state });
+
+    expect(screen.getByRole("button", { name: "Menu" })).toBeAriaDisabled();
+  });
 });

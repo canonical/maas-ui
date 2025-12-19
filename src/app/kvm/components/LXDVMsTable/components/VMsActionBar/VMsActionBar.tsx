@@ -37,12 +37,15 @@ const VMsActionBar = ({
     <ActionBar
       actions={
         <>
-          <MachineActionMenu />
+          <MachineActionMenu
+            appearance="positive"
+            disabled={vmActionsDisabled}
+            label="Take action"
+          />
           {onAddVMClick && (
             <span className="u-nudge-right">
               <Button
                 className="u-no-margin--bottom"
-                data-testid="add-vm"
                 hasIcon
                 onClick={onAddVMClick}
               >
@@ -61,7 +64,6 @@ const VMsActionBar = ({
           >
             <Button
               className="u-no-margin--bottom"
-              data-testid="delete-vm"
               disabled={vmActionsDisabled}
               hasIcon
               onClick={() => {
