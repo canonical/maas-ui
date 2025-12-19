@@ -148,4 +148,39 @@ describe("MachineActionMenuBar", () => {
       getActionButton(powerMenu, NodeActions.CHECK_POWER)
     ).toBeInTheDocument();
   });
+
+  it("renders a button instead of a contextual menu for 'Delete'", () => {
+    renderWithProviders(<MachineActionMenuBar />, { state });
+
+    expect(screen.getByRole("button", { name: "Delete" })).not.toHaveClass(
+      "p-contextual-menu__toggle"
+    );
+  });
+
+  it("renders an icon for buttons that have one", () => {
+    renderWithProviders(<MachineActionMenuBar />, { state });
+
+    expect(
+      screen.getByRole("button", { name: "Delete" }).firstElementChild
+    ).toHaveClass("p-icon--delete");
+  });
+
+  it("renders a switch for locking instead of a contexual menu when viewing details", () => {
+    const { rerender } = renderWithProviders(
+      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
+      { state }
+    );
+
+    expect(screen.getByRole("switch", { name: "Lock" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Lock" })
+    ).not.toBeInTheDocument();
+
+    rerender(<MachineActionMenuBar />);
+
+    expect(screen.getByRole("button", { name: "Lock" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("switch", { name: "Lock" })
+    ).not.toBeInTheDocument();
+  });
 });
