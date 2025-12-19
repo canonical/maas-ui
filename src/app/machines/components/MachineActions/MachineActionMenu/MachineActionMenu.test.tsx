@@ -45,6 +45,10 @@ describe("MachineActionMenu", async () => {
     });
   });
 
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   describe("display", () => {
     it("only shows actions that a given machine can perform when provided a system id", async () => {
       const machine = factory.machine({
@@ -172,6 +176,8 @@ describe("MachineActionMenu", async () => {
       .forEach((action) => {
         const actionTitle = getNodeActionTitle(action);
         it(`opens the ${actionTitle} form when the ${actionTitle} button is clicked`, async () => {
+          // TODO: Remove when DPU feature flag is removed https://warthogs.atlassian.net/browse/MAASENG-4186
+          vi.stubEnv("VITE_APP_DPU_PROVISIONING", "true");
           renderWithProviders(<MachineActionMenu />, { state });
 
           await openMenu();
