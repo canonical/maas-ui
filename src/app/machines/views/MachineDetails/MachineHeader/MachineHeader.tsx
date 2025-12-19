@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router";
 
 import MachineName from "./MachineName";
@@ -11,6 +11,7 @@ import ScriptStatus from "@/app/base/components/ScriptStatus";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import MachineActions from "@/app/machines/components/MachineActions";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
@@ -26,6 +27,7 @@ type MachineHeaderProps = {
 };
 
 const MachineHeader = ({ systemId }: MachineHeaderProps): ReactElement => {
+  const dispatch = useDispatch();
   const [editingName, setEditingName] = useState(false);
   const { pathname } = useLocation();
   const machine = useSelector((state: RootState) =>
@@ -35,7 +37,23 @@ const MachineHeader = ({ systemId }: MachineHeaderProps): ReactElement => {
     machineSelectors.getStatuses(state, systemId)
   );
   const isDetails = isMachineDetails(machine);
+  const selected = useSelector(machineSelectors.selected);
   useFetchMachine(systemId);
+
+  useEffect(() => {
+    if (machine) {
+      if (
+        (selected &&
+          "items" in selected &&
+          !selected.items?.some(
+            (selectedMachine) => selectedMachine === machine.system_id
+          )) ||
+        (selected && !("items" in selected)) ||
+        !selected
+      )
+        dispatch(machineActions.setSelected({ items: [machine.system_id] }));
+    }
+  }, [dispatch, machine, machine?.system_id, selected]);
 
   if (!(machine && isDetails)) {
     return <SectionHeader loading />;
