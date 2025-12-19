@@ -116,6 +116,21 @@ describe("MachineActionMenuBar", () => {
     expect(getActionButton(actionsMenu, NodeActions.DEPLOY)).toBeAriaDisabled();
   });
 
+  it("can exclude actions", async () => {
+    renderWithProviders(
+      <MachineActionMenuBar excludeActions={[NodeActions.DEPLOY]} />,
+      { state }
+    );
+
+    await openMenu("Actions");
+
+    const actionsMenu = getSubMenu("Actions");
+
+    expect(
+      queryActionButton(actionsMenu, NodeActions.DEPLOY)
+    ).not.toBeInTheDocument();
+  });
+
   it("shows all actions that can be performed when machines are not provided", async () => {
     renderWithProviders(<MachineActionMenuBar />, { state });
 

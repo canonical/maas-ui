@@ -17,6 +17,7 @@ type MachineActionMenuBarProps = MachineActionsProps;
 
 const MachineActionMenuBar = ({
   disabledActions,
+  excludeActions,
   isMachineLocked,
   isViewingDetails = false,
   systemId,
@@ -41,6 +42,13 @@ const MachineActionMenuBar = ({
               dropdownProps={{ "aria-label": `${menu.title} submenu` }}
               hasToggleIcon
               links={menu.items.reduce<MenuLink[]>((links, item) => {
+                if (
+                  excludeActions &&
+                  excludeActions.some((action) => action === item.action)
+                ) {
+                  return links;
+                }
+
                 if (
                   disabledActions &&
                   disabledActions.some((action) => action === item.action)

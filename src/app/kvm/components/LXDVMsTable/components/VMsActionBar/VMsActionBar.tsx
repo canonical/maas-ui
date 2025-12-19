@@ -9,6 +9,7 @@ import DeleteVM from "@/app/kvm/components/DeleteVM";
 import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
 import MachineActionMenu from "@/app/machines/components/MachineActions/MachineActionMenu";
 import { useHasSelection } from "@/app/store/machine/utils/hooks";
+import { NodeActions } from "@/app/store/types/node";
 
 type Props = {
   currentPage: number;
@@ -40,6 +41,7 @@ const VMsActionBar = ({
           <MachineActionMenu
             appearance="positive"
             disabled={vmActionsDisabled}
+            excludeActions={[NodeActions.DELETE]}
             label="Take action"
           />
           {onAddVMClick && (

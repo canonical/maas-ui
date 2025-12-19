@@ -28,6 +28,7 @@ const MachineActionMenu = ({
   appearance = "base",
   disabled = false,
   disabledActions,
+  excludeActions,
   isMachineLocked,
   isViewingDetails = false,
   label = "Menu",
@@ -49,6 +50,13 @@ const MachineActionMenu = ({
       hasToggleIcon
       links={actionMenus.reduce<ActionLink[][]>((links, group) => {
         const groupLinks = group.items.reduce<ActionLink[]>((actions, item) => {
+          if (
+            excludeActions &&
+            excludeActions.some((action) => action === item.action)
+          ) {
+            return actions;
+          }
+
           if (
             disabledActions &&
             disabledActions.some((action) => action === item.action)

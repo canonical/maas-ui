@@ -87,9 +87,22 @@ describe("MachineActionMenu", () => {
     expect(getActionButton(NodeActions.DEPLOY)).toBeAriaDisabled();
   });
 
+  it("can exclude actions from being shown", async () => {
+    renderWithProviders(
+      <MachineActionMenu excludeActions={[NodeActions.DELETE]} />,
+      { state }
+    );
+
+    await openMenu();
+
+    expect(queryActionButton(NodeActions.DELETE)).not.toBeInTheDocument();
+  });
+
   it("shows all actions that can be performed when machines are not provided", async () => {
     renderWithProviders(<MachineActionMenu />, { state });
+
     await openMenu();
+
     expect(getActionButton(NodeActions.DELETE)).toBeInTheDocument();
     expect(getActionButton(NodeActions.SET_ZONE)).toBeInTheDocument();
     expect(getActionButton(NodeActions.TEST)).toBeInTheDocument();

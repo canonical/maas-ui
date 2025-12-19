@@ -17,6 +17,7 @@ export type MachineActionGroup = {
 
 export type MachineActionsProps = {
   disabledActions?: NodeActions[];
+  excludeActions?: NodeActions[];
   isMachineLocked?: boolean;
   isViewingDetails?: boolean;
   systemId?: Machine["system_id"];
