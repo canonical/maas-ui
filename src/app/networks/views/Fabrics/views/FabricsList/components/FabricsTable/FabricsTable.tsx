@@ -7,8 +7,11 @@ import { useFabrics } from "@/app/api/query/fabrics";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 
 const FabricsTable = () => {
-  const { page, size, handlePageSizeChange, setPage } = usePagination(50);
-  const { data, isPending, error, isError } = useFabrics();
+  const { page, debouncedPage, size, handlePageSizeChange, setPage } =
+    usePagination();
+  const { data, isPending, error, isError } = useFabrics({
+    query: { page: debouncedPage, size },
+  });
   const columns = useFabricsTableColumns();
 
   if (isError) {
