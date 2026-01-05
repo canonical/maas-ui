@@ -4,10 +4,10 @@ import { queryOptions, type UseMutationOptions } from "@tanstack/react-query";
 
 import { client } from "../client.gen";
 import {
+  bulkCreateSelections,
+  bulkDeleteSelections,
   changePasswordAdmin,
   changePasswordUser,
-  checkStatusBootsourceBootsourceselection,
-  checkStatusesBootsourceBootsourceselection,
   clearAllDiscoveriesWithOptionalIpAndMac,
   clearNeighboursDiscoveries,
   clearRdnsAndMdnsDiscoveries,
@@ -34,9 +34,9 @@ import {
   createUserSshkeys,
   createUserSslkey,
   createZone,
-  deleteBootResourceById,
   deleteBootsource,
   deleteBootsourceBootsourceselection,
+  deleteCustomImageById,
   deleteDomain,
   deleteFabric,
   deleteFabricVlan,
@@ -63,12 +63,16 @@ import {
   generateRackBootstrapToken,
   getAccessToken,
   getAllAvailableImages,
-  getBootResourceById,
+  getBootloader,
   getBootsource,
   getBootsourceAvailableImages,
   getBootsourceBootsourceselection,
+  getBootsourceBootsourceselectionResource,
   getConfiguration,
   getConfigurations,
+  getCustomImageById,
+  getCustomImageStatistic,
+  getCustomImageStatus,
   getDiscovery,
   getDomain,
   getDomainRrsets,
@@ -84,10 +88,14 @@ import {
   getMeWithSummary,
   getNotification,
   getOauthProvider,
+  getOauthProviderById,
   getPackageRepository,
   getRack,
   getRackAgent,
   getResourcePool,
+  getSelection,
+  getSelectionStatistic,
+  getSelectionStatus,
   getSpace,
   getSubnet,
   getTag,
@@ -98,11 +106,17 @@ import {
   getUserSslkeys,
   getUserSslkeysWithSummary,
   getZone,
+  handleOauthCallback,
+  importBootsources,
   importUserSshkeys,
-  initiateOauthFlow,
-  listBootResources,
+  initiateAuthFlow,
+  listBootloaders,
   listBootsourceBootsourceselection,
+  listBootsourceBootsourceselectionResources,
   listBootsources,
+  listCustomImages,
+  listCustomImagesStatistic,
+  listCustomImagesStatus,
   listDiscoveries,
   listDomains,
   listEvents,
@@ -125,6 +139,9 @@ import {
   listRacksWithSummary,
   listResourcePools,
   listResourcePoolsWithSummary,
+  listSelections,
+  listSelectionStatistic,
+  listSelectionStatus,
   listSpaces,
   listSubnets,
   listTags,
@@ -134,9 +151,11 @@ import {
   listZones,
   listZonesWithSummary,
   login,
+  logout,
   type Options,
   setConfiguration,
   setConfigurations,
+  stopImportBootsources,
   stopSyncBootsourceBootsourceselection,
   syncBootsourceBootsourceselection,
   updateBootsource,
@@ -147,6 +166,7 @@ import {
   updateFabricVlanSubnetIprange,
   updateFabricVlanSubnetReservedIp,
   updateFabricVlanSubnetStaticroute,
+  updateManifestBootsources,
   updateNotification,
   updateOauthProvider,
   updatePackageRepository,
@@ -156,21 +176,21 @@ import {
   updateTag,
   updateUser,
   updateZone,
-  uploadBootResource,
+  uploadCustomImage,
 } from "../sdk.gen";
 import type {
+  BulkCreateSelectionsData,
+  BulkCreateSelectionsError,
+  BulkCreateSelectionsResponse,
+  BulkDeleteSelectionsData,
+  BulkDeleteSelectionsError,
+  BulkDeleteSelectionsResponse,
   ChangePasswordAdminData,
   ChangePasswordAdminError,
   ChangePasswordAdminResponse,
   ChangePasswordUserData,
   ChangePasswordUserError,
   ChangePasswordUserResponse,
-  CheckStatusBootsourceBootsourceselectionData,
-  CheckStatusBootsourceBootsourceselectionError,
-  CheckStatusBootsourceBootsourceselectionResponse,
-  CheckStatusesBootsourceBootsourceselectionData,
-  CheckStatusesBootsourceBootsourceselectionError,
-  CheckStatusesBootsourceBootsourceselectionResponse,
   ClearAllDiscoveriesWithOptionalIpAndMacData,
   ClearAllDiscoveriesWithOptionalIpAndMacError,
   ClearAllDiscoveriesWithOptionalIpAndMacResponse,
@@ -249,15 +269,15 @@ import type {
   CreateZoneData,
   CreateZoneError,
   CreateZoneResponse,
-  DeleteBootResourceByIdData,
-  DeleteBootResourceByIdError,
-  DeleteBootResourceByIdResponse,
   DeleteBootsourceBootsourceselectionData,
   DeleteBootsourceBootsourceselectionError,
   DeleteBootsourceBootsourceselectionResponse,
   DeleteBootsourceData,
   DeleteBootsourceError,
   DeleteBootsourceResponse,
+  DeleteCustomImageByIdData,
+  DeleteCustomImageByIdError,
+  DeleteCustomImageByIdResponse,
   DeleteDomainData,
   DeleteDomainError,
   DeleteDomainResponse,
@@ -335,14 +355,17 @@ import type {
   GetAllAvailableImagesData,
   GetAllAvailableImagesError,
   GetAllAvailableImagesResponse,
-  GetBootResourceByIdData,
-  GetBootResourceByIdError,
-  GetBootResourceByIdResponse,
+  GetBootloaderData,
+  GetBootloaderError,
+  GetBootloaderResponse,
   GetBootsourceAvailableImagesData,
   GetBootsourceAvailableImagesError,
   GetBootsourceAvailableImagesResponse,
   GetBootsourceBootsourceselectionData,
   GetBootsourceBootsourceselectionError,
+  GetBootsourceBootsourceselectionResourceData,
+  GetBootsourceBootsourceselectionResourceError,
+  GetBootsourceBootsourceselectionResourceResponse,
   GetBootsourceBootsourceselectionResponse,
   GetBootsourceData,
   GetBootsourceError,
@@ -353,6 +376,15 @@ import type {
   GetConfigurationsData,
   GetConfigurationsError,
   GetConfigurationsResponse,
+  GetCustomImageByIdData,
+  GetCustomImageByIdError,
+  GetCustomImageByIdResponse,
+  GetCustomImageStatisticData,
+  GetCustomImageStatisticError,
+  GetCustomImageStatisticResponse,
+  GetCustomImageStatusData,
+  GetCustomImageStatusError,
+  GetCustomImageStatusResponse,
   GetDiscoveryData,
   GetDiscoveryError,
   GetDiscoveryResponse,
@@ -395,6 +427,9 @@ import type {
   GetNotificationData,
   GetNotificationError,
   GetNotificationResponse,
+  GetOauthProviderByIdData,
+  GetOauthProviderByIdError,
+  GetOauthProviderByIdResponse,
   GetOauthProviderData,
   GetOauthProviderError,
   GetOauthProviderResponse,
@@ -410,6 +445,15 @@ import type {
   GetResourcePoolData,
   GetResourcePoolError,
   GetResourcePoolResponse,
+  GetSelectionData,
+  GetSelectionError,
+  GetSelectionResponse,
+  GetSelectionStatisticData,
+  GetSelectionStatisticError,
+  GetSelectionStatisticResponse,
+  GetSelectionStatusData,
+  GetSelectionStatusError,
+  GetSelectionStatusResponse,
   GetSpaceData,
   GetSpaceError,
   GetSpaceResponse,
@@ -440,21 +484,39 @@ import type {
   GetZoneData,
   GetZoneError,
   GetZoneResponse,
+  HandleOauthCallbackData,
+  HandleOauthCallbackError,
+  HandleOauthCallbackResponse,
+  ImportBootsourcesData,
+  ImportBootsourcesError,
+  ImportBootsourcesResponse,
   ImportUserSshkeysData,
   ImportUserSshkeysError,
   ImportUserSshkeysResponse,
-  InitiateOauthFlowData,
-  InitiateOauthFlowError,
-  InitiateOauthFlowResponse,
-  ListBootResourcesData,
-  ListBootResourcesError,
-  ListBootResourcesResponse,
+  InitiateAuthFlowData,
+  InitiateAuthFlowError,
+  InitiateAuthFlowResponse,
+  ListBootloadersData,
+  ListBootloadersError,
+  ListBootloadersResponse,
   ListBootsourceBootsourceselectionData,
   ListBootsourceBootsourceselectionError,
+  ListBootsourceBootsourceselectionResourcesData,
+  ListBootsourceBootsourceselectionResourcesError,
+  ListBootsourceBootsourceselectionResourcesResponse,
   ListBootsourceBootsourceselectionResponse,
   ListBootsourcesData,
   ListBootsourcesError,
   ListBootsourcesResponse,
+  ListCustomImagesData,
+  ListCustomImagesError,
+  ListCustomImagesResponse,
+  ListCustomImagesStatisticData,
+  ListCustomImagesStatisticError,
+  ListCustomImagesStatisticResponse,
+  ListCustomImagesStatusData,
+  ListCustomImagesStatusError,
+  ListCustomImagesStatusResponse,
   ListDiscoveriesData,
   ListDiscoveriesError,
   ListDiscoveriesResponse,
@@ -521,6 +583,15 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryError,
   ListResourcePoolsWithSummaryResponse,
+  ListSelectionsData,
+  ListSelectionsError,
+  ListSelectionsResponse,
+  ListSelectionStatisticData,
+  ListSelectionStatisticError,
+  ListSelectionStatisticResponse,
+  ListSelectionStatusData,
+  ListSelectionStatusError,
+  ListSelectionStatusResponse,
   ListSpacesData,
   ListSpacesError,
   ListSpacesResponse,
@@ -548,12 +619,18 @@ import type {
   LoginData,
   LoginError,
   LoginResponse,
+  LogoutData,
+  LogoutError,
+  LogoutResponse,
   SetConfigurationData,
   SetConfigurationError,
   SetConfigurationResponse,
   SetConfigurationsData,
   SetConfigurationsError,
   SetConfigurationsResponse,
+  StopImportBootsourcesData,
+  StopImportBootsourcesError,
+  StopImportBootsourcesResponse,
   StopSyncBootsourceBootsourceselectionData,
   StopSyncBootsourceBootsourceselectionError,
   SyncBootsourceBootsourceselectionData,
@@ -583,6 +660,8 @@ import type {
   UpdateFabricVlanSubnetStaticrouteData,
   UpdateFabricVlanSubnetStaticrouteError,
   UpdateFabricVlanSubnetStaticrouteResponse,
+  UpdateManifestBootsourcesData,
+  UpdateManifestBootsourcesError,
   UpdateNotificationData,
   UpdateNotificationError,
   UpdateNotificationResponse,
@@ -610,9 +689,9 @@ import type {
   UpdateZoneData,
   UpdateZoneError,
   UpdateZoneResponse,
-  UploadBootResourceData,
-  UploadBootResourceError,
-  UploadBootResourceResponse,
+  UploadCustomImageData,
+  UploadCustomImageError,
+  UploadCustomImageResponse,
 } from "../types.gen";
 
 export type QueryKey<TOptions extends Options> = [
@@ -737,6 +816,34 @@ export const deleteOauthProviderMutation = (
   return mutationOptions;
 };
 
+export const getOauthProviderByIdQueryKey = (
+  options: Options<GetOauthProviderByIdData>
+) => createQueryKey("getOauthProviderById", options);
+
+/**
+ * Get Oauth Provider By Id
+ */
+export const getOauthProviderByIdOptions = (
+  options: Options<GetOauthProviderByIdData>
+) =>
+  queryOptions<
+    GetOauthProviderByIdResponse,
+    GetOauthProviderByIdError,
+    GetOauthProviderByIdResponse,
+    ReturnType<typeof getOauthProviderByIdQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getOauthProviderById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getOauthProviderByIdQueryKey(options),
+  });
+
 /**
  * Update Oauth Provider
  */
@@ -817,26 +924,26 @@ export const getOauthProviderOptions = (
     queryKey: getOauthProviderQueryKey(options),
   });
 
-export const initiateOauthFlowQueryKey = (
-  options?: Options<InitiateOauthFlowData>
-) => createQueryKey("initiateOauthFlow", options);
+export const handleOauthCallbackQueryKey = (
+  options: Options<HandleOauthCallbackData>
+) => createQueryKey("handleOauthCallback", options);
 
 /**
- * Initiate Oauth Flow
+ * Handle Oauth Callback
  *
- * Initiate the OAuth flow by generating the authorization URL and setting the necessary security cookies.
+ * Handle the OAuth callback by exchanging the authorization code for tokens.
  */
-export const initiateOauthFlowOptions = (
-  options?: Options<InitiateOauthFlowData>
+export const handleOauthCallbackOptions = (
+  options: Options<HandleOauthCallbackData>
 ) =>
   queryOptions<
-    InitiateOauthFlowResponse,
-    InitiateOauthFlowError,
-    InitiateOauthFlowResponse,
-    ReturnType<typeof initiateOauthFlowQueryKey>
+    HandleOauthCallbackResponse,
+    HandleOauthCallbackError,
+    HandleOauthCallbackResponse,
+    ReturnType<typeof handleOauthCallbackQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await initiateOauthFlow({
+      const { data } = await handleOauthCallback({
         ...options,
         ...queryKey[0],
         signal,
@@ -844,7 +951,38 @@ export const initiateOauthFlowOptions = (
       });
       return data;
     },
-    queryKey: initiateOauthFlowQueryKey(options),
+    queryKey: handleOauthCallbackQueryKey(options),
+  });
+
+export const initiateAuthFlowQueryKey = (
+  options: Options<InitiateAuthFlowData>
+) => createQueryKey("initiateAuthFlow", options);
+
+/**
+ * Initiate Auth Flow
+ *
+ * Initiate the OAuth flow by generating the authorization URL and setting the necessary security cookies,
+ * if the user is an OIDC user.
+ */
+export const initiateAuthFlowOptions = (
+  options: Options<InitiateAuthFlowData>
+) =>
+  queryOptions<
+    InitiateAuthFlowResponse,
+    InitiateAuthFlowError,
+    InitiateAuthFlowResponse,
+    ReturnType<typeof initiateAuthFlowQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await initiateAuthFlow({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: initiateAuthFlowQueryKey(options),
   });
 
 /**
@@ -871,22 +1009,18 @@ export const loginMutation = (
 };
 
 /**
- * Delete Boot Resource By Id
+ * Logout
  */
-export const deleteBootResourceByIdMutation = (
-  options?: Partial<Options<DeleteBootResourceByIdData>>
-): UseMutationOptions<
-  DeleteBootResourceByIdResponse,
-  DeleteBootResourceByIdError,
-  Options<DeleteBootResourceByIdData>
-> => {
+export const logoutMutation = (
+  options?: Partial<Options<LogoutData>>
+): UseMutationOptions<LogoutResponse, LogoutError, Options<LogoutData>> => {
   const mutationOptions: UseMutationOptions<
-    DeleteBootResourceByIdResponse,
-    DeleteBootResourceByIdError,
-    Options<DeleteBootResourceByIdData>
+    LogoutResponse,
+    LogoutError,
+    Options<LogoutData>
   > = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteBootResourceById({
+      const { data } = await logout({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -897,24 +1031,21 @@ export const deleteBootResourceByIdMutation = (
   return mutationOptions;
 };
 
-export const getBootResourceByIdQueryKey = (
-  options: Options<GetBootResourceByIdData>
-) => createQueryKey("getBootResourceById", options);
+export const getBootloaderQueryKey = (options: Options<GetBootloaderData>) =>
+  createQueryKey("getBootloader", options);
 
 /**
- * Get Boot Resource By Id
+ * Get Bootloader
  */
-export const getBootResourceByIdOptions = (
-  options: Options<GetBootResourceByIdData>
-) =>
+export const getBootloaderOptions = (options: Options<GetBootloaderData>) =>
   queryOptions<
-    GetBootResourceByIdResponse,
-    GetBootResourceByIdError,
-    GetBootResourceByIdResponse,
-    ReturnType<typeof getBootResourceByIdQueryKey>
+    GetBootloaderResponse,
+    GetBootloaderError,
+    GetBootloaderResponse,
+    ReturnType<typeof getBootloaderQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getBootResourceById({
+      const { data } = await getBootloader({
         ...options,
         ...queryKey[0],
         signal,
@@ -922,27 +1053,27 @@ export const getBootResourceByIdOptions = (
       });
       return data;
     },
-    queryKey: getBootResourceByIdQueryKey(options),
+    queryKey: getBootloaderQueryKey(options),
   });
 
-export const listBootResourcesQueryKey = (
-  options?: Options<ListBootResourcesData>
-) => createQueryKey("listBootResources", options);
+export const listBootloadersQueryKey = (
+  options?: Options<ListBootloadersData>
+) => createQueryKey("listBootloaders", options);
 
 /**
- * List Boot Resources
+ * List Bootloaders
  */
-export const listBootResourcesOptions = (
-  options?: Options<ListBootResourcesData>
+export const listBootloadersOptions = (
+  options?: Options<ListBootloadersData>
 ) =>
   queryOptions<
-    ListBootResourcesResponse,
-    ListBootResourcesError,
-    ListBootResourcesResponse,
-    ReturnType<typeof listBootResourcesQueryKey>
+    ListBootloadersResponse,
+    ListBootloadersError,
+    ListBootloadersResponse,
+    ReturnType<typeof listBootloadersQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listBootResources({
+      const { data } = await listBootloaders({
         ...options,
         ...queryKey[0],
         signal,
@@ -950,90 +1081,7 @@ export const listBootResourcesOptions = (
       });
       return data;
     },
-    queryKey: listBootResourcesQueryKey(options),
-  });
-
-/**
- * Upload Boot Resource
- */
-export const uploadBootResourceMutation = (
-  options?: Partial<Options<UploadBootResourceData>>
-): UseMutationOptions<
-  UploadBootResourceResponse,
-  UploadBootResourceError,
-  Options<UploadBootResourceData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    UploadBootResourceResponse,
-    UploadBootResourceError,
-    Options<UploadBootResourceData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await uploadBootResource({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const checkStatusBootsourceBootsourceselectionQueryKey = (
-  options: Options<CheckStatusBootsourceBootsourceselectionData>
-) => createQueryKey("checkStatusBootsourceBootsourceselection", options);
-
-/**
- * Check Status Bootsource Bootsourceselection
- */
-export const checkStatusBootsourceBootsourceselectionOptions = (
-  options: Options<CheckStatusBootsourceBootsourceselectionData>
-) =>
-  queryOptions<
-    CheckStatusBootsourceBootsourceselectionResponse,
-    CheckStatusBootsourceBootsourceselectionError,
-    CheckStatusBootsourceBootsourceselectionResponse,
-    ReturnType<typeof checkStatusBootsourceBootsourceselectionQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await checkStatusBootsourceBootsourceselection({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: checkStatusBootsourceBootsourceselectionQueryKey(options),
-  });
-
-export const checkStatusesBootsourceBootsourceselectionQueryKey = (
-  options?: Options<CheckStatusesBootsourceBootsourceselectionData>
-) => createQueryKey("checkStatusesBootsourceBootsourceselection", options);
-
-/**
- * Check Statuses Bootsource Bootsourceselection
- */
-export const checkStatusesBootsourceBootsourceselectionOptions = (
-  options?: Options<CheckStatusesBootsourceBootsourceselectionData>
-) =>
-  queryOptions<
-    CheckStatusesBootsourceBootsourceselectionResponse,
-    CheckStatusesBootsourceBootsourceselectionError,
-    CheckStatusesBootsourceBootsourceselectionResponse,
-    ReturnType<typeof checkStatusesBootsourceBootsourceselectionQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await checkStatusesBootsourceBootsourceselection({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: checkStatusesBootsourceBootsourceselectionQueryKey(options),
+    queryKey: listBootloadersQueryKey(options),
   });
 
 export const listBootsourcesQueryKey = (
@@ -1390,6 +1438,116 @@ export const getBootsourceAvailableImagesOptions = (
     queryKey: getBootsourceAvailableImagesQueryKey(options),
   });
 
+export const getBootsourceBootsourceselectionResourceQueryKey = (
+  options: Options<GetBootsourceBootsourceselectionResourceData>
+) => createQueryKey("getBootsourceBootsourceselectionResource", options);
+
+/**
+ * Get Bootsource Bootsourceselection Resource
+ */
+export const getBootsourceBootsourceselectionResourceOptions = (
+  options: Options<GetBootsourceBootsourceselectionResourceData>
+) =>
+  queryOptions<
+    GetBootsourceBootsourceselectionResourceResponse,
+    GetBootsourceBootsourceselectionResourceError,
+    GetBootsourceBootsourceselectionResourceResponse,
+    ReturnType<typeof getBootsourceBootsourceselectionResourceQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBootsourceBootsourceselectionResource({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBootsourceBootsourceselectionResourceQueryKey(options),
+  });
+
+/**
+ * Import Bootsources
+ */
+export const importBootsourcesMutation = (
+  options?: Partial<Options<ImportBootsourcesData>>
+): UseMutationOptions<
+  ImportBootsourcesResponse,
+  ImportBootsourcesError,
+  Options<ImportBootsourcesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    ImportBootsourcesResponse,
+    ImportBootsourcesError,
+    Options<ImportBootsourcesData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await importBootsources({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listBootsourceBootsourceselectionResourcesQueryKey = (
+  options: Options<ListBootsourceBootsourceselectionResourcesData>
+) => createQueryKey("listBootsourceBootsourceselectionResources", options);
+
+/**
+ * List Bootsource Bootsourceselection Resources
+ */
+export const listBootsourceBootsourceselectionResourcesOptions = (
+  options: Options<ListBootsourceBootsourceselectionResourcesData>
+) =>
+  queryOptions<
+    ListBootsourceBootsourceselectionResourcesResponse,
+    ListBootsourceBootsourceselectionResourcesError,
+    ListBootsourceBootsourceselectionResourcesResponse,
+    ReturnType<typeof listBootsourceBootsourceselectionResourcesQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listBootsourceBootsourceselectionResources({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listBootsourceBootsourceselectionResourcesQueryKey(options),
+  });
+
+/**
+ * Stop Import Bootsources
+ */
+export const stopImportBootsourcesMutation = (
+  options?: Partial<Options<StopImportBootsourcesData>>
+): UseMutationOptions<
+  StopImportBootsourcesResponse,
+  StopImportBootsourcesError,
+  Options<StopImportBootsourcesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    StopImportBootsourcesResponse,
+    StopImportBootsourcesError,
+    Options<StopImportBootsourcesData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await stopImportBootsources({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 /**
  * Stop Sync Bootsource Bootsourceselection
  */
@@ -1443,6 +1601,249 @@ export const syncBootsourceBootsourceselectionMutation = (
   };
   return mutationOptions;
 };
+
+/**
+ * Update Manifest Bootsources
+ */
+export const updateManifestBootsourcesMutation = (
+  options?: Partial<Options<UpdateManifestBootsourcesData>>
+): UseMutationOptions<
+  unknown,
+  UpdateManifestBootsourcesError,
+  Options<UpdateManifestBootsourcesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    UpdateManifestBootsourcesError,
+    Options<UpdateManifestBootsourcesData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await updateManifestBootsources({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Bulk Delete Selections
+ */
+export const bulkDeleteSelectionsMutation = (
+  options?: Partial<Options<BulkDeleteSelectionsData>>
+): UseMutationOptions<
+  BulkDeleteSelectionsResponse,
+  BulkDeleteSelectionsError,
+  Options<BulkDeleteSelectionsData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    BulkDeleteSelectionsResponse,
+    BulkDeleteSelectionsError,
+    Options<BulkDeleteSelectionsData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await bulkDeleteSelections({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listSelectionsQueryKey = (options?: Options<ListSelectionsData>) =>
+  createQueryKey("listSelections", options);
+
+/**
+ * List Selections
+ */
+export const listSelectionsOptions = (options?: Options<ListSelectionsData>) =>
+  queryOptions<
+    ListSelectionsResponse,
+    ListSelectionsError,
+    ListSelectionsResponse,
+    ReturnType<typeof listSelectionsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listSelections({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listSelectionsQueryKey(options),
+  });
+
+/**
+ * Bulk Create Selections
+ */
+export const bulkCreateSelectionsMutation = (
+  options?: Partial<Options<BulkCreateSelectionsData>>
+): UseMutationOptions<
+  BulkCreateSelectionsResponse,
+  BulkCreateSelectionsError,
+  Options<BulkCreateSelectionsData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    BulkCreateSelectionsResponse,
+    BulkCreateSelectionsError,
+    Options<BulkCreateSelectionsData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await bulkCreateSelections({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getSelectionQueryKey = (options: Options<GetSelectionData>) =>
+  createQueryKey("getSelection", options);
+
+/**
+ * Get Selection
+ */
+export const getSelectionOptions = (options: Options<GetSelectionData>) =>
+  queryOptions<
+    GetSelectionResponse,
+    GetSelectionError,
+    GetSelectionResponse,
+    ReturnType<typeof getSelectionQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSelection({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSelectionQueryKey(options),
+  });
+
+export const getSelectionStatisticQueryKey = (
+  options: Options<GetSelectionStatisticData>
+) => createQueryKey("getSelectionStatistic", options);
+
+/**
+ * Get Selection Statistic
+ */
+export const getSelectionStatisticOptions = (
+  options: Options<GetSelectionStatisticData>
+) =>
+  queryOptions<
+    GetSelectionStatisticResponse,
+    GetSelectionStatisticError,
+    GetSelectionStatisticResponse,
+    ReturnType<typeof getSelectionStatisticQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSelectionStatistic({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSelectionStatisticQueryKey(options),
+  });
+
+export const getSelectionStatusQueryKey = (
+  options: Options<GetSelectionStatusData>
+) => createQueryKey("getSelectionStatus", options);
+
+/**
+ * Get Selection Status
+ */
+export const getSelectionStatusOptions = (
+  options: Options<GetSelectionStatusData>
+) =>
+  queryOptions<
+    GetSelectionStatusResponse,
+    GetSelectionStatusError,
+    GetSelectionStatusResponse,
+    ReturnType<typeof getSelectionStatusQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSelectionStatus({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSelectionStatusQueryKey(options),
+  });
+
+export const listSelectionStatisticQueryKey = (
+  options?: Options<ListSelectionStatisticData>
+) => createQueryKey("listSelectionStatistic", options);
+
+/**
+ * List Selection Statistic
+ */
+export const listSelectionStatisticOptions = (
+  options?: Options<ListSelectionStatisticData>
+) =>
+  queryOptions<
+    ListSelectionStatisticResponse,
+    ListSelectionStatisticError,
+    ListSelectionStatisticResponse,
+    ReturnType<typeof listSelectionStatisticQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listSelectionStatistic({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listSelectionStatisticQueryKey(options),
+  });
+
+export const listSelectionStatusQueryKey = (
+  options?: Options<ListSelectionStatusData>
+) => createQueryKey("listSelectionStatus", options);
+
+/**
+ * List Selection Status
+ */
+export const listSelectionStatusOptions = (
+  options?: Options<ListSelectionStatusData>
+) =>
+  queryOptions<
+    ListSelectionStatusResponse,
+    ListSelectionStatusError,
+    ListSelectionStatusResponse,
+    ReturnType<typeof listSelectionStatusQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listSelectionStatus({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listSelectionStatusQueryKey(options),
+  });
 
 export const getConfigurationQueryKey = (
   options: Options<GetConfigurationData>
@@ -1553,6 +1954,228 @@ export const setConfigurationsMutation = (
   };
   return mutationOptions;
 };
+
+/**
+ * Delete Custom Image By Id
+ */
+export const deleteCustomImageByIdMutation = (
+  options?: Partial<Options<DeleteCustomImageByIdData>>
+): UseMutationOptions<
+  DeleteCustomImageByIdResponse,
+  DeleteCustomImageByIdError,
+  Options<DeleteCustomImageByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteCustomImageByIdResponse,
+    DeleteCustomImageByIdError,
+    Options<DeleteCustomImageByIdData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await deleteCustomImageById({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getCustomImageByIdQueryKey = (
+  options: Options<GetCustomImageByIdData>
+) => createQueryKey("getCustomImageById", options);
+
+/**
+ * Get Custom Image By Id
+ */
+export const getCustomImageByIdOptions = (
+  options: Options<GetCustomImageByIdData>
+) =>
+  queryOptions<
+    GetCustomImageByIdResponse,
+    GetCustomImageByIdError,
+    GetCustomImageByIdResponse,
+    ReturnType<typeof getCustomImageByIdQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCustomImageById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCustomImageByIdQueryKey(options),
+  });
+
+export const getCustomImageStatisticQueryKey = (
+  options: Options<GetCustomImageStatisticData>
+) => createQueryKey("getCustomImageStatistic", options);
+
+/**
+ * Get Custom Image Statistic
+ */
+export const getCustomImageStatisticOptions = (
+  options: Options<GetCustomImageStatisticData>
+) =>
+  queryOptions<
+    GetCustomImageStatisticResponse,
+    GetCustomImageStatisticError,
+    GetCustomImageStatisticResponse,
+    ReturnType<typeof getCustomImageStatisticQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCustomImageStatistic({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCustomImageStatisticQueryKey(options),
+  });
+
+export const getCustomImageStatusQueryKey = (
+  options: Options<GetCustomImageStatusData>
+) => createQueryKey("getCustomImageStatus", options);
+
+/**
+ * Get Custom Image Status
+ */
+export const getCustomImageStatusOptions = (
+  options: Options<GetCustomImageStatusData>
+) =>
+  queryOptions<
+    GetCustomImageStatusResponse,
+    GetCustomImageStatusError,
+    GetCustomImageStatusResponse,
+    ReturnType<typeof getCustomImageStatusQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCustomImageStatus({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCustomImageStatusQueryKey(options),
+  });
+
+export const listCustomImagesQueryKey = (
+  options?: Options<ListCustomImagesData>
+) => createQueryKey("listCustomImages", options);
+
+/**
+ * List Custom Images
+ */
+export const listCustomImagesOptions = (
+  options?: Options<ListCustomImagesData>
+) =>
+  queryOptions<
+    ListCustomImagesResponse,
+    ListCustomImagesError,
+    ListCustomImagesResponse,
+    ReturnType<typeof listCustomImagesQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listCustomImages({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listCustomImagesQueryKey(options),
+  });
+
+/**
+ * Upload Custom Image
+ */
+export const uploadCustomImageMutation = (
+  options?: Partial<Options<UploadCustomImageData>>
+): UseMutationOptions<
+  UploadCustomImageResponse,
+  UploadCustomImageError,
+  Options<UploadCustomImageData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UploadCustomImageResponse,
+    UploadCustomImageError,
+    Options<UploadCustomImageData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await uploadCustomImage({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listCustomImagesStatisticQueryKey = (
+  options?: Options<ListCustomImagesStatisticData>
+) => createQueryKey("listCustomImagesStatistic", options);
+
+/**
+ * List Custom Images Statistic
+ */
+export const listCustomImagesStatisticOptions = (
+  options?: Options<ListCustomImagesStatisticData>
+) =>
+  queryOptions<
+    ListCustomImagesStatisticResponse,
+    ListCustomImagesStatisticError,
+    ListCustomImagesStatisticResponse,
+    ReturnType<typeof listCustomImagesStatisticQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listCustomImagesStatistic({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listCustomImagesStatisticQueryKey(options),
+  });
+
+export const listCustomImagesStatusQueryKey = (
+  options?: Options<ListCustomImagesStatusData>
+) => createQueryKey("listCustomImagesStatus", options);
+
+/**
+ * List Custom Images Status
+ */
+export const listCustomImagesStatusOptions = (
+  options?: Options<ListCustomImagesStatusData>
+) =>
+  queryOptions<
+    ListCustomImagesStatusResponse,
+    ListCustomImagesStatusError,
+    ListCustomImagesStatusResponse,
+    ReturnType<typeof listCustomImagesStatusQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listCustomImagesStatus({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listCustomImagesStatusQueryKey(options),
+  });
 
 export const listEventsQueryKey = (options?: Options<ListEventsData>) =>
   createQueryKey("listEvents", options);

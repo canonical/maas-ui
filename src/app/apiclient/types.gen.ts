@@ -159,19 +159,23 @@ export type AgentResponse = {
 };
 
 /**
- * AuthProviderInfoResponse
+ * AuthInfoResponse
  *
- * Content for a response returning info about a pre-configured OIDC provider
+ * Content for a response returning authentication flow information.
  */
-export type AuthProviderInfoResponse = {
+export type AuthInfoResponse = {
   /**
    * Auth Url
    */
-  auth_url: string;
+  auth_url?: string;
   /**
    * Provider Name
    */
-  provider_name: string;
+  provider_name?: string;
+  /**
+   * Is Oidc
+   */
+  is_oidc: boolean;
   /**
    * Kind
    */
@@ -388,37 +392,26 @@ export type BootResourceResponse = {
    */
   id: number;
   /**
-   * Name
+   * Os
    */
-  name: string;
+  os: string;
+  /**
+   * Release
+   */
+  release: string;
   /**
    * Architecture
    */
   architecture: string;
   /**
-   * Type
+   * Sub Architecture
    */
-  type: string;
-  /**
-   * Extra
-   */
-  extra: Record<string, unknown>;
-  /**
-   * Last Deployed
-   */
-  last_deployed?: string;
+  sub_architecture: string;
   /**
    * Kind
    */
   kind?: string;
 };
-
-/**
- * BootResourceStrType
- *
- * Possible selections for the type of `BootResource`.
- */
-export type BootResourceStrType = "synced" | "uploaded";
 
 /**
  * BootSourceAvailableImageListResponse
@@ -581,31 +574,6 @@ export type BootSourceResponse = {
 };
 
 /**
- * BootSourceSelectionListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
- */
-export type BootSourceSelectionListResponse = {
-  /**
-   * Items
-   */
-  items: BootSourceSelectionResponse[];
-  /**
-   * Total
-   */
-  total: number;
-  /**
-   * Next
-   */
-  next?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
-};
-
-/**
  * BootSourceSelectionRequest
  */
 export type BootSourceSelectionRequest = {
@@ -630,101 +598,23 @@ export type BootSourceSelectionRequest = {
 };
 
 /**
- * BootSourceSelectionResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
- */
-export type BootSourceSelectionResponse = {
-  _links?: BaseHal;
-  /**
-   *  Embedded
-   */
-  _embedded?: Record<string, unknown>;
-  /**
-   * Id
-   */
-  id: number;
-  /**
-   * Os
-   */
-  os: string;
-  /**
-   * Release
-   */
-  release: string;
-  /**
-   * Arch
-   */
-  arch: string;
-  /**
-   * Boot Source Id
-   */
-  boot_source_id: number;
-  /**
-   * Kind
-   */
-  kind?: string;
-};
-
-/**
- * BootSourceSelectionStatusListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
- */
-export type BootSourceSelectionStatusListResponse = {
-  /**
-   * Items
-   */
-  items: BootSourceSelectionStatusResponse[];
-  /**
-   * Total
-   */
-  total: number;
-  /**
-   * Next
-   */
-  next?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
-};
-
-/**
- * BootSourceSelectionStatusResponse
- */
-export type BootSourceSelectionStatusResponse = {
-  /**
-   * Selection Id
-   */
-  selection_id: number;
-  status: SelectionStatus;
-  update_status: SelectionUpdateStatus;
-  /**
-   * Sync Percentage
-   */
-  sync_percentage: number;
-  /**
-   * Selected
-   */
-  selected: boolean;
-  /**
-   * Kind
-   */
-  kind?: string;
-};
-
-/**
  * BootSourceSelectionSyncResponse
  */
 export type BootSourceSelectionSyncResponse = {
+  /**
+   * Monitor Url
+   */
+  monitor_url: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * BootSourceSyncResponse
+ */
+export type BootSourceSyncResponse = {
   /**
    * Monitor Url
    */
@@ -754,6 +644,70 @@ export type BootSourcesListResponse = {
    * Next
    */
   next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * BootloaderListResponse
+ *
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type BootloaderListResponse = {
+  /**
+   * Items
+   */
+  items: BootloaderResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * BootloaderResponse
+ *
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type BootloaderResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Name
+   */
+  name: string;
+  /**
+   * Architecture
+   */
+  architecture: string;
+  /**
+   * Bootloader Type
+   */
+  bootloader_type: string;
   /**
    * Kind
    */
@@ -1709,6 +1663,203 @@ export type IpRangeUpdateRequest = {
 };
 
 /**
+ * ImageListResponse
+ *
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type ImageListResponse = {
+  /**
+   * Items
+   */
+  items: ImageResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * ImageResponse
+ *
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type ImageResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Os
+   */
+  os: string;
+  /**
+   * Release
+   */
+  release: string;
+  /**
+   * Title
+   */
+  title: string;
+  /**
+   * Architecture
+   */
+  architecture: string;
+  /**
+   * Boot Source Id
+   */
+  boot_source_id?: number;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * ImageStatisticListResponse
+ *
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type ImageStatisticListResponse = {
+  /**
+   * Items
+   */
+  items: ImageStatisticResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * ImageStatisticResponse
+ */
+export type ImageStatisticResponse = {
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Last Updated
+   */
+  last_updated: string;
+  /**
+   * Last Deployed
+   */
+  last_deployed?: string;
+  /**
+   * Size
+   */
+  size: string;
+  /**
+   * Node Count
+   */
+  node_count: number;
+  /**
+   * Deploy To Memory
+   */
+  deploy_to_memory: boolean;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * ImageStatus
+ *
+ * An enumeration.
+ */
+export type ImageStatus = "Downloading" | "Ready" | "Waiting for download";
+
+/**
+ * ImageStatusListResponse
+ *
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type ImageStatusListResponse = {
+  /**
+   * Items
+   */
+  items: ImageStatusResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * ImageStatusResponse
+ */
+export type ImageStatusResponse = {
+  /**
+   * Id
+   */
+  id: number;
+  status: ImageStatus;
+  update_status: ImageUpdateStatus;
+  /**
+   * Sync Percentage
+   */
+  sync_percentage: number;
+  /**
+   * Selected
+   */
+  selected: boolean;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * ImageUpdateStatus
+ *
+ * An enumeration.
+ */
+export type ImageUpdateStatus =
+  | "Downloading"
+  | "No updates available"
+  | "Update available";
+
+/**
  * InterfaceLinkType
  *
  * The vocabulary of possible types to link a `Subnet` to a `Interface`.
@@ -2317,6 +2468,10 @@ export type OAuthProviderResponse = {
   id: number;
   metadata: ProviderMetadata;
   /**
+   * User Count
+   */
+  user_count?: number;
+  /**
    * Kind
    */
   kind?: string;
@@ -2748,6 +2903,10 @@ export type ProviderMetadata = {
    */
   introspection_endpoint?: string;
   /**
+   * Revocation Endpoint
+   */
+  revocation_endpoint?: string;
+  /**
    * Jwks Uri
    */
   jwks_uri: string;
@@ -2797,6 +2956,7 @@ export type PublicConfigName =
   | "maas_proxy_port"
   | "maas_syslog_port"
   | "max_node_commissioning_results"
+  | "max_node_deployment_results"
   | "max_node_installation_results"
   | "max_node_release_results"
   | "max_node_testing_results"
@@ -3485,21 +3645,34 @@ export type SslKeysWithSummaryListResponse = {
 };
 
 /**
- * SelectionStatus
- *
- * An enumeration.
+ * SelectionRequest
  */
-export type SelectionStatus = "Downloading" | "Ready" | "Waiting for download";
-
-/**
- * SelectionUpdateStatus
- *
- * An enumeration.
- */
-export type SelectionUpdateStatus =
-  | "Downloading"
-  | "No updates available"
-  | "Update available";
+export type SelectionRequest = {
+  /**
+   * Os
+   *
+   * The OS (e.g. ubuntu, centos) for which to import resources.
+   */
+  os: string;
+  /**
+   * Release
+   *
+   * The release for which to import resources.
+   */
+  release: string;
+  /**
+   * Arch
+   *
+   * The architecture list for which to import resources.
+   */
+  arch: string;
+  /**
+   * Boot Source Id
+   *
+   * The id of the boot source that this selection refers to
+   */
+  boot_source_id: number;
+};
 
 /**
  * SourceAvailableImageListResponse
@@ -5194,10 +5367,6 @@ export type DeleteOauthProviderError =
 
 export type DeleteOauthProviderResponses = {
   /**
-   * OK
-   */
-  200: OAuthProviderResponse;
-  /**
    * Successful Response
    */
   204: void;
@@ -5205,6 +5374,42 @@ export type DeleteOauthProviderResponses = {
 
 export type DeleteOauthProviderResponse =
   DeleteOauthProviderResponses[keyof DeleteOauthProviderResponses];
+
+export type GetOauthProviderByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Provider Id
+     */
+    provider_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}";
+};
+
+export type GetOauthProviderByIdErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetOauthProviderByIdError =
+  GetOauthProviderByIdErrors[keyof GetOauthProviderByIdErrors];
+
+export type GetOauthProviderByIdResponses = {
+  /**
+   * Successful Response
+   */
+  200: OAuthProviderResponse;
+};
+
+export type GetOauthProviderByIdResponse =
+  GetOauthProviderByIdResponses[keyof GetOauthProviderByIdResponses];
 
 export type UpdateOauthProviderData = {
   body: OAuthProviderRequest;
@@ -5304,14 +5509,59 @@ export type GetOauthProviderResponses = {
 export type GetOauthProviderResponse =
   GetOauthProviderResponses[keyof GetOauthProviderResponses];
 
-export type InitiateOauthFlowData = {
+export type HandleOauthCallbackData = {
   body?: never;
   path?: never;
-  query?: never;
-  url: "/MAAS/a/v3/auth/oauth/authorization_url";
+  query: {
+    /**
+     * Code
+     */
+    code: string;
+    /**
+     * State
+     */
+    state: string;
+  };
+  url: "/MAAS/a/v3/auth/oauth/callback";
 };
 
-export type InitiateOauthFlowErrors = {
+export type HandleOauthCallbackErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type HandleOauthCallbackError =
+  HandleOauthCallbackErrors[keyof HandleOauthCallbackErrors];
+
+export type HandleOauthCallbackResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type HandleOauthCallbackResponse =
+  HandleOauthCallbackResponses[keyof HandleOauthCallbackResponses];
+
+export type InitiateAuthFlowData = {
+  body?: never;
+  path?: never;
+  query: {
+    /**
+     * Email
+     */
+    email: string;
+  };
+  url: "/MAAS/a/v3/auth/login_info";
+};
+
+export type InitiateAuthFlowErrors = {
   /**
    * Not Found
    */
@@ -5322,18 +5572,18 @@ export type InitiateOauthFlowErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type InitiateOauthFlowError =
-  InitiateOauthFlowErrors[keyof InitiateOauthFlowErrors];
+export type InitiateAuthFlowError =
+  InitiateAuthFlowErrors[keyof InitiateAuthFlowErrors];
 
-export type InitiateOauthFlowResponses = {
+export type InitiateAuthFlowResponses = {
   /**
    * Successful Response
    */
-  200: AuthProviderInfoResponse;
+  200: AuthInfoResponse;
 };
 
-export type InitiateOauthFlowResponse =
-  InitiateOauthFlowResponses[keyof InitiateOauthFlowResponses];
+export type InitiateAuthFlowResponse =
+  InitiateAuthFlowResponses[keyof InitiateAuthFlowResponses];
 
 export type LoginData = {
   body: BodyLogin;
@@ -5364,65 +5614,44 @@ export type LoginResponses = {
 
 export type LoginResponse = LoginResponses[keyof LoginResponses];
 
-export type DeleteBootResourceByIdData = {
+export type LogoutData = {
   body?: never;
-  headers?: {
-    /**
-     * If-Match
-     */
-    "if-match"?: string;
-  };
-  path: {
-    /**
-     * Boot Resource Id
-     */
-    boot_resource_id: number;
-  };
+  path?: never;
   query?: never;
-  url: "/MAAS/a/v3/boot_resources/{boot_resource_id}";
+  url: "/MAAS/a/v3/auth/logout";
 };
 
-export type DeleteBootResourceByIdErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Precondition Failed
-   */
-  412: PreconditionFailedBodyResponse;
+export type LogoutErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type DeleteBootResourceByIdError =
-  DeleteBootResourceByIdErrors[keyof DeleteBootResourceByIdErrors];
+export type LogoutError = LogoutErrors[keyof LogoutErrors];
 
-export type DeleteBootResourceByIdResponses = {
+export type LogoutResponses = {
   /**
    * Successful Response
    */
   204: void;
 };
 
-export type DeleteBootResourceByIdResponse =
-  DeleteBootResourceByIdResponses[keyof DeleteBootResourceByIdResponses];
+export type LogoutResponse = LogoutResponses[keyof LogoutResponses];
 
-export type GetBootResourceByIdData = {
+export type GetBootloaderData = {
   body?: never;
   path: {
     /**
-     * Boot Resource Id
+     * Bootloader Id
      */
-    boot_resource_id: number;
+    bootloader_id: number;
   };
   query?: never;
-  url: "/MAAS/a/v3/boot_resources/{boot_resource_id}";
+  url: "/MAAS/a/v3/bootloaders/{bootloader_id}";
 };
 
-export type GetBootResourceByIdErrors = {
+export type GetBootloaderErrors = {
   /**
    * Not Found
    */
@@ -5433,27 +5662,22 @@ export type GetBootResourceByIdErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetBootResourceByIdError =
-  GetBootResourceByIdErrors[keyof GetBootResourceByIdErrors];
+export type GetBootloaderError = GetBootloaderErrors[keyof GetBootloaderErrors];
 
-export type GetBootResourceByIdResponses = {
+export type GetBootloaderResponses = {
   /**
    * Successful Response
    */
-  200: BootResourceResponse;
+  200: BootloaderResponse;
 };
 
-export type GetBootResourceByIdResponse =
-  GetBootResourceByIdResponses[keyof GetBootResourceByIdResponses];
+export type GetBootloaderResponse =
+  GetBootloaderResponses[keyof GetBootloaderResponses];
 
-export type ListBootResourcesData = {
+export type ListBootloadersData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * Filter boot resources of a particular type
-     */
-    type?: BootResourceStrType;
     /**
      * Page
      */
@@ -5463,190 +5687,28 @@ export type ListBootResourcesData = {
      */
     size?: number;
   };
-  url: "/MAAS/a/v3/boot_resources";
+  url: "/MAAS/a/v3/bootloaders";
 };
 
-export type ListBootResourcesErrors = {
+export type ListBootloadersErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListBootResourcesError =
-  ListBootResourcesErrors[keyof ListBootResourcesErrors];
+export type ListBootloadersError =
+  ListBootloadersErrors[keyof ListBootloadersErrors];
 
-export type ListBootResourcesResponses = {
+export type ListBootloadersResponses = {
   /**
    * Successful Response
    */
-  200: BootResourceListResponse;
+  200: BootloaderListResponse;
 };
 
-export type ListBootResourcesResponse =
-  ListBootResourcesResponses[keyof ListBootResourcesResponses];
-
-export type UploadBootResourceData = {
-  /**
-   * Image content, presented as an `application/octet-stream` file upload.
-   */
-  body: Blob | File;
-  headers: {
-    /**
-     * Name
-     *
-     * Name of the boot resource.
-     */
-    name: string;
-    /**
-     * Sha256
-     *
-     * The `sha256` hash of the resource.
-     */
-    sha256: string;
-    /**
-     * Size
-     *
-     * The size of the resource in bytes.
-     */
-    size: number;
-    /**
-     * Architecture
-     *
-     * Architecture the boot resource supports.
-     */
-    architecture: string;
-    /**
-     * Filetype for uploaded content.
-     */
-    "file-type"?: BootResourceFileTypeChoice;
-    /**
-     * Title
-     *
-     * Title for the boot resource.
-     */
-    title?: string;
-    /**
-     * Base-Image
-     *
-     * The Base OS image a custom image is built on top of. Only required for custom image.
-     */
-    "base-image"?: string;
-  };
-  path?: never;
-  query?: never;
-  url: "/MAAS/a/v3/boot_resources";
-};
-
-export type UploadBootResourceErrors = {
-  /**
-   * Bad Request
-   */
-  400: BadRequestBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type UploadBootResourceError =
-  UploadBootResourceErrors[keyof UploadBootResourceErrors];
-
-export type UploadBootResourceResponses = {
-  /**
-   * Successful Response
-   */
-  201: BootResourceResponse;
-};
-
-export type UploadBootResourceResponse =
-  UploadBootResourceResponses[keyof UploadBootResourceResponses];
-
-export type CheckStatusBootsourceBootsourceselectionData = {
-  body?: never;
-  path: {
-    /**
-     * Boot Source Id
-     */
-    boot_source_id: number;
-    /**
-     * Id
-     */
-    id: number;
-  };
-  query?: never;
-  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}:check_status";
-};
-
-export type CheckStatusBootsourceBootsourceselectionErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type CheckStatusBootsourceBootsourceselectionError =
-  CheckStatusBootsourceBootsourceselectionErrors[keyof CheckStatusBootsourceBootsourceselectionErrors];
-
-export type CheckStatusBootsourceBootsourceselectionResponses = {
-  /**
-   * Successful Response
-   */
-  200: BootSourceSelectionStatusResponse;
-};
-
-export type CheckStatusBootsourceBootsourceselectionResponse =
-  CheckStatusBootsourceBootsourceselectionResponses[keyof CheckStatusBootsourceBootsourceselectionResponses];
-
-export type CheckStatusesBootsourceBootsourceselectionData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Id
-     *
-     * Filter by Boot Source Selection ID
-     */
-    id?: number[];
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Size
-     */
-    size?: number;
-  };
-  url: "/MAAS/a/v3/boot_source_selection_statuses";
-};
-
-export type CheckStatusesBootsourceBootsourceselectionErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type CheckStatusesBootsourceBootsourceselectionError =
-  CheckStatusesBootsourceBootsourceselectionErrors[keyof CheckStatusesBootsourceBootsourceselectionErrors];
-
-export type CheckStatusesBootsourceBootsourceselectionResponses = {
-  /**
-   * Successful Response
-   */
-  200: BootSourceSelectionStatusResponse;
-};
-
-export type CheckStatusesBootsourceBootsourceselectionResponse =
-  CheckStatusesBootsourceBootsourceselectionResponses[keyof CheckStatusesBootsourceBootsourceselectionResponses];
+export type ListBootloadersResponse =
+  ListBootloadersResponses[keyof ListBootloadersResponses];
 
 export type ListBootsourcesData = {
   body?: never;
@@ -5750,7 +5812,7 @@ export type ListBootsourceBootsourceselectionResponses = {
   /**
    * Successful Response
    */
-  200: BootSourceSelectionListResponse;
+  200: ImageListResponse;
 };
 
 export type ListBootsourceBootsourceselectionResponse =
@@ -5786,7 +5848,7 @@ export type CreateBootsourceBootsourceselectionResponses = {
   /**
    * Successful Response
    */
-  201: BootSourceSelectionResponse;
+  201: ImageResponse;
 };
 
 export type CreateBootsourceBootsourceselectionResponse =
@@ -5985,7 +6047,7 @@ export type GetBootsourceBootsourceselectionResponses = {
   /**
    * Successful Response
    */
-  200: BootSourceSelectionResponse;
+  200: ImageResponse;
 };
 
 export type GetBootsourceBootsourceselectionResponse =
@@ -6134,6 +6196,153 @@ export type GetBootsourceAvailableImagesResponses = {
 export type GetBootsourceAvailableImagesResponse =
   GetBootsourceAvailableImagesResponses[keyof GetBootsourceAvailableImagesResponses];
 
+export type GetBootsourceBootsourceselectionResourceData = {
+  body?: never;
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+    /**
+     * Selection Id
+     */
+    selection_id: number;
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{selection_id}/resources/{id}";
+};
+
+export type GetBootsourceBootsourceselectionResourceErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetBootsourceBootsourceselectionResourceError =
+  GetBootsourceBootsourceselectionResourceErrors[keyof GetBootsourceBootsourceselectionResourceErrors];
+
+export type GetBootsourceBootsourceselectionResourceResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootResourceResponse;
+};
+
+export type GetBootsourceBootsourceselectionResourceResponse =
+  GetBootsourceBootsourceselectionResourceResponses[keyof GetBootsourceBootsourceselectionResourceResponses];
+
+export type ImportBootsourcesData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources:import";
+};
+
+export type ImportBootsourcesErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ImportBootsourcesError =
+  ImportBootsourcesErrors[keyof ImportBootsourcesErrors];
+
+export type ImportBootsourcesResponses = {
+  /**
+   * Successful Response
+   */
+  202: BootSourceSyncResponse;
+};
+
+export type ImportBootsourcesResponse =
+  ImportBootsourcesResponses[keyof ImportBootsourcesResponses];
+
+export type ListBootsourceBootsourceselectionResourcesData = {
+  body?: never;
+  path: {
+    /**
+     * Boot Source Id
+     */
+    boot_source_id: number;
+    /**
+     * Selection Id
+     */
+    selection_id: number;
+  };
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{selection_id}/resources";
+};
+
+export type ListBootsourceBootsourceselectionResourcesErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListBootsourceBootsourceselectionResourcesError =
+  ListBootsourceBootsourceselectionResourcesErrors[keyof ListBootsourceBootsourceselectionResourcesErrors];
+
+export type ListBootsourceBootsourceselectionResourcesResponses = {
+  /**
+   * Successful Response
+   */
+  200: BootResourceListResponse;
+};
+
+export type ListBootsourceBootsourceselectionResourcesResponse =
+  ListBootsourceBootsourceselectionResourcesResponses[keyof ListBootsourceBootsourceselectionResourcesResponses];
+
+export type StopImportBootsourcesData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources:stop_import";
+};
+
+export type StopImportBootsourcesErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type StopImportBootsourcesError =
+  StopImportBootsourcesErrors[keyof StopImportBootsourcesErrors];
+
+export type StopImportBootsourcesResponses = {
+  /**
+   * Successful Response
+   */
+  202: BootSourceSyncResponse;
+};
+
+export type StopImportBootsourcesResponse =
+  StopImportBootsourcesResponses[keyof StopImportBootsourcesResponses];
+
 export type StopSyncBootsourceBootsourceselectionData = {
   body?: never;
   path: {
@@ -6218,6 +6427,335 @@ export type SyncBootsourceBootsourceselectionResponses = {
 
 export type SyncBootsourceBootsourceselectionResponse =
   SyncBootsourceBootsourceselectionResponses[keyof SyncBootsourceBootsourceselectionResponses];
+
+export type UpdateManifestBootsourcesData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/boot_sources:update_manifest";
+};
+
+export type UpdateManifestBootsourcesErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateManifestBootsourcesError =
+  UpdateManifestBootsourcesErrors[keyof UpdateManifestBootsourcesErrors];
+
+export type UpdateManifestBootsourcesResponses = {
+  /**
+   * Successful Response
+   */
+  202: unknown;
+};
+
+export type BulkDeleteSelectionsData = {
+  body?: never;
+  path?: never;
+  query: {
+    /**
+     * Id
+     *
+     * ids of selections to delete
+     */
+    id: number[];
+  };
+  url: "/MAAS/a/v3/selections";
+};
+
+export type BulkDeleteSelectionsErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type BulkDeleteSelectionsError =
+  BulkDeleteSelectionsErrors[keyof BulkDeleteSelectionsErrors];
+
+export type BulkDeleteSelectionsResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type BulkDeleteSelectionsResponse =
+  BulkDeleteSelectionsResponses[keyof BulkDeleteSelectionsResponses];
+
+export type ListSelectionsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/selections";
+};
+
+export type ListSelectionsErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListSelectionsError =
+  ListSelectionsErrors[keyof ListSelectionsErrors];
+
+export type ListSelectionsResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageListResponse;
+};
+
+export type ListSelectionsResponse =
+  ListSelectionsResponses[keyof ListSelectionsResponses];
+
+export type BulkCreateSelectionsData = {
+  /**
+   * Selections To Create
+   */
+  body: SelectionRequest[];
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/selections";
+};
+
+export type BulkCreateSelectionsErrors = {
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type BulkCreateSelectionsError =
+  BulkCreateSelectionsErrors[keyof BulkCreateSelectionsErrors];
+
+export type BulkCreateSelectionsResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageListResponse;
+};
+
+export type BulkCreateSelectionsResponse =
+  BulkCreateSelectionsResponses[keyof BulkCreateSelectionsResponses];
+
+export type GetSelectionData = {
+  body?: never;
+  path: {
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/selections/{id}";
+};
+
+export type GetSelectionErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetSelectionError = GetSelectionErrors[keyof GetSelectionErrors];
+
+export type GetSelectionResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageResponse;
+};
+
+export type GetSelectionResponse =
+  GetSelectionResponses[keyof GetSelectionResponses];
+
+export type GetSelectionStatisticData = {
+  body?: never;
+  path: {
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/selection_statistics/{id}";
+};
+
+export type GetSelectionStatisticErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetSelectionStatisticError =
+  GetSelectionStatisticErrors[keyof GetSelectionStatisticErrors];
+
+export type GetSelectionStatisticResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageStatisticResponse;
+};
+
+export type GetSelectionStatisticResponse =
+  GetSelectionStatisticResponses[keyof GetSelectionStatisticResponses];
+
+export type GetSelectionStatusData = {
+  body?: never;
+  path: {
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/selection_statuses/{id}";
+};
+
+export type GetSelectionStatusErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetSelectionStatusError =
+  GetSelectionStatusErrors[keyof GetSelectionStatusErrors];
+
+export type GetSelectionStatusResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageStatusResponse;
+};
+
+export type GetSelectionStatusResponse =
+  GetSelectionStatusResponses[keyof GetSelectionStatusResponses];
+
+export type ListSelectionStatisticData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Id
+     *
+     * Filter by Boot Source Selection ID
+     */
+    id?: number[];
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/selection_statistics";
+};
+
+export type ListSelectionStatisticErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListSelectionStatisticError =
+  ListSelectionStatisticErrors[keyof ListSelectionStatisticErrors];
+
+export type ListSelectionStatisticResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageStatisticListResponse;
+};
+
+export type ListSelectionStatisticResponse =
+  ListSelectionStatisticResponses[keyof ListSelectionStatisticResponses];
+
+export type ListSelectionStatusData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Id
+     *
+     * Filter by Boot Source Selection ID
+     */
+    id?: number[];
+    /**
+     * Selected
+     *
+     * Filter by whether the boot source selection is selected
+     */
+    selected?: boolean;
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/selection_statuses";
+};
+
+export type ListSelectionStatusErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListSelectionStatusError =
+  ListSelectionStatusErrors[keyof ListSelectionStatusErrors];
+
+export type ListSelectionStatusResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageStatusListResponse;
+};
+
+export type ListSelectionStatusResponse =
+  ListSelectionStatusResponses[keyof ListSelectionStatusResponses];
 
 export type GetConfigurationData = {
   body?: never;
@@ -6353,6 +6891,348 @@ export type SetConfigurationsResponses = {
 
 export type SetConfigurationsResponse =
   SetConfigurationsResponses[keyof SetConfigurationsResponses];
+
+export type DeleteCustomImageByIdData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Boot Resource Id
+     */
+    boot_resource_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/custom_images/{boot_resource_id}";
+};
+
+export type DeleteCustomImageByIdErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Precondition Failed
+   */
+  412: PreconditionFailedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteCustomImageByIdError =
+  DeleteCustomImageByIdErrors[keyof DeleteCustomImageByIdErrors];
+
+export type DeleteCustomImageByIdResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteCustomImageByIdResponse =
+  DeleteCustomImageByIdResponses[keyof DeleteCustomImageByIdResponses];
+
+export type GetCustomImageByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Boot Resource Id
+     */
+    boot_resource_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/custom_images/{boot_resource_id}";
+};
+
+export type GetCustomImageByIdErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetCustomImageByIdError =
+  GetCustomImageByIdErrors[keyof GetCustomImageByIdErrors];
+
+export type GetCustomImageByIdResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageResponse;
+};
+
+export type GetCustomImageByIdResponse =
+  GetCustomImageByIdResponses[keyof GetCustomImageByIdResponses];
+
+export type GetCustomImageStatisticData = {
+  body?: never;
+  path: {
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/custom_image_statistics/{id}";
+};
+
+export type GetCustomImageStatisticErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetCustomImageStatisticError =
+  GetCustomImageStatisticErrors[keyof GetCustomImageStatisticErrors];
+
+export type GetCustomImageStatisticResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageStatisticResponse;
+};
+
+export type GetCustomImageStatisticResponse =
+  GetCustomImageStatisticResponses[keyof GetCustomImageStatisticResponses];
+
+export type GetCustomImageStatusData = {
+  body?: never;
+  path: {
+    /**
+     * Id
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/custom_image_statuses/{id}";
+};
+
+export type GetCustomImageStatusErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetCustomImageStatusError =
+  GetCustomImageStatusErrors[keyof GetCustomImageStatusErrors];
+
+export type GetCustomImageStatusResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageStatusResponse;
+};
+
+export type GetCustomImageStatusResponse =
+  GetCustomImageStatusResponses[keyof GetCustomImageStatusResponses];
+
+export type ListCustomImagesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/custom_images";
+};
+
+export type ListCustomImagesErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListCustomImagesError =
+  ListCustomImagesErrors[keyof ListCustomImagesErrors];
+
+export type ListCustomImagesResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageListResponse;
+};
+
+export type ListCustomImagesResponse =
+  ListCustomImagesResponses[keyof ListCustomImagesResponses];
+
+export type UploadCustomImageData = {
+  /**
+   * Image content, presented as an `application/octet-stream` file upload.
+   */
+  body: Blob | File;
+  headers: {
+    /**
+     * Name
+     *
+     * Name of the boot resource.
+     */
+    name: string;
+    /**
+     * Sha256
+     *
+     * The `sha256` hash of the resource.
+     */
+    sha256: string;
+    /**
+     * Size
+     *
+     * The size of the resource in bytes.
+     */
+    size: number;
+    /**
+     * Architecture
+     *
+     * Architecture the boot resource supports.
+     */
+    architecture: string;
+    /**
+     * Filetype for uploaded content.
+     */
+    "file-type"?: BootResourceFileTypeChoice;
+    /**
+     * Title
+     *
+     * Title for the boot resource.
+     */
+    title?: string;
+    /**
+     * Base-Image
+     *
+     * The Base OS image a custom image is built on top of. Only required for custom image.
+     */
+    "base-image"?: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/custom_images";
+};
+
+export type UploadCustomImageErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UploadCustomImageError =
+  UploadCustomImageErrors[keyof UploadCustomImageErrors];
+
+export type UploadCustomImageResponses = {
+  /**
+   * Successful Response
+   */
+  201: ImageResponse;
+};
+
+export type UploadCustomImageResponse =
+  UploadCustomImageResponses[keyof UploadCustomImageResponses];
+
+export type ListCustomImagesStatisticData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Id
+     *
+     * Filter by Custom Image ID
+     */
+    id?: number[];
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/custom_image_statistics";
+};
+
+export type ListCustomImagesStatisticErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListCustomImagesStatisticError =
+  ListCustomImagesStatisticErrors[keyof ListCustomImagesStatisticErrors];
+
+export type ListCustomImagesStatisticResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageStatisticListResponse;
+};
+
+export type ListCustomImagesStatisticResponse =
+  ListCustomImagesStatisticResponses[keyof ListCustomImagesStatisticResponses];
+
+export type ListCustomImagesStatusData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Id
+     *
+     * Filter by Custom Image ID
+     */
+    id?: number[];
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/custom_image_statuses";
+};
+
+export type ListCustomImagesStatusErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListCustomImagesStatusError =
+  ListCustomImagesStatusErrors[keyof ListCustomImagesStatusErrors];
+
+export type ListCustomImagesStatusResponses = {
+  /**
+   * Successful Response
+   */
+  200: ImageStatusListResponse;
+};
+
+export type ListCustomImagesStatusResponse =
+  ListCustomImagesStatusResponses[keyof ListCustomImagesStatusResponses];
 
 export type ListEventsData = {
   body?: never;

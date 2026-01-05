@@ -9,18 +9,18 @@ import {
 } from "./client";
 import { client } from "./client.gen";
 import type {
+  BulkCreateSelectionsData,
+  BulkCreateSelectionsErrors,
+  BulkCreateSelectionsResponses,
+  BulkDeleteSelectionsData,
+  BulkDeleteSelectionsErrors,
+  BulkDeleteSelectionsResponses,
   ChangePasswordAdminData,
   ChangePasswordAdminErrors,
   ChangePasswordAdminResponses,
   ChangePasswordUserData,
   ChangePasswordUserErrors,
   ChangePasswordUserResponses,
-  CheckStatusBootsourceBootsourceselectionData,
-  CheckStatusBootsourceBootsourceselectionErrors,
-  CheckStatusBootsourceBootsourceselectionResponses,
-  CheckStatusesBootsourceBootsourceselectionData,
-  CheckStatusesBootsourceBootsourceselectionErrors,
-  CheckStatusesBootsourceBootsourceselectionResponses,
   ClearAllDiscoveriesWithOptionalIpAndMacData,
   ClearAllDiscoveriesWithOptionalIpAndMacErrors,
   ClearAllDiscoveriesWithOptionalIpAndMacResponses,
@@ -99,15 +99,15 @@ import type {
   CreateZoneData,
   CreateZoneErrors,
   CreateZoneResponses,
-  DeleteBootResourceByIdData,
-  DeleteBootResourceByIdErrors,
-  DeleteBootResourceByIdResponses,
   DeleteBootsourceBootsourceselectionData,
   DeleteBootsourceBootsourceselectionErrors,
   DeleteBootsourceBootsourceselectionResponses,
   DeleteBootsourceData,
   DeleteBootsourceErrors,
   DeleteBootsourceResponses,
+  DeleteCustomImageByIdData,
+  DeleteCustomImageByIdErrors,
+  DeleteCustomImageByIdResponses,
   DeleteDomainData,
   DeleteDomainErrors,
   DeleteDomainResponses,
@@ -186,14 +186,17 @@ import type {
   GetAllAvailableImagesData,
   GetAllAvailableImagesErrors,
   GetAllAvailableImagesResponses,
-  GetBootResourceByIdData,
-  GetBootResourceByIdErrors,
-  GetBootResourceByIdResponses,
+  GetBootloaderData,
+  GetBootloaderErrors,
+  GetBootloaderResponses,
   GetBootsourceAvailableImagesData,
   GetBootsourceAvailableImagesErrors,
   GetBootsourceAvailableImagesResponses,
   GetBootsourceBootsourceselectionData,
   GetBootsourceBootsourceselectionErrors,
+  GetBootsourceBootsourceselectionResourceData,
+  GetBootsourceBootsourceselectionResourceErrors,
+  GetBootsourceBootsourceselectionResourceResponses,
   GetBootsourceBootsourceselectionResponses,
   GetBootsourceData,
   GetBootsourceErrors,
@@ -204,6 +207,15 @@ import type {
   GetConfigurationsData,
   GetConfigurationsErrors,
   GetConfigurationsResponses,
+  GetCustomImageByIdData,
+  GetCustomImageByIdErrors,
+  GetCustomImageByIdResponses,
+  GetCustomImageStatisticData,
+  GetCustomImageStatisticErrors,
+  GetCustomImageStatisticResponses,
+  GetCustomImageStatusData,
+  GetCustomImageStatusErrors,
+  GetCustomImageStatusResponses,
   GetDiscoveryData,
   GetDiscoveryErrors,
   GetDiscoveryResponses,
@@ -246,6 +258,9 @@ import type {
   GetNotificationData,
   GetNotificationErrors,
   GetNotificationResponses,
+  GetOauthProviderByIdData,
+  GetOauthProviderByIdErrors,
+  GetOauthProviderByIdResponses,
   GetOauthProviderData,
   GetOauthProviderErrors,
   GetOauthProviderResponses,
@@ -261,6 +276,15 @@ import type {
   GetResourcePoolData,
   GetResourcePoolErrors,
   GetResourcePoolResponses,
+  GetSelectionData,
+  GetSelectionErrors,
+  GetSelectionResponses,
+  GetSelectionStatisticData,
+  GetSelectionStatisticErrors,
+  GetSelectionStatisticResponses,
+  GetSelectionStatusData,
+  GetSelectionStatusErrors,
+  GetSelectionStatusResponses,
   GetSpaceData,
   GetSpaceErrors,
   GetSpaceResponses,
@@ -291,21 +315,39 @@ import type {
   GetZoneData,
   GetZoneErrors,
   GetZoneResponses,
+  HandleOauthCallbackData,
+  HandleOauthCallbackErrors,
+  HandleOauthCallbackResponses,
+  ImportBootsourcesData,
+  ImportBootsourcesErrors,
+  ImportBootsourcesResponses,
   ImportUserSshkeysData,
   ImportUserSshkeysErrors,
   ImportUserSshkeysResponses,
-  InitiateOauthFlowData,
-  InitiateOauthFlowErrors,
-  InitiateOauthFlowResponses,
-  ListBootResourcesData,
-  ListBootResourcesErrors,
-  ListBootResourcesResponses,
+  InitiateAuthFlowData,
+  InitiateAuthFlowErrors,
+  InitiateAuthFlowResponses,
+  ListBootloadersData,
+  ListBootloadersErrors,
+  ListBootloadersResponses,
   ListBootsourceBootsourceselectionData,
   ListBootsourceBootsourceselectionErrors,
+  ListBootsourceBootsourceselectionResourcesData,
+  ListBootsourceBootsourceselectionResourcesErrors,
+  ListBootsourceBootsourceselectionResourcesResponses,
   ListBootsourceBootsourceselectionResponses,
   ListBootsourcesData,
   ListBootsourcesErrors,
   ListBootsourcesResponses,
+  ListCustomImagesData,
+  ListCustomImagesErrors,
+  ListCustomImagesResponses,
+  ListCustomImagesStatisticData,
+  ListCustomImagesStatisticErrors,
+  ListCustomImagesStatisticResponses,
+  ListCustomImagesStatusData,
+  ListCustomImagesStatusErrors,
+  ListCustomImagesStatusResponses,
   ListDiscoveriesData,
   ListDiscoveriesErrors,
   ListDiscoveriesResponses,
@@ -372,6 +414,15 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryErrors,
   ListResourcePoolsWithSummaryResponses,
+  ListSelectionsData,
+  ListSelectionsErrors,
+  ListSelectionsResponses,
+  ListSelectionStatisticData,
+  ListSelectionStatisticErrors,
+  ListSelectionStatisticResponses,
+  ListSelectionStatusData,
+  ListSelectionStatusErrors,
+  ListSelectionStatusResponses,
   ListSpacesData,
   ListSpacesErrors,
   ListSpacesResponses,
@@ -399,12 +450,18 @@ import type {
   LoginData,
   LoginErrors,
   LoginResponses,
+  LogoutData,
+  LogoutErrors,
+  LogoutResponses,
   SetConfigurationData,
   SetConfigurationErrors,
   SetConfigurationResponses,
   SetConfigurationsData,
   SetConfigurationsErrors,
   SetConfigurationsResponses,
+  StopImportBootsourcesData,
+  StopImportBootsourcesErrors,
+  StopImportBootsourcesResponses,
   StopSyncBootsourceBootsourceselectionData,
   StopSyncBootsourceBootsourceselectionErrors,
   StopSyncBootsourceBootsourceselectionResponses,
@@ -435,6 +492,9 @@ import type {
   UpdateFabricVlanSubnetStaticrouteData,
   UpdateFabricVlanSubnetStaticrouteErrors,
   UpdateFabricVlanSubnetStaticrouteResponses,
+  UpdateManifestBootsourcesData,
+  UpdateManifestBootsourcesErrors,
+  UpdateManifestBootsourcesResponses,
   UpdateNotificationData,
   UpdateNotificationErrors,
   UpdateNotificationResponses,
@@ -462,9 +522,9 @@ import type {
   UpdateZoneData,
   UpdateZoneErrors,
   UpdateZoneResponses,
-  UploadBootResourceData,
-  UploadBootResourceErrors,
-  UploadBootResourceResponses,
+  UploadCustomImageData,
+  UploadCustomImageErrors,
+  UploadCustomImageResponses,
 } from "./types.gen";
 
 export type Options<
@@ -555,6 +615,28 @@ export const deleteOauthProvider = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Get Oauth Provider By Id
+ */
+export const getOauthProviderById = <ThrowOnError extends boolean = false>(
+  options: Options<GetOauthProviderByIdData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetOauthProviderByIdResponses,
+    GetOauthProviderByIdErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}",
+    ...options,
+  });
+};
+
+/**
  * Update Oauth Provider
  */
 export const updateOauthProvider = <ThrowOnError extends boolean = false>(
@@ -625,19 +707,38 @@ export const getOauthProvider = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Initiate Oauth Flow
+ * Handle Oauth Callback
  *
- * Initiate the OAuth flow by generating the authorization URL and setting the necessary security cookies.
+ * Handle the OAuth callback by exchanging the authorization code for tokens.
  */
-export const initiateOauthFlow = <ThrowOnError extends boolean = false>(
-  options?: Options<InitiateOauthFlowData, ThrowOnError>
+export const handleOauthCallback = <ThrowOnError extends boolean = false>(
+  options: Options<HandleOauthCallbackData, ThrowOnError>
 ) => {
-  return (options?.client ?? client).get<
-    InitiateOauthFlowResponses,
-    InitiateOauthFlowErrors,
+  return (options.client ?? client).get<
+    HandleOauthCallbackResponses,
+    HandleOauthCallbackErrors,
     ThrowOnError
   >({
-    url: "/MAAS/a/v3/auth/oauth/authorization_url",
+    url: "/MAAS/a/v3/auth/oauth/callback",
+    ...options,
+  });
+};
+
+/**
+ * Initiate Auth Flow
+ *
+ * Initiate the OAuth flow by generating the authorization URL and setting the necessary security cookies,
+ * if the user is an OIDC user.
+ */
+export const initiateAuthFlow = <ThrowOnError extends boolean = false>(
+  options: Options<InitiateAuthFlowData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    InitiateAuthFlowResponses,
+    InitiateAuthFlowErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/auth/login_info",
     ...options,
   });
 };
@@ -664,36 +765,30 @@ export const login = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Delete Boot Resource By Id
+ * Logout
  */
-export const deleteBootResourceById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteBootResourceByIdData, ThrowOnError>
+export const logout = <ThrowOnError extends boolean = false>(
+  options?: Options<LogoutData, ThrowOnError>
 ) => {
-  return (options.client ?? client).delete<
-    DeleteBootResourceByIdResponses,
-    DeleteBootResourceByIdErrors,
+  return (options?.client ?? client).post<
+    LogoutResponses,
+    LogoutErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/boot_resources/{boot_resource_id}",
+    url: "/MAAS/a/v3/auth/logout",
     ...options,
   });
 };
 
 /**
- * Get Boot Resource By Id
+ * Get Bootloader
  */
-export const getBootResourceById = <ThrowOnError extends boolean = false>(
-  options: Options<GetBootResourceByIdData, ThrowOnError>
+export const getBootloader = <ThrowOnError extends boolean = false>(
+  options: Options<GetBootloaderData, ThrowOnError>
 ) => {
   return (options.client ?? client).get<
-    GetBootResourceByIdResponses,
-    GetBootResourceByIdErrors,
+    GetBootloaderResponses,
+    GetBootloaderErrors,
     ThrowOnError
   >({
     security: [
@@ -702,20 +797,20 @@ export const getBootResourceById = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/boot_resources/{boot_resource_id}",
+    url: "/MAAS/a/v3/bootloaders/{bootloader_id}",
     ...options,
   });
 };
 
 /**
- * List Boot Resources
+ * List Bootloaders
  */
-export const listBootResources = <ThrowOnError extends boolean = false>(
-  options?: Options<ListBootResourcesData, ThrowOnError>
+export const listBootloaders = <ThrowOnError extends boolean = false>(
+  options?: Options<ListBootloadersData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListBootResourcesResponses,
-    ListBootResourcesErrors,
+    ListBootloadersResponses,
+    ListBootloadersErrors,
     ThrowOnError
   >({
     security: [
@@ -724,85 +819,7 @@ export const listBootResources = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/boot_resources",
-    ...options,
-  });
-};
-
-/**
- * Upload Boot Resource
- */
-export const uploadBootResource = <ThrowOnError extends boolean = false>(
-  options: Options<UploadBootResourceData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
-    UploadBootResourceResponses,
-    UploadBootResourceErrors,
-    ThrowOnError
-  >({
-    bodySerializer: null,
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/boot_resources",
-    ...options,
-    headers: {
-      "Content-Type": "application/octet-stream",
-      ...options.headers,
-    },
-  });
-};
-
-/**
- * Check Status Bootsource Bootsourceselection
- */
-export const checkStatusBootsourceBootsourceselection = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<CheckStatusBootsourceBootsourceselectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    CheckStatusBootsourceBootsourceselectionResponses,
-    CheckStatusBootsourceBootsourceselectionErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}:check_status",
-    ...options,
-  });
-};
-
-/**
- * Check Statuses Bootsource Bootsourceselection
- */
-export const checkStatusesBootsourceBootsourceselection = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<
-    CheckStatusesBootsourceBootsourceselectionData,
-    ThrowOnError
-  >
-) => {
-  return (options?.client ?? client).get<
-    CheckStatusesBootsourceBootsourceselectionResponses,
-    CheckStatusesBootsourceBootsourceselectionErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/boot_source_selection_statuses",
+    url: "/MAAS/a/v3/bootloaders",
     ...options,
   });
 };
@@ -1128,6 +1145,98 @@ export const getBootsourceAvailableImages = <
 };
 
 /**
+ * Get Bootsource Bootsourceselection Resource
+ */
+export const getBootsourceBootsourceselectionResource = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetBootsourceBootsourceselectionResourceData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetBootsourceBootsourceselectionResourceResponses,
+    GetBootsourceBootsourceselectionResourceErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{selection_id}/resources/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Import Bootsources
+ */
+export const importBootsources = <ThrowOnError extends boolean = false>(
+  options?: Options<ImportBootsourcesData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    ImportBootsourcesResponses,
+    ImportBootsourcesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources:import",
+    ...options,
+  });
+};
+
+/**
+ * List Bootsource Bootsourceselection Resources
+ */
+export const listBootsourceBootsourceselectionResources = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ListBootsourceBootsourceselectionResourcesData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    ListBootsourceBootsourceselectionResourcesResponses,
+    ListBootsourceBootsourceselectionResourcesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{selection_id}/resources",
+    ...options,
+  });
+};
+
+/**
+ * Stop Import Bootsources
+ */
+export const stopImportBootsources = <ThrowOnError extends boolean = false>(
+  options?: Options<StopImportBootsourcesData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    StopImportBootsourcesResponses,
+    StopImportBootsourcesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources:stop_import",
+    ...options,
+  });
+};
+
+/**
  * Stop Sync Bootsource Bootsourceselection
  */
 export const stopSyncBootsourceBootsourceselection = <
@@ -1171,6 +1280,208 @@ export const syncBootsourceBootsourceselection = <
       },
     ],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}:sync",
+    ...options,
+  });
+};
+
+/**
+ * Update Manifest Bootsources
+ */
+export const updateManifestBootsources = <ThrowOnError extends boolean = false>(
+  options?: Options<UpdateManifestBootsourcesData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    UpdateManifestBootsourcesResponses,
+    UpdateManifestBootsourcesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/boot_sources:update_manifest",
+    ...options,
+  });
+};
+
+/**
+ * Bulk Delete Selections
+ */
+export const bulkDeleteSelections = <ThrowOnError extends boolean = false>(
+  options: Options<BulkDeleteSelectionsData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    BulkDeleteSelectionsResponses,
+    BulkDeleteSelectionsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selections",
+    ...options,
+  });
+};
+
+/**
+ * List Selections
+ */
+export const listSelections = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSelectionsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListSelectionsResponses,
+    ListSelectionsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selections",
+    ...options,
+  });
+};
+
+/**
+ * Bulk Create Selections
+ */
+export const bulkCreateSelections = <ThrowOnError extends boolean = false>(
+  options: Options<BulkCreateSelectionsData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    BulkCreateSelectionsResponses,
+    BulkCreateSelectionsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selections",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Get Selection
+ */
+export const getSelection = <ThrowOnError extends boolean = false>(
+  options: Options<GetSelectionData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetSelectionResponses,
+    GetSelectionErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selections/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Selection Statistic
+ */
+export const getSelectionStatistic = <ThrowOnError extends boolean = false>(
+  options: Options<GetSelectionStatisticData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetSelectionStatisticResponses,
+    GetSelectionStatisticErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selection_statistics/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Selection Status
+ */
+export const getSelectionStatus = <ThrowOnError extends boolean = false>(
+  options: Options<GetSelectionStatusData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetSelectionStatusResponses,
+    GetSelectionStatusErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selection_statuses/{id}",
+    ...options,
+  });
+};
+
+/**
+ * List Selection Statistic
+ */
+export const listSelectionStatistic = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSelectionStatisticData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListSelectionStatisticResponses,
+    ListSelectionStatisticErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selection_statistics",
+    ...options,
+  });
+};
+
+/**
+ * List Selection Status
+ */
+export const listSelectionStatus = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSelectionStatusData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListSelectionStatusResponses,
+    ListSelectionStatusErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selection_statuses",
     ...options,
   });
 };
@@ -1268,6 +1579,187 @@ export const setConfigurations = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * Delete Custom Image By Id
+ */
+export const deleteCustomImageById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteCustomImageByIdData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    DeleteCustomImageByIdResponses,
+    DeleteCustomImageByIdErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_images/{boot_resource_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Custom Image By Id
+ */
+export const getCustomImageById = <ThrowOnError extends boolean = false>(
+  options: Options<GetCustomImageByIdData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetCustomImageByIdResponses,
+    GetCustomImageByIdErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_images/{boot_resource_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Custom Image Statistic
+ */
+export const getCustomImageStatistic = <ThrowOnError extends boolean = false>(
+  options: Options<GetCustomImageStatisticData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetCustomImageStatisticResponses,
+    GetCustomImageStatisticErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_image_statistics/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Custom Image Status
+ */
+export const getCustomImageStatus = <ThrowOnError extends boolean = false>(
+  options: Options<GetCustomImageStatusData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetCustomImageStatusResponses,
+    GetCustomImageStatusErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_image_statuses/{id}",
+    ...options,
+  });
+};
+
+/**
+ * List Custom Images
+ */
+export const listCustomImages = <ThrowOnError extends boolean = false>(
+  options?: Options<ListCustomImagesData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListCustomImagesResponses,
+    ListCustomImagesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_images",
+    ...options,
+  });
+};
+
+/**
+ * Upload Custom Image
+ */
+export const uploadCustomImage = <ThrowOnError extends boolean = false>(
+  options: Options<UploadCustomImageData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    UploadCustomImageResponses,
+    UploadCustomImageErrors,
+    ThrowOnError
+  >({
+    bodySerializer: null,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_images",
+    ...options,
+    headers: {
+      "Content-Type": "application/octet-stream",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * List Custom Images Statistic
+ */
+export const listCustomImagesStatistic = <ThrowOnError extends boolean = false>(
+  options?: Options<ListCustomImagesStatisticData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListCustomImagesStatisticResponses,
+    ListCustomImagesStatisticErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_image_statistics",
+    ...options,
+  });
+};
+
+/**
+ * List Custom Images Status
+ */
+export const listCustomImagesStatus = <ThrowOnError extends boolean = false>(
+  options?: Options<ListCustomImagesStatusData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListCustomImagesStatusResponses,
+    ListCustomImagesStatusErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_image_statuses",
+    ...options,
   });
 };
 
