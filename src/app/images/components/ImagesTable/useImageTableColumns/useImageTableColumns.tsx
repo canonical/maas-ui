@@ -4,7 +4,6 @@ import { Icon, Spinner } from "@canonical/react-components";
 import type {
   Column,
   ColumnDef,
-  Getter,
   Header,
   Row,
   RowSelectionState,
@@ -13,12 +12,10 @@ import pluralize from "pluralize";
 
 import DeleteImages from "../../DeleteImages";
 
-import DoubleRow from "@/app/base/components/DoubleRow";
+import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
-import TooltipButton from "@/app/base/components/TooltipButton";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import type { Image } from "@/app/images/types";
-import { formatUtcDatetime, getTimeDistanceString } from "@/app/utils/time";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
@@ -27,14 +24,14 @@ export const filterCells = (
   column: Column<Image>
 ): boolean => {
   if (row.getIsGrouped()) {
-    return ["name", "actions"].includes(column.id);
+    return ["os", "actions"].includes(column.id);
   } else {
-    return !["name"].includes(column.id);
+    return !["os"].includes(column.id);
   }
 };
 
 export const filterHeaders = (header: Header<Image, unknown>): boolean =>
-  header.column.id !== "name";
+  header.column.id !== "os";
 
 const useImageTableColumns = ({
   commissioningRelease,
@@ -50,19 +47,13 @@ const useImageTableColumns = ({
     () =>
       [
         {
-          id: "name",
-          accessorKey: "name",
-          cell: ({
-            row,
-            getValue,
-          }: {
-            row: Row<Image>;
-            getValue: Getter<Image["name"]>;
-          }) => {
+          id: "os",
+          accessorKey: "os",
+          cell: ({ row }: { row: Row<Image> }) => {
             return (
               <div>
                 <div>
-                  <strong>{getValue()}</strong>
+                  <strong>{row.original.os}</strong>
                 </div>
                 <small className="u-text--muted">
                   {pluralize("image", row.getLeafRows().length ?? 0, true)}
@@ -84,87 +75,32 @@ const useImageTableColumns = ({
           header: () => "Architecture",
         },
         {
-          id: "size",
-          accessorKey: "size",
-          enableSorting: true,
-          header: () => "Size",
-        },
-        {
-          id: "canDeployToMemory",
-          accessorKey: "canDeployToMemory",
-          enableSorting: true,
-          header: () => "Deployable in Memory",
-          cell: ({ row: { original: canDeployToMemory } }) =>
-            canDeployToMemory ? (
-              <TooltipButton
-                iconName="task-outstanding"
-                iconProps={{ "aria-label": "supported" }}
-                message="This image can be deployed in memory."
-              />
-            ) : (
-              <TooltipButton
-                iconName="close"
-                iconProps={{ "aria-label": "not supported" }}
-                message="This image cannot be deployed in memory."
-              />
-            ),
-        },
-        {
           id: "status",
           accessorKey: "status",
           enableSorting: true,
           header: () => "Status",
           cell: ({
             row: {
-              original: { status, lastSynced },
+              original: { status, sync_percentage },
             },
           }) => {
-            let statusIcon;
+            let icon;
             switch (status) {
-              case "Synced":
-                statusIcon = <Icon aria-label={"synced"} name={"success"} />;
+              case "Ready":
+                icon = <Icon aria-label={"synced"} name={"success"} />;
                 break;
-              default:
-                statusIcon = <Spinner />;
+              case "Waiting for download":
+                icon = <Icon name={"status-waiting"} />;
                 break;
+              case "Downloading":
+                icon = <Spinner aria-label={"downloading"} />;
             }
             return (
               <DoubleRow
-                data-testid="resource-status"
-                icon={statusIcon}
-                primary={status}
-                secondary={lastSynced ?? ""}
+                icon={icon}
+                primary={`${status}${status === "Downloading" ? ` ${sync_percentage}%` : ""}`}
               />
             );
-          },
-        },
-        {
-          id: "lastDeployed",
-          accessorKey: "lastDeployed",
-          enableSorting: true,
-          header: () => "Last deployed",
-          cell: ({
-            row: {
-              original: { lastDeployed },
-            },
-          }) => {
-            return lastDeployed ? (
-              <DoubleRow
-                primary={getTimeDistanceString(lastDeployed)}
-                secondary={formatUtcDatetime(lastDeployed)}
-              />
-            ) : (
-              "—"
-            );
-          },
-        },
-        {
-          id: "machines",
-          accessorKey: "machines",
-          enableSorting: true,
-          header: () => "Machines",
-          cell: ({ row }) => {
-            return row.original.machines || "—";
           },
         },
         {
@@ -174,11 +110,9 @@ const useImageTableColumns = ({
           header: () => "Actions",
           cell: ({ row }: { row: Row<Image> }) => {
             const isCommissioningImage =
-              row.original.resource.name === `ubuntu/${commissioningRelease}`;
+              row.original.release === commissioningRelease;
             const canBeDeleted =
-              !isCommissioningImage &&
-              (row.original.resource.complete ||
-                !row.original.resource.downloading);
+              !isCommissioningImage && row.original.status === "Ready";
             return row.getIsGrouped() ? null : (
               <TableActions
                 data-testid="image-actions"
