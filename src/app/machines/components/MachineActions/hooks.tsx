@@ -23,10 +23,11 @@ import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
+import { canOpenActionForm } from "@/app/store/utils";
 
 export const useMachineActionMenus = (
-  isLocked: boolean,
   isViewingDetails: boolean,
   systemId?: Machine["system_id"]
 ) => {
@@ -36,6 +37,10 @@ export const useMachineActionMenus = (
   const selectedMachines = useSelector(machineSelectors.selected);
   const searchFilter = FilterMachines.filtersToString(
     FilterMachines.queryStringToFilters(location.search)
+  );
+
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
   );
 
   const { actionErrors } = useSelectedMachinesActionsDispatch({
@@ -414,21 +419,32 @@ export const useMachineActionMenus = (
         },
       ],
       render:
-        isViewingDetails && systemId
+        isViewingDetails && machine
           ? () => {
-              return (
-                <Switch
-                  checked={isLocked}
-                  label="Lock"
-                  onChange={() =>
-                    dispatch(
-                      isLocked
-                        ? machineActions.unlock({ system_id: systemId })
-                        : machineActions.lock({ system_id: systemId })
-                    )
-                  }
-                />
-              );
+              if (
+                canOpenActionForm(machine, NodeActions.LOCK) ||
+                canOpenActionForm(machine, NodeActions.UNLOCK)
+              ) {
+                return (
+                  <Switch
+                    checked={machine.locked}
+                    label="Lock"
+                    onChange={() =>
+                      dispatch(
+                        machine.locked
+                          ? machineActions.unlock({
+                              system_id: machine.system_id,
+                            })
+                          : machineActions.lock({
+                              system_id: machine.system_id,
+                            })
+                      )
+                    }
+                  />
+                );
+              } else {
+                return <></>;
+              }
             }
           : undefined,
       title: "Lock",

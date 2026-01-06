@@ -1,7 +1,7 @@
 import MachineActionMenuBar from "./MachineActionMenuBar";
 
 import type { RootState } from "@/app/store/root/types";
-import { NodeActions } from "@/app/store/types/node";
+import { NodeActions, NodeStatus } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
 import {
@@ -180,7 +180,13 @@ describe("MachineActionMenuBar", () => {
     ).toHaveClass("p-icon--delete");
   });
 
-  it("renders a switch for locking instead of a contexual menu when viewing details", () => {
+  it("renders a switch for locking instead of a contexual menu when viewing details and the machine can be locked", () => {
+    const machine = factory.machine({
+      system_id: "abc123",
+      status: NodeStatus.DEPLOYED,
+      actions: [NodeActions.LOCK],
+    });
+    state.machine.items = [machine];
     const { rerender } = renderWithProviders(
       <MachineActionMenuBar isViewingDetails systemId="abc123" />,
       { state }
@@ -196,6 +202,44 @@ describe("MachineActionMenuBar", () => {
     expect(screen.getByRole("button", { name: "Lock" })).toBeInTheDocument();
     expect(
       screen.queryByRole("switch", { name: "Lock" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders a switch for locking instead of a contexual menu when viewing details and the machine can be unlocked", () => {
+    const machine = factory.machine({
+      system_id: "abc123",
+      status: NodeStatus.DEPLOYED,
+      actions: [NodeActions.LOCK],
+    });
+    state.machine.items = [machine];
+    renderWithProviders(
+      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
+      { state }
+    );
+
+    expect(screen.getByRole("switch", { name: "Lock" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Lock" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("does not render a switch for locking when viewing details if the machine cannot be locked or unlocked", () => {
+    const machine = factory.machine({
+      system_id: "abc123",
+      status: NodeStatus.DEPLOYED,
+      actions: [],
+    });
+    state.machine.items = [machine];
+    renderWithProviders(
+      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
+      { state }
+    );
+
+    expect(
+      screen.queryByRole("switch", { name: "Lock" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Lock" })
     ).not.toBeInTheDocument();
   });
 });

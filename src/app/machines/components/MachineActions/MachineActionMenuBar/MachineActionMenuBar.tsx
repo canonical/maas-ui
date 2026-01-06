@@ -18,15 +18,10 @@ type MachineActionMenuBarProps = MachineActionsProps;
 const MachineActionMenuBar = ({
   disabledActions,
   excludeActions,
-  isMachineLocked,
   isViewingDetails = false,
   systemId,
 }: MachineActionMenuBarProps): ReactElement => {
-  const actionMenus = useMachineActionMenus(
-    isMachineLocked ?? false,
-    isViewingDetails,
-    systemId
-  );
+  const actionMenus = useMachineActionMenus(isViewingDetails, systemId);
 
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)

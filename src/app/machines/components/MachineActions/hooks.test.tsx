@@ -12,7 +12,7 @@ describe("useMachineActionMenus", () => {
   it("includes 'Power cycle' when the DPU feature flag is enabled", () => {
     vi.stubEnv("VITE_APP_DPU_PROVISIONING", "true");
     const { result } = renderHookWithProviders(() =>
-      useMachineActionMenus(false, false)
+      useMachineActionMenus(false)
     );
 
     expect(
@@ -26,7 +26,7 @@ describe("useMachineActionMenus", () => {
   it("excludes 'Power cycle' when the DPU feature flag is disabled", () => {
     vi.stubEnv("VITE_APP_DPU_PROVISIONING", "false");
     const { result } = renderHookWithProviders(() =>
-      useMachineActionMenus(false, false)
+      useMachineActionMenus(false)
     );
 
     expect(
@@ -38,7 +38,7 @@ describe("useMachineActionMenus", () => {
 
   it("includes 'Check power' if viewing details and a system ID is provided", () => {
     const { result } = renderHookWithProviders(() =>
-      useMachineActionMenus(false, true, "abc123")
+      useMachineActionMenus(true, "abc123")
     );
 
     expect(
@@ -50,7 +50,7 @@ describe("useMachineActionMenus", () => {
 
   it("excludes 'Check power' if viewing details and a system ID is not provided", () => {
     const { result } = renderHookWithProviders(() =>
-      useMachineActionMenus(false, true, undefined)
+      useMachineActionMenus(true, undefined)
     );
 
     expect(
@@ -62,7 +62,7 @@ describe("useMachineActionMenus", () => {
 
   it("excludes 'Check power' if not viewing details", () => {
     const { result } = renderHookWithProviders(() =>
-      useMachineActionMenus(false, false)
+      useMachineActionMenus(false)
     );
 
     expect(

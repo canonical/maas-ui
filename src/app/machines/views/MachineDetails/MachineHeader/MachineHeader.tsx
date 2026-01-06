@@ -77,7 +77,6 @@ const MachineHeader = ({ systemId }: MachineHeaderProps): ReactElement => {
       renderButtons={() => (
         <MachineActions
           disabledActions={disabledActions}
-          isMachineLocked={machine.locked}
           isViewingDetails
           systemId={machine.system_id}
         />

@@ -29,16 +29,11 @@ const MachineActionMenu = ({
   disabled = false,
   disabledActions,
   excludeActions,
-  isMachineLocked,
   isViewingDetails = false,
   label = "Menu",
   systemId,
 }: MachineActionMenuProps): ReactElement => {
-  const actionMenus = useMachineActionMenus(
-    isMachineLocked ?? false,
-    isViewingDetails,
-    systemId
-  );
+  const actionMenus = useMachineActionMenus(isViewingDetails, systemId);
 
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
