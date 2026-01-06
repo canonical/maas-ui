@@ -3,6 +3,7 @@ import { Col, Input, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import "./index.scss";
 import type { CreateVolumeGroupColumnData } from "./useCreateVolumeGroupColumns/useCreateVolumeGroupColumns";
 import useCreateVolumeGroupColumns from "./useCreateVolumeGroupColumns/useCreateVolumeGroupColumns";
 
@@ -98,6 +99,7 @@ export const CreateVolumeGroup = ({
         <Row>
           <Col size={12}>
             <GenericTable<CreateVolumeGroupColumnData>
+              className="create-volume-group-table"
               columns={columns}
               data={selected}
               isLoading={false}
