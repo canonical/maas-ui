@@ -57,7 +57,7 @@ const MachineActionMenu = ({
             disabledActions.some((action) => action === item.action)
           ) {
             actions.push({
-              children: <span>{item.label}</span>,
+              children: <span>{item.label}...</span>,
               disabled: true,
               onClick: item.onClick,
             });
@@ -67,12 +67,12 @@ const MachineActionMenu = ({
 
           if (!machine) {
             actions.push({
-              children: <span>{item.label}</span>,
+              children: <span>{item.label}...</span>,
               onClick: item.onClick,
             });
           } else if (canOpenActionForm(machine, item.action)) {
             actions.push({
-              children: <span>{item.label}</span>,
+              children: <span>{item.label}...</span>,
               onClick: item.onClick,
             });
           }

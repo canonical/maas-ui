@@ -51,7 +51,7 @@ const MachineActionMenuBar = ({
                   links.push({
                     children: (
                       <div className="u-flex--between">
-                        <span>{item.label}</span>
+                        <span>{item.label}...</span>
                       </div>
                     ),
                     disabled: true,
@@ -65,7 +65,7 @@ const MachineActionMenuBar = ({
                   links.push({
                     children: (
                       <div className="u-flex--between">
-                        <span>{item.label}</span>
+                        <span>{item.label}...</span>
                       </div>
                     ),
                     onClick: item.onClick,
@@ -74,7 +74,7 @@ const MachineActionMenuBar = ({
                   links.push({
                     children: (
                       <div className="u-flex--between">
-                        <span>{item.label}</span>
+                        <span>{item.label}...</span>
                       </div>
                     ),
                     onClick: item.onClick,
