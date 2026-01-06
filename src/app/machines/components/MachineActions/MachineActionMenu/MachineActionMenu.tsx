@@ -15,6 +15,7 @@ import type { DataTestElement } from "@/app/base/types";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { canOpenActionForm } from "@/app/store/utils";
+import "./_index.scss";
 
 type MachineActionMenuProps = MachineActionsProps & {
   appearance?: ValueOf<typeof ButtonAppearance>;
@@ -41,7 +42,6 @@ const MachineActionMenu = ({
 
   return (
     <ContextualMenu
-      className="is-maas-select"
       hasToggleIcon
       links={actionMenus.reduce<ActionLink[][]>((links, group) => {
         const groupLinks = group.items.reduce<ActionLink[]>((actions, item) => {
