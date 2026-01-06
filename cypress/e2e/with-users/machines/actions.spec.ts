@@ -52,7 +52,7 @@ const openMachineActionForm = (groupLabel: string, action: string) => {
   openMachineActionDropdown(groupLabel);
   cy.findByLabelText(`${groupLabel} submenu`).within(() => {
     cy.findAllByRole("button", {
-      name: new RegExp(`${action}`),
+      name: new RegExp(`${action}...`),
     }).click();
   });
 };
