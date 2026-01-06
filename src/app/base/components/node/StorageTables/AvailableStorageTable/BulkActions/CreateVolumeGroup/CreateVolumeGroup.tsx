@@ -1,14 +1,11 @@
-import {
-  Col,
-  Input,
-  Row,
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "@canonical/react-components";
+import { GenericTable } from "@canonical/maas-react-components";
+import { Col, Input, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+
+import "./index.scss";
+import type { CreateVolumeGroupColumnData } from "./useCreateVolumeGroupColumns/useCreateVolumeGroupColumns";
+import useCreateVolumeGroupColumns from "./useCreateVolumeGroupColumns/useCreateVolumeGroupColumns";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -21,11 +18,7 @@ import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import type { Disk, Partition } from "@/app/store/types/node";
-import {
-  formatSize,
-  formatType,
-  splitDiskPartitionIds,
-} from "@/app/store/utils";
+import { formatSize, splitDiskPartitionIds } from "@/app/store/utils";
 
 type CreateVolumeGroupValues = {
   name: string;
@@ -61,6 +54,7 @@ export const CreateVolumeGroup = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  const columns = useCreateVolumeGroupColumns();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "creatingVolumeGroup",
@@ -104,24 +98,13 @@ export const CreateVolumeGroup = ({
       >
         <Row>
           <Col size={12}>
-            <Table>
-              <thead>
-                <TableRow>
-                  <TableHeader>Name</TableHeader>
-                  <TableHeader>Size</TableHeader>
-                  <TableHeader>Device type</TableHeader>
-                </TableRow>
-              </thead>
-              <tbody>
-                {selected.map((device) => (
-                  <TableRow key={`${device.type}-${device.id}`}>
-                    <TableCell>{device.name}</TableCell>
-                    <TableCell>{formatSize(device.size)}</TableCell>
-                    <TableCell>{formatType(device)}</TableCell>
-                  </TableRow>
-                ))}
-              </tbody>
-            </Table>
+            <GenericTable<CreateVolumeGroupColumnData>
+              className="create-volume-group-table"
+              columns={columns}
+              data={selected}
+              isLoading={false}
+              noData="No devices selected."
+            />
           </Col>
           <Col size={12}>
             <FormikField label="Name" name="name" required type="text" />
