@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
-import { Icon, Spinner } from "@canonical/react-components";
+import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
 import type {
   Column,
   ColumnDef,
@@ -10,8 +10,8 @@ import type {
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
+import { useStartImageSync, useStopImageSync } from "@/app/api/query/images";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
-import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import type { Image } from "@/app/images/types";
@@ -46,6 +46,9 @@ const useImageTableColumns = ({
   isStatisticsLoading: boolean;
 }): ImageColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const startSync = useStartImageSync();
+  const stopSync = useStopImageSync();
+
   return useMemo(
     () =>
       [
@@ -196,39 +199,109 @@ const useImageTableColumns = ({
             const canBeDeleted =
               !isCommissioningImage && row.original.status === "Ready";
             return row.getIsGrouped() ? null : (
-              <TableActions
-                data-testid="image-actions"
-                deleteDisabled={!canBeDeleted}
-                deleteTooltip={
-                  !canBeDeleted
-                    ? isCommissioningImage
-                      ? "Cannot delete images of the default commissioning release."
-                      : "Cannot delete images that are currently being imported."
-                    : "Deletes this image."
-                }
-                onDelete={() => {
-                  if (row.original.id) {
-                    if (!row.getIsSelected()) {
-                      row.toggleSelected();
-                    }
-                    openSidePanel({
-                      component: DeleteImages,
-                      title: "Delete images",
-                      props: {
-                        rowSelection: { ...selectedRows, [row.id]: true },
-                        setRowSelection: setSelectedRows,
-                      },
-                    });
+              <div>
+                <Tooltip
+                  message={
+                    row.original.status === "Waiting for download"
+                      ? "Start image synchronization."
+                      : row.original.status === "Downloading"
+                        ? "Cannot start synchronization during download."
+                        : "Image is already synchronized."
                   }
-                }}
-              />
+                  position="left"
+                >
+                  <Button
+                    appearance="base"
+                    className="is-dense u-table-cell-padding-overlap"
+                    disabled={
+                      row.original.status !== "Waiting for download" ||
+                      stopSync.isPending
+                    }
+                    hasIcon
+                    onClick={() => {
+                      startSync.mutate({
+                        path: {
+                          id: row.original.id,
+                          boot_source_id: row.original.boot_source_id!,
+                        },
+                      });
+                    }}
+                  >
+                    <i className="p-icon--start">Start synchronization</i>
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  message={
+                    row.original.status === "Downloading"
+                      ? "Stop image synchronization."
+                      : "No synchronization in progress."
+                  }
+                  position="left"
+                >
+                  <Button
+                    appearance="base"
+                    className="is-dense u-table-cell-padding-overlap"
+                    disabled={
+                      row.original.status !== "Downloading" ||
+                      startSync.isPending
+                    }
+                    hasIcon
+                    onClick={() => {
+                      stopSync.mutate({
+                        path: {
+                          id: row.original.id,
+                          boot_source_id: row.original.boot_source_id!,
+                        },
+                      });
+                    }}
+                  >
+                    <i className="p-icon--stop">Stop synchronization</i>
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  message={
+                    !canBeDeleted
+                      ? isCommissioningImage
+                        ? "Cannot delete images of the default commissioning release."
+                        : "Cannot delete images that are currently being imported."
+                      : "Deletes this image."
+                  }
+                  position="left"
+                >
+                  <Button
+                    appearance="base"
+                    className="is-dense u-table-cell-padding-overlap"
+                    disabled={!canBeDeleted}
+                    hasIcon
+                    onClick={() => {
+                      if (row.original.id) {
+                        if (!row.getIsSelected()) {
+                          row.toggleSelected();
+                        }
+                        openSidePanel({
+                          component: DeleteImages,
+                          title: "Delete images",
+                          props: {
+                            rowSelection: { ...selectedRows, [row.id]: true },
+                            setRowSelection: setSelectedRows,
+                          },
+                        });
+                      }
+                    }}
+                  >
+                    <i className="p-icon--delete">Delete</i>
+                  </Button>
+                </Tooltip>
+              </div>
             );
           },
         },
       ] as ImageColumnDef[],
     [
-      isStatusLoading,
       isStatisticsLoading,
+      isStatusLoading,
+      stopSync,
+      startSync,
       commissioningRelease,
       openSidePanel,
       selectedRows,

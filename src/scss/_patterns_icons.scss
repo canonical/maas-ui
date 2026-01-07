@@ -186,6 +186,16 @@
     @include vf-icon-highlight-off($colors--dark-theme--text-default);
   }
 
+  .p-icon--start {
+    @extend %icon;
+    @include vf-icon-video-play($colors--dark-theme--text-default);
+  }
+
+  .p-icon--stop {
+    @extend %icon;
+    @include vf-icon-ignored($colors--dark-theme--text-default);
+  }
+
   [class*="p-circle--"].is-inline,
   [class*="p-icon--"].is-inline {
     margin-right: $sph--small;

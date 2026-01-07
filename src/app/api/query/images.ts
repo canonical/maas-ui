@@ -60,6 +60,8 @@ import {
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import type { Image } from "@/app/images/types";
 
+const IMAGE_STATUS_REFETCH_INTERVAL = 60000;
+
 type UseImagesResult = {
   data: { items: Image[]; total: number };
   isLoading: UseQueryResult["isLoading"];
@@ -265,6 +267,7 @@ export const useSelectionStatuses = (
       ListSelectionStatusData
     >(options, listSelectionStatus, listSelectionStatusQueryKey(options)),
     enabled,
+    refetchInterval: IMAGE_STATUS_REFETCH_INTERVAL,
   });
 };
 
@@ -303,6 +306,7 @@ export const useCustomImageStatuses = (
       ListCustomImagesStatusData
     >(options, listCustomImagesStatus, listCustomImagesStatusQueryKey(options)),
     enabled,
+    refetchInterval: IMAGE_STATUS_REFETCH_INTERVAL,
   });
 };
 
