@@ -1,9 +1,13 @@
 import { useMemo } from "react";
 
 import type { UseQueryResult } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
-import { queryOptionsWithHeaders } from "@/app/api/utils";
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   ListCustomImagesData,
   ListCustomImagesError,
@@ -29,8 +33,16 @@ import type {
   ListSelectionStatusErrors,
   ListSelectionStatusResponses,
   Options,
+  StopSyncBootsourceBootsourceselectionData,
+  StopSyncBootsourceBootsourceselectionErrors,
+  StopSyncBootsourceBootsourceselectionResponses,
+  SyncBootsourceBootsourceselectionData,
+  SyncBootsourceBootsourceselectionErrors,
+  SyncBootsourceBootsourceselectionResponses,
 } from "@/app/apiclient";
 import {
+  stopSyncBootsourceBootsourceselection,
+  syncBootsourceBootsourceselection,
   listCustomImagesStatistic,
   listCustomImagesStatus,
   listSelectionStatistic,
@@ -309,5 +321,41 @@ export const useCustomImageStatistics = (
       listCustomImagesStatisticQueryKey(options)
     ),
     enabled,
+  });
+};
+
+export const useStartImageSync = (
+  mutationOptions?: Options<SyncBootsourceBootsourceselectionData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      SyncBootsourceBootsourceselectionResponses,
+      SyncBootsourceBootsourceselectionErrors,
+      SyncBootsourceBootsourceselectionData
+    >(mutationOptions, syncBootsourceBootsourceselection),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listSelectionsQueryKey(),
+      });
+    },
+  });
+};
+
+export const useStopImageSync = (
+  mutationOptions?: Options<StopSyncBootsourceBootsourceselectionData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      StopSyncBootsourceBootsourceselectionResponses,
+      StopSyncBootsourceBootsourceselectionErrors,
+      StopSyncBootsourceBootsourceselectionData
+    >(mutationOptions, stopSyncBootsourceBootsourceselection),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listSelectionsQueryKey(),
+      });
+    },
   });
 };
