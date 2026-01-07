@@ -43,6 +43,7 @@ const VMsActionBar = ({
             disabled={vmActionsDisabled}
             excludeActions={[NodeActions.DELETE]}
             label="Take action"
+            position="right"
           />
           {onAddVMClick && (
             <span className="u-nudge-right">

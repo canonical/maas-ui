@@ -26,7 +26,7 @@
   .p-action-button--wrapper + .p-action-button--wrapper {
     .p-button,
     .p-switch {
-      border-left: 1px solid #d9d9d9;
+      border-left: 1px solid var(--vf-color-border-default);
       border-radius: 0;
     }
   }

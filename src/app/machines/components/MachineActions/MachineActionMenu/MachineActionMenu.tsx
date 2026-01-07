@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import type {
   ButtonAppearance,
   ButtonProps,
+  Position,
   ValueOf,
 } from "@canonical/react-components";
 import { ContextualMenu } from "@canonical/react-components";
@@ -21,6 +22,7 @@ type MachineActionMenuProps = MachineActionsProps & {
   appearance?: ValueOf<typeof ButtonAppearance>;
   disabled?: boolean;
   label?: string;
+  position?: Position;
 };
 
 type ActionLink = DataTestElement<ButtonProps>;
@@ -32,6 +34,7 @@ const MachineActionMenu = ({
   excludeActions,
   isViewingDetails = false,
   label = "Menu",
+  position,
   systemId,
 }: MachineActionMenuProps): ReactElement => {
   const actionMenus = useMachineActionMenus(isViewingDetails, systemId);
@@ -82,6 +85,7 @@ const MachineActionMenu = ({
         links.push(groupLinks);
         return links;
       }, [])}
+      position={position}
       toggleAppearance={appearance}
       toggleClassName="p-action-menu"
       toggleDisabled={disabled}
