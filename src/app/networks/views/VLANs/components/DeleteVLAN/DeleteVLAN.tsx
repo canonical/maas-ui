@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import FabricLink from "@/app/base/components/FabricLink";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/networks/urls";
 import fabricSelectors from "@/app/store/fabric/selectors";

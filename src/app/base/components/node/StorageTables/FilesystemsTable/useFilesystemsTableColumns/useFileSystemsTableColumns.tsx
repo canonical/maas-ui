@@ -7,7 +7,7 @@ import DeleteFilesystem from "@/app/base/components/node/StorageTables/Filesyste
 import DeleteSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/DeleteSpecialFilesystem";
 import type { FilesystemRow } from "@/app/base/components/node/StorageTables/FilesystemsTable/FilesystemsTable";
 import UnmountFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/UnmountFilesystem";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { formatSize, usesStorage } from "@/app/store/utils";
 
 export type FilesystemsColumnDef = ColumnDef<

@@ -5,7 +5,7 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 import TableMenu from "@/app/base/components/TableMenu";
 import type { DatastoreRow } from "@/app/base/components/node/StorageTables/DatastoresTable/DatastoresTable";
 import RemoveDatastore from "@/app/base/components/node/StorageTables/DatastoresTable/RemoveDatastore";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { formatSize } from "@/app/store/utils";
 
 export type DatastoresColumnDef = ColumnDef<

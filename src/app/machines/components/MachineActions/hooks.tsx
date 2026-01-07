@@ -17,7 +17,7 @@ import type { MachineActionGroup } from "./types";
 
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import PowerOffForm from "@/app/base/components/node/PowerOffForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";

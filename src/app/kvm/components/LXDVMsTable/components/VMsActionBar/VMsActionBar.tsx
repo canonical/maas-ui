@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { Button, Icon, Tooltip } from "@canonical/react-components";
 
 import ActionBar from "@/app/base/components/ActionBar";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 import DeleteVM from "@/app/kvm/components/DeleteVM";
 import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";

@@ -14,7 +14,7 @@ import type {
 import CredentialsFormFields from "./CredentialsFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { generalActions } from "@/app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "@/app/store/general/selectors";
 import { splitCertificateName } from "@/app/store/general/utils";

@@ -6,7 +6,7 @@ import { Button, CodeSnippet, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import docsUrls from "@/app/base/docsUrls";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import configSelectors from "@/app/store/config/selectors";
 import { version as versionSelectors } from "@/app/store/general/selectors";
 

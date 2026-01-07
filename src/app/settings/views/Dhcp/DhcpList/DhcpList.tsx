@@ -5,10 +5,10 @@ import {
   Button,
   Code,
   Col,
-  Link as VanillaLink,
   MainTable,
   Row,
   Spinner,
+  Link as VanillaLink,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,8 +21,8 @@ import TableActions from "@/app/base/components/TableActions";
 import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import docsUrls from "@/app/base/docsUrls";
 import { useWindowTitle } from "@/app/base/hooks";
-import type { SidePanelActions } from "@/app/base/side-panel-context-new";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import type { SidePanelActions } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
 import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
 import DhcpTarget from "@/app/settings/views/Dhcp/DhcpTarget";

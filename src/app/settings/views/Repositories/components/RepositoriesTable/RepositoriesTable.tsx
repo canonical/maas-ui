@@ -5,7 +5,7 @@ import useRepositoriesTableColumns from "./useRepositoriesTableColumns/useReposi
 
 import { usePackageRepositories } from "@/app/api/query/packageRepositories";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { AddRepository } from "@/app/settings/views/Repositories/components";
 
 const RepositoriesTable = () => {

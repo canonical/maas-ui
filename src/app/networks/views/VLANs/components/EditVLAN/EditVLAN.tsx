@@ -11,7 +11,7 @@ import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import SpaceSelect from "@/app/base/components/SpaceSelect";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import { getSpaceDisplay } from "@/app/store/space/utils";
 import { VLANMTURange, VLANVidRange } from "@/app/store/types/enum";

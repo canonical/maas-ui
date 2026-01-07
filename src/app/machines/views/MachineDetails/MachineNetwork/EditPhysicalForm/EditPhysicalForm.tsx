@@ -15,7 +15,7 @@ import type { EditPhysicalValues } from "./types";
 import FormikForm from "@/app/base/components/FormikForm";
 import { formatIpAddress } from "@/app/base/components/PrefixedIpInput";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { fabricActions } from "@/app/store/fabric";

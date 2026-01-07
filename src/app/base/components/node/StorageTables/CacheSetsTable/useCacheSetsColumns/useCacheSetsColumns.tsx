@@ -4,7 +4,7 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import TableMenu from "@/app/base/components/TableMenu";
 import DeleteCacheSet from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteCacheSet";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { Disk, Node } from "@/app/store/types/node";
 import { formatSize } from "@/app/store/utils";
 

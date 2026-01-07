@@ -6,7 +6,7 @@ import TableMenu from "@/app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "@/app/base/components/TableMenu/TableMenu";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import AddAliasOrVlan from "@/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan";
 import EditPhysicalForm from "@/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm";
 import MarkConnectedForm from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm";
@@ -24,9 +24,9 @@ import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   canAddAlias,
-  hasInterfaceType,
   getInterfaceTypeText,
   getLinkInterface,
+  hasInterfaceType,
 } from "@/app/store/utils";
 
 type NetworkTableActionsProps = {

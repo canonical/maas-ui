@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 import { ContextualMenu } from "@canonical/react-components";
 
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import AddChassisForm from "@/app/machines/components/MachineForms/AddChassis/AddChassisForm";
 import AddMachineForm from "@/app/machines/components/MachineForms/AddMachine/AddMachineForm";
 

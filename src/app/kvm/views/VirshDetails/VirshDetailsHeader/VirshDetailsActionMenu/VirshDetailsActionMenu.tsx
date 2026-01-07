@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 import { ContextualMenu } from "@canonical/react-components";
 
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import ComposeForm from "@/app/kvm/components/ComposeForm";
 import DeleteForm from "@/app/kvm/components/DeleteForm";
 import RefreshForm from "@/app/kvm/components/RefreshForm";

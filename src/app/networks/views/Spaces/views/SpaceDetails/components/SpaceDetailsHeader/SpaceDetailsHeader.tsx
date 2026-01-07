@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { Button } from "@canonical/react-components";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteSpace } from "@/app/networks/views/Spaces/components";
 import type { Space } from "@/app/store/space/types";
 

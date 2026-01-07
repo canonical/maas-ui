@@ -5,15 +5,15 @@ import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import type { NetworkValues } from "../NetworkFields/NetworkFields";
 import NetworkFields, {
   networkFieldsSchema,
 } from "../NetworkFields/NetworkFields";
-import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import TagNameField from "@/app/base/components/TagNameField";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
@@ -32,9 +32,9 @@ import type {
   UpdateInterfaceParams,
 } from "@/app/store/types/node";
 import {
-  getInterfaceTypeText,
   getInterfaceIPAddress,
   getInterfaceSubnet,
+  getInterfaceTypeText,
   getLinkMode,
 } from "@/app/store/utils";
 import { vlanActions } from "@/app/store/vlan";

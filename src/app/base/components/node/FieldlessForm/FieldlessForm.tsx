@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { NodeActionFormProps } from "../types";
 
 import ActionForm from "@/app/base/components/ActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject } from "@/app/base/types";
 import type { controllerActions } from "@/app/store/controller";
 import type { machineActions } from "@/app/store/machine";

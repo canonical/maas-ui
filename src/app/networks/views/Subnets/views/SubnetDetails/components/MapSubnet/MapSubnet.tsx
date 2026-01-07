@@ -7,7 +7,7 @@ import { Link } from "react-router";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useCycled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";

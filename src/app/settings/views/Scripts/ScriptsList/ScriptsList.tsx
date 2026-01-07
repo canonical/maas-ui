@@ -13,7 +13,7 @@ import SearchBox from "@/app/base/components/SearchBox";
 import TableActions from "@/app/base/components/TableActions";
 import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import { useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import ScriptsUpload from "@/app/settings/views/Scripts/ScriptsUpload";
 import type { RootState } from "@/app/store/root/types";
 import { scriptActions } from "@/app/store/script";

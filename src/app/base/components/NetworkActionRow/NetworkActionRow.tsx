@@ -10,7 +10,7 @@ import type {
   SetSelected,
 } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { default as AddDeviceInterface } from "@/app/devices/components/DeviceNetwork/AddInterface";
 import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
 import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";

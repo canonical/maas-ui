@@ -6,18 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import NetworkFields from "../NetworkFields";
+import type { NetworkValues } from "../NetworkFields/NetworkFields";
 import {
   networkFieldsInitialValues,
   networkFieldsSchema,
 } from "../NetworkFields/NetworkFields";
-import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import TagNameField from "@/app/base/components/TagNameField";
 import { useScrollOnRender } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";

@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
-import { Row, NotificationSeverity } from "@canonical/react-components";
+import { NotificationSeverity, Row } from "@canonical/react-components";
 import classNames from "classnames";
 import type { FileRejection, FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
@@ -11,7 +11,7 @@ import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { messageActions } from "@/app/store/message";
 import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";

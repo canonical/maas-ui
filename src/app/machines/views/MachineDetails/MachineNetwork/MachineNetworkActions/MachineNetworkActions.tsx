@@ -9,7 +9,7 @@ import type { Expanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkT
 import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useSendAnalytics } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
@@ -17,8 +17,8 @@ import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
-  getInterfaceType,
   getInterfaceById,
+  getInterfaceType,
   getLinkFromNic,
 } from "@/app/store/utils";
 

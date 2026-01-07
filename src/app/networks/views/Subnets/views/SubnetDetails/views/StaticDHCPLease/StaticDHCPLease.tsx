@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import ReserveDHCPLease from "./ReserveDHCPLease";
 import StaticDHCPTable from "./StaticDHCPTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { useReservedIps } from "@/app/store/subnet/hooks";

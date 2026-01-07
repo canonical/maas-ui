@@ -1,13 +1,13 @@
 import { useState } from "react";
 
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import DeviceName from "./DeviceName";
 
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { DeviceActionFormWrapper } from "@/app/devices/components";
 import deviceSelectors from "@/app/store/device/selectors";

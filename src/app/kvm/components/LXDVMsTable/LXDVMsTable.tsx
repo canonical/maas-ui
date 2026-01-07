@@ -13,7 +13,7 @@ import type {
 } from "./useVMsTableColumns/useVMsTableColumns";
 import useVMsTableColumns from "./useVMsTableColumns/useVMsTableColumns";
 
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 import { SortDirection } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import BaseDhcpForm from "@/app/base/components/DhcpForm";
 import type { DHCPFormValues } from "@/app/base/components/DhcpForm/types";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {

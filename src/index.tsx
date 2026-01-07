@@ -12,7 +12,7 @@ import { createQueryClient } from "./app/api/query-client";
 import useDarkMode from "./app/base/hooks/useDarkMode/useDarkMode";
 import { store } from "./redux-store";
 
-import NewSidePanelContextProvider from "@/app/base/side-panel-context-new";
+import NewSidePanelContextProvider from "@/app/base/side-panel-context";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import { router } from "@/router";
 import "./scss/index.scss";

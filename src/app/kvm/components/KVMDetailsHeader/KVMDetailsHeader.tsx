@@ -8,7 +8,7 @@ import { useLocation } from "react-router";
 
 import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 type TitleBlock = {
   title: ReactNode;

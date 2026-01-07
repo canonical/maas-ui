@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 import { ContextualMenu } from "@canonical/react-components";
 
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import ChangeStorageLayout from "@/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout";
 import type { Machine, StorageLayoutOption } from "@/app/store/machine/types";
 import { StorageLayout } from "@/app/store/types/enum";

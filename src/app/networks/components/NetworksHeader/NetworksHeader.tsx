@@ -9,7 +9,7 @@ import AddSubnet from "../AddSubnet";
 import AddVlan from "../AddVlan";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 
 type Props = {

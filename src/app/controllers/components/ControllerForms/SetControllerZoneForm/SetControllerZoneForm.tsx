@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import type { ZoneResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { getProcessingCount } from "@/app/controllers/utils";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {

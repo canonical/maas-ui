@@ -11,7 +11,7 @@ import {
 } from "@canonical/react-components";
 import type { Location } from "history";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import { usePools } from "@/app/api/query/pools";
 import type {
@@ -20,8 +20,8 @@ import type {
 } from "@/app/apiclient";
 import TableHeader from "@/app/base/components/TableHeader";
 import { useTableSort } from "@/app/base/hooks";
-import type { SidePanelActions } from "@/app/base/side-panel-context-new";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import type { SidePanelActions } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { SortDirection } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import CPUColumn from "@/app/kvm/components/CPUColumn";

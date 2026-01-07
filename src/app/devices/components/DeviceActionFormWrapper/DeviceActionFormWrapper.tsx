@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import SetZoneForm from "../SetDeviceZoneForm";
 
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteDevice from "@/app/devices/components/DeleteDevice";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceActions } from "@/app/store/device/types";

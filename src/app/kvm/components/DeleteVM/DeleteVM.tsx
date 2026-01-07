@@ -8,7 +8,7 @@ import type { Action, Dispatch } from "redux";
 import ActionForm from "@/app/base/components/ActionForm";
 import NodeActionConfirmationText from "@/app/base/components/NodeActionConfirmationText";
 import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";

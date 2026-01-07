@@ -6,7 +6,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { DiscoveryResponse } from "@/app/apiclient";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   DiscoveryAddForm,
   DiscoveryDeleteForm,

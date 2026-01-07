@@ -2,11 +2,11 @@ import type { ReactElement, ReactNode } from "react";
 
 import { Button, Icon, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import { useGetZone } from "@/app/api/query/zones";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
 import RefreshForm from "@/app/kvm/components/RefreshForm";

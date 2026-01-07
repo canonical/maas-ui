@@ -6,7 +6,7 @@ import { AppAside, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
 import { useLocation } from "react-router";
 
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 const useCloseSidePanelOnRouteChange = (): void => {
   const location = useLocation();

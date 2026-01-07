@@ -9,7 +9,7 @@ import {
   type TestFormValues,
 } from "@/app/base/components/node/TestFormFields/TestFormFields";
 import type { HardwareType } from "@/app/base/enum";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { ActionStatuses } from "@/app/base/types";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {

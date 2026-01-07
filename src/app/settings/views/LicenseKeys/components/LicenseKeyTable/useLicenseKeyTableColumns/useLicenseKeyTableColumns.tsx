@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { LicenseKeyEdit } from "@/app/settings/views/LicenseKeys/components";
 import LicenseKeyDelete from "@/app/settings/views/LicenseKeys/components/LicenseKeyDelete/LicenseKeyDelete";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";

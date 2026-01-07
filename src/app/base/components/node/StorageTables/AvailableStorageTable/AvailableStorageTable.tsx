@@ -8,7 +8,7 @@ import BulkActions from "./BulkActions";
 import type { AvailableStorageRow } from "./useAvailableStorageColumns/useAvailableStorageColumns";
 import useAvailableStorageColumns from "./useAvailableStorageColumns/useAvailableStorageColumns";
 
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import {

@@ -18,7 +18,7 @@ import configureStore from "redux-mock-store";
 import { vi } from "vitest";
 
 import { client } from "@/app/apiclient/client.gen";
-import NewSidePanelContextProvider from "@/app/base/side-panel-context-new";
+import NewSidePanelContextProvider from "@/app/base/side-panel-context";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
@@ -529,7 +529,7 @@ export const spyOnMutation = (obj: unknown, methodName: string) => {
  */
 export const mockSidePanel = async () => {
   const mockUseSidePanel = vi.spyOn(
-    await import("@/app/base/side-panel-context-new"),
+    await import("@/app/base/side-panel-context"),
     "useSidePanel"
   );
 

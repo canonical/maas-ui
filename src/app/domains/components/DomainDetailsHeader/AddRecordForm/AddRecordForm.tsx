@@ -1,11 +1,11 @@
 import { useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import type { SchemaOf } from "yup";
+import * as Yup from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { RecordFields } from "@/app/domains/components";
 import { domainActions } from "@/app/store/domain";
 import { MIN_TTL } from "@/app/store/domain/constants";

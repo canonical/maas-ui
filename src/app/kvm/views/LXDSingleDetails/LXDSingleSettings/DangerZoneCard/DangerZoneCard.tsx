@@ -3,7 +3,7 @@ import type { ReactElement, ReactNode } from "react";
 import { Button, Col, Row } from "@canonical/react-components";
 
 import FormCard from "@/app/base/components/FormCard";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteForm from "@/app/kvm/components/DeleteForm";
 import type { Pod, PodMeta } from "@/app/store/pod/types";
 import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";

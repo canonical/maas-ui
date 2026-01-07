@@ -5,7 +5,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import DeleteRecordForm from "@/app/domains/components/ResourceRecords/DeleteRecordForm";
 import EditRecordForm from "@/app/domains/components/ResourceRecords/EditRecordForm";

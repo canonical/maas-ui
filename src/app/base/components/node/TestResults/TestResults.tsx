@@ -5,7 +5,7 @@ import { Link } from "react-router";
 
 import { HardwareType } from "@/app/base/enum";
 import { useSendAnalytics } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { TestStatus } from "@/app/store/types/node";

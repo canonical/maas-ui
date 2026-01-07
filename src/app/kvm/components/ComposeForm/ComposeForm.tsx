@@ -18,7 +18,7 @@ import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import type { ResourcePoolResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { hostnameValidation, RANGE_REGEX } from "@/app/base/validation";
 import { useActivePod } from "@/app/kvm/hooks";
 import { domainActions } from "@/app/store/domain";

@@ -8,7 +8,7 @@ import { useLocation } from "react-router";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import AddLxd from "@/app/kvm/components/AddLxd";
 import AddVirsh from "@/app/kvm/components/AddVirsh";

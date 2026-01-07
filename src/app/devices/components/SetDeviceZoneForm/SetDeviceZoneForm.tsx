@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import type { ZoneResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device } from "@/app/store/device/types";

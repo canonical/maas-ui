@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import type { MultiSelectItem } from "@canonical/react-components";
-import { Spinner, Notification, Strip } from "@canonical/react-components";
+import { Notification, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
@@ -10,7 +10,7 @@ import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/Sel
 
 import { useImageSources } from "@/app/api/query/imageSources";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type {
@@ -20,8 +20,8 @@ import type {
   BootResourceUbuntuRelease,
 } from "@/app/store/bootresource/types";
 import {
-  BootResourceSourceType,
   BootResourceAction,
+  BootResourceSourceType,
 } from "@/app/store/bootresource/types";
 
 import "./_index.scss";

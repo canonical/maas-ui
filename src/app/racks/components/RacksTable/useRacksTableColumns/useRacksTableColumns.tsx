@@ -11,7 +11,7 @@ import RemoveControllers from "../../RemoveControllers";
 
 import type { RackResponse } from "@/app/apiclient";
 import TableMenu from "@/app/base/components/TableMenu";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { FilterControllers } from "@/app/store/controller/utils";
 
