@@ -10,11 +10,10 @@ import type {
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
-import DeleteImages from "../../DeleteImages";
-
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
+import DeleteImages from "@/app/images/components/DeleteImages";
 import type { Image } from "@/app/images/types";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
@@ -37,10 +36,14 @@ const useImageTableColumns = ({
   commissioningRelease,
   selectedRows,
   setSelectedRows,
+  isStatusLoading,
+  isStatisticsLoading,
 }: {
-  commissioningRelease: string | null;
+  commissioningRelease: string;
   selectedRows: RowSelectionState;
   setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
+  isStatusLoading: boolean;
+  isStatisticsLoading: boolean;
 }): ImageColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   return useMemo(
@@ -53,7 +56,10 @@ const useImageTableColumns = ({
             return (
               <div>
                 <div>
-                  <strong>{row.original.os}</strong>
+                  <strong>
+                    {row.original.os.charAt(0).toUpperCase() +
+                      row.original.os.slice(1)}
+                  </strong>
                 </div>
                 <small className="u-text--muted">
                   {pluralize("image", row.getLeafRows().length ?? 0, true)}
@@ -67,6 +73,20 @@ const useImageTableColumns = ({
           accessorKey: "release",
           enableSorting: true,
           header: () => "Release title",
+          cell: ({
+            row: {
+              original: { release, title },
+            },
+          }: {
+            row: Row<Image>;
+          }) => {
+            return (
+              <div>
+                <div>{title}</div>
+                <small className="u-text--muted">{release}</small>
+              </div>
+            );
+          },
         },
         {
           id: "architecture",
@@ -75,16 +95,59 @@ const useImageTableColumns = ({
           header: () => "Architecture",
         },
         {
+          id: "size",
+          accessorKey: "size",
+          enableSorting: true,
+          header: () => "Size",
+          cell: ({
+            row: {
+              original: { size },
+            },
+          }) => (isStatisticsLoading ? <Spinner /> : size),
+        },
+        {
+          id: "version",
+          accessorKey: "version",
+          enableSorting: true,
+          header: () => "Version",
+          cell: ({
+            row: {
+              original: { update_status, last_updated },
+            },
+          }) => {
+            return isStatusLoading ? (
+              <Spinner />
+            ) : (
+              <DoubleRow
+                primary={update_status}
+                secondary={
+                  isStatisticsLoading ? (
+                    <Spinner />
+                  ) : (
+                    `Last updated on ${new Date(last_updated ?? "").toLocaleDateString()}`
+                  )
+                }
+              />
+            );
+          },
+        },
+        {
           id: "status",
           accessorKey: "status",
           enableSorting: true,
           header: () => "Status",
           cell: ({
             row: {
-              original: { status, sync_percentage },
+              original: { id, status, sync_percentage, node_count },
             },
           }) => {
             let icon;
+            status =
+              id < 4
+                ? "Downloading"
+                : id < 6
+                  ? "Waiting for download"
+                  : "Ready";
             switch (status) {
               case "Ready":
                 icon = <Icon aria-label={"synced"} name={"success"} />;
@@ -95,10 +158,19 @@ const useImageTableColumns = ({
               case "Downloading":
                 icon = <Spinner aria-label={"downloading"} />;
             }
-            return (
+            return isStatusLoading ? (
+              <Spinner />
+            ) : (
               <DoubleRow
                 icon={icon}
-                primary={`${status}${status === "Downloading" ? ` ${sync_percentage}%` : ""}`}
+                primary={`${status}${status === "Downloading" ? ` ${sync_percentage?.toFixed(0)}%` : ""}`}
+                secondary={
+                  isStatisticsLoading ? (
+                    <Spinner />
+                  ) : (
+                    pluralize("node", node_count, true)
+                  )
+                }
               />
             );
           },
@@ -144,7 +216,14 @@ const useImageTableColumns = ({
           },
         },
       ] as ImageColumnDef[],
-    [commissioningRelease, selectedRows, setSelectedRows, openSidePanel]
+    [
+      isStatusLoading,
+      isStatisticsLoading,
+      commissioningRelease,
+      openSidePanel,
+      selectedRows,
+      setSelectedRows,
+    ]
   );
 };
 

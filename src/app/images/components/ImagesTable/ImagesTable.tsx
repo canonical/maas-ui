@@ -1,6 +1,6 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
-import { GenericTable, TableCaption } from "@canonical/maas-react-components";
+import { GenericTable } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { useGetConfiguration } from "@/app/api/query/configurations";
@@ -26,14 +26,17 @@ const ImagesTable = ({
 }: ImagesTableProps): ReactElement => {
   const images = useImages();
 
-  const commissioningRelease = useGetConfiguration({
-    path: { name: ConfigNames.COMMISSIONING_DISTRO_SERIES },
-  });
+  const commissioningRelease =
+    (useGetConfiguration({
+      path: { name: ConfigNames.COMMISSIONING_DISTRO_SERIES },
+    }).data?.value as string) ?? "";
 
   const columns = useImageTableColumns({
-    commissioningRelease: (commissioningRelease.data?.value as string) ?? "",
+    commissioningRelease,
     selectedRows,
     setSelectedRows,
+    isStatusLoading: images.stages.statuses.isLoading,
+    isStatisticsLoading: images.stages.statistics.isLoading,
   });
 
   return (
@@ -44,14 +47,10 @@ const ImagesTable = ({
       filterHeaders={filterHeaders}
       groupBy={["os"]}
       isLoading={images.isLoading}
-      noData={
-        <TableCaption.Description>
-          No images have been selected to sync.
-        </TableCaption.Description>
-      }
+      noData="No images have been selected to sync."
       pinGroup={[
-        { value: "Ubuntu", isTop: true },
-        { value: "Other", isTop: false },
+        { value: "ubuntu", isTop: true },
+        { value: "other", isTop: false },
       ]}
       selection={{
         rowSelection: selectedRows,
