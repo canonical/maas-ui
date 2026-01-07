@@ -1629,6 +1629,118 @@ export const updateManifestBootsourcesMutation = (
   return mutationOptions;
 };
 
+export const listSelectionStatusQueryKey = (
+  options?: Options<ListSelectionStatusData>
+) => createQueryKey("listSelectionStatus", options);
+
+/**
+ * List Selection Status
+ */
+export const listSelectionStatusOptions = (
+  options?: Options<ListSelectionStatusData>
+) =>
+  queryOptions<
+    ListSelectionStatusResponse,
+    ListSelectionStatusError,
+    ListSelectionStatusResponse,
+    ReturnType<typeof listSelectionStatusQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listSelectionStatus({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listSelectionStatusQueryKey(options),
+  });
+
+export const getSelectionStatusQueryKey = (
+  options: Options<GetSelectionStatusData>
+) => createQueryKey("getSelectionStatus", options);
+
+/**
+ * Get Selection Status
+ */
+export const getSelectionStatusOptions = (
+  options: Options<GetSelectionStatusData>
+) =>
+  queryOptions<
+    GetSelectionStatusResponse,
+    GetSelectionStatusError,
+    GetSelectionStatusResponse,
+    ReturnType<typeof getSelectionStatusQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSelectionStatus({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSelectionStatusQueryKey(options),
+  });
+
+export const listSelectionStatisticQueryKey = (
+  options?: Options<ListSelectionStatisticData>
+) => createQueryKey("listSelectionStatistic", options);
+
+/**
+ * List Selection Statistic
+ */
+export const listSelectionStatisticOptions = (
+  options?: Options<ListSelectionStatisticData>
+) =>
+  queryOptions<
+    ListSelectionStatisticResponse,
+    ListSelectionStatisticError,
+    ListSelectionStatisticResponse,
+    ReturnType<typeof listSelectionStatisticQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listSelectionStatistic({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listSelectionStatisticQueryKey(options),
+  });
+
+export const getSelectionStatisticQueryKey = (
+  options: Options<GetSelectionStatisticData>
+) => createQueryKey("getSelectionStatistic", options);
+
+/**
+ * Get Selection Statistic
+ */
+export const getSelectionStatisticOptions = (
+  options: Options<GetSelectionStatisticData>
+) =>
+  queryOptions<
+    GetSelectionStatisticResponse,
+    GetSelectionStatisticError,
+    GetSelectionStatisticResponse,
+    ReturnType<typeof getSelectionStatisticQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSelectionStatistic({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSelectionStatisticQueryKey(options),
+  });
+
 /**
  * Bulk Delete Selections
  */
@@ -1731,118 +1843,6 @@ export const getSelectionOptions = (options: Options<GetSelectionData>) =>
       return data;
     },
     queryKey: getSelectionQueryKey(options),
-  });
-
-export const getSelectionStatisticQueryKey = (
-  options: Options<GetSelectionStatisticData>
-) => createQueryKey("getSelectionStatistic", options);
-
-/**
- * Get Selection Statistic
- */
-export const getSelectionStatisticOptions = (
-  options: Options<GetSelectionStatisticData>
-) =>
-  queryOptions<
-    GetSelectionStatisticResponse,
-    GetSelectionStatisticError,
-    GetSelectionStatisticResponse,
-    ReturnType<typeof getSelectionStatisticQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getSelectionStatistic({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getSelectionStatisticQueryKey(options),
-  });
-
-export const getSelectionStatusQueryKey = (
-  options: Options<GetSelectionStatusData>
-) => createQueryKey("getSelectionStatus", options);
-
-/**
- * Get Selection Status
- */
-export const getSelectionStatusOptions = (
-  options: Options<GetSelectionStatusData>
-) =>
-  queryOptions<
-    GetSelectionStatusResponse,
-    GetSelectionStatusError,
-    GetSelectionStatusResponse,
-    ReturnType<typeof getSelectionStatusQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getSelectionStatus({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getSelectionStatusQueryKey(options),
-  });
-
-export const listSelectionStatisticQueryKey = (
-  options?: Options<ListSelectionStatisticData>
-) => createQueryKey("listSelectionStatistic", options);
-
-/**
- * List Selection Statistic
- */
-export const listSelectionStatisticOptions = (
-  options?: Options<ListSelectionStatisticData>
-) =>
-  queryOptions<
-    ListSelectionStatisticResponse,
-    ListSelectionStatisticError,
-    ListSelectionStatisticResponse,
-    ReturnType<typeof listSelectionStatisticQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listSelectionStatistic({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: listSelectionStatisticQueryKey(options),
-  });
-
-export const listSelectionStatusQueryKey = (
-  options?: Options<ListSelectionStatusData>
-) => createQueryKey("listSelectionStatus", options);
-
-/**
- * List Selection Status
- */
-export const listSelectionStatusOptions = (
-  options?: Options<ListSelectionStatusData>
-) =>
-  queryOptions<
-    ListSelectionStatusResponse,
-    ListSelectionStatusError,
-    ListSelectionStatusResponse,
-    ReturnType<typeof listSelectionStatusQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listSelectionStatus({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: listSelectionStatusQueryKey(options),
   });
 
 export const getConfigurationQueryKey = (
@@ -1955,51 +1955,24 @@ export const setConfigurationsMutation = (
   return mutationOptions;
 };
 
-/**
- * Delete Custom Image By Id
- */
-export const deleteCustomImageByIdMutation = (
-  options?: Partial<Options<DeleteCustomImageByIdData>>
-): UseMutationOptions<
-  DeleteCustomImageByIdResponse,
-  DeleteCustomImageByIdError,
-  Options<DeleteCustomImageByIdData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    DeleteCustomImageByIdResponse,
-    DeleteCustomImageByIdError,
-    Options<DeleteCustomImageByIdData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await deleteCustomImageById({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const getCustomImageByIdQueryKey = (
-  options: Options<GetCustomImageByIdData>
-) => createQueryKey("getCustomImageById", options);
+export const listCustomImagesStatusQueryKey = (
+  options?: Options<ListCustomImagesStatusData>
+) => createQueryKey("listCustomImagesStatus", options);
 
 /**
- * Get Custom Image By Id
+ * List Custom Images Status
  */
-export const getCustomImageByIdOptions = (
-  options: Options<GetCustomImageByIdData>
+export const listCustomImagesStatusOptions = (
+  options?: Options<ListCustomImagesStatusData>
 ) =>
   queryOptions<
-    GetCustomImageByIdResponse,
-    GetCustomImageByIdError,
-    GetCustomImageByIdResponse,
-    ReturnType<typeof getCustomImageByIdQueryKey>
+    ListCustomImagesStatusResponse,
+    ListCustomImagesStatusError,
+    ListCustomImagesStatusResponse,
+    ReturnType<typeof listCustomImagesStatusQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getCustomImageById({
+      const { data } = await listCustomImagesStatus({
         ...options,
         ...queryKey[0],
         signal,
@@ -2007,35 +1980,7 @@ export const getCustomImageByIdOptions = (
       });
       return data;
     },
-    queryKey: getCustomImageByIdQueryKey(options),
-  });
-
-export const getCustomImageStatisticQueryKey = (
-  options: Options<GetCustomImageStatisticData>
-) => createQueryKey("getCustomImageStatistic", options);
-
-/**
- * Get Custom Image Statistic
- */
-export const getCustomImageStatisticOptions = (
-  options: Options<GetCustomImageStatisticData>
-) =>
-  queryOptions<
-    GetCustomImageStatisticResponse,
-    GetCustomImageStatisticError,
-    GetCustomImageStatisticResponse,
-    ReturnType<typeof getCustomImageStatisticQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getCustomImageStatistic({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getCustomImageStatisticQueryKey(options),
+    queryKey: listCustomImagesStatusQueryKey(options),
   });
 
 export const getCustomImageStatusQueryKey = (
@@ -2064,6 +2009,62 @@ export const getCustomImageStatusOptions = (
       return data;
     },
     queryKey: getCustomImageStatusQueryKey(options),
+  });
+
+export const listCustomImagesStatisticQueryKey = (
+  options?: Options<ListCustomImagesStatisticData>
+) => createQueryKey("listCustomImagesStatistic", options);
+
+/**
+ * List Custom Images Statistic
+ */
+export const listCustomImagesStatisticOptions = (
+  options?: Options<ListCustomImagesStatisticData>
+) =>
+  queryOptions<
+    ListCustomImagesStatisticResponse,
+    ListCustomImagesStatisticError,
+    ListCustomImagesStatisticResponse,
+    ReturnType<typeof listCustomImagesStatisticQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listCustomImagesStatistic({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listCustomImagesStatisticQueryKey(options),
+  });
+
+export const getCustomImageStatisticQueryKey = (
+  options: Options<GetCustomImageStatisticData>
+) => createQueryKey("getCustomImageStatistic", options);
+
+/**
+ * Get Custom Image Statistic
+ */
+export const getCustomImageStatisticOptions = (
+  options: Options<GetCustomImageStatisticData>
+) =>
+  queryOptions<
+    GetCustomImageStatisticResponse,
+    GetCustomImageStatisticError,
+    GetCustomImageStatisticResponse,
+    ReturnType<typeof getCustomImageStatisticQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCustomImageStatistic({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCustomImageStatisticQueryKey(options),
   });
 
 export const listCustomImagesQueryKey = (
@@ -2121,24 +2122,51 @@ export const uploadCustomImageMutation = (
   return mutationOptions;
 };
 
-export const listCustomImagesStatisticQueryKey = (
-  options?: Options<ListCustomImagesStatisticData>
-) => createQueryKey("listCustomImagesStatistic", options);
+/**
+ * Delete Custom Image By Id
+ */
+export const deleteCustomImageByIdMutation = (
+  options?: Partial<Options<DeleteCustomImageByIdData>>
+): UseMutationOptions<
+  DeleteCustomImageByIdResponse,
+  DeleteCustomImageByIdError,
+  Options<DeleteCustomImageByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteCustomImageByIdResponse,
+    DeleteCustomImageByIdError,
+    Options<DeleteCustomImageByIdData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await deleteCustomImageById({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getCustomImageByIdQueryKey = (
+  options: Options<GetCustomImageByIdData>
+) => createQueryKey("getCustomImageById", options);
 
 /**
- * List Custom Images Statistic
+ * Get Custom Image By Id
  */
-export const listCustomImagesStatisticOptions = (
-  options?: Options<ListCustomImagesStatisticData>
+export const getCustomImageByIdOptions = (
+  options: Options<GetCustomImageByIdData>
 ) =>
   queryOptions<
-    ListCustomImagesStatisticResponse,
-    ListCustomImagesStatisticError,
-    ListCustomImagesStatisticResponse,
-    ReturnType<typeof listCustomImagesStatisticQueryKey>
+    GetCustomImageByIdResponse,
+    GetCustomImageByIdError,
+    GetCustomImageByIdResponse,
+    ReturnType<typeof getCustomImageByIdQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listCustomImagesStatistic({
+      const { data } = await getCustomImageById({
         ...options,
         ...queryKey[0],
         signal,
@@ -2146,35 +2174,7 @@ export const listCustomImagesStatisticOptions = (
       });
       return data;
     },
-    queryKey: listCustomImagesStatisticQueryKey(options),
-  });
-
-export const listCustomImagesStatusQueryKey = (
-  options?: Options<ListCustomImagesStatusData>
-) => createQueryKey("listCustomImagesStatus", options);
-
-/**
- * List Custom Images Status
- */
-export const listCustomImagesStatusOptions = (
-  options?: Options<ListCustomImagesStatusData>
-) =>
-  queryOptions<
-    ListCustomImagesStatusResponse,
-    ListCustomImagesStatusError,
-    ListCustomImagesStatusResponse,
-    ReturnType<typeof listCustomImagesStatusQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listCustomImagesStatus({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: listCustomImagesStatusQueryKey(options),
+    queryKey: getCustomImageByIdQueryKey(options),
   });
 
 export const listEventsQueryKey = (options?: Options<ListEventsData>) =>

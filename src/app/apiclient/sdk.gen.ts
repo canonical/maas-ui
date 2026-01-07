@@ -1307,6 +1307,94 @@ export const updateManifestBootsources = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Selection Status
+ */
+export const listSelectionStatus = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSelectionStatusData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListSelectionStatusResponses,
+    ListSelectionStatusErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selections/statuses",
+    ...options,
+  });
+};
+
+/**
+ * Get Selection Status
+ */
+export const getSelectionStatus = <ThrowOnError extends boolean = false>(
+  options: Options<GetSelectionStatusData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetSelectionStatusResponses,
+    GetSelectionStatusErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selections/statuses/{id}",
+    ...options,
+  });
+};
+
+/**
+ * List Selection Statistic
+ */
+export const listSelectionStatistic = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSelectionStatisticData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListSelectionStatisticResponses,
+    ListSelectionStatisticErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selections/statistics",
+    ...options,
+  });
+};
+
+/**
+ * Get Selection Statistic
+ */
+export const getSelectionStatistic = <ThrowOnError extends boolean = false>(
+  options: Options<GetSelectionStatisticData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetSelectionStatisticResponses,
+    GetSelectionStatisticErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/selections/statistics/{id}",
+    ...options,
+  });
+};
+
+/**
  * Bulk Delete Selections
  */
 export const bulkDeleteSelections = <ThrowOnError extends boolean = false>(
@@ -1394,94 +1482,6 @@ export const getSelection = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/selections/{id}",
-    ...options,
-  });
-};
-
-/**
- * Get Selection Statistic
- */
-export const getSelectionStatistic = <ThrowOnError extends boolean = false>(
-  options: Options<GetSelectionStatisticData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    GetSelectionStatisticResponses,
-    GetSelectionStatisticErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/selection_statistics/{id}",
-    ...options,
-  });
-};
-
-/**
- * Get Selection Status
- */
-export const getSelectionStatus = <ThrowOnError extends boolean = false>(
-  options: Options<GetSelectionStatusData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    GetSelectionStatusResponses,
-    GetSelectionStatusErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/selection_statuses/{id}",
-    ...options,
-  });
-};
-
-/**
- * List Selection Statistic
- */
-export const listSelectionStatistic = <ThrowOnError extends boolean = false>(
-  options?: Options<ListSelectionStatisticData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
-    ListSelectionStatisticResponses,
-    ListSelectionStatisticErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/selection_statistics",
-    ...options,
-  });
-};
-
-/**
- * List Selection Status
- */
-export const listSelectionStatus = <ThrowOnError extends boolean = false>(
-  options?: Options<ListSelectionStatusData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
-    ListSelectionStatusResponses,
-    ListSelectionStatusErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/selection_statuses",
     ...options,
   });
 };
@@ -1583,14 +1583,14 @@ export const setConfigurations = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Delete Custom Image By Id
+ * List Custom Images Status
  */
-export const deleteCustomImageById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteCustomImageByIdData, ThrowOnError>
+export const listCustomImagesStatus = <ThrowOnError extends boolean = false>(
+  options?: Options<ListCustomImagesStatusData, ThrowOnError>
 ) => {
-  return (options.client ?? client).delete<
-    DeleteCustomImageByIdResponses,
-    DeleteCustomImageByIdErrors,
+  return (options?.client ?? client).get<
+    ListCustomImagesStatusResponses,
+    ListCustomImagesStatusErrors,
     ThrowOnError
   >({
     security: [
@@ -1599,51 +1599,7 @@ export const deleteCustomImageById = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/custom_images/{boot_resource_id}",
-    ...options,
-  });
-};
-
-/**
- * Get Custom Image By Id
- */
-export const getCustomImageById = <ThrowOnError extends boolean = false>(
-  options: Options<GetCustomImageByIdData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    GetCustomImageByIdResponses,
-    GetCustomImageByIdErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/custom_images/{boot_resource_id}",
-    ...options,
-  });
-};
-
-/**
- * Get Custom Image Statistic
- */
-export const getCustomImageStatistic = <ThrowOnError extends boolean = false>(
-  options: Options<GetCustomImageStatisticData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    GetCustomImageStatisticResponses,
-    GetCustomImageStatisticErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/custom_image_statistics/{id}",
+    url: "/MAAS/a/v3/custom_images/statuses",
     ...options,
   });
 };
@@ -1665,7 +1621,51 @@ export const getCustomImageStatus = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/custom_image_statuses/{id}",
+    url: "/MAAS/a/v3/custom_images/statuses/{id}",
+    ...options,
+  });
+};
+
+/**
+ * List Custom Images Statistic
+ */
+export const listCustomImagesStatistic = <ThrowOnError extends boolean = false>(
+  options?: Options<ListCustomImagesStatisticData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListCustomImagesStatisticResponses,
+    ListCustomImagesStatisticErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_images/statistics",
+    ...options,
+  });
+};
+
+/**
+ * Get Custom Image Statistic
+ */
+export const getCustomImageStatistic = <ThrowOnError extends boolean = false>(
+  options: Options<GetCustomImageStatisticData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetCustomImageStatisticResponses,
+    GetCustomImageStatisticErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_images/statistics/{id}",
     ...options,
   });
 };
@@ -1720,14 +1720,14 @@ export const uploadCustomImage = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List Custom Images Statistic
+ * Delete Custom Image By Id
  */
-export const listCustomImagesStatistic = <ThrowOnError extends boolean = false>(
-  options?: Options<ListCustomImagesStatisticData, ThrowOnError>
+export const deleteCustomImageById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteCustomImageByIdData, ThrowOnError>
 ) => {
-  return (options?.client ?? client).get<
-    ListCustomImagesStatisticResponses,
-    ListCustomImagesStatisticErrors,
+  return (options.client ?? client).delete<
+    DeleteCustomImageByIdResponses,
+    DeleteCustomImageByIdErrors,
     ThrowOnError
   >({
     security: [
@@ -1736,20 +1736,20 @@ export const listCustomImagesStatistic = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/custom_image_statistics",
+    url: "/MAAS/a/v3/custom_images/{boot_resource_id}",
     ...options,
   });
 };
 
 /**
- * List Custom Images Status
+ * Get Custom Image By Id
  */
-export const listCustomImagesStatus = <ThrowOnError extends boolean = false>(
-  options?: Options<ListCustomImagesStatusData, ThrowOnError>
+export const getCustomImageById = <ThrowOnError extends boolean = false>(
+  options: Options<GetCustomImageByIdData, ThrowOnError>
 ) => {
-  return (options?.client ?? client).get<
-    ListCustomImagesStatusResponses,
-    ListCustomImagesStatusErrors,
+  return (options.client ?? client).get<
+    GetCustomImageByIdResponses,
+    GetCustomImageByIdErrors,
     ThrowOnError
   >({
     security: [
@@ -1758,7 +1758,7 @@ export const listCustomImagesStatus = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/custom_image_statuses",
+    url: "/MAAS/a/v3/custom_images/{boot_resource_id}",
     ...options,
   });
 };
