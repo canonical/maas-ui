@@ -25,16 +25,11 @@ import { getObjectString } from "@/app/store/script/utils";
 import { NodeActions } from "@/app/store/types/node";
 
 type Props = {
-  applyConfiguredNetworking?: Script["apply_configured_networking"];
   hardwareType?: HardwareType;
   isViewingDetails: boolean;
 };
 
-const TestMachineForm = ({
-  applyConfiguredNetworking,
-  hardwareType,
-  isViewingDetails,
-}: Props) => {
+const TestMachineForm = ({ hardwareType, isViewingDetails }: Props) => {
   const dispatch = useDispatch();
   const { closeSidePanel } = useSidePanel();
   const scripts = useSelector(scriptSelectors.testing);
@@ -65,11 +60,6 @@ const TestMachineForm = ({
   if (hardwareType) {
     preselected = formattedScripts.filter(
       (script) => script?.hardware_type === hardwareType
-    );
-  } else if (applyConfiguredNetworking) {
-    preselected = formattedScripts.filter(
-      (script) =>
-        script?.apply_configured_networking === applyConfiguredNetworking
     );
   } else {
     const formattedScript = formattedScripts.find(
