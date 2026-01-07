@@ -138,16 +138,10 @@ const useImageTableColumns = ({
           header: () => "Status",
           cell: ({
             row: {
-              original: { id, status, sync_percentage, node_count },
+              original: { status, sync_percentage, node_count },
             },
           }) => {
             let icon;
-            status =
-              id < 4
-                ? "Downloading"
-                : id < 6
-                  ? "Waiting for download"
-                  : "Ready";
             switch (status) {
               case "Ready":
                 icon = <Icon aria-label={"synced"} name={"success"} />;
@@ -156,14 +150,30 @@ const useImageTableColumns = ({
                 icon = <Icon name={"status-waiting"} />;
                 break;
               case "Downloading":
-                icon = <Spinner aria-label={"downloading"} />;
+                icon = null;
             }
             return isStatusLoading ? (
               <Spinner />
             ) : (
               <DoubleRow
                 icon={icon}
-                primary={`${status}${status === "Downloading" ? ` ${sync_percentage?.toFixed(0)}%` : ""}`}
+                primary={
+                  status === "Downloading" ? (
+                    <>
+                      <div className="p-progress">
+                        <div
+                          className="p-progress__value"
+                          style={{ width: `${sync_percentage}%` }}
+                        />
+                      </div>
+                      <small className="u-text--muted">
+                        {sync_percentage}%
+                      </small>
+                    </>
+                  ) : (
+                    status
+                  )
+                }
                 secondary={
                   isStatisticsLoading ? (
                     <Spinner />
