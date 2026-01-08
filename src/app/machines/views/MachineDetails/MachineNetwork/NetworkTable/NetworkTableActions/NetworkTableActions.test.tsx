@@ -1,6 +1,7 @@
+import EditInterface from "../../EditInterface";
+
 import NetworkTableActions from "./NetworkTableActions";
 
-import EditPhysicalForm from "@/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm";
 import MarkConnectedForm from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
@@ -144,9 +145,17 @@ describe("NetworkTableActions", () => {
   it("can display an item to edit the interface", async () => {
     nic.type = NetworkInterfaceTypes.BOND;
 
-    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
-      state,
-    });
+    renderWithProviders(
+      <NetworkTableActions
+        nic={nic}
+        selected={[]}
+        setSelected={vi.fn()}
+        systemId="abc123"
+      />,
+      {
+        state,
+      }
+    );
     // Open the menu:
     await openMenu();
     const editBondButton = screen.getByRole("button", {
@@ -156,7 +165,7 @@ describe("NetworkTableActions", () => {
     await userEvent.click(editBondButton);
     expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        component: EditPhysicalForm,
+        component: EditInterface,
       })
     );
   });

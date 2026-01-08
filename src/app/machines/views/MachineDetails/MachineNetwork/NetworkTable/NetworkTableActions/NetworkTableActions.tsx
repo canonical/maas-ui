@@ -175,7 +175,6 @@ const NetworkTableActions = ({
     }
     actions.push({
       children: `Edit ${getInterfaceTypeText(machine, nic, link)}...`,
-      disabled: !(selected && setSelected),
       onClick: () => {
         if (showDisconnectedWarning) {
           openSidePanel({
