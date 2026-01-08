@@ -106,7 +106,7 @@ const useImageTableColumns = ({
             row: {
               original: { size },
             },
-          }) => (isStatisticsLoading ? <Spinner /> : size),
+          }) => (isStatisticsLoading ? <Spinner /> : size ? size : "—"),
         },
         {
           id: "version",
@@ -126,8 +126,10 @@ const useImageTableColumns = ({
                 secondary={
                   isStatisticsLoading ? (
                     <Spinner />
-                  ) : (
+                  ) : last_updated ? (
                     `Last updated on ${new Date(last_updated ?? "").toLocaleDateString()}`
+                  ) : (
+                    "—"
                   )
                 }
               />
@@ -180,8 +182,10 @@ const useImageTableColumns = ({
                 secondary={
                   isStatisticsLoading ? (
                     <Spinner />
-                  ) : (
+                  ) : node_count ? (
                     pluralize("node", node_count, true)
+                  ) : (
+                    "—"
                   )
                 }
               />

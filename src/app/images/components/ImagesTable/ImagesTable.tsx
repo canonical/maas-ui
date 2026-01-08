@@ -46,7 +46,7 @@ const ImagesTable = ({
       filterCells={filterCells}
       filterHeaders={filterHeaders}
       groupBy={["os"]}
-      isLoading={images.isLoading}
+      isLoading={images.stages.images.isLoading}
       noData="No images have been selected to sync."
       pinGroup={[
         { value: "ubuntu", isTop: true },
@@ -58,7 +58,7 @@ const ImagesTable = ({
         rowSelectionLabelKey: "release",
       }}
       showChevron
-      sorting={[{ id: "release", desc: true }]}
+      sorting={[{ id: "release", desc: false }]}
       variant={variant}
     />
   );
