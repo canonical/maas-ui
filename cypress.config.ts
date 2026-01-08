@@ -12,6 +12,8 @@ export default defineConfig({
       "www.google-analytics.com",
       "sentry.is.canonical.com",
     ],
+    // In file they are used any types, as either we don't know correct types or because of cypress updates the more strict types
+    // either cause errors or incorporate much more complex and not readable solutions
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
