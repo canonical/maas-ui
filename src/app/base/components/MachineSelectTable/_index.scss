@@ -3,7 +3,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: $color-light;
+      background-color: var(--vf-color-background-hover);
     }
 
     // The default <strong> font-weight is a bit subtle for highlighting
