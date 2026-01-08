@@ -182,7 +182,7 @@ const useImageTableColumns = ({
                 secondary={
                   isStatisticsLoading ? (
                     <Spinner />
-                  ) : node_count ? (
+                  ) : typeof node_count === "number" ? (
                     pluralize("node", node_count, true)
                   ) : (
                     "—"

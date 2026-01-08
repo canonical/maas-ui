@@ -1,28 +1,25 @@
 import type { ReactElement } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { MultiSelectItem } from "@canonical/react-components";
 import { Spinner, Notification, Strip } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 
 import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
 import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 
 import { useImageSources } from "@/app/api/query/imageSources";
+import {
+  useAddSelections,
+  useAvailableSelections,
+  useSelections,
+} from "@/app/api/query/images";
+import type {
+  ImageResponse,
+  SelectionRequest,
+  UiSourceAvailableImageResponse,
+} from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context-new";
-import { bootResourceActions } from "@/app/store/bootresource";
-import bootResourceSelectors from "@/app/store/bootresource/selectors";
-import type {
-  BaseImageFields,
-  BootResource,
-  BootResourceUbuntuArch,
-  BootResourceUbuntuRelease,
-} from "@/app/store/bootresource/types";
-import {
-  BootResourceSourceType,
-  BootResourceAction,
-} from "@/app/store/bootresource/types";
 
 import "./_index.scss";
 
@@ -34,82 +31,40 @@ type ImagesByOS = Record<string, DownloadableImage[]>;
 
 type DownloadableImage = {
   id: string;
-  name: string;
   release: string;
   architectures: string;
-  subArchitectures?: string;
   os: string;
 };
 
 export const getDownloadableImages = (
-  ubuntuReleases: BootResourceUbuntuRelease[],
-  ubuntuArches: BootResourceUbuntuArch[],
-  otherReleases: BaseImageFields[]
+  availableImages: UiSourceAvailableImageResponse[]
 ): DownloadableImage[] => {
-  const ubuntuImages = ubuntuReleases
-    .filter((release) => !release.deleted)
+  return availableImages
     .map((image) => {
-      return ubuntuArches
-        .filter(
-          (arche) =>
-            !arche.deleted && !image.unsupported_arches.includes(arche.name)
-        )
-        .map((arch) => {
-          return {
-            id: `ubuntu-${image.name}-${image.title}-${arch.name}`,
-            name: image.name,
-            release: image.title,
-            architectures: arch.name,
-            os: "Ubuntu",
-          };
-        });
-    })
-    .flat();
-
-  const otherImages = otherReleases
-    .map((image) => {
-      const [os, architecture, subArchitecture, release] =
-        image.name.split("/");
       return {
-        id: `${os}-${release}-${architecture}-${subArchitecture}`,
-        name: image.title,
-        release: release,
-        architectures: architecture,
-        subArchitecture: subArchitecture,
-        os: os.charAt(0).toUpperCase() + os.slice(1),
+        id: `${image.os}&${image.release}&${image.architecture}&${image.source_id}`,
+        release: image.release,
+        architectures: image.architecture,
+        os: image.os.charAt(0).toUpperCase() + image.os.slice(1),
       };
     })
     .flat();
-
-  return [...ubuntuImages, ...otherImages];
 };
 
-export const getSyncedImages = (
+export const filterSyncedImages = (
   downloadableImages: DownloadableImage[],
-  resources: BootResource[]
-): Record<string, { label: string; value: string }[]> => {
-  return downloadableImages
-    .filter((image) => {
-      return resources.some(
-        (resource) =>
-          (resource.title === image.release || resource.title === image.name) &&
-          resource.arch === image.architectures
-      );
-    })
-    .reduce<Record<string, { label: string; value: string }[]>>(
-      (acc, image) => {
-        const key = `${image.os}-${image.release.replace(".", "-")}`;
-        if (!acc[key]) {
-          acc[key] = [];
-        }
-        acc[key].push({
-          label: image.architectures,
-          value: image.id,
-        });
-        return acc;
-      },
-      {}
+  selectedImages: ImageResponse[]
+): DownloadableImage[] => {
+  return downloadableImages.filter((image) => {
+    const [os, release, arch] = image.id.split("&");
+
+    return !selectedImages.some(
+      (selected) =>
+        selected.os === os &&
+        selected.release === release &&
+        selected.architecture === arch
     );
+  });
 };
 
 export const groupImagesByOS = (images: DownloadableImage[]): ImagesByOS => {
@@ -164,44 +119,32 @@ export const groupArchesByRelease = (images: ImagesByOS): GroupedImages => {
 
 const SelectUpstreamImagesForm = (): ReactElement => {
   const { closeSidePanel } = useSidePanel();
-  const dispatch = useDispatch();
-  const ubuntu = useSelector(bootResourceSelectors.ubuntu);
-  const otherImages = useSelector(bootResourceSelectors.otherImages);
-  const resources = useSelector(bootResourceSelectors.resources);
 
-  const { data: sources, isPending } = useImageSources();
+  const { data: sources, isPending: isSourcesPending } = useImageSources();
+  const { data: selectedImages, isPending: isSelectedImagesPending } =
+    useSelections();
+  const { data: availableImages, isPending: isAvailableImagesPending } =
+    useAvailableSelections();
+
+  const addSelections = useAddSelections();
+
   const [groupedImages, setGroupedImages] = useState<GroupedImages>({});
-  const [syncedImages, setSyncedImages] = useState({});
 
-  const eventErrors = useSelector(bootResourceSelectors.eventErrors);
-  const error = eventErrors.find(
-    (error) =>
-      error.event === BootResourceAction.SAVE_UBUNTU ||
-      error.event === BootResourceAction.STOP_IMPORT
-  )?.error;
-  const cleanup = useCallback(() => bootResourceActions.cleanup(), []);
-
-  const mainSource = (sources?.total ?? 0) > 0 ? sources?.items[0] : null;
+  const isPending =
+    isSourcesPending || isSelectedImagesPending || isAvailableImagesPending;
   const tooManySources = (sources?.total ?? 0) > 1;
 
   useEffect(() => {
-    if (ubuntu && resources && otherImages) {
-      const downloadableImages = getDownloadableImages(
-        ubuntu.releases,
-        ubuntu.arches,
-        otherImages
+    if (selectedImages && availableImages) {
+      const downloadableImages = getDownloadableImages(availableImages.items);
+      const filteredDownloadableImages = filterSyncedImages(
+        downloadableImages,
+        selectedImages.items
       );
-      setSyncedImages(getSyncedImages(downloadableImages, resources));
-      const imagesByOS = groupImagesByOS(downloadableImages);
+      const imagesByOS = groupImagesByOS(filteredDownloadableImages);
       setGroupedImages(groupArchesByRelease(imagesByOS));
     }
-  }, [ubuntu, resources, otherImages]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(bootResourceActions.cleanup());
-    };
-  }, [dispatch]);
+  }, [availableImages, selectedImages]);
 
   return (
     <div className="select-upstream-images-form">
@@ -221,82 +164,31 @@ const SelectUpstreamImagesForm = (): ReactElement => {
           <FormikForm
             allowUnchanged
             buttonsBehavior="independent"
-            cleanup={cleanup}
             editable={!tooManySources}
             enableReinitialize
-            errors={error}
-            initialValues={syncedImages}
+            errors={addSelections.error}
+            initialValues={{}}
             onCancel={closeSidePanel}
             onSubmit={(values) => {
-              dispatch(cleanup());
-              const ubuntuSystems: {
-                arches: string[];
-                osystem: string;
-                release: string;
-              }[] = [];
-              const otherSystems: {
-                arch: string;
-                os: string;
-                release: string;
-                subArch: string;
-              }[] = [];
-              Object.entries(
+              const formSelectedImages = Object.entries(
                 values as Record<string, { label: string; value: string }[]>
-              ).forEach(([key, images]) => {
-                if (images.length === 0) {
-                  return;
-                }
-                const [osystem] = key.split("-", 1);
-
-                if (osystem === "Ubuntu") {
-                  const arches = images.map((image) => image.label);
-                  const release = images[0].value.split("-")[1];
-                  ubuntuSystems.push({
-                    arches,
-                    osystem: osystem.toLowerCase(),
-                    release,
-                  });
-                } else {
-                  const [os, release, arch, subArch] =
-                    images[0].value.split("-");
-                  otherSystems.push({
+              ).flatMap(([_, images]): SelectionRequest[] => {
+                return images.map((image): SelectionRequest => {
+                  const [os, release, arch, boot_source_id] =
+                    image.value.split("&");
+                  return {
                     arch,
+                    boot_source_id: Number(boot_source_id),
                     os,
                     release,
-                    subArch,
-                  });
-                }
+                  };
+                });
               });
 
-              if (ubuntuSystems.length > 0) {
-                const params = mainSource
-                  ? {
-                      osystems: ubuntuSystems,
-                      ...mainSource,
-                      source_type: BootResourceSourceType.MAAS_IO,
-                    }
-                  : {
-                      osystems: ubuntuSystems,
-                      source_type: BootResourceSourceType.MAAS_IO,
-                    };
-                dispatch(bootResourceActions.saveUbuntu(params));
-                dispatch(bootResourceActions.saveUbuntuSuccess());
-              }
-
-              if (otherSystems.length > 0) {
-                const params = {
-                  images: otherSystems.map(
-                    ({ arch, os, release, subArch = "" }) =>
-                      `${os}/${arch}/${subArch}/${release}`
-                  ),
-                };
-                dispatch(bootResourceActions.saveOther(params));
-                dispatch(bootResourceActions.saveOtherSuccess());
-              }
+              addSelections.mutate({
+                body: formSelectedImages,
+              });
               closeSidePanel();
-            }}
-            onSuccess={() => {
-              dispatch(bootResourceActions.poll({ continuous: false }));
             }}
             submitLabel="Save and sync"
           >
