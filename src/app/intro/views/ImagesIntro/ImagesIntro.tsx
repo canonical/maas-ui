@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   Button,
@@ -8,11 +8,11 @@ import {
   Tooltip,
 } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router";
 
 import { useGetConfiguration } from "@/app/api/query/configurations";
 import { useImageSources } from "@/app/api/query/imageSources";
+import { useCustomImages, useSelections } from "@/app/api/query/images";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import ImagesTable from "@/app/images/components/ImagesTable";
@@ -20,8 +20,6 @@ import { Labels as ImagesLabels } from "@/app/images/views/ImageList/ImageList";
 import ImageListHeader from "@/app/images/views/ImageList/ImageListHeader";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
-import { bootResourceActions } from "@/app/store/bootresource";
-import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import { ConfigNames } from "@/app/store/config/types";
 
 export enum Labels {
@@ -30,9 +28,9 @@ export enum Labels {
 }
 
 const ImagesIntro = (): ReactElement => {
-  const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
-  const resources = useSelector(bootResourceSelectors.resources);
+  const selections = useSelections();
+  const customImages = useCustomImages();
 
   const { data: sources, isPending: sourcesPending } = useImageSources();
   const { data, isPending: configPending } = useGetConfiguration({
@@ -42,16 +40,11 @@ const ImagesIntro = (): ReactElement => {
 
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
 
-  useEffect(() => {
-    dispatch(bootResourceActions.poll({ continuous: true }));
-
-    return () => {
-      dispatch(bootResourceActions.pollStop());
-    };
-  }, [dispatch]);
-
   const hasSources = (sources?.total ?? 0) > 0;
-  const incomplete = !hasSources || resources.length === 0;
+  const incomplete =
+    !hasSources ||
+    (selections.isSuccess && selections.data.total === 0) ||
+    (customImages.isSuccess && customImages.data.total === 0);
 
   return (
     <IntroSection

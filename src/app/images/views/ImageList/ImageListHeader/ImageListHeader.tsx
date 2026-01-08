@@ -3,7 +3,6 @@ import type { ReactElement, Dispatch, SetStateAction } from "react";
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
-import { useSelector } from "react-redux";
 
 import { useImageSources } from "@/app/api/query/imageSources";
 import {
@@ -16,8 +15,7 @@ import { useSidePanel } from "@/app/base/side-panel-context-new";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
-import bootResourceSelectors from "@/app/store/bootresource/selectors";
-import { BootResourceSourceType } from "@/app/store/bootresource/types";
+import { BootResourceSourceType } from "@/app/images/types";
 
 type ImageListHeaderProps = {
   selectedRows: RowSelectionState;
@@ -49,13 +47,6 @@ const ImageListHeader = ({
   selectedRows,
   setSelectedRows,
 }: ImageListHeaderProps): ReactElement => {
-  const rackImportRunning = useSelector(
-    bootResourceSelectors.rackImportRunning
-  );
-  const regionImportRunning = useSelector(
-    bootResourceSelectors.regionImportRunning
-  );
-
   const { openSidePanel } = useSidePanel();
   const isDeleteDisabled = Object.keys(selectedRows).length <= 0;
 
@@ -82,21 +73,7 @@ const ImageListHeader = ({
         </MainToolbar.Title>
         {selectionsStatuses.isPending || isPending ? (
           <Spinner text="Loading..." />
-        ) : (
-          <span className="u-text--muted">
-            {regionImportRunning ? (
-              <>
-                <Spinner data-testid="region-importing" />{" "}
-                {Labels.RegionControllerImporting}
-              </>
-            ) : rackImportRunning ? (
-              <>
-                <Spinner data-testid="rack-importing" />{" "}
-                {Labels.RackControllersImporting}
-              </>
-            ) : null}
-          </span>
-        )}
+        ) : null}
         <MainToolbar.Controls>
           <Button
             appearance="negative"
