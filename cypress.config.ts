@@ -12,30 +12,29 @@ export default defineConfig({
       "www.google-analytics.com",
       "sentry.is.canonical.com",
     ],
-    // In file they are used any types, as either we don't know correct types or because of cypress updates the more strict types
-    // either cause errors or incorporate much more complex and not readable solutions
+
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
+    // Here we use any type as Cypress’s on function supports many different event types, but its TypeScript definitions
+    // only fully cover "task", so strictly typing on causes errors for other events like "file:preprocessor"
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async setupNodeEvents(on: any, config) {
       await addCucumberPreprocessorPlugin(on, config);
       on("task", {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        log(args: any) {
+        log(args: unknown) {
           console.log(args);
 
           return null;
         },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        table(message: any) {
+        table(message: unknown) {
           console.table(message);
 
           return null;
         },
       });
       const jsBundler = createBundler({});
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      on("file:preprocessor", (file: any) => {
+
+      on("file:preprocessor", (file: Cypress.FileObject) => {
         if (file.filePath.endsWith(".feature")) {
           return createBundler({
             plugins: [createEsbuildPlugin(config)],
