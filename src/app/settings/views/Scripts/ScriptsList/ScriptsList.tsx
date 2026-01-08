@@ -202,7 +202,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
           )}
           <MainTable
             className={classNames(
-              "p-table-expanding--light u-nudge-down",
+              "p-table-expanding u-nudge-down",
               "scripts-list",
               {
                 "u-no-padding--bottom": scriptsLoading && !scriptsLoaded,
