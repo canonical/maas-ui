@@ -91,6 +91,8 @@
     "yup": "0.32.11"
   },
   "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^23.0.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.5",
     "@canonical/typescript-config-react": "0.9.0",
     "@eslint/compat": "1.4.1",
     "@eslint/eslintrc": "3.3.1",
@@ -207,5 +209,9 @@
       "prefer-alphabetical-dependencies": "error",
       "prefer-alphabetical-devDependencies": "error"
     }
-  }
+  },
+   "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": false,
+    "step_definitions": "cypress/e2e/Tests"
+   }
 }
