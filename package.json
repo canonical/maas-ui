@@ -91,6 +91,8 @@
     "yup": "0.32.11"
   },
   "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "23.0.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "2.2.5",
     "@canonical/typescript-config-react": "0.9.0",
     "@eslint/compat": "1.4.1",
     "@eslint/eslintrc": "3.3.1",
@@ -119,7 +121,7 @@
     "@types/chance": "1.1.7",
     "@types/classnames": "2.3.4",
     "@types/clone-deep": "4.0.4",
-    "@types/node": "22.19.1",
+    "@types/node": "25.0.3",
     "@types/path-parse": "1.0.22",
     "@types/pluralize": "0.0.33",
     "@types/react": "19.2.4",
@@ -207,5 +209,8 @@
       "prefer-alphabetical-dependencies": "error",
       "prefer-alphabetical-devDependencies": "error"
     }
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
   }
 }
