@@ -2,13 +2,18 @@ import type { ReactElement } from "react";
 
 import { useSelector } from "react-redux";
 
+import EditInterface from "../../EditInterface";
+
 import TableMenu from "@/app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "@/app/base/components/TableMenu/TableMenu";
 import TooltipButton from "@/app/base/components/TooltipButton";
+import type {
+  Selected,
+  SetSelected,
+} from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import AddAliasOrVlan from "@/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan";
-import EditPhysicalForm from "@/app/machines/views/MachineDetails/MachineNetwork/EditPhysicalForm";
 import MarkConnectedForm from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm";
 import { ConnectionState } from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm/MarkConnectedForm";
 import RemovePhysicalForm from "@/app/machines/views/MachineDetails/MachineNetwork/RemovePhysicalForm";
@@ -32,12 +37,16 @@ import {
 type NetworkTableActionsProps = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
+  selected?: Selected[] | undefined;
+  setSelected?: SetSelected | undefined;
   systemId: Machine["system_id"];
 };
 
 const NetworkTableActions = ({
   link,
   nic,
+  selected,
+  setSelected,
   systemId,
 }: NetworkTableActionsProps): ReactElement | null => {
   const { openSidePanel } = useSidePanel();
@@ -166,6 +175,7 @@ const NetworkTableActions = ({
     }
     actions.push({
       children: `Edit ${getInterfaceTypeText(machine, nic, link)}...`,
+      disabled: !(selected && setSelected),
       onClick: () => {
         if (showDisconnectedWarning) {
           openSidePanel({
@@ -178,11 +188,13 @@ const NetworkTableActions = ({
               connectionState: ConnectionState.DISCONNECTED_WARNING,
             },
           });
-        } else {
+        } else if (selected && setSelected) {
           openSidePanel({
-            component: EditPhysicalForm,
+            component: EditInterface,
             title: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
             props: {
+              selected,
+              setSelected,
               systemId: machine.system_id,
               linkId: link?.id,
               nicId: nic?.id,

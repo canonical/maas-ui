@@ -1,6 +1,14 @@
 import { useMemo } from "react";
 
-import type { Column, ColumnDef, Header, Row } from "@tanstack/react-table";
+import type {
+  Column,
+  ColumnDef,
+  Header,
+  Row,
+  Table,
+} from "@tanstack/react-table";
+
+import type { Selected, SetSelected } from "../../types";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
@@ -43,8 +51,10 @@ export const filterHeadersAndAction = (
 
 const useNetworkTableColumns = ({
   node,
+  setSelected,
 }: {
   node: ControllerDetails | MachineDetails;
+  setSelected?: SetSelected | undefined;
 }): NetworkColumnDef[] => {
   return useMemo(
     () => [
@@ -211,20 +221,29 @@ const useNetworkTableColumns = ({
           row: {
             original: { isABondOrBridgeParent, nic, link },
           },
+          table,
         }: {
           row: Row<Network>;
+          table: Table<Network>;
         }) => {
           return !isABondOrBridgeParent && nodeIsMachine(node) ? (
             <NetworkTableActions
               link={link}
               nic={nic}
+              selected={table.getSelectedRowModel().flatRows.map(
+                (row): Selected => ({
+                  linkId: row.original.link?.id,
+                  nicId: row.original.nic.id,
+                })
+              )}
+              setSelected={setSelected}
               systemId={node.system_id}
             />
           ) : null;
         },
       },
     ],
-    [node]
+    [node, setSelected]
   );
 };
 

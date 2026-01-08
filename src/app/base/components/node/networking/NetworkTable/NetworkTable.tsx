@@ -230,7 +230,7 @@ const NetworkTable = ({
     vlanActions.fetch,
   ]);
 
-  const columns = useNetworkTableColumns({ node });
+  const columns = useNetworkTableColumns({ node, setSelected });
   const data = useMemo(
     () =>
       getNetworkTableData(

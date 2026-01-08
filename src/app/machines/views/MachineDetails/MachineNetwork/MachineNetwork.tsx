@@ -12,8 +12,8 @@ import NetworkTable from "@/app/base/components/node/networking/NetworkTable";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useWindowTitle } from "@/app/base/hooks";
 import machineSelectors from "@/app/store/machine/selectors";
-import { MachineMeta } from "@/app/store/machine/types";
 import type { Machine } from "@/app/store/machine/types";
+import { MachineMeta } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 
