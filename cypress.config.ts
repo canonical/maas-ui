@@ -31,14 +31,25 @@ export default defineConfig({
           return null;
         },
       });
+      const jsBundler = createBundler({});
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       on("file:preprocessor", (file: any) => {
         if (file.filePath.endsWith(".feature")) {
+          // Let Cucumber plugin handle .feature and corresponding .steps.ts files
           return createBundler({
             plugins: [createEsbuildPlugin(config)],
           })(file);
         }
-        // Use default preprocessor for other files
+
+        // Only preprocess JS/TS specs that are NOT step files
+        if (
+          file.filePath.match(/\.(js|ts|jsx|tsx)$/) &&
+          !file.filePath.endsWith(".steps.ts")
+        ) {
+          return jsBundler(file);
+        }
+
+        // Support files and step files are left alone
         return undefined;
       });
       return config;

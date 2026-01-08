@@ -1,5 +1,5 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
-import { generateMAASURL } from "../../../utils";
+import { generateMAASURL } from "../../../e2e/utils";
 
 When("the user navigates to the images page", () => {
   cy.visit(generateMAASURL("/images"));

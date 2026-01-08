@@ -1,5 +1,5 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
-import { generateMAASURL } from "../../../utils";
+import { generateMAASURL } from "../../../e2e/utils";
 
 Given("the user is on the home page", () => {
   cy.visit(generateMAASURL("/"));
