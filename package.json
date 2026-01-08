@@ -121,7 +121,7 @@
     "@types/chance": "1.1.7",
     "@types/classnames": "2.3.4",
     "@types/clone-deep": "4.0.4",
-    "@types/node": "ya25.0.3",
+    "@types/node": "25.0.3",
     "@types/path-parse": "1.0.22",
     "@types/pluralize": "0.0.33",
     "@types/react": "19.2.4",
