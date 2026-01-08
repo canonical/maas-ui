@@ -1,14 +1,17 @@
 import { useMemo } from "react";
 
-import type { UseQueryResult } from "@tanstack/react-query";
+import type { Query, UseQueryResult } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
+import type { WithHeaders } from "@/app/api/utils";
 import {
   mutationOptionsWithHeaders,
   queryOptionsWithHeaders,
 } from "@/app/api/utils";
 import type {
+  ImageStatusListResponse,
+  ImageStatusResponse,
   ListCustomImagesData,
   ListCustomImagesError,
   ListCustomImagesErrors,
@@ -60,7 +63,10 @@ import {
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import type { Image } from "@/app/images/types";
 
-const IMAGE_STATUS_REFETCH_INTERVAL = 60000;
+export const IMAGES_WORKFLOW_KEY = ["images-workflow"];
+
+const ACTIVE_DOWNLOAD_REFETCH_INTERVAL = 5000;
+const IDLE_REFETCH_INTERVAL = 60000;
 
 type UseImagesResult = {
   data: { items: Image[]; total: number };
@@ -102,20 +108,52 @@ type UseImagesResult = {
   };
 };
 
+const withImagesWorkflow = (key: readonly unknown[]) =>
+  [...IMAGES_WORKFLOW_KEY, ...key] as const;
+
+const calculateRefetchInterval = (statuses?: ImageStatusResponse[]): number => {
+  const hasActiveDownloads = statuses?.some(
+    (status) =>
+      status.status === "Downloading" ||
+      status.status === "Waiting for download"
+  );
+
+  return hasActiveDownloads
+    ? ACTIVE_DOWNLOAD_REFETCH_INTERVAL
+    : IDLE_REFETCH_INTERVAL;
+};
+
 export const useImages = (
   options?: Options<ListSelectionsData>
 ): UseImagesResult => {
   const selections = useSelections(options);
-  const selectionStatuses = useSelectionStatuses(options, selections.isSuccess);
-  const selectionStatistics = useSelectionStatistics(
-    options,
+  const customImages = useCustomImages(options);
+
+  // Use function form of refetchInterval for dynamic calculation based on query data
+  const selectionStatuses = useSelectionStatuses(
+    {
+      ...options,
+      refetchInterval: (query) => {
+        return calculateRefetchInterval(query.state.data?.items);
+      },
+    },
     selections.isSuccess
   );
 
-  const customImages = useCustomImages(options);
   const customImageStatuses = useCustomImageStatuses(
-    options,
+    {
+      ...options,
+      refetchInterval: (query) => {
+        return calculateRefetchInterval(query.state.data?.items);
+      },
+    },
     customImages.isSuccess
+  );
+
+  // Statistics queries do NOT use dynamic refetch - they use default behavior
+  const selectionStatistics = useSelectionStatistics(
+    options,
+    selections.isSuccess
   );
   const customImageStatistics = useCustomImageStatistics(
     options,
@@ -252,12 +290,23 @@ export const useSelections = (options?: Options<ListSelectionsData>) => {
       ListSelectionsResponses,
       ListSelectionsErrors,
       ListSelectionsData
-    >(options, listSelections, listSelectionsQueryKey(options)),
+    >(
+      options,
+      listSelections,
+      withImagesWorkflow(listSelectionsQueryKey(options))
+    ),
   });
 };
 
 export const useSelectionStatuses = (
-  options?: Options<ListSelectionStatusData>,
+  options?: Options<ListSelectionStatusData> & {
+    refetchInterval?: (
+      query: Query<
+        WithHeaders<ImageStatusListResponse>,
+        ListSelectionStatusError
+      >
+    ) => number;
+  },
   enabled?: boolean
 ) => {
   return useWebsocketAwareQuery({
@@ -265,9 +314,13 @@ export const useSelectionStatuses = (
       ListSelectionStatusResponses,
       ListSelectionStatusErrors,
       ListSelectionStatusData
-    >(options, listSelectionStatus, listSelectionStatusQueryKey(options)),
+    >(
+      options,
+      listSelectionStatus,
+      withImagesWorkflow(listSelectionStatusQueryKey(options))
+    ),
+    refetchInterval: options?.refetchInterval,
     enabled,
-    refetchInterval: IMAGE_STATUS_REFETCH_INTERVAL,
   });
 };
 
@@ -280,7 +333,11 @@ export const useSelectionStatistics = (
       ListSelectionStatisticResponses,
       ListSelectionStatisticErrors,
       ListSelectionStatisticData
-    >(options, listSelectionStatistic, listSelectionStatisticQueryKey(options)),
+    >(
+      options,
+      listSelectionStatistic,
+      withImagesWorkflow(listSelectionStatisticQueryKey(options))
+    ),
     enabled,
   });
 };
@@ -291,12 +348,23 @@ export const useCustomImages = (options?: Options<ListCustomImagesData>) => {
       ListCustomImagesResponses,
       ListCustomImagesErrors,
       ListCustomImagesData
-    >(options, listCustomImages, listCustomImagesQueryKey(options))
+    >(
+      options,
+      listCustomImages,
+      withImagesWorkflow(listCustomImagesQueryKey(options))
+    )
   );
 };
 
 export const useCustomImageStatuses = (
-  options?: Options<ListCustomImagesStatusData>,
+  options?: Options<ListCustomImagesStatusData> & {
+    refetchInterval?: (
+      query: Query<
+        WithHeaders<ImageStatusListResponse>,
+        ListSelectionStatusError
+      >
+    ) => number;
+  },
   enabled?: boolean
 ) => {
   return useWebsocketAwareQuery({
@@ -304,9 +372,13 @@ export const useCustomImageStatuses = (
       ListCustomImagesStatusResponses,
       ListCustomImagesStatusErrors,
       ListCustomImagesStatusData
-    >(options, listCustomImagesStatus, listCustomImagesStatusQueryKey(options)),
+    >(
+      options,
+      listCustomImagesStatus,
+      withImagesWorkflow(listCustomImagesStatusQueryKey(options))
+    ),
+    refetchInterval: options?.refetchInterval,
     enabled,
-    refetchInterval: IMAGE_STATUS_REFETCH_INTERVAL,
   });
 };
 
@@ -322,7 +394,7 @@ export const useCustomImageStatistics = (
     >(
       options,
       listCustomImagesStatistic,
-      listCustomImagesStatisticQueryKey(options)
+      withImagesWorkflow(listCustomImagesStatisticQueryKey(options))
     ),
     enabled,
   });
@@ -340,7 +412,7 @@ export const useStartImageSync = (
     >(mutationOptions, syncBootsourceBootsourceselection),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listSelectionsQueryKey(),
+        queryKey: IMAGES_WORKFLOW_KEY,
       });
     },
   });
@@ -358,7 +430,7 @@ export const useStopImageSync = (
     >(mutationOptions, stopSyncBootsourceBootsourceselection),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listSelectionsQueryKey(),
+        queryKey: IMAGES_WORKFLOW_KEY,
       });
     },
   });
