@@ -55,10 +55,10 @@ const ImagesTable = ({
       selection={{
         rowSelection: selectedRows,
         setRowSelection: setSelectedRows,
-        rowSelectionLabelKey: "release",
+        rowSelectionLabelKey: "title",
       }}
       showChevron
-      sorting={[{ id: "release", desc: false }]}
+      sorting={[{ id: "title", desc: true }]}
       variant={variant}
     />
   );

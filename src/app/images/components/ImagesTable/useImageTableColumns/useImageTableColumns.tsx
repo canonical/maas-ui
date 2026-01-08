@@ -72,8 +72,8 @@ const useImageTableColumns = ({
           },
         },
         {
-          id: "release",
-          accessorKey: "release",
+          id: "title",
+          accessorKey: "title",
           enableSorting: true,
           header: () => "Release title",
           cell: ({
