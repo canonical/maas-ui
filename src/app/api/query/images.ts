@@ -10,6 +10,15 @@ import {
   queryOptionsWithHeaders,
 } from "@/app/api/utils";
 import type {
+  BulkCreateSelectionsData,
+  BulkCreateSelectionsErrors,
+  BulkCreateSelectionsResponses,
+  BulkDeleteSelectionsData,
+  BulkDeleteSelectionsErrors,
+  BulkDeleteSelectionsResponses,
+  GetAllAvailableImagesData,
+  GetAllAvailableImagesErrors,
+  GetAllAvailableImagesResponses,
   ImageStatusListResponse,
   ImageStatusResponse,
   ListCustomImagesData,
@@ -44,6 +53,9 @@ import type {
   SyncBootsourceBootsourceselectionResponses,
 } from "@/app/apiclient";
 import {
+  bulkCreateSelections,
+  bulkDeleteSelections,
+  getAllAvailableImages,
   stopSyncBootsourceBootsourceselection,
   syncBootsourceBootsourceselection,
   listCustomImagesStatistic,
@@ -54,6 +66,7 @@ import {
   listSelections,
 } from "@/app/apiclient";
 import {
+  getAllAvailableImagesQueryKey,
   listCustomImagesQueryKey,
   listCustomImagesStatisticQueryKey,
   listCustomImagesStatusQueryKey,
@@ -113,9 +126,7 @@ const withImagesWorkflow = (key: readonly unknown[]) =>
 
 const calculateRefetchInterval = (statuses?: ImageStatusResponse[]): number => {
   const hasActiveDownloads = statuses?.some(
-    (status) =>
-      status.status === "Downloading" ||
-      status.status === "Waiting for download"
+    (status) => status.status === "Downloading"
   );
 
   return hasActiveDownloads
@@ -428,6 +439,54 @@ export const useStopImageSync = (
       StopSyncBootsourceBootsourceselectionErrors,
       StopSyncBootsourceBootsourceselectionData
     >(mutationOptions, stopSyncBootsourceBootsourceselection),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: IMAGES_WORKFLOW_KEY,
+      });
+    },
+  });
+};
+
+export const useAvailableSelections = (
+  options?: Options<GetAllAvailableImagesData>
+) => {
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
+      GetAllAvailableImagesResponses,
+      GetAllAvailableImagesErrors,
+      GetAllAvailableImagesData
+    >(options, getAllAvailableImages, getAllAvailableImagesQueryKey(options)),
+  });
+};
+
+export const useAddSelections = (
+  mutationOptions?: Options<BulkCreateSelectionsData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkCreateSelectionsResponses,
+      BulkCreateSelectionsErrors,
+      BulkCreateSelectionsData
+    >(mutationOptions, bulkCreateSelections),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: IMAGES_WORKFLOW_KEY,
+      });
+    },
+  });
+};
+
+export const useDeleteSelections = (
+  mutationOptions?: Options<BulkDeleteSelectionsData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkDeleteSelectionsResponses,
+      BulkDeleteSelectionsErrors,
+      BulkDeleteSelectionsData
+    >(mutationOptions, bulkDeleteSelections),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: IMAGES_WORKFLOW_KEY,
