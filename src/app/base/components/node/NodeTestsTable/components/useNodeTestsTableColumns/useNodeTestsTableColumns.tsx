@@ -1,13 +1,12 @@
 import type { Dispatch } from "react";
 import { useMemo } from "react";
 
-import { Input, Tooltip } from "@canonical/react-components";
+import { Icon, Input, Tooltip } from "@canonical/react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 
 import ScriptRunTime from "../../ScriptRunTime";
-import TestActions from "../../TestActions";
 import type { NodeTestRow } from "../NodeTestsTable/NodeTestsTable";
 
 import ScriptStatus from "@/app/base/components/ScriptStatus";
@@ -131,7 +130,21 @@ const useNodeTestsTableColumns = ({
         accessorKey: "name",
         enableSorting: false,
         cell: ({ row }) =>
-          !row.original.isHistory ? <>{row.original.name}</> : null,
+          !row.original.isHistory ? (
+            <Link
+              data-testid="view-history-link"
+              onClick={(e) => {
+                e.preventDefault();
+                setExpanded({
+                  id: row.original.id,
+                  content: ScriptResultAction.VIEW_PREVIOUS_TESTS,
+                });
+              }}
+              to="#"
+            >
+              {row.original.name}
+            </Link>
+          ) : null,
       },
       {
         id: "tags",
@@ -196,27 +209,19 @@ const useNodeTestsTableColumns = ({
         cell: ({ row }) => <ScriptRunTime scriptResult={row.original} />,
       },
       {
-        id: "actions",
-        header: "Actions",
-        accessorKey: "actions",
+        id: "metrics",
+        header: "Metrics",
+        accessorKey: "metrics",
         enableSorting: false,
         cell: ({ row }) =>
-          !row.original.isHistory ? (
-            <TestActions
-              node={node}
-              resultType={
-                containsTesting
-                  ? ScriptResultType.TESTING
-                  : ScriptResultType.COMMISSIONING
-              }
-              scriptResult={row.original}
-              setExpanded={setExpanded}
-            />
-          ) : null,
+          row.original.metrics ? (
+            <Icon name="success"></Icon>
+          ) : (
+            <Icon name="minus"></Icon>
+          ),
       },
     ],
     [
-      containsTesting,
       dispatch,
       expanded?.content,
       isMachine,
