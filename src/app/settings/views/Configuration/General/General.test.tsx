@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import { Labels as FormLabels } from "../GeneralForm/GeneralForm";
 
 import General, { Labels as GeneralLabels } from "./General";
@@ -9,9 +5,7 @@ import General, { Labels as GeneralLabels } from "./General";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("General", () => {
   let state: RootState;
@@ -39,31 +33,13 @@ describe("General", () => {
 
   it("displays a spinner if config is loading", () => {
     state.config.loading = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <General />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    renderWithProviders(<General />, { state });
     expect(screen.getByText(GeneralLabels.Loading)).toBeInTheDocument();
   });
 
   it("displays the General form if config is loaded", () => {
     state.config.loaded = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <General />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    renderWithProviders(<General />, { state });
     expect(
       screen.getByRole("form", { name: FormLabels.FormLabel })
     ).toBeInTheDocument();
@@ -71,15 +47,7 @@ describe("General", () => {
 
   it("dispatches action to fetch config if not already loaded", () => {
     state.config.loaded = false;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <General />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<General />, { state });
 
     const fetchActions = store
       .getActions()

@@ -1,7 +1,4 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
 
 import LicenseKeyFormFields, {
   Labels as FormFieldsLabels,
@@ -10,9 +7,7 @@ import LicenseKeyFormFields, {
 import type { OSInfoOptions } from "@/app/store/general/selectors/osInfo";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("LicenseKeyFormFields", () => {
   let state: RootState;
@@ -48,15 +43,11 @@ describe("LicenseKeyFormFields", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={vi.fn()}>
-            <LicenseKeyFormFields osystems={osystems} releases={releases} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <LicenseKeyFormFields osystems={osystems} releases={releases} />
+      </Formik>,
+      { state }
     );
 
     expect(

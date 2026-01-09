@@ -1,16 +1,10 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import ScriptDetails from ".";
 
 import FileContext, { fileContextStore } from "@/app/base/file-context";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
-import { screen, render, renderWithBrowserRouter } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ScriptDetails", () => {
   let state: RootState;
@@ -40,14 +34,7 @@ describe("ScriptDetails", () => {
   });
 
   it("fetches the script", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptDetails id={1} />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<ScriptDetails id={1} />, { state });
     expect(
       store.getActions().some((action) => action.type === "script/get")
     ).toBe(true);
@@ -55,22 +42,22 @@ describe("ScriptDetails", () => {
 
   it("displays a spinner while loading", () => {
     state.script.loading = true;
-    renderWithBrowserRouter(<ScriptDetails id={1} />, { state, route: "/" });
+    renderWithProviders(<ScriptDetails id={1} />, { state });
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("displays a message when the script does not exist", () => {
-    renderWithBrowserRouter(<ScriptDetails id={1} />, { state, route: "/" });
+    renderWithProviders(<ScriptDetails id={1} />, { state });
     expect(screen.getByText("Script could not be found")).toBeInTheDocument();
   });
 
   it("can display the script", () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FileContext.Provider value={fileContextStore}>
         <ScriptDetails id={1} />
       </FileContext.Provider>,
-      { state, route: "/" }
+      { state }
     );
 
     expect(screen.getByText("test script contents")).toBeInTheDocument();
@@ -78,11 +65,11 @@ describe("ScriptDetails", () => {
 
   it("displays a collapse button if 'isCollapsible' prop is provided", () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("some random text");
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FileContext.Provider value={fileContextStore}>
         <ScriptDetails id={1} isCollapsible />
       </FileContext.Provider>,
-      { state, route: "/" }
+      { state }
     );
 
     expect(
@@ -92,11 +79,11 @@ describe("ScriptDetails", () => {
 
   it("doesn't display a collapse button if 'isCollapsible' prop is not provided", () => {
     vi.spyOn(fileContextStore, "get").mockReturnValue("some random text");
-    renderWithBrowserRouter(
+    renderWithProviders(
       <FileContext.Provider value={fileContextStore}>
         <ScriptDetails id={1} />
       </FileContext.Provider>,
-      { state, route: "/" }
+      { state }
     );
 
     expect(

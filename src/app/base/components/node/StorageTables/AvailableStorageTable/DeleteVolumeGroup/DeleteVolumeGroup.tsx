@@ -3,12 +3,12 @@ import type { ReactElement } from "react";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk } from "@/app/store/types/node";
 
-type Props = {
-  close: () => void;
+type DeleteVolumeGroupProps = {
   systemId: Machine["system_id"];
   diskId: Disk["id"];
 };
@@ -16,16 +16,16 @@ type Props = {
 const DeleteVolumeGroup = ({
   systemId,
   diskId,
-  close,
-}: Props): ReactElement => {
+}: DeleteVolumeGroupProps): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   return (
     <ModelActionForm
       aria-label="Delete volume group"
       initialValues={{}}
       message={<>Are you sure you want to remove this volume group?</>}
       modelType="volume group"
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Delete volume group",
         category: "Machine storage",
@@ -39,7 +39,7 @@ const DeleteVolumeGroup = ({
             systemId: systemId,
           })
         );
-        close();
+        closeSidePanel();
       }}
       submitAppearance="negative"
       submitLabel="Remove volume group"

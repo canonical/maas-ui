@@ -9,7 +9,7 @@ import LicenseKeyFormFields from "../LicenseKeyFormFields";
 import type { LicenseKeyFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import settingsURLs from "@/app/settings/urls";
 import { generalActions } from "@/app/store/general";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";

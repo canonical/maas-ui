@@ -10,7 +10,7 @@ import {
 } from "@/app/api/query/auth";
 import type { OAuthProviderResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 type Props = {
   id: OAuthProviderResponse["id"];

@@ -10,28 +10,14 @@ import RegisterController from "../../RegisterController";
 import RemoveControllers from "../../RemoveControllers";
 
 import type { RackResponse } from "@/app/apiclient";
-import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import TableMenu from "@/app/base/components/TableMenu";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { FilterControllers } from "@/app/store/controller/utils";
 
 type RackWithSummaryResponse = RackResponse & { registered: string[] };
 
 type RacksColumnDef = ColumnDef<RackWithSummaryResponse>;
-
-enum RackActions {
-  Edit = "editRack",
-  Delete = "deleteRack",
-  RegisterController = "registerController",
-  RemoveControllers = "removeControllers",
-}
-
-const actions = [
-  { label: "Edit rack...", type: RackActions.Edit },
-  { label: "Delete rack...", type: RackActions.Delete },
-  { label: "Register controller...", type: RackActions.RegisterController },
-  { label: "Remove controllers...", type: RackActions.RemoveControllers },
-];
 
 const getControllersLabel = (row: Row<RackWithSummaryResponse>) => {
   if (row.original.registered.length === 0) {
@@ -74,18 +60,21 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
         //TODO Correctly disable actions when backend is ready
         cell: ({ row }) => {
           return (
-            <TableActionsDropdown
-              actions={actions}
-              onActionClick={(action: RackActions) => {
-                switch (action) {
-                  case RackActions.Edit:
+            <TableMenu
+              links={[
+                {
+                  children: "Edit rack...",
+                  onClick: () => {
                     openSidePanel({
                       component: EditRack,
                       title: "Edit rack",
                       props: { id: row.original.id },
                     });
-                    break;
-                  case RackActions.Delete:
+                  },
+                },
+                {
+                  children: "Delete rack...",
+                  onClick: () => {
                     openSidePanel({
                       component: DeleteRack,
                       title: "Delete rack",
@@ -93,8 +82,11 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
                         id: row.original.id,
                       },
                     });
-                    break;
-                  case RackActions.RegisterController:
+                  },
+                },
+                {
+                  children: "Register controller...",
+                  onClick: () => {
                     openSidePanel({
                       component: RegisterController,
                       title: "Register controller",
@@ -102,8 +94,11 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
                         id: row.original.id,
                       },
                     });
-                    break;
-                  case RackActions.RemoveControllers:
+                  },
+                },
+                {
+                  children: "Remove controllers...",
+                  onClick: () => {
                     openSidePanel({
                       component: RemoveControllers,
                       title: "Remove controllers",
@@ -111,11 +106,11 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
                         id: row.original.id,
                       },
                     });
-                    break;
-                  default:
-                    break;
-                }
-              }}
+                  },
+                },
+              ]}
+              position="right"
+              title="Take action:"
             />
           );
         },

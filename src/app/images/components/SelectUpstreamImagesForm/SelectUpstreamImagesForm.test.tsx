@@ -1,10 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import SelectUpstreamImagesForm from "./SelectUpstreamImagesForm";
 
 import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import {
@@ -16,7 +13,6 @@ import {
   waitForLoading,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(
   imageSourceResolvers.listImageSources.handler()
 );
@@ -77,7 +73,6 @@ describe("SelectUpstreamImagesForm", () => {
       otherImages,
     }),
   });
-  const store = mockStore(state);
 
   it("correctly sets initial values", async () => {
     renderWithProviders(<SelectUpstreamImagesForm />, {
@@ -100,8 +95,8 @@ describe("SelectUpstreamImagesForm", () => {
   });
 
   it("can dispatch an action to save ubuntu images", async () => {
-    renderWithProviders(<SelectUpstreamImagesForm />, {
-      store,
+    const { store } = renderWithProviders(<SelectUpstreamImagesForm />, {
+      state,
     });
     await waitForLoading();
     await userEvent.click(

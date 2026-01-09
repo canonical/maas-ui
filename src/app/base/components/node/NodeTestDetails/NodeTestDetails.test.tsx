@@ -1,12 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import NodeTestDetails from "./NodeTestDetails";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const getReturnPath = (id: string) => `/some/url/${id}`;
 
 describe("NodeTestDetails", () => {
@@ -32,9 +29,9 @@ describe("NodeTestDetails", () => {
 
   it("displays a spinner when loading", () => {
     state.scriptresult.loading = true;
-    renderWithBrowserRouter(<NodeTestDetails getReturnPath={getReturnPath} />, {
-      route: "/machine/abc123/testing/1/details",
-      routePattern: "/machine/:id/testing/:scriptResultId/details",
+    renderWithProviders(<NodeTestDetails getReturnPath={getReturnPath} />, {
+      initialEntries: ["/machine/abc123/testing/1/details"],
+      pattern: "/machine/:id/testing/:scriptResultId/details",
       state,
     });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -42,9 +39,9 @@ describe("NodeTestDetails", () => {
 
   it("displays a message if script results aren't found", () => {
     state.scriptresult.items = [];
-    renderWithBrowserRouter(<NodeTestDetails getReturnPath={getReturnPath} />, {
-      route: "/machine/abc123/testing/1/details",
-      routePattern: "/machine/:id/testing/:scriptResultId/details",
+    renderWithProviders(<NodeTestDetails getReturnPath={getReturnPath} />, {
+      initialEntries: ["/machine/abc123/testing/1/details"],
+      pattern: "/machine/:id/testing/:scriptResultId/details",
       state,
     });
     expect(screen.getByTestId("not-found")).toBeInTheDocument();
@@ -55,12 +52,16 @@ describe("NodeTestDetails", () => {
     const scriptResults = [scriptResult];
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    renderWithBrowserRouter(<NodeTestDetails getReturnPath={getReturnPath} />, {
-      route: "/machine/abc123/testing/1/details",
-      routePattern: "/machine/:id/testing/:scriptResultId/details",
-      store,
-    });
+
+    const { store } = renderWithProviders(
+      <NodeTestDetails getReturnPath={getReturnPath} />,
+      {
+        initialEntries: ["/machine/abc123/testing/1/details"],
+        pattern: "/machine/:id/testing/:scriptResultId/details",
+        state,
+      }
+    );
+
     expect(
       store.getActions().find((action) => action.type === "scriptresult/get")
     ).toStrictEqual({
@@ -82,20 +83,19 @@ describe("NodeTestDetails", () => {
     const scriptResults = [scriptResult];
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    const { rerender } = renderWithBrowserRouter(
+    const { rerender, store } = renderWithProviders(
       <NodeTestDetails getReturnPath={getReturnPath} />,
       {
-        route: "/machine/abc123/testing/1/details",
-        routePattern: "/machine/:id/testing/:scriptResultId/details",
-        store,
+        initialEntries: ["/machine/abc123/testing/1/details"],
+        pattern: "/machine/:id/testing/:scriptResultId/details",
+        state,
       }
     );
     expect(
       store.getActions().filter((action) => action.type === "scriptresult/get")
         .length
     ).toBe(1);
-    rerender(<NodeTestDetails getReturnPath={getReturnPath} />);
+    rerender(<NodeTestDetails getReturnPath={getReturnPath} />, { state });
     expect(
       store.getActions().filter((action) => action.type === "scriptresult/get")
         .length
@@ -108,9 +108,9 @@ describe("NodeTestDetails", () => {
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
 
-    renderWithBrowserRouter(<NodeTestDetails getReturnPath={getReturnPath} />, {
-      route: "/machine/abc123/testing/1/details",
-      routePattern: "/machine/:id/testing/:scriptResultId/details",
+    renderWithProviders(<NodeTestDetails getReturnPath={getReturnPath} />, {
+      initialEntries: ["/machine/abc123/testing/1/details"],
+      pattern: "/machine/:id/testing/:scriptResultId/details",
       state,
     });
 
@@ -130,9 +130,9 @@ describe("NodeTestDetails", () => {
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
 
-    renderWithBrowserRouter(<NodeTestDetails getReturnPath={getReturnPath} />, {
-      route: "/machine/abc123/testing/1/details",
-      routePattern: "/machine/:id/testing/:scriptResultId/details",
+    renderWithProviders(<NodeTestDetails getReturnPath={getReturnPath} />, {
+      initialEntries: ["/machine/abc123/testing/1/details"],
+      pattern: "/machine/:id/testing/:scriptResultId/details",
       state,
     });
 
@@ -156,13 +156,14 @@ describe("NodeTestDetails", () => {
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
 
-    const store = mockStore(state);
-
-    renderWithBrowserRouter(<NodeTestDetails getReturnPath={getReturnPath} />, {
-      route: "/machine/abc123/testing/1/details",
-      routePattern: "/machine/:id/testing/:scriptResultId/details",
-      store,
-    });
+    const { store } = renderWithProviders(
+      <NodeTestDetails getReturnPath={getReturnPath} />,
+      {
+        initialEntries: ["/machine/abc123/testing/1/details"],
+        pattern: "/machine/:id/testing/:scriptResultId/details",
+        state,
+      }
+    );
     const actions = store
       .getActions()
       .filter((action) => action.type === "scriptresult/getLogs");
@@ -177,9 +178,9 @@ describe("NodeTestDetails", () => {
     state.scriptresult.items = [scriptResult];
     state.nodescriptresult.items = { abc123: [scriptResult.id] };
 
-    renderWithBrowserRouter(<NodeTestDetails getReturnPath={getReturnPath} />, {
-      route: "/machine/abc123/testing/1/details",
-      routePattern: "/machine/:id/testing/:scriptResultId/details",
+    renderWithProviders(<NodeTestDetails getReturnPath={getReturnPath} />, {
+      initialEntries: ["/machine/abc123/testing/1/details"],
+      pattern: "/machine/:id/testing/:scriptResultId/details",
       state,
     });
 

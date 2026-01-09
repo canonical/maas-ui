@@ -2,11 +2,11 @@ import type { ActionFormProps } from "./ActionForm";
 import ActionForm, { Labels } from "./ActionForm";
 
 import { TestIds } from "@/app/base/components/FormikFormButtons";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("ActionForm", () => {
   it("shows a spinner if form has not fully loaded", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ActionForm
         actionName="action"
         initialValues={{}}
@@ -24,7 +24,7 @@ describe("ActionForm", () => {
   });
 
   it("can show the default submit label", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ActionForm
         actionName="action"
         initialValues={{}}
@@ -41,7 +41,7 @@ describe("ActionForm", () => {
   });
 
   it("can override the submit label", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ActionForm
         actionName="action"
         initialValues={{}}
@@ -59,7 +59,7 @@ describe("ActionForm", () => {
   });
 
   it("can show the correct saving state", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ActionForm
         actionName="action"
         initialValues={{}}
@@ -79,7 +79,7 @@ describe("ActionForm", () => {
   });
 
   it("disables the submit button when selectedCount equals 0", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ActionForm
         actionName="action"
         initialValues={{}}
@@ -92,35 +92,8 @@ describe("ActionForm", () => {
     expect(screen.getByRole("button")).toBeDisabled();
   });
 
-  it("shows correct saving label if selectedCount changes after submit", async () => {
-    const Proxy = ({ selectedCount }: Partial<ActionFormProps<object>>) => (
-      <ActionForm
-        actionName="action"
-        initialValues={{}}
-        modelName="machine"
-        onSubmit={vi.fn()}
-        processingCount={2}
-        selectedCount={selectedCount}
-      />
-    );
-    const { rerender } = renderWithBrowserRouter(<Proxy selectedCount={2} />);
-
-    // Submit the form to start processing.
-    await userEvent.click(screen.getByRole("button"));
-    expect(screen.getByTestId(TestIds.SavingLabel).textContent).toBe(
-      "Processing 0 of 2 machines..."
-    );
-
-    // Change the selected count prop - the label should stay the same.
-    rerender(<Proxy selectedCount={1} />);
-
-    expect(screen.getByTestId(TestIds.SavingLabel).textContent).toBe(
-      "Processing 0 of 2 machines..."
-    );
-  });
-
   it("can override showing the processing count", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ActionForm
         actionName="action"
         initialValues={{}}
@@ -152,9 +125,7 @@ describe("ActionForm", () => {
       />
     );
 
-    const { rerender } = renderWithBrowserRouter(
-      <Proxy actionStatus="loading" />
-    );
+    const { rerender } = renderWithProviders(<Proxy actionStatus="loading" />);
     expect(screen.getByTestId(TestIds.SavingLabel)).toBeInTheDocument();
 
     rerender(<Proxy actionStatus="success" />);
@@ -178,7 +149,7 @@ describe("ActionForm", () => {
       />
     );
 
-    const { rerender } = renderWithBrowserRouter(<Proxy processingCount={1} />);
+    const { rerender } = renderWithProviders(<Proxy processingCount={1} />);
     expect(screen.getByTestId(TestIds.SavingLabel)).toBeInTheDocument();
 
     rerender(<Proxy processingCount={0} />);

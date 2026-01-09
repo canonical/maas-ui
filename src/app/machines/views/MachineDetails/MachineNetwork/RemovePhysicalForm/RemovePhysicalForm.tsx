@@ -1,8 +1,9 @@
-import React from "react";
+import type { ReactElement } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -15,20 +16,19 @@ import {
   isAlias,
 } from "@/app/store/utils";
 
-interface Props {
+interface RemovePhysicalProps {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
   systemId: Machine["system_id"];
-  close: () => void;
 }
 
-const RemovePhysicalForm: React.FC<Props> = ({
+const RemovePhysicalForm = ({
   link,
   nic,
   systemId,
-  close,
-}) => {
+}: RemovePhysicalProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -38,12 +38,12 @@ const RemovePhysicalForm: React.FC<Props> = ({
       "deletingInterface",
       "deleteInterface",
       () => {
-        close();
+        closeSidePanel();
       }
     );
   const { saved: unlinkedSubnet, saving: unlinkingSubnet } =
     useMachineDetailsForm(systemId, "unlinkingSubnet", "unlinkSubnet", () => {
-      close();
+      closeSidePanel();
     });
   if (machine && link && !nic) {
     [nic] = getLinkInterface(machine, link);
@@ -60,7 +60,7 @@ const RemovePhysicalForm: React.FC<Props> = ({
       initialValues={{}}
       message={<>Are you sure you want to remove this {removeTypeText}?</>}
       modelType={removeTypeText || ""}
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: `Remove ${removeTypeText}`,
         category: "Machine network",
@@ -87,7 +87,7 @@ const RemovePhysicalForm: React.FC<Props> = ({
           );
         }
       }}
-      onSuccess={close}
+      onSuccess={closeSidePanel}
       saved={deletedInterface || unlinkedSubnet}
       saving={deletingInterface || unlinkingSubnet}
       submitLabel="Remove"

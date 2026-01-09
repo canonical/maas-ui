@@ -1,4 +1,3 @@
-import configureStore from "redux-mock-store";
 import type { Mock, SpyInstance } from "vitest";
 
 import NodeTestsTable from "./NodeTestsTable";
@@ -19,8 +18,6 @@ import {
   waitFor,
   waitForLoading,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("NodeTestsTable", () => {
   let controller: ControllerDetails;
@@ -168,12 +165,12 @@ describe("NodeTestsTable", () => {
       state.scriptresult.history = {
         1: [factory.partialScriptResult(), factory.partialScriptResult()],
       };
-      const store = mockStore(state);
+
       renderWithProviders(
         <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
         {
           initialEntries: ["/machine/abc123"],
-          store,
+          state,
         }
       );
       await waitForLoading();
@@ -196,12 +193,12 @@ describe("NodeTestsTable", () => {
       state.scriptresult.history = {
         1: [],
       };
-      const store = mockStore(state);
+
       renderWithProviders(
         <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
         {
           initialEntries: ["/machine/abc123"],
-          store,
+          state,
         }
       );
       await waitForLoading();
@@ -258,12 +255,12 @@ describe("NodeTestsTable", () => {
         }),
       ];
       state.scriptresult.items = scriptResults;
-      const store = mockStore(state);
-      renderWithProviders(
+
+      const { store } = renderWithProviders(
         <NodeTestsTable node={machine} scriptResults={scriptResults} />,
         {
           initialEntries: ["/machine/abc123"],
-          store,
+          state,
         }
       );
 
@@ -289,12 +286,12 @@ describe("NodeTestsTable", () => {
         }),
       ];
       state.scriptresult.items = scriptResults;
-      const store = mockStore(state);
-      renderWithProviders(
+
+      const { store } = renderWithProviders(
         <NodeTestsTable node={machine} scriptResults={scriptResults} />,
         {
           initialEntries: ["/machine/abc123"],
-          store,
+          state,
         }
       );
 
@@ -377,12 +374,12 @@ describe("NodeTestsTable", () => {
       state.scriptresult.history = {
         1: [],
       };
-      const store = mockStore(state);
-      renderWithProviders(
+
+      const { store } = renderWithProviders(
         <NodeTestsTable node={machine} scriptResults={scriptResults} />,
         {
           initialEntries: ["/machine/abc123"],
-          store,
+          state,
         }
       );
 

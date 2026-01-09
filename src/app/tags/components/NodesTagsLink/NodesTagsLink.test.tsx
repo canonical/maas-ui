@@ -1,18 +1,14 @@
-import { MemoryRouter } from "react-router";
-
 import NodesTagsLink from "./NodesTagsLink";
 
 import urls from "@/app/base/urls";
 import { ControllerMeta } from "@/app/store/controller/types";
 import { DeviceMeta } from "@/app/store/device/types";
 import { MachineMeta } from "@/app/store/machine/types";
-import { render, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("create a link to machines", () => {
-  render(
-    <MemoryRouter>
-      <NodesTagsLink count={1} nodeType={MachineMeta.MODEL} tags={["a-tag"]} />
-    </MemoryRouter>
+  renderWithProviders(
+    <NodesTagsLink count={1} nodeType={MachineMeta.MODEL} tags={["a-tag"]} />
   );
   const machineLink = screen.getByRole("link", {
     name: "1 machine",
@@ -25,14 +21,8 @@ it("create a link to machines", () => {
 });
 
 it("create a link to controllers", () => {
-  render(
-    <MemoryRouter>
-      <NodesTagsLink
-        count={3}
-        nodeType={ControllerMeta.MODEL}
-        tags={["a-tag"]}
-      />
-    </MemoryRouter>
+  renderWithProviders(
+    <NodesTagsLink count={3} nodeType={ControllerMeta.MODEL} tags={["a-tag"]} />
   );
   const controllerLink = screen.getByRole("link", {
     name: "3 controllers",
@@ -45,10 +35,8 @@ it("create a link to controllers", () => {
 });
 
 it("create a link to devices", () => {
-  render(
-    <MemoryRouter>
-      <NodesTagsLink count={2} nodeType={DeviceMeta.MODEL} tags={["a-tag"]} />
-    </MemoryRouter>
+  renderWithProviders(
+    <NodesTagsLink count={2} nodeType={DeviceMeta.MODEL} tags={["a-tag"]} />
   );
   const deviceLink = screen.getByRole("link", {
     name: "2 devices",

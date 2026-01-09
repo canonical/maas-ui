@@ -1,14 +1,14 @@
 import type { ReactElement } from "react";
 
-import { Col, Row, Textarea } from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
+import { Col, Row, Textarea } from "@canonical/react-components";
 import * as Yup from "yup";
 
 import { useCreateSslKeys } from "@/app/api/query/sslKeys";
 import type { CreateUserSslkeyError, SslKeyRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 // This can be removed when the autoComplete prop is supported:
 // https://github.com/canonical/react-components/issues/571

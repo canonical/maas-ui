@@ -8,7 +8,7 @@ import useUsersTableColumns from "./useUsersTableColumns/useUsersTableColumns";
 import { useUsers } from "@/app/api/query/users";
 import SearchBox from "@/app/base/components/SearchBox";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { AddUser } from "@/app/settings/views/UserManagement/views/UsersList/components";
 
 const UsersTable = () => {

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DeleteDomainForm from "./DeleteDomainForm";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";

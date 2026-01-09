@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { PoolColumn } from "./PoolColumn";
 
 import type { RootState } from "@/app/store/root/types";
@@ -14,7 +12,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(poolsResolvers.listPools.handler());
 
 describe("PoolColumn", () => {
@@ -104,12 +101,11 @@ describe("PoolColumn", () => {
   });
 
   it("can change pools", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         initialEntries: ["/machines"],
-        store,
+        state,
       }
     );
     await waitFor(() => {

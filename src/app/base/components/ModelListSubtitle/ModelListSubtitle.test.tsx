@@ -1,10 +1,12 @@
 import ModelListSubtitle, { TestIds } from "./ModelListSubtitle";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("ModelListSubtitle", () => {
   it("correctly displays when one model is available and none selected", () => {
-    render(<ModelListSubtitle available={1} modelName="machine" />);
+    renderWithProviders(
+      <ModelListSubtitle available={1} modelName="machine" />
+    );
 
     expect(screen.getByTestId(TestIds.Subtitle).textContent).toBe(
       "1 machine available"
@@ -12,7 +14,9 @@ describe("ModelListSubtitle", () => {
   });
 
   it("correctly displays when more than one model is available and none selected", () => {
-    render(<ModelListSubtitle available={2} modelName="machine" />);
+    renderWithProviders(
+      <ModelListSubtitle available={2} modelName="machine" />
+    );
 
     expect(screen.getByTestId(TestIds.Subtitle).textContent).toBe(
       "2 machines available"
@@ -20,7 +24,9 @@ describe("ModelListSubtitle", () => {
   });
 
   it("correctly displays when no models are available", () => {
-    render(<ModelListSubtitle available={0} modelName="machine" />);
+    renderWithProviders(
+      <ModelListSubtitle available={0} modelName="machine" />
+    );
 
     expect(screen.getByTestId(TestIds.Subtitle).textContent).toBe(
       "No machines available"
@@ -28,7 +34,7 @@ describe("ModelListSubtitle", () => {
   });
 
   it("correctly displays when all models are selected", () => {
-    render(
+    renderWithProviders(
       <ModelListSubtitle available={2} modelName="machine" selected={2} />
     );
 
@@ -38,7 +44,7 @@ describe("ModelListSubtitle", () => {
   });
 
   it("correctly displays when some models are selected", () => {
-    render(
+    renderWithProviders(
       <ModelListSubtitle available={2} modelName="machine" selected={1} />
     );
 
@@ -49,7 +55,7 @@ describe("ModelListSubtitle", () => {
 
   it("can render a filter button when some models are selected", async () => {
     const filterSelected = vi.fn();
-    render(
+    renderWithProviders(
       <ModelListSubtitle
         available={2}
         filterSelected={filterSelected}

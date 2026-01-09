@@ -1,5 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
 import DeleteTagForm from "./DeleteTagForm";
@@ -24,7 +23,6 @@ vi.mock("@reduxjs/toolkit", async () => {
     nanoid: vi.fn(),
   };
 });
-const mockStore = configureStore();
 
 let state: RootState;
 let scrollToSpy: Mock;
@@ -55,8 +53,7 @@ afterEach(() => {
 });
 
 it("dispatches an action to delete a tag", async () => {
-  const store = mockStore(state);
-  renderWithProviders(<DeleteTagForm id={1} />, { store });
+  const { store } = renderWithProviders(<DeleteTagForm id={1} />, { state });
   await userEvent.click(screen.getByRole("button", { name: "Delete" }));
   const expected = tagActions.delete(1);
   await waitFor(() => {

@@ -8,14 +8,14 @@ import type { Dispatch } from "redux";
 import * as Yup from "yup";
 
 import DiscoveryAddFormFields from "./DiscoveryAddFormFields";
-import { DeviceType } from "./types";
 import type { DiscoveryAddValues } from "./types";
+import { DeviceType } from "./types";
 
 import type { DiscoveryResponse } from "@/app/apiclient";
 import { listDiscoveriesQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useFetchActions, useCycled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useCycled, useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { hostnameValidation } from "@/app/base/validation";
 import { deviceActions } from "@/app/store/device";

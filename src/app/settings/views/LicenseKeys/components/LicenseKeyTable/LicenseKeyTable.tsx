@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 import SearchBox from "@/app/base/components/SearchBox";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { LicenseKeyAdd } from "@/app/settings/views/LicenseKeys/components";
 import useLicenseKeyTableColumns from "@/app/settings/views/LicenseKeys/components/LicenseKeyTable/useLicenseKeyTableColumns/useLicenseKeyTableColumns";
 import { generalActions } from "@/app/store/general";

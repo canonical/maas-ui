@@ -47,12 +47,7 @@ const DomainDetails = (): React.ReactElement => {
   }
 
   return (
-    <PageContent
-      header={<DomainDetailsHeader id={id} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<DomainDetailsHeader id={id} />}>
       <DomainSummary id={id} />
       <ResourceRecords id={id} />
     </PageContent>

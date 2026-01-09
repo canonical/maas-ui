@@ -1,10 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import TableDeleteConfirm from "./TableDeleteConfirm";
 
+import { renderWithProviders } from "@/testing/utils";
+
 describe("TableDeleteConfirm", () => {
   it("renders", () => {
-    render(
+    renderWithProviders(
       <TableDeleteConfirm
         deleted={false}
         deleting={false}

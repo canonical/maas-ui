@@ -6,7 +6,7 @@ import { Button } from "@canonical/react-components";
 import AddRack from "../AddRack/AddRack";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 
 type Props = {

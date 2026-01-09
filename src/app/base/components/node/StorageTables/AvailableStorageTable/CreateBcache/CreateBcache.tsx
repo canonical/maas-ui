@@ -1,9 +1,12 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import CreateBcacheFields from "./CreateBcacheFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -25,8 +28,7 @@ export type CreateBcacheValues = {
   tags: string[];
 };
 
-type Props = {
-  closeExpanded: () => void;
+type CreateBcacheSchemaProps = {
   storageDevice: Disk | Partition;
   systemId: Machine["system_id"];
 };
@@ -56,17 +58,17 @@ const getInitialName = (disks: Disk[]) => {
 };
 
 export const CreateBcache = ({
-  closeExpanded,
   storageDevice,
   systemId,
-}: Props): React.ReactElement | null => {
+}: CreateBcacheSchemaProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "creatingBcache",
     "createBcache",
     () => {
-      closeExpanded();
+      closeSidePanel();
     }
   );
   const machine = useSelector((state: RootState) =>
@@ -79,7 +81,7 @@ export const CreateBcache = ({
     if (cacheSets.length === 0) {
       // Close the form if the last remaining cache set was deleted after the
       // form had already opened.
-      closeExpanded();
+      closeSidePanel();
       return null;
     }
 
@@ -98,7 +100,7 @@ export const CreateBcache = ({
           name: getInitialName(machine.disks),
           tags: [],
         }}
-        onCancel={closeExpanded}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Create bcache",
           category: "Machine storage",

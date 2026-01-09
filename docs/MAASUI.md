@@ -258,13 +258,9 @@ To this end, it renders the React code into actual DOM nodes, as opposed to libr
 
 #### Testing utility functions
 
-Many of our tests require providers for the Redux store and the React router. We provide utility functions that automatically wrap the code you want to render with these providers:
-- `renderWithMockStore`: Wraps components with a Redux store provider.
-- `renderWithBrowserRouter`: Wraps components with both Redux and React Router providers.
+Many of our tests require providers for the Redux store and the React router. We provide a utility function that automatically wraps the code you want to render called `renderWithProviders`
 
-You can directly pass `state` as an option to both of these functions, and a mock store will be created internally and provided to the rendered components. `renderWithBrowserRouter` can also take a `route` option to specify a route that the DOM should be rendered on.
-
-- `getByTextContent`: Helps locate text content that may be split across multiple DOM nodes. Returns `true` if the provided text is found in the DOM, even if it's broken up across multiple nodes.
+You can directly pass `state` as an option to both of these functions, and a mock store will be created internally and provided to the rendered components.
 
 You can see the full suite in the [test utils file on GitHub](https://github.com/canonical/maas-ui/blob/main/src/testing/utils.tsx).
 

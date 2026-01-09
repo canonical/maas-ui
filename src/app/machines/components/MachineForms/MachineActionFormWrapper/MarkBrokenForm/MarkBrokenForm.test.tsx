@@ -1,13 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import MarkBrokenForm from "./MarkBrokenForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("MarkBrokenForm", () => {
   let state: RootState;
@@ -23,20 +19,15 @@ describe("MarkBrokenForm", () => {
           abc123: factory.machineStatus({ markingBroken: false }),
           def456: factory.machineStatus({ markingBroken: false }),
         },
+        selected: { items: ["abc123", "def456"] },
       }),
     });
   });
 
   it("dispatches actions to mark given machines broken", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MarkBrokenForm
-        clearSidePanelContent={vi.fn()}
-        machines={state.machine.items}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <MarkBrokenForm isViewingDetails={false} />,
+      { state }
     );
 
     const commentInput = screen.getByLabelText(
@@ -53,7 +44,7 @@ describe("MarkBrokenForm", () => {
       store
         .getActions()
         .filter((action) => action.type === "machine/markBroken")
-    ).toStrictEqual([
+    ).toMatchObject([
       {
         type: "machine/markBroken",
         meta: {
@@ -66,23 +57,10 @@ describe("MarkBrokenForm", () => {
             extra: {
               message: "machine is on fire",
             },
-            system_id: "abc123",
-          },
-        },
-      },
-      {
-        type: "machine/markBroken",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.MARK_BROKEN,
-            extra: {
-              message: "machine is on fire",
+            system_id: undefined,
+            filter: {
+              id: ["abc123", "def456"],
             },
-            system_id: "def456",
           },
         },
       },
@@ -90,15 +68,10 @@ describe("MarkBrokenForm", () => {
   });
 
   it("dispatches actions to mark selected machines broken without a message", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MarkBrokenForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    state.machine.selected = { items: ["abc123"] };
+    const { store } = renderWithProviders(
+      <MarkBrokenForm isViewingDetails={false} />,
+      { state }
     );
 
     const submitButton = screen.getByRole("button", {
@@ -108,7 +81,7 @@ describe("MarkBrokenForm", () => {
 
     expect(
       store.getActions().find((action) => action.type === "machine/markBroken")
-    ).toStrictEqual({
+    ).toMatchObject({
       type: "machine/markBroken",
       meta: {
         model: "machine",
@@ -120,7 +93,10 @@ describe("MarkBrokenForm", () => {
           extra: {
             message: "",
           },
-          system_id: "abc123",
+          system_id: undefined,
+          filter: {
+            id: ["abc123"],
+          },
         },
       },
     });

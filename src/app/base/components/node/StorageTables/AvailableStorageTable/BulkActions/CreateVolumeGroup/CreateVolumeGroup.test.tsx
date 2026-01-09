@@ -33,11 +33,7 @@ describe("CreateVolumeGroupForm", () => {
     });
     it("displays the columns correctly", () => {
       renderWithProviders(
-        <CreateVolumeGroup
-          closeForm={vi.fn()}
-          selected={[]}
-          systemId="abc123"
-        />,
+        <CreateVolumeGroup selected={[]} systemId="abc123" />,
         { state }
       );
       ["Name", "Size", "Device Type"].forEach((column) => {
@@ -51,7 +47,6 @@ describe("CreateVolumeGroupForm", () => {
     it("shows the details of the selected storage devices in the table", () => {
       renderWithProviders(
         <CreateVolumeGroup
-          closeForm={vi.fn()}
           selected={[selectedDisk, selectedPartition]}
           systemId="abc123"
         />,
@@ -93,11 +88,7 @@ describe("CreateVolumeGroupForm", () => {
         }),
       });
       renderWithProviders(
-        <CreateVolumeGroup
-          closeForm={vi.fn()}
-          selected={[physicalDisk]}
-          systemId="abc123"
-        />,
+        <CreateVolumeGroup selected={[physicalDisk]} systemId="abc123" />,
         { state }
       );
 
@@ -126,7 +117,6 @@ describe("CreateVolumeGroupForm", () => {
       });
       const { store } = renderWithProviders(
         <CreateVolumeGroup
-          closeForm={vi.fn()}
           selected={[selectedDisk, selectedPartition]}
           systemId="abc123"
         />,

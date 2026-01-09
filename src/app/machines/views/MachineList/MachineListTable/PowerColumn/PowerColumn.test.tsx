@@ -6,7 +6,7 @@ import { PowerState } from "@/app/store/types/enum";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -32,9 +32,9 @@ describe("PowerColumn", () => {
   it("displays the correct power state", () => {
     state.machine.items[0].power_state = PowerState.OFF;
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
 
     expect(screen.getByTestId("power_state")).toHaveTextContent("off");
@@ -43,9 +43,9 @@ describe("PowerColumn", () => {
   it("displays the correct power type", () => {
     state.machine.items[0].power_type = "manual";
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
 
     expect(screen.getByTestId("power_type")).toHaveTextContent("manual");
@@ -55,9 +55,9 @@ describe("PowerColumn", () => {
     state.machine.items[0].actions = [NodeActions.ON];
     state.machine.items[0].power_state = PowerState.OFF;
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
     // Open the menu so the elements get rendered.
     await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
@@ -68,9 +68,9 @@ describe("PowerColumn", () => {
   it("can show a menu item to turn a machine off", async () => {
     state.machine.items[0].actions = [NodeActions.OFF];
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
 
     // Open the menu so the elements get rendered.
@@ -80,9 +80,9 @@ describe("PowerColumn", () => {
   });
 
   it("can show a menu item to check power", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
 
     // Open the menu so the elements get rendered.
@@ -94,9 +94,9 @@ describe("PowerColumn", () => {
   it("can show a message when there are no menu items", async () => {
     state.machine.items[0].power_state = PowerState.UNKNOWN;
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
 
     // Open the menu so the elements get rendered.
@@ -106,8 +106,7 @@ describe("PowerColumn", () => {
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {
-    renderWithBrowserRouter(<PowerColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<PowerColumn systemId="abc123" />, {
       state,
     });
 
@@ -120,9 +119,9 @@ describe("PowerColumn", () => {
     state.machine.items[0].power_state = PowerState.ERROR;
     state.machine.items[0].status_message = "It's not working";
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { state }
     );
 
     await userEvent.hover(screen.getByLabelText("error"));

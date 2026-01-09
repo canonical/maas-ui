@@ -1,14 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import MachineConfiguration from "./MachineConfiguration";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithProviders } from "@/testing/utils";
 
 describe("MachineConfiguration", () => {
   let state: RootState;
@@ -22,16 +18,11 @@ describe("MachineConfiguration", () => {
 
   it("displays a spinner if machine has not loaded yet", () => {
     state.machine.items = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MachineConfiguration />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<MachineConfiguration />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 });

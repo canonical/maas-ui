@@ -1,14 +1,8 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import NodeLink from "./NodeLink";
 
 import { NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("can render a controller link", () => {
   const controller = factory.controller({
@@ -21,16 +15,13 @@ it("can render a controller link", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <NodeLink
-          nodeType={NodeType.RACK_CONTROLLER}
-          systemId={controller.system_id}
-        />
-      </MemoryRouter>
-    </Provider>
+
+  renderWithProviders(
+    <NodeLink
+      nodeType={NodeType.RACK_CONTROLLER}
+      systemId={controller.system_id}
+    />,
+    { state }
   );
 
   expect(screen.getByRole("link")).toHaveTextContent("controller.c");
@@ -44,13 +35,10 @@ it("can render a device link", () => {
   const state = factory.rootState({
     device: factory.deviceState({ items: [device], loading: false }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <NodeLink nodeType={NodeType.DEVICE} systemId={device.system_id} />
-      </MemoryRouter>
-    </Provider>
+
+  renderWithProviders(
+    <NodeLink nodeType={NodeType.DEVICE} systemId={device.system_id} />,
+    { state }
   );
 
   expect(screen.getByRole("link")).toHaveTextContent("device.d");
@@ -64,13 +52,10 @@ it("can render a machine link", () => {
   const state = factory.rootState({
     machine: factory.machineState({ items: [machine], loading: false }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <NodeLink nodeType={NodeType.MACHINE} systemId={machine.system_id} />
-      </MemoryRouter>
-    </Provider>
+
+  renderWithProviders(
+    <NodeLink nodeType={NodeType.MACHINE} systemId={machine.system_id} />,
+    { state }
   );
 
   expect(screen.getByRole("link")).toHaveTextContent("machine.m");

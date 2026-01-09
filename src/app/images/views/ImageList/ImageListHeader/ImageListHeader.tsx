@@ -1,4 +1,4 @@
-import type { ReactElement, Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { useCallback } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useImageSources } from "@/app/api/query/imageSources";
 import type { BootSourceResponse } from "@/app/apiclient";
-import { useFetchActions, useCycled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useCycled, useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { MAAS_IO_DEFAULTS } from "@/app/images/constants";

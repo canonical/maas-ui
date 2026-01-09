@@ -16,7 +16,7 @@ import DeleteImages from "../../DeleteImages";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { Image } from "@/app/images/types";
 import { formatUtcDatetime, getTimeDistanceString } from "@/app/utils/time";
 

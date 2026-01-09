@@ -10,7 +10,7 @@ import DeviceFilterAccordion from "./DeviceFilterAccordion";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 import {
   AddDeviceForm,

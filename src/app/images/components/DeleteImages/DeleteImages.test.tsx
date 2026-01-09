@@ -1,11 +1,9 @@
 import { Formik } from "formik";
-import configureStore from "redux-mock-store";
 
 import DeleteImages from "./DeleteImages";
 
 import { Labels as TableDeleteConfirmLabels } from "@/app/base/components/TableDeleteConfirm/TableDeleteConfirm";
 import { bootResourceActions } from "@/app/store/bootresource";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   userEvent,
@@ -13,8 +11,6 @@ import {
   mockSidePanel,
   renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 const { mockClose } = await mockSidePanel();
 
@@ -37,14 +33,17 @@ describe("DeleteImages", () => {
         resources: [resource],
       }),
     });
-    const store = mockStore(state);
-    const { result } = renderWithProviders(
+
+    const {
+      result: { unmount },
+      store,
+    } = renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <DeleteImages rowSelection={{}} setRowSelection={vi.fn} />
       </Formik>,
-      { store }
+      { state }
     );
-    result.unmount();
+    unmount();
 
     const expectedAction = bootResourceActions.cleanup();
     const actualActions = store.getActions();
@@ -60,12 +59,12 @@ describe("DeleteImages", () => {
         resources: [resource],
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <DeleteImages rowSelection={{ 1: true }} setRowSelection={vi.fn} />
       </Formik>,
-      { store }
+      { state }
     );
 
     await userEvent.click(

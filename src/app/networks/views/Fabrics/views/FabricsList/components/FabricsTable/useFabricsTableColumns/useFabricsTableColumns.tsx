@@ -5,7 +5,7 @@ import { Link } from "react-router";
 
 import type { FabricResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/networks/urls";
 import { DeleteFabric } from "@/app/networks/views/Fabrics/components";
 

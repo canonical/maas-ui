@@ -1,14 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 
 import { controllerActions } from "@/app/store/controller";
-import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("ControllerActionFormWrapper", () => {
   it("can set selected controllers to those that can perform action", async () => {
@@ -20,14 +15,14 @@ describe("ControllerActionFormWrapper", () => {
       }),
       factory.controller({ system_id: "def456", actions: [] }),
     ];
-    const store = mockStore(state);
-    renderWithProviders(
+
+    const { store } = renderWithProviders(
       <ControllerActionFormWrapper
         action={NodeActions.DELETE}
         controllers={controllers}
         viewingDetails={false}
       />,
-      { initialEntries: ["/controllers"], store }
+      { initialEntries: ["/controllers"], state }
     );
 
     await userEvent.click(screen.getByTestId("on-update-selected"));

@@ -1,17 +1,17 @@
 import CloneStorageTable from "./CloneStorageTable";
 
 import * as factory from "@/testing/factories";
-import { render, screen, within } from "@/testing/utils";
+import { screen, within, renderWithProviders } from "@/testing/utils";
 
 describe("CloneStorageTable", () => {
   it("renders empty table if neither loading details nor machine provided", () => {
-    render(<CloneStorageTable machine={null} selected={false} />);
+    renderWithProviders(<CloneStorageTable machine={null} selected={false} />);
     expect(screen.getAllByRole("row")).toHaveLength(1);
     expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
   });
 
   it("renders placeholder content while machine details are loading", () => {
-    render(
+    renderWithProviders(
       <CloneStorageTable
         loadingMachineDetails
         machine={null}
@@ -37,7 +37,9 @@ describe("CloneStorageTable", () => {
     const machine = factory.machineDetails({
       disks: [factory.nodeDisk({ name: "Disk 1" })],
     });
-    render(<CloneStorageTable machine={machine} selected={false} />);
+    renderWithProviders(
+      <CloneStorageTable machine={machine} selected={false} />
+    );
     expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
 
     expect(screen.getByText("Disk 1")).toBeInTheDocument();
@@ -49,7 +51,9 @@ describe("CloneStorageTable", () => {
         factory.nodeDisk({ available_size: 1000000000, size: 1000000000 }),
       ],
     });
-    render(<CloneStorageTable machine={machine} selected={false} />);
+    renderWithProviders(
+      <CloneStorageTable machine={machine} selected={false} />
+    );
     expect(screen.getByTestId("disk-available")).toHaveClass("p-icon--tick");
     expect(screen.getByTestId("disk-available")).toHaveAccessibleName(
       "available"
@@ -60,7 +64,9 @@ describe("CloneStorageTable", () => {
     const machine = factory.machineDetails({
       disks: [factory.nodeDisk({ available_size: 0, size: 1000000000 })],
     });
-    render(<CloneStorageTable machine={machine} selected={false} />);
+    renderWithProviders(
+      <CloneStorageTable machine={machine} selected={false} />
+    );
     expect(screen.getByTestId("disk-available")).toHaveClass("p-icon--close");
     expect(screen.getByTestId("disk-available")).toHaveAccessibleName(
       "not available"
@@ -75,7 +81,9 @@ describe("CloneStorageTable", () => {
         }),
       ],
     });
-    render(<CloneStorageTable machine={machine} selected={false} />);
+    renderWithProviders(
+      <CloneStorageTable machine={machine} selected={false} />
+    );
     expect(screen.getByTestId("partition-available")).toHaveClass(
       "p-icon--tick"
     );
@@ -94,7 +102,9 @@ describe("CloneStorageTable", () => {
         }),
       ],
     });
-    render(<CloneStorageTable machine={machine} selected={false} />);
+    renderWithProviders(
+      <CloneStorageTable machine={machine} selected={false} />
+    );
     expect(screen.getByTestId("partition-available")).toHaveClass(
       "p-icon--close"
     );

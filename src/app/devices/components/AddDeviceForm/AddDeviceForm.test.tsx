@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AddDeviceForm from "./AddDeviceForm";
 
 import { deviceActions } from "@/app/store/device";
@@ -18,7 +16,6 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 setupMockServer(
   zoneResolvers.listZones.handler({
     items: [factory.zone({ id: 1, name: "zone-1" })],
@@ -61,19 +58,13 @@ describe("AddDeviceForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    const store = mockStore(state);
-    renderWithProviders(<AddDeviceForm />, {
-      store,
-    });
+    renderWithProviders(<AddDeviceForm />, { state });
 
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
   });
 
   it("can handle saving a device", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<AddDeviceForm />, {
-      store,
-    });
+    const { store } = renderWithProviders(<AddDeviceForm />, { state });
     await waitFor(() => {
       expect(
         screen.getByRole("textbox", { name: "Device name" })

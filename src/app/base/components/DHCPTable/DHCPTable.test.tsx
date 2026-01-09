@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import DHCPTable, { TestIds } from "./DHCPTable";
 
 import { Labels as FormLabels } from "@/app/base/components/DhcpForm";
@@ -9,9 +5,7 @@ import { MachineMeta } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("DHCPTable", () => {
   let state: RootState;
@@ -44,18 +38,13 @@ describe("DHCPTable", () => {
     state.dhcpsnippet.loading = true;
     state.dhcpsnippet.loaded = false;
     state.dhcpsnippet.items = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <DHCPTable
-            modelName={MachineMeta.MODEL}
-            node={state.machine.items[0]}
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <DHCPTable modelName={MachineMeta.MODEL} node={state.machine.items[0]} />,
+      {
+        initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+        state,
+      }
     );
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -70,18 +59,13 @@ describe("DHCPTable", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <DHCPTable
-            modelName={MachineMeta.MODEL}
-            node={state.machine.items[0]}
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <DHCPTable modelName={MachineMeta.MODEL} node={state.machine.items[0]} />,
+      {
+        initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+        state,
+      }
     );
 
     expect(screen.getAllByRole("row").length).toBe(3);
@@ -97,15 +81,13 @@ describe("DHCPTable", () => {
       factory.dhcpSnippet(),
       factory.dhcpSnippet({ subnet: subnets[1].id }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <DHCPTable modelName={MachineMeta.MODEL} subnets={subnets} />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <DHCPTable modelName={MachineMeta.MODEL} subnets={subnets} />,
+      {
+        initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+        state,
+      }
     );
     const subnetSnippets = screen.getAllByTestId(TestIds.AppliesTo);
 
@@ -126,18 +108,13 @@ describe("DHCPTable", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <DHCPTable
-            modelName={MachineMeta.MODEL}
-            node={state.machine.items[0]}
-          />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithProviders(
+      <DHCPTable modelName={MachineMeta.MODEL} node={state.machine.items[0]} />,
+      {
+        initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+        state,
+      }
     );
     const buttons = screen.getAllByRole("button", { name: "Edit" });
 

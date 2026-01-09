@@ -5,7 +5,7 @@ import {
   ScriptResultEstimated,
 } from "@/app/store/scriptresult/types";
 import * as factory from "@/testing/factories";
-import { render, screen, waitFor } from "@/testing/utils";
+import { screen, waitFor, renderWithProviders } from "@/testing/utils";
 
 describe("ScriptRunTime", () => {
   beforeEach(() => {
@@ -23,7 +23,7 @@ describe("ScriptRunTime", () => {
       status: ScriptResultStatus.RUNNING,
       starttime: 1617254218,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00/i)).toBeInTheDocument();
   });
 
@@ -33,7 +33,7 @@ describe("ScriptRunTime", () => {
       status: ScriptResultStatus.RUNNING,
       starttime: 1617254218,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00 of ~0:10:00/i)).toBeInTheDocument();
   });
 
@@ -44,7 +44,7 @@ describe("ScriptRunTime", () => {
       // Use undefined here so that the factory does not set the start time.
       starttime: undefined,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:00:00 of ~0:10:00/i)).toBeInTheDocument();
   });
 
@@ -54,7 +54,7 @@ describe("ScriptRunTime", () => {
       status: ScriptResultStatus.INSTALLING,
       starttime: 1617254218,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00/i)).toBeInTheDocument();
   });
 
@@ -64,7 +64,7 @@ describe("ScriptRunTime", () => {
       status: ScriptResultStatus.INSTALLING,
       starttime: 1617254218,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00 of ~0:10:00/i)).toBeInTheDocument();
   });
 
@@ -74,7 +74,7 @@ describe("ScriptRunTime", () => {
       status: ScriptResultStatus.RUNNING,
       starttime: 1617254218,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00/i)).toBeInTheDocument();
     vi.advanceTimersByTime(1000);
     await waitFor(() => {
@@ -88,7 +88,7 @@ describe("ScriptRunTime", () => {
       status: ScriptResultStatus.RUNNING,
       starttime: 1617254218,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00/i)).toBeInTheDocument();
   });
 
@@ -98,7 +98,7 @@ describe("ScriptRunTime", () => {
       status: ScriptResultStatus.RUNNING,
       starttime: 1617167818,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/1 day, 0:05:00/i)).toBeInTheDocument();
   });
 
@@ -108,7 +108,7 @@ describe("ScriptRunTime", () => {
       status: ScriptResultStatus.RUNNING,
       starttime: 1617081418,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/2 days, 0:05:00/i)).toBeInTheDocument();
   });
 
@@ -117,7 +117,7 @@ describe("ScriptRunTime", () => {
       estimated_runtime: "0:10:00",
       status: ScriptResultStatus.PENDING,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/~0:10:00/i)).toBeInTheDocument();
   });
 
@@ -126,7 +126,7 @@ describe("ScriptRunTime", () => {
       runtime: "0:15:00",
       status: ScriptResultStatus.FAILED_APPLYING_NETCONF,
     });
-    render(<ScriptRunTime scriptResult={scriptResult} />);
+    renderWithProviders(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:15:00/i)).toBeInTheDocument();
   });
 });

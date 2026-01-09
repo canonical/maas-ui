@@ -4,7 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 import type { SslKeyResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteSSLKey } from "@/app/preferences/views/SSLKeys/components";
 
 type SSLKeysColumnDef = ColumnDef<SslKeyResponse, Partial<SslKeyResponse>>;

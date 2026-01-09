@@ -6,7 +6,7 @@ import APIKeyDelete from "../../APIKeyDelete";
 import APIKeyEdit from "../../APIKeyEdit";
 
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { Token } from "@/app/store/token/types";
 
 export type TokenRowData = {

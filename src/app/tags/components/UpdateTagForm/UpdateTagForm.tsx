@@ -6,12 +6,12 @@ import UpdateTagFormFields from "./UpdateTagFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { messageActions } from "@/app/store/message";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
-import type { Tag, UpdateParams, TagMeta } from "@/app/store/tag/types";
+import type { Tag, TagMeta, UpdateParams } from "@/app/store/tag/types";
 import { NewDefinitionMessage } from "@/app/tags/constants";
 
 type Props = {

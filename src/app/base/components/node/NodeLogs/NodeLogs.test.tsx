@@ -6,7 +6,7 @@ import urls from "@/app/base/urls";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("NodeLogs", () => {
   let state: RootState;
@@ -36,7 +36,7 @@ describe("NodeLogs", () => {
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(
+      renderWithProviders(
         <NodeLogs
           node={machine}
           urls={{
@@ -46,9 +46,9 @@ describe("NodeLogs", () => {
           }}
         />,
         {
-          route: path,
+          initialEntries: [path],
           state,
-          routePattern: `${urls.machines.machine.logs.index(null)}/*`,
+          pattern: `${urls.machines.machine.logs.index(null)}/*`,
         }
       );
       expect(screen.getByLabelText(label)).toBeInTheDocument();

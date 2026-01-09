@@ -1,7 +1,4 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
-import configureStore from "redux-mock-store";
 
 import MachineTests from ".";
 
@@ -13,7 +10,7 @@ import {
 } from "@/app/store/scriptresult/types";
 import { TestStatusStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => {
   const hooks = vi.importActual("@canonical/react-components/dist/hooks");
@@ -22,8 +19,6 @@ vi.mock("@canonical/react-components/dist/hooks", () => {
     usePrevious: vi.fn(),
   };
 });
-
-const mockStore = configureStore<RootState>();
 
 describe("MachineTests", () => {
   let state: RootState;
@@ -65,20 +60,12 @@ describe("MachineTests", () => {
         hardware_type: HardwareType.Node,
       }),
     ];
-    const store = mockStore(state);
 
-    renderWithMockStore(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineTests />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-      { store }
-    );
+    renderWithProviders(<MachineTests />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
 
     expect(screen.getAllByTestId("hardware-heading")[0]).toHaveTextContent(
       "CPU"
@@ -114,20 +101,13 @@ describe("MachineTests", () => {
         },
       }),
     ];
-    const store = mockStore(state);
 
-    renderWithMockStore(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineTests />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-      { store }
-    );
+    renderWithProviders(<MachineTests />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
+
     expect(screen.getByTestId("storage-heading")).toHaveTextContent(
       "/dev/sda (model: QEMU HARDDISK, serial: lxd_root)"
     );
@@ -156,19 +136,13 @@ describe("MachineTests", () => {
         },
       }),
     ];
-    const store = mockStore(state);
-    renderWithMockStore(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineTests />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-      { store }
-    );
+
+    renderWithProviders(<MachineTests />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
+
     expect(screen.getByTestId("storage-heading")).toHaveTextContent("/dev/sda");
   });
 
@@ -193,19 +167,13 @@ describe("MachineTests", () => {
         },
       }),
     ];
-    const store = mockStore(state);
-    renderWithMockStore(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineTests />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-      { store }
-    );
+
+    renderWithProviders(<MachineTests />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
+
     expect(screen.getByTestId("hardware-device-heading")).toHaveTextContent(
       "ens4 (52:54:00:57:e9:ac)"
     );
@@ -214,19 +182,13 @@ describe("MachineTests", () => {
   it("fetches script results if they haven't been fetched", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
-    const store = mockStore(state);
-    renderWithMockStore(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineTests />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-      { store }
-    );
+
+    const { store } = renderWithProviders(<MachineTests />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
+
     expect(
       store
         .getActions()
@@ -237,19 +199,13 @@ describe("MachineTests", () => {
   it("fetches script results on mount if they have already been loaded", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [factory.scriptResult()];
-    const store = mockStore(state);
-    renderWithMockStore(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineTests />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-      { store }
-    );
+
+    const { store } = renderWithProviders(<MachineTests />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
+
     expect(
       store
         .getActions()
@@ -280,19 +236,13 @@ describe("MachineTests", () => {
         hardware_type: HardwareType.CPU,
       }),
     ];
-    const store = mockStore(state);
-    renderWithMockStore(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineTests />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-      { store }
-    );
+
+    const { store } = renderWithProviders(<MachineTests />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
+
     expect(
       store
         .getActions()

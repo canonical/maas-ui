@@ -1,27 +1,15 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import FabricLink, { Labels } from "./FabricLink";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("handles when fabrics are loading", () => {
   const state = factory.rootState({
     fabric: factory.fabricState({ items: [], loading: true }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricLink id={1} />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<FabricLink id={1} />, { state });
 
   expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
 });
@@ -30,16 +18,10 @@ it("handles when a fabric does not exist", () => {
   const state = factory.rootState({
     fabric: factory.fabricState({ items: [], loading: false }),
   });
-  const store = mockStore(state);
-  const { container } = render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricLink id={1} />
-      </MemoryRouter>
-    </Provider>
-  );
 
-  expect(container).toBeEmptyDOMElement();
+  renderWithProviders(<FabricLink id={1} />, { state });
+
+  expect(screen.queryByText(/.+/)).not.toBeInTheDocument();
 });
 
 it("renders a link if fabrics have loaded and it exists", () => {
@@ -47,14 +29,8 @@ it("renders a link if fabrics have loaded and it exists", () => {
   const state = factory.rootState({
     fabric: factory.fabricState({ items: [fabric], loading: false }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <FabricLink id={fabric.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<FabricLink id={fabric.id} />, { state });
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",

@@ -4,7 +4,7 @@ import NodeDevicesTable from "./NodeDevicesTable";
 
 import { HardwareType } from "@/app/base/enum";
 import urls from "@/app/base/urls";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import CommissionForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/CommissionForm";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import { NodeDeviceBus } from "@/app/store/nodedevice/types";
@@ -16,7 +16,10 @@ import {
   screen,
   waitFor,
   userEvent,
+  mockSidePanel,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("NodeDevicesTable", () => {
   let state: RootState;
@@ -60,17 +63,12 @@ describe("NodeDevicesTable", () => {
 
     describe("displays a message when rendering an empty list", () => {
       it("prompts user to commission machine if no devices found and machine can be commissioned", async () => {
-        const setSidePanelContent = vi.fn();
         const machine = factory.machineDetails({
           actions: [NodeActions.COMMISSION],
         });
 
         renderWithProviders(
-          <NodeDevicesTable
-            bus={NodeDeviceBus.PCIE}
-            node={machine}
-            setSidePanelContent={setSidePanelContent}
-          />,
+          <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
           { state }
         );
 
@@ -84,8 +82,10 @@ describe("NodeDevicesTable", () => {
           screen.getByRole("button", { name: "Commission" })
         );
 
-        expect(setSidePanelContent).toHaveBeenCalledWith({
-          view: MachineSidePanelViews.COMMISSION_MACHINE,
+        expect(mockOpen).toHaveBeenCalledWith({
+          component: CommissionForm,
+          title: "Commission machine",
+          props: { isViewingDetails: true },
         });
       });
 
@@ -227,11 +227,7 @@ describe("NodeDevicesTable", () => {
 
     it("can link to the machine network and storage tabs", () => {
       renderWithProviders(
-        <NodeDevicesTable
-          bus={NodeDeviceBus.PCIE}
-          node={machine}
-          setSidePanelContent={vi.fn()}
-        />,
+        <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
         { state }
       );
 
@@ -282,11 +278,7 @@ describe("NodeDevicesTable", () => {
         }),
       });
       renderWithProviders(
-        <NodeDevicesTable
-          bus={NodeDeviceBus.PCIE}
-          node={machine}
-          setSidePanelContent={vi.fn()}
-        />,
+        <NodeDevicesTable bus={NodeDeviceBus.PCIE} node={machine} />,
         { state }
       );
 

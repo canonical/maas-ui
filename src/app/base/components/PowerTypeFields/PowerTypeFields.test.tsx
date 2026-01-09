@@ -7,7 +7,7 @@ import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithMockStore,
+  renderWithProviders,
   screen,
   userEvent,
   within,
@@ -55,7 +55,7 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ power_type: PowerTypeNames.MANUAL }}
         onSubmit={vi.fn()}
@@ -103,7 +103,7 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ power_type: PowerTypeNames.MANUAL }}
         onSubmit={vi.fn()}
@@ -135,7 +135,7 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{ power_type: PowerTypeNames.MANUAL }}
         onSubmit={vi.fn()}
@@ -169,7 +169,7 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{ power_type: "" }} onSubmit={vi.fn()}>
         <PowerTypeFields forChassis />
       </Formik>,
@@ -192,7 +192,7 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{
           powerParameters: {},
@@ -221,7 +221,7 @@ describe("PowerTypeFields", () => {
   });
 
   it("can disable the power type select", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{
           power_parameters: {},
@@ -274,7 +274,7 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{
           power_parameters: {
@@ -329,7 +329,7 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik
         initialValues={{
           power_parameters: {},

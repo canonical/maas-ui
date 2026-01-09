@@ -1,15 +1,15 @@
+import type { ReactElement } from "react";
+
 import { Button, Icon, Tooltip } from "@canonical/react-components";
 
 import ActionBar from "@/app/base/components/ActionBar";
-import NodeActionMenu from "@/app/base/components/NodeActionMenu";
-import { useSendAnalytics } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
+import DeleteVM from "@/app/kvm/components/DeleteVM";
 import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import MachineActionMenu from "@/app/machines/components/MachineActions/MachineActionMenu";
 import { useHasSelection } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
-import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
   currentPage: number;
@@ -18,7 +18,6 @@ type Props = {
   searchFilter: string;
   setCurrentPage: (page: number) => void;
   setSearchFilter: SetSearchFilter;
-  setSidePanelContent: KVMSetSidePanelContent;
   vmCount: number;
 };
 
@@ -29,10 +28,9 @@ const VMsActionBar = ({
   searchFilter,
   setCurrentPage,
   setSearchFilter,
-  setSidePanelContent,
   vmCount,
-}: Props): React.ReactElement | null => {
-  const sendAnalytics = useSendAnalytics();
+}: Props): ReactElement => {
+  const { openSidePanel } = useSidePanel();
   const hasSelection = useHasSelection();
   const vmActionsDisabled = !hasSelection;
 
@@ -40,34 +38,17 @@ const VMsActionBar = ({
     <ActionBar
       actions={
         <>
-          <NodeActionMenu
-            alwaysShowLifecycle
-            data-testid="vm-actions"
-            disabledTooltipPosition="top-left"
+          <MachineActionMenu
+            appearance="positive"
+            disabled={vmActionsDisabled}
             excludeActions={[NodeActions.DELETE]}
-            hasSelection={hasSelection}
-            menuPosition="left"
-            nodeDisplay="VM"
-            onActionClick={(action) => {
-              const view = Object.values(MachineSidePanelViews).find(
-                ([, actionName]) => actionName === action
-              );
-              if (view) {
-                setSidePanelContent({ view });
-              }
-              sendAnalytics(
-                "LXD VMs list action form",
-                getNodeActionTitle(action),
-                "Open"
-              );
-            }}
-            toggleClassName="u-no-margin--bottom"
+            label="Take action"
+            position="right"
           />
           {onAddVMClick && (
             <span className="u-nudge-right">
               <Button
                 className="u-no-margin--bottom"
-                data-testid="add-vm"
                 hasIcon
                 onClick={onAddVMClick}
               >
@@ -86,12 +67,12 @@ const VMsActionBar = ({
           >
             <Button
               className="u-no-margin--bottom"
-              data-testid="delete-vm"
               disabled={vmActionsDisabled}
               hasIcon
               onClick={() => {
-                setSidePanelContent({
-                  view: MachineSidePanelViews.DELETE_MACHINE,
+                openSidePanel({
+                  component: DeleteVM,
+                  title: "Delete VMs",
                 });
               }}
             >

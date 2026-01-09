@@ -18,8 +18,6 @@ const NotFound = ({ includeSection = false }: Props): React.ReactElement => {
       <PageContent
         aria-label={Label.Title}
         header={<SectionHeader title={Label.Title} />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
       >
         <h2 className="p-heading--5">{message}</h2>
       </PageContent>

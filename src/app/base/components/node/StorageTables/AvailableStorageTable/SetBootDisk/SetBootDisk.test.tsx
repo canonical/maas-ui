@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import SetBootDisk from "./SetBootDisk";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const disk = factory.nodeDisk({
   id: 1,
   name: "floppy-disk",
@@ -23,10 +19,9 @@ const state = factory.rootState({
 });
 
 it("should render the form", () => {
-  renderWithBrowserRouter(
-    <SetBootDisk close={vi.fn()} diskId={disk.id} systemId="abc123" />,
-    { state }
-  );
+  renderWithProviders(<SetBootDisk diskId={disk.id} systemId="abc123" />, {
+    state,
+  });
 
   expect(
     screen.getByRole("form", { name: "Set boot disk" })
@@ -34,10 +29,11 @@ it("should render the form", () => {
 });
 
 it("should fire an action to set boot disk", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <SetBootDisk close={vi.fn()} diskId={disk.id} systemId="abc123" />,
-    { store }
+  const { store } = renderWithProviders(
+    <SetBootDisk diskId={disk.id} systemId="abc123" />,
+    {
+      state,
+    }
   );
 
   await userEvent.click(screen.getByRole("button", { name: "Set boot disk" }));

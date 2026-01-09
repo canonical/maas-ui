@@ -13,7 +13,7 @@ import MacAddressField from "@/app/base/components/MacAddressField";
 import PrefixedIpInput, {
   formatIpAddress,
 } from "@/app/base/components/PrefixedIpInput";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { reservedIpActions } from "@/app/store/reservedip";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";

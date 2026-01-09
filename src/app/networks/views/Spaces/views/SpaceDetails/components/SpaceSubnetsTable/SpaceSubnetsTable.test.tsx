@@ -1,11 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import SpaceSubnetsTable from "./SpaceSubnetsTable";
 
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen } from "@/testing/utils";
 
-const mockStore = configureStore();
 const getRootState = () =>
   factory.rootState({
     vlan: factory.vlanState({
@@ -57,9 +54,8 @@ it("displays subnet details correctly", async () => {
   state.fabric.items = [
     factory.fabric({ id: 1, name: "test-fabric", vlan_ids: [2] }),
   ];
-  const store = mockStore(state);
 
-  renderWithProviders(<SpaceSubnetsTable space={space} />, { store });
+  renderWithProviders(<SpaceSubnetsTable space={space} />, { state });
 
   ["Subnet", "Available IPs", "VLAN", "Fabric"].forEach((column) => {
     expect(

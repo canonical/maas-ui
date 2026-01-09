@@ -1,6 +1,6 @@
 import SegmentedControl from "./SegmentedControl";
 
-import { render, screen, userEvent } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 const options = [
   {
@@ -18,7 +18,7 @@ const options = [
 ];
 
 it("renders a segment for each option", () => {
-  render(
+  renderWithProviders(
     <SegmentedControl onSelect={vi.fn()} options={options} selected="#00FF00" />
   );
   expect(screen.getByRole("tab", { name: "Red" })).toBeInTheDocument();
@@ -27,7 +27,7 @@ it("renders a segment for each option", () => {
 });
 
 it("selects the active option", () => {
-  render(
+  renderWithProviders(
     <SegmentedControl onSelect={vi.fn()} options={options} selected="#00FF00" />
   );
   expect(screen.getByRole("tab", { name: "Green" })).toHaveAttribute(
@@ -38,7 +38,7 @@ it("selects the active option", () => {
 
 it("calls the callback when clicking a button", async () => {
   const onSelect = vi.fn();
-  render(
+  renderWithProviders(
     <SegmentedControl
       onSelect={onSelect}
       options={options}

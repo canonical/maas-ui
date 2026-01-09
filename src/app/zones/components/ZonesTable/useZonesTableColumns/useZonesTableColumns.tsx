@@ -6,7 +6,7 @@ import { Link } from "react-router";
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import type { ZoneWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { FilterDevices } from "@/app/store/device/utils";
 import { FilterMachines } from "@/app/store/machine/utils";

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
@@ -6,11 +8,11 @@ import LXDHostToolbar from "../LXDHostToolbar";
 
 import NumaResources from "./NumaResources";
 
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
 import LXDVMsSummaryCard from "@/app/kvm/components/LXDVMsSummaryCard";
 import LXDVMsTable from "@/app/kvm/components/LXDVMsTable";
-import { KVMSidePanelViews } from "@/app/kvm/constants";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
@@ -21,7 +23,6 @@ type Props = {
   hostId: Pod["id"];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const LXDHostVMs = ({
@@ -29,9 +30,9 @@ const LXDHostVMs = ({
   hostId,
   searchFilter,
   setSearchFilter,
-  setSidePanelContent,
   ...wrapperProps
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
+  const { openSidePanel } = useSidePanel();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
@@ -48,7 +49,6 @@ const LXDHostVMs = ({
         <LXDHostToolbar
           clusterId={clusterId}
           hostId={hostId}
-          setSidePanelContent={setSidePanelContent}
           setViewByNuma={setViewByNuma}
           title={isInCluster ? `VMs on ${pod.name}` : "VMs on this host"}
           viewByNuma={viewByNuma}
@@ -72,15 +72,15 @@ const LXDHostVMs = ({
               };
             }}
             onAddVMClick={() => {
-              setSidePanelContent({
-                view: KVMSidePanelViews.COMPOSE_VM,
-                extras: { hostId },
+              openSidePanel({
+                component: ComposeForm,
+                title: "Compose",
+                props: { hostId },
               });
             }}
             pods={[pod.name]}
             searchFilter={searchFilter}
             setSearchFilter={setSearchFilter}
-            setSidePanelContent={setSidePanelContent}
           />
         </Strip>
       </div>

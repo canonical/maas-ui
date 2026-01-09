@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 

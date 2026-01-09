@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import { APIKeyForm, Label as APIKeyFormLabels } from "./APIKeyForm";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("APIKeyForm", () => {
   let state: RootState;
@@ -33,8 +29,7 @@ describe("APIKeyForm", () => {
   });
 
   it("can create an API key", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<APIKeyForm />, { store });
+    const { store } = renderWithProviders(<APIKeyForm />, { state });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: APIKeyFormLabels.AddNameLabel }),
@@ -62,8 +57,10 @@ describe("APIKeyForm", () => {
   });
 
   it("can update an API key", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<APIKeyForm token={state.token.items[0]} />, { store });
+    const { store } = renderWithProviders(
+      <APIKeyForm token={state.token.items[0]} />,
+      { state }
+    );
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: APIKeyFormLabels.EditNameLabel })

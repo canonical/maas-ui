@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import NodeSummaryNetworkCard from "./NodeSummaryNetworkCard";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 describe("NodeSummaryNetworkCard", () => {
   let state: RootState;
@@ -21,14 +17,13 @@ describe("NodeSummaryNetworkCard", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={[]}
         networkURL="url"
         node={state.device.items[0]}
       />,
-      { store }
+      { state }
     );
     const actions = store.getActions();
 
@@ -38,7 +33,7 @@ describe("NodeSummaryNetworkCard", () => {
   });
 
   it("shows a spinner while network data is loading", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={null}
         networkURL="url"
@@ -63,7 +58,7 @@ describe("NodeSummaryNetworkCard", () => {
         vendor: null,
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={interfaces}
         networkURL="url"
@@ -115,7 +110,7 @@ describe("NodeSummaryNetworkCard", () => {
         vendor: "Vendor 2",
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={interfaces}
         networkURL="url"
@@ -133,7 +128,7 @@ describe("NodeSummaryNetworkCard", () => {
   });
 
   it("can render children", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <NodeSummaryNetworkCard
         interfaces={[]}
         networkURL="url"

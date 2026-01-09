@@ -1,7 +1,7 @@
 import TagChip from "./TagChip";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 const tags = [
   factory.tag({ name: "chip1", id: 1 }),
@@ -14,7 +14,9 @@ const tagMap = new Map([
 ]);
 
 it("displays chips with counts", () => {
-  render(<TagChip machineCount={10} tag={tags[0]} tagIdsAndCounts={tagMap} />);
+  renderWithProviders(
+    <TagChip machineCount={10} tag={tags[0]} tagIdsAndCounts={tagMap} />
+  );
   expect(
     screen.getByRole("button", { name: "chip1 (2/10)" })
   ).toBeInTheDocument();

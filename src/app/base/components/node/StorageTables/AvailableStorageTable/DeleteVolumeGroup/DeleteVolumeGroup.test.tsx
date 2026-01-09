@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import DeleteVolumeGroup from ".";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const disk = factory.nodeDisk({
   id: 1,
   name: "floppy-disk",
@@ -23,8 +19,8 @@ const state = factory.rootState({
 });
 
 it("should render the form", () => {
-  renderWithBrowserRouter(
-    <DeleteVolumeGroup close={vi.fn()} diskId={disk.id} systemId="abc123" />,
+  renderWithProviders(
+    <DeleteVolumeGroup diskId={disk.id} systemId="abc123" />,
     { state }
   );
 
@@ -34,10 +30,9 @@ it("should render the form", () => {
 });
 
 it("should fire an action to delete a volume group", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <DeleteVolumeGroup close={vi.fn()} diskId={disk.id} systemId="abc123" />,
-    { store }
+  const { store } = renderWithProviders(
+    <DeleteVolumeGroup diskId={disk.id} systemId="abc123" />,
+    { state }
   );
 
   await userEvent.click(

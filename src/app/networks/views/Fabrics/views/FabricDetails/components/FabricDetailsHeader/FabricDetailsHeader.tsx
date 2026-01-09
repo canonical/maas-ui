@@ -4,7 +4,7 @@ import { Button } from "@canonical/react-components";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteFabric } from "@/app/networks/views/Fabrics/components";
 import type { Fabric } from "@/app/store/fabric/types";
 

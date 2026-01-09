@@ -9,7 +9,7 @@ import BootArchitecturesTable from "./BootArchitecturesTable";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { generalActions } from "@/app/store/general";
 import { knownBootArchitectures as knownBootArchitecturesSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";

@@ -1,6 +1,3 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import ControllerStatusCard, { Labels } from "./ControllerStatusCard";
 
 import { controllerActions } from "@/app/store/controller";
@@ -10,9 +7,13 @@ import {
 } from "@/app/store/controller/types";
 import { NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { render, screen, userEvent, waitFor, within } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  screen,
+  userEvent,
+  waitFor,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("dispatches an action to poll images if controller is a rack or region+rack", () => {
   const controller = factory.controllerDetails({
@@ -21,11 +22,12 @@ it("dispatches an action to poll images if controller is a rack or region+rack",
   const state = factory.rootState({
     controller: factory.controllerState({ items: [controller] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
+
+  const { store } = renderWithProviders(
+    <ControllerStatusCard controller={controller} />,
+    {
+      state,
+    }
   );
 
   expect(
@@ -46,11 +48,12 @@ it("does not dispatch an action to poll images if controller is a region control
   const state = factory.rootState({
     controller: factory.controllerState({ items: [controller] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
+
+  const { store } = renderWithProviders(
+    <ControllerStatusCard controller={controller} />,
+    {
+      state,
+    }
   );
 
   expect(
@@ -69,12 +72,13 @@ it("dispatches an action to stop polling images on unmount", () => {
   const state = factory.rootState({
     controller: factory.controllerState({ items: [controller] }),
   });
-  const store = mockStore(state);
-  const { unmount } = render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  const {
+    result: { unmount },
+    store,
+  } = renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   unmount();
 
@@ -99,12 +103,10 @@ it("renders correct version info for a deb install", async () => {
   const state = factory.rootState({
     controller: factory.controllerState({ items: [controller] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   await userEvent.hover(
     screen.getByRole("button", { name: Labels.VersionDetails })
@@ -133,12 +135,10 @@ it("renders correct version info for a snap install", async () => {
   const state = factory.rootState({
     controller: factory.controllerState({ items: [controller] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   await userEvent.hover(
     screen.getByRole("button", { name: Labels.VersionDetails })
@@ -168,12 +168,10 @@ it("renders correct version info for an unknown install type", async () => {
   const state = factory.rootState({
     controller: factory.controllerState({ items: [controller] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   await userEvent.hover(
     screen.getByRole("button", { name: Labels.VersionDetails })
@@ -206,12 +204,10 @@ it("renders OS info", () => {
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   expect(screen.getByLabelText(Labels.OSInfo).textContent).toBe(
     'Ubuntu 20.04 LTS "Focal Fossa"'
@@ -225,12 +221,10 @@ it("shows image sync status for rack or region+rack controllers", () => {
   const state = factory.rootState({
     controller: factory.controllerState({ items: [controller] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   expect(screen.getByLabelText(Labels.ImageSyncStatus)).toBeInTheDocument();
 });
@@ -245,12 +239,10 @@ it("can render when no image sync status exists", () => {
       items: [controller],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   expect(screen.getByText(Labels.NoStatus)).toBeInTheDocument();
 });
@@ -267,12 +259,10 @@ it("can render when image status is synced", () => {
       items: [controller],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   expect(screen.getByLabelText(Labels.ImagesSynced)).toBeInTheDocument();
 });
@@ -294,12 +284,10 @@ it("can render when checking image status", () => {
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   expect(screen.getByText(Labels.CheckingImages)).toBeInTheDocument();
 });
@@ -311,12 +299,10 @@ it("does not show image sync status for region controllers", () => {
   const state = factory.rootState({
     controller: factory.controllerState({ items: [controller] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <ControllerStatusCard controller={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<ControllerStatusCard controller={controller} />, {
+    state,
+  });
 
   expect(
     screen.queryByLabelText(Labels.ImageSyncStatus)

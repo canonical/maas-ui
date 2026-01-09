@@ -16,11 +16,7 @@ const SSHKeysList = ({ isIntro = false }: SSHKeysListProps): ReactElement => {
       {isIntro ? (
         <SSHKeysTable isIntro={true} />
       ) : (
-        <PageContent
-          sidePanelContent={undefined}
-          sidePanelTitle={null}
-          useNewSidePanelContext={true}
-        >
+        <PageContent>
           <SSHKeysTable isIntro={false} />
         </PageContent>
       )}

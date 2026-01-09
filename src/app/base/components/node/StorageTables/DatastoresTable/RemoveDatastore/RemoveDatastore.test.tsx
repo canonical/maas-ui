@@ -1,12 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import RemoveDatastore from "@/app/base/components/node/StorageTables/DatastoresTable/RemoveDatastore/RemoveDatastore";
 import { machineActions } from "@/app/store/machine";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("RemoveDatastore", () => {
   const filesystem = factory.nodeFilesystem({ mount_point: "/disk-fs/path" });
@@ -36,10 +31,9 @@ describe("RemoveDatastore", () => {
   });
 
   it("can remove a disk's filesystem", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
+    const { store } = renderWithProviders(
       <RemoveDatastore diskId={disk.id} systemId="abc123" />,
-      { store }
+      { state }
     );
 
     expect(

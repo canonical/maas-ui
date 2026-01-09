@@ -1,19 +1,14 @@
-import configureStore from "redux-mock-store";
-
 import CreateDatastore from "./CreateDatastore";
 
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
-import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   within,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("CreateDatastore", () => {
   it("sets the initial name correctly", () => {
@@ -44,12 +39,8 @@ describe("CreateDatastore", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <CreateDatastore
-        closeForm={vi.fn()}
-        selected={[newDatastore]}
-        systemId="abc123"
-      />,
+    renderWithProviders(
+      <CreateDatastore selected={[newDatastore]} systemId="abc123" />,
       { state }
     );
 
@@ -86,9 +77,8 @@ describe("CreateDatastore", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CreateDatastore
-        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
@@ -121,9 +111,8 @@ describe("CreateDatastore", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <CreateDatastore
-        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
@@ -157,15 +146,12 @@ describe("CreateDatastore", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <CreateDatastore
-        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(

@@ -1,12 +1,9 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import LXDVMsSummaryCard from "./LXDVMsSummaryCard";
 
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithProviders } from "@/testing/utils";
 
 describe("LXDVMsSummaryCard", () => {
   it("shows a spinner if pod has not loaded yet", () => {
@@ -17,12 +14,7 @@ describe("LXDVMsSummaryCard", () => {
       }),
     });
 
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <LXDVMsSummaryCard id={1} />
-      </Provider>
-    );
+    renderWithProviders(<LXDVMsSummaryCard id={1} />, { state });
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });

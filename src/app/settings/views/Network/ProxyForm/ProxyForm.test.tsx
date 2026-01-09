@@ -1,15 +1,9 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import ProxyForm from "./ProxyForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, render, reduceInitialState } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ProxyForm", () => {
   let state: RootState;
@@ -38,51 +32,32 @@ describe("ProxyForm", () => {
 
   it("displays a spinner if config is loading", () => {
     state.config.loading = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ProxyForm />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    renderWithProviders(<ProxyForm />, { state });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a text input if http proxy is enabled", () => {
-    state.config.items = reduceInitialState(
-      state.config.items,
-      "name",
-      ConfigNames.ENABLE_HTTP_PROXY,
-      { value: true }
-    );
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
-        >
-          <ProxyForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    state.config.items = [
+      {
+        name: ConfigNames.HTTP_PROXY,
+        value: "http://www.url.com",
+      },
+      {
+        name: ConfigNames.ENABLE_HTTP_PROXY,
+        value: true,
+      },
+      {
+        name: ConfigNames.USE_PEER_PROXY,
+        value: false,
+      },
+    ];
+    renderWithProviders(<ProxyForm />, { state });
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
     state.config.loaded = false;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ProxyForm />
-        </MemoryRouter>
-      </Provider>
-    );
-
+    const { store } = renderWithProviders(<ProxyForm />, { state });
     const fetchActions = store
       .getActions()
       .filter((action) => action.type.endsWith("fetch"));

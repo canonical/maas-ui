@@ -1,10 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import KVMResourceMeter from "./KVMResourceMeter";
 
+import { renderWithProviders } from "@/testing/utils";
+
 describe("KVMResourceMeter", () => {
   it("can render a summary of the resource usage", () => {
-    render(<KVMResourceMeter allocated={1} free={2} />);
+    renderWithProviders(<KVMResourceMeter allocated={1} free={2} />);
     expect(screen.getByTestId("kvm-resource-summary")).toHaveTextContent(
       "1 of 3 allocated"
     );
@@ -14,7 +16,7 @@ describe("KVMResourceMeter", () => {
   });
 
   it("can rendered a detailed version of the resource usage", () => {
-    render(<KVMResourceMeter allocated={1} detailed free={2} />);
+    renderWithProviders(<KVMResourceMeter allocated={1} detailed free={2} />);
     expect(screen.getByTestId("kvm-resource-details")).toBeInTheDocument();
     expect(
       screen.queryByTestId("kvm-resource-summary")
@@ -22,17 +24,19 @@ describe("KVMResourceMeter", () => {
   });
 
   it("renders other resource usage data if provided", () => {
-    render(<KVMResourceMeter allocated={1} detailed free={2} other={3} />);
+    renderWithProviders(
+      <KVMResourceMeter allocated={1} detailed free={2} other={3} />
+    );
     expect(screen.getByTestId("kvm-resource-other")).toBeInTheDocument();
   });
 
   it("does not render other resource usage data if not provided", () => {
-    render(<KVMResourceMeter allocated={1} detailed free={2} />);
+    renderWithProviders(<KVMResourceMeter allocated={1} detailed free={2} />);
     expect(screen.queryByTestId("kvm-resource-other")).not.toBeInTheDocument();
   });
 
   it("correctly formats non-binary units", () => {
-    render(
+    renderWithProviders(
       <KVMResourceMeter
         allocated={1000}
         detailed
@@ -49,7 +53,7 @@ describe("KVMResourceMeter", () => {
   });
 
   it("correctly formats binary units", () => {
-    render(
+    renderWithProviders(
       <KVMResourceMeter
         allocated={1024}
         binaryUnit
