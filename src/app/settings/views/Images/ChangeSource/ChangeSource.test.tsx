@@ -5,6 +5,7 @@ import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
+import { imageResolvers } from "@/testing/resolvers/images";
 import {
   renderWithProviders,
   screen,
@@ -13,10 +14,12 @@ import {
   waitForLoading,
 } from "@/testing/utils";
 
-setupMockServer(
+const mockServer = setupMockServer(
   imageSourceResolvers.listImageSources.handler(),
   imageSourceResolvers.getImageSource.handler(),
   imageSourceResolvers.updateImageSource.handler(),
+  imageResolvers.listSelectionStatuses.handler(),
+  imageResolvers.listCustomImageStatuses.handler(),
   configurationsResolvers.getConfiguration.handler({
     name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
     value: true,
@@ -40,12 +43,13 @@ describe("ChangeSource", () => {
   });
 
   it("disables the button to change source if resources are downloading", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        resources: [factory.bootResource({ downloading: true })],
-      }),
-    });
-    renderWithProviders(<ChangeSource />, { state });
+    mockServer.use(
+      imageResolvers.listSelectionStatuses.handler({
+        items: [factory.imageStatusFactory.build({ status: "Downloading" })],
+        total: 1,
+      })
+    );
+    renderWithProviders(<ChangeSource />);
     await waitForLoading();
     expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
     expect(

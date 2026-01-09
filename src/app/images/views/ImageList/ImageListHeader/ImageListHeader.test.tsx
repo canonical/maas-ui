@@ -1,15 +1,12 @@
 import { vi } from "vitest";
 
-import ImageListHeader, {
-  Labels as ImageListHeaderLabels,
-} from "./ImageListHeader";
+import ImageListHeader from "./ImageListHeader";
 
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
-import { bootResourceActions } from "@/app/store/bootresource";
-import { LONG_TIMEOUT } from "@/testing/constants";
 import * as factory from "@/testing/factories";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
+import { imageResolvers } from "@/testing/resolvers/images";
 import {
   userEvent,
   screen,
@@ -22,67 +19,16 @@ import {
 
 const { mockOpen } = await mockSidePanel();
 const mockServer = setupMockServer(
-  imageSourceResolvers.listImageSources.handler()
+  imageSourceResolvers.listImageSources.handler(),
+  imageResolvers.listSelectionStatuses.handler()
 );
 
 describe("ImageListHeader", () => {
   it("sets loading state when polling", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        statuses: factory.bootResourceStatuses({
-          polling: true,
-        }),
-      }),
-    });
     renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
-      {
-        state,
-      }
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
-
-  it("can show the rack import status", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        rackImportRunning: true,
-      }),
-    });
-    renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
-      {
-        state,
-      }
-    );
-    await waitForLoading("Loading...", { timeout: LONG_TIMEOUT });
-    expect(
-      screen.getByText(ImageListHeaderLabels.RackControllersImporting)
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByText(ImageListHeaderLabels.RegionControllerImporting)
-    ).not.toBeInTheDocument();
-  });
-
-  it("can show the region import status", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        regionImportRunning: true,
-      }),
-    });
-    renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
-      {
-        state,
-      }
-    );
-    await waitForLoading("Loading...", { timeout: LONG_TIMEOUT });
-    expect(
-      screen.getByText(ImageListHeaderLabels.RegionControllerImporting)
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByText(ImageListHeaderLabels.RackControllersImporting)
-    ).not.toBeInTheDocument();
   });
 });
 
@@ -147,98 +93,19 @@ describe("Select upstream images", () => {
   });
 
   it("does not show a button to select upstream images if there are images already downloading", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        resources: [
-          factory.bootResource({ downloading: true, name: "ubuntu/focal" }),
-          factory.bootResource({ downloading: false, name: "centos/centos70" }),
-        ],
-        ubuntu: factory.bootResourceUbuntu(),
-      }),
-    });
+    mockServer.use(
+      imageResolvers.listSelectionStatuses.handler({
+        items: [factory.imageStatusFactory.build({ status: "Downloading" })],
+        total: 1,
+      })
+    );
     renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      {
-        state,
-      }
+      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />
     );
     await waitForLoading();
     expect(
       screen.getByRole("button", { name: "Select upstream images" })
     ).toBeAriaDisabled();
-  });
-});
-
-describe("Stop import", () => {
-  it("does not show a button to stop importing ubuntu images if none are downloading", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        resources: [
-          factory.bootResource({ downloading: false, name: "ubuntu/focal" }),
-          factory.bootResource({ downloading: false, name: "centos/centos70" }),
-        ],
-        ubuntu: factory.bootResourceUbuntu(),
-      }),
-    });
-    renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      {
-        state,
-      }
-    );
-    await waitForLoading();
-    expect(
-      screen.queryByRole("button", { name: "Stop import" })
-    ).not.toBeInTheDocument();
-  });
-
-  it("can dispatch an action to stop importing ubuntu images if at least one is downloading", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        resources: [
-          factory.bootResource({ downloading: true, name: "ubuntu/focal" }),
-        ],
-        ubuntu: factory.bootResourceUbuntu(),
-      }),
-    });
-
-    const { store } = renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      { state }
-    );
-    await waitForLoading();
-    await userEvent.click(
-      screen.getByRole("button", { name: "Stop image import" })
-    );
-
-    const expectedAction = bootResourceActions.stopImport();
-    const actualActions = store.getActions();
-    expect(
-      actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
-  });
-
-  it("enables 'Stop import' button if images are saving", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        resources: [
-          factory.bootResource({ downloading: true, name: "ubuntu/focal" }),
-        ],
-        ubuntu: factory.bootResourceUbuntu(),
-        statuses: factory.bootResourceStatuses({ savingUbuntu: true }),
-      }),
-    });
-    renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      {
-        state,
-      }
-    );
-    await waitForLoading();
-    const stopImportButton = screen.getByRole("button", {
-      name: "Stop image import",
-    });
-    expect(stopImportButton).toBeEnabled();
   });
 });
 

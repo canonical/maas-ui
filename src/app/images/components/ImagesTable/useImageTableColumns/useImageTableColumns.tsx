@@ -1,24 +1,20 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
-import { Icon, Spinner } from "@canonical/react-components";
+import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
 import type {
   Column,
   ColumnDef,
-  Getter,
   Header,
   Row,
   RowSelectionState,
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
-import DeleteImages from "../../DeleteImages";
-
-import DoubleRow from "@/app/base/components/DoubleRow";
-import TableActions from "@/app/base/components/TableActions";
-import TooltipButton from "@/app/base/components/TooltipButton";
+import { useStartImageSync, useStopImageSync } from "@/app/api/query/images";
+import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import DeleteImages from "@/app/images/components/DeleteImages";
 import type { Image } from "@/app/images/types";
-import { formatUtcDatetime, getTimeDistanceString } from "@/app/utils/time";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
@@ -27,42 +23,46 @@ export const filterCells = (
   column: Column<Image>
 ): boolean => {
   if (row.getIsGrouped()) {
-    return ["name", "actions"].includes(column.id);
+    return ["os", "actions"].includes(column.id);
   } else {
-    return !["name"].includes(column.id);
+    return !["os"].includes(column.id);
   }
 };
 
 export const filterHeaders = (header: Header<Image, unknown>): boolean =>
-  header.column.id !== "name";
+  header.column.id !== "os";
 
 const useImageTableColumns = ({
   commissioningRelease,
   selectedRows,
   setSelectedRows,
+  isStatusLoading,
+  isStatisticsLoading,
 }: {
-  commissioningRelease: string | null;
+  commissioningRelease: string;
   selectedRows: RowSelectionState;
   setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
+  isStatusLoading: boolean;
+  isStatisticsLoading: boolean;
 }): ImageColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const startSync = useStartImageSync();
+  const stopSync = useStopImageSync();
+
   return useMemo(
     () =>
       [
         {
-          id: "name",
-          accessorKey: "name",
-          cell: ({
-            row,
-            getValue,
-          }: {
-            row: Row<Image>;
-            getValue: Getter<Image["name"]>;
-          }) => {
+          id: "os",
+          accessorKey: "os",
+          cell: ({ row }: { row: Row<Image> }) => {
             return (
               <div>
                 <div>
-                  <strong>{getValue()}</strong>
+                  <strong>
+                    {row.original.os.charAt(0).toUpperCase() +
+                      row.original.os.slice(1)}
+                  </strong>
                 </div>
                 <small className="u-text--muted">
                   {pluralize("image", row.getLeafRows().length ?? 0, true)}
@@ -72,10 +72,24 @@ const useImageTableColumns = ({
           },
         },
         {
-          id: "release",
-          accessorKey: "release",
+          id: "title",
+          accessorKey: "title",
           enableSorting: true,
           header: () => "Release title",
+          cell: ({
+            row: {
+              original: { release, title },
+            },
+          }: {
+            row: Row<Image>;
+          }) => {
+            return (
+              <div>
+                <div>{title}</div>
+                <small className="u-text--muted">{release}</small>
+              </div>
+            );
+          },
         },
         {
           id: "architecture",
@@ -88,26 +102,39 @@ const useImageTableColumns = ({
           accessorKey: "size",
           enableSorting: true,
           header: () => "Size",
+          cell: ({
+            row: {
+              original: { size },
+            },
+          }) => (isStatisticsLoading ? <Spinner /> : size ? size : "—"),
         },
         {
-          id: "canDeployToMemory",
-          accessorKey: "canDeployToMemory",
+          id: "version",
+          accessorKey: "version",
           enableSorting: true,
-          header: () => "Deployable in Memory",
-          cell: ({ row: { original: canDeployToMemory } }) =>
-            canDeployToMemory ? (
-              <TooltipButton
-                iconName="task-outstanding"
-                iconProps={{ "aria-label": "supported" }}
-                message="This image can be deployed in memory."
-              />
+          header: () => "Version",
+          cell: ({
+            row: {
+              original: { update_status, last_updated },
+            },
+          }) => {
+            return isStatusLoading ? (
+              <Spinner />
             ) : (
-              <TooltipButton
-                iconName="close"
-                iconProps={{ "aria-label": "not supported" }}
-                message="This image cannot be deployed in memory."
+              <DoubleRow
+                primary={update_status}
+                secondary={
+                  isStatisticsLoading ? (
+                    <Spinner />
+                  ) : last_updated ? (
+                    `Last updated on ${new Date(last_updated ?? "").toLocaleDateString()}`
+                  ) : (
+                    "—"
+                  )
+                }
               />
-            ),
+            );
+          },
         },
         {
           id: "status",
@@ -116,55 +143,53 @@ const useImageTableColumns = ({
           header: () => "Status",
           cell: ({
             row: {
-              original: { status, lastSynced },
+              original: { status, sync_percentage, node_count },
             },
           }) => {
-            let statusIcon;
+            let icon;
             switch (status) {
-              case "Synced":
-                statusIcon = <Icon aria-label={"synced"} name={"success"} />;
+              case "Ready":
+                icon = <Icon aria-label={"synced"} name={"success"} />;
                 break;
-              default:
-                statusIcon = <Spinner />;
+              case "Waiting for download":
+                icon = <Icon name={"status-waiting"} />;
                 break;
+              case "Downloading":
+                icon = null;
             }
-            return (
-              <DoubleRow
-                data-testid="resource-status"
-                icon={statusIcon}
-                primary={status}
-                secondary={lastSynced ?? ""}
-              />
-            );
-          },
-        },
-        {
-          id: "lastDeployed",
-          accessorKey: "lastDeployed",
-          enableSorting: true,
-          header: () => "Last deployed",
-          cell: ({
-            row: {
-              original: { lastDeployed },
-            },
-          }) => {
-            return lastDeployed ? (
-              <DoubleRow
-                primary={getTimeDistanceString(lastDeployed)}
-                secondary={formatUtcDatetime(lastDeployed)}
-              />
+            return isStatusLoading ? (
+              <Spinner />
             ) : (
-              "—"
+              <DoubleRow
+                icon={icon}
+                primary={
+                  status === "Downloading" ? (
+                    <>
+                      <div className="p-progress">
+                        <div
+                          className="p-progress__value"
+                          style={{ width: `${sync_percentage}%` }}
+                        />
+                      </div>
+                      <small className="u-text--muted">
+                        {sync_percentage}%
+                      </small>
+                    </>
+                  ) : (
+                    status
+                  )
+                }
+                secondary={
+                  isStatisticsLoading ? (
+                    <Spinner />
+                  ) : typeof node_count === "number" ? (
+                    pluralize("node", node_count, true)
+                  ) : (
+                    "—"
+                  )
+                }
+              />
             );
-          },
-        },
-        {
-          id: "machines",
-          accessorKey: "machines",
-          enableSorting: true,
-          header: () => "Machines",
-          cell: ({ row }) => {
-            return row.original.machines || "—";
           },
         },
         {
@@ -174,43 +199,118 @@ const useImageTableColumns = ({
           header: () => "Actions",
           cell: ({ row }: { row: Row<Image> }) => {
             const isCommissioningImage =
-              row.original.resource.name === `ubuntu/${commissioningRelease}`;
+              row.original.release === commissioningRelease;
             const canBeDeleted =
-              !isCommissioningImage &&
-              (row.original.resource.complete ||
-                !row.original.resource.downloading);
+              !isCommissioningImage && row.original.status === "Ready";
             return row.getIsGrouped() ? null : (
-              <TableActions
-                data-testid="image-actions"
-                deleteDisabled={!canBeDeleted}
-                deleteTooltip={
-                  !canBeDeleted
-                    ? isCommissioningImage
-                      ? "Cannot delete images of the default commissioning release."
-                      : "Cannot delete images that are currently being imported."
-                    : "Deletes this image."
-                }
-                onDelete={() => {
-                  if (row.original.id) {
-                    if (!row.getIsSelected()) {
-                      row.toggleSelected();
-                    }
-                    openSidePanel({
-                      component: DeleteImages,
-                      title: "Delete images",
-                      props: {
-                        rowSelection: { ...selectedRows, [row.id]: true },
-                        setRowSelection: setSelectedRows,
-                      },
-                    });
+              <div>
+                <Tooltip
+                  message={
+                    row.original.status === "Waiting for download"
+                      ? "Start image synchronization."
+                      : row.original.status === "Downloading"
+                        ? "Cannot start synchronization during download."
+                        : "Image is already synchronized."
                   }
-                }}
-              />
+                  position="left"
+                >
+                  <Button
+                    appearance="base"
+                    className="is-dense u-table-cell-padding-overlap"
+                    disabled={
+                      row.original.status !== "Waiting for download" ||
+                      stopSync.isPending
+                    }
+                    hasIcon
+                    onClick={() => {
+                      startSync.mutate({
+                        path: {
+                          id: row.original.id,
+                          boot_source_id: row.original.boot_source_id!,
+                        },
+                      });
+                    }}
+                  >
+                    <i className="p-icon--start">Start synchronization</i>
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  message={
+                    row.original.status === "Downloading"
+                      ? "Stop image synchronization."
+                      : "No synchronization in progress."
+                  }
+                  position="left"
+                >
+                  <Button
+                    appearance="base"
+                    className="is-dense u-table-cell-padding-overlap"
+                    disabled={
+                      row.original.status !== "Downloading" ||
+                      startSync.isPending
+                    }
+                    hasIcon
+                    onClick={() => {
+                      stopSync.mutate({
+                        path: {
+                          id: row.original.id,
+                          boot_source_id: row.original.boot_source_id!,
+                        },
+                      });
+                    }}
+                  >
+                    <i className="p-icon--stop">Stop synchronization</i>
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  message={
+                    !canBeDeleted
+                      ? isCommissioningImage
+                        ? "Cannot delete images of the default commissioning release."
+                        : "Cannot delete images that are currently being imported."
+                      : "Deletes this image."
+                  }
+                  position="left"
+                >
+                  <Button
+                    appearance="base"
+                    className="is-dense u-table-cell-padding-overlap"
+                    disabled={!canBeDeleted}
+                    hasIcon
+                    onClick={() => {
+                      if (row.original.id) {
+                        if (!row.getIsSelected()) {
+                          row.toggleSelected();
+                        }
+                        openSidePanel({
+                          component: DeleteImages,
+                          title: "Delete images",
+                          props: {
+                            rowSelection: { ...selectedRows, [row.id]: true },
+                            setRowSelection: setSelectedRows,
+                          },
+                        });
+                      }
+                    }}
+                  >
+                    <i className="p-icon--delete">Delete</i>
+                  </Button>
+                </Tooltip>
+              </div>
             );
           },
         },
       ] as ImageColumnDef[],
-    [commissioningRelease, selectedRows, setSelectedRows, openSidePanel]
+    [
+      isStatisticsLoading,
+      isStatusLoading,
+      stopSync,
+      startSync,
+      commissioningRelease,
+      openSidePanel,
+      selectedRows,
+      setSelectedRows,
+    ]
   );
 };
 

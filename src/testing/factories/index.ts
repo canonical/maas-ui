@@ -141,6 +141,12 @@ export {
 } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";
 export { fabric } from "./fabric";
+export {
+  imageFactory,
+  imageStatisticsFactory,
+  imageStatusFactory,
+  availableImageFactory,
+} from "./image";
 export { imageSourceFactory } from "./imageSource";
 export { licenseKeys } from "./licensekeys";
 export {
