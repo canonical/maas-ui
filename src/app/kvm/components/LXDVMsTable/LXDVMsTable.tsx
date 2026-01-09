@@ -1,22 +1,28 @@
-import { useEffect, useState } from "react";
+import type { ReactElement } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import type { ValueOf } from "@canonical/react-components";
+import { GenericTable } from "@canonical/maas-react-components";
 import { usePrevious } from "@canonical/react-components";
-import { useDispatch } from "react-redux";
+import type { RowSelectionState, SortingState } from "@tanstack/react-table";
+import { useDispatch, useSelector } from "react-redux";
 
-import VMsActionBar from "./VMsActionBar";
-import VMsTable from "./VMsTable";
-import type { GetHostColumn, GetResources } from "./VMsTable/VMsTable";
+import VMsActionBar from "./components/VMsActionBar";
+import type {
+  GetHostColumn,
+  GetResources,
+} from "./useVMsTableColumns/useVMsTableColumns";
+import useVMsTableColumns from "./useVMsTableColumns/useVMsTableColumns";
 
-import type { SetSearchFilter, SortDirection } from "@/app/base/types";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
-import { DEFAULTS } from "@/app/machines/views/MachineList/MachineListTable/constants";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import type { SetSearchFilter } from "@/app/base/types";
+import { SortDirection } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";
-import type { FetchGroupKey } from "@/app/store/machine/types";
+import machineSelectors from "@/app/store/machine/selectors";
 import { FilterGroupKey } from "@/app/store/machine/types";
 import { FilterMachines, useFetchedCount } from "@/app/store/machine/utils";
 import { useFetchMachines } from "@/app/store/machine/utils/hooks";
 import type { Pod } from "@/app/store/pod/types";
+import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {
   displayForCluster?: boolean;
@@ -26,7 +32,6 @@ type Props = {
   pods: Pod["name"][];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export const VMS_PER_PAGE = 10;
@@ -39,16 +44,17 @@ const LXDVMsTable = ({
   pods,
   searchFilter,
   setSearchFilter,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
+
+  const tags = useSelector(tagSelectors.all);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
-    DEFAULTS.sortKey
-  );
-  const [sortDirection, setSortDirection] = useState<
-    ValueOf<typeof SortDirection>
-  >(DEFAULTS.sortDirection);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "hostname", desc: false },
+  ]);
+
   const {
     callId,
     loading,
@@ -60,20 +66,32 @@ const LXDVMsTable = ({
       // Set the filters to get results that belong to this single pod or pods in a cluster.
       [FilterGroupKey.Pod]: pods,
     },
-    sortDirection,
-    sortKey,
+    sortDirection:
+      sorting[0]?.desc === true
+        ? SortDirection.DESCENDING
+        : SortDirection.ASCENDING,
+    sortKey: sorting[0]?.id ?? null,
     pagination: { currentPage, setCurrentPage, pageSize: VMS_PER_PAGE },
   });
+
+  const selected = useSelector(machineSelectors.selected);
+  const getSystemIdsFromRowSelection = useCallback(() => {
+    const selectedVms = vms.filter((vm) =>
+      Object.keys(rowSelection).includes(vm.id.toString())
+    );
+    return selectedVms.map((vm) => vm.system_id);
+  }, [rowSelection, vms]);
+
   const count = useFetchedCount(machineCount, loading);
   const previousSearchFilter = usePrevious(searchFilter);
 
   useEffect(() => {
     // Clear machine selection and close the action form on filters change
     if (searchFilter !== previousSearchFilter) {
-      setSidePanelContent(null);
+      closeSidePanel();
       dispatch(machineActions.setSelected(null));
     }
-  }, [searchFilter, previousSearchFilter, setSidePanelContent, dispatch]);
+  }, [searchFilter, previousSearchFilter, closeSidePanel, dispatch]);
 
   useEffect(
     () => () => {
@@ -83,6 +101,36 @@ const LXDVMsTable = ({
     [dispatch]
   );
 
+  useEffect(() => {
+    const selectedSystemIds = getSystemIdsFromRowSelection();
+    if (selected === null && selectedSystemIds.length > 0) {
+      dispatch(
+        machineActions.setSelected({
+          items: selectedSystemIds,
+        })
+      );
+    }
+
+    if (selected && "items" in selected && !!selected.items) {
+      const selectedCopy = [...selected.items];
+      if (
+        selectedCopy.sort().join(",") !== selectedSystemIds.sort().join(",")
+      ) {
+        dispatch(
+          machineActions.setSelected({
+            items: selectedSystemIds,
+          })
+        );
+      }
+    }
+  }, [dispatch, getSystemIdsFromRowSelection, selected]);
+
+  const columns = useVMsTableColumns({
+    callId: callId,
+    getHostColumn: getHostColumn,
+    getResources: getResources,
+    tags: tags,
+  });
   return (
     <>
       <VMsActionBar
@@ -91,22 +139,23 @@ const LXDVMsTable = ({
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
         setSearchFilter={setSearchFilter}
-        setSidePanelContent={setSidePanelContent}
         vmCount={count}
       />
-      <VMsTable
-        callId={callId}
-        displayForCluster={displayForCluster}
-        getHostColumn={getHostColumn}
-        getResources={getResources}
-        machinesLoading={loading}
-        pods={pods}
-        searchFilter={searchFilter}
-        setSortDirection={setSortDirection}
-        setSortKey={setSortKey}
-        sortDirection={sortDirection}
-        sortKey={sortKey}
-        vms={vms}
+      <GenericTable
+        aria-label="VMs table"
+        className="vms-table"
+        columns={columns}
+        data={vms}
+        isLoading={loading}
+        noData={`No VMs in this ${displayForCluster ? "cluster" : "KVM host"} match the search criteria.`}
+        selection={{
+          rowSelection,
+          setRowSelection,
+          rowSelectionLabelKey: "hostname",
+        }}
+        setSorting={setSorting}
+        sorting={sorting}
+        variant="regular"
       />
     </>
   );

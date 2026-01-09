@@ -1,14 +1,10 @@
-import configureStore from "redux-mock-store";
-
 import PowerOffForm from "./PowerOffForm";
 
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("PowerOffForm", () => {
   let state: RootState;
@@ -39,20 +35,17 @@ describe("PowerOffForm", () => {
   });
 
   it("can dispatch a soft power off action on machines", async () => {
-    const store = mockStore(state);
-
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <PowerOffForm
         action={NodeActions.SOFT_OFF}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
       />,
-      { route: "/machines", store }
+      { initialEntries: ["/machines"], state }
     );
 
     await userEvent.click(

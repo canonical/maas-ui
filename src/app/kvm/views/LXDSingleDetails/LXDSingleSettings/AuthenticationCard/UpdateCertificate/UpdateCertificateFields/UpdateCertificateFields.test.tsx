@@ -4,10 +4,10 @@ import UpdateCertificateFields from "./UpdateCertificateFields";
 
 import { Labels } from "@/app/base/components/CertificateFields/CertificateFields";
 import * as factory from "@/testing/factories";
-import { render, screen, waitFor } from "@/testing/utils";
+import { screen, waitFor, renderWithProviders } from "@/testing/utils";
 describe("UpdateCertificateFields", () => {
   it("shows authentication fields if no certificate provided", async () => {
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
         onSubmit={vi.fn()}
@@ -27,7 +27,7 @@ describe("UpdateCertificateFields", () => {
 
   it("shows certificate data if certificate provided", () => {
     const generatedCertificate = factory.generatedCertificate();
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
         onSubmit={vi.fn()}

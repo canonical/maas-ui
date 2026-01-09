@@ -1,4 +1,4 @@
-import type { ReactElement, Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
@@ -11,7 +11,7 @@ import {
   useStopImageSync,
 } from "@/app/api/query/images";
 import type { BootSourceResponse } from "@/app/apiclient";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import { MAAS_IO_DEFAULTS } from "@/app/images/constants";

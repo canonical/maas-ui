@@ -1,27 +1,15 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import SubnetLink from "./SubnetLink";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 it("handles when subnets are loading", () => {
   const state = factory.rootState({
     subnet: factory.subnetState({ items: [], loading: true }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <SubnetLink id={1} />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<SubnetLink id={1} />, { state });
 
   expect(screen.getByLabelText("Loading subnets")).toBeInTheDocument();
 });
@@ -30,14 +18,8 @@ it("handles when a subnet does not exist", () => {
   const state = factory.rootState({
     subnet: factory.subnetState({ items: [], loading: false }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <SubnetLink id={1} />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<SubnetLink id={1} />, { state });
 
   expect(screen.queryByRole("link")).toBeNull();
   expect(screen.getByText("Unconfigured")).toBeInTheDocument();
@@ -48,14 +30,8 @@ it("renders a link if subnets have loaded and it exists", () => {
   const state = factory.rootState({
     subnet: factory.subnetState({ items: [subnet], loading: false }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <SubnetLink id={subnet.id} />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<SubnetLink id={subnet.id} />, { state });
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",

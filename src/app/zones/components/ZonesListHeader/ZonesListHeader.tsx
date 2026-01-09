@@ -7,7 +7,7 @@ import ZonesListTitle from "./ZonesListTitle";
 
 import { useZoneCount } from "@/app/api/query/zones";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { AddZone } from "@/app/zones/components";
 
 const ZonesListHeader = (): ReactElement => {

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { GenericTable } from "@canonical/maas-react-components";
 
 import useCacheSetsColumns from "./useCacheSetsColumns/useCacheSetsColumns";
@@ -7,11 +9,7 @@ import type { MachineDetails } from "@/app/store/machine/types";
 import type { Disk } from "@/app/store/types/node";
 import { isCacheSet, nodeIsMachine } from "@/app/store/utils";
 
-export enum CacheSetAction {
-  DELETE = "deleteCacheSet",
-}
-
-type Props = {
+type CacheSetsTableProps = {
   canEditStorage: boolean;
   node: ControllerDetails | MachineDetails;
 };
@@ -19,7 +17,7 @@ type Props = {
 const CacheSetsTable = ({
   canEditStorage,
   node,
-}: Props): React.ReactElement => {
+}: CacheSetsTableProps): ReactElement => {
   const isMachine = nodeIsMachine(node);
 
   const newRows = node.disks.reduce<Disk[]>((rows, disk) => {

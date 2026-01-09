@@ -1,10 +1,7 @@
 import { formatBytes } from "@canonical/maas-react-components";
 
-import { KVMSidePanelViews } from "./constants";
 import type { KVMStoragePoolResource, KVMStoragePoolResources } from "./types";
 
-import type { SidePanelContent } from "@/app/base/side-panel-context";
-import { getSidePanelTitle } from "@/app/base/side-panel-context";
 import type { Pod } from "@/app/store/pod/types";
 
 /**
@@ -16,35 +13,6 @@ import type { Pod } from "@/app/store/pod/types";
 export const memoryWithUnit = (memory: number): string => {
   const formatted = formatBytes({ value: memory, unit: "B" }, { binary: true });
   return `${formatted.value}${formatted.unit}`;
-};
-
-const kvmSidePanelTitleMap = {
-  [KVMSidePanelViews.ADD_LXD_HOST[1]]: "Add LXD host",
-  [KVMSidePanelViews.ADD_VIRSH_HOST[1]]: "Add Virsh host",
-  [KVMSidePanelViews.COMPOSE_VM[1]]: "Compose",
-  [KVMSidePanelViews.DELETE_KVM[1]]: "Delete",
-  [KVMSidePanelViews.REFRESH_KVM[1]]: "Refresh",
-} as const;
-
-/**
- * Get header title depending on header content.
- * @param sidePanelContent - The currently selected header content.
- * @returns Header title.
- */
-export const getFormTitle = (sidePanelContent: SidePanelContent): string => {
-  if (sidePanelContent && sidePanelContent.view) {
-    const [, title] = sidePanelContent.view;
-    if (title && title in kvmSidePanelTitleMap) {
-      return kvmSidePanelTitleMap[title as keyof typeof kvmSidePanelTitleMap];
-    }
-  }
-
-  // We need to explicitly cast sidePanelContent here - TypeScript doesn't
-  // seem to be able to infer remaining object tuple values as with string
-  // values.
-  // https://github.com/canonical/maas-ui/issues/3040
-  const machineSidePanelContent = sidePanelContent;
-  return getSidePanelTitle("", machineSidePanelContent);
 };
 
 /**

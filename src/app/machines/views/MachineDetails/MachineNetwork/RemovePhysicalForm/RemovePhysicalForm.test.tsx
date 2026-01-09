@@ -1,14 +1,11 @@
-import configureStore from "redux-mock-store";
-
 import RemovePhysicalForm from "./RemovePhysicalForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 let state: RootState;
-const mockStore = configureStore<RootState>();
 const nic = factory.machineInterface({
   type: NetworkInterfaceTypes.PHYSICAL,
 });
@@ -29,12 +26,9 @@ beforeEach(() => {
 });
 
 it("renders a remove physical form", () => {
-  renderWithBrowserRouter(
-    <RemovePhysicalForm close={vi.fn()} nic={nic} systemId="abc123" />,
-    {
-      state,
-    }
-  );
+  renderWithProviders(<RemovePhysicalForm nic={nic} systemId="abc123" />, {
+    state,
+  });
 
   expect(
     screen.getByText("Are you sure you want to remove this interface?")
@@ -42,11 +36,10 @@ it("renders a remove physical form", () => {
 });
 
 it("dispatches a delete interface action", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <RemovePhysicalForm close={vi.fn()} nic={nic} systemId="abc123" />,
+  const { store } = renderWithProviders(
+    <RemovePhysicalForm nic={nic} systemId="abc123" />,
     {
-      store,
+      state,
     }
   );
 

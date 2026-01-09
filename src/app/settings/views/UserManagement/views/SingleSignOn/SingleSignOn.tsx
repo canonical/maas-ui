@@ -14,7 +14,7 @@ import SingleSignOnForm from "./components/SingleSignOnForm";
 import { useActiveOauthProvider } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 const SingleSignOn = (): ReactElement => {
   const { data, error, isPending } = useActiveOauthProvider();
@@ -31,11 +31,7 @@ const SingleSignOn = (): ReactElement => {
   useWindowTitle("OIDC/Single sign-on");
 
   return (
-    <PageContent
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Header>
           <MainToolbar>

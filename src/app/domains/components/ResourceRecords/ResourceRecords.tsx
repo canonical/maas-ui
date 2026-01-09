@@ -1,10 +1,10 @@
 import { MainToolbar } from "@canonical/maas-react-components";
-import { Col, Row, Strip, Spinner, Button } from "@canonical/react-components";
+import { Button, Col, Row, Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import AddRecordForm from "../DomainDetailsHeader/AddRecordForm";
 
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { ResourceRecordsTable } from "@/app/domains/components";
 import domainsSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";

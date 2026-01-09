@@ -1,8 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import TestMetrics from "./TestMetrics";
 
 import * as factory from "@/testing/factories";
+import { renderWithProviders } from "@/testing/utils";
 
 describe("TestMetrics", () => {
   it("shows a metrics table if the test has metrics", () => {
@@ -10,7 +11,9 @@ describe("TestMetrics", () => {
       results: [factory.scriptResultResult()],
     });
     const closeFunc = vi.fn();
-    render(<TestMetrics close={closeFunc} scriptResult={scriptResult} />);
+    renderWithProviders(
+      <TestMetrics close={closeFunc} scriptResult={scriptResult} />
+    );
     expect(screen.getByTestId("metrics-table")).toBeInTheDocument();
   });
 });

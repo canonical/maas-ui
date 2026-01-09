@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import PowerForm from "./PowerForm";
 
 import { Labels } from "@/app/base/components/EditableSection";
@@ -12,13 +8,10 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   userEvent,
-  render,
   screen,
   waitFor,
-  renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 let state: RootState;
 beforeEach(() => {
@@ -86,14 +79,8 @@ beforeEach(() => {
 
 it("is not editable if machine does not have edit permission", () => {
   state.machine.items[0].permissions = [];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <PowerForm systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<PowerForm systemId="abc123" />, { state });
 
   expect(
     screen.queryByRole("button", { name: Labels.EditButton })
@@ -102,14 +89,8 @@ it("is not editable if machine does not have edit permission", () => {
 
 it("is editable if machine has edit permission", () => {
   state.machine.items[0].permissions = ["edit"];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <PowerForm systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithProviders(<PowerForm systemId="abc123" />, { state });
 
   expect(
     screen.getAllByRole("button", { name: Labels.EditButton }).length
@@ -117,14 +98,7 @@ it("is editable if machine has edit permission", () => {
 });
 
 it("renders read-only text fields until edit button is pressed", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <PowerForm systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<PowerForm systemId="abc123" />, { state });
 
   expect(
     screen.queryByRole("combobox", { name: "Power type" })
@@ -140,8 +114,7 @@ it("renders read-only text fields until edit button is pressed", async () => {
 });
 
 it("can validate IPv6 addresses with a port for IPMI power type", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(<PowerForm systemId="def456" />, { store });
+  renderWithProviders(<PowerForm systemId="def456" />, { state });
 
   await userEvent.click(
     screen.getAllByRole("button", { name: Labels.EditButton })[0]
@@ -180,8 +153,7 @@ it("can validate IPv6 addresses with a port for IPMI power type", async () => {
 });
 
 it("can validate IPv4 addresses with a port for IPMI power type", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(<PowerForm systemId="def456" />, { store });
+  renderWithProviders(<PowerForm systemId="def456" />, { state });
 
   await userEvent.click(
     screen.getAllByRole("button", { name: Labels.EditButton })[0]
@@ -224,14 +196,10 @@ it("correctly dispatches an action to update a machine's power", async () => {
     system_id: "abc123",
   });
   state.machine.items = [machine];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <PowerForm systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
-  );
+
+  const { store } = renderWithProviders(<PowerForm systemId="abc123" />, {
+    state,
+  });
 
   await userEvent.click(
     screen.getAllByRole("button", { name: Labels.EditButton })[0]

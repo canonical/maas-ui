@@ -16,6 +16,7 @@ import { default as zones } from "@/app/zones/urls";
 
 const urls = {
   index: "/",
+  login: "/login",
   controllers,
   networkDiscovery,
   devices,

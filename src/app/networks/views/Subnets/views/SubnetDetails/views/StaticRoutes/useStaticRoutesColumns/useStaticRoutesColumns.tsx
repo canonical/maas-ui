@@ -7,7 +7,7 @@ import EditStaticRouteForm from "../EditStaticRouteForm";
 
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { StaticRoute } from "@/app/store/staticroute/types";
 
 export type StaticRouteColumnDef = ColumnDef<StaticRoute, Partial<StaticRoute>>;

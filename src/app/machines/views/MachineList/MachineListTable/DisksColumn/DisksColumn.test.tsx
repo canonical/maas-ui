@@ -4,7 +4,7 @@ import type { RootState } from "@/app/store/root/types";
 import { TestStatusStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -32,8 +32,7 @@ describe("DisksColumn", () => {
   it("displays the physical disk count", () => {
     state.machine.items[0].physical_disk_count = 2;
 
-    renderWithBrowserRouter(<DisksColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<DisksColumn systemId="abc123" />, {
       state,
     });
     expect(screen.getByTestId("primary")).toHaveTextContent("2");
@@ -44,8 +43,7 @@ describe("DisksColumn", () => {
       status: TestStatusStatus.FAILED,
     });
 
-    renderWithBrowserRouter(<DisksColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<DisksColumn systemId="abc123" />, {
       state,
     });
 

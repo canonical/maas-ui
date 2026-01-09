@@ -1,15 +1,14 @@
 import HardwareCard, { Labels as HardwareCardLabels } from "./HardwareCard";
 
 import * as factory from "@/testing/factories";
-import { screen, within, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, within, renderWithProviders } from "@/testing/utils";
 
 it("renders with system data", () => {
   const machine = factory.machineDetails({ system_id: "abc123" });
   const state = factory.rootState({
     machine: factory.machineState({ items: [machine] }),
   });
-  renderWithBrowserRouter(<HardwareCard node={machine} />, {
-    route: "/machine/abc123",
+  renderWithProviders(<HardwareCard node={machine} />, {
     state,
   });
 
@@ -63,8 +62,7 @@ it("renders when system data is not available", () => {
   const state = factory.rootState({
     machine: factory.machineState({ items: [machine] }),
   });
-  renderWithBrowserRouter(<HardwareCard node={machine} />, {
-    route: "/machine/abc123",
+  renderWithProviders(<HardwareCard node={machine} />, {
     state,
   });
 

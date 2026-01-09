@@ -5,7 +5,7 @@ import AddTagForm from "../AddTagForm";
 
 import SearchBox from "@/app/base/components/SearchBox";
 import SegmentedControl from "@/app/base/components/SegmentedControl";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
 
 export type Props = {

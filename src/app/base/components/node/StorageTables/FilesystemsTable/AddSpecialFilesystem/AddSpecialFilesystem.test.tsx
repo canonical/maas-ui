@@ -1,14 +1,13 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
 import { machineActions } from "@/app/store/machine";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("only shows filesystems that do not require a storage device", () => {
   const machine = factory.machineDetails({
@@ -26,14 +25,7 @@ it("only shows filesystems that do not require a storage device", () => {
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<AddSpecialFilesystem machine={machine} />, { state });
 
   expect(screen.getByRole("option", { name: "ramfs" })).toBeInTheDocument();
   expect(
@@ -58,14 +50,7 @@ it("can show errors", () => {
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<AddSpecialFilesystem machine={machine} />, { state });
 
   expect(screen.getByText("you can't do that")).toBeInTheDocument();
 });
@@ -83,13 +68,9 @@ it("correctly dispatches an action to mount a special filesystem", async () => {
       }),
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithProviders(
+    <AddSpecialFilesystem machine={machine} />,
+    { state }
   );
 
   await userEvent.selectOptions(

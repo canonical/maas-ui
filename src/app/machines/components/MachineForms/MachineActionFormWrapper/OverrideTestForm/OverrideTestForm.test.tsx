@@ -1,5 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
 
@@ -15,9 +14,7 @@ import {
 } from "@/app/store/scriptresult/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -86,18 +83,14 @@ describe("OverrideTestForm", () => {
   });
 
   it("dispatches actions to override tests for given machines", async () => {
-    const store = mockStore(state);
-
-    renderWithBrowserRouter(
-      <OverrideTestForm
-        clearSidePanelContent={vi.fn()}
-        selectedCount={1}
-        selectedMachines={{
-          items: state.machine.items.map((item) => item.system_id),
-        }}
-        viewingDetails={false}
-      />,
-      { store, route: "/machines" }
+    state.machine.selected = {
+      items: state.machine.items.map((machine) => machine.system_id),
+    };
+    const { store } = renderWithProviders(
+      <OverrideTestForm isViewingDetails={false} />,
+      {
+        state,
+      }
     );
 
     await userEvent.click(
@@ -130,17 +123,14 @@ describe("OverrideTestForm", () => {
   });
 
   it("dispatches actions to suppress script results for given machines", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <OverrideTestForm
-        clearSidePanelContent={vi.fn()}
-        selectedCount={1}
-        selectedMachines={{
-          items: [state.machine.items[0].system_id],
-        }}
-        viewingDetails={false}
-      />,
-      { store, route: "/machines" }
+    state.machine.selected = {
+      items: [state.machine.items[0].system_id],
+    };
+    const { store } = renderWithProviders(
+      <OverrideTestForm isViewingDetails={false} />,
+      {
+        state,
+      }
     );
 
     await userEvent.click(screen.getByLabelText(/Suppress test-failure/));
@@ -163,19 +153,16 @@ describe("OverrideTestForm", () => {
   });
 
   it("dispatches actions to suppress script results for given multiple machines", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <OverrideTestForm
-        clearSidePanelContent={vi.fn()}
-        selectedCount={1}
-        selectedMachines={{
-          items: ["abc123"],
-          groups: ["admin"],
-          grouping: FetchGroupKey.Owner,
-        }}
-        viewingDetails={false}
-      />,
-      { store, route: "/machines" }
+    state.machine.selected = {
+      items: [state.machine.items[0].system_id],
+      groups: ["admin"],
+      grouping: FetchGroupKey.Owner,
+    };
+    const { store } = renderWithProviders(
+      <OverrideTestForm isViewingDetails={false} />,
+      {
+        state,
+      }
     );
 
     await userEvent.click(screen.getByLabelText(/Suppress test-failure/));

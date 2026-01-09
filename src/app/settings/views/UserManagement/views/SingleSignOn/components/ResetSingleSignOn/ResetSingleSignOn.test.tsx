@@ -86,4 +86,44 @@ describe("ResetSingleSignOn", () => {
 
     expect(mockClose).toHaveBeenCalled();
   });
+
+  it("shows number of users associated with the provider during deletion", async () => {
+    mockServer.use(
+      authResolvers.getActiveOauthProvider.handler({
+        ...mockOauthProvider,
+        user_count: 3,
+      })
+    );
+
+    renderWithProviders(<ResetSingleSignOn id={mockOauthProvider.id} />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("form", { name: "Reset single sign-on configuration" })
+      ).toBeInTheDocument();
+    });
+    expect(
+      screen.getByText("Remove 3 users associated with this provider")
+    ).toBeInTheDocument();
+  });
+
+  it("doesn't show user removal line if no users are associated with the provider", async () => {
+    mockServer.use(
+      authResolvers.getActiveOauthProvider.handler({
+        ...mockOauthProvider,
+        user_count: 0,
+      })
+    );
+
+    renderWithProviders(<ResetSingleSignOn id={mockOauthProvider.id} />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("form", { name: "Reset single sign-on configuration" })
+      ).toBeInTheDocument();
+    });
+    expect(
+      screen.queryByText(/Remove \d+ users associated with this provider/)
+    ).not.toBeInTheDocument();
+  });
 });

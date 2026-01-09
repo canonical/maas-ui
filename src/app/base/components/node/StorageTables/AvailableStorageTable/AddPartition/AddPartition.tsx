@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { formatBytes } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -5,6 +7,7 @@ import * as Yup from "yup";
 import AddPartitionFields from "./AddPartitionFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
@@ -23,8 +26,7 @@ export type AddPartitionValues = {
   unit: string;
 };
 
-type Props = {
-  closeExpanded: () => void;
+type AddPartitionProps = {
   disk: Disk;
   systemId: Machine["system_id"];
 };
@@ -85,17 +87,17 @@ const generateSchema = (availableSize: number) =>
   });
 
 export const AddPartition = ({
-  closeExpanded,
   disk,
   systemId,
-}: Props): React.ReactElement | null => {
+}: AddPartitionProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "creatingPartition",
     "createPartition",
     () => {
-      closeExpanded();
+      closeSidePanel();
     }
   );
   const machine = useSelector((state: RootState) =>
@@ -127,7 +129,7 @@ export const AddPartition = ({
           ).value,
           unit: "GB",
         }}
-        onCancel={closeExpanded}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Add partition",
           category: "Machine storage",

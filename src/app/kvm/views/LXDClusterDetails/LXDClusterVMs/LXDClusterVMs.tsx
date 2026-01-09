@@ -8,7 +8,6 @@ import { useWindowTitle } from "@/app/base/hooks";
 import type { SetSearchFilter } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import LXDVMsTable from "@/app/kvm/components/LXDVMsTable";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
@@ -16,7 +15,6 @@ import type { VMCluster } from "@/app/store/vmcluster/types";
 type Props = {
   clusterId: VMCluster["id"];
   searchFilter: string;
-  setSidePanelContent: KVMSetSidePanelContent;
   setSearchFilter: SetSearchFilter;
 };
 
@@ -27,7 +25,6 @@ export enum Label {
 const LXDClusterVMs = ({
   clusterId,
   searchFilter,
-  setSidePanelContent,
   setSearchFilter,
 }: Props): React.ReactElement | null => {
   const cluster = useSelector((state: RootState) =>
@@ -75,7 +72,6 @@ const LXDClusterVMs = ({
         pods={cluster.hosts.map(({ name }) => name)}
         searchFilter={searchFilter}
         setSearchFilter={setSearchFilter}
-        setSidePanelContent={setSidePanelContent}
       />
     </div>
   );

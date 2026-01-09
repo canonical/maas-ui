@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
@@ -7,10 +7,10 @@ import FormikForm from "../FormikForm";
 
 import PrefixedIpInput from "./PrefixedIpInput";
 
-import { renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithProviders } from "@/testing/utils";
 
 it("displays the correct range help text for an IPv4 subnet", () => {
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <PrefixedIpInput cidr="10.0.0.0/24" name="ip" />
     </Formik>
@@ -22,7 +22,7 @@ it("displays the correct range help text for an IPv4 subnet", () => {
 });
 
 it("displays the correct placeholder for an IPv4 subnet", () => {
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <PrefixedIpInput cidr="10.0.0.0/24" name="ip" />
     </Formik>
@@ -32,7 +32,7 @@ it("displays the correct placeholder for an IPv4 subnet", () => {
 });
 
 it("hides the range help text for an IPv6 subnet", () => {
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <PrefixedIpInput cidr="2001:db8::/32" name="ip" />
     </Formik>
@@ -44,7 +44,7 @@ it("hides the range help text for an IPv6 subnet", () => {
 });
 
 it("displays the correct placeholder for an IPv6 subnet", () => {
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <PrefixedIpInput cidr="2001:db8::/32" name="ip" />
     </Formik>
@@ -57,7 +57,7 @@ it("displays the correct placeholder for an IPv6 subnet", () => {
 });
 
 it("trims the immutable octets from a pasted IPv4 address", async () => {
-  renderWithBrowserRouter(
+  renderWithProviders(
     <FormikForm initialValues={{ ip: "" }} onSubmit={vi.fn()}>
       <FormikField cidr="10.0.0.0/24" component={PrefixedIpInput} name="ip" />
     </FormikForm>
@@ -70,7 +70,7 @@ it("trims the immutable octets from a pasted IPv4 address", async () => {
 });
 
 it("trims the network address and subnet ID from a pasted IPv6 address", async () => {
-  renderWithBrowserRouter(
+  renderWithProviders(
     <FormikForm initialValues={{ ip: "" }} onSubmit={vi.fn()}>
       <FormikField cidr="2001:db8::/32" component={PrefixedIpInput} name="ip" />
     </FormikForm>
@@ -83,7 +83,7 @@ it("trims the network address and subnet ID from a pasted IPv6 address", async (
 });
 
 it("displays provided help text instead of the IP address range", () => {
-  render(
+  renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <PrefixedIpInput
         cidr="10.0.0.0/24"

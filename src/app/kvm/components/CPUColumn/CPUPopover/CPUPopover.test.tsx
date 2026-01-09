@@ -1,11 +1,11 @@
 import CPUPopover from "./CPUPopover";
 
 import * as factory from "@/testing/factories";
-import { render, screen, userEvent } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 describe("CPUPopover", () => {
   it("shows if cores are used by any other projects in the group", async () => {
-    render(
+    renderWithProviders(
       <CPUPopover
         cores={factory.podResource({
           allocated_other: 1,
@@ -21,7 +21,7 @@ describe("CPUPopover", () => {
   });
 
   it("does not show other cores if no other projects in the group use them", async () => {
-    render(
+    renderWithProviders(
       <CPUPopover
         cores={factory.podResource({
           allocated_other: 0,
@@ -37,7 +37,7 @@ describe("CPUPopover", () => {
   });
 
   it("shows CPU over-commit ratio if it is not equal to 1", async () => {
-    render(
+    renderWithProviders(
       <CPUPopover
         cores={factory.podResource({
           allocated_other: 1,
@@ -53,7 +53,7 @@ describe("CPUPopover", () => {
   });
 
   it("does not show CPU over-commit ratio if it is equal to 1", async () => {
-    render(
+    renderWithProviders(
       <CPUPopover
         cores={factory.podResource({
           allocated_other: 1,
@@ -69,7 +69,7 @@ describe("CPUPopover", () => {
   });
 
   it("displays cores for a vmcluster", async () => {
-    render(
+    renderWithProviders(
       <CPUPopover
         cores={factory.vmClusterResource({
           allocated_other: 1,

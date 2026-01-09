@@ -1,3 +1,5 @@
+import type { Dispatch, ReactElement, SetStateAction } from "react";
+
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -7,16 +9,16 @@ import type { Expanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkT
 import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useSendAnalytics } from "@/app/base/hooks";
-import { MachineSidePanelViews } from "@/app/machines/constants";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
-  getInterfaceType,
   getInterfaceById,
+  getInterfaceType,
   getLinkFromNic,
 } from "@/app/store/utils";
 
@@ -26,11 +28,10 @@ type Action = {
   state: ExpandedState;
 };
 
-type Props = {
+type MachineNetworkActionsProps = {
   expanded: Expanded | null;
   selected: Selected[];
-  setSidePanelContent: MachineSetSidePanelContent;
-  setSelected: React.Dispatch<React.SetStateAction<Selected[]>>;
+  setSelected: Dispatch<SetStateAction<Selected[]>>;
   systemId: Machine["system_id"];
 };
 
@@ -77,10 +78,10 @@ const selectedDifferentVLANs = (
 
 const MachineNetworkActions = ({
   selected,
-  setSidePanelContent,
   systemId,
   setSelected,
-}: Props): React.ReactElement | null => {
+}: MachineNetworkActionsProps): ReactElement | null => {
+  const { openSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -140,9 +141,13 @@ const MachineNetworkActions = ({
           className="u-no-margin--bottom"
           disabled={isAllNetworkingDisabled}
           onClick={() => {
-            setSidePanelContent({
-              view: MachineSidePanelViews.TEST_MACHINE,
-              extras: { applyConfiguredNetworking: true },
+            openSidePanel({
+              component: TestMachineForm,
+              title: "Test machine",
+              props: {
+                applyConfiguredNetworking: true,
+                isViewingDetails: true,
+              },
             });
             sendAnalytics(
               "Machine details",

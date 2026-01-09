@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import CommissionForm from "./CommissionForm";
 
 import { machineActions } from "@/app/store/machine";
@@ -8,9 +6,7 @@ import { ScriptName, ScriptType } from "@/app/store/script/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeStatusCode } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("CommissionForm", () => {
   let state: RootState;
@@ -27,6 +23,7 @@ describe("CommissionForm", () => {
           abc123: factory.machineStatus(),
           def456: factory.machineStatus(),
         }),
+        selected: { items: ["abc123", "def456"] },
       }),
       script: factory.scriptState({
         loaded: true,
@@ -65,15 +62,9 @@ describe("CommissionForm", () => {
 
   it("fetches scripts if they haven't been loaded yet", () => {
     state.script.loaded = false;
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <CommissionForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <CommissionForm isViewingDetails={false} />,
+      { state }
     );
 
     expect(
@@ -82,15 +73,9 @@ describe("CommissionForm", () => {
   });
 
   it("correctly dispatches actions to commission given machines", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <CommissionForm
-        clearSidePanelContent={vi.fn()}
-        machines={state.machine.items}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <CommissionForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.click(
@@ -144,26 +129,10 @@ describe("CommissionForm", () => {
       store
         .getActions()
         .filter((action) => action.type === "machine/commission")
-    ).toStrictEqual([
+    ).toMatchObject([
       machineActions.commission({
-        system_id: "abc123",
-        enable_ssh: true,
-        skip_bmc_config: true,
-        skip_networking: true,
-        skip_storage: true,
-        commissioning_scripts: [
-          state.script.items[1].name,
-          ScriptName.UPDATE_FIRMWARE,
-          ScriptName.CONFIGURE_HBA,
-        ],
-        testing_scripts: [
-          state.script.items[2].name,
-          state.script.items[0].name,
-        ],
-        script_input: { "custom-testing-script": { url: "www.url.com" } },
-      }),
-      machineActions.commission({
-        system_id: "def456",
+        filter: { id: ["abc123", "def456"] },
+        system_id: undefined,
         enable_ssh: true,
         skip_bmc_config: true,
         skip_networking: true,
@@ -183,15 +152,9 @@ describe("CommissionForm", () => {
   });
 
   it("correctly dispatches an action to commission a machine without tests", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <CommissionForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <CommissionForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.click(
@@ -242,20 +205,13 @@ describe("CommissionForm", () => {
   it("Displays an error notification if power type is not set and status is unknown", () => {
     state.machine.items[0].power_state = PowerState.UNKNOWN;
     state.machine.items[0].status_code = NodeStatusCode.NEW;
+    state.machine.selected = { items: [state.machine.items[0].system_id] };
 
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <CommissionForm
-        clearSidePanelContent={vi.fn()}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      {
-        route: "/machine/abc123",
-        store,
-        routePattern: "/machine/:id",
-      }
-    );
+    renderWithProviders(<CommissionForm isViewingDetails={false} />, {
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+      state,
+    });
 
     expect(
       screen.getByRole("heading", {

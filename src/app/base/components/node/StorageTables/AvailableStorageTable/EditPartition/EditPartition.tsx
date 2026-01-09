@@ -1,9 +1,12 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import EditPartitionFields from "./EditPartitionFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -19,8 +22,7 @@ export type EditPartitionValues = {
   mountPoint?: string;
 };
 
-type Props = {
-  closeExpanded: () => void;
+type EditPartitionProps = {
   disk: Disk;
   partition: Partition;
   systemId: Machine["system_id"];
@@ -36,18 +38,18 @@ const EditPartitionSchema = Yup.object().shape({
 });
 
 export const EditPartition = ({
-  closeExpanded,
   disk,
   partition,
   systemId,
-}: Props): React.ReactElement | null => {
+}: EditPartitionProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "updatingFilesystem",
     "updateFilesystem",
     () => {
-      closeExpanded();
+      closeSidePanel();
     }
   );
   const machine = useSelector((state: RootState) =>
@@ -67,7 +69,7 @@ export const EditPartition = ({
           mountOptions: fs?.mount_options || "",
           mountPoint: fs?.mount_point || "",
         }}
-        onCancel={closeExpanded}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Edit partition",
           category: "Machine storage",

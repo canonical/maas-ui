@@ -9,7 +9,7 @@ const VMsColumn = ({ version, vms }: Props): React.ReactElement | null => {
   return (
     <DoubleRow
       primary={<span data-testid="machines-count">{vms}</span>}
-      primaryClassName="u-align--right"
+      primaryClassName="u-align--left"
       secondary={version && <span data-testid="version">{version}</span>}
     />
   );

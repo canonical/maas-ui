@@ -10,6 +10,7 @@ import { usePageSize, type useResponsiveColumns } from "./hooks";
 
 import VaultNotification from "@/app/base/components/VaultNotification";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SortDirection } from "@/app/base/types";
 import { controllerActions } from "@/app/store/controller";
 import { generalActions } from "@/app/store/general";
@@ -23,7 +24,6 @@ type Props = {
   grouping: FetchGroupKey | null;
   hiddenColumns: ReturnType<typeof useResponsiveColumns>[0];
   hiddenGroups: (string | null)[];
-  headerFormOpen?: boolean;
   searchFilter: string;
   setHiddenGroups: (groups: (string | null)[]) => void;
 };
@@ -32,12 +32,12 @@ const MachineList = ({
   grouping,
   hiddenColumns,
   hiddenGroups,
-  headerFormOpen,
   searchFilter,
   setHiddenGroups,
 }: Props): React.ReactElement => {
   useWindowTitle("Machines");
   const dispatch = useDispatch();
+  const { isOpen: headerFormOpen } = useSidePanel();
   const errors = useSelector(machineSelectors.errors);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState<FetchGroupKey | null>(

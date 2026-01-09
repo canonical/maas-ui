@@ -1,10 +1,17 @@
 import TooltipButton from "./TooltipButton";
 
 import { breakLines, unindentString } from "@/app/utils";
-import { userEvent, render, screen, within } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("renders with default options correctly", async () => {
-  render(<TooltipButton data-testid="tooltip-portal" message="Tooltip" />);
+  renderWithProviders(
+    <TooltipButton data-testid="tooltip-portal" message="Tooltip" />
+  );
   const button = screen.getByRole("button");
 
   await userEvent.click(button);
@@ -16,7 +23,7 @@ it("renders with default options correctly", async () => {
 });
 
 it("can override default props", async () => {
-  render(
+  renderWithProviders(
     <TooltipButton
       buttonProps={{ appearance: "negative", className: "button-class" }}
       data-testid="tooltip-portal"
@@ -44,7 +51,7 @@ it("automatically unindents and breaks string messages into lines", async () => 
   const message = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
   a malesuada leo. Cras imperdiet maximus velit vel euismod. Fusce laoreet sem
   at pellentesque ultricies. Proin posuere tortor at sollicitudin tempus.`;
-  render(<TooltipButton message={message} />);
+  renderWithProviders(<TooltipButton message={message} />);
   const button = screen.getByRole("button");
 
   await userEvent.click(button);

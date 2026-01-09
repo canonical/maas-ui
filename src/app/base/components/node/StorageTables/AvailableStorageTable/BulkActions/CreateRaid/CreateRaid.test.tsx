@@ -1,13 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import CreateRaid from "./CreateRaid";
 
-import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("CreateRaid", () => {
   it("sets the initial name correctly", () => {
@@ -39,12 +34,8 @@ describe("CreateRaid", () => {
       }),
     });
 
-    renderWithBrowserRouter(
-      <CreateRaid
-        closeForm={vi.fn()}
-        selected={[physicalDisk]}
-        systemId="abc123"
-      />,
+    renderWithProviders(
+      <CreateRaid selected={[physicalDisk]} systemId="abc123" />,
       { state }
     );
 
@@ -74,14 +65,12 @@ describe("CreateRaid", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <CreateRaid
-        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));

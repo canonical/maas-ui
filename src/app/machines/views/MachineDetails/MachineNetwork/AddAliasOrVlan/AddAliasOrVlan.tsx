@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -14,6 +15,7 @@ import type { AddAliasOrVlanValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useScrollOnRender } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -35,8 +37,7 @@ export enum Labels {
   SaveAndAdd = "Save and add another",
 }
 
-type Props = {
-  close: () => void;
+type AddAliasOrVlanProps = {
   nic?: NetworkInterface | null;
   interfaceType: NetworkInterfaceTypes.ALIAS | NetworkInterfaceTypes.VLAN;
   systemId: MachineDetails["system_id"];
@@ -48,11 +49,11 @@ const InterfaceSchema = Yup.object().shape({
 });
 
 const AddAliasOrVlan = ({
-  close,
   nic,
   interfaceType,
   systemId,
-}: Props): React.ReactElement | null => {
+}: AddAliasOrVlanProps): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const [secondarySubmit, setSecondarySubmit] = useState(false);
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
@@ -75,7 +76,7 @@ const AddAliasOrVlan = ({
         // Reset the flag for the action that submitted the form.
         setSecondarySubmit(false);
       } else {
-        close();
+        closeSidePanel();
       }
     }
   );
@@ -96,7 +97,7 @@ const AddAliasOrVlan = ({
           fabric: nicVLAN?.fabric,
           vlan: nic.vlan_id,
         }}
-        onCancel={close}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: `Add ${interfaceType}`,
           category: "Machine details networking",

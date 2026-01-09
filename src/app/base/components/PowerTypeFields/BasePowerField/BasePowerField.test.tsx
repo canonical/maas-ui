@@ -4,12 +4,12 @@ import BasePowerField from "./BasePowerField";
 
 import { PowerFieldType } from "@/app/store/general/types";
 import * as factory from "@/testing/factories";
-import { screen, render, userEvent } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 describe("BasePowerField", () => {
   it("can be given a custom power parameters name", () => {
     const field = factory.powerField({ name: "field-name" });
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField
           field={field}
@@ -24,7 +24,7 @@ describe("BasePowerField", () => {
 
   it("correctly renders a string field type", () => {
     const field = factory.powerField({ field_type: PowerFieldType.STRING });
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
       </Formik>
@@ -36,7 +36,7 @@ describe("BasePowerField", () => {
 
   it("correctly renders a IP address field type", () => {
     const field = factory.powerField({ field_type: PowerFieldType.IP_ADDRESS });
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
       </Formik>
@@ -50,7 +50,7 @@ describe("BasePowerField", () => {
     const field = factory.powerField({
       field_type: PowerFieldType.VIRSH_ADDRESS,
     });
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
       </Formik>
@@ -64,7 +64,7 @@ describe("BasePowerField", () => {
     const field = factory.powerField({
       field_type: PowerFieldType.LXD_ADDRESS,
     });
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
       </Formik>
@@ -79,7 +79,7 @@ describe("BasePowerField", () => {
       field_type: PowerFieldType.PASSWORD,
       label: "Password",
     });
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
       </Formik>
@@ -94,7 +94,7 @@ describe("BasePowerField", () => {
 
   it("correctly renders a choice field type", () => {
     const field = factory.powerField({ field_type: PowerFieldType.CHOICE });
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
       </Formik>
@@ -113,7 +113,7 @@ describe("BasePowerField", () => {
       label: "label",
       name: "field",
     });
-    render(
+    renderWithProviders(
       <Formik
         initialValues={{ power_parameters: { field: ["value1"] } }}
         onSubmit={vi.fn()}

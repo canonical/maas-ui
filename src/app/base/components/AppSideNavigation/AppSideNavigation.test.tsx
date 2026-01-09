@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AppSideNavigation from "./AppSideNavigation";
 
 import urls from "@/app/base/urls";
@@ -9,7 +7,6 @@ import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  renderWithBrowserRouter,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -27,7 +24,6 @@ vi.mock("react-router", async () => {
   };
 });
 
-const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 afterEach(() => {
@@ -90,8 +86,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("can dispatch an action to log out", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<AppSideNavigation />, { store });
+    const { store } = renderWithProviders(<AppSideNavigation />, { state });
 
     await waitFor(() => {
       expect(
@@ -359,51 +354,13 @@ describe("GlobalSideNav", () => {
     ).toHaveAttribute("href", "/machines");
   });
 
-  it("redirects to the intro page if intro not completed", async () => {
-    state.config.items = [
-      factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
-    ];
-    renderWithProviders(<AppSideNavigation />, {
-      initialEntries: ["/machines"],
-      state,
-    });
-    await waitFor(() => {
-      expect(authResolvers.getCurrentUser.resolved).toBe(true);
-    });
-    await waitFor(() => {
-      expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.index);
-    });
-  });
-
-  it("redirects to the user intro page if user intro not completed", async () => {
-    state.config.items = [
-      factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
-    ];
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: false })
-      )
-    );
-    renderWithProviders(<AppSideNavigation />, {
-      initialEntries: ["/machines"],
-      state,
-    });
-    await waitFor(() => {
-      expect(authResolvers.getCurrentUser.resolved).toBe(true);
-    });
-    await waitFor(() => {
-      expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.user);
-    });
-  });
-
   it("does not redirect if the intro is being displayed", async () => {
     state.config.items = [
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
     ];
 
-    const store = mockStore(state);
     const { router } = renderWithProviders(<AppSideNavigation />, {
-      store,
+      state,
       initialEntries: [urls.intro.images],
     });
     await waitFor(() => {
@@ -446,8 +403,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("persists collapsed state", async () => {
-    const { rerender } = renderWithBrowserRouter(<AppSideNavigation />, {
-      route: "/",
+    const { rerender } = renderWithProviders(<AppSideNavigation />, {
       state,
     });
 

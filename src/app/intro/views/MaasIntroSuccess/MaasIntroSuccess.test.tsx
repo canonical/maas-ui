@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 
 import MaasIntroSuccess, {
   Labels as MaasIntroSuccessLabels,
@@ -18,7 +17,6 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("MaasIntroSuccess", () => {
@@ -84,10 +82,9 @@ describe("MaasIntroSuccess", () => {
   });
 
   it("dispatches an action to update completed intro config", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<MaasIntroSuccess />, {
+    const { store } = renderWithProviders(<MaasIntroSuccess />, {
       initialEntries: ["/intro/success"],
-      store,
+      state,
     });
 
     await userEvent.click(

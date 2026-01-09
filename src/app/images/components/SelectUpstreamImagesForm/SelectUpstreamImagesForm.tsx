@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import type { MultiSelectItem } from "@canonical/react-components";
-import { Spinner, Notification, Strip } from "@canonical/react-components";
+import { Notification, Spinner, Strip } from "@canonical/react-components";
 
 import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
 import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
@@ -19,7 +19,7 @@ import type {
   UiSourceAvailableImageResponse,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 import "./_index.scss";
 

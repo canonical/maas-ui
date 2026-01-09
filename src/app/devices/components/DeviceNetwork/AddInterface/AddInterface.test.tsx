@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AddInterface from "./AddInterface";
 
 import { deviceActions } from "@/app/store/device";
@@ -9,7 +7,6 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const createNewInterface = async () => {
   await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
   await userEvent.type(screen.getByRole("textbox", { name: "Name" }), "eth123");
@@ -73,15 +70,16 @@ describe("AddInterface", () => {
 
   it("displays a spinner if device is not detailed version", () => {
     state.device.items[0] = factory.device({ system_id: "abc123" });
-    const store = mockStore(state);
-    renderWithProviders(<AddInterface systemId="abc123" />, { store });
+
+    renderWithProviders(<AddInterface systemId="abc123" />, { state });
 
     expect(screen.getByTestId("loading-device-details"));
   });
 
   it("correctly dispatches action to create an interface", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<AddInterface systemId="abc123" />, { store });
+    const { store } = renderWithProviders(<AddInterface systemId="abc123" />, {
+      state,
+    });
 
     await createNewInterface();
 
@@ -103,8 +101,10 @@ describe("AddInterface", () => {
   it("does not close the form if there is an error when creating the interface", async () => {
     const closeForm = vi.fn();
     state.device.errors = null;
-    const store = mockStore(state);
-    renderWithProviders(<AddInterface systemId="abc123" />, { store });
+
+    const { store } = renderWithProviders(<AddInterface systemId="abc123" />, {
+      state,
+    });
     await createNewInterface();
     const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
@@ -123,8 +123,10 @@ describe("AddInterface", () => {
   it("does not close the form if there is an error when submitting the form multiple times", async () => {
     const closeForm = vi.fn();
     state.device.errors = null;
-    const store = mockStore(state);
-    renderWithProviders(<AddInterface systemId="abc123" />, { store });
+
+    const { store } = renderWithProviders(<AddInterface systemId="abc123" />, {
+      state,
+    });
     await createNewInterface();
     const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([

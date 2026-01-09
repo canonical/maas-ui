@@ -1,6 +1,6 @@
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
-import { KVMSidePanelViews } from "@/app/kvm/constants";
+import RefreshForm from "@/app/kvm/components/RefreshForm";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -8,11 +8,13 @@ import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
+  renderWithProviders,
   setupMockServer,
   waitFor,
+  mockSidePanel,
 } from "@/testing/utils";
 
+const { mockOpen } = await mockSidePanel();
 setupMockServer(zoneResolvers.getZone.handler());
 
 describe("LXDSingleDetailsHeader", () => {
@@ -43,10 +45,9 @@ describe("LXDSingleDetailsHeader", () => {
 
   it("displays a spinner if pod hasn't loaded", () => {
     state.pod.items = [];
-    renderWithBrowserRouter(
-      <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      { route: "/kvm/1/resources", state }
-    );
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
+      state,
+    });
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -55,10 +56,9 @@ describe("LXDSingleDetailsHeader", () => {
     state.pod.items[0].power_parameters = factory.podPowerParameters({
       project: "Manhattan",
     });
-    renderWithBrowserRouter(
-      <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      { route: "/kvm/1/resources", state }
-    );
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
+      state,
+    });
 
     expect(screen.getAllByTestId("block-subtitle")[3]).toHaveTextContent(
       "Manhattan"
@@ -69,10 +69,9 @@ describe("LXDSingleDetailsHeader", () => {
     state.pod.items[0].resources = factory.podResources({
       vm_count: factory.podVmCount({ tracked: 5 }),
     });
-    renderWithBrowserRouter(
-      <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      { route: "/kvm/1/resources", state }
-    );
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
+      state,
+    });
 
     expect(screen.getAllByTestId("block-subtitle")[1]).toHaveTextContent(
       "5 available"
@@ -81,10 +80,9 @@ describe("LXDSingleDetailsHeader", () => {
 
   it("displays the pod's zone's name", async () => {
     state.pod.items[0].zone = 1;
-    renderWithBrowserRouter(
-      <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      { route: "/kvm/1/resources", state }
-    );
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
+      state,
+    });
 
     await waitFor(() => {
       expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
@@ -95,19 +93,15 @@ describe("LXDSingleDetailsHeader", () => {
 
   it("can open the refresh host form", async () => {
     state.pod.items[0].zone = 1;
-    const setSidePanelContent = vi.fn();
-    renderWithBrowserRouter(
-      <LXDSingleDetailsHeader
-        id={1}
-        setSidePanelContent={setSidePanelContent}
-      />,
-      { route: "/kvm/1/resources", state }
-    );
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
+      state,
+    });
     await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));
 
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMSidePanelViews.REFRESH_KVM,
-      extras: { hostIds: [1] },
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: RefreshForm,
+      title: "Refresh",
+      props: { hostIds: [1] },
     });
   });
 });

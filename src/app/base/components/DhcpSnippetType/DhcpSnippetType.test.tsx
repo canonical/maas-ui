@@ -1,13 +1,8 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import DhcpSnippetType from "./DhcpSnippetType";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 let state: RootState;
 
@@ -63,31 +58,19 @@ it("displays a loading component if loading", () => {
   state.dhcpsnippet.loading = true;
   state.machine.loading = true;
   state.subnet.loading = true;
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <DhcpSnippetType subnetId={808} />
-    </Provider>
-  );
+
+  renderWithProviders(<DhcpSnippetType subnetId={808} />, { state });
   expect(screen.getByText("Loading")).toBeInTheDocument();
 });
 
 it("displays a global type", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <DhcpSnippetType nodeId={null} subnetId={null} />
-    </Provider>
-  );
+  renderWithProviders(<DhcpSnippetType nodeId={null} subnetId={null} />, {
+    state,
+  });
   expect(screen.getByText("Global")).toBeInTheDocument();
 });
 
 it("can display a Machine type", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <DhcpSnippetType nodeId="xyz" />
-    </Provider>
-  );
+  renderWithProviders(<DhcpSnippetType nodeId="xyz" />, { state });
   expect(screen.getByText("Machine")).toBeInTheDocument();
 });

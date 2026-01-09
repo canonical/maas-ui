@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router";
-import configureStore from "redux-mock-store";
 
 import { ControllerDetailsTabLabels } from "../../constants";
 
@@ -9,8 +8,6 @@ import urls from "@/app/base/urls";
 import { controllerActions } from "@/app/store/controller";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 beforeEach(() => {
   global.scrollTo = vi.fn;
@@ -29,25 +26,18 @@ it("gets and sets the controller as active", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  renderWithProviders(
-    <Routes>
-      <Route
-        element={<ControllerDetails />}
-        path={`${urls.controllers.controller.index(null)}/*`}
-      />
-    </Routes>,
-    {
-      store,
-      initialEntries: [
-        {
-          pathname: urls.controllers.controller.index({
-            id: controller.system_id,
-          }),
-        },
-      ],
-    }
-  );
+
+  const { store } = renderWithProviders(<ControllerDetails />, {
+    state,
+    initialEntries: [
+      {
+        pathname: urls.controllers.controller.index({
+          id: controller.system_id,
+        }),
+      },
+    ],
+    pattern: `${urls.controllers.controller.index(null)}/*`,
+  });
 
   const expectedActions = [
     controllerActions.get(controller.system_id),
@@ -72,27 +62,23 @@ it("unsets active controller and cleans up when unmounting", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  const { result } = renderWithProviders(
-    <Routes>
-      <Route
-        element={<ControllerDetails />}
-        path={`${urls.controllers.controller.index(null)}/*`}
-      />
-    </Routes>,
-    {
-      store,
-      initialEntries: [
-        {
-          pathname: urls.controllers.controller.index({
-            id: controller.system_id,
-          }),
-        },
-      ],
-    }
-  );
 
-  result.unmount();
+  const {
+    result: { unmount },
+    store,
+  } = renderWithProviders(<ControllerDetails />, {
+    state,
+    initialEntries: [
+      {
+        pathname: urls.controllers.controller.index({
+          id: controller.system_id,
+        }),
+      },
+    ],
+    pattern: `${urls.controllers.controller.index(null)}/*`,
+  });
+
+  unmount();
 
   const expectedActions = [
     controllerActions.setActive(null),
@@ -153,26 +139,18 @@ it("gets and sets the controller as active only once when navigating within the 
       loading: false,
     }),
   });
-  const store = mockStore(state);
 
-  renderWithProviders(
-    <Routes>
-      <Route
-        element={<ControllerDetails />}
-        path={`${urls.controllers.controller.index(null)}/*`}
-      />
-    </Routes>,
-    {
-      store,
-      initialEntries: [
-        {
-          pathname: urls.controllers.controller.index({
-            id: controller.system_id,
-          }),
-        },
-      ],
-    }
-  );
+  const { store } = renderWithProviders(<ControllerDetails />, {
+    state,
+    initialEntries: [
+      {
+        pathname: urls.controllers.controller.index({
+          id: controller.system_id,
+        }),
+      },
+    ],
+    pattern: `${urls.controllers.controller.index(null)}/*`,
+  });
 
   await userEvent.click(
     screen.getByRole("link", { name: ControllerDetailsTabLabels.vlans })

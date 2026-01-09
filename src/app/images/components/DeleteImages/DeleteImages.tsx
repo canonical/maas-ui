@@ -1,10 +1,10 @@
-import type { ReactElement, Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { useDeleteSelections } from "@/app/api/query/images";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 type DeleteImagesProps = {
   rowSelection: RowSelectionState;

@@ -35,9 +35,6 @@ const ImageList = (): ReactElement => {
           setSelectedRows={setSelectedRows}
         />
       }
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       {configLoaded && (
         <>

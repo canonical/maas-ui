@@ -2,7 +2,7 @@ import { FabricColumn } from "./FabricColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("FabricColumn", () => {
   let state: RootState;
@@ -43,8 +43,7 @@ describe("FabricColumn", () => {
       },
     });
 
-    renderWithBrowserRouter(<FabricColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<FabricColumn systemId="abc123" />, {
       state,
     });
     expect(screen.getByLabelText("Fabric")).toHaveTextContent(/fabric-2/i);
@@ -59,8 +58,7 @@ describe("FabricColumn", () => {
       vlan: null,
     });
 
-    renderWithBrowserRouter(<FabricColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<FabricColumn systemId="abc123" />, {
       state,
     });
     expect(screen.getByLabelText("Fabric")).toHaveTextContent("-");
@@ -80,8 +78,7 @@ describe("FabricColumn", () => {
       },
     });
 
-    renderWithBrowserRouter(<FabricColumn systemId="abc123" />, {
-      route: "/machines",
+    renderWithProviders(<FabricColumn systemId="abc123" />, {
       state,
     });
     expect(screen.getByTestId("vlan")).toHaveTextContent(/Wombat/i);

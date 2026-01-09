@@ -12,7 +12,7 @@ import pluralize from "pluralize";
 
 import { useStartImageSync, useStopImageSync } from "@/app/api/query/images";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import type { Image } from "@/app/images/types";
 

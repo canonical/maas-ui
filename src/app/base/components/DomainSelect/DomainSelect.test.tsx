@@ -1,24 +1,19 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import DomainSelect, { Labels } from "./DomainSelect";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("DomainSelect", () => {
   it("dispatches action to fetch domains on load", () => {
     const state = factory.rootState();
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ domain: "" }} onSubmit={vi.fn()}>
-          <DomainSelect name="domain" />
-        </Formik>
-      </Provider>
+
+    const { store } = renderWithProviders(
+      <Formik initialValues={{ domain: "" }} onSubmit={vi.fn()}>
+        <DomainSelect name="domain" />
+      </Formik>,
+      { state }
     );
 
     expect(
@@ -32,13 +27,12 @@ describe("DomainSelect", () => {
         loaded: false,
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ domain: "" }} onSubmit={vi.fn()}>
-          <DomainSelect name="domain" />
-        </Formik>
-      </Provider>
+
+    renderWithProviders(
+      <Formik initialValues={{ domain: "" }} onSubmit={vi.fn()}>
+        <DomainSelect name="domain" />
+      </Formik>,
+      { state }
     );
 
     expect(

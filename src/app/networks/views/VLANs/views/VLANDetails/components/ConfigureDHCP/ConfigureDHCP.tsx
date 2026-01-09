@@ -11,8 +11,8 @@ import DHCPReservedRanges from "./DHCPReservedRanges";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
-import { useFetchActions, useCycled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useCycled, useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "@/app/store/controller/types";

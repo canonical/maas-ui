@@ -5,7 +5,7 @@ import GroupColumn from "./GroupColumn";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen, waitFor } from "@/testing/utils";
+import { renderWithProviders, screen, waitFor } from "@/testing/utils";
 
 vi.mock("@/app/store/machine/utils/hooks");
 
@@ -25,7 +25,7 @@ it("displays the correct column name and machines count", () => {
     name: "Test Group",
     value: "test-group",
   });
-  renderWithMockStore(
+  renderWithProviders(
     <GroupColumn
       callId="test-call-id"
       filter={null}
@@ -49,7 +49,7 @@ it("displays correct fetched machines count when initial count is null", async (
     value: "test-group",
   });
 
-  renderWithMockStore(
+  renderWithProviders(
     <GroupColumn
       callId="test-call-id"
       filter={null}

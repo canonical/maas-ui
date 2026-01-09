@@ -1,15 +1,10 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import AppliedTo from "./AppliedTo";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
-const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
@@ -34,16 +29,10 @@ it("links to nodes", () => {
       name: "a-tag",
     }),
   ];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <AppliedTo id={1} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<AppliedTo id={1} />, {
+    state,
+    initialEntries: [urls.tags.tag.index({ id: 1 })],
+  });
   const machineLink = screen.getByRole("link", {
     name: "1 machine",
   });
@@ -80,16 +69,10 @@ it("displays a message if there are no nodes", () => {
       name: "a-tag",
     }),
   ];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <AppliedTo id={1} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<AppliedTo id={1} />, {
+    state,
+    initialEntries: [urls.tags.tag.index({ id: 1 })],
+  });
   expect(screen.queryByRole("link")).not.toBeInTheDocument();
   expect(screen.getByText("None")).toBeInTheDocument();
 });

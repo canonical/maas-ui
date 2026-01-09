@@ -171,7 +171,7 @@ context("Machine listing - actions", () => {
   it("can open a soft power off form", () => {
     selectFirstMachine();
     cy.findAllByRole("button", { name: "Power" }).first().click();
-    cy.findByRole("button", { name: /soft power off\.\.\./i }).click();
+    cy.findByRole("button", { name: /soft power off/i }).click();
     cy.findByRole("complementary", { name: /soft power off/i }).should("exist");
     cy.findByRole("heading", { name: /soft power off/i }).should("exist");
     cy.findByText(

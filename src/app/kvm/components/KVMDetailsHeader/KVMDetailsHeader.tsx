@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useEffect } from "react";
 
 import type { ClassName } from "@canonical/react-components";
@@ -8,7 +8,7 @@ import { useLocation } from "react-router";
 
 import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 type TitleBlock = {
   title: ReactNode;
@@ -19,7 +19,6 @@ type Props = {
   buttons?: SectionHeaderProps["buttons"];
   className?: ClassName;
   loading?: SectionHeaderProps["loading"];
-  setSidePanelContent: KVMSetSidePanelContent;
   tabLinks: SectionHeaderProps["tabLinks"];
   title: ReactNode;
   titleBlocks: TitleBlock[];
@@ -29,21 +28,21 @@ const KVMDetailsHeader = ({
   buttons,
   className,
   loading,
-  setSidePanelContent,
   tabLinks,
   title,
   titleBlocks,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const location = useLocation();
+  const { closeSidePanel } = useSidePanel();
   const pathname = location.pathname;
   const previousPathname = usePrevious(pathname);
 
   // Close the action form if the pathname changes.
   useEffect(() => {
     if (previousPathname && pathname !== previousPathname) {
-      setSidePanelContent(null);
+      closeSidePanel();
     }
-  }, [pathname, previousPathname, setSidePanelContent]);
+  }, [pathname, previousPathname, closeSidePanel]);
 
   return (
     <SectionHeader

@@ -1,6 +1,6 @@
 import CopyButton from "./CopyButton";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("CopyButton", () => {
   let execCommand: (
@@ -19,7 +19,7 @@ describe("CopyButton", () => {
   });
 
   it("can copy a value", async () => {
-    render(<CopyButton value="Test key" />);
+    renderWithProviders(<CopyButton value="Test key" />);
 
     await userEvent.click(screen.getByRole("button"));
 

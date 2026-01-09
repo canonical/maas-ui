@@ -503,7 +503,7 @@ export const useFetchDeployedMachineCount = ({
 export type UseFetchMachinesOptions = {
   filters?: FetchFilters | null;
   grouping?: FetchGroupKey | null;
-  sortKey?: FetchGroupKey | null;
+  sortKey?: FetchGroupKey | string | null;
   sortDirection?: ValueOf<typeof SortDirection> | null;
   collapsedGroups?: FetchParams["group_collapsed"];
   pagination?: {

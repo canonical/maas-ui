@@ -8,7 +8,7 @@ import EditBootArchitectures from "../EditBootArchitectures";
 import MapSubnet from "../MapSubnet";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { Subnet } from "@/app/store/subnet/types";
 import { isSubnetDetails } from "@/app/store/subnet/utils";
 

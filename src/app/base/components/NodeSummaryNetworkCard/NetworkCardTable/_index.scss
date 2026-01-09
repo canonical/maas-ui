@@ -11,31 +11,7 @@
     }
 
     .name {
-      width: 40%;
-
-      @media only screen and (min-width: $breakpoint-x-large) {
-        width: 80%;
-      }
-    }
-
-    .ip {
-      width: 9.5rem;
-    }
-
-    .speed {
-      width: 7rem;
-    }
-
-    .fabric {
-      width: 7rem;
-    }
-
-    .dhcp {
-      width: 60%;
-    }
-
-    .sriov {
-      width: 3rem;
+      width: 30%;
     }
   }
 }

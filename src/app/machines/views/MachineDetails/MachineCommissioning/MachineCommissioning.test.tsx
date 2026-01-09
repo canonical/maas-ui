@@ -1,8 +1,5 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import MachineCommissioning from ".";
 
@@ -11,6 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import { ScriptResultType } from "@/app/store/scriptresult/types";
 import { TestStatusStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
+import { renderWithProviders } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => {
   const hooks = vi.importActual("@canonical/react-components/dist/hooks");
@@ -19,7 +17,6 @@ vi.mock("@canonical/react-components/dist/hooks", () => {
     usePrevious: vi.fn(),
   };
 });
-const mockStore = configureStore();
 
 describe("MachineCommissioning", () => {
   let state: RootState;
@@ -41,33 +38,22 @@ describe("MachineCommissioning", () => {
     });
   });
   it("renders the spinner while script results are loading.", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <MachineCommissioning />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<MachineCommissioning />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
   it("fetches script results if they haven't been fetched", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineCommissioning />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
+
+    const { store } = renderWithProviders(<MachineCommissioning />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
     expect(
       store
         .getActions()
@@ -77,34 +63,20 @@ describe("MachineCommissioning", () => {
   it("does not fetch script results if they have already been loaded", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
-    const store = mockStore(state);
-    const { rerender } = render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineCommissioning />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
+
+    const { store, rerender } = renderWithProviders(<MachineCommissioning />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
     expect(
       store
         .getActions()
         .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(1);
-    rerender(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineCommissioning />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
+    rerender(<MachineCommissioning />, {
+      state,
+    });
     expect(
       store
         .getActions()
@@ -133,18 +105,12 @@ describe("MachineCommissioning", () => {
         hardware_type: HardwareType.CPU,
       }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<MachineCommissioning />} path="/machine/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
+
+    const { store } = renderWithProviders(<MachineCommissioning />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
     expect(
       store
         .getActions()

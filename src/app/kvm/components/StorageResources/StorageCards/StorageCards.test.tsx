@@ -6,7 +6,7 @@ import StorageCards, {
 
 import { COLOURS } from "@/app/base/constants";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("StorageCards", () => {
   it("correctly calculates meter width", () => {
@@ -15,8 +15,7 @@ describe("StorageCards", () => {
       allocated_other: 30,
       total: 100,
     });
-
-    render(<StorageCards pools={{ pool: storagePoolResource }} />);
+    renderWithProviders(<StorageCards pools={{ pool: storagePoolResource }} />);
     const expectedBg = `linear-gradient(
       to right,
       ${COLOURS.LINK} 0,

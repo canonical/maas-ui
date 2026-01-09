@@ -6,14 +6,14 @@ import type { ScriptResult } from "@/app/store/scriptresult/types";
 
 type Props = {
   close: () => void;
-  scriptResult: ScriptResult;
+  scriptResult: ScriptResult | undefined;
 };
 
 const TestMetrics = ({ close, scriptResult }: Props): React.ReactElement => {
-  const metrics = scriptResult.results;
+  const metrics = scriptResult?.results;
   let content: ReactNode;
 
-  if (metrics.length) {
+  if (metrics?.length) {
     content = (
       <table data-testid="metrics-table">
         <tbody>

@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 
 import { Notification, Spinner } from "@canonical/react-components";
+import pluralize from "pluralize";
 
 import {
   useActiveOauthProvider,
@@ -9,7 +10,7 @@ import {
 } from "@/app/api/query/auth";
 import type { OAuthProviderResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 type Props = {
   id: OAuthProviderResponse["id"];
@@ -48,7 +49,13 @@ const ResetSingleSignOn = ({ id }: Props): ReactElement => {
           <span className="u-nudge-down--small">
             This will:
             <ul>
-              <li>Remove all users associated with this provider</li>
+              {(data.user_count ?? 0) > 0 && (
+                <li>
+                  Remove {pluralize("user", data.user_count ?? 0, true)}{" "}
+                  associated with this provider
+                </li>
+              )}
+
               <li>Remove all settings for this provider, including secrets</li>
             </ul>
             This action is permanent and cannot be undone.

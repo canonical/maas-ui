@@ -1,13 +1,7 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import OverviewCard from "./OverviewCard";
 
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("renders a controller status section if node is a controller", () => {
   const controller = factory.controllerDetails();
@@ -16,14 +10,7 @@ it("renders a controller status section if node is a controller", () => {
       items: [controller],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <OverviewCard node={controller} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<OverviewCard node={controller} />, { state });
 
   expect(screen.getByTestId("controller-status")).toBeInTheDocument();
   expect(screen.queryByTestId("machine-status")).not.toBeInTheDocument();
@@ -36,14 +23,7 @@ it("renders a machine status section if node is a machine", () => {
       items: [machine],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <OverviewCard node={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithProviders(<OverviewCard node={machine} />, { state });
 
   expect(screen.getByTestId("machine-status")).toBeInTheDocument();
   expect(screen.queryByTestId("controller-status")).not.toBeInTheDocument();

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -17,8 +18,7 @@ export enum ConnectionState {
   MARK_DISCONNECTED = "markDisconnected",
 }
 
-type Props = {
-  close: () => void;
+type MarkConnectedProps = {
   systemId: MachineDetails["system_id"];
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
@@ -26,13 +26,13 @@ type Props = {
 };
 
 const MarkConnectedForm = ({
-  close,
   systemId,
   nic,
   link,
   connectionState,
-}: Props): ReactElement | null => {
+}: MarkConnectedProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -94,14 +94,14 @@ const MarkConnectedForm = ({
       initialValues={{}}
       message={message}
       modelType="interface"
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: `Mark interface as ${event}`,
         category: "Machine network",
         label: "Update",
       }}
       onSubmit={updateConnection}
-      onSuccess={close}
+      onSuccess={closeSidePanel}
       saved={saved}
       submitAppearance={markConnected ? "positive" : "negative"}
       submitLabel={`Mark as ${event}`}

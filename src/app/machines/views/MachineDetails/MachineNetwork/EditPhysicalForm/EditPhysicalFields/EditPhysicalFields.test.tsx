@@ -5,12 +5,7 @@ import EditPhysicalFields from "./EditPhysicalFields";
 import type { RootState } from "@/app/store/root/types";
 import type { NetworkInterface } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import {
-  getByTextContent,
-  renderWithBrowserRouter,
-  screen,
-  userEvent,
-} from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("EditPhysicalFields", () => {
   let nic: NetworkInterface;
@@ -48,7 +43,7 @@ describe("EditPhysicalFields", () => {
   });
 
   it("shows a warning if link speed is higher than interface speed", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik
         initialValues={{ interface_speed: 0, link_speed: 0 }}
         onSubmit={vi.fn()}
@@ -56,7 +51,6 @@ describe("EditPhysicalFields", () => {
         <EditPhysicalFields nic={nic} />
       </Formik>,
       {
-        route: "/machines",
         state,
       }
     );
@@ -74,7 +68,7 @@ describe("EditPhysicalFields", () => {
     await userEvent.tab();
 
     expect(
-      getByTextContent(/Link speed should not be higher than interface speed/i)
+      screen.getByText(/Link speed should not be higher than interface speed/i)
     ).toBeInTheDocument();
   });
 });

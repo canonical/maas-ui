@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import DeployForm from "../DeployForm";
 
 import { ConfigNames } from "@/app/store/config/types";
@@ -14,7 +12,6 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("DeployFormFields", () => {
@@ -111,16 +108,9 @@ describe("DeployFormFields", () => {
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_osystem = "centos";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
     expect(screen.getByRole("combobox", { name: "OS" })).toHaveValue("centos");
   });
 
@@ -128,16 +118,7 @@ describe("DeployFormFields", () => {
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
     expect(screen.getByRole("combobox", { name: "Release" })).toHaveValue(
       "bionic"
     );
@@ -151,16 +132,9 @@ describe("DeployFormFields", () => {
       ];
       state.general.defaultMinHweKernel.data = "ga-18.04";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
     await waitFor(() => {
       expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue(
         "ga-18.04"
@@ -176,16 +150,7 @@ describe("DeployFormFields", () => {
       ];
       state.general.defaultMinHweKernel.data = "different-kernel";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
     await waitFor(() => {
       expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("");
     });
@@ -195,16 +160,7 @@ describe("DeployFormFields", () => {
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "xenial";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
     expect(
       screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
     ).toBeDisabled();
@@ -224,16 +180,7 @@ describe("DeployFormFields", () => {
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
     // Initial selection is Ubuntu 18.04. Switch to CentOS 6 to CentOS 7 back to
     // Ubuntu 18.04 and checkbox should be enabled.
     await userEvent.selectOptions(
@@ -263,16 +210,7 @@ describe("DeployFormFields", () => {
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
     expect(
       screen.queryByRole("radio", { name: /LXD/ })
     ).not.toBeInTheDocument();
@@ -293,16 +231,7 @@ describe("DeployFormFields", () => {
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
 
     const SUPPORT_MESSAGE =
       "Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported.";
@@ -321,16 +250,9 @@ describe("DeployFormFields", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(factory.user({ sshkeys_count: 0 }))
     );
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
     await waitFor(() => {
       expect(screen.getByTestId("sshkeys-warning")).toBeInTheDocument();
     });
@@ -342,16 +264,9 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.osystems = [];
       state.general.osInfo.data.releases = [];
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
     expect(screen.getByTestId("images-error")).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "OS" })).toBeDisabled();
     expect(screen.getByRole("combobox", { name: "Release" })).toBeDisabled();
@@ -364,16 +279,9 @@ describe("DeployFormFields", () => {
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
     expect(
       screen.queryByPlaceholderText(/Paste or drop script here/)
     ).not.toBeInTheDocument();
@@ -395,16 +303,9 @@ describe("DeployFormFields", () => {
       ];
       state.general.defaultMinHweKernel.data = "different-default-release";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
     // Change kernel to non-default.
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Kernel" }),
@@ -429,16 +330,9 @@ describe("DeployFormFields", () => {
       ];
       state.general.defaultMinHweKernel.data = "ga-18.04";
     }
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
     // Change release to Ubuntu 20.04.
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Release" }),
@@ -465,16 +359,9 @@ describe("DeployFormFields", () => {
       name: ConfigNames.HARDWARE_SYNC_INTERVAL,
       value: "15m",
     });
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
 
     expect(
       screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
@@ -496,31 +383,20 @@ describe("DeployFormFields", () => {
       name: ConfigNames.HARDWARE_SYNC_INTERVAL,
       value: "",
     });
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
     expect(
       screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
     ).toHaveAccessibleDescription(/Hardware sync interval: Invalid/i);
   });
 
   it("'Periodically sync hardware' is unchecked by default", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      {
+        state,
+      }
     );
 
     expect(
@@ -539,15 +415,10 @@ describe("DeployFormFields", () => {
   });
 
   it("adds a enable_hw_sync field to the request on submit", async () => {
-    const store = mockStore(state);
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[state.machine.items[0]]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { store, initialEntries: ["/machines/add"] }
+    state.machine.selected = { items: [state.machine.items[0].system_id] };
+    const { store } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.click(
@@ -571,15 +442,7 @@ describe("DeployFormFields", () => {
   });
 
   it("selects 'Deploy to disk' as the default deployment target", () => {
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: ["/machines/add"], state }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
 
     expect(screen.getByRole("radio", { name: "Deploy to disk" })).toBeChecked();
     expect(
@@ -588,15 +451,9 @@ describe("DeployFormFields", () => {
   });
 
   it("hides 'Register as MAAS KVM host' if 'Deploy in memory' is selected", async () => {
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: ["/machines/add"], state }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, {
+      state,
+    });
 
     await userEvent.click(
       screen.getByRole("radio", { name: "Deploy in memory" })
@@ -608,15 +465,7 @@ describe("DeployFormFields", () => {
   });
 
   it("shows a tooltip for minimum OS requirements", async () => {
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: ["/machines/add"], state }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
 
     await userEvent.hover(
       screen.getAllByRole("button", { name: "help-mid-dark" })[1]
@@ -630,15 +479,7 @@ describe("DeployFormFields", () => {
   });
 
   it("shows a tooltip for minimum hardware requirements", async () => {
-    renderWithProviders(
-      <DeployForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { initialEntries: ["/machines/add"], state }
-    );
+    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
 
     await userEvent.hover(
       screen.getAllByRole("button", { name: "help-mid-dark" })[0]

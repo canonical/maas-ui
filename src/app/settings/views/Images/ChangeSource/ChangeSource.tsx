@@ -102,7 +102,7 @@ const ChangeSource = (): ReactElement => {
   };
 
   return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+    <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Title className="section-header__title">
           Source

@@ -1,9 +1,12 @@
+import type { ReactElement } from "react";
+
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import EditDiskFields from "./EditDiskFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
@@ -18,8 +21,7 @@ export type EditDiskValues = {
   tags: string[];
 };
 
-type Props = {
-  closeExpanded: () => void;
+type EditDiskProps = {
   disk: Disk;
   systemId: Machine["system_id"];
 };
@@ -34,18 +36,15 @@ const EditDiskSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-export const EditDisk = ({
-  closeExpanded,
-  disk,
-  systemId,
-}: Props): React.ReactElement => {
+export const EditDisk = ({ disk, systemId }: EditDiskProps): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "updatingDisk",
     "updateDisk",
     () => {
-      closeExpanded();
+      closeSidePanel();
     }
   );
 
@@ -60,7 +59,7 @@ export const EditDisk = ({
         mountPoint: disk.filesystem?.mount_point || "",
         tags: disk.tags || [],
       }}
-      onCancel={closeExpanded}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: `Edit ${formatType(disk, true)}`,
         category: "Machine storage",

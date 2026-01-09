@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 import ScriptStatus from "./ScriptStatus";
 
 import { ScriptResultStatus } from "@/app/store/scriptresult/types";
-import { expectTooltipOnHover } from "@/testing/utils";
+import { expectTooltipOnHover, renderWithProviders } from "@/testing/utils";
 
 const getIcon = (name: string, container: HTMLElement): Element | null => {
   return container.querySelector(`.p-icon--${name}`);
@@ -70,7 +70,7 @@ describe("ScriptStatus", () => {
   });
 
   it("can have its icon wrapped in a tooltip", async () => {
-    render(
+    renderWithProviders(
       <ScriptStatus
         status={ScriptResultStatus.PASSED}
         tooltipMessage="Tooltip!"

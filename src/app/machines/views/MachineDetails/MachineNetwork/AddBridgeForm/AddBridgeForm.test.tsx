@@ -1,8 +1,5 @@
-import configureStore from "redux-mock-store";
-
 import AddBridgeForm from "./AddBridgeForm";
 
-import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
@@ -11,11 +8,8 @@ import {
   userEvent,
   screen,
   within,
-  renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
-const route = urls.machines.index;
 
 describe("AddBridgeForm", () => {
   let nic: NetworkInterface;
@@ -68,14 +62,13 @@ describe("AddBridgeForm", () => {
       }),
     ];
     const selected = [{ nicId: nic.id }];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AddBridgeForm
-        close={vi.fn()}
         selected={selected}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route, state }
+      { state }
     );
     const table = screen.getByRole("grid");
     expect(within(table).getAllByRole("row")).toHaveLength(2);
@@ -83,15 +76,13 @@ describe("AddBridgeForm", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <AddBridgeForm
-        close={vi.fn()}
         selected={[{ nicId: nic.id }]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route, store }
+      { state }
     );
     expect(store.getActions().some((action) => action.type === "vlan/fetch"));
   });
@@ -99,14 +90,13 @@ describe("AddBridgeForm", () => {
   it("displays a spinner when data is loading", () => {
     state.vlan.loaded = false;
     state.machine.loaded = false;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AddBridgeForm
-        close={vi.fn()}
         selected={[{ nicId: nic.id }]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route, state }
+      { state }
     );
 
     // Multiple spinners are displayed, so we have to check that there is at least one
@@ -115,15 +105,13 @@ describe("AddBridgeForm", () => {
 
   it("can dispatch an action to add a bridge", async () => {
     state.machine.selected = { items: ["abc123", "def456"] };
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <AddBridgeForm
-        close={vi.fn()}
         selected={[{ nicId: nic.id }]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
-      { route, store }
+      { state }
     );
 
     const macAddressField = screen.getByRole("textbox", {

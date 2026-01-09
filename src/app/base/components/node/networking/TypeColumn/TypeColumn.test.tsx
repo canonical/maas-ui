@@ -3,7 +3,7 @@ import TypeColumn from "./TypeColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("TypeColumn", () => {
   let state: RootState;
@@ -33,7 +33,7 @@ describe("TypeColumn", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <TypeColumn nic={nic} node={state.machine.items[0]} />,
       { state }
     );
@@ -52,7 +52,7 @@ describe("TypeColumn", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <TypeColumn nic={nic} node={state.machine.items[0]} />,
       { state }
     );
@@ -73,7 +73,7 @@ describe("TypeColumn", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <TypeColumn nic={nic} node={state.machine.items[0]} />,
       { state }
     );

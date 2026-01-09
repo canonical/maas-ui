@@ -1,13 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import ToggleMembers from "./ToggleMembers";
 
-import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("ToggleMembers", () => {
   it("disables the edit button if there are no additional valid interfaces", () => {
@@ -22,14 +17,12 @@ describe("ToggleMembers", () => {
       }),
     ];
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
-    const store = mockStore(factory.rootState());
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ToggleMembers
         selected={selected}
         setEditingMembers={vi.fn()}
         validNics={interfaces}
-      />,
-      { route: "/machines", store }
+      />
     );
 
     expect(screen.getByTestId("edit-members")).toBeAriaDisabled();
@@ -50,29 +43,28 @@ describe("ToggleMembers", () => {
         vlan_id: 1,
       }),
     ];
-    const store = mockStore(factory.rootState());
-    const { unmount } = renderWithBrowserRouter(
+    const {
+      result: { unmount },
+    } = renderWithProviders(
       <ToggleMembers
         editingMembers
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
         setEditingMembers={vi.fn()}
         validNics={interfaces}
-      />,
-      { route: "/machines", store }
+      />
     );
 
     expect(screen.getByTestId("edit-members")).not.toBeAriaDisabled();
 
     unmount();
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ToggleMembers
         editingMembers
         selected={[]}
         setEditingMembers={vi.fn()}
         validNics={interfaces}
-      />,
-      { route: "/machines", store }
+      />
     );
     expect(screen.getByTestId("edit-members")).toBeAriaDisabled();
   });

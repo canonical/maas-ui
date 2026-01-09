@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import DeleteForm from "@/app/base/components/node/DeleteForm";
+import SetControllerZoneForm from "../SetControllerZoneForm";
+import TestControllerForm from "../TestControllerForm";
+
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
-import SetZoneForm from "@/app/base/components/node/SetZoneForm";
-import TestForm from "@/app/base/components/node/TestForm";
 import type { HardwareType } from "@/app/base/enum";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
-import urls from "@/app/base/urls";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import DeleteController from "@/app/controllers/components/ControllerForms/DeleteController";
+import { getProcessingCount } from "@/app/controllers/utils";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {
   statusSelectors,
@@ -27,18 +28,6 @@ type Props = {
   hardwareType?: HardwareType;
   controllers: Controller[];
   viewingDetails: boolean;
-};
-
-const getProcessingCount = (
-  selectedControllers: Controller[],
-  processingControllers: Controller[]
-) => {
-  return processingControllers.reduce<number>((count, processingController) => {
-    const controllerInSelection = selectedControllers.some(
-      (controller) => controller.system_id === processingController.system_id
-    );
-    return controllerInSelection ? count + 1 : count;
-  }, 0);
 };
 
 export const ControllerActionFormWrapper = ({
@@ -82,51 +71,25 @@ export const ControllerActionFormWrapper = ({
     switch (action) {
       case NodeActions.DELETE:
         return (
-          <DeleteForm
-            onSubmit={() => {
-              controllers.forEach((controller) => {
-                dispatch(
-                  controllerActions.delete({ system_id: controller.system_id })
-                );
-              });
-            }}
-            redirectURL={urls.controllers.index}
-            {...commonNodeFormProps}
+          <DeleteController
+            controllers={controllers}
+            isViewingDetails={viewingDetails}
           />
         );
       case NodeActions.SET_ZONE:
         return (
-          <SetZoneForm
-            onSubmit={(zoneID) => {
-              dispatch(controllerActions.cleanup());
-              controllers.forEach((controller) => {
-                dispatch(
-                  controllerActions.setZone({
-                    system_id: controller.system_id,
-                    zone_id: zoneID,
-                  })
-                );
-              });
-            }}
-            {...commonNodeFormProps}
+          <SetControllerZoneForm
+            controllers={controllers}
+            isViewingDetails={viewingDetails}
           />
         );
       case NodeActions.TEST:
         return (
-          <TestForm
+          <TestControllerForm
             applyConfiguredNetworking={applyConfiguredNetworking}
+            controllers={controllerSystemIds}
             hardwareType={hardwareType}
-            onTest={(args) => {
-              dispatch(
-                controllerActions.test({
-                  enable_ssh: args.enableSSH,
-                  script_input: args.scriptInputs,
-                  system_id: args.systemId as string,
-                  testing_scripts: args.scripts.map((script) => script.name),
-                })
-              );
-            }}
-            {...commonNodeFormProps}
+            isViewingDetails={viewingDetails}
           />
         );
       case NodeActions.IMPORT_IMAGES:

@@ -1,6 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 
 import PrefixedInput from "./PrefixedInput";
+
+import { renderWithProviders } from "@/testing/utils";
 
 beforeAll(() => {
   Element.prototype.getBoundingClientRect = vi.fn(() => ({
@@ -21,7 +23,7 @@ afterAll(() => {
 });
 
 it("renders without crashing", async () => {
-  render(
+  renderWithProviders(
     <PrefixedInput aria-label="Limited input" immutableText="Some text" />
   );
 
@@ -31,7 +33,7 @@ it("renders without crashing", async () => {
 });
 
 it("displays the immutable text", async () => {
-  render(
+  renderWithProviders(
     <PrefixedInput aria-label="Limited input" immutableText="Some text" />
   );
 
@@ -39,7 +41,7 @@ it("displays the immutable text", async () => {
 });
 
 it("adjusts input padding", async () => {
-  render(
+  renderWithProviders(
     <PrefixedInput aria-label="Limited input" immutableText="Some text" />
   );
   const inputElement = screen.getByRole("textbox", { name: "Limited input" });

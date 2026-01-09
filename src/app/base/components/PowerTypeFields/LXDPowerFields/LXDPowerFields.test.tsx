@@ -3,12 +3,12 @@ import { Formik } from "formik";
 import LXDPowerFields from "./LXDPowerFields";
 
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("LXDPowerFields", () => {
   it("can be given a custom power parameters name", () => {
     const field = factory.powerField({ name: "field", label: "custom field" });
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LXDPowerFields
           fields={[field]}
@@ -23,7 +23,7 @@ describe("LXDPowerFields", () => {
   });
 
   it("renders certificate fields if the user can edit them", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LXDPowerFields canEditCertificate fields={[]} />
       </Formik>
@@ -35,7 +35,7 @@ describe("LXDPowerFields", () => {
   });
 
   it("does not render certificate fields if the user cannot edit them", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LXDPowerFields canEditCertificate={false} fields={[]} />
       </Formik>

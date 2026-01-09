@@ -1,8 +1,5 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
 
 import TagFormChanges, { Label, RowType } from "./TagFormChanges";
 
@@ -11,9 +8,13 @@ import type { RootState } from "@/app/store/root/types";
 import type { Tag } from "@/app/store/tag/types";
 import * as factory from "@/testing/factories";
 import { tagStateListFactory } from "@/testing/factories/state";
-import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  waitFor,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 let state: RootState;
 let tags: Tag[];
@@ -63,15 +64,12 @@ beforeEach(() => {
 it("displays manual tags", () => {
   tags[0].definition = "";
   tags[1].definition = "";
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
-          <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+
+  renderWithProviders(
+    <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
+      <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
+    </Formik>,
+    { state }
   );
   const labelCell = screen.getByRole("cell", { name: Label.Manual });
   expect(labelCell).toBeInTheDocument();
@@ -89,15 +87,12 @@ it("displays manual tags", () => {
 it("displays automatic tags", () => {
   tags[0].definition = "def1";
   tags[1].definition = "def2";
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
-          <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+
+  renderWithProviders(
+    <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
+      <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
+    </Formik>,
+    { state }
   );
   const labelCell = screen.getByRole("cell", {
     name: new RegExp(Label.Automatic),
@@ -115,18 +110,14 @@ it("displays automatic tags", () => {
 });
 
 it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik
-          initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
-          onSubmit={vi.fn()}
-        >
-          <TagFormChanges {...commonProps} newTags={[tags[1].id]} tags={tags} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik
+      initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
+      onSubmit={vi.fn()}
+    >
+      <TagFormChanges {...commonProps} newTags={[tags[1].id]} tags={tags} />
+    </Formik>,
+    { state }
   );
   const labelCell = screen.getByRole("cell", {
     name: new RegExp(Label.Added),
@@ -142,18 +133,14 @@ it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
 });
 
 it("discards added tags", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik
-          initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
-          onSubmit={vi.fn()}
-        >
-          <TagFormChanges {...commonProps} newTags={[]} tags={[]} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik
+      initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
+      onSubmit={vi.fn()}
+    >
+      <TagFormChanges {...commonProps} newTags={[]} tags={[]} />
+    </Formik>,
+    { state }
   );
   const row = screen.getByRole("row", { name: "tag1" });
   expect(row).toHaveAttribute("data-testid", RowType.Added);
@@ -169,21 +156,18 @@ it("displays a tag details modal when chips are clicked", async () => {
   const expectedTag = tags[0];
   expectedTag.name = "tag1";
   expectedTag.machine_count = 2;
-  const store = mockStore(state);
+
   const handleToggleTagDetails = vi.fn();
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
-          <TagFormChanges
-            newTags={[]}
-            selectedCount={2}
-            tags={tags}
-            toggleTagDetails={handleToggleTagDetails}
-          />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
+      <TagFormChanges
+        newTags={[]}
+        selectedCount={2}
+        tags={tags}
+        toggleTagDetails={handleToggleTagDetails}
+      />
+    </Formik>,
+    { state }
   );
   await userEvent.click(
     screen.getByRole("button", { name: `${expectedTag.name} (2/2)` })
@@ -192,15 +176,11 @@ it("displays a tag details modal when chips are clicked", async () => {
 });
 
 it("can remove manual tags", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
-          <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
+      <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
+    </Formik>,
+    { state }
   );
   const tagName = "tag1";
   const manualRow = screen.getByRole("row", { name: tagName });
@@ -217,18 +197,15 @@ it("can remove manual tags", async () => {
 
 it("displays removed tags", () => {
   const tags = state.tag.items;
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik
-          initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
-          onSubmit={vi.fn()}
-        >
-          <TagFormChanges {...commonProps} newTags={[]} tags={[]} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+
+  renderWithProviders(
+    <Formik
+      initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
+      onSubmit={vi.fn()}
+    >
+      <TagFormChanges {...commonProps} newTags={[]} tags={[]} />
+    </Formik>,
+    { state }
   );
   const labelCell = screen.getByRole("cell", {
     name: new RegExp(Label.Removed),
@@ -246,18 +223,14 @@ it("displays removed tags", () => {
 });
 
 it("discards removed tags", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik
-          initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
-          onSubmit={vi.fn()}
-        >
-          <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithProviders(
+    <Formik
+      initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
+      onSubmit={vi.fn()}
+    >
+      <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
+    </Formik>,
+    { state }
   );
   const row = screen.getByRole("row", { name: "tag1" });
   expect(row).toHaveAttribute("data-testid", RowType.Removed);
@@ -285,15 +258,12 @@ it("shows a message if no tags are assigned to the selected machines", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
-          <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+
+  renderWithProviders(
+    <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
+      <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
+    </Formik>,
+    { state }
   );
 
   expect(screen.getByText(Label.NoTags)).toBeInTheDocument();

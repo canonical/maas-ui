@@ -6,7 +6,7 @@ import pluralize from "pluralize";
 import { Link } from "react-router";
 
 import { usePoolCount } from "@/app/api/query/pools";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { AddPool } from "@/app/pools/components";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";

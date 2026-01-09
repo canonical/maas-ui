@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-import type { Mock } from "vitest";
-
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
 import EditRepository from "./EditRepository";
 
 import * as repoQueryHooks from "@/app/api/query/packageRepositories";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
@@ -20,7 +16,10 @@ import {
   waitForLoading,
   userEvent,
   spyOnMutation,
+  mockSidePanel,
 } from "@/testing/utils";
+
+const { mockClose } = await mockSidePanel();
 
 const mockServer = setupMockServer(
   packageRepositoriesResolvers.getPackageRepository.handler(
@@ -29,23 +28,8 @@ const mockServer = setupMockServer(
   packageRepositoriesResolvers.updatePackageRepository.handler()
 );
 
-const mockStore = configureStore();
-
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
-
 describe("RepositoryEdit", () => {
   let state: RootState;
-  const mockSetSidePanelContent = vi.fn();
-
-  (useSidePanel as Mock).mockReturnValue({
-    setSidePanelContent: mockSetSidePanelContent,
-  });
 
   beforeEach(() => {
     state = factory.rootState({
@@ -63,6 +47,13 @@ describe("RepositoryEdit", () => {
     });
   });
 
+  it("runs closeSidePanel function when the cancel button is clicked", async () => {
+    renderWithProviders(<EditRepository id={1} type="repository" />, { state });
+    await waitForLoading();
+    await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+    expect(mockClose).toHaveBeenCalled();
+  });
+
   it("displays a loading component if loading", () => {
     mockIsPending();
     renderWithProviders(<EditRepository id={1} type={"ppa"} />, { state });
@@ -73,9 +64,10 @@ describe("RepositoryEdit", () => {
     state.general.componentsToDisable.loaded = false;
     state.general.knownArchitectures.loaded = false;
     state.general.pocketsToDisable.loaded = false;
-    const store = mockStore(state);
-
-    renderWithProviders(<EditRepository id={1} type="ppa" />, { store });
+    const { store } = renderWithProviders(
+      <EditRepository id={1} type="ppa" />,
+      { state }
+    );
 
     expect(store.getActions()).toEqual([
       {

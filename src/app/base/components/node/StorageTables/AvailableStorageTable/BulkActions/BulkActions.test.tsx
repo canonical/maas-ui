@@ -1,28 +1,22 @@
-import { vi } from "vitest";
-
 import BulkActions from "./BulkActions";
 
-import * as sidePanelHooks from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import CreateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateDatastore";
+import CreateRaid from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateRaid";
+import CreateVolumeGroup from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateVolumeGroup";
+import UpdateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/UpdateDatastore";
 import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
   expectTooltipOnHover,
-  renderWithBrowserRouter,
+  mockSidePanel,
+  renderWithProviders,
   screen,
   userEvent,
 } from "@/testing/utils";
 
+const { mockOpen } = await mockSidePanel();
+
 describe("BulkActions", () => {
-  const setSidePanelContent = vi.fn();
-  beforeAll(() => {
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent,
-      sidePanelContent: null,
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
-  });
   it("disables create volume group button with tooltip if selected devices are not eligible", async () => {
     const selected = [
       factory.nodeDisk({
@@ -43,10 +37,9 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <BulkActions selected={selected} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<BulkActions selected={selected} systemId="abc123" />, {
+      state,
+    });
     const createVolumeGroupButton = screen.getByRole("button", {
       name: "Create volume group",
     });
@@ -74,10 +67,9 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <BulkActions selected={selected} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<BulkActions selected={selected} systemId="abc123" />, {
+      state,
+    });
 
     expect(
       screen.getByRole("button", { name: "Create volume group" })
@@ -98,7 +90,7 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(<BulkActions selected={[]} systemId="abc123" />, {
+    renderWithProviders(<BulkActions selected={[]} systemId="abc123" />, {
       state,
     });
 
@@ -121,10 +113,9 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <BulkActions selected={selected} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<BulkActions selected={selected} systemId="abc123" />, {
+      state,
+    });
 
     expect(
       screen.getByRole("button", { name: "Create datastore" })
@@ -151,7 +142,7 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <BulkActions selected={[selected]} systemId="abc123" />,
       { state }
     );
@@ -180,7 +171,7 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <BulkActions selected={[selected]} systemId="abc123" />,
       { state }
     );
@@ -188,9 +179,9 @@ describe("BulkActions", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Create datastore" })
     );
-    expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        view: MachineSidePanelViews.CREATE_DATASTORE,
+        component: CreateDatastore,
       })
     );
   });
@@ -220,15 +211,14 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <BulkActions selected={selected} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<BulkActions selected={selected} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.click(screen.getByRole("button", { name: "Create RAID" }));
-    expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        view: MachineSidePanelViews.CREATE_RAID,
+        component: CreateRaid,
       })
     );
   });
@@ -258,17 +248,16 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <BulkActions selected={selected} systemId="abc123" />,
-      { state }
-    );
+    renderWithProviders(<BulkActions selected={selected} systemId="abc123" />, {
+      state,
+    });
 
     await userEvent.click(
       screen.getByRole("button", { name: "Create volume group" })
     );
-    expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        view: MachineSidePanelViews.CREATE_VOLUME_GROUP,
+        component: CreateVolumeGroup,
       })
     );
   });
@@ -293,7 +282,7 @@ describe("BulkActions", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <BulkActions selected={[selected]} systemId="abc123" />,
       { state }
     );
@@ -301,9 +290,9 @@ describe("BulkActions", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Add to existing datastore" })
     );
-    expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        view: MachineSidePanelViews.UPDATE_DATASTORE,
+        component: UpdateDatastore,
       })
     );
   });

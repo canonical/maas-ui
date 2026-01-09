@@ -14,7 +14,7 @@ import {
   userEvent,
   screen,
   within,
-  renderWithBrowserRouter,
+  renderWithProviders,
 } from "@/testing/utils";
 
 describe("DiscoveryAddFormFields", () => {
@@ -27,7 +27,7 @@ describe("DiscoveryAddFormFields", () => {
   });
 
   it("shows fields for a device", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ type: DeviceType.DEVICE }} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
@@ -35,7 +35,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={vi.fn()}
         />
       </Formik>,
-      { route: "/network-discovery" }
+      {}
     );
     expect(
       screen.getByRole("combobox", {
@@ -66,7 +66,7 @@ describe("DiscoveryAddFormFields", () => {
   });
 
   it("shows fields for an interface", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ type: DeviceType.INTERFACE }} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
@@ -74,7 +74,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={vi.fn()}
         />
       </Formik>,
-      { route: "/network-discovery" }
+      {}
     );
     expect(
       screen.queryByRole("combobox", {
@@ -106,7 +106,7 @@ describe("DiscoveryAddFormFields", () => {
 
   it("includes static ip if there is a subnet", () => {
     discovery.subnet_id = 0;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
@@ -114,7 +114,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={vi.fn()}
         />
       </Formik>,
-      { route: "/network-discovery" }
+      {}
     );
 
     const ipAssignment = screen.getByRole("combobox", {
@@ -130,7 +130,7 @@ describe("DiscoveryAddFormFields", () => {
 
   it("does not includes static ip if there is no subnet", () => {
     discovery.subnet_id = undefined;
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
@@ -138,7 +138,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={vi.fn()}
         />
       </Formik>,
-      { route: "/network-discovery" }
+      {}
     );
 
     const ipAssignment = screen.getByRole("combobox", {
@@ -161,7 +161,7 @@ describe("DiscoveryAddFormFields", () => {
         factory.device({ [DeviceMeta.PK]: "def456" }),
       ],
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ type: DeviceType.INTERFACE }} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
@@ -169,7 +169,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={setDeviceType}
         />
       </Formik>,
-      { route: "/network-discovery", state }
+      { state }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: DiscoveryAddFormFieldsLabels.Type }),
@@ -195,7 +195,7 @@ describe("DiscoveryAddFormFields", () => {
         factory.device({ [DeviceMeta.PK]: "def456" }),
       ],
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{ type: DeviceType.INTERFACE }} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
@@ -203,7 +203,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={vi.fn()}
         />
       </Formik>,
-      { route: "/network-discovery", state }
+      { state }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", {

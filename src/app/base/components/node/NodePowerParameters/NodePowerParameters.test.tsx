@@ -1,15 +1,10 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import NodePowerParameters from "./NodePowerParameters";
 
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 let state: RootState;
 beforeEach(() => {
@@ -26,12 +21,8 @@ beforeEach(() => {
 it("shows an error if no rack controller is connected", () => {
   state.general.powerTypes.data = [];
   const machine = factory.machineDetails({ system_id: "abc123" });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <NodePowerParameters node={machine} />
-    </Provider>
-  );
+
+  renderWithProviders(<NodePowerParameters node={machine} />, { state });
 
   expect(
     screen.getByText(/no rack controller is currently connected/)
@@ -43,12 +34,8 @@ it("shows an error if a power type has not been set", () => {
     power_type: "",
     system_id: "abc123",
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <NodePowerParameters node={machine} />
-    </Provider>
-  );
+
+  renderWithProviders(<NodePowerParameters node={machine} />, { state });
 
   expect(
     screen.getByText(/This node does not have a power type set/)
@@ -60,12 +47,8 @@ it("shows a warning if the power type is set to manual", () => {
     power_type: PowerTypeNames.MANUAL,
     system_id: "abc123",
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <NodePowerParameters node={machine} />
-    </Provider>
-  );
+
+  renderWithProviders(<NodePowerParameters node={machine} />, { state });
 
   expect(
     screen.getByText(
@@ -86,12 +69,8 @@ it("shows an error if the power type is missing packages", () => {
     power_type: PowerTypeNames.AMT,
     system_id: "abc123",
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <NodePowerParameters node={machine} />
-    </Provider>
-  );
+
+  renderWithProviders(<NodePowerParameters node={machine} />, { state });
 
   expect(
     screen.getByText(
@@ -124,12 +103,8 @@ it("renders power parameters for all scopes if machine is not in a pod", () => {
     power_type: PowerTypeNames.LXD,
     system_id: "abc123",
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <NodePowerParameters node={machine} />
-    </Provider>
-  );
+
+  renderWithProviders(<NodePowerParameters node={machine} />, { state });
 
   expect(screen.getByText("node field")).toBeInTheDocument();
   expect(screen.getByText("bmc field")).toBeInTheDocument();
@@ -154,12 +129,8 @@ it("renders power parameters only for node scope if machine is in a pod", () => 
     power_type: PowerTypeNames.LXD,
     system_id: "abc123",
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <NodePowerParameters node={machine} />
-    </Provider>
-  );
+
+  renderWithProviders(<NodePowerParameters node={machine} />, { state });
 
   expect(screen.getByText("node field")).toBeInTheDocument();
   expect(screen.queryByText("bmc field")).not.toBeInTheDocument();
@@ -181,12 +152,8 @@ it("renders certificate power parameters with metadata", () => {
     power_type: PowerTypeNames.LXD,
     system_id: "abc123",
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <NodePowerParameters node={machine} />
-    </Provider>
-  );
+
+  renderWithProviders(<NodePowerParameters node={machine} />, { state });
 
   expect(screen.getByText(certificateMetadata.CN)).toBeInTheDocument();
   expect(screen.getByText(certificateMetadata.expiration)).toBeInTheDocument();
@@ -212,12 +179,8 @@ it("renders power parameters for a controller", () => {
     power_type: PowerTypeNames.LXD,
     system_id: "abc123",
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <NodePowerParameters node={controller} />
-    </Provider>
-  );
+
+  renderWithProviders(<NodePowerParameters node={controller} />, { state });
 
   expect(screen.getByText("node field")).toBeInTheDocument();
   expect(screen.getByText("bmc field")).toBeInTheDocument();

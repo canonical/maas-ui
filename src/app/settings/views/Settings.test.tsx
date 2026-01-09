@@ -1,20 +1,16 @@
-import configureStore from "redux-mock-store";
-
 import Settings from "./Settings";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("Settings", () => {
   it("dispatches action to fetch config on load", () => {
     const state = factory.rootState();
-    const store = mockStore(state);
-    renderWithProviders(<Settings />, { store });
+
+    const { store } = renderWithProviders(<Settings />, { state });
 
     const fetchConfigAction = store
       .getActions()

@@ -1,18 +1,14 @@
-import configureStore from "redux-mock-store";
-
 import MachineListControls from "./MachineListControls";
 
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("MachineListControls", () => {
   let initialState: RootState;
@@ -40,7 +36,7 @@ describe("MachineListControls", () => {
 
   it("changes the filter when the filter accordion changes", async () => {
     const setFilter = vi.fn();
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListControls
         filter=""
         grouping={null}
@@ -51,9 +47,8 @@ describe("MachineListControls", () => {
         setGrouping={vi.fn()}
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
-      { route: "/machines?q=test+search", state: initialState }
+      { initialEntries: ["/machines?q=test+search"], state: initialState }
     );
     await userEvent.clear(screen.getByRole("searchbox", { name: "Search" }));
     await userEvent.type(
@@ -66,7 +61,7 @@ describe("MachineListControls", () => {
   });
 
   it("shows search bar, filter accordion, and grouping select when no machines are selected", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListControls
         filter=""
         grouping={null}
@@ -77,9 +72,8 @@ describe("MachineListControls", () => {
         setGrouping={vi.fn()}
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
-      { route: "/machines", state: initialState }
+      { state: initialState }
     );
 
     expect(screen.getByRole("button", { name: "Filters" })).toBeInTheDocument();
@@ -112,7 +106,7 @@ describe("MachineListControls", () => {
 
   it("hides search bar, filter accordion, and grouping select when machines are selected", () => {
     initialState.machine.selected = { items: ["abc123"] };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineListControls
         filter=""
         grouping={null}
@@ -123,9 +117,8 @@ describe("MachineListControls", () => {
         setGrouping={vi.fn()}
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
-      { route: "/machines", state: initialState }
+      { state: initialState }
     );
 
     expect(screen.getByRole("button", { name: "Actions" })).toBeInTheDocument();
@@ -152,8 +145,7 @@ describe("MachineListControls", () => {
 
   it("dispatches an action to clear selected machines when the 'Clear selection' button is clicked", async () => {
     initialState.machine.selected = { items: ["abc123"] };
-    const store = mockStore(initialState);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <MachineListControls
         filter=""
         grouping={null}
@@ -164,9 +156,8 @@ describe("MachineListControls", () => {
         setGrouping={vi.fn()}
         setHiddenColumns={vi.fn()}
         setHiddenGroups={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
-      { route: "/machines", store }
+      { state: initialState }
     );
 
     const clearSelection = screen.getByRole("button", {

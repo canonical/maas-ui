@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { Labels } from "../StaticRoutes";
 
 import AddStaticRouteForm from "./AddStaticRouteForm";
@@ -13,8 +11,6 @@ import {
   within,
   renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 it("dispatches a correct action on add static route form submit", async () => {
   const subnet = factory.subnet({ id: 1, cidr: "172.16.1.0/24" });
@@ -30,8 +26,10 @@ it("dispatches a correct action on add static route form submit", async () => {
     }),
   });
 
-  const store = mockStore(state);
-  renderWithProviders(<AddStaticRouteForm subnetId={subnet.id} />, { store });
+  const { store } = renderWithProviders(
+    <AddStaticRouteForm subnetId={subnet.id} />,
+    { state }
+  );
 
   await waitFor(() => {
     expect(

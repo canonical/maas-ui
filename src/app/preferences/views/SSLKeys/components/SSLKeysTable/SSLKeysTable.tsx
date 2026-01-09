@@ -4,7 +4,7 @@ import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
 import { Button, Notification } from "@canonical/react-components";
 
 import { useGetSslKeys } from "@/app/api/query/sslKeys";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { AddSSLKey } from "@/app/preferences/views/SSLKeys/components";
 import useSSLKeysTableColumns from "@/app/preferences/views/SSLKeys/components/SSLKeysTable/useSSLKeysTableColumns/useSSLKeysTableColumns";
 

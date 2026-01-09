@@ -1,16 +1,20 @@
 import Popover from "./Popover";
 
-import { render, screen, userEvent } from "@/testing/utils";
+import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
 it("renders popover content when focused", async () => {
-  render(<Popover content={<span>popover content</span>}>child text</Popover>);
+  renderWithProviders(
+    <Popover content={<span>popover content</span>}>child text</Popover>
+  );
   expect(screen.queryByText("popover content")).not.toBeInTheDocument();
   await userEvent.click(screen.getByText("child text"));
   expect(screen.getByText("popover content")).toBeInTheDocument();
 });
 
 it("keeps popover content open on unhover if initiated by click", async () => {
-  render(<Popover content={<span>popover content</span>}>trigger</Popover>);
+  renderWithProviders(
+    <Popover content={<span>popover content</span>}>trigger</Popover>
+  );
   const button = screen.getByRole("button", { name: "trigger" });
   await userEvent.hover(button);
   expect(screen.getByText("popover content")).toBeInTheDocument();
