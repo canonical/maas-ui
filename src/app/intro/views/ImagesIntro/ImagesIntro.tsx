@@ -43,9 +43,9 @@ const ImagesIntro = (): ReactElement => {
   const hasSources = (sources?.total ?? 0) > 0;
   const incomplete =
     !hasSources ||
-    (selections.isSuccess && selections.data.total === 0) ||
-    (customImages.isSuccess && customImages.data.total === 0);
-
+    (selections.isSuccess &&
+      customImages.isSuccess &&
+      selections.data.total + customImages.data.total === 0);
   return (
     <IntroSection
       loading={sourcesPending}
