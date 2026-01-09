@@ -5,7 +5,6 @@ import { Button } from "@canonical/react-components";
 import type { SortingState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
-import TestMetrics from "../../TestMetrics";
 import type { Expanded } from "../useNodeTestsTableColumns/useNodeTestsTableColumns";
 import useNodeTestsTableColumns, {
   ScriptResultAction,
@@ -29,6 +28,7 @@ type Props = {
 export type NodeTestRow = ScriptResult & {
   history?: NodeTestRow[];
   isHistory?: boolean;
+  metrics?: boolean;
 };
 
 const getNodeTestsTableData = (
@@ -50,9 +50,13 @@ const getNodeTestsTableData = (
               isHistory: true,
             };
           }),
+        metrics: scriptResult.results.length > 0,
       });
     } else {
-      newData.push(scriptResult);
+      newData.push({
+        ...scriptResult,
+        metrics: scriptResult.results.length > 0,
+      });
     }
   });
   return newData;
@@ -127,15 +131,6 @@ const NodeTestsTable = ({ node, scriptResults }: Props) => {
               Close
             </Button>
           </>
-        ) : expanded?.content === ScriptResultAction.VIEW_METRICS ? (
-          <TestMetrics
-            close={() => {
-              setExpanded(null);
-            }}
-            scriptResult={scriptResults.find(
-              (result) => result.id === expanded.id
-            )}
-          />
         ) : null}
       </div>
     </>
