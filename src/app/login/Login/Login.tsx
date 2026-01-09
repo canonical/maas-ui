@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router";
 import * as Yup from "yup";
 
+import { useAuthenticate, useCreateSession } from "@/app/api/query/auth";
+import type { LoginError, AccessTokenResponse } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
@@ -20,7 +22,7 @@ import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { statusActions } from "@/app/store/status";
 import statusSelectors from "@/app/store/status/selectors";
-import { formatErrors } from "@/app/utils";
+import { formatErrors, setCookie } from "@/app/utils";
 
 const generateSchema = (hasEnteredUsername: boolean) => {
   if (hasEnteredUsername) {
@@ -55,6 +57,9 @@ export enum TestIds {
   SectionHeaderTitle = "section-header-title",
 }
 
+export const INCORRECT_CREDENTIALS_ERROR_MESSAGE =
+  "Please enter a correct username and password. Note that both fields may be case-sensitive.";
+
 export const Login = (): React.ReactElement => {
   const dispatch = useDispatch();
   const authenticated = useSelector(statusSelectors.authenticated);
@@ -64,6 +69,8 @@ export const Login = (): React.ReactElement => {
   const authenticationError = useSelector(statusSelectors.authenticationError);
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirectTo");
+  const authenticate = useAuthenticate();
+  const createSession = useCreateSession();
 
   // TODO: replace this state with a mutation to check if user is local or OIDC https://warthogs.atlassian.net/browse/MAASENG-5637
   const [hasEnteredUsername, setHasEnteredUsername] = useState(false);
@@ -93,6 +100,33 @@ export const Login = (): React.ReactElement => {
       dispatch(statusActions.externalLogin());
     }
   }, [dispatch, externalAuthURL]);
+
+  const handleSubmit = (values: LoginValues) => {
+    authenticate.mutate(
+      {
+        body: {
+          username: values.username,
+          password: values.password,
+        },
+      },
+      {
+        onSuccess: async (data: AccessTokenResponse) => {
+          setCookie("maas_v3_access_token", data.access_token, {
+            sameSite: "Strict",
+            path: "/",
+          });
+          await createSession.mutateAsync({});
+          dispatch(statusActions.loginSuccess());
+          handleRedirect();
+        },
+        onError: () => {
+          dispatch(
+            statusActions.loginError(INCORRECT_CREDENTIALS_ERROR_MESSAGE)
+          );
+        },
+      }
+    );
+  };
 
   return (
     <PageContent>
@@ -146,7 +180,7 @@ export const Login = (): React.ReactElement => {
                     {Labels.ExternalLoginButton}
                   </Button>
                 ) : (
-                  <FormikForm<LoginValues>
+                  <FormikForm<LoginValues, LoginError>
                     aria-label={Labels.APILoginForm}
                     initialValues={{
                       password: "",
@@ -156,7 +190,8 @@ export const Login = (): React.ReactElement => {
                       if (!hasEnteredUsername) {
                         setHasEnteredUsername(true);
                       } else {
-                        dispatch(statusActions.login(values));
+                        // dispatch(statusActions.login(values));
+                        handleSubmit(values);
                       }
                     }}
                     saved={authenticated}

@@ -14,6 +14,8 @@ describe("status", () => {
         error: null,
         externalAuthURL: null,
         externalLoginURL: null,
+        id: null,
+        username: null,
         noUsers: false,
       })
     );
@@ -187,9 +189,8 @@ describe("status", () => {
         {
           type: "status/checkAuthenticatedSuccess",
           payload: {
-            authenticated: true,
-            external_auth_url: "http://login.example.com",
-            no_users: true,
+            id: 2,
+            username: "koala",
           },
         }
       )
@@ -197,8 +198,9 @@ describe("status", () => {
       factory.statusState({
         authenticating: false,
         authenticated: true,
-        externalAuthURL: "http://login.example.com",
-        noUsers: true,
+        externalAuthURL: null,
+        id: 2,
+        username: "koala",
       })
     );
   });

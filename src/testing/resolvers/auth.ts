@@ -4,6 +4,7 @@ import { oAuthProviderFactory } from "../factories/auth";
 import { BASE_URL } from "../utils";
 
 import {
+  LoginResponse,
   type CompleteIntroError,
   type CreateOauthProviderError,
   type GetMeWithSummaryError,
@@ -21,6 +22,12 @@ const mockAuth: UserWithSummaryResponse = user({
   email: "user1@example.com",
   username: "user1",
 });
+
+const mockLoginResponse: LoginResponse = {
+  token_type: "Bearer",
+  access_token: "mock_access_token",
+  kind: "AccessTokenResponse",
+}
 
 const mockAuthenticateError: LoginError = {
   message: "Unauthorized",
@@ -64,10 +71,10 @@ const mockDeleteOauthProviderError = {
 const authResolvers = {
   authenticate: {
     resolved: false,
-    handler: () =>
+    handler: (data: LoginResponse = mockLoginResponse) =>
       http.post(`${BASE_URL}MAAS/a/v3/auth/login`, () => {
         authResolvers.authenticate.resolved = true;
-        return HttpResponse.json();
+        return HttpResponse.json(data);
       }),
     error: (error: LoginError = mockAuthenticateError) =>
       http.post(`${BASE_URL}MAAS/a/v3/auth/login`, () => {

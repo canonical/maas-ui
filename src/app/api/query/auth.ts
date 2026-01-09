@@ -12,9 +12,14 @@ import type {
   CreateOauthProviderData,
   CreateOauthProviderErrors,
   CreateOauthProviderResponses,
+  CreateSessionData,
+  CreateSessionErrors,
+  CreateSessionResponses,
   DeleteOauthProviderData,
   DeleteOauthProviderErrors,
   DeleteOauthProviderResponses,
+  ExtendSessionData,
+  ExtendSessionErrors,
   GetMeWithSummaryData,
   GetMeWithSummaryErrors,
   GetMeWithSummaryResponses,
@@ -28,6 +33,7 @@ import type {
   UpdateOauthProviderData,
   UpdateOauthProviderErrors,
   UpdateOauthProviderResponses,
+  ExtendSessionResponses,
 } from "@/app/apiclient";
 import {
   deleteOauthProvider,
@@ -37,6 +43,8 @@ import {
   getOauthProvider,
   getMeWithSummary,
   login,
+  createSession,
+  extendSession,
 } from "@/app/apiclient";
 import {
   getMeWithSummaryQueryKey,
@@ -49,6 +57,30 @@ export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
       mutationOptions,
       login
     ),
+  });
+};
+
+export const useCreateSession = (
+  mutationOtions?: Options<CreateSessionData>
+) => {
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateSessionResponses,
+      CreateSessionErrors,
+      CreateSessionData
+    >(mutationOtions, createSession),
+  });
+};
+
+export const useExtendSession = (
+  mutationOptions?: Options<ExtendSessionData>
+) => {
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      ExtendSessionResponses,
+      ExtendSessionErrors,
+      ExtendSessionData
+    >(mutationOptions, extendSession),
   });
 };
 

@@ -1,5 +1,14 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { call, put, takeEvery, takeLatest } from "typed-redux-saga";
+import {
+  call,
+  cancel,
+  delay,
+  fork,
+  put,
+  take,
+  takeEvery,
+  takeLatest,
+} from "typed-redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
@@ -27,8 +36,10 @@ export const ROOT_API = "/MAAS/api/2.0/";
 const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
-const LOGIN_API = "/MAAS/accounts/login/";
-const LOGOUT_API = "/MAAS/accounts/logout/";
+const LOGIN_API = "/MAAS/a/v3/auth/access_token";
+const CHECK_AUTHENTICATED_API = "/MAAS/a/v3/users/me_with_summary";
+const LOGOUT_API = "/MAAS/a/v3/auth/logout";
+const EXTEND_SESSION_API = "/MAAS/a/v3/auth/sessions:extend";
 const MACHINES_API = `${ROOT_API}machines/`;
 const ZONES_LIST_API = `${SERVICE_API}zones`;
 
@@ -82,7 +93,7 @@ const scriptresultsDownload = (
 export const api = {
   auth: {
     checkAuthenticated: (): Promise<string> => {
-      return fetch(LOGIN_API).then((response) => {
+      return fetch(CHECK_AUTHENTICATED_API).then((response) => {
         const status = response.status.toString();
         if (status.startsWith("5")) {
           // If a 5xx error is returned then the API server is down for
@@ -146,6 +157,18 @@ export const api = {
         handleErrors(res);
         window.location.reload();
       });
+    },
+    extendSession: (): Promise<void> => {
+      return fetch(EXTEND_SESSION_API, {
+        method: "POST",
+        headers: DEFAULT_HEADERS,
+      })
+        .then(handlePromise)
+        .then(([responseOk, body]) => {
+          if (!responseOk) {
+            throw body;
+          }
+        });
     },
   },
   licenseKeys: {
@@ -296,6 +319,32 @@ export function* checkAuthenticatedSaga(): SagaGenerator<void> {
       payload: error instanceof Error ? error.message : error,
       type: "status/checkAuthenticatedError",
     });
+  }
+}
+
+export function* extendSessionSaga(): SagaGenerator<void> {
+  while (true) {
+    yield* take(
+      (action) =>
+        action.type === "status/checkAuthenticatedSuccess" &&
+        Boolean(action.payload?.username && action.payload?.id)
+    );
+    const task = yield* fork(extendSessionWorker);
+
+    yield* take([
+      "status/logoutSuccess",
+      "status/checkAuthenticatedError",
+      "status/websocketDisconnect",
+    ]);
+
+    yield* cancel(task);
+  }
+}
+
+export function* extendSessionWorker(): SagaGenerator<void> {
+  while (true) {
+    yield* call(api.auth.extendSession);
+    yield* delay(60000); 
   }
 }
 
@@ -564,4 +613,8 @@ export function* watchUploadScript(): SagaGenerator<void> {
 
 export function* watchAddMachineChassis(): SagaGenerator<void> {
   yield* takeEvery("machine/addChassis", addMachineChassisSaga);
+}
+
+export function* watchExtendSession(): SagaGenerator<void> {
+  yield* fork(extendSessionSaga);
 }

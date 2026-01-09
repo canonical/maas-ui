@@ -31,4 +31,14 @@ describe("useLogout", () => {
       { payload: null, type: "status/logout" },
     ]);
   });
+
+  it("clears the 'maas_v3_access_token' cookie", () => {
+    document.cookie =
+      "maas_v3_access_token=some_token_value; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+    const { result } = renderHookWithProviders(useLogout, { state });
+
+    result.current();
+
+    expect(document.cookie).not.toContain("maas_v3_access_token=some_token_value");
+  });
 });
