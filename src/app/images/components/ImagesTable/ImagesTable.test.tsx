@@ -16,7 +16,6 @@ import {
   within,
   mockIsPending,
   mockSidePanel,
-  renderWithMockStore,
   waitForLoading,
 } from "@/testing/utils";
 
@@ -107,7 +106,7 @@ describe("ImagesTable", () => {
 
   describe("permissions", () => {
     it("disables delete for default commissioning release images", async () => {
-      renderWithMockStore(
+      renderWithProviders(
         <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
       );
       await waitForLoading();
@@ -180,7 +179,7 @@ describe("ImagesTable", () => {
     });
 
     it("disables stop sync when there is no download", async () => {
-      renderWithMockStore(
+      renderWithProviders(
         <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
       );
       await waitForLoading();

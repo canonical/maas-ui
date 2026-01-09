@@ -20,7 +20,7 @@ import {
 } from "@/testing/factories/image";
 import { BASE_URL } from "@/testing/utils";
 
-const mockImages: ImageListResponse = {
+const mockSelections: ImageListResponse = {
   items: [
     imageFactory.build({
       os: "ubuntu",
@@ -109,7 +109,7 @@ const mockSyncError: SyncBootsourceBootsourceselectionError = {
 const imageResolvers = {
   listSelections: {
     resolved: false,
-    handler: (data: ImageListResponse = mockImages) =>
+    handler: (data: ImageListResponse = mockSelections) =>
       http.get(`${BASE_URL}MAAS/a/v3/selections`, () => {
         imageResolvers.listSelections.resolved = true;
         return HttpResponse.json(data);
@@ -272,7 +272,7 @@ const imageResolvers = {
 
 export {
   imageResolvers,
-  mockImages,
+  mockSelections,
   mockStatistics,
   mockStatuses,
   mockAvailableSelections,
