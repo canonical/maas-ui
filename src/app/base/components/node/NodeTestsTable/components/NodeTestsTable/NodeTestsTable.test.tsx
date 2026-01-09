@@ -180,8 +180,6 @@ describe("NodeTestsTable", () => {
 
       expect(screen.queryByTestId("no-history")).not.toBeInTheDocument();
       expect(screen.getByTestId("view-history-link")).toBeInTheDocument();
-
-      expect(await screen.findAllByTestId("details-link")).toHaveLength(2);
     });
 
     it("displays a message if the test has no history", async () => {

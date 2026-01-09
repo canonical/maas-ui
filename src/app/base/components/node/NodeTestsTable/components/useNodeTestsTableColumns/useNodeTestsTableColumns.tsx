@@ -132,15 +132,18 @@ const useNodeTestsTableColumns = ({
         cell: ({ row }) =>
           !row.original.isHistory ? (
             <Link
-              data-testid="view-history-link"
-              onClick={(e) => {
-                e.preventDefault();
-                setExpanded({
-                  id: row.original.id,
-                  content: ScriptResultAction.VIEW_PREVIOUS_TESTS,
-                });
-              }}
-              to="#"
+              data-testid="details-link"
+              to={
+                isMachine
+                  ? urls.machines.machine.testing.scriptResult({
+                      id: node.system_id,
+                      scriptResultId: row.original.id,
+                    })
+                  : urls.controllers.controller.commissioning.scriptResult({
+                      id: node.system_id,
+                      scriptResultId: row.original.id,
+                    })
+              }
             >
               {row.original.name}
             </Link>
@@ -219,6 +222,28 @@ const useNodeTestsTableColumns = ({
           ) : (
             <Icon name="minus"></Icon>
           ),
+      },
+      {
+        id: "history",
+        header: "",
+        accessorKey: "history",
+        enableSorting: false,
+        cell: ({ row }) =>
+          !row.original.isHistory ? (
+            <Link
+              data-testid="view-history-link"
+              onClick={(e) => {
+                e.preventDefault();
+                setExpanded({
+                  id: row.original.id,
+                  content: ScriptResultAction.VIEW_PREVIOUS_TESTS,
+                });
+              }}
+              to="#"
+            >
+              View previous tests
+            </Link>
+          ) : null,
       },
     ],
     [

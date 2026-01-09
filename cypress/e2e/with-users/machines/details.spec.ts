@@ -76,13 +76,9 @@ context("Machine details", () => {
 
     cy.findByRole("link", { name: "Commissioning" }).click();
     cy.findByRole("grid").within(() => {
-      cy.findAllByRole("button", { name: /Take action/i })
-        .first()
-        .click();
+      cy.findByTestId("details-link").last({ timeout: LONG_TIMEOUT }).click();
     });
-    cy.findByLabelText("submenu").within(() => {
-      cy.findAllByRole("link", { name: /View details/i }).click();
-    });
+
     cy.findByRole("heading", { level: 2, name: /details/i }).should("exist");
 
     // delete the machine
