@@ -25,18 +25,8 @@ const mockServer = setupMockServer(
 
 describe("ImageListHeader", () => {
   it("sets loading state when polling", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        statuses: factory.bootResourceStatuses({
-          polling: true,
-        }),
-      }),
-    });
     renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
-      {
-        state,
-      }
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -116,30 +106,6 @@ describe("Select upstream images", () => {
     expect(
       screen.getByRole("button", { name: "Select upstream images" })
     ).toBeAriaDisabled();
-  });
-});
-
-describe("Stop import", () => {
-  it("does not show a button to stop importing ubuntu images if none are downloading", async () => {
-    const state = factory.rootState({
-      bootresource: factory.bootResourceState({
-        resources: [
-          factory.bootResource({ downloading: false, name: "ubuntu/focal" }),
-          factory.bootResource({ downloading: false, name: "centos/centos70" }),
-        ],
-        ubuntu: factory.bootResourceUbuntu(),
-      }),
-    });
-    renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />,
-      {
-        state,
-      }
-    );
-    await waitForLoading();
-    expect(
-      screen.queryByRole("button", { name: "Stop import" })
-    ).not.toBeInTheDocument();
   });
 });
 

@@ -4,6 +4,7 @@ import type {
   ImageResponse,
   ImageStatisticResponse,
   ImageStatusResponse,
+  UiSourceAvailableImageResponse,
 } from "@/app/apiclient";
 import { timestamp } from "@/testing/factories/general";
 
@@ -36,3 +37,12 @@ export const imageStatusFactory = Factory.define<ImageStatusResponse>(
     selected: true,
   })
 );
+
+export const availableImageFactory =
+  Factory.define<UiSourceAvailableImageResponse>(() => ({
+    os: "ubuntu",
+    release: "noble",
+    architecture: "amd64",
+    source_id: 1,
+    source_name: "maas.io",
+  }));

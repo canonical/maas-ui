@@ -1,14 +1,19 @@
 import { http, HttpResponse } from "msw";
 
 import type {
+  BulkCreateSelectionsError,
+  GetAllAvailableImagesError,
   ImageListResponse,
   ImageStatisticListResponse,
   ImageStatusListResponse,
   ListSelectionsError,
   ListSelectionStatisticError,
   ListSelectionStatusError,
+  SyncBootsourceBootsourceselectionError,
+  UiSourceAvailableImageListResponse,
 } from "@/app/apiclient";
 import {
+  availableImageFactory,
   imageFactory,
   imageStatisticsFactory,
   imageStatusFactory,
@@ -46,6 +51,31 @@ const mockStatuses: ImageStatusListResponse = {
   total: 3,
 };
 
+const mockAvailableSelections: UiSourceAvailableImageListResponse = {
+  items: [
+    availableImageFactory.build({
+      os: "ubuntu",
+      release: "noble",
+      architecture: "amd64",
+    }),
+    availableImageFactory.build({
+      os: "ubuntu",
+      release: "noble",
+      architecture: "arm64",
+    }),
+    availableImageFactory.build({
+      os: "ubuntu",
+      release: "jammy",
+      architecture: "amd64",
+    }),
+    availableImageFactory.build({
+      os: "centos",
+      release: "centos7",
+      architecture: "amd64",
+    }),
+  ],
+};
+
 const mockListImagesError: ListSelectionsError = {
   message: "Invalid",
   code: 422,
@@ -61,6 +91,18 @@ const mockListImageStatisticsError: ListSelectionStatisticError = {
 const mockListImageStatusesError: ListSelectionStatusError = {
   message: "Not found",
   code: 404,
+  kind: "Error",
+};
+
+const mockSaveSelectionsError: BulkCreateSelectionsError = {
+  message: "Conflict",
+  code: 409,
+  kind: "Error",
+};
+
+const mockSyncError: SyncBootsourceBootsourceselectionError = {
+  message: "Conflict",
+  code: 409,
   kind: "Error",
 };
 
@@ -147,6 +189,91 @@ const imageResolvers = {
         return HttpResponse.json(error, { status: error.code });
       }),
   },
+  listAvailableSelections: {
+    resolved: false,
+    handler: (
+      data: UiSourceAvailableImageListResponse = mockAvailableSelections
+    ) =>
+      http.get(`${BASE_URL}MAAS/a/v3/available_images`, () => {
+        imageResolvers.listAvailableSelections.resolved = true;
+        return HttpResponse.json(data);
+      }),
+    error: (error: GetAllAvailableImagesError = mockListImagesError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/available_images`, () => {
+        imageResolvers.listAvailableSelections.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  addSelections: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/selections`, () => {
+        imageResolvers.addSelections.resolved = true;
+        return HttpResponse.json({}, { status: 200 });
+      }),
+    error: (error: BulkCreateSelectionsError = mockSaveSelectionsError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/selections`, () => {
+        imageResolvers.addSelections.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  deleteSelections: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/selections`, () => {
+        imageResolvers.deleteSelections.resolved = true;
+        return HttpResponse.json({}, { status: 204 });
+      }),
+    error: (error: BulkCreateSelectionsError = mockSaveSelectionsError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/selections`, () => {
+        imageResolvers.deleteSelections.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  startSynchronization: {
+    resolved: false,
+    handler: () =>
+      http.post(
+        `${BASE_URL}MAAS/a/v3/boot_sources/:boot_source_id/selections/:id\\:sync`,
+        () => {
+          imageResolvers.startSynchronization.resolved = true;
+          return HttpResponse.json({}, { status: 202 });
+        }
+      ),
+    error: (error: SyncBootsourceBootsourceselectionError = mockSyncError) =>
+      http.post(
+        `${BASE_URL}MAAS/a/v3/boot_sources/:boot_source_id/selections/:id\\:sync`,
+        () => {
+          imageResolvers.startSynchronization.resolved = true;
+          return HttpResponse.json(error, { status: error.code });
+        }
+      ),
+  },
+  stopSynchronization: {
+    resolved: false,
+    handler: () =>
+      http.post(
+        `${BASE_URL}MAAS/a/v3/boot_sources/:boot_source_id/selections/:id\\:stop_sync`,
+        () => {
+          imageResolvers.stopSynchronization.resolved = true;
+          return HttpResponse.json({}, { status: 200 });
+        }
+      ),
+    error: (error: SyncBootsourceBootsourceselectionError = mockSyncError) =>
+      http.post(
+        `${BASE_URL}MAAS/a/v3/boot_sources/:boot_source_id/selections/:id\\:stop_sync`,
+        () => {
+          imageResolvers.stopSynchronization.resolved = true;
+          return HttpResponse.json(error, { status: error.code });
+        }
+      ),
+  },
 };
 
-export { imageResolvers, mockImages, mockStatistics, mockStatuses };
+export {
+  imageResolvers,
+  mockImages,
+  mockStatistics,
+  mockStatuses,
+  mockAvailableSelections,
+};
