@@ -1798,7 +1798,11 @@ export type ImageStatisticResponse = {
  *
  * An enumeration.
  */
-export type ImageStatus = "Downloading" | "Ready" | "Waiting for download";
+export type ImageStatus =
+  | "Downloading"
+  | "Optimistic"
+  | "Ready"
+  | "Waiting for download";
 
 /**
  * ImageStatusListResponse

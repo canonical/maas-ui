@@ -126,7 +126,18 @@ type UseImagesResult = {
 const withImagesWorkflow = (key: readonly unknown[]) =>
   [...IMAGES_WORKFLOW_KEY, ...key] as const;
 
-const calculateRefetchInterval = (statuses?: ImageStatusResponse[]): number => {
+const calculateRefetchInterval = (
+  statuses?: ImageStatusResponse[]
+): number | false => {
+  const hasOptimisticTransition = statuses?.some(
+    (s) => s.status === "Optimistic"
+  );
+
+  if (hasOptimisticTransition) {
+    // Silent polling phase — React Query must stay idle
+    return false;
+  }
+
   const hasActiveDownloads = statuses?.some(
     (status) => status.status === "Downloading"
   );
@@ -318,7 +329,7 @@ export const useSelectionStatuses = (
         WithHeaders<ImageStatusListResponse>,
         ListSelectionStatusError
       >
-    ) => number;
+    ) => number | false;
   },
   enabled?: boolean
 ) => {
@@ -376,7 +387,7 @@ export const useCustomImageStatuses = (
         WithHeaders<ImageStatusListResponse>,
         ListSelectionStatusError
       >
-    ) => number;
+    ) => number | false;
   },
   enabled?: boolean
 ) => {
@@ -428,8 +439,6 @@ export const useStartImageSync = (
     onMutate: async (variables) => {
       const imageId = variables.path.id;
 
-      console.log("Starting optimistic update for image:", imageId);
-
       // Cancel all queries to prevent overwrites
       await queryClient.cancelQueries();
 
@@ -460,29 +469,19 @@ export const useStartImageSync = (
           },
         });
 
-      console.log("Found queries:", {
-        selectionStatus: selectionStatusQueries.length,
-        customImageStatus: customImageStatusQueries.length,
-      });
-
       // Extract the actual query keys and data
       const [selectionStatusKey, previousSelectionStatuses] =
         selectionStatusQueries[0] || [null, null];
       const [customImageStatusKey, previousCustomImageStatuses] =
         customImageStatusQueries[0] || [null, null];
 
-      console.log("Retrieved data:", {
-        hasSelectionData: !!previousSelectionStatuses,
-        hasCustomImageData: !!previousCustomImageStatuses,
-      });
-
-      // Optimistically update selection statuses to "Downloading"
+      // Optimistically update selection statuses to "Optimistic"
       if (selectionStatusKey && previousSelectionStatuses) {
         const updatedSelectionStatuses = {
           ...previousSelectionStatuses,
           items: previousSelectionStatuses.items.map((item) =>
             item.id === imageId
-              ? { ...item, status: "Downloading" as const }
+              ? { ...item, status: "Optimistic" as const }
               : item
           ),
         };
@@ -491,18 +490,15 @@ export const useStartImageSync = (
           selectionStatusKey,
           updatedSelectionStatuses
         );
-        console.log("✅ Updated selection statuses to Downloading");
-      } else {
-        console.error("❌ Could not update selection statuses");
       }
 
-      // Optimistically update custom image statuses to "Downloading"
+      // Optimistically update custom image statuses to "Optimistic"
       if (customImageStatusKey && previousCustomImageStatuses) {
         const updatedCustomImageStatuses = {
           ...previousCustomImageStatuses,
           items: previousCustomImageStatuses.items.map((item) =>
             item.id === imageId
-              ? { ...item, status: "Downloading" as const }
+              ? { ...item, status: "Optimistic" as const }
               : item
           ),
         };
@@ -511,12 +507,8 @@ export const useStartImageSync = (
           customImageStatusKey,
           updatedCustomImageStatuses
         );
-        console.log("✅ Updated custom image statuses to Downloading");
-      } else {
-        console.error("❌ Could not update custom image statuses");
       }
 
-      // Return context with previous values for potential rollback
       return {
         selectionStatusKey,
         customImageStatusKey,
@@ -527,8 +519,6 @@ export const useStartImageSync = (
     },
 
     onError: (_err, _variables, context) => {
-      console.log("Mutation failed, rolling back optimistic updates");
-
       // Rollback to previous state if mutation fails
       if (context?.selectionStatusKey && context?.previousSelectionStatuses) {
         queryClient.setQueryData(
@@ -549,7 +539,6 @@ export const useStartImageSync = (
 
     onSuccess: async (_data, _variables, context) => {
       const imageId = context?.imageId;
-      console.log("Mutation succeeded for image:", imageId);
 
       // Don't invalidate immediately - let the optimistic update stay visible
       // The dynamic refetch interval (5s for "Downloading") will update it soon
@@ -561,51 +550,28 @@ export const useStartImageSync = (
       const pollBackendStatus = async () => {
         pollAttempts++;
 
-        // Refetch just the status queries silently (don't invalidate everything)
-        await Promise.all([
+        // Fetch status data directly WITHOUT updating the cache
+        const [selectionResult, customImageResult] = await Promise.all([
           context?.selectionStatusKey
-            ? queryClient.fetchQuery({
-                queryKey: context.selectionStatusKey,
-              })
+            ? listSelectionStatus()
             : Promise.resolve(null),
           context?.customImageStatusKey
-            ? queryClient.fetchQuery({
-                queryKey: context.customImageStatusKey,
-              })
+            ? listCustomImagesStatus()
             : Promise.resolve(null),
         ]);
 
-        // Check if backend has updated to "Downloading"
-        const selectionData = context?.selectionStatusKey
-          ? queryClient.getQueryData<ListSelectionStatusResponse>(
-              context.selectionStatusKey
-            )
-          : null;
-        const customImageData = context?.customImageStatusKey
-          ? queryClient.getQueryData<ListCustomImagesStatusResponse>(
-              context.customImageStatusKey
-            )
-          : null;
-
         const backendStatus =
-          selectionData?.items.find((item) => item.id === imageId)?.status ||
-          customImageData?.items.find((item) => item.id === imageId)?.status;
+          selectionResult?.data?.items.find((item) => item.id === imageId)
+            ?.status ||
+          customImageResult?.data?.items.find((item) => item.id === imageId)
+            ?.status;
 
-        console.log(
-          `Poll attempt ${pollAttempts}: Backend status =`,
-          backendStatus
-        );
-
-        // If backend caught up to "Downloading" or we've polled enough, stop
+        // If backend caught up to "Downloading" or we've polled enough,
+        // stop and invalidate all related queries
         if (
           backendStatus === "Downloading" ||
           pollAttempts >= maxPollAttempts
         ) {
-          console.log(
-            "✅ Backend caught up or max attempts reached, invalidating all queries"
-          );
-
-          // Now invalidate everything to refresh all related data
           await Promise.all([
             queryClient.invalidateQueries({
               queryKey: withImagesWorkflow(listSelectionsQueryKey()),
@@ -627,14 +593,13 @@ export const useStartImageSync = (
             }),
           ]);
         } else {
-          // Backend hasn't caught up yet, poll again in 5 seconds
-          console.log("⏳ Backend not ready, polling again in 5s...");
-          setTimeout(pollBackendStatus, 5000);
+          // Poll again until backend catches up
+          setTimeout(pollBackendStatus, ACTIVE_DOWNLOAD_REFETCH_INTERVAL);
         }
       };
 
       // Start polling after a brief delay to give backend a head start
-      setTimeout(pollBackendStatus, 2000);
+      setTimeout(pollBackendStatus, ACTIVE_DOWNLOAD_REFETCH_INTERVAL / 2);
     },
   });
 };

@@ -154,6 +154,7 @@ const useImageTableColumns = ({
               case "Waiting for download":
                 icon = <Icon name={"status-waiting"} />;
                 break;
+              case "Optimistic":
               case "Downloading":
                 icon = null;
             }
@@ -163,7 +164,7 @@ const useImageTableColumns = ({
               <DoubleRow
                 icon={icon}
                 primary={
-                  status === "Downloading" ? (
+                  status === "Downloading" || status === "Optimistic" ? (
                     <>
                       <div className="p-progress">
                         <div
@@ -208,7 +209,8 @@ const useImageTableColumns = ({
                   message={
                     row.original.status === "Waiting for download"
                       ? "Start image synchronization."
-                      : row.original.status === "Downloading"
+                      : row.original.status === "Downloading" ||
+                          row.original.status === "Optimistic"
                         ? "Cannot start synchronization during download."
                         : "Image is already synchronized."
                   }
@@ -236,7 +238,8 @@ const useImageTableColumns = ({
                 </Tooltip>
                 <Tooltip
                   message={
-                    row.original.status === "Downloading"
+                    row.original.status === "Downloading" ||
+                    row.original.status === "Optimistic"
                       ? "Stop image synchronization."
                       : "No synchronization in progress."
                   }
@@ -246,7 +249,8 @@ const useImageTableColumns = ({
                     appearance="base"
                     className="is-dense u-table-cell-padding-overlap"
                     disabled={
-                      row.original.status !== "Downloading" ||
+                      (row.original.status !== "Downloading" &&
+                        row.original.status !== "Optimistic") ||
                       startSync.isPending
                     }
                     hasIcon
