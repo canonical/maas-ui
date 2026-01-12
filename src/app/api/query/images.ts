@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import type { Query, UseQueryResult } from "@tanstack/react-query";
+import type { Query, QueryClient, UseQueryResult } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
@@ -424,6 +424,89 @@ export const useCustomImageStatistics = (
   });
 };
 
+type PollEntry = {
+  attempts: number;
+};
+
+type SilentPollState = {
+  active: boolean;
+  entries: Map<number, PollEntry>;
+  timer: ReturnType<typeof setTimeout> | null;
+};
+
+const silentPoll: SilentPollState = {
+  active: false,
+  entries: new Map(),
+  timer: null,
+};
+
+const POLL_INTERVAL = ACTIVE_DOWNLOAD_REFETCH_INTERVAL;
+const MAX_ATTEMPTS_PER_IMAGE = 10;
+
+const startOrExtendSilentPolling = (queryClient: QueryClient) => {
+  if (silentPoll.active) {
+    return;
+  }
+
+  silentPoll.active = true;
+
+  const poll = async () => {
+    const [selectionResult, customImageResult] = await Promise.all([
+      listSelectionStatus(),
+      listCustomImagesStatus(),
+    ]);
+
+    const selectionItems = selectionResult?.data?.items ?? [];
+    const customItems = customImageResult?.data?.items ?? [];
+
+    for (const [imageId, entry] of silentPoll.entries) {
+      entry.attempts++;
+
+      const backendStatus =
+        selectionItems.find((i) => i.id === imageId)?.status ??
+        customItems.find((i) => i.id === imageId)?.status;
+
+      const resolved =
+        backendStatus === "Downloading" ||
+        entry.attempts >= MAX_ATTEMPTS_PER_IMAGE;
+
+      if (resolved) {
+        silentPoll.entries.delete(imageId);
+      }
+    }
+
+    if (silentPoll.entries.size === 0) {
+      silentPoll.active = false;
+      silentPoll.timer = null;
+
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: withImagesWorkflow(listSelectionStatusQueryKey()),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: withImagesWorkflow(listCustomImagesStatusQueryKey()),
+        }),
+      ]);
+
+      return;
+    }
+
+    silentPoll.timer = setTimeout(poll, POLL_INTERVAL);
+  };
+
+  silentPoll.timer = setTimeout(poll, POLL_INTERVAL / 2);
+};
+
+export const resetSilentPolling = () => {
+  if (silentPoll.timer) {
+    clearTimeout(silentPoll.timer);
+  }
+
+  silentPoll.entries.clear();
+  silentPoll.active = false;
+  silentPoll.timer = null;
+};
+
 export const useStartImageSync = (
   mutationOptions?: Options<SyncBootsourceBootsourceselectionData>
 ) => {
@@ -539,67 +622,13 @@ export const useStartImageSync = (
 
     onSuccess: async (_data, _variables, context) => {
       const imageId = context?.imageId;
+      if (!imageId) return;
 
-      // Don't invalidate immediately - let the optimistic update stay visible
-      // The dynamic refetch interval (5s for "Downloading") will update it soon
+      if (!silentPoll.entries.has(imageId)) {
+        silentPoll.entries.set(imageId, { attempts: 0 });
+      }
 
-      // Instead, start polling to check if backend has caught up
-      let pollAttempts = 0;
-      const maxPollAttempts = 10; // Poll for up to 50 seconds (10 * 5s)
-
-      const pollBackendStatus = async () => {
-        pollAttempts++;
-
-        // Fetch status data directly WITHOUT updating the cache
-        const [selectionResult, customImageResult] = await Promise.all([
-          context?.selectionStatusKey
-            ? listSelectionStatus()
-            : Promise.resolve(null),
-          context?.customImageStatusKey
-            ? listCustomImagesStatus()
-            : Promise.resolve(null),
-        ]);
-
-        const backendStatus =
-          selectionResult?.data?.items.find((item) => item.id === imageId)
-            ?.status ||
-          customImageResult?.data?.items.find((item) => item.id === imageId)
-            ?.status;
-
-        // If backend caught up to "Downloading" or we've polled enough,
-        // stop and invalidate all related queries
-        if (
-          backendStatus === "Downloading" ||
-          pollAttempts >= maxPollAttempts
-        ) {
-          await Promise.all([
-            queryClient.invalidateQueries({
-              queryKey: withImagesWorkflow(listSelectionsQueryKey()),
-            }),
-            queryClient.invalidateQueries({
-              queryKey: withImagesWorkflow(listSelectionStatusQueryKey()),
-            }),
-            queryClient.invalidateQueries({
-              queryKey: withImagesWorkflow(listSelectionStatisticQueryKey()),
-            }),
-            queryClient.invalidateQueries({
-              queryKey: withImagesWorkflow(listCustomImagesQueryKey()),
-            }),
-            queryClient.invalidateQueries({
-              queryKey: withImagesWorkflow(listCustomImagesStatusQueryKey()),
-            }),
-            queryClient.invalidateQueries({
-              queryKey: withImagesWorkflow(listCustomImagesStatisticQueryKey()),
-            }),
-          ]);
-        } else {
-          // Poll again until backend catches up
-          setTimeout(pollBackendStatus, ACTIVE_DOWNLOAD_REFETCH_INTERVAL);
-        }
-      };
-
-      // Start polling after a brief delay to give backend a head start
-      setTimeout(pollBackendStatus, ACTIVE_DOWNLOAD_REFETCH_INTERVAL / 2);
+      startOrExtendSilentPolling(queryClient);
     },
   });
 };
