@@ -32,6 +32,7 @@ import type {
   ListCustomImagesStatusData,
   ListCustomImagesStatusError,
   ListCustomImagesStatusErrors,
+  ListCustomImagesStatusResponse,
   ListCustomImagesStatusResponses,
   ListSelectionsData,
   ListSelectionsErrors,
@@ -43,6 +44,7 @@ import type {
   ListSelectionStatusData,
   ListSelectionStatusError,
   ListSelectionStatusErrors,
+  ListSelectionStatusResponse,
   ListSelectionStatusResponses,
   Options,
   StopSyncBootsourceBootsourceselectionData,
@@ -415,16 +417,224 @@ export const useStartImageSync = (
   mutationOptions?: Options<SyncBootsourceBootsourceselectionData>
 ) => {
   const queryClient = useQueryClient();
+
   return useMutation({
     ...mutationOptionsWithHeaders<
       SyncBootsourceBootsourceselectionResponses,
       SyncBootsourceBootsourceselectionErrors,
       SyncBootsourceBootsourceselectionData
     >(mutationOptions, syncBootsourceBootsourceselection),
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
-        queryKey: IMAGES_WORKFLOW_KEY,
+
+    onMutate: async (variables) => {
+      const imageId = variables.path.id;
+
+      console.log("Starting optimistic update for image:", imageId);
+
+      // Cancel all queries to prevent overwrites
+      await queryClient.cancelQueries();
+
+      // Get data using predicate instead of exact key match
+      const selectionStatusQueries =
+        queryClient.getQueriesData<ListSelectionStatusResponse>({
+          predicate: (query) => {
+            const key = query.queryKey;
+            return (
+              Array.isArray(key) &&
+              key[0] === "images-workflow" &&
+              typeof key[1] === "object" &&
+              key[1]?._id === "listSelectionStatus"
+            );
+          },
+        });
+
+      const customImageStatusQueries =
+        queryClient.getQueriesData<ListCustomImagesStatusResponse>({
+          predicate: (query) => {
+            const key = query.queryKey;
+            return (
+              Array.isArray(key) &&
+              key[0] === "images-workflow" &&
+              typeof key[1] === "object" &&
+              key[1]?._id === "listCustomImagesStatus"
+            );
+          },
+        });
+
+      console.log("Found queries:", {
+        selectionStatus: selectionStatusQueries.length,
+        customImageStatus: customImageStatusQueries.length,
       });
+
+      // Extract the actual query keys and data
+      const [selectionStatusKey, previousSelectionStatuses] =
+        selectionStatusQueries[0] || [null, null];
+      const [customImageStatusKey, previousCustomImageStatuses] =
+        customImageStatusQueries[0] || [null, null];
+
+      console.log("Retrieved data:", {
+        hasSelectionData: !!previousSelectionStatuses,
+        hasCustomImageData: !!previousCustomImageStatuses,
+      });
+
+      // Optimistically update selection statuses to "Downloading"
+      if (selectionStatusKey && previousSelectionStatuses) {
+        const updatedSelectionStatuses = {
+          ...previousSelectionStatuses,
+          items: previousSelectionStatuses.items.map((item) =>
+            item.id === imageId
+              ? { ...item, status: "Downloading" as const }
+              : item
+          ),
+        };
+
+        queryClient.setQueryData<ListSelectionStatusResponse>(
+          selectionStatusKey,
+          updatedSelectionStatuses
+        );
+        console.log("✅ Updated selection statuses to Downloading");
+      } else {
+        console.error("❌ Could not update selection statuses");
+      }
+
+      // Optimistically update custom image statuses to "Downloading"
+      if (customImageStatusKey && previousCustomImageStatuses) {
+        const updatedCustomImageStatuses = {
+          ...previousCustomImageStatuses,
+          items: previousCustomImageStatuses.items.map((item) =>
+            item.id === imageId
+              ? { ...item, status: "Downloading" as const }
+              : item
+          ),
+        };
+
+        queryClient.setQueryData<ListCustomImagesStatusResponse>(
+          customImageStatusKey,
+          updatedCustomImageStatuses
+        );
+        console.log("✅ Updated custom image statuses to Downloading");
+      } else {
+        console.error("❌ Could not update custom image statuses");
+      }
+
+      // Return context with previous values for potential rollback
+      return {
+        selectionStatusKey,
+        customImageStatusKey,
+        previousSelectionStatuses,
+        previousCustomImageStatuses,
+        imageId,
+      };
+    },
+
+    onError: (_err, _variables, context) => {
+      console.log("Mutation failed, rolling back optimistic updates");
+
+      // Rollback to previous state if mutation fails
+      if (context?.selectionStatusKey && context?.previousSelectionStatuses) {
+        queryClient.setQueryData(
+          context.selectionStatusKey,
+          context.previousSelectionStatuses
+        );
+      }
+      if (
+        context?.customImageStatusKey &&
+        context?.previousCustomImageStatuses
+      ) {
+        queryClient.setQueryData(
+          context.customImageStatusKey,
+          context.previousCustomImageStatuses
+        );
+      }
+    },
+
+    onSuccess: async (_data, _variables, context) => {
+      const imageId = context?.imageId;
+      console.log("Mutation succeeded for image:", imageId);
+
+      // Don't invalidate immediately - let the optimistic update stay visible
+      // The dynamic refetch interval (5s for "Downloading") will update it soon
+
+      // Instead, start polling to check if backend has caught up
+      let pollAttempts = 0;
+      const maxPollAttempts = 10; // Poll for up to 50 seconds (10 * 5s)
+
+      const pollBackendStatus = async () => {
+        pollAttempts++;
+
+        // Refetch just the status queries silently (don't invalidate everything)
+        await Promise.all([
+          context?.selectionStatusKey
+            ? queryClient.fetchQuery({
+                queryKey: context.selectionStatusKey,
+              })
+            : Promise.resolve(null),
+          context?.customImageStatusKey
+            ? queryClient.fetchQuery({
+                queryKey: context.customImageStatusKey,
+              })
+            : Promise.resolve(null),
+        ]);
+
+        // Check if backend has updated to "Downloading"
+        const selectionData = context?.selectionStatusKey
+          ? queryClient.getQueryData<ListSelectionStatusResponse>(
+              context.selectionStatusKey
+            )
+          : null;
+        const customImageData = context?.customImageStatusKey
+          ? queryClient.getQueryData<ListCustomImagesStatusResponse>(
+              context.customImageStatusKey
+            )
+          : null;
+
+        const backendStatus =
+          selectionData?.items.find((item) => item.id === imageId)?.status ||
+          customImageData?.items.find((item) => item.id === imageId)?.status;
+
+        console.log(
+          `Poll attempt ${pollAttempts}: Backend status =`,
+          backendStatus
+        );
+
+        // If backend caught up to "Downloading" or we've polled enough, stop
+        if (
+          backendStatus === "Downloading" ||
+          pollAttempts >= maxPollAttempts
+        ) {
+          console.log(
+            "✅ Backend caught up or max attempts reached, invalidating all queries"
+          );
+
+          // Now invalidate everything to refresh all related data
+          await Promise.all([
+            queryClient.invalidateQueries({
+              queryKey: withImagesWorkflow(listSelectionsQueryKey()),
+            }),
+            queryClient.invalidateQueries({
+              queryKey: withImagesWorkflow(listSelectionStatusQueryKey()),
+            }),
+            queryClient.invalidateQueries({
+              queryKey: withImagesWorkflow(listSelectionStatisticQueryKey()),
+            }),
+            queryClient.invalidateQueries({
+              queryKey: withImagesWorkflow(listCustomImagesQueryKey()),
+            }),
+            queryClient.invalidateQueries({
+              queryKey: withImagesWorkflow(listCustomImagesStatusQueryKey()),
+            }),
+            queryClient.invalidateQueries({
+              queryKey: withImagesWorkflow(listCustomImagesStatisticQueryKey()),
+            }),
+          ]);
+        } else {
+          // Backend hasn't caught up yet, poll again in 5 seconds
+          console.log("⏳ Backend not ready, polling again in 5s...");
+          setTimeout(pollBackendStatus, 5000);
+        }
+      };
+
+      // Start polling after a brief delay to give backend a head start
+      setTimeout(pollBackendStatus, 2000);
     },
   });
 };
