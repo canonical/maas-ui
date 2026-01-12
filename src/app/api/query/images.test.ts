@@ -30,8 +30,6 @@ setupMockServer(
   imageResolvers.listCustomImages.handler(),
   imageResolvers.listCustomImageStatuses.handler(),
   imageResolvers.listCustomImageStatistics.handler(),
-  imageResolvers.startSynchronization.handler(),
-  imageResolvers.stopSynchronization.handler(),
   imageResolvers.listAvailableSelections.handler(),
   imageResolvers.addSelections.handler(),
   imageResolvers.deleteSelections.handler()

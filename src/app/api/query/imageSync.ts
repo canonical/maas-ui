@@ -227,7 +227,7 @@ export const useStartImageSync = (
 
     onSuccess: async (_data, _variables, context) => {
       const imageId = context?.imageId;
-      if (!imageId) return;
+      if (imageId === null) return;
 
       if (!silentPoll.entries.has(imageId)) {
         silentPoll.entries.set(imageId, { attempts: 0 });
