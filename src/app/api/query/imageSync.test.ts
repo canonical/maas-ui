@@ -2,6 +2,7 @@ import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
 import { ACTIVE_DOWNLOAD_REFETCH_INTERVAL } from "@/app/api/query/images";
 import * as sdk from "@/app/apiclient/sdk.gen";
 import { imageStatusFactory } from "@/testing/factories";
+import { imageSyncResolvers } from "@/testing/resolvers/imageSync";
 import { imageResolvers } from "@/testing/resolvers/images";
 import {
   renderHookWithProviders,
@@ -12,8 +13,8 @@ import {
 setupMockServer(
   imageResolvers.listSelectionStatuses.handler(),
   imageResolvers.listCustomImageStatuses.handler(),
-  imageResolvers.startSynchronization.handler(),
-  imageResolvers.stopSynchronization.handler()
+  imageSyncResolvers.startSynchronization.handler(),
+  imageSyncResolvers.stopSynchronization.handler()
 );
 
 describe("useStartImageSync", () => {

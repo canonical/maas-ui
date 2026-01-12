@@ -9,7 +9,6 @@ import type {
   ListSelectionsError,
   ListSelectionStatisticError,
   ListSelectionStatusError,
-  SyncBootsourceBootsourceselectionError,
   UiSourceAvailableImageListResponse,
 } from "@/app/apiclient";
 import {
@@ -95,12 +94,6 @@ const mockListImageStatusesError: ListSelectionStatusError = {
 };
 
 const mockSaveSelectionsError: BulkCreateSelectionsError = {
-  message: "Conflict",
-  code: 409,
-  kind: "Error",
-};
-
-const mockSyncError: SyncBootsourceBootsourceselectionError = {
   message: "Conflict",
   code: 409,
   kind: "Error",
@@ -229,44 +222,6 @@ const imageResolvers = {
         imageResolvers.deleteSelections.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
-  },
-  startSynchronization: {
-    resolved: false,
-    handler: () =>
-      http.post(
-        `${BASE_URL}MAAS/a/v3/boot_sources/:boot_source_id/selections/:id\\:sync`,
-        () => {
-          imageResolvers.startSynchronization.resolved = true;
-          return HttpResponse.json({}, { status: 202 });
-        }
-      ),
-    error: (error: SyncBootsourceBootsourceselectionError = mockSyncError) =>
-      http.post(
-        `${BASE_URL}MAAS/a/v3/boot_sources/:boot_source_id/selections/:id\\:sync`,
-        () => {
-          imageResolvers.startSynchronization.resolved = true;
-          return HttpResponse.json(error, { status: error.code });
-        }
-      ),
-  },
-  stopSynchronization: {
-    resolved: false,
-    handler: () =>
-      http.post(
-        `${BASE_URL}MAAS/a/v3/boot_sources/:boot_source_id/selections/:id\\:stop_sync`,
-        () => {
-          imageResolvers.stopSynchronization.resolved = true;
-          return HttpResponse.json({}, { status: 200 });
-        }
-      ),
-    error: (error: SyncBootsourceBootsourceselectionError = mockSyncError) =>
-      http.post(
-        `${BASE_URL}MAAS/a/v3/boot_sources/:boot_source_id/selections/:id\\:stop_sync`,
-        () => {
-          imageResolvers.stopSynchronization.resolved = true;
-          return HttpResponse.json(error, { status: error.code });
-        }
-      ),
   },
 };
 

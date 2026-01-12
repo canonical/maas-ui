@@ -7,6 +7,7 @@ import DeleteImages from "@/app/images/components/DeleteImages";
 import { ConfigNames } from "@/app/store/config/types";
 import { imageFactory, imageStatusFactory } from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import { imageSyncResolvers } from "@/testing/resolvers/imageSync";
 import { imageResolvers } from "@/testing/resolvers/images";
 import {
   renderWithProviders,
@@ -26,8 +27,8 @@ const mockServer = setupMockServer(
   imageResolvers.listCustomImages.handler(),
   imageResolvers.listCustomImageStatistics.handler(),
   imageResolvers.listCustomImageStatuses.handler(),
-  imageResolvers.startSynchronization.handler(),
-  imageResolvers.stopSynchronization.handler(),
+  imageSyncResolvers.startSynchronization.handler(),
+  imageSyncResolvers.stopSynchronization.handler(),
   configurationsResolvers.getConfiguration.handler({
     name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
     value: "noble",
@@ -266,7 +267,7 @@ describe("ImagesTable", () => {
       );
 
       await waitFor(() => {
-        expect(imageResolvers.startSynchronization.resolved).toBeTruthy();
+        expect(imageSyncResolvers.startSynchronization.resolved).toBeTruthy();
       });
     });
 
@@ -301,7 +302,7 @@ describe("ImagesTable", () => {
       );
 
       await waitFor(() => {
-        expect(imageResolvers.stopSynchronization.resolved).toBeTruthy();
+        expect(imageSyncResolvers.stopSynchronization.resolved).toBeTruthy();
       });
     });
   });
