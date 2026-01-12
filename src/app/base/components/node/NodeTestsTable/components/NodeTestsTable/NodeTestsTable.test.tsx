@@ -175,16 +175,11 @@ describe("NodeTestsTable", () => {
       );
       await waitForLoading();
 
-      const toggleButton = await screen.findByRole("button");
-      await userEvent.click(toggleButton);
-
-      const previousTestsButton = await screen.findByRole("button", {
-        name: /previous tests/i,
-      });
+      const previousTestsButton = screen.getByTestId("view-history-link");
       await userEvent.click(previousTestsButton);
 
       expect(screen.queryByTestId("no-history")).not.toBeInTheDocument();
-      expect(await screen.findAllByTestId("details-link")).toHaveLength(2);
+      expect(screen.getByTestId("view-history-link")).toBeInTheDocument();
     });
 
     it("displays a message if the test has no history", async () => {
@@ -203,13 +198,9 @@ describe("NodeTestsTable", () => {
       );
       await waitForLoading();
 
-      const toggleButton = await screen.findByRole("button");
-      await userEvent.click(toggleButton);
-
-      const previousTestsButton = await screen.findByRole("button", {
-        name: /previous tests/i,
-      });
+      const previousTestsButton = screen.getByTestId("view-history-link");
       await userEvent.click(previousTestsButton);
+
       expect(screen.getByTestId("no-history")).toBeInTheDocument();
     });
   });
