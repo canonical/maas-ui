@@ -5,11 +5,8 @@ import { Button, Spinner } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { useImageSources } from "@/app/api/query/imageSources";
-import {
-  useSelectionStatuses,
-  useStartImageSync,
-  useStopImageSync,
-} from "@/app/api/query/images";
+import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
+import { useSelectionStatuses } from "@/app/api/query/images";
 import type { BootSourceResponse } from "@/app/apiclient";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
@@ -21,11 +18,6 @@ type ImageListHeaderProps = {
   selectedRows: RowSelectionState;
   setSelectedRows: Dispatch<SetStateAction<RowSelectionState>>;
 };
-
-export enum Labels {
-  RackControllersImporting = "Step 2/2: Rack controller(s) importing",
-  RegionControllerImporting = "Step 1/2: Region controller importing",
-}
 
 const getImageSyncText = (sources: BootSourceResponse[]) => {
   if (sources.length === 1) {

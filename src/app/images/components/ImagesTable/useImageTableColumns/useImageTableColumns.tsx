@@ -10,7 +10,7 @@ import type {
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
-import { useStartImageSync, useStopImageSync } from "@/app/api/query/images";
+import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";

@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 
-import { resetSilentPolling } from "@/app/api/query/images";
+import { resetSilentPolling } from "@/app/api/query/imageSync";
 import { statusActions } from "@/app/store/status";
 
 export const useLogout = () => {
