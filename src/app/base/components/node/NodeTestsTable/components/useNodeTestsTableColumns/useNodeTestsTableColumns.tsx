@@ -217,7 +217,7 @@ const useNodeTestsTableColumns = ({
         accessorKey: "metrics",
         enableSorting: false,
         cell: ({ row }) =>
-          row.original.metrics ? (
+          row.original.hasMetrics ? (
             <Icon name="success"></Icon>
           ) : (
             <Icon name="minus"></Icon>

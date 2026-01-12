@@ -28,7 +28,7 @@ type Props = {
 export type NodeTestRow = ScriptResult & {
   history?: NodeTestRow[];
   isHistory?: boolean;
-  metrics?: boolean;
+  hasMetrics?: boolean;
 };
 
 const getNodeTestsTableData = (
@@ -50,12 +50,12 @@ const getNodeTestsTableData = (
               isHistory: true,
             };
           }),
-        metrics: scriptResult.results.length > 0,
+        hasMetrics: scriptResult.results.length > 0,
       });
     } else {
       newData.push({
         ...scriptResult,
-        metrics: scriptResult.results.length > 0,
+        hasMetrics: scriptResult.results.length > 0,
       });
     }
   });
