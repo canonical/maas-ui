@@ -1,8 +1,9 @@
 import type { ReactElement } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Notification } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
+import { useDispatch } from "react-redux";
 
 import ImageListHeader from "./ImageListHeader";
 
@@ -10,6 +11,7 @@ import { useGetConfiguration } from "@/app/api/query/configurations";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import ImagesTable from "@/app/images/components/ImagesTable";
+import { bootResourceActions } from "@/app/store/bootresource";
 import { ConfigNames } from "@/app/store/config/types";
 
 export enum Labels {
@@ -17,6 +19,7 @@ export enum Labels {
 }
 
 const ImageList = (): ReactElement => {
+  const dispatch = useDispatch();
   const { data, isPending } = useGetConfiguration({
     path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
   });
@@ -26,6 +29,13 @@ const ImageList = (): ReactElement => {
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
 
   useWindowTitle("Images");
+
+  useEffect(() => {
+    dispatch(bootResourceActions.poll({ continuous: true }));
+    return () => {
+      dispatch(bootResourceActions.pollStop());
+    };
+  }, [dispatch]);
 
   return (
     <PageContent
