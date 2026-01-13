@@ -125,6 +125,36 @@ describe("ImagesTable", () => {
   });
 
   describe("actions", () => {
+    it("cannot select or delete images of commissioning release", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [
+            imageFactory.build({
+              id: 1,
+              release: "noble",
+              title: "24.04 LTS",
+            }),
+          ],
+          total: 3,
+        })
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("checkbox", { name: "select 24.04 LTS" })
+        ).toBeAriaDisabled();
+      });
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Delete" })
+        ).toBeAriaDisabled();
+      });
+    });
+
     it("opens delete image side panel form", async () => {
       mockServer.use(
         imageResolvers.listSelections.handler({
