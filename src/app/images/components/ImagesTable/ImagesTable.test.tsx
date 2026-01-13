@@ -150,22 +150,17 @@ describe("ImagesTable", () => {
 
       expect(within(row).getByText("50%")).toBeInTheDocument();
 
-      const startButton = within(row).getByRole("button", {
-        name: "Start synchronization",
-      });
+      // Start button is replaced by stop
+      expect(
+        within(row).queryByRole("button", {
+          name: "Start synchronization",
+        })
+      ).not.toBeInTheDocument();
+
       const stopButton = within(row).getByRole("button", {
         name: "Stop synchronization",
       });
       const deleteButton = within(row).getByRole("button", { name: "Delete" });
-
-      expect(startButton).toBeAriaDisabled();
-      await userEvent.hover(startButton);
-
-      await waitFor(() => {
-        expect(startButton).toHaveAccessibleDescription(
-          "Cannot start synchronization during download."
-        );
-      });
 
       expect(stopButton).not.toBeAriaDisabled();
 
@@ -188,17 +183,11 @@ describe("ImagesTable", () => {
       const row = screen.getByRole("row", {
         name: new RegExp("jammy", "i"),
       });
-      const stopButton = within(row).getByRole("button", {
-        name: "Stop synchronization",
-      });
-      expect(stopButton).toBeAriaDisabled();
-      await userEvent.hover(stopButton);
-
-      await waitFor(() => {
-        expect(stopButton).toHaveAccessibleDescription(
-          "No synchronization in progress."
-        );
-      });
+      expect(
+        within(row).queryByRole("button", {
+          name: "Stop synchronization",
+        })
+      ).not.toBeInTheDocument();
     });
   });
 

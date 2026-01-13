@@ -230,11 +230,7 @@ const useImageTableColumns = ({
               <div>
                 {downloadInProgress ? (
                   <Tooltip
-                    message={
-                      downloadInProgress
-                        ? "Stop image synchronization."
-                        : "No synchronization in progress."
-                    }
+                    message="Stop image synchronization."
                     position="left"
                   >
                     <Button
@@ -257,21 +253,17 @@ const useImageTableColumns = ({
                 ) : (
                   <Tooltip
                     message={
-                      row.original.status === "Waiting for download"
+                      row.original.status === "Waiting for download" ||
+                      row.original.update_status === "Update available"
                         ? "Start image synchronization."
-                        : downloadInProgress
-                          ? "Cannot start synchronization during download."
-                          : "Image is already synchronized."
+                        : "Image is already synchronized."
                     }
                     position="left"
                   >
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={
-                        row.original.status !== "Waiting for download" ||
-                        stopSync.isPending
-                      }
+                      disabled={stopSync.isPending}
                       hasIcon
                       onClick={() => {
                         startSync.mutate({
