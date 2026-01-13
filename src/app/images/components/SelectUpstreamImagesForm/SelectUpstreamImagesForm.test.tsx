@@ -9,7 +9,6 @@ import {
   within,
   renderWithProviders,
   setupMockServer,
-  waitForLoading,
   waitFor,
 } from "@/testing/utils";
 
@@ -23,8 +22,15 @@ const mockServer = setupMockServer(
 describe("SelectUpstreamImagesForm", () => {
   it("correctly filters selection options", async () => {
     renderWithProviders(<SelectUpstreamImagesForm />);
-    await waitForLoading();
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("row", {
+          name: "noble",
+          hidden: true,
+        })
+      ).toBeInTheDocument();
+    });
     const rowAvailable = within(
       screen.getByRole("row", {
         name: "noble",
@@ -39,7 +45,12 @@ describe("SelectUpstreamImagesForm", () => {
 
   it("can dispatch an action to save ubuntu images", async () => {
     renderWithProviders(<SelectUpstreamImagesForm />);
-    await waitForLoading();
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Save and sync" })
+      ).toBeInTheDocument();
+    });
     await userEvent.click(
       screen.getByRole("button", { name: "Save and sync" })
     );
@@ -60,12 +71,14 @@ describe("SelectUpstreamImagesForm", () => {
     );
 
     renderWithProviders(<SelectUpstreamImagesForm />);
-    await waitForLoading();
-    expect(
-      screen.getByText(
-        "More than one image source exists. The UI does not support updating synced images when more than one source has been defined. Use the API to adjust your sources."
-      )
-    ).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          "More than one image source exists. The UI does not support updating synced images when more than one source has been defined. Use the API to adjust your sources."
+        )
+      ).toBeInTheDocument();
+    });
 
     expect(
       screen.queryByRole("button", { name: "Download" })
