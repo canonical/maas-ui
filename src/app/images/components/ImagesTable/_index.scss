@@ -2,9 +2,7 @@
   .p-generic-table {
     .version, .status {
       width: 20%;
-    }
 
-    .status {
       .p-progress {
         position: relative;
         width: 10rem;
@@ -52,12 +50,6 @@
         100% {
           background-position-x: -200%;
         }
-      }
-    }
-
-    .actions {
-      .p-icon--stop {
-        rotate: 90deg;
       }
     }
   }

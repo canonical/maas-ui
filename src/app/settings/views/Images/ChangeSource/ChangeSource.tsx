@@ -85,8 +85,12 @@ const ChangeSource = (): ReactElement => {
   const canChangeSource =
     selectionStatuses &&
     customImageStatuses &&
-    selectionStatuses.items.every((s) => s.status === "Ready") &&
-    customImageStatuses.items.every((s) => s.status === "Ready");
+    selectionStatuses.items.every(
+      (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
+    ) &&
+    customImageStatuses.items.every(
+      (s) => s.status === "Downloading" && s.update_status !== "Downloading"
+    );
   const sourceType = new RegExp(MAAS_IO_DEFAULTS.url).test(
     source.data?.url ?? ""
   )

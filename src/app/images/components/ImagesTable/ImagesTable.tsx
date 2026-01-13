@@ -56,6 +56,10 @@ const ImagesTable = ({
         rowSelection: selectedRows,
         setRowSelection: setSelectedRows,
         rowSelectionLabelKey: "title",
+        filterSelectable: (row) =>
+          row.original.release !== commissioningRelease,
+        disabledSelectionTooltip:
+          "Cannot modify images of the default commissioning release.",
       }}
       showChevron
       sorting={[{ id: "title", desc: true }]}
