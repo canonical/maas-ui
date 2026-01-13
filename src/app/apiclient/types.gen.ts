@@ -1861,6 +1861,7 @@ export type ImageStatusResponse = {
 export type ImageUpdateStatus =
   | "Downloading"
   | "No updates available"
+  | "Optimistic"
   | "Update available";
 
 /**

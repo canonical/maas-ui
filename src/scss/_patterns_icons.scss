@@ -193,7 +193,7 @@
 
   .p-icon--stop {
     @extend %icon;
-    @include vf-icon-ignored($colors--dark-theme--text-default);
+    @include vf-icon-ignored-themed;
   }
 
   [class*="p-circle--"].is-inline,

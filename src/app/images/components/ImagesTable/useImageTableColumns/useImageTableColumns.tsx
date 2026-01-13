@@ -115,14 +115,31 @@ const useImageTableColumns = ({
           header: () => "Version",
           cell: ({
             row: {
-              original: { update_status, last_updated },
+              original: { update_status, last_updated, sync_percentage },
             },
           }) => {
             return isStatusLoading ? (
               <Spinner />
             ) : (
               <DoubleRow
-                primary={update_status}
+                primary={
+                  update_status === "Downloading" ||
+                  update_status === "Optimistic" ? (
+                    <>
+                      <div className="p-progress">
+                        <div
+                          className="p-progress__value"
+                          style={{ width: `${sync_percentage}%` }}
+                        />
+                      </div>
+                      <small className="u-text--muted">
+                        {sync_percentage}%
+                      </small>
+                    </>
+                  ) : (
+                    update_status
+                  )
+                }
                 secondary={
                   isStatisticsLoading ? (
                     <Spinner />
@@ -201,78 +218,83 @@ const useImageTableColumns = ({
           cell: ({ row }: { row: Row<Image> }) => {
             const isCommissioningImage =
               row.original.release === commissioningRelease;
-            const canBeDeleted =
-              !isCommissioningImage && row.original.status === "Ready";
+            const isSyncing =
+              row.original.status === "Downloading" ||
+              row.original.status === "Optimistic";
+            const isUpdating =
+              row.original.update_status === "Downloading" ||
+              row.original.update_status === "Optimistic";
+            const downloadInProgress = isSyncing || isUpdating;
+            const canBeDeleted = !isCommissioningImage && !downloadInProgress;
             return row.getIsGrouped() ? null : (
               <div>
-                <Tooltip
-                  message={
-                    row.original.status === "Waiting for download"
-                      ? "Start image synchronization."
-                      : row.original.status === "Downloading" ||
-                          row.original.status === "Optimistic"
-                        ? "Cannot start synchronization during download."
-                        : "Image is already synchronized."
-                  }
-                  position="left"
-                >
-                  <Button
-                    appearance="base"
-                    className="is-dense u-table-cell-padding-overlap"
-                    disabled={
-                      row.original.status !== "Waiting for download" ||
-                      stopSync.isPending
+                {downloadInProgress ? (
+                  <Tooltip
+                    message={
+                      downloadInProgress
+                        ? "Stop image synchronization."
+                        : "No synchronization in progress."
                     }
-                    hasIcon
-                    onClick={() => {
-                      startSync.mutate({
-                        path: {
-                          id: row.original.id,
-                          boot_source_id: row.original.boot_source_id!,
-                        },
-                      });
-                    }}
+                    position="left"
                   >
-                    <i className="p-icon--start">Start synchronization</i>
-                  </Button>
-                </Tooltip>
-                <Tooltip
-                  message={
-                    row.original.status === "Downloading" ||
-                    row.original.status === "Optimistic"
-                      ? "Stop image synchronization."
-                      : "No synchronization in progress."
-                  }
-                  position="left"
-                >
-                  <Button
-                    appearance="base"
-                    className="is-dense u-table-cell-padding-overlap"
-                    disabled={
-                      (row.original.status !== "Downloading" &&
-                        row.original.status !== "Optimistic") ||
-                      startSync.isPending
+                    <Button
+                      appearance="base"
+                      className="is-dense u-table-cell-padding-overlap"
+                      disabled={startSync.isPending}
+                      hasIcon
+                      onClick={() => {
+                        stopSync.mutate({
+                          path: {
+                            id: row.original.id,
+                            boot_source_id: row.original.boot_source_id!,
+                          },
+                        });
+                      }}
+                    >
+                      <i className="p-icon--stop">Stop synchronization</i>
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    message={
+                      row.original.status === "Waiting for download"
+                        ? "Start image synchronization."
+                        : downloadInProgress
+                          ? "Cannot start synchronization during download."
+                          : "Image is already synchronized."
                     }
-                    hasIcon
-                    onClick={() => {
-                      stopSync.mutate({
-                        path: {
-                          id: row.original.id,
-                          boot_source_id: row.original.boot_source_id!,
-                        },
-                      });
-                    }}
+                    position="left"
                   >
-                    <i className="p-icon--stop">Stop synchronization</i>
-                  </Button>
-                </Tooltip>
+                    <Button
+                      appearance="base"
+                      className="is-dense u-table-cell-padding-overlap"
+                      disabled={
+                        row.original.status !== "Waiting for download" ||
+                        stopSync.isPending
+                      }
+                      hasIcon
+                      onClick={() => {
+                        startSync.mutate({
+                          path: {
+                            id: row.original.id,
+                            boot_source_id: row.original.boot_source_id!,
+                          },
+                        });
+                      }}
+                    >
+                      <i className="p-icon--begin-downloading">
+                        Start synchronization
+                      </i>
+                    </Button>
+                  </Tooltip>
+                )}
                 <Tooltip
                   message={
                     !canBeDeleted
                       ? isCommissioningImage
                         ? "Cannot delete images of the default commissioning release."
                         : "Cannot delete images that are currently being imported."
-                      : "Deletes this image."
+                      : "Delete this image."
                   }
                   position="left"
                 >

@@ -17,6 +17,8 @@ import type {
   StopSyncBootsourceBootsourceselectionData,
   StopSyncBootsourceBootsourceselectionErrors,
   StopSyncBootsourceBootsourceselectionResponses,
+  ImageUpdateStatus,
+  ImageStatus,
 } from "@/app/apiclient";
 import {
   listCustomImagesStatus,
@@ -67,12 +69,17 @@ const startOrExtendSilentPolling = (queryClient: QueryClient) => {
     for (const [imageId, entry] of silentPoll.entries) {
       entry.attempts++;
 
-      const backendStatus =
+      const backendSyncStatus =
         selectionItems.find((i) => i.id === imageId)?.status ??
         customItems.find((i) => i.id === imageId)?.status;
 
+      const backendUpdateStatus =
+        selectionItems.find((i) => i.id === imageId)?.update_status ??
+        customItems.find((i) => i.id === imageId)?.update_status;
+
       const resolved =
-        backendStatus === "Downloading" ||
+        backendSyncStatus === "Downloading" ||
+        backendUpdateStatus === "Downloading" ||
         entry.attempts >= MAX_ATTEMPTS_PER_IMAGE;
 
       if (resolved) {
@@ -167,11 +174,20 @@ export const useStartImageSync = (
       if (selectionStatusKey && previousSelectionStatuses) {
         const updatedSelectionStatuses = {
           ...previousSelectionStatuses,
-          items: previousSelectionStatuses.items.map((item) =>
-            item.id === imageId
-              ? { ...item, status: "Optimistic" as const }
-              : item
-          ),
+          items: previousSelectionStatuses.items.map((item) => {
+            if (item.id === imageId && item.status === "Waiting for download") {
+              return { ...item, status: "Optimistic" as ImageStatus };
+            } else if (
+              item.id === imageId &&
+              item.update_status === "Update available"
+            ) {
+              return {
+                ...item,
+                update_status: "Optimistic" as ImageUpdateStatus,
+              };
+            }
+            return item;
+          }),
         };
 
         queryClient.setQueryData<ListSelectionStatusResponse>(
@@ -184,11 +200,20 @@ export const useStartImageSync = (
       if (customImageStatusKey && previousCustomImageStatuses) {
         const updatedCustomImageStatuses = {
           ...previousCustomImageStatuses,
-          items: previousCustomImageStatuses.items.map((item) =>
-            item.id === imageId
-              ? { ...item, status: "Optimistic" as const }
-              : item
-          ),
+          items: previousCustomImageStatuses.items.map((item) => {
+            if (item.id === imageId && item.status === "Waiting for download") {
+              return { ...item, status: "Optimistic" as ImageStatus };
+            } else if (
+              item.id === imageId &&
+              item.update_status === "Update available"
+            ) {
+              return {
+                ...item,
+                update_status: "Optimistic" as ImageUpdateStatus,
+              };
+            }
+            return item;
+          }),
         };
 
         queryClient.setQueryData<ListCustomImagesStatusResponse>(
