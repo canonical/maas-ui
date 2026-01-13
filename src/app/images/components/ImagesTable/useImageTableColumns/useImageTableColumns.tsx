@@ -10,6 +10,7 @@ import type {
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
+import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
@@ -45,6 +46,8 @@ const useImageTableColumns = ({
   isStatisticsLoading: boolean;
 }): ImageColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const startSync = useStartImageSync();
+  const stopSync = useStopImageSync();
 
   return useMemo(
     () =>
@@ -225,6 +228,62 @@ const useImageTableColumns = ({
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
             return row.getIsGrouped() ? null : (
               <div>
+                {downloadInProgress ? (
+                  <Tooltip
+                    message="Stop image synchronization."
+                    position="left"
+                  >
+                    <Button
+                      appearance="base"
+                      className="is-dense u-table-cell-padding-overlap"
+                      disabled={startSync.isPending}
+                      hasIcon
+                      onClick={() => {
+                        stopSync.mutate({
+                          path: {
+                            id: row.original.id,
+                            boot_source_id: row.original.boot_source_id!,
+                          },
+                        });
+                      }}
+                    >
+                      <i className="p-icon--stop">Stop synchronization</i>
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    message={
+                      row.original.status === "Waiting for download" ||
+                      row.original.update_status === "Update available"
+                        ? "Start image synchronization."
+                        : "Image is already synchronized."
+                    }
+                    position="left"
+                  >
+                    <Button
+                      appearance="base"
+                      className="is-dense u-table-cell-padding-overlap"
+                      disabled={
+                        (row.original.status !== "Waiting for download" &&
+                          row.original.update_status !== "Update available") ||
+                        stopSync.isPending
+                      }
+                      hasIcon
+                      onClick={() => {
+                        startSync.mutate({
+                          path: {
+                            id: row.original.id,
+                            boot_source_id: row.original.boot_source_id!,
+                          },
+                        });
+                      }}
+                    >
+                      <i className="p-icon--begin-downloading">
+                        Start synchronization
+                      </i>
+                    </Button>
+                  </Tooltip>
+                )}
                 <Tooltip
                   message={
                     !canBeDeleted
@@ -267,6 +326,8 @@ const useImageTableColumns = ({
     [
       isStatisticsLoading,
       isStatusLoading,
+      stopSync,
+      startSync,
       commissioningRelease,
       openSidePanel,
       selectedRows,
