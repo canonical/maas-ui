@@ -2,7 +2,6 @@ import type { Action, AnyAction, Reducer } from "redux";
 import { combineReducers } from "redux";
 import type { RouterState } from "redux-first-history";
 
-import bootresource from "@/app/store/bootresource";
 import config from "@/app/store/config";
 import controller from "@/app/store/controller";
 import device from "@/app/store/device";
@@ -38,7 +37,6 @@ import vmcluster from "@/app/store/vmcluster";
 
 const createAppReducer = (routerReducer: Reducer<RouterState, Action>) =>
   combineReducers({
-    bootresource,
     config,
     controller,
     device,

@@ -6,7 +6,6 @@ import type {
 } from "@reduxjs/toolkit";
 
 import type { KeysOfUnion } from "@/app/base/types";
-import type { BootResourceMeta } from "@/app/store/bootresource/types";
 import type { ConfigMeta } from "@/app/store/config/types";
 import type {
   ControllerMeta,
@@ -45,7 +44,6 @@ export type GenericMeta = {
 // - 'status' is not an API model.
 export type CommonStates = Omit<
   RootState,
-  | BootResourceMeta.MODEL
   | ConfigMeta.MODEL
   | GeneralMeta.MODEL
   | MessageMeta.MODEL

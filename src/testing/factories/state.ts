@@ -6,7 +6,6 @@ import { bondOptions } from "./general";
 
 import { ACTION_STATUS } from "@/app/base/constants";
 import type { APIError, ActionState } from "@/app/base/types";
-import type { BootResourceState } from "@/app/store/bootresource/types";
 import type { ConfigState } from "@/app/store/config/types";
 import { DEFAULT_STATUSES as DEFAULT_CONTROLLER_STATUSES } from "@/app/store/controller/slice";
 import type {
@@ -122,27 +121,6 @@ const defaultGeneralState = {
   loaded: false,
   loading: false,
 };
-
-export const bootResourceState = define<BootResourceState>({
-  connectionError: false,
-  eventErrors: () => [],
-  fetchedImages: null,
-  otherImages: () => [],
-  rackImportRunning: false,
-  regionImportRunning: false,
-  resources: () => [],
-  statuses: () => ({
-    deletingImage: false,
-    fetching: false,
-    polling: false,
-    savingOther: false,
-    savingUbuntuCore: false,
-    savingUbuntu: false,
-    stoppingImport: false,
-  }),
-  ubuntu: null,
-  ubuntuCoreImages: () => [],
-});
 
 export const configState = define<ConfigState>({
   ...defaultState,
@@ -600,7 +578,6 @@ export const routerState = define<RouterState>({
 });
 
 export const rootState = define<RootState>({
-  bootresource: bootResourceState,
   config: configState,
   controller: controllerState,
   device: deviceState,
