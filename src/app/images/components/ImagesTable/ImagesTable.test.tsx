@@ -5,8 +5,9 @@ import ImagesTable from "./ImagesTable";
 
 import DeleteImages from "@/app/images/components/DeleteImages";
 import { ConfigNames } from "@/app/store/config/types";
-import { imageFactory } from "@/testing/factories";
+import { imageFactory, imageStatusFactory } from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import { imageSyncResolvers } from "@/testing/resolvers/imageSync";
 import { imageResolvers } from "@/testing/resolvers/images";
 import {
   renderWithProviders,
@@ -26,6 +27,8 @@ const mockServer = setupMockServer(
   imageResolvers.listCustomImages.handler(),
   imageResolvers.listCustomImageStatistics.handler(),
   imageResolvers.listCustomImageStatuses.handler(),
+  imageSyncResolvers.startSynchronization.handler(),
+  imageSyncResolvers.stopSynchronization.handler(),
   configurationsResolvers.getConfiguration.handler({
     name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
     value: "noble",
@@ -103,7 +106,7 @@ describe("ImagesTable", () => {
   });
 
   describe("permissions", () => {
-    it("disables delete for default commissioning release images", async () => {
+    it("disables delete and select for default commissioning release images", async () => {
       renderWithProviders(
         <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
       );
@@ -121,18 +124,30 @@ describe("ImagesTable", () => {
           "Cannot delete images of the default commissioning release."
         );
       });
-    });
-  });
 
-  describe("actions", () => {
-    it("cannot select or delete images of commissioning release", async () => {
+      const selectionCheckbox = within(row).getByRole("checkbox", {
+        name: "select 24.04 LTS",
+      });
+      expect(selectionCheckbox).toBeAriaDisabled();
+      await userEvent.hover(selectionCheckbox);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(
+            "Cannot modify images of the default commissioning release."
+          )
+        ).toBeInTheDocument();
+      });
+    });
+
+    it("disables delete and start sync for images being downloaded, enables stop sync", async () => {
       mockServer.use(
-        imageResolvers.listSelections.handler({
+        imageResolvers.listSelectionStatuses.handler({
           items: [
-            imageFactory.build({
-              id: 1,
-              release: "noble",
-              title: "24.04 LTS",
+            imageStatusFactory.build({
+              id: 2,
+              status: "Downloading",
+              sync_percentage: 50,
             }),
           ],
           total: 3,
@@ -141,20 +156,56 @@ describe("ImagesTable", () => {
       renderWithProviders(
         <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
       );
+      await waitForLoading();
 
-      await waitFor(() => {
-        expect(
-          screen.getByRole("checkbox", { name: "select 24.04 LTS" })
-        ).toBeAriaDisabled();
+      const row = screen.getByRole("row", {
+        name: new RegExp("jammy", "i"),
       });
 
+      expect(within(row).getByText("50%")).toBeInTheDocument();
+
+      // Start button is replaced by stop
+      expect(
+        within(row).queryByRole("button", {
+          name: "Start synchronization",
+        })
+      ).not.toBeInTheDocument();
+
+      const stopButton = within(row).getByRole("button", {
+        name: "Stop synchronization",
+      });
+      const deleteButton = within(row).getByRole("button", { name: "Delete" });
+
+      expect(stopButton).not.toBeAriaDisabled();
+
+      expect(deleteButton).toBeAriaDisabled();
+      await userEvent.hover(deleteButton);
+
       await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: "Delete" })
-        ).toBeAriaDisabled();
+        expect(deleteButton).toHaveAccessibleDescription(
+          "Cannot delete images that are currently being imported."
+        );
       });
     });
 
+    it("disables stop sync when there is no download", async () => {
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+      await waitForLoading();
+
+      const row = screen.getByRole("row", {
+        name: new RegExp("jammy", "i"),
+      });
+      expect(
+        within(row).queryByRole("button", {
+          name: "Stop synchronization",
+        })
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("actions", () => {
     it("opens delete image side panel form", async () => {
       mockServer.use(
         imageResolvers.listSelections.handler({
@@ -183,6 +234,81 @@ describe("ImagesTable", () => {
         component: DeleteImages,
         title: "Delete images",
         props: { rowSelection: { "1": true }, setRowSelection: vi.fn },
+      });
+    });
+
+    it("calls start sync", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [
+            imageFactory.build({
+              id: 1,
+              release: "jammy",
+            }),
+          ],
+          total: 1,
+        }),
+        imageResolvers.listSelectionStatuses.handler({
+          items: [
+            imageStatusFactory.build({
+              id: 1,
+              status: "Waiting for download",
+            }),
+          ],
+          total: 1,
+        })
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Start synchronization" })
+        ).toBeInTheDocument();
+      });
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Start synchronization" })
+      );
+
+      await waitFor(() => {
+        expect(imageSyncResolvers.startSynchronization.resolved).toBeTruthy();
+      });
+    });
+
+    it("calls stop sync", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [
+            imageFactory.build({
+              id: 1,
+              release: "jammy",
+            }),
+          ],
+          total: 1,
+        }),
+        imageResolvers.listSelectionStatuses.handler({
+          items: [imageStatusFactory.build({ id: 1, status: "Downloading" })],
+          total: 1,
+        })
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Stop synchronization" })
+        ).toBeInTheDocument();
+      });
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Stop synchronization" })
+      );
+
+      await waitFor(() => {
+        expect(imageSyncResolvers.stopSynchronization.resolved).toBeTruthy();
       });
     });
   });
