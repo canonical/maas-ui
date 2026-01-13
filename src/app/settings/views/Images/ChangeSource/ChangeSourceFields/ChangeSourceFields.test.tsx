@@ -1,9 +1,9 @@
 import { Formik } from "formik";
 
+import { BootResourceSourceType } from "@/app/images/types";
 import ChangeSourceFields, {
   Labels,
 } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
-import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import { userEvent, renderWithProviders, screen } from "@/testing/utils";
 
 describe("ChangeSourceFields", () => {
