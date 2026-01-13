@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
-import { Icon, Spinner } from "@canonical/react-components";
+import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
 import type {
   Column,
   ColumnDef,
@@ -11,7 +11,6 @@ import type {
 import pluralize from "pluralize";
 
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
-import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import type { Image } from "@/app/images/types";
@@ -225,32 +224,42 @@ const useImageTableColumns = ({
             const downloadInProgress = isSyncing || isUpdating;
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
             return row.getIsGrouped() ? null : (
-              <TableActions
-                data-testid="image-actions"
-                deleteDisabled={!canBeDeleted}
-                deleteTooltip={
-                  !canBeDeleted
-                    ? isCommissioningImage
-                      ? "Cannot delete images of the default commissioning release."
-                      : "Cannot delete images that are currently being imported."
-                    : "Deletes this image."
-                }
-                onDelete={() => {
-                  if (row.original.id) {
-                    if (!row.getIsSelected()) {
-                      row.toggleSelected();
-                    }
-                    openSidePanel({
-                      component: DeleteImages,
-                      title: "Delete images",
-                      props: {
-                        rowSelection: { ...selectedRows, [row.id]: true },
-                        setRowSelection: setSelectedRows,
-                      },
-                    });
+              <div>
+                <Tooltip
+                  message={
+                    !canBeDeleted
+                      ? isCommissioningImage
+                        ? "Cannot delete images of the default commissioning release."
+                        : "Cannot delete images that are currently being imported."
+                      : "Delete this image."
                   }
-                }}
-              />
+                  position="left"
+                >
+                  <Button
+                    appearance="base"
+                    className="is-dense u-table-cell-padding-overlap"
+                    disabled={!canBeDeleted}
+                    hasIcon
+                    onClick={() => {
+                      if (row.original.id) {
+                        if (!row.getIsSelected()) {
+                          row.toggleSelected();
+                        }
+                        openSidePanel({
+                          component: DeleteImages,
+                          title: "Delete images",
+                          props: {
+                            rowSelection: { ...selectedRows, [row.id]: true },
+                            setRowSelection: setSelectedRows,
+                          },
+                        });
+                      }
+                    }}
+                  >
+                    <i className="p-icon--delete">Delete</i>
+                  </Button>
+                </Tooltip>
+              </div>
             );
           },
         },
