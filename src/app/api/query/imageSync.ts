@@ -52,7 +52,26 @@ const silentPoll: SilentPollState = {
 const POLL_INTERVAL = ACTIVE_DOWNLOAD_REFETCH_INTERVAL;
 const MAX_ATTEMPTS_PER_IMAGE = 10;
 
+/**
+ * Starts a silent polling mechanism to check if optimistically updated images
+ * have transitioned to "Downloading" state on the backend.
+ *
+ * This function is called after starting image sync to verify that the backend
+ * has picked up the sync request. It polls the backend at regular intervals
+ * without triggering UI refetches, checking each tracked image's status.
+ *
+ * The polling continues until:
+ * - An image's status becomes "Downloading" (success)
+ * - An image reaches MAX_ATTEMPTS_PER_IMAGE (timeout/failure)
+ * - All tracked images are resolved
+ *
+ * Once all images are resolved, it invalidates queries to refresh the UI
+ * and stops the polling mechanism.
+ *
+ * @param queryClient - The React Query client for managing query cache
+ */
 const startOrExtendSilentPolling = (queryClient: QueryClient) => {
+  // Prevent multiple concurrent polling loops
   if (silentPoll.active) {
     return;
   }
@@ -60,6 +79,7 @@ const startOrExtendSilentPolling = (queryClient: QueryClient) => {
   silentPoll.active = true;
 
   const poll = async () => {
+    // Fetch latest status from backend without triggering UI updates
     const [selectionResult, customImageResult] = await Promise.all([
       listSelectionStatus(),
       listCustomImagesStatus(),
@@ -68,9 +88,11 @@ const startOrExtendSilentPolling = (queryClient: QueryClient) => {
     const selectionItems = selectionResult?.data?.items ?? [];
     const customItems = customImageResult?.data?.items ?? [];
 
+    // Check each tracked image to see if it has resolved
     for (const [imageId, entry] of silentPoll.entries) {
       entry.attempts++;
 
+      // Find the image's current status from backend
       const backendSyncStatus =
         selectionItems.find((i) => i.id === imageId)?.status ??
         customItems.find((i) => i.id === imageId)?.status;
@@ -79,6 +101,7 @@ const startOrExtendSilentPolling = (queryClient: QueryClient) => {
         selectionItems.find((i) => i.id === imageId)?.update_status ??
         customItems.find((i) => i.id === imageId)?.update_status;
 
+      // Image is resolved if it's actively downloading, or we've exceeded max attempts
       const resolved =
         backendSyncStatus === "Downloading" ||
         backendUpdateStatus === "Downloading" ||
@@ -89,10 +112,12 @@ const startOrExtendSilentPolling = (queryClient: QueryClient) => {
       }
     }
 
+    // All images resolved - stop polling and refresh UI
     if (silentPoll.entries.size === 0) {
       silentPoll.active = false;
       silentPoll.timer = null;
 
+      // Invalidate all image-related queries to show final state
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: withImagesWorkflow(listSelectionStatusQueryKey()),
@@ -111,9 +136,11 @@ const startOrExtendSilentPolling = (queryClient: QueryClient) => {
       return;
     }
 
+    // Continue polling - schedule next check
     silentPoll.timer = setTimeout(poll, POLL_INTERVAL);
   };
 
+  // Start first poll after half interval to give backend a head-start
   silentPoll.timer = setTimeout(poll, POLL_INTERVAL / 2);
 };
 
