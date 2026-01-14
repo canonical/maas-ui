@@ -25,7 +25,7 @@ describe("SelectUpstreamImagesForm", () => {
     await waitFor(() => {
       expect(
         screen.getByRole("row", {
-          name: "noble",
+          name: "24.04 LTS noble",
           hidden: true,
         })
       ).toBeInTheDocument();
@@ -33,7 +33,7 @@ describe("SelectUpstreamImagesForm", () => {
 
     const rowAvailable = within(
       screen.getByRole("row", {
-        name: "noble",
+        name: "24.04 LTS noble",
         hidden: true,
       })
     ).getAllByRole("combobox", { hidden: true });

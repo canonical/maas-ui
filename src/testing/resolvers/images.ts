@@ -55,21 +55,25 @@ const mockAvailableSelections: UiSourceAvailableImageListResponse = {
     availableImageFactory.build({
       os: "ubuntu",
       release: "noble",
+      title: "24.04 LTS",
       architecture: "amd64",
     }),
     availableImageFactory.build({
       os: "ubuntu",
       release: "noble",
+      title: "24.04 LTS",
       architecture: "arm64",
     }),
     availableImageFactory.build({
       os: "ubuntu",
       release: "jammy",
+      title: "22.04 LTS",
       architecture: "amd64",
     }),
     availableImageFactory.build({
       os: "centos",
       release: "centos7",
+      title: "7.0",
       architecture: "amd64",
     }),
   ],

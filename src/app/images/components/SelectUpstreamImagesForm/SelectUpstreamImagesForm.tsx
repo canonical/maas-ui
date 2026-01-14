@@ -31,6 +31,7 @@ type ImagesByOS = Record<string, DownloadableImage[]>;
 
 type DownloadableImage = {
   id: string;
+  title: string;
   release: string;
   architectures: string;
   os: string;
@@ -42,7 +43,8 @@ export const getDownloadableImages = (
   return availableImages
     .map((image) => {
       return {
-        id: `${image.os}&${image.release}&${image.architecture}&${image.source_id}`,
+        id: `${image.os}&${image.release}&${image.title}&${image.architecture}&${image.source_id}`,
+        title: image.title,
         release: image.release,
         architectures: image.architecture,
         os: image.os.charAt(0).toUpperCase() + image.os.slice(1),
@@ -56,12 +58,13 @@ export const filterSyncedImages = (
   selectedImages: ImageResponse[]
 ): DownloadableImage[] => {
   return downloadableImages.filter((image) => {
-    const [os, release, arch] = image.id.split("&");
+    const [os, release, title, arch] = image.id.split("&");
 
     return !selectedImages.some(
       (selected) =>
         selected.os === os &&
         selected.release === release &&
+        selected.title === title &&
         selected.architecture === arch
     );
   });
@@ -80,20 +83,20 @@ export const groupImagesByOS = (images: DownloadableImage[]): ImagesByOS => {
 
   Object.keys(imagesByOS).forEach((distro) => {
     imagesByOS[distro].sort((a, b) => {
-      const aIsLTS = a.release.endsWith("LTS");
-      const bIsLTS = b.release.endsWith("LTS");
+      const aIsLTS = a.title.endsWith("LTS");
+      const bIsLTS = b.title.endsWith("LTS");
 
       if (aIsLTS && !bIsLTS) return -1;
       if (!aIsLTS && bIsLTS) return 1;
 
-      return b.release.localeCompare(a.release);
+      return b.title.localeCompare(a.title);
     });
   });
 
   return imagesByOS;
 };
 
-export const groupArchesByRelease = (images: ImagesByOS): GroupedImages => {
+export const groupArchesByTitle = (images: ImagesByOS): GroupedImages => {
   const groupedImages: GroupedImages = {};
 
   Object.keys(images).forEach((distro) => {
@@ -101,12 +104,12 @@ export const groupArchesByRelease = (images: ImagesByOS): GroupedImages => {
       groupedImages[distro] = {};
     }
     images[distro].forEach((image) => {
-      if (!groupedImages[distro][image.release]) {
-        groupedImages[distro][image.release] = [
+      if (!groupedImages[distro][`${image.title}&${image.release}`]) {
+        groupedImages[distro][`${image.title}&${image.release}`] = [
           { label: image.architectures.toString(), value: image.id },
         ];
       } else {
-        groupedImages[distro][image.release].push({
+        groupedImages[distro][`${image.title}&${image.release}`].push({
           label: image.architectures.toString(),
           value: image.id,
         });
@@ -142,7 +145,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
         selectedImages.items
       );
       const imagesByOS = groupImagesByOS(filteredDownloadableImages);
-      setGroupedImages(groupArchesByRelease(imagesByOS));
+      setGroupedImages(groupArchesByTitle(imagesByOS));
     }
   }, [availableImages, selectedImages]);
 
@@ -174,7 +177,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
                 values as Record<string, { label: string; value: string }[]>
               ).flatMap(([_, images]): SelectionRequest[] => {
                 return images.map((image): SelectionRequest => {
-                  const [os, release, arch, boot_source_id] =
+                  const [os, release, _title, arch, boot_source_id] =
                     image.value.split("&");
                   return {
                     arch,

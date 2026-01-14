@@ -42,7 +42,8 @@ export const availableImageFactory =
   Factory.define<UiSourceAvailableImageResponse>(() => ({
     os: "ubuntu",
     release: "noble",
+    title: "24.04 LTS",
     architecture: "amd64",
     source_id: 1,
-    source_name: "maas.io",
+    source_url: "maas.io",
   }));

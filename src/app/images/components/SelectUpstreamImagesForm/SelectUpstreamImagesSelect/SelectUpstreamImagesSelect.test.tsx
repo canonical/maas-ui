@@ -2,7 +2,7 @@ import { Formik } from "formik";
 
 import {
   getDownloadableImages,
-  groupArchesByRelease,
+  groupArchesByTitle,
   groupImagesByOS,
 } from "@/app/images/components/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
 import type { DownloadImagesSelectProps } from "@/app/images/components/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
@@ -18,7 +18,7 @@ describe("SelectUpstreamImagesSelect", () => {
 
     const downloadableImages = getDownloadableImages(releases);
     const imagesByOS = groupImagesByOS(downloadableImages);
-    const groupedImages = groupArchesByRelease(imagesByOS);
+    const groupedImages = groupArchesByTitle(imagesByOS);
     const mockSetFieldValue = vi.fn();
     renderWithProviders(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
@@ -43,8 +43,8 @@ describe("SelectUpstreamImagesSelect", () => {
     await userEvent.click(checkbox);
 
     expect(mockSetFieldValue).toHaveBeenCalledWith(
-      getValueKey("Ubuntu", releases[0].release),
-      [groupedImages.Ubuntu[releases[0].release][0]]
+      getValueKey("Ubuntu", releases[0].release, releases[0].title),
+      [groupedImages.Ubuntu[`${releases[0].title}&${releases[0].release}`][0]]
     );
   });
 });
