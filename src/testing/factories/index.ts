@@ -1,7 +1,6 @@
 export {
   architecturesState,
   bondOptionsState,
-  bootResourceState,
   componentsToDisableState,
   configState,
   controllerEventError,
@@ -79,19 +78,6 @@ export {
   vmClusterState,
   vmClusterStatuses,
 } from "./state";
-export {
-  bootResource,
-  bootResourceEventError,
-  bootResourceFetchedArch,
-  bootResourceFetchedImages,
-  bootResourceFetchedRelease,
-  bootResourceOtherImage,
-  bootResourceStatuses,
-  bootResourceUbuntu,
-  bootResourceUbuntuArch,
-  bootResourceUbuntuCoreImage,
-  bootResourceUbuntuRelease,
-} from "./bootresource";
 export { config } from "./config";
 export { discovery } from "./discovery";
 export { domain, domainDetails, domainResource } from "./domain";

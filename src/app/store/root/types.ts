@@ -1,9 +1,5 @@
 import type { RouterState } from "redux-first-history";
 
-import type {
-  BootResourceState,
-  BootResourceMeta,
-} from "@/app/store/bootresource/types";
 import type { ConfigState, ConfigMeta } from "@/app/store/config/types";
 import type {
   ControllerState,
@@ -68,7 +64,6 @@ import type {
 } from "@/app/store/vmcluster/types";
 
 export type RootState = {
-  [BootResourceMeta.MODEL]: BootResourceState;
   [ConfigMeta.MODEL]: ConfigState;
   [ControllerMeta.MODEL]: ControllerState;
   [DeviceMeta.MODEL]: DeviceState;
