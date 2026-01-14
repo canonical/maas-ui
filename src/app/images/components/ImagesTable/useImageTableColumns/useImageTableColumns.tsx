@@ -86,7 +86,9 @@ const useImageTableColumns = ({
             return (
               <div>
                 <div>{title}</div>
-                <small className="u-text--muted">{release}</small>
+                {title !== release ? (
+                  <small className="u-text--muted">{release}</small>
+                ) : null}
               </div>
             );
           },
@@ -119,7 +121,13 @@ const useImageTableColumns = ({
           id: "version",
           accessorKey: "version",
           enableSorting: true,
-          header: () => "Version",
+          header: () => (
+            <>
+              <span>Version</span>
+              <br />
+              <span>Last update</span>
+            </>
+          ),
           cell: ({
             row: {
               original: { update_status, last_updated, sync_percentage },
@@ -143,6 +151,8 @@ const useImageTableColumns = ({
                         {sync_percentage}%
                       </small>
                     </>
+                  ) : update_status === "No updates available" ? (
+                    "Up to date"
                   ) : (
                     update_status
                   )
@@ -164,7 +174,13 @@ const useImageTableColumns = ({
           id: "status",
           accessorKey: "status",
           enableSorting: true,
-          header: () => "Status",
+          header: () => (
+            <>
+              <span>Status</span>
+              <br />
+              <span>Machines</span>
+            </>
+          ),
           cell: ({
             row: {
               original: { status, sync_percentage, node_count },
@@ -208,7 +224,7 @@ const useImageTableColumns = ({
                   isStatisticsLoading ? (
                     <Spinner />
                   ) : typeof node_count === "number" ? (
-                    pluralize("node", node_count, true)
+                    pluralize("machine", node_count, true)
                   ) : (
                     "—"
                   )
@@ -237,13 +253,22 @@ const useImageTableColumns = ({
               <div>
                 {downloadInProgress ? (
                   <Tooltip
-                    message="Stop image synchronization."
+                    message={
+                      row.original.status === "Downloading" ||
+                      row.original.update_status === "Downloading"
+                        ? "Stop image synchronization."
+                        : "Synchronization cannot be stopped at 0%."
+                    }
                     position="left"
                   >
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={startSync.isPending}
+                      disabled={
+                        startSync.isPending ||
+                        row.original.status === "Optimistic" ||
+                        row.original.update_status === "Optimistic"
+                      }
                       hasIcon
                       onClick={() => {
                         stopSync.mutate({
