@@ -1,11 +1,18 @@
 import { useMemo } from "react";
 
 import type { Query, UseQueryResult } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
 import type { WithHeaders } from "@/app/api/utils";
-import { queryOptionsWithHeaders } from "@/app/api/utils";
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
+  BulkDeleteSelectionsData,
+  BulkDeleteSelectionsErrors,
+  BulkDeleteSelectionsResponses,
   ImageStatusListResponse,
   ImageStatusResponse,
   ListCustomImagesData,
@@ -34,6 +41,7 @@ import type {
   Options,
 } from "@/app/apiclient";
 import {
+  bulkDeleteSelections,
   listCustomImagesStatistic,
   listCustomImagesStatus,
   listSelectionStatistic,
@@ -394,5 +402,23 @@ export const useCustomImageStatistics = (
       withImagesWorkflow(listCustomImagesStatisticQueryKey(options))
     ),
     enabled,
+  });
+};
+
+export const useDeleteSelections = (
+  mutationOptions?: Options<BulkDeleteSelectionsData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkDeleteSelectionsResponses,
+      BulkDeleteSelectionsErrors,
+      BulkDeleteSelectionsData
+    >(mutationOptions, bulkDeleteSelections),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: IMAGES_WORKFLOW_KEY,
+      });
+    },
   });
 };

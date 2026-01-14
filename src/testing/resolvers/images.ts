@@ -1,6 +1,7 @@
 import { http, HttpResponse } from "msw";
 
 import type {
+  BulkCreateSelectionsError,
   ImageListResponse,
   ImageStatisticListResponse,
   ImageStatusListResponse,
@@ -61,6 +62,12 @@ const mockListImageStatisticsError: ListSelectionStatisticError = {
 const mockListImageStatusesError: ListSelectionStatusError = {
   message: "Not found",
   code: 404,
+  kind: "Error",
+};
+
+const mockSaveSelectionsError: BulkCreateSelectionsError = {
+  message: "Conflict",
+  code: 409,
   kind: "Error",
 };
 
@@ -144,6 +151,19 @@ const imageResolvers = {
     error: (error: ListSelectionStatusError = mockListImageStatusesError) =>
       http.get(`${BASE_URL}MAAS/a/v3/custom_images/statuses`, () => {
         imageResolvers.listCustomImageStatuses.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  deleteSelections: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/selections`, () => {
+        imageResolvers.deleteSelections.resolved = true;
+        return HttpResponse.json({}, { status: 204 });
+      }),
+    error: (error: BulkCreateSelectionsError = mockSaveSelectionsError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/selections`, () => {
+        imageResolvers.deleteSelections.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
