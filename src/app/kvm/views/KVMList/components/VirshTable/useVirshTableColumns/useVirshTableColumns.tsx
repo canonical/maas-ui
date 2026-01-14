@@ -41,7 +41,7 @@ const useVirshTableColumns = (): VirshColumnDef[] => {
         id: "resources",
         header: "VMs",
         accessorKey: "resources",
-        enbleSorting: true,
+        enableSorting: true,
         cell: ({ row }) => <VMsColumn vms={row.original.resources} />,
       },
       {
