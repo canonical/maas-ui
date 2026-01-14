@@ -1,10 +1,8 @@
 import type { ReactElement } from "react";
-import { useCallback, useEffect } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import { Notification, Spinner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
-import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import {
@@ -17,6 +15,10 @@ import {
   useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import {
+  useCustomImageStatuses,
+  useSelectionStatuses,
+} from "@/app/api/query/images";
+import {
   getBootsourceQueryKey,
   getConfigurationQueryKey,
   getConfigurationsQueryKey,
@@ -26,10 +28,8 @@ import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
+import { BootResourceSourceType } from "@/app/images/types";
 import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
-import { bootResourceActions } from "@/app/store/bootresource";
-import bootResourceSelectors from "@/app/store/bootresource/selectors";
-import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import { ConfigNames } from "@/app/store/config/types";
 
 const ChangeSourceSchema = Yup.object()
@@ -54,13 +54,6 @@ export type ChangeSourceValues = {
 };
 
 const ChangeSource = (): ReactElement => {
-  const dispatch = useDispatch();
-  const resources = useSelector(bootResourceSelectors.resources);
-  const pollingSources = useSelector(bootResourceSelectors.polling);
-  const cleanup = useCallback(() => {
-    return bootResourceActions.cleanup();
-  }, []);
-
   const queryClient = useQueryClient();
   const sources = useImageSources();
   // TODO: add support for multiple sources when v3 is ready
@@ -70,6 +63,9 @@ const ChangeSource = (): ReactElement => {
     },
     sources.isSuccess
   );
+  const { data: selectionStatuses } = useSelectionStatuses();
+  const { data: customImageStatuses } = useCustomImageStatuses();
+
   const importConfig = useGetConfiguration({
     path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
   });
@@ -85,15 +81,16 @@ const ChangeSource = (): ReactElement => {
   const saved = updateConfig.isSuccess && updateImageSource.isSuccess;
 
   useWindowTitle("Source");
-  useEffect(() => {
-    dispatch(bootResourceActions.poll({ continuous: false }));
-    return () => {
-      dispatch(bootResourceActions.pollStop());
-      dispatch(bootResourceActions.cleanup());
-    };
-  }, [dispatch]);
 
-  const canChangeSource = resources.every((resource) => !resource.downloading);
+  const canChangeSource =
+    selectionStatuses &&
+    customImageStatuses &&
+    selectionStatuses.items.every(
+      (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
+    ) &&
+    customImageStatuses.items.every(
+      (s) => s.status === "Downloading" && s.update_status !== "Downloading"
+    );
   const sourceType = new RegExp(MAAS_IO_DEFAULTS.url).test(
     source.data?.url ?? ""
   )
@@ -124,15 +121,13 @@ const ChangeSource = (): ReactElement => {
               Image import is in progress, cannot change source settings.
             </Notification>
           )}
-          {!pollingSources && !loading && (
+          {!loading && (
             <FormikForm
               aria-label="Choose source"
-              cleanup={cleanup}
               enableReinitialize
               errors={updateImageSource.error}
               initialValues={initialValues}
               onSubmit={(values) => {
-                dispatch(cleanup());
                 updateConfig.mutate({
                   headers: {
                     ETag: configETag,

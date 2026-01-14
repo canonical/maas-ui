@@ -15,8 +15,8 @@ import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import ShowAdvanced from "@/app/base/components/ShowAdvanced";
 import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
+import { BootResourceSourceType } from "@/app/images/types";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
-import { BootResourceSourceType } from "@/app/store/bootresource/types";
 
 export enum Labels {
   AutoSyncImages = "Automatically sync images",
