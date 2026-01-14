@@ -464,8 +464,6 @@ export const statusState = define<StatusState>({
   error: null,
   externalAuthURL: "http://example.com/auth",
   externalLoginURL: "http://example.com/login",
-  id: 2,
-  username: "koala",
   noUsers: false,
 });
 

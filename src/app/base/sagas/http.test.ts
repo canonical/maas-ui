@@ -178,10 +178,11 @@ describe("Auth API", () => {
 
     it("only starts calling the endpoint after user is authenticated", () => {
       return expectSaga(extendSessionSaga)
+        .withState({ status: { authenticated: true } })
         .provide([[matchers.call.fn(api.auth.extendSession), null]])
         .dispatch({
           type: "status/checkAuthenticatedSuccess",
-          payload: { username: "admin", id: 1 },
+          payload: { authenticated: true },
         })
         .fork(extendSessionWorker)
         .silentRun(100);
@@ -189,10 +190,11 @@ describe("Auth API", () => {
 
     it("does not start if authentication fails", () => {
       return expectSaga(extendSessionSaga)
+        .withState({ status: { authenticated: false } })
         .provide([[matchers.call.fn(api.auth.extendSession), null]])
         .dispatch({
           type: "status/checkAuthenticatedSuccess",
-          payload: { username: null, id: null },
+          payload: { authenticated: false },
         })
         .not.fork(extendSessionWorker)
         .silentRun(100);

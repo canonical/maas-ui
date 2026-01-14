@@ -80,7 +80,7 @@ describe("Login", () => {
   });
 
   it("can login via the api", async () => {
-    renderWithProviders(<Login />, {
+    const { store } = renderWithProviders(<Login />, {
       initialEntries: ["/login"],
       state,
     });
@@ -104,6 +104,9 @@ describe("Login", () => {
         path: "/",
       }
     );
+    expect(
+      store.getActions().find((action) => action.type === "status/loginSuccess")
+    ).toBeDefined();
   });
 
   it("shows a warning if no users have been added yet", () => {

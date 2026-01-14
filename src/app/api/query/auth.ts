@@ -18,8 +18,6 @@ import type {
   DeleteOauthProviderData,
   DeleteOauthProviderErrors,
   DeleteOauthProviderResponses,
-  ExtendSessionData,
-  ExtendSessionErrors,
   GetMeWithSummaryData,
   GetMeWithSummaryErrors,
   GetMeWithSummaryResponses,
@@ -33,7 +31,9 @@ import type {
   UpdateOauthProviderData,
   UpdateOauthProviderErrors,
   UpdateOauthProviderResponses,
-  ExtendSessionResponses,
+  PreLoginData,
+  PreLoginResponses,
+  PreLoginErrors,
 } from "@/app/apiclient";
 import {
   deleteOauthProvider,
@@ -44,12 +44,22 @@ import {
   getMeWithSummary,
   login,
   createSession,
-  extendSession,
+  preLogin,
 } from "@/app/apiclient";
 import {
   getMeWithSummaryQueryKey,
   getOauthProviderQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
+
+export const usePreLogin = (mutationOptions?: Options<PreLoginData>) => {
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      PreLoginResponses,
+      PreLoginErrors,
+      PreLoginData
+    >(mutationOptions, preLogin),
+  });
+};
 
 export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
   return useMutation({
@@ -69,18 +79,6 @@ export const useCreateSession = (
       CreateSessionErrors,
       CreateSessionData
     >(mutationOtions, createSession),
-  });
-};
-
-export const useExtendSession = (
-  mutationOptions?: Options<ExtendSessionData>
-) => {
-  return useMutation({
-    ...mutationOptionsWithHeaders<
-      ExtendSessionResponses,
-      ExtendSessionErrors,
-      ExtendSessionData
-    >(mutationOptions, extendSession),
   });
 };
 

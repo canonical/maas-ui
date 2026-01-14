@@ -1,11 +1,11 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Action } from "redux-saga";
 import {
   call,
   cancel,
   delay,
   fork,
   put,
+  select,
   take,
   takeEvery,
   takeLatest,
@@ -15,6 +15,7 @@ import type { SagaGenerator } from "typed-redux-saga/macro";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import type { Script } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
+import type { StatusState } from "@/app/store/status/types/base";
 import type { SimpleNode } from "@/app/store/types/node";
 import { getCookie } from "@/app/utils";
 
@@ -37,8 +38,7 @@ export const ROOT_API = "/MAAS/api/2.0/";
 const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
-const LOGIN_API = "/MAAS/a/v3/auth/access_token";
-const CHECK_AUTHENTICATED_API = "/MAAS/a/v3/users/me_with_summary";
+const LOGIN_API = "/MAAS/a/v3/auth/login";
 const LOGOUT_API = "/MAAS/a/v3/auth/logout";
 const EXTEND_SESSION_API = "/MAAS/a/v3/auth/sessions:extend";
 const MACHINES_API = `${ROOT_API}machines/`;
@@ -94,7 +94,7 @@ const scriptresultsDownload = (
 export const api = {
   auth: {
     checkAuthenticated: (): Promise<string> => {
-      return fetch(CHECK_AUTHENTICATED_API).then((response) => {
+      return fetch(LOGIN_API).then((response) => {
         const status = response.status.toString();
         if (status.startsWith("5")) {
           // If a 5xx error is returned then the API server is down for
@@ -323,31 +323,23 @@ export function* checkAuthenticatedSaga(): SagaGenerator<void> {
   }
 }
 
-const isCheckAuthenticatedSuccess = (
-  action: Action
-): action is PayloadAction<{ username: string; id: number }> => {
-  return (
-    action.type === "status/checkAuthenticatedSuccess" &&
-    "payload" in action &&
-    typeof (action as PayloadAction<{ username: string; id: number }>).payload
-      ?.username === "string" &&
-    typeof (action as PayloadAction<{ username: string; id: number }>).payload
-      ?.id === "number"
-  );
-};
-
 export function* extendSessionSaga(): SagaGenerator<void> {
   while (true) {
-    yield* take(isCheckAuthenticatedSuccess);
-    const task = yield* fork(extendSessionWorker);
+    yield* take("status/checkAuthenticatedSuccess");
+    const isAuthenticated = yield* select(
+      (state: { status: StatusState }) => state.status.authenticated
+    );
+    if (isAuthenticated) {
+      const task = yield* fork(extendSessionWorker);
 
-    yield* take([
-      "status/logoutSuccess",
-      "status/checkAuthenticatedError",
-      "status/websocketDisconnect",
-    ]);
+      yield* take([
+        "status/logoutSuccess",
+        "status/checkAuthenticatedError",
+        "status/websocketDisconnect",
+      ]);
 
-    yield* cancel(task);
+      yield* cancel(task);
+    }
   }
 }
 

@@ -15,8 +15,6 @@ const statusSlice = createSlice({
     externalLoginURL: null,
     connected: false,
     connecting: false,
-    id: null,
-    username: null,
     // The number of times the websocket connection has been successful
     connectedCount: 0,
     error: null,
@@ -35,20 +33,14 @@ const statusSlice = createSlice({
     checkAuthenticatedSuccess: (
       state: StatusState,
       action: PayloadAction<{
-        username: StatusState["username"];
-        id: StatusState["id"];
+        is_authenticated: StatusState["authenticated"];
+        no_users: StatusState["noUsers"];
       }>
     ) => {
-      if (action.payload.username && action.payload.id) {
-        state.authenticating = false;
-        state.authenticated = true;
-        state.externalAuthURL = null;
-        state.id = action.payload.id;
-        state.username = action.payload.username;
-      } else {
-        state.authenticating = false;
-        state.authenticated = false;
-      }
+      state.authenticating = false;
+      state.authenticated = action.payload.is_authenticated;
+      state.externalAuthURL = null;
+      state.noUsers = action.payload.no_users;
     },
     login: {
       prepare: (params: { password: string; username: string }) => ({

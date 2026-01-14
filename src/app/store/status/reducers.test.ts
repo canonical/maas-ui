@@ -14,8 +14,6 @@ describe("status", () => {
         error: null,
         externalAuthURL: null,
         externalLoginURL: null,
-        id: null,
-        username: null,
         noUsers: false,
       })
     );
@@ -189,8 +187,8 @@ describe("status", () => {
         {
           type: "status/checkAuthenticatedSuccess",
           payload: {
-            id: 2,
-            username: "koala",
+            is_authenticated: true,
+            no_users: false,
           },
         }
       )
@@ -199,8 +197,7 @@ describe("status", () => {
         authenticating: false,
         authenticated: true,
         externalAuthURL: null,
-        id: 2,
-        username: "koala",
+        noUsers: false,
       })
     );
   });
