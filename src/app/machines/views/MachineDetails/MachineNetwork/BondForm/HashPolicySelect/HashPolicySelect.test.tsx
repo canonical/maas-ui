@@ -5,7 +5,7 @@ import HashPolicySelect from "./HashPolicySelect";
 import { BondXmitHashPolicy } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, within, renderWithMockStore } from "@/testing/utils";
+import { screen, within, renderWithProviders } from "@/testing/utils";
 
 describe("HashPolicySelect", () => {
   let state: RootState;
@@ -30,7 +30,7 @@ describe("HashPolicySelect", () => {
 
   it("shows a spinner if the bond options haven't loaded", () => {
     state.general.bondOptions.loaded = false;
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <HashPolicySelect name="xmitHashPolicy" />
       </Formik>,
@@ -40,7 +40,7 @@ describe("HashPolicySelect", () => {
   });
 
   it("displays the options", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <HashPolicySelect name="xmitHashPolicy" />
       </Formik>,
@@ -85,7 +85,7 @@ describe("HashPolicySelect", () => {
       label: "Default",
       value: "99",
     };
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <HashPolicySelect defaultOption={defaultOption} name="xmitHashPolicy" />
       </Formik>,
@@ -105,7 +105,7 @@ describe("HashPolicySelect", () => {
       data: undefined,
       loaded: true,
     });
-    renderWithMockStore(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <HashPolicySelect defaultOption={null} name="xmitHashPolicy" />
       </Formik>,

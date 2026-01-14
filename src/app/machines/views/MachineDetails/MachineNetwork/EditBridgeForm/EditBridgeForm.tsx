@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
@@ -11,6 +12,7 @@ import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 import FormikForm from "@/app/base/components/FormikForm";
 import { TAG_SELECTOR_INPUT_NAME } from "@/app/base/components/TagSelector/TagSelector";
 import { useFetchActions } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
@@ -41,20 +43,19 @@ const InterfaceSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
 });
 
-type Props = {
-  close: () => void;
+type EditBridgeProps = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
   systemId: MachineDetails["system_id"];
 };
 
 const EditBridgeForm = ({
-  close,
   link,
   nic,
   systemId,
-}: Props): React.ReactElement | null => {
+}: EditBridgeProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -68,7 +69,7 @@ const EditBridgeForm = ({
     "updatingInterface",
     "updateInterface",
     () => {
-      close();
+      closeSidePanel();
     }
   );
 
@@ -98,7 +99,7 @@ const EditBridgeForm = ({
         [TAG_SELECTOR_INPUT_NAME]: "",
         vlan: nic.vlan_id,
       }}
-      onCancel={close}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Edit bridge",
         category: "Machine details networking",

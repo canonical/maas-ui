@@ -8,7 +8,7 @@ import { Labels } from "../ReservedRangesTable";
 
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { IPRangeType } from "@/app/store/iprange/types";
 
 export type ReservedRangesTableData = {

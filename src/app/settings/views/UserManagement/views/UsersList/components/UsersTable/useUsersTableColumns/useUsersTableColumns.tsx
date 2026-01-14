@@ -7,7 +7,7 @@ import type { UserWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import TableHeader from "@/app/base/components/TableHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import {
   DeleteUser,

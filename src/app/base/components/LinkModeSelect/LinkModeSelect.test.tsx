@@ -1,30 +1,25 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import LinkModeSelect, { Label } from "./LinkModeSelect";
 
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import { LINK_MODE_DISPLAY } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("LinkModeSelect", () => {
   it("only displays LINK_UP if a subnet is not provided", () => {
-    const store = mockStore(factory.rootState());
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
-          <LinkModeSelect
-            defaultOption={null}
-            interfaceType={NetworkInterfaceTypes.PHYSICAL}
-            name="mode"
-            subnet={null}
-          />
-        </Formik>
-      </Provider>
+    const state = factory.rootState();
+    renderWithProviders(
+      <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
+        <LinkModeSelect
+          defaultOption={null}
+          interfaceType={NetworkInterfaceTypes.PHYSICAL}
+          name="mode"
+          subnet={null}
+        />
+      </Formik>,
+      { state }
     );
 
     expect(screen.getAllByRole("option").length).toBe(1);
@@ -36,18 +31,17 @@ describe("LinkModeSelect", () => {
   });
 
   it("can display all options", () => {
-    const store = mockStore(factory.rootState());
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
-          <LinkModeSelect
-            defaultOption={null}
-            interfaceType={NetworkInterfaceTypes.PHYSICAL}
-            name="mode"
-            subnet={1}
-          />
-        </Formik>
-      </Provider>
+    const state = factory.rootState();
+    renderWithProviders(
+      <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
+        <LinkModeSelect
+          defaultOption={null}
+          interfaceType={NetworkInterfaceTypes.PHYSICAL}
+          name="mode"
+          subnet={1}
+        />
+      </Formik>,
+      { state }
     );
 
     expect(
@@ -73,18 +67,17 @@ describe("LinkModeSelect", () => {
   });
 
   it("only displays auto or static for an alias", () => {
-    const store = mockStore(factory.rootState());
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
-          <LinkModeSelect
-            defaultOption={null}
-            interfaceType={NetworkInterfaceTypes.ALIAS}
-            name="mode"
-            subnet={1}
-          />
-        </Formik>
-      </Provider>
+    const state = factory.rootState();
+    renderWithProviders(
+      <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
+        <LinkModeSelect
+          defaultOption={null}
+          interfaceType={NetworkInterfaceTypes.ALIAS}
+          name="mode"
+          subnet={1}
+        />
+      </Formik>,
+      { state }
     );
 
     expect(
@@ -110,38 +103,36 @@ describe("LinkModeSelect", () => {
   });
 
   it("can display a default option", () => {
-    const store = mockStore(factory.rootState());
+    const state = factory.rootState();
     const defaultOption = {
       label: "Default",
       value: "99",
     };
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
-          <LinkModeSelect
-            defaultOption={defaultOption}
-            interfaceType={NetworkInterfaceTypes.PHYSICAL}
-            name="mode"
-          />
-        </Formik>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
+        <LinkModeSelect
+          defaultOption={defaultOption}
+          interfaceType={NetworkInterfaceTypes.PHYSICAL}
+          name="mode"
+        />
+      </Formik>,
+      { state }
     );
 
     expect(screen.getByRole("option", { name: "Default" })).toBeInTheDocument();
   });
 
   it("can hide the default option", () => {
-    const store = mockStore(factory.rootState());
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
-          <LinkModeSelect
-            defaultOption={null}
-            interfaceType={NetworkInterfaceTypes.PHYSICAL}
-            name="mode"
-          />
-        </Formik>
-      </Provider>
+    const state = factory.rootState();
+    renderWithProviders(
+      <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
+        <LinkModeSelect
+          defaultOption={null}
+          interfaceType={NetworkInterfaceTypes.PHYSICAL}
+          name="mode"
+        />
+      </Formik>,
+      { state }
     );
 
     expect(

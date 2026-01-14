@@ -96,10 +96,9 @@
 @import "@/app/base/components/node/HardwareCard";
 @import "@/app/base/components/node/networking/NetworkTable";
 @import "@/app/base/components/node/NodeLogs/DownloadMenu";
-@import "@/app/base/components/node/NodeTestsTable";
+@import "@/app/base/components/node/NodeTestsTable/components/NodeTestsTable";
 @import "@/app/base/components/node/OverviewCard";
 @import "@/app/base/components/node/StorageTables/AvailableStorageTable";
-@import "@/app/base/components/NodeActionMenuGroup";
 @import "@/app/base/components/NodeName";
 @import "@/app/base/components/NodeSummaryNetworkCard";
 @import "@/app/base/components/NodeSummaryNetworkCard/NetworkCardTable";
@@ -131,7 +130,6 @@
 @include MachineSelectTable;
 @include NetworkCardTable;
 @include NetworkTable;
-@include NodeActionMenuGroup;
 @include NodeName;
 @include NodeSummaryNetworkCard;
 @include NodeTestsTable;
@@ -174,9 +172,9 @@
 @import "@/app/kvm/components/CPUColumn/CPUPopover";
 @import "@/app/kvm/components/KVMDetailsHeader";
 @import "@/app/base/components/DhcpFormFields/MachineSelect";
-@import "@/app/kvm/components/KVMForms/ComposeForm/InterfacesTable";
-@import "@/app/kvm/components/KVMForms/ComposeForm/InterfacesTable/SubnetSelect";
-@import "@/app/kvm/components/KVMForms/ComposeForm/StorageTable/PoolSelect";
+@import "@/app/kvm/components/ComposeForm/InterfacesTable";
+@import "@/app/kvm/components/ComposeForm/InterfacesTable/SubnetSelect";
+@import "@/app/kvm/components/ComposeForm/StorageTable/PoolSelect";
 @import "@/app/kvm/components/KVMResourcesCard";
 @import "@/app/kvm/components/KVMStorageCards";
 @import "@/app/kvm/components/LXDHostToolbar";
@@ -263,7 +261,7 @@
 @include GuidedProvisioning;
 
 // settings
-@import "@/app/settings/components/SettingsTable";
+@import "@/app/settings";
 @import "@/app/settings/views/Configuration/GeneralForm";
 @import "@/app/settings/views/Configuration/GeneralForm/ThemedRadioButton";
 @import "@/app/settings/views/Security/SecurityProtocols/TLSEnabled/TLSEnabledFields";

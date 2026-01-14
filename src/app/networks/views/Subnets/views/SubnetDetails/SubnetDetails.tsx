@@ -60,12 +60,7 @@ const SubnetDetails = (): ReactElement => {
   const base = urls.subnet.index(null);
 
   return (
-    <PageContent
-      header={<SubnetDetailsHeader subnet={subnet} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<SubnetDetailsHeader subnet={subnet} />}>
       {!subnet || !isValidID ? (
         <Spinner text="Loading..." />
       ) : (

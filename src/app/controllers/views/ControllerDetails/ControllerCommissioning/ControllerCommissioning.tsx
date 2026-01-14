@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Spinner, usePrevious } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import NodeTestsTable from "@/app/base/components/node/NodeTestsTable";
+import NodeTestsTable from "@/app/base/components/node/NodeTestsTable/components/NodeTestsTable";
 import { useWindowTitle } from "@/app/base/hooks";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "@/app/store/controller/types";

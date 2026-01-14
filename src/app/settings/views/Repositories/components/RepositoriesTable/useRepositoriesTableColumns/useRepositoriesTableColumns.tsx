@@ -4,7 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 import type { PackageRepositoryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   DeleteRepository,
   EditRepository,

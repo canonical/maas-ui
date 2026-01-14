@@ -2,7 +2,7 @@ import MachineInstances from "./MachineInstances";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("MachineInstances", () => {
   let state: RootState;
@@ -34,9 +34,8 @@ describe("MachineInstances", () => {
   });
 
   it("displays the spinner on load", () => {
-    renderWithBrowserRouter(<MachineInstances />, {
+    renderWithProviders(<MachineInstances />, {
       state,
-      route: "/machine/fake123/instances",
     });
 
     expect(screen.getByRole("alert")).toBeInTheDocument();
@@ -44,10 +43,10 @@ describe("MachineInstances", () => {
   });
 
   it("displays the table when data is available", () => {
-    renderWithBrowserRouter(<MachineInstances />, {
+    renderWithProviders(<MachineInstances />, {
       state,
-      route: "/machine/abc123/instances",
-      routePattern: "/machine/:id/instances",
+      initialEntries: ["/machine/abc123/instances"],
+      pattern: "/machine/:id/instances",
     });
 
     expect(
@@ -77,10 +76,10 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(<MachineInstances />, {
+    renderWithProviders(<MachineInstances />, {
       state,
-      route: "/machine/abc123/instances",
-      routePattern: "/machine/:id/instances",
+      initialEntries: ["/machine/abc123/instances"],
+      pattern: "/machine/:id/instances",
     });
 
     expect(screen.getByTestId("name")).toHaveTextContent("foo");
@@ -105,10 +104,10 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(<MachineInstances />, {
+    renderWithProviders(<MachineInstances />, {
       state,
-      route: "/machine/abc123/instances",
-      routePattern: "/machine/:id/instances",
+      initialEntries: ["/machine/abc123/instances"],
+      pattern: "/machine/:id/instances",
     });
 
     expect(screen.getByTestId("name")).toHaveTextContent("foo");
@@ -149,10 +148,10 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(<MachineInstances />, {
+    renderWithProviders(<MachineInstances />, {
       state,
-      route: "/machine/abc123/instances",
-      routePattern: "/machine/:id/instances",
+      initialEntries: ["/machine/abc123/instances"],
+      pattern: "/machine/:id/instances",
     });
 
     expect(screen.getAllByTestId("name")).toHaveLength(3);
@@ -178,10 +177,10 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(<MachineInstances />, {
+    renderWithProviders(<MachineInstances />, {
       state,
-      route: "/machine/abc123/instances",
-      routePattern: "/machine/:id/instances",
+      initialEntries: ["/machine/abc123/instances"],
+      pattern: "/machine/:id/instances",
     });
 
     expect(screen.getAllByTestId("mac")).toHaveLength(2);
@@ -222,10 +221,10 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(<MachineInstances />, {
+    renderWithProviders(<MachineInstances />, {
       state,
-      route: "/machine/abc123/instances",
-      routePattern: "/machine/:id/instances",
+      initialEntries: ["/machine/abc123/instances"],
+      pattern: "/machine/:id/instances",
     });
 
     expect(screen.getAllByTestId("mac")).toHaveLength(2);

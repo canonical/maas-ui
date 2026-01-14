@@ -1,10 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import AddAliasOrVlan, {
   Labels as AddAliasOrVlanLabels,
 } from "./AddAliasOrVlan";
 
-import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import {
@@ -17,12 +14,9 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  renderWithBrowserRouter,
   expectTooltipOnHover,
+  renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
-const route = urls.machines.index;
 
 describe("AddAliasOrVlan", () => {
   let state: RootState;
@@ -87,26 +81,24 @@ describe("AddAliasOrVlan", () => {
 
   it("displays a spinner when data is loading", () => {
     state.machine.items = [];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AddAliasOrVlan
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         systemId="abc123"
       />,
-      { route, state }
+      { state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a save-another button for aliases", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AddAliasOrVlan
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         nic={nic}
         systemId="abc123"
       />,
-      { route, state }
+      { state }
     );
     const secondarySubmit = screen.getByRole("button", {
       name: AddAliasOrVlanLabels.SaveAndAdd,
@@ -129,14 +121,13 @@ describe("AddAliasOrVlan", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AddAliasOrVlan
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
       />,
-      { route, state }
+      { state }
     );
     expect(
       screen.getByRole("button", {
@@ -147,14 +138,13 @@ describe("AddAliasOrVlan", () => {
 
   it("disables the save-another button when there are no unused VLANS", async () => {
     state.vlan.items = [];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AddAliasOrVlan
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
       />,
-      { route, state }
+      { state }
     );
     const saveAndAddButton = screen.getByRole("button", {
       name: AddAliasOrVlanLabels.SaveAndAdd,
@@ -192,14 +182,13 @@ describe("AddAliasOrVlan", () => {
         loading: false,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <AddAliasOrVlan
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         nic={nic}
         systemId="abc123"
       />,
-      { route, state }
+      { state }
     );
 
     expect(screen.getByRole("combobox", { name: "Fabric" })).toHaveValue(
@@ -212,15 +201,13 @@ describe("AddAliasOrVlan", () => {
 
   it("correctly dispatches actions to add a VLAN", async () => {
     const nic = factory.machineInterface();
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <AddAliasOrVlan
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
       />,
-      { route, store }
+      { state }
     );
 
     await userEvent.click(
@@ -277,15 +264,13 @@ describe("AddAliasOrVlan", () => {
         loaded: true,
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <AddAliasOrVlan
-        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         nic={nic}
         systemId="abc123"
       />,
-      { route, store }
+      { state }
     );
 
     await userEvent.click(

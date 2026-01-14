@@ -118,24 +118,14 @@ export const App = (): React.ReactElement => {
     configErrors === VaultErrors.REQUEST_FAILED ||
     configErrors === VaultErrors.CONNECTION_FAILED;
 
-  let content: ReactNode = null;
+  let content: ReactNode;
   // display loading spinner only on initial load
   // this prevents flashing of the loading screen when websocket connection is lost and restored
   if (isLoading) {
-    content = (
-      <PageContent
-        header={<SectionHeader loading />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
-      />
-    );
+    content = <PageContent header={<SectionHeader loading />} />;
   } else if (hasVaultError) {
     content = (
-      <PageContent
-        header={<SectionHeader title="Failed to connect" />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
-      >
+      <PageContent header={<SectionHeader title="Failed to connect" />}>
         <Notification severity="negative" title="Error:">
           The server connection failed with the error "{configErrors}"
         </Notification>
@@ -165,13 +155,7 @@ export const App = (): React.ReactElement => {
             <AppSideNavigation />
 
             <Suspense
-              fallback={
-                <PageContent
-                  header={<SectionHeader loading />}
-                  sidePanelContent={null}
-                  sidePanelTitle={null}
-                />
-              }
+              fallback={<PageContent header={<SectionHeader loading />} />}
             >
               {content}
             </Suspense>

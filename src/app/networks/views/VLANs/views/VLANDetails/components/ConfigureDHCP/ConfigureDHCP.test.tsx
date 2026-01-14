@@ -1,8 +1,5 @@
-import configureStore from "redux-mock-store";
-
 import ConfigureDHCP from "./ConfigureDHCP";
 
-import type { RootState } from "@/app/store/root/types";
 import { getSubnetDisplay } from "@/app/store/subnet/utils";
 import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
@@ -12,8 +9,6 @@ import {
   waitFor,
   renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("ConfigureDHCP", () => {
   it("shows a spinner while data is loading", () => {
@@ -235,9 +230,9 @@ describe("ConfigureDHCP", () => {
       }),
       vlan: factory.vlanState({ items: [vlan] }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<ConfigureDHCP vlan={vlan} />, {
-      store,
+
+    const { store } = renderWithProviders(<ConfigureDHCP vlan={vlan} />, {
+      state,
     });
 
     await userEvent.selectOptions(
@@ -354,9 +349,9 @@ describe("ConfigureDHCP", () => {
     const state = factory.rootState({
       vlan: factory.vlanState({ items: [relay, vlan] }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<ConfigureDHCP vlan={vlan} />, {
-      store,
+
+    const { store } = renderWithProviders(<ConfigureDHCP vlan={vlan} />, {
+      state,
     });
 
     await userEvent.click(
@@ -404,9 +399,9 @@ describe("ConfigureDHCP", () => {
       subnet: factory.subnetState({ items: [subnet], loaded: true }),
       vlan: factory.vlanState({ items: [relay, vlan] }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<ConfigureDHCP vlan={vlan} />, {
-      store,
+
+    const { store } = renderWithProviders(<ConfigureDHCP vlan={vlan} />, {
+      state,
     });
 
     await userEvent.click(

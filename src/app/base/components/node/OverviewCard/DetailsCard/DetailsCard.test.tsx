@@ -5,7 +5,7 @@ import { PowerTypeNames } from "@/app/store/general/constants";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 let state: RootState;
 beforeEach(() => {
@@ -32,8 +32,7 @@ it("renders a link to zone configuration with edit permissions", () => {
   });
   state.machine.items = [machine];
 
-  renderWithBrowserRouter(<DetailsCard node={machine} />, {
-    route: "/machine/abc123",
+  renderWithProviders(<DetailsCard node={machine} />, {
     state,
   });
 
@@ -50,8 +49,7 @@ it("renders a zone label without edit permissions", () => {
   });
   state.machine.items = [machine];
 
-  renderWithBrowserRouter(<DetailsCard node={machine} />, {
-    route: "/machine/abc123",
+  renderWithProviders(<DetailsCard node={machine} />, {
     state,
   });
 
@@ -73,8 +71,7 @@ it("renders a formatted power type", () => {
   state.machine.items = [machine];
   state.general.powerTypes.data = [powerType];
 
-  renderWithBrowserRouter(<DetailsCard node={machine} />, {
-    route: "/machine/abc123",
+  renderWithProviders(<DetailsCard node={machine} />, {
     state,
   });
 
@@ -96,8 +93,7 @@ it("shows a spinner if tags are not loaded", () => {
     }),
   });
 
-  renderWithBrowserRouter(<DetailsCard node={machine} />, {
-    route: "/machine/abc123",
+  renderWithProviders(<DetailsCard node={machine} />, {
     state,
   });
 
@@ -121,8 +117,7 @@ it("renders a list of tags once loaded", () => {
     }),
   });
 
-  renderWithBrowserRouter(<DetailsCard node={machine} />, {
-    route: "/machine/abc123",
+  renderWithProviders(<DetailsCard node={machine} />, {
     state,
   });
 
@@ -134,7 +129,7 @@ describe("node is a controller", () => {
     const controller = factory.controllerDetails();
     state.controller.items = [controller];
 
-    renderWithBrowserRouter(<DetailsCard node={controller} />, {
+    renderWithProviders(<DetailsCard node={controller} />, {
       state,
     });
 
@@ -154,8 +149,7 @@ describe("node is a machine", () => {
     const machine = factory.machineDetails({ owner: "admin" });
     state.machine.items = [machine];
 
-    renderWithBrowserRouter(<DetailsCard node={machine} />, {
-      route: "/machine/abc123",
+    renderWithProviders(<DetailsCard node={machine} />, {
       state,
     });
 
@@ -177,8 +171,7 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
     state.pod.items = [pod];
 
-    renderWithBrowserRouter(<DetailsCard node={machine} />, {
-      route: "/machine/abc123",
+    renderWithProviders(<DetailsCard node={machine} />, {
       state,
     });
 
@@ -203,8 +196,7 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
     state.pod.items = [pod];
 
-    renderWithBrowserRouter(<DetailsCard node={machine} />, {
-      route: "/machine/abc123",
+    renderWithProviders(<DetailsCard node={machine} />, {
       state,
     });
 
@@ -222,8 +214,7 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    renderWithBrowserRouter(<DetailsCard node={machine} />, {
-      route: "/machine/abc123",
+    renderWithProviders(<DetailsCard node={machine} />, {
       state,
     });
 
@@ -240,8 +231,7 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    renderWithBrowserRouter(<DetailsCard node={machine} />, {
-      route: "/machine/abc123",
+    renderWithProviders(<DetailsCard node={machine} />, {
       state,
     });
 
@@ -258,8 +248,7 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    renderWithBrowserRouter(<DetailsCard node={machine} />, {
-      route: "/machine/abc123",
+    renderWithProviders(<DetailsCard node={machine} />, {
       state,
     });
 

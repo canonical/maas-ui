@@ -10,7 +10,7 @@ import useStaticRoutesColumns from "./useStaticRoutesColumns/useStaticRoutesColu
 import { useGetIsSuperUser } from "@/app/api/query/auth";
 import TitledSection from "@/app/base/components/TitledSection";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
 import { subnetActions } from "@/app/store/subnet";

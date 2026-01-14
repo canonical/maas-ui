@@ -5,18 +5,14 @@ import { APIKeyAdd, APIKeyTable } from "../components";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 const APIKeyList = () => {
   useWindowTitle("API keys");
   const { openSidePanel } = useSidePanel();
 
   return (
-    <PageContent
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent>
       <ContentSection>
         <ContentSection.Header>
           <MainToolbar>

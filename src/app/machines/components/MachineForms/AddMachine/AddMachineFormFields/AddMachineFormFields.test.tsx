@@ -62,7 +62,7 @@ describe("AddMachineFormFields", () => {
   });
 
   const renderAddMachineFormFields = async () => {
-    renderWithProviders(<AddMachineForm clearSidePanelContent={vi.fn()} />, {
+    renderWithProviders(<AddMachineForm />, {
       initialEntries: ["/machines/add"],
       state,
     });

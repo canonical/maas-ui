@@ -7,7 +7,7 @@ import { Button, CodeSnippet } from "@canonical/react-components";
 import { useGenerateToken } from "@/app/api/query/racks";
 import CopyButton from "@/app/base/components/CopyButton";
 import docsUrls from "@/app/base/docsUrls";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import "./_index.scss";
 
 type GuidedProvisioningProps = {

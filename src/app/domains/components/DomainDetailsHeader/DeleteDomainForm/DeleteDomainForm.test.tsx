@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import DeleteDomainForm, {
   Labels as DeleteDomainFormLabels,
 } from "./DeleteDomainForm";
@@ -12,7 +10,6 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-const mockStore = configureStore();
 const { mockClose } = await mockSidePanel();
 
 describe("DeleteDomainForm", () => {
@@ -41,8 +38,10 @@ describe("DeleteDomainForm", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<DeleteDomainForm id={1} />, { store });
+
+    const { store } = renderWithProviders(<DeleteDomainForm id={1} />, {
+      state,
+    });
 
     expect(
       screen.getByText(DeleteDomainFormLabels.AreYouSure)

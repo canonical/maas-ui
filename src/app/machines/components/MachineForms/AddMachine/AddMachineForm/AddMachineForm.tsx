@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { ExternalLink } from "@canonical/maas-react-components";
@@ -13,7 +14,7 @@ import { useZones } from "@/app/api/query/zones";
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
-import type { ClearSidePanelContent } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
@@ -34,14 +35,9 @@ import {
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 
-type Props = {
-  clearSidePanelContent: ClearSidePanelContent;
-};
-
-export const AddMachineForm = ({
-  clearSidePanelContent,
-}: Props): React.ReactElement => {
+export const AddMachineForm = (): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const architectures = useSelector(architecturesSelectors.get);
   const architecturesLoaded = useSelector(architecturesSelectors.loaded);
   const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
@@ -139,7 +135,7 @@ export const AddMachineForm = ({
             zone:
               (zones?.data?.items?.length && zones?.data.items[0].name) || "",
           }}
-          onCancel={clearSidePanelContent}
+          onCancel={closeSidePanel}
           onSaveAnalytics={{
             action: secondarySubmit ? "Save and add another" : "Save",
             category: "Machine",
@@ -166,7 +162,7 @@ export const AddMachineForm = ({
           }}
           onSuccess={() => {
             if (!secondarySubmit) {
-              clearSidePanelContent();
+              closeSidePanel();
             }
             setSecondarySubmit(false);
           }}

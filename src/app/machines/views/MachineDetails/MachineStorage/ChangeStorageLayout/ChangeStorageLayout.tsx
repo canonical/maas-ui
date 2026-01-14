@@ -1,8 +1,11 @@
+import type { ReactElement } from "react";
+
 import { Icon } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import type { ClearSidePanelContent, EmptyObject } from "@/app/base/types";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import type { EmptyObject } from "@/app/base/types";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import type { Machine, StorageLayoutOption } from "@/app/store/machine/types";
@@ -10,18 +13,17 @@ import type { MachineEventErrors } from "@/app/store/machine/types/base";
 import { StorageLayout } from "@/app/store/types/enum";
 import { isVMWareLayout } from "@/app/store/utils";
 
-type Props = {
+type ChangeStorageLayoutProps = {
   systemId: Machine["system_id"];
-  clearSidePanelContent: ClearSidePanelContent;
   selectedLayout: StorageLayoutOption;
 };
 
 export const ChangeStorageLayout = ({
   systemId,
-  clearSidePanelContent,
   selectedLayout,
-}: Props): React.ReactElement => {
+}: ChangeStorageLayoutProps): ReactElement => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "applyingStorageLayout",
@@ -33,7 +35,7 @@ export const ChangeStorageLayout = ({
       cleanup={machineActions.cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={clearSidePanelContent}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: `Change storage layout${
           selectedLayout ? ` to ${selectedLayout?.sentenceLabel}` : ""
@@ -49,7 +51,7 @@ export const ChangeStorageLayout = ({
             storageLayout: selectedLayout.value,
           })
         );
-        clearSidePanelContent();
+        closeSidePanel();
       }}
       saved={saved}
       saving={saving}

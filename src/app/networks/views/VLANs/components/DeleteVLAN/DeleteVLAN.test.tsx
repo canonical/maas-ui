@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import DeleteVLAN from "./DeleteVLAN";
 
 import { vlanActions } from "@/app/store/vlan";
@@ -10,8 +8,6 @@ import {
   waitFor,
   renderWithProviders,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("DeleteVLAN", () => {
   it("does not allow deletion if the VLAN is the default VLAN in its fabric", () => {
@@ -29,8 +25,8 @@ describe("DeleteVLAN", () => {
         items: [vlan],
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<DeleteVLAN id={vlan.id} />, { store });
+
+    renderWithProviders(<DeleteVLAN id={vlan.id} />, { state });
 
     expect(
       screen.getByText(
@@ -54,8 +50,8 @@ describe("DeleteVLAN", () => {
         items: [vlan],
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<DeleteVLAN id={vlan.id} />, { store });
+
+    renderWithProviders(<DeleteVLAN id={vlan.id} />, { state });
 
     expect(
       screen.getByText("Are you sure you want to delete this VLAN?")
@@ -77,8 +73,10 @@ describe("DeleteVLAN", () => {
         items: [vlan],
       }),
     });
-    const store = mockStore(state);
-    renderWithProviders(<DeleteVLAN id={vlan.id} />, { store });
+
+    const { store } = renderWithProviders(<DeleteVLAN id={vlan.id} />, {
+      state,
+    });
 
     await userEvent.click(screen.getByRole("button", { name: "Delete VLAN" }));
 

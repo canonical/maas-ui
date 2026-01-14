@@ -8,9 +8,10 @@ import type {
   Table,
 } from "@tanstack/react-table";
 
+import type { Selected, SetSelected } from "../../types";
+
 import DoubleRow from "@/app/base/components/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
-import type { SetExpanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableHeader from "@/app/base/components/TableHeader";
 import DHCPColumn from "@/app/base/components/node/networking/DHCPColumn";
 import FabricColumn from "@/app/base/components/node/networking/FabricColumn";
@@ -20,10 +21,6 @@ import PXEColumn from "@/app/base/components/node/networking/NetworkTable/PXECol
 import SpeedColumn from "@/app/base/components/node/networking/NetworkTable/SpeedColumn";
 import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
 import TypeColumn from "@/app/base/components/node/networking/TypeColumn";
-import type {
-  Selected,
-  SetSelected,
-} from "@/app/base/components/node/networking/types";
 import NetworkTableActions from "@/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -54,12 +51,10 @@ export const filterHeadersAndAction = (
 
 const useNetworkTableColumns = ({
   node,
-  setExpanded,
   setSelected,
 }: {
   node: ControllerDetails | MachineDetails;
-  setExpanded?: SetExpanded;
-  setSelected?: SetSelected;
+  setSelected?: SetSelected | undefined;
 }): NetworkColumnDef[] => {
   return useMemo(
     () => [
@@ -231,9 +226,7 @@ const useNetworkTableColumns = ({
           row: Row<Network>;
           table: Table<Network>;
         }) => {
-          return !isABondOrBridgeParent &&
-            nodeIsMachine(node) &&
-            setExpanded ? (
+          return !isABondOrBridgeParent && nodeIsMachine(node) ? (
             <NetworkTableActions
               link={link}
               nic={nic}
@@ -250,7 +243,7 @@ const useNetworkTableColumns = ({
         },
       },
     ],
-    [node, setExpanded, setSelected]
+    [node, setSelected]
   );
 };
 

@@ -1,5 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
 import { DEFAULTS } from "./MachineListTable/constants";
@@ -15,9 +14,7 @@ import {
   TestStatusStatus,
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter, fireEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { fireEvent, renderWithProviders, screen } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -213,7 +210,7 @@ describe("MachineList", () => {
 
   it("can display an error", () => {
     state.machine.errors = "Uh oh!";
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -221,7 +218,7 @@ describe("MachineList", () => {
         searchFilter=""
         setHiddenGroups={vi.fn()}
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(screen.getByText("Uh oh!")).toBeInTheDocument();
   });
@@ -229,7 +226,7 @@ describe("MachineList", () => {
   it("can display and close an error from machine list", () => {
     state.machine.errors = null;
     state.machine.lists["123456"].errors = { tag: "No such constraint." };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -237,7 +234,7 @@ describe("MachineList", () => {
         searchFilter=""
         setHiddenGroups={vi.fn()}
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(screen.getByText("tag: No such constraint.")).toBeInTheDocument();
 
@@ -253,7 +250,7 @@ describe("MachineList", () => {
 
   it("can display a list of errors", () => {
     state.machine.errors = ["Uh oh!", "It broke"];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -261,14 +258,14 @@ describe("MachineList", () => {
         searchFilter=""
         setHiddenGroups={vi.fn()}
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(screen.getByText("Uh oh! It broke")).toBeInTheDocument();
   });
 
   it("can display a collection of errors", () => {
     state.machine.errors = { machine: "Uh oh!", network: "It broke" };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -276,7 +273,7 @@ describe("MachineList", () => {
         searchFilter=""
         setHiddenGroups={vi.fn()}
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(
       screen.getByText("machine: Uh oh! network: It broke")
@@ -285,8 +282,7 @@ describe("MachineList", () => {
 
   it("dispatches action to clean up machine state when dismissing errors", () => {
     state.machine.errors = "Everything is broken.";
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -294,7 +290,7 @@ describe("MachineList", () => {
         searchFilter=""
         setHiddenGroups={vi.fn()}
       />,
-      { route: "/machines", store }
+      { state }
     );
 
     // Using fireEvent instead of userEvent here,
@@ -315,7 +311,7 @@ describe("MachineList", () => {
         groups: [],
       }),
     };
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -323,7 +319,7 @@ describe("MachineList", () => {
         searchFilter="no matches here mate"
         setHiddenGroups={vi.fn()}
       />,
-      { route: "/machines", state }
+      { state }
     );
     expect(
       screen.getByText("No machines match the search criteria.")
@@ -331,8 +327,10 @@ describe("MachineList", () => {
   });
 
   it("cleans up when unmounting", async () => {
-    const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(
+    const {
+      result: { unmount },
+      store,
+    } = renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -340,7 +338,7 @@ describe("MachineList", () => {
         searchFilter=""
         setHiddenGroups={vi.fn()}
       />,
-      { route: "/machines", store }
+      { state }
     );
 
     unmount();
@@ -357,8 +355,7 @@ describe("MachineList", () => {
   });
 
   it("can search", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -366,7 +363,7 @@ describe("MachineList", () => {
         searchFilter="free text workload-service:prod"
         setHiddenGroups={vi.fn()}
       />,
-      { store }
+      { state }
     );
     const filter = {
       free_text: ["free text"],
@@ -402,8 +399,7 @@ describe("MachineList", () => {
         ],
       }),
     };
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -411,7 +407,7 @@ describe("MachineList", () => {
         searchFilter=""
         setHiddenGroups={vi.fn()}
       />,
-      { route: "/machines", store }
+      { state }
     );
     // Using fireEvent instead of userEvent here,
     // since using the latter seems to break every other test in this file
@@ -428,7 +424,7 @@ describe("MachineList", () => {
   });
 
   it("shows a warning notification if not all controllers are configured with Vault", async () => {
-    const controllers = [
+    state.controller.items = [
       factory.controller({
         system_id: "abc123",
         vault_configured: true,
@@ -440,9 +436,8 @@ describe("MachineList", () => {
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
       }),
     ];
-    state.controller.items = controllers;
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -459,7 +454,7 @@ describe("MachineList", () => {
   });
 
   it("shows a warning notification if  all controllers are configured with Vault but secrets are not migrated", async () => {
-    const controllers = [
+    state.controller.items = [
       factory.controller({
         system_id: "abc123",
         vault_configured: true,
@@ -471,9 +466,8 @@ describe("MachineList", () => {
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
       }),
     ];
-    state.controller.items = controllers;
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -490,7 +484,7 @@ describe("MachineList", () => {
   });
 
   it("doesn't show a warning notification if Vault setup has not been started", async () => {
-    const controllers = [
+    state.controller.items = [
       factory.controller({
         system_id: "abc123",
         vault_configured: false,
@@ -502,9 +496,8 @@ describe("MachineList", () => {
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
       }),
     ];
-    state.controller.items = controllers;
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -519,7 +512,7 @@ describe("MachineList", () => {
   });
 
   it("doesn't show a warning notification if Vault is fully configured", async () => {
-    const controllers = [
+    state.controller.items = [
       factory.controller({
         system_id: "abc123",
         vault_configured: true,
@@ -531,7 +524,6 @@ describe("MachineList", () => {
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
       }),
     ];
-    state.controller.items = controllers;
     state.general = factory.generalState({
       vaultEnabled: factory.vaultEnabledState({
         data: true,
@@ -539,7 +531,7 @@ describe("MachineList", () => {
       }),
     });
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -556,8 +548,7 @@ describe("MachineList", () => {
   it("uses the stored machineListPageSize", () => {
     localStorage.setItem("machineListPageSize", "20");
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -565,7 +556,7 @@ describe("MachineList", () => {
         searchFilter=""
         setHiddenGroups={vi.fn()}
       />,
-      { store }
+      { state }
     );
     const expected = machineActions.fetch("123456", {
       page_size: 20,
@@ -580,8 +571,7 @@ describe("MachineList", () => {
   it("falls back to default for invalid stored machineListPageSize", () => {
     localStorage.setItem("machineListPageSize", '"invalid_value"');
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    const { store } = renderWithProviders(
       <MachineList
         grouping={null}
         hiddenColumns={[]}
@@ -589,7 +579,7 @@ describe("MachineList", () => {
         searchFilter=""
         setHiddenGroups={vi.fn()}
       />,
-      { store }
+      { state }
     );
     const expected = machineActions.fetch("123456", {
       page_size: DEFAULTS.pageSize,

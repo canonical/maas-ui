@@ -8,7 +8,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import SubnetSelect from "@/app/base/components/SubnetSelect";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";

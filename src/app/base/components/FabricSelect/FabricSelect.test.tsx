@@ -1,14 +1,10 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import FabricSelect, { Label } from "./FabricSelect";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { render, screen, within } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { screen, within, renderWithProviders } from "@/testing/utils";
 
 describe("FabricSelect", () => {
   let state: RootState;
@@ -23,13 +19,12 @@ describe("FabricSelect", () => {
 
   it("is disabled if the fabrics haven't loaded", () => {
     state.fabric.loaded = false;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
-          <FabricSelect name="fabric" />
-        </Formik>
-      </Provider>
+
+    renderWithProviders(
+      <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
+        <FabricSelect name="fabric" />
+      </Formik>,
+      { state }
     );
 
     expect(screen.getByRole("combobox", { name: Label.Select })).toBeDisabled();
@@ -41,13 +36,12 @@ describe("FabricSelect", () => {
       factory.fabric({ id: 2, name: "FABric2" }),
     ];
     state.fabric.items = items;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
-          <FabricSelect name="fabric" />
-        </Formik>
-      </Provider>
+
+    renderWithProviders(
+      <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
+        <FabricSelect name="fabric" />
+      </Formik>,
+      { state }
     );
     const options = screen.getAllByRole("option");
 
@@ -63,17 +57,15 @@ describe("FabricSelect", () => {
   });
 
   it("can display a default option", () => {
-    const store = mockStore(state);
     const defaultOption = {
       label: "Default",
       value: "99",
     };
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
-          <FabricSelect defaultOption={defaultOption} name="fabric" />
-        </Formik>
-      </Provider>
+    renderWithProviders(
+      <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
+        <FabricSelect defaultOption={defaultOption} name="fabric" />
+      </Formik>,
+      { state }
     );
     const options = screen.getAllByRole("option");
 
@@ -85,13 +77,12 @@ describe("FabricSelect", () => {
 
   it("can hide the default option", () => {
     state.fabric.items = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
-          <FabricSelect defaultOption={null} name="fabric" />
-        </Formik>
-      </Provider>
+
+    renderWithProviders(
+      <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
+        <FabricSelect defaultOption={null} name="fabric" />
+      </Formik>,
+      { state }
     );
     const options = screen.queryAllByRole("option");
 
@@ -104,13 +95,12 @@ describe("FabricSelect", () => {
       factory.fabric({ id: 2, name: "FABric1" }),
     ];
     state.fabric.items = items;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
-          <FabricSelect name="fabric" />
-        </Formik>
-      </Provider>
+
+    renderWithProviders(
+      <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
+        <FabricSelect name="fabric" />
+      </Formik>,
+      { state }
     );
     const options = screen.getAllByRole("option");
 

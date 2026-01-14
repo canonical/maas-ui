@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { useClearNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import type { DiscoveryResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 type Props = {
   discovery: DiscoveryResponse;

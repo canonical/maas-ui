@@ -56,12 +56,7 @@ const VLANDetails = (): ReactElement => {
   }
 
   return (
-    <PageContent
-      header={<VLANDetailsHeader vlan={vlan} />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<VLANDetailsHeader vlan={vlan} />}>
       {vlansLoading ? (
         <Spinner text="Loading..." />
       ) : (

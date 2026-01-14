@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 //TODO when endpoint is ready
 export type OneTouchProvisioning = {

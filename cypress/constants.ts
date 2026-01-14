@@ -1,6 +1,6 @@
 export type Page = { heading: string; headingLevel?: number; url: string };
 export const pages: Page[] = [
-  { heading: "Login", url: "/accounts/login" },
+  { heading: "Login", url: "/login" },
   { heading: "SSH keys for admin", url: "/intro/user" },
   { heading: "Devices", url: "/devices" },
   { heading: "Controllers", url: "/controllers" },

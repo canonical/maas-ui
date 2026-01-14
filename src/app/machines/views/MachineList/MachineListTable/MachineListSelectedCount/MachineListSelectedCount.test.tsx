@@ -1,17 +1,13 @@
-import configureStore from "redux-mock-store";
-
 import MachineListSelectedCount from "./MachineListSelectedCount";
 
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import {
   screen,
-  renderWithMockStore,
+  renderWithProviders,
   getTestState,
   userEvent,
 } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("MachineListSelectedCount", () => {
   let state: RootState;
@@ -20,7 +16,7 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("displays the number of selected machines", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <MachineListSelectedCount
         filter={""}
         machineCount={20}
@@ -33,7 +29,7 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("displays a button to select all machines", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <MachineListSelectedCount
         filter={""}
         machineCount={20}
@@ -48,7 +44,7 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("displays a button to select all filtered machines", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <MachineListSelectedCount
         filter={"filter"}
         machineCount={20}
@@ -63,7 +59,7 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("displays a button to clear selection if all machines are selected", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <MachineListSelectedCount
         filter={""}
         machineCount={20}
@@ -77,14 +73,13 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("dispatches an action to select all machines", async () => {
-    const store = mockStore(state);
-    renderWithMockStore(
+    const { store } = renderWithProviders(
       <MachineListSelectedCount
         filter={""}
         machineCount={20}
         selectedCount={10}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -99,14 +94,13 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("dispatches an action to select all filtered machines", async () => {
-    const store = mockStore(state);
-    renderWithMockStore(
+    const { store } = renderWithProviders(
       <MachineListSelectedCount
         filter={"this-is-a-filter"}
         machineCount={20}
         selectedCount={10}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(
@@ -123,14 +117,13 @@ describe("MachineListSelectedCount", () => {
   });
 
   it("dispatches an action to clear the selection", async () => {
-    const store = mockStore(state);
-    renderWithMockStore(
+    const { store } = renderWithProviders(
       <MachineListSelectedCount
         filter={""}
         machineCount={20}
         selectedCount={20}
       />,
-      { store }
+      { state }
     );
 
     await userEvent.click(

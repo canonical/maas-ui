@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import RemoveInterface from "./RemoveInterface";
 
 import * as analyticsHooks from "@/app/base/hooks/analytics";
@@ -14,7 +12,6 @@ import {
   mockSidePanel,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
 const { mockClose } = await mockSidePanel();
 
 describe("RemoveInterface", () => {
@@ -39,9 +36,9 @@ describe("RemoveInterface", () => {
     const useSendMock = vi.spyOn(analyticsHooks, "useSendAnalyticsWhen");
     // Mock interface successfully being deleted.
     vi.spyOn(baseHooks, "useCycled").mockReturnValue([true, () => null]);
-    const store = mockStore(state);
+
     renderWithProviders(<RemoveInterface nicId={1} systemId="abc123" />, {
-      store,
+      state,
     });
 
     expect(mockClose).toHaveBeenCalled();
@@ -76,9 +73,9 @@ describe("RemoveInterface", () => {
         event: "deleteInterface",
       }),
     ];
-    const store = mockStore(state);
+
     renderWithProviders(<RemoveInterface nicId={1} systemId="abc123" />, {
-      store,
+      state,
     });
 
     expect(
@@ -87,10 +84,12 @@ describe("RemoveInterface", () => {
   });
 
   it("correctly dispatches an action to delete an interface", async () => {
-    const store = mockStore(state);
-    renderWithProviders(<RemoveInterface nicId={1} systemId="abc123" />, {
-      store,
-    });
+    const { store } = renderWithProviders(
+      <RemoveInterface nicId={1} systemId="abc123" />,
+      {
+        state,
+      }
+    );
 
     await userEvent.click(screen.getByRole("button", { name: /remove/i }));
 

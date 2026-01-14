@@ -1,17 +1,17 @@
-import {
-  Col,
-  Input,
-  Row,
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "@canonical/react-components";
+import type { ReactElement } from "react";
+
+import { GenericTable } from "@canonical/maas-react-components";
+import { Col, Input, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import "./index.scss";
+import type { CreateVolumeGroupColumnData } from "./useCreateVolumeGroupColumns/useCreateVolumeGroupColumns";
+import useCreateVolumeGroupColumns from "./useCreateVolumeGroupColumns/useCreateVolumeGroupColumns";
+
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -21,18 +21,13 @@ import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import type { Disk, Partition } from "@/app/store/types/node";
-import {
-  formatSize,
-  formatType,
-  splitDiskPartitionIds,
-} from "@/app/store/utils";
+import { formatSize, splitDiskPartitionIds } from "@/app/store/utils";
 
 type CreateVolumeGroupValues = {
   name: string;
 };
 
-type Props = {
-  closeForm: () => void;
+type CreateVolumeGroupProps = {
   selected: (Disk | Partition)[];
   systemId: Machine["system_id"];
 };
@@ -53,20 +48,21 @@ const CreateVolumeGroupSchema = Yup.object().shape({
 });
 
 export const CreateVolumeGroup = ({
-  closeForm,
   selected,
   systemId,
-}: Props): React.ReactElement | null => {
+}: CreateVolumeGroupProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  const columns = useCreateVolumeGroupColumns();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "creatingVolumeGroup",
     "createVolumeGroup",
     () => {
-      closeForm();
+      closeSidePanel();
     }
   );
   const totalSize = selected.reduce((sum, device) => (sum += device.size), 0);
@@ -80,7 +76,7 @@ export const CreateVolumeGroup = ({
         initialValues={{
           name: getInitialName(machine.disks),
         }}
-        onCancel={closeForm}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Create volume group",
           category: "Machine storage",
@@ -104,24 +100,13 @@ export const CreateVolumeGroup = ({
       >
         <Row>
           <Col size={12}>
-            <Table>
-              <thead>
-                <TableRow>
-                  <TableHeader>Name</TableHeader>
-                  <TableHeader>Size</TableHeader>
-                  <TableHeader>Device type</TableHeader>
-                </TableRow>
-              </thead>
-              <tbody>
-                {selected.map((device) => (
-                  <TableRow key={`${device.type}-${device.id}`}>
-                    <TableCell>{device.name}</TableCell>
-                    <TableCell>{formatSize(device.size)}</TableCell>
-                    <TableCell>{formatType(device)}</TableCell>
-                  </TableRow>
-                ))}
-              </tbody>
-            </Table>
+            <GenericTable<CreateVolumeGroupColumnData>
+              className="create-volume-group-table"
+              columns={columns}
+              data={selected}
+              isLoading={false}
+              noData="No devices selected."
+            />
           </Col>
           <Col size={12}>
             <FormikField label="Name" name="name" required type="text" />

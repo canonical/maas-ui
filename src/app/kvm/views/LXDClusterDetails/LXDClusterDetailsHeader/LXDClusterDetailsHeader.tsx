@@ -3,29 +3,26 @@ import type { ReactNode } from "react";
 import { Button, Icon, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import { useGetZone } from "@/app/api/query/zones";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
-import { KVMSidePanelViews } from "@/app/kvm/constants";
-import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import RefreshForm from "@/app/kvm/components/RefreshForm";
 import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
   clusterId: VMCluster["id"];
-  setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const LXDClusterDetailsHeader = ({
-  clusterId,
-  setSidePanelContent,
-}: Props): React.ReactElement => {
+const LXDClusterDetailsHeader = ({ clusterId }: Props): React.ReactElement => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
+  const { openSidePanel } = useSidePanel();
 
   // clusterId will be of a known cluster, so we can safely assume that cluster will be defined
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
@@ -47,9 +44,12 @@ const LXDClusterDetailsHeader = ({
           hasIcon
           onClick={() => {
             if (canRefresh) {
-              setSidePanelContent({
-                view: KVMSidePanelViews.REFRESH_KVM,
-                extras: { hostIds: cluster.hosts.map((host) => host.id) },
+              openSidePanel({
+                component: RefreshForm,
+                title: "Refresh",
+                props: {
+                  hostIds: cluster.hosts.map((host) => host.id),
+                },
               });
             }
           }}
@@ -60,7 +60,6 @@ const LXDClusterDetailsHeader = ({
       ]}
       className="has-icon"
       loading={!cluster}
-      setSidePanelContent={setSidePanelContent}
       tabLinks={[
         {
           active: location.pathname.endsWith(

@@ -8,7 +8,7 @@ import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { mockUsers, usersResolvers } from "@/testing/resolvers/users";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
@@ -52,9 +52,9 @@ describe("OwnerColumn", () => {
   });
 
   it("displays owner's username", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { state, route: "/machines" }
+      { state }
     );
 
     expect(screen.getByTestId("owner")).toHaveTextContent("user1");
@@ -66,18 +66,18 @@ describe("OwnerColumn", () => {
         factory.user({ last_name: "", username: "user1" })
       )
     );
-    renderWithBrowserRouter(
+    renderWithProviders(
       <OwnerColumn onToggleMenu={vi.fn()} showFullName systemId="abc123" />,
-      { state, route: "/machines" }
+      { state }
     );
 
     expect(screen.getByTestId("owner")).toHaveTextContent("user1");
   });
 
   it("can display owner's full name if present", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <OwnerColumn onToggleMenu={vi.fn()} showFullName systemId="abc123" />,
-      { state, route: "/machines" }
+      { state }
     );
 
     await waitFor(() => {
@@ -93,9 +93,9 @@ describe("OwnerColumn", () => {
       factory.tag({ id: 1, name: "minty" }),
       factory.tag({ id: 2, name: "aloof" }),
     ];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { state, route: "/machines" }
+      { state }
     );
 
     expect(screen.getByTestId("tags")).toHaveTextContent("aloof, minty");
@@ -103,9 +103,9 @@ describe("OwnerColumn", () => {
 
   it("can show a menu item to allocate a machine", async () => {
     state.machine.items[0].actions = [NodeActions.ACQUIRE];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { state, route: "/machines" }
+      { state }
     );
     // Open the menu so the elements get rendered.
     await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
@@ -117,9 +117,9 @@ describe("OwnerColumn", () => {
 
   it("can show a menu item to release a machine", async () => {
     state.machine.items[0].actions = [NodeActions.RELEASE];
-    renderWithBrowserRouter(
+    renderWithProviders(
       <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { state, route: "/machines" }
+      { state }
     );
     // Open the menu so the elements get rendered.
     await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
@@ -130,9 +130,9 @@ describe("OwnerColumn", () => {
   });
 
   it("can show a message when there are no menu items", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { state, route: "/machines" }
+      { state }
     );
     // Open the menu so the elements get rendered.
     await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
@@ -141,9 +141,8 @@ describe("OwnerColumn", () => {
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {
-    renderWithBrowserRouter(<OwnerColumn systemId="abc123" />, {
+    renderWithProviders(<OwnerColumn systemId="abc123" />, {
       state,
-      route: "/machines",
     });
     expect(
       screen.queryByRole("button", { name: "Take action:" })

@@ -8,12 +8,7 @@ const PoolsList = (): ReactElement => {
   useWindowTitle("Pools");
 
   return (
-    <PageContent
-      header={<PoolsListHeader />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
-    >
+    <PageContent header={<PoolsListHeader />}>
       <PoolsTable />
     </PageContent>
   );

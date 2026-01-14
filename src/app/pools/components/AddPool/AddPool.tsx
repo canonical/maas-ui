@@ -9,7 +9,7 @@ import type {
 } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 const PoolSchema = Yup.object().shape({
   name: Yup.string().required("name is required"),

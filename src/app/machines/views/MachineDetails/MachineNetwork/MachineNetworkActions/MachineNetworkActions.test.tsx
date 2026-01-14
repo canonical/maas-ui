@@ -1,17 +1,21 @@
 import MachineNetworkActions from "./MachineNetworkActions";
 
-import * as sidePanelHooks from "@/app/base/side-panel-context";
-import { MachineSidePanelViews } from "@/app/machines/constants";
+import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
+import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
+import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   expectTooltipOnHover,
+  mockSidePanel,
   renderWithProviders,
   screen,
   userEvent,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 const expectDisabledButtonWithTooltip = async (
   buttonLabel: RegExp | string,
@@ -47,7 +51,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -59,14 +62,11 @@ describe("MachineNetworkActions", () => {
     });
 
     it("shows the test form when clicking the button", async () => {
-      const setSidePanelContent = vi.fn();
-
       renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[]}
           setSelected={vi.fn()}
-          setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -75,9 +75,13 @@ describe("MachineNetworkActions", () => {
       await userEvent.click(
         screen.getByRole("button", { name: /Validate network configuration/i })
       );
-      expect(setSidePanelContent).toHaveBeenCalledWith({
-        view: MachineSidePanelViews.TEST_MACHINE,
-        extras: { applyConfiguredNetworking: true },
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: TestMachineForm,
+        title: "Test machine",
+        props: {
+          applyConfiguredNetworking: true,
+          isViewingDetails: true,
+        },
       });
     });
   });
@@ -101,20 +105,12 @@ describe("MachineNetworkActions", () => {
           system_id: "abc123",
         }),
       ];
-      const setSidePanelContent = vi.fn();
-      vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-        setSidePanelContent,
-        sidePanelContent: null,
-        setSidePanelSize: vi.fn(),
-        sidePanelSize: "regular",
-      });
 
       renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
           setSelected={vi.fn()}
-          setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -124,9 +120,9 @@ describe("MachineNetworkActions", () => {
         screen.getByRole("button", { name: /Create bond/i })
       );
 
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.ADD_BOND,
+          component: AddBondForm,
         })
       );
     });
@@ -139,7 +135,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -155,7 +150,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -188,7 +182,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[{ nicId: 1 }]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -228,7 +221,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -263,7 +255,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -289,20 +280,12 @@ describe("MachineNetworkActions", () => {
           system_id: "abc123",
         }),
       ];
-      const setSidePanelContent = vi.fn();
-      vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-        setSidePanelContent,
-        sidePanelContent: null,
-        setSidePanelSize: vi.fn(),
-        sidePanelSize: "regular",
-      });
 
       renderWithProviders(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }]}
           setSelected={vi.fn()}
-          setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -311,9 +294,9 @@ describe("MachineNetworkActions", () => {
       await userEvent.click(
         screen.getByRole("button", { name: /create bridge/i })
       );
-      expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
-          view: MachineSidePanelViews.ADD_BRIDGE,
+          component: AddBridgeForm,
         })
       );
     });
@@ -326,7 +309,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -344,7 +326,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -377,7 +358,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -417,7 +397,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }
@@ -451,7 +430,6 @@ describe("MachineNetworkActions", () => {
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
           setSelected={vi.fn()}
-          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, initialEntries: ["/machine/abc123"] }

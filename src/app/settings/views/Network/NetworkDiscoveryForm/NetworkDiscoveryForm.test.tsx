@@ -1,15 +1,9 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import NetworkDiscoveryForm from "./NetworkDiscoveryForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, render } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("NetworkDiscoveryForm", () => {
   let state: RootState;
@@ -49,28 +43,13 @@ describe("NetworkDiscoveryForm", () => {
 
   it("displays a spinner if config is loading", () => {
     state.config.loading = true;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <NetworkDiscoveryForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<NetworkDiscoveryForm />, { state });
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("dispatches an action to update config on save button click", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <NetworkDiscoveryForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<NetworkDiscoveryForm />, { state });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Active subnet mapping interval" }),
@@ -100,15 +79,7 @@ describe("NetworkDiscoveryForm", () => {
 
   it("dispatches action to fetch config if not already loaded", () => {
     state.config.loaded = false;
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <NetworkDiscoveryForm />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { store } = renderWithProviders(<NetworkDiscoveryForm />, { state });
 
     const fetchActions = store
       .getActions()

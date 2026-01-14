@@ -1,23 +1,29 @@
-import { Notification } from "@canonical/react-components";
+import type { ReactElement } from "react";
+
+import { Notification, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import * as Yup from "yup";
 
 import CommissionFormFields from "./CommissionFormFields";
 import type { CommissionFormValues, FormattedScript } from "./types";
 
 import ActionForm from "@/app/base/components/ActionForm";
+import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
 import { useFetchActions, useGetURLId } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import type { MachineActionFormProps } from "@/app/machines/types";
 import { machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import {
   MachineMeta,
   type MachineEventErrors,
 } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
 import { isUnconfiguredPowerType } from "@/app/store/machine/utils/common";
 import {
   useFetchMachine,
+  useMachineSelectedCount,
   useSelectedMachinesActionsDispatch,
 } from "@/app/store/machine/utils/hooks";
 import { scriptActions } from "@/app/store/script";
@@ -54,23 +60,34 @@ const CommissionFormSchema = Yup.object().shape({
 
 type ScriptInput = Record<string, { url: string }>;
 
-type Props = MachineActionFormProps;
+type CommissionFormProps = {
+  isViewingDetails: boolean;
+};
 
 export const CommissionForm = ({
-  clearSidePanelContent,
-  errors,
-  machines,
-  processingCount,
-  selectedCount,
-  searchFilter,
-  viewingDetails,
-  selectedMachines,
-}: Props): React.ReactElement => {
+  isViewingDetails,
+}: CommissionFormProps): ReactElement => {
   const id = useGetURLId(MachineMeta.PK);
   const { machine } = useFetchMachine(id);
   const dispatch = useDispatch();
-  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
+  const location = useLocation();
+  const { closeSidePanel } = useSidePanel();
+
+  const searchFilter = FilterMachines.filtersToString(
+    FilterMachines.queryStringToFilters(location.search)
+  );
+
+  const selectedMachines = useSelector(machineSelectors.selected);
+  const { selectedCount, selectedCountLoading } = useMachineSelectedCount(
+    FilterMachines.parseFetchFilters(searchFilter)
+  );
+
+  const {
+    dispatch: dispatchForSelectedMachines,
+    actionErrors,
+    actionStatus,
+    ...actionProps
+  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const preselectedCommissioningScripts = useSelector(
@@ -105,105 +122,105 @@ export const CommissionForm = ({
 
   useFetchActions([scriptActions.fetch]);
 
+  if (selectedCountLoading) {
+    return <Spinner text={"Loading..."} />;
+  }
+
   return (
-    <ActionForm<CommissionFormValues, MachineEventErrors>
-      actionName={NodeActions.COMMISSION}
-      allowUnchanged
-      cleanup={machineActions.cleanup}
-      errors={errors}
-      initialValues={{
-        enableSSH: false,
-        skipBMCConfig: false,
-        skipNetworking: false,
-        skipStorage: false,
-        updateFirmware: false,
-        configureHBA: false,
-        commissioningScripts: preselectedCommissioningSorted,
-        testingScripts: preselectedTestingScripts,
-        scriptInputs: initialScriptInputs,
-      }}
-      loaded={scriptsLoaded}
-      modelName="machine"
-      onCancel={clearSidePanelContent}
-      onSaveAnalytics={{
-        action: "Submit",
-        category: `Machine ${viewingDetails ? "details" : "list"} action form`,
-        label: "Commission",
-      }}
-      onSubmit={(values) => {
-        dispatch(machineActions.cleanup());
-        const {
-          enableSSH,
-          skipBMCConfig,
-          skipNetworking,
-          skipStorage,
-          updateFirmware,
-          configureHBA,
-          commissioningScripts,
-          testingScripts,
-          scriptInputs,
-        } = values;
-        const commissioningScriptsParam = commissioningScripts.map(
-          (script) => script.name
-        );
-        if (updateFirmware) {
-          commissioningScriptsParam.push(ScriptName.UPDATE_FIRMWARE);
-        }
-        if (configureHBA) {
-          commissioningScriptsParam.push(ScriptName.CONFIGURE_HBA);
-        }
-        const testingScriptsParam = testingScripts.length
-          ? testingScripts.map((script) => script.name)
-          : [ScriptName.NONE];
-        if (selectedMachines) {
-          dispatchForSelectedMachines(machineActions.commission, {
-            commissioning_scripts: commissioningScriptsParam,
-            enable_ssh: enableSSH,
-            script_input: scriptInputs,
-            skip_bmc_config: skipBMCConfig,
-            skip_networking: skipNetworking,
-            skip_storage: skipStorage,
-            testing_scripts: testingScriptsParam,
-          });
-        } else {
-          machines?.forEach((machine) => {
-            dispatch(
-              machineActions.commission({
-                commissioning_scripts: commissioningScriptsParam,
-                enable_ssh: enableSSH,
-                script_input: scriptInputs,
-                skip_bmc_config: skipBMCConfig,
-                skip_networking: skipNetworking,
-                skip_storage: skipStorage,
-                system_id: machine.system_id,
-                testing_scripts: testingScriptsParam,
-              })
-            );
-          });
-        }
-      }}
-      onSuccess={clearSidePanelContent}
-      processingCount={processingCount}
-      selectedCount={machines ? machines.length : (selectedCount ?? 0)}
-      validationSchema={CommissionFormSchema}
-      {...actionProps}
-    >
-      {machine && isUnconfiguredPowerType(machine) && (
-        <Notification severity="negative" title="Error">
-          Unconfigured power type. Please{" "}
-          <Link to={urls.machines.machine.configuration(id ? { id } : null)}>
-            configure the power type{" "}
-          </Link>
-          and try again.
-        </Notification>
-      )}
-      <CommissionFormFields
-        commissioningScripts={formatScripts(commissioningScripts)}
-        preselectedCommissioning={formatScripts(preselectedCommissioningSorted)}
-        preselectedTesting={formatScripts(preselectedTestingScripts)}
-        testingScripts={formatScripts(testingScripts)}
-      />
-    </ActionForm>
+    <>
+      {selectedCount === 0 ? (
+        <NodeActionWarning
+          action={NodeActions.COMMISSION}
+          nodeType="machine"
+          selectedCount={selectedCount}
+        />
+      ) : null}
+      <ActionForm<CommissionFormValues, MachineEventErrors>
+        actionName={NodeActions.COMMISSION}
+        allowUnchanged
+        cleanup={machineActions.cleanup}
+        errors={actionErrors}
+        initialValues={{
+          enableSSH: false,
+          skipBMCConfig: false,
+          skipNetworking: false,
+          skipStorage: false,
+          updateFirmware: false,
+          configureHBA: false,
+          commissioningScripts: preselectedCommissioningSorted,
+          testingScripts: preselectedTestingScripts,
+          scriptInputs: initialScriptInputs,
+        }}
+        loaded={scriptsLoaded}
+        modelName="machine"
+        onCancel={closeSidePanel}
+        onSaveAnalytics={{
+          action: "Submit",
+          category: `Machine ${isViewingDetails ? "details" : "list"} action form`,
+          label: "Commission",
+        }}
+        onSubmit={(values) => {
+          dispatch(machineActions.cleanup());
+          const {
+            enableSSH,
+            skipBMCConfig,
+            skipNetworking,
+            skipStorage,
+            updateFirmware,
+            configureHBA,
+            commissioningScripts,
+            testingScripts,
+            scriptInputs,
+          } = values;
+          const commissioningScriptsParam = commissioningScripts.map(
+            (script) => script.name
+          );
+          if (updateFirmware) {
+            commissioningScriptsParam.push(ScriptName.UPDATE_FIRMWARE);
+          }
+          if (configureHBA) {
+            commissioningScriptsParam.push(ScriptName.CONFIGURE_HBA);
+          }
+          const testingScriptsParam = testingScripts.length
+            ? testingScripts.map((script) => script.name)
+            : [ScriptName.NONE];
+          if (selectedMachines) {
+            dispatchForSelectedMachines(machineActions.commission, {
+              commissioning_scripts: commissioningScriptsParam,
+              enable_ssh: enableSSH,
+              script_input: scriptInputs,
+              skip_bmc_config: skipBMCConfig,
+              skip_networking: skipNetworking,
+              skip_storage: skipStorage,
+              testing_scripts: testingScriptsParam,
+            });
+          }
+        }}
+        onSuccess={closeSidePanel}
+        processingCount={actionStatus === "loading" ? selectedCount : 0}
+        selectedCount={selectedCount ?? 0}
+        validationSchema={CommissionFormSchema}
+        {...actionProps}
+      >
+        {machine && isUnconfiguredPowerType(machine) && (
+          <Notification severity="negative" title="Error">
+            Unconfigured power type. Please{" "}
+            <Link to={urls.machines.machine.configuration(id ? { id } : null)}>
+              configure the power type{" "}
+            </Link>
+            and try again.
+          </Notification>
+        )}
+        <CommissionFormFields
+          commissioningScripts={formatScripts(commissioningScripts)}
+          preselectedCommissioning={formatScripts(
+            preselectedCommissioningSorted
+          )}
+          preselectedTesting={formatScripts(preselectedTestingScripts)}
+          testingScripts={formatScripts(testingScripts)}
+        />
+      </ActionForm>
+    </>
   );
 };
 

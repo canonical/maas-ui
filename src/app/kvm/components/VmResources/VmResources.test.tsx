@@ -1,5 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import configureStore from "redux-mock-store";
 
 import VmResources, { Label } from "./VmResources";
 
@@ -9,12 +8,7 @@ import * as query from "@/app/store/machine/utils/query";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  renderWithBrowserRouter,
-  renderWithMockStore,
-} from "@/testing/utils";
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -24,7 +18,6 @@ vi.mock("@reduxjs/toolkit", async () => {
   };
 });
 const callId = "mocked-nanoid";
-const mockStore = configureStore<RootState>();
 
 describe("VmResources", () => {
   let state: RootState;
@@ -67,17 +60,16 @@ describe("VmResources", () => {
         name: "Deployed",
       }),
     ];
-    renderWithMockStore(<VmResources podId={1} />, { state });
+    renderWithProviders(<VmResources podId={1} />, { state });
     expect(
       screen.getByRole("button", { name: Label.ResourceVMs })
     ).toBeAriaDisabled();
   });
 
   it("can pass additional filters to the request", () => {
-    const store = mockStore(state);
-    renderWithMockStore(
+    const { store } = renderWithProviders(
       <VmResources filters={{ id: ["abc123"] }} podId={1} />,
-      { store }
+      { state }
     );
     const expected = machineActions.fetch(callId);
     const result = store
@@ -90,7 +82,7 @@ describe("VmResources", () => {
   });
 
   it("can display a list of VMs", async () => {
-    renderWithBrowserRouter(<VmResources podId={1} />, {
+    renderWithProviders(<VmResources podId={1} />, {
       state,
     });
     await userEvent.click(

@@ -1,4 +1,4 @@
-import type { ReactElement, Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { useEffect } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
@@ -6,7 +6,7 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import { BootResourceAction } from "@/app/store/bootresource/types";

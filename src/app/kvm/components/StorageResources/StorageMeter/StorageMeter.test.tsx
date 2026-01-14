@@ -1,8 +1,7 @@
-import { render, screen } from "@testing-library/react";
-
 import StorageMeter from "./StorageMeter";
 
 import * as factory from "@/testing/factories";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 const pools = {
   "pool-1": factory.podStoragePoolResource({
@@ -17,13 +16,13 @@ const pools = {
 
 describe("StorageMeter", () => {
   it("renders", () => {
-    render(<StorageMeter pools={pools} />);
+    renderWithProviders(<StorageMeter pools={pools} />);
 
     expect(screen.getByText("Allocated")).toBeInTheDocument();
   });
 
   it("does not render if more than one pool present", () => {
-    render(
+    renderWithProviders(
       <StorageMeter
         pools={{ ...pools, "pool-2": factory.podStoragePoolResource() }}
       />

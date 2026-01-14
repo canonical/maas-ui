@@ -1,14 +1,16 @@
-import configureStore from "redux-mock-store";
-
 import LXDHostVMs from "./LXDHostVMs";
 
-import { KVMSidePanelViews } from "@/app/kvm/constants";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
 import { machineActions } from "@/app/store/machine";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  mockSidePanel,
+  renderWithProviders,
+  screen,
+  userEvent,
+} from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
+const { mockOpen } = await mockSidePanel();
 
 describe("LXDHostVMs", () => {
   it("shows a spinner if pod has not loaded yet", () => {
@@ -18,16 +20,10 @@ describe("LXDHostVMs", () => {
         loaded: false,
       }),
     });
-    const store = mockStore(state);
 
-    renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
-      { route: "/kvm/1/project", store }
+    renderWithProviders(
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
+      { state }
     );
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -45,14 +41,9 @@ describe("LXDHostVMs", () => {
       }),
     });
 
-    renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
-      { route: "/kvm/1", state }
+    renderWithProviders(
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
+      { state }
     );
 
     expect(screen.queryByTestId("numa-resources")).not.toBeInTheDocument();
@@ -69,15 +60,14 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithProviders(
       <LXDHostVMs
         clusterId={2}
         hostId={1}
         searchFilter=""
         setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
       />,
-      { route: "/kvm/1", state }
+      { state }
     );
     expect(screen.getByTestId("toolbar-title")).toHaveTextContent(
       `VMs on ${pod.name}`
@@ -91,14 +81,9 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
-      { route: "/kvm/1", state }
+    renderWithProviders(
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
+      { state }
     );
     expect(screen.getByTestId("toolbar-title")).toHaveTextContent(
       `VMs on this host`
@@ -112,23 +97,18 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    const setSidePanelContent = vi.fn();
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={setSidePanelContent}
-      />,
-      { route: "/kvm/1", store }
+
+    renderWithProviders(
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
+      { state }
     );
 
-    await userEvent.click(screen.getByTestId("add-vm"));
+    await userEvent.click(screen.getByRole("button", { name: "Add VM" }));
 
-    expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMSidePanelViews.COMPOSE_VM,
-      extras: {
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: ComposeForm,
+      title: "Compose",
+      props: {
         hostId: 1,
       },
     });
@@ -141,16 +121,10 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    const store = mockStore(state);
 
-    renderWithBrowserRouter(
-      <LXDHostVMs
-        hostId={1}
-        searchFilter=""
-        setSearchFilter={vi.fn()}
-        setSidePanelContent={vi.fn()}
-      />,
-      { store }
+    const { store } = renderWithProviders(
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
+      { state }
     );
     const expected = machineActions.fetch("123456", {
       filter: { pod: [pod.name] },

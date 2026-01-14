@@ -2,11 +2,11 @@ import type { ReactElement } from "react";
 
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useLocation, Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { ClearAllForm } from "@/app/networkDiscovery/components";
 

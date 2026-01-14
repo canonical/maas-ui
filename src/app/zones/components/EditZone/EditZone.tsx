@@ -8,7 +8,7 @@ import type { UpdateZoneError, ZoneRequest } from "@/app/apiclient";
 import { getZoneQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 type EditZoneProps = {
   id: number;

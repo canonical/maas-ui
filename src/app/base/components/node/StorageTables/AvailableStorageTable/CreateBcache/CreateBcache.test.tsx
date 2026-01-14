@@ -1,15 +1,10 @@
-import configureStore from "redux-mock-store";
-
 import CreateBcache from "./CreateBcache";
 
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import { BcacheModes } from "@/app/store/machine/types";
-import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("CreateBcache", () => {
   it("sets the initial name correctly", () => {
@@ -48,12 +43,8 @@ describe("CreateBcache", () => {
       }),
     });
 
-    renderWithBrowserRouter(
-      <CreateBcache
-        closeExpanded={vi.fn()}
-        storageDevice={factory.nodeDisk()}
-        systemId="abc123"
-      />,
+    renderWithProviders(
+      <CreateBcache storageDevice={factory.nodeDisk()} systemId="abc123" />,
       { state }
     );
 
@@ -83,15 +74,9 @@ describe("CreateBcache", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-
-    renderWithBrowserRouter(
-      <CreateBcache
-        closeExpanded={vi.fn()}
-        storageDevice={backingDevice}
-        systemId="abc123"
-      />,
-      { store }
+    const { store } = renderWithProviders(
+      <CreateBcache storageDevice={backingDevice} systemId="abc123" />,
+      { state }
     );
 
     await userEvent.selectOptions(

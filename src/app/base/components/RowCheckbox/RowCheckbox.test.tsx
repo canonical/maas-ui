@@ -1,10 +1,10 @@
 import RowCheckbox from "./RowCheckbox";
 
-import { render, screen } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("RowCheckbox", () => {
   it("can show a label", () => {
-    render(
+    renderWithProviders(
       <RowCheckbox
         handleRowCheckbox={vi.fn()}
         item={null}
@@ -18,7 +18,7 @@ describe("RowCheckbox", () => {
   });
 
   it("can check if it should be selected via a function", () => {
-    render(
+    renderWithProviders(
       <RowCheckbox
         checkSelected={() => true}
         handleRowCheckbox={vi.fn()}

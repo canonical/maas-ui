@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
-
 import TagForm from "./TagForm";
 
 import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
@@ -10,9 +6,7 @@ import { Label as TagFormFieldsLabel } from "@/app/machines/components/MachineFo
 import { FilterMachines } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { userEvent, screen, renderWithProviders } from "@/testing/utils";
 
 describe("TagForm", () => {
   let state: RootState;
@@ -43,14 +37,7 @@ describe("TagForm", () => {
 
   it("is not editable if machine does not have edit permission", () => {
     state.machine.items[0].permissions = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <TagForm systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<TagForm systemId="abc123" />, { state });
 
     expect(
       screen.queryByRole("button", { name: EditableSectionLabels.EditButton })
@@ -59,14 +46,7 @@ describe("TagForm", () => {
 
   it("is editable if machine has edit permission", () => {
     state.machine.items[0].permissions = ["edit"];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <TagForm systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<TagForm systemId="abc123" />, { state });
 
     expect(
       screen.getAllByRole("button", { name: EditableSectionLabels.EditButton })
@@ -75,14 +55,7 @@ describe("TagForm", () => {
   });
 
   it("renders list of tag links until edit button is pressed", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <TagForm systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<TagForm systemId="abc123" />, { state });
 
     expect(screen.queryByLabelText("tag-form")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "tag-1" })).toHaveAttribute(

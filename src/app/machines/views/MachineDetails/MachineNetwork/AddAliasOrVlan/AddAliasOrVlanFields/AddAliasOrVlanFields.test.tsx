@@ -2,13 +2,10 @@ import { Formik } from "formik";
 
 import AddAliasOrVlanFields from "./AddAliasOrVlanFields";
 
-import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
-
-const route = urls.machines.index;
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("AddAliasOrVlanFields", () => {
   let state: RootState;
@@ -17,27 +14,27 @@ describe("AddAliasOrVlanFields", () => {
   });
 
   it("displays a tag field for a VLAN", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <AddAliasOrVlanFields
           interfaceType={NetworkInterfaceTypes.VLAN}
           systemId="abc123"
         />
       </Formik>,
-      { route: route, state }
+      { state }
     );
     expect(screen.getByRole("textbox", { name: "Tags" })).toBeInTheDocument();
   });
 
   it("does not display a tag field for an ALIAS", () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <AddAliasOrVlanFields
           interfaceType={NetworkInterfaceTypes.ALIAS}
           systemId="abc123"
         />
       </Formik>,
-      { route: route, state }
+      { state }
     );
     expect(
       screen.queryByRole("textbox", { name: "Tags" })

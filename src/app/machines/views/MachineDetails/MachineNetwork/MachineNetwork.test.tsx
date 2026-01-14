@@ -9,10 +9,7 @@ it("displays a spinner if machine is loading", () => {
       items: [],
     }),
   });
-  renderWithProviders(
-    <MachineNetwork id="abc123" setSidePanelContent={vi.fn()} />,
-    { state }
-  );
+  renderWithProviders(<MachineNetwork id="abc123" />, { state });
   expect(screen.getByLabelText("Loading machine")).toBeInTheDocument();
   expect(screen.queryByLabelText("Machine network")).not.toBeInTheDocument();
 });
@@ -23,10 +20,7 @@ it("displays the network tab when loaded", () => {
       items: [factory.machineDetails({ system_id: "abc123" })],
     }),
   });
-  renderWithProviders(
-    <MachineNetwork id="abc123" setSidePanelContent={vi.fn()} />,
-    { state }
-  );
+  renderWithProviders(<MachineNetwork id="abc123" />, { state });
   expect(screen.queryByLabelText("Loading machine")).not.toBeInTheDocument();
   expect(screen.getByLabelText("Machine network")).toBeInTheDocument();
 });

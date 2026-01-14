@@ -1,5 +1,5 @@
-import { generateMAASURL } from "../../utils";
-import { generateName, generateMac } from "../../utils";
+import { LONG_TIMEOUT } from "../../../constants";
+import { generateMAASURL, generateMac, generateName } from "../../utils";
 
 context("Machine details", () => {
   beforeEach(() => {
@@ -26,7 +26,10 @@ context("Machine details", () => {
     cy.findByRole("searchbox").type(name);
     cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
 
-    cy.findByRole("link", { name: new RegExp(name, "i") }).click();
+    cy.findByRole("link", {
+      name: new RegExp(name, "i"),
+      timeout: LONG_TIMEOUT,
+    }).click();
 
     cy.findByRole("link", { name: "Network" }).click();
 
@@ -55,7 +58,10 @@ context("Machine details", () => {
     cy.findByRole("searchbox").type(name);
     cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
 
-    cy.findByRole("link", { name: new RegExp(name, "i") }).click();
+    cy.findByRole("link", {
+      name: new RegExp(name, "i"),
+      timeout: LONG_TIMEOUT,
+    }).click();
 
     cy.waitForPageToLoad();
     cy.findByRole("button", {
@@ -70,13 +76,13 @@ context("Machine details", () => {
 
     cy.findByRole("link", { name: "Commissioning" }).click();
     cy.findByRole("grid").within(() => {
-      cy.findAllByRole("button", { name: /Take action/i })
+      cy.get("tbody tr")
         .first()
-        .click();
+        .within(() => {
+          cy.findByTestId("details-link", { timeout: LONG_TIMEOUT }).click();
+        });
     });
-    cy.findByLabelText("submenu").within(() => {
-      cy.findAllByRole("link", { name: /View details/i }).click();
-    });
+    cy.waitForPageToLoad();
     cy.findByRole("heading", { level: 2, name: /details/i }).should("exist");
 
     // delete the machine

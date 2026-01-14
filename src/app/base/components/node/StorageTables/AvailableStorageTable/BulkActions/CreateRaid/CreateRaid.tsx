@@ -1,9 +1,12 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import CreateRaidFields from "./CreateRaidFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -33,8 +36,7 @@ export type CreateRaidValues = {
   tags: string[];
 };
 
-type Props = {
-  closeForm: () => void;
+type CreateRaidProps = {
   selected: (Disk | Partition)[];
   systemId: Machine["system_id"];
 };
@@ -67,11 +69,11 @@ const CreateRaidSchema = Yup.object().shape({
 });
 
 export const CreateRaid = ({
-  closeForm,
   selected,
   systemId,
-}: Props): React.ReactElement | null => {
+}: CreateRaidProps): ReactElement | null => {
   const dispatch = useDispatch();
+  const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -80,7 +82,7 @@ export const CreateRaid = ({
     "creatingRaid",
     "createRaid",
     () => {
-      closeForm();
+      closeSidePanel();
     }
   );
   const [initialBlockDevices, initialPartitions] =
@@ -104,7 +106,7 @@ export const CreateRaid = ({
           sparePartitionIds: [],
           tags: [],
         }}
-        onCancel={closeForm}
+        onCancel={closeSidePanel}
         onSaveAnalytics={{
           action: "Create RAID",
           category: "Machine storage",

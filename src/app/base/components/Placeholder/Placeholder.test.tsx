@@ -1,6 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import Placeholder from "./Placeholder";
+
+import { renderWithProviders } from "@/testing/utils";
 
 describe("Placeholder", () => {
   beforeEach(() => {
@@ -12,12 +14,14 @@ describe("Placeholder", () => {
   });
 
   it("renders", () => {
-    render(<Placeholder>Placeholder text</Placeholder>);
+    renderWithProviders(<Placeholder>Placeholder text</Placeholder>);
     expect(screen.getByTestId("placeholder")).toBeInTheDocument();
   });
 
   it("does not return placeholder styling if loading is false", () => {
-    render(<Placeholder loading={false}>Placeholder text</Placeholder>);
+    renderWithProviders(
+      <Placeholder loading={false}>Placeholder text</Placeholder>
+    );
     expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
   });
 });

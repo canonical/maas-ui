@@ -27,20 +27,6 @@ export enum BulkAction {
   UPDATE_DATASTORE = "updateDatastore",
 }
 
-// Actions that are performed on a single device
-export enum StorageDeviceAction {
-  CREATE_BCACHE = "createBcache",
-  CREATE_CACHE_SET = "createCacheSet",
-  CREATE_LOGICAL_VOLUME = "createLogicalVolume",
-  CREATE_PARTITION = "createPartition",
-  DELETE_DISK = "deleteDisk",
-  DELETE_PARTITION = "deletePartition",
-  DELETE_VOLUME_GROUP = "deleteVolumeGroup",
-  EDIT_DISK = "editDisk",
-  EDIT_PARTITION = "editPartition",
-  SET_BOOT_DISK = "setBootDisk",
-}
-
 type Props = {
   canEditStorage: boolean;
   node: ControllerDetails | MachineDetails;
@@ -67,8 +53,8 @@ const AvailableStorageTable = ({
   node,
 }: Props): React.ReactElement => {
   const isMachine = nodeIsMachine(node);
-  const { sidePanelContent } = useSidePanel();
-  const actionsDisabled = !canEditStorage || Boolean(sidePanelContent?.view);
+  const { isOpen } = useSidePanel();
+  const actionsDisabled = !canEditStorage || isOpen;
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const columns = useAvailableStorageColumns({
     isMachine,

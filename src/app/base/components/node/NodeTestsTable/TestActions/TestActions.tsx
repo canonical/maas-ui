@@ -2,8 +2,10 @@ import type { ContextualMenuProps } from "@canonical/react-components";
 import type { LinkProps } from "react-router";
 import { Link } from "react-router";
 
-import type { SetExpanded } from "../NodeTestsTable";
-import { ScriptResultAction } from "../NodeTestsTable";
+import {
+  ScriptResultAction,
+  type SetExpanded,
+} from "../components/useNodeTestsTableColumns/useNodeTestsTableColumns";
 
 import TableMenu from "@/app/base/components/TableMenu";
 import { useSendAnalytics } from "@/app/base/hooks";

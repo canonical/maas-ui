@@ -4,7 +4,7 @@ import LXDSingleSettings from "./LXDSingleSettings";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithProviders } from "@/testing/utils";
 
 describe("LXDSingleSettings", () => {
   let state: RootState;
@@ -22,10 +22,9 @@ describe("LXDSingleSettings", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const { store } = renderWithBrowserRouter(
-      <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />,
-      { state }
-    );
+    const { store } = renderWithProviders(<LXDSingleSettings id={1} />, {
+      state,
+    });
     const expectedActionTypes = [
       "resourcepool/fetch",
       "tag/fetch",
@@ -42,10 +41,7 @@ describe("LXDSingleSettings", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    renderWithBrowserRouter(
-      <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />,
-      { state }
-    );
+    renderWithProviders(<LXDSingleSettings id={1} />, { state });
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 });

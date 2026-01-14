@@ -1,0 +1,8 @@
+.p-generic-table.create-volume-group-table {
+  th,
+  td {
+    &.type {
+      text-align: left !important;
+    }
+  }
+}

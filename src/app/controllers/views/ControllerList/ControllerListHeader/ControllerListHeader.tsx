@@ -9,7 +9,7 @@ import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import { useSendAnalytics } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 import AddController from "@/app/controllers/components/ControllerForms/AddController";
 import ControllerActionFormWrapper from "@/app/controllers/components/ControllerForms/ControllerActionFormWrapper";

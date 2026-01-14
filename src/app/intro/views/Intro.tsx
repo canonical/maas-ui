@@ -64,13 +64,7 @@ const Intro = (): ReactElement => {
 
   let content: ReactNode;
   if (user.isPending || configLoading) {
-    content = (
-      <PageContent
-        header={<SectionHeader loading />}
-        sidePanelContent={null}
-        sidePanelTitle={null}
-      />
-    );
+    content = <PageContent header={<SectionHeader loading />} />;
   } else if (showIncomplete) {
     // Prevent the user from reaching any of the intro urls if they are not an admin
     content = <IncompleteCard />;

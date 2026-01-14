@@ -1,11 +1,11 @@
 /* eslint-disable testing-library/no-container */
 import CoreResources from "./CoreResources";
 
-import { render, screen } from "@/testing/utils";
+import { render, screen, renderWithProviders } from "@/testing/utils";
 
 describe("CoreResources", () => {
   it("renders correctly", () => {
-    render(<CoreResources allocated={1} free={2} other={3} />);
+    renderWithProviders(<CoreResources allocated={1} free={2} other={3} />);
 
     expect(
       screen.getByRole("heading", { name: /CPU cores/i })
@@ -23,13 +23,13 @@ describe("CoreResources", () => {
   });
 
   it("renders the pinned core section if cores are provided as arrays", () => {
-    render(<CoreResources allocated={[1]} free={[2]} />);
+    renderWithProviders(<CoreResources allocated={[1]} free={[2]} />);
 
     expect(screen.getByText(/Pinned cores/)).toBeInTheDocument();
   });
 
   it("does not render the pinned core section if cores are provided as numbers", () => {
-    render(<CoreResources allocated={1} free={2} />);
+    renderWithProviders(<CoreResources allocated={1} free={2} />);
 
     expect(screen.queryByText(/Pinned cores/)).not.toBeInTheDocument();
   });

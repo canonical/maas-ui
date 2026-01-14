@@ -1,9 +1,16 @@
 import ErrorsNotification from "./ErrorsNotification";
 
-import { userEvent, screen, render } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  render,
+  renderWithProviders,
+} from "@/testing/utils";
 
 it("can display and close an error message", async () => {
-  render(<ErrorsNotification errors={{ title: "error message" }} />);
+  renderWithProviders(
+    <ErrorsNotification errors={{ title: "error message" }} />
+  );
   expect(screen.getByText("title: error message")).toBeInTheDocument();
   await userEvent.click(
     screen.getByRole("button", { name: "Close notification" })

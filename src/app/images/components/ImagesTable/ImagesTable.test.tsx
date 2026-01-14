@@ -1,7 +1,6 @@
 import MockDate from "mockdate";
 import { register, unregister } from "timezone-mock";
 
-import * as sidePanelHooks from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import ImagesTable from "@/app/images/components/ImagesTable/ImagesTable";
 import { ConfigNames } from "@/app/store/config/types";
@@ -9,7 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   mockSidePanel,
-  renderWithMockStore,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
@@ -67,7 +66,7 @@ describe("ImagesTable", () => {
   });
 
   it("renders the correct status for an image", () => {
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       { state }
     );
@@ -92,7 +91,7 @@ describe("ImagesTable", () => {
       lastUpdate,
     });
     state.bootresource.resources = [resource];
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,
@@ -107,13 +106,6 @@ describe("ImagesTable", () => {
   });
 
   it("can open the delete image confirmation if the image does not use the default commissioning release", async () => {
-    const setSidePanelContent = vi.fn();
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent,
-      sidePanelContent: null,
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
     const resources = [
       factory.bootResource({
         arch: "amd64",
@@ -135,7 +127,7 @@ describe("ImagesTable", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,
@@ -180,7 +172,7 @@ describe("ImagesTable", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,
@@ -212,7 +204,7 @@ describe("ImagesTable", () => {
         downloading: true,
       }),
     ];
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,
@@ -273,7 +265,7 @@ describe("ImagesTable", () => {
       }),
     });
 
-    renderWithMockStore(
+    renderWithProviders(
       <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
       {
         state,

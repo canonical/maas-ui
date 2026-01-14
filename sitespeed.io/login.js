@@ -17,6 +17,8 @@ module.exports = async function (context, commands) {
   await commands.navigate(constructURL(context, "/"));
   await commands.wait.bySelector("input[name='username']", TIMEOUT);
   await commands.addText.byName("admin", "username");
+  await commands.click.bySelector("button.p-button--positive");
+  await commands.wait.bySelector("input[name='password']:not([hidden])", TIMEOUT);
   await commands.addText.byName("test", "password");
   await commands.click.bySelector("button.p-button--positive");
   await commands.wait.bySelector(

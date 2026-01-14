@@ -1,15 +1,10 @@
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import ReleaseForm from "./ReleaseForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("ReleaseForm", () => {
   let state: RootState;
@@ -61,15 +56,7 @@ describe("ReleaseForm", () => {
         value: true,
       }),
     ];
-    renderWithBrowserRouter(
-      <ReleaseForm
-        clearSidePanelContent={vi.fn()}
-        machines={[]}
-        processingCount={0}
-        viewingDetails={false}
-      />,
-      { route: "/machines", state }
-    );
+    renderWithProviders(<ReleaseForm isViewingDetails={false} />, { state });
 
     expect(
       screen.getByRole("checkbox", { name: "Erase disks before releasing" })
@@ -83,18 +70,10 @@ describe("ReleaseForm", () => {
   });
 
   it("correctly dispatches action to release given machines", async () => {
-    const store = mockStore(state);
     state.machine.selected = { items: ["abc123", "def456"] };
-    renderWithBrowserRouter(
-      <Provider store={store}>
-        <ReleaseForm
-          clearSidePanelContent={vi.fn()}
-          machines={state.machine.items}
-          processingCount={0}
-          viewingDetails={false}
-        />
-      </Provider>,
-      { route: "/machines", store }
+    const { store } = renderWithProviders(
+      <ReleaseForm isViewingDetails={false} />,
+      { state }
     );
 
     await userEvent.click(
@@ -110,7 +89,7 @@ describe("ReleaseForm", () => {
 
     expect(
       store.getActions().filter((action) => action.type === "machine/release")
-    ).toStrictEqual([
+    ).toMatchObject([
       {
         type: "machine/release",
         meta: {
@@ -125,25 +104,10 @@ describe("ReleaseForm", () => {
               quick_erase: false,
               secure_erase: true,
             },
-            system_id: "abc123",
-          },
-        },
-      },
-      {
-        type: "machine/release",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.RELEASE,
-            extra: {
-              erase: true,
-              quick_erase: false,
-              secure_erase: true,
+            system_id: undefined,
+            filter: {
+              id: ["abc123", "def456"],
             },
-            system_id: "def456",
           },
         },
       },

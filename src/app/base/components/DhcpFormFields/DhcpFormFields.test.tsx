@@ -1,7 +1,4 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import configureStore from "redux-mock-store";
 
 import { Labels } from "./DhcpFormFields";
 
@@ -10,7 +7,13 @@ import { getIpRangeDisplayName } from "@/app/store/iprange/utils";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  within,
+  renderWithProviders,
+} from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -20,7 +23,6 @@ vi.mock("@reduxjs/toolkit", async () => {
   };
 });
 
-const mockStore = configureStore();
 const machines = [factory.machine()];
 const ipRange = factory.ipRange();
 const callId = "mocked-nanoid";
@@ -89,16 +91,12 @@ describe("DhcpFormFields", () => {
   });
 
   it("shows a notification if editing and disabled", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm
-            analyticsCategory="settings"
-            id={state.dhcpsnippet.items[0].id}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <DhcpForm
+        analyticsCategory="settings"
+        id={state.dhcpsnippet.items[0].id}
+      />,
+      { state }
     );
 
     expect(screen.getByText(Labels.Disabled)).toBeInTheDocument();
@@ -113,14 +111,8 @@ describe("DhcpFormFields", () => {
     state.device.loaded = false;
     state.controller.loaded = false;
     state.machine.loaded = false;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm analyticsCategory="settings" />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<DhcpForm analyticsCategory="settings" />, { state });
     const select = screen.getByRole("combobox", { name: Labels.Type });
 
     await userEvent.selectOptions(select, "subnet");
@@ -134,14 +126,7 @@ describe("DhcpFormFields", () => {
   });
 
   it("shows the entity options for a chosen type", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm analyticsCategory="settings" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<DhcpForm analyticsCategory="settings" />, { state });
     const select = screen.getByRole("combobox", { name: Labels.Type });
 
     await userEvent.selectOptions(select, "subnet");
@@ -155,14 +140,7 @@ describe("DhcpFormFields", () => {
   });
 
   it("allows to select an IP Range", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm analyticsCategory="settings" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<DhcpForm analyticsCategory="settings" />, { state });
     const select = screen.getByRole("combobox", { name: Labels.Type });
 
     await userEvent.selectOptions(select, "iprange");
@@ -180,14 +158,8 @@ describe("DhcpFormFields", () => {
 
   it("resets the entity if the type changes", async () => {
     const machine = state.machine.items[0];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm analyticsCategory="settings" />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithProviders(<DhcpForm analyticsCategory="settings" />, { state });
     // Set an initial type.
     const typeSelect = screen.getByRole("combobox", { name: Labels.Type });
     await userEvent.selectOptions(typeSelect, "subnet");

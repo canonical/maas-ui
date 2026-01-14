@@ -1,14 +1,9 @@
-import configureStore from "redux-mock-store";
-
 import AddLogicalVolume from "./AddLogicalVolume";
 
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
-import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, userEvent, screen } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, userEvent, screen } from "@/testing/utils";
 
 describe("AddLogicalVolume", () => {
   it("sets the initial name correctly", () => {
@@ -50,14 +45,9 @@ describe("AddLogicalVolume", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddLogicalVolume
-        closeExpanded={vi.fn()}
-        disk={volumeGroup}
-        systemId="abc123"
-      />,
-      { store }
+    renderWithProviders(
+      <AddLogicalVolume disk={volumeGroup} systemId="abc123" />,
+      { state }
     );
 
     // Two logical volumes already exist so the next one should be lv2
@@ -103,14 +93,9 @@ describe("AddLogicalVolume", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddLogicalVolume
-        closeExpanded={vi.fn()}
-        disk={volumeGroup}
-        systemId="abc123"
-      />,
-      { store }
+    renderWithProviders(
+      <AddLogicalVolume disk={volumeGroup} systemId="abc123" />,
+      { state }
     );
 
     expect(screen.getByRole("spinbutton", { name: "Size" })).toHaveValue(8);
@@ -131,15 +116,9 @@ describe("AddLogicalVolume", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddLogicalVolume
-        closeExpanded={vi.fn()}
-        disk={disk}
-        systemId="abc123"
-      />,
-      { store }
-    );
+    renderWithProviders(<AddLogicalVolume disk={disk} systemId="abc123" />, {
+      state,
+    });
 
     // Set logical volume size to 0.1MB
     await userEvent.clear(screen.getByRole("spinbutton", { name: "Size" }));
@@ -167,15 +146,9 @@ describe("AddLogicalVolume", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddLogicalVolume
-        closeExpanded={vi.fn()}
-        disk={disk}
-        systemId="abc123"
-      />,
-      { store }
-    );
+    renderWithProviders(<AddLogicalVolume disk={disk} systemId="abc123" />, {
+      state,
+    });
 
     // Set logical volume size to 2GB
     await userEvent.clear(screen.getByRole("spinbutton", { name: "Size" }));
@@ -205,14 +178,11 @@ describe("AddLogicalVolume", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddLogicalVolume
-        closeExpanded={vi.fn()}
-        disk={disk}
-        systemId="abc123"
-      />,
-      { store }
+    const { store } = renderWithProviders(
+      <AddLogicalVolume disk={disk} systemId="abc123" />,
+      {
+        state,
+      }
     );
 
     await userEvent.clear(screen.getByRole("spinbutton", { name: "Size" }));

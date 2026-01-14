@@ -1,12 +1,7 @@
-import configureStore from "redux-mock-store";
-
 import EditPartition from "./EditPartition";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("EditPartition", () => {
   it("can show errors", () => {
@@ -27,13 +22,8 @@ describe("EditPartition", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <EditPartition
-        closeExpanded={vi.fn()}
-        disk={disk}
-        partition={partition}
-        systemId="abc123"
-      />,
+    renderWithProviders(
+      <EditPartition disk={disk} partition={partition} systemId="abc123" />,
       { state }
     );
 
@@ -57,15 +47,9 @@ describe("EditPartition", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <EditPartition
-        closeExpanded={vi.fn()}
-        disk={disk}
-        partition={partition}
-        systemId="abc123"
-      />,
-      { store }
+    const { store } = renderWithProviders(
+      <EditPartition disk={disk} partition={partition} systemId="abc123" />,
+      { state }
     );
 
     await userEvent.selectOptions(

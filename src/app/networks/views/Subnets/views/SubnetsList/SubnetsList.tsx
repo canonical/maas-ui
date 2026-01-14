@@ -32,9 +32,6 @@ const SubnetsList = (): ReactElement => {
           setSearchText={setSearchText}
         />
       }
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext={true}
     >
       {hasValidGroupBy ? (
         <SubnetsTable

@@ -30,7 +30,7 @@ const SyslogForm = (): ReactElement => {
   useWindowTitle("Syslog");
 
   return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null}>
+    <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Title className="section-header__title">
           Syslog

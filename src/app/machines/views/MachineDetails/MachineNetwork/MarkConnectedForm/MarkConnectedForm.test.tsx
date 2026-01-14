@@ -3,7 +3,7 @@ import MarkConnectedForm, { ConnectionState } from "./MarkConnectedForm";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 let state: RootState;
 
@@ -33,9 +33,8 @@ it("renders a mark connected form", () => {
       interfaces: [nic],
     }),
   ];
-  renderWithBrowserRouter(
+  renderWithProviders(
     <MarkConnectedForm
-      close={vi.fn()}
       connectionState={ConnectionState.MARK_CONNECTED}
       nic={nic}
       systemId="abc123"
@@ -62,9 +61,8 @@ it("renders a mark disconnected form", () => {
       interfaces: [nic],
     }),
   ];
-  renderWithBrowserRouter(
+  renderWithProviders(
     <MarkConnectedForm
-      close={vi.fn()}
       connectionState={ConnectionState.MARK_DISCONNECTED}
       nic={nic}
       systemId="abc123"
@@ -91,9 +89,8 @@ it("displays a disconnected warning", () => {
       interfaces: [nic],
     }),
   ];
-  renderWithBrowserRouter(
+  renderWithProviders(
     <MarkConnectedForm
-      close={vi.fn()}
       connectionState={ConnectionState.DISCONNECTED_WARNING}
       nic={nic}
       systemId="abc123"

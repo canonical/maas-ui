@@ -1,15 +1,15 @@
-import { MemoryRouter } from "react-router";
-
 import { DhcpForm } from "./DhcpForm";
 
-import settingsURLs from "@/app/settings/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   screen,
-  renderWithMockStore,
   renderWithProviders,
+  mockSidePanel,
+  userEvent,
 } from "@/testing/utils";
+
+const { mockClose } = await mockSidePanel();
 
 describe("DhcpForm", () => {
   let state: RootState;
@@ -34,30 +34,23 @@ describe("DhcpForm", () => {
   });
 
   it("can render", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={["/"]}>
-        <DhcpForm />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpForm />, { state });
     expect(
       screen.getByRole("form", { name: "Add DHCP snippet" })
     ).toBeInTheDocument();
   });
 
-  it("redirects when the snippet is saved", () => {
+  it("runs closeSidePanel function when snippet is saved", async () => {
     state.dhcpsnippet.saved = true;
-    const { router } = renderWithProviders(<DhcpForm />, { state });
-    expect(router.state.location.pathname).toBe(settingsURLs.dhcp.index);
+    renderWithProviders(<DhcpForm />, { state });
+    await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+    expect(mockClose).toHaveBeenCalled();
   });
 
   it("shows the snippet name in the title when editing", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={["/"]}>
-        <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithProviders(<DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />, {
+      state,
+    });
 
     expect(
       screen.getByRole("form", { name: "Editing `lease`" })

@@ -1,10 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import Switch from "./Switch";
 
+import { renderWithProviders } from "@/testing/utils";
+
 describe("Switch", () => {
   it("renders", () => {
-    render(<Switch />);
+    renderWithProviders(<Switch />);
 
     expect(screen.getByRole("checkbox")).toBeInTheDocument();
   });

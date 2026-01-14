@@ -1,13 +1,14 @@
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
 import urls from "@/app/base/urls";
-import { KVMSidePanelViews } from "@/app/kvm/constants";
+import ComposeForm from "@/app/kvm/components/ComposeForm";
 import { PodType } from "@/app/store/pod/constants";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -15,6 +16,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
+const { mockOpen } = await mockSidePanel();
 setupMockServer(poolsResolvers.listPools.handler());
 
 describe("LXDClusterHostsTable", () => {
@@ -51,7 +53,6 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={state.pod.items}
         searchFilter=""
-        setSidePanelContent={vi.fn()}
       />,
       { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
@@ -65,7 +66,6 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={state.pod.items}
         searchFilter=""
-        setSidePanelContent={vi.fn()}
       />,
       { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
@@ -85,7 +85,6 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={state.pod.items}
         searchFilter=""
-        setSidePanelContent={vi.fn()}
       />,
       { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
@@ -100,23 +99,22 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("can open the compose VM form for a host", async () => {
-    const setSidePanelContent = vi.fn();
     renderWithProviders(
       <LXDClusterHostsTable
         clusterId={1}
         currentPage={1}
         hosts={state.pod.items}
         searchFilter=""
-        setSidePanelContent={setSidePanelContent}
       />,
       { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
     await waitFor(() => screen.getByTestId("vm-host-compose"));
     await userEvent.click(screen.getByTestId("vm-host-compose"));
     await waitFor(() => {
-      expect(setSidePanelContent).toHaveBeenCalledWith({
-        view: KVMSidePanelViews.COMPOSE_VM,
-        extras: { hostId: 22 },
+      expect(mockOpen).toHaveBeenCalledWith({
+        component: ComposeForm,
+        title: "Compose",
+        props: { hostId: 22 },
       });
     });
   });
@@ -128,7 +126,6 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={state.pod.items}
         searchFilter=""
-        setSidePanelContent={vi.fn()}
       />,
       { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
@@ -153,7 +150,6 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={[]}
         searchFilter="nothing"
-        setSidePanelContent={vi.fn()}
       />,
       { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );

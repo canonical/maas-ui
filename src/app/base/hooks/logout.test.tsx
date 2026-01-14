@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-
 import { useLogout } from "./logout";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderHookWithProviders } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("useLogout", () => {
   let state: RootState;
@@ -27,9 +23,7 @@ describe("useLogout", () => {
   });
 
   it("dispatches an action to log out", () => {
-    const store = mockStore(state);
-
-    const { result } = renderHookWithProviders(useLogout, { store });
+    const { result, store } = renderHookWithProviders(useLogout, { state });
 
     result.current();
 

@@ -16,7 +16,7 @@ import type {
   KnownComponentsEnum,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context-new";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { generalActions } from "@/app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,

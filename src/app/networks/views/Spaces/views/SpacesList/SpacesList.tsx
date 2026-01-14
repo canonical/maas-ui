@@ -8,12 +8,7 @@ const SpacesList = () => {
   useWindowTitle("Spaces");
 
   return (
-    <PageContent
-      header={<NetworksHeader />}
-      sidePanelContent={undefined}
-      sidePanelTitle={null}
-      useNewSidePanelContext
-    >
+    <PageContent header={<NetworksHeader />}>
       <SpacesTable />
     </PageContent>
   );
