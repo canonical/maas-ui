@@ -184,7 +184,11 @@ export const useStartImageSync = (
           ...previousSelectionStatuses,
           items: previousSelectionStatuses.items.map((item) => {
             if (item.id === imageId && item.status === "Waiting for download") {
-              return { ...item, status: "Optimistic" as ImageStatus };
+              return {
+                ...item,
+                status: "Optimistic" as ImageStatus,
+                sync_percentage: 0,
+              };
             } else if (
               item.id === imageId &&
               item.update_status === "Update available"
@@ -192,6 +196,7 @@ export const useStartImageSync = (
               return {
                 ...item,
                 update_status: "Optimistic" as ImageUpdateStatus,
+                sync_percentage: 0,
               };
             }
             return item;
@@ -210,7 +215,11 @@ export const useStartImageSync = (
           ...previousCustomImageStatuses,
           items: previousCustomImageStatuses.items.map((item) => {
             if (item.id === imageId && item.status === "Waiting for download") {
-              return { ...item, status: "Optimistic" as ImageStatus };
+              return {
+                ...item,
+                status: "Optimistic" as ImageStatus,
+                sync_percentage: 0,
+              };
             } else if (
               item.id === imageId &&
               item.update_status === "Update available"
@@ -218,6 +227,7 @@ export const useStartImageSync = (
               return {
                 ...item,
                 update_status: "Optimistic" as ImageUpdateStatus,
+                sync_percentage: 0,
               };
             }
             return item;
