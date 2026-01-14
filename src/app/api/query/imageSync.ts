@@ -27,7 +27,9 @@ import {
   stopSyncBootsourceBootsourceselection,
 } from "@/app/apiclient";
 import {
+  listCustomImagesStatisticQueryKey,
   listCustomImagesStatusQueryKey,
+  listSelectionStatisticQueryKey,
   listSelectionStatusQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
@@ -96,7 +98,13 @@ const startOrExtendSilentPolling = (queryClient: QueryClient) => {
           queryKey: withImagesWorkflow(listSelectionStatusQueryKey()),
         }),
         queryClient.invalidateQueries({
+          queryKey: withImagesWorkflow(listSelectionStatisticQueryKey()),
+        }),
+        queryClient.invalidateQueries({
           queryKey: withImagesWorkflow(listCustomImagesStatusQueryKey()),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: withImagesWorkflow(listCustomImagesStatisticQueryKey()),
         }),
       ]);
 
