@@ -39,6 +39,8 @@ describe("useLogout", () => {
 
     result.current();
 
-    expect(document.cookie).not.toContain("maas_v3_access_token=some_token_value");
+    expect(document.cookie).not.toContain(
+      "maas_v3_access_token=some_token_value"
+    );
   });
 });

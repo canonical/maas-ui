@@ -3,9 +3,7 @@ import { getCookie } from "@/app/utils";
 
 /**
  * Configures the API client to automatically include Authorization header
- * with Bearer token from cookies on all requests.
- *
- * @param store - Redux store instance
+ * with Bearer token on all requests.
  */
 export const configureAuthInterceptor = () => {
   client.interceptors.request.use((request) => {

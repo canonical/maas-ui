@@ -43,6 +43,8 @@ const statusSlice = createSlice({
         state.authenticating = false;
         state.authenticated = true;
         state.externalAuthURL = null;
+        state.id = action.payload.id;
+        state.username = action.payload.username;
       } else {
         state.authenticating = false;
         state.authenticated = false;

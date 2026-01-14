@@ -23,7 +23,7 @@ export const getCookie = (n: string): string | null => {
  *
  * @param {string} key - cookie name.
  * @param {string} value - cookie value.
- * @param {Object} [options] - additional cookie options (e.g., expires, path, domain, secure).
+ * @param {Object} [options] - additional cookie options.
  */
 export const setCookie = (
   key: string,
@@ -57,6 +57,11 @@ export const setCookie = (
   document.cookie = cookie;
 };
 
+/** Clears a cookie by setting its expiration date to a past date.
+ *
+ * @param {string} name - cookie name.
+ * @param {Object} [options] - additional cookie options.
+ */
 export const clearCookie = (
   name: string,
   options: CookieOptions = {}

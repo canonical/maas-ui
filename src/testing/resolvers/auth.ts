@@ -4,7 +4,7 @@ import { oAuthProviderFactory } from "../factories/auth";
 import { BASE_URL } from "../utils";
 
 import {
-  LoginResponse,
+  type LoginResponse,
   type CompleteIntroError,
   type CreateOauthProviderError,
   type GetMeWithSummaryError,
@@ -27,7 +27,7 @@ const mockLoginResponse: LoginResponse = {
   token_type: "Bearer",
   access_token: "mock_access_token",
   kind: "AccessTokenResponse",
-}
+};
 
 const mockAuthenticateError: LoginError = {
   message: "Unauthorized",

@@ -1,4 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { Action } from "redux-saga";
 import {
   call,
   cancel,
@@ -322,13 +323,22 @@ export function* checkAuthenticatedSaga(): SagaGenerator<void> {
   }
 }
 
+const isCheckAuthenticatedSuccess = (
+  action: Action
+): action is PayloadAction<{ username: string; id: number }> => {
+  return (
+    action.type === "status/checkAuthenticatedSuccess" &&
+    "payload" in action &&
+    typeof (action as PayloadAction<{ username: string; id: number }>).payload
+      ?.username === "string" &&
+    typeof (action as PayloadAction<{ username: string; id: number }>).payload
+      ?.id === "number"
+  );
+};
+
 export function* extendSessionSaga(): SagaGenerator<void> {
   while (true) {
-    yield* take(
-      (action) =>
-        action.type === "status/checkAuthenticatedSuccess" &&
-        Boolean(action.payload?.username && action.payload?.id)
-    );
+    yield* take(isCheckAuthenticatedSuccess);
     const task = yield* fork(extendSessionWorker);
 
     yield* take([
@@ -344,7 +354,7 @@ export function* extendSessionSaga(): SagaGenerator<void> {
 export function* extendSessionWorker(): SagaGenerator<void> {
   while (true) {
     yield* call(api.auth.extendSession);
-    yield* delay(60000); 
+    yield* delay(60000);
   }
 }
 

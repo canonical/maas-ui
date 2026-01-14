@@ -1,10 +1,7 @@
-import Login, { Labels } from "./Login";
+import Login, { Labels, INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
-import { statusActions } from "@/app/store/status";
-import { store } from "@/redux-store";
-import { INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "@/app/login/Login/Login";
-
+import { setCookie } from "@/app/utils";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
@@ -14,7 +11,6 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
-import { setCookie } from "@/app/utils";
 
 setupMockServer(authResolvers.authenticate.handler());
 
