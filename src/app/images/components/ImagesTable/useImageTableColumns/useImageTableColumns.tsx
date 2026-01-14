@@ -106,7 +106,14 @@ const useImageTableColumns = ({
             row: {
               original: { size },
             },
-          }) => (isStatisticsLoading ? <Spinner /> : size ? size : "—"),
+          }) =>
+            isStatisticsLoading ? (
+              <Spinner />
+            ) : size && size !== "0 bytes" ? (
+              size
+            ) : (
+              "—"
+            ),
         },
         {
           id: "version",
