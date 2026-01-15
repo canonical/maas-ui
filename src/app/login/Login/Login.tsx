@@ -119,10 +119,12 @@ export const Login = (): React.ReactElement => {
           dispatch(statusActions.loginSuccess());
           handleRedirect();
         },
-        onError: () => {
-          dispatch(
-            statusActions.loginError(INCORRECT_CREDENTIALS_ERROR_MESSAGE)
-          );
+        onError: (error: LoginError) => {
+          if (error.code === 401) {
+            dispatch(
+              statusActions.loginError(INCORRECT_CREDENTIALS_ERROR_MESSAGE)
+            );
+          }
         },
       }
     );
