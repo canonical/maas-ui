@@ -20,7 +20,7 @@ export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
 const TOOLTIP_MESSAGES = {
   STOP_SYNC_ACTIVE: "Stop image synchronization.",
-  STOP_SYNC_OPTIMISTIC: "Synchronization cannot be stopped at 0%.",
+  STOP_SYNC_OPTIMISTIC: "Synchronization cannot be stopped while queueing.",
   START_SYNC: "Start image synchronization.",
   START_SYNC_DISABLED: "Image is already synchronized.",
   DELETE_IMAGE: "Delete this image.",
@@ -144,6 +144,7 @@ const useImageTableColumns = ({
               original: { update_status, last_updated, sync_percentage },
             },
           }) => {
+            const isOptimistic = status === "Optimistic";
             return isStatusLoading ? (
               <Spinner />
             ) : (
@@ -155,11 +156,13 @@ const useImageTableColumns = ({
                       <div className="p-progress">
                         <div
                           className="p-progress__value"
-                          style={{ width: `${sync_percentage}%` }}
+                          style={{
+                            width: `${isOptimistic ? 100 : sync_percentage}%`,
+                          }}
                         />
                       </div>
                       <small className="u-text--muted">
-                        {sync_percentage}%
+                        {isOptimistic ? "Queueing..." : `${sync_percentage}%`}
                       </small>
                     </>
                   ) : update_status === "No updates available" ? (
@@ -209,6 +212,7 @@ const useImageTableColumns = ({
               case "Downloading":
                 icon = null;
             }
+            const isOptimistic = status === "Optimistic";
             return isStatusLoading ? (
               <Spinner />
             ) : (
@@ -220,11 +224,13 @@ const useImageTableColumns = ({
                       <div className="p-progress">
                         <div
                           className="p-progress__value"
-                          style={{ width: `${sync_percentage}%` }}
+                          style={{
+                            width: `${isOptimistic ? 100 : sync_percentage}%`,
+                          }}
                         />
                       </div>
                       <small className="u-text--muted">
-                        {sync_percentage}%
+                        {isOptimistic ? "Queueing..." : `${sync_percentage}%`}
                       </small>
                     </>
                   ) : (
