@@ -45,8 +45,12 @@ import type {
   ListSelectionStatusErrors,
   ListSelectionStatusResponses,
   Options,
+  UploadCustomImageData,
+  UploadCustomImageErrors,
+  UploadCustomImageResponses,
 } from "@/app/apiclient";
 import {
+  uploadCustomImage,
   bulkCreateSelections,
   bulkDeleteSelections,
   getAllAvailableImages,
@@ -458,6 +462,22 @@ export const useDeleteSelections = (
       return queryClient.invalidateQueries({
         queryKey: IMAGES_WORKFLOW_KEY,
       });
+    },
+  });
+};
+
+export const useUploadCustomImage = (
+  mutationOptions?: Options<UploadCustomImageData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UploadCustomImageResponses,
+      UploadCustomImageErrors,
+      UploadCustomImageData
+    >(mutationOptions, uploadCustomImage),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: IMAGES_WORKFLOW_KEY });
     },
   });
 };
