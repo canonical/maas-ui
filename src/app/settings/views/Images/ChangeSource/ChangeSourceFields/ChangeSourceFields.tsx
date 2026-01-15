@@ -1,11 +1,12 @@
 import type { ReactElement } from "react";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   Col,
   Icon,
   Notification,
   Row,
+  Select,
   Textarea,
   Tooltip,
 } from "@canonical/react-components";
@@ -13,7 +14,6 @@ import { useFormikContext } from "formik";
 
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
-import ShowAdvanced from "@/app/base/components/ShowAdvanced";
 import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
@@ -25,8 +25,6 @@ export enum Labels {
   Url = "URL",
   KeyringFilename = "Keyring filename",
   KeyringData = "Keyring data",
-  ShowAdvanced = "Show advanced...",
-  HideAdvanced = "Hide advanced...",
 }
 
 type ChangeSourceFieldsProps = {
@@ -40,7 +38,12 @@ const ChangeSourceFields = ({
 }: ChangeSourceFieldsProps): ReactElement => {
   const { handleChange, setFieldValue, validateForm, values, initialValues } =
     useFormikContext<ChangeSourceValues>();
-  const { keyring_data, keyring_filename, source_type, url } = values;
+  const { keyring_data, keyring_filename, keyring_type, source_type, url } =
+    values;
+
+  const [selectedKeyringType, setSelectedKeyringType] = useState<
+    "keyring_data" | "keyring_filename"
+  >(keyring_type || "keyring_filename");
 
   const customValuesRef = useRef(
     source_type === BootResourceSourceType.CUSTOM
@@ -195,42 +198,71 @@ const ChangeSourceFields = ({
               required
               type="text"
             />
-            <ShowAdvanced
-              initialIsShown={!!(keyring_data || keyring_filename)}
-              onAfterHide={() => {
-                setFieldValue("keyring_data", "").catch((reason: unknown) => {
-                  throw new FormikFieldChangeError(
-                    "keyring_data",
-                    "setFieldValue",
-                    reason as string
-                  );
-                });
-                setFieldValue("keyring_filename", "").catch(
+            <Select
+              label="Keyring"
+              name="keyring_type"
+              onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+                const newType = e.target.value as
+                  | "keyring_data"
+                  | "keyring_filename";
+                setSelectedKeyringType(newType);
+                await setFieldValue("keyring_type", newType).catch(
                   (reason: unknown) => {
                     throw new FormikFieldChangeError(
-                      "keyring_filename",
+                      "keyring_type",
                       "setFieldValue",
                       reason as string
                     );
                   }
                 );
+                // Clear the other field when switching types
+                if (newType === "keyring_filename") {
+                  await setFieldValue("keyring_data", "").catch(
+                    (reason: unknown) => {
+                      throw new FormikFieldChangeError(
+                        "keyring_data",
+                        "setFieldValue",
+                        reason as string
+                      );
+                    }
+                  );
+                } else {
+                  await setFieldValue("keyring_filename", "").catch(
+                    (reason: unknown) => {
+                      throw new FormikFieldChangeError(
+                        "keyring_filename",
+                        "setFieldValue",
+                        reason as string
+                      );
+                    }
+                  );
+                }
+                await validateForm();
               }}
-            >
+              options={[
+                { label: "Keyring filename", value: "keyring_filename" },
+                { label: "Keyring data", value: "keyring_data" },
+              ]}
+              required
+              value={selectedKeyringType}
+            />
+            {selectedKeyringType === "keyring_filename" ? (
               <FormikField
                 help="Path to the keyring to validate the mirror path."
-                label={Labels.KeyringFilename}
                 name="keyring_filename"
                 placeholder="e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+                required
                 type="text"
               />
+            ) : (
               <FormikField
                 component={Textarea}
                 help="Contents on the keyring to validate the mirror path."
-                label={Labels.KeyringData}
                 name="keyring_data"
                 placeholder="Contents of GPG key (base64 encoded)"
+                required
               />
-            </ShowAdvanced>
+            )}
           </>
         )}
         <FormikField
