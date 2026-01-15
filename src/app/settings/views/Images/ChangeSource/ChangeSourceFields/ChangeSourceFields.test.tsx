@@ -56,14 +56,12 @@ describe("ChangeSourceFields", () => {
       screen.getByRole("textbox", { name: Labels.Url })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("textbox", {
-        name: Labels.KeyringFilename,
-      })
+      screen.getByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("textbox", {
-        name: Labels.KeyringData,
-      })
+      screen.queryByPlaceholderText("Contents of GPG key (base64 encoded)")
     ).not.toBeInTheDocument();
   });
 
@@ -107,14 +105,12 @@ describe("ChangeSourceFields", () => {
       </Formik>
     );
     expect(
-      screen.getByRole("textbox", {
-        name: Labels.KeyringFilename,
-      })
+      screen.getByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("textbox", {
-        name: Labels.KeyringData,
-      })
+      screen.queryByPlaceholderText("Contents of GPG key (base64 encoded)")
     ).not.toBeInTheDocument();
 
     // Switch to keyring_data
@@ -122,14 +118,12 @@ describe("ChangeSourceFields", () => {
     await userEvent.selectOptions(select, "keyring_data");
 
     expect(
-      screen.queryByRole("textbox", {
-        name: Labels.KeyringFilename,
-      })
+      screen.queryByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
     ).not.toBeInTheDocument();
     expect(
-      screen.getByRole("textbox", {
-        name: Labels.KeyringData,
-      })
+      screen.getByPlaceholderText("Contents of GPG key (base64 encoded)")
     ).toBeInTheDocument();
   });
 
@@ -150,9 +144,9 @@ describe("ChangeSourceFields", () => {
     );
 
     expect(
-      screen.getByRole("textbox", {
-        name: Labels.KeyringFilename,
-      })
+      screen.getByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
     ).toHaveValue("/path/to/file");
 
     // Switch to keyring_data
@@ -161,9 +155,7 @@ describe("ChangeSourceFields", () => {
 
     // keyring_data should be shown with its value
     expect(
-      screen.getByRole("textbox", {
-        name: Labels.KeyringData,
-      })
+      screen.getByPlaceholderText("Contents of GPG key (base64 encoded)")
     ).toHaveValue("some data");
 
     // Switch back to keyring_filename
