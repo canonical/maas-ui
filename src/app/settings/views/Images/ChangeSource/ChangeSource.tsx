@@ -63,8 +63,10 @@ const ChangeSource = (): ReactElement => {
     },
     sources.isSuccess
   );
-  const { data: selectionStatuses } = useSelectionStatuses();
-  const { data: customImageStatuses } = useCustomImageStatuses();
+  const { data: selectionStatuses, error: selectionStatusesError } =
+    useSelectionStatuses();
+  const { data: customImageStatuses, error: customImageStatusesError } =
+    useCustomImageStatuses();
 
   const importConfig = useGetConfiguration({
     path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
@@ -79,6 +81,14 @@ const ChangeSource = (): ReactElement => {
 
   const saving = updateConfig.isPending || updateImageSource.isPending;
   const saved = updateConfig.isSuccess && updateImageSource.isSuccess;
+
+  const errors =
+    sources.error ||
+    selectionStatusesError ||
+    customImageStatusesError ||
+    importConfig.error ||
+    updateConfig.error ||
+    updateImageSource.error;
 
   useWindowTitle("Source");
 
@@ -125,7 +135,7 @@ const ChangeSource = (): ReactElement => {
             <FormikForm
               aria-label="Choose source"
               enableReinitialize
-              errors={updateImageSource.error}
+              errors={errors}
               initialValues={initialValues}
               onSubmit={(values) => {
                 updateConfig.mutate({
