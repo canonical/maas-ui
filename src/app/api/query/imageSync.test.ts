@@ -30,7 +30,7 @@ describe("useStartImageSync", () => {
     const listSelectionStatusSpy = vi
       .spyOn(sdk, "listSelectionStatus")
       .mockResolvedValueOnce(
-        // @ts-expect-error partial return
+        // @ts-expect-error partial return since the whole response object is not needed for this test
         {
           data: {
             items: [
@@ -44,7 +44,7 @@ describe("useStartImageSync", () => {
         }
       )
       .mockResolvedValueOnce(
-        // @ts-expect-error partial return
+        // @ts-expect-error partial return since the whole response object is not needed for this test
         {
           data: {
             items: [imageStatusFactory.build({ id: 0, status: "Downloading" })],
