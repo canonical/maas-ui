@@ -11,6 +11,7 @@ import type { BootSourceResponse } from "@/app/apiclient";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
+import UploadCustomImage from "@/app/images/components/UploadCustomImage";
 import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 
@@ -40,9 +41,8 @@ const ImageListHeader = ({
   setSelectedRows,
 }: ImageListHeaderProps): ReactElement => {
   const { openSidePanel } = useSidePanel();
-  const isDeleteDisabled = Object.keys(selectedRows).length <= 0;
 
-  const { data, isPending } = useImageSources();
+  const sources = useImageSources();
   const selectionsStatuses = useSelectionStatuses();
   const startSync = useStartImageSync();
   const stopSync = useStopImageSync();
@@ -55,21 +55,22 @@ const ImageListHeader = ({
   const startingImport = startSync.isPending;
   const stoppingImport = stopSync.isPending;
 
-  const sources = data?.items || [];
+  const isPending = sources.isPending || selectionsStatuses.isPending;
+  const isDownloading = imagesDownloading || startingImport || stoppingImport;
+  const isDeleteDisabled = Object.keys(selectedRows).length <= 0;
 
   return (
     <MainToolbar>
       <>
         <MainToolbar.Title>
-          Images synced from <strong>{getImageSyncText(sources)}</strong>
+          Images synced from{" "}
+          <strong>{getImageSyncText(sources.data?.items ?? [])}</strong>
         </MainToolbar.Title>
-        {selectionsStatuses.isPending || isPending ? (
-          <Spinner text="Loading..." />
-        ) : null}
+        {isPending ? <Spinner text="Loading..." /> : null}
         <MainToolbar.Controls>
           <Button
             appearance="negative"
-            disabled={isDeleteDisabled}
+            disabled={isDownloading || isDeleteDisabled}
             hasIcon
             onClick={() => {
               openSidePanel({
@@ -85,6 +86,20 @@ const ImageListHeader = ({
           >
             <i className="p-icon--delete is-light" />
             <span>Delete</span>
+          </Button>
+          <Button
+            disabled={isDownloading}
+            hasIcon
+            onClick={() => {
+              openSidePanel({
+                component: UploadCustomImage,
+                title: "Upload custom image",
+              });
+            }}
+            type="button"
+          >
+            <i className="p-icon--upload" />
+            <span>Upload custom image</span>
           </Button>
           <Button
             disabled={imagesDownloading || startingImport || stoppingImport}
