@@ -6,6 +6,7 @@ import { Input, Label, Select, Strip } from "@canonical/react-components";
 import classNames from "classnames";
 import type { FormikProps } from "formik";
 import { Field } from "formik";
+import { sha256 } from "js-sha256";
 import * as Yup from "yup";
 
 import { useUploadCustomImage } from "@/app/api/query/images";
@@ -21,6 +22,8 @@ import {
   OPERATING_SYSTEM_NAMES,
   VALID_IMAGE_FILE_TYPES,
 } from "@/app/images/constants";
+
+import "./_index.scss";
 
 type UploadImageFormValues = {
   title: string;
@@ -45,6 +48,11 @@ const getFileExtension = (
 
 const isValidFileType = (fileName: string) => {
   return getFileExtension(fileName) !== undefined;
+};
+
+const getChecksumSha256 = async (file: Blob | File) => {
+  const arrayBuffer = await file.arrayBuffer();
+  return sha256(arrayBuffer);
 };
 
 const osOptions: SelectProps["options"] = [
@@ -100,19 +108,20 @@ const UploadCustomImage = (): ReactElement => {
             } as UploadImageFormValues
           }
           onCancel={closeSidePanel}
-          onSubmit={(values) => {
+          onSubmit={async (values) => {
             if (values.file) {
+              const sha256 = await getChecksumSha256(values.file);
               uploadCustomImage.mutate({
                 body: values.file,
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  name: values.release,
-                  sha256: "",
+                  name: `${values.os.toLowerCase()}/${values.release}`,
+                  sha256,
                   size: values.file.size,
-                  architecture: values.arch,
+                  architecture: `${values.arch}/generic`,
                   "file-type": getFileExtension(values.file.name),
                   title: values.title,
-                  "base-image": values.os,
+                  "base-image": undefined, // TODO: base-image needs to be investigated as to what it's used for
                 },
               });
             }
