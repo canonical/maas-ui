@@ -81,6 +81,9 @@ import type {
   CreateResourcePoolData,
   CreateResourcePoolErrors,
   CreateResourcePoolResponses,
+  CreateSessionData,
+  CreateSessionErrors,
+  CreateSessionResponses,
   CreateSpaceData,
   CreateSpaceErrors,
   CreateSpaceResponses,
@@ -174,6 +177,9 @@ import type {
   EvaluateTagData,
   EvaluateTagErrors,
   EvaluateTagResponses,
+  ExtendSessionData,
+  ExtendSessionErrors,
+  ExtendSessionResponses,
   FetchBootsourcesAvailableImagesData,
   FetchBootsourcesAvailableImagesErrors,
   FetchBootsourcesAvailableImagesResponses,
@@ -593,6 +599,22 @@ export const createOauthProvider = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Create Session
+ */
+export const createSession = <ThrowOnError extends boolean = false>(
+  options?: Options<CreateSessionData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    CreateSessionResponses,
+    CreateSessionErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/auth/sessions",
+    ...options,
+  });
+};
+
+/**
  * Delete Oauth Provider
  */
 export const deleteOauthProvider = <ThrowOnError extends boolean = false>(
@@ -659,6 +681,22 @@ export const updateOauthProvider = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * Extend Session
+ */
+export const extendSession = <ThrowOnError extends boolean = false>(
+  options?: Options<ExtendSessionData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    ExtendSessionResponses,
+    ExtendSessionErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/auth/sessions:extend",
+    ...options,
   });
 };
 

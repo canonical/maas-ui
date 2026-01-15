@@ -28,6 +28,7 @@ import {
   createPackageRepository,
   createRack,
   createResourcePool,
+  createSession,
   createSpace,
   createTag,
   createUser,
@@ -59,6 +60,7 @@ import {
   deleteZone,
   dismissNotification,
   evaluateTag,
+  extendSession,
   fetchBootsourcesAvailableImages,
   generateRackBootstrapToken,
   getAccessToken,
@@ -251,6 +253,9 @@ import type {
   CreateResourcePoolData,
   CreateResourcePoolError,
   CreateResourcePoolResponse,
+  CreateSessionData,
+  CreateSessionError,
+  CreateSessionResponse,
   CreateSpaceData,
   CreateSpaceError,
   CreateSpaceResponse,
@@ -343,6 +348,9 @@ import type {
   DismissNotificationResponse,
   EvaluateTagData,
   EvaluateTagError,
+  ExtendSessionData,
+  ExtendSessionError,
+  ExtendSessionResponse,
   FetchBootsourcesAvailableImagesData,
   FetchBootsourcesAvailableImagesError,
   FetchBootsourcesAvailableImagesResponse,
@@ -790,6 +798,33 @@ export const createOauthProviderMutation = (
 };
 
 /**
+ * Create Session
+ */
+export const createSessionMutation = (
+  options?: Partial<Options<CreateSessionData>>
+): UseMutationOptions<
+  CreateSessionResponse,
+  CreateSessionError,
+  Options<CreateSessionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateSessionResponse,
+    CreateSessionError,
+    Options<CreateSessionData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await createSession({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
  * Delete Oauth Provider
  */
 export const deleteOauthProviderMutation = (
@@ -861,6 +896,33 @@ export const updateOauthProviderMutation = (
   > = {
     mutationFn: async (fnOptions) => {
       const { data } = await updateOauthProvider({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Extend Session
+ */
+export const extendSessionMutation = (
+  options?: Partial<Options<ExtendSessionData>>
+): UseMutationOptions<
+  ExtendSessionResponse,
+  ExtendSessionError,
+  Options<ExtendSessionData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    ExtendSessionResponse,
+    ExtendSessionError,
+    Options<ExtendSessionData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await extendSession({
         ...options,
         ...fnOptions,
         throwOnError: true,

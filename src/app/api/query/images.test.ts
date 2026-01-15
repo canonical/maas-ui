@@ -1,4 +1,6 @@
 import {
+  useAddSelections,
+  useAvailableSelections,
   useCustomImages,
   useCustomImageStatistics,
   useCustomImageStatuses,
@@ -10,6 +12,7 @@ import {
 } from "@/app/api/query/images";
 import {
   imageResolvers,
+  mockAvailableSelections,
   mockSelections,
   mockStatistics,
   mockStatuses,
@@ -27,6 +30,8 @@ setupMockServer(
   imageResolvers.listCustomImages.handler(),
   imageResolvers.listCustomImageStatuses.handler(),
   imageResolvers.listCustomImageStatistics.handler(),
+  imageResolvers.listAvailableSelections.handler(),
+  imageResolvers.addSelections.handler(),
   imageResolvers.deleteSelections.handler()
 );
 
@@ -101,6 +106,35 @@ describe("useSelectionStatistics", () => {
     const { result } = renderHookWithProviders(() =>
       useCustomImageStatistics()
     );
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useAvailableSelections", () => {
+  it("should return available selection data", async () => {
+    const { result } = renderHookWithProviders(() => useAvailableSelections());
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data?.items).toEqual(mockAvailableSelections.items);
+  });
+});
+
+describe("useAddSelections", () => {
+  it("should add a new selection", async () => {
+    const { result } = renderHookWithProviders(() => useAddSelections());
+    result.current.mutate({
+      body: [
+        {
+          os: "ubuntu",
+          release: "noble",
+          arch: "amd64",
+          boot_source_id: 0,
+        },
+      ],
+    });
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });

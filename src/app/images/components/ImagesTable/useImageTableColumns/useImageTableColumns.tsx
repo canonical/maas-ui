@@ -10,12 +10,24 @@ import type {
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
+import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import type { Image } from "@/app/images/types";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
+
+const TOOLTIP_MESSAGES = {
+  STOP_SYNC_ACTIVE: "Stop image synchronization.",
+  STOP_SYNC_OPTIMISTIC: "Synchronization cannot be stopped at 0%.",
+  START_SYNC: "Start image synchronization.",
+  START_SYNC_DISABLED: "Image is already synchronized.",
+  DELETE_IMAGE: "Delete this image.",
+  DELETE_COMMISSIONING:
+    "Cannot delete images of the default commissioning release.",
+  DELETE_IMPORTING: "Cannot delete images that are currently being imported.",
+} as const;
 
 export const filterCells = (
   row: Row<Image>,
@@ -45,6 +57,8 @@ const useImageTableColumns = ({
   isStatisticsLoading: boolean;
 }): ImageColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const startSync = useStartImageSync();
+  const stopSync = useStopImageSync();
 
   return useMemo(
     () =>
@@ -83,7 +97,9 @@ const useImageTableColumns = ({
             return (
               <div>
                 <div>{title}</div>
-                <small className="u-text--muted">{release}</small>
+                {title !== release ? (
+                  <small className="u-text--muted">{release}</small>
+                ) : null}
               </div>
             );
           },
@@ -103,13 +119,26 @@ const useImageTableColumns = ({
             row: {
               original: { size },
             },
-          }) => (isStatisticsLoading ? <Spinner /> : size ? size : "—"),
+          }) =>
+            isStatisticsLoading ? (
+              <Spinner />
+            ) : size && size !== "0 bytes" ? (
+              size
+            ) : (
+              "—"
+            ),
         },
         {
           id: "version",
           accessorKey: "version",
           enableSorting: true,
-          header: () => "Version",
+          header: () => (
+            <>
+              <span>Version</span>
+              <br />
+              <span>Last update</span>
+            </>
+          ),
           cell: ({
             row: {
               original: { update_status, last_updated, sync_percentage },
@@ -133,6 +162,8 @@ const useImageTableColumns = ({
                         {sync_percentage}%
                       </small>
                     </>
+                  ) : update_status === "No updates available" ? (
+                    "Up to date"
                   ) : (
                     update_status
                   )
@@ -154,7 +185,13 @@ const useImageTableColumns = ({
           id: "status",
           accessorKey: "status",
           enableSorting: true,
-          header: () => "Status",
+          header: () => (
+            <>
+              <span>Status</span>
+              <br />
+              <span>Machines</span>
+            </>
+          ),
           cell: ({
             row: {
               original: { status, sync_percentage, node_count },
@@ -198,7 +235,7 @@ const useImageTableColumns = ({
                   isStatisticsLoading ? (
                     <Spinner />
                   ) : typeof node_count === "number" ? (
-                    pluralize("node", node_count, true)
+                    pluralize("machine", node_count, true)
                   ) : (
                     "—"
                   )
@@ -215,23 +252,88 @@ const useImageTableColumns = ({
           cell: ({ row }: { row: Row<Image> }) => {
             const isCommissioningImage =
               row.original.release === commissioningRelease;
+
             const isSyncing =
               row.original.status === "Downloading" ||
               row.original.status === "Optimistic";
             const isUpdating =
               row.original.update_status === "Downloading" ||
               row.original.update_status === "Optimistic";
+
+            const isOptimistic =
+              row.original.status === "Optimistic" ||
+              row.original.update_status === "Optimistic";
+
             const downloadInProgress = isSyncing || isUpdating;
+            const downloadAvailable =
+              row.original.status === "Waiting for download" ||
+              row.original.update_status === "Update available";
+
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
             return row.getIsGrouped() ? null : (
               <div>
+                {downloadInProgress ? (
+                  <Tooltip
+                    message={
+                      !isOptimistic
+                        ? TOOLTIP_MESSAGES.STOP_SYNC_ACTIVE
+                        : TOOLTIP_MESSAGES.STOP_SYNC_OPTIMISTIC
+                    }
+                    position="left"
+                  >
+                    <Button
+                      appearance="base"
+                      className="is-dense u-table-cell-padding-overlap"
+                      disabled={startSync.isPending || isOptimistic}
+                      hasIcon
+                      onClick={() => {
+                        stopSync.mutate({
+                          path: {
+                            id: row.original.id,
+                            boot_source_id: row.original.boot_source_id!,
+                          },
+                        });
+                      }}
+                    >
+                      <i className="p-icon--stop">Stop synchronization</i>
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    message={
+                      downloadAvailable
+                        ? TOOLTIP_MESSAGES.START_SYNC
+                        : TOOLTIP_MESSAGES.START_SYNC_DISABLED
+                    }
+                    position="left"
+                  >
+                    <Button
+                      appearance="base"
+                      className="is-dense u-table-cell-padding-overlap"
+                      disabled={!downloadAvailable || stopSync.isPending}
+                      hasIcon
+                      onClick={() => {
+                        startSync.mutate({
+                          path: {
+                            id: row.original.id,
+                            boot_source_id: row.original.boot_source_id!,
+                          },
+                        });
+                      }}
+                    >
+                      <i className="p-icon--begin-downloading">
+                        Start synchronization
+                      </i>
+                    </Button>
+                  </Tooltip>
+                )}
                 <Tooltip
                   message={
                     !canBeDeleted
                       ? isCommissioningImage
-                        ? "Cannot delete images of the default commissioning release."
-                        : "Cannot delete images that are currently being imported."
-                      : "Delete this image."
+                        ? TOOLTIP_MESSAGES.DELETE_COMMISSIONING
+                        : TOOLTIP_MESSAGES.DELETE_IMPORTING
+                      : TOOLTIP_MESSAGES.DELETE_IMAGE
                   }
                   position="left"
                 >
@@ -267,6 +369,8 @@ const useImageTableColumns = ({
     [
       isStatisticsLoading,
       isStatusLoading,
+      stopSync,
+      startSync,
       commissioningRelease,
       openSidePanel,
       selectedRows,

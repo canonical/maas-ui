@@ -2,14 +2,17 @@ import { http, HttpResponse } from "msw";
 
 import type {
   BulkCreateSelectionsError,
+  GetAllAvailableImagesError,
   ImageListResponse,
   ImageStatisticListResponse,
   ImageStatusListResponse,
   ListSelectionsError,
   ListSelectionStatisticError,
   ListSelectionStatusError,
+  UiSourceAvailableImageListResponse,
 } from "@/app/apiclient";
 import {
+  availableImageFactory,
   imageFactory,
   imageStatisticsFactory,
   imageStatusFactory,
@@ -45,6 +48,35 @@ const mockStatistics: ImageStatisticListResponse = {
 const mockStatuses: ImageStatusListResponse = {
   items: imageStatusFactory.buildList(3),
   total: 3,
+};
+
+const mockAvailableSelections: UiSourceAvailableImageListResponse = {
+  items: [
+    availableImageFactory.build({
+      os: "ubuntu",
+      release: "noble",
+      title: "24.04 LTS",
+      architecture: "amd64",
+    }),
+    availableImageFactory.build({
+      os: "ubuntu",
+      release: "noble",
+      title: "24.04 LTS",
+      architecture: "arm64",
+    }),
+    availableImageFactory.build({
+      os: "ubuntu",
+      release: "jammy",
+      title: "22.04 LTS",
+      architecture: "amd64",
+    }),
+    availableImageFactory.build({
+      os: "centos",
+      release: "centos7",
+      title: "7.0",
+      architecture: "amd64",
+    }),
+  ],
 };
 
 const mockListImagesError: ListSelectionsError = {
@@ -154,6 +186,34 @@ const imageResolvers = {
         return HttpResponse.json(error, { status: error.code });
       }),
   },
+  listAvailableSelections: {
+    resolved: false,
+    handler: (
+      data: UiSourceAvailableImageListResponse = mockAvailableSelections
+    ) =>
+      http.get(`${BASE_URL}MAAS/a/v3/available_images`, () => {
+        imageResolvers.listAvailableSelections.resolved = true;
+        return HttpResponse.json(data);
+      }),
+    error: (error: GetAllAvailableImagesError = mockListImagesError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/available_images`, () => {
+        imageResolvers.listAvailableSelections.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  addSelections: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/selections`, () => {
+        imageResolvers.addSelections.resolved = true;
+        return HttpResponse.json({}, { status: 200 });
+      }),
+    error: (error: BulkCreateSelectionsError = mockSaveSelectionsError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/selections`, () => {
+        imageResolvers.addSelections.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
   deleteSelections: {
     resolved: false,
     handler: () =>
@@ -169,4 +229,10 @@ const imageResolvers = {
   },
 };
 
-export { imageResolvers, mockSelections, mockStatistics, mockStatuses };
+export {
+  imageResolvers,
+  mockSelections,
+  mockStatistics,
+  mockStatuses,
+  mockAvailableSelections,
+};

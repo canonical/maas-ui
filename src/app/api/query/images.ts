@@ -10,9 +10,15 @@ import {
   queryOptionsWithHeaders,
 } from "@/app/api/utils";
 import type {
+  BulkCreateSelectionsData,
+  BulkCreateSelectionsErrors,
+  BulkCreateSelectionsResponses,
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsErrors,
   BulkDeleteSelectionsResponses,
+  GetAllAvailableImagesData,
+  GetAllAvailableImagesErrors,
+  GetAllAvailableImagesResponses,
   ImageStatusListResponse,
   ImageStatusResponse,
   ListCustomImagesData,
@@ -41,7 +47,9 @@ import type {
   Options,
 } from "@/app/apiclient";
 import {
+  bulkCreateSelections,
   bulkDeleteSelections,
+  getAllAvailableImages,
   listCustomImagesStatistic,
   listCustomImagesStatus,
   listSelectionStatistic,
@@ -50,6 +58,7 @@ import {
   listSelections,
 } from "@/app/apiclient";
 import {
+  getAllAvailableImagesQueryKey,
   listCustomImagesQueryKey,
   listCustomImagesStatisticQueryKey,
   listCustomImagesStatusQueryKey,
@@ -402,6 +411,36 @@ export const useCustomImageStatistics = (
       withImagesWorkflow(listCustomImagesStatisticQueryKey(options))
     ),
     enabled,
+  });
+};
+
+export const useAvailableSelections = (
+  options?: Options<GetAllAvailableImagesData>
+) => {
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
+      GetAllAvailableImagesResponses,
+      GetAllAvailableImagesErrors,
+      GetAllAvailableImagesData
+    >(options, getAllAvailableImages, getAllAvailableImagesQueryKey(options)),
+  });
+};
+
+export const useAddSelections = (
+  mutationOptions?: Options<BulkCreateSelectionsData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkCreateSelectionsResponses,
+      BulkCreateSelectionsErrors,
+      BulkCreateSelectionsData
+    >(mutationOptions, bulkCreateSelections),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: IMAGES_WORKFLOW_KEY,
+      });
+    },
   });
 };
 

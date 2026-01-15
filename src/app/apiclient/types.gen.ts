@@ -455,6 +455,10 @@ export type BootSourceAvailableImageResponse = {
    */
   architecture: string;
   /**
+   * Title
+   */
+  title: string;
+  /**
    * Kind
    */
   kind?: string;
@@ -1770,7 +1774,7 @@ export type ImageStatisticResponse = {
   /**
    * Last Updated
    */
-  last_updated: string;
+  last_updated?: string;
   /**
    * Last Deployed
    */
@@ -3710,9 +3714,9 @@ export type SourceAvailableImageResponse = {
    */
   architecture: string;
   /**
-   * Release Title
+   * Title
    */
-  release_title: string;
+  title: string;
   /**
    * Kind
    */
@@ -4312,13 +4316,17 @@ export type UiSourceAvailableImageResponse = {
    */
   architecture: string;
   /**
+   * Title
+   */
+  title: string;
+  /**
    * Source Id
    */
-  source_id?: number;
+  source_id: number;
   /**
-   * Source Name
+   * Source Url
    */
-  source_name?: string;
+  source_url: string;
   /**
    * Kind
    */
@@ -5338,6 +5346,32 @@ export type CreateOauthProviderResponses = {
 export type CreateOauthProviderResponse =
   CreateOauthProviderResponses[keyof CreateOauthProviderResponses];
 
+export type CreateSessionData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/auth/sessions";
+};
+
+export type CreateSessionErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateSessionError = CreateSessionErrors[keyof CreateSessionErrors];
+
+export type CreateSessionResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type CreateSessionResponse =
+  CreateSessionResponses[keyof CreateSessionResponses];
+
 export type DeleteOauthProviderData = {
   body?: never;
   headers?: {
@@ -5451,6 +5485,36 @@ export type UpdateOauthProviderResponses = {
 
 export type UpdateOauthProviderResponse =
   UpdateOauthProviderResponses[keyof UpdateOauthProviderResponses];
+
+export type ExtendSessionData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/auth/sessions:extend";
+};
+
+export type ExtendSessionErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadGatewayErrorBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ExtendSessionError = ExtendSessionErrors[keyof ExtendSessionErrors];
+
+export type ExtendSessionResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type ExtendSessionResponse =
+  ExtendSessionResponses[keyof ExtendSessionResponses];
 
 export type GetAccessTokenData = {
   body?: never;

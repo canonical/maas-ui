@@ -13,8 +13,11 @@ import type { GroupedImages } from "@/app/images/components/SelectUpstreamImages
 
 import "./_index.scss";
 
-export const getValueKey = (distro: string, release: string): string =>
-  `${distro}-${release}`.replace(".", "-");
+export const getValueKey = (
+  distro: string,
+  release: string,
+  title: string
+): string => `${distro}&${release}&${title}`.replace(".", "-");
 
 export type DownloadImagesSelectProps = {
   values: Record<string, MultiSelectItem[]>;
@@ -48,25 +51,36 @@ const SelectUpstreamImagesSelect = ({
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(groupedImages[distro]).map((release) => (
-                  <tr key={release}>
-                    <td>{release}</td>
-                    <td>
-                      <FormikField
-                        component={MultiSelect}
-                        items={groupedImages[distro][release]}
-                        key={`${getValueKey(distro, release)}-${forceRenderKey}`}
-                        name={getValueKey(distro, release)}
-                        onItemsUpdate={(items: MultiSelectItem[]) => {
-                          setFieldValue(getValueKey(distro, release), items);
-                        }}
-                        placeholder="Select architectures"
-                        selectedItems={values[getValueKey(distro, release)]}
-                        variant="condensed"
-                      />
-                    </td>
-                  </tr>
-                ))}
+                {Object.keys(groupedImages[distro]).map((key) => {
+                  const [title, release] = key.split("&");
+                  return (
+                    <tr key={key}>
+                      <td>
+                        <div>{title}</div>
+                        <small className="u-text--muted">{release}</small>
+                      </td>
+                      <td>
+                        <FormikField
+                          component={MultiSelect}
+                          items={groupedImages[distro][key]}
+                          key={`${getValueKey(distro, release, title)}-${forceRenderKey}`}
+                          name={getValueKey(distro, release, title)}
+                          onItemsUpdate={(items: MultiSelectItem[]) => {
+                            setFieldValue(
+                              getValueKey(distro, release, title),
+                              items
+                            );
+                          }}
+                          placeholder="Select architectures"
+                          selectedItems={
+                            values[getValueKey(distro, release, title)]
+                          }
+                          variant="condensed"
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           ),
