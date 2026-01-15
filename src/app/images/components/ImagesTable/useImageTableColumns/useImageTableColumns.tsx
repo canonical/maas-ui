@@ -252,21 +252,30 @@ const useImageTableColumns = ({
           cell: ({ row }: { row: Row<Image> }) => {
             const isCommissioningImage =
               row.original.release === commissioningRelease;
+
             const isSyncing =
               row.original.status === "Downloading" ||
               row.original.status === "Optimistic";
             const isUpdating =
               row.original.update_status === "Downloading" ||
               row.original.update_status === "Optimistic";
+
+            const isOptimistic =
+              row.original.status === "Optimistic" ||
+              row.original.update_status === "Optimistic";
+
             const downloadInProgress = isSyncing || isUpdating;
+            const downloadAvailable =
+              row.original.status === "Waiting for download" ||
+              row.original.update_status === "Update available";
+
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
             return row.getIsGrouped() ? null : (
               <div>
                 {downloadInProgress ? (
                   <Tooltip
                     message={
-                      row.original.status === "Downloading" ||
-                      row.original.update_status === "Downloading"
+                      !isOptimistic
                         ? TOOLTIP_MESSAGES.STOP_SYNC_ACTIVE
                         : TOOLTIP_MESSAGES.STOP_SYNC_OPTIMISTIC
                     }
@@ -275,11 +284,7 @@ const useImageTableColumns = ({
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={
-                        startSync.isPending ||
-                        row.original.status === "Optimistic" ||
-                        row.original.update_status === "Optimistic"
-                      }
+                      disabled={startSync.isPending || isOptimistic}
                       hasIcon
                       onClick={() => {
                         stopSync.mutate({
@@ -296,8 +301,7 @@ const useImageTableColumns = ({
                 ) : (
                   <Tooltip
                     message={
-                      row.original.status === "Waiting for download" ||
-                      row.original.update_status === "Update available"
+                      downloadAvailable
                         ? TOOLTIP_MESSAGES.START_SYNC
                         : TOOLTIP_MESSAGES.START_SYNC_DISABLED
                     }
@@ -306,11 +310,7 @@ const useImageTableColumns = ({
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={
-                        (row.original.status !== "Waiting for download" &&
-                          row.original.update_status !== "Update available") ||
-                        stopSync.isPending
-                      }
+                      disabled={!downloadAvailable || stopSync.isPending}
                       hasIcon
                       onClick={() => {
                         startSync.mutate({
