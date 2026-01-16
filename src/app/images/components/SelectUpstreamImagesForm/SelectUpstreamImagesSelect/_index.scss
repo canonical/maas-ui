@@ -9,11 +9,22 @@
   overflow: hidden;
 
   table {
-    table-layout: auto;
+    table-layout: fixed;
+    width: 100%;
 
     th, td {
       padding-left: 0;
       padding-right: 0;
+    }
+
+    th:first-child,
+    td:first-child {
+      width: 30%;
+    }
+
+    th:last-child,
+    td:last-child {
+      width: 70%;
     }
   }
 
