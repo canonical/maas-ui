@@ -3,9 +3,11 @@ import {
   useAuthenticate,
   useCompleteIntro,
   useCreateOauthProvider,
+  useCreateSession,
   useDeleteOauthProvider,
   useGetCurrentUser,
   useGetIsSuperUser,
+  usePreLogin,
   useUpdateOauthProvider,
 } from "@/app/api/query/auth";
 import {
@@ -21,6 +23,8 @@ import {
 
 setupMockServer(
   authResolvers.authenticate.handler(),
+  authResolvers.preLogin.handler(),
+  authResolvers.createSession.handler(),
   authResolvers.getCurrentUser.handler(),
   authResolvers.completeIntro.handler(),
   authResolvers.getActiveOauthProvider.handler(),
@@ -28,6 +32,16 @@ setupMockServer(
   authResolvers.updateOauthProvider.handler(),
   authResolvers.deleteOauthProvider.handler()
 );
+
+describe("usePreLogin", () => {
+  it("should get pre-login data", async () => {
+    const { result } = renderHookWithProviders(() => usePreLogin());
+    result.current.mutate({});
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
 
 describe("useAuthenticate", () => {
   it("should authenticate the user", async () => {
@@ -38,6 +52,16 @@ describe("useAuthenticate", () => {
         password: "password",
       },
     });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useCreateSession", () => {
+  it("should create a session", async () => {
+    const { result } = renderHookWithProviders(() => useCreateSession());
+    result.current.mutate({});
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });

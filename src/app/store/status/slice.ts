@@ -33,14 +33,13 @@ const statusSlice = createSlice({
     checkAuthenticatedSuccess: (
       state: StatusState,
       action: PayloadAction<{
-        authenticated: StatusState["authenticated"];
-        external_auth_url: StatusState["externalAuthURL"];
+        is_authenticated: StatusState["authenticated"];
         no_users: StatusState["noUsers"];
       }>
     ) => {
       state.authenticating = false;
-      state.authenticated = action.payload.authenticated;
-      state.externalAuthURL = action.payload.external_auth_url;
+      state.authenticated = action.payload.is_authenticated;
+      state.externalAuthURL = null;
       state.noUsers = action.payload.no_users;
     },
     login: {

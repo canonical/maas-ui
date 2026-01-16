@@ -155,6 +155,7 @@ import {
   login,
   logout,
   type Options,
+  preLogin,
   setConfiguration,
   setConfigurations,
   stopImportBootsources,
@@ -630,6 +631,9 @@ import type {
   LogoutData,
   LogoutError,
   LogoutResponse,
+  PreLoginData,
+  PreLoginError,
+  PreLoginResponse,
   SetConfigurationData,
   SetConfigurationError,
   SetConfigurationResponse,
@@ -1045,6 +1049,31 @@ export const initiateAuthFlowOptions = (
       return data;
     },
     queryKey: initiateAuthFlowQueryKey(options),
+  });
+
+export const preLoginQueryKey = (options?: Options<PreLoginData>) =>
+  createQueryKey("preLogin", options);
+
+/**
+ * Pre Login
+ */
+export const preLoginOptions = (options?: Options<PreLoginData>) =>
+  queryOptions<
+    PreLoginResponse,
+    PreLoginError,
+    PreLoginResponse,
+    ReturnType<typeof preLoginQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await preLogin({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: preLoginQueryKey(options),
   });
 
 /**

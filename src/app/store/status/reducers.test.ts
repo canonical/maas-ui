@@ -187,9 +187,8 @@ describe("status", () => {
         {
           type: "status/checkAuthenticatedSuccess",
           payload: {
-            authenticated: true,
-            external_auth_url: "http://login.example.com",
-            no_users: true,
+            is_authenticated: true,
+            no_users: false,
           },
         }
       )
@@ -197,8 +196,8 @@ describe("status", () => {
       factory.statusState({
         authenticating: false,
         authenticated: true,
-        externalAuthURL: "http://login.example.com",
-        noUsers: true,
+        externalAuthURL: null,
+        noUsers: false,
       })
     );
   });

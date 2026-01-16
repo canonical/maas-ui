@@ -2870,6 +2870,26 @@ export type PowerTypeEnum =
   | "wedge";
 
 /**
+ * PreLoginInfoResponse
+ *
+ * Content for a response returning pre-login information.
+ */
+export type PreLoginInfoResponse = {
+  /**
+   * Is Authenticated
+   */
+  is_authenticated: boolean;
+  /**
+   * No Users
+   */
+  no_users: boolean;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * PreconditionFailedBodyResponse
  */
 export type PreconditionFailedBodyResponse = {
@@ -5497,7 +5517,7 @@ export type ExtendSessionErrors = {
   /**
    * Bad Request
    */
-  400: BadGatewayErrorBodyResponse;
+  400: BadRequestBodyResponse;
   /**
    * Unprocessable Entity
    */
@@ -5653,6 +5673,31 @@ export type InitiateAuthFlowResponses = {
 
 export type InitiateAuthFlowResponse =
   InitiateAuthFlowResponses[keyof InitiateAuthFlowResponses];
+
+export type PreLoginData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/auth/login";
+};
+
+export type PreLoginErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type PreLoginError = PreLoginErrors[keyof PreLoginErrors];
+
+export type PreLoginResponses = {
+  /**
+   * Successful Response
+   */
+  200: PreLoginInfoResponse;
+};
+
+export type PreLoginResponse = PreLoginResponses[keyof PreLoginResponses];
 
 export type LoginData = {
   body: BodyLogin;

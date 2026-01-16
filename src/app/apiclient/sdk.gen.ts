@@ -459,6 +459,9 @@ import type {
   LogoutData,
   LogoutErrors,
   LogoutResponses,
+  PreLoginData,
+  PreLoginErrors,
+  PreLoginResponses,
   SetConfigurationData,
   SetConfigurationErrors,
   SetConfigurationResponses,
@@ -777,6 +780,22 @@ export const initiateAuthFlow = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/MAAS/a/v3/auth/login_info",
+    ...options,
+  });
+};
+
+/**
+ * Pre Login
+ */
+export const preLogin = <ThrowOnError extends boolean = false>(
+  options?: Options<PreLoginData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    PreLoginResponses,
+    PreLoginErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/auth/login",
     ...options,
   });
 };
