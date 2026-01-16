@@ -1,10 +1,12 @@
 import type { ReactElement } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { MultiSelectItem } from "@canonical/react-components";
 import { Notification, Spinner, Strip } from "@canonical/react-components";
 
-import SelectUpstreamImagesSelect from "./SelectUpstreamImagesSelect";
+import SelectUpstreamImagesSelect, {
+  getValueKey,
+} from "./SelectUpstreamImagesSelect";
 import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 
 import { useImageSources } from "@/app/api/query/imageSources";
@@ -144,9 +146,22 @@ const SelectUpstreamImagesForm = (): ReactElement => {
         selectedImages.items
       );
       const imagesByOS = groupImagesByOS(filteredDownloadableImages);
-      setGroupedImages(groupArchesByTitle(imagesByOS));
+      const grouped = groupArchesByTitle(imagesByOS);
+      setGroupedImages(grouped);
     }
   }, [availableImages, selectedImages]);
+
+  const initialValues = useMemo(() => {
+    const initial: Record<string, MultiSelectItem[]> = {};
+    Object.keys(groupedImages).forEach((distro) => {
+      Object.keys(groupedImages[distro]).forEach((key) => {
+        const [title, release] = key.split("&");
+        const fieldKey = getValueKey(distro, release, title);
+        initial[fieldKey] = [];
+      });
+    });
+    return initial;
+  }, [groupedImages]);
 
   return (
     <div className="select-upstream-images-form">
@@ -164,12 +179,11 @@ const SelectUpstreamImagesForm = (): ReactElement => {
           <Spinner text="Loading..." />
         ) : (
           <FormikForm
-            allowUnchanged
             buttonsBehavior="independent"
             editable={!tooManySources}
             enableReinitialize
             errors={addSelections.error}
-            initialValues={{}}
+            initialValues={initialValues}
             onCancel={closeSidePanel}
             onSubmit={(values) => {
               const formSelectedImages = Object.entries(
