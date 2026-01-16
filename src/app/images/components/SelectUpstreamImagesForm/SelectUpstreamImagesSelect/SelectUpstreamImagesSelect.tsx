@@ -10,6 +10,7 @@ import {
 import type { Section } from "@canonical/react-components/dist/components/Accordion/Accordion";
 
 import type { GroupedImages } from "@/app/images/components/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
+import { OPERATING_SYSTEM_NAMES } from "@/app/images/constants";
 
 import "./_index.scss";
 
@@ -85,7 +86,10 @@ const SelectUpstreamImagesSelect = ({
             </table>
           ),
           titleElement: "h4",
-          title: distro,
+          title:
+            OPERATING_SYSTEM_NAMES.find(
+              (os) => os.value.toLowerCase() === distro.toLowerCase()
+            )?.label ?? distro,
         } as Section;
       }),
     [groupedImages, forceRenderKey, values, setFieldValue]

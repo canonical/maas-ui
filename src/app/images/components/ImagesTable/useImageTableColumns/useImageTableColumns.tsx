@@ -14,6 +14,7 @@ import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
+import { OPERATING_SYSTEM_NAMES } from "@/app/images/constants";
 import type { Image } from "@/app/images/types";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
@@ -71,8 +72,12 @@ const useImageTableColumns = ({
               <div>
                 <div>
                   <strong>
-                    {row.original.os.charAt(0).toUpperCase() +
-                      row.original.os.slice(1)}
+                    {OPERATING_SYSTEM_NAMES.find(
+                      (os) =>
+                        os.value.toLowerCase() === row.original.os.toLowerCase()
+                    )?.label ??
+                      row.original.os.charAt(0).toUpperCase() +
+                        row.original.os.slice(1)}
                   </strong>
                 </div>
                 <small className="u-text--muted">
