@@ -144,7 +144,7 @@ const useImageTableColumns = ({
               original: { update_status, last_updated, sync_percentage },
             },
           }) => {
-            const isOptimistic = status === "Optimistic";
+            const isOptimistic = update_status === "Optimistic";
             return isStatusLoading ? (
               <Spinner />
             ) : (
