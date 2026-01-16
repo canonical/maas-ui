@@ -33,21 +33,40 @@ import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeS
 import { ConfigNames } from "@/app/store/config/types";
 
 const ChangeSourceSchema = Yup.object()
-  .shape({
-    keyring_data: Yup.string(),
-    keyring_filename: Yup.string(),
-    source_type: Yup.string().required("Source type is required"),
-    url: Yup.string().when("source_type", {
-      is: (val: string) => val === BootResourceSourceType.CUSTOM,
-      then: Yup.string().required("URL is required for custom sources"),
-    }),
-    autoSync: Yup.boolean(),
-  })
+  .shape(
+    {
+      keyring_data: Yup.string().when("keyring_filename", {
+        is: (val: string) => !val,
+        then: (schema) =>
+          schema.required(
+            "Either keyring data or keyring filename is required"
+          ),
+        otherwise: (schema) => schema,
+      }),
+      keyring_filename: Yup.string().when("keyring_data", {
+        is: (val: string) => !val,
+        then: (schema) =>
+          schema.required(
+            "Either keyring data or keyring filename is required"
+          ),
+        otherwise: (schema) => schema,
+      }),
+      source_type: Yup.string().required("Source type is required"),
+      url: Yup.string().when("source_type", {
+        is: (val: string) => val === BootResourceSourceType.CUSTOM,
+        then: (schema) => schema.required("URL is required for custom sources"),
+        otherwise: (schema) => schema,
+      }),
+      autoSync: Yup.boolean(),
+    },
+    [["keyring_data", "keyring_filename"]]
+  )
   .defined();
 
 export type ChangeSourceValues = {
   keyring_data: string;
   keyring_filename: string;
+  keyring_type: "keyring_data" | "keyring_filename";
   source_type: BootResourceSourceType;
   url: string;
   autoSync: boolean;
@@ -63,8 +82,10 @@ const ChangeSource = (): ReactElement => {
     },
     sources.isSuccess
   );
-  const { data: selectionStatuses } = useSelectionStatuses();
-  const { data: customImageStatuses } = useCustomImageStatuses();
+  const { data: selectionStatuses, error: selectionStatusesError } =
+    useSelectionStatuses();
+  const { data: customImageStatuses, error: customImageStatusesError } =
+    useCustomImageStatuses();
 
   const importConfig = useGetConfiguration({
     path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
@@ -79,6 +100,14 @@ const ChangeSource = (): ReactElement => {
 
   const saving = updateConfig.isPending || updateImageSource.isPending;
   const saved = updateConfig.isSuccess && updateImageSource.isSuccess;
+
+  const errors =
+    sources.error ||
+    selectionStatusesError ||
+    customImageStatusesError ||
+    importConfig.error ||
+    updateConfig.error ||
+    updateImageSource.error;
 
   useWindowTitle("Source");
 
@@ -100,6 +129,9 @@ const ChangeSource = (): ReactElement => {
   const initialValues: ChangeSourceValues = {
     keyring_data: source.data?.keyring_data ?? "",
     keyring_filename: source.data?.keyring_filename ?? "",
+    keyring_type: source.data?.keyring_filename
+      ? "keyring_filename"
+      : "keyring_data",
     url: source.data?.url ?? "",
     source_type: sourceType,
     autoSync: autoImport || false,
@@ -125,7 +157,7 @@ const ChangeSource = (): ReactElement => {
             <FormikForm
               aria-label="Choose source"
               enableReinitialize
-              errors={updateImageSource.error}
+              errors={errors}
               initialValues={initialValues}
               onSubmit={(values) => {
                 updateConfig.mutate({

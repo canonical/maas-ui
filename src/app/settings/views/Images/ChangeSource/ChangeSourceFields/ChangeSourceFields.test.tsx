@@ -13,6 +13,7 @@ describe("ChangeSourceFields", () => {
         initialValues={{
           keyring_data: "",
           keyring_filename: "",
+          keyring_type: "keyring_filename",
           source_type: BootResourceSourceType.MAAS_IO,
           url: "",
         }}
@@ -42,6 +43,7 @@ describe("ChangeSourceFields", () => {
         initialValues={{
           keyring_data: "",
           keyring_filename: "",
+          keyring_type: "keyring_filename",
           source_type: BootResourceSourceType.CUSTOM,
           url: "",
         }}
@@ -54,14 +56,12 @@ describe("ChangeSourceFields", () => {
       screen.getByRole("textbox", { name: Labels.Url })
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("textbox", {
-        name: Labels.KeyringFilename,
-      })
-    ).not.toBeInTheDocument();
+      screen.getByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
+    ).toBeInTheDocument();
     expect(
-      screen.queryByRole("textbox", {
-        name: Labels.KeyringData,
-      })
+      screen.queryByPlaceholderText("Contents of GPG key (base64 encoded)")
     ).not.toBeInTheDocument();
   });
 
@@ -71,6 +71,7 @@ describe("ChangeSourceFields", () => {
         initialValues={{
           keyring_data: "data",
           keyring_filename: "/path/to/file",
+          keyring_type: "keyring_filename",
           source_type: BootResourceSourceType.CUSTOM,
           url: "http://www.example.com",
         }}
@@ -88,13 +89,13 @@ describe("ChangeSourceFields", () => {
     );
   });
 
-  it(`shows advanced fields when using a custom source and the "Show advanced"
-    button is clicked`, async () => {
+  it(`switches between keyring filename and keyring data fields when selecting different options`, async () => {
     renderWithProviders(
       <Formik
         initialValues={{
           keyring_data: "",
           keyring_filename: "",
+          keyring_type: "keyring_filename",
           source_type: BootResourceSourceType.CUSTOM,
           url: "",
         }}
@@ -104,41 +105,35 @@ describe("ChangeSourceFields", () => {
       </Formik>
     );
     expect(
-      screen.queryByRole("textbox", {
-        name: Labels.KeyringFilename,
-      })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("textbox", {
-        name: Labels.KeyringData,
-      })
-    ).not.toBeInTheDocument();
-
-    // Click the "Show advanced" button
-    await userEvent.click(
-      screen.getByRole("button", {
-        name: Labels.ShowAdvanced,
-      })
-    );
-
-    expect(
-      screen.getByRole("textbox", {
-        name: Labels.KeyringFilename,
-      })
+      screen.getByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("textbox", {
-        name: Labels.KeyringData,
-      })
+      screen.queryByPlaceholderText("Contents of GPG key (base64 encoded)")
+    ).not.toBeInTheDocument();
+
+    // Switch to keyring_data
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_data");
+
+    expect(
+      screen.queryByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText("Contents of GPG key (base64 encoded)")
     ).toBeInTheDocument();
   });
 
-  it("resets advanced field values when the Hide advanced button is clicked", async () => {
+  it("clears the other field when switching between keyring types", async () => {
     renderWithProviders(
       <Formik
         initialValues={{
-          keyring_data: "data",
+          keyring_data: "some data",
           keyring_filename: "/path/to/file",
+          keyring_type: "keyring_filename",
           source_type: BootResourceSourceType.CUSTOM,
           url: "http://example.com",
         }}
@@ -147,31 +142,28 @@ describe("ChangeSourceFields", () => {
         <ChangeSourceFields saved={false} saving={false} />
       </Formik>
     );
-    // Click the "Hide advanced" button
-    await userEvent.click(
-      screen.getByRole("button", {
-        name: Labels.HideAdvanced,
-      })
-    );
 
-    // Click the "Show advanced" button - advanced fields should've been cleared
-    await userEvent.click(
-      screen.getByRole("button", {
-        name: Labels.ShowAdvanced,
-      })
-    );
+    expect(
+      screen.getByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
+    ).toHaveValue("/path/to/file");
+
+    // Switch to keyring_data
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_data");
+
+    // keyring_data should be shown with its value
+    expect(
+      screen.getByPlaceholderText("Contents of GPG key (base64 encoded)")
+    ).toHaveValue("some data");
+
+    // Switch back to keyring_filename
+    await userEvent.selectOptions(select, "keyring_filename");
+
+    // URL should still have its value
     expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue(
       "http://example.com"
     );
-    expect(
-      screen.getByRole("textbox", {
-        name: Labels.KeyringFilename,
-      })
-    ).toHaveValue("");
-    expect(
-      screen.getByRole("textbox", {
-        name: Labels.KeyringData,
-      })
-    ).toHaveValue("");
   });
 });
