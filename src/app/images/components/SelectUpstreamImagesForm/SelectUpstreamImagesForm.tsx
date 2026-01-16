@@ -58,13 +58,12 @@ export const filterSyncedImages = (
   selectedImages: ImageResponse[]
 ): DownloadableImage[] => {
   return downloadableImages.filter((image) => {
-    const [os, release, title, arch] = image.id.split("&");
+    const [os, release, _title, arch] = image.id.split("&");
 
     return !selectedImages.some(
       (selected) =>
-        selected.os === os &&
+        selected.os.toLowerCase() === os.toLowerCase() &&
         selected.release === release &&
-        selected.title === title &&
         selected.architecture === arch
     );
   });
