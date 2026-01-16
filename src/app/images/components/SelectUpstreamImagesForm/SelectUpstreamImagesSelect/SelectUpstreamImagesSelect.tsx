@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useCallback, useState, useMemo } from "react";
+import { useEffect, useCallback, useState, useMemo } from "react";
 
 import {
   Accordion,
@@ -31,12 +31,59 @@ const SelectUpstreamImagesSelect = ({
   setFieldValue,
   groupedImages,
 }: DownloadImagesSelectProps): ReactElement => {
-  const [forceRenderKey, setForceRenderKey] = useState(0);
+  const [openMultiSelectKey, setOpenMultiSelectKey] = useState<string | null>(
+    null
+  );
+  const [forceRenderKeys, setForceRenderKeys] = useState<
+    Record<string, number>
+  >({});
+
+  useEffect(() => {
+    if (!openMultiSelectKey) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      // Find the specific MultiSelect container for the open one
+      const openMultiSelectElement = document.querySelector(
+        `[data-multiselect-key="${openMultiSelectKey}"]`
+      );
+
+      if (!openMultiSelectElement) return;
+
+      // Check if click is inside the MultiSelect container or dropdown
+      if (
+        target instanceof Element &&
+        (openMultiSelectElement.contains(target) ||
+          target.closest(".multi-select__dropdown"))
+      ) {
+        return;
+      }
+
+      // Click is outside - force re-render to close
+      setForceRenderKeys((prev) => ({
+        ...prev,
+        [openMultiSelectKey]: (prev[openMultiSelectKey] || 0) + 1,
+      }));
+      setOpenMultiSelectKey(null);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openMultiSelectKey]);
 
   const handleAccordionExpandedChange = useCallback(() => {
-    // Force re-render of all MultiSelect components to close any open dropdowns
-    setForceRenderKey((prev) => prev + 1);
-  }, []);
+    // Close any open MultiSelect when accordion sections are toggled
+    if (openMultiSelectKey) {
+      setForceRenderKeys((prev) => ({
+        ...prev,
+        [openMultiSelectKey]: (prev[openMultiSelectKey] || 0) + 1,
+      }));
+      setOpenMultiSelectKey(null);
+    }
+  }, [openMultiSelectKey]);
 
   const accordionSections = useMemo(
     () =>
@@ -54,28 +101,29 @@ const SelectUpstreamImagesSelect = ({
               <tbody>
                 {Object.keys(groupedImages[distro]).map((key) => {
                   const [title, release] = key.split("&");
+                  const multiSelectKey = getValueKey(distro, release, title);
                   return (
                     <tr key={key}>
                       <td>
                         <div>{title}</div>
                         <small className="u-text--muted">{release}</small>
                       </td>
-                      <td>
+                      <td
+                        data-multiselect-key={multiSelectKey}
+                        onClick={() => {
+                          setOpenMultiSelectKey(multiSelectKey);
+                        }}
+                      >
                         <FormikField
                           component={MultiSelect}
                           items={groupedImages[distro][key]}
-                          key={`${getValueKey(distro, release, title)}-${forceRenderKey}`}
-                          name={getValueKey(distro, release, title)}
+                          key={`${multiSelectKey}-${forceRenderKeys[multiSelectKey] || 0}`}
+                          name={multiSelectKey}
                           onItemsUpdate={(items: MultiSelectItem[]) => {
-                            setFieldValue(
-                              getValueKey(distro, release, title),
-                              items
-                            );
+                            setFieldValue(multiSelectKey, items);
                           }}
                           placeholder="Select architectures"
-                          selectedItems={
-                            values[getValueKey(distro, release, title)]
-                          }
+                          selectedItems={values[multiSelectKey]}
                           variant="condensed"
                         />
                       </td>
@@ -92,7 +140,7 @@ const SelectUpstreamImagesSelect = ({
             )?.label ?? distro,
         } as Section;
       }),
-    [groupedImages, forceRenderKey, values, setFieldValue]
+    [groupedImages, values, setFieldValue, forceRenderKeys]
   );
   return (
     <Accordion
