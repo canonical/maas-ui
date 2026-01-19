@@ -105,7 +105,7 @@ const AddBridgeForm = ({
   useFetchActions([vlanActions.fetch]);
 
   useEffect(() => {
-    // When the form is first show then store the VLAN for this bridge. This needs
+    // When the form is first shown then store the VLAN for this bridge. This needs
     // to be done so that if all interfaces become deselected then the VLAN
     // information is not lost.
     if (!bridgeVLAN && firstNic) {
