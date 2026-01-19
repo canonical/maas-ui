@@ -336,39 +336,6 @@ describe("MachineNetworkActions", () => {
       ).toBeAriaDisabled();
     });
 
-    it("disables the button when more than 1 interface is selected", async () => {
-      state.machine.items = [
-        factory.machineDetails({
-          interfaces: [
-            factory.machineInterface({
-              id: 1,
-              type: NetworkInterfaceTypes.PHYSICAL,
-            }),
-            factory.machineInterface({
-              id: 2,
-              type: NetworkInterfaceTypes.PHYSICAL,
-            }),
-          ],
-          system_id: "abc123",
-        }),
-      ];
-
-      renderWithProviders(
-        <MachineNetworkActions
-          expanded={null}
-          selected={[{ nicId: 1 }, { nicId: 2 }]}
-          setSelected={vi.fn()}
-          systemId="abc123"
-        />,
-        { state, initialEntries: ["/machine/abc123"] }
-      );
-
-      await expectDisabledButtonWithTooltip(
-        /create bridge/i,
-        /A bridge can only be created from one interface/i
-      );
-    });
-
     it("disables the button when an alias is selected", async () => {
       state.machine.items = [
         factory.machineDetails({
@@ -437,7 +404,7 @@ describe("MachineNetworkActions", () => {
 
       await expectDisabledButtonWithTooltip(
         /create bridge/i,
-        /A bridge can only be created from one interface/i
+        /A bridge cannot be created from another bridge/i
       );
     });
   });
