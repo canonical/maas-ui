@@ -179,10 +179,10 @@ describe("AddBridgeForm", () => {
 
     // Ensure both interfaces are shown in the table
     const table = screen.getByRole("grid");
-    const rows = within(table).getAllByRole("row");
-    expect(rows).toHaveLength(3); // header + 2 interfaces
-    expect(within(table).getByText("eth0")).toBeInTheDocument();
-    expect(within(table).getByText("eth1")).toBeInTheDocument();
+    const rows = within(table).getAllByRole("rowGroup")[1].getAllByRole("row");
+    expect(rows).toHaveLength(2);
+    expect(within(rows[0]).getByText("eth0")).toBeInTheDocument();
+    expect(within(rows[1]).getByText("eth1")).toBeInTheDocument();
 
     const macAddressField = screen.getByRole("textbox", {
       name: "MAC address",
