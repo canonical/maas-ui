@@ -179,7 +179,9 @@ describe("AddBridgeForm", () => {
 
     // Ensure both interfaces are shown in the table
     const table = screen.getByRole("grid");
-    const rows = within(table).getAllByRole("rowGroup")[1].getAllByRole("row");
+    const rows = within(within(table).getAllByRole("rowgroup")[1]).getAllByRole(
+      "row"
+    );
     expect(rows).toHaveLength(2);
     expect(within(rows[0]).getByText("eth0")).toBeInTheDocument();
     expect(within(rows[1]).getByText("eth1")).toBeInTheDocument();
