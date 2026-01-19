@@ -404,7 +404,7 @@ describe("MachineNetworkActions", () => {
 
       await expectDisabledButtonWithTooltip(
         /create bridge/i,
-        /A bridge cannot be created from another bridge/i
+        /A bridge can not be created from another bridge/i
       );
     });
   });
