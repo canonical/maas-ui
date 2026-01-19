@@ -1,5 +1,5 @@
 import { GenericTable } from "@canonical/maas-react-components";
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 
 import useSpacesTableColumns from "./useSpacesTableColumns/useSpacesTableColumns";
 
@@ -16,9 +16,9 @@ const SpacesTable = () => {
 
   if (isError) {
     return (
-      <Notification title="Error while fetching spaces">
+      <NotificationBanner title="Error while fetching spaces">
         {error.message}
-      </Notification>
+      </NotificationBanner>
     );
   }
 

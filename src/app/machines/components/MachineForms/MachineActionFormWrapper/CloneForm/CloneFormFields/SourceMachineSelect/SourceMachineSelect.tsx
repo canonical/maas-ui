@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import classNames from "classnames";
 
 import SourceMachineDetails from "./SourceMachineDetails";
@@ -57,14 +57,14 @@ export const SourceMachineSelect = ({
     content = <SourceMachineDetails machine={selectedMachine} />;
   } else if (!loading && machineCount === 0) {
     content = (
-      <Notification
+      <NotificationBanner
         borderless
         severity="negative"
         title={Label.NoSourceMachines}
       >
         All machines are selected as destination machines. Unselect at least one
         machine from the list.
-      </Notification>
+      </NotificationBanner>
     );
   } else {
     content = (

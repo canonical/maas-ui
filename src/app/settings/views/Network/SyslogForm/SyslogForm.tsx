@@ -1,7 +1,10 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner, Notification } from "@canonical/react-components";
+import {
+  Spinner,
+  Notification as NotificationBanner,
+} from "@canonical/react-components";
 import * as Yup from "yup";
 
 import {
@@ -38,12 +41,12 @@ const SyslogForm = (): ReactElement => {
         <ContentSection.Content>
           {isPending && <Spinner text="Loading..." />}
           {error && (
-            <Notification
+            <NotificationBanner
               severity="negative"
               title="Error while fetching network configurations"
             >
               {error.message}
-            </Notification>
+            </NotificationBanner>
           )}
           {isSuccess && (
             <FormikForm

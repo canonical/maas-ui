@@ -1,7 +1,10 @@
 import type { ReactElement } from "react";
 
 import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
-import { Button, Notification } from "@canonical/react-components";
+import {
+  Button,
+  Notification as NotificationBanner,
+} from "@canonical/react-components";
 
 import { useGetSslKeys } from "@/app/api/query/sslKeys";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -18,9 +21,9 @@ const SSLKeysTable = (): ReactElement => {
   return (
     <div className="ssl-keys-table" data-testid="ssl-keys-table">
       {failureReason && (
-        <Notification severity="negative" title="Error:">
+        <NotificationBanner severity="negative" title="Error:">
           {failureReason.message}
-        </Notification>
+        </NotificationBanner>
       )}
       <MainToolbar>
         <MainToolbar.Controls>

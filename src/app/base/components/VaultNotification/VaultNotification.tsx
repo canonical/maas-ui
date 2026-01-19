@@ -1,4 +1,4 @@
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
@@ -21,7 +21,7 @@ const VaultNotification = (): React.ReactElement | null => {
 
   return configuredControllers.length >= 1 &&
     unconfiguredControllers.length >= 1 ? (
-    <Notification
+    <NotificationBanner
       data-testid="vault-notification"
       severity="caution"
       title="Incomplete Vault integration"
@@ -33,10 +33,10 @@ const VaultNotification = (): React.ReactElement | null => {
       with Vault to complete integration with Vault. Check the{" "}
       <Link to="/settings/configuration/security">security settings</Link> for
       more information.
-    </Notification>
+    </NotificationBanner>
   ) : unconfiguredControllers.length === 0 &&
     configuredControllers.length >= 1 ? (
-    <Notification
+    <NotificationBanner
       data-testid="vault-notification"
       severity="caution"
       title="Incomplete Vault integration"
@@ -44,7 +44,7 @@ const VaultNotification = (): React.ReactElement | null => {
       Migrate your secrets to Vault to complete integration with Vault. Check
       the <Link to="/settings/configuration/security">security settings</Link>{" "}
       for more information.
-    </Notification>
+    </NotificationBanner>
   ) : null;
 };
 

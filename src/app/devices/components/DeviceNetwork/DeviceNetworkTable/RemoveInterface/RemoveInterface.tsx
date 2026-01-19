@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -48,11 +48,11 @@ const RemoveInterface = ({ nicId, systemId }: Props): React.ReactElement => {
   return (
     <>
       {deleteInterfaceError ? (
-        <Notification severity="negative">
+        <NotificationBanner severity="negative">
           <span data-testid="error-message">
             {formatErrors(deleteInterfaceError)}
           </span>
-        </Notification>
+        </NotificationBanner>
       ) : null}
       <ModelActionForm
         aria-label="Remove interface"

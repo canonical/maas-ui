@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
@@ -37,7 +37,9 @@ const DiscoveriesList = (): ReactElement => {
   return (
     <PageContent header={<NetworkDiscoveryHeader />}>
       {networkDiscovery === "disabled" && (
-        <Notification severity="caution">{Labels.Disabled}</Notification>
+        <NotificationBanner severity="caution">
+          {Labels.Disabled}
+        </NotificationBanner>
       )}
       <DiscoveriesTable />
     </PageContent>

@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
@@ -50,14 +50,14 @@ export const DeleteSpace = ({ id }: DeleteSpaceProps): ReactElement => {
       submitLabel="Delete space"
     >
       {canBeDeleted ? (
-        <Notification borderless severity="caution">
+        <NotificationBanner borderless severity="caution">
           Are you sure you want to delete this space?
-        </Notification>
+        </NotificationBanner>
       ) : (
-        <Notification borderless severity="negative">
+        <NotificationBanner borderless severity="negative">
           Space cannot be deleted because it has subnets attached. Remove all
           subnets from the space to allow deletion.
-        </Notification>
+        </NotificationBanner>
       )}
     </FormikForm>
   );

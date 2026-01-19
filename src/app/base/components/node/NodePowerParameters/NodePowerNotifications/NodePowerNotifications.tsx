@@ -1,4 +1,4 @@
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { useIsRackControllerConnected } from "@/app/base/hooks";
@@ -20,28 +20,31 @@ const NodePowerNotifications = ({ node }: Props): React.ReactElement => {
   return (
     <>
       {!isRackControllerConnected && (
-        <Notification data-testid="no-rack-controller" severity="negative">
+        <NotificationBanner
+          data-testid="no-rack-controller"
+          severity="negative"
+        >
           Power configuration is currently disabled because no rack controller
           is currently connected to the region.
-        </Notification>
+        </NotificationBanner>
       )}
       {isRackControllerConnected && !powerType && (
-        <Notification data-testid="no-power-type" severity="negative">
+        <NotificationBanner data-testid="no-power-type" severity="negative">
           This node does not have a power type set and MAAS will be unable to
           control it. Update the power information below.
-        </Notification>
+        </NotificationBanner>
       )}
       {powerType?.name === PowerTypeNames.MANUAL && (
-        <Notification data-testid="manual-power-type" severity="caution">
+        <NotificationBanner data-testid="manual-power-type" severity="caution">
           Power control for this power type will need to be handled manually.
-        </Notification>
+        </NotificationBanner>
       )}
       {powerType && powerType.missing_packages.length > 0 && (
-        <Notification data-testid="missing-packages" severity="negative">
+        <NotificationBanner data-testid="missing-packages" severity="negative">
           Power control software for {powerType.description} is missing from the
           rack controller. To proceed, install the following packages on the
           rack controller: {powerType.missing_packages.join(", ")}
-        </Notification>
+        </NotificationBanner>
       )}
     </>
   );

@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-import { Button, Icon, Notification } from "@canonical/react-components";
+import {
+  Button,
+  Icon,
+  Notification as NotificationBanner,
+} from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
@@ -45,7 +49,7 @@ const NotificationGroup = ({
 
   return (
     <div className="p-notification-group">
-      <Notification
+      <NotificationBanner
         className={classNames("p-notification-group__summary", {
           "is-open": groupOpen,
         })}
