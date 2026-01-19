@@ -1,6 +1,9 @@
 import { useState, type ReactElement } from "react";
 
-import { Notification, RadioInput } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  RadioInput,
+} from "@canonical/react-components";
 import { position } from "@canonical/react-components/dist/components/Tooltip";
 
 import GuidedProvisioning from "./components/GuidedProvisioning";
@@ -17,9 +20,9 @@ const RegisterController = ({ id }: RegisterControllerProps): ReactElement => {
 
   return (
     <div>
-      <Notification severity="information" title="Network configuration">
+      <NotificationBanner severity="information" title="Network configuration">
         The controller must be reachable over HTTP to register.
-      </Notification>
+      </NotificationBanner>
       To register a controller to the rack, choose either "guided provisioning"
       or "one-touch provisioning" depending on the controller setup.
       <span className="u-flex--row u-flex--between">

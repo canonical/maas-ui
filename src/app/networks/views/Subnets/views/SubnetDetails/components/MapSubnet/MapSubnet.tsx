@@ -1,7 +1,11 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
-import { Notification, Spinner, Strip } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+  Strip,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 
@@ -69,9 +73,14 @@ export const MapSubnet = ({
           discovered items.
         </>
       ) : (
-        <Notification borderless inline severity="negative" title="Error:">
+        <NotificationBanner
+          borderless
+          inline
+          severity="negative"
+          title="Error:"
+        >
           Only IPv4 subnets can be scanned.
-        </Notification>
+        </NotificationBanner>
       )}
     </FormikForm>
   );

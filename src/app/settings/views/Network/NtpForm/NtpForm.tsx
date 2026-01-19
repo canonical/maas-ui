@@ -1,7 +1,10 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import * as Yup from "yup";
 
 import {
@@ -36,12 +39,12 @@ const NtpForm = (): ReactElement => {
 
   if (isError) {
     return (
-      <Notification
+      <NotificationBanner
         severity="negative"
         title="Error while fetching configurations:"
       >
         {error.message}
-      </Notification>
+      </NotificationBanner>
     );
   }
 

@@ -1,6 +1,9 @@
 import type { ReactElement } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import * as Yup from "yup";
 
 import { useGetRack, useUpdateRack } from "@/app/api/query/racks";
@@ -28,7 +31,9 @@ const EditRack = ({ id }: EditRackProps): ReactElement => {
     <>
       {rack.isPending && <Spinner text="Loading..." />}
       {rack.isError && (
-        <Notification severity="negative">{rack.error.message}</Notification>
+        <NotificationBanner severity="negative">
+          {rack.error.message}
+        </NotificationBanner>
       )}
       {rack.isSuccess && rack.data && (
         <FormikForm<RackRequest, UpdateRackError>

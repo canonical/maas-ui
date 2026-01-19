@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
@@ -147,11 +150,11 @@ const ControllerPowerConfiguration = ({
             validationSchema={PowerFormSchema}
           >
             {otherNodesCount > 0 ? (
-              <Notification severity="information">
+              <NotificationBanner severity="information">
                 This power controller manages {otherNodesCount} other{" "}
                 {otherNodesCount > 1 ? "nodes" : "node"}. Changing the IP
                 address or outlet delay will affect all these nodes.
-              </Notification>
+              </NotificationBanner>
             ) : null}
             <PowerTypeFields
               disableSelect={!isSuperUser.data}

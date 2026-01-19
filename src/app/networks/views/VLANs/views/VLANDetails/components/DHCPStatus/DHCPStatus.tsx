@@ -2,7 +2,7 @@ import { ExternalLink } from "@canonical/maas-react-components";
 import {
   Button,
   Col,
-  Notification,
+  Notification as NotificationBanner,
   Row,
   Spinner,
 } from "@canonical/react-components";
@@ -113,9 +113,9 @@ const DHCPStatus = ({ id }: Props): React.ReactElement | null => {
       title="DHCP"
     >
       {!hasVLANSubnets && (
-        <Notification severity="caution">
+        <NotificationBanner severity="caution">
           No subnets are available on this VLAN. DHCP cannot be enabled.
-        </Notification>
+        </NotificationBanner>
       )}
       <Row>
         <Col size={6}>

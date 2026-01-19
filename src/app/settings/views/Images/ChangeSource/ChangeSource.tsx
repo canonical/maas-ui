@@ -1,7 +1,10 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
@@ -146,12 +149,12 @@ const ChangeSource = (): ReactElement => {
         <ContentSection.Content>
           {loading && <Spinner text="Loading..." />}
           {!canChangeSource && (
-            <Notification
+            <NotificationBanner
               data-testid="cannot-change-source-warning"
               severity="caution"
             >
               Image import is in progress, cannot change source settings.
-            </Notification>
+            </NotificationBanner>
           )}
           {!loading && (
             <FormikForm

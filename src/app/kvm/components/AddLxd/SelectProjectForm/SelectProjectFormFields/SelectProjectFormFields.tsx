@@ -4,7 +4,7 @@ import {
   Col,
   Icon,
   Input,
-  Notification,
+  Notification as NotificationBanner,
   Row,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
@@ -45,12 +45,12 @@ export const SelectProjectFormFields = ({
     <Row>
       {!newProject && (
         <Col size={12}>
-          <Notification
+          <NotificationBanner
             data-testid="existing-project-warning"
             severity="caution"
           >
             MAAS will recommission all VMs in the selected project.
-          </Notification>
+          </NotificationBanner>
         </Col>
       )}
       <Col size={12}>

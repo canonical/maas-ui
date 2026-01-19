@@ -5,7 +5,7 @@ import { ExternalLink } from "@canonical/maas-react-components";
 import {
   Col,
   Input,
-  Notification,
+  Notification as NotificationBanner,
   Row,
   Select,
 } from "@canonical/react-components";
@@ -96,11 +96,11 @@ export const DeployFormFields = (): React.ReactElement => {
   return (
     <>
       {noImages && (
-        <Notification data-testid="images-error" severity="negative">
+        <NotificationBanner data-testid="images-error" severity="negative">
           You will not be able to deploy a machine until at least one valid
           image has been downloaded. To download an image, visit the{" "}
           <Link to={urls.images.index}>images page</Link>.
-        </Notification>
+        </NotificationBanner>
       )}
       <div className="u-sv2">
         <Row>

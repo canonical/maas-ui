@@ -1,7 +1,10 @@
 import type { ReactElement, ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useNavigate } from "react-router";
 
 import PageContent from "@/app/base/components/PageContent";
@@ -46,9 +49,9 @@ const IntroSection = ({
   return (
     <PageContent {...props}>
       {errorMessage && (
-        <Notification severity="negative" title="Error:">
+        <NotificationBanner severity="negative" title="Error:">
           {errorMessage}
-        </Notification>
+        </NotificationBanner>
       )}
       {loading ? <Spinner text="Loading..." /> : children}
     </PageContent>

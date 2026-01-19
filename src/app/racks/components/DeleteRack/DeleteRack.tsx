@@ -1,6 +1,9 @@
 import type { ReactElement } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 
 import { useDeleteRack, useGetRack } from "@/app/api/query/racks";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -19,7 +22,9 @@ const DeleteRack = ({ id }: DeleteRackProps): ReactElement => {
     <>
       {rack.isPending && <Spinner text="Loading..." />}
       {rack.isError && (
-        <Notification severity="negative">{rack.error.message}</Notification>
+        <NotificationBanner severity="negative">
+          {rack.error.message}
+        </NotificationBanner>
       )}
       {rack.isSuccess && rack.data && (
         <ModelActionForm

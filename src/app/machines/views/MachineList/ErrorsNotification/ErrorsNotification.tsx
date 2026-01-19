@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { Notification, usePrevious } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  usePrevious,
+} from "@canonical/react-components";
 
 import type { APIError } from "@/app/base/types";
 import { formatErrors } from "@/app/utils";
@@ -26,9 +29,9 @@ const ErrorsNotification = ({
   }, [errors, previousErrors]);
 
   return errors && isOpen ? (
-    <Notification onDismiss={handleDismiss} severity="negative">
+    <NotificationBanner onDismiss={handleDismiss} severity="negative">
       {formatErrors(errors)}
-    </Notification>
+    </NotificationBanner>
   ) : null;
 };
 

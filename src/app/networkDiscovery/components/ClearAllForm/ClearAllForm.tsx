@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 import { ExternalLink } from "@canonical/maas-react-components";
 import {
-  Notification,
+  Notification as NotificationBanner,
   NotificationSeverity,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -86,9 +86,12 @@ const ClearAllForm = (): ReactElement => {
       submitAppearance="negative"
       submitLabel={Labels.SubmitLabel}
     >
-      <Notification severity={NotificationSeverity.CAUTION} title="Warning:">
+      <NotificationBanner
+        severity={NotificationSeverity.CAUTION}
+        title="Warning:"
+      >
         Clearing all discoveries will remove all items from the list below.
-      </Notification>
+      </NotificationBanner>
       {content}
     </FormikForm>
   );

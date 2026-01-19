@@ -1,6 +1,9 @@
 import type { ReactElement } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
@@ -35,7 +38,9 @@ const EditPool = ({ id }: EditPoolProps): ReactElement => {
     <>
       {pool.isPending && <Spinner text="Loading..." />}
       {pool.isError && (
-        <Notification severity="negative">{pool.error.message}</Notification>
+        <NotificationBanner severity="negative">
+          {pool.error.message}
+        </NotificationBanner>
       )}
       {pool.isSuccess && pool.data && (
         <FormikForm<ResourcePoolRequest, UpdateResourcePoolError>
