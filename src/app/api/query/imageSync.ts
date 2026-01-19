@@ -284,7 +284,13 @@ export const useStartImageSync = (
       };
     },
 
-    onError: (_err, _variables, onMutateResult) => {
+    onError: (
+      _err,
+      _variables,
+      onMutateResult: MutateStartImageSyncResult | undefined,
+      _context
+    ) => {
+      if (!onMutateResult) return;
       // Rollback to previous state if mutation fails
       if (
         onMutateResult?.selectionStatusKey &&
@@ -306,9 +312,15 @@ export const useStartImageSync = (
       }
     },
 
-    onSuccess: async (_data, _variables, onMutateResult) => {
+    onSuccess: async (
+      _data,
+      _variables,
+      onMutateResult: MutateStartImageSyncResult,
+      _context
+    ) => {
+      if (!onMutateResult) return;
+
       const imageId = onMutateResult?.imageId;
-      if (imageId === null) return;
 
       if (!silentPoll.entries.has(imageId)) {
         silentPoll.entries.set(imageId, { attempts: 0 });
