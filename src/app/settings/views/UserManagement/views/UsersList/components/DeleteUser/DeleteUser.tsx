@@ -1,6 +1,9 @@
 import type { ReactElement } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useDeleteUser, useGetUser } from "@/app/api/query/users";
@@ -23,7 +26,9 @@ const DeleteUser = ({ id }: DeleteUserProps): ReactElement => {
     <>
       {user.isPending && <Spinner text="Loading..." />}
       {user.isError && (
-        <Notification severity="negative">{user.error.message}</Notification>
+        <NotificationBanner severity="negative">
+          {user.error.message}
+        </NotificationBanner>
       )}
       {user.isSuccess && user.data && (
         <ModelActionForm

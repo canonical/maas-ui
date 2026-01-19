@@ -3,7 +3,7 @@ import { useMemo, type ReactElement } from "react";
 import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
 import {
   Button,
-  Notification,
+  Notification as NotificationBanner,
   Spinner,
   Tooltip,
 } from "@canonical/react-components";
@@ -67,12 +67,12 @@ const SingleSignOn = (): ReactElement => {
               <Spinner text="Loading..." />
             ) : // 404 errors can be excluded, as this will always happen when there is no active provider
             error && error.code != 404 ? (
-              <Notification
+              <NotificationBanner
                 severity="negative"
                 title="Error while fetching OIDC provider"
               >
                 {error.message}
-              </Notification>
+              </NotificationBanner>
             ) : (
               <SingleSignOnForm provider={queryData} />
             )}

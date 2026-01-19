@@ -1,6 +1,10 @@
 import type { ReactElement } from "react";
 
-import { Notification, Spinner, Textarea } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+  Textarea,
+} from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useGetZone, useUpdateZone } from "@/app/api/query/zones";
@@ -25,7 +29,9 @@ const EditZone = ({ id }: EditZoneProps): ReactElement => {
     <>
       {zone.isPending && <Spinner text="Loading..." />}
       {zone.isError && (
-        <Notification severity="negative">{zone.error.message}</Notification>
+        <NotificationBanner severity="negative">
+          {zone.error.message}
+        </NotificationBanner>
       )}
       {zone.isSuccess && zone.data && (
         <FormikForm<ZoneRequest, UpdateZoneError>
