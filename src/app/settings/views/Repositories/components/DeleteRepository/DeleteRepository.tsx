@@ -1,4 +1,7 @@
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import {
@@ -34,12 +37,12 @@ const DeleteRepository = ({ id }: Props) => {
 
   if (isError) {
     return (
-      <Notification
+      <NotificationBanner
         severity="negative"
         title="Error while fetching package repository"
       >
         {error.message}
-      </Notification>
+      </NotificationBanner>
     );
   }
 

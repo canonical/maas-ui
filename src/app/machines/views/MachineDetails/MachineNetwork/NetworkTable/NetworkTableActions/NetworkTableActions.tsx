@@ -198,7 +198,8 @@ const NetworkTableActions = ({
               linkId: link?.id,
               nicId: nic?.id,
             },
-            size: nic.type === NetworkInterfaceTypes.BOND ? "large" : undefined,
+            size:
+              nic?.type === NetworkInterfaceTypes.BOND ? "large" : undefined,
           });
         }
       },

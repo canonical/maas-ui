@@ -4,7 +4,7 @@ import {
   ActionButton,
   Button,
   Col,
-  Notification,
+  Notification as NotificationBanner,
   Row,
 } from "@canonical/react-components";
 import type { ActionButtonProps } from "@canonical/react-components";
@@ -58,9 +58,9 @@ const ActionConfirm = ({
   return (
     <Row>
       {formattedErrors ? (
-        <Notification severity="negative">
+        <NotificationBanner severity="negative">
           <span data-testid="error-message">{formattedErrors}</span>
-        </Notification>
+        </NotificationBanner>
       ) : null}
       <Col size={8}>
         {message && (

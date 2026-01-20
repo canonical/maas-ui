@@ -1,6 +1,6 @@
 import {
   Spinner,
-  Notification,
+  Notification as NotificationBanner,
   Select,
   Textarea,
 } from "@canonical/react-components";
@@ -119,9 +119,9 @@ export const DhcpFormFields = ({ editing }: Props): React.ReactElement => {
   return (
     <>
       {editing && !enabled && (
-        <Notification severity="caution" title="Warning:">
+        <NotificationBanner severity="caution" title="Warning:">
           {Labels.Disabled}
-        </Notification>
+        </NotificationBanner>
       )}
       <FormikField
         label={Labels.Name}

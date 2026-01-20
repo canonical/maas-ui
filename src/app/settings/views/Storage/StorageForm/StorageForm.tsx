@@ -1,5 +1,8 @@
 import { ContentSection } from "@canonical/maas-react-components";
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import * as Yup from "yup";
 
 import StorageFormFields from "./StorageFormFields";
@@ -55,12 +58,12 @@ const StorageForm = (): React.ReactElement => {
         <ContentSection.Content>
           {isPending && <Spinner text="Loading..." />}
           {error && (
-            <Notification
+            <NotificationBanner
               severity="negative"
               title="Error while fetching storage configurations"
             >
               {error.message}
-            </Notification>
+            </NotificationBanner>
           )}
           {isSuccess && (
             <FormikForm<StorageFormValues, SetConfigurationsError>

@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Col,
   Icon,
-  Notification,
+  Notification as NotificationBanner,
   Row,
   Select,
   Textarea,
@@ -184,10 +184,13 @@ const ChangeSourceFields = ({
           </li>
         </ul>
         {showSourceChangeWarning && (
-          <Notification data-testid="source-change-warning" severity="caution">
+          <NotificationBanner
+            data-testid="source-change-warning"
+            severity="caution"
+          >
             Changing the image source will remove all currently downloaded
             images.
-          </Notification>
+          </NotificationBanner>
         )}
         {source_type === BootResourceSourceType.CUSTOM && (
           <>

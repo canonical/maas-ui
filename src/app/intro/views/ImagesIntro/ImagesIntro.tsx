@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
   Button,
   Icon,
-  Notification,
+  Notification as NotificationBanner,
   Tooltip,
 } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
@@ -56,12 +56,12 @@ const ImagesIntro = (): ReactElement => {
         {!configPending && (
           <>
             {!autoImport && (
-              <Notification
+              <NotificationBanner
                 data-testid="disabled-sync-warning"
                 severity="caution"
               >
                 {ImagesLabels.SyncDisabled}
-              </Notification>
+              </NotificationBanner>
             )}
             <ImagesTable
               selectedRows={selectedRows}

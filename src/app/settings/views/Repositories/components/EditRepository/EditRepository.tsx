@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { repositorySchema } from "../../constants";
@@ -82,12 +85,12 @@ export const EditRepository = ({ id, type }: Props): React.ReactElement => {
 
   if (isError) {
     return (
-      <Notification
+      <NotificationBanner
         severity="negative"
         title="Error while fetching package repository"
       >
         {error.message}
-      </Notification>
+      </NotificationBanner>
     );
   }
 

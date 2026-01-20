@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
@@ -56,7 +56,7 @@ export const DeleteSubnet = ({
       submitLabel="Delete"
     >
       {canBeDeleted ? (
-        <Notification borderless severity="caution">
+        <NotificationBanner borderless severity="caution">
           Are you sure you want to delete this subnet?
           {isDHCPEnabled ? null : (
             <>
@@ -65,13 +65,13 @@ export const DeleteSubnet = ({
               retained.
             </>
           )}
-        </Notification>
+        </NotificationBanner>
       ) : (
-        <Notification borderless severity="negative">
+        <NotificationBanner borderless severity="negative">
           This subnet cannot be deleted as there are nodes that have an IP
           address obtained through DHCP services on this subnet. Release these
           nodes in order to proceed.
-        </Notification>
+        </NotificationBanner>
       )}
     </FormikForm>
   );

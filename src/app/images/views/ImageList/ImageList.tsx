@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import ImageListHeader from "./ImageListHeader";
@@ -39,12 +39,12 @@ const ImageList = (): ReactElement => {
       {configLoaded && (
         <>
           {!autoImport && (
-            <Notification
+            <NotificationBanner
               data-testid="disabled-sync-warning"
               severity="caution"
             >
               {Labels.SyncDisabled}
-            </Notification>
+            </NotificationBanner>
           )}
           <ImagesTable
             selectedRows={selectedRows}

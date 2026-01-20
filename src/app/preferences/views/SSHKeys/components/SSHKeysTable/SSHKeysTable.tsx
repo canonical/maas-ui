@@ -5,7 +5,10 @@ import {
   GenericTable,
   MainToolbar,
 } from "@canonical/maas-react-components";
-import { Button, Notification } from "@canonical/react-components";
+import {
+  Button,
+  Notification as NotificationBanner,
+} from "@canonical/react-components";
 
 import { useListSshKeys } from "@/app/api/query/sshKeys";
 import type { SshKeyResponse } from "@/app/apiclient";
@@ -67,9 +70,9 @@ const SSHKeysTable = ({ isIntro = false }: SSHKeysTableProps): ReactElement => {
   return (
     <div className="ssh-keys-table" data-testid="ssh-keys-table">
       {failureReason && (
-        <Notification severity="negative" title="Error:">
+        <NotificationBanner severity="negative" title="Error:">
           {failureReason.message}
-        </Notification>
+        </NotificationBanner>
       )}
       {!isIntro && (
         <MainToolbar>

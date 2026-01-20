@@ -1,6 +1,9 @@
 import type { ReactElement } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router";
 import * as Yup from "yup";
@@ -203,13 +206,13 @@ export const CommissionForm = ({
         {...actionProps}
       >
         {machine && isUnconfiguredPowerType(machine) && (
-          <Notification severity="negative" title="Error">
+          <NotificationBanner severity="negative" title="Error">
             Unconfigured power type. Please{" "}
             <Link to={urls.machines.machine.configuration(id ? { id } : null)}>
               configure the power type{" "}
             </Link>
             and try again.
-          </Notification>
+          </NotificationBanner>
         )}
         <CommissionFormFields
           commissioningScripts={formatScripts(commissioningScripts)}

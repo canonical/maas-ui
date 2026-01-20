@@ -180,7 +180,7 @@ const useImageTableColumns = ({
                   isStatisticsLoading ? (
                     <Spinner />
                   ) : last_updated ? (
-                    `Last updated on ${new Date(last_updated ?? "").toLocaleDateString()}`
+                    `Last updated on ${new Date(last_updated).toLocaleDateString()}`
                   ) : (
                     "—"
                   )
@@ -260,31 +260,38 @@ const useImageTableColumns = ({
           accessorKey: "id",
           enableSorting: false,
           header: () => "Actions",
-          cell: ({ row }: { row: Row<Image> }) => {
-            const isCommissioningImage =
-              row.original.release === commissioningRelease;
+          cell: ({
+            row: {
+              id: rowId,
+              getIsSelected,
+              getIsGrouped,
+              toggleSelected,
+              original: { id, boot_source_id, release, status, update_status },
+            },
+          }: {
+            row: Row<Image>;
+          }) => {
+            const isCommissioningImage = release === commissioningRelease;
 
             const isSyncing =
-              row.original.status === "Downloading" ||
-              row.original.status === "Optimistic";
+              status === "Downloading" || status === "Optimistic";
             const isUpdating =
-              row.original.update_status === "Downloading" ||
-              row.original.update_status === "Optimistic";
+              update_status === "Downloading" || update_status === "Optimistic";
 
             const isOptimistic =
-              row.original.status === "Optimistic" ||
-              row.original.update_status === "Optimistic";
+              status === "Optimistic" || update_status === "Optimistic";
 
             const downloadInProgress = isSyncing || isUpdating;
+
             const downloadAvailable =
-              row.original.status === "Waiting for download" ||
-              row.original.update_status === "Update available";
+              status === "Waiting for download" ||
+              update_status === "Update available";
 
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
-            const isCustom = row.original.id.endsWith("-custom");
-            const imageId = Number(row.original.id.split("-")[0]);
+            const isCustom = id.endsWith("-custom");
+            const imageId = Number(id.split("-")[0]);
 
-            return row.getIsGrouped() ? null : (
+            return getIsGrouped() ? null : (
               <div>
                 {isCustom ? null : downloadInProgress ? (
                   <Tooltip
@@ -304,7 +311,7 @@ const useImageTableColumns = ({
                         stopSync.mutate({
                           path: {
                             id: imageId,
-                            boot_source_id: row.original.boot_source_id!,
+                            boot_source_id: boot_source_id!,
                           },
                         });
                       }}
@@ -332,7 +339,7 @@ const useImageTableColumns = ({
                         startSync.mutate({
                           path: {
                             id: imageId,
-                            boot_source_id: row.original.boot_source_id!,
+                            boot_source_id: boot_source_id!,
                           },
                         });
                       }}
@@ -359,15 +366,15 @@ const useImageTableColumns = ({
                     disabled={!canBeDeleted}
                     hasIcon
                     onClick={() => {
-                      if (row.original.id) {
-                        if (!row.getIsSelected()) {
-                          row.toggleSelected();
+                      if (id) {
+                        if (!getIsSelected()) {
+                          toggleSelected();
                         }
                         openSidePanel({
                           component: DeleteImages,
                           title: "Delete images",
                           props: {
-                            rowSelection: { ...selectedRows, [row.id]: true },
+                            rowSelection: { ...selectedRows, [rowId]: true },
                             setRowSelection: setSelectedRows,
                           },
                         });

@@ -2,7 +2,11 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo, useState } from "react";
 
 import type { MultiSelectItem } from "@canonical/react-components";
-import { Notification, Spinner, Strip } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+  Strip,
+} from "@canonical/react-components";
 
 import SelectUpstreamImagesSelect, {
   getValueKey,
@@ -168,11 +172,11 @@ const SelectUpstreamImagesForm = (): ReactElement => {
       Select images to be imported and kept in sync daily. Images will be
       available for deployment on MAAS managed machines.
       {tooManySources && (
-        <Notification data-testid="too-many-sources" severity="caution">
+        <NotificationBanner data-testid="too-many-sources" severity="caution">
           More than one image source exists. The UI does not support updating
           synced images when more than one source has been defined. Use the API
           to adjust your sources.
-        </Notification>
+        </NotificationBanner>
       )}
       <Strip shallow>
         {isPending ? (

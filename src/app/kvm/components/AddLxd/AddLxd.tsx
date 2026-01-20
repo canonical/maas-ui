@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { Stepper } from "@canonical/maas-react-components";
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
 import AuthenticationForm from "./AuthenticationForm";
@@ -54,13 +54,13 @@ export const AddLxd = (): ReactElement => {
       <Stepper activeStep={stepIndex} items={Object.values(AddLxdSteps)} />
       <hr />
       {submissionErrors ? (
-        <Notification
+        <NotificationBanner
           data-testid="submission-error"
           severity="negative"
           title="Error:"
         >
           {submissionErrors}
-        </Notification>
+        </NotificationBanner>
       ) : null}
       {step === AddLxdSteps.CREDENTIALS && (
         <CredentialsForm

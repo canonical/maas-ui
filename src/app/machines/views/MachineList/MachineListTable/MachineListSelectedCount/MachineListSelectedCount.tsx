@@ -1,4 +1,7 @@
-import { Notification, Button } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Button,
+} from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 
@@ -19,7 +22,11 @@ export const MachineListSelectedCount = ({
   const dispatch = useDispatch();
 
   return (
-    <Notification borderless className="u-no-margin--bottom" title="Selection">
+    <NotificationBanner
+      borderless
+      className="u-no-margin--bottom"
+      title="Selection"
+    >
       {machineCount && selectedCount < machineCount ? (
         <>
           {selectedCount} {pluralize("machine", selectedCount)} selected.{" "}
@@ -52,7 +59,7 @@ export const MachineListSelectedCount = ({
           </Button>
         </>
       )}
-    </Notification>
+    </NotificationBanner>
   );
 };
 

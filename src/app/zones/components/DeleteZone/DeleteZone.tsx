@@ -1,6 +1,9 @@
 import React from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useDeleteZone, useGetZone } from "@/app/api/query/zones";
@@ -23,7 +26,9 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ id }) => {
     <>
       {zone.isPending && <Spinner text="Loading..." />}
       {zone.isError && (
-        <Notification severity="negative">{zone.error.message}</Notification>
+        <NotificationBanner severity="negative">
+          {zone.error.message}
+        </NotificationBanner>
       )}
       {zone.isSuccess && zone.data && (
         <ModelActionForm

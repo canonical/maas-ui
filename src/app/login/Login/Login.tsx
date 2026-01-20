@@ -5,7 +5,7 @@ import {
   Card,
   Code,
   Col,
-  Notification,
+  Notification as NotificationBanner,
   Row,
   Strip,
 } from "@canonical/react-components";
@@ -101,14 +101,18 @@ export const Login = (): React.ReactElement => {
           <Col emptyLarge={4} size={6}>
             {authenticationError ? (
               authenticationError === "Session expired" ? (
-                <Notification role="alert" severity="information">
+                <NotificationBanner role="alert" severity="information">
                   Your session has expired. Plese log in again to continue using
                   MAAS.
-                </Notification>
+                </NotificationBanner>
               ) : (
-                <Notification role="alert" severity="negative" title="Error:">
+                <NotificationBanner
+                  role="alert"
+                  severity="negative"
+                  title="Error:"
+                >
                   {formatErrors(authenticationError, "__all__")}
-                </Notification>
+                </NotificationBanner>
               )
             ) : null}
             {noUsers && !externalAuthURL ? (

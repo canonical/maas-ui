@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import PageContent from "@/app/base/components/PageContent";
@@ -15,9 +15,9 @@ const UsersList = (): ReactElement => {
 
   if (externalAuthURL) {
     return (
-      <Notification severity="information">
+      <NotificationBanner severity="information">
         Users for this MAAS are managed using an external service
-      </Notification>
+      </NotificationBanner>
     );
   }
 

@@ -2,7 +2,10 @@ import type { ReactNode, AriaAttributes } from "react";
 import { isValidElement, useEffect, useId, useRef } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Form, Notification } from "@canonical/react-components";
+import {
+  Form,
+  Notification as NotificationBanner,
+} from "@canonical/react-components";
 import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
 import { withFormikDevtools } from "formik-devtools-extension";
@@ -183,9 +186,13 @@ const FormikFormContent = <V extends object, E = null>({
   const renderFormContent = () => (
     <>
       {!!nonFieldError && (
-        <Notification id={notificationId} severity="negative" title="Error:">
+        <NotificationBanner
+          id={notificationId}
+          severity="negative"
+          title="Error:"
+        >
           {nonFieldError}
-        </Notification>
+        </NotificationBanner>
       )}
       {typeof children === "function" ? children(formikContext) : children}
     </>

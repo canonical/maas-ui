@@ -1,5 +1,8 @@
 import { ContentSection } from "@canonical/maas-react-components";
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 
 import VMWareForm from "../VMWareForm";
 
@@ -34,12 +37,12 @@ const VMWare = (): React.ReactElement => {
         <ContentSection.Content>
           {isPending && <Spinner text={Labels.Loading} />}
           {error && (
-            <Notification
+            <NotificationBanner
               severity="negative"
               title="Error while fetching image configurations"
             >
               {error.message}
-            </Notification>
+            </NotificationBanner>
           )}
           {isSuccess && <VMWareForm />}
         </ContentSection.Content>

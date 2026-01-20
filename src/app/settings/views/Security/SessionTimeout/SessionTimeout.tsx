@@ -1,7 +1,11 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Icon, Notification, Spinner } from "@canonical/react-components";
+import {
+  Icon,
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { formatDuration } from "date-fns";
 import * as Yup from "yup";
 
@@ -81,12 +85,12 @@ const SessionTimeout = (): ReactElement => {
         </ContentSection.Title>
         <ContentSection.Content>
           {error && (
-            <Notification
+            <NotificationBanner
               severity="negative"
               title="Error while fetching setting security configurations session timeout"
             >
               {error.message}
-            </Notification>
+            </NotificationBanner>
           )}
           <FormikForm<SessionTimeoutFormValues, SetConfigurationsError>
             aria-label={Labels.ConfigureSessionTimeout}

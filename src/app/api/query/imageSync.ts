@@ -154,6 +154,14 @@ export const resetSilentPolling = () => {
   silentPoll.timer = null;
 };
 
+type MutateStartImageSyncResult = {
+  selectionStatusKey: readonly unknown[];
+  customImageStatusKey: readonly unknown[];
+  previousSelectionStatuses?: ListSelectionStatusResponse;
+  previousCustomImageStatuses?: ListCustomImagesStatusResponse;
+  imageId: number;
+};
+
 export const useStartImageSync = (
   mutationOptions?: Options<SyncBootsourceBootsourceselectionData>
 ) => {
@@ -166,7 +174,7 @@ export const useStartImageSync = (
       SyncBootsourceBootsourceselectionData
     >(mutationOptions, syncBootsourceBootsourceselection),
 
-    onMutate: async (variables) => {
+    onMutate: async (variables): Promise<MutateStartImageSyncResult> => {
       const imageId = variables.path.id;
 
       // Cancel all queries to prevent overwrites
@@ -276,28 +284,43 @@ export const useStartImageSync = (
       };
     },
 
-    onError: (_err, _variables, context) => {
+    onError: (
+      _err,
+      _variables,
+      onMutateResult: MutateStartImageSyncResult | undefined,
+      _context
+    ) => {
+      if (!onMutateResult) return;
       // Rollback to previous state if mutation fails
-      if (context?.selectionStatusKey && context?.previousSelectionStatuses) {
+      if (
+        onMutateResult?.selectionStatusKey &&
+        onMutateResult?.previousSelectionStatuses
+      ) {
         queryClient.setQueryData(
-          context.selectionStatusKey,
-          context.previousSelectionStatuses
+          onMutateResult.selectionStatusKey,
+          onMutateResult.previousSelectionStatuses
         );
       }
       if (
-        context?.customImageStatusKey &&
-        context?.previousCustomImageStatuses
+        onMutateResult?.customImageStatusKey &&
+        onMutateResult?.previousCustomImageStatuses
       ) {
         queryClient.setQueryData(
-          context.customImageStatusKey,
-          context.previousCustomImageStatuses
+          onMutateResult.customImageStatusKey,
+          onMutateResult.previousCustomImageStatuses
         );
       }
     },
 
-    onSuccess: async (_data, _variables, context) => {
-      const imageId = context?.imageId;
-      if (imageId === null) return;
+    onSuccess: async (
+      _data,
+      _variables,
+      onMutateResult: MutateStartImageSyncResult,
+      _context
+    ) => {
+      if (!onMutateResult) return;
+
+      const imageId = onMutateResult?.imageId;
 
       if (!silentPoll.entries.has(imageId)) {
         silentPoll.entries.set(imageId, { attempts: 0 });

@@ -4,7 +4,7 @@ import { Suspense, useEffect } from "react";
 import {
   Application,
   AppStatus,
-  Notification,
+  Notification as NotificationBanner,
   NotificationProvider,
   ToastNotificationProvider,
 } from "@canonical/react-components";
@@ -126,9 +126,9 @@ export const App = (): React.ReactElement => {
   } else if (hasVaultError) {
     content = (
       <PageContent header={<SectionHeader title="Failed to connect" />}>
-        <Notification severity="negative" title="Error:">
+        <NotificationBanner severity="negative" title="Error:">
           The server connection failed with the error "{configErrors}"
-        </Notification>
+        </NotificationBanner>
       </PageContent>
     );
   } else {
