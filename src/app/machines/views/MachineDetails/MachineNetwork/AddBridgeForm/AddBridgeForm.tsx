@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +23,10 @@ import { useFetchActions } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
+import {
+  getFirstSelected,
+  getParentIds,
+} from "@/app/machines/views/MachineDetails/MachineNetwork/BondForm/utils";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type {
@@ -33,6 +37,7 @@ import type { MachineEventErrors } from "@/app/store/machine/types/base";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { BridgeType, NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
 import { getNextNicName } from "@/app/store/utils";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
@@ -72,12 +77,20 @@ const AddBridgeForm = ({
     closeSidePanel();
   };
   const nextName = getNextNicName(machine, NetworkInterfaceTypes.BRIDGE);
-  const [{ linkId, nicId }] = selected;
-  const nic = useSelector((state: RootState) =>
-    machineSelectors.getInterfaceById(state, systemId, nicId, linkId)
+  const [bridgeVLAN, setBridgeVLAN] = useState<
+    NetworkInterface["vlan_id"] | null
+  >(null);
+  const firstSelected = machine ? getFirstSelected(machine, selected) : null;
+  const firstNic = useSelector((state: RootState) =>
+    machineSelectors.getInterfaceById(
+      state,
+      systemId,
+      firstSelected?.nicId,
+      firstSelected?.linkId
+    )
   );
   const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, nic?.vlan_id)
+    vlanSelectors.getById(state, bridgeVLAN || firstNic?.vlan_id)
   );
   const vlansLoading = useSelector(vlanSelectors.loading);
   const { errors, saved, saving } = useMachineDetailsForm(
@@ -91,14 +104,20 @@ const AddBridgeForm = ({
 
   useFetchActions([vlanActions.fetch]);
 
-  // A bridge can only be created with one interface.
-  if (selected.length !== 1) {
-    return null;
-  }
+  useEffect(() => {
+    // When the form is first shown then store the VLAN for this bridge. This needs
+    // to be done so that if all interfaces become deselected then the VLAN
+    // information is not lost.
+    if (!bridgeVLAN && firstNic) {
+      setBridgeVLAN(firstNic.vlan_id);
+    }
+  }, [bridgeVLAN, firstNic, setBridgeVLAN]);
 
-  if (vlansLoading || !nic || !isMachineDetails(machine)) {
+  if (vlansLoading || !bridgeVLAN || !isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
+
+  const macAddress = firstNic?.mac_address || "";
 
   return (
     <>
@@ -114,11 +133,11 @@ const AddBridgeForm = ({
           bridge_type: BridgeType.STANDARD,
           // Prefill the fabric from the parent interface.
           fabric: vlan?.fabric,
-          mac_address: nic.mac_address,
+          mac_address: macAddress,
           name: nextName || "",
           tags: [],
           // Prefill the vlan from the parent interface.
-          vlan: nic.vlan_id,
+          vlan: bridgeVLAN,
         }}
         onCancel={handleClose}
         onSaveAnalytics={{
@@ -131,7 +150,7 @@ const AddBridgeForm = ({
           dispatch(cleanup());
           const payload = preparePayload({
             ...values,
-            parents: [nic.id],
+            parents: getParentIds(selected),
             system_id: systemId,
           }) as CreateBridgeParams;
           dispatch(machineActions.createBridge(payload));

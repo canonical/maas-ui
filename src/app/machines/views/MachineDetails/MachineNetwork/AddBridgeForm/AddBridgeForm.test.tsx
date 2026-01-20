@@ -150,4 +150,76 @@ describe("AddBridgeForm", () => {
       },
     });
   });
+
+  it("can dispatch an action to add a bridge with multiple interfaces", async () => {
+    const nic1 = factory.machineInterface({
+      type: NetworkInterfaceTypes.PHYSICAL,
+      name: "eth0",
+    });
+    const nic2 = factory.machineInterface({
+      type: NetworkInterfaceTypes.PHYSICAL,
+      name: "eth1",
+    });
+
+    state.machine.items = [
+      factory.machineDetails({
+        system_id: "abc123",
+        interfaces: [nic1, nic2],
+      }),
+    ];
+
+    const { store } = renderWithProviders(
+      <AddBridgeForm
+        selected={[{ nicId: nic1.id }, { nicId: nic2.id }]}
+        setSelected={vi.fn()}
+        systemId="abc123"
+      />,
+      { state }
+    );
+
+    // Ensure both interfaces are shown in the table
+    const table = screen.getByRole("grid");
+    const rows = within(within(table).getAllByRole("rowgroup")[1]).getAllByRole(
+      "row"
+    );
+    expect(rows).toHaveLength(2);
+    expect(within(rows[0]).getByText("eth0")).toBeInTheDocument();
+    expect(within(rows[1]).getByText("eth1")).toBeInTheDocument();
+
+    const macAddressField = screen.getByRole("textbox", {
+      name: "MAC address",
+    });
+
+    await userEvent.clear(macAddressField);
+    await userEvent.type(macAddressField, "28:21:c6:b9:1b:22");
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save interface" })
+    );
+
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "machine/createBridge")
+    ).toStrictEqual({
+      type: "machine/createBridge",
+      meta: {
+        model: "machine",
+        method: "create_bridge",
+      },
+      payload: {
+        params: {
+          bridge_stp: false,
+          fabric: "1",
+          bridge_type: "standard",
+          mac_address: "28:21:c6:b9:1b:22",
+          name: "br0",
+          parents: [nic1.id, nic2.id],
+          system_id: "abc123",
+          tags: [],
+          vlan: "39",
+        },
+      },
+    });
+  });
 });
