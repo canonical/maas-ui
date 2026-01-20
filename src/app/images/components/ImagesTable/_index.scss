@@ -1,5 +1,7 @@
 @mixin ImagesTable {
   .p-generic-table {
+    margin-bottom: 0;
+
     .version, .status {
       width: 20%;
 

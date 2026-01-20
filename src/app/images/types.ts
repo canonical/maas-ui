@@ -4,9 +4,12 @@ import type {
   ImageStatusResponse,
 } from "@/app/apiclient";
 
-export type Image = ImageResponse &
-  Partial<ImageStatisticResponse> &
-  Partial<ImageStatusResponse>;
+export type Image = Omit<
+  ImageResponse &
+    Partial<ImageStatisticResponse> &
+    Partial<ImageStatusResponse>,
+  "id"
+> & { id: string };
 
 export enum BootResourceSourceType {
   MAAS_IO = "maas.io",

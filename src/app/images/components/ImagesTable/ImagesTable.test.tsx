@@ -233,7 +233,10 @@ describe("ImagesTable", () => {
       expect(mockOpen).toHaveBeenCalledWith({
         component: DeleteImages,
         title: "Delete images",
-        props: { rowSelection: { "1": true }, setRowSelection: vi.fn },
+        props: {
+          rowSelection: { "1-selection": true },
+          setRowSelection: vi.fn,
+        },
       });
     });
 

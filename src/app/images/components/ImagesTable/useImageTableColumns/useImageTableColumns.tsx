@@ -14,6 +14,7 @@ import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
+import { OPERATING_SYSTEM_NAMES } from "@/app/images/constants";
 import type { Image } from "@/app/images/types";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
@@ -71,8 +72,12 @@ const useImageTableColumns = ({
               <div>
                 <div>
                   <strong>
-                    {row.original.os.charAt(0).toUpperCase() +
-                      row.original.os.slice(1)}
+                    {OPERATING_SYSTEM_NAMES.find(
+                      (os) =>
+                        os.value.toLowerCase() === row.original.os.toLowerCase()
+                    )?.label ??
+                      row.original.os.charAt(0).toUpperCase() +
+                        row.original.os.slice(1)}
                   </strong>
                 </div>
                 <small className="u-text--muted">
@@ -144,7 +149,7 @@ const useImageTableColumns = ({
               original: { update_status, last_updated, sync_percentage },
             },
           }) => {
-            const isOptimistic = status === "Optimistic";
+            const isOptimistic = update_status === "Optimistic";
             return isStatusLoading ? (
               <Spinner />
             ) : (
@@ -276,9 +281,12 @@ const useImageTableColumns = ({
               row.original.update_status === "Update available";
 
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
+            const isCustom = row.original.id.endsWith("-custom");
+            const imageId = Number(row.original.id.split("-")[0]);
+
             return row.getIsGrouped() ? null : (
               <div>
-                {downloadInProgress ? (
+                {isCustom ? null : downloadInProgress ? (
                   <Tooltip
                     message={
                       !isOptimistic
@@ -290,12 +298,12 @@ const useImageTableColumns = ({
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={startSync.isPending || isOptimistic}
+                      disabled={startSync.isPending || isOptimistic || isCustom}
                       hasIcon
                       onClick={() => {
                         stopSync.mutate({
                           path: {
-                            id: row.original.id,
+                            id: imageId,
                             boot_source_id: row.original.boot_source_id!,
                           },
                         });
@@ -316,12 +324,14 @@ const useImageTableColumns = ({
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={!downloadAvailable || stopSync.isPending}
+                      disabled={
+                        !downloadAvailable || stopSync.isPending || isCustom
+                      }
                       hasIcon
                       onClick={() => {
                         startSync.mutate({
                           path: {
-                            id: row.original.id,
+                            id: imageId,
                             boot_source_id: row.original.boot_source_id!,
                           },
                         });

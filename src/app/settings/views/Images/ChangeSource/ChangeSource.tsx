@@ -118,7 +118,7 @@ const ChangeSource = (): ReactElement => {
       (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
     ) &&
     customImageStatuses.items.every(
-      (s) => s.status === "Downloading" && s.update_status !== "Downloading"
+      (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
     );
   const sourceType = new RegExp(MAAS_IO_DEFAULTS.url).test(
     source.data?.url ?? ""
