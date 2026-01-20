@@ -51,7 +51,7 @@ const DeleteImages = ({
               .map((id) => Number(id.split("-")[0])),
           },
         });
-        // TODO: add custom image deletion when v3 API ready
+        // TODO: add custom image deletion when v3 API ready https://warthogs.atlassian.net/browse/MAASENG-5983
       }}
       onSuccess={() => {
         if (setRowSelection) {

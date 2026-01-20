@@ -46,6 +46,7 @@ describe("useImages", () => {
         ...item,
         ...mockStatistics.items[index],
         ...mockStatuses.items[index],
+        id: `${item.id}-selection`,
       };
     });
     expect(result.current.data?.items).toEqual(expectedItems);
