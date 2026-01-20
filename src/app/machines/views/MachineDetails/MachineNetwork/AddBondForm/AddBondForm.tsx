@@ -137,7 +137,7 @@ const AddBondForm = ({
   ]);
 
   useEffect(() => {
-    // When the form is first show then store the VLAN for this bond. This needs
+    // When the form is first shown then store the VLAN for this bond. This needs
     // to be done so that if all interfaces become deselected then the VLAN
     // information is not lost.
     if (!bondVLAN && hasEnoughNics && firstNic) {
