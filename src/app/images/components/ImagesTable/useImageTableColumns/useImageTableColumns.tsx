@@ -288,8 +288,8 @@ const useImageTableColumns = ({
               update_status === "Update available";
 
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
-            const isCustom = row.original.id.endsWith("-custom");
-            const imageId = Number(row.original.id.split("-")[0]);
+            const isCustom = id.endsWith("-custom");
+            const imageId = Number(id.split("-")[0]);
 
             return getIsGrouped() ? null : (
               <div>
