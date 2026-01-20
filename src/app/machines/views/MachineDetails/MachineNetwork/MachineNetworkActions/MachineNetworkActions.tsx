@@ -115,10 +115,6 @@ const MachineNetworkActions = ({
         [isAllNetworkingDisabled, NETWORK_DISABLED_MESSAGE],
         [selected.length === 0, "No interfaces are selected"],
         [
-          selected.length > 1,
-          "A bridge can only be created from one interface",
-        ],
-        [
           selectedIncludesType(machine, selected, NetworkInterfaceTypes.ALIAS),
           "A bridge can not be created from an alias",
         ],
