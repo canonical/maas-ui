@@ -281,9 +281,12 @@ const useImageTableColumns = ({
               row.original.update_status === "Update available";
 
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
+            const isCustom = row.original.id.endsWith("-custom");
+            const imageId = Number(row.original.id.split("-")[0]);
+
             return row.getIsGrouped() ? null : (
               <div>
-                {downloadInProgress ? (
+                {isCustom ? null : downloadInProgress ? (
                   <Tooltip
                     message={
                       !isOptimistic
@@ -295,12 +298,12 @@ const useImageTableColumns = ({
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={startSync.isPending || isOptimistic}
+                      disabled={startSync.isPending || isOptimistic || isCustom}
                       hasIcon
                       onClick={() => {
                         stopSync.mutate({
                           path: {
-                            id: row.original.id,
+                            id: imageId,
                             boot_source_id: row.original.boot_source_id!,
                           },
                         });
@@ -321,12 +324,14 @@ const useImageTableColumns = ({
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={!downloadAvailable || stopSync.isPending}
+                      disabled={
+                        !downloadAvailable || stopSync.isPending || isCustom
+                      }
                       hasIcon
                       onClick={() => {
                         startSync.mutate({
                           path: {
-                            id: row.original.id,
+                            id: imageId,
                             boot_source_id: row.original.boot_source_id!,
                           },
                         });

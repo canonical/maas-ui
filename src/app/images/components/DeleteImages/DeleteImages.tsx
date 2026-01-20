@@ -22,9 +22,7 @@ const DeleteImages = ({
 
   const deleteSelections = useDeleteSelections();
 
-  const imagesCount = Object.keys(rowSelection).filter(
-    (key: string) => !isNaN(Number(key))
-  ).length;
+  const imagesCount = Object.keys(rowSelection).length;
 
   const deleteMessage =
     imagesCount === 1 ? (
@@ -48,9 +46,12 @@ const DeleteImages = ({
       onSubmit={() => {
         deleteSelections.mutate({
           query: {
-            id: Object.keys(rowSelection).map((id) => Number(id)),
+            id: Object.keys(rowSelection)
+              .filter((id) => id.endsWith("-selection"))
+              .map((id) => Number(id.split("-")[0])),
           },
         });
+        // TODO: add custom image deletion when v3 API ready
       }}
       onSuccess={() => {
         if (setRowSelection) {
