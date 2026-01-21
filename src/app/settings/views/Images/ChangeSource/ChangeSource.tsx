@@ -21,6 +21,10 @@ import {
   useCustomImageStatuses,
   useSelectionStatuses,
 } from "@/app/api/query/images";
+import type {
+  ImageStatusListResponse,
+  ImageStatusResponse,
+} from "@/app/apiclient";
 import {
   getBootsourceQueryKey,
   getConfigurationQueryKey,
@@ -36,43 +40,80 @@ import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeS
 import { ConfigNames } from "@/app/store/config/types";
 
 const ChangeSourceSchema = Yup.object()
-  .shape(
-    {
-      keyring_data: Yup.string().when("keyring_filename", {
-        is: (val: string) => !val,
-        then: (schema) =>
-          schema.required(
-            "Either keyring data or keyring filename is required"
-          ),
-        otherwise: (schema) => schema,
-      }),
-      keyring_filename: Yup.string().when("keyring_data", {
-        is: (val: string) => !val,
-        then: (schema) =>
-          schema.required(
-            "Either keyring data or keyring filename is required"
-          ),
-        otherwise: (schema) => schema,
-      }),
-      source_type: Yup.string().required("Source type is required"),
-      url: Yup.string().when("source_type", {
+  .shape({
+    keyring_type: Yup.string()
+      .oneOf(["keyring_data", "keyring_filename", "keyring_unsigned"])
+      .required("Keyring type is required"),
+    keyring_data: Yup.string().when("keyring_type", {
+      is: "keyring_data",
+      then: (schema) => schema.required("Keyring data is required"),
+      otherwise: (schema) => schema,
+    }),
+    keyring_filename: Yup.string().when("keyring_type", {
+      is: "keyring_filename",
+      then: (schema) => schema.required("Keyring filename is required"),
+      otherwise: (schema) => schema,
+    }),
+    source_type: Yup.string().required("Source type is required"),
+    url: Yup.string()
+      .when("source_type", {
         is: (val: string) => val === BootResourceSourceType.CUSTOM,
         then: (schema) => schema.required("URL is required for custom sources"),
         otherwise: (schema) => schema,
+      })
+      .when("keyring_type", {
+        is: "keyring_unsigned",
+        then: (schema) =>
+          schema
+            .required("URL is required")
+            .test(
+              "ends-with-json",
+              "URL must end with .json for unsigned keyring",
+              (value) => !!value && value.endsWith(".json")
+            ),
+        otherwise: (schema) => schema,
       }),
-      autoSync: Yup.boolean(),
-    },
-    [["keyring_data", "keyring_filename"]]
-  )
+    autoSync: Yup.boolean(),
+  })
   .defined();
 
 export type ChangeSourceValues = {
   keyring_data: string;
   keyring_filename: string;
-  keyring_type: "keyring_data" | "keyring_filename";
+  keyring_type: "keyring_data" | "keyring_filename" | "keyring_unsigned";
   source_type: BootResourceSourceType;
   url: string;
   autoSync: boolean;
+};
+
+const getKeyringType = (
+  keyring_filename?: string,
+  keyring_data?: string
+): "keyring_data" | "keyring_filename" | "keyring_unsigned" => {
+  if (keyring_filename) return "keyring_filename";
+  if (keyring_data) return "keyring_data";
+  return "keyring_unsigned";
+};
+
+const getSourceType = (url: string): BootResourceSourceType => {
+  return new RegExp(MAAS_IO_DEFAULTS.url).test(url)
+    ? BootResourceSourceType.MAAS_IO
+    : BootResourceSourceType.CUSTOM;
+};
+
+const checkCanChangeSource = (
+  selectionStatuses: ImageStatusListResponse | undefined,
+  customImageStatuses: ImageStatusListResponse | undefined
+): boolean => {
+  if (!selectionStatuses || !customImageStatuses) return false;
+
+  const isNotDownloading = (s: ImageStatusResponse) =>
+    s.status !== "Downloading" && s.update_status !== "Downloading";
+
+  return (
+    selectionStatuses.items.every(isNotDownloading) &&
+    customImageStatuses.items.every(isNotDownloading)
+  );
 };
 
 const ChangeSource = (): ReactElement => {
@@ -114,27 +155,19 @@ const ChangeSource = (): ReactElement => {
 
   useWindowTitle("Source");
 
-  const canChangeSource =
-    selectionStatuses &&
-    customImageStatuses &&
-    selectionStatuses.items.every(
-      (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
-    ) &&
-    customImageStatuses.items.every(
-      (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
-    );
-  const sourceType = new RegExp(MAAS_IO_DEFAULTS.url).test(
-    source.data?.url ?? ""
-  )
-    ? BootResourceSourceType.MAAS_IO
-    : BootResourceSourceType.CUSTOM;
+  const canChangeSource = checkCanChangeSource(
+    selectionStatuses,
+    customImageStatuses
+  );
+  const sourceType = getSourceType(source.data?.url ?? "");
 
   const initialValues: ChangeSourceValues = {
     keyring_data: source.data?.keyring_data ?? "",
     keyring_filename: source.data?.keyring_filename ?? "",
-    keyring_type: source.data?.keyring_filename
-      ? "keyring_filename"
-      : "keyring_data",
+    keyring_type: getKeyringType(
+      source.data?.keyring_filename,
+      source.data?.keyring_data
+    ),
     url: source.data?.url ?? "",
     source_type: sourceType,
     autoSync: autoImport || false,
