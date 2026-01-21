@@ -89,7 +89,7 @@ describe("ChangeSourceFields", () => {
     );
   });
 
-  it(`switches between keyring filename and keyring data fields when selecting different options`, async () => {
+  it("switches between keyring filename and keyring data fields when selecting different options", async () => {
     renderWithProviders(
       <Formik
         initialValues={{

@@ -42,7 +42,7 @@ const ChangeSourceFields = ({
     values;
 
   const [selectedKeyringType, setSelectedKeyringType] = useState<
-    "keyring_data" | "keyring_filename"
+    "keyring_data" | "keyring_filename" | "keyring_unsigned"
   >(keyring_type || "keyring_filename");
 
   const customValuesRef = useRef(
@@ -229,7 +229,7 @@ const ChangeSourceFields = ({
                       );
                     }
                   );
-                } else {
+                } else if (newType === "keyring_data") {
                   await setFieldValue("keyring_filename", "").catch(
                     (reason: unknown) => {
                       throw new FormikFieldChangeError(
@@ -245,6 +245,7 @@ const ChangeSourceFields = ({
               options={[
                 { label: "Keyring filename", value: "keyring_filename" },
                 { label: "Keyring data", value: "keyring_data" },
+                { label: "Unsigned", value: "keyring_unsigned" },
               ]}
               required
               value={selectedKeyringType}
@@ -257,7 +258,7 @@ const ChangeSourceFields = ({
                 required
                 type="text"
               />
-            ) : (
+            ) : selectedKeyringType === "keyring_data" ? (
               <FormikField
                 component={Textarea}
                 help="Contents on the keyring to validate the mirror path."
@@ -265,7 +266,7 @@ const ChangeSourceFields = ({
                 placeholder="Contents of GPG key (base64 encoded)"
                 required
               />
-            )}
+            ) : null}
           </>
         )}
         <FormikField
