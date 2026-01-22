@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 
-import type { ColumnDef, Row } from "@tanstack/react-table";
+import { Spinner } from "@canonical/react-components";
+import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
-import type { ZoneWithSummaryResponse } from "@/app/apiclient";
+import type { ZoneResponse, ZoneWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
@@ -12,10 +13,15 @@ import { FilterDevices } from "@/app/store/device/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { DeleteZone, EditZone } from "@/app/zones/components";
 
-export type ZoneColumnDef = ColumnDef<
-  ZoneWithSummaryResponse,
-  Partial<ZoneWithSummaryResponse>
->;
+export type ZoneRow = Partial<
+  Pick<
+    ZoneWithSummaryResponse,
+    "controllers_count" | "devices_count" | "machines_count"
+  >
+> &
+  ZoneResponse;
+
+export type ZoneColumnDef = ColumnDef<ZoneRow, Partial<ZoneRow>>;
 
 const filterDevices = (name: string) =>
   FilterDevices.filtersToQueryString({
@@ -27,11 +33,15 @@ const machinesFilter = (name: string) =>
     zone: [name],
   });
 
-const useZonesTableColumns = (): ZoneColumnDef[] => {
+const useZonesTableColumns = ({
+  isSummaryPending,
+}: {
+  isSummaryPending: boolean;
+}): ZoneColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   const isSuperUser = useGetIsSuperUser();
   return useMemo(
-    () => [
+    (): ZoneColumnDef[] => [
       {
         id: "name",
         accessorKey: "name",
@@ -50,6 +60,10 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         enableSorting: true,
         header: "Machines",
         cell: ({ row }) => {
+          if (isSummaryPending) {
+            return <Spinner />;
+          }
+
           return (
             <Link
               className="u-align--right"
@@ -66,6 +80,10 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         enableSorting: true,
         header: "Devices",
         cell: ({ row }) => {
+          if (isSummaryPending) {
+            return <Spinner />;
+          }
+
           return (
             <Link
               className="u-align--right"
@@ -82,6 +100,10 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         enableSorting: true,
         header: "Controllers",
         cell: ({ row }) => {
+          if (isSummaryPending) {
+            return <Spinner />;
+          }
+
           return (
             <Link className="u-align--right" to={`${urls.controllers.index}`}>
               {row.original.controllers_count}
@@ -94,7 +116,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",
-        cell: ({ row }: { row: Row<ZoneWithSummaryResponse> }) => {
+        cell: ({ row }) => {
           const canBeDeleted = isSuperUser.data && row.original.id !== 1;
           return (
             <TableActions
@@ -124,7 +146,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         },
       },
     ],
-    [isSuperUser.data, openSidePanel]
+    [isSummaryPending, isSuperUser.data, openSidePanel]
   );
 };
 
