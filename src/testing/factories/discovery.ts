@@ -16,6 +16,7 @@ export const discovery = extend<Model, DiscoveryResponse>(model, {
   is_external_dhcp: false,
   last_seen: () => timestamp("Wed, 08 Jul. 2020 05:35:4"),
   mac_address: "00:00:00:00:00:00",
+  mac_organization: "Unknown Vendor",
   mdns_id: 2,
   neighbour_id: 3,
   observer_hostname: "observer-hostname",

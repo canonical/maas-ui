@@ -964,6 +964,10 @@ export type DiscoveryResponse = {
    */
   mac_address?: string;
   /**
+   * Mac Organization
+   */
+  mac_organization?: string;
+  /**
    * Vid
    */
   vid?: number;

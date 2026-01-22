@@ -64,6 +64,48 @@ describe("DiscoveriesTable", () => {
         ).toBeInTheDocument();
       });
     });
+
+    it("displays MAC address with organization", async () => {
+      const mockDiscovery = discovery({
+        id: 1,
+        mac_address: "aa:bb:cc:dd:ee:ff",
+        mac_organization: "Intel Corporate",
+      });
+      mockServer.use(
+        networkDiscoveryResolvers.listNetworkDiscoveries.handler({
+          items: [mockDiscovery],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<DiscoveriesTable />);
+
+      await waitFor(() => {
+        expect(screen.getByText("aa:bb:cc:dd:ee:ff")).toBeInTheDocument();
+        expect(screen.getByText("Intel Corporate")).toBeInTheDocument();
+      });
+    });
+
+    it("displays 'Unknown' when MAC organization is not available", async () => {
+      const mockDiscovery = discovery({
+        id: 1,
+        mac_address: "aa:bb:cc:dd:ee:ff",
+        mac_organization: undefined,
+      });
+      mockServer.use(
+        networkDiscoveryResolvers.listNetworkDiscoveries.handler({
+          items: [mockDiscovery],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<DiscoveriesTable />);
+
+      await waitFor(() => {
+        expect(screen.getByText("aa:bb:cc:dd:ee:ff")).toBeInTheDocument();
+        expect(screen.getByText("Unknown")).toBeInTheDocument();
+      });
+    });
   });
 
   describe("actions", () => {
