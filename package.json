@@ -213,5 +213,8 @@
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
+  },
+  "resolve": {
+    "preserveSymlinks": false
   }
 }
