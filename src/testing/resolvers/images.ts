@@ -227,6 +227,19 @@ const imageResolvers = {
         return HttpResponse.json(error, { status: error.code });
       }),
   },
+  deleteCustomImages: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/custom_images`, () => {
+        imageResolvers.deleteSelections.resolved = true;
+        return HttpResponse.json({}, { status: 204 });
+      }),
+    error: (error: BulkCreateSelectionsError = mockSaveSelectionsError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/custom_images`, () => {
+        imageResolvers.deleteSelections.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
 };
 
 export {

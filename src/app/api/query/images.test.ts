@@ -4,6 +4,7 @@ import {
   useCustomImages,
   useCustomImageStatistics,
   useCustomImageStatuses,
+  useDeleteCustomImages,
   useDeleteSelections,
   useImages,
   useSelections,
@@ -32,7 +33,8 @@ setupMockServer(
   imageResolvers.listCustomImageStatistics.handler(),
   imageResolvers.listAvailableSelections.handler(),
   imageResolvers.addSelections.handler(),
-  imageResolvers.deleteSelections.handler()
+  imageResolvers.deleteSelections.handler(),
+  imageResolvers.deleteCustomImages.handler()
 );
 
 describe("useImages", () => {
@@ -145,6 +147,20 @@ describe("useAddSelections", () => {
 describe("useDeleteSelections", () => {
   it("should delete a selection", async () => {
     const { result } = renderHookWithProviders(() => useDeleteSelections());
+    result.current.mutate({
+      query: {
+        id: [1],
+      },
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useDeleteSelections", () => {
+  it("should delete a custom image", async () => {
+    const { result } = renderHookWithProviders(() => useDeleteCustomImages());
     result.current.mutate({
       query: {
         id: [1],

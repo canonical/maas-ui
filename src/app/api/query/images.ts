@@ -13,6 +13,9 @@ import type {
   BulkCreateSelectionsData,
   BulkCreateSelectionsErrors,
   BulkCreateSelectionsResponses,
+  BulkDeleteCustomImagesData,
+  BulkDeleteCustomImagesErrors,
+  BulkDeleteCustomImagesResponses,
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsErrors,
   BulkDeleteSelectionsResponses,
@@ -47,6 +50,7 @@ import type {
   Options,
 } from "@/app/apiclient";
 import {
+  bulkDeleteCustomImages,
   bulkCreateSelections,
   bulkDeleteSelections,
   getAllAvailableImages,
@@ -475,6 +479,24 @@ export const useDeleteSelections = (
       BulkDeleteSelectionsErrors,
       BulkDeleteSelectionsData
     >(mutationOptions, bulkDeleteSelections),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: IMAGES_WORKFLOW_KEY,
+      });
+    },
+  });
+};
+
+export const useDeleteCustomImages = (
+  mutationOptions?: Options<BulkDeleteCustomImagesData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkDeleteCustomImagesResponses,
+      BulkDeleteCustomImagesErrors,
+      BulkDeleteCustomImagesData
+    >(mutationOptions, bulkDeleteCustomImages),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: IMAGES_WORKFLOW_KEY,
