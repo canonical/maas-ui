@@ -2,7 +2,10 @@ import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import type { RowSelectionState } from "@tanstack/react-table";
 
-import { useDeleteSelections } from "@/app/api/query/images";
+import {
+  useDeleteCustomImages,
+  useDeleteSelections,
+} from "@/app/api/query/images";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
@@ -21,6 +24,7 @@ const DeleteImages = ({
   const { closeSidePanel } = useSidePanel();
 
   const deleteSelections = useDeleteSelections();
+  const deleteCustomImages = useDeleteCustomImages();
 
   const imagesCount = Object.keys(rowSelection).length;
 
@@ -44,14 +48,28 @@ const DeleteImages = ({
       modelType="image"
       onCancel={closeSidePanel}
       onSubmit={() => {
-        deleteSelections.mutate({
-          query: {
-            id: Object.keys(rowSelection)
-              .filter((id) => id.endsWith("-selection"))
-              .map((id) => Number(id.split("-")[0])),
-          },
-        });
-        // TODO: add custom image deletion when v3 API ready https://warthogs.atlassian.net/browse/MAASENG-5983
+        const selectionIds = Object.keys(rowSelection)
+          .filter((id) => id.endsWith("-selection"))
+          .map((id) => Number(id.split("-")[0]));
+        const customImageIds = Object.keys(rowSelection)
+          .filter((id) => id.endsWith("-custom"))
+          .map((id) => Number(id.split("-")[0]));
+
+        if (selectionIds.length) {
+          deleteSelections.mutate({
+            query: {
+              id: selectionIds,
+            },
+          });
+        }
+
+        if (customImageIds.length) {
+          deleteCustomImages.mutate({
+            query: {
+              id: customImageIds,
+            },
+          });
+        }
       }}
       onSuccess={() => {
         if (setRowSelection) {
