@@ -1,3 +1,5 @@
+import type { Accept } from "react-dropzone";
+
 export const MAAS_IO_DEFAULTS = {
   url: "http://images.maas.io/ephemeral-v3/stable/",
   keyring_filename:
@@ -5,19 +7,21 @@ export const MAAS_IO_DEFAULTS = {
   keyring_data: "",
 } as const;
 
-export const VALID_IMAGE_FILE_TYPES = [
-  "tgz",
-  "tbz",
-  "txz",
-  "ddtgz",
-  "ddtbz",
-  "ddtxz",
-  "ddtar",
-  "ddbz2",
-  "ddgz",
-  "ddxz",
-  "ddraw",
-] as const;
+export const VALID_IMAGE_FILE_TYPES: Accept = {
+  "application/octet-stream": [
+    ".tgz",
+    ".tbz",
+    ".txz",
+    ".ddtgz",
+    ".ddtbz",
+    ".ddtxz",
+    ".ddtar",
+    ".ddbz2",
+    ".ddgz",
+    ".ddxz",
+    ".ddraw",
+  ],
+} as const;
 
 export const OPERATING_SYSTEM_NAMES = [
   {

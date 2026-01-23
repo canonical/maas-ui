@@ -7,6 +7,7 @@ import classNames from "classnames";
 import type { FormikProps } from "formik";
 import { Field } from "formik";
 import { sha256 } from "js-sha256";
+import type { FileRejection } from "react-dropzone";
 import * as Yup from "yup";
 
 import { useUploadCustomImage } from "@/app/api/query/images";
@@ -23,8 +24,6 @@ import {
   VALID_IMAGE_FILE_TYPES,
 } from "@/app/images/constants";
 
-import "./_index.scss";
-
 type UploadImageFormValues = {
   title: string;
   release: string;
@@ -33,21 +32,8 @@ type UploadImageFormValues = {
   file: File | undefined;
 };
 
-const getFileExtension = (
-  fileName: string
-): BootResourceFileTypeChoice | undefined => {
-  const extension = fileName.split(".").pop()?.toLowerCase();
-  if (
-    extension &&
-    VALID_IMAGE_FILE_TYPES.includes(extension as BootResourceFileTypeChoice)
-  ) {
-    return extension as BootResourceFileTypeChoice;
-  }
-  return undefined;
-};
-
-const isValidFileType = (fileName: string) => {
-  return getFileExtension(fileName) !== undefined;
+const getFileExtension = (fileName: string): BootResourceFileTypeChoice => {
+  return fileName.split(".").pop()?.toLowerCase() as BootResourceFileTypeChoice;
 };
 
 const getChecksumSha256 = async (file: Blob | File) => {
@@ -78,11 +64,7 @@ const UploadImageSchema = Yup.object().shape({
   release: Yup.string().required("Release is required."),
   os: Yup.string().required("OS is required."),
   arch: Yup.string().required("Architecture is required."),
-  file: Yup.mixed<File>()
-    .required("Image file is required.")
-    .test("is-valid-type", "File type is invalid.", (image) =>
-      isValidFileType(image?.name?.toLowerCase() || "")
-    ),
+  file: Yup.mixed<File>().required("Image file is required."),
 });
 
 const UploadCustomImage = (): ReactElement => {
@@ -130,6 +112,7 @@ const UploadCustomImage = (): ReactElement => {
           saved={uploadCustomImage.isSuccess}
           saving={uploadCustomImage.isPending}
           submitLabel="Save and sync"
+          validateOnChange
           validationSchema={UploadImageSchema}
         >
           {({
@@ -193,7 +176,9 @@ const UploadCustomImage = (): ReactElement => {
                   "is-error": touched.file && errors.file,
                 })}
               >
-                <Label className="is-required">Upload image</Label>
+                <Label className="is-required" id="file-field">
+                  Upload image
+                </Label>
                 <p className="p-form-help-text">
                   Supported file types are tgz, tbz, txz, ddtgz, ddtbz, ddtxz,
                   ddtar, ddbz2, ddgz, ddxz and ddraw.
@@ -201,19 +186,19 @@ const UploadCustomImage = (): ReactElement => {
                 <div className="p-form__control">
                   <div className="u-padding-bottom--medium">
                     <Field
+                      accept={VALID_IMAGE_FILE_TYPES}
+                      aria-labelledby="file-field"
                       as={FileUpload}
                       error={touched.file && errors.file}
-                      files={
-                        values.file
-                          ? [
-                              {
-                                name: values.file.name,
-                              },
-                            ]
-                          : []
-                      }
+                      files={values.file && !errors.file ? [values.file] : []}
+                      maxFiles={1}
+                      maxSize={20000}
+                      minSize={1}
                       name="file"
-                      onFileUpload={async (files: File[]) => {
+                      onFileUpload={async (
+                        files: File[],
+                        rejectedFiles: FileRejection[]
+                      ) => {
                         setFieldTouched("file", true).catch(
                           (reason: unknown) => {
                             throw new FormikFieldChangeError(
@@ -223,24 +208,69 @@ const UploadCustomImage = (): ReactElement => {
                             );
                           }
                         );
-                        if (files.length > 1) {
-                          setFieldError(
-                            "file",
-                            "Only one image can be uploaded at a time."
-                          );
-                        } else {
-                          setFieldValue("file", files[0]).catch(
-                            (reason: unknown) => {
+                        if (files.length) {
+                          setFieldValue("file", files[0])
+                            // Clear errors if file is valid
+                            .then(() => {
+                              setFieldError("file", undefined);
+                            })
+                            .catch((reason: unknown) => {
                               throw new FormikFieldChangeError(
                                 "file",
-                                "setFieldTouched",
+                                "setFieldValue",
                                 reason as string
                               );
-                            }
-                          );
+                            });
+                        } else {
+                          setFieldValue("file", rejectedFiles[0].file)
+                            // Set error to rejected file's message
+                            .then(() => {
+                              setFieldError(
+                                "file",
+                                `${rejectedFiles[0].errors[0].message}.`
+                              );
+                            })
+                            .catch((reason: unknown) => {
+                              throw new FormikFieldChangeError(
+                                "file",
+                                "setFieldValue",
+                                reason as string
+                              );
+                            });
                         }
                       }}
+                      onRemoveFile={async () => {
+                        setFieldValue("file", undefined).catch(
+                          (reason: unknown) => {
+                            throw new FormikFieldChangeError(
+                              "file",
+                              "setFieldTouched",
+                              reason as string
+                            );
+                          }
+                        );
+                      }}
+                      rejectedFiles={
+                        values.file && errors.file
+                          ? [
+                              {
+                                file: values.file,
+                                errors: [
+                                  {
+                                    code: "validation-error",
+                                    message: errors.file as string,
+                                  },
+                                ],
+                              },
+                            ]
+                          : []
+                      }
                       required
+                      validate={() => {
+                        // Force return the previous state's errors so that
+                        // form re-validation does not clear field-level errors.
+                        return errors.file;
+                      }}
                     />
                   </div>
                 </div>
