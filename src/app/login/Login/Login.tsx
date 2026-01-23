@@ -14,7 +14,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import * as Yup from "yup";
 
 import { useAuthenticate, useCreateSession } from "@/app/api/query/auth";
-import type { LoginError, AccessTokenResponse } from "@/app/apiclient";
+import type { LoginError, TokenResponse } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
@@ -23,6 +23,7 @@ import urls from "@/app/base/urls";
 import { statusActions } from "@/app/store/status";
 import statusSelectors from "@/app/store/status/selectors";
 import { formatErrors, setCookie } from "@/app/utils";
+import { COOKIE_NAMES } from "@/app/utils/cookies";
 
 const generateSchema = (hasEnteredUsername: boolean) => {
   if (hasEnteredUsername) {
@@ -110,11 +111,19 @@ export const Login = (): React.ReactElement => {
         },
       },
       {
-        onSuccess: async (data: AccessTokenResponse) => {
-          setCookie("maas_v3_access_token", data.access_token, {
+        onSuccess: async (data: TokenResponse) => {
+          setCookie(COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME, data.access_token, {
             sameSite: "Strict",
             path: "/",
           });
+          setCookie(
+            COOKIE_NAMES.LOCAL_REFRESH_TOKEN_NAME,
+            data.refresh_token!,
+            {
+              sameSite: "Strict",
+              path: "/",
+            }
+          );
           await createSession.mutateAsync({});
           dispatch(statusActions.loginSuccess());
           handleRedirect();

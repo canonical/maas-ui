@@ -26,19 +26,19 @@ import {
   secondsToDuration,
 } from "@/app/utils/timeSpan";
 
-type SessionTimeoutFormValues = {
-  session_length: string;
+type TokenExpirationFormValues = {
+  refresh_token_expiration: string;
 };
 
 export enum Labels {
   Loading = "Loading...",
-  Expiration = "Session timeout expiration",
+  Expiration = "Refresh token expiration",
   Save = "Save",
-  ConfigureSessionTimeout = "Configure Session Timeout",
+  ConfigureSessionTimeout = "Configure Token Expiration",
 }
 
 const SessionTimeoutSchema = Yup.object().shape({
-  session_length: Yup.string()
+  refresh_token_expiration: Yup.string()
     .required("Timeout length is required")
     .matches(
       /^((\d)+ ?(hour|day|week|minute)(s)? ?(and)? ?)+$/,
@@ -46,7 +46,7 @@ const SessionTimeoutSchema = Yup.object().shape({
     )
     .test(
       "session-length-boundary-check",
-      "Maximum value is 2 weeks (or equivalent)",
+      "Maximum value is 60 days (or equivalent)",
       function (value) {
         if (!value) {
           return false;
@@ -57,18 +57,33 @@ const SessionTimeoutSchema = Yup.object().shape({
           return false;
         }
 
-        return sessionLengthInSeconds <= 1209600;
+        return sessionLengthInSeconds <= 5184000;
+      }
+    )
+    .test(
+      "session-length-minimum-check",
+      "Minimum value is 10 minutes (or equivalent)",
+      function (value) {
+        if (!value) {
+          return false;
+        }
+        const sessionLengthInSeconds = humanReadableToSeconds(value);
+        if (!sessionLengthInSeconds) {
+          return false;
+        }
+
+        return sessionLengthInSeconds >= 600;
       }
     ),
 });
 
 const SessionTimeout = (): ReactElement => {
-  const names = [ConfigNames.SESSION_LENGTH] as PublicConfigName[];
+  const names = [ConfigNames.REFRESH_TOKEN_DURATION] as PublicConfigName[];
   const { data, isPending, error } = useConfigurations({
     query: { name: names },
   });
   const eTag = data?.headers?.get("ETag");
-  const session_length = data?.items?.[0].value || {};
+  const token_expiration = data?.items?.[0].value || {};
   const updateConfig = useBulkSetConfigurations();
   useWindowTitle("Session timeout");
   const logout = useLogout();
@@ -92,13 +107,13 @@ const SessionTimeout = (): ReactElement => {
               {error.message}
             </NotificationBanner>
           )}
-          <FormikForm<SessionTimeoutFormValues, SetConfigurationsError>
+          <FormikForm<TokenExpirationFormValues, SetConfigurationsError>
             aria-label={Labels.ConfigureSessionTimeout}
             cleanup={configActions.cleanup}
             errors={updateConfig.error}
             initialValues={{
-              session_length: formatDuration(
-                secondsToDuration(session_length as number)
+              refresh_token_expiration: formatDuration(
+                secondsToDuration(token_expiration as number)
               ),
             }}
             onSaveAnalytics={{
@@ -107,10 +122,10 @@ const SessionTimeout = (): ReactElement => {
               label: "Session timeout form",
             }}
             onSubmit={(values, { resetForm }) => {
-              const sessionLengthInSeconds = humanReadableToSeconds(
-                values.session_length
+              const tokenExpirationInSeconds = humanReadableToSeconds(
+                values.refresh_token_expiration
               );
-              sessionLengthInSeconds &&
+              tokenExpirationInSeconds &&
                 updateConfig.mutate(
                   {
                     headers: {
@@ -119,8 +134,8 @@ const SessionTimeout = (): ReactElement => {
                     body: {
                       configurations: [
                         {
-                          name: ConfigNames.SESSION_LENGTH,
-                          value: sessionLengthInSeconds,
+                          name: ConfigNames.REFRESH_TOKEN_DURATION,
+                          value: tokenExpirationInSeconds,
                         },
                       ],
                     },
@@ -140,17 +155,23 @@ const SessionTimeout = (): ReactElement => {
             <FormikField
               help={
                 <span>
-                  Maximum session length is 14 days / 2 weeks. Format options
-                  are weeks, days, hours, and/or minutes.
+                  Maximum refresh token duration is 60 days. Format options are
+                  weeks, days, hours, and/or minutes.
                   <br />
                   <br />
                   <Icon name="warning" /> MAAS will automatically log out all
-                  users after changing the session expiration time. New session
-                  timeout applies after login.
+                  users after changing the refresh token duration. New token
+                  duration applies after login.
+                  <br />
+                  <br />
+                  <Icon name="warning" /> This setting applies to local MAAS
+                  users. Externally authenticated users, such as those using
+                  Single Sign-On, may have different session timeout policies.
+                  Configure those settings in your identity provider.
                 </span>
               }
               label={Labels.Expiration}
-              name="session_length"
+              name="refresh_token_expiration"
               required={true}
               type="text"
             />

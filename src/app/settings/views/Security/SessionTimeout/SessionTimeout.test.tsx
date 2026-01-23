@@ -127,6 +127,32 @@ describe("SessionTimeout", () => {
     expect(
       screen.getByRole("button", { name: SessionTimeoutLabels.Save })
     ).toBeDisabled();
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+    );
+    // Testing minimum boundary
+    await userEvent.type(
+      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration }),
+      "5 minutes"
+    );
+
+    expect(
+      screen.getByRole("button", { name: SessionTimeoutLabels.Save })
+    ).toBeDisabled();
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+    );
+    // Testing maximum boundary
+    await userEvent.type(
+      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration }),
+      "90 days"
+    );
+
+    expect(
+      screen.getByRole("button", { name: SessionTimeoutLabels.Save })
+    ).toBeDisabled();
   });
 
   it("correctly converts time values to seconds on save", async () => {
@@ -161,7 +187,7 @@ describe("SessionTimeout", () => {
         body: {
           configurations: [
             {
-              name: "session_length",
+              name: "refresh_token_duration",
               value: 1044000,
             },
           ],

@@ -2,6 +2,7 @@ import Login, { Labels, INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
 import { setCookie } from "@/app/utils";
+import { COOKIE_NAMES } from "@/app/utils/cookies";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
@@ -97,7 +98,7 @@ describe("Login", () => {
       expect(authResolvers.authenticate.resolved).toBeTruthy();
     });
     expect(setCookie).toHaveBeenCalledWith(
-      "maas_v3_access_token",
+      COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME,
       "mock_access_token",
       {
         sameSite: "Strict",

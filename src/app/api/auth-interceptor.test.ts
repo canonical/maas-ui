@@ -4,6 +4,7 @@ import { configureAuthInterceptor } from "./auth-interceptor";
 
 import { client } from "@/app/apiclient/client.gen";
 import { getCookie } from "@/app/utils";
+import { COOKIE_NAMES } from "../utils/cookies";
 
 vi.mock("@/app/apiclient/client.gen", () => ({
   client: {
@@ -37,7 +38,7 @@ describe("configureAuthInterceptor", () => {
 
     const result = await interceptor(mockRequest, { url: "" });
 
-    expect(getCookie).toHaveBeenCalledWith("maas_v3_access_token");
+    expect(getCookie).toHaveBeenCalledWith(COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME);
     expect(result.headers.get("Authorization")).toBe("Bearer test-token-123");
   });
 

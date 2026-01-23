@@ -1,3 +1,5 @@
+import { COOKIE_NAMES } from "../utils/cookies";
+
 import { client } from "@/app/apiclient/client.gen";
 import { getCookie } from "@/app/utils";
 
@@ -7,7 +9,7 @@ import { getCookie } from "@/app/utils";
  */
 export const configureAuthInterceptor = () => {
   client.interceptors.request.use((request) => {
-    const token = getCookie("maas_v3_access_token");
+    const token = getCookie(COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME);
 
     if (token) {
       request.headers.set("Authorization", `Bearer ${token}`);

@@ -7,6 +7,14 @@ type CookieOptions = {
   sameSite?: "Lax" | "None" | "Strict";
 };
 
+const LOCAL_JWT_TOKEN_NAME = "maas.local_jwt_token_cookie";
+const LOCAL_REFRESH_TOKEN_NAME = "maas.local_refresh_token_cookie";
+
+export const COOKIE_NAMES = {
+  LOCAL_JWT_TOKEN_NAME,
+  LOCAL_REFRESH_TOKEN_NAME,
+};
+
 /**
  * Get cookie value by name.
  *
