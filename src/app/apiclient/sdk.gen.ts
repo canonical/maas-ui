@@ -12,6 +12,9 @@ import type {
   BulkCreateSelectionsData,
   BulkCreateSelectionsErrors,
   BulkCreateSelectionsResponses,
+  BulkDeleteCustomImagesData,
+  BulkDeleteCustomImagesErrors,
+  BulkDeleteCustomImagesResponses,
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsErrors,
   BulkDeleteSelectionsResponses,
@@ -459,6 +462,9 @@ import type {
   LogoutData,
   LogoutErrors,
   LogoutResponses,
+  PreLoginData,
+  PreLoginErrors,
+  PreLoginResponses,
   SetConfigurationData,
   SetConfigurationErrors,
   SetConfigurationResponses,
@@ -777,6 +783,22 @@ export const initiateAuthFlow = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/MAAS/a/v3/auth/login_info",
+    ...options,
+  });
+};
+
+/**
+ * Pre Login
+ */
+export const preLogin = <ThrowOnError extends boolean = false>(
+  options?: Options<PreLoginData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    PreLoginResponses,
+    PreLoginErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/auth/login",
     ...options,
   });
 };
@@ -1704,6 +1726,28 @@ export const getCustomImageStatistic = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/custom_images/statistics/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Bulk Delete Custom Images
+ */
+export const bulkDeleteCustomImages = <ThrowOnError extends boolean = false>(
+  options: Options<BulkDeleteCustomImagesData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    BulkDeleteCustomImagesResponses,
+    BulkDeleteCustomImagesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/custom_images",
     ...options,
   });
 };

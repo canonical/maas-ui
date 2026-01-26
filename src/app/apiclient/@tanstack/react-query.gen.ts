@@ -5,6 +5,7 @@ import { queryOptions, type UseMutationOptions } from "@tanstack/react-query";
 import { client } from "../client.gen";
 import {
   bulkCreateSelections,
+  bulkDeleteCustomImages,
   bulkDeleteSelections,
   changePasswordAdmin,
   changePasswordUser,
@@ -155,6 +156,7 @@ import {
   login,
   logout,
   type Options,
+  preLogin,
   setConfiguration,
   setConfigurations,
   stopImportBootsources,
@@ -184,6 +186,9 @@ import type {
   BulkCreateSelectionsData,
   BulkCreateSelectionsError,
   BulkCreateSelectionsResponse,
+  BulkDeleteCustomImagesData,
+  BulkDeleteCustomImagesError,
+  BulkDeleteCustomImagesResponse,
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsError,
   BulkDeleteSelectionsResponse,
@@ -630,6 +635,9 @@ import type {
   LogoutData,
   LogoutError,
   LogoutResponse,
+  PreLoginData,
+  PreLoginError,
+  PreLoginResponse,
   SetConfigurationData,
   SetConfigurationError,
   SetConfigurationResponse,
@@ -1045,6 +1053,31 @@ export const initiateAuthFlowOptions = (
       return data;
     },
     queryKey: initiateAuthFlowQueryKey(options),
+  });
+
+export const preLoginQueryKey = (options?: Options<PreLoginData>) =>
+  createQueryKey("preLogin", options);
+
+/**
+ * Pre Login
+ */
+export const preLoginOptions = (options?: Options<PreLoginData>) =>
+  queryOptions<
+    PreLoginResponse,
+    PreLoginError,
+    PreLoginResponse,
+    ReturnType<typeof preLoginQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await preLogin({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: preLoginQueryKey(options),
   });
 
 /**
@@ -2128,6 +2161,33 @@ export const getCustomImageStatisticOptions = (
     },
     queryKey: getCustomImageStatisticQueryKey(options),
   });
+
+/**
+ * Bulk Delete Custom Images
+ */
+export const bulkDeleteCustomImagesMutation = (
+  options?: Partial<Options<BulkDeleteCustomImagesData>>
+): UseMutationOptions<
+  BulkDeleteCustomImagesResponse,
+  BulkDeleteCustomImagesError,
+  Options<BulkDeleteCustomImagesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    BulkDeleteCustomImagesResponse,
+    BulkDeleteCustomImagesError,
+    Options<BulkDeleteCustomImagesData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await bulkDeleteCustomImages({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
 
 export const listCustomImagesQueryKey = (
   options?: Options<ListCustomImagesData>
