@@ -964,6 +964,10 @@ export type DiscoveryResponse = {
    */
   mac_address?: string;
   /**
+   * Mac Organization
+   */
+  mac_organization?: string;
+  /**
    * Vid
    */
   vid?: number;
@@ -2868,6 +2872,26 @@ export type PowerTypeEnum =
   | "vmware"
   | "webhook"
   | "wedge";
+
+/**
+ * PreLoginInfoResponse
+ *
+ * Content for a response returning pre-login information.
+ */
+export type PreLoginInfoResponse = {
+  /**
+   * Is Authenticated
+   */
+  is_authenticated: boolean;
+  /**
+   * No Users
+   */
+  no_users: boolean;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
 
 /**
  * PreconditionFailedBodyResponse
@@ -5497,7 +5521,7 @@ export type ExtendSessionErrors = {
   /**
    * Bad Request
    */
-  400: BadGatewayErrorBodyResponse;
+  400: BadRequestBodyResponse;
   /**
    * Unprocessable Entity
    */
@@ -5653,6 +5677,31 @@ export type InitiateAuthFlowResponses = {
 
 export type InitiateAuthFlowResponse =
   InitiateAuthFlowResponses[keyof InitiateAuthFlowResponses];
+
+export type PreLoginData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/auth/login";
+};
+
+export type PreLoginErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type PreLoginError = PreLoginErrors[keyof PreLoginErrors];
+
+export type PreLoginResponses = {
+  /**
+   * Successful Response
+   */
+  200: PreLoginInfoResponse;
+};
+
+export type PreLoginResponse = PreLoginResponses[keyof PreLoginResponses];
 
 export type LoginData = {
   body: BodyLogin;
@@ -7109,6 +7158,48 @@ export type GetCustomImageStatisticResponses = {
 export type GetCustomImageStatisticResponse =
   GetCustomImageStatisticResponses[keyof GetCustomImageStatisticResponses];
 
+export type BulkDeleteCustomImagesData = {
+  body?: never;
+  path?: never;
+  query: {
+    /**
+     * Id
+     *
+     * ids of custom images to delete
+     */
+    id: number[];
+  };
+  url: "/MAAS/a/v3/custom_images";
+};
+
+export type BulkDeleteCustomImagesErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Precondition Failed
+   */
+  412: PreconditionFailedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type BulkDeleteCustomImagesError =
+  BulkDeleteCustomImagesErrors[keyof BulkDeleteCustomImagesErrors];
+
+export type BulkDeleteCustomImagesResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type BulkDeleteCustomImagesResponse =
+  BulkDeleteCustomImagesResponses[keyof BulkDeleteCustomImagesResponses];
+
 export type ListCustomImagesData = {
   body?: never;
   path?: never;
@@ -7164,12 +7255,6 @@ export type UploadCustomImageData = {
      */
     sha256: string;
     /**
-     * Size
-     *
-     * The size of the resource in bytes.
-     */
-    size: number;
-    /**
      * Architecture
      *
      * Architecture the boot resource supports.
@@ -7188,7 +7273,7 @@ export type UploadCustomImageData = {
     /**
      * Base-Image
      *
-     * The Base OS image a custom image is built on top of. Only required for custom image.
+     * The Base OS image a custom image is built on top of. Only required for images of type 'custom'.
      */
     "base-image"?: string;
   };

@@ -13,6 +13,9 @@ import type {
   BulkCreateSelectionsData,
   BulkCreateSelectionsErrors,
   BulkCreateSelectionsResponses,
+  BulkDeleteCustomImagesData,
+  BulkDeleteCustomImagesErrors,
+  BulkDeleteCustomImagesResponses,
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsErrors,
   BulkDeleteSelectionsResponses,
@@ -45,8 +48,13 @@ import type {
   ListSelectionStatusErrors,
   ListSelectionStatusResponses,
   Options,
+  UploadCustomImageData,
+  UploadCustomImageErrors,
+  UploadCustomImageResponses,
 } from "@/app/apiclient";
 import {
+  uploadCustomImage,
+  bulkDeleteCustomImages,
   bulkCreateSelections,
   bulkDeleteSelections,
   getAllAvailableImages,
@@ -182,10 +190,12 @@ export const useImages = (
       ...(selections.data?.items ?? []).map((item) => ({
         ...item,
         id: generateImageId(item.id, false),
+        isUpstream: true,
       })),
       ...(customImages.data?.items ?? []).map((item) => ({
         ...item,
         id: generateImageId(item.id, true),
+        isUpstream: false,
       })),
     ];
     const statuses = [
@@ -228,6 +238,7 @@ export const useImages = (
         size: statistic?.size,
         node_count: statistic?.node_count,
         deploy_to_memory: statistic?.deploy_to_memory,
+        isUpstream: image.isUpstream,
       };
     });
   }, [
@@ -475,6 +486,40 @@ export const useDeleteSelections = (
       BulkDeleteSelectionsErrors,
       BulkDeleteSelectionsData
     >(mutationOptions, bulkDeleteSelections),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: IMAGES_WORKFLOW_KEY,
+      });
+    },
+  });
+};
+
+export const useUploadCustomImage = (
+  mutationOptions?: Options<UploadCustomImageData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UploadCustomImageResponses,
+      UploadCustomImageErrors,
+      UploadCustomImageData
+    >(mutationOptions, uploadCustomImage),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: IMAGES_WORKFLOW_KEY });
+    },
+  });
+};
+
+export const useDeleteCustomImages = (
+  mutationOptions?: Options<BulkDeleteCustomImagesData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkDeleteCustomImagesResponses,
+      BulkDeleteCustomImagesErrors,
+      BulkDeleteCustomImagesData
+    >(mutationOptions, bulkDeleteCustomImages),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: IMAGES_WORKFLOW_KEY,

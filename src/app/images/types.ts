@@ -9,7 +9,7 @@ export type Image = Omit<
     Partial<ImageStatisticResponse> &
     Partial<ImageStatusResponse>,
   "id"
-> & { id: string };
+> & { id: string; isUpstream: boolean };
 
 export enum BootResourceSourceType {
   MAAS_IO = "maas.io",

@@ -227,6 +227,32 @@ const imageResolvers = {
         return HttpResponse.json(error, { status: error.code });
       }),
   },
+  uploadCustomImage: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/custom_images`, () => {
+        imageResolvers.uploadCustomImage.resolved = true;
+        return HttpResponse.json({}, { status: 201 });
+      }),
+    error: (error: BulkCreateSelectionsError = mockSaveSelectionsError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/custom_images`, () => {
+        imageResolvers.uploadCustomImage.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  deleteCustomImages: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/custom_images`, () => {
+        imageResolvers.deleteCustomImages.resolved = true;
+        return HttpResponse.json({}, { status: 204 });
+      }),
+    error: (error: BulkCreateSelectionsError = mockSaveSelectionsError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/custom_images`, () => {
+        imageResolvers.deleteCustomImages.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
 };
 
 export {

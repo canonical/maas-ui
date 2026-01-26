@@ -1,5 +1,3 @@
-import { Formik } from "formik";
-
 import DeleteImages from "./DeleteImages";
 
 import { imageResolvers } from "@/testing/resolvers/images";
@@ -15,16 +13,14 @@ import {
 
 const { mockClose } = await mockSidePanel();
 const mockServer = setupMockServer(
-  imageResolvers.listSelectionStatuses.handler(),
-  imageResolvers.deleteSelections.handler()
+  imageResolvers.deleteSelections.handler(),
+  imageResolvers.deleteCustomImages.handler()
 );
 
 describe("DeleteImages", () => {
   it("calls closeForm on cancel click", async () => {
     renderWithProviders(
-      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteImages rowSelection={{}} setRowSelection={vi.fn} />
-      </Formik>
+      <DeleteImages rowSelection={{}} setRowSelection={vi.fn} />
     );
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -33,14 +29,18 @@ describe("DeleteImages", () => {
 
   it("calls delete images on save click", async () => {
     renderWithProviders(
-      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteImages rowSelection={{}} setRowSelection={vi.fn} />
-      </Formik>
+      <DeleteImages
+        rowSelection={{ "1-selection": true, "2-custom": true }}
+        setRowSelection={vi.fn}
+      />
     );
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: /Delete/i }));
     await waitFor(() => {
       expect(imageResolvers.deleteSelections.resolved).toBeTruthy();
+    });
+    await waitFor(() => {
+      expect(imageResolvers.deleteCustomImages.resolved).toBeTruthy();
     });
   });
 
@@ -49,9 +49,10 @@ describe("DeleteImages", () => {
       imageResolvers.deleteSelections.error({ code: 400, message: "Uh oh!" })
     );
     renderWithProviders(
-      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-        <DeleteImages rowSelection={{}} setRowSelection={vi.fn} />
-      </Formik>
+      <DeleteImages
+        rowSelection={{ "1-selection": true }}
+        setRowSelection={vi.fn}
+      />
     );
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
