@@ -62,6 +62,25 @@ export const OPERATING_SYSTEM_NAMES = [
   },
 ] as const;
 
+export const BASE_IMAGE_OPERATING_SYSTEM_NAMES = [
+  {
+    label: "Ubuntu",
+    value: "Ubuntu",
+  },
+  {
+    label: "CentOS",
+    value: "CentOS",
+  },
+  {
+    label: "RHEL",
+    value: "RHEL",
+  },
+  {
+    label: "OL",
+    value: "OL",
+  },
+] as const;
+
 // TODO: Finalise valid architecture options https://warthogs.atlassian.net/browse/MAASENG-2716
 export const ARCHITECTURES = [
   {

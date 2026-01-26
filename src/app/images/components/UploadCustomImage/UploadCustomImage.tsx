@@ -20,6 +20,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   ARCHITECTURES,
+  BASE_IMAGE_OPERATING_SYSTEM_NAMES,
   OPERATING_SYSTEM_NAMES,
   VALID_IMAGE_FILE_TYPES,
 } from "@/app/images/constants";
@@ -30,6 +31,8 @@ type UploadImageFormValues = {
   os: string;
   arch: string;
   file: File | undefined;
+  baseImageOs: string;
+  baseImageRelease: string;
 };
 
 const getFileExtension = (fileName: string): BootResourceFileTypeChoice => {
@@ -50,6 +53,15 @@ const osOptions: SelectProps["options"] = [
   ...OPERATING_SYSTEM_NAMES,
 ];
 
+const baseImageOsOptions: SelectProps["options"] = [
+  {
+    label: "Select an operating system",
+    value: "",
+    disabled: true,
+  },
+  ...BASE_IMAGE_OPERATING_SYSTEM_NAMES,
+];
+
 const archOptions: SelectProps["options"] = [
   {
     label: "Select an architecture",
@@ -65,6 +77,14 @@ const UploadImageSchema = Yup.object().shape({
   os: Yup.string().required("OS is required."),
   arch: Yup.string().required("Architecture is required."),
   file: Yup.mixed<File>().required("Image file is required."),
+  baseImageOs: Yup.string().when("os", {
+    is: "Custom",
+    then: (schema) => schema.required("Base image OS is required."),
+  }),
+  baseImageRelease: Yup.string().when("os", {
+    is: "Custom",
+    then: (schema) => schema.required("Base image release is required."),
+  }),
 });
 
 const UploadCustomImage = (): ReactElement => {
@@ -76,7 +96,6 @@ const UploadCustomImage = (): ReactElement => {
     <div className="upload-custom-image-form">
       <Strip shallow>
         <FormikForm<UploadImageFormValues, UploadCustomImageError>
-          allowUnchanged
           buttonsBehavior="independent"
           enableReinitialize
           errors={uploadCustomImage.error}
@@ -87,12 +106,18 @@ const UploadCustomImage = (): ReactElement => {
               os: "",
               arch: "",
               file: undefined,
+              baseImageOs: "",
+              baseImageRelease: "",
             } as UploadImageFormValues
           }
           onCancel={closeSidePanel}
           onSubmit={async (values) => {
             if (values.file) {
               const sha256 = await getChecksumSha256(values.file);
+              const baseImage =
+                values.baseImageOs && values.baseImageRelease
+                  ? `${values.baseImageOs}/${values.baseImageRelease}`
+                  : undefined;
               uploadCustomImage.mutate({
                 body: values.file,
                 headers: {
@@ -103,7 +128,7 @@ const UploadCustomImage = (): ReactElement => {
                   architecture: `${values.arch}/generic`,
                   "file-type": getFileExtension(values.file.name),
                   title: values.title,
-                  "base-image": undefined, // TODO: base-image needs to be investigated as to what it's used for
+                  "base-image": baseImage,
                 },
               });
             }
@@ -171,6 +196,40 @@ const UploadCustomImage = (): ReactElement => {
                 options={archOptions}
                 required
               />
+              {values.os === "Custom" && (
+                <>
+                  <div className="u-sv2">
+                    <hr className="u-sv2" />
+                  </div>
+                  <Label className="is-required" id="base-image-os-field">
+                    Base image operating system
+                  </Label>
+                  <Field
+                    aria-labelledby="base-image-os-field"
+                    as={Select}
+                    error={touched.baseImageOs && errors.baseImageOs}
+                    help="The operating system that the custom image is based on."
+                    name="baseImageOs"
+                    options={baseImageOsOptions}
+                    required
+                  />
+                  <Label className="is-required" id="base-image-release-field">
+                    Base image release codename
+                  </Label>
+                  <Field
+                    aria-labelledby="base-image-release-field"
+                    as={Input}
+                    error={touched.baseImageRelease && errors.baseImageRelease}
+                    help="The codename for the base image release."
+                    name="baseImageRelease"
+                    required
+                    type="text"
+                  />
+                  <div className="u-sv2">
+                    <hr className="u-sv2" />
+                  </div>
+                </>
+              )}
               <div
                 className={classNames("p-form__group p-form-validation", {
                   "is-error": touched.file && errors.file,
