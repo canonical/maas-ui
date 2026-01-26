@@ -1,5 +1,8 @@
 import { ContentSection } from "@canonical/maas-react-components";
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 
 import ThirdPartyDriversForm from "../ThirdPartyDriversForm";
 
@@ -28,12 +31,12 @@ const ThirdPartyDrivers = (): React.ReactElement => {
         <ContentSection.Content>
           {isPending && <Spinner text="Loading..." />}
           {error && (
-            <Notification
+            <NotificationBanner
               severity="negative"
               title="Error while fetching image configurations"
             >
               {error.message}
-            </Notification>
+            </NotificationBanner>
           )}
           {isSuccess && <ThirdPartyDriversForm />}
         </ContentSection.Content>

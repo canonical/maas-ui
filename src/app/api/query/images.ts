@@ -13,6 +13,9 @@ import type {
   BulkCreateSelectionsData,
   BulkCreateSelectionsErrors,
   BulkCreateSelectionsResponses,
+  BulkDeleteCustomImagesData,
+  BulkDeleteCustomImagesErrors,
+  BulkDeleteCustomImagesResponses,
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsErrors,
   BulkDeleteSelectionsResponses,
@@ -51,6 +54,7 @@ import type {
 } from "@/app/apiclient";
 import {
   uploadCustomImage,
+  bulkDeleteCustomImages,
   bulkCreateSelections,
   bulkDeleteSelections,
   getAllAvailableImages,
@@ -120,6 +124,9 @@ type UseImagesResult = {
   };
 };
 
+const generateImageId = (id: number, isCustom: boolean) =>
+  `${id}-${isCustom ? "custom" : "selection"}`;
+
 const calculateRefetchInterval = (
   statuses?: ImageStatusResponse[]
 ): number | false => {
@@ -180,16 +187,34 @@ export const useImages = (
 
   const images = useMemo(() => {
     const baseImages = [
-      ...(selections.data?.items ?? []),
-      ...(customImages.data?.items ?? []),
+      ...(selections.data?.items ?? []).map((item) => ({
+        ...item,
+        id: generateImageId(item.id, false),
+      })),
+      ...(customImages.data?.items ?? []).map((item) => ({
+        ...item,
+        id: generateImageId(item.id, true),
+      })),
     ];
     const statuses = [
-      ...(selectionStatuses.data?.items ?? []),
-      ...(customImageStatuses.data?.items ?? []),
+      ...(selectionStatuses.data?.items ?? []).map((item) => ({
+        ...item,
+        id: generateImageId(item.id, false),
+      })),
+      ...(customImageStatuses.data?.items ?? []).map((item) => ({
+        ...item,
+        id: generateImageId(item.id, true),
+      })),
     ];
     const statistics = [
-      ...(selectionStatistics.data?.items ?? []),
-      ...(customImageStatistics.data?.items ?? []),
+      ...(selectionStatistics.data?.items ?? []).map((item) => ({
+        ...item,
+        id: generateImageId(item.id, false),
+      })),
+      ...(customImageStatistics.data?.items ?? []).map((item) => ({
+        ...item,
+        id: generateImageId(item.id, true),
+      })),
     ];
 
     return baseImages.map((image): Image => {
@@ -478,6 +503,24 @@ export const useUploadCustomImage = (
     >(mutationOptions, uploadCustomImage),
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: IMAGES_WORKFLOW_KEY });
+    },
+  });
+};
+
+export const useDeleteCustomImages = (
+  mutationOptions?: Options<BulkDeleteCustomImagesData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkDeleteCustomImagesResponses,
+      BulkDeleteCustomImagesErrors,
+      BulkDeleteCustomImagesData
+    >(mutationOptions, bulkDeleteCustomImages),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: IMAGES_WORKFLOW_KEY,
+      });
     },
   });
 };

@@ -110,12 +110,12 @@ const NodeTestsTable = ({ node, scriptResults }: Props) => {
       <div className="u-align--right u-nudge-left--small">
         {expanded?.content === ScriptResultAction.VIEW_PREVIOUS_TESTS ? (
           <>
-            {!history || history[expanded.id]?.length <= 1 ? (
+            {!history || history[expanded?.id]?.length <= 1 ? (
               <p
                 className="u-align--center u-no-max-width"
                 data-testid="no-history"
               >
-                {history[expanded.id]?.length === 1 ? (
+                {history[expanded?.id]?.length === 1 ? (
                   "This test has only been run once."
                 ) : (
                   <></>

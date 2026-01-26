@@ -1,4 +1,4 @@
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -40,7 +40,7 @@ const NotificationGroupNotification = ({
   const showSettings = isReleaseNotification(notification) && isSuperUser.data;
   const showDate = isUpgradeNotification(notification);
   return (
-    <Notification
+    <NotificationBanner
       actions={
         showSettings
           ? [
@@ -68,7 +68,7 @@ const NotificationGroupNotification = ({
         dangerouslySetInnerHTML={{ __html: notification.message }}
         data-testid="notification-message"
       ></span>
-    </Notification>
+    </NotificationBanner>
   );
 };
 

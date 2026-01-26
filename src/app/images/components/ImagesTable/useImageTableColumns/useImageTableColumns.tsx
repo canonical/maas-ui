@@ -14,13 +14,14 @@ import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
+import { OPERATING_SYSTEM_NAMES } from "@/app/images/constants";
 import type { Image } from "@/app/images/types";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
 const TOOLTIP_MESSAGES = {
   STOP_SYNC_ACTIVE: "Stop image synchronization.",
-  STOP_SYNC_OPTIMISTIC: "Synchronization cannot be stopped at 0%.",
+  STOP_SYNC_OPTIMISTIC: "Synchronization cannot be stopped while queueing.",
   START_SYNC: "Start image synchronization.",
   START_SYNC_DISABLED: "Image is already synchronized.",
   DELETE_IMAGE: "Delete this image.",
@@ -71,8 +72,12 @@ const useImageTableColumns = ({
               <div>
                 <div>
                   <strong>
-                    {row.original.os.charAt(0).toUpperCase() +
-                      row.original.os.slice(1)}
+                    {OPERATING_SYSTEM_NAMES.find(
+                      (os) =>
+                        os.value.toLowerCase() === row.original.os.toLowerCase()
+                    )?.label ??
+                      row.original.os.charAt(0).toUpperCase() +
+                        row.original.os.slice(1)}
                   </strong>
                 </div>
                 <small className="u-text--muted">
@@ -144,6 +149,7 @@ const useImageTableColumns = ({
               original: { update_status, last_updated, sync_percentage },
             },
           }) => {
+            const isOptimistic = update_status === "Optimistic";
             return isStatusLoading ? (
               <Spinner />
             ) : (
@@ -155,11 +161,13 @@ const useImageTableColumns = ({
                       <div className="p-progress">
                         <div
                           className="p-progress__value"
-                          style={{ width: `${sync_percentage}%` }}
+                          style={{
+                            width: `${isOptimistic ? 100 : sync_percentage}%`,
+                          }}
                         />
                       </div>
                       <small className="u-text--muted">
-                        {sync_percentage}%
+                        {isOptimistic ? "Queueing..." : `${sync_percentage}%`}
                       </small>
                     </>
                   ) : update_status === "No updates available" ? (
@@ -172,7 +180,7 @@ const useImageTableColumns = ({
                   isStatisticsLoading ? (
                     <Spinner />
                   ) : last_updated ? (
-                    `Last updated on ${new Date(last_updated ?? "").toLocaleDateString()}`
+                    `Last updated on ${new Date(last_updated).toLocaleDateString()}`
                   ) : (
                     "—"
                   )
@@ -209,6 +217,7 @@ const useImageTableColumns = ({
               case "Downloading":
                 icon = null;
             }
+            const isOptimistic = status === "Optimistic";
             return isStatusLoading ? (
               <Spinner />
             ) : (
@@ -220,11 +229,13 @@ const useImageTableColumns = ({
                       <div className="p-progress">
                         <div
                           className="p-progress__value"
-                          style={{ width: `${sync_percentage}%` }}
+                          style={{
+                            width: `${isOptimistic ? 100 : sync_percentage}%`,
+                          }}
                         />
                       </div>
                       <small className="u-text--muted">
-                        {sync_percentage}%
+                        {isOptimistic ? "Queueing..." : `${sync_percentage}%`}
                       </small>
                     </>
                   ) : (
@@ -249,30 +260,40 @@ const useImageTableColumns = ({
           accessorKey: "id",
           enableSorting: false,
           header: () => "Actions",
-          cell: ({ row }: { row: Row<Image> }) => {
-            const isCommissioningImage =
-              row.original.release === commissioningRelease;
+          cell: ({
+            row: {
+              id: rowId,
+              getIsSelected,
+              getIsGrouped,
+              toggleSelected,
+              original: { id, boot_source_id, release, status, update_status },
+            },
+          }: {
+            row: Row<Image>;
+          }) => {
+            const isCommissioningImage = release === commissioningRelease;
 
             const isSyncing =
-              row.original.status === "Downloading" ||
-              row.original.status === "Optimistic";
+              status === "Downloading" || status === "Optimistic";
             const isUpdating =
-              row.original.update_status === "Downloading" ||
-              row.original.update_status === "Optimistic";
+              update_status === "Downloading" || update_status === "Optimistic";
 
             const isOptimistic =
-              row.original.status === "Optimistic" ||
-              row.original.update_status === "Optimistic";
+              status === "Optimistic" || update_status === "Optimistic";
 
             const downloadInProgress = isSyncing || isUpdating;
+
             const downloadAvailable =
-              row.original.status === "Waiting for download" ||
-              row.original.update_status === "Update available";
+              status === "Waiting for download" ||
+              update_status === "Update available";
 
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
-            return row.getIsGrouped() ? null : (
+            const isCustom = id.endsWith("-custom");
+            const imageId = Number(id.split("-")[0]);
+
+            return getIsGrouped() ? null : (
               <div>
-                {downloadInProgress ? (
+                {isCustom ? null : downloadInProgress ? (
                   <Tooltip
                     message={
                       !isOptimistic
@@ -284,13 +305,13 @@ const useImageTableColumns = ({
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={startSync.isPending || isOptimistic}
+                      disabled={startSync.isPending || isOptimistic || isCustom}
                       hasIcon
                       onClick={() => {
                         stopSync.mutate({
                           path: {
-                            id: row.original.id,
-                            boot_source_id: row.original.boot_source_id!,
+                            id: imageId,
+                            boot_source_id: boot_source_id!,
                           },
                         });
                       }}
@@ -310,13 +331,15 @@ const useImageTableColumns = ({
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={!downloadAvailable || stopSync.isPending}
+                      disabled={
+                        !downloadAvailable || stopSync.isPending || isCustom
+                      }
                       hasIcon
                       onClick={() => {
                         startSync.mutate({
                           path: {
-                            id: row.original.id,
-                            boot_source_id: row.original.boot_source_id!,
+                            id: imageId,
+                            boot_source_id: boot_source_id!,
                           },
                         });
                       }}
@@ -343,15 +366,15 @@ const useImageTableColumns = ({
                     disabled={!canBeDeleted}
                     hasIcon
                     onClick={() => {
-                      if (row.original.id) {
-                        if (!row.getIsSelected()) {
-                          row.toggleSelected();
+                      if (id) {
+                        if (!getIsSelected()) {
+                          toggleSelected();
                         }
                         openSidePanel({
                           component: DeleteImages,
                           title: "Delete images",
                           props: {
-                            rowSelection: { ...selectedRows, [row.id]: true },
+                            rowSelection: { ...selectedRows, [rowId]: true },
                             setRowSelection: setSelectedRows,
                           },
                         });

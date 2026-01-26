@@ -1,6 +1,7 @@
 import { describe } from "vitest";
 
 import ChangeSource from "@/app/settings/views/Images/ChangeSource/ChangeSource";
+import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
 import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
@@ -11,6 +12,7 @@ import {
   screen,
   setupMockServer,
   userEvent,
+  waitFor,
   waitForLoading,
 } from "@/testing/utils";
 
@@ -55,5 +57,96 @@ describe("ChangeSource", () => {
     expect(
       screen.getByTestId("cannot-change-source-warning")
     ).toBeInTheDocument();
+  });
+
+  it("does not display keyring fields when unsigned keyring type is selected", async () => {
+    renderWithProviders(<ChangeSource />);
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
+
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_unsigned");
+
+    expect(
+      screen.getByRole("textbox", { name: Labels.Url })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByPlaceholderText("Contents of GPG key (base64 encoded)")
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows error when keyring_filename is empty and keyring_type is keyring_filename", async () => {
+    renderWithProviders(<ChangeSource />);
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
+
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_filename");
+
+    // Focus and blur the keyring filename field to trigger validation
+    const keyringFilenameInput = screen.getByPlaceholderText(
+      "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+    );
+    await userEvent.click(keyringFilenameInput);
+    await userEvent.tab();
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Keyring filename is required")
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("shows error when keyring_data is empty and keyring_type is keyring_data", async () => {
+    renderWithProviders(<ChangeSource />);
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
+
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_data");
+
+    // Focus and blur the keyring data field to trigger validation
+    const keyringDataInput = screen.getByPlaceholderText(
+      "Contents of GPG key (base64 encoded)"
+    );
+    await userEvent.click(keyringDataInput);
+    await userEvent.tab();
+
+    await waitFor(() => {
+      expect(screen.getByText("Keyring data is required")).toBeInTheDocument();
+    });
+  });
+
+  it("shows error when URL does not end with .json and keyring_type is keyring_unsigned", async () => {
+    renderWithProviders(<ChangeSource />);
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
+
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_unsigned");
+
+    // Enter URL that doesn't end with .json
+    const urlInput = screen.getByRole("textbox", { name: Labels.Url });
+    await userEvent.clear(urlInput);
+    await userEvent.type(urlInput, "http://example.com/images");
+
+    // Try to submit
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("URL must end with .json for unsigned keyring")
+      ).toBeInTheDocument();
+    });
   });
 });

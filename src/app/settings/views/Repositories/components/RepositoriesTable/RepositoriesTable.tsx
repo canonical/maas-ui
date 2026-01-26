@@ -1,5 +1,8 @@
 import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
-import { Button, Notification } from "@canonical/react-components";
+import {
+  Button,
+  Notification as NotificationBanner,
+} from "@canonical/react-components";
 
 import useRepositoriesTableColumns from "./useRepositoriesTableColumns/useRepositoriesTableColumns";
 
@@ -52,12 +55,12 @@ const RepositoriesTable = () => {
         </MainToolbar.Controls>
       </MainToolbar>
       {isError && (
-        <Notification
+        <NotificationBanner
           severity="negative"
           title="Error while fetching package repositories"
         >
           {error.message}
-        </Notification>
+        </NotificationBanner>
       )}
       <GenericTable
         columns={columns}

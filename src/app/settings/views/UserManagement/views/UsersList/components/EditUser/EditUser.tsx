@@ -1,7 +1,11 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
-import { Button, Notification, Spinner } from "@canonical/react-components";
+import {
+  Button,
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
@@ -69,7 +73,9 @@ const EditUser = ({
     <>
       {user.isPending && <Spinner text="Loading..." />}
       {user.isError && (
-        <Notification severity="negative">{user.error.message}</Notification>
+        <NotificationBanner severity="negative">
+          {user.error.message}
+        </NotificationBanner>
       )}
       {user.isSuccess && user.data && (
         <FormikForm<

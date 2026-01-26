@@ -4,7 +4,7 @@ import {
   ActionButton,
   Button,
   Col,
-  Notification,
+  Notification as NotificationBanner,
   Row,
 } from "@canonical/react-components";
 import type { ActionButtonProps, ColSize } from "@canonical/react-components";
@@ -51,9 +51,9 @@ const TableConfirm = ({
   return (
     <Row>
       {errorMessage && (
-        <Notification severity="negative" title="Error:">
+        <NotificationBanner severity="negative" title="Error:">
           {errorMessage}
-        </Notification>
+        </NotificationBanner>
       )}
       <Col
         size={

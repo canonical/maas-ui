@@ -1,7 +1,10 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import * as Yup from "yup";
 
 import Fields from "./IpmiFormFields";
@@ -70,12 +73,12 @@ const IpmiSettings = (): ReactElement => {
         <ContentSection.Content>
           {isPending && <Spinner text={Labels.Loading} />}
           {error && (
-            <Notification
+            <NotificationBanner
               severity="negative"
               title="Error while fetching security configurations ipmi settings"
             >
               {error.message}
-            </Notification>
+            </NotificationBanner>
           )}
           {isSuccess && (
             <FormikForm<IpmiFormValues, SetConfigurationsError>

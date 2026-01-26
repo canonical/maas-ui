@@ -1,4 +1,4 @@
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
@@ -16,13 +16,13 @@ type Props = {
 };
 
 const generateWarning = (nodeType: string, count: number) => (
-  <Notification
+  <NotificationBanner
     className="delete-tag-form-warnings__notification"
     severity="caution"
   >
     There {count === 1 ? "is" : "are"} {pluralize(nodeType, count, true)} with
     this tag.
-  </Notification>
+  </NotificationBanner>
 );
 
 const generateDeployedMessage = (count: number) =>
@@ -46,7 +46,7 @@ export const DeleteTagFormWarnings = ({
   return (
     <div className="delete-tag-form-warnings">
       {!!tag.kernel_opts && deployedCount > 0 ? (
-        <Notification
+        <NotificationBanner
           className="delete-tag-form-warnings__notification"
           severity="caution"
         >
@@ -59,7 +59,7 @@ export const DeleteTagFormWarnings = ({
           >
             Show the deployed {pluralize("machine", deployedCount)}
           </Link>
-        </Notification>
+        </NotificationBanner>
       ) : null}
       {tag.device_count > 0
         ? generateWarning("device", tag.device_count)

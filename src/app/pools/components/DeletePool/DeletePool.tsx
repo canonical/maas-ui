@@ -1,6 +1,9 @@
 import type { ReactElement } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useDeletePool, useGetPool } from "@/app/api/query/pools";
@@ -24,7 +27,9 @@ const DeletePool = ({ id }: DeletePoolProps): ReactElement => {
     <>
       {pool.isPending && <Spinner text="Loading..." />}
       {pool.isError && (
-        <Notification severity="negative">{pool.error.message}</Notification>
+        <NotificationBanner severity="negative">
+          {pool.error.message}
+        </NotificationBanner>
       )}
       {pool.isSuccess && pool.data && (
         <ModelActionForm

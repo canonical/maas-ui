@@ -12,6 +12,7 @@ import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
+  configState as configStateFactory,
 } from "@/testing/factories";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
@@ -72,6 +73,9 @@ describe("RequireLogin", () => {
         connected: true,
         connecting: false,
         error: undefined,
+      }),
+      config: configStateFactory({
+        loaded: true,
       }),
     });
   });

@@ -1,6 +1,11 @@
 import type { ChangeEvent } from "react";
 
-import { Col, Notification, Row, Select } from "@canonical/react-components";
+import {
+  Col,
+  Notification as NotificationBanner,
+  Row,
+  Select,
+} from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
@@ -83,10 +88,10 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
             {dhcpType === DHCPType.CONTROLLERS && (
               <>
                 {connectedControllers.length === 0 ? (
-                  <Notification severity="negative">
+                  <NotificationBanner severity="negative">
                     This VLAN is not currently being utilised on any rack
                     controller.
-                  </Notification>
+                  </NotificationBanner>
                 ) : (
                   <>
                     <FormikField
@@ -184,10 +189,10 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
         )}
       </Col>
       {!enableDHCP && (
-        <Notification severity="caution">
+        <NotificationBanner severity="caution">
           Are you sure you want to disable DHCP on this VLAN? All subnets on
           this VLAN will be affected.
-        </Notification>
+        </NotificationBanner>
       )}
     </Row>
   );

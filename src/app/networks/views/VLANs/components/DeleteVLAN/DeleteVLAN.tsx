@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FabricLink from "@/app/base/components/FabricLink";
@@ -57,14 +57,14 @@ const DeleteVLAN = ({ id }: DeleteVLANProps): ReactElement | null => {
       submitLabel="Delete VLAN"
     >
       {isDefaultVLAN ? (
-        <Notification borderless severity="negative">
+        <NotificationBanner borderless severity="negative">
           This VLAN cannot be deleted because it is the default VLAN for{" "}
           <FabricLink id={fabric.id} />.
-        </Notification>
+        </NotificationBanner>
       ) : (
-        <Notification borderless severity="caution">
+        <NotificationBanner borderless severity="caution">
           Are you sure you want to delete this VLAN?
-        </Notification>
+        </NotificationBanner>
       )}
     </FormikForm>
   );

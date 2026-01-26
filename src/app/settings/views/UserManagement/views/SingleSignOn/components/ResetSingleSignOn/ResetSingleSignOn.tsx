@@ -1,6 +1,9 @@
 import type { ReactElement } from "react";
 
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import pluralize from "pluralize";
 
 import {
@@ -25,12 +28,12 @@ const ResetSingleSignOn = ({ id }: Props): ReactElement => {
 
   if (error) {
     return (
-      <Notification
+      <NotificationBanner
         severity="negative"
         title="Error while fetching OIDC provider"
       >
         {error.message}
-      </Notification>
+      </NotificationBanner>
     );
   }
 

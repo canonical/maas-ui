@@ -1,7 +1,12 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Col, Notification, Row, Spinner } from "@canonical/react-components";
+import {
+  Col,
+  Notification as NotificationBanner,
+  Row,
+  Spinner,
+} from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { useGetCurrentUser } from "@/app/api/query/auth";
@@ -25,9 +30,9 @@ export const Details = (): ReactElement => {
       <ContentSection.Title>{Label.Title}</ContentSection.Title>
       <ContentSection.Content>
         {externalAuthURL && (
-          <Notification severity="information">
+          <NotificationBanner severity="information">
             Users for this MAAS are managed using an external service
-          </Notification>
+          </NotificationBanner>
         )}
         <Row>
           <Col size={6}>

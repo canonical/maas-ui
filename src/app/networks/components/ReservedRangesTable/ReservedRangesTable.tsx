@@ -2,7 +2,10 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { ExternalLink, GenericTable } from "@canonical/maas-react-components";
-import { ContextualMenu, Notification } from "@canonical/react-components";
+import {
+  ContextualMenu,
+  Notification as NotificationBanner,
+} from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
@@ -134,9 +137,9 @@ const ReservedRangesTable = ({
       title="Reserved ranges"
     >
       {isDisabled ? (
-        <Notification severity="caution">
+        <NotificationBanner severity="caution">
           No subnets are available on this VLAN. Ranges cannot be reserved.
-        </Notification>
+        </NotificationBanner>
       ) : null}
       <GenericTable
         className={classNames(

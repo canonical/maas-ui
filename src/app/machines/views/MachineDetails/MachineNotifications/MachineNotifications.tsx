@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 
 type MachineNotification = {
@@ -21,9 +21,14 @@ const MachineNotifications = ({ notifications }: Props): React.ReactElement => {
       const role = severity === "negative" ? "alert" : "status";
       if (active) {
         collection.push(
-          <Notification key={i} role={role} severity={severity} title={title}>
+          <NotificationBanner
+            key={i}
+            role={role}
+            severity={severity}
+            title={title}
+          >
             {content}
-          </Notification>
+          </NotificationBanner>
         );
       }
       return collection;

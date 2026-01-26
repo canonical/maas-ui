@@ -1,5 +1,5 @@
 import { GenericTable } from "@canonical/maas-react-components";
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import type { TokenRowData } from "./useAPIKeyTableColumns/useAPIKeyTableColumns";
@@ -34,9 +34,9 @@ const APIKeyList = (): React.ReactElement => {
   return (
     <>
       {errors && typeof errors === "string" && (
-        <Notification severity="negative" title="Error:">
+        <NotificationBanner severity="negative" title="Error:">
           {errors}
-        </Notification>
+        </NotificationBanner>
       )}
       <GenericTable
         aria-label={Label.Title}

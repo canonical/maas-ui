@@ -1,5 +1,5 @@
 import { GenericTable } from "@canonical/maas-react-components";
-import { Notification } from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 
 import useFabricsTableColumns from "./useFabricsTableColumns/useFabricsTableColumns";
 
@@ -16,9 +16,9 @@ const FabricsTable = () => {
 
   if (isError) {
     return (
-      <Notification title="Error while fetching fabrics">
+      <NotificationBanner title="Error while fetching fabrics">
         {error.message}
-      </Notification>
+      </NotificationBanner>
     );
   }
 

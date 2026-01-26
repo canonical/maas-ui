@@ -1,7 +1,10 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Notification, Spinner } from "@canonical/react-components";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
@@ -18,6 +21,10 @@ import {
   useCustomImageStatuses,
   useSelectionStatuses,
 } from "@/app/api/query/images";
+import type {
+  ImageStatusListResponse,
+  ImageStatusResponse,
+} from "@/app/apiclient";
 import {
   getBootsourceQueryKey,
   getConfigurationQueryKey,
@@ -34,13 +41,38 @@ import { ConfigNames } from "@/app/store/config/types";
 
 const ChangeSourceSchema = Yup.object()
   .shape({
-    keyring_data: Yup.string(),
-    keyring_filename: Yup.string(),
-    source_type: Yup.string().required("Source type is required"),
-    url: Yup.string().when("source_type", {
-      is: (val: string) => val === BootResourceSourceType.CUSTOM,
-      then: Yup.string().required("URL is required for custom sources"),
+    keyring_type: Yup.string()
+      .oneOf(["keyring_data", "keyring_filename", "keyring_unsigned"])
+      .required("Keyring type is required"),
+    keyring_data: Yup.string().when("keyring_type", {
+      is: "keyring_data",
+      then: (schema) => schema.required("Keyring data is required"),
+      otherwise: (schema) => schema,
     }),
+    keyring_filename: Yup.string().when("keyring_type", {
+      is: "keyring_filename",
+      then: (schema) => schema.required("Keyring filename is required"),
+      otherwise: (schema) => schema,
+    }),
+    source_type: Yup.string().required("Source type is required"),
+    url: Yup.string()
+      .when("source_type", {
+        is: (val: string) => val === BootResourceSourceType.CUSTOM,
+        then: (schema) => schema.required("URL is required for custom sources"),
+        otherwise: (schema) => schema,
+      })
+      .when("keyring_type", {
+        is: "keyring_unsigned",
+        then: (schema) =>
+          schema
+            .required("URL is required")
+            .test(
+              "ends-with-json",
+              "URL must end with .json for unsigned keyring",
+              (value) => !!value && value.endsWith(".json")
+            ),
+        otherwise: (schema) => schema,
+      }),
     autoSync: Yup.boolean(),
   })
   .defined();
@@ -48,9 +80,40 @@ const ChangeSourceSchema = Yup.object()
 export type ChangeSourceValues = {
   keyring_data: string;
   keyring_filename: string;
+  keyring_type: "keyring_data" | "keyring_filename" | "keyring_unsigned";
   source_type: BootResourceSourceType;
   url: string;
   autoSync: boolean;
+};
+
+const getKeyringType = (
+  keyring_filename?: string,
+  keyring_data?: string
+): "keyring_data" | "keyring_filename" | "keyring_unsigned" => {
+  if (keyring_filename) return "keyring_filename";
+  if (keyring_data) return "keyring_data";
+  return "keyring_unsigned";
+};
+
+const getSourceType = (url: string): BootResourceSourceType => {
+  return new RegExp(MAAS_IO_DEFAULTS.url).test(url)
+    ? BootResourceSourceType.MAAS_IO
+    : BootResourceSourceType.CUSTOM;
+};
+
+const checkCanChangeSource = (
+  selectionStatuses: ImageStatusListResponse | undefined,
+  customImageStatuses: ImageStatusListResponse | undefined
+): boolean => {
+  if (!selectionStatuses || !customImageStatuses) return false;
+
+  const isNotDownloading = (s: ImageStatusResponse) =>
+    s.status !== "Downloading" && s.update_status !== "Downloading";
+
+  return (
+    selectionStatuses.items.every(isNotDownloading) &&
+    customImageStatuses.items.every(isNotDownloading)
+  );
 };
 
 const ChangeSource = (): ReactElement => {
@@ -63,8 +126,10 @@ const ChangeSource = (): ReactElement => {
     },
     sources.isSuccess
   );
-  const { data: selectionStatuses } = useSelectionStatuses();
-  const { data: customImageStatuses } = useCustomImageStatuses();
+  const { data: selectionStatuses, error: selectionStatusesError } =
+    useSelectionStatuses();
+  const { data: customImageStatuses, error: customImageStatusesError } =
+    useCustomImageStatuses();
 
   const importConfig = useGetConfiguration({
     path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
@@ -80,26 +145,29 @@ const ChangeSource = (): ReactElement => {
   const saving = updateConfig.isPending || updateImageSource.isPending;
   const saved = updateConfig.isSuccess && updateImageSource.isSuccess;
 
+  const errors =
+    sources.error ||
+    selectionStatusesError ||
+    customImageStatusesError ||
+    importConfig.error ||
+    updateConfig.error ||
+    updateImageSource.error;
+
   useWindowTitle("Source");
 
-  const canChangeSource =
-    selectionStatuses &&
-    customImageStatuses &&
-    selectionStatuses.items.every(
-      (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
-    ) &&
-    customImageStatuses.items.every(
-      (s) => s.status === "Downloading" && s.update_status !== "Downloading"
-    );
-  const sourceType = new RegExp(MAAS_IO_DEFAULTS.url).test(
-    source.data?.url ?? ""
-  )
-    ? BootResourceSourceType.MAAS_IO
-    : BootResourceSourceType.CUSTOM;
+  const canChangeSource = checkCanChangeSource(
+    selectionStatuses,
+    customImageStatuses
+  );
+  const sourceType = getSourceType(source.data?.url ?? "");
 
   const initialValues: ChangeSourceValues = {
     keyring_data: source.data?.keyring_data ?? "",
     keyring_filename: source.data?.keyring_filename ?? "",
+    keyring_type: getKeyringType(
+      source.data?.keyring_filename,
+      source.data?.keyring_data
+    ),
     url: source.data?.url ?? "",
     source_type: sourceType,
     autoSync: autoImport || false,
@@ -114,18 +182,18 @@ const ChangeSource = (): ReactElement => {
         <ContentSection.Content>
           {loading && <Spinner text="Loading..." />}
           {!canChangeSource && (
-            <Notification
+            <NotificationBanner
               data-testid="cannot-change-source-warning"
               severity="caution"
             >
               Image import is in progress, cannot change source settings.
-            </Notification>
+            </NotificationBanner>
           )}
           {!loading && (
             <FormikForm
               aria-label="Choose source"
               enableReinitialize
-              errors={updateImageSource.error}
+              errors={errors}
               initialValues={initialValues}
               onSubmit={(values) => {
                 updateConfig.mutate({
