@@ -156,7 +156,7 @@ const UploadCustomImage = (): ReactElement => {
                 aria-labelledby="os-field"
                 as={Select}
                 error={touched.os && errors.os}
-                help="The operating system the custom image is based on."
+                help="The operating system of the image."
                 name="os"
                 options={osOptions}
                 required

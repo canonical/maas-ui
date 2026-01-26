@@ -93,13 +93,13 @@ const ImageListHeader = ({
             onClick={() => {
               openSidePanel({
                 component: UploadCustomImage,
-                title: "Upload custom image",
+                title: "Upload local image",
               });
             }}
             type="button"
           >
             <i className="p-icon--upload" />
-            <span>Upload custom image</span>
+            <span>Upload local image</span>
           </Button>
           <Button
             disabled={imagesDownloading || startingImport || stoppingImport}

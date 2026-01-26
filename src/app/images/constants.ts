@@ -41,10 +41,6 @@ export const OPERATING_SYSTEM_NAMES = [
     value: "RHEL",
   },
   {
-    label: "Custom",
-    value: "Custom",
-  },
-  {
     label: "Windows",
     value: "Windows",
   },
@@ -59,6 +55,10 @@ export const OPERATING_SYSTEM_NAMES = [
   {
     label: "OL",
     value: "OL",
+  },
+  {
+    label: "Custom",
+    value: "Custom",
   },
 ] as const;
 
