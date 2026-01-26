@@ -15,7 +15,9 @@ import type {
   BootResourceFileTypeChoice,
   UploadCustomImageError,
 } from "@/app/apiclient";
-import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
+import FormikField, {
+  FormikFieldChangeError,
+} from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import {
@@ -151,49 +153,41 @@ const UploadCustomImage = (): ReactElement => {
             setFieldError,
           }: FormikProps<UploadImageFormValues>) => (
             <>
-              <Label className="is-required" id="os-field">
-                Operating system
-              </Label>
-              <Field
-                aria-labelledby="os-field"
-                as={Select}
+              <FormikField
+                aria-label="Operating system"
+                component={Select}
                 error={touched.os && errors.os}
                 help="The operating system of the image."
+                label="Operating system"
                 name="os"
                 options={osOptions}
                 required
               />
-              <Label className="is-required" id="release-title-field">
-                Release title
-              </Label>
-              <Field
-                aria-labelledby="release-title-field"
-                as={Input}
+              <FormikField
+                aria-label="Release title"
+                component={Input}
                 error={touched.title && errors.title}
                 help="The release title that will be shown in the images table, e.g. 24.04 LTS."
+                label="Release title"
                 name="title"
                 required
                 type="text"
               />
-              <Label className="is-required" id="release-codename-field">
-                Release codename
-              </Label>
-              <Field
-                aria-labelledby="release-codename-field"
-                as={Input}
+              <FormikField
+                aria-label="Release codename"
+                component={Input}
                 error={touched.release && errors.release}
                 help="The codename for the release, e.g. 'noble'."
+                label="Release codename"
                 name="release"
                 required
                 type="text"
               />
-              <Label className="is-required" id="architecture-field">
-                Architecture
-              </Label>
-              <Field
-                aria-labelledby="architecture-field"
-                as={Select}
+              <FormikField
+                aria-label="Architecture"
+                component={Select}
                 error={touched.arch && errors.arch}
+                label="Architecture"
                 name="arch"
                 options={archOptions}
                 required
@@ -203,26 +197,22 @@ const UploadCustomImage = (): ReactElement => {
                   <div className="u-sv2">
                     <hr className="u-sv2" />
                   </div>
-                  <Label className="is-required" id="base-image-os-field">
-                    Base image operating system
-                  </Label>
-                  <Field
-                    aria-labelledby="base-image-os-field"
-                    as={Select}
+                  <FormikField
+                    aria-label="Base image operating system"
+                    component={Select}
                     error={touched.baseImageOs && errors.baseImageOs}
                     help="The operating system that the custom image is based on."
+                    label="Base image operating system"
                     name="baseImageOs"
                     options={baseImageOsOptions}
                     required
                   />
-                  <Label className="is-required" id="base-image-release-field">
-                    Base image release codename
-                  </Label>
-                  <Field
-                    aria-labelledby="base-image-release-field"
-                    as={Input}
+                  <FormikField
+                    aria-label="Base image release codename"
+                    component={Input}
                     error={touched.baseImageRelease && errors.baseImageRelease}
                     help="The codename for the base image release."
+                    label="Base image release codename"
                     name="baseImageRelease"
                     required
                     type="text"

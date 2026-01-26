@@ -186,7 +186,7 @@ const useImageTableColumns = ({
                       message="This image is not managed by an upstream source."
                       position="right"
                     >
-                      Local
+                      Custom
                       <Icon name="information" />
                     </Tooltip>
                   )

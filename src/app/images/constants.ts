@@ -53,7 +53,7 @@ export const OPERATING_SYSTEM_NAMES = [
     value: "ESXi",
   },
   {
-    label: "OL",
+    label: "Oracle Linux",
     value: "OL",
   },
   {
@@ -76,7 +76,7 @@ export const BASE_IMAGE_OPERATING_SYSTEM_NAMES = [
     value: "RHEL",
   },
   {
-    label: "OL",
+    label: "Oracle Linux",
     value: "OL",
   },
 ] as const;
