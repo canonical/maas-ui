@@ -138,7 +138,7 @@ const UploadCustomImage = (): ReactElement => {
           onSuccess={closeSidePanel}
           saved={uploadCustomImage.isSuccess}
           saving={uploadCustomImage.isPending}
-          submitLabel="Save and sync"
+          submitLabel="Upload"
           validateOnChange
           validationSchema={UploadImageSchema}
         >
