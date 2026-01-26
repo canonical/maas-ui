@@ -35,13 +35,15 @@ type UploadImageFormValues = {
   baseImageRelease: string;
 };
 
-const getFileExtension = (fileName: string): BootResourceFileTypeChoice => {
-  return fileName.split(".").pop()?.toLowerCase() as BootResourceFileTypeChoice;
-};
-
-const getChecksumSha256 = async (file: Blob | File) => {
+export const getChecksumSha256 = async (file: Blob | File) => {
   const arrayBuffer = await file.arrayBuffer();
   return sha256(arrayBuffer);
+};
+
+export const getFileExtension = (
+  fileName: string
+): BootResourceFileTypeChoice => {
+  return fileName.split(".").pop()?.toLowerCase() as BootResourceFileTypeChoice;
 };
 
 const osOptions: SelectProps["options"] = [

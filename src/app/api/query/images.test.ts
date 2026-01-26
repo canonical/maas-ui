@@ -1,3 +1,5 @@
+import { sha256 } from "js-sha256";
+
 import {
   useAddSelections,
   useAvailableSelections,
@@ -10,7 +12,9 @@ import {
   useSelections,
   useSelectionStatistics,
   useSelectionStatuses,
+  useUploadCustomImage,
 } from "@/app/api/query/images";
+import { getFileExtension } from "@/app/images/components/UploadCustomImage/UploadCustomImage";
 import {
   imageResolvers,
   mockAvailableSelections,
@@ -34,6 +38,7 @@ setupMockServer(
   imageResolvers.listAvailableSelections.handler(),
   imageResolvers.addSelections.handler(),
   imageResolvers.deleteSelections.handler(),
+  imageResolvers.uploadCustomImage.handler(),
   imageResolvers.deleteCustomImages.handler()
 );
 
@@ -49,6 +54,7 @@ describe("useImages", () => {
         ...mockStatistics.items[index],
         ...mockStatuses.items[index],
         id: `${item.id}-selection`,
+        isUpstream: true,
       };
     });
     expect(result.current.data?.items).toEqual(expectedItems);
@@ -158,7 +164,38 @@ describe("useDeleteSelections", () => {
   });
 });
 
-describe("useDeleteSelections", () => {
+describe("useUploadCustomImage", () => {
+  it("should add a new custom image", async () => {
+    const { result } = renderHookWithProviders(() => useUploadCustomImage());
+    const dummyContent = "dummy content";
+    const contentArray = new TextEncoder().encode(dummyContent);
+
+    const dummyFile = new File([dummyContent], "test-image.tgz", {
+      type: "application/octet-stream",
+    });
+
+    result.current.mutate({
+      body: dummyFile,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        name: `ubuntu/noble`,
+        // the dummy file cannot be used with the getChecksumSha256
+        // function actually used in UploadCustomImage
+        sha256: sha256(contentArray),
+        size: dummyFile.size,
+        architecture: `amd64/generic`,
+        "file-type": getFileExtension(dummyFile.name),
+        title: "24.04",
+        "base-image": undefined,
+      },
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useDeleteCustomImages", () => {
   it("should delete a custom image", async () => {
     const { result } = renderHookWithProviders(() => useDeleteCustomImages());
     result.current.mutate({
