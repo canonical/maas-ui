@@ -42,7 +42,7 @@ const DeleteImages = ({
   return (
     <ModelActionForm
       aria-label="Confirm image deletion"
-      errors={deleteSelections.error}
+      errors={deleteSelections.error || deleteCustomImages.error}
       initialValues={{}}
       message={deleteMessage}
       modelType="image"
@@ -77,8 +77,8 @@ const DeleteImages = ({
         }
         closeSidePanel();
       }}
-      saved={deleteSelections.isSuccess}
-      saving={deleteSelections.isPending}
+      saved={deleteSelections.isSuccess || deleteCustomImages.isSuccess}
+      saving={deleteSelections.isPending || deleteCustomImages.isPending}
     />
   );
 };
