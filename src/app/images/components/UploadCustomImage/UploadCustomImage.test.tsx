@@ -9,11 +9,36 @@ import {
   setupMockServer,
   waitForLoading,
   waitFor,
-  fireEvent,
 } from "@/testing/utils";
 
 const { mockClose } = await mockSidePanel();
 const mockServer = setupMockServer(imageResolvers.uploadCustomImage.handler());
+
+// Mock File.prototype.arrayBuffer for tests
+if (!File.prototype.arrayBuffer) {
+  File.prototype.arrayBuffer = function () {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        resolve(reader.result as ArrayBuffer);
+      };
+      reader.readAsArrayBuffer(this);
+    });
+  };
+}
+
+// Mock File.prototype.stream for MSW
+if (!File.prototype.stream) {
+  File.prototype.stream = function () {
+    // Return a mock ReadableStream
+    return new ReadableStream({
+      start(controller) {
+        controller.enqueue(new Uint8Array([]));
+        controller.close();
+      },
+    }) as unknown as ReadableStream;
+  };
+}
 
 describe("UploadCustomImage", () => {
   it("calls closeForm on cancel click", async () => {
@@ -24,7 +49,7 @@ describe("UploadCustomImage", () => {
   });
 
   it("calls upload images on save click", async () => {
-    renderWithProviders(<UploadCustomImage />);
+    const { result } = renderWithProviders(<UploadCustomImage />);
     await waitForLoading();
 
     await userEvent.selectOptions(
@@ -46,14 +71,10 @@ describe("UploadCustomImage", () => {
     const file = new File(["dummy content"], "test-image.tgz", {
       type: "application/octet-stream",
     });
-    const fileInput = screen.getByRole("button", {
-      name: "Drag and drop files here or click to upload",
-    });
-    fireEvent.drop(fileInput, {
-      dataTransfer: {
-        files: [file],
-      },
-    });
+    const fileInput = result.container.querySelector(
+      "input[type='file']"
+    ) as HTMLInputElement;
+    await userEvent.upload(fileInput, file);
 
     await userEvent.click(screen.getByRole("button", { name: "Upload" }));
     await waitFor(() => {
@@ -65,8 +86,34 @@ describe("UploadCustomImage", () => {
     mockServer.use(
       imageResolvers.uploadCustomImage.error({ code: 400, message: "Uh oh!" })
     );
-    renderWithProviders(<UploadCustomImage />);
+    const { result } = renderWithProviders(<UploadCustomImage />);
     await waitForLoading();
+
+    // Fill in all required fields to enable the Upload button
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /operating system/i }),
+      "Ubuntu"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /release title/i }),
+      "24.04 LTS"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /release codename/i }),
+      "noble"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /architecture/i }),
+      "amd64"
+    );
+    const file = new File(["dummy content"], "test-image.tgz", {
+      type: "application/octet-stream",
+    });
+    const fileInput = result.container.querySelector(
+      "input[type='file']"
+    ) as HTMLInputElement;
+    await userEvent.upload(fileInput, file);
+
     await userEvent.click(screen.getByRole("button", { name: "Upload" }));
     await waitFor(() => {
       expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
