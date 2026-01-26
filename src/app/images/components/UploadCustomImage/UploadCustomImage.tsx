@@ -192,8 +192,6 @@ const UploadCustomImage = (): ReactElement => {
                       error={touched.file && errors.file}
                       files={values.file && !errors.file ? [values.file] : []}
                       maxFiles={1}
-                      maxSize={20000}
-                      minSize={1}
                       name="file"
                       onFileUpload={async (
                         files: File[],
