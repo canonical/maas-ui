@@ -190,10 +190,12 @@ export const useImages = (
       ...(selections.data?.items ?? []).map((item) => ({
         ...item,
         id: generateImageId(item.id, false),
+        isUpstream: true,
       })),
       ...(customImages.data?.items ?? []).map((item) => ({
         ...item,
         id: generateImageId(item.id, true),
+        isUpstream: false,
       })),
     ];
     const statuses = [
@@ -236,6 +238,7 @@ export const useImages = (
         size: statistic?.size,
         node_count: statistic?.node_count,
         deploy_to_memory: statistic?.deploy_to_memory,
+        isUpstream: image.isUpstream,
       };
     });
   }, [

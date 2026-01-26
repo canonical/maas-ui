@@ -146,7 +146,12 @@ const useImageTableColumns = ({
           ),
           cell: ({
             row: {
-              original: { update_status, last_updated, sync_percentage },
+              original: {
+                update_status,
+                last_updated,
+                sync_percentage,
+                isUpstream,
+              },
             },
           }) => {
             const isOptimistic = update_status === "Optimistic";
@@ -155,25 +160,35 @@ const useImageTableColumns = ({
             ) : (
               <DoubleRow
                 primary={
-                  update_status === "Downloading" ||
-                  update_status === "Optimistic" ? (
-                    <>
-                      <div className="p-progress">
-                        <div
-                          className="p-progress__value"
-                          style={{
-                            width: `${isOptimistic ? 100 : sync_percentage}%`,
-                          }}
-                        />
-                      </div>
-                      <small className="u-text--muted">
-                        {isOptimistic ? "Queueing..." : `${sync_percentage}%`}
-                      </small>
-                    </>
-                  ) : update_status === "No updates available" ? (
-                    "Up to date"
+                  isUpstream ? (
+                    update_status === "Downloading" ||
+                    update_status === "Optimistic" ? (
+                      <>
+                        <div className="p-progress">
+                          <div
+                            className="p-progress__value"
+                            style={{
+                              width: `${isOptimistic ? 100 : sync_percentage}%`,
+                            }}
+                          />
+                        </div>
+                        <small className="u-text--muted">
+                          {isOptimistic ? "Queueing..." : `${sync_percentage}%`}
+                        </small>
+                      </>
+                    ) : update_status === "No updates available" ? (
+                      "Up to date"
+                    ) : (
+                      update_status
+                    )
                   ) : (
-                    update_status
+                    <Tooltip
+                      message="This image is not managed by an upstream source."
+                      position="right"
+                    >
+                      Local
+                      <Icon name="information" />
+                    </Tooltip>
                   )
                 }
                 secondary={
@@ -316,7 +331,7 @@ const useImageTableColumns = ({
                         });
                       }}
                     >
-                      <i className="p-icon--stop">Stop synchronization</i>
+                      <Icon name="stop">Stop synchronization</Icon>
                     </Button>
                   </Tooltip>
                 ) : (
@@ -344,9 +359,9 @@ const useImageTableColumns = ({
                         });
                       }}
                     >
-                      <i className="p-icon--begin-downloading">
+                      <Icon name="begin-downloading">
                         Start synchronization
-                      </i>
+                      </Icon>
                     </Button>
                   </Tooltip>
                 )}
@@ -381,7 +396,7 @@ const useImageTableColumns = ({
                       }
                     }}
                   >
-                    <i className="p-icon--delete">Delete</i>
+                    <Icon name="delete">Delete</Icon>
                   </Button>
                 </Tooltip>
               </div>
