@@ -33,15 +33,18 @@ describe("useLogout", () => {
     ]);
   });
 
-  it("clears the local access_token cookie", () => {
-    document.cookie =
-      `${COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME}=some_token_value; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+  it("clears the local token cookies", () => {
+    document.cookie = `${COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME}=some_token_value; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+    document.cookie = `${COOKIE_NAMES.LOCAL_REFRESH_TOKEN_NAME}=some_refresh_token_value; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
     const { result } = renderHookWithProviders(useLogout, { state });
 
     result.current();
 
     expect(document.cookie).not.toContain(
       `${COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME}=some_token_value`
+    );
+    expect(document.cookie).not.toContain(
+      `${COOKIE_NAMES.LOCAL_REFRESH_TOKEN_NAME}=some_refresh_token_value`
     );
   });
 });

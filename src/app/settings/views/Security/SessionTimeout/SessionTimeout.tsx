@@ -34,10 +34,10 @@ export enum Labels {
   Loading = "Loading...",
   Expiration = "Refresh token expiration",
   Save = "Save",
-  ConfigureSessionTimeout = "Configure Token Expiration",
+  ConfigureTokenExpiration = "Configure Token Expiration",
 }
 
-const SessionTimeoutSchema = Yup.object().shape({
+const TokenExpirationSchema = Yup.object().shape({
   refresh_token_expiration: Yup.string()
     .required("Timeout length is required")
     .matches(
@@ -85,7 +85,7 @@ const SessionTimeout = (): ReactElement => {
   const eTag = data?.headers?.get("ETag");
   const token_expiration = data?.items?.[0].value || {};
   const updateConfig = useBulkSetConfigurations();
-  useWindowTitle("Session timeout");
+  useWindowTitle("Token Expiration");
   const logout = useLogout();
 
   if (isPending) {
@@ -96,19 +96,19 @@ const SessionTimeout = (): ReactElement => {
     <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Title className="section-header__title">
-          Session timeout
+          Token Expiration
         </ContentSection.Title>
         <ContentSection.Content>
           {error && (
             <NotificationBanner
               severity="negative"
-              title="Error while fetching setting security configurations session timeout"
+              title="Error while fetching setting security configurations token expiration"
             >
               {error.message}
             </NotificationBanner>
           )}
           <FormikForm<TokenExpirationFormValues, SetConfigurationsError>
-            aria-label={Labels.ConfigureSessionTimeout}
+            aria-label={Labels.ConfigureTokenExpiration}
             cleanup={configActions.cleanup}
             errors={updateConfig.error}
             initialValues={{
@@ -119,7 +119,7 @@ const SessionTimeout = (): ReactElement => {
             onSaveAnalytics={{
               action: "Saved",
               category: "Security settings",
-              label: "Session timeout form",
+              label: "Token expiration form",
             }}
             onSubmit={(values, { resetForm }) => {
               const tokenExpirationInSeconds = humanReadableToSeconds(
@@ -150,7 +150,7 @@ const SessionTimeout = (): ReactElement => {
             resetOnSave
             saved={updateConfig.isSuccess}
             saving={updateConfig.isPending}
-            validationSchema={SessionTimeoutSchema}
+            validationSchema={TokenExpirationSchema}
           >
             <FormikField
               help={
@@ -166,7 +166,7 @@ const SessionTimeout = (): ReactElement => {
                   <br />
                   <Icon name="warning" /> This setting applies to local MAAS
                   users. Externally authenticated users, such as those using
-                  Single Sign-On, may have different session timeout policies.
+                  Single Sign-On, may have different token expiration policies.
                   Configure those settings in your identity provider.
                 </span>
               }

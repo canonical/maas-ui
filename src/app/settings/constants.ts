@@ -30,7 +30,7 @@ export const settingsNavItems: NavItem[] = [
       },
       {
         path: settingsURLs.security.sessionTimeout,
-        label: "Session timeout",
+        label: "Token expiration",
       },
       {
         path: settingsURLs.security.ipmiSettings,

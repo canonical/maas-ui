@@ -46,7 +46,7 @@ describe("SessionTimeout", () => {
     await waitForLoading();
     expect(
       screen.getByRole("form", {
-        name: SessionTimeoutLabels.ConfigureSessionTimeout,
+        name: SessionTimeoutLabels.ConfigureTokenExpiration,
       })
     ).toBeInTheDocument();
 
@@ -131,7 +131,7 @@ describe("SessionTimeout", () => {
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     );
-    // Testing minimum boundary
+    // Minimum boundary
     await userEvent.type(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration }),
       "5 minutes"
@@ -144,7 +144,7 @@ describe("SessionTimeout", () => {
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     );
-    // Testing maximum boundary
+    // Maximum boundary
     await userEvent.type(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration }),
       "90 days"
