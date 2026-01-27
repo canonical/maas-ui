@@ -22,6 +22,7 @@ import {
   useSelectionStatuses,
 } from "@/app/api/query/images";
 import type {
+  BootSourceRequest,
   ImageStatusListResponse,
   ImageStatusResponse,
 } from "@/app/apiclient";
@@ -63,26 +64,16 @@ const ChangeSourceSchema = Yup.object()
       })
       .when("keyring_type", {
         is: "keyring_unsigned",
-        then: (schema) =>
-          schema
-            .required("URL is required")
-            .test(
-              "ends-with-json",
-              "URL must end with .json for unsigned keyring",
-              (value) => !!value && value.endsWith(".json")
-            ),
+        then: (schema) => schema.required("URL is required"),
         otherwise: (schema) => schema,
       }),
     autoSync: Yup.boolean(),
   })
   .defined();
 
-export type ChangeSourceValues = {
-  keyring_data: string;
-  keyring_filename: string;
+export type ChangeSourceValues = BootSourceRequest & {
   keyring_type: "keyring_data" | "keyring_filename" | "keyring_unsigned";
   source_type: BootResourceSourceType;
-  url: string;
   autoSync: boolean;
 };
 
@@ -171,6 +162,8 @@ const ChangeSource = (): ReactElement => {
     url: source.data?.url ?? "",
     source_type: sourceType,
     autoSync: autoImport || false,
+    // TODO: add priority field when multiple sources are supported
+    priority: 10,
   };
 
   return (
@@ -208,8 +201,10 @@ const ChangeSource = (): ReactElement => {
                 updateImageSource.mutate({
                   body: {
                     ...values,
-                    // TODO: add priority field when multiple sources are supported
-                    priority: 10,
+                    skip_keyring_verification:
+                      values.keyring_type === "keyring_unsigned"
+                        ? true
+                        : undefined,
                   },
                   path: {
                     boot_source_id: source.data?.id ?? -1,
