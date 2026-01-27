@@ -47,6 +47,7 @@ const mockCreateSessionError: CreateSessionError = {
 const mockLoginResponse: LoginResponse = {
   token_type: "Bearer",
   access_token: "mock_access_token",
+  refresh_token: "mock_refresh_token",
   kind: "AccessTokenResponse",
 };
 

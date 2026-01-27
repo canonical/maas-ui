@@ -1,10 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
+import { COOKIE_NAMES } from "../utils/cookies";
+
 import { configureAuthInterceptor } from "./auth-interceptor";
 
 import { client } from "@/app/apiclient/client.gen";
 import { getCookie } from "@/app/utils";
-import { COOKIE_NAMES } from "../utils/cookies";
 
 vi.mock("@/app/apiclient/client.gen", () => ({
   client: {

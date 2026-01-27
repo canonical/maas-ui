@@ -96,7 +96,7 @@ const SessionTimeout = (): ReactElement => {
     <PageContent>
       <ContentSection variant="narrow">
         <ContentSection.Title className="section-header__title">
-          Token Expiration
+          Token expiration
         </ContentSection.Title>
         <ContentSection.Content>
           {error && (
