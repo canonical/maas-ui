@@ -4,6 +4,7 @@ import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import type { DiscoveryResponse } from "@/app/apiclient";
+import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -55,10 +56,15 @@ const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
         header: "Mac Address",
         cell: ({
           row: {
-            original: { mac_address },
+            original: { mac_address, mac_organization },
           },
         }) => {
-          return <MacAddressDisplay>{mac_address}</MacAddressDisplay>;
+          return (
+            <DoubleRow
+              primary={<MacAddressDisplay>{mac_address}</MacAddressDisplay>}
+              secondary={mac_organization || "Unknown"}
+            />
+          );
         },
       },
       {
