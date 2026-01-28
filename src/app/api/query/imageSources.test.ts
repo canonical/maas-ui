@@ -1,10 +1,10 @@
 import {
+  useChangeImageSource,
   useGetImageSource,
   useImageSources,
-  useUpdateImageSource,
 } from "./imageSources";
 
-import type { BootSourceRequest } from "@/app/apiclient";
+import type { BootSourceCreateRequest } from "@/app/apiclient";
 import {
   imageSourceResolvers,
   mockImageSources,
@@ -15,10 +15,12 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(
+const mockServer = setupMockServer(
   imageSourceResolvers.listImageSources.handler(),
   imageSourceResolvers.getImageSource.handler(),
-  imageSourceResolvers.updateImageSource.handler()
+  imageSourceResolvers.fetchImageSource.handler(),
+  imageSourceResolvers.createImageSource.handler(),
+  imageSourceResolvers.deleteImageSource.handler()
 );
 
 describe("useImageSources", () => {
@@ -66,22 +68,76 @@ describe("useGetImageSource", () => {
   });
 });
 
-describe("useUpdateImageSource", () => {
-  it("should update an existing image source", async () => {
-    const updatedImageSource: BootSourceRequest = {
-      url: "http://updated.images.io/",
-      keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
-      keyring_data: "newdata",
-      priority: 5,
-      skip_keyring_verification: false,
-    };
-    const { result } = renderHookWithProviders(() => useUpdateImageSource());
+describe("useChangeImageSource", () => {
+  const updatedImageSource: BootSourceCreateRequest = {
+    url: "http://updated.images.io/",
+    keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
+    keyring_data: "newdata",
+    priority: 5,
+    skip_keyring_verification: false,
+  };
+
+  afterEach(() => {
+    imageSourceResolvers.fetchImageSource.resolved = false;
+    imageSourceResolvers.createImageSource.resolved = false;
+    imageSourceResolvers.deleteImageSource.resolved = false;
+  });
+
+  it("should change an existing image source", async () => {
+    const { result } = renderHookWithProviders(() => useChangeImageSource());
     result.current.mutate({
-      body: updatedImageSource,
-      path: { boot_source_id: 1 },
+      body: {
+        ...updatedImageSource,
+        current_boot_source_id: 1,
+      },
+    });
+    await waitFor(() => {
+      expect(imageSourceResolvers.fetchImageSource.resolved).toBe(true);
+    });
+    await waitFor(() => {
+      expect(imageSourceResolvers.createImageSource.resolved).toBe(true);
+    });
+    await waitFor(() => {
+      expect(imageSourceResolvers.deleteImageSource.resolved).toBe(true);
     });
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
+  });
+
+  it("should terminate if fetch fails", async () => {
+    mockServer.use(imageSourceResolvers.fetchImageSource.error());
+    const { result } = renderHookWithProviders(() => useChangeImageSource());
+    result.current.mutate({
+      body: {
+        ...updatedImageSource,
+        current_boot_source_id: 1,
+      },
+    });
+    await waitFor(() => {
+      expect(imageSourceResolvers.fetchImageSource.resolved).toBe(true);
+    });
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+    expect(imageSourceResolvers.createImageSource.resolved).toBe(false);
+  });
+
+  it("should terminate if create fails", async () => {
+    mockServer.use(imageSourceResolvers.createImageSource.error());
+    const { result } = renderHookWithProviders(() => useChangeImageSource());
+    result.current.mutate({
+      body: {
+        ...updatedImageSource,
+        current_boot_source_id: 1,
+      },
+    });
+    await waitFor(() => {
+      expect(imageSourceResolvers.createImageSource.resolved).toBe(true);
+    });
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+    expect(imageSourceResolvers.deleteImageSource.resolved).toBe(false);
   });
 });

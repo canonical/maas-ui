@@ -20,7 +20,8 @@ setupMockServer(
   rackResolvers.createRack.handler(),
   rackResolvers.getRack.handler(),
   rackResolvers.updateRack.handler(),
-  rackResolvers.deleteRack.handler()
+  rackResolvers.deleteRack.handler(),
+  rackResolvers.generateToken.handler()
 );
 
 describe("useRacks", () => {

@@ -77,16 +77,42 @@ const imageSourceResolvers = {
         return HttpResponse.json(error, { status: error.code });
       }),
   },
-  updateImageSource: {
+  fetchImageSource: {
     resolved: false,
     handler: () =>
-      http.put(`${BASE_URL}MAAS/a/v3/boot_sources/:id`, () => {
-        imageSourceResolvers.updateImageSource.resolved = true;
-        return HttpResponse.json({});
+      http.post(`${BASE_URL}MAAS/a/v3/boot_sources\\:fetch`, () => {
+        imageSourceResolvers.fetchImageSource.resolved = true;
+        return HttpResponse.json({ status: 200 });
       }),
     error: (error: UpdateBootsourceError = mockUpdateImageSourceError) =>
-      http.put(`${BASE_URL}MAAS/a/v3/boot_sources/:id`, () => {
-        imageSourceResolvers.updateImageSource.resolved = true;
+      http.post(`${BASE_URL}MAAS/a/v3/boot_sources\\:fetch`, () => {
+        imageSourceResolvers.fetchImageSource.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  createImageSource: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/boot_sources`, () => {
+        imageSourceResolvers.createImageSource.resolved = true;
+        return HttpResponse.json({ status: 201 });
+      }),
+    error: (error: UpdateBootsourceError = mockUpdateImageSourceError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/boot_sources`, () => {
+        imageSourceResolvers.createImageSource.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  deleteImageSource: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/boot_sources/:id`, () => {
+        imageSourceResolvers.deleteImageSource.resolved = true;
+        return HttpResponse.json({ status: 204 });
+      }),
+    error: (error: UpdateBootsourceError = mockUpdateImageSourceError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/boot_sources/:id`, () => {
+        imageSourceResolvers.deleteImageSource.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },

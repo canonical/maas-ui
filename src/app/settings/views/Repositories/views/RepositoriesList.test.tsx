@@ -10,7 +10,10 @@ import {
   userEvent,
 } from "@/testing/utils";
 
-setupMockServer(packageRepositoriesResolvers.listPackageRepositories.handler());
+setupMockServer(
+  packageRepositoriesResolvers.listPackageRepositories.handler(),
+  packageRepositoriesResolvers.getPackageRepository.handler()
+);
 
 describe("RepositoriesList", () => {
   it("renders 'Add PPA'", async () => {

@@ -272,7 +272,7 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
   });
 
   beforeAll(() => {
-    mockServer.listen({ onUnhandledRequest: "warn" });
+    mockServer.listen({ onUnhandledRequest: "error" });
   });
   afterEach(() => {
     mockServer.resetHandlers();
