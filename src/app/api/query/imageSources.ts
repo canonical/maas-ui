@@ -2,10 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
 import { IMAGES_WORKFLOW_KEY } from "@/app/api/query/images";
-import {
-  mutationOptionsWithHeaders,
-  queryOptionsWithHeaders,
-} from "@/app/api/utils";
+import { queryOptionsWithHeaders } from "@/app/api/utils";
 import type {
   GetBootsourceData,
   GetBootsourceErrors,
@@ -14,9 +11,6 @@ import type {
   ListBootsourcesErrors,
   ListBootsourcesResponses,
   Options,
-  UpdateBootsourceData,
-  UpdateBootsourceErrors,
-  UpdateBootsourceResponses,
   DeleteBootsourceErrors,
   CreateBootsourceData,
   CreateBootsourceErrors,
@@ -26,7 +20,6 @@ import {
   createBootsource,
   deleteBootsource,
   fetchBootsourcesAvailableImages,
-  updateBootsource,
   getBootsource,
   listBootsources,
 } from "@/app/apiclient";
@@ -97,24 +90,6 @@ export const useChangeImageSource = () => {
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: [listBootsourcesQueryKey(), IMAGES_WORKFLOW_KEY],
-      });
-    },
-  });
-};
-
-export const useUpdateImageSource = (
-  mutationOptions?: Options<UpdateBootsourceData>
-) => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...mutationOptionsWithHeaders<
-      UpdateBootsourceResponses,
-      UpdateBootsourceErrors,
-      UpdateBootsourceData
-    >(mutationOptions, updateBootsource),
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
-        queryKey: listBootsourcesQueryKey(),
       });
     },
   });
