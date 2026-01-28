@@ -1,7 +1,6 @@
 import Login, { Labels, INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
-import * as cookies from "@/app/utils/cookies";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
@@ -76,8 +75,6 @@ describe("Login", () => {
   });
 
   it("can login via the api", async () => {
-    vi.spyOn(cookies, "setCookie").mockImplementation(() => {});
-
     const { store } = renderWithProviders(<Login />, {
       initialEntries: ["/login"],
       state,

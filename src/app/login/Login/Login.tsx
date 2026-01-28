@@ -100,14 +100,13 @@ export const Login = (): React.ReactElement => {
     }
   }, [dispatch, externalAuthURL]);
 
-  const handleSubmit = async (values: LoginValues) => {
-    await authenticate.mutateAsync({
+  const handleSubmit = (values: LoginValues) => {
+    authenticate.mutate({
       body: {
         username: values.username,
         password: values.password,
       },
     });
-    handleRedirect();
   };
 
   return (
