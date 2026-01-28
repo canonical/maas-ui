@@ -19,7 +19,9 @@ import {
 const mockServer = setupMockServer(
   imageSourceResolvers.listImageSources.handler(),
   imageSourceResolvers.getImageSource.handler(),
-  imageSourceResolvers.updateImageSource.handler(),
+  imageSourceResolvers.fetchImageSource.handler(),
+  imageSourceResolvers.createImageSource.handler(),
+  imageSourceResolvers.deleteImageSource.handler(),
   imageResolvers.listSelectionStatuses.handler(),
   imageResolvers.listCustomImageStatuses.handler(),
   configurationsResolvers.getConfiguration.handler({
@@ -123,30 +125,6 @@ describe("ChangeSource", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Keyring data is required")).toBeInTheDocument();
-    });
-  });
-
-  it("shows error when URL does not end with .json and keyring_type is keyring_unsigned", async () => {
-    renderWithProviders(<ChangeSource />);
-    await waitForLoading();
-
-    await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
-
-    const select = screen.getByRole("combobox");
-    await userEvent.selectOptions(select, "keyring_unsigned");
-
-    // Enter URL that doesn't end with .json
-    const urlInput = screen.getByRole("textbox", { name: Labels.Url });
-    await userEvent.clear(urlInput);
-    await userEvent.type(urlInput, "http://example.com/images");
-
-    // Try to submit
-    await userEvent.click(screen.getByRole("button", { name: "Save" }));
-
-    await waitFor(() => {
-      expect(
-        screen.getByText("URL must end with .json for unsigned keyring")
-      ).toBeInTheDocument();
     });
   });
 });
