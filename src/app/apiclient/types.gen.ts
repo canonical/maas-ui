@@ -79,26 +79,6 @@ export type ARecordResponse = {
 };
 
 /**
- * AccessTokenResponse
- *
- * Content for a response returning a JWT.
- */
-export type AccessTokenResponse = {
-  /**
-   * Token Type
-   */
-  token_type: string;
-  /**
-   * Access Token
-   */
-  access_token: string;
-  /**
-   * Kind
-   */
-  kind?: string;
-};
-
-/**
  * AgentListResponse
  *
  * Base class for offset-paginated responses.
@@ -465,45 +445,9 @@ export type BootSourceAvailableImageResponse = {
 };
 
 /**
- * BootSourceFetchRequest
+ * BootSourceCreateRequest
  */
-export type BootSourceFetchRequest = {
-  /**
-   * Url
-   *
-   * URL of SimpleStreams server providing boot source information.
-   */
-  url: string;
-  /**
-   * Keyring Path
-   *
-   * File path to keyring to use for verifying signatures of the boot sources.
-   */
-  keyring_path?: string;
-  /**
-   * Keyring Data
-   *
-   * Base64-encoded keyring data to use for verifying signatures of the boot sources.
-   */
-  keyring_data?: string;
-  /**
-   * Validate Products
-   *
-   * Whether to validate products in the boot sources.
-   */
-  validate_products?: boolean;
-};
-
-/**
- * BootSourceRequest
- */
-export type BootSourceRequest = {
-  /**
-   * Url
-   *
-   * URL of SimpleStreams server providing boot source information.
-   */
-  url: string;
+export type BootSourceCreateRequest = {
   /**
    * Keyring Filename
    *
@@ -517,17 +461,53 @@ export type BootSourceRequest = {
    */
   keyring_data?: string;
   /**
+   * Skip Keyring Verification
+   *
+   * If true, keyring signature verification will be skipped.
+   */
+  skip_keyring_verification?: boolean;
+  /**
    * Priority
    *
    * Priority value. Higher values mean higher priority. Must be non-negative.
    */
   priority: number;
   /**
+   * Url
+   *
+   * URL of SimpleStreams server providing boot source information.
+   */
+  url: string;
+};
+
+/**
+ * BootSourceFetchRequest
+ */
+export type BootSourceFetchRequest = {
+  /**
+   * Keyring Filename
+   *
+   * File path to keyring to use for verifying signatures of the boot sources.
+   */
+  keyring_filename?: string;
+  /**
+   * Keyring Data
+   *
+   * Base64-encoded keyring data used for signature verification. Optional alternative to providing a keyring file path.
+   */
+  keyring_data?: string;
+  /**
    * Skip Keyring Verification
    *
    * If true, keyring signature verification will be skipped.
    */
   skip_keyring_verification?: boolean;
+  /**
+   * Url
+   *
+   * URL of SimpleStreams server providing boot source information.
+   */
+  url: string;
 };
 
 /**
@@ -627,6 +607,36 @@ export type BootSourceSyncResponse = {
    * Kind
    */
   kind?: string;
+};
+
+/**
+ * BootSourceUpdateRequest
+ */
+export type BootSourceUpdateRequest = {
+  /**
+   * Keyring Filename
+   *
+   * File path to keyring to use for verifying signatures of the boot sources.
+   */
+  keyring_filename?: string;
+  /**
+   * Keyring Data
+   *
+   * Base64-encoded keyring data used for signature verification. Optional alternative to providing a keyring file path.
+   */
+  keyring_data?: string;
+  /**
+   * Skip Keyring Verification
+   *
+   * If true, keyring signature verification will be skipped.
+   */
+  skip_keyring_verification?: boolean;
+  /**
+   * Priority
+   *
+   * Priority value. Higher values mean higher priority. Must be non-negative.
+   */
+  priority: number;
 };
 
 /**
@@ -3002,6 +3012,7 @@ export type PublicConfigName =
   | "prometheus_push_interval"
   | "promtail_enabled"
   | "promtail_port"
+  | "refresh_token_duration"
   | "release_notifications"
   | "remote_syslog"
   | "session_length"
@@ -4310,6 +4321,30 @@ export type TagsListResponse = {
 };
 
 /**
+ * TokenResponse
+ *
+ * Content for a response returning a JWT and a refresh token.
+ */
+export type TokenResponse = {
+  /**
+   * Token Type
+   */
+  token_type: string;
+  /**
+   * Access Token
+   */
+  access_token: string;
+  /**
+   * Refresh Token
+   */
+  refresh_token?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * UISourceAvailableImageListResponse
  */
 export type UiSourceAvailableImageListResponse = {
@@ -5565,7 +5600,7 @@ export type GetAccessTokenResponses = {
   /**
    * Successful Response
    */
-  200: AccessTokenResponse;
+  200: TokenResponse;
 };
 
 export type GetAccessTokenResponse =
@@ -5727,7 +5762,7 @@ export type LoginResponses = {
   /**
    * Successful Response
    */
-  200: AccessTokenResponse;
+  200: TokenResponse;
 };
 
 export type LoginResponse = LoginResponses[keyof LoginResponses];
@@ -5865,7 +5900,7 @@ export type ListBootsourcesResponse =
   ListBootsourcesResponses[keyof ListBootsourcesResponses];
 
 export type CreateBootsourceData = {
-  body: BootSourceRequest;
+  body: BootSourceCreateRequest;
   path?: never;
   query?: never;
   url: "/MAAS/a/v3/boot_sources";
@@ -6050,7 +6085,7 @@ export type GetBootsourceResponse =
   GetBootsourceResponses[keyof GetBootsourceResponses];
 
 export type UpdateBootsourceData = {
-  body: BootSourceRequest;
+  body: BootSourceUpdateRequest;
   path: {
     /**
      * Boot Source Id
