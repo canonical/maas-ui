@@ -1,3 +1,5 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import {
   useActiveOauthProvider,
   useAuthenticate,
@@ -5,11 +7,15 @@ import {
   useCreateOauthProvider,
   useCreateSession,
   useDeleteOauthProvider,
+  useExtendSession,
   useGetCurrentUser,
   useGetIsSuperUser,
   usePreLogin,
   useUpdateOauthProvider,
 } from "@/app/api/query/auth";
+import { INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "@/app/login/Login/Login";
+import { setCookie } from "@/app/utils";
+import { COOKIE_NAMES } from "@/app/utils/cookies";
 import {
   authResolvers,
   mockAuth,
@@ -21,7 +27,15 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(
+vi.mock("@/app/utils", async () => {
+  const actual = await vi.importActual("@/app/utils");
+  return {
+    ...actual,
+    setCookie: vi.fn(),
+  };
+});
+
+const mockServer = setupMockServer(
   authResolvers.authenticate.handler(),
   authResolvers.preLogin.handler(),
   authResolvers.createSession.handler(),
@@ -44,23 +58,98 @@ describe("usePreLogin", () => {
 });
 
 describe("useAuthenticate", () => {
-  it("should authenticate the user", async () => {
-    const { result } = renderHookWithProviders(() => useAuthenticate());
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should authenticate the user and handle success flow", async () => {
+    const { result, store } = renderHookWithProviders(() => useAuthenticate());
+
     result.current.mutate({
       body: {
         username: "username",
         password: "password",
       },
     });
+
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
+
+    expect(vi.mocked(setCookie)).toHaveBeenCalledWith(
+      COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME,
+      expect.any(String),
+      {
+        sameSite: "Strict",
+        path: "/",
+      }
+    );
+    expect(vi.mocked(setCookie)).toHaveBeenCalledWith(
+      COOKIE_NAMES.LOCAL_REFRESH_TOKEN_NAME,
+      expect.any(String),
+      {
+        sameSite: "Strict",
+        path: "/",
+      }
+    );
+
+    await waitFor(() => {
+      const actions = store.getActions();
+      expect(actions).toContainEqual(
+        expect.objectContaining({ type: "status/loginSuccess" })
+      );
+    });
+  });
+
+  it("should handle 401 authentication errors", async () => {
+    mockServer.use(
+      authResolvers.authenticate.error({
+        code: 401,
+        message: "Unauthorized",
+        kind: "Error",
+      })
+    );
+
+    const { result, store } = renderHookWithProviders(() => useAuthenticate());
+
+    result.current.mutate({
+      body: {
+        username: "invalid",
+        password: "invalid",
+      },
+    });
+
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+
+    await waitFor(() => {
+      const actions = store.getActions();
+      expect(actions).toContainEqual(
+        expect.objectContaining({
+          type: "status/loginError",
+          payload: INCORRECT_CREDENTIALS_ERROR_MESSAGE,
+        })
+      );
+    });
+
+    expect(vi.mocked(setCookie)).not.toHaveBeenCalled();
   });
 });
 
 describe("useCreateSession", () => {
   it("should create a session", async () => {
     const { result } = renderHookWithProviders(() => useCreateSession());
+    result.current.mutate({});
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useExtendSession", () => {
+  it("should extend a session", async () => {
+    const { result } = renderHookWithProviders(() => useExtendSession());
     result.current.mutate({});
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);

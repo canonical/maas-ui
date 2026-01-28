@@ -1,21 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import {
-  call,
-  cancel,
-  delay,
-  fork,
-  put,
-  select,
-  take,
-  takeEvery,
-  takeLatest,
-} from "typed-redux-saga";
+import { call, put, takeEvery, takeLatest } from "typed-redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import type { Script } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
-import type { StatusState } from "@/app/store/status/types/base";
 import type { SimpleNode } from "@/app/store/types/node";
 import { getCookie } from "@/app/utils";
 
@@ -40,7 +29,6 @@ const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
 const LOGIN_API = "/MAAS/a/v3/auth/login";
 const LOGOUT_API = "/MAAS/a/v3/auth/logout";
-const EXTEND_SESSION_API = "/MAAS/a/v3/auth/sessions:extend";
 const MACHINES_API = `${ROOT_API}machines/`;
 const ZONES_LIST_API = `${SERVICE_API}zones`;
 
@@ -158,18 +146,6 @@ export const api = {
         handleErrors(res);
         window.location.reload();
       });
-    },
-    extendSession: (): Promise<void> => {
-      return fetch(EXTEND_SESSION_API, {
-        method: "POST",
-        headers: DEFAULT_HEADERS,
-      })
-        .then(handlePromise)
-        .then(([responseOk, body]) => {
-          if (!responseOk) {
-            throw body;
-          }
-        });
     },
   },
   licenseKeys: {
@@ -320,33 +296,6 @@ export function* checkAuthenticatedSaga(): SagaGenerator<void> {
       payload: error instanceof Error ? error.message : error,
       type: "status/checkAuthenticatedError",
     });
-  }
-}
-
-export function* extendSessionSaga(): SagaGenerator<void> {
-  while (true) {
-    yield* take("status/checkAuthenticatedSuccess");
-    const isAuthenticated = yield* select(
-      (state: { status: StatusState }) => state.status.authenticated
-    );
-    if (isAuthenticated) {
-      const task = yield* fork(extendSessionWorker);
-
-      yield* take([
-        "status/logoutSuccess",
-        "status/checkAuthenticatedError",
-        "status/websocketDisconnect",
-      ]);
-
-      yield* cancel(task);
-    }
-  }
-}
-
-export function* extendSessionWorker(): SagaGenerator<void> {
-  while (true) {
-    yield* call(api.auth.extendSession);
-    yield* delay(60000);
   }
 }
 
@@ -615,8 +564,4 @@ export function* watchUploadScript(): SagaGenerator<void> {
 
 export function* watchAddMachineChassis(): SagaGenerator<void> {
   yield* takeEvery("machine/addChassis", addMachineChassisSaga);
-}
-
-export function* watchExtendSession(): SagaGenerator<void> {
-  yield* fork(extendSessionSaga);
 }

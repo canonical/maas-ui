@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
 import {
@@ -34,6 +35,11 @@ import type {
   PreLoginData,
   PreLoginResponses,
   PreLoginErrors,
+  TokenResponse,
+  LoginError,
+  ExtendSessionResponses,
+  ExtendSessionErrors,
+  ExtendSessionData,
 } from "@/app/apiclient";
 import {
   deleteOauthProvider,
@@ -45,11 +51,16 @@ import {
   login,
   createSession,
   preLogin,
+  extendSession,
 } from "@/app/apiclient";
 import {
   getMeWithSummaryQueryKey,
   getOauthProviderQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
+import { INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "@/app/login/Login/Login";
+import { statusActions } from "@/app/store/status";
+import { setCookie } from "@/app/utils";
+import { COOKIE_NAMES } from "@/app/utils/cookies";
 
 export const usePreLogin = (mutationOptions?: Options<PreLoginData>) => {
   return useMutation({
@@ -62,11 +73,30 @@ export const usePreLogin = (mutationOptions?: Options<PreLoginData>) => {
 };
 
 export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
+  const dispatch = useDispatch();
+  const createSession = useCreateSession();
   return useMutation({
     ...mutationOptionsWithHeaders<LoginResponses, LoginErrors, LoginData>(
       mutationOptions,
       login
     ),
+    onSuccess: async (data: TokenResponse) => {
+      setCookie(COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME, data.access_token, {
+        sameSite: "Strict",
+        path: "/",
+      });
+      setCookie(COOKIE_NAMES.LOCAL_REFRESH_TOKEN_NAME, data.refresh_token!, {
+        sameSite: "Strict",
+        path: "/",
+      });
+      await createSession.mutateAsync({});
+      dispatch(statusActions.loginSuccess());
+    },
+    onError: (error: LoginError) => {
+      if (error.code === 401) {
+        dispatch(statusActions.loginError(INCORRECT_CREDENTIALS_ERROR_MESSAGE));
+      }
+    },
   });
 };
 
@@ -79,6 +109,18 @@ export const useCreateSession = (
       CreateSessionErrors,
       CreateSessionData
     >(mutationOtions, createSession),
+  });
+};
+
+export const useExtendSession = (
+  mutationOptions?: Options<ExtendSessionData>
+) => {
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      ExtendSessionResponses,
+      ExtendSessionErrors,
+      ExtendSessionData
+    >(mutationOptions, extendSession),
   });
 };
 

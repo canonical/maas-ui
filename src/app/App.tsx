@@ -15,12 +15,14 @@ import { Outlet, useLocation } from "react-router";
 
 import packageInfo from "../../package.json";
 
+import { useExtendSession } from "./api/query/auth";
 import {
   useDismissNotification,
   useDismissNotifications,
 } from "./api/query/notifications";
 import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
+import useSessionExtender from "./base/hooks/useSessionExtender/useSessionExtender";
 import ThemePreviewContextProvider from "./base/theme-context";
 import { MAAS_UI_ID } from "./constants";
 
@@ -83,11 +85,13 @@ export const App = (): React.ReactElement => {
   const connecting = useSelector(status.connecting);
   const configLoading = useSelector(configSelectors.loading);
   const configErrors = useSelector(configSelectors.errors);
+  const extendSession = useExtendSession();
   const previousAuthenticated = usePrevious(authenticated, false);
   const dismissMutation = useDismissNotification();
   const location = useLocation();
   const dismiss = useDismissNotifications(dismissMutation.mutate);
 
+  useSessionExtender(extendSession);
   useFetchActions([statusActions.checkAuthenticated]);
 
   useEffect(() => {

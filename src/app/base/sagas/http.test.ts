@@ -5,7 +5,6 @@ import { throwError } from "redux-saga-test-plan/providers";
 import {
   api,
   checkAuthenticatedSaga,
-  extendSessionSaga,
   loginSaga,
   logoutSaga,
   externalLoginSaga,
@@ -16,7 +15,6 @@ import {
   addMachineChassisSaga,
   ROOT_API,
   SERVICE_API,
-  extendSessionWorker,
 } from "./http";
 
 import { ScriptType } from "@/app/store/script/types";
@@ -164,40 +162,6 @@ describe("Auth API", () => {
           payload: { error: error.message },
         })
         .run();
-    });
-  });
-
-  describe("extendSession", () => {
-    it("calls the extend session endpoint repeatedly", () => {
-      return expectSaga(extendSessionWorker)
-        .provide([[matchers.call.fn(api.auth.extendSession), null]])
-        .delay(60000)
-        .call(api.auth.extendSession)
-        .silentRun(100);
-    });
-
-    it("only starts calling the endpoint after user is authenticated", () => {
-      return expectSaga(extendSessionSaga)
-        .withState({ status: { authenticated: true } })
-        .provide([[matchers.call.fn(api.auth.extendSession), null]])
-        .dispatch({
-          type: "status/checkAuthenticatedSuccess",
-          payload: { authenticated: true },
-        })
-        .fork(extendSessionWorker)
-        .silentRun(100);
-    });
-
-    it("does not start if authentication fails", () => {
-      return expectSaga(extendSessionSaga)
-        .withState({ status: { authenticated: false } })
-        .provide([[matchers.call.fn(api.auth.extendSession), null]])
-        .dispatch({
-          type: "status/checkAuthenticatedSuccess",
-          payload: { authenticated: false },
-        })
-        .not.fork(extendSessionWorker)
-        .silentRun(100);
     });
   });
 });

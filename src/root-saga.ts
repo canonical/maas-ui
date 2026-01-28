@@ -14,7 +14,6 @@ import {
   watchFetchLicenseKeys,
   watchUploadScript,
   watchAddMachineChassis,
-  watchExtendSession,
 } from "./app/base/sagas";
 
 import type { MessageHandler } from "@/app/base/sagas/actions";
@@ -35,6 +34,5 @@ export default function* rootSaga(
     watchFetchLicenseKeys(),
     watchUploadScript(),
     watchAddMachineChassis(),
-    watchExtendSession(),
   ]);
 }

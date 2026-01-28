@@ -13,8 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router";
 import * as Yup from "yup";
 
-import { useAuthenticate, useCreateSession } from "@/app/api/query/auth";
-import type { LoginError, TokenResponse } from "@/app/apiclient";
+import { useAuthenticate } from "@/app/api/query/auth";
+import type { LoginError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
@@ -22,8 +22,7 @@ import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { statusActions } from "@/app/store/status";
 import statusSelectors from "@/app/store/status/selectors";
-import { formatErrors, setCookie } from "@/app/utils";
-import { COOKIE_NAMES } from "@/app/utils/cookies";
+import { formatErrors } from "@/app/utils";
 
 const generateSchema = (hasEnteredUsername: boolean) => {
   if (hasEnteredUsername) {
@@ -71,7 +70,6 @@ export const Login = (): React.ReactElement => {
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirectTo");
   const authenticate = useAuthenticate();
-  const createSession = useCreateSession();
 
   // TODO: replace this state with a mutation to check if user is local or OIDC https://warthogs.atlassian.net/browse/MAASENG-5637
   const [hasEnteredUsername, setHasEnteredUsername] = useState(false);
@@ -102,41 +100,14 @@ export const Login = (): React.ReactElement => {
     }
   }, [dispatch, externalAuthURL]);
 
-  const handleSubmit = (values: LoginValues) => {
-    authenticate.mutate(
-      {
-        body: {
-          username: values.username,
-          password: values.password,
-        },
+  const handleSubmit = async (values: LoginValues) => {
+    await authenticate.mutateAsync({
+      body: {
+        username: values.username,
+        password: values.password,
       },
-      {
-        onSuccess: async (data: TokenResponse) => {
-          setCookie(COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME, data.access_token, {
-            sameSite: "Strict",
-            path: "/",
-          });
-          setCookie(
-            COOKIE_NAMES.LOCAL_REFRESH_TOKEN_NAME,
-            data.refresh_token!,
-            {
-              sameSite: "Strict",
-              path: "/",
-            }
-          );
-          await createSession.mutateAsync({});
-          dispatch(statusActions.loginSuccess());
-          handleRedirect();
-        },
-        onError: (error: LoginError) => {
-          if (error.code === 401) {
-            dispatch(
-              statusActions.loginError(INCORRECT_CREDENTIALS_ERROR_MESSAGE)
-            );
-          }
-        },
-      }
-    );
+    });
+    handleRedirect();
   };
 
   return (

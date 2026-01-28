@@ -1,8 +1,6 @@
 import Login, { Labels, INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
-import { setCookie } from "@/app/utils";
-import { COOKIE_NAMES } from "@/app/utils/cookies";
 import * as cookies from "@/app/utils/cookies";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
@@ -96,23 +94,6 @@ describe("Login", () => {
     await waitFor(() => {
       expect(authResolvers.authenticate.resolved).toBeTruthy();
     });
-
-    expect(setCookie).toHaveBeenCalledWith(
-      COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME,
-      "mock_access_token",
-      {
-        sameSite: "Strict",
-        path: "/",
-      }
-    );
-    expect(setCookie).toHaveBeenCalledWith(
-      COOKIE_NAMES.LOCAL_REFRESH_TOKEN_NAME,
-      "mock_refresh_token",
-      {
-        sameSite: "Strict",
-        path: "/",
-      }
-    );
 
     expect(
       store.getActions().find((action) => action.type === "status/loginSuccess")
