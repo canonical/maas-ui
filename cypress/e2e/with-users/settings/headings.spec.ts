@@ -27,7 +27,7 @@ const settingsPages = [
   },
   {
     path: "/settings/security/session-timeout",
-    label: "Session timeout",
+    label: "Token expiration",
   },
   {
     path: "/settings/security/ipmi-settings",

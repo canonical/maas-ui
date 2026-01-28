@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router";
 import * as Yup from "yup";
 
+import { useAuthenticate } from "@/app/api/query/auth";
+import type { LoginError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
@@ -55,6 +57,9 @@ export enum TestIds {
   SectionHeaderTitle = "section-header-title",
 }
 
+export const INCORRECT_CREDENTIALS_ERROR_MESSAGE =
+  "Please enter a correct username and password. Note that both fields may be case-sensitive.";
+
 export const Login = (): React.ReactElement => {
   const dispatch = useDispatch();
   const authenticated = useSelector(statusSelectors.authenticated);
@@ -64,6 +69,7 @@ export const Login = (): React.ReactElement => {
   const authenticationError = useSelector(statusSelectors.authenticationError);
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirectTo");
+  const authenticate = useAuthenticate();
 
   // TODO: replace this state with a mutation to check if user is local or OIDC https://warthogs.atlassian.net/browse/MAASENG-5637
   const [hasEnteredUsername, setHasEnteredUsername] = useState(false);
@@ -93,6 +99,15 @@ export const Login = (): React.ReactElement => {
       dispatch(statusActions.externalLogin());
     }
   }, [dispatch, externalAuthURL]);
+
+  const handleSubmit = (values: LoginValues) => {
+    authenticate.mutate({
+      body: {
+        username: values.username,
+        password: values.password,
+      },
+    });
+  };
 
   return (
     <PageContent>
@@ -146,7 +161,7 @@ export const Login = (): React.ReactElement => {
                     {Labels.ExternalLoginButton}
                   </Button>
                 ) : (
-                  <FormikForm<LoginValues>
+                  <FormikForm<LoginValues, LoginError>
                     aria-label={Labels.APILoginForm}
                     initialValues={{
                       password: "",
@@ -156,7 +171,7 @@ export const Login = (): React.ReactElement => {
                       if (!hasEnteredUsername) {
                         setHasEnteredUsername(true);
                       } else {
-                        dispatch(statusActions.login(values));
+                        handleSubmit(values);
                       }
                     }}
                     saved={authenticated}

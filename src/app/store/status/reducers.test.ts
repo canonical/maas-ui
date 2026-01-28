@@ -187,7 +187,7 @@ describe("status", () => {
         {
           type: "status/checkAuthenticatedSuccess",
           payload: {
-            authenticated: true,
+            is_authenticated: true,
             external_auth_url: "http://login.example.com",
             no_users: true,
           },

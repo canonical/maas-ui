@@ -3,16 +3,20 @@ import { http, HttpResponse } from "msw";
 import { oAuthProviderFactory } from "../factories/auth";
 import { BASE_URL } from "../utils";
 
-import {
-  type CompleteIntroError,
-  type CreateOauthProviderError,
-  type GetMeWithSummaryError,
-  type GetOauthProviderError,
-  type LoginError,
-  type OAuthProviderResponse,
-  type UpdateOauthProviderError,
-  type UpdateUserError,
-  type UserWithSummaryResponse,
+import type {
+  PreLoginResponse,
+  PreLoginError,
+  CreateSessionError,
+  LoginResponse,
+  CompleteIntroError,
+  CreateOauthProviderError,
+  GetMeWithSummaryError,
+  GetOauthProviderError,
+  LoginError,
+  OAuthProviderResponse,
+  UpdateOauthProviderError,
+  UpdateUserError,
+  UserWithSummaryResponse,
 } from "@/app/apiclient";
 import { user } from "@/testing/factories";
 
@@ -21,6 +25,31 @@ const mockAuth: UserWithSummaryResponse = user({
   email: "user1@example.com",
   username: "user1",
 });
+
+const mockPreLoginResponse: PreLoginResponse = {
+  is_authenticated: false,
+  no_users: false,
+  kind: "PreLoginResponse",
+};
+
+const mockPreLoginError: PreLoginError = {
+  message: "Internal server error",
+  code: 500,
+  kind: "Error",
+};
+
+const mockCreateSessionError: CreateSessionError = {
+  message: "Internal server error",
+  code: 500,
+  kind: "Error",
+};
+
+const mockLoginResponse: LoginResponse = {
+  token_type: "Bearer",
+  access_token: "mock_access_token",
+  refresh_token: "mock_refresh_token",
+  kind: "AccessTokenResponse",
+};
 
 const mockAuthenticateError: LoginError = {
   message: "Unauthorized",
@@ -64,14 +93,40 @@ const mockDeleteOauthProviderError = {
 const authResolvers = {
   authenticate: {
     resolved: false,
-    handler: () =>
+    handler: (data: LoginResponse = mockLoginResponse) =>
       http.post(`${BASE_URL}MAAS/a/v3/auth/login`, () => {
         authResolvers.authenticate.resolved = true;
-        return HttpResponse.json();
+        return HttpResponse.json(data);
       }),
     error: (error: LoginError = mockAuthenticateError) =>
       http.post(`${BASE_URL}MAAS/a/v3/auth/login`, () => {
         authResolvers.authenticate.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  preLogin: {
+    resolved: false,
+    handler: (data: PreLoginResponse = mockPreLoginResponse) =>
+      http.post(`${BASE_URL}MAAS/a/v3/auth/prelogin`, () => {
+        authResolvers.preLogin.resolved = true;
+        return HttpResponse.json(data);
+      }),
+    error: (error: PreLoginError = mockPreLoginError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/auth/prelogin`, () => {
+        authResolvers.preLogin.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  createSession: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/auth/sessions`, () => {
+        authResolvers.createSession.resolved = true;
+        return HttpResponse.json({});
+      }),
+    error: (error: CreateSessionError = mockCreateSessionError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/auth/sessions`, () => {
+        authResolvers.createSession.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },

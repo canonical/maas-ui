@@ -9,7 +9,7 @@ export { formatErrors } from "./formatErrors";
 export { formatMacAddress } from "./formatMacAddress";
 export { formatSpeedUnits } from "./formatSpeedUnits";
 export { generateCheckboxHandlers } from "./generateCheckboxHandlers";
-export { getCookie } from "./getCookie";
+export { getCookie, setCookie, clearCookie } from "./cookies";
 export { getNextName } from "./getNextName";
 export { getRanges } from "./getRanges";
 export { getRelativeRoute } from "./getRelativeRoute";
