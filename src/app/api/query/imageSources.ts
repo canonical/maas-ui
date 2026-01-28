@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
+import { IMAGES_WORKFLOW_KEY } from "@/app/api/query/images";
 import {
   mutationOptionsWithHeaders,
   queryOptionsWithHeaders,
@@ -16,8 +17,15 @@ import type {
   UpdateBootsourceData,
   UpdateBootsourceErrors,
   UpdateBootsourceResponses,
+  DeleteBootsourceErrors,
+  CreateBootsourceData,
+  CreateBootsourceErrors,
+  CreateBootsourceResponses,
 } from "@/app/apiclient";
 import {
+  createBootsource,
+  deleteBootsource,
+  fetchBootsourcesAvailableImages,
   updateBootsource,
   getBootsource,
   listBootsources,
@@ -48,6 +56,49 @@ export const useGetImageSource = (
       GetBootsourceData
     >(options, getBootsource, getBootsourceQueryKey(options)),
     enabled,
+  });
+};
+
+export const useChangeImageSource = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    CreateBootsourceResponses[keyof CreateBootsourceResponses],
+    | CreateBootsourceErrors[keyof CreateBootsourceErrors]
+    | DeleteBootsourceErrors[keyof DeleteBootsourceErrors],
+    Options<CreateBootsourceData & { body: { current_boot_source_id: number } }>
+  >({
+    mutationFn: async (params) => {
+      // Step 1: Fetch to validate source using URL from createData
+      await fetchBootsourcesAvailableImages({
+        body: {
+          url: params.body.url,
+          keyring_filename: params.body.keyring_filename,
+          keyring_data: params.body.keyring_data,
+          skip_keyring_verification: params.body.skip_keyring_verification,
+        },
+        throwOnError: true,
+      });
+
+      // Step 2: Create new source
+      const createResult = await createBootsource({
+        ...params,
+        throwOnError: true,
+      });
+
+      // Step 3: Delete old source
+      await deleteBootsource({
+        path: { boot_source_id: params.body.current_boot_source_id },
+        throwOnError: true,
+      });
+
+      return createResult.data;
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [listBootsourcesQueryKey(), IMAGES_WORKFLOW_KEY],
+      });
+    },
   });
 };
 

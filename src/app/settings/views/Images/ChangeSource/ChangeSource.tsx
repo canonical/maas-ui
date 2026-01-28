@@ -13,16 +13,16 @@ import {
   useSetConfiguration,
 } from "@/app/api/query/configurations";
 import {
+  useChangeImageSource,
   useGetImageSource,
   useImageSources,
-  useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import {
   useCustomImageStatuses,
   useSelectionStatuses,
 } from "@/app/api/query/images";
 import type {
-  BootSourceRequest,
+  BootSourceCreateRequest,
   ImageStatusListResponse,
   ImageStatusResponse,
 } from "@/app/apiclient";
@@ -71,7 +71,7 @@ const ChangeSourceSchema = Yup.object()
   })
   .defined();
 
-export type ChangeSourceValues = BootSourceRequest & {
+export type ChangeSourceValues = BootSourceCreateRequest & {
   keyring_type: "keyring_data" | "keyring_filename" | "keyring_unsigned";
   source_type: BootResourceSourceType;
   autoSync: boolean;
@@ -128,13 +128,13 @@ const ChangeSource = (): ReactElement => {
   const configETag = importConfig.data?.headers?.get("ETag");
   const autoImport = importConfig.data?.value as boolean;
   const updateConfig = useSetConfiguration();
-  const updateImageSource = useUpdateImageSource();
+  const changeImageSource = useChangeImageSource();
 
   const loading =
     sources.isPending || source.isPending || importConfig.isPending;
 
-  const saving = updateConfig.isPending || updateImageSource.isPending;
-  const saved = updateConfig.isSuccess && updateImageSource.isSuccess;
+  const saving = updateConfig.isPending || changeImageSource.isPending;
+  const saved = updateConfig.isSuccess && changeImageSource.isSuccess;
 
   const errors =
     sources.error ||
@@ -142,7 +142,7 @@ const ChangeSource = (): ReactElement => {
     customImageStatusesError ||
     importConfig.error ||
     updateConfig.error ||
-    updateImageSource.error;
+    changeImageSource.error;
 
   useWindowTitle("Source");
 
@@ -162,8 +162,11 @@ const ChangeSource = (): ReactElement => {
     url: source.data?.url ?? "",
     source_type: sourceType,
     autoSync: autoImport || false,
-    // TODO: add priority field when multiple sources are supported
-    priority: 10,
+    // TODO: add priority field when multiple sources are supported.
+    //  Since priority must be unique, fake uniqueness by switching
+    //  between 10 and 9 until multiple sources introduce an explicit
+    //  priority field
+    priority: source.data?.priority === 10 ? 9 : 10,
   };
 
   return (
@@ -198,16 +201,23 @@ const ChangeSource = (): ReactElement => {
                   },
                   path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
                 });
-                updateImageSource.mutate({
+                changeImageSource.mutate({
                   body: {
-                    ...values,
+                    url: values.url,
+                    keyring_data:
+                      values.keyring_type === "keyring_data"
+                        ? values.keyring_data
+                        : undefined,
+                    keyring_filename:
+                      values.keyring_type === "keyring_filename"
+                        ? values.keyring_filename
+                        : undefined,
                     skip_keyring_verification:
                       values.keyring_type === "keyring_unsigned"
                         ? true
                         : undefined,
-                  },
-                  path: {
-                    boot_source_id: source.data?.id ?? -1,
+                    priority: values.priority,
+                    current_boot_source_id: source.data?.id ?? -1,
                   },
                 });
               }}
