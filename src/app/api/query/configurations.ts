@@ -31,6 +31,7 @@ import {
   getConfigurationQueryKey,
   getConfigurationsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
+import { ConfigNames } from "@/app/store/config/types";
 
 export const useConfigurations = (options?: Options<GetConfigurationsData>) => {
   return useWebsocketAwareQuery(
@@ -62,9 +63,14 @@ export const useSetConfiguration = (
       SetConfigurationErrors,
       SetConfigurationData
     >(mutationOptions, setConfiguration),
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: getConfigurationsQueryKey(),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: getConfigurationQueryKey({
+          path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+        }),
       });
     },
   });

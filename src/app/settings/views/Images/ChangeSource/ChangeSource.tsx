@@ -5,7 +5,6 @@ import {
   Notification as NotificationBanner,
   Spinner,
 } from "@canonical/react-components";
-import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
 import {
@@ -13,24 +12,19 @@ import {
   useSetConfiguration,
 } from "@/app/api/query/configurations";
 import {
+  useChangeImageSource,
   useGetImageSource,
   useImageSources,
-  useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import {
   useCustomImageStatuses,
   useSelectionStatuses,
 } from "@/app/api/query/images";
 import type {
+  BootSourceCreateRequest,
   ImageStatusListResponse,
   ImageStatusResponse,
 } from "@/app/apiclient";
-import {
-  getBootsourceQueryKey,
-  getConfigurationQueryKey,
-  getConfigurationsQueryKey,
-  listBootsourcesQueryKey,
-} from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
@@ -63,26 +57,16 @@ const ChangeSourceSchema = Yup.object()
       })
       .when("keyring_type", {
         is: "keyring_unsigned",
-        then: (schema) =>
-          schema
-            .required("URL is required")
-            .test(
-              "ends-with-json",
-              "URL must end with .json for unsigned keyring",
-              (value) => !!value && value.endsWith(".json")
-            ),
+        then: (schema) => schema.required("URL is required"),
         otherwise: (schema) => schema,
       }),
     autoSync: Yup.boolean(),
   })
   .defined();
 
-export type ChangeSourceValues = {
-  keyring_data: string;
-  keyring_filename: string;
+export type ChangeSourceValues = BootSourceCreateRequest & {
   keyring_type: "keyring_data" | "keyring_filename" | "keyring_unsigned";
   source_type: BootResourceSourceType;
-  url: string;
   autoSync: boolean;
 };
 
@@ -117,7 +101,6 @@ const checkCanChangeSource = (
 };
 
 const ChangeSource = (): ReactElement => {
-  const queryClient = useQueryClient();
   const sources = useImageSources();
   // TODO: add support for multiple sources when v3 is ready
   const source = useGetImageSource(
@@ -137,13 +120,13 @@ const ChangeSource = (): ReactElement => {
   const configETag = importConfig.data?.headers?.get("ETag");
   const autoImport = importConfig.data?.value as boolean;
   const updateConfig = useSetConfiguration();
-  const updateImageSource = useUpdateImageSource();
+  const changeImageSource = useChangeImageSource();
 
   const loading =
     sources.isPending || source.isPending || importConfig.isPending;
 
-  const saving = updateConfig.isPending || updateImageSource.isPending;
-  const saved = updateConfig.isSuccess && updateImageSource.isSuccess;
+  const saving = updateConfig.isPending || changeImageSource.isPending;
+  const saved = updateConfig.isSuccess && changeImageSource.isSuccess;
 
   const errors =
     sources.error ||
@@ -151,7 +134,7 @@ const ChangeSource = (): ReactElement => {
     customImageStatusesError ||
     importConfig.error ||
     updateConfig.error ||
-    updateImageSource.error;
+    changeImageSource.error;
 
   useWindowTitle("Source");
 
@@ -171,6 +154,11 @@ const ChangeSource = (): ReactElement => {
     url: source.data?.url ?? "",
     source_type: sourceType,
     autoSync: autoImport || false,
+    // TODO: add priority field when multiple sources are supported.
+    //  Since priority must be unique, fake uniqueness by switching
+    //  between 10 and 9 until multiple sources introduce an explicit
+    //  priority field
+    priority: source.data?.priority === 10 ? 9 : 10,
   };
 
   return (
@@ -205,33 +193,24 @@ const ChangeSource = (): ReactElement => {
                   },
                   path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
                 });
-                updateImageSource.mutate({
+                changeImageSource.mutate({
                   body: {
-                    ...values,
-                    // TODO: add priority field when multiple sources are supported
-                    priority: 10,
+                    url: values.url,
+                    keyring_data:
+                      values.keyring_type === "keyring_data"
+                        ? values.keyring_data
+                        : undefined,
+                    keyring_filename:
+                      values.keyring_type === "keyring_filename"
+                        ? values.keyring_filename
+                        : undefined,
+                    skip_keyring_verification:
+                      values.keyring_type === "keyring_unsigned"
+                        ? true
+                        : undefined,
+                    priority: values.priority,
+                    current_boot_source_id: source.data?.id ?? -1,
                   },
-                  path: {
-                    boot_source_id: source.data?.id ?? -1,
-                  },
-                });
-              }}
-              onSuccess={async () => {
-                await queryClient.invalidateQueries({
-                  queryKey: getConfigurationsQueryKey(),
-                });
-                await queryClient.invalidateQueries({
-                  queryKey: getConfigurationQueryKey({
-                    path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
-                  }),
-                });
-                await queryClient.invalidateQueries({
-                  queryKey: listBootsourcesQueryKey(),
-                });
-                await queryClient.invalidateQueries({
-                  queryKey: getBootsourceQueryKey({
-                    path: { boot_source_id: source.data?.id ?? -1 },
-                  }),
                 });
               }}
               saved={saved}
