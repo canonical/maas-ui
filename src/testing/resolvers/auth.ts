@@ -17,6 +17,7 @@ import type {
   UpdateOauthProviderError,
   UpdateUserError,
   UserWithSummaryResponse,
+  ExtendSessionError,
 } from "@/app/apiclient";
 import { user } from "@/testing/factories";
 
@@ -39,6 +40,12 @@ const mockPreLoginError: PreLoginError = {
 };
 
 const mockCreateSessionError: CreateSessionError = {
+  message: "Internal server error",
+  code: 500,
+  kind: "Error",
+};
+
+const mockExtendSessionError: ExtendSessionError = {
   message: "Internal server error",
   code: 500,
   kind: "Error",
@@ -107,12 +114,12 @@ const authResolvers = {
   preLogin: {
     resolved: false,
     handler: (data: PreLoginResponse = mockPreLoginResponse) =>
-      http.post(`${BASE_URL}MAAS/a/v3/auth/prelogin`, () => {
+      http.get(`${BASE_URL}MAAS/a/v3/auth/login`, () => {
         authResolvers.preLogin.resolved = true;
         return HttpResponse.json(data);
       }),
     error: (error: PreLoginError = mockPreLoginError) =>
-      http.post(`${BASE_URL}MAAS/a/v3/auth/prelogin`, () => {
+      http.get(`${BASE_URL}MAAS/a/v3/auth/login`, () => {
         authResolvers.preLogin.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
@@ -127,6 +134,19 @@ const authResolvers = {
     error: (error: CreateSessionError = mockCreateSessionError) =>
       http.post(`${BASE_URL}MAAS/a/v3/auth/sessions`, () => {
         authResolvers.createSession.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  extendSession: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/auth/sessions:extend`, () => {
+        authResolvers.extendSession.resolved = true;
+        return HttpResponse.json({});
+      }),
+    error: (error: ExtendSessionError = mockExtendSessionError) =>
+      http.post(`${BASE_URL}MAAS/a/v3/auth/sessions:extend`, () => {
+        authResolvers.extendSession.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
