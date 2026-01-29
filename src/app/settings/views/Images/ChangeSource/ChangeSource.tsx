@@ -5,7 +5,6 @@ import {
   Notification as NotificationBanner,
   Spinner,
 } from "@canonical/react-components";
-import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
 import {
@@ -26,12 +25,6 @@ import type {
   ImageStatusListResponse,
   ImageStatusResponse,
 } from "@/app/apiclient";
-import {
-  getBootsourceQueryKey,
-  getConfigurationQueryKey,
-  getConfigurationsQueryKey,
-  listBootsourcesQueryKey,
-} from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
@@ -108,7 +101,6 @@ const checkCanChangeSource = (
 };
 
 const ChangeSource = (): ReactElement => {
-  const queryClient = useQueryClient();
   const sources = useImageSources();
   // TODO: add support for multiple sources when v3 is ready
   const source = useGetImageSource(
@@ -219,24 +211,6 @@ const ChangeSource = (): ReactElement => {
                     priority: values.priority,
                     current_boot_source_id: source.data?.id ?? -1,
                   },
-                });
-              }}
-              onSuccess={async () => {
-                await queryClient.invalidateQueries({
-                  queryKey: getConfigurationsQueryKey(),
-                });
-                await queryClient.invalidateQueries({
-                  queryKey: getConfigurationQueryKey({
-                    path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
-                  }),
-                });
-                await queryClient.invalidateQueries({
-                  queryKey: listBootsourcesQueryKey(),
-                });
-                await queryClient.invalidateQueries({
-                  queryKey: getBootsourceQueryKey({
-                    path: { boot_source_id: source.data?.id ?? -1 },
-                  }),
                 });
               }}
               saved={saved}

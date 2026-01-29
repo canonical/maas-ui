@@ -87,9 +87,12 @@ export const useChangeImageSource = () => {
 
       return createResult.data;
     },
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
-        queryKey: [listBootsourcesQueryKey(), IMAGES_WORKFLOW_KEY],
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: listBootsourcesQueryKey(),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: IMAGES_WORKFLOW_KEY,
       });
     },
   });
