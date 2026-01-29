@@ -11,7 +11,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(authResolvers.authenticate.handler());
+setupMockServer(
+  authResolvers.authenticate.handler(),
+  authResolvers.createSession.handler()
+);
 
 describe("Login", () => {
   let state: RootState;

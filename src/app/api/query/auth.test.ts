@@ -39,6 +39,7 @@ const mockServer = setupMockServer(
   authResolvers.authenticate.handler(),
   authResolvers.preLogin.handler(),
   authResolvers.createSession.handler(),
+  authResolvers.extendSession.handler(),
   authResolvers.getCurrentUser.handler(),
   authResolvers.completeIntro.handler(),
   authResolvers.getActiveOauthProvider.handler(),
