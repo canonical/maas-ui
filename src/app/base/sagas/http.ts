@@ -27,8 +27,8 @@ export const ROOT_API = "/MAAS/api/2.0/";
 const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
 const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
-const LOGIN_API = "/MAAS/accounts/login/";
-const LOGOUT_API = "/MAAS/accounts/logout/";
+const LOGIN_API = "/MAAS/a/v3/auth/login";
+const LOGOUT_API = "/MAAS/a/v3/auth/logout";
 const MACHINES_API = `${ROOT_API}machines/`;
 const ZONES_LIST_API = `${SERVICE_API}zones`;
 

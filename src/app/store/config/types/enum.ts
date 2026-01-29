@@ -57,6 +57,7 @@ export enum ConfigNames {
   PROMETHEUS_PUSH_INTERVAL = "prometheus_push_interval",
   PROMTAIL_ENABLED = "promtail_enabled",
   PROMTAIL_PORT = "promtail_port",
+  REFRESH_TOKEN_DURATION = "refresh_token_duration",
   RELEASE_NOTIFICATIONS = "release_notifications",
   REMOTE_SYSLOG = "remote_syslog",
   RPC_SHARED_SECRET = "rpc_shared_secret",

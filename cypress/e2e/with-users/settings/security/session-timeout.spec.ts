@@ -1,14 +1,14 @@
 import { generateMAASURL } from "../../../utils";
 
-context("Settings - Security - Session timeout", () => {
+context("Settings - Security - Token expiration", () => {
   beforeEach(() => {
     cy.login();
     cy.visit(generateMAASURL("/settings/security/session-timeout"));
   });
 
   it("logs the user out when the session timeout expiration is changed", () => {
-    cy.findByRole("textbox", { name: "Session timeout expiration" }).clear();
-    cy.findByRole("textbox", { name: "Session timeout expiration" }).type(
+    cy.findByRole("textbox", { name: "Refresh token expiration" }).clear();
+    cy.findByRole("textbox", { name: "Refresh token expiration" }).type(
       "13 days"
     );
     cy.findByRole("button", { name: "Save" }).then(($btn) => {

@@ -1,14 +1,17 @@
-import Login, { Labels } from "./Login";
+import Login, { Labels, INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
-import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
 } from "@/testing/utils";
+
+setupMockServer(authResolvers.authenticate.handler());
 
 describe("Login", () => {
   let state: RootState;
@@ -22,11 +25,11 @@ describe("Login", () => {
   });
 
   it("can display a login error message", () => {
-    const authenticationError =
-      "Please enter a correct username and password. Note that both fields may be case-sensitive.";
-    state.status.authenticationError = authenticationError;
+    state.status.authenticationError = INCORRECT_CREDENTIALS_ERROR_MESSAGE;
     renderWithProviders(<Login />, { initialEntries: ["/login"], state });
-    expect(screen.getByRole("alert")).toHaveTextContent(authenticationError);
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      INCORRECT_CREDENTIALS_ERROR_MESSAGE
+    );
   });
 
   it("can render api login", () => {
@@ -85,13 +88,13 @@ describe("Login", () => {
     await userEvent.type(screen.getByLabelText(Labels.Password), "gumtree");
     await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
 
-    const expectedAction = statusActions.login({
-      username: "koala",
-      password: "gumtree",
+    await waitFor(() => {
+      expect(authResolvers.authenticate.resolved).toBeTruthy();
     });
+
     expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+      store.getActions().find((action) => action.type === "status/loginSuccess")
+    ).toBeDefined();
   });
 
   it("shows a warning if no users have been added yet", () => {
