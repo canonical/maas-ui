@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router";
 import * as Yup from "yup";
 
-import { useAuthenticate } from "@/app/api/query/auth";
+import { useAuthenticate, useIsOIDCUser } from "@/app/api/query/auth";
 import type { LoginError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -24,19 +24,13 @@ import { statusActions } from "@/app/store/status";
 import statusSelectors from "@/app/store/status/selectors";
 import { formatErrors } from "@/app/utils";
 
-const generateSchema = (hasEnteredUsername: boolean) => {
-  if (hasEnteredUsername) {
-    return Yup.object().shape({
-      username: Yup.string().required("Username is required"),
-      password: Yup.string().required("Password is required"),
-    });
-  } else {
-    return Yup.object().shape({
-      username: Yup.string().required("Username is required"),
-      password: Yup.string(),
-    });
-  }
-};
+const generateSchema = (requirePassword: boolean) =>
+  Yup.object({
+    username: Yup.string().required("Username is required"),
+    password: requirePassword
+      ? Yup.string().required("Password is required")
+      : Yup.string(),
+  });
 
 export type LoginValues = {
   password: string;
@@ -60,6 +54,11 @@ export enum TestIds {
 export const INCORRECT_CREDENTIALS_ERROR_MESSAGE =
   "Please enter a correct username and password. Note that both fields may be case-sensitive.";
 
+export const NOT_FOUND_USER_ERROR_MESSAGE =
+  "User not found. Please check the username and try again.";
+
+type LoginStep = "OIDC" | "PASSWORD" | "USERNAME";
+
 export const Login = (): React.ReactElement => {
   const dispatch = useDispatch();
   const authenticated = useSelector(statusSelectors.authenticated);
@@ -67,14 +66,31 @@ export const Login = (): React.ReactElement => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
   const authenticationError = useSelector(statusSelectors.authenticationError);
+  const noUsers = useSelector(statusSelectors.noUsers);
+
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirectTo");
   const authenticate = useAuthenticate();
+  const [oidcURL, setOidcURL] = useState("");
+  const [providerName, setProviderName] = useState("");
+  const [submittedUsername, setSubmittedUsername] = useState<string | null>(
+    null
+  );
+  const [step, setStep] = useState<LoginStep>("USERNAME");
 
-  // TODO: replace this state with a mutation to check if user is local or OIDC https://warthogs.atlassian.net/browse/MAASENG-5637
-  const [hasEnteredUsername, setHasEnteredUsername] = useState(false);
+  const hasEnteredUsername = step !== "USERNAME";
+  const requirePassword = step === "PASSWORD";
+  const isOIDCUser = step === "OIDC";
 
-  const noUsers = useSelector(statusSelectors.noUsers);
+  const userInfoQuery = useIsOIDCUser(
+    {
+      query: {
+        email: submittedUsername ?? "",
+        redirect_target: redirect ?? "/machines",
+      },
+    },
+    Boolean(submittedUsername)
+  );
 
   const navigate = useNavigate();
 
@@ -100,6 +116,26 @@ export const Login = (): React.ReactElement => {
     }
   }, [dispatch, externalAuthURL]);
 
+  useEffect(() => {
+    if (userInfoQuery.error) {
+      setSubmittedUsername(null);
+      dispatch(statusActions.loginError(NOT_FOUND_USER_ERROR_MESSAGE));
+      return;
+    }
+
+    if (!userInfoQuery.data) return;
+
+    const { is_oidc, auth_url, provider_name } = userInfoQuery.data;
+
+    if (is_oidc) {
+      setOidcURL(auth_url ?? "");
+      setProviderName(provider_name ?? "");
+      setStep("OIDC");
+    } else {
+      setStep("PASSWORD");
+    }
+  }, [userInfoQuery.data, userInfoQuery.error, dispatch]);
+
   const handleSubmit = (values: LoginValues) => {
     authenticate.mutate({
       body: {
@@ -108,7 +144,6 @@ export const Login = (): React.ReactElement => {
       },
     });
   };
-
   return (
     <PageContent>
       <Strip>
@@ -168,17 +203,33 @@ export const Login = (): React.ReactElement => {
                       username: "",
                     }}
                     onSubmit={(values) => {
-                      if (!hasEnteredUsername) {
-                        setHasEnteredUsername(true);
+                      dispatch(statusActions.loginError(""));
+                      if (!submittedUsername) {
+                        setSubmittedUsername(values.username);
                       } else {
-                        handleSubmit(values);
+                        if (isOIDCUser) {
+                          navigate(oidcURL);
+                        } else {
+                          handleSubmit(values);
+                        }
                       }
                     }}
                     saved={authenticated}
                     saving={authenticating}
-                    submitLabel={hasEnteredUsername ? Labels.Submit : "Next"}
-                    validationSchema={generateSchema(hasEnteredUsername)}
+                    submitLabel={
+                      !submittedUsername
+                        ? "Next"
+                        : isOIDCUser
+                          ? `Login with ${providerName}`
+                          : Labels.Submit
+                    }
+                    validationSchema={generateSchema(
+                      hasEnteredUsername && !isOIDCUser
+                    )}
                   >
+                    {isOIDCUser ? (
+                      <p>Please sign in with {providerName} to continue.</p>
+                    ) : null}
                     <FormikField
                       aria-hidden={hasEnteredUsername}
                       hidden={hasEnteredUsername}
@@ -188,14 +239,16 @@ export const Login = (): React.ReactElement => {
                       takeFocus
                       type="text"
                     />
-                    <FormikField
-                      aria-hidden={!hasEnteredUsername}
-                      hidden={!hasEnteredUsername}
-                      label={!hasEnteredUsername ? "" : Labels.Password}
-                      name="password"
-                      required={hasEnteredUsername}
-                      type="password"
-                    />
+                    {requirePassword && (
+                      <FormikField
+                        aria-hidden={!requirePassword}
+                        hidden={!requirePassword}
+                        label={Labels.Password}
+                        name="password"
+                        required={requirePassword}
+                        type="password"
+                      />
+                    )}
                   </FormikForm>
                 )}
               </Card>

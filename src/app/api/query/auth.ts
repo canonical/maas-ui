@@ -7,6 +7,9 @@ import {
   queryOptionsWithHeaders,
 } from "@/app/api/utils";
 import type {
+  HandleOauthCallbackResponses,
+  HandleOauthCallbackErrors,
+  HandleOauthCallbackData,
   CompleteIntroData,
   CompleteIntroErrors,
   CompleteIntroResponses,
@@ -40,6 +43,9 @@ import type {
   ExtendSessionResponses,
   ExtendSessionErrors,
   ExtendSessionData,
+  InitiateAuthFlowData,
+  InitiateAuthFlowResponses,
+  InitiateAuthFlowErrors,
 } from "@/app/apiclient";
 import {
   deleteOauthProvider,
@@ -52,10 +58,14 @@ import {
   createSession,
   preLogin,
   extendSession,
+  initiateAuthFlow,
+  handleOauthCallback,
 } from "@/app/apiclient";
 import {
   getMeWithSummaryQueryKey,
   getOauthProviderQueryKey,
+  handleOauthCallbackQueryKey,
+  initiateAuthFlowQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import { INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "@/app/login/Login/Login";
 import { statusActions } from "@/app/store/status";
@@ -69,6 +79,38 @@ export const usePreLogin = (mutationOptions?: Options<PreLoginData>) => {
       PreLoginErrors,
       PreLoginData
     >(mutationOptions, preLogin),
+  });
+};
+
+export const useIsOIDCUser = (
+  options: Options<InitiateAuthFlowData>,
+  enabled: boolean
+) => {
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
+      InitiateAuthFlowResponses,
+      InitiateAuthFlowErrors,
+      InitiateAuthFlowData
+    >(options, initiateAuthFlow, initiateAuthFlowQueryKey(options)),
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+};
+
+export const useGetCallback = (
+  options: Options<HandleOauthCallbackData>,
+  enabled: boolean
+) => {
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
+      HandleOauthCallbackResponses,
+      HandleOauthCallbackErrors,
+      HandleOauthCallbackData
+    >(options, handleOauthCallback, handleOauthCallbackQueryKey(options)),
+    refetchOnWindowFocus: false,
+    retry: false,
+    enabled,
   });
 };
 
