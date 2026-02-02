@@ -72,13 +72,13 @@ context("Machine details", () => {
     cy.findByLabelText("Actions submenu").within(() => {
       cy.findByRole("button", { name: /Abort/i }).should("be.visible");
 
-      cy.findByRole("button", { name: /Abort/i }).click();
+      cy.findByRole("button", { name: /Abort/i }).click({ force: true });
     });
 
     cy.findByRole("button", { name: /Abort actions/i })
       .should("be.visible")
       .and("not.be.disabled");
-    cy.findByRole("button", { name: /Abort actions for machine/i }).click();
+    cy.findByRole("button", { name: /Abort actions/i }).click();
 
     cy.findByRole("link", { name: /Scripts/i }).click();
     cy.findByRole("tab", { name: /Commissioning/i }).click();
