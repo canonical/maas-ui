@@ -1,9 +1,11 @@
 import { waitFor } from "@testing-library/react";
 
 import NetworkDiscoveryConfigurationForm from "@/app/settings/views/Network/NetworkDiscoveryConfigurationForm/NetworkDiscoveryConfigurationForm";
+import { ConfigNames } from "@/app/store/config/types";
+import * as factory from "@/testing/factories";
 import { authResolvers, mockAuth } from "@/testing/resolvers/auth";
 import { networkDiscoveryResolvers } from "@/testing/resolvers/networkDiscovery";
-import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
+import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   networkDiscoveryResolvers.listNetworkDiscoveries.handler(),
@@ -24,7 +26,18 @@ describe("NetworkDiscoveryConfigurationForm", () => {
   });
 
   it("shows disabled discovery warning", async () => {
-    renderWithProviders(<NetworkDiscoveryConfigurationForm />);
+    const state = factory.rootState({
+      config: factory.configState({
+        items: [
+          {
+            name: ConfigNames.NETWORK_DISCOVERY,
+            value: "disabled",
+          },
+        ],
+        loaded: true,
+      }),
+    });
+    renderWithProviders(<NetworkDiscoveryConfigurationForm />, { state });
     await waitFor(() => {
       expect(
         screen.getByText(

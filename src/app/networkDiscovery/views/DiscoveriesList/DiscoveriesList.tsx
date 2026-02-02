@@ -26,7 +26,7 @@ const DiscoveriesList = (): ReactElement => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const isSuperUser = useGetIsSuperUser();
 
-  useWindowTitle("Network Discovery");
+  useWindowTitle("Network discovery");
 
   if (!isSuperUser.data) {
     return (

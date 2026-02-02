@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
 import { Select, Spinner } from "@canonical/react-components";
@@ -19,7 +20,7 @@ const NetworkDiscoverySchema = Yup.object().shape({
   network_discovery: Yup.string().required(),
 });
 
-const NetworkDiscoveryForm = (): React.ReactElement => {
+const NetworkDiscoveryForm = (): ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 

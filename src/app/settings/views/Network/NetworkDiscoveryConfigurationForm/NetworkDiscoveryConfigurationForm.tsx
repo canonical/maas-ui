@@ -22,7 +22,7 @@ const NetworkDiscoveryConfigurationForm = (): ReactElement => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const isSuperUser = useGetIsSuperUser();
 
-  useWindowTitle(Label.Title);
+  useWindowTitle("Network discovery settings");
 
   if (!isSuperUser.data) {
     return <PageContent header={<SectionHeader title={Label.Permissions} />} />;
