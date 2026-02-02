@@ -134,27 +134,11 @@ export const router = createBrowserRouter(
             },
             {
               path: urls.networkDiscovery.index,
-              children: [
-                {
-                  path: urls.networkDiscovery.index,
-                  element: (
-                    <ErrorBoundary>
-                      <DiscoveriesList />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.networkDiscovery.configuration,
-                    urls.networkDiscovery.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <NetworkDiscoveryConfigurationForm />
-                    </ErrorBoundary>
-                  ),
-                },
-              ],
+              element: (
+                <ErrorBoundary>
+                  <DiscoveriesList />
+                </ErrorBoundary>
+              ),
             },
             {
               path: urls.networkDiscovery.legacyIndex,
