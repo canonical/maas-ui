@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import { Navigate, useLocation, Route, Routes } from "react-router";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 
-import MachineCommissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";
 import MachineHeader from "./MachineHeader";
 import MachineInstances from "./MachineInstances";
@@ -11,16 +10,15 @@ import MachineLogs from "./MachineLogs";
 import MachineNetwork from "./MachineNetwork";
 import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
 import MachinePCIDevices from "./MachinePCIDevices";
+import MachineScript from "./MachineScripts";
 import MachineStorage from "./MachineStorage";
 import StorageNotifications from "./MachineStorage/StorageNotifications";
 import MachineSummary from "./MachineSummary";
 import SummaryNotifications from "./MachineSummary/SummaryNotifications";
-import MachineTests from "./MachineTests";
 import MachineUSBDevices from "./MachineUSBDevices";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
-import NodeTestDetails from "@/app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import urls from "@/app/base/urls";
 import { machineActions } from "@/app/store/machine";
@@ -121,42 +119,23 @@ const MachineDetails = (): React.ReactElement => {
             )}
           />
           <Route
-            element={<MachineCommissioning />}
+            element={<MachineScript systemId={id} />}
+            path={getRelativeRoute(
+              `${urls.machines.machine.scriptsResults.index(null)}/*`,
+              base
+            )}
+          />
+          <Route
+            element={
+              <Navigate
+                replace
+                to={urls.machines.machine.scriptsResults.commissioning.index({
+                  id,
+                })}
+              />
+            }
             path={getRelativeRoute(
               urls.machines.machine.commissioning.index(null),
-              base
-            )}
-          />
-          <Route
-            element={
-              <NodeTestDetails
-                getReturnPath={(id) =>
-                  urls.machines.machine.commissioning.index({ id })
-                }
-              />
-            }
-            path={getRelativeRoute(
-              urls.machines.machine.commissioning.scriptResult(null),
-              base
-            )}
-          />
-          <Route
-            element={<MachineTests />}
-            path={getRelativeRoute(
-              urls.machines.machine.testing.index(null),
-              base
-            )}
-          />
-          <Route
-            element={
-              <NodeTestDetails
-                getReturnPath={(id) =>
-                  urls.machines.machine.testing.index({ id })
-                }
-              />
-            }
-            path={getRelativeRoute(
-              urls.machines.machine.testing.scriptResult(null),
               base
             )}
           />

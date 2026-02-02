@@ -16,6 +16,10 @@ import scriptResultSelectors from "@/app/store/scriptresult/selectors";
 import { TestStatusStatus } from "@/app/store/types/node";
 import { isId } from "@/app/utils";
 
+export enum Label {
+  Title = "Commissioning",
+}
+
 const MachineCommissioning = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
@@ -64,14 +68,14 @@ const MachineCommissioning = (): React.ReactElement => {
 
   if (isId(id) && isDetails && scriptResults?.length) {
     return (
-      <div>
+      <div aria-label={Label.Title}>
         {commissioningResults?.length && commissioningResults.length > 0 ? (
           <NodeTestsTable node={machine} scriptResults={commissioningResults} />
         ) : null}
       </div>
     );
   }
-  return <Spinner text="Loading..." />;
+  return <Spinner aria-label={Label.Title} text="Loading..." />;
 };
 
 export default MachineCommissioning;

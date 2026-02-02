@@ -135,10 +135,20 @@ const useNodeTestsTableColumns = ({
               data-testid="details-link"
               to={
                 isMachine
-                  ? urls.machines.machine.testing.scriptResult({
-                      id: node.system_id,
-                      scriptResultId: row.original.id,
-                    })
+                  ? row.original.result_type === ScriptResultType.COMMISSIONING
+                    ? urls.machines.machine.scriptsResults.commissioning.scriptResult(
+                        {
+                          id: node.system_id,
+
+                          scriptResultId: row.original.id,
+                        }
+                      )
+                    : urls.machines.machine.scriptsResults.testing.scriptResult(
+                        {
+                          id: node.system_id,
+                          scriptResultId: row.original.id,
+                        }
+                      )
                   : urls.controllers.controller.commissioning.scriptResult({
                       id: node.system_id,
                       scriptResultId: row.original.id,

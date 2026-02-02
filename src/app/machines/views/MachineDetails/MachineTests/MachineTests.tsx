@@ -30,6 +30,9 @@ const groupByKey = <I,>(items: I[], key: keyof I): Record<string, I[]> =>
     return obj;
   }, Object.create(null));
 
+export enum Label {
+  Title = "Tests",
+}
 const MachineTests = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
@@ -77,7 +80,7 @@ const MachineTests = (): React.ReactElement => {
 
   if (isId(id) && isDetails && scriptResults?.length) {
     return (
-      <div>
+      <div aria-label={Label.Title}>
         {hardwareResults?.length && hardwareResults.length > 0
           ? Object.entries(groupByKey(hardwareResults, "hardware_type")).map(
               ([hardware_type, scriptResults]: [string, ScriptResult[]]) => {
@@ -160,7 +163,7 @@ const MachineTests = (): React.ReactElement => {
       </div>
     );
   }
-  return <Spinner text="Loading..." />;
+  return <Spinner aria-label={Label.Title} text="Loading..." />;
 };
 
 export default MachineTests;

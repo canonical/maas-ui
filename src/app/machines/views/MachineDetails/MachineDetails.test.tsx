@@ -66,30 +66,9 @@ describe("MachineDetails", () => {
       title: "USB devices",
     },
     {
-      component: "MachineCommissioning",
-      path: urls.machines.machine.commissioning.index({ id: "abc123" }),
-      title: "commissioning",
-    },
-    {
-      component: "NodeTestDetails",
-      path: urls.machines.machine.commissioning.scriptResult({
-        id: "abc123",
-        scriptResultId: 1,
-      }),
-      title: "commissioning",
-    },
-    {
-      component: "MachineTests",
-      path: urls.machines.machine.testing.index({ id: "abc123" }),
-      title: "tests",
-    },
-    {
-      component: "NodeTestDetails",
-      path: urls.machines.machine.testing.scriptResult({
-        id: "abc123",
-        scriptResultId: 1,
-      }),
-      title: "tests",
+      component: "NodeScripts",
+      path: urls.machines.machine.scriptsResults.index({ id: "abc123" }),
+      title: "scripts",
     },
     {
       component: "NodeLogs",
