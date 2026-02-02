@@ -8,8 +8,8 @@ import { useGetIsSuperUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useWindowTitle } from "@/app/base/hooks";
-import { NetworkDiscoveryConfigurationSubnetForm } from "@/app/networkDiscovery/components";
-import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryForm";
+import NetworkDiscoveryConfigurationSubnetForm from "@/app/settings/views/Network/NetworkDiscoveryConfigurationForm/NetworkDiscoveryConfigurationSubnetForm";
+import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryConfigurationForm/NetworkDiscoveryForm";
 import configSelectors from "@/app/store/config/selectors";
 
 export enum Label {

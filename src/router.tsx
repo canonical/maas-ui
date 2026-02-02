@@ -67,7 +67,7 @@ const DiscoveriesList = lazy(
   () => import("@/app/networkDiscovery/views/DiscoveriesList")
 );
 const NetworkDiscoveryConfigurationForm = lazy(
-  () => import("@/app/networkDiscovery/views/NetworkDiscoveryConfigurationForm")
+  () => import("@/app/settings/views/Network/NetworkDiscoveryConfigurationForm")
 );
 const Networks = lazy(() => import("@/app/networks"));
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));

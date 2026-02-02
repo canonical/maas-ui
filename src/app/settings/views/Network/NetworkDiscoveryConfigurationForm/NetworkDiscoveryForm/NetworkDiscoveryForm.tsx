@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { Select, Spinner } from "@canonical/react-components";
+import type { FormikContextType } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import NetworkDiscoveryFormFields from "./NetworkDiscoveryFormFields";
 import type { NetworkDiscoveryValues } from "./types";
 
+import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
@@ -32,6 +33,12 @@ const NetworkDiscoveryForm = (): React.ReactElement => {
     configSelectors.activeDiscoveryInterval
   );
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
+  const networkDiscoveryOptions = useSelector(
+    configSelectors.networkDiscoveryOptions
+  );
+  const discoveryIntervalOptions = useSelector(
+    configSelectors.discoveryIntervalOptions
+  );
 
   useWindowTitle("Network discovery");
 
@@ -69,7 +76,27 @@ const NetworkDiscoveryForm = (): React.ReactElement => {
           saving={saving}
           validationSchema={NetworkDiscoverySchema}
         >
-          <NetworkDiscoveryFormFields />
+          {({ values }: FormikContextType<NetworkDiscoveryValues>) => (
+            <>
+              <FormikField
+                component={Select}
+                help="When enabled, MAAS will use passive techniques (such as listening to ARP requests and mDNS advertisements) to observe networks attached to rack controllers. Active subnet mapping will also be available to be enabled on the configured subnets."
+                label="Network discovery"
+                name="network_discovery"
+                options={networkDiscoveryOptions}
+              />
+              <FormikField
+                component={Select}
+                disabled={
+                  values.network_discovery === NetworkDiscovery.DISABLED
+                }
+                help="When enabled, each rack will scan subnets enabled for active mapping. This helps ensure discovery information is accurate and complete."
+                label="Active subnet mapping interval"
+                name="active_discovery_interval"
+                options={discoveryIntervalOptions}
+              />
+            </>
+          )}
         </FormikForm>
       )}
     </>

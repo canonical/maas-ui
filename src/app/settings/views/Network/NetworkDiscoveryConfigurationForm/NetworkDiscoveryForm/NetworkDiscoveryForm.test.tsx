@@ -48,6 +48,24 @@ describe("NetworkDiscoveryForm", () => {
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
+  it("disables the interval field if discovery is disabled", async () => {
+    state.config.loading = true;
+    renderWithProviders(<NetworkDiscoveryForm />, { state });
+
+    expect(
+      screen.queryByRole("combobox", { name: "Active subnet mapping interval" })
+    ).not.toBeDisabled();
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Network discovery" }),
+      "Disabled"
+    );
+
+    expect(
+      screen.getByRole("combobox", { name: "Active subnet mapping interval" })
+    ).toBeDisabled();
+  });
+
   it("dispatches an action to update config on save button click", async () => {
     const { store } = renderWithProviders(<NetworkDiscoveryForm />, { state });
 
