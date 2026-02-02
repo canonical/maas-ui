@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react";
 
-import NetworkDiscoveryConfigurationForm from "@/app/settings/views/Network/NetworkDiscoveryConfigurationForm/NetworkDiscoveryConfigurationForm";
+import NetworkDiscoverySettings from "@/app/settings/views/Network/NetworkDiscoverySettings/NetworkDiscoverySettings";
 import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
 import { authResolvers, mockAuth } from "@/testing/resolvers/auth";
@@ -12,12 +12,12 @@ const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler({ ...mockAuth, is_superuser: true })
 );
 
-describe("NetworkDiscoveryConfigurationForm", () => {
+describe("NetworkDiscoverySettings", () => {
   it("renders permission message if user is not superuser", async () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler({ ...mockAuth, is_superuser: false })
     );
-    renderWithProviders(<NetworkDiscoveryConfigurationForm />);
+    renderWithProviders(<NetworkDiscoverySettings />);
     await waitFor(() => {
       expect(
         screen.getByText("You do not have permission to view this page.")
@@ -37,7 +37,7 @@ describe("NetworkDiscoveryConfigurationForm", () => {
         loaded: true,
       }),
     });
-    renderWithProviders(<NetworkDiscoveryConfigurationForm />, { state });
+    renderWithProviders(<NetworkDiscoverySettings />, { state });
     await waitFor(() => {
       expect(
         screen.getByText(

@@ -24,7 +24,7 @@ export enum Labels {
   FormLabel = "Subnet mapping form",
 }
 
-const NetworkDiscoveryConfigurationSubnetForm = (): ReactElement => {
+const NetworkDiscoverySubnetForm = (): ReactElement => {
   const dispatch = useDispatch();
   const subnets = useSelector(subnetSelectors.all);
   const fabrics = useSelector(fabricSelectors.all);
@@ -124,4 +124,4 @@ const NetworkDiscoveryConfigurationSubnetForm = (): ReactElement => {
   );
 };
 
-export default NetworkDiscoveryConfigurationSubnetForm;
+export default NetworkDiscoverySubnetForm;

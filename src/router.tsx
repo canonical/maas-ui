@@ -66,8 +66,8 @@ const Machines = lazy(() => import("@/app/machines/views/Machines"));
 const DiscoveriesList = lazy(
   () => import("@/app/networkDiscovery/views/DiscoveriesList")
 );
-const NetworkDiscoveryConfigurationForm = lazy(
-  () => import("@/app/settings/views/Network/NetworkDiscoveryConfigurationForm")
+const NetworkDiscoverySettings = lazy(
+  () => import("@/app/settings/views/Network/NetworkDiscoverySettings")
 );
 const Networks = lazy(() => import("@/app/networks"));
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
@@ -693,7 +693,7 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <NetworkDiscoveryConfigurationForm />
+                      <NetworkDiscoverySettings />
                     </ErrorBoundary>
                   ),
                 },

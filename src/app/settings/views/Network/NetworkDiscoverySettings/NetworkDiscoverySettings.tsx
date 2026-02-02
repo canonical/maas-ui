@@ -8,8 +8,8 @@ import { useGetIsSuperUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useWindowTitle } from "@/app/base/hooks";
-import NetworkDiscoveryConfigurationSubnetForm from "@/app/settings/views/Network/NetworkDiscoveryConfigurationForm/NetworkDiscoveryConfigurationSubnetForm";
-import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryConfigurationForm/NetworkDiscoveryForm";
+import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoverySettings/NetworkDiscoveryForm";
+import NetworkDiscoverySubnetForm from "@/app/settings/views/Network/NetworkDiscoverySettings/NetworkDiscoverySubnetForm";
 import configSelectors from "@/app/store/config/selectors";
 
 export enum Label {
@@ -18,7 +18,7 @@ export enum Label {
   Permissions = "You do not have permission to view this page.",
 }
 
-const NetworkDiscoveryConfigurationForm = (): ReactElement => {
+const NetworkDiscoverySettings = (): ReactElement => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const isSuperUser = useGetIsSuperUser();
 
@@ -45,7 +45,7 @@ const NetworkDiscoveryConfigurationForm = (): ReactElement => {
           )}
           <div aria-label={Label.Title}>
             <NetworkDiscoveryForm />
-            <NetworkDiscoveryConfigurationSubnetForm />
+            <NetworkDiscoverySubnetForm />
           </div>
         </ContentSection.Content>
       </ContentSection>
@@ -53,4 +53,4 @@ const NetworkDiscoveryConfigurationForm = (): ReactElement => {
   );
 };
 
-export default NetworkDiscoveryConfigurationForm;
+export default NetworkDiscoverySettings;
