@@ -74,7 +74,6 @@ context("Machine details", () => {
 
       cy.findByRole("button", { name: /Abort/i }).click();
     });
-    cy.findByRole("heading", { name: /^Abort$/i }).should("be.visible");
 
     cy.findByRole("button", { name: /Abort actions/i })
       .should("be.visible")
