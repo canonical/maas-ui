@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
 import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -7,10 +8,7 @@ import { useGetIsSuperUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useWindowTitle } from "@/app/base/hooks";
-import {
-  NetworkDiscoveryConfigurationSubnetForm,
-  NetworkDiscoveryHeader,
-} from "@/app/networkDiscovery/components";
+import { NetworkDiscoveryConfigurationSubnetForm } from "@/app/networkDiscovery/components";
 import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryForm";
 import configSelectors from "@/app/store/config/selectors";
 
@@ -31,16 +29,26 @@ const NetworkDiscoveryConfigurationForm = (): ReactElement => {
   }
 
   return (
-    <PageContent header={<NetworkDiscoveryHeader />}>
-      {networkDiscovery === "disabled" && (
-        <NotificationBanner severity="caution">
-          {Label.Disabled}
-        </NotificationBanner>
-      )}
-      <div aria-label={Label.Title}>
-        <NetworkDiscoveryForm />
-        <NetworkDiscoveryConfigurationSubnetForm />
-      </div>
+    <PageContent
+      header={
+        <MainToolbar>
+          <MainToolbar.Title>Network discovery</MainToolbar.Title>
+        </MainToolbar>
+      }
+    >
+      <ContentSection variant="narrow">
+        <ContentSection.Content>
+          {networkDiscovery === "disabled" && (
+            <NotificationBanner severity="caution">
+              {Label.Disabled}
+            </NotificationBanner>
+          )}
+          <div aria-label={Label.Title}>
+            <NetworkDiscoveryForm />
+            <NetworkDiscoveryConfigurationSubnetForm />
+          </div>
+        </ContentSection.Content>
+      </ContentSection>
     </PageContent>
   );
 };

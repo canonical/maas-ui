@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -43,39 +42,37 @@ const NetworkDiscoveryForm = (): React.ReactElement => {
   }, [dispatch, loaded]);
 
   return (
-    <ContentSection variant="narrow">
-      <ContentSection.Content>
-        {loading && <Spinner text="Loading..." />}
-        {loaded && (
-          <FormikForm<NetworkDiscoveryValues>
-            cleanup={configActions.cleanup}
-            errors={errors}
-            initialValues={{
-              active_discovery_interval: activeDiscoveryInterval || "",
-              network_discovery: networkDiscovery || "",
-            }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Network settings",
-              label: "Network discovery form",
-            }}
-            onSubmit={(values, { resetForm }) => {
-              if (values.network_discovery === NetworkDiscovery.DISABLED) {
-                // Don't update the interval when the discovery is being disabled.
-                delete values.active_discovery_interval;
-              }
-              dispatch(updateConfig(values));
-              resetForm({ values });
-            }}
-            saved={saved}
-            saving={saving}
-            validationSchema={NetworkDiscoverySchema}
-          >
-            <NetworkDiscoveryFormFields />
-          </FormikForm>
-        )}
-      </ContentSection.Content>
-    </ContentSection>
+    <>
+      {loading && <Spinner text="Loading..." />}
+      {loaded && (
+        <FormikForm<NetworkDiscoveryValues>
+          cleanup={configActions.cleanup}
+          errors={errors}
+          initialValues={{
+            active_discovery_interval: activeDiscoveryInterval || "",
+            network_discovery: networkDiscovery || "",
+          }}
+          onSaveAnalytics={{
+            action: "Saved",
+            category: "Network settings",
+            label: "Network discovery form",
+          }}
+          onSubmit={(values, { resetForm }) => {
+            if (values.network_discovery === NetworkDiscovery.DISABLED) {
+              // Don't update the interval when the discovery is being disabled.
+              delete values.active_discovery_interval;
+            }
+            dispatch(updateConfig(values));
+            resetForm({ values });
+          }}
+          saved={saved}
+          saving={saving}
+          validationSchema={NetworkDiscoverySchema}
+        >
+          <NetworkDiscoveryFormFields />
+        </FormikForm>
+      )}
+    </>
   );
 };
 
