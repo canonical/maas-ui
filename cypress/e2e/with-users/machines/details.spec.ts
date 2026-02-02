@@ -81,7 +81,7 @@ context("Machine details", () => {
     cy.findByRole("button", { name: /Abort actions/i }).click();
 
     cy.findByRole("link", { name: /Scripts/i }).click();
-    cy.findByRole("tab", { name: /Commissioning/i }).click();
+    cy.findByRole("link", { name: /Commissioning/i }).click();
     cy.findByRole("grid").within(() => {
       cy.get("tbody tr")
         .first()
