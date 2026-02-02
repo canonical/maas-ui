@@ -11,7 +11,10 @@ import {
   useUpdateOauthProvider,
 } from "@/app/api/query/auth";
 import type { WithHeaders } from "@/app/api/utils";
-import type { OAuthProviderResponse } from "@/app/apiclient";
+import type {
+  OAuthProviderResponse,
+  OAuthTokenTypeChoices,
+} from "@/app/apiclient";
 import { getOauthProviderQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 
@@ -26,6 +29,9 @@ const SingleSignOnSchema = Yup.object().shape({
   issuer_url: Yup.string().required("Issuer URL is a required field."),
   redirect_uri: Yup.string().required("Redirect URL is a required field."),
   scopes: Yup.string().required("Scopes is a required field."),
+  token_type: Yup.mixed<OAuthTokenTypeChoices>()
+    .oneOf(["JWT", "Opaque"])
+    .required("Token type is a required field."),
 });
 
 const SingleSignOnForm = ({ provider }: Props): ReactElement => {
@@ -37,6 +43,7 @@ const SingleSignOnForm = ({ provider }: Props): ReactElement => {
       issuer_url: "",
       redirect_uri: "",
       scopes: "",
+      token_type: "JWT",
     }
   );
 
@@ -55,6 +62,7 @@ const SingleSignOnForm = ({ provider }: Props): ReactElement => {
         issuer_url: "",
         redirect_uri: "",
         scopes: "",
+        token_type: "JWT",
       }
     );
   };
@@ -74,6 +82,7 @@ const SingleSignOnForm = ({ provider }: Props): ReactElement => {
             issuer_url: values.issuer_url,
             scopes: values.scopes,
             enabled: true,
+            token_type: values.token_type as OAuthTokenTypeChoices,
           },
           path: { provider_id: provider.id },
         },
@@ -95,6 +104,7 @@ const SingleSignOnForm = ({ provider }: Props): ReactElement => {
           issuer_url: values.issuer_url,
           scopes: values.scopes,
           enabled: true,
+          token_type: values.token_type as OAuthTokenTypeChoices,
         },
       });
     }
