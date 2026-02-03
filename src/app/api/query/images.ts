@@ -67,6 +67,7 @@ import {
 } from "@/app/apiclient";
 import {
   getAllAvailableImagesQueryKey,
+  getConfigurationQueryKey,
   listCustomImagesQueryKey,
   listCustomImagesStatisticQueryKey,
   listCustomImagesStatusQueryKey,
@@ -74,7 +75,9 @@ import {
   listSelectionStatisticQueryKey,
   listSelectionStatusQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
+import { useOptimisticImages } from "@/app/images/hooks/useOptimisticImages/useOptimisticImages";
 import type { Image } from "@/app/images/types";
+import { ConfigNames } from "@/app/store/config/types";
 
 export const ACTIVE_DOWNLOAD_REFETCH_INTERVAL = 5000;
 const IDLE_REFETCH_INTERVAL = 60000;
@@ -466,16 +469,40 @@ export const useAddSelections = (
   mutationOptions?: Options<BulkCreateSelectionsData>
 ) => {
   const queryClient = useQueryClient();
+
+  const { onMutateWithOptimisticImages, onSuccessWithOptimisticImages } =
+    useOptimisticImages("start");
+
   return useMutation({
     ...mutationOptionsWithHeaders<
       BulkCreateSelectionsResponses,
       BulkCreateSelectionsErrors,
       BulkCreateSelectionsData
     >(mutationOptions, bulkCreateSelections),
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
+    onSuccess: async (data) => {
+      // First invalidate to get the newly created images into the cache
+      await queryClient.invalidateQueries({
         queryKey: IMAGES_WORKFLOW_KEY,
       });
+
+      const config = queryClient.getQueryData<{ value: boolean }>(
+        getConfigurationQueryKey({
+          path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+        })
+      );
+      const autoImport = config?.value as boolean;
+
+      if (!autoImport) return;
+      // Then apply optimistic updates and start polling
+      const imageIds = data.items.map((item) => item.id);
+
+      await Promise.allSettled(
+        imageIds.map(async (imageId) => {
+          const optimisticMutateResult =
+            await onMutateWithOptimisticImages(imageId);
+          onSuccessWithOptimisticImages(optimisticMutateResult);
+        })
+      );
     },
   });
 };
