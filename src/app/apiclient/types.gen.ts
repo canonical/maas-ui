@@ -1820,6 +1820,7 @@ export type ImageStatus =
   | "Downloading"
   | "Optimistic"
   | "Ready"
+  | "Stopping"
   | "Waiting for download";
 
 /**
@@ -1880,6 +1881,7 @@ export type ImageUpdateStatus =
   | "Downloading"
   | "No updates available"
   | "Optimistic"
+  | "Stopping"
   | "Update available";
 
 /**
