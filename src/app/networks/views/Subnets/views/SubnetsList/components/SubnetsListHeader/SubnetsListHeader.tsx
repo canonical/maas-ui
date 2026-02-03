@@ -38,26 +38,32 @@ const SubnetsListHeader = ({
 
   const setGrouping = useCallback(
     (group: GroupByKey | null) => {
-      navigate(
-        {
-          pathname: "/networks/subnets",
-          search: `?${SubnetsUrlParams.By}=${group}&${SubnetsUrlParams.Q}=${searchText}`,
-        },
-        { replace: true }
-      );
+      const search = `?${SubnetsUrlParams.By}=${group}&${SubnetsUrlParams.Q}=${searchText}`;
+      if (location.search !== search) {
+        navigate(
+          {
+            pathname: "/networks/subnets",
+            search,
+          },
+          { replace: true }
+        );
+      }
     },
     [navigate, searchText]
   );
 
   const handleSearch = useCallback(
     (searchText: string) => {
-      navigate(
-        {
-          pathname: "/networks/subnets",
-          search: `?${SubnetsUrlParams.By}=${grouping}&${SubnetsUrlParams.Q}=${searchText}`,
-        },
-        { replace: true }
-      );
+      const search = `?${SubnetsUrlParams.By}=${grouping}&${SubnetsUrlParams.Q}=${searchText}`;
+      if (location.search !== search) {
+        navigate(
+          {
+            pathname: "/networks/subnets",
+            search: `?${SubnetsUrlParams.By}=${grouping}&${SubnetsUrlParams.Q}=${searchText}`,
+          },
+          { replace: true }
+        );
+      }
     },
     [navigate, grouping]
   );

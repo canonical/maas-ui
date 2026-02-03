@@ -98,7 +98,7 @@ const navGroups: NavGroup[] = [
           urls.networks.vlan.index(null),
         ],
         label: "Networks",
-        url: urls.networks.index,
+        url: urls.networks.subnets.indexWithParams({ by: "fabric" }),
       },
       {
         highlight: [urls.domains.index, urls.domains.details(null)],
