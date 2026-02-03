@@ -5,6 +5,7 @@ import type { RowSelectionState } from "@tanstack/react-table";
 
 import { useGetConfiguration } from "@/app/api/query/configurations";
 import { useImages } from "@/app/api/query/images";
+import type { ImageStatus, ImageUpdateStatus } from "@/app/apiclient";
 import useImageTableColumns, {
   filterCells,
   filterHeaders,
@@ -39,6 +40,12 @@ const ImagesTable = ({
     isStatisticsLoading: images.stages.statistics.isLoading,
   });
 
+  const downloadingStatuses: (ImageStatus | ImageUpdateStatus)[] = [
+    "Optimistic",
+    "Downloading",
+    "Stopping",
+  ];
+
   return (
     <GenericTable
       columns={columns}
@@ -57,9 +64,17 @@ const ImagesTable = ({
         setRowSelection: setSelectedRows,
         rowSelectionLabelKey: "title",
         filterSelectable: (row) =>
-          row.original.release !== commissioningRelease,
-        disabledSelectionTooltip:
-          "Cannot modify images of the default commissioning release.",
+          row.original.release !== commissioningRelease &&
+          !(
+            downloadingStatuses.includes(row.original.status as ImageStatus) ||
+            downloadingStatuses.includes(
+              row.original.update_status as ImageUpdateStatus
+            )
+          ),
+        disabledSelectionTooltip: (row) =>
+          row.original.release === commissioningRelease
+            ? "Cannot modify images of the default commissioning release."
+            : "Cannot modify images that are currently being downloaded.",
       }}
       showChevron
       sorting={[{ id: "title", desc: true }]}

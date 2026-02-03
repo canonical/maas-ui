@@ -131,7 +131,11 @@ const calculateRefetchInterval = (
   statuses?: ImageStatusResponse[]
 ): number | false => {
   const hasOptimisticTransition = statuses?.some(
-    (s) => s.status === "Optimistic"
+    (s) =>
+      s.status === "Optimistic" ||
+      s.status === "Stopping" ||
+      s.update_status === "Optimistic" ||
+      s.update_status === "Stopping"
   );
 
   if (hasOptimisticTransition) {
