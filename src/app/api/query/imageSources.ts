@@ -24,6 +24,7 @@ import {
   listBootsources,
 } from "@/app/apiclient";
 import {
+  getAllAvailableImagesQueryKey,
   getBootsourceQueryKey,
   listBootsourcesQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -93,6 +94,9 @@ export const useChangeImageSource = () => {
       });
       await queryClient.invalidateQueries({
         queryKey: IMAGES_WORKFLOW_KEY,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: getAllAvailableImagesQueryKey(),
       });
     },
   });
