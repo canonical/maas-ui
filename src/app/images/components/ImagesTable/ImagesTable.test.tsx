@@ -140,7 +140,7 @@ describe("ImagesTable", () => {
       });
     });
 
-    it("disables delete and start sync for images being downloaded, enables stop sync", async () => {
+    it("disables selection, and delete/start sync for images being downloaded, enables stop sync", async () => {
       mockServer.use(
         imageResolvers.listSelectionStatuses.handler({
           items: [
@@ -164,6 +164,21 @@ describe("ImagesTable", () => {
 
       expect(within(row).getByText("50%")).toBeInTheDocument();
 
+      const selectionCheckbox = within(row).getByRole("checkbox", {
+        name: new RegExp("select", "i"),
+      });
+
+      expect(selectionCheckbox).toBeAriaDisabled();
+      await userEvent.hover(selectionCheckbox);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(
+            "Cannot modify images that are currently being downloaded."
+          )
+        ).toBeInTheDocument();
+      });
+
       // Start button is replaced by stop
       expect(
         within(row).queryByRole("button", {
@@ -183,7 +198,7 @@ describe("ImagesTable", () => {
 
       await waitFor(() => {
         expect(deleteButton).toHaveAccessibleDescription(
-          "Cannot delete images that are currently being imported."
+          "Cannot delete images that are currently being downloaded."
         );
       });
     });
