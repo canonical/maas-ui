@@ -419,6 +419,7 @@ export const renderHookWithProviders = <T,>(
 ): {
   result: { current: T };
   store: MockStoreEnhanced<RootState | unknown>;
+  queryClient: QueryClient;
 } => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, staleTime: Infinity } },
@@ -444,6 +445,7 @@ export const renderHookWithProviders = <T,>(
       ),
     }).result,
     store,
+    queryClient,
   };
 };
 
