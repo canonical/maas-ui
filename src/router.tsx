@@ -1,6 +1,5 @@
 import { lazy } from "react";
 
-import { MainToolbar } from "@canonical/maas-react-components";
 import { createBrowserRouter, Navigate } from "react-router";
 
 import Login from "./app/login/Login";
@@ -28,7 +27,6 @@ import VMWare from "@/app/settings/views/Images/VMWare";
 import Windows from "@/app/settings/views/Images/Windows";
 import LicenseKeyList from "@/app/settings/views/LicenseKeys/views";
 import DnsForm from "@/app/settings/views/Network/DnsForm";
-import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryForm";
 import NtpForm from "@/app/settings/views/Network/NtpForm";
 import ProxyForm from "@/app/settings/views/Network/ProxyForm";
 import SyslogForm from "@/app/settings/views/Network/SyslogForm";
@@ -68,8 +66,8 @@ const Machines = lazy(() => import("@/app/machines/views/Machines"));
 const DiscoveriesList = lazy(
   () => import("@/app/networkDiscovery/views/DiscoveriesList")
 );
-const NetworkDiscoveryConfigurationForm = lazy(
-  () => import("@/app/networkDiscovery/views/NetworkDiscoveryConfigurationForm")
+const NetworkDiscoverySettings = lazy(
+  () => import("@/app/settings/views/Network/NetworkDiscoverySettings")
 );
 const Networks = lazy(() => import("@/app/networks"));
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
@@ -136,27 +134,11 @@ export const router = createBrowserRouter(
             },
             {
               path: urls.networkDiscovery.index,
-              children: [
-                {
-                  path: urls.networkDiscovery.index,
-                  element: (
-                    <ErrorBoundary>
-                      <DiscoveriesList />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.networkDiscovery.configuration,
-                    urls.networkDiscovery.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <NetworkDiscoveryConfigurationForm />
-                    </ErrorBoundary>
-                  ),
-                },
-              ],
+              element: (
+                <ErrorBoundary>
+                  <DiscoveriesList />
+                </ErrorBoundary>
+              ),
             },
             {
               path: urls.networkDiscovery.legacyIndex,
@@ -711,17 +693,7 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent
-                        header={
-                          <MainToolbar>
-                            <MainToolbar.Title>
-                              Network discovery
-                            </MainToolbar.Title>
-                          </MainToolbar>
-                        }
-                      >
-                        <NetworkDiscoveryForm />
-                      </PageContent>
+                      <NetworkDiscoverySettings />
                     </ErrorBoundary>
                   ),
                 },
