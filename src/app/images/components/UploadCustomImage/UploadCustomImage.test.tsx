@@ -54,7 +54,7 @@ describe("UploadCustomImage", () => {
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /operating system/i }),
-      "Ubuntu"
+      "Ubuntu Core"
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: /release title/i }),
@@ -68,9 +68,7 @@ describe("UploadCustomImage", () => {
       screen.getByRole("combobox", { name: /architecture/i }),
       "amd64"
     );
-    const file = new File(["dummy content"], "test-image.tgz", {
-      type: "application/octet-stream",
-    });
+    const file = new File(["dummy content"], "test-image.tgz");
     const fileInput = result.container.querySelector(
       "input[type='file']"
     ) as HTMLInputElement;
@@ -91,7 +89,7 @@ describe("UploadCustomImage", () => {
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /operating system/i }),
-      "Ubuntu"
+      "Ubuntu Core"
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: /release title/i }),
@@ -105,9 +103,7 @@ describe("UploadCustomImage", () => {
       screen.getByRole("combobox", { name: /architecture/i }),
       "amd64"
     );
-    const file = new File(["dummy content"], "test-image.tgz", {
-      type: "application/octet-stream",
-    });
+    const file = new File(["dummy content"], "test-image.tgz");
     const fileInput = result.container.querySelector(
       "input[type='file']"
     ) as HTMLInputElement;
@@ -150,7 +146,7 @@ describe("UploadCustomImage", () => {
     // Select a different OS
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /^operating system/i }),
-      "Ubuntu"
+      "Ubuntu Core"
     );
 
     // Base image fields should be hidden again
@@ -171,7 +167,7 @@ describe("UploadCustomImage", () => {
     // Fill in all fields except file
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /operating system/i }),
-      "Ubuntu"
+      "Ubuntu Core"
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: /release title/i }),
@@ -231,7 +227,7 @@ describe("UploadCustomImage", () => {
     // Fill in other required fields
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /operating system/i }),
-      "Ubuntu"
+      "Ubuntu Core"
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: /release title/i }),
@@ -251,9 +247,7 @@ describe("UploadCustomImage", () => {
     expect(submitButton).toBeDisabled();
 
     // Upload a valid file
-    const file = new File(["dummy content"], "test-image.tgz", {
-      type: "application/octet-stream",
-    });
+    const file = new File(["dummy content"], "test-image.tgz");
     const fileInput = result.container.querySelector(
       "input[type='file']"
     ) as HTMLInputElement;

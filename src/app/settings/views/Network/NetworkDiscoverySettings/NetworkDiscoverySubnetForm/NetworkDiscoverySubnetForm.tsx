@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
@@ -22,7 +24,7 @@ export enum Labels {
   FormLabel = "Subnet mapping form",
 }
 
-const NetworkDiscoveryConfigurationSubnetForm = (): React.ReactElement => {
+const NetworkDiscoverySubnetForm = (): ReactElement => {
   const dispatch = useDispatch();
   const subnets = useSelector(subnetSelectors.all);
   const fabrics = useSelector(fabricSelectors.all);
@@ -36,7 +38,7 @@ const NetworkDiscoveryConfigurationSubnetForm = (): React.ReactElement => {
   useFetchActions([subnetActions.fetch, fabricActions.fetch]);
 
   const loaded = subnetsLoaded && fabricsLoaded;
-  let content: React.ReactElement = <Spinner text={Labels.Loading} />;
+  let content: ReactElement = <Spinner text={Labels.Loading} />;
 
   if (loaded) {
     const sortedSubnets = [...subnets].sort(simpleSortByKey("cidr"));
@@ -122,4 +124,4 @@ const NetworkDiscoveryConfigurationSubnetForm = (): React.ReactElement => {
   );
 };
 
-export default NetworkDiscoveryConfigurationSubnetForm;
+export default NetworkDiscoverySubnetForm;

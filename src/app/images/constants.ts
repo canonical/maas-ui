@@ -25,10 +25,6 @@ export const VALID_IMAGE_FILE_TYPES: Accept = {
 
 export const OPERATING_SYSTEM_NAMES = [
   {
-    label: "Ubuntu",
-    value: "Ubuntu",
-  },
-  {
     label: "Ubuntu Core",
     value: "Ubuntu Core",
   },
