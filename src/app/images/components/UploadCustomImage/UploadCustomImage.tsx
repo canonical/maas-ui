@@ -276,7 +276,10 @@ const UploadCustomImage = (): ReactElement => {
                             .then(() => {
                               setFieldError(
                                 "file",
-                                `${rejectedFiles[0].errors[0].message}.`
+                                `${rejectedFiles[0].errors[0].message.replace(
+                                  "application/octet-stream,",
+                                  ""
+                                )}.`
                               );
                             })
                             .catch((reason: unknown) => {
