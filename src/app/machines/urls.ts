@@ -28,6 +28,21 @@ const urls = {
     },
     network: withId("/machine/:id/network"),
     pciDevices: withId("/machine/:id/pci-devices"),
+    scriptsResults: {
+      index: withId("/machine/:id/scripts"),
+      commissioning: {
+        index: withId("/machine/:id/scripts/commissioning"),
+        scriptResult: withIdScriptResultId(
+          "/machine/:id/scripts/commissioning/:scriptResultId/details"
+        ),
+      },
+      testing: {
+        index: withId("/machine/:id/scripts/tests"),
+        scriptResult: withIdScriptResultId(
+          "/machine/:id/scripts/tests/:scriptResultId/details"
+        ),
+      },
+    },
     storage: withId("/machine/:id/storage"),
     summary: withId("/machine/:id/summary"),
     testing: {

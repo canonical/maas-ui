@@ -70,11 +70,18 @@ context("Machine details", () => {
 
     // abort commissioning
     cy.findByLabelText("Actions submenu").within(() => {
-      cy.findByRole("button", { name: /Abort/i }).click();
-    });
-    cy.findByRole("button", { name: /Abort actions for machine/i }).click();
+      cy.findByRole("button", { name: /Abort/i }).should("be.visible");
 
-    cy.findByRole("link", { name: "Commissioning" }).click();
+      cy.findByRole("button", { name: /Abort/i }).click({ force: true });
+    });
+
+    cy.findByRole("button", { name: /Abort actions/i })
+      .should("be.visible")
+      .and("not.be.disabled");
+    cy.findByRole("button", { name: /Abort actions/i }).click();
+
+    cy.findByRole("link", { name: /Scripts/i }).click();
+    cy.findByRole("link", { name: /Commissioning/i }).click();
     cy.findByRole("grid").within(() => {
       cy.get("tbody tr")
         .first()

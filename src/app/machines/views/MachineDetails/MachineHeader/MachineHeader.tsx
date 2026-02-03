@@ -153,22 +153,10 @@ const MachineHeader = ({ systemId }: MachineHeaderProps): ReactElement => {
           to: `${urlBase}/usb-devices`,
         },
         {
-          active: pathname.startsWith(`${urlBase}/commissioning`),
+          active: pathname.startsWith(`${urlBase}/scripts`),
           component: Link,
-          label: (
-            <ScriptStatus status={machine.commissioning_status.status}>
-              Commissioning
-            </ScriptStatus>
-          ),
-          to: `${urlBase}/commissioning`,
-        },
-        {
-          active: pathname.startsWith(`${urlBase}/testing`),
-          component: Link,
-          label: (
-            <ScriptStatus status={machine.testing_status}>Tests</ScriptStatus>
-          ),
-          to: `${urlBase}/testing`,
+          label: "Scripts",
+          to: `${urlBase}/scripts`,
         },
         {
           active: pathname.startsWith(`${urlBase}/logs`),
