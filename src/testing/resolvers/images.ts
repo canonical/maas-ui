@@ -203,10 +203,10 @@ const imageResolvers = {
   },
   addSelections: {
     resolved: false,
-    handler: () =>
+    handler: (data: ImageListResponse = mockSelections) =>
       http.post(`${BASE_URL}MAAS/a/v3/selections`, () => {
         imageResolvers.addSelections.resolved = true;
-        return HttpResponse.json({}, { status: 200 });
+        return HttpResponse.json(data, { status: 200 });
       }),
     error: (error: BulkCreateSelectionsError = mockSaveSelectionsError) =>
       http.post(`${BASE_URL}MAAS/a/v3/selections`, () => {
