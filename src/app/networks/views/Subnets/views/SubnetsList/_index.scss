@@ -2,7 +2,6 @@
   $grouped-subnet-indentation: $sph--x-large;
 
   .subnets-table {
-
     td {
       padding-top: $spv--x-small;
       padding-bottom: $spv--x-small;
@@ -51,5 +50,9 @@
     .subnet-row td:first-child {
       padding-left: $grouped-subnet-indentation;
     }
+  }
+
+  .subnet-group__select {
+    min-width: 10rem;
   }
 }
