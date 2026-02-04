@@ -19,7 +19,7 @@ const urls = {
     indexWithParams: (options: { by?: string; q?: string }): string => {
       const defaults = { by: "fabric", q: "" };
       const { by, q } = { ...defaults, ...options };
-      return `/networks?by=${by}&q=${q}`;
+      return `/networks/subnets?by=${by}&q=${q}`;
     },
   },
   vlans: {
