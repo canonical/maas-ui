@@ -109,7 +109,7 @@ context("Navigation - admin", () => {
     { destinationUrl: "/kvm/lxd", linkLabel: "LXD" },
     { destinationUrl: "/images", linkLabel: "Images" },
     { destinationUrl: "/domains", linkLabel: "DNS" },
-    { destinationUrl: "/networks", linkLabel: "Networks" },
+    { destinationUrl: "/networks/subnets", linkLabel: "Networks" },
     {
       destinationUrl: "/settings/configuration/general",
       linkLabel: "Settings",
