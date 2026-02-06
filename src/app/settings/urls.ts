@@ -53,6 +53,10 @@ const urls = {
       index: "/settings/scripts/commissioning",
       upload: "/settings/scripts/commissioning/upload",
     },
+    deploying: {
+      index: "/settings/scripts/deploying",
+      upload: "/settings/scripts/deploying/upload",
+    },
     testing: {
       index: "/settings/scripts/testing",
       upload: "/settings/scripts/testing/upload",

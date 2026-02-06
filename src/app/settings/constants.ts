@@ -93,6 +93,10 @@ export const settingsNavItems: NavItem[] = [
         label: "Commissioning scripts",
       },
       {
+        path: settingsURLs.scripts.deploying.index,
+        label: "Deployment scripts",
+      },
+      {
         path: settingsURLs.scripts.testing.index,
         label: "Testing scripts",
       },
