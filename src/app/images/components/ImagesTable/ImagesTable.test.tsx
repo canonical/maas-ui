@@ -37,6 +37,11 @@ const mockServer = setupMockServer(
 const { mockOpen } = await mockSidePanel();
 
 describe("ImagesTable", () => {
+  beforeEach(() => {
+    // Clear localStorage between tests to prevent optimistic state pollution
+    localStorage.clear();
+  });
+
   describe("display", () => {
     it("displays a loading component if pools are loading", async () => {
       mockIsPending();
