@@ -17,7 +17,12 @@ const mockServer = setupMockServer(
     value: true,
   }),
   imageSourceResolvers.listImageSources.handler(),
-  imageResolvers.listSelectionStatuses.handler()
+  imageResolvers.listSelections.handler(),
+  imageResolvers.listSelectionStatuses.handler(),
+  imageResolvers.listSelectionStatistics.handler(),
+  imageResolvers.listCustomImages.handler(),
+  imageResolvers.listCustomImageStatuses.handler(),
+  imageResolvers.listCustomImageStatistics.handler()
 );
 
 describe("ImageList", () => {

@@ -91,22 +91,6 @@ describe("Select upstream images", () => {
       title: "Select upstream images to sync",
     });
   });
-
-  it("does not show a button to select upstream images if there are images already downloading", async () => {
-    mockServer.use(
-      imageResolvers.listSelectionStatuses.handler({
-        items: [factory.imageStatusFactory.build({ status: "Downloading" })],
-        total: 1,
-      })
-    );
-    renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />
-    );
-    await waitForLoading();
-    expect(
-      screen.getByRole("button", { name: "Select upstream images" })
-    ).toBeAriaDisabled();
-  });
 });
 
 describe("Delete", () => {

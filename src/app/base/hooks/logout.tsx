@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 
-import { resetSilentPolling } from "@/app/api/query/imageSync";
+import { resetSilentPolling } from "@/app/images/hooks/useOptimisticImages/utils/silentPolling";
 import { statusActions } from "@/app/store/status";
 import { clearCookie } from "@/app/utils";
 import { COOKIE_NAMES } from "@/app/utils/cookies";

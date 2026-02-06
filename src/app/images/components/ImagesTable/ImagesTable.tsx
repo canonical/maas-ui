@@ -1,14 +1,17 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { useGetConfiguration } from "@/app/api/query/configurations";
 import { useImages } from "@/app/api/query/images";
+import type { ImageStatus, ImageUpdateStatus } from "@/app/apiclient";
 import useImageTableColumns, {
   filterCells,
   filterHeaders,
 } from "@/app/images/components/ImagesTable/useImageTableColumns/useImageTableColumns";
+import { useOptimisticImages } from "@/app/images/hooks/useOptimisticImages/useOptimisticImages";
 import { ConfigNames } from "@/app/store/config/types";
 
 import "./_index.scss";
@@ -26,6 +29,12 @@ const ImagesTable = ({
 }: ImagesTableProps): ReactElement => {
   const images = useImages();
 
+  const [isRestoring, setIsRestoring] = useState<boolean>(true);
+  const { restoreOptimisticImages: restoreStartingImages } =
+    useOptimisticImages("start");
+  const { restoreOptimisticImages: restoreStoppingImages } =
+    useOptimisticImages("stop");
+
   const commissioningRelease =
     (useGetConfiguration({
       path: { name: ConfigNames.COMMISSIONING_DISTRO_SERIES },
@@ -39,6 +48,30 @@ const ImagesTable = ({
     isStatisticsLoading: images.stages.statistics.isLoading,
   });
 
+  const downloadingStatuses: (ImageStatus | ImageUpdateStatus)[] = [
+    "Optimistic",
+    "Downloading",
+    "Stopping",
+  ];
+
+  useEffect(() => {
+    if (!images.isLoading) {
+      (async () => {
+        // Only restore if there are images
+        if (images.data.total > 0) {
+          await restoreStartingImages();
+          await restoreStoppingImages();
+        }
+        setIsRestoring(false);
+      })();
+    }
+  }, [
+    images.isLoading,
+    images.data.total,
+    restoreStartingImages,
+    restoreStoppingImages,
+  ]);
+
   return (
     <GenericTable
       columns={columns}
@@ -46,7 +79,7 @@ const ImagesTable = ({
       filterCells={filterCells}
       filterHeaders={filterHeaders}
       groupBy={["os"]}
-      isLoading={images.stages.images.isLoading}
+      isLoading={images.stages.images.isLoading || isRestoring}
       noData="No images have been selected to sync."
       pinGroup={[
         { value: "ubuntu", isTop: true },
@@ -57,9 +90,17 @@ const ImagesTable = ({
         setRowSelection: setSelectedRows,
         rowSelectionLabelKey: "title",
         filterSelectable: (row) =>
-          row.original.release !== commissioningRelease,
-        disabledSelectionTooltip:
-          "Cannot modify images of the default commissioning release.",
+          row.original.release !== commissioningRelease &&
+          !(
+            downloadingStatuses.includes(row.original.status as ImageStatus) ||
+            downloadingStatuses.includes(
+              row.original.update_status as ImageUpdateStatus
+            )
+          ),
+        disabledSelectionTooltip: (row) =>
+          row.original.release === commissioningRelease
+            ? "Cannot modify images of the default commissioning release."
+            : "Cannot modify images that are currently being downloaded.",
       }}
       showChevron
       sorting={[{ id: "title", desc: true }]}

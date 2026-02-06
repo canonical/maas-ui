@@ -5,7 +5,6 @@ import { Button, Spinner } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { useImageSources } from "@/app/api/query/imageSources";
-import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
 import { useSelectionStatuses } from "@/app/api/query/images";
 import type { BootSourceResponse } from "@/app/apiclient";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -44,19 +43,8 @@ const ImageListHeader = ({
 
   const sources = useImageSources();
   const selectionsStatuses = useSelectionStatuses();
-  const startSync = useStartImageSync();
-  const stopSync = useStopImageSync();
-
-  const imagesDownloading = selectionsStatuses.data?.items.some(
-    (status) =>
-      status.status === "Downloading" || status.update_status === "Downloading"
-  );
-
-  const startingImport = startSync.isPending;
-  const stoppingImport = stopSync.isPending;
 
   const isPending = sources.isPending || selectionsStatuses.isPending;
-  const isDownloading = imagesDownloading || startingImport || stoppingImport;
   const isDeleteDisabled = Object.keys(selectedRows).length <= 0;
 
   return (
@@ -70,7 +58,7 @@ const ImageListHeader = ({
         <MainToolbar.Controls>
           <Button
             appearance="negative"
-            disabled={isDownloading || isDeleteDisabled}
+            disabled={isDeleteDisabled}
             hasIcon
             onClick={() => {
               openSidePanel({
@@ -88,7 +76,6 @@ const ImageListHeader = ({
             <span>Delete</span>
           </Button>
           <Button
-            disabled={isDownloading}
             hasIcon
             onClick={() => {
               openSidePanel({
@@ -102,7 +89,6 @@ const ImageListHeader = ({
             <span>Upload custom image</span>
           </Button>
           <Button
-            disabled={imagesDownloading || startingImport || stoppingImport}
             hasIcon
             onClick={() => {
               openSidePanel({

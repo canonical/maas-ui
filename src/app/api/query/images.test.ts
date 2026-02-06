@@ -14,7 +14,15 @@ import {
   useSelectionStatuses,
   useUploadCustomImage,
 } from "@/app/api/query/images";
+import { getConfigurationQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
+import * as sdk from "@/app/apiclient/sdk.gen";
 import { getFileExtension } from "@/app/images/components/UploadCustomImage/UploadCustomImage";
+import {
+  POLL_INTERVAL,
+  resetSilentPolling,
+} from "@/app/images/hooks/useOptimisticImages/utils/silentPolling";
+import { ConfigNames } from "@/app/store/config/types";
+import { imageFactory, imageStatusFactory } from "@/testing/factories";
 import {
   imageResolvers,
   mockAvailableSelections,
@@ -36,7 +44,17 @@ setupMockServer(
   imageResolvers.listCustomImageStatuses.handler(),
   imageResolvers.listCustomImageStatistics.handler(),
   imageResolvers.listAvailableSelections.handler(),
-  imageResolvers.addSelections.handler(),
+  imageResolvers.addSelections.handler({
+    items: [
+      imageFactory.build({
+        id: 0,
+        os: "ubuntu",
+        release: "noble",
+        title: "24.04 LTS",
+      }),
+    ],
+    total: 1,
+  }),
   imageResolvers.deleteSelections.handler(),
   imageResolvers.uploadCustomImage.handler(),
   imageResolvers.deleteCustomImages.handler()
@@ -132,8 +150,54 @@ describe("useAvailableSelections", () => {
 });
 
 describe("useAddSelections", () => {
-  it("should add a new selection", async () => {
-    const { result } = renderHookWithProviders(() => useAddSelections());
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    resetSilentPolling();
+  });
+
+  it("should add a new selection and starts polling until backend returns `Downloading`", async () => {
+    const listSelectionStatusSpy = vi
+      .spyOn(sdk, "listSelectionStatus")
+      .mockResolvedValueOnce(
+        // @ts-expect-error partial return since the whole response object is not needed for this test
+        {
+          data: {
+            items: [
+              imageStatusFactory.build({
+                id: 0,
+                status: "Waiting for download",
+              }),
+            ],
+            total: 1,
+          },
+        }
+      )
+      .mockResolvedValueOnce(
+        // @ts-expect-error partial return since the whole response object is not needed for this test
+        {
+          data: {
+            items: [imageStatusFactory.build({ id: 0, status: "Downloading" })],
+            total: 1,
+          },
+        }
+      );
+
+    const { result, queryClient } = renderHookWithProviders(() =>
+      useAddSelections()
+    );
+
+    // Seed the query cache with auto-import disabled
+    queryClient.setQueryData(
+      getConfigurationQueryKey({
+        path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+      }),
+      { value: true }
+    );
+
     result.current.mutate({
       body: [
         {
@@ -144,9 +208,17 @@ describe("useAddSelections", () => {
         },
       ],
     });
+
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
+
+    await vi.advanceTimersByTimeAsync(POLL_INTERVAL / 2);
+    expect(listSelectionStatusSpy).toHaveBeenCalledTimes(1);
+    await vi.advanceTimersByTimeAsync(POLL_INTERVAL);
+    expect(listSelectionStatusSpy).toHaveBeenCalledTimes(2);
+    await vi.advanceTimersByTimeAsync(POLL_INTERVAL);
+    expect(listSelectionStatusSpy).toHaveBeenCalledTimes(2);
   });
 });
 
