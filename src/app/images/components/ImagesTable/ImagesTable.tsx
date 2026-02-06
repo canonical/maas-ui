@@ -55,15 +55,18 @@ const ImagesTable = ({
   ];
 
   useEffect(() => {
-    if (images.isSuccess && images.data.total) {
+    if (!images.isLoading) {
       (async () => {
-        await restoreStartingImages();
-        await restoreStoppingImages();
+        // Only restore if there are images
+        if (images.data.total > 0) {
+          await restoreStartingImages();
+          await restoreStoppingImages();
+        }
         setIsRestoring(false);
       })();
     }
   }, [
-    images.isSuccess,
+    images.isLoading,
     images.data.total,
     restoreStartingImages,
     restoreStoppingImages,
