@@ -11,6 +11,7 @@ import type {
   ListSelectionStatusResponse,
 } from "@/app/apiclient";
 import {
+  parseOptimisticImagesLocalStorage,
   registerPollingHook,
   silentPoll,
   startOrExtendSilentPolling,
@@ -44,9 +45,6 @@ const optimisticMutate = async ({
   imageId,
   action,
 }: OptimisticMutateProps): Promise<OptimisticMutateResult> => {
-  // Cancel all queries to prevent overwrites
-  await queryClient.cancelQueries();
-
   // Get data using predicate instead of exact key match
   const selectionStatusQueries =
     queryClient.getQueriesData<ListSelectionStatusResponse>({
@@ -157,6 +155,29 @@ const optimisticOnSuccess = ({
     silentPoll.entries.get(imageId)?.action !== action
   ) {
     silentPoll.entries.set(imageId, { attempts: 0, action: action });
+    const [startingImages, stoppingImages] = (
+      localStorage.getItem("optimisticImages") ?? "start=;stop="
+    ).split(";");
+    let startingImageIds = startingImages
+      .replace("start=", "")
+      .split(",")
+      .filter((id) => id !== "")
+      .map((id) => Number(id));
+    let stoppingImageIds = stoppingImages
+      .replace("stop=", "")
+      .split(",")
+      .filter((id) => id !== "")
+      .map((id) => Number(id));
+    // Ensure uniqueness by using Set
+    if (action === "start") {
+      startingImageIds = Array.from(new Set([...startingImageIds, imageId]));
+    } else if (action === "stop") {
+      stoppingImageIds = Array.from(new Set([...stoppingImageIds, imageId]));
+    }
+    localStorage.setItem(
+      "optimisticImages",
+      `start=${startingImageIds.join(",")};stop=${stoppingImageIds.join(",")}`
+    );
   }
 
   startOrExtendSilentPolling(queryClient);
@@ -164,10 +185,6 @@ const optimisticOnSuccess = ({
 
 export const useOptimisticImages = (action: "start" | "stop") => {
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    return registerPollingHook();
-  }, []);
 
   const onMutateWithOptimisticImages = (
     imageId: number
@@ -187,9 +204,54 @@ export const useOptimisticImages = (action: "start" | "stop") => {
     optimisticOnSuccess({ queryClient, onMutateResult, action });
   };
 
+  const restoreOptimisticImages = async () => {
+    const { startingImageIds, stoppingImageIds } =
+      parseOptimisticImagesLocalStorage();
+
+    // Only restore if there are images to restore
+    if (startingImageIds.length === 0 && stoppingImageIds.length === 0) {
+      return;
+    }
+
+    await Promise.allSettled(
+      startingImageIds.map(async (imageId) => {
+        const optimisticStartResult = await optimisticMutate({
+          queryClient,
+          imageId,
+          action: "start",
+        });
+        optimisticOnSuccess({
+          queryClient,
+          onMutateResult: optimisticStartResult,
+          action: "start",
+        });
+      })
+    );
+
+    await Promise.allSettled(
+      stoppingImageIds.map(async (imageId) => {
+        const optimisticStopResult = await optimisticMutate({
+          queryClient,
+          imageId,
+          action: "stop",
+        });
+        optimisticOnSuccess({
+          queryClient,
+          onMutateResult: optimisticStopResult,
+          action: "stop",
+        });
+      })
+    );
+  };
+
+  useEffect(() => {
+    return registerPollingHook();
+  }, [queryClient]);
+
   return {
     onMutateWithOptimisticImages,
     onErrorWithOptimisticImages,
     onSuccessWithOptimisticImages,
+    restoreOptimisticImages,
   };
 };

@@ -1,4 +1,5 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
@@ -10,6 +11,7 @@ import useImageTableColumns, {
   filterCells,
   filterHeaders,
 } from "@/app/images/components/ImagesTable/useImageTableColumns/useImageTableColumns";
+import { useOptimisticImages } from "@/app/images/hooks/useOptimisticImages/useOptimisticImages";
 import { ConfigNames } from "@/app/store/config/types";
 
 import "./_index.scss";
@@ -26,6 +28,12 @@ const ImagesTable = ({
   variant,
 }: ImagesTableProps): ReactElement => {
   const images = useImages();
+
+  const [isRestoring, setIsRestoring] = useState<boolean>(true);
+  const { restoreOptimisticImages: restoreStartingImages } =
+    useOptimisticImages("start");
+  const { restoreOptimisticImages: restoreStoppingImages } =
+    useOptimisticImages("stop");
 
   const commissioningRelease =
     (useGetConfiguration({
@@ -46,6 +54,21 @@ const ImagesTable = ({
     "Stopping",
   ];
 
+  useEffect(() => {
+    if (images.isSuccess && images.data.total) {
+      (async () => {
+        await restoreStartingImages();
+        await restoreStoppingImages();
+        setIsRestoring(false);
+      })();
+    }
+  }, [
+    images.isSuccess,
+    images.data.total,
+    restoreStartingImages,
+    restoreStoppingImages,
+  ]);
+
   return (
     <GenericTable
       columns={columns}
@@ -53,7 +76,7 @@ const ImagesTable = ({
       filterCells={filterCells}
       filterHeaders={filterHeaders}
       groupBy={["os"]}
-      isLoading={images.stages.images.isLoading}
+      isLoading={images.stages.images.isLoading || isRestoring}
       noData="No images have been selected to sync."
       pinGroup={[
         { value: "ubuntu", isTop: true },

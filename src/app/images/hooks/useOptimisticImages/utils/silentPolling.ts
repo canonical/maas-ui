@@ -27,6 +27,31 @@ export const silentPoll: SilentPollState = {
   timer: null,
 };
 
+export const parseOptimisticImagesLocalStorage = () => {
+  const localStorageValue =
+    localStorage.getItem("optimisticImages") ?? "start=;stop=";
+  const parts = localStorageValue.split(";");
+
+  const startingImages = parts[0] ?? "start=";
+  const stoppingImages = parts[1] ?? "stop=";
+
+  const startingImageIds = startingImages
+    .replace("start=", "")
+    .split(",")
+    .filter((id) => id !== "")
+    .map((id) => Number(id))
+    .filter((id) => !isNaN(id) && id > 0);
+
+  const stoppingImageIds = stoppingImages
+    .replace("stop=", "")
+    .split(",")
+    .filter((id) => id !== "")
+    .map((id) => Number(id))
+    .filter((id) => !isNaN(id) && id > 0);
+
+  return { startingImageIds, stoppingImageIds };
+};
+
 /**
  * Starts a silent polling mechanism to check if optimistically updated images
  * have transitioned to "Downloading" state on the backend.
@@ -92,6 +117,21 @@ export const startOrExtendSilentPolling = (queryClient: QueryClient) => {
 
         if (resolved) {
           silentPoll.entries.delete(imageId);
+          const { startingImageIds, stoppingImageIds } =
+            parseOptimisticImagesLocalStorage();
+
+          // Remove the resolved imageId from the appropriate array
+          const updatedStartingIds = startingImageIds.filter(
+            (id) => id !== imageId
+          );
+          const updatedStoppingIds = stoppingImageIds.filter(
+            (id) => id !== imageId
+          );
+
+          localStorage.setItem(
+            "optimisticImages",
+            `start=${updatedStartingIds.join(",")};stop=${updatedStoppingIds.join(",")}`
+          );
         }
       }
     } catch {
@@ -102,6 +142,21 @@ export const startOrExtendSilentPolling = (queryClient: QueryClient) => {
 
         if (entry.attempts >= MAX_ATTEMPTS_PER_IMAGE) {
           silentPoll.entries.delete(imageId);
+          const { startingImageIds, stoppingImageIds } =
+            parseOptimisticImagesLocalStorage();
+
+          // Remove the timed-out imageId from the appropriate array
+          const updatedStartingIds = startingImageIds.filter(
+            (id) => id !== imageId
+          );
+          const updatedStoppingIds = stoppingImageIds.filter(
+            (id) => id !== imageId
+          );
+
+          localStorage.setItem(
+            "optimisticImages",
+            `start=${updatedStartingIds.join(",")};stop=${updatedStoppingIds.join(",")}`
+          );
         }
       }
     }
@@ -110,6 +165,7 @@ export const startOrExtendSilentPolling = (queryClient: QueryClient) => {
     if (silentPoll.entries.size === 0) {
       silentPoll.active = false;
       silentPoll.timer = null;
+      localStorage.removeItem("optimisticImages");
 
       // Invalidate all image-related queries to show final state
       await Promise.all([
