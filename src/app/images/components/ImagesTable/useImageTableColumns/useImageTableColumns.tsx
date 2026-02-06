@@ -340,7 +340,12 @@ const useImageTableColumns = ({
                     <Button
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
-                      disabled={startSync.isPending || isOptimistic || isCustom}
+                      disabled={
+                        startSync.isPending ||
+                        isOptimistic ||
+                        isStopping ||
+                        isCustom
+                      }
                       hasIcon
                       onClick={() => {
                         stopSync.mutate({
