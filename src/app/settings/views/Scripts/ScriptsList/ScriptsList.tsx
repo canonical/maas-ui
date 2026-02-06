@@ -31,7 +31,7 @@ export enum Labels {
 }
 
 type Props = {
-  type?: "commissioning" | "testing";
+  type?: "commissioning" | "deployment" | "testing";
 };
 
 const generateRows = (
@@ -172,7 +172,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
         <div className="settings-table">
           <MainToolbar>
             <MainToolbar.Title>
-              {`${type === "commissioning" ? "Commissioning" : "Testing"} scripts`}
+              {`${type === "commissioning" ? "Commissioning" : type === "testing" ? "Testing" : "Deployment"} scripts`}
             </MainToolbar.Title>
             <MainToolbar.Controls>
               <SearchBox

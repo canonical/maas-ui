@@ -723,7 +723,19 @@ export const router = createBrowserRouter(
                     </ErrorBoundary>
                   ),
                 },
-
+                {
+                  path: getRelativeRoute(
+                    urls.settings.scripts.deploying.index,
+                    urls.settings.index
+                  ),
+                  element: (
+                    <ErrorBoundary>
+                      <PageContent>
+                        <ScriptsList type="deployment" />
+                      </PageContent>
+                    </ErrorBoundary>
+                  ),
+                },
                 {
                   path: getRelativeRoute(
                     urls.settings.dhcp.index,

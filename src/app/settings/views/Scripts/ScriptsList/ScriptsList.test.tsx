@@ -7,10 +7,10 @@ import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  screen,
-  within,
   renderWithProviders,
+  screen,
+  userEvent,
+  within,
 } from "@/testing/utils";
 
 describe("ScriptsList", () => {
@@ -45,6 +45,12 @@ describe("ScriptsList", () => {
             name: "testing-script-2",
             description: "another testing script",
             script_type: ScriptType.TESTING,
+          }),
+          factory.script({
+            id: 4,
+            name: "deployment-script",
+            description: "a deployment script",
+            script_type: ScriptType.DEPLOYMENT,
           }),
         ],
       }),
@@ -113,6 +119,23 @@ describe("ScriptsList", () => {
     ).toBeInTheDocument();
   });
 
+  it("Displays deployment scripts", () => {
+    renderWithProviders(<ScriptsList type="deployment" />, { state });
+
+    expect(screen.getAllByTestId("script-row")).toHaveLength(1);
+
+    const deployment_script = screen.getByRole("row", {
+      name: "deployment-script",
+    });
+
+    expect(deployment_script).toBeInTheDocument();
+    expect(
+      within(deployment_script).getByRole("gridcell", {
+        name: "a deployment script",
+      })
+    ).toBeInTheDocument();
+  });
+
   it("can show a delete confirmation", async () => {
     renderWithProviders(<ScriptsList />, { state });
 
@@ -150,7 +173,7 @@ describe("ScriptsList", () => {
 
     expect(
       within(
-        within(screen.getByRole("row", { name: "test name 19" })).getByRole(
+        within(screen.getByRole("row", { name: "test name 29" })).getByRole(
           "gridcell",
           { name: ScriptsListLabels.Actions }
         )
@@ -159,7 +182,7 @@ describe("ScriptsList", () => {
 
     expect(
       within(
-        within(screen.getByRole("row", { name: "test name 20" })).getByRole(
+        within(screen.getByRole("row", { name: "test name 30" })).getByRole(
           "gridcell",
           { name: ScriptsListLabels.Actions }
         )
