@@ -46,6 +46,7 @@ import type {
   ListSelectionStatusData,
   ListSelectionStatusError,
   ListSelectionStatusErrors,
+  ListSelectionStatusResponse,
   ListSelectionStatusResponses,
   Options,
   UploadCustomImageData,
@@ -76,6 +77,7 @@ import {
   listSelectionStatusQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import { useOptimisticImages } from "@/app/images/hooks/useOptimisticImages/useOptimisticImages";
+import { silentPoll } from "@/app/images/hooks/useOptimisticImages/utils/silentPolling";
 import type { Image } from "@/app/images/types";
 import { ConfigNames } from "@/app/store/config/types";
 
@@ -362,6 +364,8 @@ export const useSelectionStatuses = (
   },
   enabled?: boolean
 ) => {
+  const queryClient = useQueryClient();
+
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
       ListSelectionStatusResponses,
@@ -374,6 +378,25 @@ export const useSelectionStatuses = (
     ),
     refetchInterval: options?.refetchInterval,
     enabled,
+    select: (data) => {
+      const optimisticImageIds = new Set(silentPoll.entries.keys());
+
+      return {
+        ...data,
+        items: data.items.map((item) => {
+          // If image is in optimistic state, preserve its current cache value
+          if (optimisticImageIds.has(item.id)) {
+            const cached =
+              queryClient.getQueryData<ListSelectionStatusResponse>(
+                withImagesWorkflow(listSelectionStatusQueryKey(options))
+              );
+            const cachedItem = cached?.items.find((i) => i.id === item.id);
+            return cachedItem || item;
+          }
+          return item;
+        }),
+      };
+    },
   });
 };
 
