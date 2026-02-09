@@ -18,7 +18,7 @@ import scriptSelectors from "@/app/store/script/selectors";
 import { ScriptType } from "@/app/store/script/types";
 
 type ScriptsUploadProps = {
-  type: "commissioning" | "testing";
+  type: "commissioning" | "deployment" | "testing";
 };
 
 export enum Labels {
@@ -146,7 +146,9 @@ const ScriptsUpload = ({ type }: ScriptsUploadProps): ReactElement => {
               const scriptType =
                 type === "commissioning"
                   ? ScriptType.COMMISSIONING
-                  : ScriptType.TESTING;
+                  : type === "testing"
+                    ? ScriptType.TESTING
+                    : ScriptType.DEPLOYMENT;
               if (script.hasMetadata) {
                 // we allow the API to parse the script name from the metadata header
                 dispatch(scriptActions.upload(scriptType, script.script));

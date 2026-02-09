@@ -2,19 +2,19 @@ import type { FileWithPath } from "react-dropzone";
 import type { Dispatch } from "redux";
 
 import ScriptsUpload, { Labels as ScriptsUploadLabels } from "./ScriptsUpload";
-import * as readScript from "./readScript";
 import type { ReadScriptResponse } from "./readScript";
+import * as readScript from "./readScript";
 
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  screen,
-  waitFor,
   fireEvent,
-  renderWithProviders,
   mockSidePanel,
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 const { mockClose } = await mockSidePanel();
@@ -190,6 +190,14 @@ describe("ScriptsUpload", () => {
 
   it("can cancel and return to the testing list", async () => {
     renderWithProviders(<ScriptsUpload type="testing" />, {
+      state,
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(mockClose).toHaveBeenCalled();
+  });
+
+  it("can cancel and return to the deployment list", async () => {
+    renderWithProviders(<ScriptsUpload type="deployment" />, {
       state,
     });
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));

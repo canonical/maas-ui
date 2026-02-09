@@ -6,6 +6,7 @@ export enum ScriptMeta {
 export enum ScriptType {
   COMMISSIONING = 0,
   TESTING = 2,
+  DEPLOYMENT = 4,
 }
 
 export enum ScriptName {

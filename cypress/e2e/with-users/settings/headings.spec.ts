@@ -86,6 +86,10 @@ const settingsPages = [
     label: "Commissioning scripts",
   },
   {
+    path: "/settings/scripts/deploying",
+    label: "Deployment scripts",
+  },
+  {
     path: "/settings/scripts/testing",
     label: "Testing scripts",
   },
