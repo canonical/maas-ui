@@ -214,13 +214,12 @@ export const Login = (): React.ReactElement => {
                       username: "",
                     }}
                     onSubmit={(values) => {
-                      // dispatch(statusActions.loginError(""));
                       if (!submittedUsername) {
                         setSubmittedUsername(values.username);
                       } else {
                         if (isOIDCUser) {
                           // OIDC login - redirect to provider's auth page
-                          navigate(oidcURL);
+                          window.location.href = oidcURL;
                         } else {
                           // Local login
                           handleSubmit(values);
@@ -252,16 +251,14 @@ export const Login = (): React.ReactElement => {
                       takeFocus
                       type="text"
                     />
-                    {requirePassword && (
-                      <FormikField
-                        aria-hidden={!requirePassword}
-                        hidden={!requirePassword}
-                        label={Labels.Password}
-                        name="password"
-                        required={requirePassword}
-                        type="password"
-                      />
-                    )}
+                    <FormikField
+                      aria-hidden={!requirePassword}
+                      hidden={!requirePassword}
+                      label={requirePassword ? Labels.Password : ""}
+                      name="password"
+                      required={requirePassword}
+                      type="password"
+                    />
                   </FormikForm>
                 )}
               </Card>

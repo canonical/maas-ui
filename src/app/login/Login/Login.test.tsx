@@ -116,7 +116,14 @@ describe("Login", () => {
       })
     );
 
-    const { router } = renderWithProviders(<Login />, {
+    Object.defineProperty(window, "location", {
+      value: {
+        href: "",
+      },
+      writable: true,
+    });
+
+    renderWithProviders(<Login />, {
       initialEntries: ["/login"],
       state,
     });
@@ -142,7 +149,7 @@ describe("Login", () => {
     );
 
     await waitFor(() => {
-      expect(router.state.location.pathname).toBe("http://login.provider.com");
+      expect(window.location.href).toBe("http://login.provider.com");
     });
   });
 
