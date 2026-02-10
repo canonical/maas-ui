@@ -1,9 +1,11 @@
+import { waitFor } from "@testing-library/react";
+
+import LoginCallback, { Labels } from "./LoginCallback";
+
+import type { RootState } from "@/app/store/root/types";
+import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { renderWithProviders, setupMockServer, screen } from "@/testing/utils";
-import LoginCallback, { Labels } from "./LoginCallback";
-import * as factory from "@/testing/factories";
-import { RootState } from "@/app/store/root/types";
-import { waitFor } from "@testing-library/dom";
 
 const mockServer = setupMockServer(
   authResolvers.createSession.handler(),
