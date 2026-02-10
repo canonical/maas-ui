@@ -44,18 +44,17 @@ export const Labels = {
   Password: "Password",
   Submit: "Login",
   Username: "Username",
+  IncorrectCredentials:
+    "Please enter a correct username and password. Note that both fields may be case-sensitive.",
+  UserNotFound:
+    "The username belongs to an OIDC user, but no OIDC provider is enabled.",
+  NetworkError: "A network error occurred. Please try again.",
 } as const;
 
 export enum TestIds {
   NoUsers = "no-users-warning",
   SectionHeaderTitle = "section-header-title",
 }
-
-export const INCORRECT_CREDENTIALS_ERROR_MESSAGE =
-  "Please enter a correct username and password. Note that both fields may be case-sensitive.";
-
-export const NOT_FOUND_USER_ERROR_MESSAGE =
-  "User not found. Please check the username and try again.";
 
 type LoginStep = "OIDC" | "PASSWORD" | "USERNAME";
 
@@ -67,6 +66,7 @@ export const Login = (): React.ReactElement => {
   const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
   const authenticationError = useSelector(statusSelectors.authenticationError);
   const noUsers = useSelector(statusSelectors.noUsers);
+  const disableSSO = import.meta.env.VITE_APP_SINGLE_SIGN_ON === "false";
 
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirectTo");
@@ -80,7 +80,7 @@ export const Login = (): React.ReactElement => {
 
   const hasEnteredUsername = step !== "USERNAME";
   const requirePassword = step === "PASSWORD";
-  const isOIDCUser = step === "OIDC";
+  const isOIDCUser = disableSSO ? false : step === "OIDC";
 
   const userInfoQuery = useIsOIDCUser(
     {
@@ -117,9 +117,14 @@ export const Login = (): React.ReactElement => {
   }, [dispatch, externalAuthURL]);
 
   useEffect(() => {
+    if (submittedUsername && disableSSO) {
+      setStep("PASSWORD");
+      return;
+    }
+
     if (userInfoQuery.error) {
       setSubmittedUsername(null);
-      dispatch(statusActions.loginError(NOT_FOUND_USER_ERROR_MESSAGE));
+      dispatch(statusActions.loginError(Labels.UserNotFound));
       return;
     }
 
@@ -128,13 +133,19 @@ export const Login = (): React.ReactElement => {
     const { is_oidc, auth_url, provider_name } = userInfoQuery.data;
 
     if (is_oidc) {
-      setOidcURL(auth_url ?? "");
-      setProviderName(provider_name ?? "");
+      setOidcURL(auth_url!);
+      setProviderName(provider_name!);
       setStep("OIDC");
     } else {
       setStep("PASSWORD");
     }
-  }, [userInfoQuery.data, userInfoQuery.error, dispatch]);
+  }, [
+    userInfoQuery.data,
+    userInfoQuery.error,
+    disableSSO,
+    dispatch,
+    submittedUsername,
+  ]);
 
   const handleSubmit = (values: LoginValues) => {
     authenticate.mutate({
@@ -203,13 +214,15 @@ export const Login = (): React.ReactElement => {
                       username: "",
                     }}
                     onSubmit={(values) => {
-                      dispatch(statusActions.loginError(""));
+                      // dispatch(statusActions.loginError(""));
                       if (!submittedUsername) {
                         setSubmittedUsername(values.username);
                       } else {
                         if (isOIDCUser) {
+                          // OIDC login - redirect to provider's auth page
                           navigate(oidcURL);
                         } else {
+                          // Local login
                           handleSubmit(values);
                         }
                       }

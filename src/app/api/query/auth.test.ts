@@ -15,7 +15,7 @@ import {
   usePreLogin,
   useUpdateOauthProvider,
 } from "@/app/api/query/auth";
-import { INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "@/app/login/Login/Login";
+import { Labels } from "@/app/login/Login/Login";
 import { setCookie } from "@/app/utils";
 import { COOKIE_NAMES } from "@/app/utils/cookies";
 import {
@@ -133,7 +133,7 @@ describe("useAuthenticate", () => {
       expect(actions).toContainEqual(
         expect.objectContaining({
           type: "status/loginError",
-          payload: INCORRECT_CREDENTIALS_ERROR_MESSAGE,
+          payload: Labels.IncorrectCredentials,
         })
       );
     });
