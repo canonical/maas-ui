@@ -67,7 +67,7 @@ import {
   handleOauthCallbackQueryKey,
   initiateAuthFlowQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
-import { INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "@/app/login/Login/Login";
+import { Labels } from "@/app/login/Login/Login";
 import { statusActions } from "@/app/store/status";
 import { setCookie } from "@/app/utils";
 import { COOKIE_NAMES } from "@/app/utils/cookies";
@@ -136,7 +136,7 @@ export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
     },
     onError: (error: LoginError) => {
       if (error.code === 401) {
-        dispatch(statusActions.loginError(INCORRECT_CREDENTIALS_ERROR_MESSAGE));
+        dispatch(statusActions.loginError(Labels.IncorrectCredentials));
       }
     },
   });

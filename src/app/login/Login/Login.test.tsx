@@ -1,8 +1,4 @@
-import Login, {
-  Labels,
-  INCORRECT_CREDENTIALS_ERROR_MESSAGE,
-  NOT_FOUND_USER_ERROR_MESSAGE,
-} from "./Login";
+import Login, { Labels } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -33,10 +29,10 @@ describe("Login", () => {
   });
 
   it("can display a login error message", () => {
-    state.status.authenticationError = INCORRECT_CREDENTIALS_ERROR_MESSAGE;
+    state.status.authenticationError = Labels.IncorrectCredentials;
     renderWithProviders(<Login />, { initialEntries: ["/login"], state });
     expect(screen.getByRole("alert")).toHaveTextContent(
-      INCORRECT_CREDENTIALS_ERROR_MESSAGE
+      Labels.IncorrectCredentials
     );
   });
 
@@ -110,7 +106,8 @@ describe("Login", () => {
     ).toBeDefined();
   });
 
-  it("can login with external provider when the user is OIDC", async () => {
+  it("can login with external provider when the user is OIDC and SSO is enabled", async () => {
+    process.env.VITE_APP_SINGLE_SIGN_ON = "true";
     mockServer.use(
       authResolvers.isOidcUser.handler({
         is_oidc: true,
@@ -118,11 +115,6 @@ describe("Login", () => {
         auth_url: "http://login.provider.com",
       })
     );
-
-    // Object.defineProperty(window, "location", {
-    //   writable: true,
-    //   value: { ...window.location, href: "" } as Location,
-    // });
 
     const { router } = renderWithProviders(<Login />, {
       initialEntries: ["/login"],
@@ -164,7 +156,7 @@ describe("Login", () => {
   });
 
   it("shows an error if the user isn't found", async () => {
-    state.status.authenticationError = NOT_FOUND_USER_ERROR_MESSAGE;
+    state.status.authenticationError = Labels.UserNotFound;
 
     mockServer.use(authResolvers.isOidcUser.error());
     renderWithProviders(<Login />, { initialEntries: ["/login"], state });
@@ -177,9 +169,7 @@ describe("Login", () => {
 
     await waitFor(() => {
       expect(authResolvers.isOidcUser.resolved).toBeTruthy();
-      expect(screen.getByRole("alert")).toHaveTextContent(
-        NOT_FOUND_USER_ERROR_MESSAGE
-      );
+      expect(screen.getByRole("alert")).toHaveTextContent(Labels.UserNotFound);
     });
   });
 
