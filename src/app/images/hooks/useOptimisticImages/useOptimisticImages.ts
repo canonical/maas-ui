@@ -20,7 +20,7 @@ import {
 type OptimisticMutateProps = {
   queryClient: QueryClient;
   imageId: number;
-  action: "start" | "stop";
+  action: "OptimisticDownloading" | "OptimisticStopping";
 };
 
 export type OptimisticMutateResult = {
@@ -37,7 +37,7 @@ type OptimisticOnErrorProps = {
 type OptimisticOnSuccessProps = {
   queryClient: QueryClient;
   onMutateResult: OptimisticMutateResult | undefined;
-  action: "start" | "stop";
+  action: "OptimisticDownloading" | "OptimisticStopping";
 };
 
 const optimisticMutate = async ({
@@ -60,29 +60,29 @@ const optimisticMutate = async ({
     });
 
   const haltingSyncStatus: ImageStatus =
-    action === "start" ? "Waiting for download" : "Downloading";
+    action === "OptimisticDownloading" ? "Waiting for download" : "Downloading";
   const haltingUpdateStatus: ImageUpdateStatus =
-    action === "start" ? "Update available" : "Downloading";
+    action === "OptimisticDownloading" ? "Update available" : "Downloading";
 
   const optimisticSyncOverride: Partial<
     Pick<ImageStatusResponse, "status" | "sync_percentage">
   > =
-    action === "start"
+    action === "OptimisticDownloading"
       ? {
-          status: "Optimistic" as ImageStatus,
+          status: "OptimisticDownloading" as ImageStatus,
           sync_percentage: 0,
         }
-      : { status: "Stopping" as ImageStatus };
+      : { status: "OptimisticStopping" as ImageStatus };
 
   const optimisticUpdateOverride: Partial<
     Pick<ImageStatusResponse, "sync_percentage" | "update_status">
   > =
-    action === "start"
+    action === "OptimisticDownloading"
       ? {
-          update_status: "Optimistic" as ImageUpdateStatus,
+          update_status: "OptimisticDownloading" as ImageUpdateStatus,
           sync_percentage: 0,
         }
-      : { update_status: "Stopping" as ImageUpdateStatus };
+      : { update_status: "OptimisticStopping" as ImageUpdateStatus };
 
   // Extract the actual query keys and data
   const [selectionStatusKey, previousSelectionStatuses] =
@@ -156,34 +156,37 @@ const optimisticOnSuccess = ({
   ) {
     silentPoll.entries.set(imageId, { attempts: 0, action: action });
     const [startingImages, stoppingImages] = (
-      localStorage.getItem("optimisticImages") ?? "start=;stop="
+      localStorage.getItem("optimisticImages") ??
+      "OptimisticDownloading=;OptimisticStopping="
     ).split(";");
     let startingImageIds = startingImages
-      .replace("start=", "")
+      .replace("OptimisticDownloading=", "")
       .split(",")
       .filter((id) => id !== "")
       .map((id) => Number(id));
     let stoppingImageIds = stoppingImages
-      .replace("stop=", "")
+      .replace("OptimisticStopping=", "")
       .split(",")
       .filter((id) => id !== "")
       .map((id) => Number(id));
     // Ensure uniqueness by using Set
-    if (action === "start") {
+    if (action === "OptimisticDownloading") {
       startingImageIds = Array.from(new Set([...startingImageIds, imageId]));
-    } else if (action === "stop") {
+    } else if (action === "OptimisticStopping") {
       stoppingImageIds = Array.from(new Set([...stoppingImageIds, imageId]));
     }
     localStorage.setItem(
       "optimisticImages",
-      `start=${startingImageIds.join(",")};stop=${stoppingImageIds.join(",")}`
+      `OptimisticDownloading=${startingImageIds.join(",")};OptimisticStopping=${stoppingImageIds.join(",")}`
     );
   }
 
   startOrExtendSilentPolling(queryClient);
 };
 
-export const useOptimisticImages = (action: "start" | "stop") => {
+export const useOptimisticImages = (
+  action: "OptimisticDownloading" | "OptimisticStopping"
+) => {
   const queryClient = useQueryClient();
 
   const onMutateWithOptimisticImages = (
@@ -218,12 +221,12 @@ export const useOptimisticImages = (action: "start" | "stop") => {
         const optimisticStartResult = await optimisticMutate({
           queryClient,
           imageId,
-          action: "start",
+          action: "OptimisticDownloading",
         });
         optimisticOnSuccess({
           queryClient,
           onMutateResult: optimisticStartResult,
-          action: "start",
+          action: "OptimisticDownloading",
         });
       })
     );
@@ -233,12 +236,12 @@ export const useOptimisticImages = (action: "start" | "stop") => {
         const optimisticStopResult = await optimisticMutate({
           queryClient,
           imageId,
-          action: "stop",
+          action: "OptimisticStopping",
         });
         optimisticOnSuccess({
           queryClient,
           onMutateResult: optimisticStopResult,
-          action: "stop",
+          action: "OptimisticStopping",
         });
       })
     );

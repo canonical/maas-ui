@@ -31,9 +31,9 @@ const ImagesTable = ({
 
   const [isRestoring, setIsRestoring] = useState<boolean>(true);
   const { restoreOptimisticImages: restoreStartingImages } =
-    useOptimisticImages("start");
+    useOptimisticImages("OptimisticDownloading");
   const { restoreOptimisticImages: restoreStoppingImages } =
-    useOptimisticImages("stop");
+    useOptimisticImages("OptimisticStopping");
 
   const commissioningRelease =
     (useGetConfiguration({
@@ -49,9 +49,9 @@ const ImagesTable = ({
   });
 
   const downloadingStatuses: (ImageStatus | ImageUpdateStatus)[] = [
-    "Optimistic",
     "Downloading",
-    "Stopping",
+    "OptimisticDownloading",
+    "OptimisticStopping",
   ];
 
   useEffect(() => {

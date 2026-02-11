@@ -1818,9 +1818,9 @@ export type ImageStatisticResponse = {
  */
 export type ImageStatus =
   | "Downloading"
-  | "Optimistic"
+  | "OptimisticDownloading"
+  | "OptimisticStopping"
   | "Ready"
-  | "Stopping"
   | "Waiting for download";
 
 /**
@@ -1880,8 +1880,8 @@ export type ImageStatusResponse = {
 export type ImageUpdateStatus =
   | "Downloading"
   | "No updates available"
-  | "Optimistic"
-  | "Stopping"
+  | "OptimisticDownloading"
+  | "OptimisticStopping"
   | "Update available";
 
 /**

@@ -137,10 +137,10 @@ const calculateRefetchInterval = (
 ): number | false => {
   const hasOptimisticTransition = statuses?.some(
     (s) =>
-      s.status === "Optimistic" ||
-      s.status === "Stopping" ||
-      s.update_status === "Optimistic" ||
-      s.update_status === "Stopping"
+      s.status === "OptimisticDownloading" ||
+      s.status === "OptimisticStopping" ||
+      s.update_status === "OptimisticDownloading" ||
+      s.update_status === "OptimisticStopping"
   );
 
   if (hasOptimisticTransition) {
@@ -494,7 +494,7 @@ export const useAddSelections = (
   const queryClient = useQueryClient();
 
   const { onMutateWithOptimisticImages, onSuccessWithOptimisticImages } =
-    useOptimisticImages("start");
+    useOptimisticImages("OptimisticDownloading");
 
   return useMutation({
     ...mutationOptionsWithHeaders<

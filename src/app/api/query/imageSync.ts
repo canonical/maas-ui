@@ -24,7 +24,7 @@ export const useStartImageSync = (
     onMutateWithOptimisticImages,
     onErrorWithOptimisticImages,
     onSuccessWithOptimisticImages,
-  } = useOptimisticImages("start");
+  } = useOptimisticImages("OptimisticDownloading");
 
   return useMutation({
     ...mutationOptionsWithHeaders<
@@ -62,7 +62,7 @@ export const useStopImageSync = (
     onMutateWithOptimisticImages,
     onErrorWithOptimisticImages,
     onSuccessWithOptimisticImages,
-  } = useOptimisticImages("stop");
+  } = useOptimisticImages("OptimisticStopping");
 
   return useMutation({
     ...mutationOptionsWithHeaders<

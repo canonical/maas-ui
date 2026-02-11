@@ -154,8 +154,8 @@ const useImageTableColumns = ({
               },
             },
           }) => {
-            const isOptimistic = update_status === "Optimistic";
-            const isStopping = update_status === "Stopping";
+            const isOptimistic = update_status === "OptimisticDownloading";
+            const isStopping = update_status === "OptimisticStopping";
             return isStatusLoading ? (
               <Spinner />
             ) : (
@@ -163,8 +163,8 @@ const useImageTableColumns = ({
                 primary={
                   isUpstream ? (
                     update_status === "Downloading" ||
-                    update_status === "Optimistic" ||
-                    update_status === "Stopping" ? (
+                    update_status === "OptimisticDownloading" ||
+                    update_status === "OptimisticStopping" ? (
                       <>
                         {!isStopping ? (
                           <div className="p-progress">
@@ -236,12 +236,13 @@ const useImageTableColumns = ({
               case "Waiting for download":
                 icon = <Icon name={"status-waiting"} />;
                 break;
-              case "Optimistic":
+              case "OptimisticDownloading":
+              case "OptimisticStopping":
               case "Downloading":
                 icon = null;
             }
-            const isOptimistic = status === "Optimistic";
-            const isStopping = status === "Stopping";
+            const isOptimistic = status === "OptimisticDownloading";
+            const isStopping = status === "OptimisticStopping";
             return isStatusLoading ? (
               <Spinner />
             ) : (
@@ -249,8 +250,8 @@ const useImageTableColumns = ({
                 icon={icon}
                 primary={
                   status === "Downloading" ||
-                  status === "Optimistic" ||
-                  status === "Stopping" ? (
+                  status === "OptimisticDownloading" ||
+                  status === "OptimisticStopping" ? (
                     <>
                       {!isStopping ? (
                         <div className="p-progress">
@@ -306,15 +307,18 @@ const useImageTableColumns = ({
             const isCommissioningImage = release === commissioningRelease;
 
             const isSyncing =
-              status === "Downloading" || status === "Optimistic";
+              status === "Downloading" || status === "OptimisticDownloading";
             const isUpdating =
-              update_status === "Downloading" || update_status === "Optimistic";
+              update_status === "Downloading" ||
+              update_status === "OptimisticDownloading";
 
             const isOptimistic =
-              status === "Optimistic" || update_status === "Optimistic";
+              status === "OptimisticDownloading" ||
+              update_status === "OptimisticDownloading";
 
             const isStopping =
-              status === "Stopping" || update_status === "Stopping";
+              status === "OptimisticStopping" ||
+              update_status === "OptimisticStopping";
 
             const downloadInProgress = isSyncing || isUpdating || isStopping;
 

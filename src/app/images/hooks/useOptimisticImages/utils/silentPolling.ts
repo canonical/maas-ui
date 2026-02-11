@@ -12,7 +12,7 @@ const MAX_ATTEMPTS_PER_IMAGE = 10;
 
 type PollEntry = {
   attempts: number;
-  action: "start" | "stop";
+  action: "OptimisticDownloading" | "OptimisticStopping";
 };
 
 type SilentPollState = {
@@ -29,21 +29,22 @@ export const silentPoll: SilentPollState = {
 
 export const parseOptimisticImagesLocalStorage = () => {
   const localStorageValue =
-    localStorage.getItem("optimisticImages") ?? "start=;stop=";
+    localStorage.getItem("optimisticImages") ??
+    "OptimisticDownloading=;OptimisticStopping=";
   const parts = localStorageValue.split(";");
 
-  const startingImages = parts[0] ?? "start=";
-  const stoppingImages = parts[1] ?? "stop=";
+  const startingImages = parts[0] ?? "OptimisticDownloading=";
+  const stoppingImages = parts[1] ?? "OptimisticStopping=";
 
   const startingImageIds = startingImages
-    .replace("start=", "")
+    .replace("OptimisticDownloading=", "")
     .split(",")
     .filter((id) => id !== "")
     .map((id) => Number(id))
     .filter((id) => !isNaN(id) && id > 0);
 
   const stoppingImageIds = stoppingImages
-    .replace("stop=", "")
+    .replace("OptimisticStopping=", "")
     .split(",")
     .filter((id) => id !== "")
     .map((id) => Number(id))
@@ -101,13 +102,13 @@ export const startOrExtendSilentPolling = (queryClient: QueryClient) => {
         // Determine if image is resolved based on action type
         let resolved = false;
 
-        if (entry.action === "start") {
+        if (entry.action === "OptimisticDownloading") {
           // For start action: resolved when status becomes "Downloading"
           resolved =
             backendSyncStatus === "Downloading" ||
             backendUpdateStatus === "Downloading" ||
             entry.attempts >= MAX_ATTEMPTS_PER_IMAGE;
-        } else if (entry.action === "stop") {
+        } else if (entry.action === "OptimisticStopping") {
           // For stop action: resolved when status is NOT "Downloading"
           resolved =
             (backendSyncStatus !== "Downloading" &&
@@ -130,7 +131,7 @@ export const startOrExtendSilentPolling = (queryClient: QueryClient) => {
 
           localStorage.setItem(
             "optimisticImages",
-            `start=${updatedStartingIds.join(",")};stop=${updatedStoppingIds.join(",")}`
+            `OptimisticDownloading=${updatedStartingIds.join(",")};OptimisticStopping=${updatedStoppingIds.join(",")}`
           );
         }
       }
@@ -155,7 +156,7 @@ export const startOrExtendSilentPolling = (queryClient: QueryClient) => {
 
           localStorage.setItem(
             "optimisticImages",
-            `start=${updatedStartingIds.join(",")};stop=${updatedStoppingIds.join(",")}`
+            `OptimisticDownloading=${updatedStartingIds.join(",")};OptimisticStopping=${updatedStoppingIds.join(",")}`
           );
         }
       }
