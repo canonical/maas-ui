@@ -1,6 +1,12 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
-import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
+import {
+  Button,
+  Icon,
+  Spinner,
+  Tooltip,
+  useToastNotification,
+} from "@canonical/react-components";
 import type {
   Column,
   ColumnDef,
@@ -22,8 +28,10 @@ export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 const TOOLTIP_MESSAGES = {
   STOP_SYNC_ACTIVE: "Stop image synchronization.",
   STOP_SYNC_OPTIMISTIC: "Synchronization cannot be stopped while queueing.",
+  STOP_SYNC_FAILED: "Stopping image synchronization failed. Please try again.",
   START_SYNC: "Start image synchronization.",
   START_SYNC_DISABLED: "Image is already synchronized.",
+  START_SYNC_FAILED: "Starting image synchronization failed. Please try again.",
   DELETE_IMAGE: "Delete this image.",
   DELETE_COMMISSIONING:
     "Cannot delete images of the default commissioning release.",
@@ -58,6 +66,7 @@ const useImageTableColumns = ({
   isStatisticsLoading: boolean;
 }): ImageColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { failure } = useToastNotification();
   const startSync = useStartImageSync();
   const stopSync = useStopImageSync();
 
@@ -352,12 +361,16 @@ const useImageTableColumns = ({
                       }
                       hasIcon
                       onClick={() => {
-                        stopSync.mutate({
-                          path: {
-                            id: imageId,
-                            boot_source_id: boot_source_id!,
-                          },
-                        });
+                        stopSync
+                          .mutateAsync({
+                            path: {
+                              id: imageId,
+                              boot_source_id: boot_source_id!,
+                            },
+                          })
+                          .catch((e: unknown) => {
+                            failure(TOOLTIP_MESSAGES.STOP_SYNC_FAILED, e);
+                          });
                       }}
                     >
                       <Icon name="stop">Stop synchronization</Icon>
@@ -383,12 +396,16 @@ const useImageTableColumns = ({
                       }
                       hasIcon
                       onClick={() => {
-                        startSync.mutate({
-                          path: {
-                            id: imageId,
-                            boot_source_id: boot_source_id!,
-                          },
-                        });
+                        startSync
+                          .mutateAsync({
+                            path: {
+                              id: imageId,
+                              boot_source_id: boot_source_id!,
+                            },
+                          })
+                          .catch((e: unknown) => {
+                            failure(TOOLTIP_MESSAGES.START_SYNC_FAILED, e);
+                          });
                       }}
                     >
                       <Icon name="begin-downloading">
@@ -439,9 +456,10 @@ const useImageTableColumns = ({
     [
       isStatisticsLoading,
       isStatusLoading,
-      stopSync,
-      startSync,
       commissioningRelease,
+      startSync,
+      stopSync,
+      failure,
       openSidePanel,
       selectedRows,
       setSelectedRows,
