@@ -167,62 +167,82 @@ const SelectUpstreamImagesForm = (): ReactElement => {
     return initial;
   }, [groupedImages]);
 
+  const noAvailableImages = availableImages?.items.length === 0;
+
   return (
     <div className="select-upstream-images-form">
       Select images to be imported and kept in sync daily. Images will be
       available for deployment on MAAS managed machines.
-      {tooManySources && (
-        <NotificationBanner data-testid="too-many-sources" severity="caution">
-          More than one image source exists. The UI does not support updating
-          synced images when more than one source has been defined. Use the API
-          to adjust your sources.
-        </NotificationBanner>
-      )}
       <Strip shallow>
         {isPending ? (
           <Spinner text="Loading..." />
         ) : (
-          <FormikForm
-            buttonsBehavior="independent"
-            editable={!tooManySources}
-            enableReinitialize
-            errors={addSelections.error}
-            initialValues={initialValues}
-            onCancel={closeSidePanel}
-            onSubmit={(values) => {
-              const formSelectedImages = Object.entries(
-                values as Record<string, { label: string; value: string }[]>
-              ).flatMap(([_, images]): SelectionRequest[] => {
-                return images.map((image): SelectionRequest => {
-                  const [os, release, _title, arch, boot_source_id] =
-                    image.value.split("&");
-                  return {
-                    arch,
-                    boot_source_id: Number(boot_source_id),
-                    os,
-                    release,
-                  };
-                });
-              });
-
-              addSelections.mutate({
-                body: formSelectedImages,
-              });
-              closeSidePanel();
-            }}
-            submitLabel="Save and sync"
-          >
-            {({
-              values,
-              setFieldValue,
-            }: Pick<DownloadImagesSelectProps, "setFieldValue" | "values">) => (
-              <SelectUpstreamImagesSelect
-                groupedImages={groupedImages}
-                setFieldValue={setFieldValue}
-                values={values}
-              />
+          <>
+            {tooManySources && (
+              <NotificationBanner
+                data-testid="too-many-sources"
+                severity="caution"
+              >
+                More than one image source exists. The UI does not support
+                updating synced images when more than one source has been
+                defined. Use the API to adjust your sources.
+              </NotificationBanner>
             )}
-          </FormikForm>
+            {noAvailableImages && (
+              <NotificationBanner
+                data-testid="no-available-images-warning"
+                severity="caution"
+              >
+                No available upstream images found. This could be caused by an
+                ongoing image source change. If you recently changed the image
+                source, please come back after some time.
+              </NotificationBanner>
+            )}
+            <FormikForm
+              buttonsBehavior="independent"
+              editable={!tooManySources}
+              enableReinitialize
+              errors={addSelections.error}
+              initialValues={initialValues}
+              onCancel={closeSidePanel}
+              onSubmit={(values) => {
+                const formSelectedImages = Object.entries(
+                  values as Record<string, { label: string; value: string }[]>
+                ).flatMap(([_, images]): SelectionRequest[] => {
+                  return images.map((image): SelectionRequest => {
+                    const [os, release, _title, arch, boot_source_id] =
+                      image.value.split("&");
+                    return {
+                      arch,
+                      boot_source_id: Number(boot_source_id),
+                      os,
+                      release,
+                    };
+                  });
+                });
+
+                addSelections.mutate({
+                  body: formSelectedImages,
+                });
+                closeSidePanel();
+              }}
+              submitLabel="Save and sync"
+            >
+              {({
+                values,
+                setFieldValue,
+              }: Pick<
+                DownloadImagesSelectProps,
+                "setFieldValue" | "values"
+              >) => (
+                <SelectUpstreamImagesSelect
+                  groupedImages={groupedImages}
+                  setFieldValue={setFieldValue}
+                  values={values}
+                />
+              )}
+            </FormikForm>
+          </>
         )}
       </Strip>
     </div>

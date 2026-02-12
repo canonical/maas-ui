@@ -23,7 +23,6 @@ import type {
   GetAllAvailableImagesErrors,
   GetAllAvailableImagesResponses,
   ImageStatusListResponse,
-  ImageStatusResponse,
   ListCustomImagesData,
   ListCustomImagesError,
   ListCustomImagesErrors,
@@ -46,6 +45,7 @@ import type {
   ListSelectionStatusData,
   ListSelectionStatusError,
   ListSelectionStatusErrors,
+  ListSelectionStatusResponse,
   ListSelectionStatusResponses,
   Options,
   UploadCustomImageData,
@@ -67,6 +67,7 @@ import {
 } from "@/app/apiclient";
 import {
   getAllAvailableImagesQueryKey,
+  getConfigurationQueryKey,
   listCustomImagesQueryKey,
   listCustomImagesStatisticQueryKey,
   listCustomImagesStatusQueryKey,
@@ -74,7 +75,10 @@ import {
   listSelectionStatisticQueryKey,
   listSelectionStatusQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
-import type { Image } from "@/app/images/types";
+import { useOptimisticImages } from "@/app/images/hooks/useOptimisticImages/useOptimisticImages";
+import { silentPoll } from "@/app/images/hooks/useOptimisticImages/utils/silentPolling";
+import type { Image, OptimisticImageStatusResponse } from "@/app/images/types";
+import { ConfigNames } from "@/app/store/config/types";
 
 export const ACTIVE_DOWNLOAD_REFETCH_INTERVAL = 5000;
 const IDLE_REFETCH_INTERVAL = 60000;
@@ -128,10 +132,14 @@ const generateImageId = (id: number, isCustom: boolean) =>
   `${id}-${isCustom ? "custom" : "selection"}`;
 
 const calculateRefetchInterval = (
-  statuses?: ImageStatusResponse[]
+  statuses?: OptimisticImageStatusResponse[]
 ): number | false => {
   const hasOptimisticTransition = statuses?.some(
-    (s) => s.status === "Optimistic"
+    (s) =>
+      s.status === "OptimisticDownloading" ||
+      s.status === "OptimisticStopping" ||
+      s.update_status === "OptimisticDownloading" ||
+      s.update_status === "OptimisticStopping"
   );
 
   if (hasOptimisticTransition) {
@@ -355,6 +363,8 @@ export const useSelectionStatuses = (
   },
   enabled?: boolean
 ) => {
+  const queryClient = useQueryClient();
+
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
       ListSelectionStatusResponses,
@@ -367,6 +377,25 @@ export const useSelectionStatuses = (
     ),
     refetchInterval: options?.refetchInterval,
     enabled,
+    select: (data) => {
+      const optimisticImageIds = new Set(silentPoll.entries.keys());
+
+      return {
+        ...data,
+        items: data.items.map((item) => {
+          // If image is in optimistic state, preserve its current cache value
+          if (optimisticImageIds.has(item.id)) {
+            const cached =
+              queryClient.getQueryData<ListSelectionStatusResponse>(
+                withImagesWorkflow(listSelectionStatusQueryKey(options))
+              );
+            const cachedItem = cached?.items.find((i) => i.id === item.id);
+            return cachedItem || item;
+          }
+          return item;
+        }),
+      };
+    },
   });
 };
 
@@ -462,16 +491,40 @@ export const useAddSelections = (
   mutationOptions?: Options<BulkCreateSelectionsData>
 ) => {
   const queryClient = useQueryClient();
+
+  const { onMutateWithOptimisticImages, onSuccessWithOptimisticImages } =
+    useOptimisticImages("OptimisticDownloading");
+
   return useMutation({
     ...mutationOptionsWithHeaders<
       BulkCreateSelectionsResponses,
       BulkCreateSelectionsErrors,
       BulkCreateSelectionsData
     >(mutationOptions, bulkCreateSelections),
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
+    onSuccess: async (data) => {
+      // First invalidate to get the newly created images into the cache
+      await queryClient.invalidateQueries({
         queryKey: IMAGES_WORKFLOW_KEY,
       });
+
+      const config = queryClient.getQueryData<{ value: boolean }>(
+        getConfigurationQueryKey({
+          path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+        })
+      );
+      const autoImport = config?.value as boolean;
+
+      if (!autoImport) return;
+      // Then apply optimistic updates and start polling
+      const imageIds = data.items.map((item) => item.id);
+
+      await Promise.allSettled(
+        imageIds.map(async (imageId) => {
+          const optimisticMutateResult =
+            await onMutateWithOptimisticImages(imageId);
+          onSuccessWithOptimisticImages(optimisticMutateResult);
+        })
+      );
     },
   });
 };

@@ -126,7 +126,7 @@ const ChangeSource = (): ReactElement => {
     sources.isPending || source.isPending || importConfig.isPending;
 
   const saving = updateConfig.isPending || changeImageSource.isPending;
-  const saved = updateConfig.isSuccess && changeImageSource.isSuccess;
+  const saved = updateConfig.isSuccess || changeImageSource.isSuccess;
 
   const errors =
     sources.error ||
@@ -184,34 +184,46 @@ const ChangeSource = (): ReactElement => {
               errors={errors}
               initialValues={initialValues}
               onSubmit={(values) => {
-                updateConfig.mutate({
-                  headers: {
-                    ETag: configETag,
-                  },
-                  body: {
-                    value: values.autoSync,
-                  },
-                  path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
-                });
-                changeImageSource.mutate({
-                  body: {
-                    url: values.url,
-                    keyring_data:
-                      values.keyring_type === "keyring_data"
-                        ? values.keyring_data
-                        : undefined,
-                    keyring_filename:
-                      values.keyring_type === "keyring_filename"
-                        ? values.keyring_filename
-                        : undefined,
-                    skip_keyring_verification:
-                      values.keyring_type === "keyring_unsigned"
-                        ? true
-                        : undefined,
-                    priority: values.priority,
-                    current_boot_source_id: source.data?.id ?? -1,
-                  },
-                });
+                if (values.autoSync !== initialValues.autoSync) {
+                  updateConfig.mutate({
+                    headers: {
+                      ETag: configETag,
+                    },
+                    body: {
+                      value: values.autoSync,
+                    },
+                    path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+                  });
+                }
+
+                if (
+                  values.url !== initialValues.url ||
+                  values.keyring_data !== initialValues.keyring_data ||
+                  values.keyring_filename !== initialValues.keyring_filename ||
+                  values.skip_keyring_verification !==
+                    initialValues.skip_keyring_verification ||
+                  values.priority !== initialValues.priority
+                ) {
+                  changeImageSource.mutate({
+                    body: {
+                      url: values.url,
+                      keyring_data:
+                        values.keyring_type === "keyring_data"
+                          ? values.keyring_data
+                          : undefined,
+                      keyring_filename:
+                        values.keyring_type === "keyring_filename"
+                          ? values.keyring_filename
+                          : undefined,
+                      skip_keyring_verification:
+                        values.keyring_type === "keyring_unsigned"
+                          ? true
+                          : undefined,
+                      priority: values.priority,
+                      current_boot_source_id: source.data?.id ?? -1,
+                    },
+                  });
+                }
               }}
               saved={saved}
               saving={saving}
