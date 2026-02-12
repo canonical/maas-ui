@@ -17,7 +17,7 @@ jobs:
     runs-on: [ self-hosted, reactive, linux, amd64, large-tiobe, jammy ]
     timeout-minutes: 720
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0  # Important for TICS to analyze history
 
@@ -70,7 +70,7 @@ jobs:
       id-token: write
       pages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Download coverage report
         uses: actions/download-artifact@v4

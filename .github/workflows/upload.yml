@@ -13,7 +13,7 @@ jobs:
       PACKAGE_NAME: maas_ui_${{ github.sha }}.tgz
       VITE_APP_GIT_SHA: ${{ github.sha }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Get branch name
         uses: nelonoel/branch-name@v1.0.1
       - name: Restore node_modules
