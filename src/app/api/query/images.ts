@@ -23,7 +23,6 @@ import type {
   GetAllAvailableImagesErrors,
   GetAllAvailableImagesResponses,
   ImageStatusListResponse,
-  ImageStatusResponse,
   ListCustomImagesData,
   ListCustomImagesError,
   ListCustomImagesErrors,
@@ -78,7 +77,7 @@ import {
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import { useOptimisticImages } from "@/app/images/hooks/useOptimisticImages/useOptimisticImages";
 import { silentPoll } from "@/app/images/hooks/useOptimisticImages/utils/silentPolling";
-import type { Image } from "@/app/images/types";
+import type { Image, OptimisticImageStatusResponse } from "@/app/images/types";
 import { ConfigNames } from "@/app/store/config/types";
 
 export const ACTIVE_DOWNLOAD_REFETCH_INTERVAL = 5000;
@@ -133,7 +132,7 @@ const generateImageId = (id: number, isCustom: boolean) =>
   `${id}-${isCustom ? "custom" : "selection"}`;
 
 const calculateRefetchInterval = (
-  statuses?: ImageStatusResponse[]
+  statuses?: OptimisticImageStatusResponse[]
 ): number | false => {
   const hasOptimisticTransition = statuses?.some(
     (s) =>

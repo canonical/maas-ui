@@ -6,12 +6,12 @@ import type { RowSelectionState } from "@tanstack/react-table";
 
 import { useGetConfiguration } from "@/app/api/query/configurations";
 import { useImages } from "@/app/api/query/images";
-import type { ImageStatus, ImageUpdateStatus } from "@/app/apiclient";
 import useImageTableColumns, {
   filterCells,
   filterHeaders,
 } from "@/app/images/components/ImagesTable/useImageTableColumns/useImageTableColumns";
 import { useOptimisticImages } from "@/app/images/hooks/useOptimisticImages/useOptimisticImages";
+import type { OptimisticImageStatusResponse } from "@/app/images/types";
 import { ConfigNames } from "@/app/store/config/types";
 
 import "./_index.scss";
@@ -48,11 +48,10 @@ const ImagesTable = ({
     isStatisticsLoading: images.stages.statistics.isLoading,
   });
 
-  const downloadingStatuses: (ImageStatus | ImageUpdateStatus)[] = [
-    "Downloading",
-    "OptimisticDownloading",
-    "OptimisticStopping",
-  ];
+  const downloadingStatuses: (
+    | OptimisticImageStatusResponse["status"]
+    | OptimisticImageStatusResponse["update_status"]
+  )[] = ["Downloading", "OptimisticDownloading", "OptimisticStopping"];
 
   useEffect(() => {
     if (!images.isLoading) {
@@ -92,9 +91,12 @@ const ImagesTable = ({
         filterSelectable: (row) =>
           row.original.release !== commissioningRelease &&
           !(
-            downloadingStatuses.includes(row.original.status as ImageStatus) ||
             downloadingStatuses.includes(
-              row.original.update_status as ImageUpdateStatus
+              row.original.status as OptimisticImageStatusResponse["status"]
+            ) ||
+            downloadingStatuses.includes(
+              row.original
+                .update_status as OptimisticImageStatusResponse["update_status"]
             )
           ),
         disabledSelectionTooltip: (row) =>

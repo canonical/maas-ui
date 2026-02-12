@@ -4,18 +4,14 @@ import type { QueryClient } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { IMAGES_WORKFLOW_KEY } from "@/app/api/query/images";
-import type {
-  ImageStatus,
-  ImageStatusResponse,
-  ImageUpdateStatus,
-  ListSelectionStatusResponse,
-} from "@/app/apiclient";
+import type { ListSelectionStatusResponse } from "@/app/apiclient";
 import {
   parseOptimisticImagesLocalStorage,
   registerPollingHook,
   silentPoll,
   startOrExtendSilentPolling,
 } from "@/app/images/hooks/useOptimisticImages/utils/silentPolling";
+import type { OptimisticImageStatusResponse } from "@/app/images/types";
 
 type OptimisticMutateProps = {
   queryClient: QueryClient;
@@ -59,30 +55,38 @@ const optimisticMutate = async ({
       },
     });
 
-  const haltingSyncStatus: ImageStatus =
+  const haltingSyncStatus: OptimisticImageStatusResponse["status"] =
     action === "OptimisticDownloading" ? "Waiting for download" : "Downloading";
-  const haltingUpdateStatus: ImageUpdateStatus =
+  const haltingUpdateStatus: OptimisticImageStatusResponse["update_status"] =
     action === "OptimisticDownloading" ? "Update available" : "Downloading";
 
   const optimisticSyncOverride: Partial<
-    Pick<ImageStatusResponse, "status" | "sync_percentage">
+    Pick<OptimisticImageStatusResponse, "status" | "sync_percentage">
   > =
     action === "OptimisticDownloading"
       ? {
-          status: "OptimisticDownloading" as ImageStatus,
+          status:
+            "OptimisticDownloading" as OptimisticImageStatusResponse["status"],
           sync_percentage: 0,
         }
-      : { status: "OptimisticStopping" as ImageStatus };
+      : {
+          status:
+            "OptimisticStopping" as OptimisticImageStatusResponse["status"],
+        };
 
   const optimisticUpdateOverride: Partial<
-    Pick<ImageStatusResponse, "sync_percentage" | "update_status">
+    Pick<OptimisticImageStatusResponse, "sync_percentage" | "update_status">
   > =
     action === "OptimisticDownloading"
       ? {
-          update_status: "OptimisticDownloading" as ImageUpdateStatus,
+          update_status:
+            "OptimisticDownloading" as OptimisticImageStatusResponse["update_status"],
           sync_percentage: 0,
         }
-      : { update_status: "OptimisticStopping" as ImageUpdateStatus };
+      : {
+          update_status:
+            "OptimisticStopping" as OptimisticImageStatusResponse["update_status"],
+        };
 
   // Extract the actual query keys and data
   const [selectionStatusKey, previousSelectionStatuses] =
@@ -111,10 +115,11 @@ const optimisticMutate = async ({
       }),
     };
 
-    queryClient.setQueryData<ListSelectionStatusResponse>(
-      selectionStatusKey,
-      updatedSelectionStatuses
-    );
+    queryClient.setQueryData<
+      Omit<ListSelectionStatusResponse, "items"> & {
+        items: OptimisticImageStatusResponse[];
+      }
+    >(selectionStatusKey, updatedSelectionStatuses);
   }
 
   return {
