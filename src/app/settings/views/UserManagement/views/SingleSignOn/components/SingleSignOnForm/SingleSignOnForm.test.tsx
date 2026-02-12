@@ -44,6 +44,9 @@ describe("SingleSignOnForm", () => {
       ""
     );
     expect(screen.getByRole("textbox", { name: /Scopes/i })).toHaveValue("");
+    expect(screen.getByRole("combobox", { name: /Token type/i })).toHaveValue(
+      "JWT"
+    );
   });
 
   it("pre-fills the data if a provider is present", () => {
@@ -66,6 +69,9 @@ describe("SingleSignOnForm", () => {
     );
     expect(screen.getByRole("textbox", { name: /Scopes/i })).toHaveValue(
       mockAuthProvider.scopes
+    );
+    expect(screen.getByRole("combobox", { name: /Token type/i })).toHaveValue(
+      mockAuthProvider.token_type
     );
   });
 
@@ -95,6 +101,10 @@ describe("SingleSignOnForm", () => {
     await userEvent.type(
       screen.getByRole("textbox", { name: /Scopes/i }),
       mockAuthProvider.scopes
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /Token type/i }),
+      mockAuthProvider.token_type
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -159,6 +169,10 @@ describe("SingleSignOnForm", () => {
     await userEvent.type(
       screen.getByRole("textbox", { name: /Scopes/i }),
       mockAuthProvider.scopes
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /Token type/i }),
+      mockAuthProvider.token_type
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));

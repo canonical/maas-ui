@@ -596,20 +596,6 @@ export type BootSourceSelectionSyncResponse = {
 };
 
 /**
- * BootSourceSyncResponse
- */
-export type BootSourceSyncResponse = {
-  /**
-   * Monitor Url
-   */
-  monitor_url: string;
-  /**
-   * Kind
-   */
-  kind?: string;
-};
-
-/**
  * BootSourceUpdateRequest
  */
 export type BootSourceUpdateRequest = {
@@ -759,6 +745,22 @@ export type CnameRecordResponse = {
    * Cname
    */
   cname: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * CallbackTargetResponse
+ *
+ * Content for a response returning the callback target URL.
+ */
+export type CallbackTargetResponse = {
+  /**
+   * Redirect Target
+   */
+  redirect_target: string;
   /**
    * Kind
    */
@@ -2435,6 +2437,10 @@ export type OAuthProviderRequest = {
    */
   redirect_uri: string;
   /**
+   * The type of access tokens issued by the OIDC provider (e.g., JWT or opaque).
+   */
+  token_type: OAuthTokenTypeChoices;
+  /**
    * Scopes
    *
    * A space-separated list of OIDC scopes defining the information requested from the provider.
@@ -2489,6 +2495,7 @@ export type OAuthProviderResponse = {
    * User Count
    */
   user_count?: number;
+  token_type: OAuthTokenTypeChoices;
   /**
    * Kind
    */
@@ -2519,6 +2526,13 @@ export type OAuthProvidersListResponse = {
    */
   kind?: string;
 };
+
+/**
+ * OAuthTokenTypeChoices
+ *
+ * An enumeration.
+ */
+export type OAuthTokenTypeChoices = "JWT" | "Opaque";
 
 /**
  * PackageRepositoryCreateRequest
@@ -5666,7 +5680,7 @@ export type HandleOauthCallbackResponses = {
   /**
    * Successful Response
    */
-  204: void;
+  200: CallbackTargetResponse;
 };
 
 export type HandleOauthCallbackResponse =
@@ -5680,15 +5694,19 @@ export type InitiateAuthFlowData = {
      * Email
      */
     email: string;
+    /**
+     * Redirect Target
+     */
+    redirect_target?: string;
   };
   url: "/MAAS/a/v3/auth/login_info";
 };
 
 export type InitiateAuthFlowErrors = {
   /**
-   * Not Found
+   * Precondition Failed
    */
-  404: NotFoundBodyResponse;
+  412: PreconditionFailedBodyResponse;
   /**
    * Unprocessable Entity
    */
@@ -6388,33 +6406,6 @@ export type GetBootsourceBootsourceselectionResourceResponses = {
 export type GetBootsourceBootsourceselectionResourceResponse =
   GetBootsourceBootsourceselectionResourceResponses[keyof GetBootsourceBootsourceselectionResourceResponses];
 
-export type ImportBootsourcesData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: "/MAAS/a/v3/boot_sources:import";
-};
-
-export type ImportBootsourcesErrors = {
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type ImportBootsourcesError =
-  ImportBootsourcesErrors[keyof ImportBootsourcesErrors];
-
-export type ImportBootsourcesResponses = {
-  /**
-   * Successful Response
-   */
-  202: BootSourceSyncResponse;
-};
-
-export type ImportBootsourcesResponse =
-  ImportBootsourcesResponses[keyof ImportBootsourcesResponses];
-
 export type ListBootsourceBootsourceselectionResourcesData = {
   body?: never;
   path: {
@@ -6463,33 +6454,6 @@ export type ListBootsourceBootsourceselectionResourcesResponses = {
 
 export type ListBootsourceBootsourceselectionResourcesResponse =
   ListBootsourceBootsourceselectionResourcesResponses[keyof ListBootsourceBootsourceselectionResourcesResponses];
-
-export type StopImportBootsourcesData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: "/MAAS/a/v3/boot_sources:stop_import";
-};
-
-export type StopImportBootsourcesErrors = {
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type StopImportBootsourcesError =
-  StopImportBootsourcesErrors[keyof StopImportBootsourcesErrors];
-
-export type StopImportBootsourcesResponses = {
-  /**
-   * Successful Response
-   */
-  202: BootSourceSyncResponse;
-};
-
-export type StopImportBootsourcesResponse =
-  StopImportBootsourcesResponses[keyof StopImportBootsourcesResponses];
 
 export type StopSyncBootsourceBootsourceselectionData = {
   body?: never;
