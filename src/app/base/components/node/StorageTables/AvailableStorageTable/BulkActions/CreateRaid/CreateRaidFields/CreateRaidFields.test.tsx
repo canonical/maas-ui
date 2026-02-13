@@ -6,6 +6,7 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitFor,
   within,
 } from "@/testing/utils";
 
@@ -208,18 +209,24 @@ describe("CreateRaidFields", () => {
       within(screen.getAllByTestId("active-status")[i]).queryByTestId(
         "is-active"
       );
-    const getCheckbox = (i: number) =>
-      screen.getAllByTestId("spare-storage-device")[i].querySelector("input");
+    const getCheckbox = (i: number) => screen.getAllByRole("checkbox")[i];
 
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
       "RAID 1"
     );
 
-    // RAID 1s allow spare devices, with a minimum of 2 active
-    expect(
+    // Wait for the spare column to appear after RAID level change
+    await waitFor(() => {
+      expect(
+        screen.getByRole("columnheader", { name: "Spare (max 2)" })
+      ).toBeInTheDocument();
+    });
+
+    // Click out of  select
+    await userEvent.click(
       screen.getByRole("columnheader", { name: "Spare (max 2)" })
-    ).toBeInTheDocument();
+    );
 
     // None of the spare checkboxes should be disabled.
     expect(getCheckbox(0)).not.toBeDisabled();
@@ -277,6 +284,11 @@ describe("CreateRaidFields", () => {
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
       "RAID 1"
+    );
+
+    // Click out of  select
+    await userEvent.click(
+      screen.getByRole("columnheader", { name: "Spare (max 2)" })
     );
 
     // Check the spare checkboxes for the first disk and first partition
