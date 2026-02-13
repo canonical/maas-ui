@@ -1,4 +1,4 @@
-import { Col, Icon, Input, Row, Select } from "@canonical/react-components";
+import { Col, Input, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import FilesystemFields from "../../../FilesystemFields";
@@ -7,11 +7,12 @@ import type { CreateRaidValues } from "../CreateRaid";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import TagNameField from "@/app/base/components/TagNameField";
+import DatastoreTable from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/DatastoreTable";
 import { RAID_MODES } from "@/app/store/machine/constants";
 import type { RaidMode } from "@/app/store/machine/constants";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk, Partition } from "@/app/store/types/node";
-import { formatSize, formatType, isDisk } from "@/app/store/utils";
+import { formatSize, isDisk } from "@/app/store/utils";
 
 type Props = {
   storageDevices: (Disk | Partition)[];
@@ -39,22 +40,6 @@ const getRaidSize = (
   return raidMode.calculateSize(minSize, numActive);
 };
 
-/**
- * Determine whether a storage device is selected to be a spare device.
- * @param storageDevice - the storage device to check.
- * @param spareBlockDeviceIds - the ids of the block devices selected to be spare.
- * @param sparePartitionIds - the ids of the partitions selected to be spare.
- * @returns whether the storage device is selected to be a spare device.
- */
-const isSpare = (
-  storageDevice: Disk | Partition,
-  spareBlockDeviceIds: CreateRaidValues["spareBlockDeviceIds"],
-  sparePartitionIds: CreateRaidValues["sparePartitionIds"]
-) =>
-  isDisk(storageDevice)
-    ? spareBlockDeviceIds.includes(storageDevice.id)
-    : sparePartitionIds.includes(storageDevice.id);
-
 export const CreateRaidFields = ({
   storageDevices,
   systemId,
@@ -77,7 +62,6 @@ export const CreateRaidFields = ({
     ? storageDevices.length - selectedMode.minDevices
     : 0;
   const numActive = blockDeviceIds.length + partitionIds.length;
-  const numSpare = spareBlockDeviceIds.length + sparePartitionIds.length;
   const raidSize = getRaidSize(storageDevices, selectedMode, numActive);
 
   const handleSpareCheckbox = (
@@ -250,64 +234,13 @@ export const CreateRaidFields = ({
       </Row>
       <Row>
         <Col size={12}>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Size</th>
-                <th>Type</th>
-                {maxSpares > 0 && (
-                  <>
-                    <th>Active</th>
-                    <th data-testid="max-spares">{`Spare (max ${maxSpares})`}</th>
-                  </>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {storageDevices.map((storageDevice) => {
-                const id = `raid-${storageDevice.type}-${storageDevice.id}`;
-                const isSpareDevice = isSpare(
-                  storageDevice,
-                  spareBlockDeviceIds,
-                  sparePartitionIds
-                );
-
-                return (
-                  <tr key={id}>
-                    <td>{storageDevice.name}</td>
-                    <td>{formatSize(storageDevice.size)}</td>
-                    <td>{formatType(storageDevice)}</td>
-                    {maxSpares > 0 && (
-                      <>
-                        <td data-testid="active-status">
-                          {isSpareDevice ? (
-                            <Icon data-testid="is-spare" name="close" />
-                          ) : (
-                            <Icon data-testid="is-active" name="tick" />
-                          )}
-                        </td>
-                        <td data-testid="spare-storage-device">
-                          <Input
-                            checked={isSpareDevice}
-                            data-testid={id}
-                            disabled={!isSpareDevice && numSpare >= maxSpares}
-                            id={id}
-                            label=" "
-                            labelClassName="is-inline-label"
-                            onChange={() => {
-                              handleSpareCheckbox(storageDevice, isSpareDevice);
-                            }}
-                            type="checkbox"
-                          />
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <DatastoreTable
+            data={storageDevices}
+            handleSpareCheckbox={handleSpareCheckbox}
+            maxSpares={maxSpares}
+            spareBlockDeviceIds={spareBlockDeviceIds}
+            sparePartitionIds={sparePartitionIds}
+          />
         </Col>
       </Row>
     </>

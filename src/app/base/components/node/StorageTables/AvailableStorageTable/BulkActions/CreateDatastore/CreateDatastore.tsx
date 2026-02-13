@@ -1,14 +1,12 @@
 import type { ReactElement } from "react";
 
-import { GenericTable } from "@canonical/maas-react-components";
 import { Col, Input, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import useCreateDatastoreColumns from "./useCreateDatastoreColumns/useCreateDatastoreColumns";
-
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import DatastoreTable from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/DatastoreTable";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
@@ -23,8 +21,6 @@ import {
   isDatastore,
   splitDiskPartitionIds,
 } from "@/app/store/utils";
-
-import "./_index.scss";
 
 type CreateDatastoreValues = {
   name: string;
@@ -75,8 +71,6 @@ export const CreateDatastore = ({
   );
   const totalSize = selected.reduce((sum, device) => (sum += device.size), 0);
 
-  const columns = useCreateDatastoreColumns();
-
   if (isMachineDetails(machine)) {
     return (
       <FormikForm<CreateDatastoreValues, MachineEventErrors>
@@ -110,13 +104,7 @@ export const CreateDatastore = ({
       >
         <Row>
           <Col size={12}>
-            <GenericTable
-              aria-label="Create datastore table"
-              className="create-datastore-table"
-              columns={columns}
-              data={selected}
-              isLoading={false}
-            />
+            <DatastoreTable data={selected} />
           </Col>
           <Col size={12}>
             <FormikField label="Name" name="name" required type="text" />
