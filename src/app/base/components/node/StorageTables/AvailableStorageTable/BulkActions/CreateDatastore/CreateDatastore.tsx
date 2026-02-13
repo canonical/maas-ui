@@ -24,6 +24,8 @@ import {
   splitDiskPartitionIds,
 } from "@/app/store/utils";
 
+import "./_index.scss";
+
 type CreateDatastoreValues = {
   name: string;
 };
