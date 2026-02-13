@@ -1,19 +1,12 @@
 import type { ReactElement } from "react";
 
-import {
-  Col,
-  Input,
-  Row,
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "@canonical/react-components";
+import { Col, Input, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import DatastoreTable from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/DatastoreTable";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
@@ -25,7 +18,6 @@ import type { RootState } from "@/app/store/root/types";
 import type { Disk, Partition } from "@/app/store/types/node";
 import {
   formatSize,
-  formatType,
   isDatastore,
   splitDiskPartitionIds,
 } from "@/app/store/utils";
@@ -112,24 +104,7 @@ export const CreateDatastore = ({
       >
         <Row>
           <Col size={12}>
-            <Table>
-              <thead>
-                <TableRow>
-                  <TableHeader>Name</TableHeader>
-                  <TableHeader>Size</TableHeader>
-                  <TableHeader>Device type</TableHeader>
-                </TableRow>
-              </thead>
-              <tbody>
-                {selected.map((device) => (
-                  <TableRow key={`${device.type}-${device.id}`}>
-                    <TableCell>{device.name}</TableCell>
-                    <TableCell>{formatSize(device.size)}</TableCell>
-                    <TableCell>{formatType(device)}</TableCell>
-                  </TableRow>
-                ))}
-              </tbody>
-            </Table>
+            <DatastoreTable data={selected} />
           </Col>
           <Col size={12}>
             <FormikField label="Name" name="name" required type="text" />

@@ -121,10 +121,10 @@ describe("CreateDatastore", () => {
 
     const rows = screen.getAllByRole("row");
     expect(rows).toHaveLength(3);
-    expect(within(rows[1]).getAllByRole("gridcell")[0]).toHaveTextContent(
+    expect(within(rows[1]).getAllByRole("cell")[0]).toHaveTextContent(
       selectedDisk.name
     );
-    expect(within(rows[2]).getAllByRole("gridcell")[0]).toHaveTextContent(
+    expect(within(rows[2]).getAllByRole("cell")[0]).toHaveTextContent(
       selectedPartition.name
     );
   });
