@@ -11,8 +11,7 @@ import "./_index.scss";
 type DatastoreTableProps = {
   data: (Disk | Partition)[];
   maxSpares?: number;
-  spareBlockDeviceIds?: number[];
-  sparePartitionIds?: number[];
+  numSpares?: number;
   handleSpareCheckbox?: (
     storageDevice: Disk | Partition,
     isSpareDevice: boolean
@@ -22,14 +21,12 @@ type DatastoreTableProps = {
 const DatastoreTable = ({
   data,
   maxSpares = 0,
-  spareBlockDeviceIds,
-  sparePartitionIds,
+  numSpares = 0,
   handleSpareCheckbox,
 }: DatastoreTableProps): ReactElement => {
   const columns = useDatastoreTableColumns({
     maxSpares,
-    spareBlockDeviceIds,
-    sparePartitionIds,
+    numSpares,
     handleSpareCheckbox,
   });
 

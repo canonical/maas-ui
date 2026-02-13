@@ -4,22 +4,22 @@ import { Icon, Input } from "@canonical/react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import type { Disk, Partition } from "@/app/store/types/node";
-import { formatSize, formatType, isDisk } from "@/app/store/utils";
+import { formatSize, formatType } from "@/app/store/utils";
+
+type StorageDeviceWithSpare = { isSpare?: boolean } & (Disk | Partition);
 
 export type DatastoreColumnDef = ColumnDef<
-  Disk | Partition,
-  Partial<Disk | Partition>
+  StorageDeviceWithSpare,
+  Partial<StorageDeviceWithSpare>
 >;
 
 const useDatastoreTableColumns = ({
   maxSpares,
-  spareBlockDeviceIds,
-  sparePartitionIds,
+  numSpares,
   handleSpareCheckbox,
 }: {
   maxSpares: number;
-  spareBlockDeviceIds?: number[];
-  sparePartitionIds?: number[];
+  numSpares: number;
   handleSpareCheckbox?: (
     storageDevice: Disk | Partition,
     isSpareDevice: boolean
@@ -68,15 +68,17 @@ const useDatastoreTableColumns = ({
                 cell: ({
                   row: { original: device },
                 }: {
-                  row: Row<Disk | Partition>;
+                  row: Row<StorageDeviceWithSpare>;
                 }) => {
-                  const isSpareDevice = isDisk(device)
-                    ? spareBlockDeviceIds?.includes(device.id)
-                    : sparePartitionIds?.includes(device.id);
-                  return isSpareDevice ? (
-                    <Icon data-testid="is-spare" name="close" />
-                  ) : (
-                    <Icon data-testid="is-active" name="tick" />
+                  const isSpareDevice = device.isSpare;
+                  return (
+                    <div data-testid="active-status">
+                      {isSpareDevice ? (
+                        <Icon data-testid="is-spare" name="close" />
+                      ) : (
+                        <Icon data-testid="is-active" name="tick" />
+                      )}
+                    </div>
                   );
                 },
               },
@@ -88,24 +90,25 @@ const useDatastoreTableColumns = ({
                 cell: ({
                   row: { original: device },
                 }: {
-                  row: Row<Disk | Partition>;
+                  row: Row<StorageDeviceWithSpare>;
+                  table: {
+                    getRowModel: () => {
+                      rows: { original: StorageDeviceWithSpare }[];
+                    };
+                  };
                 }) => {
-                  const isSpareDevice = isDisk(device)
-                    ? spareBlockDeviceIds?.includes(device.id)
-                    : sparePartitionIds?.includes(device.id);
-                  const numSpare =
-                    (spareBlockDeviceIds?.length ?? 0) +
-                    (sparePartitionIds?.length ?? 0);
+                  const isSpareDevice = device.isSpare;
                   return (
                     <Input
                       checked={isSpareDevice}
-                      disabled={!isSpareDevice && numSpare >= maxSpares}
+                      data-testid={`raid-${device.type}-${device.id}`}
+                      disabled={!isSpareDevice && numSpares >= maxSpares}
                       id={`raid-${device.type}-${device.id}`}
                       label=" "
                       labelClassName="is-inline-label"
                       onChange={() => {
                         if (handleSpareCheckbox) {
-                          handleSpareCheckbox(device, !!isSpareDevice);
+                          handleSpareCheckbox(device, isSpareDevice ?? false);
                         }
                       }}
                       type="checkbox"
@@ -116,7 +119,7 @@ const useDatastoreTableColumns = ({
             ]
           : []),
       ] as DatastoreColumnDef[],
-    [handleSpareCheckbox, maxSpares, spareBlockDeviceIds, sparePartitionIds]
+    [handleSpareCheckbox, maxSpares, numSpares]
   );
 };
 

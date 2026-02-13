@@ -62,7 +62,16 @@ export const CreateRaidFields = ({
     ? storageDevices.length - selectedMode.minDevices
     : 0;
   const numActive = blockDeviceIds.length + partitionIds.length;
+  const numSpares = spareBlockDeviceIds.length + sparePartitionIds.length;
   const raidSize = getRaidSize(storageDevices, selectedMode, numActive);
+
+  // Transform storage devices to include isSpare state
+  const storageDevicesWithSpareState = storageDevices.map((device) => ({
+    ...device,
+    isSpare: isDisk(device)
+      ? spareBlockDeviceIds.includes(device.id)
+      : sparePartitionIds.includes(device.id),
+  }));
 
   const handleSpareCheckbox = (
     storageDevice: Disk | Partition,
@@ -164,7 +173,7 @@ export const CreateRaidFields = ({
       <Row>
         <Col size={12}>
           <FormikField label="Name" name="name" required type="text" />
-          <FormikField<typeof Select>
+          <FormikField
             component={Select}
             label="RAID level"
             name="level"
@@ -235,11 +244,10 @@ export const CreateRaidFields = ({
       <Row>
         <Col size={12}>
           <DatastoreTable
-            data={storageDevices}
+            data={storageDevicesWithSpareState}
             handleSpareCheckbox={handleSpareCheckbox}
             maxSpares={maxSpares}
-            spareBlockDeviceIds={spareBlockDeviceIds}
-            sparePartitionIds={sparePartitionIds}
+            numSpares={numSpares}
           />
         </Col>
       </Row>
