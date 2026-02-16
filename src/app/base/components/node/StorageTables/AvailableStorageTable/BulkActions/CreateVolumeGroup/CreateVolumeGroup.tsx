@@ -1,16 +1,12 @@
 import type { ReactElement } from "react";
 
-import { GenericTable } from "@canonical/maas-react-components";
 import { Col, Input, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import "./index.scss";
-import type { CreateVolumeGroupColumnData } from "./useCreateVolumeGroupColumns/useCreateVolumeGroupColumns";
-import useCreateVolumeGroupColumns from "./useCreateVolumeGroupColumns/useCreateVolumeGroupColumns";
-
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import DatastoreTable from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/DatastoreTable";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
@@ -56,7 +52,7 @@ export const CreateVolumeGroup = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const columns = useCreateVolumeGroupColumns();
+
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "creatingVolumeGroup",
@@ -100,13 +96,7 @@ export const CreateVolumeGroup = ({
       >
         <Row>
           <Col size={12}>
-            <GenericTable<CreateVolumeGroupColumnData>
-              className="create-volume-group-table"
-              columns={columns}
-              data={selected}
-              isLoading={false}
-              noData="No devices selected."
-            />
+            <DatastoreTable data={selected} />
           </Col>
           <Col size={12}>
             <FormikField label="Name" name="name" required type="text" />
