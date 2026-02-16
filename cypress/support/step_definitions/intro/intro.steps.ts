@@ -1,7 +1,7 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { generateMAASURL } from "../../../e2e/utils";
 
-Given("the user is logged in with intro enabled", () => {
+Given("the user is logged in before the intro is completed", () => {
   cy.login({
     shouldSkipIntro: false,
     shouldSkipSetupIntro: false,
@@ -13,7 +13,7 @@ Given("the user navigates to the home page", () => {
   cy.waitForPageToLoad();
 });
 
-When("the user saves the intro setup", () => {
+When("the user saves the MAAS setup", () => {
   cy.findByRole("heading", { name: /Welcome to MAAS/i }).should("exist");
   cy.waitForPageToLoad();
   cy.findByRole("button", { name: /Save/i }).click();
@@ -34,7 +34,7 @@ Then("the intro page should be displayed", () => {
 });
 
 Then(
-  "the user should be redirected to the intro {string} setup",
+  "the user should be redirected to the {string} setup page",
   (section: string) => {
     cy.location("pathname").should("eq", generateMAASURL(`/intro/${section}`));
   }
