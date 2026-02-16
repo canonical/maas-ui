@@ -12,12 +12,12 @@ import RAMColumn from "@/app/kvm/components/RAMColumn";
 import StorageColumn from "@/app/kvm/components/StorageColumn";
 import TagsColumn from "@/app/kvm/components/TagsColumn";
 import VMsColumn from "@/app/kvm/components/VMsColumn";
-import type { LXDKVMHost } from "@/app/kvm/views/KVMList/LxdTable/LxdTable";
-import { LxdKVMHostType } from "@/app/kvm/views/KVMList/LxdTable/LxdTable";
+import type { LXDKVMHost } from "@/app/kvm/views/KVMList/LXDHostsTable/LXHHostsTable";
+import { LxdKVMHostType } from "@/app/kvm/views/KVMList/LXDHostsTable/LXHHostsTable";
 
 type LxdKVMHostColumnDef = ColumnDef<LXDKVMHost, Partial<LXDKVMHost>>;
 
-export const useLxdKVMHostTableColumns = (): LxdKVMHostColumnDef[] => {
+export const useLXDHostsTableColumns = (): LxdKVMHostColumnDef[] => {
   return useMemo(
     () =>
       [

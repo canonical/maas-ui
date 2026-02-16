@@ -6,7 +6,7 @@ import type { ZoneWithSummaryResponse } from "@/app/apiclient";
 import urls from "@/app/base/urls";
 import type { Props as RAMColumnProps } from "@/app/kvm/components/RAMColumn/RAMColumn";
 import type { KVMResource, KVMStoragePoolResources } from "@/app/kvm/types";
-import { useLxdKVMHostTableColumns } from "@/app/kvm/views/KVMList/LxdTable/LxdKVMHostTable/useLxdKVMHostTableColumns/useLxdKVMHostTableColumns";
+import { useLXDHostsTableColumns } from "@/app/kvm/views/KVMList/LXDHostsTable/useLXDHostsTable/useLXDHostsTableColumns";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import vmclusterSelectors from "@/app/store/vmcluster/selectors";
@@ -108,7 +108,7 @@ export const generateClusterRows = (vmclusters: VMCluster[]): LXDKVMHost[] =>
     })
   );
 
-const LxdTable = (): React.ReactElement | null => {
+const LXHHostsTable = (): React.ReactElement | null => {
   const singleHosts = useSelector(podSelectors.lxdSingleHosts);
   const singleHostsLoading = useSelector(podSelectors.loading);
   const singleHostsLoaded = useSelector(podSelectors.loaded);
@@ -118,7 +118,7 @@ const LxdTable = (): React.ReactElement | null => {
 
   const zones = useZones();
 
-  const columns = useLxdKVMHostTableColumns();
+  const columns = useLXDHostsTableColumns();
 
   const rows = !(
     singleHostsLoaded &&
@@ -137,9 +137,9 @@ const LxdTable = (): React.ReactElement | null => {
       columns={columns}
       data={rows}
       isLoading={singleHostsLoading || vmclustersLoading}
-      noData="No hosts found."
+      noData="No hosts available."
     />
   );
 };
 
-export default LxdTable;
+export default LXHHostsTable;
