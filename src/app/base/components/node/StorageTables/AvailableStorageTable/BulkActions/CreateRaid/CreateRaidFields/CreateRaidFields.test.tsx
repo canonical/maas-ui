@@ -6,6 +6,7 @@ import {
   renderWithProviders,
   screen,
   userEvent,
+  waitFor,
   within,
 } from "@/testing/utils";
 
@@ -65,7 +66,9 @@ describe("CreateRaidFields", () => {
     );
 
     // RAID 1s allow spare devices, with a minimum of 2 active
-    expect(screen.getByTestId("max-spares").textContent).toBe("Spare (max 1)");
+    expect(
+      screen.getByRole("columnheader", { name: "Spare (max 1)" })
+    ).toBeInTheDocument();
     // RAID 1 size is calculated as (minSize) = 1GB
     expect(screen.getByTestId("raid-size")).toHaveValue("1 GB");
   });
@@ -89,9 +92,9 @@ describe("CreateRaidFields", () => {
       "RAID 1"
     );
     // RAID 1s allow spare devices, with a minimum of 2 active
-    expect(screen.queryByTestId("max-spares")).toHaveTextContent(
-      "Spare (max 1)"
-    );
+    expect(
+      screen.getByRole("columnheader", { name: "Spare (max 1)" })
+    ).toBeInTheDocument();
     // RAID 1 size is calculated as (minSize) = 1GB
     expect(screen.getByTestId("raid-size")).toHaveValue("1 GB");
   });
@@ -117,9 +120,9 @@ describe("CreateRaidFields", () => {
     );
 
     // RAID 5s allow spare devices, with a minimum of 3 active
-    expect(screen.queryByTestId("max-spares")).toHaveTextContent(
-      "Spare (max 1)"
-    );
+    expect(
+      screen.getByRole("columnheader", { name: "Spare (max 1)" })
+    ).toBeInTheDocument();
     // RAID 5 size is calculated as minSize * (numActive - 1) = 1GB * (4 - 1)
     expect(screen.getByTestId("raid-size")).toHaveValue("3 GB");
   });
@@ -146,9 +149,9 @@ describe("CreateRaidFields", () => {
     );
 
     // RAID 6s allow spare devices, with a minimum of 4 active
-    expect(screen.queryByTestId("max-spares")).toHaveTextContent(
-      "Spare (max 1)"
-    );
+    expect(
+      screen.getByRole("columnheader", { name: "Spare (max 1)" })
+    ).toBeInTheDocument();
     // RAID 6 size is calculated as minSize * (numActive - 2) = 1GB * (5 - 2)
     expect(screen.getByTestId("raid-size")).toHaveValue("3 GB");
   });
@@ -174,9 +177,9 @@ describe("CreateRaidFields", () => {
     );
 
     // RAID 10s allow spare devices, with a minimum of 3 active
-    expect(screen.queryByTestId("max-spares")).toHaveTextContent(
-      "Spare (max 1)"
-    );
+    expect(
+      screen.getByRole("columnheader", { name: "Spare (max 1)" })
+    ).toBeInTheDocument();
     // RAID 10 size is calculated as (minSize * numActive) / 2 = (1.5GB * 4) / 2
     expect(screen.getByTestId("raid-size")).toHaveValue("3 GB");
   });
@@ -206,17 +209,23 @@ describe("CreateRaidFields", () => {
       within(screen.getAllByTestId("active-status")[i]).queryByTestId(
         "is-active"
       );
-    const getCheckbox = (i: number) =>
-      screen.getAllByTestId("spare-storage-device")[i].querySelector("input");
+    const getCheckbox = (i: number) => screen.getAllByRole("checkbox")[i];
 
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
       "RAID 1"
     );
 
-    // RAID 1s allow spare devices, with a minimum of 2 active
-    expect(screen.queryByTestId("max-spares")).toHaveTextContent(
-      "Spare (max 2)"
+    // Wait for the spare column to appear after RAID level change
+    await waitFor(() => {
+      expect(
+        screen.getByRole("columnheader", { name: "Spare (max 2)" })
+      ).toBeInTheDocument();
+    });
+
+    // Click out of  select
+    await userEvent.click(
+      screen.getByRole("columnheader", { name: "Spare (max 2)" })
     );
 
     // None of the spare checkboxes should be disabled.
@@ -275,6 +284,11 @@ describe("CreateRaidFields", () => {
     await userEvent.selectOptions(
       screen.getByLabelText("RAID level"),
       "RAID 1"
+    );
+
+    // Click out of  select
+    await userEvent.click(
+      screen.getByRole("columnheader", { name: "Spare (max 2)" })
     );
 
     // Check the spare checkboxes for the first disk and first partition
