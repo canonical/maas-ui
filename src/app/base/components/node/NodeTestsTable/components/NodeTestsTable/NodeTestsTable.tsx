@@ -21,7 +21,7 @@ import type {
 
 type Props = {
   node: ControllerDetails | MachineDetails;
-
+  isLoading?: boolean;
   scriptResults: ScriptResult[];
 };
 
@@ -77,7 +77,7 @@ const useScriptResultHistory = (scriptResults: ScriptResult[]) => {
   return history;
 };
 
-const NodeTestsTable = ({ node, scriptResults }: Props) => {
+const NodeTestsTable = ({ isLoading, node, scriptResults }: Props) => {
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const columns = useNodeTestsTableColumns({
     node,
@@ -101,7 +101,7 @@ const NodeTestsTable = ({ node, scriptResults }: Props) => {
         columns={columns}
         data={data}
         getSubRows={(originalRow) => originalRow.history}
-        isLoading={false}
+        isLoading={isLoading || false}
         noData="No results available."
         setSorting={setSorting}
         sorting={sorting}

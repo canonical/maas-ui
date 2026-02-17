@@ -66,10 +66,11 @@ const MachineDeployment = (): React.ReactElement => {
     isDetails,
   ]);
 
-  if (isId(id) && isDetails && scriptResults?.length) {
+  if (isDetails) {
     return (
       <div aria-label={Label.Title}>
         <NodeTestsTable
+          isLoading={loading}
           node={machine}
           scriptResults={deploymentResults || []}
         />

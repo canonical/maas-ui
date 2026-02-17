@@ -21,6 +21,9 @@ describe("NodeScripts", () => {
       machine: factory.machineState({
         items: [machine],
       }),
+      scriptresult: factory.scriptResultState({
+        loaded: true,
+      }),
     });
   });
 
@@ -55,6 +58,7 @@ describe("NodeScripts", () => {
           urls={{
             index: urls.machines.machine.scriptsResults.index,
             commissioning: urls.machines.machine.scriptsResults.commissioning,
+            deployment: urls.machines.machine.scriptsResults.deployment,
             testing: urls.machines.machine.scriptsResults.testing,
           }}
         />,
