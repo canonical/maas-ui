@@ -1,1 +1,1 @@
-export { default } from "./LXHHostsTable";
+export { default } from "./LXDHostsTable";

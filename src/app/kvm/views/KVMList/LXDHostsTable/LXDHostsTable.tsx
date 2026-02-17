@@ -108,7 +108,7 @@ export const generateClusterRows = (vmclusters: VMCluster[]): LXDKVMHost[] =>
     })
   );
 
-const LXHHostsTable = (): React.ReactElement | null => {
+const LXDHostsTable = (): React.ReactElement | null => {
   const singleHosts = useSelector(podSelectors.lxdSingleHosts);
   const singleHostsLoading = useSelector(podSelectors.loading);
   const singleHostsLoaded = useSelector(podSelectors.loaded);
@@ -142,4 +142,4 @@ const LXHHostsTable = (): React.ReactElement | null => {
   );
 };
 
-export default LXHHostsTable;
+export default LXDHostsTable;

@@ -1,6 +1,6 @@
 import { describe } from "vitest";
 
-import LXHHostsTable from "@/app/kvm/views/KVMList/LXDHostsTable/LXHHostsTable";
+import LXDHostsTable from "@/app/kvm/views/KVMList/LXDHostsTable/LXDHostsTable";
 import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
@@ -26,7 +26,7 @@ describe("LXDHostsTable", () => {
           loading: true,
         }),
       });
-      renderWithProviders(<LXHHostsTable />, { state });
+      renderWithProviders(<LXDHostsTable />, { state });
 
       await waitFor(() => {
         expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe("LXDHostsTable", () => {
     });
 
     it("displays a message when rendering an empty list", async () => {
-      renderWithProviders(<LXHHostsTable />);
+      renderWithProviders(<LXDHostsTable />);
 
       await waitFor(() => {
         expect(screen.getByText("No hosts available.")).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe("LXDHostsTable", () => {
     });
 
     it("displays the columns correctly", () => {
-      renderWithProviders(<LXHHostsTable />);
+      renderWithProviders(<LXDHostsTable />);
 
       [
         "Name Project",
@@ -72,7 +72,7 @@ describe("LXDHostsTable", () => {
           ],
         }),
       });
-      renderWithProviders(<LXHHostsTable />, { state });
+      renderWithProviders(<LXDHostsTable />, { state });
       expect(screen.getByText("Single host")).toBeInTheDocument();
       expect(screen.queryByRole("hosts-count")).toBeNull();
     });
@@ -87,7 +87,7 @@ describe("LXDHostsTable", () => {
           ],
         }),
       });
-      renderWithProviders(<LXHHostsTable />, { state });
+      renderWithProviders(<LXDHostsTable />, { state });
       expect(screen.getByText("Cluster")).toBeInTheDocument();
       expect(screen.getByTestId("hosts-count")).toHaveTextContent(
         "2 KVM hosts"
