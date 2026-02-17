@@ -200,6 +200,73 @@ describe("scriptResult selectors", () => {
     ]);
   });
 
+  it("returns deployment script results by node id", () => {
+    const deploymentResultsForNode = [
+      factory.scriptResult({
+        id: 1,
+        hardware_type: HardwareType.Node,
+        result_type: ScriptResultType.DEPLOYMENT,
+      }),
+      factory.scriptResult({
+        id: 2,
+        hardware_type: HardwareType.CPU,
+        result_type: ScriptResultType.DEPLOYMENT,
+      }),
+      factory.scriptResult({
+        id: 3,
+        result_type: ScriptResultType.DEPLOYMENT,
+      }),
+    ];
+
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
+        items: deploymentResultsForNode,
+      }),
+      nodescriptresult: factory.nodeScriptResultState({
+        items: { abc123: [1, 2, 3] },
+      }),
+    });
+
+    expect(selectors.getDeploymentByNodeId(state, "abc123")).toStrictEqual(
+      deploymentResultsForNode
+    );
+  });
+
+  it("returns failed deployment script results by node id", () => {
+    const deploymentResultsForNode = factory.scriptResult({
+      id: 1,
+      hardware_type: HardwareType.Node,
+      result_type: ScriptResultType.DEPLOYMENT,
+      status: ScriptResultStatus.FAILED,
+    });
+
+    const items = [
+      deploymentResultsForNode,
+      factory.scriptResult({
+        id: 2,
+        hardware_type: HardwareType.CPU,
+        result_type: ScriptResultType.DEPLOYMENT,
+      }),
+      factory.scriptResult({
+        id: 3,
+        result_type: ScriptResultType.DEPLOYMENT,
+      }),
+    ];
+
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
+        items,
+      }),
+      nodescriptresult: factory.nodeScriptResultState({
+        items: { abc123: [1, 2, 3] },
+      }),
+    });
+
+    expect(
+      selectors.getDeploymentByNodeId(state, "abc123", true)
+    ).toStrictEqual([deploymentResultsForNode]);
+  });
+
   it("returns network testing script results by node id", () => {
     const items = [
       factory.scriptResult({

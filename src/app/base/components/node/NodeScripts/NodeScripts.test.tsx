@@ -1,9 +1,9 @@
-import { Label as CommissioningLabel } from "../../../../machines/views/MachineDetails/MachineCommissioning/MachineCommissioning";
-import { Label as TestsLabel } from "../../../../machines/views/MachineDetails/MachineTests/MachineTests";
-
 import NodeScripts from "./NodeScripts";
 
 import urls from "@/app/base/urls";
+import { Label as CommissioningLabel } from "@/app/machines/views/MachineDetails/MachineCommissioning/MachineCommissioning";
+import { Label as DeploymentLabel } from "@/app/machines/views/MachineDetails/MachineDeployment/MachineDeployment";
+import { Label as TestsLabel } from "@/app/machines/views/MachineDetails/MachineTests/MachineTests";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -38,6 +38,12 @@ describe("NodeScripts", () => {
     {
       label: TestsLabel.Title,
       path: urls.machines.machine.scriptsResults.testing.index({
+        id: "abc123",
+      }),
+    },
+    {
+      label: DeploymentLabel.Title,
+      path: urls.machines.machine.scriptsResults.deployment.index({
         id: "abc123",
       }),
     },

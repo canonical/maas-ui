@@ -5,6 +5,7 @@ import ScriptStatus from "../../ScriptStatus";
 import NodeTestDetails from "../NodeTestDetails/NodeTestDetails";
 
 import MachineCommissioning from "@/app/machines/views/MachineDetails/MachineCommissioning";
+import MachineDeployment from "@/app/machines/views/MachineDetails/MachineDeployment";
 import MachineTests from "@/app/machines/views/MachineDetails/MachineTests";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -33,6 +34,10 @@ type Props = {
       index: GenerateURL;
       scriptResult: ScriptResultURL;
     };
+    deployment?: {
+      index: GenerateURL;
+      scriptResult: ScriptResultURL;
+    };
   };
 };
 
@@ -41,9 +46,11 @@ const NodeScripts = ({ node, urls }: Props) => {
 
   const commissioningPath = urls.commissioning.index({ id: node.system_id });
   const testingPath = urls.testing.index({ id: node.system_id });
+  const deploymentPath = urls.deployment?.index({ id: node.system_id }) ?? "";
 
   const showingCommissioning = pathname.startsWith(commissioningPath);
   const showingTesting = pathname.startsWith(testingPath);
+  const showDeployment = pathname.startsWith(deploymentPath);
 
   return (
     <>
@@ -52,7 +59,7 @@ const NodeScripts = ({ node, urls }: Props) => {
           {
             active:
               showingCommissioning ||
-              (!showingCommissioning && !showingTesting),
+              (!showingCommissioning && !showingTesting && !showDeployment),
             component: Link,
             label: (
               <ScriptStatus status={node.commissioning_status.status}>
@@ -67,11 +74,19 @@ const NodeScripts = ({ node, urls }: Props) => {
             label: "Tests",
             to: testingPath,
           },
+          ...(deploymentPath
+            ? [
+                {
+                  active: showDeployment,
+                  component: Link,
+                  label: "Deployment",
+                  to: deploymentPath,
+                },
+              ]
+            : []),
         ]}
       />
-
       <Routes>
-        {/* <Route element={<Navigate replace to={commissioningPath} />} index /> */}
         {[urls.index(null), urls.commissioning.index(null)].map((path) => (
           <Route
             element={<MachineCommissioning />}
@@ -105,6 +120,32 @@ const NodeScripts = ({ node, urls }: Props) => {
             urls.index(null)
           )}
         />
+        {"deployment" in urls &&
+        urls.deployment &&
+        urls.deployment !== undefined ? (
+          <>
+            <Route
+              element={<MachineDeployment />}
+              path={getRelativeRoute(
+                urls.deployment.index(null),
+                urls.index(null)
+              )}
+            />
+            <Route
+              element={
+                <NodeTestDetails
+                  // TS keeps complaining about deployment possibly being undefined,
+                  // despite the check above this ensuring it is defined
+                  getReturnPath={(id) => urls.deployment!.index({ id })}
+                />
+              }
+              path={getRelativeRoute(
+                urls.deployment.scriptResult(null),
+                urls.index(null)
+              )}
+            />
+          </>
+        ) : null}
       </Routes>
     </>
   );

@@ -1,4 +1,5 @@
 import { Label as CommissioningLabel } from "../MachineCommissioning/MachineCommissioning";
+import { Label as DeploymentLabel } from "../MachineDeployment/MachineDeployment";
 import { Label as TestsLabel } from "../MachineTests/MachineTests";
 
 import MachineScripts, { Label } from "./MachineScripts";
@@ -47,6 +48,12 @@ describe("MachineScripts", () => {
     {
       label: TestsLabel.Title,
       path: urls.machines.machine.scriptsResults.testing.index({
+        id: "abc123",
+      }),
+    },
+    {
+      label: DeploymentLabel.Title,
+      path: urls.machines.machine.scriptsResults.deployment.index({
         id: "abc123",
       }),
     },

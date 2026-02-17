@@ -17,6 +17,12 @@ const urls = {
         "/machine/:id/commissioning/:scriptResultId/details"
       ),
     },
+    deployment: {
+      index: withId("/machine/:id/deployment"),
+      scriptResult: withIdScriptResultId(
+        "/machine/:id/deployment/:scriptResultId/details"
+      ),
+    },
     configuration: withId("/machine/:id/configuration"),
     events: withId("/machine/:id/events"),
     index: withId("/machine/:id"),
@@ -34,6 +40,12 @@ const urls = {
         index: withId("/machine/:id/scripts/commissioning"),
         scriptResult: withIdScriptResultId(
           "/machine/:id/scripts/commissioning/:scriptResultId/details"
+        ),
+      },
+      deployment: {
+        index: withId("/machine/:id/scripts/deployment"),
+        scriptResult: withIdScriptResultId(
+          "/machine/:id/scripts/deployment/:scriptResultId/details"
         ),
       },
       testing: {

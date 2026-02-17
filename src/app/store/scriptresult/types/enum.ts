@@ -46,4 +46,6 @@ export enum ScriptResultType {
   COMMISSIONING = 0,
   INSTALLATION = 1,
   TESTING = 2,
+  RELEASE = 3,
+  DEPLOYMENT = 4,
 }

@@ -29,6 +29,7 @@ const MachineScript = ({ systemId }: Props): React.ReactElement => {
       urls={{
         index: urls.machines.machine.scriptsResults.index,
         commissioning: urls.machines.machine.scriptsResults.commissioning,
+        deployment: urls.machines.machine.scriptsResults.deployment,
         testing: urls.machines.machine.scriptsResults.testing,
       }}
     />
