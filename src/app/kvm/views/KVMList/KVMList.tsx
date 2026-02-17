@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 
 import KVMListHeader from "./KVMListHeader";
-import LxdTable from "./LxdTable";
+import LXDHostsTable from "./LXDHostsTable";
 import VirshTable from "./components/VirshTable/VirshTable";
 
 import PageContent from "@/app/base/components/PageContent/PageContent";
@@ -52,7 +52,7 @@ const KVMList = (): ReactElement => {
   } else if (showingLXD && hasLXDs) {
     content = (
       <Strip className="u-no-padding--bottom" data-testid="lxd-table" shallow>
-        <LxdTable />
+        <LXDHostsTable />
       </Strip>
     );
   } else if (showingVirsh && hasVirsh) {

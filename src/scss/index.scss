@@ -191,7 +191,6 @@
 @import "@/app/kvm/components/VfResources";
 @import "@/app/kvm/components/VmResources";
 @import "@/app/kvm/components/SettingsBackLink";
-@import "@/app/kvm/views/KVMList/LxdTable/LxdKVMHostTable";
 @import "@/app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHostsTable";
 @import "@/app/kvm/views/LXDClusterDetails/LXDClusterSummaryCard";
 @import "@/app/controllers/views/ControllerDetails/ControllerVLANs/ControllerVLANsTable";
@@ -207,7 +206,6 @@
 @include LXDClusterHostsTable;
 @include LXDClusterSummaryCard;
 @include LXDHostToolbar;
-@include LxdKVMHostTable;
 @include LXDVMsSummaryCard;
 @include MachineSelect;
 @include NumaResources;
