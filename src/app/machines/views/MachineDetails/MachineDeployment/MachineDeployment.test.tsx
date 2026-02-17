@@ -38,6 +38,7 @@ describe("MachineDeployment", () => {
   });
 
   it("renders the spinner while script results are loading.", () => {
+    state.scriptresult.loading = true;
     renderWithProviders(<MachineDeployment />, {
       state,
       initialEntries: ["/machine/abc123"],
@@ -45,6 +46,7 @@ describe("MachineDeployment", () => {
     });
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
+
   it("fetches script results if they haven't been fetched", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
