@@ -2,7 +2,7 @@ Feature: Footer
 
 Background:
     Given the user is logged in
-    And the user is on the home page
+    And the user navigates to the home page
 
 Scenario: Navigating to the local documentation
     When the user looks for the "local documentation" link

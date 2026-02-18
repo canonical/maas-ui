@@ -1,9 +1,5 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
-import { generateMAASURL, generateMac } from "../../../e2e/utils";
-
-Given("the user is on the devices page", () => {
-  cy.visit(generateMAASURL("/devices"));
-});
+import { generateMac } from "../../../e2e/utils";
 
 Given("the user adds a new device", () => {
   cy.findByRole("button", { name: /Add device/ }).click();

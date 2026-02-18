@@ -8,11 +8,6 @@ Given("the user is logged in before the intro is completed", () => {
   });
 });
 
-Given("the user navigates to the home page", () => {
-  cy.visit(generateMAASURL("/"));
-  cy.waitForPageToLoad();
-});
-
 When("the user saves the MAAS setup", () => {
   cy.findByRole("heading", { name: /Welcome to MAAS/i }).should("exist");
   cy.waitForPageToLoad();
@@ -32,10 +27,3 @@ Then("the intro page should be displayed", () => {
   cy.findByRole("heading", { name: /Welcome to MAAS/i }).should("exist");
   cy.location("pathname").should("eq", generateMAASURL("/intro"));
 });
-
-Then(
-  "the user should be redirected to the {string} setup page",
-  (section: string) => {
-    cy.location("pathname").should("eq", generateMAASURL(`/intro/${section}`));
-  }
-);

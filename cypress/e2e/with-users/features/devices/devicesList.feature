@@ -2,7 +2,7 @@ Feature: Device listing
 
 Background
     Given the user is logged in
-    And the user is on the devices page
+    And the user navigates to the devices page
 
 Scenario: The correct heading is rendered
     Then the section header title should be "Devices"
