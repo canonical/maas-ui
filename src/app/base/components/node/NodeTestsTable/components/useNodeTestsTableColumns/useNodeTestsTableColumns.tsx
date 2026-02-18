@@ -143,12 +143,19 @@ const useNodeTestsTableColumns = ({
                           scriptResultId: row.original.id,
                         }
                       )
-                    : urls.machines.machine.scriptsResults.testing.scriptResult(
-                        {
-                          id: node.system_id,
-                          scriptResultId: row.original.id,
-                        }
-                      )
+                    : row.original.result_type === ScriptResultType.DEPLOYMENT
+                      ? urls.machines.machine.scriptsResults.deployment.scriptResult(
+                          {
+                            id: node.system_id,
+                            scriptResultId: row.original.id,
+                          }
+                        )
+                      : urls.machines.machine.scriptsResults.testing.scriptResult(
+                          {
+                            id: node.system_id,
+                            scriptResultId: row.original.id,
+                          }
+                        )
                   : urls.controllers.controller.commissioning.scriptResult({
                       id: node.system_id,
                       scriptResultId: row.original.id,

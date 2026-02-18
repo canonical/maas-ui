@@ -1,12 +1,11 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { screen } from "@testing-library/react";
 
-import MachineCommissioning from ".";
+import MachineDeployment from ".";
 
-import { HardwareType } from "@/app/base/enum";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptResultType } from "@/app/store/scriptresult/types";
-import { TestStatusStatus } from "@/app/store/types/node";
+import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { renderWithProviders } from "@/testing/utils";
 
@@ -18,9 +17,8 @@ vi.mock("@canonical/react-components/dist/hooks", () => {
   };
 });
 
-describe("MachineCommissioning", () => {
+describe("MachineDeployment", () => {
   let state: RootState;
-
   beforeEach(() => {
     state = factory.rootState({
       machine: factory.machineState({
@@ -40,7 +38,8 @@ describe("MachineCommissioning", () => {
   });
 
   it("renders the spinner while script results are loading.", () => {
-    renderWithProviders(<MachineCommissioning />, {
+    state.scriptresult.loading = true;
+    renderWithProviders(<MachineDeployment />, {
       state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
@@ -52,7 +51,7 @@ describe("MachineCommissioning", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
 
-    const { store } = renderWithProviders(<MachineCommissioning />, {
+    const { store } = renderWithProviders(<MachineDeployment />, {
       state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
@@ -68,7 +67,7 @@ describe("MachineCommissioning", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
 
-    const { store, rerender } = renderWithProviders(<MachineCommissioning />, {
+    const { store, rerender } = renderWithProviders(<MachineDeployment />, {
       state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",
@@ -78,7 +77,7 @@ describe("MachineCommissioning", () => {
         .getActions()
         .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(1);
-    rerender(<MachineCommissioning />, {
+    rerender(<MachineDeployment />, {
       state,
     });
     expect(
@@ -88,15 +87,13 @@ describe("MachineCommissioning", () => {
     ).toBe(1);
   });
 
-  it("refetchs script results when the machine commissioning status changes", () => {
+  it("refetchs script results when the machine status changes", () => {
     vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
-      () => TestStatusStatus.PASSED
+      () => NodeStatus.DEPLOYED
     );
     state.machine.items = [
       factory.machineDetails({
-        commissioning_status: factory.testStatus({
-          status: TestStatusStatus.PENDING,
-        }),
+        status: NodeStatus.DEPLOYING,
         locked: false,
         permissions: ["edit"],
         system_id: "abc123",
@@ -106,12 +103,11 @@ describe("MachineCommissioning", () => {
     state.scriptresult.items = [
       factory.scriptResult({
         id: 1,
-        result_type: ScriptResultType.TESTING,
-        hardware_type: HardwareType.CPU,
+        result_type: ScriptResultType.DEPLOYMENT,
       }),
     ];
 
-    const { store } = renderWithProviders(<MachineCommissioning />, {
+    const { store } = renderWithProviders(<MachineDeployment />, {
       state,
       initialEntries: ["/machine/abc123"],
       pattern: "/machine/:id",

@@ -185,6 +185,37 @@ const getHardwareTestingByNodeId = createSelector(
 );
 
 /**
+ * Returns deployment script results by node id
+ * @param state - Redux state
+ * @param nodeId - node system id
+ * @param failed - Whether to filter by the failed results.
+ * @returns script results
+ */
+const getDeploymentByNodeId = createSelector(
+  [
+    nodeScriptResultSelectors.all,
+    all,
+    (
+      _: RootState,
+      nodeId: Node["system_id"] | null | undefined,
+      failed?: boolean
+    ) => ({
+      failed,
+      nodeId,
+    }),
+  ],
+  (nodeScriptResult, scriptResults, { failed, nodeId }) => {
+    const results = getResult(nodeScriptResult, scriptResults, nodeId, [
+      ScriptResultType.DEPLOYMENT,
+    ]);
+    if (failed) {
+      return getFailed(results);
+    }
+    return results;
+  }
+);
+
+/**
  * Returns commissioning testing results (CPU, Memory, Network) by node id
  * @param state - Redux state
  * @param nodeId - node system id
@@ -455,6 +486,7 @@ const scriptResult = {
   getById,
   getByNodeId,
   getCommissioningByNodeId,
+  getDeploymentByNodeId,
   getFailedTestingResultsByNodeIds,
   getHardwareTestingByNodeId,
   getHistoryById,
