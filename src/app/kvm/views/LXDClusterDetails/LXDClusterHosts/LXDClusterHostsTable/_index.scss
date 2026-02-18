@@ -1,35 +1,12 @@
-@mixin LXDClusterHostsTable {
-  .lxd-cluster-hosts-table {
-    .name-col {
-      @include breakpoint-widths(100%, 60%, 50%, 35%, 35%);
-    }
+.p-generic-table.lxd-cluster-table {
+  th, td {
+    &.name {
+      text-align: left !important;
 
-    .vms-col {
-      @include breakpoint-widths(0, 0, 0, 0, 4rem);
-    }
-
-    .tags-col {
-      @include breakpoint-widths(0, 40%, 50%, 35%, 35%);
-    }
-
-    .pool-col {
-      @include breakpoint-widths(0, 0, 0, 30%, 30%);
-    }
-
-    .cpu-col {
-      @include breakpoint-widths(0, 0, 5rem, 9rem, 9rem);
-    }
-
-    .ram-col {
-      @include breakpoint-widths(0, 0, 8rem, 11rem, 11rem);
-    }
-
-    .storage-col {
-      @include breakpoint-widths(0, 0, 8rem, 11rem, 11rem);
-    }
-
-    .actions-col {
-      width: 7rem;
+      button {
+        text-align: left !important;
+        display: flex;
+      }
     }
   }
 }
