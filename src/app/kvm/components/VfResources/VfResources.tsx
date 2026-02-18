@@ -40,9 +40,7 @@ const VfResources = ({
     );
     content = (
       <>
-        <h4 className="vf-resources__header p-heading--small u-sv1">
-          Virtual functions
-        </h4>
+        <h4 className="p-text--x-small-capitalised">Virtual functions</h4>
         <div aria-label="vf-resources-meter" className="vf-resources__meter">
           <KVMResourceMeter
             allocated={allocatedVFs}

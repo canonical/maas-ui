@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
-    padding: 0 $sph--large;
+    padding: $spv--medium $sph--large;
   }
 
   .vf-resources__table-container {
