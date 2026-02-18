@@ -47,6 +47,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
                   props: {
                     subnetId: subnet!.id,
                   },
+                  size: "large",
                 });
               },
             },
