@@ -18,6 +18,7 @@ export const pages: Page[] = [
   { heading: "My preferences", headingLevel: 2, url: "/account/prefs/details" },
 ];
 export const routes: Record<string, string> = {
+  controllers: "/controllers",
   devices: "/devices",
   domains: "/domains",
   home: "/",
