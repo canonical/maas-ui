@@ -1,9 +1,4 @@
-import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
-import { generateMAASURL } from "../../../e2e/utils";
-
-When("the user navigates to the pools page", () => {
-  cy.visit(generateMAASURL("/pools"));
-});
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 
 Then("the pools heading should show machine and pool counts", () => {
   cy.findByRole("heading", {

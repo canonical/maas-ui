@@ -13,4 +13,4 @@ Scenario: Saving MAAS setup redirects to images setup page
 
 Scenario: The user can skip the initial setup
     When the user skips the initial setup
-    Then the user should be redirected to the user setup
+    Then the user should be redirected to the user setup page

@@ -17,5 +17,20 @@ export const pages: Page[] = [
   },
   { heading: "My preferences", headingLevel: 2, url: "/account/prefs/details" },
 ];
+export const routes: Record<string, string> = {
+  devices: "/devices",
+  domains: "/domains",
+  home: "/",
+  images: "/images",
+  "images setup": "/intro/images",
+  kvm: "/kvm",
+  "maas setup": "/intro",
+  "machines list": "/machines",
+  "network discovery": "/network-discovery",
+  pools: "/pools",
+  preferences: "/account/prefs",
+  "user setup": "/intro/user",
+  zones: "/zones",
+};
 // longer timeout that can be useful for slow commands
 export const LONG_TIMEOUT = 30000;
