@@ -84,5 +84,6 @@ context("Controller details", () => {
           cy.findByTestId("details-link").click();
         });
     });
+    cy.findByRole("heading", { name: /details/i }).should("exist");
   });
 });
