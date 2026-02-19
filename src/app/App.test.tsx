@@ -13,6 +13,7 @@ import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.createSession.handler(),
   notificationResolvers.listNotifications.handler()
 );
 
@@ -39,6 +40,7 @@ describe("App", () => {
 
   it("displays correct status on connection errors", () => {
     state.status.error = "Uh oh spaghettio";
+    state.status.connectedCount = 2;
     state.status.authenticated = true;
     renderWithProviders(<App />, { initialEntries: ["/settings"], state });
     expect(screen.getByText(/Trying to reconnect/i)).toBeInTheDocument();
@@ -98,18 +100,20 @@ describe("App", () => {
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("connects to the WebSocket", () => {
+  it("connects to the WebSocket", async () => {
     state.status.authenticated = true;
 
     const { store } = renderWithProviders(<App />, {
       initialEntries: ["/settings"],
       state,
     });
-    expect(
-      store
-        .getActions()
-        .some((action) => action.type === "status/websocketConnect")
-    ).toBe(true);
+    await waitFor(() => {
+      expect(
+        store
+          .getActions()
+          .some((action) => action.type === "status/websocketConnect")
+      ).toBe(true);
+    });
   });
 
   it("fetches the auth user when connected", async () => {

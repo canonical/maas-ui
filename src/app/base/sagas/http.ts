@@ -7,6 +7,7 @@ import type { Script } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
 import type { SimpleNode } from "@/app/store/types/node";
 import { getCookie } from "@/app/utils";
+import { clearCookie, COOKIE_NAMES } from "@/app/utils/cookies";
 
 type CSRFToken = string;
 
@@ -81,8 +82,16 @@ const scriptresultsDownload = (
 
 export const api = {
   auth: {
-    checkAuthenticated: (): Promise<string> => {
-      return fetch(LOGIN_API).then((response) => {
+    checkAuthenticated: (): Promise<{
+      is_authenticated: boolean;
+      no_users: boolean;
+      kind: string;
+    }> => {
+      const access_token = getCookie(COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME);
+      const headers = access_token
+        ? { Authorization: `Bearer ${access_token}` }
+        : undefined;
+      return fetch(LOGIN_API, { headers }).then((response) => {
         const status = response.status.toString();
         if (status.startsWith("5")) {
           // If a 5xx error is returned then the API server is down for
@@ -286,6 +295,10 @@ export function* checkAuthenticatedSaga(): SagaGenerator<void> {
   try {
     yield* put({ type: "status/checkAuthenticatedStart" });
     const response = yield* call(api.auth.checkAuthenticated);
+    if (!response.is_authenticated) {
+      clearCookie(COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME, { path: "/" });
+      clearCookie(COOKIE_NAMES.LOCAL_REFRESH_TOKEN_NAME, { path: "/" });
+    }
     yield* put({
       payload: response,
       type: "status/checkAuthenticatedSuccess",
