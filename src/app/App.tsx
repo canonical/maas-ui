@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import {
   Application,
@@ -15,7 +15,7 @@ import { Outlet, useLocation } from "react-router";
 
 import packageInfo from "../../package.json";
 
-import { useExtendSession } from "./api/query/auth";
+import { useCreateSession, useExtendSession } from "./api/query/auth";
 import {
   useDismissNotification,
   useDismissNotifications,
@@ -25,6 +25,7 @@ import SectionHeader from "./base/components/SectionHeader";
 import useSessionExtender from "./base/hooks/useSessionExtender/useSessionExtender";
 import ThemePreviewContextProvider from "./base/theme-context";
 import { MAAS_UI_ID } from "./constants";
+import { getCookie } from "./utils";
 
 import AppSideNavigation from "@/app/base/components/AppSideNavigation";
 import StatusBar from "@/app/base/components/StatusBar";
@@ -46,8 +47,23 @@ const ConnectionStatus = () => {
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
   const authenticated = useSelector(status.authenticated);
+  const [showError, setShowError] = useState(false);
   const shouldDisplayConnectionError =
     authenticated && (!!connectionError || (!connecting && !connected));
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout | undefined;
+    if (shouldDisplayConnectionError) {
+      timeout = setTimeout(() => {
+        setShowError(true);
+      }, 500); // 0.5s debounce
+    } else {
+      setShowError(false);
+    }
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [shouldDisplayConnectionError]);
 
   useEffect(() => {
     if (connectionError) {
@@ -58,7 +74,7 @@ const ConnectionStatus = () => {
     }
   }, [connectionError]);
 
-  return shouldDisplayConnectionError ? (
+  return showError ? (
     <div className="p-modal" style={{ alignItems: "flex-start" }}>
       <section
         className="p-modal__dialog"
@@ -80,6 +96,7 @@ export const App = (): React.ReactElement => {
   const dispatch = useDispatch();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
+  const createSession = useCreateSession();
   const authenticating = useSelector(status.authenticating);
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
@@ -102,10 +119,22 @@ export const App = (): React.ReactElement => {
   }, [authenticated, dispatch, previousAuthenticated]);
 
   useEffect(() => {
-    if (authenticated) {
-      // Connect the websocket before anything else in the app can be done.
-      dispatch(statusActions.websocketConnect());
-    }
+    const initializeSession = async () => {
+      if (authenticated) {
+        // If the user is authenticated but has no session cookies,
+        // create a new session so that the websocket connection can be established.
+        const csrftoken = getCookie("csrftoken");
+        const sessionid = getCookie("sessionid");
+        if (!csrftoken || !sessionid) {
+          await createSession.mutateAsync({});
+        }
+
+        // Connect the websocket before anything else in the app can be done.
+        dispatch(statusActions.websocketConnect());
+      }
+    };
+    initializeSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, authenticated]);
 
   useEffect(() => {
