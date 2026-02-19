@@ -44,12 +44,14 @@ export enum VaultErrors {
 
 const ConnectionStatus = () => {
   const connected = useSelector(status.connected);
+  const connectedCount = useSelector(status.connectedCount);
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
   const authenticated = useSelector(status.authenticated);
   const shouldDisplayConnectionError =
-    authenticated && (!!connectionError || (!connecting && !connected));
-  console.log("shouldDisplayConnectionError", shouldDisplayConnectionError); // --- IGNORE ---
+    connectedCount > 0 &&
+    authenticated &&
+    (!!connectionError || (!connecting && !connected));
 
   useEffect(() => {
     if (connectionError) {
@@ -107,9 +109,6 @@ export const App = (): React.ReactElement => {
   useEffect(() => {
     const initializeSession = async () => {
       if (authenticated) {
-        // Connect the websocket before anything else in the app can be done.
-        dispatch(statusActions.websocketConnect());
-
         // If the user is authenticated but has no session cookies,
         // create a new session so that the websocket connection can be established.
         const csrftoken = getCookie("csrftoken");
@@ -117,6 +116,9 @@ export const App = (): React.ReactElement => {
         if (!csrftoken || !sessionid) {
           await createSession.mutateAsync({});
         }
+
+        // Connect the websocket before anything else in the app can be done.
+        dispatch(statusActions.websocketConnect());
       }
     };
     initializeSession();

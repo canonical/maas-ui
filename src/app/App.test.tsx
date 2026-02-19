@@ -40,6 +40,7 @@ describe("App", () => {
 
   it("displays correct status on connection errors", () => {
     state.status.error = "Uh oh spaghettio";
+    state.status.connectedCount = 2;
     state.status.authenticated = true;
     renderWithProviders(<App />, { initialEntries: ["/settings"], state });
     expect(screen.getByText(/Trying to reconnect/i)).toBeInTheDocument();
