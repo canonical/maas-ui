@@ -13,6 +13,7 @@ import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.createSession.handler(),
   notificationResolvers.listNotifications.handler()
 );
 
@@ -98,18 +99,20 @@ describe("App", () => {
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("connects to the WebSocket", () => {
+  it("connects to the WebSocket", async () => {
     state.status.authenticated = true;
 
     const { store } = renderWithProviders(<App />, {
       initialEntries: ["/settings"],
       state,
     });
-    expect(
-      store
-        .getActions()
-        .some((action) => action.type === "status/websocketConnect")
-    ).toBe(true);
+    await waitFor(() => {
+      expect(
+        store
+          .getActions()
+          .some((action) => action.type === "status/websocketConnect")
+      ).toBe(true);
+    });
   });
 
   it("fetches the auth user when connected", async () => {

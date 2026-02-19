@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 
 import {
   Application,
@@ -47,23 +47,9 @@ const ConnectionStatus = () => {
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
   const authenticated = useSelector(status.authenticated);
-  const [showError, setShowError] = useState(false);
   const shouldDisplayConnectionError =
     authenticated && (!!connectionError || (!connecting && !connected));
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout | undefined;
-    if (shouldDisplayConnectionError) {
-      timeout = setTimeout(() => {
-        setShowError(true);
-      }, 500); // 0.5s debounce
-    } else {
-      setShowError(false);
-    }
-    return () => {
-      if (timeout) clearTimeout(timeout);
-    };
-  }, [shouldDisplayConnectionError]);
+  console.log("shouldDisplayConnectionError", shouldDisplayConnectionError); // --- IGNORE ---
 
   useEffect(() => {
     if (connectionError) {
@@ -74,7 +60,7 @@ const ConnectionStatus = () => {
     }
   }, [connectionError]);
 
-  return showError ? (
+  return shouldDisplayConnectionError ? (
     <div className="p-modal" style={{ alignItems: "flex-start" }}>
       <section
         className="p-modal__dialog"
@@ -121,6 +107,9 @@ export const App = (): React.ReactElement => {
   useEffect(() => {
     const initializeSession = async () => {
       if (authenticated) {
+        // Connect the websocket before anything else in the app can be done.
+        dispatch(statusActions.websocketConnect());
+
         // If the user is authenticated but has no session cookies,
         // create a new session so that the websocket connection can be established.
         const csrftoken = getCookie("csrftoken");
@@ -128,9 +117,6 @@ export const App = (): React.ReactElement => {
         if (!csrftoken || !sessionid) {
           await createSession.mutateAsync({});
         }
-
-        // Connect the websocket before anything else in the app can be done.
-        dispatch(statusActions.websocketConnect());
       }
     };
     initializeSession();
