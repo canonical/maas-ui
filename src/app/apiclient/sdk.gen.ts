@@ -327,9 +327,6 @@ import type {
   HandleOauthCallbackData,
   HandleOauthCallbackErrors,
   HandleOauthCallbackResponses,
-  ImportBootsourcesData,
-  ImportBootsourcesErrors,
-  ImportBootsourcesResponses,
   ImportUserSshkeysData,
   ImportUserSshkeysErrors,
   ImportUserSshkeysResponses,
@@ -471,9 +468,6 @@ import type {
   SetConfigurationsData,
   SetConfigurationsErrors,
   SetConfigurationsResponses,
-  StopImportBootsourcesData,
-  StopImportBootsourcesErrors,
-  StopImportBootsourcesResponses,
   StopSyncBootsourceBootsourceselectionData,
   StopSyncBootsourceBootsourceselectionErrors,
   StopSyncBootsourceBootsourceselectionResponses,
@@ -1229,28 +1223,6 @@ export const getBootsourceBootsourceselectionResource = <
 };
 
 /**
- * Import Bootsources
- */
-export const importBootsources = <ThrowOnError extends boolean = false>(
-  options?: Options<ImportBootsourcesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).post<
-    ImportBootsourcesResponses,
-    ImportBootsourcesErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/boot_sources:import",
-    ...options,
-  });
-};
-
-/**
  * List Bootsource Bootsourceselection Resources
  */
 export const listBootsourceBootsourceselectionResources = <
@@ -1270,28 +1242,6 @@ export const listBootsourceBootsourceselectionResources = <
       },
     ],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{selection_id}/resources",
-    ...options,
-  });
-};
-
-/**
- * Stop Import Bootsources
- */
-export const stopImportBootsources = <ThrowOnError extends boolean = false>(
-  options?: Options<StopImportBootsourcesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).post<
-    StopImportBootsourcesResponses,
-    StopImportBootsourcesErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/boot_sources:stop_import",
     ...options,
   });
 };

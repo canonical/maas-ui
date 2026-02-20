@@ -1,6 +1,6 @@
 import { useEffect, type ReactElement } from "react";
 
-import { FormikField } from "@canonical/react-components";
+import { FormikField, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { SingleSignOnFormValues } from "../types";
@@ -24,6 +24,7 @@ const SingleSignOnFormFields = ({ provider }: Props): ReactElement => {
           issuer_url: "",
           redirect_uri: "",
           scopes: "",
+          token_type: "JWT",
         },
       });
     }
@@ -72,6 +73,18 @@ const SingleSignOnFormFields = ({ provider }: Props): ReactElement => {
         name="scopes"
         required
         type="text"
+      />
+      <FormikField
+        component={Select}
+        help="The type of access tokens issued by the OIDC provider (e.g., JWT or opaque). Note that encrypted JWT tokens should be treated as opaque."
+        label="Token type"
+        name="token_type"
+        options={[
+          { label: "Select token type", value: "", disabled: true },
+          { label: "JWT", value: "JWT" },
+          { label: "Opaque", value: "Opaque" },
+        ]}
+        required
       />
     </>
   );
