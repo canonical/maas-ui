@@ -1,35 +1,12 @@
-@mixin CloneResults {
-  .clone-results {
-    @extend %base-grid;
-    grid-template-areas: "title title title info info info info info info empty empty empty";
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: min-content;
-
-    .clone-results__title {
-      grid-area: title;
-    }
-
-    .clone-results__info {
-      grid-area: info;
-    }
-
-    .error-col {
+.p-generic-table.clone-results-table {
+  th,td {
+    &.error {
+      text-align: left !important;
       width: 100%;
     }
 
-    .affected-col {
+    &.affectedMachines {
       width: 9rem;
-    }
-
-    @media only screen and (max-width: $breakpoint-x-large) {
-      grid-template-areas: "title title title info info info info info info info info info";
-    }
-
-    @media only screen and (max-width: $breakpoint-large) {
-      grid-template-areas:
-        "title"
-        "info";
-      grid-template-columns: 100%;
     }
   }
 }

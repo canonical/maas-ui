@@ -226,7 +226,6 @@
 // machines
 @import "@/app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneFormFields";
 @import "@/app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
-@import "@/app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneResults";
 @import "@/app/machines/components/MachineForms/MachineActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "@/app/machines/components/MachineForms/MachineActionFormWrapper/TagForm";
 @import "@/app/machines/views/MachineDetails/MachineSummary";
@@ -235,7 +234,6 @@
 @import "@/app/machines/views/MachineList/MachineListControls";
 @import "@/app/machines/views/MachineList/MachineListTable/MachineListPagination";
 @include CloneFormFields;
-@include CloneResults;
 @include MachineList;
 @include MachineListControls;
 @include ListDisplayCount;

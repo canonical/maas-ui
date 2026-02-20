@@ -178,7 +178,8 @@ describe("CloneResults", () => {
       }
     );
     expect(screen.getByTestId("errors-table")).toBeInTheDocument();
-    expect(screen.getAllByTestId("error-row").length).toBe(2);
+    // +1 row due to the header
+    expect(screen.getAllByRole("row").length).toBe(3);
   });
 
   it("can filter machines by error type", async () => {
