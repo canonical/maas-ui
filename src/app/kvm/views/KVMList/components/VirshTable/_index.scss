@@ -1,4 +1,4 @@
-.virsh-table {
+.p-generic-table.virsh-table {
   th {
       button.p-button--column-header {
         display: flex;
@@ -7,8 +7,17 @@
       }
     }
 
-}
+  th, td {
+    &.name, &.hostType {
+      width: 16%;
+    }
 
-.p-generic-table .p-generic-table__table tbody tr:not(.p-generic-table__group-row)>td:last-child {
-text-align: left;
+    &.vms, &.zone, &.storage {
+      text-align: left !important;
+
+      button {
+        text-align: left !important;
+      }
+    }
+  }
 }

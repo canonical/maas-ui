@@ -1,7 +1,6 @@
 @mixin LXDClusterSummaryCard {
   .lxd-cluster-summary-card {
     @extend %vf-is-bordered;
-    @extend %vf-bg--x-light;
     display: grid;
     grid-template-areas:
       "ram ram ram ram"
@@ -67,6 +66,12 @@
       .vf-resources {
         border-left: $border;
         border-top: 0;
+      }
+    }
+
+    .storage-resources__content {
+      button {
+        width: 100% !important;
       }
     }
   }
