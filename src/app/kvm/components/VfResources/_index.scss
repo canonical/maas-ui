@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
-    padding: 0 $sph--large;
+    padding: $spv--medium $sph--large;
   }
 
   .vf-resources__table-container {
@@ -46,8 +46,6 @@
   // viewport size. Otherwise, the component keeps the "mobile" styling.
   .vf-resources--dynamic-layout {
     @media only screen and (min-width: $breakpoint-small) {
-      flex-direction: row;
-
       .vf-resources__header {
         flex: 1;
         margin-right: $sph--large;

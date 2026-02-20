@@ -1,40 +1,17 @@
 import type { ReactElement } from "react";
 
-import {
-  Button,
-  Col,
-  Icon,
-  MainTable,
-  Row,
-  Spinner,
-  Strip,
-} from "@canonical/react-components";
-import type { Location } from "history";
+import { GenericTable } from "@canonical/maas-react-components";
+import { Col, Row, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link, useLocation } from "react-router";
 
 import { usePools } from "@/app/api/query/pools";
-import type {
-  ResourcePoolResponse,
-  ResourcePoolWithSummaryResponse,
-} from "@/app/apiclient";
-import TableHeader from "@/app/base/components/TableHeader";
-import { useTableSort } from "@/app/base/hooks";
-import type { SidePanelActions } from "@/app/base/side-panel-context";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { SortDirection } from "@/app/base/types";
-import urls from "@/app/base/urls";
-import CPUColumn from "@/app/kvm/components/CPUColumn";
-import ComposeForm from "@/app/kvm/components/ComposeForm";
-import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
-import NameColumn from "@/app/kvm/components/NameColumn";
-import RAMColumn from "@/app/kvm/components/RAMColumn";
-import StorageColumn from "@/app/kvm/components/StorageColumn";
-import TagsColumn from "@/app/kvm/components/TagsColumn";
+import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
+import { useLXDClusterHostsTableColumns } from "@/app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHostsTable/useLXDClusterHostsTableColumns/useLXDClusterHostsTableColumns";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import type { VMCluster } from "@/app/store/vmcluster/types";
-import { isComparable } from "@/app/utils";
+
+import "./_index.scss";
 
 type Props = {
   currentPage: number;
@@ -43,136 +20,29 @@ type Props = {
   searchFilter: string;
 };
 
-type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
-
-const getSortValue = (
-  sortKey: SortKey,
-  pod: Pod,
-  pools?: ResourcePoolResponse[]
-): number | string | null => {
-  const { cores, memory, storage, vm_count } = pod.resources;
-  const pool = pools?.find((pool) => pod.pool === pool.id);
-  switch (sortKey) {
-    case "pool":
-      return pool?.name || "unknown";
-    case "cpu":
-      return cores.allocated_tracked;
-    case "ram":
-      return (
-        memory.general.allocated_tracked + memory.hugepages.allocated_tracked
-      );
-    case "storage":
-      return storage.allocated_tracked;
-    case "vms":
-      return vm_count.tracked;
-  }
-  const value = pod[sortKey];
-  return isComparable(value) ? value : null;
+export type LXDClusterHost = Pod & {
+  poolName?: string;
+  vms: number;
+  cpuAllocated: number;
+  ramAllocated: number;
+  storageAllocated: number;
 };
 
-const generateRows = (
-  clusterId: VMCluster["id"],
-  clusterHosts: Pod[],
-  pools: ResourcePoolWithSummaryResponse[],
-  openSidePanel: SidePanelActions["openSidePanel"],
-  location: Location
-) =>
-  clusterHosts.map((host) => {
-    const pool = pools.find((pool) => pool.id === host.pool);
+export const generateRows = (
+  hosts: Pod[],
+  pools: ResourcePoolWithSummaryResponse[] | undefined
+): LXDClusterHost[] =>
+  hosts.map((host) => {
+    const pool = pools?.find((pool) => host.pool === pool.id);
     return {
-      key: `cluster-host-${host.id}`,
-      columns: [
-        {
-          className: "name-col",
-          content: (
-            <NameColumn
-              name={host.name}
-              secondary={host.power_parameters?.power_address}
-              url={urls.kvm.lxd.cluster.vms.host({
-                clusterId,
-                hostId: host.id,
-              })}
-            />
-          ),
-        },
-        {
-          className: "vms-col u-align--right",
-          content: host.resources.vm_count.tracked,
-        },
-        {
-          className: "tags-col",
-          content: <TagsColumn tags={host.tags} />,
-        },
-        {
-          className: "pool-col",
-          content: <span data-testid="host-pool-name">{pool?.name}</span>,
-        },
-        {
-          className: "cpu-col",
-          content: (
-            <CPUColumn
-              cores={host.resources.cores}
-              overCommit={host.cpu_over_commit_ratio}
-            />
-          ),
-        },
-        {
-          className: "ram-col",
-          content: (
-            <RAMColumn
-              memory={host.resources.memory}
-              overCommit={host.memory_over_commit_ratio}
-            />
-          ),
-        },
-        {
-          className: "storage-col",
-          content: (
-            <StorageColumn
-              pools={host.resources.storage_pools}
-              storage={host.resources.storage}
-            />
-          ),
-        },
-        {
-          className: "actions-col",
-          content: (
-            <div className="u-flex--end">
-              <Button
-                className="no-background u-no-margin"
-                data-testid="vm-host-compose"
-                hasIcon
-                onClick={() => {
-                  openSidePanel({
-                    component: ComposeForm,
-                    title: "Compose",
-                    props: {
-                      hostId: host.id,
-                    },
-                  });
-                }}
-              >
-                <Icon name="plus" />
-              </Button>
-              <div className="u-nudge-right--small">
-                <Link
-                  className="p-button no-background has-icon u-no-margin"
-                  data-testid="vm-host-settings"
-                  state={{ from: location.pathname }}
-                  to={{
-                    pathname: urls.kvm.lxd.cluster.host.edit({
-                      clusterId,
-                      hostId: host.id,
-                    }),
-                  }}
-                >
-                  <Icon name="settings" />
-                </Link>
-              </div>
-            </div>
-          ),
-        },
-      ],
+      ...host,
+      poolName: pool?.name,
+      vms: host.resources.vm_count.tracked,
+      cpuAllocated: host.resources.cores.allocated_tracked,
+      ramAllocated:
+        host.resources.memory.general.allocated_tracked +
+        host.resources.memory.hugepages.allocated_tracked,
+      storageAllocated: host.resources.storage.allocated_tracked,
     };
   });
 
@@ -182,21 +52,16 @@ const LXDClusterHostsTable = ({
   hosts,
   searchFilter,
 }: Props): ReactElement => {
-  const location = useLocation();
-  const { openSidePanel } = useSidePanel();
   const pools = usePools();
   const podsLoaded = useSelector(podSelectors.loaded);
   const loaded = !pools.isPending && podsLoaded;
-  const { currentSort, sortRows, updateSort } = useTableSort<
-    Pod,
-    SortKey,
-    ResourcePoolResponse[]
-  >(getSortValue, {
-    key: "name",
-    direction: SortDirection.DESCENDING,
-  });
-  const sortedClusterHosts = sortRows(hosts, pools.data?.items);
-  const paginatedClusterHosts = sortedClusterHosts.slice(
+
+  const columns = useLXDClusterHostsTableColumns({ clusterId });
+
+  // Paginate the hosts
+  const VMS_PER_PAGE = 10; // Default pagination size
+  const enrichedHosts = generateRows(hosts, pools.data?.items);
+  const paginatedHosts = enrichedHosts.slice(
     (currentPage - 1) * VMS_PER_PAGE,
     currentPage * VMS_PER_PAGE
   );
@@ -205,134 +70,17 @@ const LXDClusterHostsTable = ({
     <>
       <Row>
         <Col size={12}>
-          <MainTable
-            className="lxd-cluster-hosts-table"
-            headers={[
-              {
-                className: "name-col",
-                content: (
-                  <>
-                    <TableHeader
-                      currentSort={currentSort}
-                      data-testid="name-header"
-                      onClick={() => {
-                        updateSort("name");
-                      }}
-                      sortKey="name"
-                    >
-                      KVM host
-                    </TableHeader>
-                    <TableHeader>Address</TableHeader>
-                  </>
-                ),
-              },
-              {
-                className: "vms-col u-align--right",
-                content: (
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-testid="vms-header"
-                    onClick={() => {
-                      updateSort("vms");
-                    }}
-                    sortKey="vms"
-                  >
-                    VM<span className="u-no-text-transform">s</span>
-                  </TableHeader>
-                ),
-              },
-              {
-                className: "tags-col",
-                content: (
-                  <TableHeader data-testid="tags-header">Tags</TableHeader>
-                ),
-              },
-              {
-                className: "pool-col",
-                content: (
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-testid="pool-header"
-                    onClick={() => {
-                      updateSort("pool");
-                    }}
-                    sortKey="pool"
-                  >
-                    Resource pool
-                  </TableHeader>
-                ),
-              },
-              {
-                className: "cpu-col",
-                content: (
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-testid="cpu-header"
-                    onClick={() => {
-                      updateSort("cpu");
-                    }}
-                    sortKey="cpu"
-                  >
-                    CPU cores
-                  </TableHeader>
-                ),
-              },
-              {
-                className: "ram-col",
-                content: (
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-testid="ram-header"
-                    onClick={() => {
-                      updateSort("ram");
-                    }}
-                    sortKey="ram"
-                  >
-                    RAM
-                  </TableHeader>
-                ),
-              },
-              {
-                className: "storage-col",
-                content: (
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-testid="storage-header"
-                    onClick={() => {
-                      updateSort("storage");
-                    }}
-                    sortKey="storage"
-                  >
-                    Storage
-                  </TableHeader>
-                ),
-              },
-              {
-                className: "actions-col",
-                content: null,
-              },
-            ]}
-            paginate={50}
-            rows={
-              loaded
-                ? generateRows(
-                    clusterId,
-                    paginatedClusterHosts,
-                    pools.data!.items,
-                    openSidePanel,
-                    location
-                  )
-                : []
-            }
+          <GenericTable
+            className="lxd-cluster-table"
+            columns={columns}
+            data={paginatedHosts}
+            isLoading={!loaded}
+            sorting={[{ id: "name", desc: true }]}
+            variant="regular"
           />
-          {!loaded && (
-            <Strip className="u-align--center" data-testid="loading" shallow>
-              <Spinner text="Loading..." />
-            </Strip>
-          )}
         </Col>
       </Row>
-      {searchFilter && paginatedClusterHosts.length === 0 ? (
+      {searchFilter && paginatedHosts.length === 0 ? (
         <Strip rowClassName="u-align--center" shallow>
           <span data-testid="no-hosts">
             No hosts in this cluster match the search criteria.

@@ -44,7 +44,7 @@ const KVMResourceMeter = ({
     <div className="kvm-resource-meter">
       {detailed && (
         <div className="u-flex--between" data-testid="kvm-resource-details">
-          <div className="u-flex--grow u-nudge-left--small">
+          <div className="u-flex--grow u-nudge-left--small u-align-text--left">
             <div className="p-text--x-small-capitalised u-text--muted u-sv-1">
               Allocated
               <span className="u-nudge-right--small">
