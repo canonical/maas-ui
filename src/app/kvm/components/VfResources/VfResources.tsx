@@ -55,7 +55,7 @@ const VfResources = ({
   } else {
     content = (
       <div className="vf-resources__table-container">
-        <h4 className="p-text--x-small-capitalised">Virtual Functions</h4>
+        <h4 className="p-text--x-small-capitalised">Virtual functions</h4>
         <GenericTable
           aria-label="vf-resources-table"
           className="vf-resources__table"

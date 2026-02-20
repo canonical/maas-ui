@@ -46,8 +46,6 @@
   // viewport size. Otherwise, the component keeps the "mobile" styling.
   .vf-resources--dynamic-layout {
     @media only screen and (min-width: $breakpoint-small) {
-      flex-direction: row;
-
       .vf-resources__header {
         flex: 1;
         margin-right: $sph--large;

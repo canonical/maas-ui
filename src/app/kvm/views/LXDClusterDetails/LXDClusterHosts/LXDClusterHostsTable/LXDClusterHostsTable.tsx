@@ -76,6 +76,7 @@ const LXDClusterHostsTable = ({
             data={paginatedHosts}
             isLoading={!loaded}
             sorting={[{ id: "name", desc: true }]}
+            variant="regular"
           />
         </Col>
       </Row>
