@@ -16,6 +16,8 @@ import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { formatErrors } from "@/app/utils";
 
+import "./_index.scss";
+
 export const CloneErrorCodes = {
   IS_SOURCE: "is-source",
   ITEM_INVALID: "item_invalid",
