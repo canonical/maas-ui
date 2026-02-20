@@ -1,23 +1,17 @@
 import { useEffect, useState } from "react";
 
+import { GenericTable } from "@canonical/maas-react-components";
 import type { ValueOf } from "@canonical/react-components";
-import {
-  Button,
-  Icon,
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router";
+import { Link } from "react-router";
 
 import type { APIError, SetSearchFilter } from "@/app/base/types";
 import urls from "@/app/base/urls";
+import useCloneResultsColumns from "@/app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneResults/useCloneResultsColumns/useCloneResultsColumns";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
-import { FilterMachines } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { formatErrors } from "@/app/utils";
@@ -37,7 +31,8 @@ export type CloneError = {
   }[];
 };
 
-type FormattedCloneError = {
+export type FormattedCloneError = {
+  id: number;
   code: ValueOf<typeof CloneErrorCodes> | "global";
   description: string;
   destinations: Machine["system_id"][];
@@ -94,7 +89,7 @@ const formatCloneError = (
   } else if (typeof error === "object" && "destinations" in error) {
     const cloneError = error as CloneError;
     return cloneError.destinations.reduce<FormattedCloneError[]>(
-      (formattedErrors, error) => {
+      (formattedErrors, error, currentIndex) => {
         const existingError = formattedErrors.find(
           (formattedError) => formattedError.code === error.code
         );
@@ -104,6 +99,7 @@ const formatCloneError = (
           return formattedErrors;
         } else {
           formattedErrors.push({
+            id: currentIndex,
             code: error.code,
             description: getErrorDescription(error.code),
             destinations: [systemId],
@@ -119,6 +115,7 @@ const formatCloneError = (
   // successfully.
   return [
     {
+      id: 1,
       code: "global",
       description: `Cloning was unsuccessful: ${formatErrors(error)}`,
       destinations: [],
@@ -133,7 +130,6 @@ export const CloneResults = ({
   sourceMachine,
   viewingDetails,
 }: Props): React.ReactElement | null => {
-  const { pathname } = useLocation();
   const [destinationCount, setDestinationCount] = useState(0);
   const cloneErrors = useSelector((state: RootState) =>
     machineSelectors.eventErrorsForIds(
@@ -150,10 +146,6 @@ export const CloneResults = ({
       setDestinationCount(selectedCount);
     }
   }, [destinationCount, selectedCount]);
-
-  if (!sourceMachine) {
-    return null;
-  }
 
   const apiError: APIError<CloneError> = cloneErrors.length
     ? cloneErrors[0].error
@@ -180,10 +172,19 @@ export const CloneResults = ({
         []
       ).length;
 
+  const columns = useCloneResultsColumns({
+    failedCount,
+    setSearchFilter,
+  });
+
+  if (!sourceMachine) {
+    return null;
+  }
+
   return (
     <>
       <div className="clone-results">
-        <h2 className="clone-results__title p-heading--4">Cloning complete</h2>
+        <h5 className="clone-results__title p-heading--5">Cloning complete</h5>
         <div className="clone-results__info">
           <p data-testid="results-string">
             {`${destinationCount - failedCount} of ${pluralize(
@@ -201,67 +202,23 @@ export const CloneResults = ({
           {formattedCloneErrors.length > 0 && (
             <>
               <p>The following errors occurred:</p>
-              <Table
-                className="clone-results__table"
+              <GenericTable
+                className="clone-results-table"
+                columns={columns}
+                data={formattedCloneErrors}
                 data-testid="errors-table"
-              >
-                <thead>
-                  <TableRow>
-                    <TableHeader className="error-col">
-                      <span className="u-nudge-right--x-large">Error</span>
-                    </TableHeader>
-                    {!viewingDetails && (
-                      <TableHeader className="affected-col u-align--right">
-                        Affected machines
-                      </TableHeader>
-                    )}
-                  </TableRow>
-                </thead>
-                <tbody>
-                  {formattedCloneErrors.map((error) => {
-                    const filters = error.destinations
-                      ? { system_id: error.destinations }
-                      : null;
-                    return (
-                      <TableRow data-testid="error-row" key={error.code}>
-                        <TableCell className="error-col">
-                          <Icon name="error" />
-                          <span
-                            className="u-nudge-right"
-                            data-testid="error-description"
-                          >
-                            {error.description}
-                          </span>
-                        </TableCell>
-                        {!viewingDetails && (
-                          <TableCell className="affected-col u-align--right">
-                            <span className="u-nudge-left--small">
-                              {failedCount}
-                            </span>
-                            {filters ? (
-                              <Link
-                                data-testid="error-filter-link"
-                                onClick={() => {
-                                  if (setSearchFilter) {
-                                    setSearchFilter(
-                                      FilterMachines.filtersToString(filters)
-                                    );
-                                  }
-                                }}
-                                to={`${pathname}${FilterMachines.filtersToQueryString(
-                                  filters
-                                )}`}
-                              >
-                                Show
-                              </Link>
-                            ) : null}
-                          </TableCell>
-                        )}
-                      </TableRow>
-                    );
-                  })}
-                </tbody>
-              </Table>
+                filterCells={(_, column) =>
+                  viewingDetails
+                    ? !["affectedMachines"].includes(column.id)
+                    : true
+                }
+                filterHeaders={(header) =>
+                  viewingDetails
+                    ? !["affectedMachines"].includes(header.id)
+                    : true
+                }
+                isLoading={false}
+              />
             </>
           )}
         </div>
