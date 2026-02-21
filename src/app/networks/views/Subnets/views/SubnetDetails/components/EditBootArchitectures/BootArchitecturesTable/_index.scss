@@ -1,25 +1,26 @@
-@use "sass:color";
+.boot-architectures-table {
+  th.name,
+  td.name {
+    width: 25%;
+  }
 
-@mixin BootArchitecturesTable {
-  .boot-architectures-table {
-    .name-col {
-      width: 25%;
-    }
+  th.bios_boot_method,
+  td.bios_boot_method {
+    width: 20%;
+  }
 
-    .bios-boot-col {
-      width: 20%;
-    }
+  th.bootloader_arches,
+  td.bootloader_arches {
+    width: 20%;
+  }
 
-    .bootloader-col {
-      width: 20%;
-    }
+  th.protocol,
+  td.protocol {
+    width: 10%;
+  }
 
-    .protocol-col {
-      width: 15%;
-    }
-
-    .octet-col {
-      width: 20%;
-    }
+  th.arch_octet,
+  td.arch_octet {
+    width: 20%;
   }
 }
