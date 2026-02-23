@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@/app/api/query/configurations";
 import {
   useChangeImageSource,
+  useFetchBootSource,
   useGetImageSource,
   useImageSources,
   useUpdateImageSource,
@@ -113,6 +114,7 @@ const checkCanChangeSource = (
 
 const ChangeSource = (): ReactElement => {
   const dispatch = useDispatch();
+  const [isValidated, setIsValidated] = useState(false);
   const sources = useImageSources();
   // TODO: add support for multiple sources when v3 is ready
   const source = useGetImageSource(
@@ -138,13 +140,17 @@ const ChangeSource = (): ReactElement => {
   const configETag = importConfig.data?.headers?.get("ETag");
   const autoImport = importConfig.data?.value as boolean;
   const updateConfig = useSetConfiguration();
+  const fetchBootResources = useFetchBootSource();
   const changeImageSource = useChangeImageSource();
   const updateImageSource = useUpdateImageSource();
 
   const loading =
     sources.isPending || source.isPending || importConfig.isPending;
 
-  const saving = updateConfig.isPending || changeImageSource.isPending;
+  const saving =
+    fetchBootResources.isPending ||
+    updateConfig.isPending ||
+    changeImageSource.isPending;
   const saved = updateConfig.isSuccess || changeImageSource.isSuccess;
 
   const errors =
@@ -152,6 +158,7 @@ const ChangeSource = (): ReactElement => {
     selectionStatusesError ||
     customImageStatusesError ||
     importConfig.error ||
+    fetchBootResources.error ||
     updateConfig.error ||
     changeImageSource.error;
 
@@ -212,6 +219,36 @@ const ChangeSource = (): ReactElement => {
               errors={errors}
               initialValues={initialValues}
               onSubmit={(values) => {
+                // Step 1: Validate by fetching boot resources
+                if (!isValidated) {
+                  fetchBootResources.mutate(
+                    {
+                      body: {
+                        url: values.url,
+                        keyring_filename:
+                          values.keyring_type === "keyring_filename"
+                            ? values.keyring_filename
+                            : undefined,
+                        keyring_data:
+                          values.keyring_type === "keyring_data"
+                            ? values.keyring_data
+                            : undefined,
+                        skip_keyring_verification:
+                          values.keyring_type === "keyring_unsigned"
+                            ? true
+                            : undefined,
+                      },
+                    },
+                    {
+                      onSuccess: () => {
+                        setIsValidated(true);
+                      },
+                    }
+                  );
+                  return;
+                }
+
+                // Step 2: Save the configuration
                 if (values.autoSync !== initialValues.autoSync) {
                   updateConfig.mutate({
                     headers: {
@@ -263,11 +300,14 @@ const ChangeSource = (): ReactElement => {
                     });
                   }
                 }
+
+                // Reset validation state after successful save
+                setIsValidated(false);
               }}
               saved={saved}
               saving={saving}
               submitDisabled={!canChangeSource}
-              submitLabel="Save"
+              submitLabel={isValidated ? "Save" : "Validate"}
               validationSchema={ChangeSourceSchema}
             >
               <ChangeSourceFields saved={saved} saving={saving} />

@@ -21,6 +21,9 @@ import type {
   UpdateBootsourceData,
   UpdateBootsourceResponses,
   UpdateBootsourceErrors,
+  FetchBootsourcesAvailableImagesData,
+  FetchBootsourcesAvailableImagesResponses,
+  FetchBootsourcesAvailableImagesErrors,
 } from "@/app/apiclient";
 import {
   updateBootsource,
@@ -70,24 +73,13 @@ export const useChangeImageSource = () => {
     Options<CreateBootsourceData & { body: { current_boot_source_id: number } }>
   >({
     mutationFn: async (params) => {
-      // Step 1: Fetch to validate source using URL from createData
-      await fetchBootsourcesAvailableImages({
-        body: {
-          url: params.body.url,
-          keyring_filename: params.body.keyring_filename,
-          keyring_data: params.body.keyring_data,
-          skip_keyring_verification: params.body.skip_keyring_verification,
-        },
-        throwOnError: true,
-      });
-
-      // Step 2: Create new source
+      // Step 1: Create new source
       const createResult = await createBootsource({
         ...params,
         throwOnError: true,
       });
 
-      // Step 3: Delete old source
+      // Step 2: Delete old source
       await deleteBootsource({
         path: { boot_source_id: params.body.current_boot_source_id },
         throwOnError: true,
@@ -124,5 +116,17 @@ export const useUpdateImageSource = (
         queryKey: listBootsourcesQueryKey(),
       });
     },
+  });
+};
+
+export const useFetchBootSource = (
+  mutationOptions?: Options<FetchBootsourcesAvailableImagesData>
+) => {
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      FetchBootsourcesAvailableImagesResponses,
+      FetchBootsourcesAvailableImagesErrors,
+      FetchBootsourcesAvailableImagesData
+    >(mutationOptions, fetchBootsourcesAvailableImages),
   });
 };
