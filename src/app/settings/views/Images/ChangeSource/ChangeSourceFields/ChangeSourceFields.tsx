@@ -277,7 +277,7 @@ const ChangeSourceFields = ({
               {Labels.AutoSyncImages}
               <Tooltip
                 className="u-nudge-right--small"
-                message={`Enables hourly image updates (sync) from the source configured below.`}
+                message={`Enables hourly image updates (sync) from the source configured above.`}
               >
                 <div className="u-nudge-right--x-large">
                   <Icon name="help" />
