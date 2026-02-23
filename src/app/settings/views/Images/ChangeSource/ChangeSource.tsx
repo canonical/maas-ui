@@ -31,15 +31,15 @@ import type {
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { MAAS_IO_URLS } from "@/app/images/constants";
+import {
+  MAAS_IO_DEFAULT_KEYRING_FILE_PATHS,
+  MAAS_IO_URLS,
+} from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
 import { ConfigNames } from "@/app/store/config/types";
 import { generalActions } from "@/app/store/general";
 import { installType } from "@/app/store/general/selectors";
-
-const DEB_DEFAULT_KEYRING_FILENAME = "src";
-const SNAP_DEFAULT_KEYRING_FILENAME = "src";
 
 const ChangeSourceSchema = Yup.object()
   .shape({
@@ -167,9 +167,9 @@ const ChangeSource = (): ReactElement => {
     if (source.data?.keyring_filename) {
       return source.data.keyring_filename;
     }
-    return installTypeData === "snap"
-      ? SNAP_DEFAULT_KEYRING_FILENAME
-      : DEB_DEFAULT_KEYRING_FILENAME;
+    return installTypeData === "deb"
+      ? MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb
+      : MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap;
   };
 
   const initialValues: ChangeSourceValues = {
