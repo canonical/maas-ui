@@ -1,10 +1,12 @@
 import type { ReactElement } from "react";
+import { useEffect } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
 } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import {
@@ -33,6 +35,11 @@ import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
 import { ConfigNames } from "@/app/store/config/types";
+import { generalActions } from "@/app/store/general";
+import { installType } from "@/app/store/general/selectors";
+
+const DEB_DEFAULT_KEYRING_FILENAME = "src";
+const SNAP_DEFAULT_KEYRING_FILENAME = "src";
 
 const ChangeSourceSchema = Yup.object()
   .shape({
@@ -102,6 +109,7 @@ const checkCanChangeSource = (
 };
 
 const ChangeSource = (): ReactElement => {
+  const dispatch = useDispatch();
   const sources = useImageSources();
   // TODO: add support for multiple sources when v3 is ready
   const source = useGetImageSource(
@@ -114,6 +122,12 @@ const ChangeSource = (): ReactElement => {
     useSelectionStatuses();
   const { data: customImageStatuses, error: customImageStatusesError } =
     useCustomImageStatuses();
+
+  const installTypeData = useSelector(installType.get);
+
+  useEffect(() => {
+    dispatch(generalActions.fetchInstallType());
+  });
 
   const importConfig = useGetConfiguration({
     path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
@@ -146,9 +160,18 @@ const ChangeSource = (): ReactElement => {
   );
   const sourceType = getSourceType(source.data?.url ?? "");
 
+  const getDefaultKeyringFilename = (): string => {
+    if (source.data?.keyring_filename) {
+      return source.data.keyring_filename;
+    }
+    return installTypeData === "snap"
+      ? SNAP_DEFAULT_KEYRING_FILENAME
+      : DEB_DEFAULT_KEYRING_FILENAME;
+  };
+
   const initialValues: ChangeSourceValues = {
     keyring_data: source.data?.keyring_data ?? "",
-    keyring_filename: source.data?.keyring_filename ?? "",
+    keyring_filename: getDefaultKeyringFilename(),
     keyring_type: getKeyringType(
       source.data?.keyring_filename,
       source.data?.keyring_data

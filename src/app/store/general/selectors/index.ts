@@ -4,6 +4,7 @@ export { default as componentsToDisable } from "./componentsToDisable";
 export { default as defaultMinHweKernel } from "./defaultMinHweKernel";
 export { default as generatedCertificate } from "./generatedCertificate";
 export { default as hweKernels } from "./hweKernels";
+export { default as installType } from "./installType";
 export { default as knownArchitectures } from "./knownArchitectures";
 export { default as knownBootArchitectures } from "./knownBootArchitectures";
 export { default as machineActions } from "./machineActions";

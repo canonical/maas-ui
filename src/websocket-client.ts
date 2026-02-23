@@ -77,6 +77,7 @@ const WebSocketEndpoints = {
     "device_actions",
     "generate_client_certificate",
     "hwe_kernels",
+    "install_type",
     "known_architectures",
     "known_boot_architectures",
     "machine_actions",
