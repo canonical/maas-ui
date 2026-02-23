@@ -197,4 +197,39 @@ describe("ChangeSource", () => {
       expect(imageSourceResolvers.updateImageSource.resolved).toBe(true);
     });
   });
+
+  it("displays error and keeps button as Validate if fetch fails", async () => {
+    mockServer.use(
+      imageSourceResolvers.fetchImageSource.error({
+        message: "Invalid boot source URL",
+        code: 400,
+      })
+    );
+
+    renderWithProviders(<ChangeSource />);
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
+
+    const urlInput = screen.getByRole("textbox", { name: Labels.Url });
+    await userEvent.clear(urlInput);
+    await userEvent.type(urlInput, "http://invalid.example.com/");
+
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_unsigned");
+
+    await userEvent.click(screen.getByRole("button", { name: "Validate" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Invalid boot source URL")).toBeInTheDocument();
+    });
+
+    // Button should still be "Validate", not "Save"
+    expect(
+      screen.getByRole("button", { name: "Validate" })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Save" })
+    ).not.toBeInTheDocument();
+  });
 });
