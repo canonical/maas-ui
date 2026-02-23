@@ -14,7 +14,7 @@ import { useFormikContext } from "formik";
 
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
-import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
+import { MAAS_IO_DEFAULTS, MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 
@@ -44,6 +44,18 @@ const ChangeSourceFields = ({
   const [selectedKeyringType, setSelectedKeyringType] = useState<
     "keyring_data" | "keyring_filename" | "keyring_unsigned"
   >(keyring_type || "keyring_filename");
+
+  // Determine the selected MAAS.io release channel from the URL
+  const getSelectedChannel = (): "candidate" | "stable" => {
+    if (url.includes("candidate")) {
+      return "candidate";
+    }
+    return "stable";
+  };
+
+  const [selectedChannel, setSelectedChannel] = useState<
+    "candidate" | "stable"
+  >(getSelectedChannel());
 
   const customValuesRef = useRef(
     source_type === BootResourceSourceType.CUSTOM
@@ -191,6 +203,30 @@ const ChangeSourceFields = ({
             Changing the image source will remove all currently downloaded
             images.
           </NotificationBanner>
+        )}
+        {source_type === BootResourceSourceType.MAAS_IO && (
+          <Select
+            label="Stream"
+            name="maas-io-stream"
+            onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+              const newChannel = e.target.value as "candidate" | "stable";
+              setSelectedChannel(newChannel);
+              const newUrl = MAAS_IO_URLS[newChannel];
+              await setFieldValue("url", newUrl).catch((reason: unknown) => {
+                throw new FormikFieldChangeError(
+                  "url",
+                  "setFieldValue",
+                  reason as string
+                );
+              });
+            }}
+            options={[
+              { label: "Stable", value: "stable" },
+              { label: "Candidate", value: "candidate" },
+            ]}
+            required
+            value={selectedChannel}
+          />
         )}
         {source_type === BootResourceSourceType.CUSTOM && (
           <>

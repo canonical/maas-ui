@@ -31,7 +31,7 @@ import type {
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
+import { MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
 import { ConfigNames } from "@/app/store/config/types";
@@ -88,7 +88,10 @@ const getKeyringType = (
 };
 
 const getSourceType = (url: string): BootResourceSourceType => {
-  return new RegExp(MAAS_IO_DEFAULTS.url).test(url)
+  const isMaasIo =
+    new RegExp(MAAS_IO_URLS.stable).test(url) ||
+    new RegExp(MAAS_IO_URLS.candidate).test(url);
+  return isMaasIo
     ? BootResourceSourceType.MAAS_IO
     : BootResourceSourceType.CUSTOM;
 };

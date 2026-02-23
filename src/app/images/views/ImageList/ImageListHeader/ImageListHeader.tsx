@@ -11,8 +11,7 @@ import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import UploadCustomImage from "@/app/images/components/UploadCustomImage";
-import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
-import { BootResourceSourceType } from "@/app/images/types";
+import { MAAS_IO_URLS } from "@/app/images/constants";
 
 type ImageListHeaderProps = {
   selectedRows: RowSelectionState;
@@ -22,13 +21,10 @@ type ImageListHeaderProps = {
 const getImageSyncText = (sources: BootSourceResponse[]) => {
   if (sources.length === 1) {
     const mainSource = sources[0];
-    const sourceType = new RegExp(MAAS_IO_DEFAULTS.url).test(
-      mainSource.url ?? ""
-    )
-      ? BootResourceSourceType.MAAS_IO
-      : BootResourceSourceType.CUSTOM;
-    if (sourceType === BootResourceSourceType.MAAS_IO) {
+    if (new RegExp(MAAS_IO_URLS.stable).test(mainSource.url ?? "")) {
       return "maas.io";
+    } else if (new RegExp(MAAS_IO_URLS.candidate).test(mainSource.url ?? "")) {
+      return "maas.io (candidate)";
     }
     return mainSource.url;
   }
