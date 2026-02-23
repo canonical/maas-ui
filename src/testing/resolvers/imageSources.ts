@@ -103,6 +103,19 @@ const imageSourceResolvers = {
         return HttpResponse.json(error, { status: error.code });
       }),
   },
+  updateImageSource: {
+    resolved: false,
+    handler: () =>
+      http.put(`${BASE_URL}MAAS/a/v3/boot_sources/:id`, () => {
+        imageSourceResolvers.updateImageSource.resolved = true;
+        return HttpResponse.json({ status: 200 });
+      }),
+    error: (error: UpdateBootsourceError = mockUpdateImageSourceError) =>
+      http.put(`${BASE_URL}MAAS/a/v3/boot_sources/:id`, () => {
+        imageSourceResolvers.updateImageSource.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
   deleteImageSource: {
     resolved: false,
     handler: () =>

@@ -119,7 +119,7 @@ export const useUpdateImageSource = (
   });
 };
 
-export const useFetchBootSource = (
+export const useFetchImageSource = (
   mutationOptions?: Options<FetchBootsourcesAvailableImagesData>
 ) => {
   return useMutation({

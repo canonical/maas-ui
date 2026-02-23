@@ -15,7 +15,7 @@ import {
 } from "@/app/api/query/configurations";
 import {
   useChangeImageSource,
-  useFetchBootSource,
+  useFetchImageSource,
   useGetImageSource,
   useImageSources,
   useUpdateImageSource,
@@ -140,7 +140,7 @@ const ChangeSource = (): ReactElement => {
   const configETag = importConfig.data?.headers?.get("ETag");
   const autoImport = importConfig.data?.value as boolean;
   const updateConfig = useSetConfiguration();
-  const fetchBootResources = useFetchBootSource();
+  const fetchImageSource = useFetchImageSource();
   const changeImageSource = useChangeImageSource();
   const updateImageSource = useUpdateImageSource();
 
@@ -148,7 +148,7 @@ const ChangeSource = (): ReactElement => {
     sources.isPending || source.isPending || importConfig.isPending;
 
   const saving =
-    fetchBootResources.isPending ||
+    fetchImageSource.isPending ||
     updateConfig.isPending ||
     changeImageSource.isPending;
   const saved = updateConfig.isSuccess || changeImageSource.isSuccess;
@@ -158,7 +158,7 @@ const ChangeSource = (): ReactElement => {
     selectionStatusesError ||
     customImageStatusesError ||
     importConfig.error ||
-    fetchBootResources.error ||
+    fetchImageSource.error ||
     updateConfig.error ||
     changeImageSource.error;
 
@@ -221,7 +221,7 @@ const ChangeSource = (): ReactElement => {
               onSubmit={(values) => {
                 // Step 1: Validate by fetching boot resources
                 if (!isValidated) {
-                  fetchBootResources.mutate(
+                  fetchImageSource.mutate(
                     {
                       body: {
                         url: values.url,
