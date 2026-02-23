@@ -15,6 +15,7 @@ import {
   useChangeImageSource,
   useGetImageSource,
   useImageSources,
+  useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import {
   useCustomImageStatuses,
@@ -121,6 +122,7 @@ const ChangeSource = (): ReactElement => {
   const autoImport = importConfig.data?.value as boolean;
   const updateConfig = useSetConfiguration();
   const changeImageSource = useChangeImageSource();
+  const updateImageSource = useUpdateImageSource();
 
   const loading =
     sources.isPending || source.isPending || importConfig.isPending;
@@ -204,25 +206,36 @@ const ChangeSource = (): ReactElement => {
                     initialValues.skip_keyring_verification ||
                   values.priority !== initialValues.priority
                 ) {
-                  changeImageSource.mutate({
-                    body: {
-                      url: values.url,
-                      keyring_data:
-                        values.keyring_type === "keyring_data"
-                          ? values.keyring_data
-                          : undefined,
-                      keyring_filename:
-                        values.keyring_type === "keyring_filename"
-                          ? values.keyring_filename
-                          : undefined,
-                      skip_keyring_verification:
-                        values.keyring_type === "keyring_unsigned"
-                          ? true
-                          : undefined,
-                      priority: values.priority,
-                      current_boot_source_id: source.data?.id ?? -1,
-                    },
-                  });
+                  const modificationData = {
+                    url: values.url,
+                    keyring_data:
+                      values.keyring_type === "keyring_data"
+                        ? values.keyring_data
+                        : undefined,
+                    keyring_filename:
+                      values.keyring_type === "keyring_filename"
+                        ? values.keyring_filename
+                        : undefined,
+                    skip_keyring_verification:
+                      values.keyring_type === "keyring_unsigned"
+                        ? true
+                        : undefined,
+                    priority: values.priority,
+                    current_boot_source_id: source.data?.id ?? -1,
+                  };
+
+                  if (values.url !== initialValues.url) {
+                    changeImageSource.mutate({
+                      body: modificationData,
+                    });
+                  } else {
+                    updateImageSource.mutate({
+                      path: {
+                        boot_source_id: source.data?.id ?? -1,
+                      },
+                      body: modificationData,
+                    });
+                  }
                 }
               }}
               saved={saved}
