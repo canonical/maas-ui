@@ -29,6 +29,12 @@ describe("general reducer", () => {
         loaded: false,
         loading: false,
       },
+      installType: {
+        data: "",
+        errors: null,
+        loaded: false,
+        loading: false,
+      },
       generatedCertificate: {
         data: null,
         errors: null,

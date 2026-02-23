@@ -58,8 +58,14 @@ const imageSourceResolvers = {
   },
   getImageSource: {
     resolved: false,
-    handler: () =>
+    handler: (data?: BootSourcesListResponse["items"][0]) =>
       http.get(`${BASE_URL}MAAS/a/v3/boot_sources/:id`, ({ params }) => {
+        // If data override is provided, return it regardless of ID
+        if (data) {
+          imageSourceResolvers.getImageSource.resolved = true;
+          return HttpResponse.json(data);
+        }
+
         const id = Number(params.id);
         if (!id) return HttpResponse.error();
 
