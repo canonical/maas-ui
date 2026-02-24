@@ -180,7 +180,7 @@ const useImageTableColumns = ({
                             <div
                               className="p-progress__value"
                               style={{
-                                width: `${isOptimistic ? 100 : isStopping ? 0 : sync_percentage}%`,
+                                width: `${isOptimistic ? 100 : sync_percentage}%`,
                               }}
                             />
                           </div>
