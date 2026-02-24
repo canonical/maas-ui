@@ -53,6 +53,19 @@ export const parseOptimisticImagesLocalStorage = () => {
   return { startingImageIds, stoppingImageIds };
 };
 
+const removeImageFromLocalStorage = (imageId: number) => {
+  const { startingImageIds, stoppingImageIds } =
+    parseOptimisticImagesLocalStorage();
+
+  const updatedStartingIds = startingImageIds.filter((id) => id !== imageId);
+  const updatedStoppingIds = stoppingImageIds.filter((id) => id !== imageId);
+
+  localStorage.setItem(
+    "optimisticImages",
+    `OptimisticDownloading=${updatedStartingIds.join(",")};OptimisticStopping=${updatedStoppingIds.join(",")}`
+  );
+};
+
 /**
  * Starts a silent polling mechanism to check if optimistically updated images
  * have transitioned to "Downloading" state on the backend.
@@ -118,21 +131,8 @@ export const startOrExtendSilentPolling = (queryClient: QueryClient) => {
 
         if (resolved) {
           silentPoll.entries.delete(imageId);
-          const { startingImageIds, stoppingImageIds } =
-            parseOptimisticImagesLocalStorage();
-
           // Remove the resolved imageId from the appropriate array
-          const updatedStartingIds = startingImageIds.filter(
-            (id) => id !== imageId
-          );
-          const updatedStoppingIds = stoppingImageIds.filter(
-            (id) => id !== imageId
-          );
-
-          localStorage.setItem(
-            "optimisticImages",
-            `OptimisticDownloading=${updatedStartingIds.join(",")};OptimisticStopping=${updatedStoppingIds.join(",")}`
-          );
+          removeImageFromLocalStorage(imageId);
         }
       }
     } catch {
@@ -143,21 +143,8 @@ export const startOrExtendSilentPolling = (queryClient: QueryClient) => {
 
         if (entry.attempts >= MAX_ATTEMPTS_PER_IMAGE) {
           silentPoll.entries.delete(imageId);
-          const { startingImageIds, stoppingImageIds } =
-            parseOptimisticImagesLocalStorage();
-
           // Remove the timed-out imageId from the appropriate array
-          const updatedStartingIds = startingImageIds.filter(
-            (id) => id !== imageId
-          );
-          const updatedStoppingIds = stoppingImageIds.filter(
-            (id) => id !== imageId
-          );
-
-          localStorage.setItem(
-            "optimisticImages",
-            `OptimisticDownloading=${updatedStartingIds.join(",")};OptimisticStopping=${updatedStoppingIds.join(",")}`
-          );
+          removeImageFromLocalStorage(imageId);
         }
       }
     }

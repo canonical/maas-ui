@@ -16,11 +16,11 @@ import {
   isAlias,
 } from "@/app/store/utils";
 
-interface RemovePhysicalProps {
+type RemovePhysicalProps = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
   systemId: Machine["system_id"];
-}
+};
 
 const RemovePhysicalForm = ({
   link,

@@ -171,7 +171,7 @@ export const generateSkeletonRows = (
       [MachineColumns.POWER]: (
         <DoubleRow
           primary={<Placeholder>Xxxxxxxxxxx</Placeholder>}
-          secondary={<Placeholder>Xxxxxxx</Placeholder>}
+          secondary={<Placeholder>Xxxxxxxxxxx</Placeholder>}
         />
       ),
       [MachineColumns.STATUS]: (
