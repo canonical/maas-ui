@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ComponentType, ReactElement } from "react";
 
 import { useSelector } from "react-redux";
 
@@ -209,7 +209,10 @@ const NetworkTableActions = ({
         children: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
         onClick: () => {
           openSidePanel({
-            component: RemovePhysicalForm,
+            // Cast component type to appease TiCS, local compiler shows no error
+            component: RemovePhysicalForm as ComponentType<
+              Record<string, unknown>
+            >,
             title: `Remove ${getInterfaceTypeText(machine, nic, link)}`,
             props: {
               systemId: machine.system_id,
