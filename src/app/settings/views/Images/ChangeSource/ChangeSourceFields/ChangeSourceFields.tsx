@@ -14,7 +14,11 @@ import { useFormikContext } from "formik";
 
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
-import { MAAS_IO_DEFAULTS, MAAS_IO_URLS } from "@/app/images/constants";
+import {
+  MAAS_IO_DEFAULTS,
+  MAAS_IO_URLS,
+  MAAS_IO_DEFAULT_KEYRING_FILE_PATHS,
+} from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 
@@ -30,11 +34,13 @@ export enum Labels {
 type ChangeSourceFieldsProps = {
   saved: boolean;
   saving: boolean;
+  installType?: string;
 };
 
 const ChangeSourceFields = ({
   saved,
   saving,
+  installType,
 }: ChangeSourceFieldsProps): ReactElement => {
   const { handleChange, setFieldValue, validateForm, values, initialValues } =
     useFormikContext<ChangeSourceValues>();
@@ -60,21 +66,19 @@ const ChangeSourceFields = ({
   const customValuesRef = useRef(
     source_type === BootResourceSourceType.CUSTOM
       ? { url, keyring_filename, keyring_data }
-      : { url: "", keyring_filename: "", keyring_data: "" }
+      : {
+          url: "",
+          keyring_filename:
+            installType === "snap"
+              ? MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap
+              : MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb,
+          keyring_data: "",
+        }
   );
 
   const prevSourceTypeRef = useRef(source_type);
 
   useEffect(() => {
-    const switchedToCustom =
-      prevSourceTypeRef.current !== BootResourceSourceType.CUSTOM &&
-      source_type === BootResourceSourceType.CUSTOM;
-
-    prevSourceTypeRef.current = source_type;
-
-    if (switchedToCustom) {
-      return;
-    }
     if (source_type === BootResourceSourceType.CUSTOM) {
       customValuesRef.current = {
         url,
@@ -82,7 +86,9 @@ const ChangeSourceFields = ({
         keyring_data,
       };
     }
-  }, [source_type, url, keyring_filename, keyring_data]);
+
+    prevSourceTypeRef.current = source_type;
+  }, [source_type, url, keyring_filename, keyring_data, installType]);
 
   const onlyAutoSyncChanged =
     values.autoSync !== initialValues.autoSync &&

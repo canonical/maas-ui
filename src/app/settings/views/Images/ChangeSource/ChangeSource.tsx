@@ -171,7 +171,7 @@ const ChangeSource = (): ReactElement => {
   const sourceType = getSourceType(source.data?.url ?? "");
 
   const getDefaultKeyringFilename = (): string => {
-    if (source.data?.keyring_filename) {
+    if (source.data?.keyring_filename?.length) {
       return source.data.keyring_filename;
     }
     return installTypeData === "deb"
@@ -310,7 +310,11 @@ const ChangeSource = (): ReactElement => {
               submitLabel={isValidated ? "Save" : "Validate"}
               validationSchema={ChangeSourceSchema}
             >
-              <ChangeSourceFields saved={saved} saving={saving} />
+              <ChangeSourceFields
+                installType={installTypeData}
+                saved={saved}
+                saving={saving}
+              />
             </FormikForm>
           )}
         </ContentSection.Content>

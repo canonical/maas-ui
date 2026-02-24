@@ -100,6 +100,7 @@ describe("ChangeSource", () => {
       "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
     );
     await userEvent.click(keyringFilenameInput);
+    await userEvent.clear(keyringFilenameInput);
     await userEvent.tab();
 
     await waitFor(() => {
