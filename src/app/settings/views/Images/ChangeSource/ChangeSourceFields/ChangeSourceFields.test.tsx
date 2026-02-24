@@ -1,5 +1,9 @@
 import { Formik } from "formik";
 
+import {
+  MAAS_IO_DEFAULT_KEYRING_FILE_PATHS,
+  MAAS_IO_URLS,
+} from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import ChangeSourceFields, {
   Labels,
@@ -165,5 +169,95 @@ describe("ChangeSourceFields", () => {
     expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue(
       "http://example.com"
     );
+  });
+
+  it("pre-populates MAAS.io stream selector with correct channel from URL", async () => {
+    const { rerender } = renderWithProviders(
+      <Formik
+        initialValues={{
+          keyring_data: "",
+          keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb,
+          keyring_type: "keyring_filename",
+          source_type: BootResourceSourceType.MAAS_IO,
+          url: MAAS_IO_URLS.candidate,
+        }}
+        onSubmit={vi.fn()}
+      >
+        <ChangeSourceFields saved={false} saving={false} />
+      </Formik>
+    );
+
+    // Verify the stream selector is set to candidate
+    const streamSelect = screen.getByRole("combobox", { name: "Stream" });
+    expect(streamSelect).toHaveValue("candidate");
+
+    // Switch to stable URL and verify the selector updates
+    rerender(
+      <Formik
+        initialValues={{
+          keyring_data: "",
+          keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb,
+          keyring_type: "keyring_filename",
+          source_type: BootResourceSourceType.MAAS_IO,
+          url: MAAS_IO_URLS.stable,
+        }}
+        onSubmit={vi.fn()}
+      >
+        <ChangeSourceFields saved={false} saving={false} />
+      </Formik>
+    );
+
+    const stableStreamSelect = screen.getByRole("combobox", {
+      name: "Stream",
+    });
+    expect(stableStreamSelect).toHaveValue("stable");
+  });
+
+  it("pre-populates custom source with correct default keyring based on install type", async () => {
+    // Test with deb install type
+    const { rerender } = renderWithProviders(
+      <Formik
+        initialValues={{
+          keyring_data: "",
+          keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb,
+          keyring_type: "keyring_filename",
+          source_type: BootResourceSourceType.CUSTOM,
+          url: "http://custom.example.com/stable/",
+        }}
+        onSubmit={vi.fn()}
+      >
+        <ChangeSourceFields saved={false} saving={false} />
+      </Formik>
+    );
+
+    // Verify deb default keyring is shown
+    expect(
+      screen.getByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
+    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb);
+
+    // Test with snap install type
+    rerender(
+      <Formik
+        initialValues={{
+          keyring_data: "",
+          keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap,
+          keyring_type: "keyring_filename",
+          source_type: BootResourceSourceType.CUSTOM,
+          url: "http://custom.example.com/stable/",
+        }}
+        onSubmit={vi.fn()}
+      >
+        <ChangeSourceFields saved={false} saving={false} />
+      </Formik>
+    );
+
+    // Verify snap default keyring is shown
+    expect(
+      screen.getByPlaceholderText(
+        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+      )
+    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap);
   });
 });
