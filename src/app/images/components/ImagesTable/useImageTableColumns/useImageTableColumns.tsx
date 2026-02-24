@@ -314,37 +314,32 @@ const useImageTableColumns = ({
             row: Row<Image>;
           }) => {
             const isCommissioningImage = release === commissioningRelease;
+            const isCustom = id.endsWith("-custom");
+            const imageId = Number(id.split("-")[0]);
 
-            const isSyncing =
-              status === "Downloading" || status === "OptimisticDownloading";
-            const isUpdating =
-              update_status === "Downloading" ||
-              update_status === "OptimisticDownloading";
-
-            const isOptimistic =
+            const isOptimisticDownloading =
               status === "OptimisticDownloading" ||
               update_status === "OptimisticDownloading";
-
-            const isStopping =
+            const isOptimisticStopping =
               status === "OptimisticStopping" ||
               update_status === "OptimisticStopping";
+            const isDownloading =
+              status === "Downloading" || update_status === "Downloading";
 
-            const downloadInProgress = isSyncing || isUpdating || isStopping;
-
+            const downloadInProgress =
+              isDownloading || isOptimisticDownloading || isOptimisticStopping;
             const downloadAvailable =
               status === "Waiting for download" ||
               update_status === "Update available";
 
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
-            const isCustom = id.endsWith("-custom");
-            const imageId = Number(id.split("-")[0]);
 
             return getIsGrouped() ? null : (
               <div>
                 {isCustom ? null : downloadInProgress ? (
                   <Tooltip
                     message={
-                      !isOptimistic
+                      !isOptimisticDownloading && !isOptimisticStopping
                         ? TOOLTIP_MESSAGES.STOP_SYNC_ACTIVE
                         : TOOLTIP_MESSAGES.STOP_SYNC_OPTIMISTIC
                     }
@@ -355,8 +350,8 @@ const useImageTableColumns = ({
                       className="is-dense u-table-cell-padding-overlap"
                       disabled={
                         startSync.isPending ||
-                        isOptimistic ||
-                        isStopping ||
+                        isOptimisticDownloading ||
+                        isOptimisticStopping ||
                         isCustom
                       }
                       hasIcon
@@ -391,7 +386,7 @@ const useImageTableColumns = ({
                       disabled={
                         !downloadAvailable ||
                         stopSync.isPending ||
-                        isStopping ||
+                        isOptimisticStopping ||
                         isCustom
                       }
                       hasIcon
