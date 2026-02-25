@@ -92,14 +92,14 @@ describe("Login", () => {
     await waitFor(() => {
       expect(authResolvers.isOidcUser.resolved).toBeTruthy();
       expect(screen.getByLabelText(Labels.Password)).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: Labels.Submit })
+      ).toBeInTheDocument();
     });
 
-    await waitFor(async () => {
-      await userEvent.type(screen.getByLabelText(Labels.Password), "gumtree");
-      await userEvent.click(
-        screen.getByRole("button", { name: Labels.Submit })
-      );
-    });
+    await userEvent.type(screen.getByLabelText(Labels.Password), "gumtree");
+
+    await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
 
     await waitFor(async () => {
       expect(authResolvers.authenticate.resolved).toBeTruthy();
