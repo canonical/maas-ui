@@ -64,10 +64,6 @@ When("the user clicks name of the first script", () => {
   });
 });
 
-Then("the heading should be {string}", (expectedHeading: string) => {
-  cy.findByRole("heading", { level: 1 }).contains(expectedHeading);
-});
-
 Then("the correct tag is displayed in the searchbox", () => {
   cy.get("@createdTag").then((tagName) => {
     cy.findByRole("searchbox", { name: /Search/ }).should(

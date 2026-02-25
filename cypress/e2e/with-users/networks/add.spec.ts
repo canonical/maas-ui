@@ -38,7 +38,7 @@ context("Subnets - Add", () => {
     submitForm(formName);
   };
 
-  it.skip("can add and delete a new subnet", () => {
+  it("can add and delete a new subnet", () => {
     const fabric = `cy-fabric-${generateId()}`;
     const spaceName = `cy-space-${generateId()}`;
     const vid = generateVid();
@@ -75,7 +75,7 @@ context("Subnets - Add", () => {
     cy.findByRole("link", { name: new RegExp(subnetName) }).should("not.exist");
   });
 
-  it.skip("displays an error when trying to add a VLAN with a VID that already exists", () => {
+  it("displays an error when trying to add a VLAN with a VID that already exists", () => {
     const vid = generateVid();
     const name = `cypress-${vid}`;
     completeAddVlanForm(vid, name);

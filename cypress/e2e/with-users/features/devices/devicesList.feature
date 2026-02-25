@@ -1,6 +1,6 @@
 Feature: Device listing
 
-Background
+Background:
     Given the user is logged in
     And the user navigates to the devices page
 

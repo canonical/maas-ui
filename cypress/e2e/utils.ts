@@ -17,6 +17,8 @@ export const generateId = () => nanoid();
 export const generateVid = () => `${Math.floor(Math.random() * 1000)}`;
 export const generateName = (name?: string) =>
   `cy-${name ? `${name}-` : ""}${generateId()}`;
+export const generateCidr = () =>
+  `192.168.${Math.floor(Math.random() * 255)}.0/24`;
 
 export const generateMAASURL = (route?: string): string =>
   `${Cypress.env("BASENAME")}${Cypress.env("VITE_BASENAME")}${route || ""}`;
