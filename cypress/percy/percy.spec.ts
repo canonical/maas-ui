@@ -5,7 +5,7 @@ pages.forEach(({ heading, url }) => {
   it(`"Loads the ${heading}" page`, () => {
     if (url === "/intro/user") {
       cy.login({ shouldSkipIntro: false });
-    } else if (url !== "/accounts/login") {
+    } else if (url !== "/a/v3/auth/login") {
       cy.login();
     }
     const pageUrl = generateMAASURL(url);
