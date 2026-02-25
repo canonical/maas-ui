@@ -143,7 +143,7 @@ describe("useAuthenticate", () => {
 });
 
 describe("useIsOIDCUser", () => {
-  it("should check if the user is an OIDC user", async () => {
+  it("should check if the user is an OIDC user and return the correct result", async () => {
     const { result } = renderHookWithProviders(() =>
       useIsOIDCUser(
         {
@@ -162,6 +162,84 @@ describe("useIsOIDCUser", () => {
 
     expect(result.current.data).toMatchObject({
       is_oidc: false,
+    });
+    expect(result.current.loginState).toMatchObject({
+      step: "PASSWORD",
+      oidcURL: "",
+      providerName: "",
+    });
+  });
+
+  it("should handle 409 conflict errors", async () => {
+    mockServer.use(
+      authResolvers.isOidcUser.error({
+        code: 409,
+        message: "Conflict",
+        kind: "Error",
+      })
+    );
+
+    const { result, store } = renderHookWithProviders(() =>
+      useIsOIDCUser(
+        {
+          query: {
+            email: "username",
+            redirect_target: "/machines",
+          },
+        },
+        true
+      )
+    );
+
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+
+    await waitFor(() => {
+      const actions = store.getActions();
+      expect(actions).toContainEqual(
+        expect.objectContaining({
+          type: "status/loginError",
+          payload: Labels.MissingProviderConfig,
+        })
+      );
+    });
+    expect(result.current.loginState).toMatchObject({
+      step: "USERNAME",
+      oidcURL: "",
+      providerName: "",
+    });
+  });
+
+  it("should change login step to OIDC when the user is an OIDC user", async () => {
+    mockServer.use(
+      authResolvers.isOidcUser.handler({
+        is_oidc: true,
+        auth_url: "https://oidc-provider.com/auth",
+        provider_name: "Mock OIDC Provider",
+      })
+    );
+
+    const { result } = renderHookWithProviders(() =>
+      useIsOIDCUser(
+        {
+          query: {
+            email: "username",
+            redirect_target: "/machines",
+          },
+        },
+        true
+      )
+    );
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+
+    expect(result.current.loginState).toMatchObject({
+      step: "OIDC",
+      oidcURL: "https://oidc-provider.com/auth",
+      providerName: "Mock OIDC Provider",
     });
   });
 });

@@ -94,10 +94,14 @@ describe("Login", () => {
       expect(screen.getByLabelText(Labels.Password)).toBeInTheDocument();
     });
 
-    await userEvent.type(screen.getByLabelText(Labels.Password), "gumtree");
-    await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
+    await waitFor(async () => {
+      await userEvent.type(screen.getByLabelText(Labels.Password), "gumtree");
+      await userEvent.click(
+        screen.getByRole("button", { name: Labels.Submit })
+      );
+    });
 
-    await waitFor(() => {
+    await waitFor(async () => {
       expect(authResolvers.authenticate.resolved).toBeTruthy();
     });
 
@@ -106,8 +110,7 @@ describe("Login", () => {
     ).toBeDefined();
   });
 
-  it("can login with external provider when the user is OIDC and SSO is enabled", async () => {
-    process.env.VITE_APP_SINGLE_SIGN_ON = "true";
+  it("can login with external provider when the user is OIDC", async () => {
     mockServer.use(
       authResolvers.isOidcUser.handler({
         is_oidc: true,
@@ -162,9 +165,8 @@ describe("Login", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows an error if the user isn't found", async () => {
-    state.status.authenticationError = Labels.UserNotFound;
-
+  it("shows an error if the provider is misconfigured", async () => {
+    state.status.authenticationError = Labels.MissingProviderConfig;
     mockServer.use(authResolvers.isOidcUser.error());
     renderWithProviders(<Login />, { initialEntries: ["/login"], state });
 
@@ -176,7 +178,9 @@ describe("Login", () => {
 
     await waitFor(() => {
       expect(authResolvers.isOidcUser.resolved).toBeTruthy();
-      expect(screen.getByRole("alert")).toHaveTextContent(Labels.UserNotFound);
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        Labels.MissingProviderConfig
+      );
     });
   });
 

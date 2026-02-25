@@ -21,7 +21,7 @@
     "cypress-run-a11y": "yarn cypress run --config specPattern=cypress/e2e/accessibility/**/*.ts",
     "cypress-run-docs": "yarn cypress run --config specPattern=cypress/e2e/docs-links/**/*.ts ",
     "cypress-run": "yarn cypress run",
-    "generate-api-client": "openapi-ts",
+    "generate-api-client": "export NODE_TLS_REJECT_UNAUTHORIZED=0 && openapi-ts",
     "lint": "npmPkgJsonLint . && eslint src cypress && tsc --project tsconfig.json --noEmit && tsc --project cypress/tsconfig.json --noEmit",
     "lint-fix": "npmPkgJsonLint . && eslint src cypress --fix && tsc --project tsconfig.json --noEmit && tsc --project cypress/tsconfig.json --noEmit",
     "link-components": "yarn link \"@canonical/react-components\" && yarn link \"react\" && yarn install",

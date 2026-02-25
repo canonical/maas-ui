@@ -46,9 +46,9 @@ export const Labels = {
   Username: "Username",
   IncorrectCredentials:
     "Please enter a correct username and password. Note that both fields may be case-sensitive.",
-  UserNotFound:
-    "The username belongs to an OIDC user, but no OIDC provider is enabled.",
-  NetworkError: "A network error occurred. Please try again.",
+  MissingProviderConfig:
+    "The username belongs to an OIDC user, but the corresponding OIDC provider is disabled or misconfigured.",
+  UnknownError: "Something went wrong. Please try again.",
 } as const;
 
 export enum TestIds {
@@ -66,23 +66,15 @@ export const Login = (): React.ReactElement => {
   const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
   const authenticationError = useSelector(statusSelectors.authenticationError);
   const noUsers = useSelector(statusSelectors.noUsers);
-  const disableSSO = import.meta.env.VITE_APP_SINGLE_SIGN_ON === "false";
 
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirectTo");
   const authenticate = useAuthenticate();
-  const [oidcURL, setOidcURL] = useState("");
-  const [providerName, setProviderName] = useState("");
   const [submittedUsername, setSubmittedUsername] = useState<string | null>(
     null
   );
-  const [step, setStep] = useState<LoginStep>("USERNAME");
 
-  const hasEnteredUsername = step !== "USERNAME";
-  const requirePassword = step === "PASSWORD";
-  const isOIDCUser = disableSSO ? false : step === "OIDC";
-
-  const userInfoQuery = useIsOIDCUser(
+  const { loginState } = useIsOIDCUser(
     {
       query: {
         email: submittedUsername ?? "",
@@ -91,6 +83,11 @@ export const Login = (): React.ReactElement => {
     },
     Boolean(submittedUsername)
   );
+
+  const step: LoginStep = loginState.step;
+  const hasEnteredUsername = step !== "USERNAME";
+  const requirePassword = step === "PASSWORD";
+  const isOIDCUser = step === "OIDC";
 
   const navigate = useNavigate();
 
@@ -115,37 +112,6 @@ export const Login = (): React.ReactElement => {
       dispatch(statusActions.externalLogin());
     }
   }, [dispatch, externalAuthURL]);
-
-  useEffect(() => {
-    if (submittedUsername && disableSSO) {
-      setStep("PASSWORD");
-      return;
-    }
-
-    if (userInfoQuery.error) {
-      setSubmittedUsername(null);
-      dispatch(statusActions.loginError(Labels.UserNotFound));
-      return;
-    }
-
-    if (!userInfoQuery.data) return;
-
-    const { is_oidc, auth_url, provider_name } = userInfoQuery.data;
-
-    if (is_oidc) {
-      setOidcURL(auth_url!);
-      setProviderName(provider_name!);
-      setStep("OIDC");
-    } else {
-      setStep("PASSWORD");
-    }
-  }, [
-    userInfoQuery.data,
-    userInfoQuery.error,
-    disableSSO,
-    dispatch,
-    submittedUsername,
-  ]);
 
   const handleSubmit = (values: LoginValues) => {
     authenticate.mutate({
@@ -214,12 +180,12 @@ export const Login = (): React.ReactElement => {
                       username: "",
                     }}
                     onSubmit={(values) => {
-                      if (!submittedUsername) {
+                      if (!hasEnteredUsername) {
                         setSubmittedUsername(values.username);
                       } else {
                         if (isOIDCUser) {
                           // OIDC login - redirect to provider's auth page
-                          window.location.href = oidcURL;
+                          window.location.href = loginState.oidcURL;
                         } else {
                           // Local login
                           handleSubmit(values);
@@ -227,12 +193,12 @@ export const Login = (): React.ReactElement => {
                       }
                     }}
                     saved={authenticated}
-                    saving={authenticating}
+                    saving={authenticating || loginState.isPending}
                     submitLabel={
-                      !submittedUsername
+                      !hasEnteredUsername
                         ? "Next"
                         : isOIDCUser
-                          ? `Login with ${providerName}`
+                          ? `Login with ${loginState.providerName}`
                           : Labels.Submit
                     }
                     validationSchema={generateSchema(
@@ -240,7 +206,10 @@ export const Login = (): React.ReactElement => {
                     )}
                   >
                     {isOIDCUser ? (
-                      <p>Please sign in with {providerName} to continue.</p>
+                      <p>
+                        Please sign in with {loginState.providerName} to
+                        continue.
+                      </p>
                     ) : null}
                     <FormikField
                       aria-hidden={hasEnteredUsername}

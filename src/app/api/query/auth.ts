@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 
@@ -82,11 +84,22 @@ export const usePreLogin = (mutationOptions?: Options<PreLoginData>) => {
   });
 };
 
+type OIDCLoginStep = "OIDC" | "PASSWORD" | "USERNAME";
+
+type OIDCLoginState = {
+  step: OIDCLoginStep;
+  oidcURL: string;
+  providerName: string;
+  isPending?: boolean;
+  error?: "UNKNOWN" | "USER_NOT_FOUND";
+};
+
 export const useIsOIDCUser = (
   options: Options<InitiateAuthFlowData>,
   enabled: boolean
 ) => {
-  return useWebsocketAwareQuery({
+  const dispatch = useDispatch();
+  const query = useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
       InitiateAuthFlowResponses,
       InitiateAuthFlowErrors,
@@ -96,6 +109,63 @@ export const useIsOIDCUser = (
     refetchOnWindowFocus: false,
     retry: false,
   });
+
+  const loginState = useMemo<OIDCLoginState>(() => {
+    if (!enabled || query.isPending) {
+      return {
+        step: "USERNAME",
+        oidcURL: "",
+        providerName: "",
+        isPending: enabled ? query.isPending : false,
+      };
+    }
+
+    if (query.error) {
+      const { code } = query.error;
+      dispatch(
+        statusActions.loginError(
+          code === 409 ? Labels.MissingProviderConfig : Labels.UnknownError
+        )
+      );
+      return {
+        step: "USERNAME",
+        oidcURL: "",
+        providerName: "",
+        error: code === 409 ? "USER_NOT_FOUND" : "UNKNOWN",
+      };
+    }
+
+    if (!query.data) {
+      dispatch(statusActions.loginError(Labels.UnknownError));
+      return {
+        step: "USERNAME",
+        oidcURL: "",
+        providerName: "",
+        error: "UNKNOWN",
+      };
+    }
+
+    const { is_oidc, auth_url, provider_name } = query.data;
+
+    if (is_oidc) {
+      return {
+        step: "OIDC",
+        oidcURL: auth_url ?? "",
+        providerName: provider_name ?? "",
+      };
+    }
+
+    return {
+      step: "PASSWORD",
+      oidcURL: "",
+      providerName: "",
+    };
+  }, [enabled, query.data, query.error, query.isPending, dispatch]);
+
+  return {
+    ...query,
+    loginState,
+  };
 };
 
 export const useGetCallback = (
