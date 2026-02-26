@@ -27,12 +27,24 @@ Cypress.Commands.add("login", (options) => {
 
   cy.request({
     method: "POST",
-    url: `${Cypress.env("BASENAME")}/accounts/login/`,
+    url: `${Cypress.env("BASENAME")}/a/v3/auth/login`,
     form: true,
     body: {
       username,
       password,
     },
+  }).then((resp) => {
+    const { access_token, refresh_token } = resp.body;
+
+    cy.setCookie("maas.local_jwt_token_cookie", access_token, {
+      sameSite: "strict",
+      path: "/",
+    });
+
+    cy.setCookie("maas.local_refresh_token_cookie", refresh_token, {
+      sameSite: "strict",
+      path: "/",
+    });
   });
 });
 
