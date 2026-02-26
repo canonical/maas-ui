@@ -9,7 +9,8 @@ context("Login page", () => {
   it("displays an error message if submitted invalid login credentials", () => {
     cy.findByRole("textbox", { name: /Username/ }).type("user");
     cy.findByRole("button", { name: /Next/ }).click();
-    cy.findByLabelText(/Password/).type("invalid-password{enter}");
+    cy.findByLabelText(/Password/).type("invalid-password");
+    cy.findByRole("button", { name: /Login/ }).click();
     cy.findByRole("alert")
       .should("be.visible")
       .should("include.text", "Please enter a correct username and password");
