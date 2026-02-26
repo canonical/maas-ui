@@ -40,6 +40,8 @@ When("the user creates a new subnet", function () {
 });
 
 When("the user deletes the created subnet", function () {
+  cy.findByRole("searchbox", { name: "Search" }).type(this.subnetName!);
+
   cy.findByRole("link", { name: new RegExp(this.subnetName) }).click();
   cy.findByRole("button", { name: "Take action" }).click();
   cy.findByRole("button", { name: "Delete subnet" }).click();
@@ -48,7 +50,7 @@ When("the user deletes the created subnet", function () {
   );
   cy.findByRole("button", { name: "Delete" }).click();
 
-  cy.url().should("include", generateMAASURL("/networks?by=fabric"));
+  cy.url().should("include", generateMAASURL("/networks/subnets?by=fabric"));
 });
 
 When("the user tries to add a VLAN with a VID that already exists", () => {
@@ -74,24 +76,20 @@ Then("the subnet appears under the correct fabric", function () {
   cy.findByRole("button", { name: "Save VLAN" }).should("not.exist");
   cy.findByRole("searchbox", { name: "Search" }).type(this.fabric!);
 
-  cy.contains(this.fabric).should("be.visible");
-  cy.findByRole("row", { name: new RegExp(this.fabric) }).should("exist");
-
   cy.findAllByRole("link", { name: this.fabric }).should("have.length", 1);
 
   cy.findAllByRole("row", { name: new RegExp(this.fabric) })
     .next("tr")
     .within(() => {
-      cy.findAllByRole("cell").eq(0).should("contain.text", this.subnetName);
+      cy.findAllByRole("cell").eq(1).should("contain.text", this.subnetName);
       cy.findAllByRole("cell")
-        .eq(1)
+        .eq(2)
         .should("have.text", `${this.vid} (${this.vlan})`);
-      cy.findAllByRole("cell").eq(4).should("have.text", this.spaceName);
+      cy.findAllByRole("cell").eq(5).should("have.text", this.spaceName);
     });
 });
 
 Then("fabric list should not include deleted subnet", function () {
-  cy.url().should("include", generateMAASURL("/networks?by=fabric"));
   cy.findByRole("link", { name: new RegExp(this.subnetName) }).should(
     "not.exist"
   );

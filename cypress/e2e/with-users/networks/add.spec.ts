@@ -1,4 +1,9 @@
-import { generateId, generateMAASURL, generateVid } from "../../utils";
+import {
+  generateCidr,
+  generateId,
+  generateMAASURL,
+  generateVid,
+} from "../../utils";
 
 context("Subnets - Add", () => {
   beforeEach(() => {
@@ -43,13 +48,14 @@ context("Subnets - Add", () => {
     const spaceName = `cy-space-${generateId()}`;
     const vid = generateVid();
     const vlan = `cy-vlan-${vid}`;
-    const cidr = "192.168.122.18";
+    const cidr = generateCidr();
     const subnetName = `cy-subnet-${generateId()}`;
 
     completeForm("Fabric", fabric);
     completeForm("Space", spaceName);
     completeAddVlanForm(vid, vlan, fabric, spaceName);
     cy.addSubnet({ subnetName, cidr, fabric, vid, vlan });
+    cy.findByRole("searchbox", { name: "Search" }).type(fabric!);
 
     cy.findAllByRole("link", { name: fabric }).should("have.length", 1);
 
@@ -57,12 +63,16 @@ context("Subnets - Add", () => {
     cy.findAllByRole("row", { name: new RegExp(fabric) })
       .next("tr")
       .within(() => {
-        cy.findAllByRole("cell").eq(0).should("contain.text", subnetName);
-        cy.findAllByRole("cell").eq(1).should("have.text", `${vid} (${vlan})`);
-        cy.findAllByRole("cell").eq(4).should("have.text", spaceName);
+        cy.findAllByRole("cell").eq(1).should("contain.text", subnetName);
+        cy.findAllByRole("cell").eq(2).should("have.text", `${vid} (${vlan})`);
+        cy.findAllByRole("cell").eq(5).should("have.text", spaceName);
       });
 
     // delete the subnet
+
+    cy.findByRole("searchbox", { name: "Search" }).clear();
+    cy.findByRole("searchbox", { name: "Search" }).type(subnetName);
+
     cy.findByRole("link", { name: new RegExp(subnetName) }).click();
     cy.findByRole("button", { name: "Take action" }).click();
     cy.findByRole("button", { name: "Delete subnet" }).click();
@@ -71,7 +81,7 @@ context("Subnets - Add", () => {
     );
     cy.findByRole("button", { name: "Delete" }).click();
 
-    cy.url().should("include", generateMAASURL("/networks?by=fabric"));
+    cy.url().should("include", generateMAASURL("/networks/subnets?by=fabric"));
     cy.findByRole("link", { name: new RegExp(subnetName) }).should("not.exist");
   });
 
