@@ -294,6 +294,7 @@ const ChangeSourceFields = ({
             />
             {selectedKeyringType === "keyring_filename" ? (
               <FormikField
+                aria-label={Labels.KeyringFilename}
                 help="Path to the keyring to validate the mirror path."
                 name="keyring_filename"
                 placeholder="e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
@@ -302,6 +303,7 @@ const ChangeSourceFields = ({
               />
             ) : selectedKeyringType === "keyring_data" ? (
               <FormikField
+                aria-label={Labels.KeyringData}
                 component={Textarea}
                 help="Contents on the keyring to validate the mirror path."
                 name="keyring_data"

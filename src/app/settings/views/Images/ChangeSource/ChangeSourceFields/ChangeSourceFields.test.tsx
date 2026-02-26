@@ -60,12 +60,10 @@ describe("ChangeSourceFields", () => {
       screen.getByRole("textbox", { name: Labels.Url })
     ).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toBeInTheDocument();
     expect(
-      screen.queryByPlaceholderText("Contents of GPG key (base64 encoded)")
+      screen.queryByRole("textbox", { name: Labels.KeyringData })
     ).not.toBeInTheDocument();
   });
 
@@ -109,12 +107,10 @@ describe("ChangeSourceFields", () => {
       </Formik>
     );
     expect(
-      screen.getByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toBeInTheDocument();
     expect(
-      screen.queryByPlaceholderText("Contents of GPG key (base64 encoded)")
+      screen.queryByRole("textbox", { name: Labels.KeyringData })
     ).not.toBeInTheDocument();
 
     // Switch to keyring_data
@@ -122,12 +118,10 @@ describe("ChangeSourceFields", () => {
     await userEvent.selectOptions(select, "keyring_data");
 
     expect(
-      screen.queryByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.queryByRole("textbox", { name: Labels.KeyringFilename })
     ).not.toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("Contents of GPG key (base64 encoded)")
+      screen.getByRole("textbox", { name: Labels.KeyringData })
     ).toBeInTheDocument();
   });
 
@@ -148,9 +142,7 @@ describe("ChangeSourceFields", () => {
     );
 
     expect(
-      screen.getByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toHaveValue("/path/to/file");
 
     // Switch to keyring_data
@@ -159,7 +151,7 @@ describe("ChangeSourceFields", () => {
 
     // keyring_data should be shown with its value
     expect(
-      screen.getByPlaceholderText("Contents of GPG key (base64 encoded)")
+      screen.getByRole("textbox", { name: Labels.KeyringData })
     ).toHaveValue("some data");
 
     // Switch back to keyring_filename
@@ -232,9 +224,7 @@ describe("ChangeSourceFields", () => {
 
     // Verify deb default keyring is shown
     expect(
-      screen.getByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb);
 
     // Test with snap install type
@@ -255,9 +245,7 @@ describe("ChangeSourceFields", () => {
 
     // Verify snap default keyring is shown
     expect(
-      screen.getByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap);
   });
 });
