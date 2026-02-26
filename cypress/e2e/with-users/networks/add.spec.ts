@@ -74,6 +74,7 @@ context("Subnets - Add", () => {
     cy.findByRole("searchbox", { name: "Search" }).type(subnetName);
 
     cy.findByRole("link", { name: new RegExp(subnetName) }).click();
+    cy.waitForPageToLoad();
     cy.findByRole("button", { name: "Take action" }).click();
     cy.findByRole("button", { name: "Delete subnet" }).click();
     cy.findByText(/Are you sure you want to delete this subnet?/).should(
