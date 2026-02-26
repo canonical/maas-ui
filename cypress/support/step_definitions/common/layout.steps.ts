@@ -6,3 +6,7 @@ Then("the main toolbar heading should be {string}", (expectedHeading) => {
     expectedHeading
   );
 });
+
+Then("the heading should be {string}", (expectedHeading: string) => {
+  cy.findByRole("heading", { level: 1 }).contains(expectedHeading);
+});

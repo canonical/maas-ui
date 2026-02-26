@@ -27,9 +27,12 @@ export const routes: Record<string, string> = {
   kvm: "/kvm",
   "maas setup": "/intro",
   "machines list": "/machines",
+  networks: "/networks",
+  "networks by fabric": "/networks?by=fabric",
   "network discovery": "/network-discovery",
   pools: "/pools",
   preferences: "/account/prefs",
+  subnets: "/networks/subnets?by=fabric",
   "user setup": "/intro/user",
   zones: "/zones",
 };
