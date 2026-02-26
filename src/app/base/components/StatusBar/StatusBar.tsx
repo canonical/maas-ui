@@ -4,13 +4,13 @@ import {
   AppStatus,
   Button,
   Icon,
+  ICONS,
   Link,
   useToastNotification,
-  ICONS,
 } from "@canonical/react-components";
 import {
-  severityOrder,
   iconLookup,
+  severityOrder,
 } from "@canonical/react-components/dist/components/Notifications/ToastNotification/ToastNotificationList";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
@@ -26,7 +26,11 @@ import {
   isRack,
   isRegionAndRack,
 } from "@/app/store/controller/utils";
-import { version as versionSelectors } from "@/app/store/general/selectors";
+import { generalActions } from "@/app/store/general";
+import {
+  installType as installTypeSelectors,
+  version as versionSelectors,
+} from "@/app/store/general/selectors";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import {
@@ -116,6 +120,7 @@ export const StatusBar = (): React.ReactElement | null => {
   const maasName = useSelector(configSelectors.maasName);
   const allowUsabilla = useUsabilla();
   const msmRunning = useSelector(msmSelectors.running);
+  const installType = useSelector(installTypeSelectors.get);
   const { toggleListView, notifications, countBySeverity, isListView } =
     useToastNotification();
 
@@ -141,7 +146,7 @@ export const StatusBar = (): React.ReactElement | null => {
 
   const hasNotifications = notifications.length > 0;
 
-  useFetchActions([msmActions.fetch]);
+  useFetchActions([msmActions.fetch, generalActions.fetchInstallType]);
 
   if (!(maasName && version)) {
     return null;
@@ -184,7 +189,9 @@ export const StatusBar = (): React.ReactElement | null => {
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>
           :&nbsp;
-          <span data-testid="status-bar-version">{version}</span>
+          <span data-testid="status-bar-version">
+            {version} ({installType})
+          </span>
         </div>
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
           <span data-testid="status-bar-msm-status">
