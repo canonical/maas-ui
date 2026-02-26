@@ -1,5 +1,9 @@
 import { Formik } from "formik";
 
+import {
+  MAAS_IO_DEFAULT_KEYRING_FILE_PATHS,
+  MAAS_IO_URLS,
+} from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import ChangeSourceFields, {
   Labels,
@@ -56,12 +60,10 @@ describe("ChangeSourceFields", () => {
       screen.getByRole("textbox", { name: Labels.Url })
     ).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toBeInTheDocument();
     expect(
-      screen.queryByPlaceholderText("Contents of GPG key (base64 encoded)")
+      screen.queryByRole("textbox", { name: Labels.KeyringData })
     ).not.toBeInTheDocument();
   });
 
@@ -105,12 +107,10 @@ describe("ChangeSourceFields", () => {
       </Formik>
     );
     expect(
-      screen.getByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toBeInTheDocument();
     expect(
-      screen.queryByPlaceholderText("Contents of GPG key (base64 encoded)")
+      screen.queryByRole("textbox", { name: Labels.KeyringData })
     ).not.toBeInTheDocument();
 
     // Switch to keyring_data
@@ -118,12 +118,10 @@ describe("ChangeSourceFields", () => {
     await userEvent.selectOptions(select, "keyring_data");
 
     expect(
-      screen.queryByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.queryByRole("textbox", { name: Labels.KeyringFilename })
     ).not.toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("Contents of GPG key (base64 encoded)")
+      screen.getByRole("textbox", { name: Labels.KeyringData })
     ).toBeInTheDocument();
   });
 
@@ -144,9 +142,7 @@ describe("ChangeSourceFields", () => {
     );
 
     expect(
-      screen.getByPlaceholderText(
-        "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-      )
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toHaveValue("/path/to/file");
 
     // Switch to keyring_data
@@ -155,7 +151,7 @@ describe("ChangeSourceFields", () => {
 
     // keyring_data should be shown with its value
     expect(
-      screen.getByPlaceholderText("Contents of GPG key (base64 encoded)")
+      screen.getByRole("textbox", { name: Labels.KeyringData })
     ).toHaveValue("some data");
 
     // Switch back to keyring_filename
@@ -165,5 +161,91 @@ describe("ChangeSourceFields", () => {
     expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue(
       "http://example.com"
     );
+  });
+
+  it("pre-populates MAAS.io stream selector with correct channel from URL", async () => {
+    const { rerender } = renderWithProviders(
+      <Formik
+        initialValues={{
+          keyring_data: "",
+          keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb,
+          keyring_type: "keyring_filename",
+          source_type: BootResourceSourceType.MAAS_IO,
+          url: MAAS_IO_URLS.candidate,
+        }}
+        onSubmit={vi.fn()}
+      >
+        <ChangeSourceFields saved={false} saving={false} />
+      </Formik>
+    );
+
+    // Verify the stream selector is set to candidate
+    const streamSelect = screen.getByRole("combobox", { name: "Stream" });
+    expect(streamSelect).toHaveValue("candidate");
+
+    // Switch to stable URL and verify the selector updates
+    rerender(
+      <Formik
+        initialValues={{
+          keyring_data: "",
+          keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb,
+          keyring_type: "keyring_filename",
+          source_type: BootResourceSourceType.MAAS_IO,
+          url: MAAS_IO_URLS.stable,
+        }}
+        onSubmit={vi.fn()}
+      >
+        <ChangeSourceFields saved={false} saving={false} />
+      </Formik>
+    );
+
+    const stableStreamSelect = screen.getByRole("combobox", {
+      name: "Stream",
+    });
+    expect(stableStreamSelect).toHaveValue("stable");
+  });
+
+  it("pre-populates custom source with correct default keyring based on install type", async () => {
+    // Test with deb install type
+    const { rerender } = renderWithProviders(
+      <Formik
+        initialValues={{
+          keyring_data: "",
+          keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb,
+          keyring_type: "keyring_filename",
+          source_type: BootResourceSourceType.CUSTOM,
+          url: "http://custom.example.com/stable/",
+        }}
+        onSubmit={vi.fn()}
+      >
+        <ChangeSourceFields saved={false} saving={false} />
+      </Formik>
+    );
+
+    // Verify deb default keyring is shown
+    expect(
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
+    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb);
+
+    // Test with snap install type
+    rerender(
+      <Formik
+        initialValues={{
+          keyring_data: "",
+          keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap,
+          keyring_type: "keyring_filename",
+          source_type: BootResourceSourceType.CUSTOM,
+          url: "http://custom.example.com/stable/",
+        }}
+        onSubmit={vi.fn()}
+      >
+        <ChangeSourceFields saved={false} saving={false} />
+      </Formik>
+    );
+
+    // Verify snap default keyring is shown
+    expect(
+      screen.getByRole("textbox", { name: Labels.KeyringFilename })
+    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap);
   });
 });

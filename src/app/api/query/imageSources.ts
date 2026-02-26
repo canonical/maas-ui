@@ -2,7 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
 import { IMAGES_WORKFLOW_KEY } from "@/app/api/query/images";
-import { queryOptionsWithHeaders } from "@/app/api/utils";
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   GetBootsourceData,
   GetBootsourceErrors,
@@ -15,8 +18,15 @@ import type {
   CreateBootsourceData,
   CreateBootsourceErrors,
   CreateBootsourceResponses,
+  UpdateBootsourceData,
+  UpdateBootsourceResponses,
+  UpdateBootsourceErrors,
+  FetchBootsourcesAvailableImagesData,
+  FetchBootsourcesAvailableImagesResponses,
+  FetchBootsourcesAvailableImagesErrors,
 } from "@/app/apiclient";
 import {
+  updateBootsource,
   createBootsource,
   deleteBootsource,
   fetchBootsourcesAvailableImages,
@@ -63,24 +73,13 @@ export const useChangeImageSource = () => {
     Options<CreateBootsourceData & { body: { current_boot_source_id: number } }>
   >({
     mutationFn: async (params) => {
-      // Step 1: Fetch to validate source using URL from createData
-      await fetchBootsourcesAvailableImages({
-        body: {
-          url: params.body.url,
-          keyring_filename: params.body.keyring_filename,
-          keyring_data: params.body.keyring_data,
-          skip_keyring_verification: params.body.skip_keyring_verification,
-        },
-        throwOnError: true,
-      });
-
-      // Step 2: Create new source
+      // Step 1: Create new source
       const createResult = await createBootsource({
         ...params,
         throwOnError: true,
       });
 
-      // Step 3: Delete old source
+      // Step 2: Delete old source
       await deleteBootsource({
         path: { boot_source_id: params.body.current_boot_source_id },
         throwOnError: true,
@@ -99,5 +98,35 @@ export const useChangeImageSource = () => {
         queryKey: getAllAvailableImagesQueryKey(),
       });
     },
+  });
+};
+
+export const useUpdateImageSource = (
+  mutationOptions?: Options<UpdateBootsourceData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdateBootsourceResponses,
+      UpdateBootsourceErrors,
+      UpdateBootsourceData
+    >(mutationOptions, updateBootsource),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listBootsourcesQueryKey(),
+      });
+    },
+  });
+};
+
+export const useFetchImageSource = (
+  mutationOptions?: Options<FetchBootsourcesAvailableImagesData>
+) => {
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      FetchBootsourcesAvailableImagesResponses,
+      FetchBootsourcesAvailableImagesErrors,
+      FetchBootsourcesAvailableImagesData
+    >(mutationOptions, fetchBootsourcesAvailableImages),
   });
 };

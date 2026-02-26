@@ -246,6 +246,15 @@ export type VersionState = {
   loading: boolean;
 };
 
+export type InstallType = string;
+
+export type InstallTypeState = {
+  errors: APIError;
+  data: InstallType;
+  loaded: boolean;
+  loading: boolean;
+};
+
 export type GeneralState = {
   architectures: ArchitecturesState;
   bondOptions: BondOptionsState;
@@ -253,6 +262,7 @@ export type GeneralState = {
   defaultMinHweKernel: DefaultMinHweKernelState;
   generatedCertificate: GeneratedCertificateState;
   hweKernels: HWEKernelsState;
+  installType: InstallTypeState;
   knownArchitectures: KnownArchitecturesState;
   knownBootArchitectures: KnownBootArchitecturesState;
   machineActions: MachineActionsState;

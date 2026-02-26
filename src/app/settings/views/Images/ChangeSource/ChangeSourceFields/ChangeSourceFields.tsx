@@ -14,7 +14,11 @@ import { useFormikContext } from "formik";
 
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
-import { MAAS_IO_DEFAULTS } from "@/app/images/constants";
+import {
+  MAAS_IO_DEFAULTS,
+  MAAS_IO_URLS,
+  MAAS_IO_DEFAULT_KEYRING_FILE_PATHS,
+} from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 
@@ -30,11 +34,13 @@ export enum Labels {
 type ChangeSourceFieldsProps = {
   saved: boolean;
   saving: boolean;
+  installType?: string;
 };
 
 const ChangeSourceFields = ({
   saved,
   saving,
+  installType,
 }: ChangeSourceFieldsProps): ReactElement => {
   const { handleChange, setFieldValue, validateForm, values, initialValues } =
     useFormikContext<ChangeSourceValues>();
@@ -45,24 +51,34 @@ const ChangeSourceFields = ({
     "keyring_data" | "keyring_filename" | "keyring_unsigned"
   >(keyring_type || "keyring_filename");
 
+  // Determine the selected MAAS.io release channel from the URL
+  const getSelectedChannel = (): "candidate" | "stable" => {
+    if (url.includes("candidate")) {
+      return "candidate";
+    }
+    return "stable";
+  };
+
+  const [selectedChannel, setSelectedChannel] = useState<
+    "candidate" | "stable"
+  >(getSelectedChannel());
+
   const customValuesRef = useRef(
     source_type === BootResourceSourceType.CUSTOM
       ? { url, keyring_filename, keyring_data }
-      : { url: "", keyring_filename: "", keyring_data: "" }
+      : {
+          url: "",
+          keyring_filename:
+            installType === "snap"
+              ? MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap
+              : MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb,
+          keyring_data: "",
+        }
   );
 
   const prevSourceTypeRef = useRef(source_type);
 
   useEffect(() => {
-    const switchedToCustom =
-      prevSourceTypeRef.current !== BootResourceSourceType.CUSTOM &&
-      source_type === BootResourceSourceType.CUSTOM;
-
-    prevSourceTypeRef.current = source_type;
-
-    if (switchedToCustom) {
-      return;
-    }
     if (source_type === BootResourceSourceType.CUSTOM) {
       customValuesRef.current = {
         url,
@@ -70,7 +86,9 @@ const ChangeSourceFields = ({
         keyring_data,
       };
     }
-  }, [source_type, url, keyring_filename, keyring_data]);
+
+    prevSourceTypeRef.current = source_type;
+  }, [source_type, url, keyring_filename, keyring_data, installType]);
 
   const onlyAutoSyncChanged =
     values.autoSync !== initialValues.autoSync &&
@@ -192,6 +210,30 @@ const ChangeSourceFields = ({
             images.
           </NotificationBanner>
         )}
+        {source_type === BootResourceSourceType.MAAS_IO && (
+          <Select
+            label="Stream"
+            name="maas-io-stream"
+            onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+              const newChannel = e.target.value as "candidate" | "stable";
+              setSelectedChannel(newChannel);
+              const newUrl = MAAS_IO_URLS[newChannel];
+              await setFieldValue("url", newUrl).catch((reason: unknown) => {
+                throw new FormikFieldChangeError(
+                  "url",
+                  "setFieldValue",
+                  reason as string
+                );
+              });
+            }}
+            options={[
+              { label: "Stable", value: "stable" },
+              { label: "Candidate", value: "candidate" },
+            ]}
+            required
+            value={selectedChannel}
+          />
+        )}
         {source_type === BootResourceSourceType.CUSTOM && (
           <>
             <FormikField
@@ -252,6 +294,7 @@ const ChangeSourceFields = ({
             />
             {selectedKeyringType === "keyring_filename" ? (
               <FormikField
+                aria-label={Labels.KeyringFilename}
                 help="Path to the keyring to validate the mirror path."
                 name="keyring_filename"
                 placeholder="e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
@@ -260,6 +303,7 @@ const ChangeSourceFields = ({
               />
             ) : selectedKeyringType === "keyring_data" ? (
               <FormikField
+                aria-label={Labels.KeyringData}
                 component={Textarea}
                 help="Contents on the keyring to validate the mirror path."
                 name="keyring_data"
@@ -277,7 +321,7 @@ const ChangeSourceFields = ({
               {Labels.AutoSyncImages}
               <Tooltip
                 className="u-nudge-right--small"
-                message={`Enables hourly image updates (sync) from the source configured below.`}
+                message={`Enables hourly image updates (sync) from the source configured above.`}
               >
                 <div className="u-nudge-right--x-large">
                   <Icon name="help" />

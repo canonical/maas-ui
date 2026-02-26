@@ -42,6 +42,8 @@ const FormikForm = <V extends object, E = null>({
   saving,
   savingLabel,
   secondarySubmit,
+  secondarySubmitSaved,
+  secondarySubmitSaving,
   secondarySubmitDisabled,
   secondarySubmitLabel,
   secondarySubmitTooltip,
@@ -82,6 +84,8 @@ const FormikForm = <V extends object, E = null>({
         secondarySubmit={secondarySubmit}
         secondarySubmitDisabled={secondarySubmitDisabled}
         secondarySubmitLabel={secondarySubmitLabel}
+        secondarySubmitSaved={secondarySubmitSaved}
+        secondarySubmitSaving={secondarySubmitSaving}
         secondarySubmitTooltip={secondarySubmitTooltip}
         submitAppearance={submitAppearance}
         submitDisabled={submitDisabled}

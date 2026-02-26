@@ -1,4 +1,4 @@
-import { describe } from "vitest";
+import { describe, it, expect } from "vitest";
 
 import ChangeSource from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
@@ -21,6 +21,7 @@ const mockServer = setupMockServer(
   imageSourceResolvers.getImageSource.handler(),
   imageSourceResolvers.fetchImageSource.handler(),
   imageSourceResolvers.createImageSource.handler(),
+  imageSourceResolvers.updateImageSource.handler(),
   imageSourceResolvers.deleteImageSource.handler(),
   imageResolvers.listSelectionStatuses.handler(),
   imageResolvers.listCustomImageStatuses.handler(),
@@ -35,13 +36,14 @@ describe("ChangeSource", () => {
   it("dispatches an action to update config when changing the auto sync switch", async () => {
     renderWithProviders(<ChangeSource />);
     await waitForLoading();
-    await userEvent
-      .click(
-        screen.getByRole("checkbox", { name: /Automatically sync images/i })
-      )
-      .then(async () => {
-        await userEvent.click(screen.getByText("Save"));
-      });
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: /Automatically sync images/i })
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Validate" }));
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     expect(configurationsResolvers.setConfiguration.resolved).toBe(true);
   });
@@ -55,7 +57,7 @@ describe("ChangeSource", () => {
     );
     renderWithProviders(<ChangeSource />);
     await waitForLoading();
-    expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
+    expect(screen.getByRole("button", { name: "Validate" })).toBeAriaDisabled();
     expect(
       screen.getByTestId("cannot-change-source-warning")
     ).toBeInTheDocument();
@@ -98,6 +100,7 @@ describe("ChangeSource", () => {
       "e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
     );
     await userEvent.click(keyringFilenameInput);
+    await userEvent.clear(keyringFilenameInput);
     await userEvent.tab();
 
     await waitFor(() => {
@@ -126,5 +129,104 @@ describe("ChangeSource", () => {
     await waitFor(() => {
       expect(screen.getByText("Keyring data is required")).toBeInTheDocument();
     });
+  });
+
+  it("creates a new source and deletes the old one when URL is changed", async () => {
+    renderWithProviders(<ChangeSource />);
+    await waitForLoading();
+
+    // Change to custom source
+    await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
+
+    // Update the URL
+    const urlInput = screen.getByRole("textbox", { name: Labels.Url });
+    await userEvent.clear(urlInput);
+    await userEvent.type(urlInput, "http://example.com/ephemeral-v3/stable/");
+
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_unsigned");
+
+    const validateButton = screen.getByRole("button", { name: "Validate" });
+    await userEvent.click(validateButton);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
+    });
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    await waitFor(() => {
+      expect(imageSourceResolvers.createImageSource.resolved).toBe(true);
+    });
+  });
+
+  it("updates existing source when URL is unchanged", async () => {
+    mockServer.use(
+      imageSourceResolvers.getImageSource.handler(
+        factory.imageSourceFactory.build({
+          id: 1,
+          url: "http://custom.example.com/ephemeral-v3/stable/",
+          keyring_filename: "/path/to/keyring.gpg",
+          keyring_data: "",
+          priority: 0,
+          skip_keyring_verification: false,
+        })
+      )
+    );
+
+    renderWithProviders(<ChangeSource />);
+    await waitForLoading();
+
+    // Change keyring type to keyring_data (different from initial keyring_filename)
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_data");
+
+    const keyringDataInput = screen.getByPlaceholderText(
+      "Contents of GPG key (base64 encoded)"
+    );
+    await userEvent.type(keyringDataInput, "aabbccdd");
+
+    await userEvent.click(screen.getByRole("button", { name: "Validate" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
+    });
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    await waitFor(() => {
+      expect(imageSourceResolvers.updateImageSource.resolved).toBe(true);
+    });
+  });
+
+  it("displays error and keeps button as Validate if fetch fails", async () => {
+    mockServer.use(
+      imageSourceResolvers.fetchImageSource.error({
+        message: "Invalid boot source URL",
+        code: 400,
+      })
+    );
+
+    renderWithProviders(<ChangeSource />);
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("radio", { name: Labels.Custom }));
+
+    const urlInput = screen.getByRole("textbox", { name: Labels.Url });
+    await userEvent.clear(urlInput);
+    await userEvent.type(urlInput, "http://invalid.example.com/");
+
+    const select = screen.getByRole("combobox");
+    await userEvent.selectOptions(select, "keyring_unsigned");
+
+    await userEvent.click(screen.getByRole("button", { name: "Validate" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Invalid boot source URL")).toBeInTheDocument();
+    });
+
+    // "Save" should be disabled, while "Validate" still enabled
+    expect(screen.getByRole("button", { name: "Validate" })).toBeEnabled();
+    expect(screen.queryByRole("button", { name: "Save" })).toBeDisabled();
   });
 });

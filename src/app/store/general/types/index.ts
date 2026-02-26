@@ -20,6 +20,8 @@ export type {
   GeneratedCertificateState,
   HWEKernel,
   HWEKernelsState,
+  InstallType,
+  InstallTypeState,
   KnownArchitecture,
   KnownArchitecturesState,
   KnownBootArchitecture,

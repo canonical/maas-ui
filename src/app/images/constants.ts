@@ -1,7 +1,17 @@
 import type { Accept } from "react-dropzone";
 
+export const MAAS_IO_URLS = {
+  stable: "http://images.maas.io/ephemeral-v3/stable/",
+  candidate: "http://images.maas.io/ephemeral-v3/candidate/",
+} as const;
+
+export const MAAS_IO_DEFAULT_KEYRING_FILE_PATHS = {
+  deb: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
+  snap: "/snap/maas/current/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
+};
+
 export const MAAS_IO_DEFAULTS = {
-  url: "http://images.maas.io/ephemeral-v3/stable/",
+  url: MAAS_IO_URLS.stable,
   keyring_filename:
     "/snap/maas/current/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
   keyring_data: "",
