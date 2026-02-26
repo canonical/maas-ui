@@ -35,6 +35,22 @@ afterEach(() => {
   Object.assign(import.meta.env, { ...originalEnv });
 });
 
+it("can show if the MAAS is a snap installation", () => {
+  state.general.installType.data = "snap";
+
+  renderWithProviders(<StatusBar />, { state });
+
+  expect(screen.getByText(/(snap)/i)).toBeInTheDocument();
+});
+
+it("can show if the MAAS is a deb installation", () => {
+  state.general.installType.data = "deb";
+
+  renderWithProviders(<StatusBar />, { state });
+
+  expect(screen.getByText(/(deb)/i)).toBeInTheDocument();
+});
+
 it("can show if a machine is currently commissioning", () => {
   state.machine.items = [
     factory.machineDetails({
