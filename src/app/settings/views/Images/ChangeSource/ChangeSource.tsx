@@ -28,6 +28,8 @@ import type {
   BootSourceCreateRequest,
   ImageStatusListResponse,
   ImageStatusResponse,
+  NotFoundBodyResponse,
+  ValidationErrorBodyResponse,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
@@ -115,6 +117,8 @@ const checkCanChangeSource = (
 const ChangeSource = (): ReactElement => {
   const dispatch = useDispatch();
   const [isValidated, setIsValidated] = useState(false);
+  const [lastValidatedValues, setLastValidatedValues] =
+    useState<ChangeSourceValues | null>(null);
   const sources = useImageSources();
   // TODO: add support for multiple sources when v3 is ready
   const source = useGetImageSource(
@@ -147,10 +151,7 @@ const ChangeSource = (): ReactElement => {
   const loading =
     sources.isPending || source.isPending || importConfig.isPending;
 
-  const saving =
-    fetchImageSource.isPending ||
-    updateConfig.isPending ||
-    changeImageSource.isPending;
+  const saving = updateConfig.isPending || changeImageSource.isPending;
   const saved = updateConfig.isSuccess || changeImageSource.isSuccess;
 
   const errors =
@@ -213,42 +214,16 @@ const ChangeSource = (): ReactElement => {
             </NotificationBanner>
           )}
           {!loading && (
-            <FormikForm
+            <FormikForm<
+              ChangeSourceValues,
+              NotFoundBodyResponse | ValidationErrorBodyResponse | null
+            >
               aria-label="Choose source"
+              buttonsBehavior="independent"
               enableReinitialize
               errors={errors}
               initialValues={initialValues}
               onSubmit={(values) => {
-                // Step 1: Validate by fetching boot resources
-                if (!isValidated) {
-                  fetchImageSource.mutate(
-                    {
-                      body: {
-                        url: values.url,
-                        keyring_filename:
-                          values.keyring_type === "keyring_filename"
-                            ? values.keyring_filename
-                            : undefined,
-                        keyring_data:
-                          values.keyring_type === "keyring_data"
-                            ? values.keyring_data
-                            : undefined,
-                        skip_keyring_verification:
-                          values.keyring_type === "keyring_unsigned"
-                            ? true
-                            : undefined,
-                      },
-                    },
-                    {
-                      onSuccess: () => {
-                        setIsValidated(true);
-                      },
-                    }
-                  );
-                  return;
-                }
-
-                // Step 2: Save the configuration
                 if (values.autoSync !== initialValues.autoSync) {
                   updateConfig.mutate({
                     headers: {
@@ -300,14 +275,58 @@ const ChangeSource = (): ReactElement => {
                     });
                   }
                 }
+              }}
+              onValuesChanged={(values) => {
+                // Only reset validation if the form values have changed from the last validated state
+                // This prevents the validation from resetting itself when the validation callback completes
+                if (
+                  lastValidatedValues &&
+                  JSON.stringify(values) !== JSON.stringify(lastValidatedValues)
+                ) {
+                  setIsValidated(false);
+                }
+              }}
+              saved={saved}
+              saving={saving}
+              secondarySubmit={(values) => {
+                if (!isValidated) {
+                  fetchImageSource.mutate(
+                    {
+                      body: {
+                        url: values.url,
+                        keyring_filename:
+                          values.keyring_type === "keyring_filename"
+                            ? values.keyring_filename
+                            : undefined,
+                        keyring_data:
+                          values.keyring_type === "keyring_data"
+                            ? values.keyring_data
+                            : undefined,
+                        skip_keyring_verification:
+                          values.keyring_type === "keyring_unsigned"
+                            ? true
+                            : undefined,
+                      },
+                    },
+                    {
+                      onSuccess: () => {
+                        setIsValidated(true);
+                        setLastValidatedValues(values);
+                      },
+                    }
+                  );
+                  return;
+                }
 
                 // Reset validation state after successful save
                 setIsValidated(false);
               }}
-              saved={saved}
-              saving={saving}
-              submitDisabled={!canChangeSource}
-              submitLabel={isValidated ? "Save" : "Validate"}
+              secondarySubmitDisabled={!canChangeSource}
+              secondarySubmitLabel={!isValidated ? "Validate" : undefined}
+              secondarySubmitSaved={fetchImageSource.isSuccess}
+              secondarySubmitSaving={fetchImageSource.isPending}
+              submitDisabled={!canChangeSource || !isValidated}
+              submitLabel="Save"
               validationSchema={ChangeSourceSchema}
             >
               <ChangeSourceFields

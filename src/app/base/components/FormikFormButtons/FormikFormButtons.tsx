@@ -23,6 +23,8 @@ export type Props<V> = {
   saving?: boolean;
   savingLabel?: string | null;
   secondarySubmit?: FormikContextFunc<V> | null;
+  secondarySubmitSaved?: boolean;
+  secondarySubmitSaving?: boolean;
   secondarySubmitDisabled?: boolean;
   secondarySubmitLabel?: FormikContextFunc<V, string> | string | null;
   secondarySubmitTooltip?: string | null;
@@ -62,6 +64,8 @@ export const FormikFormButtons = <V,>({
   saving,
   savingLabel,
   secondarySubmit,
+  secondarySubmitSaved,
+  secondarySubmitSaving,
   secondarySubmitDisabled,
   secondarySubmitLabel,
   secondarySubmitTooltip,
@@ -81,7 +85,8 @@ export const FormikFormButtons = <V,>({
         ? secondarySubmitLabel(values, formikContext)
         : secondarySubmitLabel;
     const button = (
-      <Button
+      <ActionButton
+        appearance="default"
         className="formik-form-buttons__button"
         data-testid={TestIds.SecondarySubmit}
         disabled={
@@ -89,6 +94,7 @@ export const FormikFormButtons = <V,>({
             ? secondarySubmitDisabled || submitDisabled
             : secondarySubmitDisabled
         }
+        loading={secondarySubmitSaving}
         onClick={
           secondarySubmit
             ? () => {
@@ -96,10 +102,11 @@ export const FormikFormButtons = <V,>({
               }
             : undefined
         }
+        success={secondarySubmitSaved}
         type="button"
       >
         {secondaryLabel}
-      </Button>
+      </ActionButton>
     );
     if (secondarySubmitTooltip) {
       secondaryButton = (

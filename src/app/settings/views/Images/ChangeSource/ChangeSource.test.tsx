@@ -225,12 +225,8 @@ describe("ChangeSource", () => {
       expect(screen.getByText("Invalid boot source URL")).toBeInTheDocument();
     });
 
-    // Button should still be "Validate", not "Save"
-    expect(
-      screen.getByRole("button", { name: "Validate" })
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: "Save" })
-    ).not.toBeInTheDocument();
+    // "Save" should be disabled, while "Validate" still enabled
+    expect(screen.getByRole("button", { name: "Validate" })).toBeEnabled();
+    expect(screen.queryByRole("button", { name: "Save" })).toBeDisabled();
   });
 });
