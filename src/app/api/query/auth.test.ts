@@ -8,12 +8,14 @@ import {
   useCreateSession,
   useDeleteOauthProvider,
   useExtendSession,
+  useGetCallback,
   useGetCurrentUser,
   useGetIsSuperUser,
+  useIsOIDCUser,
   usePreLogin,
   useUpdateOauthProvider,
 } from "@/app/api/query/auth";
-import { INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "@/app/login/Login/Login";
+import { Labels } from "@/app/login/Login/Login";
 import { setCookie } from "@/app/utils";
 import { COOKIE_NAMES } from "@/app/utils/cookies";
 import {
@@ -39,6 +41,8 @@ const mockServer = setupMockServer(
   authResolvers.authenticate.handler(),
   authResolvers.preLogin.handler(),
   authResolvers.createSession.handler(),
+  authResolvers.isOidcUser.handler(),
+  authResolvers.getCallback.handler(),
   authResolvers.extendSession.handler(),
   authResolvers.getCurrentUser.handler(),
   authResolvers.completeIntro.handler(),
@@ -129,12 +133,138 @@ describe("useAuthenticate", () => {
       expect(actions).toContainEqual(
         expect.objectContaining({
           type: "status/loginError",
-          payload: INCORRECT_CREDENTIALS_ERROR_MESSAGE,
+          payload: Labels.IncorrectCredentials,
         })
       );
     });
 
     expect(vi.mocked(setCookie)).not.toHaveBeenCalled();
+  });
+});
+
+describe("useIsOIDCUser", () => {
+  it("should check if the user is an OIDC user and return the correct result", async () => {
+    const { result } = renderHookWithProviders(() =>
+      useIsOIDCUser(
+        {
+          query: {
+            email: "username",
+            redirect_target: "/machines",
+          },
+        },
+        true
+      )
+    );
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+
+    expect(result.current.data).toMatchObject({
+      is_oidc: false,
+    });
+    expect(result.current.loginState).toMatchObject({
+      step: "PASSWORD",
+      oidcURL: "",
+      providerName: "",
+    });
+  });
+
+  it("should handle 409 conflict errors", async () => {
+    mockServer.use(
+      authResolvers.isOidcUser.error({
+        code: 409,
+        message: "Conflict",
+        kind: "Error",
+      })
+    );
+
+    const { result, store } = renderHookWithProviders(() =>
+      useIsOIDCUser(
+        {
+          query: {
+            email: "username",
+            redirect_target: "/machines",
+          },
+        },
+        true
+      )
+    );
+
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+
+    await waitFor(() => {
+      const actions = store.getActions();
+      expect(actions).toContainEqual(
+        expect.objectContaining({
+          type: "status/loginError",
+          payload: Labels.MissingProviderConfig,
+        })
+      );
+    });
+    expect(result.current.loginState).toMatchObject({
+      step: "USERNAME",
+      oidcURL: "",
+      providerName: "",
+    });
+  });
+
+  it("should change login step to OIDC when the user is an OIDC user", async () => {
+    mockServer.use(
+      authResolvers.isOidcUser.handler({
+        is_oidc: true,
+        auth_url: "https://oidc-provider.com/auth",
+        provider_name: "Mock OIDC Provider",
+      })
+    );
+
+    const { result } = renderHookWithProviders(() =>
+      useIsOIDCUser(
+        {
+          query: {
+            email: "username",
+            redirect_target: "/machines",
+          },
+        },
+        true
+      )
+    );
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+
+    expect(result.current.loginState).toMatchObject({
+      step: "OIDC",
+      oidcURL: "https://oidc-provider.com/auth",
+      providerName: "Mock OIDC Provider",
+    });
+  });
+});
+
+describe("useGetCallback", () => {
+  it("should get the callback URL for OIDC authentication", async () => {
+    const { result } = renderHookWithProviders(() =>
+      useGetCallback(
+        {
+          query: {
+            state: "mock_state",
+            code: "mock_code",
+          },
+        },
+        true
+      )
+    );
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+
+    expect(result.current.data).toMatchObject({
+      redirect_target: "/devices",
+    });
   });
 });
 

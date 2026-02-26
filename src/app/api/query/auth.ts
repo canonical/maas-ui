@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 
@@ -7,6 +9,9 @@ import {
   queryOptionsWithHeaders,
 } from "@/app/api/utils";
 import type {
+  HandleOauthCallbackResponses,
+  HandleOauthCallbackErrors,
+  HandleOauthCallbackData,
   CompleteIntroData,
   CompleteIntroErrors,
   CompleteIntroResponses,
@@ -40,6 +45,9 @@ import type {
   ExtendSessionResponses,
   ExtendSessionErrors,
   ExtendSessionData,
+  InitiateAuthFlowData,
+  InitiateAuthFlowResponses,
+  InitiateAuthFlowErrors,
 } from "@/app/apiclient";
 import {
   deleteOauthProvider,
@@ -52,12 +60,16 @@ import {
   createSession,
   preLogin,
   extendSession,
+  initiateAuthFlow,
+  handleOauthCallback,
 } from "@/app/apiclient";
 import {
   getMeWithSummaryQueryKey,
   getOauthProviderQueryKey,
+  handleOauthCallbackQueryKey,
+  initiateAuthFlowQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
-import { INCORRECT_CREDENTIALS_ERROR_MESSAGE } from "@/app/login/Login/Login";
+import { Labels } from "@/app/login/Login/Login";
 import { statusActions } from "@/app/store/status";
 import { setCookie } from "@/app/utils";
 import { COOKIE_NAMES } from "@/app/utils/cookies";
@@ -69,6 +81,106 @@ export const usePreLogin = (mutationOptions?: Options<PreLoginData>) => {
       PreLoginErrors,
       PreLoginData
     >(mutationOptions, preLogin),
+  });
+};
+
+type OIDCLoginStep = "OIDC" | "PASSWORD" | "USERNAME";
+
+type OIDCLoginState = {
+  step: OIDCLoginStep;
+  oidcURL: string;
+  providerName: string;
+  isPending?: boolean;
+  error?: "UNKNOWN" | "USER_NOT_FOUND";
+};
+
+export const useIsOIDCUser = (
+  options: Options<InitiateAuthFlowData>,
+  enabled: boolean
+) => {
+  const dispatch = useDispatch();
+  const query = useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
+      InitiateAuthFlowResponses,
+      InitiateAuthFlowErrors,
+      InitiateAuthFlowData
+    >(options, initiateAuthFlow, initiateAuthFlowQueryKey(options)),
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+
+  const loginState = useMemo<OIDCLoginState>(() => {
+    if (!enabled || query.isPending) {
+      return {
+        step: "USERNAME",
+        oidcURL: "",
+        providerName: "",
+        isPending: enabled ? query.isPending : false,
+      };
+    }
+
+    if (query.error) {
+      const { code } = query.error;
+      dispatch(
+        statusActions.loginError(
+          code === 409 ? Labels.MissingProviderConfig : Labels.UnknownError
+        )
+      );
+      return {
+        step: "USERNAME",
+        oidcURL: "",
+        providerName: "",
+        error: code === 409 ? "USER_NOT_FOUND" : "UNKNOWN",
+      };
+    }
+
+    if (!query.data) {
+      dispatch(statusActions.loginError(Labels.UnknownError));
+      return {
+        step: "USERNAME",
+        oidcURL: "",
+        providerName: "",
+        error: "UNKNOWN",
+      };
+    }
+
+    const { is_oidc, auth_url, provider_name } = query.data;
+
+    if (is_oidc) {
+      return {
+        step: "OIDC",
+        oidcURL: auth_url ?? "",
+        providerName: provider_name ?? "",
+      };
+    }
+
+    return {
+      step: "PASSWORD",
+      oidcURL: "",
+      providerName: "",
+    };
+  }, [enabled, query.data, query.error, query.isPending, dispatch]);
+
+  return {
+    ...query,
+    loginState,
+  };
+};
+
+export const useGetCallback = (
+  options: Options<HandleOauthCallbackData>,
+  enabled: boolean
+) => {
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
+      HandleOauthCallbackResponses,
+      HandleOauthCallbackErrors,
+      HandleOauthCallbackData
+    >(options, handleOauthCallback, handleOauthCallbackQueryKey(options)),
+    refetchOnWindowFocus: false,
+    retry: false,
+    enabled,
   });
 };
 
@@ -94,7 +206,7 @@ export const useAuthenticate = (mutationOptions?: Options<LoginData>) => {
     },
     onError: (error: LoginError) => {
       if (error.code === 401) {
-        dispatch(statusActions.loginError(INCORRECT_CREDENTIALS_ERROR_MESSAGE));
+        dispatch(statusActions.loginError(Labels.IncorrectCredentials));
       }
     },
   });

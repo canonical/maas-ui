@@ -110,7 +110,6 @@ import {
   getUserSslkeysWithSummary,
   getZone,
   handleOauthCallback,
-  importBootsources,
   importUserSshkeys,
   initiateAuthFlow,
   listBootloaders,
@@ -159,7 +158,6 @@ import {
   preLogin,
   setConfiguration,
   setConfigurations,
-  stopImportBootsources,
   stopSyncBootsourceBootsourceselection,
   syncBootsourceBootsourceselection,
   updateBootsource,
@@ -500,9 +498,6 @@ import type {
   HandleOauthCallbackData,
   HandleOauthCallbackError,
   HandleOauthCallbackResponse,
-  ImportBootsourcesData,
-  ImportBootsourcesError,
-  ImportBootsourcesResponse,
   ImportUserSshkeysData,
   ImportUserSshkeysError,
   ImportUserSshkeysResponse,
@@ -644,9 +639,6 @@ import type {
   SetConfigurationsData,
   SetConfigurationsError,
   SetConfigurationsResponse,
-  StopImportBootsourcesData,
-  StopImportBootsourcesError,
-  StopImportBootsourcesResponse,
   StopSyncBootsourceBootsourceselectionData,
   StopSyncBootsourceBootsourceselectionError,
   SyncBootsourceBootsourceselectionData,
@@ -1561,33 +1553,6 @@ export const getBootsourceBootsourceselectionResourceOptions = (
     queryKey: getBootsourceBootsourceselectionResourceQueryKey(options),
   });
 
-/**
- * Import Bootsources
- */
-export const importBootsourcesMutation = (
-  options?: Partial<Options<ImportBootsourcesData>>
-): UseMutationOptions<
-  ImportBootsourcesResponse,
-  ImportBootsourcesError,
-  Options<ImportBootsourcesData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    ImportBootsourcesResponse,
-    ImportBootsourcesError,
-    Options<ImportBootsourcesData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await importBootsources({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
 export const listBootsourceBootsourceselectionResourcesQueryKey = (
   options: Options<ListBootsourceBootsourceselectionResourcesData>
 ) => createQueryKey("listBootsourceBootsourceselectionResources", options);
@@ -1615,33 +1580,6 @@ export const listBootsourceBootsourceselectionResourcesOptions = (
     },
     queryKey: listBootsourceBootsourceselectionResourcesQueryKey(options),
   });
-
-/**
- * Stop Import Bootsources
- */
-export const stopImportBootsourcesMutation = (
-  options?: Partial<Options<StopImportBootsourcesData>>
-): UseMutationOptions<
-  StopImportBootsourcesResponse,
-  StopImportBootsourcesError,
-  Options<StopImportBootsourcesData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    StopImportBootsourcesResponse,
-    StopImportBootsourcesError,
-    Options<StopImportBootsourcesData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await stopImportBootsources({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
 
 /**
  * Stop Sync Bootsource Bootsourceselection

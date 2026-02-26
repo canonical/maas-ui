@@ -18,6 +18,10 @@ import type {
   UpdateUserError,
   UserWithSummaryResponse,
   ExtendSessionError,
+  InitiateAuthFlowResponse,
+  InitiateAuthFlowError,
+  HandleOauthCallbackError,
+  HandleOauthCallbackResponse,
 } from "@/app/apiclient";
 import { user } from "@/testing/factories";
 
@@ -37,6 +41,26 @@ const mockPreLoginError: PreLoginError = {
   message: "Internal server error",
   code: 500,
   kind: "Error",
+};
+
+const mockInitiateAuthFlowResponse: InitiateAuthFlowResponse = {
+  is_oidc: false,
+  kind: "InitiateAuthFlowResponse",
+};
+
+const mockInitiateAuthFlowError: InitiateAuthFlowError = {
+  message: "No enabled OAuth provider is configured.",
+  code: 412,
+};
+
+const mockHandleOAuthCallbackResponse: HandleOauthCallbackResponse = {
+  redirect_target: "/devices",
+  kind: "CallbackTargetResponse",
+};
+
+const mockHandleOAuthCallbackError: HandleOauthCallbackError = {
+  code: 401,
+  message: "The provided state or nonce cookies are invalid.",
 };
 
 const mockCreateSessionError: CreateSessionError = {
@@ -121,6 +145,34 @@ const authResolvers = {
     error: (error: PreLoginError = mockPreLoginError) =>
       http.get(`${BASE_URL}MAAS/a/v3/auth/login`, () => {
         authResolvers.preLogin.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  isOidcUser: {
+    resolved: false,
+    handler: (data: InitiateAuthFlowResponse = mockInitiateAuthFlowResponse) =>
+      http.get(`${BASE_URL}MAAS/a/v3/auth/login_info`, () => {
+        authResolvers.isOidcUser.resolved = true;
+        return HttpResponse.json(data);
+      }),
+    error: (error: InitiateAuthFlowError = mockInitiateAuthFlowError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/auth/login_info`, () => {
+        authResolvers.preLogin.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  getCallback: {
+    resolved: false,
+    handler: (
+      data: HandleOauthCallbackResponse = mockHandleOAuthCallbackResponse
+    ) =>
+      http.get(`${BASE_URL}MAAS/a/v3/auth/oauth/callback`, () => {
+        authResolvers.getCallback.resolved = true;
+        return HttpResponse.json(data);
+      }),
+    error: (error: HandleOauthCallbackError = mockHandleOAuthCallbackError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/auth/oauth/callback`, () => {
+        authResolvers.getCallback.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },

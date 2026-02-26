@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router";
 import * as Yup from "yup";
 
-import { useAuthenticate } from "@/app/api/query/auth";
+import { useAuthenticate, useIsOIDCUser } from "@/app/api/query/auth";
 import type { LoginError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -24,19 +24,13 @@ import { statusActions } from "@/app/store/status";
 import statusSelectors from "@/app/store/status/selectors";
 import { formatErrors } from "@/app/utils";
 
-const generateSchema = (hasEnteredUsername: boolean) => {
-  if (hasEnteredUsername) {
-    return Yup.object().shape({
-      username: Yup.string().required("Username is required"),
-      password: Yup.string().required("Password is required"),
-    });
-  } else {
-    return Yup.object().shape({
-      username: Yup.string().required("Username is required"),
-      password: Yup.string(),
-    });
-  }
-};
+const generateSchema = (requirePassword: boolean) =>
+  Yup.object({
+    username: Yup.string().required("Username is required"),
+    password: requirePassword
+      ? Yup.string().required("Password is required")
+      : Yup.string(),
+  });
 
 export type LoginValues = {
   password: string;
@@ -50,6 +44,11 @@ export const Labels = {
   Password: "Password",
   Submit: "Login",
   Username: "Username",
+  IncorrectCredentials:
+    "Please enter a correct username and password. Note that both fields may be case-sensitive.",
+  MissingProviderConfig:
+    "The username belongs to an OIDC user, but the corresponding OIDC provider is disabled or misconfigured.",
+  UnknownError: "Something went wrong. Please try again.",
 } as const;
 
 export enum TestIds {
@@ -57,8 +56,7 @@ export enum TestIds {
   SectionHeaderTitle = "section-header-title",
 }
 
-export const INCORRECT_CREDENTIALS_ERROR_MESSAGE =
-  "Please enter a correct username and password. Note that both fields may be case-sensitive.";
+type LoginStep = "OIDC" | "PASSWORD" | "USERNAME";
 
 export const Login = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -67,14 +65,29 @@ export const Login = (): React.ReactElement => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
   const authenticationError = useSelector(statusSelectors.authenticationError);
+  const noUsers = useSelector(statusSelectors.noUsers);
+
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirectTo");
   const authenticate = useAuthenticate();
+  const [submittedUsername, setSubmittedUsername] = useState<string | null>(
+    null
+  );
 
-  // TODO: replace this state with a mutation to check if user is local or OIDC https://warthogs.atlassian.net/browse/MAASENG-5637
-  const [hasEnteredUsername, setHasEnteredUsername] = useState(false);
+  const { loginState } = useIsOIDCUser(
+    {
+      query: {
+        email: submittedUsername ?? "",
+        redirect_target: redirect ?? "/machines",
+      },
+    },
+    Boolean(submittedUsername)
+  );
 
-  const noUsers = useSelector(statusSelectors.noUsers);
+  const step: LoginStep = loginState.step;
+  const hasEnteredUsername = step !== "USERNAME";
+  const requirePassword = step === "PASSWORD";
+  const isOIDCUser = step === "OIDC";
 
   const navigate = useNavigate();
 
@@ -108,7 +121,6 @@ export const Login = (): React.ReactElement => {
       },
     });
   };
-
   return (
     <PageContent>
       <Strip>
@@ -169,16 +181,36 @@ export const Login = (): React.ReactElement => {
                     }}
                     onSubmit={(values) => {
                       if (!hasEnteredUsername) {
-                        setHasEnteredUsername(true);
+                        setSubmittedUsername(values.username);
                       } else {
-                        handleSubmit(values);
+                        if (isOIDCUser) {
+                          // OIDC login - redirect to provider's auth page
+                          window.location.href = loginState.oidcURL;
+                        } else {
+                          // Local login
+                          handleSubmit(values);
+                        }
                       }
                     }}
                     saved={authenticated}
-                    saving={authenticating}
-                    submitLabel={hasEnteredUsername ? Labels.Submit : "Next"}
-                    validationSchema={generateSchema(hasEnteredUsername)}
+                    saving={authenticating || loginState.isPending}
+                    submitLabel={
+                      !hasEnteredUsername
+                        ? "Next"
+                        : isOIDCUser
+                          ? `Login with ${loginState.providerName}`
+                          : Labels.Submit
+                    }
+                    validationSchema={generateSchema(
+                      hasEnteredUsername && !isOIDCUser
+                    )}
                   >
+                    {isOIDCUser ? (
+                      <p>
+                        Please sign in with {loginState.providerName} to
+                        continue.
+                      </p>
+                    ) : null}
                     <FormikField
                       aria-hidden={hasEnteredUsername}
                       hidden={hasEnteredUsername}
@@ -189,11 +221,11 @@ export const Login = (): React.ReactElement => {
                       type="text"
                     />
                     <FormikField
-                      aria-hidden={!hasEnteredUsername}
-                      hidden={!hasEnteredUsername}
-                      label={!hasEnteredUsername ? "" : Labels.Password}
+                      aria-hidden={!requirePassword}
+                      hidden={!requirePassword}
+                      label={requirePassword ? Labels.Password : ""}
                       name="password"
-                      required={hasEnteredUsername}
+                      required={requirePassword}
                       type="password"
                     />
                   </FormikForm>
