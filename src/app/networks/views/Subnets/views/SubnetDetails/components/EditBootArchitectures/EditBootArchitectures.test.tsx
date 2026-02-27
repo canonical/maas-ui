@@ -1,4 +1,3 @@
-import { Headers } from "./BootArchitecturesTable";
 import EditBootArchitectures from "./EditBootArchitectures";
 
 import type { RootState } from "@/app/store/root/types";
@@ -46,7 +45,9 @@ describe("EditBootArchitectures", () => {
 
   it("initialises form data correctly", () => {
     renderWithProviders(<EditBootArchitectures subnetId={1} />, { state });
-    const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
+    const nameCells = within(screen.getAllByRole("rowgroup")[1])
+      .getAllByRole("row")
+      .map((row) => within(row).getAllByRole("cell")[0]);
 
     // First arch is disabled, second arch is not.
     expect(within(nameCells[0]).getByRole("checkbox")).not.toBeChecked();
@@ -55,7 +56,9 @@ describe("EditBootArchitectures", () => {
 
   it("can update the arches to disable", async () => {
     renderWithProviders(<EditBootArchitectures subnetId={1} />, { state });
-    const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
+    const nameCells = within(screen.getAllByRole("rowgroup")[1])
+      .getAllByRole("row")
+      .map((row) => within(row).getAllByRole("cell")[0]);
 
     await userEvent.click(within(nameCells[0]).getByRole("checkbox"));
     await userEvent.click(within(nameCells[1]).getByRole("checkbox"));
@@ -76,7 +79,9 @@ describe("EditBootArchitectures", () => {
       <EditBootArchitectures subnetId={1} />,
       { state }
     );
-    const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
+    const nameCells = within(screen.getAllByRole("rowgroup")[1])
+      .getAllByRole("row")
+      .map((row) => within(row).getAllByRole("cell")[0]);
 
     await userEvent.click(within(nameCells[0]).getByRole("checkbox"));
     await userEvent.click(within(nameCells[1]).getByRole("checkbox"));
