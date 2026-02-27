@@ -1,11 +1,18 @@
-import DHCPTable, { TestIds } from "./DHCPTable";
+import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
+import DHCPTable from "./DHCPTable";
 
-import { Labels as FormLabels } from "@/app/base/components/DhcpForm";
 import { MachineMeta } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  mockSidePanel,
+} from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("DHCPTable", () => {
   let state: RootState;
@@ -32,6 +39,26 @@ describe("DHCPTable", () => {
         loading: false,
       }),
     });
+  });
+
+  it("displays the required columns", () => {
+    renderWithProviders(
+      <DHCPTable modelName={MachineMeta.MODEL} node={state.machine.items[0]} />,
+      {
+        initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+        state,
+      }
+    );
+
+    ["Name", "Type", "Applies To", "Enabled", "Description", "Actions"].forEach(
+      (column) => {
+        expect(
+          screen.getByRole("columnheader", {
+            name: new RegExp(`^${column}`, "i"),
+          })
+        ).toBeInTheDocument();
+      }
+    );
   });
 
   it("shows loading state for snippets", () => {
@@ -89,14 +116,14 @@ describe("DHCPTable", () => {
         state,
       }
     );
-    const subnetSnippets = screen.getAllByTestId(TestIds.AppliesTo);
+    const subnetSnippets = screen.getAllByRole("cell", { name: /subnet-name/ });
 
     expect(subnetSnippets.length).toBe(2);
     expect(subnetSnippets[0].textContent).toBe("subnet-name1");
     expect(subnetSnippets[1].textContent).toBe("subnet-name2");
   });
 
-  it("can show a form to edit a snippet", async () => {
+  it("opens the side panel to edit a snippet", async () => {
     state.controller.loaded = true;
     state.device.loaded = true;
     state.machine.loaded = true;
@@ -120,8 +147,10 @@ describe("DHCPTable", () => {
 
     await userEvent.click(buttons[buttons.length - 1]);
 
-    expect(
-      screen.getByRole("form", { name: FormLabels.Form })
-    ).toBeInTheDocument();
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DhcpEdit,
+      props: { id: state.dhcpsnippet.items[1].id },
+      title: "Edit DHCP Snippet",
+    });
   });
 });
