@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import {
@@ -27,11 +27,7 @@ import {
   useCustomImageStatuses,
   useSelectionStatuses,
 } from "@/app/api/query/images";
-import type {
-  BootSourceCreateRequest,
-  ImageStatusListResponse,
-  ImageStatusResponse,
-} from "@/app/apiclient";
+import type { BootSourceCreateRequest } from "@/app/apiclient";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import {
@@ -61,17 +57,7 @@ export const ChangeSourceSchema = Yup.object()
       then: (schema) => schema.required("Keyring filename is required"),
       otherwise: (schema) => schema,
     }),
-    url: Yup.string()
-      .when("source_type", {
-        is: (val: string) => val === BootResourceSourceType.CUSTOM,
-        then: (schema) => schema.required("URL is required for custom sources"),
-        otherwise: (schema) => schema,
-      })
-      .when("keyring_type", {
-        is: "keyring_unsigned",
-        then: (schema) => schema.required("URL is required"),
-        otherwise: (schema) => schema,
-      }),
+    url: Yup.string().required("URL is required"),
     autoSync: Yup.boolean(),
   })
   .defined();
@@ -99,21 +85,7 @@ const getSourceType = (url: string): BootResourceSourceType => {
     : BootResourceSourceType.CUSTOM;
 };
 
-const checkCanChangeSource = (
-  selectionStatuses: ImageStatusListResponse | undefined,
-  customImageStatuses: ImageStatusListResponse | undefined
-): boolean => {
-  if (!selectionStatuses || !customImageStatuses) return false;
-
-  const isNotDownloading = (s: ImageStatusResponse) =>
-    s.status !== "Downloading" && s.update_status !== "Downloading";
-
-  return (
-    selectionStatuses.items.every(isNotDownloading) &&
-    customImageStatuses.items.every(isNotDownloading)
-  );
-};
-
+// eslint-disable-next-line complexity
 const ChangeSource = (): ReactElement => {
   const dispatch = useDispatch();
   const [isValidated, setIsValidated] = useState(false);
@@ -165,10 +137,12 @@ const ChangeSource = (): ReactElement => {
 
   useWindowTitle("Source");
 
-  const canChangeSource = checkCanChangeSource(
-    selectionStatuses,
-    customImageStatuses
-  );
+  const canChangeSource =
+    !!selectionStatuses &&
+    !!customImageStatuses &&
+    [...selectionStatuses.items, ...customImageStatuses.items].every(
+      (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
+    );
 
   const [sourceType, setSourceType] = useState<BootResourceSourceType>(
     BootResourceSourceType.MAAS_IO
@@ -180,19 +154,16 @@ const ChangeSource = (): ReactElement => {
     }
   }, [source.isSuccess, source.data?.url]);
 
-  const getDefaultKeyringFilename = useCallback((): string => {
-    if (source.data?.keyring_filename?.length) {
-      return source.data.keyring_filename;
-    }
-    return installTypeData === "deb"
+  const defaultKeyringFilename = source.data?.keyring_filename?.length
+    ? source.data.keyring_filename
+    : installTypeData === "deb"
       ? MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb
       : MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap;
-  }, [installTypeData, source.data?.keyring_filename]);
 
   const initialValues: ChangeSourceValues = useMemo(
     () => ({
       keyring_data: source.data?.keyring_data ?? "",
-      keyring_filename: getDefaultKeyringFilename(),
+      keyring_filename: defaultKeyringFilename,
       keyring_type:
         getSourceType(source.data?.url ?? "") === BootResourceSourceType.MAAS_IO
           ? "keyring_filename"
@@ -213,8 +184,8 @@ const ChangeSource = (): ReactElement => {
       source.data?.keyring_filename,
       source.data?.url,
       source.data?.priority,
-      getDefaultKeyringFilename,
       autoImport,
+      defaultKeyringFilename,
     ]
   );
 
@@ -242,7 +213,7 @@ const ChangeSource = (): ReactElement => {
       if (resolvedSourceType === BootResourceSourceType.CUSTOM) {
         customValuesRef.current = {
           url: source.data.url,
-          keyring_filename: getDefaultKeyringFilename(),
+          keyring_filename: defaultKeyringFilename,
           keyring_data: source.data.keyring_data ?? "",
           keyring_type: getKeyringType(
             source.data.keyring_filename,
@@ -256,15 +227,12 @@ const ChangeSource = (): ReactElement => {
     source.data?.url,
     source.data?.keyring_data,
     source.data?.keyring_filename,
-    getDefaultKeyringFilename,
+    defaultKeyringFilename,
   ]);
 
-  // Track latest form values for the source-change warning
-  const currentValuesRef = useRef<ChangeSourceValues | null>(null);
   const [showSourceChangeWarning, setShowSourceChangeWarning] = useState(false);
 
   const onValuesChanged = (values: ChangeSourceValues) => {
-    currentValuesRef.current = values;
     autoSyncRef.current = values.autoSync;
 
     if (sourceType === BootResourceSourceType.CUSTOM) {
@@ -276,21 +244,12 @@ const ChangeSource = (): ReactElement => {
       };
     }
 
-    const serverUrl = source.data?.url ?? "";
-    const serverKeyringData = source.data?.keyring_data ?? "";
-    const serverKeyringFilename = source.data?.keyring_filename ?? "";
-
     const sourceSettingsChanged =
-      values.url !== serverUrl ||
-      values.keyring_data !== serverKeyringData ||
-      values.keyring_filename !== serverKeyringFilename;
+      values.url !== (source.data?.url ?? "") ||
+      values.keyring_data !== (source.data?.keyring_data ?? "") ||
+      values.keyring_filename !== (source.data?.keyring_filename ?? "");
 
-    const onlyAutoSyncChanged =
-      values.autoSync !== (autoImport || false) && !sourceSettingsChanged;
-
-    setShowSourceChangeWarning(
-      !saved && !saving && !onlyAutoSyncChanged && sourceSettingsChanged
-    );
+    setShowSourceChangeWarning(!saved && !saving && sourceSettingsChanged);
 
     if (
       lastValidatedValues &&
@@ -327,10 +286,8 @@ const ChangeSource = (): ReactElement => {
       );
     }
 
-    // Reset validation state after successful save
-    return (async () => {
-      setIsValidated(false);
-    })();
+    setIsValidated(false);
+    return Promise.resolve();
   };
 
   const onSubmitSource = (values: ChangeSourceValues) => {
