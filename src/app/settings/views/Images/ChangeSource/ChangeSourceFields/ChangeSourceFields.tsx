@@ -15,16 +15,16 @@ import { useFormikContext } from "formik";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import {
+  MAAS_IO_DEFAULT_KEYRING_FILE_PATHS,
   MAAS_IO_DEFAULTS,
   MAAS_IO_URLS,
-  MAAS_IO_DEFAULT_KEYRING_FILE_PATHS,
 } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 
 export enum Labels {
   AutoSyncImages = "Automatically sync images",
-  MaasIo = "maas.io",
+  MaasIo = "images.maas.io",
   Custom = "Custom",
   Url = "URL",
   KeyringFilename = "Keyring filename",
