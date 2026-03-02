@@ -74,6 +74,7 @@ const DHCPTable = ({
       {node || subnets?.length ? (
         <>
           <GenericTable
+            aria-label="DHCP snippets"
             className="dhcp-snippets-table"
             columns={columns}
             data={dhcpsnippets}

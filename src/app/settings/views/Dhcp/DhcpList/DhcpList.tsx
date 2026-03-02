@@ -82,6 +82,7 @@ const DhcpList = (): React.ReactElement => {
             </div>
           )}
           <GenericTable
+            aria-label="DHCP snippets"
             className="dhcp-snippets-list"
             columns={columns}
             data={dhcpsnippets.slice(size * (page - 1), size * page)}
