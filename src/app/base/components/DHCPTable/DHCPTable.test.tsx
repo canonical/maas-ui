@@ -1,6 +1,6 @@
-import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
 import DHCPTable from "./DHCPTable";
 
+import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
 import { MachineMeta } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
@@ -59,6 +59,21 @@ describe("DHCPTable", () => {
         ).toBeInTheDocument();
       }
     );
+  });
+
+  it("shows a message when there are no snippets", () => {
+    state.dhcpsnippet.items = [];
+    renderWithProviders(
+      <DHCPTable modelName={MachineMeta.MODEL} node={state.machine.items[0]} />,
+      {
+        initialEntries: [{ pathname: "/machine/abc123", key: "testKey" }],
+        state,
+      }
+    );
+
+    expect(
+      screen.getByText("No DHCP snippets applied to this machine.")
+    ).toBeInTheDocument();
   });
 
   it("shows loading state for snippets", () => {

@@ -17,6 +17,7 @@ import useDHCPListColumns from "./useDHCPListColumns/useDHCPListColumns";
 import SearchBox from "@/app/base/components/SearchBox";
 import docsUrls from "@/app/base/docsUrls";
 import { useWindowTitle } from "@/app/base/hooks";
+import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
 import { controllerActions } from "@/app/store/controller";
@@ -35,12 +36,12 @@ const DhcpList = (): React.ReactElement => {
   const dhcpsnippets = useSelector((state: RootState) =>
     dhcpsnippetSelectors.search(state, searchText)
   );
+  const { page, size, handlePageSizeChange, setPage } = usePagination(50);
+  const columns = useDHCPListColumns();
 
   const dispatch = useDispatch();
 
   useWindowTitle("DHCP snippets");
-
-  const columns = useDHCPListColumns();
 
   useEffect(() => {
     dispatch(dhcpsnippetActions.fetch());
@@ -83,10 +84,19 @@ const DhcpList = (): React.ReactElement => {
           <GenericTable
             className="dhcp-snippets-list"
             columns={columns}
-            data={dhcpsnippets}
+            data={dhcpsnippets.slice(size * (page - 1), size * page)}
             isLoading={dhcpsnippetLoading}
             noData="No DHCP snippets available."
-            showChevron={true}
+            pagination={{
+              currentPage: page,
+              dataContext: "dhcp snippets",
+              handlePageSizeChange: handlePageSizeChange,
+              isPending: false,
+              itemsPerPage: size,
+              setCurrentPage: setPage,
+              totalItems: dhcpsnippets.length,
+            }}
+            sorting={[{ id: "name", desc: false }]}
             variant="regular"
           />
           {dhcpsnippetLoading && !dhcpsnippetLoaded && (
