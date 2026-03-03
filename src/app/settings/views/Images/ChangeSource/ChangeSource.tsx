@@ -29,10 +29,10 @@ import {
 import type { BootSourceCreateRequest } from "@/app/apiclient";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import ChangeSourceForm from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm";
 import { ConfigNames } from "@/app/store/config/types";
 import { generalActions } from "@/app/store/general";
 import { installType } from "@/app/store/general/selectors";
+import ChangeSourceForm from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm";
 
 export const ChangeSourceSchema = Yup.object()
   .shape({

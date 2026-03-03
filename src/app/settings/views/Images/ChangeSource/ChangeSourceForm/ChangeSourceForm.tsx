@@ -6,8 +6,6 @@ import {
   Notification as NotificationBanner,
 } from "@canonical/react-components";
 
-import MaasIoSourceForm from "./MaasIoSourceForm/MaasIoSourceForm";
-
 import type {
   BootSourceResponse,
   NotFoundBodyResponse,
@@ -20,7 +18,8 @@ import {
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
-import CustomSourceForm from "@/app/settings/views/Images/ChangeSource/CustomSourceForm/CustomSourceForm";
+import CustomSourceForm from "@/app/settings/views/Images/ChangeSource/CustomSourceForm";
+import MaasIoSourceForm from "@/app/settings/views/Images/ChangeSource/MaasIoSourceForm";
 
 const getKeyringType = (
   keyring_filename?: string,
