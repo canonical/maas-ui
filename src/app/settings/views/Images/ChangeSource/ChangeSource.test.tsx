@@ -39,7 +39,6 @@ describe("ChangeSource", () => {
     await userEvent.click(
       screen.getByRole("checkbox", { name: /Automatically sync images/i })
     );
-    await userEvent.click(screen.getByRole("button", { name: "Validate" }));
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
     });
@@ -57,7 +56,7 @@ describe("ChangeSource", () => {
     );
     renderWithProviders(<ChangeSource />);
     await waitForLoading();
-    expect(screen.getByRole("button", { name: "Validate" })).toBeAriaDisabled();
+    expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
     expect(
       screen.getByTestId("cannot-change-source-warning")
     ).toBeInTheDocument();

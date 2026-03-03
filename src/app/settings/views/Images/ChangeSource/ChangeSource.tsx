@@ -117,35 +117,39 @@ const ChangeSource = (): ReactElement => {
       (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
     );
 
-  const onValidateSource = (values: ChangeSourceValues) => {
+  const onValidateSource = async (values: ChangeSourceValues) => {
     if (!isValidated) {
-      return fetchImageSource.mutateAsync(
-        {
-          body: {
-            url: values.url,
-            keyring_filename:
-              values.keyring_type === "keyring_filename"
-                ? values.keyring_filename
-                : undefined,
-            keyring_data:
-              values.keyring_type === "keyring_data"
-                ? values.keyring_data
-                : undefined,
-            skip_keyring_verification:
-              values.keyring_type === "keyring_unsigned" ? true : undefined,
+      try {
+        await fetchImageSource.mutateAsync(
+          {
+            body: {
+              url: values.url,
+              keyring_filename:
+                values.keyring_type === "keyring_filename"
+                  ? values.keyring_filename
+                  : undefined,
+              keyring_data:
+                values.keyring_type === "keyring_data"
+                  ? values.keyring_data
+                  : undefined,
+              skip_keyring_verification:
+                values.keyring_type === "keyring_unsigned" ? true : undefined,
+            },
           },
-        },
-        {
-          onSuccess: () => {
-            setIsValidated(true);
-            setLastValidatedValues(values);
-          },
-        }
-      );
+          {
+            onSuccess: () => {
+              setIsValidated(true);
+              setLastValidatedValues(values);
+            },
+          }
+        );
+      } catch {
+        // Error is surfaced via fetchImageSource.error / the errors variable
+      }
+      return;
     }
 
     setIsValidated(false);
-    return Promise.resolve();
   };
 
   const onSubmitSource = (

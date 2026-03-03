@@ -11,7 +11,6 @@ import MaasIoSourceForm from "./MaasIoSourceForm/MaasIoSourceForm";
 import type {
   BootSourceResponse,
   NotFoundBodyResponse,
-  SourceAvailableImageListResponse,
   ValidationErrorBodyResponse,
 } from "@/app/apiclient";
 import {
@@ -51,11 +50,7 @@ type ChangeSourceFormProps = {
     values: ChangeSourceValues,
     initialValues: ChangeSourceValues
   ) => void;
-  onValidateSource: (
-    values: ChangeSourceValues
-  ) =>
-    | Promise<SourceAvailableImageListResponse & { headers?: Headers }>
-    | Promise<void>;
+  onValidateSource: (values: ChangeSourceValues) => Promise<void>;
   saved: boolean;
   saving: boolean;
   validated: boolean;
