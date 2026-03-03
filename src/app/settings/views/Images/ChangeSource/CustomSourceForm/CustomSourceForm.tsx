@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Icon, Select, Textarea, Tooltip } from "@canonical/react-components";
 import type { FormikContextType } from "formik";
@@ -19,6 +19,7 @@ type CustomSourceFormProps = {
   enabled: boolean;
   errors: NotFoundBodyResponse | ValidationErrorBodyResponse | null;
   initialValues: ChangeSourceValues;
+  serverValues: ChangeSourceValues;
   onSubmit: (values: ChangeSourceValues) => void;
   onValidate: (values: ChangeSourceValues) => void;
   onValuesChanged: (values: ChangeSourceValues) => void;
@@ -32,6 +33,7 @@ const CustomSourceForm = ({
   enabled,
   errors,
   initialValues,
+  serverValues,
   onSubmit,
   onValidate,
   onValuesChanged,
@@ -44,6 +46,29 @@ const CustomSourceForm = ({
     "keyring_data" | "keyring_filename" | "keyring_unsigned"
   >(initialValues.keyring_type || "keyring_filename");
 
+  const formikRef = useRef<FormikContextType<ChangeSourceValues>>(null);
+
+  useEffect(() => {
+    if (
+      formikRef.current &&
+      JSON.stringify(initialValues) !== JSON.stringify(serverValues)
+    ) {
+      formikRef.current.setValues(initialValues);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const prevServerValuesRef = useRef(serverValues);
+  useEffect(() => {
+    if (
+      JSON.stringify(prevServerValuesRef.current) !==
+      JSON.stringify(serverValues)
+    ) {
+      prevServerValuesRef.current = serverValues;
+      formikRef.current?.resetForm({ values: serverValues });
+    }
+  }, [serverValues]);
+
   useEffect(() => {
     setSelectedKeyringType(initialValues.keyring_type || "keyring_filename");
   }, [initialValues.keyring_type]);
@@ -55,9 +80,9 @@ const CustomSourceForm = ({
     >
       aria-label="Choose source"
       buttonsBehavior="independent"
-      enableReinitialize
       errors={errors}
-      initialValues={initialValues}
+      initialValues={serverValues}
+      innerRef={formikRef}
       onSubmit={onSubmit}
       onValuesChanged={onValuesChanged}
       saved={saved}

@@ -90,6 +90,27 @@ const ChangeSourceForm = ({
       ? MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb
       : MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap;
 
+  const serverValues: ChangeSourceValues = useMemo(
+    () => ({
+      keyring_data: source.keyring_data ?? "",
+      keyring_filename: source.keyring_filename ?? "",
+      keyring_type:
+        getSourceType(source.url ?? "") === BootResourceSourceType.MAAS_IO
+          ? "keyring_filename"
+          : getKeyringType(source.keyring_filename, source.keyring_data),
+      url: source.url ?? "",
+      autoSync: autoImport,
+      priority: source.priority === 10 ? 9 : 10,
+    }),
+    [
+      source.keyring_data,
+      source.keyring_filename,
+      source.url,
+      source.priority,
+      autoImport,
+    ]
+  );
+
   const initialValues: ChangeSourceValues = useMemo(
     () => ({
       keyring_data: source.keyring_data ?? "",
@@ -116,8 +137,6 @@ const ChangeSourceForm = ({
     ]
   );
 
-  // Preserve the last-entered custom field values so they can be restored
-  // when the user switches back to Custom after visiting MAAS.io.
   const customValuesRef = useRef<{
     url: string;
     keyring_filename: string;
@@ -130,9 +149,10 @@ const ChangeSourceForm = ({
     keyring_type: "keyring_filename",
   });
 
-  // Persist autoSync across source type switches — it is a shared field
-  // between both forms and should not reset when toggling source type.
   const autoSyncRef = useRef<boolean>(autoImport || false);
+  useEffect(() => {
+    autoSyncRef.current = autoImport || false;
+  }, [autoImport]);
 
   useEffect(() => {
     if (source.url) {
@@ -237,6 +257,7 @@ const ChangeSourceForm = ({
           onValuesChanged={onValuesChanged}
           saved={saved}
           saving={saving}
+          serverValues={serverValues}
         />
       ) : (
         <CustomSourceForm
@@ -259,6 +280,7 @@ const ChangeSourceForm = ({
           onValuesChanged={onValuesChanged}
           saved={saved}
           saving={saving}
+          serverValues={serverValues}
           validated={validated}
           validating={validating}
         />

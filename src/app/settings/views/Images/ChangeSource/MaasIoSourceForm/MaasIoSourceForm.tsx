@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import { Icon, Select, Tooltip } from "@canonical/react-components";
 import type { FormikContextType } from "formik";
@@ -21,32 +21,57 @@ type MaasIoSourceFormProps = {
   enabled: boolean;
   errors: NotFoundBodyResponse | ValidationErrorBodyResponse | null;
   initialValues: ChangeSourceValues;
+  serverValues: ChangeSourceValues;
   onSubmit: (values: ChangeSourceValues) => void;
   onValuesChanged: (values: ChangeSourceValues) => void;
   saved: boolean;
   saving: boolean;
 };
 
+const getSelectedChannel = (url: string): "candidate" | "stable" => {
+  if (url.includes("candidate")) {
+    return "candidate";
+  }
+  return "stable";
+};
+
 const MaasIoSourceForm = ({
   enabled,
   errors,
   initialValues,
+  serverValues,
   onSubmit,
   onValuesChanged,
   saved,
   saving,
 }: MaasIoSourceFormProps): ReactElement => {
   // Determine the selected MAAS.io release channel from the URL
-  const getSelectedChannel = (url: string): "candidate" | "stable" => {
-    if (url.includes("candidate")) {
-      return "candidate";
-    }
-    return "stable";
-  };
-
   const [selectedChannel, setSelectedChannel] = useState<
     "candidate" | "stable"
   >(getSelectedChannel(initialValues.url));
+
+  const formikRef = useRef<FormikContextType<ChangeSourceValues>>(null);
+
+  useEffect(() => {
+    if (
+      formikRef.current &&
+      JSON.stringify(initialValues) !== JSON.stringify(serverValues)
+    ) {
+      formikRef.current.setValues(initialValues);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const prevServerValuesRef = useRef(serverValues);
+  useEffect(() => {
+    if (
+      JSON.stringify(prevServerValuesRef.current) !==
+      JSON.stringify(serverValues)
+    ) {
+      prevServerValuesRef.current = serverValues;
+      formikRef.current?.resetForm({ values: serverValues });
+    }
+  }, [serverValues]);
 
   useEffect(() => {
     setSelectedChannel(getSelectedChannel(initialValues.url));
@@ -59,9 +84,9 @@ const MaasIoSourceForm = ({
     >
       aria-label="Choose source"
       buttonsBehavior="independent"
-      enableReinitialize
       errors={errors}
-      initialValues={initialValues}
+      initialValues={serverValues}
+      innerRef={formikRef}
       onSubmit={onSubmit}
       onValuesChanged={onValuesChanged}
       saved={saved}
