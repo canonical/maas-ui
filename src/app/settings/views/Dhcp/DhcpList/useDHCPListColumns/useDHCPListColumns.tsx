@@ -70,6 +70,7 @@ const useDHCPListColumns = (): DHCPListColumnDef[] => {
       {
         accessorKey: "actions",
         header: "Actions",
+        enableSorting: false,
         cell: ({
           row: {
             original: { id },
