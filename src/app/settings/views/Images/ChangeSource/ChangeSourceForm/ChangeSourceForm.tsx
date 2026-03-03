@@ -245,7 +245,7 @@ const ChangeSourceForm = ({
           onSubmit={(values: ChangeSourceValues) => {
             // Silently validate when saving a maas.io source
             onValidateSource(values).then(() => {
-              onSubmitSource(values, initialValues);
+              onSubmitSource(values, serverValues);
             });
           }}
           onValuesChanged={onValuesChanged}
@@ -268,7 +268,7 @@ const ChangeSourceForm = ({
             keyring_data: customValuesRef.current.keyring_data,
           }}
           onSubmit={(values) => {
-            onSubmitSource(values, initialValues);
+            onSubmitSource(values, serverValues);
           }}
           onValidate={onValidateSource}
           onValuesChanged={onValuesChanged}
