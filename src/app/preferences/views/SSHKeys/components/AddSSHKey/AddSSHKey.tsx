@@ -14,6 +14,10 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import SSHKeyFormFields from "@/app/preferences/views/SSHKeys/components/AddSSHKey/SSHKeyFormFields";
 
+type AddSSHKeyProps = {
+  isIntro?: boolean;
+};
+
 export type SSHKeyFormValues = {
   protocol: SshKeyImportFromSourceRequest["protocol"] | "" | "upload";
   auth_id: SshKeyImportFromSourceRequest["auth_id"];
@@ -32,7 +36,7 @@ const SSHKeySchema = Yup.object().shape({
   }),
 });
 
-const AddSSHKey = (): ReactElement => {
+const AddSSHKey = ({ isIntro = false }: AddSSHKeyProps): ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const uploadSshKey = useCreateSshKeys();
   const importSshKey = useImportSshKeys();
@@ -45,7 +49,7 @@ const AddSSHKey = (): ReactElement => {
       aria-label="Add SSH key"
       errors={uploadSshKey.error || importSshKey.error}
       initialValues={{ auth_id: "", protocol: "", key: "" }}
-      onCancel={closeSidePanel}
+      onCancel={!isIntro ? closeSidePanel : undefined}
       onSaveAnalytics={{
         action: "Saved",
         category: "SSH keys preferences",

@@ -24,6 +24,14 @@ describe("AddSSHKey", () => {
     expect(mockClose).toHaveBeenCalled();
   });
 
+  it("doesn't render 'Cancel' if intro", async () => {
+    renderWithProviders(<AddSSHKey isIntro={true} />);
+
+    expect(
+      screen.queryByRole("button", { name: /Cancel/i })
+    ).not.toBeInTheDocument();
+  });
+
   it("calls the import endpoint on save button click when LP or GH is chosen", async () => {
     renderWithProviders(<AddSSHKey />);
 

@@ -47,14 +47,14 @@ const UserIntro = (): React.ReactElement => {
         complete={hasSSHKeys}
         data-testid="sshkey-card"
         hasErrors={!!errorMessage}
-        title={<>SSH keys for {user.data?.username}</>}
+        title={`SSH keys for ${user.data?.username}`}
       >
         <p>
           Add multiple keys from Launchpad and Github or enter them manually.
         </p>
         <h4>Keys</h4>
         {hasSSHKeys ? <SSHKeysList isIntro={true} /> : null}
-        <AddSSHKey />
+        <AddSSHKey isIntro={true} />
       </IntroCard>
       <div className="u-align--right">
         <Button
