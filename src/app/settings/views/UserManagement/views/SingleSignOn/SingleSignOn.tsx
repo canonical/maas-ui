@@ -1,4 +1,4 @@
-import { useMemo, type ReactElement } from "react";
+import { useEffect, useMemo, type ReactElement } from "react";
 
 import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
 import {
@@ -7,6 +7,7 @@ import {
   Spinner,
   Tooltip,
 } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
 
 import ResetSingleSignOn from "./components/ResetSingleSignOn";
 import SingleSignOnForm from "./components/SingleSignOnForm";
@@ -15,10 +16,18 @@ import { useActiveOauthProvider } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { generalActions } from "@/app/store/general";
+import maasURL from "@/app/store/general/selectors/maasURL";
 
 const SingleSignOn = (): ReactElement => {
   const { data, error, isPending } = useActiveOauthProvider();
   const { openSidePanel } = useSidePanel();
+  const maasURLData = useSelector(maasURL.get);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(generalActions.fetchMAASURL());
+  }, [dispatch]);
 
   const queryData = useMemo(() => {
     if (error && error?.code === 404) {
@@ -74,7 +83,7 @@ const SingleSignOn = (): ReactElement => {
                 {error.message}
               </NotificationBanner>
             ) : (
-              <SingleSignOnForm provider={queryData} />
+              <SingleSignOnForm maasURL={maasURLData} provider={queryData} />
             )}
           </ContentSection.Content>
         </ContentSection.Header>

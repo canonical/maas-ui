@@ -9,9 +9,10 @@ import type { OAuthProviderResponse } from "@/app/apiclient";
 
 type Props = {
   provider: OAuthProviderResponse | undefined;
+  maasURL: string;
 };
 
-const SingleSignOnFormFields = ({ provider }: Props): ReactElement => {
+const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
   const { resetForm } = useFormikContext<SingleSignOnFormValues>();
 
   useEffect(() => {
@@ -22,13 +23,13 @@ const SingleSignOnFormFields = ({ provider }: Props): ReactElement => {
           client_id: "",
           client_secret: "",
           issuer_url: "",
-          redirect_uri: "",
+          redirect_uri: maasURL + "/r/login/oidc/callback",
           scopes: "",
           token_type: "JWT",
         },
       });
     }
-  }, [provider, resetForm]);
+  }, [provider, resetForm, maasURL]);
 
   return (
     <>
