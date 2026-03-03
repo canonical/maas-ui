@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 
 import ChangeSource from "@/app/settings/views/Images/ChangeSource/ChangeSource";
-import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
+import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
 import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";

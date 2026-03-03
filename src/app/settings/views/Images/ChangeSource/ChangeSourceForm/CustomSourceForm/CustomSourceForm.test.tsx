@@ -1,7 +1,7 @@
 import { MAAS_IO_DEFAULT_KEYRING_FILE_PATHS } from "@/app/images/constants";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
-import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
-import CustomSourceForm from "@/app/settings/views/Images/ChangeSource/CustomSourceForm/CustomSourceForm";
+import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
+import CustomSourceForm from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/CustomSourceForm/CustomSourceForm";
 import { userEvent, renderWithProviders, screen } from "@/testing/utils";
 
 describe("CustomSourceForm", () => {

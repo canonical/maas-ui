@@ -3,7 +3,7 @@ import {
   MAAS_IO_URLS,
 } from "@/app/images/constants";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
-import MaasIoSourceForm from "@/app/settings/views/Images/ChangeSource/MaasIoSourceForm/MaasIoSourceForm";
+import MaasIoSourceForm from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/MaasIoSourceForm/MaasIoSourceForm";
 import { renderWithProviders, screen } from "@/testing/utils";
 
 describe("MaasIoSourceForm", () => {

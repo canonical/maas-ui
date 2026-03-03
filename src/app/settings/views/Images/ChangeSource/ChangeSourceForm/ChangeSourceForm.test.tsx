@@ -1,5 +1,6 @@
-import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
-import ChangeSourceForm from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
+import ChangeSourceForm, {
+  Labels,
+} from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
 import { imageSourceFactory } from "@/testing/factories";
 import { userEvent, renderWithProviders, screen } from "@/testing/utils";
 

@@ -15,7 +15,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { MAAS_IO_URLS } from "@/app/images/constants";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
 import { ChangeSourceSchema } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
-import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
+import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
 
 type MaasIoSourceFormProps = {
   enabled: boolean;

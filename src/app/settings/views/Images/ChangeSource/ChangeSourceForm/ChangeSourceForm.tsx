@@ -17,9 +17,17 @@ import {
 } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ChangeSourceValues } from "@/app/settings/views/Images/ChangeSource/ChangeSource";
-import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
-import CustomSourceForm from "@/app/settings/views/Images/ChangeSource/CustomSourceForm";
-import MaasIoSourceForm from "@/app/settings/views/Images/ChangeSource/MaasIoSourceForm";
+import CustomSourceForm from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/CustomSourceForm";
+import MaasIoSourceForm from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/MaasIoSourceForm";
+
+export enum Labels {
+  AutoSyncImages = "Automatically sync images",
+  MaasIo = "maas.io",
+  Custom = "Custom",
+  Url = "URL",
+  KeyringFilename = "Keyring filename",
+  KeyringData = "Keyring data",
+}
 
 const getKeyringType = (
   keyring_filename?: string,
