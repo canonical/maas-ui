@@ -22,7 +22,7 @@ import MaasIoSourceForm from "@/app/settings/views/Images/ChangeSource/ChangeSou
 
 export enum Labels {
   AutoSyncImages = "Automatically sync images",
-  MaasIo = "maas.io",
+  MaasIo = "images.maas.io",
   Custom = "Custom",
   Url = "URL",
   KeyringFilename = "Keyring filename",
