@@ -89,8 +89,11 @@ const MaasIoSourceForm = ({
                 });
               }}
               options={[
-                { label: "Stable", value: "stable" },
-                { label: "Candidate", value: "candidate" },
+                { label: `Stable (${MAAS_IO_URLS.stable})`, value: "stable" },
+                {
+                  label: `Candidate (${MAAS_IO_URLS.candidate})`,
+                  value: "candidate",
+                },
               ]}
               required
               value={selectedChannel}
