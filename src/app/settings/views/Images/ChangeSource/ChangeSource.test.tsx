@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 
 import ChangeSource from "@/app/settings/views/Images/ChangeSource/ChangeSource";
-import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields/ChangeSourceFields";
+import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
 import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
@@ -39,7 +39,6 @@ describe("ChangeSource", () => {
     await userEvent.click(
       screen.getByRole("checkbox", { name: /Automatically sync images/i })
     );
-    await userEvent.click(screen.getByRole("button", { name: "Validate" }));
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
     });
@@ -57,7 +56,7 @@ describe("ChangeSource", () => {
     );
     renderWithProviders(<ChangeSource />);
     await waitForLoading();
-    expect(screen.getByRole("button", { name: "Validate" })).toBeAriaDisabled();
+    expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
     expect(
       screen.getByTestId("cannot-change-source-warning")
     ).toBeInTheDocument();

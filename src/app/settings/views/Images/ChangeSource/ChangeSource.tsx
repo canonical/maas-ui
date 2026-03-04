@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import {
+  Col,
   Notification as NotificationBanner,
+  Row,
   Spinner,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,27 +26,15 @@ import {
   useCustomImageStatuses,
   useSelectionStatuses,
 } from "@/app/api/query/images";
-import type {
-  BootSourceCreateRequest,
-  ImageStatusListResponse,
-  ImageStatusResponse,
-  NotFoundBodyResponse,
-  ValidationErrorBodyResponse,
-} from "@/app/apiclient";
-import FormikForm from "@/app/base/components/FormikForm";
+import type { BootSourceCreateRequest } from "@/app/apiclient";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import {
-  MAAS_IO_DEFAULT_KEYRING_FILE_PATHS,
-  MAAS_IO_URLS,
-} from "@/app/images/constants";
-import { BootResourceSourceType } from "@/app/images/types";
-import ChangeSourceFields from "@/app/settings/views/Images/ChangeSource/ChangeSourceFields";
+import ChangeSourceForm from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm";
 import { ConfigNames } from "@/app/store/config/types";
 import { generalActions } from "@/app/store/general";
 import { installType } from "@/app/store/general/selectors";
 
-const ChangeSourceSchema = Yup.object()
+export const ChangeSourceSchema = Yup.object()
   .shape({
     keyring_type: Yup.string()
       .oneOf(["keyring_data", "keyring_filename", "keyring_unsigned"])
@@ -59,59 +49,14 @@ const ChangeSourceSchema = Yup.object()
       then: (schema) => schema.required("Keyring filename is required"),
       otherwise: (schema) => schema,
     }),
-    source_type: Yup.string().required("Source type is required"),
-    url: Yup.string()
-      .when("source_type", {
-        is: (val: string) => val === BootResourceSourceType.CUSTOM,
-        then: (schema) => schema.required("URL is required for custom sources"),
-        otherwise: (schema) => schema,
-      })
-      .when("keyring_type", {
-        is: "keyring_unsigned",
-        then: (schema) => schema.required("URL is required"),
-        otherwise: (schema) => schema,
-      }),
+    url: Yup.string().required("URL is required"),
     autoSync: Yup.boolean(),
   })
   .defined();
 
 export type ChangeSourceValues = BootSourceCreateRequest & {
   keyring_type: "keyring_data" | "keyring_filename" | "keyring_unsigned";
-  source_type: BootResourceSourceType;
   autoSync: boolean;
-};
-
-const getKeyringType = (
-  keyring_filename?: string,
-  keyring_data?: string
-): "keyring_data" | "keyring_filename" | "keyring_unsigned" => {
-  if (keyring_filename) return "keyring_filename";
-  if (keyring_data) return "keyring_data";
-  return "keyring_unsigned";
-};
-
-const getSourceType = (url: string): BootResourceSourceType => {
-  const isMaasIo =
-    new RegExp(MAAS_IO_URLS.stable).test(url) ||
-    new RegExp(MAAS_IO_URLS.candidate).test(url);
-  return isMaasIo
-    ? BootResourceSourceType.MAAS_IO
-    : BootResourceSourceType.CUSTOM;
-};
-
-const checkCanChangeSource = (
-  selectionStatuses: ImageStatusListResponse | undefined,
-  customImageStatuses: ImageStatusListResponse | undefined
-): boolean => {
-  if (!selectionStatuses || !customImageStatuses) return false;
-
-  const isNotDownloading = (s: ImageStatusResponse) =>
-    s.status !== "Downloading" && s.update_status !== "Downloading";
-
-  return (
-    selectionStatuses.items.every(isNotDownloading) &&
-    customImageStatuses.items.every(isNotDownloading)
-  );
 };
 
 const ChangeSource = (): ReactElement => {
@@ -165,36 +110,101 @@ const ChangeSource = (): ReactElement => {
 
   useWindowTitle("Source");
 
-  const canChangeSource = checkCanChangeSource(
-    selectionStatuses,
-    customImageStatuses
-  );
-  const sourceType = getSourceType(source.data?.url ?? "");
+  const canChangeSource =
+    !!selectionStatuses &&
+    !!customImageStatuses &&
+    [...selectionStatuses.items, ...customImageStatuses.items].every(
+      (s) => s.status !== "Downloading" && s.update_status !== "Downloading"
+    );
 
-  const getDefaultKeyringFilename = (): string => {
-    if (source.data?.keyring_filename?.length) {
-      return source.data.keyring_filename;
+  const onValidateSource = async (values: ChangeSourceValues) => {
+    if (!isValidated) {
+      try {
+        await fetchImageSource.mutateAsync(
+          {
+            body: {
+              url: values.url,
+              keyring_filename:
+                values.keyring_type === "keyring_filename"
+                  ? values.keyring_filename
+                  : undefined,
+              keyring_data:
+                values.keyring_type === "keyring_data"
+                  ? values.keyring_data
+                  : undefined,
+              skip_keyring_verification:
+                values.keyring_type === "keyring_unsigned" ? true : undefined,
+            },
+          },
+          {
+            onSuccess: () => {
+              setIsValidated(true);
+              setLastValidatedValues(values);
+            },
+          }
+        );
+      } catch {
+        // Error is surfaced via fetchImageSource.error / the errors variable
+      }
+      return;
     }
-    return installTypeData === "deb"
-      ? MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb
-      : MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap;
+
+    setIsValidated(false);
   };
 
-  const initialValues: ChangeSourceValues = {
-    keyring_data: source.data?.keyring_data ?? "",
-    keyring_filename: getDefaultKeyringFilename(),
-    keyring_type: getKeyringType(
-      source.data?.keyring_filename,
-      source.data?.keyring_data
-    ),
-    url: source.data?.url ?? "",
-    source_type: sourceType,
-    autoSync: autoImport || false,
-    // TODO: add priority field when multiple sources are supported.
-    //  Since priority must be unique, fake uniqueness by switching
-    //  between 10 and 9 until multiple sources introduce an explicit
-    //  priority field
-    priority: source.data?.priority === 10 ? 9 : 10,
+  const onSubmitSource = (
+    values: ChangeSourceValues,
+    initialValues: ChangeSourceValues
+  ) => {
+    if (values.autoSync !== initialValues.autoSync) {
+      updateConfig.mutate({
+        headers: {
+          ETag: configETag,
+        },
+        body: {
+          value: values.autoSync,
+        },
+        path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+      });
+    }
+
+    if (
+      values.url !== initialValues.url ||
+      values.keyring_data !== initialValues.keyring_data ||
+      values.keyring_filename !== initialValues.keyring_filename ||
+      values.skip_keyring_verification !==
+        initialValues.skip_keyring_verification ||
+      values.priority !== initialValues.priority
+    ) {
+      const modificationData = {
+        url: values.url,
+        keyring_data:
+          values.keyring_type === "keyring_data"
+            ? values.keyring_data
+            : undefined,
+        keyring_filename:
+          values.keyring_type === "keyring_filename"
+            ? values.keyring_filename
+            : undefined,
+        skip_keyring_verification:
+          values.keyring_type === "keyring_unsigned" ? true : undefined,
+        priority: values.priority,
+        current_boot_source_id: source.data?.id ?? -1,
+      };
+
+      if (values.url !== initialValues.url) {
+        changeImageSource.mutate({
+          body: modificationData,
+        });
+      } else {
+        updateImageSource.mutate({
+          path: {
+            boot_source_id: source.data?.id ?? -1,
+          },
+          body: modificationData,
+        });
+      }
+    }
   };
 
   return (
@@ -214,127 +224,25 @@ const ChangeSource = (): ReactElement => {
             </NotificationBanner>
           )}
           {!loading && (
-            <FormikForm<
-              ChangeSourceValues,
-              NotFoundBodyResponse | ValidationErrorBodyResponse | null
-            >
-              aria-label="Choose source"
-              buttonsBehavior="independent"
-              enableReinitialize
-              errors={errors}
-              initialValues={initialValues}
-              onSubmit={(values) => {
-                if (values.autoSync !== initialValues.autoSync) {
-                  updateConfig.mutate({
-                    headers: {
-                      ETag: configETag,
-                    },
-                    body: {
-                      value: values.autoSync,
-                    },
-                    path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
-                  });
-                }
-
-                if (
-                  values.url !== initialValues.url ||
-                  values.keyring_data !== initialValues.keyring_data ||
-                  values.keyring_filename !== initialValues.keyring_filename ||
-                  values.skip_keyring_verification !==
-                    initialValues.skip_keyring_verification ||
-                  values.priority !== initialValues.priority
-                ) {
-                  const modificationData = {
-                    url: values.url,
-                    keyring_data:
-                      values.keyring_type === "keyring_data"
-                        ? values.keyring_data
-                        : undefined,
-                    keyring_filename:
-                      values.keyring_type === "keyring_filename"
-                        ? values.keyring_filename
-                        : undefined,
-                    skip_keyring_verification:
-                      values.keyring_type === "keyring_unsigned"
-                        ? true
-                        : undefined,
-                    priority: values.priority,
-                    current_boot_source_id: source.data?.id ?? -1,
-                  };
-
-                  if (values.url !== initialValues.url) {
-                    changeImageSource.mutate({
-                      body: modificationData,
-                    });
-                  } else {
-                    updateImageSource.mutate({
-                      path: {
-                        boot_source_id: source.data?.id ?? -1,
-                      },
-                      body: modificationData,
-                    });
-                  }
-                }
-              }}
-              onValuesChanged={(values) => {
-                // Only reset validation if the form values have changed from the last validated state
-                // This prevents the validation from resetting itself when the validation callback completes
-                if (
-                  lastValidatedValues &&
-                  JSON.stringify(values) !== JSON.stringify(lastValidatedValues)
-                ) {
-                  setIsValidated(false);
-                }
-              }}
-              saved={saved}
-              saving={saving}
-              secondarySubmit={(values) => {
-                if (!isValidated) {
-                  fetchImageSource.mutate(
-                    {
-                      body: {
-                        url: values.url,
-                        keyring_filename:
-                          values.keyring_type === "keyring_filename"
-                            ? values.keyring_filename
-                            : undefined,
-                        keyring_data:
-                          values.keyring_type === "keyring_data"
-                            ? values.keyring_data
-                            : undefined,
-                        skip_keyring_verification:
-                          values.keyring_type === "keyring_unsigned"
-                            ? true
-                            : undefined,
-                      },
-                    },
-                    {
-                      onSuccess: () => {
-                        setIsValidated(true);
-                        setLastValidatedValues(values);
-                      },
-                    }
-                  );
-                  return;
-                }
-
-                // Reset validation state after successful save
-                setIsValidated(false);
-              }}
-              secondarySubmitDisabled={!canChangeSource}
-              secondarySubmitLabel={!isValidated ? "Validate" : undefined}
-              secondarySubmitSaved={fetchImageSource.isSuccess}
-              secondarySubmitSaving={fetchImageSource.isPending}
-              submitDisabled={!canChangeSource || !isValidated}
-              submitLabel="Save"
-              validationSchema={ChangeSourceSchema}
-            >
-              <ChangeSourceFields
-                installType={installTypeData}
-                saved={saved}
-                saving={saving}
-              />
-            </FormikForm>
+            <Row>
+              <Col size={12}>
+                <ChangeSourceForm
+                  autoImport={autoImport}
+                  canChangeSource={canChangeSource}
+                  errors={errors}
+                  installType={installTypeData}
+                  lastValidatedValues={lastValidatedValues}
+                  onSubmitSource={onSubmitSource}
+                  onValidateSource={onValidateSource}
+                  saved={saved}
+                  saving={saving}
+                  setIsValidated={setIsValidated}
+                  source={source.data!}
+                  validated={isValidated}
+                  validating={fetchImageSource.isPending}
+                />
+              </Col>
+            </Row>
           )}
         </ContentSection.Content>
       </ContentSection>
