@@ -46,10 +46,6 @@ When("the user clicks the created tag", () => {
   });
 });
 
-When("the user clicks {string} button", (button: string) => {
-  cy.findByRole("button", { name: button }).click();
-});
-
 When("the user clicks {string} link", (link: string) => {
   cy.findByRole("link", { name: link }).click();
 });
