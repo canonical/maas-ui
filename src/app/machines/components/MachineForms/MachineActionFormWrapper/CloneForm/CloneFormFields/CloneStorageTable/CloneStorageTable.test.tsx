@@ -1,16 +1,15 @@
 import CloneStorageTable from "./CloneStorageTable";
 
 import * as factory from "@/testing/factories";
-import { screen, within, renderWithProviders } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 describe("CloneStorageTable", () => {
-  it("renders empty table if neither loading details nor machine provided", () => {
+  it("renders the table", () => {
     renderWithProviders(<CloneStorageTable machine={null} selected={false} />);
-    expect(screen.getAllByRole("row")).toHaveLength(1);
-    expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
+    expect(screen.getByTestId("p-generic-table")).toBeInTheDocument();
   });
 
-  it("renders placeholder content while machine details are loading", () => {
+  it("renders a loading spinner while machine details are loading", () => {
     renderWithProviders(
       <CloneStorageTable
         loadingMachineDetails
@@ -18,19 +17,7 @@ describe("CloneStorageTable", () => {
         selected={false}
       />
     );
-    const tableBody = screen.getAllByRole("rowgroup")[1];
-    const rows = within(tableBody).getAllByRole("row");
-
-    rows.forEach((row) => {
-      const placeholders = within(row).getAllByTestId("placeholder");
-      expect(placeholders[0]).toHaveTextContent("Disk name");
-      expect(placeholders[1]).toHaveTextContent("Model");
-      expect(placeholders[2]).toHaveTextContent("1.0.0");
-      expect(placeholders[3]).toHaveTextContent("Disk type");
-      expect(placeholders[4]).toHaveTextContent("X, X");
-      expect(placeholders[5]).toHaveTextContent("1.23 GB");
-      expect(placeholders[6]).toHaveTextContent("Icon");
-    });
+    expect(screen.getByRole("alert")).toHaveTextContent("Loading...");
   });
 
   it("renders machine storage details if machine is provided", () => {
@@ -40,8 +27,7 @@ describe("CloneStorageTable", () => {
     renderWithProviders(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
-
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(screen.getByText("Disk 1")).toBeInTheDocument();
   });
 
@@ -54,10 +40,10 @@ describe("CloneStorageTable", () => {
     renderWithProviders(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(screen.getByTestId("disk-available")).toHaveClass("p-icon--tick");
-    expect(screen.getByTestId("disk-available")).toHaveAccessibleName(
-      "available"
-    );
+    const availableCell = within(screen.getAllByRole("row")[1]).getAllByRole(
+      "cell"
+    )[4];
+    expect(availableCell.querySelector("i")).toHaveClass("p-icon--tick");
   });
 
   it("shows a cross for unavailable disks", () => {
@@ -67,10 +53,10 @@ describe("CloneStorageTable", () => {
     renderWithProviders(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(screen.getByTestId("disk-available")).toHaveClass("p-icon--close");
-    expect(screen.getByTestId("disk-available")).toHaveAccessibleName(
-      "not available"
-    );
+    const availableCell = within(screen.getAllByRole("row")[1]).getAllByRole(
+      "cell"
+    )[4];
+    expect(availableCell.querySelector("i")).toHaveClass("p-icon--close");
   });
 
   it("shows a tick for available partitions", () => {
@@ -84,12 +70,10 @@ describe("CloneStorageTable", () => {
     renderWithProviders(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(screen.getByTestId("partition-available")).toHaveClass(
-      "p-icon--tick"
-    );
-    expect(screen.getByTestId("partition-available")).toHaveAccessibleName(
-      "available"
-    );
+    const availableCell = within(screen.getAllByRole("row")[2]).getAllByRole(
+      "cell"
+    )[4];
+    expect(availableCell.querySelector("i")).toHaveClass("p-icon--tick");
   });
 
   it("shows a cross for unavailable partitions", () => {
@@ -105,11 +89,9 @@ describe("CloneStorageTable", () => {
     renderWithProviders(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(screen.getByTestId("partition-available")).toHaveClass(
-      "p-icon--close"
-    );
-    expect(screen.getByTestId("partition-available")).toHaveAccessibleName(
-      "not available"
-    );
+    const availableCell = within(screen.getAllByRole("row")[2]).getAllByRole(
+      "cell"
+    )[4];
+    expect(availableCell.querySelector("i")).toHaveClass("p-icon--close");
   });
 });

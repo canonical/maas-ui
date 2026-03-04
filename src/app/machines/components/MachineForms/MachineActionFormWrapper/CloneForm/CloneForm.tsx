@@ -23,6 +23,8 @@ import {
 } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
 
+import "./_index.scss";
+
 type CloneMachineProps = {
   isViewingDetails: boolean;
   searchFilter?: string;
@@ -122,6 +124,7 @@ export const CloneForm = ({
               </ExternalLink>
             </p>
           }
+          className="clone-form"
           initialValues={{
             interfaces: false,
             source: "",

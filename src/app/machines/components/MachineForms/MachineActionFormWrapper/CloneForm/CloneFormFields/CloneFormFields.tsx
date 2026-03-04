@@ -33,6 +33,7 @@ export const CloneFormFields = ({
 }: Props): React.ReactElement => {
   const { setFieldValue, values } = useFormikContext<CloneFormValues>();
   const cloneNetworkTableContainerRef = useRef<HTMLDivElement>(null);
+  const cloneStorageTableContainerRef = useRef<HTMLDivElement>(null);
 
   const machineInState = useSelector((state: RootState) =>
     machineSelectors.getById(state, values.source)
@@ -126,25 +127,25 @@ export const CloneFormFields = ({
                 />
               </div>
             </div>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col size={12}>
-          <div className="clone-table-card">
-            <FormikField
-              disabled={!selectedMachine}
-              label="Clone storage configuration"
-              name="storage"
-              type="checkbox"
-              wrapperClassName="u-sv2"
-            />
-            <div className="clone-table-container">
-              <CloneStorageTable
-                loadingMachineDetails={loadingMachineDetails}
-                machine={selectedMachine}
-                selected={values.storage}
+            <div className="clone-table-card">
+              <FormikField
+                disabled={!selectedMachine}
+                label="Clone storage configuration"
+                name="storage"
+                type="checkbox"
+                wrapperClassName="u-sv2"
               />
+              <div
+                className="clone-table-container"
+                ref={cloneStorageTableContainerRef}
+              >
+                <CloneStorageTable
+                  containerRef={cloneStorageTableContainerRef}
+                  loadingMachineDetails={loadingMachineDetails}
+                  machine={selectedMachine}
+                  selected={values.storage}
+                />
+              </div>
             </div>
           </div>
         </Col>

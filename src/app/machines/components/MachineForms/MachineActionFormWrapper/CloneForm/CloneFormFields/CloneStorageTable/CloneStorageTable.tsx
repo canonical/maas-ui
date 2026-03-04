@@ -1,13 +1,13 @@
-import type { ReactNode } from "react";
+import type { ReactElement, RefObject } from "react";
 
-import { Icon, MainTable } from "@canonical/react-components";
-import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
+import { GenericTable } from "@canonical/maas-react-components";
 import classNames from "classnames";
 
-import DoubleRow from "@/app/base/components/DoubleRow";
-import Placeholder from "@/app/base/components/Placeholder";
-import DiskNumaNodes from "@/app/base/components/node/DiskNumaNodes";
+import type { CloneStorage } from "./useCloneStorageTableColumns/useCloneStorageTableColumns";
+import useCloneStorageTableColumns from "./useCloneStorageTableColumns/useCloneStorageTableColumns";
+
 import type { MachineDetails } from "@/app/store/machine/types";
+import type { Disk, Partition } from "@/app/store/types/node";
 import {
   diskAvailable,
   formatSize,
@@ -15,117 +15,46 @@ import {
   partitionAvailable,
 } from "@/app/store/utils";
 
-type Props = {
+type CloneStorageTableProps = {
+  containerRef?: RefObject<HTMLElement | null>;
   loadingMachineDetails?: boolean;
   machine: MachineDetails | null;
   selected: boolean;
 };
 
-const normaliseColumns = ({
-  available,
-  model,
-  name,
-  size,
-  type,
-}: {
-  available: ReactNode;
-  model: ReactNode;
-  name: ReactNode;
-  size: ReactNode;
-  type: ReactNode;
-}) => [
-  { className: "name-col", content: name },
-  { className: "model-col", content: model },
-  { className: "type-col", content: type },
-  { className: "size-col", content: size },
-  { className: "available-col u-align--center", content: available },
-];
-
 export const CloneStorageTable = ({
+  containerRef,
   loadingMachineDetails = false,
   machine,
   selected,
-}: Props): React.ReactElement => {
-  let rows: MainTableRow[] = [];
+}: CloneStorageTableProps): ReactElement => {
+  const columns = useCloneStorageTableColumns();
+  const data: CloneStorage[] = [];
 
-  if (loadingMachineDetails) {
-    rows = Array.from(Array(4)).map(() => ({
-      columns: normaliseColumns({
-        available: <Placeholder>Icon</Placeholder>,
-        model: (
-          <DoubleRow
-            primary={<Placeholder>Model</Placeholder>}
-            secondary={<Placeholder>1.0.0</Placeholder>}
-          />
-        ),
-        name: <Placeholder>Disk name</Placeholder>,
-        size: <Placeholder>1.23 GB</Placeholder>,
-        type: (
-          <DoubleRow
-            primary={<Placeholder>Disk type</Placeholder>}
-            secondary={<Placeholder>X, X</Placeholder>}
-          />
-        ),
-      }),
-    }));
-  } else if (machine) {
-    rows = [];
-    machine.disks.forEach((disk) => {
-      rows.push({
-        columns: normaliseColumns({
-          available: (
-            <Icon
-              aria-label={diskAvailable(disk) ? "available" : "not available"}
-              data-testid="disk-available"
-              name={diskAvailable(disk) ? "tick" : "close"}
-            />
-          ),
-          model: (
-            <DoubleRow
-              primary={disk.model || "—"}
-              primaryTitle={disk.model}
-              secondary={disk.firmware_version}
-              secondaryTitle={disk.firmware_version}
-            />
-          ),
-          name: <DoubleRow primary={disk.name} primaryTitle={disk.name} />,
-          size: formatSize(disk.size),
-          type: (
-            <DoubleRow
-              primary={formatType(disk)}
-              primaryTitle={formatType(disk)}
-              secondary={<DiskNumaNodes disk={disk} />}
-            />
-          ),
-        }),
+  if (machine) {
+    machine.disks.forEach((disk: Disk) => {
+      data.push({
+        id: `disk-${disk.id}`,
+        name: disk.name,
+        model: disk.model || "—",
+        firmwareVersion: disk.firmware_version,
+        type: formatType(disk),
+        numaNodesDisk: disk,
+        size: formatSize(disk.size),
+        available: diskAvailable(disk),
       });
 
       if (disk.partitions) {
-        disk.partitions.forEach((partition) => {
-          rows.push({
-            columns: normaliseColumns({
-              available: (
-                <Icon
-                  aria-label={
-                    partitionAvailable(partition)
-                      ? "available"
-                      : "not available"
-                  }
-                  data-testid="partition-available"
-                  name={partitionAvailable(partition) ? "tick" : "close"}
-                />
-              ),
-              model: "—",
-              name: partition.name,
-              size: formatSize(partition.size),
-              type: (
-                <DoubleRow
-                  primary={formatType(partition)}
-                  primaryTitle={formatType(partition)}
-                  secondary={<DiskNumaNodes disk={disk} />}
-                />
-              ),
-            }),
+        disk.partitions.forEach((partition: Partition) => {
+          data.push({
+            id: `partition-${partition.id}`,
+            name: partition.name,
+            model: "—",
+            firmwareVersion: "",
+            type: formatType(partition),
+            numaNodesDisk: disk,
+            size: formatSize(partition.size),
+            available: partitionAvailable(partition),
           });
         });
       }
@@ -133,29 +62,17 @@ export const CloneStorageTable = ({
   }
 
   return (
-    <MainTable
+    <GenericTable
+      aria-label="Clone storage"
       className={classNames("clone-table--storage", {
         "not-selected": !selected,
       })}
-      emptyStateMsg={machine ? "No storage information detected." : null}
-      headers={normaliseColumns({
-        available: "Available",
-        model: (
-          <>
-            <div>Model</div>
-            <div>Firmware</div>
-          </>
-        ),
-        name: "Name",
-        size: "Size",
-        type: (
-          <>
-            <div>Type</div>
-            <div>NUMA node</div>
-          </>
-        ),
-      })}
-      rows={rows}
+      columns={columns}
+      containerRef={containerRef}
+      data={data}
+      isLoading={loadingMachineDetails}
+      noData={machine ? "No storage information detected." : null}
+      variant="full-height"
     />
   );
 };
