@@ -28,7 +28,7 @@ export const CloneStorageTable = ({
   machine,
   selected,
 }: CloneStorageTableProps): ReactElement => {
-  const columns = useCloneStorageTableColumns(loadingMachineDetails);
+  const columns = useCloneStorageTableColumns();
   const data: CloneStorage[] = [];
 
   if (machine) {
@@ -42,7 +42,6 @@ export const CloneStorageTable = ({
         numaNodesDisk: disk,
         size: formatSize(disk.size),
         available: diskAvailable(disk),
-        availableTestId: "disk-available",
       });
 
       if (disk.partitions) {
@@ -56,7 +55,6 @@ export const CloneStorageTable = ({
             numaNodesDisk: disk,
             size: formatSize(partition.size),
             available: partitionAvailable(partition),
-            availableTestId: "partition-available",
           });
         });
       }

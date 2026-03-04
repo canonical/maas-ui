@@ -4,7 +4,6 @@ import { Icon } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
-import Placeholder from "@/app/base/components/Placeholder";
 import DiskNumaNodes from "@/app/base/components/node/DiskNumaNodes";
 import type { Disk } from "@/app/store/types/node";
 
@@ -17,7 +16,6 @@ export type CloneStorage = {
   numaNodesDisk: Disk;
   size: string;
   available: boolean;
-  availableTestId: "disk-available" | "partition-available";
 };
 
 export type CloneStorageColumnDef = ColumnDef<
@@ -25,9 +23,7 @@ export type CloneStorageColumnDef = ColumnDef<
   Partial<CloneStorage>
 >;
 
-const useCloneStorageTableColumns = (
-  isLoading?: boolean
-): CloneStorageColumnDef[] => {
+const useCloneStorageTableColumns = (): CloneStorageColumnDef[] => {
   return useMemo(
     (): CloneStorageColumnDef[] => [
       {
@@ -39,12 +35,7 @@ const useCloneStorageTableColumns = (
           row: {
             original: { name },
           },
-        }) =>
-          isLoading ? (
-            <Placeholder>Disk name</Placeholder>
-          ) : (
-            <DoubleRow primary={name} primaryTitle={name} />
-          ),
+        }) => <DoubleRow primary={name} primaryTitle={name} />,
       },
       {
         id: "model",
@@ -60,20 +51,14 @@ const useCloneStorageTableColumns = (
           row: {
             original: { model, firmwareVersion },
           },
-        }) =>
-          isLoading ? (
-            <DoubleRow
-              primary={<Placeholder>Model</Placeholder>}
-              secondary={<Placeholder>1.0.0</Placeholder>}
-            />
-          ) : (
-            <DoubleRow
-              primary={model}
-              primaryTitle={model}
-              secondary={firmwareVersion}
-              secondaryTitle={firmwareVersion}
-            />
-          ),
+        }) => (
+          <DoubleRow
+            primary={model}
+            primaryTitle={model}
+            secondary={firmwareVersion}
+            secondaryTitle={firmwareVersion}
+          />
+        ),
       },
       {
         id: "type",
@@ -89,19 +74,13 @@ const useCloneStorageTableColumns = (
           row: {
             original: { type, numaNodesDisk },
           },
-        }) =>
-          isLoading ? (
-            <DoubleRow
-              primary={<Placeholder>Disk type</Placeholder>}
-              secondary={<Placeholder>X, X</Placeholder>}
-            />
-          ) : (
-            <DoubleRow
-              primary={type}
-              primaryTitle={type}
-              secondary={<DiskNumaNodes disk={numaNodesDisk} />}
-            />
-          ),
+        }) => (
+          <DoubleRow
+            primary={type}
+            primaryTitle={type}
+            secondary={<DiskNumaNodes disk={numaNodesDisk} />}
+          />
+        ),
       },
       {
         id: "size",
@@ -112,7 +91,7 @@ const useCloneStorageTableColumns = (
           row: {
             original: { size },
           },
-        }) => (isLoading ? <Placeholder>1.23 GB</Placeholder> : <>{size}</>),
+        }) => <>{size}</>,
       },
       {
         id: "available",
@@ -123,21 +102,17 @@ const useCloneStorageTableColumns = (
         ),
         cell: ({
           row: {
-            original: { available, availableTestId },
+            original: { available },
           },
-        }) =>
-          isLoading ? (
-            <Placeholder>Icon</Placeholder>
-          ) : (
-            <Icon
-              aria-label={available ? "available" : "not available"}
-              data-testid={availableTestId}
-              name={available ? "tick" : "close"}
-            />
-          ),
+        }) => (
+          <Icon
+            aria-label={available ? "available" : "not available"}
+            name={available ? "tick" : "close"}
+          />
+        ),
       },
     ],
-    [isLoading]
+    []
   );
 };
 
