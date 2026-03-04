@@ -1,3 +1,6 @@
+import DhcpDelete from "../DhcpDelete";
+import DhcpEdit from "../DhcpEdit";
+
 import DhcpList from "./DhcpList";
 
 import type { RootState } from "@/app/store/root/types";
@@ -7,7 +10,10 @@ import {
   screen,
   within,
   renderWithProviders,
+  mockSidePanel,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("DhcpList", () => {
   let state: RootState;
@@ -58,80 +64,79 @@ describe("DhcpList", () => {
     });
   });
 
-  it("can show a delete confirmation", async () => {
-    renderWithProviders(<DhcpList />, { state });
-    let row = screen.getAllByTestId("dhcp-row")[0];
-    expect(row).not.toHaveClass("is-active");
+  describe("display", () => {
+    it("displays a loading component if snippets are loading", () => {
+      state.dhcpsnippet.loading = true;
+      renderWithProviders(<DhcpList />, { state });
 
-    // Click on the delete button:
-    await userEvent.click(within(row).getByTestId("table-actions-delete"));
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+    });
 
-    row = screen.getAllByTestId("dhcp-row")[0];
-    expect(row).toHaveClass("is-active");
-  });
+    it("displays a message when rendering an empty list", () => {
+      state.dhcpsnippet.items = [];
+      renderWithProviders(<DhcpList />, { state });
 
-  it("can delete a dhcp snippet", async () => {
-    const { store } = renderWithProviders(<DhcpList />, { state });
-    let row = screen.getAllByTestId("dhcp-row")[1];
-    expect(row).not.toHaveClass("is-active");
+      expect(
+        screen.getByText("No DHCP snippets available.")
+      ).toBeInTheDocument();
+    });
 
-    // Click on the delete button:
-    await userEvent.click(within(row).getByTestId("table-actions-delete"));
+    it("displays the columns correctly", () => {
+      renderWithProviders(<DhcpList />, { state });
 
-    row = screen.getAllByTestId("dhcp-row")[1];
-    expect(row).toHaveClass("is-active");
-
-    // Click on the delete confirm button
-    await userEvent.click(within(row).getByTestId("action-confirm"));
-
-    expect(
-      store.getActions().find((action) => action.type === "dhcpsnippet/delete")
-    ).toEqual({
-      type: "dhcpsnippet/delete",
-      payload: {
-        params: {
-          id: 2,
-        },
-      },
-      meta: {
-        model: "dhcpsnippet",
-        method: "delete",
-      },
+      [
+        "Snippet name",
+        "Type",
+        "Applies to",
+        "description",
+        "enabled",
+        "Last edited",
+        "Actions",
+      ].forEach((column) => {
+        expect(
+          screen.getByRole("columnheader", {
+            name: new RegExp(`^${column}`, "i"),
+          })
+        ).toBeInTheDocument();
+      });
     });
   });
 
-  it("can show snippet details", async () => {
-    renderWithProviders(<DhcpList />, { state });
-    let row = screen.getAllByTestId("dhcp-row")[0];
-    expect(row).not.toHaveClass("is-active");
+  describe("table actions", () => {
+    it("can show a delete side panel", async () => {
+      renderWithProviders(<DhcpList />, { state });
+      await userEvent.click(
+        screen.getAllByRole("button", { name: "Delete" })[0]
+      );
 
-    // Click on the column toggle button:
-    await userEvent.click(
-      within(row).getByRole("button", { name: "Show/hide details" })
-    );
+      expect(mockOpen).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: "Delete DHCP snippet",
+          component: DhcpDelete,
+          props: {
+            id: state.dhcpsnippet.items[2].id,
+          },
+        })
+      );
+    });
 
-    row = screen.getAllByTestId("dhcp-row")[0];
-    expect(row).toHaveClass("is-active");
-  });
+    it("can show an edit side panel to edit and view details", async () => {
+      renderWithProviders(<DhcpList />, { state });
+      await userEvent.click(
+        within(screen.getAllByRole("row")[1]).getByRole("button", {
+          name: "Edit",
+        })
+      );
 
-  it("can filter dhcp snippets", async () => {
-    renderWithProviders(<DhcpList />, { state });
-    let rows = screen.getAllByTestId("dhcp-row");
-    expect(rows.length).toBe(3);
-
-    await userEvent.type(
-      screen.getAllByPlaceholderText("Search DHCP snippets")[0],
-      "lease"
-    );
-
-    rows = screen.getAllByTestId("dhcp-row");
-    expect(rows.length).toBe(1);
-  });
-
-  it("displays a message when DHCP list is empty", () => {
-    state.dhcpsnippet.items = [];
-    renderWithProviders(<DhcpList />, { state });
-
-    expect(screen.getByText("No DHCP snippets available.")).toBeInTheDocument();
+      expect(mockOpen).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: "Edit DHCP snippet",
+          component: DhcpEdit,
+          props: {
+            id: state.dhcpsnippet.items[2].id,
+          },
+        })
+      );
+    });
   });
 });
