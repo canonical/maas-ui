@@ -1,25 +1,14 @@
 @mixin CloneFormFields {
   .clone-tables {
-    @extend %vf-is-bordered;
     @extend %vf-has-round-corners;
     display: flex;
-
-    @media only screen and (max-width: $breakpoint-navigation-threshold) {
-      flex-direction: column;
-    }
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .clone-table-card {
-    padding: $spv--medium $sph--large 0 $sph--large;
-
-    &:not(:last-of-type) {
-      border-right: $border;
-
-      @media only screen and (max-width: $breakpoint-navigation-threshold) {
-        border-bottom: $border;
-        border-right: 0;
-      }
-    }
+    @extend %vf-is-bordered;
+    padding: $spv--medium 0 0 $sph--large;
   }
 
   .clone-table-container {
@@ -42,7 +31,7 @@
 
     th:last-child,
     td:last-child {
-      padding-right: 0;
+      padding-right: 1rem;
     }
 
     &.not-selected {
