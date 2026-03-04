@@ -258,7 +258,7 @@ const ChangeSourceForm = ({
           }}
           onValuesChanged={onValuesChanged}
           saved={saved}
-          saving={saving}
+          saving={saving || validating}
           serverValues={serverValues}
         />
       ) : (
