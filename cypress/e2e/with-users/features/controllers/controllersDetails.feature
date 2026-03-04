@@ -13,7 +13,7 @@ Scenario: The user can add a tag to the controller
     And the correct number of controllers is displayed
 
 Scenario: Valid actions on the controller details page are listed
-    When the user clicks "Take action" button
+    When the user clicks the "Take action" button
     Then the "Set zone" action should exist
     And the "Delete" action should exist
     And the "Deploy" action should not exist

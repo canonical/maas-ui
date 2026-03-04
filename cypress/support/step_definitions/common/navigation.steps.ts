@@ -12,3 +12,7 @@ Then(/^the user is redirected to the (.+) page$/, (page: string) => {
   const path = routes[page];
   cy.visit(generateMAASURL(path));
 });
+
+Then("the pathname should equal {string}", (expectedPath: string) => {
+  cy.location("pathname").should("eq", generateMAASURL(expectedPath));
+});
