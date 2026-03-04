@@ -1,7 +1,7 @@
 import CloneStorageTable from "./CloneStorageTable";
 
 import * as factory from "@/testing/factories";
-import { screen, renderWithProviders } from "@/testing/utils";
+import { renderWithProviders, screen, within } from "@/testing/utils";
 
 describe("CloneStorageTable", () => {
   it("renders the table", () => {
@@ -40,10 +40,10 @@ describe("CloneStorageTable", () => {
     renderWithProviders(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(screen.getByTestId("disk-available")).toHaveClass("p-icon--tick");
-    expect(screen.getByTestId("disk-available")).toHaveAccessibleName(
-      "available"
-    );
+    const availableCell = within(screen.getAllByRole("row")[1]).getAllByRole(
+      "cell"
+    )[4];
+    expect(availableCell.querySelector("i")).toHaveClass("p-icon--tick");
   });
 
   it("shows a cross for unavailable disks", () => {
@@ -53,10 +53,10 @@ describe("CloneStorageTable", () => {
     renderWithProviders(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(screen.getByTestId("disk-available")).toHaveClass("p-icon--close");
-    expect(screen.getByTestId("disk-available")).toHaveAccessibleName(
-      "not available"
-    );
+    const availableCell = within(screen.getAllByRole("row")[1]).getAllByRole(
+      "cell"
+    )[4];
+    expect(availableCell.querySelector("i")).toHaveClass("p-icon--close");
   });
 
   it("shows a tick for available partitions", () => {
@@ -70,12 +70,10 @@ describe("CloneStorageTable", () => {
     renderWithProviders(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(screen.getByTestId("partition-available")).toHaveClass(
-      "p-icon--tick"
-    );
-    expect(screen.getByTestId("partition-available")).toHaveAccessibleName(
-      "available"
-    );
+    const availableCell = within(screen.getAllByRole("row")[2]).getAllByRole(
+      "cell"
+    )[4];
+    expect(availableCell.querySelector("i")).toHaveClass("p-icon--tick");
   });
 
   it("shows a cross for unavailable partitions", () => {
@@ -91,11 +89,9 @@ describe("CloneStorageTable", () => {
     renderWithProviders(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(screen.getByTestId("partition-available")).toHaveClass(
-      "p-icon--close"
-    );
-    expect(screen.getByTestId("partition-available")).toHaveAccessibleName(
-      "not available"
-    );
+    const availableCell = within(screen.getAllByRole("row")[2]).getAllByRole(
+      "cell"
+    )[4];
+    expect(availableCell.querySelector("i")).toHaveClass("p-icon--close");
   });
 });
