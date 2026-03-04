@@ -98,7 +98,7 @@ const DhcpList = (): React.ReactElement => {
               totalItems: dhcpsnippets.length,
             }}
             sorting={[{ id: "name", desc: false }]}
-            variant="regular"
+            variant="full-height"
           />
           {dhcpsnippetLoading && !dhcpsnippetLoaded && (
             <div className="settings-table__lines"></div>

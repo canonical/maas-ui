@@ -64,71 +64,79 @@ describe("DhcpList", () => {
     });
   });
 
-  it("displays a loading component if snippets are loading", () => {
-    state.dhcpsnippet.loading = true;
-    renderWithProviders(<DhcpList />, { state });
+  describe("display", () => {
+    it("displays a loading component if snippets are loading", () => {
+      state.dhcpsnippet.loading = true;
+      renderWithProviders(<DhcpList />, { state });
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+    });
 
-  it("displays a message when rendering an empty list", () => {
-    state.dhcpsnippet.items = [];
-    renderWithProviders(<DhcpList />, { state });
+    it("displays a message when rendering an empty list", () => {
+      state.dhcpsnippet.items = [];
+      renderWithProviders(<DhcpList />, { state });
 
-    expect(screen.getByText("No DHCP snippets available.")).toBeInTheDocument();
-  });
-
-  it("displays the columns correctly", () => {
-    renderWithProviders(<DhcpList />, { state });
-
-    [
-      "Snippet name",
-      "Type",
-      "Applies to",
-      "description",
-      "enabled",
-      "Last edited",
-      "Actions",
-    ].forEach((column) => {
       expect(
-        screen.getByRole("columnheader", {
-          name: new RegExp(`^${column}`, "i"),
-        })
+        screen.getByText("No DHCP snippets available.")
       ).toBeInTheDocument();
+    });
+
+    it("displays the columns correctly", () => {
+      renderWithProviders(<DhcpList />, { state });
+
+      [
+        "Snippet name",
+        "Type",
+        "Applies to",
+        "description",
+        "enabled",
+        "Last edited",
+        "Actions",
+      ].forEach((column) => {
+        expect(
+          screen.getByRole("columnheader", {
+            name: new RegExp(`^${column}`, "i"),
+          })
+        ).toBeInTheDocument();
+      });
     });
   });
 
-  it("can show a delete side panel", async () => {
-    renderWithProviders(<DhcpList />, { state });
-    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
+  describe("table actions", () => {
+    it("can show a delete side panel", async () => {
+      renderWithProviders(<DhcpList />, { state });
+      await userEvent.click(
+        screen.getAllByRole("button", { name: "Delete" })[0]
+      );
 
-    expect(mockOpen).toHaveBeenCalledWith(
-      expect.objectContaining({
-        title: "Delete DHCP snippet",
-        component: DhcpDelete,
-        props: {
-          id: state.dhcpsnippet.items[2].id,
-        },
-      })
-    );
-  });
+      expect(mockOpen).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: "Delete DHCP snippet",
+          component: DhcpDelete,
+          props: {
+            id: state.dhcpsnippet.items[2].id,
+          },
+        })
+      );
+    });
 
-  it("can show an edit side panel to edit and view details", async () => {
-    renderWithProviders(<DhcpList />, { state });
-    await userEvent.click(
-      within(screen.getAllByRole("row")[1]).getByRole("button", {
-        name: "Edit",
-      })
-    );
+    it("can show an edit side panel to edit and view details", async () => {
+      renderWithProviders(<DhcpList />, { state });
+      await userEvent.click(
+        within(screen.getAllByRole("row")[1]).getByRole("button", {
+          name: "Edit",
+        })
+      );
 
-    expect(mockOpen).toHaveBeenCalledWith(
-      expect.objectContaining({
-        title: "Edit DHCP snippet",
-        component: DhcpEdit,
-        props: {
-          id: state.dhcpsnippet.items[2].id,
-        },
-      })
-    );
+      expect(mockOpen).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: "Edit DHCP snippet",
+          component: DhcpEdit,
+          props: {
+            id: state.dhcpsnippet.items[2].id,
+          },
+        })
+      );
+    });
   });
 });

@@ -82,7 +82,7 @@ const DHCPTable = ({
             noData={generateEmptyStateMsg(tableStatus, {
               default: `No DHCP snippets applied to this ${modelName}.`,
             })}
-            variant="regular"
+            variant="full-height"
           />
           <List
             items={[
