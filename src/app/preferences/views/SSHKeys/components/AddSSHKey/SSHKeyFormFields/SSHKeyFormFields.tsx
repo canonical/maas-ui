@@ -45,7 +45,7 @@ export const SSHKeyFormFields = (): React.ReactElement => {
                   Public key{" "}
                   <TooltipButton
                     iconName="help"
-                    message={`Begins with 'ssh-rsa', 'ssh-dss', 'ssh-ed25519',
+                    message={`Begins with 'ssh-rsa', 'ssh-ed25519',
                   'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or
                   'ecdsa-sha2-nistp521`}
                     position="btm-left"
