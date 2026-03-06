@@ -9,9 +9,10 @@ import type { OAuthProviderResponse } from "@/app/apiclient";
 
 type Props = {
   provider: OAuthProviderResponse | undefined;
+  maasURL: string;
 };
 
-const SingleSignOnFormFields = ({ provider }: Props): ReactElement => {
+const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
   const { resetForm } = useFormikContext<SingleSignOnFormValues>();
 
   useEffect(() => {
@@ -22,13 +23,13 @@ const SingleSignOnFormFields = ({ provider }: Props): ReactElement => {
           client_id: "",
           client_secret: "",
           issuer_url: "",
-          redirect_uri: "",
+          redirect_uri: maasURL + "/r/login/oidc/callback",
           scopes: "",
           token_type: "JWT",
         },
       });
     }
-  }, [provider, resetForm]);
+  }, [provider, resetForm, maasURL]);
 
   return (
     <>
@@ -61,7 +62,7 @@ const SingleSignOnFormFields = ({ provider }: Props): ReactElement => {
         type="text"
       />
       <FormikField
-        help="The callback URL in your application where the OIDC provider will redirect users after successful authentication."
+        help="The redirect URI in the application where the OIDC provider will redirect users after successful authentication. Unless you have specific requirements, this should be set to your MAAS URL followed by /r/login/oidc/callback."
         label="Redirect URI"
         name="redirect_uri"
         required

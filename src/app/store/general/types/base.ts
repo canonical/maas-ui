@@ -255,6 +255,15 @@ export type InstallTypeState = {
   loading: boolean;
 };
 
+export type MAASURLType = string;
+
+export type MAASURLState = {
+  errors: APIError;
+  data: MAASURLType;
+  loaded: boolean;
+  loading: boolean;
+};
+
 export type GeneralState = {
   architectures: ArchitecturesState;
   bondOptions: BondOptionsState;
@@ -265,6 +274,7 @@ export type GeneralState = {
   installType: InstallTypeState;
   knownArchitectures: KnownArchitecturesState;
   knownBootArchitectures: KnownBootArchitecturesState;
+  maasURL: MAASURLState;
   machineActions: MachineActionsState;
   osInfo: OSInfoState;
   pocketsToDisable: PocketsToDisableState;

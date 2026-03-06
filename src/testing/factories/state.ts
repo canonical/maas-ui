@@ -40,6 +40,7 @@ import type {
   InstallTypeState,
   KnownArchitecturesState,
   KnownBootArchitecturesState,
+  MAASURLState,
   MachineActionsState,
   OSInfoState,
   PocketsToDisableState,
@@ -215,6 +216,11 @@ export const machineStateListGroup = define<MachineStateListGroup>({
 });
 
 export const fetchedAt = define<number>(Date.now());
+
+export const maasURLState = define<MAASURLState>({
+  ...defaultGeneralState,
+  data: "http://example.com/maas",
+});
 
 export const machineStateList = define<MachineStateList>({
   count: null,
@@ -451,6 +457,7 @@ export const generalState = define<GeneralState>({
   installType: installTypeState,
   knownArchitectures: knownArchitecturesState,
   knownBootArchitectures: knownBootArchitecturesState,
+  maasURL: maasURLState,
   machineActions: machineActionsState,
   osInfo: osInfoState,
   pocketsToDisable: pocketsToDisableState,

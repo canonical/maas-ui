@@ -1,6 +1,8 @@
 import SingleSignOn from "./SingleSignOn";
 import ResetSingleSignOn from "./components/ResetSingleSignOn";
 
+import type { RootState } from "@/app/store/root/types";
+import * as factory from "@/testing/factories";
 import { authResolvers, mockOauthProvider } from "@/testing/resolvers/auth";
 import {
   mockIsPending,
@@ -19,16 +21,30 @@ const mockServer = setupMockServer(
 const { mockOpen } = await mockSidePanel();
 
 describe("Single sign-on", () => {
+  let state: RootState;
+  beforeEach(() => {
+    state = factory.rootState({
+      general: factory.generalState({
+        maasURL: {
+          data: "http://example.com/maas",
+          errors: null,
+          loaded: true,
+          loading: false,
+        },
+      }),
+    });
+  });
+
   it("displays a spinner while loading provider information", async () => {
     mockIsPending();
 
-    renderWithProviders(<SingleSignOn />);
+    renderWithProviders(<SingleSignOn />, { state });
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a pre-filled form when provider data loads", async () => {
-    renderWithProviders(<SingleSignOn />);
+    renderWithProviders(<SingleSignOn />, { state });
 
     await waitFor(() => {
       expect(
@@ -50,7 +66,7 @@ describe("Single sign-on", () => {
       })
     );
 
-    renderWithProviders(<SingleSignOn />);
+    renderWithProviders(<SingleSignOn />, { state });
 
     await waitFor(() => {
       expect(
@@ -72,7 +88,7 @@ describe("Single sign-on", () => {
       })
     );
 
-    renderWithProviders(<SingleSignOn />);
+    renderWithProviders(<SingleSignOn />, { state });
 
     await waitFor(() => {
       expect(
@@ -92,7 +108,7 @@ describe("Single sign-on", () => {
       })
     );
 
-    renderWithProviders(<SingleSignOn />);
+    renderWithProviders(<SingleSignOn />, { state });
 
     await waitFor(() => {
       expect(
@@ -114,7 +130,7 @@ describe("Single sign-on", () => {
   });
 
   it("enables the 'Reset' button and does not show a tooltip when OIDC is configured", async () => {
-    renderWithProviders(<SingleSignOn />);
+    renderWithProviders(<SingleSignOn />, { state });
 
     await waitFor(() => {
       expect(
@@ -134,7 +150,7 @@ describe("Single sign-on", () => {
   });
 
   it("opens the side panel when 'Reset' is clicked", async () => {
-    renderWithProviders(<SingleSignOn />);
+    renderWithProviders(<SingleSignOn />, { state });
 
     await waitFor(() => {
       expect(

@@ -63,6 +63,7 @@ const generalSlice = createSlice({
     installType: generateInitialState(""),
     knownArchitectures: generateInitialState([]),
     knownBootArchitectures: generateInitialState([]),
+    maasURL: generateInitialState(""),
     machineActions: generateInitialState([]),
     osInfo: generateInitialState(null),
     pocketsToDisable: generateInitialState([]),
@@ -126,6 +127,10 @@ const generalSlice = createSlice({
     fetchKnownBootArchitecturesSuccess: generateSuccessReducer(
       "knownBootArchitectures"
     ),
+    fetchMAASURL: generatePrepareReducer("maas_url"),
+    fetchMAASURLStart: generateStartReducer("maasURL"),
+    fetchMAASURLError: generateErrorReducer("maasURL"),
+    fetchMAASURLSuccess: generateSuccessReducer("maasURL"),
     fetchMachineActions: generatePrepareReducer("machine_actions"),
     fetchMachineActionsStart: generateStartReducer("machineActions"),
     fetchMachineActionsError: generateErrorReducer("machineActions"),

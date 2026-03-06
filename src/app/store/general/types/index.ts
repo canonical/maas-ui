@@ -26,6 +26,7 @@ export type {
   KnownArchitecturesState,
   KnownBootArchitecture,
   KnownBootArchitecturesState,
+  MAASURLState,
   MachineAction,
   MachineActionsState,
   OSInfo,
