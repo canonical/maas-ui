@@ -42,7 +42,7 @@ const SingleSignOnForm = ({ provider, maasURL }: Props): ReactElement => {
       client_id: "",
       client_secret: "",
       issuer_url: "",
-      redirect_uri: maasURL + "/login/oidc/callback",
+      redirect_uri: maasURL + "/r/login/oidc/callback",
       scopes: "",
       token_type: "JWT",
     }

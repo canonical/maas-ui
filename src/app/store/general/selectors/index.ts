@@ -7,6 +7,7 @@ export { default as hweKernels } from "./hweKernels";
 export { default as installType } from "./installType";
 export { default as knownArchitectures } from "./knownArchitectures";
 export { default as knownBootArchitectures } from "./knownBootArchitectures";
+export { default as maasURL } from "./maasURL";
 export { default as machineActions } from "./machineActions";
 export { default as osInfo } from "./osInfo";
 export { default as pocketsToDisable } from "./pocketsToDisable";

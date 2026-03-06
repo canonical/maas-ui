@@ -17,13 +17,13 @@ import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { generalActions } from "@/app/store/general";
-import maasURL from "@/app/store/general/selectors/maasURL";
+import { maasURL } from "@/app/store/general/selectors";
 
 const SingleSignOn = (): ReactElement => {
   const { data, error, isPending } = useActiveOauthProvider();
   const { openSidePanel } = useSidePanel();
-  const maasURLData = useSelector(maasURL.get);
   const dispatch = useDispatch();
+  const maasURLData = useSelector(maasURL.get);
 
   useEffect(() => {
     dispatch(generalActions.fetchMAASURL());

@@ -20,6 +20,7 @@ const mockServer = setupMockServer(
 );
 
 describe("SingleSignOnForm", () => {
+  const maasURL = "http://example.com/maas";
   beforeEach(() => {
     mockAuthProvider = oAuthProviderFactory.build();
   });
@@ -30,7 +31,9 @@ describe("SingleSignOnForm", () => {
   });
 
   it("doesn't pre-fill the data if no provider is present", () => {
-    renderWithProviders(<SingleSignOnForm provider={undefined} />);
+    renderWithProviders(
+      <SingleSignOnForm maasURL={maasURL} provider={undefined} />
+    );
 
     expect(screen.getByRole("textbox", { name: /Name/i })).toHaveValue("");
     expect(screen.getByRole("textbox", { name: /Client ID/i })).toHaveValue("");
@@ -40,8 +43,9 @@ describe("SingleSignOnForm", () => {
     expect(screen.getByRole("textbox", { name: /Issuer URL/i })).toHaveValue(
       ""
     );
+    // Redirect URI should be pre-filled as the default callback url
     expect(screen.getByRole("textbox", { name: /Redirect URI/i })).toHaveValue(
-      ""
+      maasURL + "/r/login/oidc/callback"
     );
     expect(screen.getByRole("textbox", { name: /Scopes/i })).toHaveValue("");
     expect(screen.getByRole("combobox", { name: /Token type/i })).toHaveValue(
@@ -50,7 +54,9 @@ describe("SingleSignOnForm", () => {
   });
 
   it("pre-fills the data if a provider is present", () => {
-    renderWithProviders(<SingleSignOnForm provider={mockAuthProvider} />);
+    renderWithProviders(
+      <SingleSignOnForm maasURL={maasURL} provider={mockAuthProvider} />
+    );
 
     expect(screen.getByRole("textbox", { name: /Name/i })).toHaveValue(
       mockAuthProvider.name
@@ -76,7 +82,9 @@ describe("SingleSignOnForm", () => {
   });
 
   it("calls the endpoint to create a provider if one is not given as a prop", async () => {
-    renderWithProviders(<SingleSignOnForm provider={undefined} />);
+    renderWithProviders(
+      <SingleSignOnForm maasURL={maasURL} provider={undefined} />
+    );
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /Name/i }),
@@ -118,7 +126,9 @@ describe("SingleSignOnForm", () => {
   it("calls the endpoint to update a provider if one is given as a prop", async () => {
     mockAuthProvider = oAuthProviderFactory.build({ name: "red hat" });
 
-    renderWithProviders(<SingleSignOnForm provider={mockAuthProvider} />);
+    renderWithProviders(
+      <SingleSignOnForm maasURL={maasURL} provider={mockAuthProvider} />
+    );
 
     await userEvent.clear(screen.getByRole("textbox", { name: /Name/i }));
 
@@ -144,7 +154,9 @@ describe("SingleSignOnForm", () => {
       })
     );
 
-    renderWithProviders(<SingleSignOnForm provider={undefined} />);
+    renderWithProviders(
+      <SingleSignOnForm maasURL={maasURL} provider={undefined} />
+    );
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /Name/i }),
@@ -195,7 +207,9 @@ describe("SingleSignOnForm", () => {
 
     mockAuthProvider = oAuthProviderFactory.build({ name: "red hat" });
 
-    renderWithProviders(<SingleSignOnForm provider={mockAuthProvider} />);
+    renderWithProviders(
+      <SingleSignOnForm maasURL={maasURL} provider={mockAuthProvider} />
+    );
 
     await userEvent.clear(screen.getByRole("textbox", { name: /Name/i }));
 
@@ -214,7 +228,9 @@ describe("SingleSignOnForm", () => {
   });
 
   it("clears the form when 'Cancel' is clicked", async () => {
-    renderWithProviders(<SingleSignOnForm provider={undefined} />);
+    renderWithProviders(
+      <SingleSignOnForm maasURL={maasURL} provider={undefined} />
+    );
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /Name/i }),
@@ -234,17 +250,20 @@ describe("SingleSignOnForm", () => {
 
   it("resets the form to an empty state if 'provider' becomes undefined", async () => {
     const { rerender } = renderWithProviders(
-      <SingleSignOnForm provider={mockAuthProvider} />
+      <SingleSignOnForm maasURL={maasURL} provider={mockAuthProvider} />
     );
 
     expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(
       mockAuthProvider.name
     );
 
-    rerender(<SingleSignOnForm provider={undefined} />);
+    rerender(<SingleSignOnForm maasURL={maasURL} provider={undefined} />);
 
     await waitFor(() => {
       expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("");
+      expect(
+        screen.getByRole("textbox", { name: /Redirect URI/i })
+      ).toHaveValue(maasURL + "/r/login/oidc/callback");
     });
   });
 });
