@@ -18,12 +18,20 @@ module.exports = async function (context, commands) {
   await commands.wait.bySelector("input[name='username']", TIMEOUT);
   await commands.addText.byName("admin", "username");
   await commands.click.bySelector("button.p-button--positive");
-  await commands.wait.bySelector("input[name='password']:not([hidden])", TIMEOUT);
+  await commands.wait.bySelector(
+    "input[name='password']:not([hidden])",
+    TIMEOUT
+  );
   await commands.addText.byName("test", "password");
+  // Wait for the login button to be enabled before clicking it
+  await commands.wait.byCondition(
+    `document.querySelector("button.p-button--positive")?.textContent?.trim() === "Login"`,
+    TIMEOUT
+  );
   await commands.click.bySelector("button.p-button--positive");
   await commands.wait.bySelector(
     "[data-testid='section-header-title-spinner']",
     TIMEOUT
   );
-  await commands.wait.byXpath("//a//span[text()='admin']");
+  await commands.wait.byXpath("//a//span[text()='admin']", TIMEOUT);
 };
