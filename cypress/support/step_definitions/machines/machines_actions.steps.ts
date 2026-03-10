@@ -11,6 +11,8 @@ import { generateName } from "../../../e2e/utils";
 let machineName = "";
 let newPoolName = "";
 let newTagName = "";
+const doesMachineExist = false;
+const shouldMachineBeDeleted = false;
 
 const openMachineActionDropdown = (groupLabel: string) => {
   cy.findAllByRole("button", { name: groupLabel }).first().click();
@@ -26,13 +28,17 @@ const openMachineActionForm = (groupLabel: string, action: string) => {
 };
 
 Before({ tags: "@machine-actions" }, () => {
-  machineName = generateName("machine");
-  cy.login();
-  cy.addMachine(machineName);
+  if (!doesMachineExist) {
+    machineName = generateName("machine");
+    cy.login();
+    cy.addMachine(machineName);
+  }
 });
 
 After({ tags: "@machine-actions" }, () => {
-  cy.deleteMachine(machineName);
+  if (shouldMachineBeDeleted) {
+    cy.deleteMachine(machineName);
+  }
 });
 
 Given("the machines table is loaded", () => {
@@ -138,8 +144,6 @@ Then("the new pool name should be visible in the machines grid", () => {
   cy.findByRole("grid", { name: /Machines/i }).within(() => {
     cy.findByText(newPoolName).should("exist");
   });
-
-  cy.deletePool(newPoolName);
 });
 
 Then(

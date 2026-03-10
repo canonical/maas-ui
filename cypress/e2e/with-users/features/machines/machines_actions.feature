@@ -55,7 +55,7 @@ Feature: Machine listing - actions
     When the user cancels the "Delete" form
     Then the "Delete" side panel should not exist
 
-  Scenario: Can create and set the zone of a machine
+  Scenario: Can create and set the pool of a machine
     Given the user filters the machine list by the generated machine
     And the user selects that machine
     When the user opens the "Set pool" form from the "Categorise" menu
