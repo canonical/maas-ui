@@ -18,7 +18,7 @@ Scenario: The user can delete a created subnet
 
 Scenario: An error is displayed when trying to add a VLAN with a VID that already exists
     When the user tries to add a VLAN with a VID that already exists
-    Then an error is displayed
+    Then the text matching "A VLAN with the specified VID already exists in the destination fabric." should exist
 
 Scenario: An error is displayed when trying to add a Fabric with a name that already exists
     When the user tries to add a Fabric with a name that already exists

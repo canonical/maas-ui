@@ -97,12 +97,6 @@ Then("fabric list should not include deleted subnet", function () {
   );
 });
 
-Then("an error is displayed", () => {
-  cy.findByText(
-    /A VLAN with the specified VID already exists in the destination fabric./
-  ).should("exist");
-});
-
 Then("text {string} should be visible", (text: string) => {
   cy.findByText(new RegExp(text, "i")).should("be.visible");
 });

@@ -4,7 +4,7 @@ Background:
   Given the user is logged in
   And the viewport is "macbook-13"
   And the user navigates to the home page
-  And the main navigation gets expanded
+  And the user clicks the button matching "expand main navigation"
   And the page is loaded
 
 Scenario: Clicking the logo navigates to Machines

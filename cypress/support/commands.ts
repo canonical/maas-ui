@@ -57,8 +57,12 @@ Cypress.Commands.add("loginNonAdmin", () => {
 
 Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.visit(generateMAASURL("/machines"));
+  cy.waitForPageToLoad();
+  cy.waitForTableToLoad({ name: /Machines/i });
   cy.findByRole("button", { name: "Add hardware" }).click();
-  cy.get(".p-contextual-menu__link").contains("Machine").click();
+  cy.get(".p-contextual-menu__link")
+    .contains("Machine", { timeout: LONG_TIMEOUT })
+    .click();
   cy.get("input[name='hostname']").type(hostname);
   cy.get("input[name='pxe_mac']").type(generateMac());
   cy.get("select[name='power_type']").select("manual");

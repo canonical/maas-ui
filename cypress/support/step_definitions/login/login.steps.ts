@@ -26,6 +26,6 @@ When("the user provides correct username and password", () => {
   cy.get("button[type='submit']").click();
 });
 
-Then("the text {string} should be visible", (text: string) => {
+Then("the alert {string} should be visible", (text: string) => {
   cy.findByRole("alert").should("be.visible").should("include.text", text);
 });

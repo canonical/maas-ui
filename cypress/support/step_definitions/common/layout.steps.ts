@@ -10,3 +10,15 @@ Then("the main toolbar heading should be {string}", (expectedHeading) => {
 Then("the heading should be {string}", (expectedHeading: string) => {
   cy.findByRole("heading", { level: 1 }).contains(expectedHeading);
 });
+
+Then("the heading matching {string} text should exist", (heading: string) => {
+  cy.findByRole("heading", { name: new RegExp(heading, "i") }).should("exist");
+});
+
+Then("the {string} header should not exist", (headerName: string) => {
+  cy.findByRole("header", { name: headerName }).should("not.exist");
+});
+
+Then("the text matching {string} should exist", (text: string) => {
+  cy.findByText(new RegExp(text, "i")).should("exist");
+});
