@@ -1,5 +1,4 @@
 import {
-  After,
   Before,
   DataTable,
   Given,
@@ -11,8 +10,7 @@ import { generateName } from "../../../e2e/utils";
 let machineName = "";
 let newPoolName = "";
 let newTagName = "";
-const doesMachineExist = false;
-const shouldMachineBeDeleted = false;
+let doesMachineExist = false;
 
 const openMachineActionDropdown = (groupLabel: string) => {
   cy.findAllByRole("button", { name: groupLabel }).first().click();
@@ -32,12 +30,7 @@ Before({ tags: "@machine-actions" }, () => {
     machineName = generateName("machine");
     cy.login();
     cy.addMachine(machineName);
-  }
-});
-
-After({ tags: "@machine-actions" }, () => {
-  if (shouldMachineBeDeleted) {
-    cy.deleteMachine(machineName);
+    doesMachineExist = true;
   }
 });
 
