@@ -167,7 +167,9 @@ When("the user selects the {string} filter tab", (tabName: string) => {
 });
 
 When("the user enables the {string} filter", (filterName: string) => {
-  cy.findByRole("checkbox", { name: filterName }).should("exist").click();
+  cy.findByRole("checkbox", { name: new RegExp(filterName, "i") })
+    .should("exist")
+    .click();
 });
 
 When("the user navigates back", () => {

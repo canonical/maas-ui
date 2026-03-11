@@ -25,7 +25,6 @@ Scenario: The machine commissioning details are displayed
     And the user opens the machine actions menu
     And the user aborts commissioning
     And the user opens the "Scripts" tab
-    And the user opens the "Commissioning" tab
     And the user opens the first commissioning details row
     Then the "details" heading should exist
     When the user deletes the machine
