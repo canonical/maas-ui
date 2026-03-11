@@ -31,7 +31,7 @@ describe("LoginCallback", () => {
     expect(screen.getByRole("alert")).toHaveTextContent(Labels.MissingParams);
   });
 
-  it("shows an error if callback fails", async () => {
+  it("shows an error if callback fails due to a server error", async () => {
     mockServer.use(authResolvers.getCallback.error());
     renderWithProviders(<LoginCallback />, {
       initialEntries: ["/login/oidc/callback?code=abc123&state=xyz789"],
@@ -40,6 +40,28 @@ describe("LoginCallback", () => {
     await waitFor(() => {
       expect(screen.getByRole("alert")).toHaveTextContent(Labels.CallbackError);
     });
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Please try logging in again."
+    );
+  });
+
+  it("shows an error if the callback URL contains an error parameter", async () => {
+    renderWithProviders(<LoginCallback />, {
+      initialEntries: [
+        "/login/oidc/callback?error=access_denied&error_description=User%20denied%20access",
+      ],
+      state,
+    });
+    await waitFor(() => {
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        "Error: access_denied"
+      );
+    });
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Please try logging in again."
+    );
+    expect(screen.getByRole("alert")).toHaveTextContent("User denied access");
+    expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
 
   it("shows a loading state while processing the callback", async () => {
