@@ -17,6 +17,7 @@ context("Login page", () => {
   });
 
   it("logs in and redirects to the intro", () => {
+    cy.setCookie("skipsetupintro", "false");
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.findByRole("button", { name: /Next/ }).click();
     cy.get("input[name='password']").type(Cypress.env("password"));
@@ -26,6 +27,7 @@ context("Login page", () => {
 
   it("logs in and redirects to the user intro if setup intro complete", () => {
     // Log in - should go to setup intro.
+    cy.setCookie("skipsetupintro", "false");
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.findByRole("button", { name: /Next/ }).click();
     cy.get("input[name='password']").type(Cypress.env("password"));
@@ -38,6 +40,7 @@ context("Login page", () => {
     );
     // Set cookie to skip setup intro.
     cy.setCookie("skipsetupintro", "true");
+    cy.setCookie("skipintro", "false");
 
     // Log in again - should go straight to user intro.
     cy.get("input[name='username']").type(Cypress.env("username"));

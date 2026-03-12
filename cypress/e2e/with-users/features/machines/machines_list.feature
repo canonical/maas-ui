@@ -87,5 +87,5 @@ Feature: Machine listing
     When the user clicks the button matching "filters"
     And the user selects the "Deployment target" filter tab
     Then the "deployed to disk" filter should be visible
-    When the user enables the "Deployed in memory" filter
+    When the user enables the filter matching "Deployed in memory"
     Then the machine searchbox should contain "deployment_target:(=memory)"
