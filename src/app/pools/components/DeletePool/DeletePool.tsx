@@ -7,7 +7,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useDeletePool, useGetPool } from "@/app/api/query/pools";
-import { getResourcePoolQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
+import { listResourcePoolsWithSummaryQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
@@ -47,9 +47,7 @@ const DeletePool = ({ id }: DeletePoolProps): ReactElement => {
           onSuccess={() => {
             return queryClient
               .invalidateQueries({
-                queryKey: getResourcePoolQueryKey({
-                  path: { resource_pool_id: id },
-                }),
+                queryKey: listResourcePoolsWithSummaryQueryKey(),
               })
               .then(closeSidePanel);
           }}

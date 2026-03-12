@@ -10,7 +10,7 @@ import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import { AddSSHKey } from "@/app/preferences/views/SSHKeys/components";
 import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
-import { formatErrors } from "@/app/utils";
+import { formatErrors, setCookie } from "@/app/utils";
 
 export enum Labels {
   Continue = "Finish setup",
@@ -99,6 +99,7 @@ const UserIntro = (): React.ReactElement => {
               setShowSkip(false);
             }}
             onConfirm={() => {
+              setCookie("skipintro", "true");
               completeIntro.mutate({});
             }}
             sidebar={false}

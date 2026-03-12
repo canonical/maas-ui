@@ -22,8 +22,12 @@ Cypress.Commands.add("login", (options) => {
     ...options,
   };
 
-  shouldSkipSetupIntro && cy.setCookie("skipsetupintro", "true");
-  shouldSkipIntro && cy.setCookie("skipintro", "true");
+  shouldSkipSetupIntro
+    ? cy.setCookie("skipsetupintro", "true")
+    : cy.setCookie("skipsetupintro", "false");
+  shouldSkipIntro
+    ? cy.setCookie("skipintro", "true")
+    : cy.setCookie("skipintro", "false");
 
   cy.request({
     method: "POST",
@@ -57,8 +61,12 @@ Cypress.Commands.add("loginNonAdmin", () => {
 
 Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.visit(generateMAASURL("/machines"));
+  cy.waitForPageToLoad();
+  cy.waitForTableToLoad({ name: /Machines/i });
   cy.findByRole("button", { name: "Add hardware" }).click();
-  cy.get(".p-contextual-menu__link").contains("Machine").click();
+  cy.get(".p-contextual-menu__link")
+    .contains("Machine", { timeout: LONG_TIMEOUT })
+    .click();
   cy.get("input[name='hostname']").type(hostname);
   cy.get("input[name='pxe_mac']").type(generateMac());
   cy.get("select[name='power_type']").select("manual");
@@ -82,7 +90,6 @@ Cypress.Commands.add("deleteMachine", (hostname: string) => {
   cy.findByRole("button", { name: /Delete/i }).click();
   cy.findByRole("button", { name: /Delete machine/ }).click();
   cy.findByRole("complementary", { name: /Delete/i }).should("not.exist");
-  cy.findByText(/No machines match the search criteria/).should("exist");
 });
 
 Cypress.Commands.add("deletePool", (pool: string) => {
@@ -128,7 +135,8 @@ Cypress.Commands.add(
     vid = generateVid(),
     vlan = `cy-vlan-${vid}`,
   }) => {
-    cy.visit(generateMAASURL("/networks?by=fabric"));
+    cy.visit(generateMAASURL("/networks"));
+    cy.waitForTableToLoad({ name: "Subnets by fabric" });
     cy.findByRole("button", { name: "Add" }).click();
     cy.findByRole("button", { name: "Subnet" }).click();
     cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
@@ -184,11 +192,10 @@ Cypress.Commands.add("testA11y", (pageContext) => {
 Cypress.Commands.add("waitForPageToLoad", () => {
   cy.findByText(/Loading/, { timeout: LONG_TIMEOUT }).should("not.exist");
   cy.findByText("Failed to connect").should("not.exist");
-  cy.findByRole("heading", { level: 1 }).should("be.visible");
+  cy.findAllByRole("heading", { level: 1 }).should("have.length.at.least", 1);
 });
 
 Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {
-  cy.findByRole("grid", { name: /Loading/i }).should("exist");
   cy.findByRole("grid", { name: /Loading/i, timeout: LONG_TIMEOUT }).should(
     "not.exist"
   );

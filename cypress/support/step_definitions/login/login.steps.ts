@@ -4,19 +4,22 @@ Given("the main navigation is expanded", () => {
   cy.expandMainNavigation();
 });
 
-Given("the user sets cookie to skip setup intro", () => {
-  cy.setCookie("skipsetupintro", "true");
-});
+Given(
+  "the skipsetupintro cookie is set to {string}",
+  (value: "true" | "false") => {
+    cy.setCookie("skipsetupintro", value);
+  }
+);
 
-Given("the user sets cookies to skip setup and user intros", () => {
-  cy.setCookie("skipsetupintro", "true");
-  cy.setCookie("skipintro", "true");
+Given("the skipintro cookie is set to {string}", (value: "true" | "false") => {
+  cy.setCookie("skipintro", value);
 });
 
 When("the user enters invalid username and password", () => {
-  cy.findByRole("textbox", { name: /Username/ }).type("invalid-username");
+  cy.findByRole("textbox", { name: /Username/ }).type("user");
   cy.findByRole("button", { name: /Next/ }).click();
-  cy.findByLabelText(/Password/).type("invalid-password{enter}");
+  cy.findByLabelText(/Password/).type("invalid-password");
+  cy.findByRole("button", { name: /Login/ }).click();
 });
 
 When("the user provides correct username and password", () => {
@@ -26,6 +29,6 @@ When("the user provides correct username and password", () => {
   cy.get("button[type='submit']").click();
 });
 
-Then("the text {string} should be visible", (text: string) => {
+Then("the alert {string} should be visible", (text: string) => {
   cy.findByRole("alert").should("be.visible").should("include.text", text);
 });

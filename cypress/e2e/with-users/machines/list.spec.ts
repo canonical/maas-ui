@@ -64,6 +64,10 @@ context("Machine listing", () => {
     cy.findByRole("button", { name: /Delete/i }).click();
     cy.findByRole("button", { name: /Delete 2 machines/ }).should("exist");
     cy.findByRole("button", { name: /Delete 2 machines/ }).click();
+    cy.findByRole("searchbox").type(searchFilter);
+    cy.findByText(/No machines match the search criteria./, {
+      timeout: LONG_TIMEOUT,
+    }).should("exist");
   });
 
   it("replaces the URL when selecting filters", () => {

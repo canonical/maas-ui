@@ -9,7 +9,15 @@ import { getCookie } from "@/app/utils";
  */
 export const useCompletedIntro = (): boolean => {
   const completedIntro = useSelector(configSelectors.completedIntro);
-  return !!completedIntro || !!getCookie("skipsetupintro");
+  const completedIntroCookie = getCookie("skipsetupintro");
+  if (completedIntroCookie) {
+    if (completedIntroCookie === "false") {
+      return false;
+    } else if (completedIntroCookie === "true") {
+      return true;
+    }
+  }
+  return !!completedIntro;
 };
 
 /**
@@ -17,5 +25,13 @@ export const useCompletedIntro = (): boolean => {
  */
 export const useCompletedUserIntro = (): boolean => {
   const user = useGetCurrentUser();
-  return user.data?.completed_intro || !!getCookie("skipintro");
+  const completedUserIntroCookie = getCookie("skipintro");
+  if (completedUserIntroCookie) {
+    if (completedUserIntroCookie === "false") {
+      return false;
+    } else if (completedUserIntroCookie === "true") {
+      return true;
+    }
+  }
+  return !!user.data?.completed_intro;
 };

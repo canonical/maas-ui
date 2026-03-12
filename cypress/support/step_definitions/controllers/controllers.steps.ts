@@ -8,10 +8,6 @@ Given("the user navigates to details page of the first controller", () => {
   cy.waitForPageToLoad();
 });
 
-Given("{string} text exists", (text: string) => {
-  cy.findByText(new RegExp(text, "i")).should("exist");
-});
-
 When("the user adds a tag to the controller", () => {
   const tagName = `tag-${generateId()}`;
   cy.wrap(tagName).as("createdTag");
@@ -46,10 +42,6 @@ When("the user clicks the created tag", () => {
   });
 });
 
-When("the user clicks {string} link", (link: string) => {
-  cy.findByRole("link", { name: link }).click();
-});
-
 When("the user clicks name of the first script", () => {
   cy.findByRole("grid").within(() => {
     cy.get("tbody tr")
@@ -74,19 +66,13 @@ Then("the correct number of controllers is displayed", () => {
     cy.get("tbody tr").should("have.length", 1);
   });
 });
-
 Then("the {string} action should exist", (action: string) => {
   cy.findByRole("button", {
     name: new RegExp(action, "i"),
   }).should("exist");
 });
-
 Then("the {string} action should not exist", (action: string) => {
   cy.findByRole("button", {
     name: new RegExp(action, "i"),
   }).should("not.exist");
-});
-
-Then("the commissioning details should be displayed", () => {
-  cy.findByRole("heading", { name: /details/i }).should("exist");
 });

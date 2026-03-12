@@ -40,10 +40,10 @@ When("the user creates a new subnet", function () {
 });
 
 When("the user deletes the created subnet", function () {
-  cy.findByRole("searchbox", { name: "Search" }).type(this.subnetName!);
-
-  cy.findByRole("link", { name: new RegExp(this.subnetName) }).click();
-  cy.waitForPageToLoad();
+  cy.findByRole("link", { name: new RegExp(this.subnetName) }).click({
+    force: true,
+  });
+  cy.findByRole("heading", { name: "Subnet summary" }).should("exist");
 
   cy.findByRole("button", { name: "Take action" }).click();
   cy.findByRole("button", { name: "Delete subnet" }).click();
@@ -95,12 +95,6 @@ Then("fabric list should not include deleted subnet", function () {
   cy.findByRole("link", { name: new RegExp(this.subnetName) }).should(
     "not.exist"
   );
-});
-
-Then("an error is displayed", () => {
-  cy.findByText(
-    /A VLAN with the specified VID already exists in the destination fabric./
-  ).should("exist");
 });
 
 Then("text {string} should be visible", (text: string) => {

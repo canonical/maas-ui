@@ -1,8 +1,4 @@
-import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
-
-Given("the main navigation gets expanded", () => {
-  cy.findByRole("button", { name: /expand main navigation/ }).click();
-});
+import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 
 When(
   'the user clicks the "{string}" link in the main navigation',

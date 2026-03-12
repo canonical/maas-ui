@@ -6,7 +6,7 @@ on:
       - "3.*"
       - "*cypress*"
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   cypress:
@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        groups: [ 'no-users', 'with-users' ]
+        groups: ["no-users", "with-users"]
     env:
       MAAS_URL: http://localhost:5240
       MAAS_UI_URL: http://localhost:8400
@@ -56,7 +56,7 @@ jobs:
           config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
           install: false
           start: yarn start
-          spec: cypress/e2e/${{ matrix.groups }}/**/*.spec.ts
+          spec: cypress/e2e/${{ matrix.groups }}/**/*.{spec.ts,feature}
           wait-on: ${{env.MAAS_UI_URL}}/MAAS/r/machines
       - uses: actions/upload-artifact@v4
         if: failure()

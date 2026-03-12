@@ -2,8 +2,8 @@ Feature: Subnets - Add
 
 Background:
     Given the user is logged in 
-    And the user navigates to the networks by fabric page
-    And the viewport is "macbook-11"
+    And the user navigates to the networks page
+    And the "Subnets by fabric" table has loaded
 
 Scenario: The user can add a new subnet
     When the user creates a new fabric
@@ -18,7 +18,7 @@ Scenario: The user can delete a created subnet
 
 Scenario: An error is displayed when trying to add a VLAN with a VID that already exists
     When the user tries to add a VLAN with a VID that already exists
-    Then an error is displayed
+    Then the text matching "A VLAN with the specified VID already exists in the destination fabric." should exist
 
 Scenario: An error is displayed when trying to add a Fabric with a name that already exists
     When the user tries to add a Fabric with a name that already exists
