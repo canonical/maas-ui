@@ -14,9 +14,10 @@ Given("the user sets cookies to skip setup and user intros", () => {
 });
 
 When("the user enters invalid username and password", () => {
-  cy.findByRole("textbox", { name: /Username/ }).type("invalid-username");
+  cy.findByRole("textbox", { name: /Username/ }).type("user");
   cy.findByRole("button", { name: /Next/ }).click();
-  cy.findByLabelText(/Password/).type("invalid-password{enter}");
+  cy.findByLabelText(/Password/).type("invalid-password");
+  cy.findByRole("button", { name: /Login/ }).click();
 });
 
 When("the user provides correct username and password", () => {

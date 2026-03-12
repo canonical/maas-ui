@@ -1,6 +1,6 @@
 Feature: Login page
 
-Background
+Background:
     Given the user navigates to the home page
     And the main navigation is expanded
 
