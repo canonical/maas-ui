@@ -237,7 +237,7 @@ Then(
     }
 
     cy.findByRole("searchbox").clear().type(state.searchFilter);
-    cy.findByText(/Showing 0 out of 0 machines/, {
+    cy.findByText(/No machines match the search criteria./, {
       timeout: LONG_TIMEOUT,
     }).should("exist");
   }

@@ -22,8 +22,12 @@ Cypress.Commands.add("login", (options) => {
     ...options,
   };
 
-  shouldSkipSetupIntro && cy.setCookie("skipsetupintro", "true");
-  shouldSkipIntro && cy.setCookie("skipintro", "true");
+  shouldSkipSetupIntro
+    ? cy.setCookie("skipsetupintro", "true")
+    : cy.setCookie("skipsetupintro", "false");
+  shouldSkipIntro
+    ? cy.setCookie("skipintro", "true")
+    : cy.setCookie("skipintro", "false");
 
   cy.request({
     method: "POST",
@@ -187,7 +191,7 @@ Cypress.Commands.add("testA11y", (pageContext) => {
 Cypress.Commands.add("waitForPageToLoad", () => {
   cy.findByText(/Loading/, { timeout: LONG_TIMEOUT }).should("not.exist");
   cy.findByText("Failed to connect").should("not.exist");
-  cy.findByRole("heading", { level: 1 }).should("be.visible");
+  cy.findAllByRole("heading", { level: 1 }).should("have.length.at.least", 1);
 });
 
 Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {

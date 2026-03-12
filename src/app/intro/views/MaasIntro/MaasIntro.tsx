@@ -22,6 +22,7 @@ import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { repositoryActions } from "@/app/store/packagerepository";
 import repoSelectors from "@/app/store/packagerepository/selectors";
+import { setCookie } from "@/app/utils";
 
 export enum Labels {
   SecondarySubmit = "Skip setup",
@@ -151,6 +152,7 @@ const MaasIntro = (): React.ReactElement => {
               }}
               onConfirm={() => {
                 dispatch(configActions.update({ completed_intro: true }));
+                setCookie("skipsetupintro", "true");
                 if (!user.data?.completed_intro) {
                   navigate({ pathname: urls.intro.user });
                 } else {
