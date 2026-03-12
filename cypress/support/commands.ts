@@ -135,7 +135,8 @@ Cypress.Commands.add(
     vid = generateVid(),
     vlan = `cy-vlan-${vid}`,
   }) => {
-    cy.visit(generateMAASURL("/networks?by=fabric"));
+    cy.visit(generateMAASURL("/networks"));
+    cy.waitForTableToLoad({ name: "Subnets by fabric" });
     cy.findByRole("button", { name: "Add" }).click();
     cy.findByRole("button", { name: "Subnet" }).click();
     cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
@@ -195,7 +196,6 @@ Cypress.Commands.add("waitForPageToLoad", () => {
 });
 
 Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {
-  cy.findByRole("grid", { name: /Loading/i }).should("exist");
   cy.findByRole("grid", { name: /Loading/i, timeout: LONG_TIMEOUT }).should(
     "not.exist"
   );

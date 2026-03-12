@@ -7,3 +7,7 @@ Given("the viewport is {string}", (viewport: Cypress.ViewportPreset) => {
 Given("the page is loaded", () => {
   cy.waitForPageToLoad();
 });
+
+Given("the {string} table has loaded", (name: string) => {
+  cy.waitForTableToLoad({ name: name });
+});

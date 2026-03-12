@@ -49,3 +49,6 @@ coverage/
 
 # openapi-ts error logs
 openapi-ts-error-*.log
+
+# git patches
+*.patch

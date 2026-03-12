@@ -2,8 +2,8 @@ Feature: Subnets - Add
 
 Background:
     Given the user is logged in 
-    And the user navigates to the networks by fabric page
-    And the viewport is "macbook-11"
+    And the user navigates to the networks page
+    And the "Subnets by fabric" table has loaded
 
 Scenario: The user can add a new subnet
     When the user creates a new fabric
