@@ -181,7 +181,7 @@
     "vitest": "1.6.1",
     "vitest-fetch-mock": "0.4.5",
     "wait-on": "7.2.0",
-    "webpack": "5.102.1"
+    "webpack": "5.104.1"
   },
   "resolutions": {
     "string-width": "4.2.3"
