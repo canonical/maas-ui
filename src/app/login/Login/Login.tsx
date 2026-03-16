@@ -217,7 +217,7 @@ export const Login = (): React.ReactElement => {
                       label={hasEnteredUsername ? "" : Labels.Username}
                       name="username"
                       required={true}
-                      takeFocus
+                      takeFocus={!hasEnteredUsername}
                       type="text"
                     />
                     <FormikField
@@ -226,6 +226,7 @@ export const Login = (): React.ReactElement => {
                       label={requirePassword ? Labels.Password : ""}
                       name="password"
                       required={requirePassword}
+                      takeFocus={requirePassword}
                       type="password"
                     />
                   </FormikForm>
