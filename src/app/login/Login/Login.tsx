@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import {
@@ -51,17 +52,10 @@ export const Labels = {
   UnknownError: "Something went wrong. Please try again.",
 } as const;
 
-export enum TestIds {
-  NoUsers = "no-users-warning",
-  SectionHeaderTitle = "section-header-title",
-}
-
 type LoginStep = "OIDC" | "PASSWORD" | "USERNAME";
 
-export const Login = (): React.ReactElement => {
+export const Login = (): ReactElement => {
   const dispatch = useDispatch();
-  const authenticated = useSelector(statusSelectors.authenticated);
-  const authenticating = useSelector(statusSelectors.authenticating);
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
   const authenticationError = useSelector(statusSelectors.authenticationError);
@@ -100,10 +94,10 @@ export const Login = (): React.ReactElement => {
   }, [navigate, redirect]);
 
   useEffect(() => {
-    if (authenticated) {
+    if (authenticate.isSuccess) {
       handleRedirect();
     }
-  }, [authenticated, handleRedirect]);
+  }, [authenticate.isSuccess, handleRedirect]);
 
   useWindowTitle("Login");
 
@@ -155,12 +149,7 @@ export const Login = (): React.ReactElement => {
               </Card>
             ) : (
               <Card>
-                <h1
-                  className="p-card__title p-heading--3"
-                  data-testid={TestIds.SectionHeaderTitle}
-                >
-                  Login
-                </h1>
+                <h1 className="p-card__title p-heading--3">Login</h1>
                 {externalAuthURL ? (
                   <Button
                     appearance="positive"
@@ -192,8 +181,8 @@ export const Login = (): React.ReactElement => {
                         }
                       }
                     }}
-                    saved={authenticated}
-                    saving={authenticating || loginState.isPending}
+                    saved={authenticate.isSuccess}
+                    saving={loginState.isPending || authenticate.isPending}
                     submitLabel={
                       !hasEnteredUsername
                         ? "Next"
@@ -217,7 +206,7 @@ export const Login = (): React.ReactElement => {
                       label={hasEnteredUsername ? "" : Labels.Username}
                       name="username"
                       required={true}
-                      takeFocus
+                      takeFocus={!hasEnteredUsername}
                       type="text"
                     />
                     <FormikField
@@ -226,6 +215,7 @@ export const Login = (): React.ReactElement => {
                       label={requirePassword ? Labels.Password : ""}
                       name="password"
                       required={requirePassword}
+                      takeFocus={requirePassword}
                       type="password"
                     />
                   </FormikForm>

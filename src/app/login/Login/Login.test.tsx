@@ -185,13 +185,32 @@ describe("Login", () => {
   });
 
   it("redirects to machines after login", async () => {
-    state.status.authenticated = true;
     const { router } = renderWithProviders(<Login />, {
       initialEntries: ["/login"],
       state,
     });
 
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.Username }),
+      "koala"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
+
     await waitFor(() => {
+      expect(authResolvers.isOidcUser.resolved).toBeTruthy();
+      expect(screen.getByLabelText(Labels.Password)).toBeInTheDocument();
+    });
+
+    await userEvent.type(screen.getByLabelText(Labels.Password), "gumtree");
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Login" })).not.toBeDisabled();
+    });
+
+    await userEvent.click(screen.getByRole("button", { name: "Login" }));
+
+    await waitFor(() => {
+      expect(authResolvers.authenticate.resolved).toBeTruthy();
       expect(router.state.location.pathname).toBe("/machines");
     });
   });
