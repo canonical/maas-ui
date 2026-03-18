@@ -72,15 +72,3 @@ jobs:
         with:
           name: maas_logs
           path: cypress/maas_logs.txt
-      - name: Create issue on failure
-        # Create an issue if the job fails on push to main or 3.* branches
-        if: failure() && github.event_name == 'push' && contains(fromJson('["main", "3.*"]'), env.BRANCH_NAME)
-        uses: JasonEtco/create-an-issue@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
-          WORKFLOW: ${{ github.workflow }}
-        with:
-          filename: .github/ISSUE_TEMPLATE/ci-failure.md
-          update_existing: true
