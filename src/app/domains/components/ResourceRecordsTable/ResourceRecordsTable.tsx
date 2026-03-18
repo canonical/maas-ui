@@ -26,8 +26,6 @@ const ResourceRecordsTable = ({ id, domain }: Props): ReactElement => {
     ...record,
   }));
 
-  console.log(data);
-
   return (
     <GenericTable
       columns={columns}
