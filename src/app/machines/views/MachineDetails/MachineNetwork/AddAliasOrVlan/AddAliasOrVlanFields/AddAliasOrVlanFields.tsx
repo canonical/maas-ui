@@ -16,7 +16,7 @@ import vlanSelectors from "@/app/store/vlan/selectors";
 import { toFormikNumber } from "@/app/utils";
 
 type Props = {
-  nic?: NetworkInterface | null;
+  nic: NetworkInterface;
   interfaceType: NetworkInterfaceTypes.ALIAS | NetworkInterfaceTypes.VLAN;
   systemId: MachineDetails["system_id"];
 };

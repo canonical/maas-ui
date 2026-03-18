@@ -36,14 +36,3 @@ jobs:
           install: false
           spec: "cypress/e2e/accessibility/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
-      - name: Create issue on failure
-        if: failure()
-        uses: JasonEtco/create-an-issue@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
-          WORKFLOW: ${{ github.workflow }}
-        with:
-          filename: .github/ISSUE_TEMPLATE/ci-failure.md
-          update_existing: true
