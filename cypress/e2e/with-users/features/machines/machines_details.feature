@@ -26,6 +26,6 @@ Scenario: The machine commissioning details are displayed
     And the user aborts commissioning
     And the user opens the "Scripts" tab
     And the user opens the first commissioning details row
-    Then the "details" heading should exist
+    Then the sub-heading matching "details" text should exist
     When the user deletes the machine
     Then the user should be redirected to the machines page

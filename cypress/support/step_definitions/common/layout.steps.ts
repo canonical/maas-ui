@@ -7,6 +7,10 @@ Then("the main toolbar heading should be {string}", (expectedHeading) => {
   );
 });
 
+Then("the side navigation title should be {string}", (expectedHeading) => {
+  cy.get(".p-side-navigation__title").should("contain", expectedHeading);
+});
+
 Then("the heading should be {string}", (expectedHeading: string) => {
   cy.findByRole("heading", { level: 1 }).contains(expectedHeading);
 });
