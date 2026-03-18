@@ -76,6 +76,9 @@ describe("AddAliasOrVlan", () => {
           abc123: factory.machineStatus(),
         }),
       }),
+      vlan: factory.vlanState({
+        items: [factory.vlan({ id: nic.vlan_id })],
+      }),
     });
   });
 
@@ -84,6 +87,7 @@ describe("AddAliasOrVlan", () => {
     renderWithProviders(
       <AddAliasOrVlan
         interfaceType={NetworkInterfaceTypes.VLAN}
+        nic={nic}
         systemId="abc123"
       />,
       { state }
@@ -137,7 +141,7 @@ describe("AddAliasOrVlan", () => {
   });
 
   it("disables the save-another button when there are no unused VLANS", async () => {
-    state.vlan.items = [];
+    state.vlan.items = [factory.vlan({ id: nic.vlan_id })];
     renderWithProviders(
       <AddAliasOrVlan
         interfaceType={NetworkInterfaceTypes.VLAN}
@@ -201,6 +205,7 @@ describe("AddAliasOrVlan", () => {
 
   it("correctly dispatches actions to add a VLAN", async () => {
     const nic = factory.machineInterface();
+    state.vlan.items = [factory.vlan({ id: nic.vlan_id })];
     const { store } = renderWithProviders(
       <AddAliasOrVlan
         interfaceType={NetworkInterfaceTypes.VLAN}
