@@ -94,8 +94,12 @@ Then("the user should be redirected to the machines page", () => {
   cy.url().should("include", generateMAASURL("/machines"));
 });
 
-Then("the {string} heading should exist", (heading: string) => {
-  cy.findByRole("heading", { level: 2, name: new RegExp(heading, "i") }).should(
-    "exist"
-  );
-});
+Then(
+  "the sub-heading matching {string} text should exist",
+  (heading: string) => {
+    cy.findByRole("heading", {
+      level: 2,
+      name: new RegExp(heading, "i"),
+    }).should("exist");
+  }
+);
