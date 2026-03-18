@@ -67,7 +67,7 @@ const useResourceRecordsColumns = ({
         },
       },
       {
-        accessorKey: "node_type",
+        accessorKey: "rrtype",
         header: "Type",
         enableSorting: true,
       },
@@ -82,7 +82,7 @@ const useResourceRecordsColumns = ({
         }) => ttl || "(default)",
       },
       {
-        accessorKey: "data",
+        accessorKey: "rrdata",
         header: "Data",
         enableSorting: true,
       },
