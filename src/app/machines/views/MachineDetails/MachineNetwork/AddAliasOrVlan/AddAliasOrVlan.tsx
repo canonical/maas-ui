@@ -38,7 +38,7 @@ export enum Labels {
 }
 
 type AddAliasOrVlanProps = {
-  nic?: NetworkInterface | null;
+  nic: NetworkInterface;
   interfaceType: NetworkInterfaceTypes.ALIAS | NetworkInterfaceTypes.VLAN;
   systemId: MachineDetails["system_id"];
 };
@@ -63,7 +63,7 @@ const AddAliasOrVlan = ({
     vlanSelectors.getUnusedForInterface(state, machine, nic)
   );
   const nicVLAN = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, nic?.vlan_id)
+    vlanSelectors.getById(state, nic.vlan_id)
   );
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const isAlias = interfaceType === NetworkInterfaceTypes.ALIAS;
@@ -83,7 +83,7 @@ const AddAliasOrVlan = ({
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const canAddAnother = isAlias || (!isAlias && unusedVLANs.length > 1);
 
-  if (!nic || !isMachineDetails(machine)) {
+  if (!nicVLAN || !isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
   return (
@@ -94,7 +94,7 @@ const AddAliasOrVlan = ({
         initialValues={{
           ...networkFieldsInitialValues,
           ...(isAlias ? {} : { tags: [] }),
-          fabric: nicVLAN?.fabric,
+          fabric: nicVLAN.fabric,
           vlan: nic.vlan_id,
         }}
         onCancel={closeSidePanel}

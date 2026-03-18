@@ -18,6 +18,7 @@ describe("AddAliasOrVlanFields", () => {
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <AddAliasOrVlanFields
           interfaceType={NetworkInterfaceTypes.VLAN}
+          nic={factory.machineInterface()}
           systemId="abc123"
         />
       </Formik>,
@@ -31,6 +32,7 @@ describe("AddAliasOrVlanFields", () => {
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <AddAliasOrVlanFields
           interfaceType={NetworkInterfaceTypes.ALIAS}
+          nic={factory.machineInterface()}
           systemId="abc123"
         />
       </Formik>,

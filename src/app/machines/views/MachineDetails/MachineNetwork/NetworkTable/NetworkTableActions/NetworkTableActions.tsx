@@ -30,13 +30,12 @@ import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   canAddAlias,
   getInterfaceTypeText,
-  getLinkInterface,
   hasInterfaceType,
 } from "@/app/store/utils";
 
 type NetworkTableActionsProps = {
   link?: NetworkLink | null;
-  nic?: NetworkInterface | null;
+  nic: NetworkInterface;
   selected?: Selected[] | undefined;
   setSelected?: SetSelected | undefined;
   systemId: Machine["system_id"];
@@ -53,9 +52,6 @@ const NetworkTableActions = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  if (machine && link && !nic) {
-    [nic] = getLinkInterface(machine, link);
-  }
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   const canAddVLAN = useCanAddVLAN(machine, nic, link);
@@ -70,8 +66,8 @@ const NetworkTableActions = ({
     link
   );
   const actions: TableMenuProps["links"] = [];
-  if (machine && nic) {
-    const showDisconnectedWarning = isPhysical && !nic?.link_connected;
+  if (machine) {
+    const showDisconnectedWarning = isPhysical && !nic.link_connected;
     if (!nic.link_connected && isPhysical) {
       actions.push({
         children: "Mark as connected...",
@@ -196,10 +192,9 @@ const NetworkTableActions = ({
               setSelected,
               systemId: machine.system_id,
               linkId: link?.id,
-              nicId: nic?.id,
+              nicId: nic.id,
             },
-            size:
-              nic?.type === NetworkInterfaceTypes.BOND ? "large" : undefined,
+            size: nic.type === NetworkInterfaceTypes.BOND ? "large" : undefined,
           });
         }
       },
