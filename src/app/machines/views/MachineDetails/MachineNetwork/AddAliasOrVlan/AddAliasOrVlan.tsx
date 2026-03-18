@@ -82,7 +82,7 @@ const AddAliasOrVlan = ({
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const canAddAnother = isAlias || (!isAlias && unusedVLANs.length > 1);
 
-  if (!nic || !isMachineDetails(machine)) {
+  if (!nic || !nicVLAN || !isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
   }
   return (
@@ -93,7 +93,7 @@ const AddAliasOrVlan = ({
         initialValues={{
           ...networkFieldsInitialValues,
           ...(isAlias ? {} : { tags: [] }),
-          fabric: nicVLAN?.fabric || "",
+          fabric: nicVLAN.fabric,
           vlan: nic.vlan_id,
         }}
         onCancel={close}
