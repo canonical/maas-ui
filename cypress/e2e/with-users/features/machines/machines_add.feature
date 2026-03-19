@@ -7,7 +7,7 @@ Background:
 
 Scenario: The user can add a machine
     When the user fills in valid machine details
-    And the user submits the add machine form
+    And the user submits the form
     Then the add machine side panel should not be visible
 
 Scenario: ESC key press closes the add machine form

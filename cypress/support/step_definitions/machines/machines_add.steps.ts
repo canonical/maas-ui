@@ -21,10 +21,6 @@ When("the user fills in valid machine details", () => {
   cy.get("select[name='power_type']").blur();
 });
 
-When("the user submits the add machine form", () => {
-  cy.get("button[type='submit']").click();
-});
-
 When("the user presses the Escape key", () => {
   cy.get("body").type("{esc}");
 });

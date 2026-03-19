@@ -19,5 +19,7 @@ context("Settings - User add", () => {
     cy.get("input[name='password']").type(password);
     cy.get("input[name='passwordConfirm']").type(password);
     cy.get("button[type='submit']").click();
+    cy.findByText("Add user").should("not.exist");
+    cy.findByText(username).should("exist");
   });
 });
