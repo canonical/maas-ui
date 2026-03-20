@@ -8,6 +8,10 @@ When("the user clicks the button matching {string}", (button: string) => {
   cy.findByRole("button", { name: new RegExp(button, "i") }).click();
 });
 
+When("the user submits the form", () => {
+  cy.get("button[type='submit']").click();
+});
+
 When("the user clicks the {string} link", (link: string) => {
   cy.findByRole("link", { name: link }).click();
 });
