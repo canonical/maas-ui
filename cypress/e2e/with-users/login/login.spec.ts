@@ -67,7 +67,7 @@ context("Login page", () => {
     cy.get("input[name='username']").type("johndoe");
     cy.findByRole("button", { name: /Next/ }).click();
     cy.findByRole("button", { name: /Login with keycloak/i }).click();
-    
+
     // Log in at keycloak
     cy.origin(
       `${Cypress.env("KEYCLOAK_URL")}:${Cypress.env("KEYCLOAK_PORT")}`,

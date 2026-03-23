@@ -53,7 +53,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: true,
     },
     plugins: [react(), eslint()],
-    server: { port: 8401, hmr: { port: 8402 } },
+    server: { port: 8401, hmr: process.env.CI ? false : { port: 8402 } },
     resolve: {
       alias: { "@": path.resolve(__dirname, "src") },
     },
