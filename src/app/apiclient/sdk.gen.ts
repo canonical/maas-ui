@@ -9,6 +9,12 @@ import {
 } from "./client";
 import { client } from "./client.gen";
 import type {
+  AddGroupEntitlementData,
+  AddGroupEntitlementErrors,
+  AddGroupEntitlementResponses,
+  AddGroupMemberData,
+  AddGroupMemberErrors,
+  AddGroupMemberResponses,
   BulkCreateSelectionsData,
   BulkCreateSelectionsErrors,
   BulkCreateSelectionsResponses,
@@ -66,6 +72,9 @@ import type {
   CreateFabricVlanSubnetStaticrouteData,
   CreateFabricVlanSubnetStaticrouteErrors,
   CreateFabricVlanSubnetStaticrouteResponses,
+  CreateGroupData,
+  CreateGroupErrors,
+  CreateGroupResponses,
   CreateNotificationData,
   CreateNotificationErrors,
   CreateNotificationResponses,
@@ -138,6 +147,9 @@ import type {
   DeleteFileData,
   DeleteFileErrors,
   DeleteFileResponses,
+  DeleteGroupData,
+  DeleteGroupErrors,
+  DeleteGroupResponses,
   DeleteNotificationData,
   DeleteNotificationErrors,
   DeleteNotificationResponses,
@@ -258,6 +270,9 @@ import type {
   GetFileData,
   GetFileErrors,
   GetFileResponses,
+  GetGroupData,
+  GetGroupErrors,
+  GetGroupResponses,
   GetMachinePowerParametersData,
   GetMachinePowerParametersErrors,
   GetMachinePowerParametersResponses,
@@ -384,6 +399,15 @@ import type {
   ListFilesData,
   ListFilesErrors,
   ListFilesResponses,
+  ListGroupEntitlementsData,
+  ListGroupEntitlementsErrors,
+  ListGroupEntitlementsResponses,
+  ListGroupMembersData,
+  ListGroupMembersErrors,
+  ListGroupMembersResponses,
+  ListGroupsData,
+  ListGroupsErrors,
+  ListGroupsResponses,
   ListInterfacesData,
   ListInterfacesErrors,
   ListInterfacesResponses,
@@ -462,6 +486,12 @@ import type {
   PreLoginData,
   PreLoginErrors,
   PreLoginResponses,
+  RemoveGroupEntitlementData,
+  RemoveGroupEntitlementErrors,
+  RemoveGroupEntitlementResponses,
+  RemoveGroupMemberData,
+  RemoveGroupMemberErrors,
+  RemoveGroupMemberResponses,
   SetConfigurationData,
   SetConfigurationErrors,
   SetConfigurationResponses,
@@ -498,6 +528,9 @@ import type {
   UpdateFabricVlanSubnetStaticrouteData,
   UpdateFabricVlanSubnetStaticrouteErrors,
   UpdateFabricVlanSubnetStaticrouteResponses,
+  UpdateGroupData,
+  UpdateGroupErrors,
+  UpdateGroupResponses,
   UpdateManifestBootsourcesData,
   UpdateManifestBootsourcesErrors,
   UpdateManifestBootsourcesResponses,
@@ -711,12 +744,6 @@ export const getAccessToken = <ThrowOnError extends boolean = false>(
     GetAccessTokenErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/auth/access_token",
     ...options,
   });
@@ -2341,12 +2368,6 @@ export const listFabricVlanSubnetIprange = <
     ListFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges",
     ...options,
   });
@@ -2365,12 +2386,6 @@ export const createFabricVlanSubnetIprange = <
     CreateFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges",
     ...options,
     headers: {
@@ -2393,12 +2408,6 @@ export const deleteFabricVlanSubnetIprange = <
     DeleteFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}",
     ...options,
   });
@@ -2417,12 +2426,6 @@ export const updateFabricVlanSubnetIprange = <
     UpdateFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}",
     ...options,
     headers: {
@@ -2445,12 +2448,6 @@ export const getFabricVlanSubnetIprange = <
     GetFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{id}",
     ...options,
   });
@@ -2555,12 +2552,6 @@ export const listNotifications = <ThrowOnError extends boolean = false>(
     ListNotificationsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/notifications",
     ...options,
   });
@@ -2625,12 +2616,6 @@ export const getNotification = <ThrowOnError extends boolean = false>(
     GetNotificationErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/notifications/{notification_id}",
     ...options,
   });
@@ -2673,12 +2658,6 @@ export const dismissNotification = <ThrowOnError extends boolean = false>(
     DismissNotificationErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/notifications/{notification_id}:dismiss",
     ...options,
   });
@@ -3561,12 +3540,6 @@ export const listUserSshkeys = <ThrowOnError extends boolean = false>(
     ListUserSshkeysErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sshkeys",
     ...options,
   });
@@ -3583,12 +3556,6 @@ export const createUserSshkeys = <ThrowOnError extends boolean = false>(
     CreateUserSshkeysErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sshkeys",
     ...options,
     headers: {
@@ -3609,12 +3576,6 @@ export const deleteUserSshkey = <ThrowOnError extends boolean = false>(
     DeleteUserSshkeyErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sshkeys/{id}",
     ...options,
   });
@@ -3631,12 +3592,6 @@ export const getUserSshkey = <ThrowOnError extends boolean = false>(
     GetUserSshkeyErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}",
     ...options,
   });
@@ -3653,12 +3608,6 @@ export const importUserSshkeys = <ThrowOnError extends boolean = false>(
     ImportUserSshkeysErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sshkeys:import",
     ...options,
     headers: {
@@ -3679,12 +3628,6 @@ export const getUserSslkeys = <ThrowOnError extends boolean = false>(
     GetUserSslkeysErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sslkeys",
     ...options,
   });
@@ -3701,12 +3644,6 @@ export const createUserSslkey = <ThrowOnError extends boolean = false>(
     CreateUserSslkeyErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sslkeys",
     ...options,
     headers: {
@@ -3727,12 +3664,6 @@ export const deleteUserSslkey = <ThrowOnError extends boolean = false>(
     DeleteUserSslkeyErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}",
     ...options,
   });
@@ -3749,12 +3680,6 @@ export const getUserSslkey = <ThrowOnError extends boolean = false>(
     GetUserSslkeyErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}",
     ...options,
   });
@@ -3773,12 +3698,6 @@ export const getUserSslkeysWithSummary = <ThrowOnError extends boolean = false>(
     GetUserSslkeysWithSummaryErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me/sslkeys_with_summary",
     ...options,
   });
@@ -4043,6 +3962,264 @@ export const evaluateTag = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Remove Group Entitlement
+ */
+export const removeGroupEntitlement = <ThrowOnError extends boolean = false>(
+  options: Options<RemoveGroupEntitlementData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    RemoveGroupEntitlementResponses,
+    RemoveGroupEntitlementErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
+    ...options,
+  });
+};
+
+/**
+ * List Group Entitlements
+ */
+export const listGroupEntitlements = <ThrowOnError extends boolean = false>(
+  options: Options<ListGroupEntitlementsData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    ListGroupEntitlementsResponses,
+    ListGroupEntitlementsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
+    ...options,
+  });
+};
+
+/**
+ * Add Group Entitlement
+ */
+export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
+  options: Options<AddGroupEntitlementData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AddGroupEntitlementResponses,
+    AddGroupEntitlementErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * List Group Members
+ */
+export const listGroupMembers = <ThrowOnError extends boolean = false>(
+  options: Options<ListGroupMembersData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    ListGroupMembersResponses,
+    ListGroupMembersErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/members",
+    ...options,
+  });
+};
+
+/**
+ * Add Group Member
+ */
+export const addGroupMember = <ThrowOnError extends boolean = false>(
+  options: Options<AddGroupMemberData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AddGroupMemberResponses,
+    AddGroupMemberErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/members",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * List Groups
+ */
+export const listGroups = <ThrowOnError extends boolean = false>(
+  options?: Options<ListGroupsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListGroupsResponses,
+    ListGroupsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups",
+    ...options,
+  });
+};
+
+/**
+ * Create Group
+ */
+export const createGroup = <ThrowOnError extends boolean = false>(
+  options: Options<CreateGroupData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    CreateGroupResponses,
+    CreateGroupErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete Group
+ */
+export const deleteGroup = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteGroupData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    DeleteGroupResponses,
+    DeleteGroupErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Group
+ */
+export const getGroup = <ThrowOnError extends boolean = false>(
+  options: Options<GetGroupData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetGroupResponses,
+    GetGroupErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Group
+ */
+export const updateGroup = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateGroupData, ThrowOnError>
+) => {
+  return (options.client ?? client).put<
+    UpdateGroupResponses,
+    UpdateGroupErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Remove Group Member
+ */
+export const removeGroupMember = <ThrowOnError extends boolean = false>(
+  options: Options<RemoveGroupMemberData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    RemoveGroupMemberResponses,
+    RemoveGroupMemberErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/members/{user_id}",
+    ...options,
+  });
+};
+
+/**
  * Get user with a summary. ONLY FOR INTERNAL USAGE.
  *
  * Get user with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
@@ -4055,12 +4232,6 @@ export const getMeWithSummary = <ThrowOnError extends boolean = false>(
     GetMeWithSummaryErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me_with_summary",
     ...options,
   });
@@ -4077,12 +4248,6 @@ export const getUserInfo = <ThrowOnError extends boolean = false>(
     GetUserInfoErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me",
     ...options,
   });
@@ -4099,12 +4264,6 @@ export const completeIntro = <ThrowOnError extends boolean = false>(
     CompleteIntroErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me:complete_intro",
     ...options,
   });
@@ -4121,12 +4280,6 @@ export const changePasswordUser = <ThrowOnError extends boolean = false>(
     ChangePasswordUserErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/users/me:change_password",
     ...options,
     headers: {

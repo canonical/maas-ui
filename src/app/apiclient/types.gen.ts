@@ -321,6 +321,7 @@ export type BootResourceFileTypeChoice =
   | "ddtgz"
   | "ddtxz"
   | "ddxz"
+  | "self-extracting"
   | "tbz"
   | "tgz"
   | "txz";
@@ -1221,6 +1222,64 @@ export type DomainsListResponse = {
    * Next
    */
   next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * EntitlementRequest
+ */
+export type EntitlementRequest = {
+  /**
+   * The resource type (e.g. 'maas', 'pool').
+   */
+  resource_type: OpenFgaEntitlementResourceType;
+  /**
+   * Resource Id
+   *
+   * The resource ID. Must be 0 for 'maas' type.
+   */
+  resource_id: number;
+  /**
+   * Entitlement
+   *
+   * The entitlement name.
+   */
+  entitlement: string;
+};
+
+/**
+ * EntitlementResponse
+ */
+export type EntitlementResponse = {
+  /**
+   * Resource Type
+   */
+  resource_type: string;
+  /**
+   * Resource Id
+   */
+  resource_id: number;
+  /**
+   * Entitlement
+   */
+  entitlement: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * EntitlementsListResponse
+ */
+export type EntitlementsListResponse = {
+  /**
+   * Items
+   */
+  items: EntitlementResponse[];
   /**
    * Kind
    */
@@ -2540,6 +2599,13 @@ export type OAuthProvidersListResponse = {
 export type OAuthTokenTypeChoices = "JWT" | "Opaque";
 
 /**
+ * OpenFGAEntitlementResourceType
+ *
+ * Resource types used in OpenFGA tuples.
+ */
+export type OpenFgaEntitlementResourceType = "maas" | "pool";
+
+/**
  * PackageRepositoryCreateRequest
  */
 export type PackageRepositoryCreateRequest = {
@@ -2911,6 +2977,10 @@ export type PreLoginInfoResponse = {
    * No Users
    */
   no_users: boolean;
+  /**
+   * External Legacy Login Url
+   */
+  external_legacy_login_url?: string;
   /**
    * Kind
    */
@@ -4733,6 +4803,132 @@ export type UserCreateRequest = {
    * Password
    */
   password: string;
+};
+
+/**
+ * UserGroupMemberRequest
+ */
+export type UserGroupMemberRequest = {
+  /**
+   * User Id
+   *
+   * The ID of the user to add to the group.
+   */
+  user_id: number;
+};
+
+/**
+ * UserGroupMemberResponse
+ */
+export type UserGroupMemberResponse = {
+  /**
+   * User Id
+   */
+  user_id: number;
+  /**
+   * Username
+   */
+  username: string;
+  /**
+   * Email
+   */
+  email: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * UserGroupMembersListResponse
+ */
+export type UserGroupMembersListResponse = {
+  /**
+   * Items
+   */
+  items: UserGroupMemberResponse[];
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * UserGroupRequest
+ */
+export type UserGroupRequest = {
+  /**
+   * Name
+   *
+   * The unique name of the entity.
+   */
+  name: string;
+  /**
+   * Description
+   *
+   * The description of the group.
+   */
+  description?: string;
+};
+
+/**
+ * UserGroupResponse
+ *
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type UserGroupResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Name
+   */
+  name: string;
+  /**
+   * Description
+   */
+  description?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * UserGroupsListResponse
+ *
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type UserGroupsListResponse = {
+  /**
+   * Items
+   */
+  items: UserGroupResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
 };
 
 /**
@@ -11085,6 +11281,419 @@ export type EvaluateTagResponses = {
    */
   202: unknown;
 };
+
+export type RemoveGroupEntitlementData = {
+  body?: never;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query: {
+    resource_type: OpenFgaEntitlementResourceType;
+    /**
+     * Resource Id
+     */
+    resource_id: number;
+    /**
+     * Entitlement
+     */
+    entitlement: string;
+  };
+  url: "/MAAS/a/v3/groups/{group_id}/entitlements";
+};
+
+export type RemoveGroupEntitlementErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type RemoveGroupEntitlementError =
+  RemoveGroupEntitlementErrors[keyof RemoveGroupEntitlementErrors];
+
+export type RemoveGroupEntitlementResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type RemoveGroupEntitlementResponse =
+  RemoveGroupEntitlementResponses[keyof RemoveGroupEntitlementResponses];
+
+export type ListGroupEntitlementsData = {
+  body?: never;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}/entitlements";
+};
+
+export type ListGroupEntitlementsErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListGroupEntitlementsError =
+  ListGroupEntitlementsErrors[keyof ListGroupEntitlementsErrors];
+
+export type ListGroupEntitlementsResponses = {
+  /**
+   * Successful Response
+   */
+  200: EntitlementsListResponse;
+};
+
+export type ListGroupEntitlementsResponse =
+  ListGroupEntitlementsResponses[keyof ListGroupEntitlementsResponses];
+
+export type AddGroupEntitlementData = {
+  body: EntitlementRequest;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}/entitlements";
+};
+
+export type AddGroupEntitlementErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type AddGroupEntitlementError =
+  AddGroupEntitlementErrors[keyof AddGroupEntitlementErrors];
+
+export type AddGroupEntitlementResponses = {
+  /**
+   * Successful Response
+   */
+  200: EntitlementResponse;
+};
+
+export type AddGroupEntitlementResponse =
+  AddGroupEntitlementResponses[keyof AddGroupEntitlementResponses];
+
+export type ListGroupMembersData = {
+  body?: never;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}/members";
+};
+
+export type ListGroupMembersErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListGroupMembersError =
+  ListGroupMembersErrors[keyof ListGroupMembersErrors];
+
+export type ListGroupMembersResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserGroupMembersListResponse;
+};
+
+export type ListGroupMembersResponse =
+  ListGroupMembersResponses[keyof ListGroupMembersResponses];
+
+export type AddGroupMemberData = {
+  body: UserGroupMemberRequest;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}/members";
+};
+
+export type AddGroupMemberErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type AddGroupMemberError =
+  AddGroupMemberErrors[keyof AddGroupMemberErrors];
+
+export type AddGroupMemberResponses = {
+  /**
+   * Successful Response
+   */
+  200: unknown;
+};
+
+export type ListGroupsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/groups";
+};
+
+export type ListGroupsErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListGroupsError = ListGroupsErrors[keyof ListGroupsErrors];
+
+export type ListGroupsResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserGroupsListResponse;
+};
+
+export type ListGroupsResponse = ListGroupsResponses[keyof ListGroupsResponses];
+
+export type CreateGroupData = {
+  body: UserGroupRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/groups";
+};
+
+export type CreateGroupErrors = {
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateGroupError = CreateGroupErrors[keyof CreateGroupErrors];
+
+export type CreateGroupResponses = {
+  /**
+   * Successful Response
+   */
+  201: UserGroupResponse;
+};
+
+export type CreateGroupResponse =
+  CreateGroupResponses[keyof CreateGroupResponses];
+
+export type DeleteGroupData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}";
+};
+
+export type DeleteGroupErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteGroupError = DeleteGroupErrors[keyof DeleteGroupErrors];
+
+export type DeleteGroupResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteGroupResponse =
+  DeleteGroupResponses[keyof DeleteGroupResponses];
+
+export type GetGroupData = {
+  body?: never;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}";
+};
+
+export type GetGroupErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetGroupError = GetGroupErrors[keyof GetGroupErrors];
+
+export type GetGroupResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserGroupResponse;
+};
+
+export type GetGroupResponse = GetGroupResponses[keyof GetGroupResponses];
+
+export type UpdateGroupData = {
+  body: UserGroupRequest;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}";
+};
+
+export type UpdateGroupErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateGroupError = UpdateGroupErrors[keyof UpdateGroupErrors];
+
+export type UpdateGroupResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserGroupResponse;
+};
+
+export type UpdateGroupResponse =
+  UpdateGroupResponses[keyof UpdateGroupResponses];
+
+export type RemoveGroupMemberData = {
+  body?: never;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+    /**
+     * User Id
+     */
+    user_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}/members/{user_id}";
+};
+
+export type RemoveGroupMemberErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type RemoveGroupMemberError =
+  RemoveGroupMemberErrors[keyof RemoveGroupMemberErrors];
+
+export type RemoveGroupMemberResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type RemoveGroupMemberResponse =
+  RemoveGroupMemberResponses[keyof RemoveGroupMemberResponses];
 
 export type GetMeWithSummaryData = {
   body?: never;
