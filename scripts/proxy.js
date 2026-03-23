@@ -1,4 +1,6 @@
 import express from "express";
+import fs from "fs";
+import https from "https";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { config } from "dotenv-flow";
 
@@ -75,6 +77,14 @@ if (process.env.STATIC_DEMO === "true") {
   app.use(`*`, express.static("./build"));
 }
 
-app.listen(PROXY_PORT);
+if (process.env.HTTPS_CERT && process.env.HTTPS_KEY) {
+  const options = {
+    cert: fs.readFileSync(process.env.HTTPS_CERT),
+    key: fs.readFileSync(process.env.HTTPS_KEY),
+  };
+  https.createServer(options, app).listen(PROXY_PORT);
+} else {
+  app.listen(PROXY_PORT);
+}
 
 console.log(`Serving on port ${PROXY_PORT}`);
