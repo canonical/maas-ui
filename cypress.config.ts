@@ -68,6 +68,8 @@ export default defineConfig({
     password: "test",
     skipA11yFailures: false,
     username: "admin",
+    KEYCLOAK_URL: "http://localhost",
+    KEYCLOAK_PORT: "8080",
   },
   projectId: "gp2cox",
   retries: {
