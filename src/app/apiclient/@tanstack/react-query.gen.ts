@@ -4,6 +4,8 @@ import { queryOptions, type UseMutationOptions } from "@tanstack/react-query";
 
 import { client } from "../client.gen";
 import {
+  addGroupEntitlement,
+  addGroupMember,
   bulkCreateSelections,
   bulkDeleteCustomImages,
   bulkDeleteSelections,
@@ -23,6 +25,7 @@ import {
   createFabricVlanSubnetIprange,
   createFabricVlanSubnetReservedIp,
   createFabricVlanSubnetStaticroute,
+  createGroup,
   createNotification,
   createOauthProvider,
   createOrReplaceFile,
@@ -47,6 +50,7 @@ import {
   deleteFabricVlanSubnetReservedIp,
   deleteFabricVlanSubnetStaticroute,
   deleteFile,
+  deleteGroup,
   deleteNotification,
   deleteOauthProvider,
   deletePackageRepository,
@@ -87,6 +91,7 @@ import {
   getFabricVlanSubnetStaticroute,
   getFile,
   getFileByKey,
+  getGroup,
   getMachinePowerParameters,
   getMeWithSummary,
   getNotification,
@@ -129,6 +134,9 @@ import {
   listFabricVlanSubnets,
   listFabricVlanSubnetStaticroutes,
   listFiles,
+  listGroupEntitlements,
+  listGroupMembers,
+  listGroups,
   listInterfaces,
   listMachinePciDevices,
   listMachines,
@@ -156,6 +164,8 @@ import {
   logout,
   type Options,
   preLogin,
+  removeGroupEntitlement,
+  removeGroupMember,
   setConfiguration,
   setConfigurations,
   stopSyncBootsourceBootsourceselection,
@@ -168,6 +178,7 @@ import {
   updateFabricVlanSubnetIprange,
   updateFabricVlanSubnetReservedIp,
   updateFabricVlanSubnetStaticroute,
+  updateGroup,
   updateManifestBootsources,
   updateNotification,
   updateOauthProvider,
@@ -181,6 +192,11 @@ import {
   uploadCustomImage,
 } from "../sdk.gen";
 import type {
+  AddGroupEntitlementData,
+  AddGroupEntitlementError,
+  AddGroupEntitlementResponse,
+  AddGroupMemberData,
+  AddGroupMemberError,
   BulkCreateSelectionsData,
   BulkCreateSelectionsError,
   BulkCreateSelectionsResponse,
@@ -238,6 +254,9 @@ import type {
   CreateFabricVlanSubnetStaticrouteData,
   CreateFabricVlanSubnetStaticrouteError,
   CreateFabricVlanSubnetStaticrouteResponse,
+  CreateGroupData,
+  CreateGroupError,
+  CreateGroupResponse,
   CreateNotificationData,
   CreateNotificationError,
   CreateNotificationResponse,
@@ -310,6 +329,9 @@ import type {
   DeleteFileData,
   DeleteFileError,
   DeleteFileResponse,
+  DeleteGroupData,
+  DeleteGroupError,
+  DeleteGroupResponse,
   DeleteNotificationData,
   DeleteNotificationError,
   DeleteNotificationResponse,
@@ -429,6 +451,9 @@ import type {
   GetFileData,
   GetFileError,
   GetFileResponse,
+  GetGroupData,
+  GetGroupError,
+  GetGroupResponse,
   GetMachinePowerParametersData,
   GetMachinePowerParametersError,
   GetMachinePowerParametersResponse,
@@ -555,6 +580,15 @@ import type {
   ListFilesData,
   ListFilesError,
   ListFilesResponse,
+  ListGroupEntitlementsData,
+  ListGroupEntitlementsError,
+  ListGroupEntitlementsResponse,
+  ListGroupMembersData,
+  ListGroupMembersError,
+  ListGroupMembersResponse,
+  ListGroupsData,
+  ListGroupsError,
+  ListGroupsResponse,
   ListInterfacesData,
   ListInterfacesError,
   ListInterfacesResponse,
@@ -633,6 +667,12 @@ import type {
   PreLoginData,
   PreLoginError,
   PreLoginResponse,
+  RemoveGroupEntitlementData,
+  RemoveGroupEntitlementError,
+  RemoveGroupEntitlementResponse,
+  RemoveGroupMemberData,
+  RemoveGroupMemberError,
+  RemoveGroupMemberResponse,
   SetConfigurationData,
   SetConfigurationError,
   SetConfigurationResponse,
@@ -668,6 +708,9 @@ import type {
   UpdateFabricVlanSubnetStaticrouteData,
   UpdateFabricVlanSubnetStaticrouteError,
   UpdateFabricVlanSubnetStaticrouteResponse,
+  UpdateGroupData,
+  UpdateGroupError,
+  UpdateGroupResponse,
   UpdateManifestBootsourcesData,
   UpdateManifestBootsourcesError,
   UpdateNotificationData,
@@ -4765,6 +4808,301 @@ export const evaluateTagMutation = (
   > = {
     mutationFn: async (fnOptions) => {
       const { data } = await evaluateTag({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Remove Group Entitlement
+ */
+export const removeGroupEntitlementMutation = (
+  options?: Partial<Options<RemoveGroupEntitlementData>>
+): UseMutationOptions<
+  RemoveGroupEntitlementResponse,
+  RemoveGroupEntitlementError,
+  Options<RemoveGroupEntitlementData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    RemoveGroupEntitlementResponse,
+    RemoveGroupEntitlementError,
+    Options<RemoveGroupEntitlementData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await removeGroupEntitlement({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listGroupEntitlementsQueryKey = (
+  options: Options<ListGroupEntitlementsData>
+) => createQueryKey("listGroupEntitlements", options);
+
+/**
+ * List Group Entitlements
+ */
+export const listGroupEntitlementsOptions = (
+  options: Options<ListGroupEntitlementsData>
+) =>
+  queryOptions<
+    ListGroupEntitlementsResponse,
+    ListGroupEntitlementsError,
+    ListGroupEntitlementsResponse,
+    ReturnType<typeof listGroupEntitlementsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listGroupEntitlements({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listGroupEntitlementsQueryKey(options),
+  });
+
+/**
+ * Add Group Entitlement
+ */
+export const addGroupEntitlementMutation = (
+  options?: Partial<Options<AddGroupEntitlementData>>
+): UseMutationOptions<
+  AddGroupEntitlementResponse,
+  AddGroupEntitlementError,
+  Options<AddGroupEntitlementData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    AddGroupEntitlementResponse,
+    AddGroupEntitlementError,
+    Options<AddGroupEntitlementData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await addGroupEntitlement({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listGroupMembersQueryKey = (
+  options: Options<ListGroupMembersData>
+) => createQueryKey("listGroupMembers", options);
+
+/**
+ * List Group Members
+ */
+export const listGroupMembersOptions = (
+  options: Options<ListGroupMembersData>
+) =>
+  queryOptions<
+    ListGroupMembersResponse,
+    ListGroupMembersError,
+    ListGroupMembersResponse,
+    ReturnType<typeof listGroupMembersQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listGroupMembers({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listGroupMembersQueryKey(options),
+  });
+
+/**
+ * Add Group Member
+ */
+export const addGroupMemberMutation = (
+  options?: Partial<Options<AddGroupMemberData>>
+): UseMutationOptions<
+  unknown,
+  AddGroupMemberError,
+  Options<AddGroupMemberData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    AddGroupMemberError,
+    Options<AddGroupMemberData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await addGroupMember({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listGroupsQueryKey = (options?: Options<ListGroupsData>) =>
+  createQueryKey("listGroups", options);
+
+/**
+ * List Groups
+ */
+export const listGroupsOptions = (options?: Options<ListGroupsData>) =>
+  queryOptions<
+    ListGroupsResponse,
+    ListGroupsError,
+    ListGroupsResponse,
+    ReturnType<typeof listGroupsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listGroups({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listGroupsQueryKey(options),
+  });
+
+/**
+ * Create Group
+ */
+export const createGroupMutation = (
+  options?: Partial<Options<CreateGroupData>>
+): UseMutationOptions<
+  CreateGroupResponse,
+  CreateGroupError,
+  Options<CreateGroupData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateGroupResponse,
+    CreateGroupError,
+    Options<CreateGroupData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await createGroup({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete Group
+ */
+export const deleteGroupMutation = (
+  options?: Partial<Options<DeleteGroupData>>
+): UseMutationOptions<
+  DeleteGroupResponse,
+  DeleteGroupError,
+  Options<DeleteGroupData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteGroupResponse,
+    DeleteGroupError,
+    Options<DeleteGroupData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await deleteGroup({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getGroupQueryKey = (options: Options<GetGroupData>) =>
+  createQueryKey("getGroup", options);
+
+/**
+ * Get Group
+ */
+export const getGroupOptions = (options: Options<GetGroupData>) =>
+  queryOptions<
+    GetGroupResponse,
+    GetGroupError,
+    GetGroupResponse,
+    ReturnType<typeof getGroupQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getGroup({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getGroupQueryKey(options),
+  });
+
+/**
+ * Update Group
+ */
+export const updateGroupMutation = (
+  options?: Partial<Options<UpdateGroupData>>
+): UseMutationOptions<
+  UpdateGroupResponse,
+  UpdateGroupError,
+  Options<UpdateGroupData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateGroupResponse,
+    UpdateGroupError,
+    Options<UpdateGroupData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await updateGroup({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Remove Group Member
+ */
+export const removeGroupMemberMutation = (
+  options?: Partial<Options<RemoveGroupMemberData>>
+): UseMutationOptions<
+  RemoveGroupMemberResponse,
+  RemoveGroupMemberError,
+  Options<RemoveGroupMemberData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    RemoveGroupMemberResponse,
+    RemoveGroupMemberError,
+    Options<RemoveGroupMemberData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await removeGroupMember({
         ...options,
         ...fnOptions,
         throwOnError: true,
