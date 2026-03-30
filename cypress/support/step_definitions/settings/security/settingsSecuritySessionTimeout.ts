@@ -16,7 +16,6 @@ When("the user saves the token expiration settings if possible", () => {
     if ($button.is(":disabled")) {
       return;
     }
-
     cy.wrap($button).click();
   });
 });
