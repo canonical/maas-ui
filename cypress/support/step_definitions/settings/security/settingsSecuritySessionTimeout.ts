@@ -6,10 +6,10 @@ When("the user clears the {string} field", (fieldName: string) => {
 });
 
 When(
-  "the user enters new value into the {string} field",
-  (fieldName: string) => {
+  "the user enters new value into the refresh token expiration field",
+  () => {
     const value = generateRefreshTokenLifetime();
-    cy.findByRole("textbox", { name: fieldName }).type(value);
+    cy.findByRole("textbox", { name: "Refresh token expiration" }).type(value);
   }
 );
 
