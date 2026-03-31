@@ -4,6 +4,6 @@ Feature: Settings security session timeout
     Given the user is logged in
     And the user navigates to the settings token expiration page
     When the user clears the "Refresh token expiration" field
-    And the user enters "13 days" into the "Refresh token expiration" field
+    And the user enters new value into the "Refresh token expiration" field
     And the user saves the token expiration settings if possible
     Then the login form should be displayed
