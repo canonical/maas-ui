@@ -101,6 +101,24 @@ export const useChangeImageSource = () => {
   });
 };
 
+export const useCreateImageSource = (
+  mutationOptions?: Options<CreateBootsourceData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateBootsourceResponses,
+      CreateBootsourceErrors,
+      CreateBootsourceData
+    >(mutationOptions, createBootsource),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listBootsourcesQueryKey(),
+      });
+    },
+  });
+};
+
 export const useUpdateImageSource = (
   mutationOptions?: Options<UpdateBootsourceData>
 ) => {
