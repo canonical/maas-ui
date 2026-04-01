@@ -8,6 +8,7 @@ import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import { DiscoveryDeleteForm } from "@/app/networkDiscovery/components";
+import DeleteSource from "@/app/settings/views/Images/Sources/DeleteSource";
 import EditSource from "@/app/settings/views/Images/Sources/EditSource";
 import type { ImageSource } from "@/app/settings/views/Images/Sources/Sources";
 
@@ -153,9 +154,9 @@ const useSourcesTableColumns = (): SourcesColumnDef[] => {
                         children: "Delete source...",
                         onClick: () => {
                           openSidePanel({
-                            component: DiscoveryDeleteForm,
-                            title: "Delete source",
-                            props: { discovery: original },
+                            component: DeleteSource,
+                            title: "Delete custom source",
+                            props: { id: original.id },
                           });
                         },
                       },
