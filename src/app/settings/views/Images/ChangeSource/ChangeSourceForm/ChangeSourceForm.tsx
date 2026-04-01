@@ -24,9 +24,11 @@ export enum Labels {
   AutoSyncImages = "Automatically sync images",
   MaasIo = "images.maas.io",
   Custom = "Custom",
+  Name = "Name",
   Url = "URL",
   KeyringFilename = "Keyring filename",
   KeyringData = "Keyring data",
+  Priority = "Priority",
 }
 
 const getKeyringType = (
