@@ -1,11 +1,13 @@
 import type { ReactElement } from "react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import {
+  Icon,
   Notification as NotificationBanner,
   Select,
   Spinner,
   Textarea,
+  Tooltip,
 } from "@canonical/react-components";
 import type { FormikContextType } from "formik";
 
@@ -47,7 +49,11 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
 
   const eTag = source.data?.headers?.get("ETag");
 
-  const initialKeyringType = getInitialKeyringType(source.data!);
+  const initialKeyringType = useMemo(
+    () =>
+      source.data ? getInitialKeyringType(source.data) : "keyring_unsigned",
+    [source.data]
+  );
 
   const [selectedKeyringType, setSelectedKeyringType] = useState<
     "keyring_data" | "keyring_filename" | "keyring_unsigned"
@@ -188,7 +194,17 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
                     />
                     <FormikField
                       disabled
-                      label={Labels.Url}
+                      label={
+                        <>
+                          {Labels.Url}
+                          <Tooltip
+                            className="u-nudge-right--small"
+                            message="Source URL is immutable. You must delete this source, and create a new one to change the URL."
+                          >
+                            <Icon name="help" />
+                          </Tooltip>
+                        </>
+                      }
                       name="url"
                       type="text"
                     />
