@@ -134,7 +134,9 @@ const useSourcesTableColumns = (): SourcesColumnDef[] => {
                         component: EditSource,
                         title: `Edit ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
                         props: {
-                          source: original,
+                          id: original.id,
+                          isDefault:
+                            original.type === BootResourceSourceType.MAAS_IO,
                         },
                       });
                     },
