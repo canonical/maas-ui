@@ -24,6 +24,8 @@ import type {
   FetchBootsourcesAvailableImagesData,
   FetchBootsourcesAvailableImagesResponses,
   FetchBootsourcesAvailableImagesErrors,
+  DeleteBootsourceData,
+  DeleteBootsourceResponses,
 } from "@/app/apiclient";
 import {
   updateBootsource,
@@ -129,6 +131,24 @@ export const useUpdateImageSource = (
       UpdateBootsourceErrors,
       UpdateBootsourceData
     >(mutationOptions, updateBootsource),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listBootsourcesQueryKey(),
+      });
+    },
+  });
+};
+
+export const useDeleteImageSource = (
+  mutationOptions?: Options<DeleteBootsourceData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteBootsourceResponses,
+      DeleteBootsourceErrors,
+      DeleteBootsourceData
+    >(mutationOptions, deleteBootsource),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listBootsourcesQueryKey(),
