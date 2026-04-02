@@ -173,7 +173,8 @@ const AddSource = (): ReactElement => {
       {({ setFieldValue, validateForm }: FormikContextType<SourceValues>) => {
         return (
           <>
-            <FormikField label={Labels.Name} name="name" required type="text" />
+            {/*TODO: uncomment when name field is available*/}
+            {/*<FormikField label={Labels.Name} name="name" required type="text" />*/}
             <FormikField
               label={Labels.Url}
               name="url"

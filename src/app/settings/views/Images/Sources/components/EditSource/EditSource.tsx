@@ -186,12 +186,13 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
               <>
                 {!isDefault && (
                   <>
-                    <FormikField
-                      label={Labels.Name}
-                      name="name"
-                      required
-                      type="text"
-                    />
+                    {/*TODO: uncomment when name field is available*/}
+                    {/*<FormikField*/}
+                    {/*  label={Labels.Name}*/}
+                    {/*  name="name"*/}
+                    {/*  required*/}
+                    {/*  type="text"*/}
+                    {/*/>*/}
                     <FormikField
                       disabled
                       label={
