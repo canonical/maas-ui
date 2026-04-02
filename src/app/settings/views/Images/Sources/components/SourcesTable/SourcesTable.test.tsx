@@ -118,7 +118,7 @@ describe("SourcesTable", () => {
   });
 
   describe("actions", () => {
-    it("opens edit user side panel form", async () => {
+    it("opens edit source side panel form", async () => {
       mockServer.use(
         imageSourceResolvers.listImageSources.handler({
           items: [factory.imageSourceFactory.build({ id: 1 })],
@@ -153,7 +153,7 @@ describe("SourcesTable", () => {
       });
     });
 
-    it("opens delete user side panel form", async () => {
+    it("opens delete source side panel form", async () => {
       mockServer.use(
         imageSourceResolvers.listImageSources.handler({
           items: [
