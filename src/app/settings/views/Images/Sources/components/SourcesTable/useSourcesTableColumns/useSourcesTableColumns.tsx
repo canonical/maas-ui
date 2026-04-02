@@ -7,11 +7,11 @@ import pluralize from "pluralize";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
-import DeleteSource from "@/app/settings/views/Images/Sources/DeleteSource";
-import DisableSource from "@/app/settings/views/Images/Sources/DisableSource";
-import EditSource from "@/app/settings/views/Images/Sources/EditSource";
-import EnableSource from "@/app/settings/views/Images/Sources/EnableSource";
 import type { ImageSource } from "@/app/settings/views/Images/Sources/Sources";
+import DeleteSource from "@/app/settings/views/Images/Sources/components/DeleteSource";
+import DisableSource from "@/app/settings/views/Images/Sources/components/DisableSource";
+import EditSource from "@/app/settings/views/Images/Sources/components/EditSource";
+import EnableSource from "@/app/settings/views/Images/Sources/components/EnableSource";
 
 type SourcesColumnDef = ColumnDef<ImageSource, Partial<ImageSource>>;
 

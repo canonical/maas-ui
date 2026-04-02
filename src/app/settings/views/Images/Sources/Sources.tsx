@@ -7,7 +7,7 @@ import type { BootSourceResponse } from "@/app/apiclient";
 import PageContent from "@/app/base/components/PageContent";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import type { BootResourceSourceType } from "@/app/images/types";
-import AddSource from "@/app/settings/views/Images/Sources/AddSource";
+import AddSource from "@/app/settings/views/Images/Sources/components/AddSource";
 import SourcesTable from "@/app/settings/views/Images/Sources/components/SourcesTable";
 
 export type ImageSource = BootSourceResponse & {

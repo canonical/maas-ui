@@ -26,8 +26,8 @@ import { FormikFieldChangeError } from "@/app/base/components/FormikField/Formik
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
-import type { SourceValues } from "@/app/settings/views/Images/Sources/AddSource/AddSource";
-import { SourceSchema } from "@/app/settings/views/Images/Sources/AddSource/AddSource";
+import type { SourceValues } from "@/app/settings/views/Images/Sources/components/AddSource/AddSource";
+import { SourceSchema } from "@/app/settings/views/Images/Sources/components/AddSource/AddSource";
 
 type EditSourceProps = {
   id: number;
