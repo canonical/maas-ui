@@ -7,9 +7,10 @@ import pluralize from "pluralize";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
-import { DiscoveryDeleteForm } from "@/app/networkDiscovery/components";
 import DeleteSource from "@/app/settings/views/Images/Sources/DeleteSource";
+import DisableSource from "@/app/settings/views/Images/Sources/DisableSource";
 import EditSource from "@/app/settings/views/Images/Sources/EditSource";
+import EnableSource from "@/app/settings/views/Images/Sources/EnableSource";
 import type { ImageSource } from "@/app/settings/views/Images/Sources/Sources";
 
 type SourcesColumnDef = ColumnDef<ImageSource, Partial<ImageSource>>;
@@ -141,18 +142,8 @@ const useSourcesTableColumns = (): SourcesColumnDef[] => {
                       });
                     },
                   },
-                  original.type === BootResourceSourceType.MAAS_IO
+                  original.type === BootResourceSourceType.CUSTOM
                     ? {
-                        children: "Disable source",
-                        onClick: () => {
-                          openSidePanel({
-                            component: DiscoveryDeleteForm,
-                            title: "Disable source",
-                            props: { discovery: original },
-                          });
-                        },
-                      }
-                    : {
                         children: "Delete source...",
                         onClick: () => {
                           openSidePanel({
@@ -161,7 +152,28 @@ const useSourcesTableColumns = (): SourcesColumnDef[] => {
                             props: { id: original.id },
                           });
                         },
-                      },
+                      }
+                    : original.enabled
+                      ? {
+                          children: "Disable source...",
+                          onClick: () => {
+                            openSidePanel({
+                              component: DisableSource,
+                              title: "Disable default source",
+                              props: { id: original.id },
+                            });
+                          },
+                        }
+                      : {
+                          children: "Enable source...",
+                          onClick: () => {
+                            openSidePanel({
+                              component: EnableSource,
+                              title: "Enable default source",
+                              props: { id: original.id },
+                            });
+                          },
+                        },
                 ]}
                 toggleAppearance="base"
                 toggleClassName="row-menu-toggle u-no-margin--bottom"

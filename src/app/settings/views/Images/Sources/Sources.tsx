@@ -34,6 +34,8 @@ import "./_index.scss";
 
 export type ImageSource = BootSourceResponse & {
   type: BootResourceSourceType;
+  // TODO: implement v3 enabled state
+  enabled?: boolean;
 };
 
 const getSourceType = (url: string): BootResourceSourceType => {
