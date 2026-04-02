@@ -168,3 +168,23 @@ export const useFetchImageSource = (
     >(mutationOptions, fetchBootsourcesAvailableImages),
   });
 };
+
+// TODO: implement default source enabling when v3 is ready
+export const useEnableImageSource = () => {
+  return {
+    error: {},
+    mutate: (_args: object) => {},
+    isPending: false,
+    isSuccess: true,
+  };
+};
+
+// TODO: implement default source disabling when v3 is ready
+export const useDisableImageSource = () => {
+  return {
+    error: {},
+    mutate: (_args: object) => {},
+    isPending: false,
+    isSuccess: true,
+  };
+};
