@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import {
   Icon,
@@ -61,6 +61,10 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
   const [isValidated, setIsValidated] = useState(false);
   const [lastValidatedValues, setLastValidatedValues] =
     useState<SourceValues | null>(null);
+
+  useEffect(() => {
+    setSelectedKeyringType(initialKeyringType);
+  }, [initialKeyringType]);
 
   const updateSource = useUpdateImageSource();
   const fetchImageSource = useFetchImageSource();
@@ -194,6 +198,7 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
                     {/*  type="text"*/}
                     {/*/>*/}
                     <FormikField
+                      aria-label={Labels.Url}
                       disabled
                       label={
                         <>
