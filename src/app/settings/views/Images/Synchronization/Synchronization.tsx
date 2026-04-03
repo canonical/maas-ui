@@ -1,7 +1,10 @@
 import type { ReactElement } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import {
+  Col,
   Notification as NotificationBanner,
+  Row,
   Spinner,
 } from "@canonical/react-components";
 import * as Yup from "yup";
@@ -12,6 +15,7 @@ import {
 } from "@/app/api/query/configurations";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import PageContent from "@/app/base/components/PageContent";
 import { ConfigNames } from "@/app/store/config/types";
 
 const SynchronizationSchema = Yup.object()
@@ -51,52 +55,63 @@ const Synchronization = (): ReactElement => {
   };
 
   return (
-    <>
-      {importConfig.isPending && <Spinner text="Loading..." />}
-      {importConfig.isError && (
-        <NotificationBanner severity="negative">
-          {importConfig.error.message}
-        </NotificationBanner>
-      )}
-      {importConfig.isSuccess && importConfig.data && (
-        <FormikForm
-          aria-label="Synchronization"
-          enableReinitialize
-          errors={updateConfig.error}
-          initialValues={initialValues}
-          onSubmit={onSubmit}
-          saved={updateConfig.isSuccess}
-          saving={updateConfig.isPending}
-          submitLabel="Save"
-          validationSchema={SynchronizationSchema}
-        >
-          {() => {
-            return (
-              <>
-                <FormikField
-                  data-testid="auto-sync-switch"
-                  help="Enables image updates by a given synchronization interval."
-                  id="auto-sync-switch"
-                  label="Automatically sync images"
-                  name="autoSync"
-                  type="checkbox"
-                />
-                {/*TODO: uncomment when synchronization interval is available as a global configuration*/}
-                {/*{values.autoSync ? (*/}
-                {/*  <FormikField*/}
-                {/*    help="Image synchronization interval, in minutes."*/}
-                {/*    label="Sync interval"*/}
-                {/*    name="syncInterval"*/}
-                {/*    required*/}
-                {/*    type="number"*/}
-                {/*  />*/}
-                {/*) : null}*/}
-              </>
-            );
-          }}
-        </FormikForm>
-      )}
-    </>
+    <PageContent>
+      <ContentSection variant="narrow">
+        <ContentSection.Title className="section-header__title">
+          Synchronization
+        </ContentSection.Title>
+        <ContentSection.Content>
+          {importConfig.isPending && <Spinner text="Loading..." />}
+          <Row>
+            <Col size={12}>
+              {importConfig.isError && (
+                <NotificationBanner severity="negative">
+                  {importConfig.error.message}
+                </NotificationBanner>
+              )}
+              {importConfig.isSuccess && importConfig.data && (
+                <FormikForm
+                  aria-label="Synchronization"
+                  enableReinitialize
+                  errors={updateConfig.error}
+                  initialValues={initialValues}
+                  onSubmit={onSubmit}
+                  saved={updateConfig.isSuccess}
+                  saving={updateConfig.isPending}
+                  submitLabel="Save"
+                  validationSchema={SynchronizationSchema}
+                >
+                  {() => {
+                    return (
+                      <>
+                        <FormikField
+                          data-testid="auto-sync-switch"
+                          help="Enables image updates by a given synchronization interval."
+                          id="auto-sync-switch"
+                          label="Automatically sync images"
+                          name="autoSync"
+                          type="checkbox"
+                        />
+                        {/*TODO: uncomment when synchronization interval is available as a global configuration*/}
+                        {/*{values.autoSync ? (*/}
+                        {/*  <FormikField*/}
+                        {/*    help="Image synchronization interval, in minutes."*/}
+                        {/*    label="Sync interval"*/}
+                        {/*    name="syncInterval"*/}
+                        {/*    required*/}
+                        {/*    type="number"*/}
+                        {/*  />*/}
+                        {/*) : null}*/}
+                      </>
+                    );
+                  }}
+                </FormikForm>
+              )}
+            </Col>
+          </Row>
+        </ContentSection.Content>
+      </ContentSection>
+    </PageContent>
   );
 };
 
