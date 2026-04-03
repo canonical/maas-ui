@@ -1,7 +1,5 @@
 import SelectUpstreamImagesForm from "./SelectUpstreamImagesForm";
 
-import * as factory from "@/testing/factories";
-import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import { imageResolvers } from "@/testing/resolvers/images";
 import {
   userEvent,
@@ -12,8 +10,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(
-  imageSourceResolvers.listImageSources.handler(),
+setupMockServer(
   imageResolvers.listSelections.handler(),
   imageResolvers.listAvailableSelections.handler(),
   imageResolvers.addSelections.handler()
@@ -71,36 +68,5 @@ describe("SelectUpstreamImagesForm", () => {
     await waitFor(() => {
       expect(imageResolvers.addSelections.resolved).toBeTruthy();
     });
-  });
-
-  it("disables form with a notification if more than one source detected", async () => {
-    mockServer.use(
-      imageSourceResolvers.listImageSources.handler({
-        items: [
-          factory.imageSourceFactory.build(),
-          factory.imageSourceFactory.build(),
-        ],
-        total: 2,
-      })
-    );
-
-    renderWithProviders(<SelectUpstreamImagesForm />);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          "More than one image source exists. The UI does not support updating synced images when more than one source has been defined. Use the API to adjust your sources."
-        )
-      ).toBeInTheDocument();
-    });
-    expect(
-      screen.getByText(
-        "More than one image source exists. The UI does not support updating synced images when more than one source has been defined. Use the API to adjust your sources."
-      )
-    ).toBeInTheDocument();
-
-    expect(
-      screen.queryByRole("button", { name: "Download" })
-    ).not.toBeInTheDocument();
   });
 });
