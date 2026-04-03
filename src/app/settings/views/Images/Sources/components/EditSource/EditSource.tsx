@@ -178,7 +178,7 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
           }
           secondarySubmitSaved={isValidated}
           secondarySubmitSaving={fetchImageSource.isPending}
-          submitDisabled={!isValidated}
+          submitDisabled={!isValidated && !isDefault}
           submitLabel="Save source"
           validationSchema={SourceSchema}
         >
