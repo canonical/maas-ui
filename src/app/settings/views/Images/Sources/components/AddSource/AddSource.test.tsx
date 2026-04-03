@@ -1,8 +1,8 @@
 import { expect, it } from "vitest";
 
 import { MAAS_IO_DEFAULT_KEYRING_FILE_PATHS } from "@/app/images/constants";
-import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
 import AddSource from "@/app/settings/views/Images/Sources/components/AddSource/AddSource";
+import { Labels } from "@/app/settings/views/Images/Sources/constants";
 import * as factory from "@/testing/factories";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import {

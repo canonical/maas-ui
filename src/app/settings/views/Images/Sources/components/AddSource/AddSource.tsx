@@ -20,7 +20,7 @@ import { FormikFieldChangeError } from "@/app/base/components/FormikField/Formik
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAAS_IO_DEFAULT_KEYRING_FILE_PATHS } from "@/app/images/constants";
-import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
+import { Labels } from "@/app/settings/views/Images/Sources/constants";
 import { generalActions } from "@/app/store/general";
 import { installType } from "@/app/store/general/selectors";
 

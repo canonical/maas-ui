@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 
-import { Labels } from "@/app/settings/views/Images/ChangeSource/ChangeSourceForm/ChangeSourceForm";
 import EditSource from "@/app/settings/views/Images/Sources/components/EditSource/EditSource";
+import { Labels } from "@/app/settings/views/Images/Sources/constants";
 import { imageSourceFactory } from "@/testing/factories";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import {
