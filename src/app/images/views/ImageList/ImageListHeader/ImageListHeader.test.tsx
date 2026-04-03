@@ -30,9 +30,7 @@ describe("ImageListHeader", () => {
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
-});
 
-describe("Change sources", () => {
   it("renders the correct text for a single default source", async () => {
     renderWithProviders(
       <ImageListHeader selectedRows={{}} setSelectedRows={() => {}} />
@@ -72,7 +70,9 @@ describe("Change sources", () => {
     );
     await waitForLoading();
     const images_from = screen.getByText("Images synced from");
-    expect(within(images_from).getByText("sources")).toBeInTheDocument();
+    expect(
+      within(images_from).getByText("multiple sources")
+    ).toBeInTheDocument();
   });
 });
 

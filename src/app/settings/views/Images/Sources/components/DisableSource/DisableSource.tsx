@@ -34,7 +34,7 @@ const DisableSource = ({ id }: DisableSourceProps): ReactElement => {
       )}
       {source.isSuccess && source.data && (
         <ModelActionForm
-          aria-label="Confirm custom source disabling"
+          aria-label="Confirm default source disabling"
           errors={disableSource.error}
           initialValues={{}}
           message={

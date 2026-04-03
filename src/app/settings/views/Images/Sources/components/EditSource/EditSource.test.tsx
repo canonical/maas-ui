@@ -105,7 +105,7 @@ describe("EditSource", () => {
   it("clears the other field when switching between keyring types", async () => {
     renderWithProviders(<EditSource id={1} isDefault={false} />);
     await waitForLoading();
-    // The default keyring filename is the snap path when no install type is set
+    // The default keyring filename is the editing source filename
     expect(
       screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toHaveValue("/custom/keyring/file.gpg");

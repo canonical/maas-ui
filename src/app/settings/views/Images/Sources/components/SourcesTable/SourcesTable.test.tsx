@@ -62,15 +62,19 @@ describe("SourcesTable", () => {
     it("displays the columns correctly", () => {
       renderWithProviders(<SourcesTable />);
 
-      ["Name", "Source URL", "Priority", "Signed with GPG", "Action"].forEach(
-        (column) => {
-          expect(
-            screen.getByRole("columnheader", {
-              name: new RegExp(`^${column}`, "i"),
-            })
-          ).toBeInTheDocument();
-        }
-      );
+      [
+        "Name",
+        "Source URL",
+        "Priority",
+        "Signed with GPG key",
+        "Action",
+      ].forEach((column) => {
+        expect(
+          screen.getByRole("columnheader", {
+            name: new RegExp(`^${column}`, "i"),
+          })
+        ).toBeInTheDocument();
+      });
     });
 
     it("displays the row actions correctly", async () => {

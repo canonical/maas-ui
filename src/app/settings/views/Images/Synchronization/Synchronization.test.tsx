@@ -21,7 +21,7 @@ const mockServer = setupMockServer(
 );
 
 describe("Synchronization", () => {
-  it("dispatches an action to update config when changing the auto sync switch", async () => {
+  it("calls setConfiguration when saving the auto sync switch", async () => {
     renderWithProviders(<Synchronization />);
     await waitForLoading();
     await userEvent.click(

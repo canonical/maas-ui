@@ -34,7 +34,7 @@ const EnableSource = ({ id }: EnableSourceProps): ReactElement => {
       )}
       {source.isSuccess && source.data && (
         <ModelActionForm
-          aria-label="Confirm custom source enabling"
+          aria-label="Confirm default source enabling"
           errors={enableSource.error}
           initialValues={{}}
           message={

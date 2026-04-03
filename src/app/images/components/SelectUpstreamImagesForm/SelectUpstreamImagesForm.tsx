@@ -181,7 +181,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
               >
                 No available upstream images found. This could be caused by an
                 ongoing image source change. If you recently changed the image
-                source, please come back after some time.
+                source settings, please come back after some time.
               </NotificationBanner>
             )}
             <FormikForm

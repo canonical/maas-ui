@@ -28,7 +28,7 @@ const getImageSyncText = (sources: BootSourceResponse[]) => {
     }
     return mainSource.url;
   }
-  return "sources";
+  return "multiple sources";
 };
 
 const ImageListHeader = ({
