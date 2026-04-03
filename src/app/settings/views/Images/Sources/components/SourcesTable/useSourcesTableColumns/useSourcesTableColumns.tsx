@@ -27,7 +27,11 @@ export const filterCells = (
 export const filterHeaders = (header: Header<ImageSource, unknown>): boolean =>
   header.column.id !== "type";
 
-const useSourcesTableColumns = (): SourcesColumnDef[] => {
+const useSourcesTableColumns = ({
+  canChangeSource,
+}: {
+  canChangeSource: boolean;
+}): SourcesColumnDef[] => {
   const { openSidePanel } = useSidePanel();
 
   return useMemo(
@@ -175,12 +179,13 @@ const useSourcesTableColumns = (): SourcesColumnDef[] => {
                 ]}
                 toggleAppearance="base"
                 toggleClassName="row-menu-toggle u-no-margin--bottom"
+                toggleDisabled={!canChangeSource}
               />
             );
           },
         },
       ] as SourcesColumnDef[],
-    [openSidePanel]
+    [canChangeSource, openSidePanel]
   );
 };
 

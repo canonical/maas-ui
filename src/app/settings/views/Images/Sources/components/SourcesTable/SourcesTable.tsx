@@ -62,7 +62,7 @@ const SourcesTable = (): ReactElement => {
     customImageStatusesError ||
     importConfig.error;
 
-  const columns = useSourcesTableColumns();
+  const columns = useSourcesTableColumns({ canChangeSource });
 
   const data = useMemo((): ImageSource[] => {
     if (!sources.data) {
