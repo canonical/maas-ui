@@ -25,7 +25,7 @@ describe("DeleteSource", () => {
     expect(mockClose).toHaveBeenCalled();
   });
 
-  it("calls delete pool on save click", async () => {
+  it("calls delete source on save click", async () => {
     renderWithProviders(<DeleteSource id={1} />);
     await waitForLoading();
     await userEvent.click(
@@ -36,7 +36,7 @@ describe("DeleteSource", () => {
     });
   });
 
-  it("displays error messages when delete pool fails", async () => {
+  it("displays error messages when delete source fails", async () => {
     mockServer.use(
       imageSourceResolvers.deleteImageSource.error({
         code: 400,
