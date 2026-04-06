@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import {
   Icon,
@@ -49,22 +49,23 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
 
   const eTag = source.data?.headers?.get("ETag");
 
-  const initialKeyringType = useMemo(
-    () =>
-      source.data ? getInitialKeyringType(source.data) : "keyring_unsigned",
+  const initialValues = useMemo<SourceValues>(
+    () => ({
+      url: source.data?.url ?? "",
+      keyring_type: source.data
+        ? getInitialKeyringType(source.data)
+        : "keyring_unsigned",
+      keyring_filename: source.data?.keyring_filename ?? "",
+      keyring_data: source.data?.keyring_data ?? "",
+      skip_keyring_verification: source.data?.skip_keyring_verification,
+      priority: source.data?.priority ?? 10,
+    }),
     [source.data]
   );
 
-  const [selectedKeyringType, setSelectedKeyringType] = useState<
-    "keyring_data" | "keyring_filename" | "keyring_unsigned"
-  >(initialKeyringType);
   const [isValidated, setIsValidated] = useState(false);
   const [lastValidatedValues, setLastValidatedValues] =
     useState<SourceValues | null>(null);
-
-  useEffect(() => {
-    setSelectedKeyringType(initialKeyringType);
-  }, [initialKeyringType]);
 
   const updateSource = useUpdateImageSource();
   const fetchImageSource = useFetchImageSource();
@@ -135,15 +136,9 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
         >
           aria-label="Edit source"
           buttonsBehavior="independent"
+          enableReinitialize
           errors={errors}
-          initialValues={{
-            url: source.data.url,
-            keyring_type: initialKeyringType,
-            keyring_filename: source.data.keyring_filename ?? "",
-            keyring_data: source.data.keyring_data ?? "",
-            skip_keyring_verification: source.data.skip_keyring_verification,
-            priority: source.data.priority,
-          }}
+          initialValues={initialValues}
           onCancel={closeSidePanel}
           onSubmit={(values) => {
             updateSource.mutate(
@@ -185,6 +180,7 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
           {({
             setFieldValue,
             validateForm,
+            values,
           }: FormikContextType<SourceValues>) => {
             return (
               <>
@@ -224,7 +220,6 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
                           | "keyring_data"
                           | "keyring_filename"
                           | "keyring_unsigned";
-                        setSelectedKeyringType(newType);
                         await setFieldValue("keyring_type", newType).catch(
                           (reason: unknown) => {
                             throw new FormikFieldChangeError(
@@ -267,9 +262,9 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
                         { label: "Unsigned", value: "keyring_unsigned" },
                       ]}
                       required
-                      value={selectedKeyringType}
+                      value={values.keyring_type}
                     />
-                    {selectedKeyringType === "keyring_filename" ? (
+                    {values.keyring_type === "keyring_filename" ? (
                       <FormikField
                         aria-label={Labels.KeyringFilename}
                         help="Path to the keyring to validate the mirror path."
@@ -278,7 +273,7 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
                         required
                         type="text"
                       />
-                    ) : selectedKeyringType === "keyring_data" ? (
+                    ) : values.keyring_type === "keyring_data" ? (
                       <FormikField
                         aria-label={Labels.KeyringData}
                         component={Textarea}

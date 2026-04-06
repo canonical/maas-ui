@@ -51,9 +51,6 @@ export type SourceValues = BootSourceCreateRequest & {
 const AddSource = (): ReactElement => {
   const dispatch = useDispatch();
   const { closeSidePanel } = useSidePanel();
-  const [selectedKeyringType, setSelectedKeyringType] = useState<
-    "keyring_data" | "keyring_filename" | "keyring_unsigned"
-  >("keyring_filename");
   const [isValidated, setIsValidated] = useState(false);
   const [lastValidatedValues, setLastValidatedValues] =
     useState<SourceValues | null>(null);
@@ -170,7 +167,11 @@ const AddSource = (): ReactElement => {
       submitLabel="Save source"
       validationSchema={SourceSchema}
     >
-      {({ setFieldValue, validateForm }: FormikContextType<SourceValues>) => {
+      {({
+        setFieldValue,
+        validateForm,
+        values,
+      }: FormikContextType<SourceValues>) => {
         return (
           <>
             {/*TODO: uncomment when name field is available*/}
@@ -190,7 +191,6 @@ const AddSource = (): ReactElement => {
                   | "keyring_data"
                   | "keyring_filename"
                   | "keyring_unsigned";
-                setSelectedKeyringType(newType);
                 await setFieldValue("keyring_type", newType).catch(
                   (reason: unknown) => {
                     throw new FormikFieldChangeError(
@@ -230,9 +230,9 @@ const AddSource = (): ReactElement => {
                 { label: "Unsigned", value: "keyring_unsigned" },
               ]}
               required
-              value={selectedKeyringType}
+              value={values.keyring_type}
             />
-            {selectedKeyringType === "keyring_filename" ? (
+            {values.keyring_type === "keyring_filename" ? (
               <FormikField
                 aria-label={Labels.KeyringFilename}
                 help="Path to the keyring to validate the mirror path."
@@ -241,7 +241,7 @@ const AddSource = (): ReactElement => {
                 required
                 type="text"
               />
-            ) : selectedKeyringType === "keyring_data" ? (
+            ) : values.keyring_type === "keyring_data" ? (
               <FormikField
                 aria-label={Labels.KeyringData}
                 component={Textarea}
