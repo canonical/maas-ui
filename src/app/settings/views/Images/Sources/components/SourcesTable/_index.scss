@@ -1,0 +1,21 @@
+.p-generic-table.sources-table {
+  tr {
+    .name {
+      width: 20%;
+    }
+
+    .priority {
+      width: 15%;
+      text-align: right;
+    }
+
+    .signed {
+      width: 20%;
+      text-align: center;
+    }
+
+    .actions {
+      width: 20%;
+    }
+  }
+}

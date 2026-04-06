@@ -22,7 +22,6 @@ import Deploy from "@/app/settings/views/Configuration/Deploy";
 import General from "@/app/settings/views/Configuration/General";
 import KernelParameters from "@/app/settings/views/Configuration/KernelParameters";
 import DhcpList from "@/app/settings/views/Dhcp/DhcpList";
-import ChangeSource from "@/app/settings/views/Images/ChangeSource";
 import ThirdPartyDrivers from "@/app/settings/views/Images/ThirdPartyDrivers";
 import VMWare from "@/app/settings/views/Images/VMWare";
 import Windows from "@/app/settings/views/Images/Windows";
@@ -80,6 +79,7 @@ const FabricDetails = lazy(
 const FabricsList = lazy(
   () => import("@/app/networks/views/Fabrics/views/FabricsList")
 );
+const Sources = lazy(() => import("@/app/settings/views/Images/Sources"));
 const SpaceDetails = lazy(
   () => import("@/app/networks/views/Spaces/views/SpaceDetails")
 );
@@ -91,6 +91,9 @@ const SubnetDetails = lazy(
 );
 const SubnetsList = lazy(
   () => import("@/app/networks/views/Subnets/views/SubnetsList")
+);
+const Synchronization = lazy(
+  () => import("@/app/settings/views/Images/Synchronization")
 );
 const VLANDetails = lazy(
   () => import("@/app/networks/views/VLANs/views/VLANDetails")
@@ -801,12 +804,23 @@ export const router = createBrowserRouter(
                 },
                 {
                   path: getRelativeRoute(
-                    urls.settings.images.source,
+                    urls.settings.images.sources,
                     urls.settings.index
                   ),
                   element: (
                     <ErrorBoundary>
-                      <ChangeSource />
+                      <Sources />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  path: getRelativeRoute(
+                    urls.settings.images.sync,
+                    urls.settings.index
+                  ),
+                  element: (
+                    <ErrorBoundary>
+                      <Synchronization />
                     </ErrorBoundary>
                   ),
                 },

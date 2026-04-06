@@ -20,6 +20,7 @@ export {
   fetchedAt,
   generalState,
   generatedCertificateState,
+  installTypeState,
   hweKernelsState,
   knownArchitecturesState,
   knownBootArchitecturesState,

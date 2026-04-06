@@ -24,6 +24,8 @@ import type {
   FetchBootsourcesAvailableImagesData,
   FetchBootsourcesAvailableImagesResponses,
   FetchBootsourcesAvailableImagesErrors,
+  DeleteBootsourceData,
+  DeleteBootsourceResponses,
 } from "@/app/apiclient";
 import {
   updateBootsource,
@@ -101,6 +103,24 @@ export const useChangeImageSource = () => {
   });
 };
 
+export const useCreateImageSource = (
+  mutationOptions?: Options<CreateBootsourceData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateBootsourceResponses,
+      CreateBootsourceErrors,
+      CreateBootsourceData
+    >(mutationOptions, createBootsource),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listBootsourcesQueryKey(),
+      });
+    },
+  });
+};
+
 export const useUpdateImageSource = (
   mutationOptions?: Options<UpdateBootsourceData>
 ) => {
@@ -119,6 +139,24 @@ export const useUpdateImageSource = (
   });
 };
 
+export const useDeleteImageSource = (
+  mutationOptions?: Options<DeleteBootsourceData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteBootsourceResponses,
+      DeleteBootsourceErrors,
+      DeleteBootsourceData
+    >(mutationOptions, deleteBootsource),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listBootsourcesQueryKey(),
+      });
+    },
+  });
+};
+
 export const useFetchImageSource = (
   mutationOptions?: Options<FetchBootsourcesAvailableImagesData>
 ) => {
@@ -129,4 +167,24 @@ export const useFetchImageSource = (
       FetchBootsourcesAvailableImagesData
     >(mutationOptions, fetchBootsourcesAvailableImages),
   });
+};
+
+// TODO: implement default source enabling when v3 is ready
+export const useEnableImageSource = () => {
+  return {
+    error: {},
+    mutate: (_args: object) => {},
+    isPending: false,
+    isSuccess: true,
+  };
+};
+
+// TODO: implement default source disabling when v3 is ready
+export const useDisableImageSource = () => {
+  return {
+    error: {},
+    mutate: (_args: object) => {},
+    isPending: false,
+    isSuccess: true,
+  };
 };
