@@ -33,30 +33,40 @@ const DeleteSource = ({ id }: DeleteSourceProps): ReactElement => {
         </NotificationBanner>
       )}
       {source.isSuccess && source.data && (
-        <ModelActionForm
-          aria-label="Confirm custom source deletion"
-          errors={deleteSource.error}
-          initialValues={{}}
-          message={
-            // TODO: add actual source name
-            <>
-              Are you sure you want to remove <strong>Source</strong> (
-              {source.data.url})?
-            </>
-          }
-          modelType="custom source"
-          onCancel={closeSidePanel}
-          onSubmit={() => {
-            deleteSource.mutate({
-              headers: { ETag: eTag },
-              path: { boot_source_id: id },
-            });
-          }}
-          onSuccess={closeSidePanel}
-          saved={deleteSource.isSuccess}
-          saving={deleteSource.isPending}
-          submitLabel="Delete source"
-        />
+        <>
+          <NotificationBanner
+            className="u-no-margin--bottom"
+            severity="caution"
+            title="Images will be affected"
+          >
+            Removing a source will remove all images that were pulled from the
+            source.
+          </NotificationBanner>
+          <ModelActionForm
+            aria-label="Confirm custom source deletion"
+            errors={deleteSource.error}
+            initialValues={{}}
+            message={
+              // TODO: add actual source name
+              <>
+                Are you sure you want to remove <strong>Source</strong> (
+                {source.data.url})?
+              </>
+            }
+            modelType="custom source"
+            onCancel={closeSidePanel}
+            onSubmit={() => {
+              deleteSource.mutate({
+                headers: { ETag: eTag },
+                path: { boot_source_id: id },
+              });
+            }}
+            onSuccess={closeSidePanel}
+            saved={deleteSource.isSuccess}
+            saving={deleteSource.isPending}
+            submitLabel="Delete source"
+          />
+        </>
       )}
     </>
   );
