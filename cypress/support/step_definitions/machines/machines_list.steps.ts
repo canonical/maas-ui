@@ -190,10 +190,6 @@ When("the user hides the {string} column", (columnName: string) => {
   });
 });
 
-When("the user refreshes the page", () => {
-  cy.reload();
-});
-
 When("the user selects the first machine", () => {
   const firstMachine = state.generatedMachines?.[0];
 

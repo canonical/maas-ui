@@ -26,3 +26,7 @@ When(
       );
   }
 );
+
+When("the user refreshes the page", () => {
+  cy.reload(true);
+});
