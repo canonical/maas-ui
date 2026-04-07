@@ -42,6 +42,7 @@ const CopyButton = ({ value }: Props): React.ReactElement => {
         className="is-dense u-table-cell-padding-overlap u-no-margin--right"
         hasIcon
         onClick={handleClick}
+        type="button"
       >
         <i className={`p-icon--${icon}`}>Copy</i>
       </Button>
