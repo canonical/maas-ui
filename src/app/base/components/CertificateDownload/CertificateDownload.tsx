@@ -63,7 +63,7 @@ const CertificateDownload = ({
         </span>
       </Button>
       <CopyButton
-        value={`lxc config trust add - <<EOF\n\n${certificate}\nEOF`}
+        value={`lxc config trust add - <<EOF \n\n${certificate}\n EOF`}
       />
     </>
   );
