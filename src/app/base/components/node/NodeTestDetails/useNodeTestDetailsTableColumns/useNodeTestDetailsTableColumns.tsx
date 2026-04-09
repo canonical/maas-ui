@@ -33,6 +33,11 @@ const useNodeTestDetailsTableColumns = (): NodeTestDetailsColumnDef[] => {
         enableSorting: false,
         id: "exit_status",
         header: "Exit status",
+        cell: ({
+          row: {
+            original: { exit_status },
+          },
+        }) => exit_status ?? "—",
       },
       {
         accessorKey: "tags",
@@ -44,17 +49,33 @@ const useNodeTestDetailsTableColumns = (): NodeTestDetailsColumnDef[] => {
         enableSorting: false,
         id: "started",
         header: "Start time",
+        cell: ({
+          row: {
+            original: { started },
+          },
+        }) => (started ? started : "—"),
       },
       {
         accessorKey: "ended",
         enableSorting: false,
         id: "ended",
         header: "End time",
+        cell: ({
+          row: {
+            original: { ended },
+          },
+        }) => (ended ? ended : "—"),
       },
       {
         accessorKey: "runtime",
         enableSorting: false,
         id: "runtime",
+        header: "Runtime",
+        cell: ({
+          row: {
+            original: { runtime },
+          },
+        }) => (runtime ? runtime : "—"),
       },
     ],
     []
