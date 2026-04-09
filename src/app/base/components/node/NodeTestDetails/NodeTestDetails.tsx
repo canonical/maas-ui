@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
+import { GenericTable } from "@canonical/maas-react-components";
 import { Col, Row, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import NodeTestDetailsLogs from "./NodeTestDetailsLogs";
+import useNodeTestDetailsTableColumns from "./useNodeTestDetailsTableColumns/useNodeTestDetailsTableColumns";
 
-import ScriptStatus from "@/app/base/components/ScriptStatus";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import type { RootState } from "@/app/store/root/types";
 import { scriptResultActions } from "@/app/store/scriptresult";
@@ -35,6 +36,7 @@ const NodeTestDetails = ({
   const logs = useSelector(scriptResultSelectors.logs);
   const loading = useSelector(scriptResultSelectors.loading);
   const log = logs && isId(scriptResultId) ? logs[scriptResultId] : null;
+  const columns = useNodeTestDetailsTableColumns();
 
   useEffect(() => {
     if (!fetched && isId(scriptResultId)) {
@@ -64,6 +66,19 @@ const NodeTestDetails = ({
 
   const hasMetrics = result.results.length > 0;
   const returnPath = getReturnPath(id);
+  const data = [
+    {
+      ...result,
+      id: result.id,
+      status: result.status,
+      status_name: result.status_name,
+      exit_status: result.exit_status,
+      tags: result.tags,
+      started: result.started,
+      ended: result.ended,
+      runtime: result.runtime,
+    },
+  ];
   return (
     <>
       <Row className="u-sv2">
@@ -76,40 +91,12 @@ const NodeTestDetails = ({
           </Link>
         </Col>
       </Row>
-      <Row className="u-sv2">
-        <Col size={6}>
-          <Row>
-            <Col size={2}>Status</Col>
-            <Col size={4}>
-              <ScriptStatus status={result.status}>
-                {result.status_name}
-              </ScriptStatus>
-            </Col>
-          </Row>
-          <Row>
-            <Col size={2}>Exit status</Col>
-            <Col size={4}>{result.exit_status}</Col>
-          </Row>
-          <Row>
-            <Col size={2}>Tags</Col>
-            <Col size={4}>{result.tags}</Col>
-          </Row>
-        </Col>
-        <Col size={6}>
-          <Row>
-            <Col size={2}>Start time</Col>
-            <Col size={4}>{result.started}</Col>
-          </Row>
-          <Row>
-            <Col size={2}>End time</Col>
-            <Col size={4}>{result.ended}</Col>
-          </Row>
-          <Row>
-            <Col size={2}>Runtime</Col>
-            <Col size={4}>{result.runtime}</Col>
-          </Row>
-        </Col>
-      </Row>
+      <GenericTable
+        columns={columns}
+        data={data}
+        isLoading={false}
+        noData="No details available."
+      />
       {hasMetrics ? (
         <Row>
           <Col size={12}>
