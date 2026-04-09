@@ -12,6 +12,7 @@ import type { AddLxdStepValues, NewPodValues } from "./types";
 
 import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
+import { generalActions } from "@/app/store/general";
 import { podActions } from "@/app/store/pod";
 
 export const AddLxdSteps = {
@@ -42,10 +43,12 @@ export const AddLxd = (): ReactElement => {
   // We run the cleanup function here rather than in each form component
   // because we want the errors to be able to persist across forms. We also
   // clear projects, so the user has to "re-authenticate" every time.
+  // Clear the generated certificate when the entire AddLxd flow ends.
   useEffect(() => {
     return () => {
       dispatch(podActions.cleanup());
       dispatch(podActions.clearProjects());
+      dispatch(generalActions.clearGeneratedCertificate());
     };
   }, [dispatch]);
 
