@@ -1591,6 +1591,28 @@ export type FileResponse = {
 };
 
 /**
+ * ForbiddenBodyResponse
+ */
+export type ForbiddenBodyResponse = {
+  /**
+   * Code
+   */
+  code?: number;
+  /**
+   * Message
+   */
+  message?: string;
+  /**
+   * Details
+   */
+  details?: BaseExceptionDetail[];
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * HardwareDeviceTypeEnum
  *
  * An enumeration.
@@ -4270,6 +4292,91 @@ export type SubnetsListResponse = {
 };
 
 /**
+ * SwitchRequest
+ *
+ * Request model for creating a switch.
+ */
+export type SwitchRequest = {
+  /**
+   * Mac Address
+   */
+  mac_address: string;
+  /**
+   * Image
+   *
+   * Boot resource name for the NOS to install on the switch. Supports full format (e.g., 'onie/mellanox-3.8.0') or short format for ONIE images (e.g., 'mellanox-3.8.0').
+   */
+  image?: string;
+};
+
+/**
+ * SwitchResponse
+ *
+ * Response model for a single switch.
+ */
+export type SwitchResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Target Image Id
+   */
+  target_image_id?: number;
+  /**
+   * Target Image
+   */
+  target_image?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * SwitchUpdateRequest
+ *
+ * Request model for updating a switch.
+ */
+export type SwitchUpdateRequest = {
+  /**
+   * Image
+   *
+   * Boot resource name for the NOS to install on the switch. Supports full format (e.g., 'onie/mellanox-3.8.0') or short format for ONIE images (e.g., 'mellanox-3.8.0').
+   */
+  image?: string;
+};
+
+/**
+ * SwitchesListResponse
+ *
+ * Response model for a list of switches.
+ */
+export type SwitchesListResponse = {
+  /**
+   * Items
+   */
+  items: SwitchResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * TXTRecord
  */
 export type TxtRecord = {
@@ -4900,6 +5007,10 @@ export type UserGroupResponse = {
    * Description
    */
   description?: string;
+  /**
+   * User Count
+   */
+  user_count?: number;
   /**
    * Kind
    */
@@ -8802,6 +8913,76 @@ export type ListMachinesResponses = {
 export type ListMachinesResponse =
   ListMachinesResponses[keyof ListMachinesResponses];
 
+export type GetNosInstallerData = {
+  body?: never;
+  headers: {
+    /**
+     * Onie-Eth-Addr
+     */
+    "onie-eth-addr": string;
+    /**
+     * Onie-Serial-Number
+     */
+    "onie-serial-number"?: string;
+    /**
+     * Onie-Vendor-Id
+     */
+    "onie-vendor-id"?: string;
+    /**
+     * Onie-Machine
+     */
+    "onie-machine"?: string;
+    /**
+     * Onie-Machine-Rev
+     */
+    "onie-machine-rev"?: string;
+    /**
+     * Onie-Arch
+     */
+    "onie-arch"?: string;
+    /**
+     * Onie-Security-Key
+     */
+    "onie-security-key"?: string;
+    /**
+     * Onie-Operation
+     */
+    "onie-operation"?: string;
+    /**
+     * Onie-Version
+     */
+    "onie-version"?: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/nos-installer";
+};
+
+export type GetNosInstallerErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetNosInstallerError =
+  GetNosInstallerErrors[keyof GetNosInstallerErrors];
+
+export type GetNosInstallerResponses = {
+  /**
+   * NOS installer binary
+   */
+  200: unknown;
+};
+
 export type ListNotificationsData = {
   body?: never;
   path?: never;
@@ -11083,6 +11264,211 @@ export type GetFabricVlanSubnetResponses = {
 export type GetFabricVlanSubnetResponse =
   GetFabricVlanSubnetResponses[keyof GetFabricVlanSubnetResponses];
 
+export type ListSwitchesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/switches";
+};
+
+export type ListSwitchesErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListSwitchesError = ListSwitchesErrors[keyof ListSwitchesErrors];
+
+export type ListSwitchesResponses = {
+  /**
+   * Successful Response
+   */
+  200: SwitchesListResponse;
+};
+
+export type ListSwitchesResponse =
+  ListSwitchesResponses[keyof ListSwitchesResponses];
+
+export type CreateSwitchData = {
+  body: SwitchRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/switches";
+};
+
+export type CreateSwitchErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Forbidden
+   */
+  403: ForbiddenBodyResponse;
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateSwitchError = CreateSwitchErrors[keyof CreateSwitchErrors];
+
+export type CreateSwitchResponses = {
+  /**
+   * Successful Response
+   */
+  201: SwitchResponse;
+};
+
+export type CreateSwitchResponse =
+  CreateSwitchResponses[keyof CreateSwitchResponses];
+
+export type DeleteSwitchData = {
+  body?: never;
+  path: {
+    /**
+     * Switch Id
+     */
+    switch_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/switches/{switch_id}";
+};
+
+export type DeleteSwitchErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Forbidden
+   */
+  403: ForbiddenBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteSwitchError = DeleteSwitchErrors[keyof DeleteSwitchErrors];
+
+export type DeleteSwitchResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteSwitchResponse =
+  DeleteSwitchResponses[keyof DeleteSwitchResponses];
+
+export type GetSwitchData = {
+  body?: never;
+  path: {
+    /**
+     * Switch Id
+     */
+    switch_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/switches/{switch_id}";
+};
+
+export type GetSwitchErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetSwitchError = GetSwitchErrors[keyof GetSwitchErrors];
+
+export type GetSwitchResponses = {
+  /**
+   * Successful Response
+   */
+  200: SwitchResponse;
+};
+
+export type GetSwitchResponse = GetSwitchResponses[keyof GetSwitchResponses];
+
+export type UpdateSwitchData = {
+  body: SwitchUpdateRequest;
+  path: {
+    /**
+     * Switch Id
+     */
+    switch_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/switches/{switch_id}";
+};
+
+export type UpdateSwitchErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Forbidden
+   */
+  403: ForbiddenBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateSwitchError = UpdateSwitchErrors[keyof UpdateSwitchErrors];
+
+export type UpdateSwitchResponses = {
+  /**
+   * Successful Response
+   */
+  200: SwitchResponse;
+};
+
+export type UpdateSwitchResponse =
+  UpdateSwitchResponses[keyof UpdateSwitchResponses];
+
 export type ListTagsData = {
   body?: never;
   path?: never;
@@ -11493,6 +11879,10 @@ export type ListGroupsData = {
      * Size
      */
     size?: number;
+    /**
+     * Group Name
+     */
+    group_name?: string;
   };
   url: "/MAAS/a/v3/groups";
 };
