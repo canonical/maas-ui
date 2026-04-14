@@ -59,7 +59,6 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
       (subnet) => Number(e.target.value) === subnet.id
     );
 
-    // Set all field values without validating individually
     await setFieldValue(
       "endIP",
       subnet?.statistics.suggested_dynamic_range?.end || ""
@@ -93,7 +92,7 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
       );
     });
 
-    // Validate the entire form after all values are set
+    // need to manually call this as Yup does not automatically re-trigger the validation schema
     validateForm();
   };
 
