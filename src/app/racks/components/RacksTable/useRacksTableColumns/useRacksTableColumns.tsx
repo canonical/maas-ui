@@ -9,26 +9,24 @@ import EditRack from "../../EditRack";
 import RegisterController from "../../RegisterController";
 import RemoveControllers from "../../RemoveControllers";
 
-import type { RackResponse } from "@/app/apiclient";
+import type { RackWithSummaryResponse } from "@/app/apiclient";
 import TableMenu from "@/app/base/components/TableMenu";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { FilterControllers } from "@/app/store/controller/utils";
 
-type RackWithSummaryResponse = RackResponse & { registered: string[] };
-
 type RacksColumnDef = ColumnDef<RackWithSummaryResponse>;
 
 const getControllersLabel = (row: Row<RackWithSummaryResponse>) => {
-  if (row.original.registered.length === 0) {
+  if (row.original.registered_agents_system_ids.length === 0) {
     return "0 controllers";
   }
   const filters = FilterControllers.filtersToQueryString({
-    system_id: [`=${row.original.registered.join(",")}`],
+    system_id: [`=${row.original.registered_agents_system_ids.join(",")}`],
   });
   return (
     <Link to={`${urls.controllers.index}${filters}`}>
-      {`${row.original.registered.length} ${pluralize("controller", row.original.registered.length)}`}
+      {`${row.original.registered_agents_system_ids.length} ${pluralize("controller", row.original.registered_agents_system_ids.length)}`}
     </Link>
   );
 };
@@ -45,7 +43,7 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
       },
       {
         id: "registered",
-        accessorKey: "registered",
+        accessorKey: "registered_agents_system_ids",
         enableSorting: true,
         header: "Registered",
         cell: ({ row }) => {
