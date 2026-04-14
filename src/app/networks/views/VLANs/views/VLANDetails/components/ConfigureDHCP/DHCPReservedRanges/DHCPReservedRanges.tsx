@@ -1,25 +1,23 @@
 import type { ChangeEventHandler } from "react";
 
-import { MainTable } from "@canonical/react-components";
+import { GenericTable } from "@canonical/maas-react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { ConfigureDHCPValues } from "../ConfigureDHCP";
 
-import FormikField from "@/app/base/components/FormikField";
+import type { DHCPReservedRangeData } from "./useDHCPReservedRangesColumns";
+import useDHCPReservedRangesColumns from "./useDHCPReservedRangesColumns";
+
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
-import SubnetLink from "@/app/base/components/SubnetLink";
-import SubnetSelect from "@/app/base/components/SubnetSelect";
 import TitledSection from "@/app/base/components/TitledSection";
 import { useFetchActions } from "@/app/base/hooks";
 import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
-import type { IPRange } from "@/app/store/iprange/types";
 import { getCommentDisplay } from "@/app/store/iprange/utils";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
-import type { Subnet } from "@/app/store/subnet/types";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import { isId } from "@/app/utils";
 
@@ -35,124 +33,22 @@ export enum Headers {
   Subnet = "Subnet",
 }
 
-const generateIPRangeRows = (ipRanges: IPRange[], subnets: Subnet[]) =>
-  ipRanges.map((ipRange) => {
-    const subnet = subnets.find((subnet) => subnet.id === ipRange.subnet);
-    const comment = getCommentDisplay(ipRange);
-    const gatewayIP = subnet?.gateway_ip || "—";
-
-    return {
-      columns: [
-        {
-          "aria-label": Headers.Subnet,
-          content: <SubnetLink id={ipRange.subnet} />,
-        },
-        {
-          "aria-label": Headers.StartIP,
-          content: ipRange.start_ip,
-        },
-        {
-          "aria-label": Headers.EndIP,
-          content: ipRange.end_ip,
-        },
-        {
-          "aria-label": Headers.GatewayIP,
-          content: gatewayIP,
-        },
-        {
-          "aria-label": Headers.Comment,
-          content: comment,
-        },
-      ],
-      key: ipRange.id,
-      sortData: {
-        comment,
-        endIP: ipRange.end_ip,
-        gatewayIP,
-        subnet: subnet?.cidr || "",
-        startIP: ipRange.start_ip,
-      },
-    };
-  });
-
-const generateFormRow = (
-  vlanId: VLAN[VLANMeta.PK],
-  subnetSelected: boolean,
-  handleSubnetChange: ChangeEventHandler
-) => {
-  return [
-    {
-      columns: [
-        {
-          "aria-label": Headers.Subnet,
-          content: (
-            <SubnetSelect
-              labelClassName="u-visually-hidden"
-              name="subnet"
-              onChange={handleSubnetChange}
-              vlan={vlanId}
-            />
-          ),
-        },
-        {
-          "aria-label": Headers.StartIP,
-          content: subnetSelected ? (
-            <FormikField
-              label={Headers.StartIP}
-              labelClassName="u-visually-hidden"
-              name="startIP"
-              type="text"
-            />
-          ) : null,
-        },
-        {
-          "aria-label": Headers.EndIP,
-          content: subnetSelected ? (
-            <FormikField
-              label={Headers.EndIP}
-              labelClassName="u-visually-hidden"
-              name="endIP"
-              type="text"
-            />
-          ) : null,
-        },
-        {
-          "aria-label": Headers.GatewayIP,
-          content: subnetSelected ? (
-            <FormikField
-              label={Headers.GatewayIP}
-              labelClassName="u-visually-hidden"
-              name="gatewayIP"
-              type="text"
-            />
-          ) : null,
-        },
-      ],
-    },
-  ];
-};
-
 const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
-  const { handleChange, setFieldValue, values } =
+  const { handleChange, setFieldValue, validateForm, values } =
     useFormikContext<ConfigureDHCPValues>();
 
   const ipRanges = useSelector((state: RootState) =>
     ipRangeSelectors.getByVLAN(state, id)
   );
   const subnets = useSelector(subnetSelectors.all);
+  const ipRangeLoading = useSelector(ipRangeSelectors.loading);
 
   useFetchActions([ipRangeActions.fetch, subnetActions.fetch]);
 
-  if (!values.enableDHCP) {
-    return null;
-  }
-
-  // If the VLAN already has IP ranges defined in its subnets we only display
-  // a table of that IP range data. Otherwise, we allow the user to define a
-  // range of IP addresses to be used for DHCP.
   const hasIPRanges = ipRanges.length > 0;
   const subnetSelected = isId(values.subnet);
-  const handleSubnetChange: ChangeEventHandler<HTMLSelectElement> = async (
+
+  const handleSubnetChange: ChangeEventHandler<HTMLInputElement> = async (
     e
   ) => {
     // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
@@ -162,7 +58,9 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
     const subnet = subnets.find(
       (subnet) => Number(e.target.value) === subnet.id
     );
-    setFieldValue(
+
+    // Set all field values without validating individually
+    await setFieldValue(
       "endIP",
       subnet?.statistics.suggested_dynamic_range?.end || ""
     ).catch((reason: unknown) => {
@@ -172,7 +70,8 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
         reason as string
       );
     });
-    setFieldValue(
+
+    await setFieldValue(
       "gatewayIP",
       subnet?.gateway_ip || subnet?.statistics.suggested_gateway || ""
     ).catch((reason: unknown) => {
@@ -182,7 +81,8 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
         reason as string
       );
     });
-    setFieldValue(
+
+    await setFieldValue(
       "startIP",
       subnet?.statistics.suggested_dynamic_range?.start || ""
     ).catch((reason: unknown) => {
@@ -192,37 +92,55 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
         reason as string
       );
     });
+
+    // Validate the entire form after all values are set
+    validateForm();
   };
+
+  const columns = useDHCPReservedRangesColumns({
+    hasIPRanges,
+    subnetSelected,
+    handleSubnetChange,
+    vlanId: id,
+  });
+
+  if (!values.enableDHCP) {
+    return null;
+  }
+
+  const data: DHCPReservedRangeData[] = hasIPRanges
+    ? ipRanges.map((ipRange) => {
+        const subnet = subnets.find((subnet) => subnet.id === ipRange.subnet);
+        return {
+          id: ipRange.id,
+          subnet: ipRange.subnet,
+          startIp: ipRange.start_ip,
+          endIp: ipRange.end_ip,
+          gatewayIp: subnet?.gateway_ip || "—",
+          comment: getCommentDisplay(ipRange),
+        };
+      })
+    : [
+        {
+          id: 0,
+          subnet: values.subnet || 0,
+          startIp: values.startIP,
+          endIp: values.endIP,
+          gatewayIp: values.gatewayIP,
+          comment: "",
+        },
+      ];
 
   return (
     <TitledSection title="Reserved dynamic range">
-      {hasIPRanges ? (
-        <MainTable
-          defaultSort="startIP"
-          defaultSortDirection="ascending"
-          headers={[
-            { content: Headers.Subnet, sortKey: "subnet" },
-            { content: Headers.StartIP, sortKey: "startIP" },
-            { content: Headers.EndIP, sortKey: "endIP" },
-            { content: Headers.GatewayIP, sortKey: "gatewayIP" },
-            { content: Headers.Comment, sortKey: "comment" },
-          ]}
-          responsive
-          rows={generateIPRangeRows(ipRanges, subnets)}
-          sortable
-        />
-      ) : (
-        <MainTable
-          headers={[
-            { content: Headers.Subnet },
-            { content: Headers.StartIP },
-            { content: Headers.EndIP },
-            { content: Headers.GatewayIP },
-          ]}
-          responsive
-          rows={generateFormRow(id, subnetSelected, handleSubnetChange)}
-        />
-      )}
+      <GenericTable
+        columns={columns}
+        data={data}
+        isLoading={hasIPRanges ? ipRangeLoading : false}
+        noData={hasIPRanges ? "No IP ranges have been reserved." : ""}
+        sorting={hasIPRanges ? [{ id: "startIp", desc: false }] : undefined}
+        variant="regular"
+      />
     </TitledSection>
   );
 };
