@@ -7,9 +7,15 @@ import type { UserGroupResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
+type GroupsListColumnData = UserGroupResponse & {
+  statistics?: {
+    user_count: number;
+  };
+};
+
 export type GroupsListColumnDef = ColumnDef<
-  UserGroupResponse,
-  Partial<UserGroupResponse>
+  GroupsListColumnData,
+  Partial<GroupsListColumnData>
 >;
 
 const useGroupsListColumns = (): GroupsListColumnDef[] => {
@@ -31,6 +37,11 @@ const useGroupsListColumns = (): GroupsListColumnDef[] => {
       accessorKey: "user_count",
       enableSorting: true,
       header: "User count",
+      cell: ({
+        row: {
+          original: { statistics },
+        },
+      }) => statistics?.user_count,
     },
     {
       id: "actions",

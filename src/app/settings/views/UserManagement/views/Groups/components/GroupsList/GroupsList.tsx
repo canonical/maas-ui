@@ -16,6 +16,10 @@ const GroupsList = () => {
   const groups = useGroups({
     query: { page: debouncedPage, size, group_name: searchText },
   });
+  const groupsData = (groups.data?.items ?? []).map((item) => ({
+    ...item,
+    user_count: item.statistics?.user_count,
+  }));
   return (
     <div className="groups-list">
       <MainToolbar>
@@ -31,7 +35,7 @@ const GroupsList = () => {
       </MainToolbar>
       <GenericTable
         columns={columns}
-        data={groups.data?.items ?? []}
+        data={groupsData}
         isLoading={groups.isPending}
         noData="No groups found."
         pagination={{

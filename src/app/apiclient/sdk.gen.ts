@@ -420,6 +420,9 @@ import type {
   ListGroupsData,
   ListGroupsErrors,
   ListGroupsResponses,
+  ListGroupsStatisticsData,
+  ListGroupsStatisticsErrors,
+  ListGroupsStatisticsResponses,
   ListInterfacesData,
   ListInterfacesErrors,
   ListInterfacesResponses,
@@ -4125,124 +4128,6 @@ export const evaluateTag = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Remove Group Entitlement
- */
-export const removeGroupEntitlement = <ThrowOnError extends boolean = false>(
-  options: Options<RemoveGroupEntitlementData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
-    RemoveGroupEntitlementResponses,
-    RemoveGroupEntitlementErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
-    ...options,
-  });
-};
-
-/**
- * List Group Entitlements
- */
-export const listGroupEntitlements = <ThrowOnError extends boolean = false>(
-  options: Options<ListGroupEntitlementsData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    ListGroupEntitlementsResponses,
-    ListGroupEntitlementsErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
-    ...options,
-  });
-};
-
-/**
- * Add Group Entitlement
- */
-export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
-  options: Options<AddGroupEntitlementData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
-    AddGroupEntitlementResponses,
-    AddGroupEntitlementErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-/**
- * List Group Members
- */
-export const listGroupMembers = <ThrowOnError extends boolean = false>(
-  options: Options<ListGroupMembersData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    ListGroupMembersResponses,
-    ListGroupMembersErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/members",
-    ...options,
-  });
-};
-
-/**
- * Add Group Member
- */
-export const addGroupMember = <ThrowOnError extends boolean = false>(
-  options: Options<AddGroupMemberData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
-    AddGroupMemberResponses,
-    AddGroupMemberErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/members",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-/**
  * List Groups
  */
 export const listGroups = <ThrowOnError extends boolean = false>(
@@ -4287,6 +4172,28 @@ export const createGroup = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * List Groups Statistics
+ */
+export const listGroupsStatistics = <ThrowOnError extends boolean = false>(
+  options?: Options<ListGroupsStatisticsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListGroupsStatisticsResponses,
+    ListGroupsStatisticsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/statistics",
+    ...options,
   });
 };
 
@@ -4361,6 +4268,54 @@ export const updateGroup = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Group Members
+ */
+export const listGroupMembers = <ThrowOnError extends boolean = false>(
+  options: Options<ListGroupMembersData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    ListGroupMembersResponses,
+    ListGroupMembersErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/members",
+    ...options,
+  });
+};
+
+/**
+ * Add Group Member
+ */
+export const addGroupMember = <ThrowOnError extends boolean = false>(
+  options: Options<AddGroupMemberData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AddGroupMemberResponses,
+    AddGroupMemberErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/members",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
  * Remove Group Member
  */
 export const removeGroupMember = <ThrowOnError extends boolean = false>(
@@ -4379,6 +4334,76 @@ export const removeGroupMember = <ThrowOnError extends boolean = false>(
     ],
     url: "/MAAS/a/v3/groups/{group_id}/members/{user_id}",
     ...options,
+  });
+};
+
+/**
+ * Remove Group Entitlement
+ */
+export const removeGroupEntitlement = <ThrowOnError extends boolean = false>(
+  options: Options<RemoveGroupEntitlementData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    RemoveGroupEntitlementResponses,
+    RemoveGroupEntitlementErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
+    ...options,
+  });
+};
+
+/**
+ * List Group Entitlements
+ */
+export const listGroupEntitlements = <ThrowOnError extends boolean = false>(
+  options: Options<ListGroupEntitlementsData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    ListGroupEntitlementsResponses,
+    ListGroupEntitlementsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
+    ...options,
+  });
+};
+
+/**
+ * Add Group Entitlement
+ */
+export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
+  options: Options<AddGroupEntitlementData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AddGroupEntitlementResponses,
+    AddGroupEntitlementErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 
