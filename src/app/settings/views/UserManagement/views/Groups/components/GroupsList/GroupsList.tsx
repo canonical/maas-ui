@@ -3,13 +3,17 @@ import { useState } from "react";
 import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
 import { Button, SearchBox } from "@canonical/react-components";
 
+import AddGroup from "../AddGroup";
+
 import useGroupsListColumns from "./useGroupsListColumns/useGroupsListColumns";
 
 import { useGroups } from "@/app/api/query/groups";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 const GroupsList = () => {
   const [searchText, setSearchText] = useState("");
+  const { openSidePanel } = useSidePanel();
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
   const columns = useGroupsListColumns();
@@ -30,7 +34,16 @@ const GroupsList = () => {
             placeholder="Search groups"
             value={searchText}
           />
-          <Button>Add group</Button>
+          <Button
+            onClick={() => {
+              openSidePanel({
+                component: AddGroup,
+                title: "Add group",
+              });
+            }}
+          >
+            Add group
+          </Button>
         </MainToolbar.Controls>
       </MainToolbar>
       <GenericTable

@@ -4192,7 +4192,7 @@ export const listGroupsStatistics = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/groups/statistics",
+    url: "/MAAS/a/v3/groups:statistics",
     ...options,
   });
 };

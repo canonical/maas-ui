@@ -11821,7 +11821,7 @@ export type ListGroupsStatisticsData = {
      */
     group_name?: string;
   };
-  url: "/MAAS/a/v3/groups/statistics";
+  url: "/MAAS/a/v3/groups:statistics";
 };
 
 export type ListGroupsStatisticsErrors = {

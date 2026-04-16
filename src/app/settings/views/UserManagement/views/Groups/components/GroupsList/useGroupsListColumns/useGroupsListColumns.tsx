@@ -49,14 +49,14 @@ const useGroupsListColumns = (): GroupsListColumnDef[] => {
       enableSorting: false,
       cell: ({
         row: {
-          original: { id },
+          original: { id, statistics },
         },
       }) => (
         <TableActions
           onDelete={() => {
             openSidePanel({
               component: DeleteGroup,
-              props: { id },
+              props: { id, user_count: statistics?.user_count ?? 0 },
               title: "Delete group",
             });
           }}

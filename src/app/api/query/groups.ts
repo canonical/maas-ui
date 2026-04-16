@@ -5,6 +5,8 @@ import { mutationOptionsWithHeaders, queryOptionsWithHeaders } from "../utils";
 import { useWebsocketAwareQuery } from "./base";
 
 import type {
+  CreateGroupData,
+  CreateGroupErrors,
   DeleteGroupData,
   DeleteGroupErrors,
   DeleteGroupResponses,
@@ -17,12 +19,18 @@ import type {
   ListGroupsStatisticsData,
   ListGroupsStatisticsErrors,
   ListGroupsStatisticsResponses,
+  UpdateGroupData,
+  UpdateGroupErrors,
+  UpdateGroupResponses,
+  CreateGroupResponses,
 } from "@/app/apiclient";
 import {
   deleteGroup,
   listGroups,
   getGroup,
   listGroupsStatistics,
+  createGroup,
+  updateGroup,
 } from "@/app/apiclient";
 import {
   getGroupQueryKey,
@@ -82,6 +90,38 @@ export const useGetGroup = (options: Options<GetGroupData>) => {
       getGroupQueryKey(options)
     )
   );
+};
+
+export const useCreateGroup = (mutationOptions?: Options<CreateGroupData>) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateGroupResponses,
+      CreateGroupErrors,
+      CreateGroupData
+    >(mutationOptions, createGroup),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listGroupsQueryKey(),
+      });
+    },
+  });
+};
+
+export const useUpdateGroup = (mutationOptions?: Options<UpdateGroupData>) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdateGroupResponses,
+      UpdateGroupErrors,
+      UpdateGroupData
+    >(mutationOptions, updateGroup),
+    onSuccess: async () => {
+      return queryClient.invalidateQueries({
+        queryKey: listGroupsQueryKey(),
+      });
+    },
+  });
 };
 
 export const useDeleteGroup = (mutationOptions?: Options<DeleteGroupData>) => {
