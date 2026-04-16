@@ -1,14 +1,14 @@
-import GroupsList from "./components/GroupsList";
+import GroupsTable from "./components/GroupsTable";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 
-const Groups = () => {
+const GroupsList = () => {
   useWindowTitle("Groups");
   return (
     <PageContent>
-      <GroupsList />
+      <GroupsTable />
     </PageContent>
   );
 };
-export default Groups;
+export default GroupsList;

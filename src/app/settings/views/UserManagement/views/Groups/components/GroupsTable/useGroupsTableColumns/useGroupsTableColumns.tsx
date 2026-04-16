@@ -18,7 +18,7 @@ export type GroupsListColumnDef = ColumnDef<
   Partial<GroupsListColumnData>
 >;
 
-const useGroupsListColumns = (): GroupsListColumnDef[] => {
+const useGroupsTableColumns = (): GroupsListColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   return [
     {
@@ -73,4 +73,4 @@ const useGroupsListColumns = (): GroupsListColumnDef[] => {
   ] as GroupsListColumnDef[];
 };
 
-export default useGroupsListColumns;
+export default useGroupsTableColumns;

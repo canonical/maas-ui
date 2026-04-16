@@ -28,6 +28,7 @@ const DeleteGroup = ({ id, user_count }: Props) => {
       )}
       <ModelActionForm
         aria-label="Delete group"
+        errors={deleteGroup.error}
         initialValues={{}}
         message={
           user_count ? (

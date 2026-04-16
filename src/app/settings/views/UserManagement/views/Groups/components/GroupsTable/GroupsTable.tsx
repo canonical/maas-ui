@@ -5,13 +5,13 @@ import { Button, SearchBox } from "@canonical/react-components";
 
 import AddGroup from "../AddGroup";
 
-import useGroupsListColumns from "./useGroupsListColumns/useGroupsListColumns";
+import useGroupsListColumns from "./useGroupsTableColumns/useGroupsTableColumns";
 
 import { useGroups } from "@/app/api/query/groups";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
-const GroupsList = () => {
+const GroupsTable = () => {
   const [searchText, setSearchText] = useState("");
   const { openSidePanel } = useSidePanel();
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
@@ -64,4 +64,4 @@ const GroupsList = () => {
     </div>
   );
 };
-export default GroupsList;
+export default GroupsTable;
