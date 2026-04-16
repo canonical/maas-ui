@@ -2,6 +2,7 @@
 
 ## TL;DR
 
+- Run tests using `yarn test path/to/file.test.tsx`, add `--run` to only run once instead of watching
 - Import all test utilities from `@/testing/utils` (includes `renderWithProviders`, `screen`, `waitFor`, `userEvent`, `within`, etc.)
 - Use `renderWithProviders` for all modern component tests
 - Use `setupMockServer` to configure MSW for API mocking
