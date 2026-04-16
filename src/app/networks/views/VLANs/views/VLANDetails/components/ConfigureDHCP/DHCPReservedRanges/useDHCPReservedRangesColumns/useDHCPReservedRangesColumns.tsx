@@ -1,4 +1,3 @@
-import type { ChangeEventHandler } from "react";
 import { useMemo } from "react";
 
 import type { ColumnDef } from "@tanstack/react-table";
@@ -27,14 +26,12 @@ type DHCPReservedRangesColumnDef = ColumnDef<
 type UseDHCPReservedRangesColumnsProps = {
   hasIPRanges: boolean;
   subnetSelected: boolean;
-  handleSubnetChange: ChangeEventHandler<HTMLInputElement>;
   vlanId: VLAN[VLANMeta.PK];
 };
 
 const useDHCPReservedRangesColumns = ({
   hasIPRanges,
   subnetSelected = false,
-  handleSubnetChange,
   vlanId,
 }: UseDHCPReservedRangesColumnsProps): DHCPReservedRangesColumnDef[] => {
   return useMemo(
@@ -51,7 +48,6 @@ const useDHCPReservedRangesColumns = ({
             <SubnetSelect
               labelClassName="u-visually-hidden"
               name="subnet"
-              onChange={handleSubnetChange}
               vlan={vlanId}
             />
           ),
@@ -120,7 +116,7 @@ const useDHCPReservedRangesColumns = ({
           ]
         : []),
     ],
-    [hasIPRanges, subnetSelected, handleSubnetChange, vlanId]
+    [hasIPRanges, subnetSelected, vlanId]
   );
 };
 

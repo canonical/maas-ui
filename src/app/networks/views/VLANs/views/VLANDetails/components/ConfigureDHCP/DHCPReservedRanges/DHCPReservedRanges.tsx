@@ -1,4 +1,4 @@
-import type { ChangeEventHandler } from "react";
+import { useEffect } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
 import { useFormikContext } from "formik";
@@ -34,7 +34,7 @@ export enum Headers {
 }
 
 const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
-  const { handleChange, setFieldValue, validateForm, values } =
+  const { setFieldTouched, setFieldValue, validateForm, values } =
     useFormikContext<ConfigureDHCPValues>();
 
   const ipRanges = useSelector((state: RootState) =>
@@ -48,18 +48,11 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
   const hasIPRanges = ipRanges.length > 0;
   const subnetSelected = isId(values.subnet);
 
-  const handleSubnetChange: ChangeEventHandler<HTMLInputElement> = async (
-    e
-  ) => {
-    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-    await handleChange(e);
-    // We set reserved range defaults based on the selected subnet if they exist
-    // otherwise leave the field empty.
-    const subnet = subnets.find(
-      (subnet) => Number(e.target.value) === subnet.id
-    );
-
-    await setFieldValue(
+  // When the selected subnet changes, populate the reserved range defaults
+  // based on the subnet's suggested dynamic range, or clear the fields.
+  useEffect(() => {
+    const subnet = subnets.find((s) => s.id === Number(values.subnet));
+    setFieldValue(
       "endIP",
       subnet?.statistics.suggested_dynamic_range?.end || ""
     ).catch((reason: unknown) => {
@@ -69,8 +62,7 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
         reason as string
       );
     });
-
-    await setFieldValue(
+    setFieldValue(
       "gatewayIP",
       subnet?.gateway_ip || subnet?.statistics.suggested_gateway || ""
     ).catch((reason: unknown) => {
@@ -80,8 +72,7 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
         reason as string
       );
     });
-
-    await setFieldValue(
+    setFieldValue(
       "startIP",
       subnet?.statistics.suggested_dynamic_range?.start || ""
     ).catch((reason: unknown) => {
@@ -91,15 +82,16 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
         reason as string
       );
     });
-
+    if (isId(values.subnet)) {
+      setFieldTouched("subnet", true, false);
+    }
     // need to manually call this as Yup does not automatically re-trigger the validation schema
     validateForm();
-  };
+  }, [setFieldTouched, setFieldValue, subnets, validateForm, values.subnet]);
 
   const columns = useDHCPReservedRangesColumns({
     hasIPRanges,
     subnetSelected,
-    handleSubnetChange,
     vlanId: id,
   });
 
