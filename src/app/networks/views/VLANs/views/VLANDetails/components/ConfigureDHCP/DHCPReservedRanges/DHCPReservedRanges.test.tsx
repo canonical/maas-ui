@@ -96,7 +96,6 @@ describe("DHCPReservedRanges", () => {
         { state }
       );
 
-      // In form mode with no subnet selected, the table shows form fields but no data message
       expect(screen.getByText("Reserved dynamic range")).toBeInTheDocument();
       expect(
         screen.getByRole("combobox", { name: "Subnet" })
@@ -159,7 +158,6 @@ describe("DHCPReservedRanges", () => {
         { state }
       );
 
-      // Form mode should not show Comment column
       ["Subnet", Headers.StartIP, Headers.EndIP, Headers.GatewayIP].forEach(
         (column) => {
           expect(
@@ -170,7 +168,6 @@ describe("DHCPReservedRanges", () => {
         }
       );
 
-      // Comment column should not be present
       expect(
         screen.queryByRole("columnheader", {
           name: new RegExp(`^${Headers.Comment}`, "i"),
