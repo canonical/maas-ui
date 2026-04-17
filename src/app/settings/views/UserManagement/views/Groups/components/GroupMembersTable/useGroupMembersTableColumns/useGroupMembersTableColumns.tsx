@@ -1,10 +1,10 @@
+import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import type {
   UserGroupMemberResponse,
   UserGroupResponse,
 } from "@/app/apiclient";
-import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import RemoveGroupMember from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupMember";
 
@@ -39,14 +39,22 @@ const useGroupMembersTableColumns = ({
           original: { user_id },
         },
       }) => (
-        <TableActions
-          onDelete={() => {
-            openSidePanel({
-              component: RemoveGroupMember,
-              title: "Remove member",
-              props: { group_id, user_id },
-            });
-          }}
+        <ContextualMenu
+          hasToggleIcon
+          links={[
+            {
+              children: "Remove member...",
+              onClick: () => {
+                openSidePanel({
+                  component: RemoveGroupMember,
+                  title: "Remove member",
+                  props: { group_id, user_id },
+                });
+              },
+            },
+          ]}
+          toggleAppearance="base"
+          toggleClassName="u-no-margin--bottom is-small is-dense"
         />
       ),
     },
