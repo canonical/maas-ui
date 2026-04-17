@@ -1,4 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
+import { Link } from "react-router";
 
 import DeleteGroup from "../../DeleteGroup";
 import EditGroup from "../../EditGroup";
@@ -6,6 +7,7 @@ import EditGroup from "../../EditGroup";
 import type { UserGroupResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import urls from "@/app/settings/urls";
 
 type GroupsListColumnData = UserGroupResponse & {
   statistics?: {
@@ -25,6 +27,15 @@ const useGroupsTableColumns = (): GroupsListColumnDef[] => {
       id: "name",
       accessorKey: "name",
       enableSorting: true,
+      cell: ({
+        row: {
+          original: { id, name },
+        },
+      }) => (
+        <Link to={urls.userManagement.group.index({ id })}>
+          <strong>{name}</strong>
+        </Link>
+      ),
     },
     {
       id: "description",
