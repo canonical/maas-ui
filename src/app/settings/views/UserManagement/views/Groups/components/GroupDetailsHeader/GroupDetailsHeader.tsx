@@ -8,6 +8,7 @@ import type { UserGroupResponse } from "@/app/apiclient";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/settings/urls";
+import AddEntitlement from "@/app/settings/views/UserManagement/views/Groups/components/AddEntitlement";
 import DeleteGroup from "@/app/settings/views/UserManagement/views/Groups/components/DeleteGroup";
 import EditGroup from "@/app/settings/views/UserManagement/views/Groups/components/EditGroup";
 
@@ -41,10 +42,10 @@ const GroupDetailsHeader = ({
                 children: "Add entitlement...",
                 onClick: () => {
                   openSidePanel({
-                    component: EditGroup,
+                    component: AddEntitlement,
                     title: "Add entitlement",
                     props: {
-                      id: group!.id,
+                      group_id: group!.id,
                     },
                   });
                 },

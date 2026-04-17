@@ -37,8 +37,12 @@ import type {
   RemoveGroupMemberData,
   RemoveGroupMemberErrors,
   RemoveGroupMemberResponses,
+  AddGroupEntitlementData,
+  AddGroupEntitlementErrors,
+  AddGroupEntitlementResponses,
 } from "@/app/apiclient";
 import {
+  addGroupEntitlement,
   removeGroupMember,
   removeGroupEntitlement,
   listGroupMembers,
@@ -192,6 +196,26 @@ export const useGroupEntitlements = (
       ListGroupEntitlementsData
     >(options, listGroupEntitlements, listGroupEntitlementsQueryKey(options))
   );
+};
+
+export const useAddGroupEntitlement = (
+  mutationOptions?: Options<AddGroupEntitlementData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      AddGroupEntitlementResponses,
+      AddGroupEntitlementErrors,
+      AddGroupEntitlementData
+    >(mutationOptions, addGroupEntitlement),
+    onSuccess: (_data, variables) => {
+      return queryClient.invalidateQueries({
+        queryKey: listGroupEntitlementsQueryKey({
+          path: { group_id: variables.path.group_id },
+        }),
+      });
+    },
+  });
 };
 
 export const useRemoveGroupEntitlement = (
