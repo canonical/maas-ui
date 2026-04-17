@@ -99,6 +99,9 @@ import type {
   CreateSpaceData,
   CreateSpaceErrors,
   CreateSpaceResponses,
+  CreateSwitchData,
+  CreateSwitchErrors,
+  CreateSwitchResponses,
   CreateTagData,
   CreateTagErrors,
   CreateTagResponses,
@@ -171,6 +174,9 @@ import type {
   DeleteSpaceData,
   DeleteSpaceErrors,
   DeleteSpaceResponses,
+  DeleteSwitchData,
+  DeleteSwitchErrors,
+  DeleteSwitchResponses,
   DeleteTagData,
   DeleteTagErrors,
   DeleteTagResponses,
@@ -279,6 +285,9 @@ import type {
   GetMeWithSummaryData,
   GetMeWithSummaryErrors,
   GetMeWithSummaryResponses,
+  GetNosInstallerData,
+  GetNosInstallerErrors,
+  GetNosInstallerResponses,
   GetNotificationData,
   GetNotificationErrors,
   GetNotificationResponses,
@@ -315,6 +324,9 @@ import type {
   GetSubnetData,
   GetSubnetErrors,
   GetSubnetResponses,
+  GetSwitchData,
+  GetSwitchErrors,
+  GetSwitchResponses,
   GetTagData,
   GetTagErrors,
   GetTagResponses,
@@ -408,6 +420,9 @@ import type {
   ListGroupsData,
   ListGroupsErrors,
   ListGroupsResponses,
+  ListGroupsStatisticsData,
+  ListGroupsStatisticsErrors,
+  ListGroupsStatisticsResponses,
   ListInterfacesData,
   ListInterfacesErrors,
   ListInterfacesResponses,
@@ -459,6 +474,9 @@ import type {
   ListSubnetsData,
   ListSubnetsErrors,
   ListSubnetsResponses,
+  ListSwitchesData,
+  ListSwitchesErrors,
+  ListSwitchesResponses,
   ListTagsData,
   ListTagsErrors,
   ListTagsResponses,
@@ -552,6 +570,9 @@ import type {
   UpdateSpaceData,
   UpdateSpaceErrors,
   UpdateSpaceResponses,
+  UpdateSwitchData,
+  UpdateSwitchErrors,
+  UpdateSwitchResponses,
   UpdateTagData,
   UpdateTagErrors,
   UpdateTagResponses,
@@ -2019,12 +2040,6 @@ export const getDomainRrsets = <ThrowOnError extends boolean = false>(
     GetDomainRrsetsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
     ...options,
   });
@@ -2537,6 +2552,29 @@ export const listMachines = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/machines",
+    ...options,
+  });
+};
+
+/**
+ * Get Nos Installer
+ *
+ * Serve NOS installer binary.
+ *
+ * This endpoint:
+ * - Receives ONIE headers from the switch
+ * - Checks if an installer is assigned to the switch
+ * - If assigned, streams the installer binary to the switch
+ */
+export const getNosInstaller = <ThrowOnError extends boolean = false>(
+  options: Options<GetNosInstallerData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetNosInstallerResponses,
+    GetNosInstallerErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/nos-installer",
     ...options,
   });
 };
@@ -3822,6 +3860,134 @@ export const getFabricVlanSubnet = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Switches
+ *
+ * List all switches with pagination.
+ */
+export const listSwitches = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSwitchesData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListSwitchesResponses,
+    ListSwitchesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches",
+    ...options,
+  });
+};
+
+/**
+ * Create Switch
+ *
+ * Create a new switch with its management interface.
+ */
+export const createSwitch = <ThrowOnError extends boolean = false>(
+  options: Options<CreateSwitchData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    CreateSwitchResponses,
+    CreateSwitchErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete Switch
+ *
+ * Delete a switch and all related entries.
+ */
+export const deleteSwitch = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteSwitchData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    DeleteSwitchResponses,
+    DeleteSwitchErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches/{switch_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Switch
+ *
+ * Get a specific switch by ID.
+ */
+export const getSwitch = <ThrowOnError extends boolean = false>(
+  options: Options<GetSwitchData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetSwitchResponses,
+    GetSwitchErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches/{switch_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Switch
+ *
+ * Update a switch's target image.
+ */
+export const updateSwitch = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateSwitchData, ThrowOnError>
+) => {
+  return (options.client ?? client).patch<
+    UpdateSwitchResponses,
+    UpdateSwitchErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches/{switch_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
  * List Tags
  */
 export const listTags = <ThrowOnError extends boolean = false>(
@@ -3962,124 +4128,6 @@ export const evaluateTag = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Remove Group Entitlement
- */
-export const removeGroupEntitlement = <ThrowOnError extends boolean = false>(
-  options: Options<RemoveGroupEntitlementData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
-    RemoveGroupEntitlementResponses,
-    RemoveGroupEntitlementErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
-    ...options,
-  });
-};
-
-/**
- * List Group Entitlements
- */
-export const listGroupEntitlements = <ThrowOnError extends boolean = false>(
-  options: Options<ListGroupEntitlementsData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    ListGroupEntitlementsResponses,
-    ListGroupEntitlementsErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
-    ...options,
-  });
-};
-
-/**
- * Add Group Entitlement
- */
-export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
-  options: Options<AddGroupEntitlementData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
-    AddGroupEntitlementResponses,
-    AddGroupEntitlementErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-/**
- * List Group Members
- */
-export const listGroupMembers = <ThrowOnError extends boolean = false>(
-  options: Options<ListGroupMembersData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    ListGroupMembersResponses,
-    ListGroupMembersErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/members",
-    ...options,
-  });
-};
-
-/**
- * Add Group Member
- */
-export const addGroupMember = <ThrowOnError extends boolean = false>(
-  options: Options<AddGroupMemberData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
-    AddGroupMemberResponses,
-    AddGroupMemberErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/groups/{group_id}/members",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-/**
  * List Groups
  */
 export const listGroups = <ThrowOnError extends boolean = false>(
@@ -4124,6 +4172,28 @@ export const createGroup = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * List Groups Statistics
+ */
+export const listGroupsStatistics = <ThrowOnError extends boolean = false>(
+  options?: Options<ListGroupsStatisticsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListGroupsStatisticsResponses,
+    ListGroupsStatisticsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups:statistics",
+    ...options,
   });
 };
 
@@ -4198,6 +4268,54 @@ export const updateGroup = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Group Members
+ */
+export const listGroupMembers = <ThrowOnError extends boolean = false>(
+  options: Options<ListGroupMembersData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    ListGroupMembersResponses,
+    ListGroupMembersErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/members",
+    ...options,
+  });
+};
+
+/**
+ * Add Group Member
+ */
+export const addGroupMember = <ThrowOnError extends boolean = false>(
+  options: Options<AddGroupMemberData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AddGroupMemberResponses,
+    AddGroupMemberErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/members",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
  * Remove Group Member
  */
 export const removeGroupMember = <ThrowOnError extends boolean = false>(
@@ -4216,6 +4334,76 @@ export const removeGroupMember = <ThrowOnError extends boolean = false>(
     ],
     url: "/MAAS/a/v3/groups/{group_id}/members/{user_id}",
     ...options,
+  });
+};
+
+/**
+ * Remove Group Entitlement
+ */
+export const removeGroupEntitlement = <ThrowOnError extends boolean = false>(
+  options: Options<RemoveGroupEntitlementData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    RemoveGroupEntitlementResponses,
+    RemoveGroupEntitlementErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
+    ...options,
+  });
+};
+
+/**
+ * List Group Entitlements
+ */
+export const listGroupEntitlements = <ThrowOnError extends boolean = false>(
+  options: Options<ListGroupEntitlementsData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    ListGroupEntitlementsResponses,
+    ListGroupEntitlementsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
+    ...options,
+  });
+};
+
+/**
+ * Add Group Entitlement
+ */
+export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
+  options: Options<AddGroupEntitlementData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AddGroupEntitlementResponses,
+    AddGroupEntitlementErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 

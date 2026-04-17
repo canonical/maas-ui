@@ -73,6 +73,7 @@ const urls = {
   userManagement: {
     index: "/settings/user-management",
     users: "/settings/user-management/users",
+    groups: "/settings/user-management/groups",
     singleSignOn: "/settings/user-management/single-sign-on",
   },
 } as const;

@@ -34,6 +34,7 @@ import {
   createResourcePool,
   createSession,
   createSpace,
+  createSwitch,
   createTag,
   createUser,
   createUserSshkeys,
@@ -58,6 +59,7 @@ import {
   deleteRacks,
   deleteResourcePool,
   deleteSpace,
+  deleteSwitch,
   deleteTag,
   deleteUser,
   deleteUserSshkey,
@@ -94,6 +96,7 @@ import {
   getGroup,
   getMachinePowerParameters,
   getMeWithSummary,
+  getNosInstaller,
   getNotification,
   getOauthProvider,
   getOauthProviderById,
@@ -106,6 +109,7 @@ import {
   getSelectionStatus,
   getSpace,
   getSubnet,
+  getSwitch,
   getTag,
   getUser,
   getUserInfo,
@@ -137,6 +141,7 @@ import {
   listGroupEntitlements,
   listGroupMembers,
   listGroups,
+  listGroupsStatistics,
   listInterfaces,
   listMachinePciDevices,
   listMachines,
@@ -154,6 +159,7 @@ import {
   listSelectionStatus,
   listSpaces,
   listSubnets,
+  listSwitches,
   listTags,
   listUsers,
   listUserSshkeys,
@@ -186,6 +192,7 @@ import {
   updateRack,
   updateResourcePool,
   updateSpace,
+  updateSwitch,
   updateTag,
   updateUser,
   updateZone,
@@ -281,6 +288,9 @@ import type {
   CreateSpaceData,
   CreateSpaceError,
   CreateSpaceResponse,
+  CreateSwitchData,
+  CreateSwitchError,
+  CreateSwitchResponse,
   CreateTagData,
   CreateTagError,
   CreateTagResponse,
@@ -353,6 +363,9 @@ import type {
   DeleteSpaceData,
   DeleteSpaceError,
   DeleteSpaceResponse,
+  DeleteSwitchData,
+  DeleteSwitchError,
+  DeleteSwitchResponse,
   DeleteTagData,
   DeleteTagError,
   DeleteTagResponse,
@@ -460,6 +473,8 @@ import type {
   GetMeWithSummaryData,
   GetMeWithSummaryError,
   GetMeWithSummaryResponse,
+  GetNosInstallerData,
+  GetNosInstallerError,
   GetNotificationData,
   GetNotificationError,
   GetNotificationResponse,
@@ -496,6 +511,9 @@ import type {
   GetSubnetData,
   GetSubnetError,
   GetSubnetResponse,
+  GetSwitchData,
+  GetSwitchError,
+  GetSwitchResponse,
   GetTagData,
   GetTagError,
   GetTagResponse,
@@ -589,6 +607,9 @@ import type {
   ListGroupsData,
   ListGroupsError,
   ListGroupsResponse,
+  ListGroupsStatisticsData,
+  ListGroupsStatisticsError,
+  ListGroupsStatisticsResponse,
   ListInterfacesData,
   ListInterfacesError,
   ListInterfacesResponse,
@@ -640,6 +661,9 @@ import type {
   ListSubnetsData,
   ListSubnetsError,
   ListSubnetsResponse,
+  ListSwitchesData,
+  ListSwitchesError,
+  ListSwitchesResponse,
   ListTagsData,
   ListTagsError,
   ListTagsResponse,
@@ -731,6 +755,9 @@ import type {
   UpdateSpaceData,
   UpdateSpaceError,
   UpdateSpaceResponse,
+  UpdateSwitchData,
+  UpdateSwitchError,
+  UpdateSwitchResponse,
   UpdateTagData,
   UpdateTagError,
   UpdateTagResponse,
@@ -3127,6 +3154,39 @@ export const listMachinesOptions = (options?: Options<ListMachinesData>) =>
     queryKey: listMachinesQueryKey(options),
   });
 
+export const getNosInstallerQueryKey = (
+  options: Options<GetNosInstallerData>
+) => createQueryKey("getNosInstaller", options);
+
+/**
+ * Get Nos Installer
+ *
+ * Serve NOS installer binary.
+ *
+ * This endpoint:
+ * - Receives ONIE headers from the switch
+ * - Checks if an installer is assigned to the switch
+ * - If assigned, streams the installer binary to the switch
+ */
+export const getNosInstallerOptions = (options: Options<GetNosInstallerData>) =>
+  queryOptions<
+    unknown,
+    GetNosInstallerError,
+    unknown,
+    ReturnType<typeof getNosInstallerQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getNosInstaller({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getNosInstallerQueryKey(options),
+  });
+
 export const listNotificationsQueryKey = (
   options?: Options<ListNotificationsData>
 ) => createQueryKey("listNotifications", options);
@@ -4664,6 +4724,147 @@ export const getFabricVlanSubnetOptions = (
     queryKey: getFabricVlanSubnetQueryKey(options),
   });
 
+export const listSwitchesQueryKey = (options?: Options<ListSwitchesData>) =>
+  createQueryKey("listSwitches", options);
+
+/**
+ * List Switches
+ *
+ * List all switches with pagination.
+ */
+export const listSwitchesOptions = (options?: Options<ListSwitchesData>) =>
+  queryOptions<
+    ListSwitchesResponse,
+    ListSwitchesError,
+    ListSwitchesResponse,
+    ReturnType<typeof listSwitchesQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listSwitches({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listSwitchesQueryKey(options),
+  });
+
+/**
+ * Create Switch
+ *
+ * Create a new switch with its management interface.
+ */
+export const createSwitchMutation = (
+  options?: Partial<Options<CreateSwitchData>>
+): UseMutationOptions<
+  CreateSwitchResponse,
+  CreateSwitchError,
+  Options<CreateSwitchData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateSwitchResponse,
+    CreateSwitchError,
+    Options<CreateSwitchData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await createSwitch({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete Switch
+ *
+ * Delete a switch and all related entries.
+ */
+export const deleteSwitchMutation = (
+  options?: Partial<Options<DeleteSwitchData>>
+): UseMutationOptions<
+  DeleteSwitchResponse,
+  DeleteSwitchError,
+  Options<DeleteSwitchData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteSwitchResponse,
+    DeleteSwitchError,
+    Options<DeleteSwitchData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await deleteSwitch({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getSwitchQueryKey = (options: Options<GetSwitchData>) =>
+  createQueryKey("getSwitch", options);
+
+/**
+ * Get Switch
+ *
+ * Get a specific switch by ID.
+ */
+export const getSwitchOptions = (options: Options<GetSwitchData>) =>
+  queryOptions<
+    GetSwitchResponse,
+    GetSwitchError,
+    GetSwitchResponse,
+    ReturnType<typeof getSwitchQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSwitch({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSwitchQueryKey(options),
+  });
+
+/**
+ * Update Switch
+ *
+ * Update a switch's target image.
+ */
+export const updateSwitchMutation = (
+  options?: Partial<Options<UpdateSwitchData>>
+): UseMutationOptions<
+  UpdateSwitchResponse,
+  UpdateSwitchError,
+  Options<UpdateSwitchData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateSwitchResponse,
+    UpdateSwitchError,
+    Options<UpdateSwitchData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await updateSwitch({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const listTagsQueryKey = (options?: Options<ListTagsData>) =>
   createQueryKey("listTags", options);
 
@@ -4818,143 +5019,6 @@ export const evaluateTagMutation = (
   return mutationOptions;
 };
 
-/**
- * Remove Group Entitlement
- */
-export const removeGroupEntitlementMutation = (
-  options?: Partial<Options<RemoveGroupEntitlementData>>
-): UseMutationOptions<
-  RemoveGroupEntitlementResponse,
-  RemoveGroupEntitlementError,
-  Options<RemoveGroupEntitlementData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    RemoveGroupEntitlementResponse,
-    RemoveGroupEntitlementError,
-    Options<RemoveGroupEntitlementData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await removeGroupEntitlement({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const listGroupEntitlementsQueryKey = (
-  options: Options<ListGroupEntitlementsData>
-) => createQueryKey("listGroupEntitlements", options);
-
-/**
- * List Group Entitlements
- */
-export const listGroupEntitlementsOptions = (
-  options: Options<ListGroupEntitlementsData>
-) =>
-  queryOptions<
-    ListGroupEntitlementsResponse,
-    ListGroupEntitlementsError,
-    ListGroupEntitlementsResponse,
-    ReturnType<typeof listGroupEntitlementsQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listGroupEntitlements({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: listGroupEntitlementsQueryKey(options),
-  });
-
-/**
- * Add Group Entitlement
- */
-export const addGroupEntitlementMutation = (
-  options?: Partial<Options<AddGroupEntitlementData>>
-): UseMutationOptions<
-  AddGroupEntitlementResponse,
-  AddGroupEntitlementError,
-  Options<AddGroupEntitlementData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    AddGroupEntitlementResponse,
-    AddGroupEntitlementError,
-    Options<AddGroupEntitlementData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await addGroupEntitlement({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const listGroupMembersQueryKey = (
-  options: Options<ListGroupMembersData>
-) => createQueryKey("listGroupMembers", options);
-
-/**
- * List Group Members
- */
-export const listGroupMembersOptions = (
-  options: Options<ListGroupMembersData>
-) =>
-  queryOptions<
-    ListGroupMembersResponse,
-    ListGroupMembersError,
-    ListGroupMembersResponse,
-    ReturnType<typeof listGroupMembersQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listGroupMembers({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: listGroupMembersQueryKey(options),
-  });
-
-/**
- * Add Group Member
- */
-export const addGroupMemberMutation = (
-  options?: Partial<Options<AddGroupMemberData>>
-): UseMutationOptions<
-  unknown,
-  AddGroupMemberError,
-  Options<AddGroupMemberData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    unknown,
-    AddGroupMemberError,
-    Options<AddGroupMemberData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await addGroupMember({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
 export const listGroupsQueryKey = (options?: Options<ListGroupsData>) =>
   createQueryKey("listGroups", options);
 
@@ -5006,6 +5070,34 @@ export const createGroupMutation = (
   };
   return mutationOptions;
 };
+
+export const listGroupsStatisticsQueryKey = (
+  options?: Options<ListGroupsStatisticsData>
+) => createQueryKey("listGroupsStatistics", options);
+
+/**
+ * List Groups Statistics
+ */
+export const listGroupsStatisticsOptions = (
+  options?: Options<ListGroupsStatisticsData>
+) =>
+  queryOptions<
+    ListGroupsStatisticsResponse,
+    ListGroupsStatisticsError,
+    ListGroupsStatisticsResponse,
+    ReturnType<typeof listGroupsStatisticsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listGroupsStatistics({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listGroupsStatisticsQueryKey(options),
+  });
 
 /**
  * Delete Group
@@ -5086,6 +5178,61 @@ export const updateGroupMutation = (
   return mutationOptions;
 };
 
+export const listGroupMembersQueryKey = (
+  options: Options<ListGroupMembersData>
+) => createQueryKey("listGroupMembers", options);
+
+/**
+ * List Group Members
+ */
+export const listGroupMembersOptions = (
+  options: Options<ListGroupMembersData>
+) =>
+  queryOptions<
+    ListGroupMembersResponse,
+    ListGroupMembersError,
+    ListGroupMembersResponse,
+    ReturnType<typeof listGroupMembersQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listGroupMembers({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listGroupMembersQueryKey(options),
+  });
+
+/**
+ * Add Group Member
+ */
+export const addGroupMemberMutation = (
+  options?: Partial<Options<AddGroupMemberData>>
+): UseMutationOptions<
+  unknown,
+  AddGroupMemberError,
+  Options<AddGroupMemberData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    AddGroupMemberError,
+    Options<AddGroupMemberData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await addGroupMember({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 /**
  * Remove Group Member
  */
@@ -5103,6 +5250,88 @@ export const removeGroupMemberMutation = (
   > = {
     mutationFn: async (fnOptions) => {
       const { data } = await removeGroupMember({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Remove Group Entitlement
+ */
+export const removeGroupEntitlementMutation = (
+  options?: Partial<Options<RemoveGroupEntitlementData>>
+): UseMutationOptions<
+  RemoveGroupEntitlementResponse,
+  RemoveGroupEntitlementError,
+  Options<RemoveGroupEntitlementData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    RemoveGroupEntitlementResponse,
+    RemoveGroupEntitlementError,
+    Options<RemoveGroupEntitlementData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await removeGroupEntitlement({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listGroupEntitlementsQueryKey = (
+  options: Options<ListGroupEntitlementsData>
+) => createQueryKey("listGroupEntitlements", options);
+
+/**
+ * List Group Entitlements
+ */
+export const listGroupEntitlementsOptions = (
+  options: Options<ListGroupEntitlementsData>
+) =>
+  queryOptions<
+    ListGroupEntitlementsResponse,
+    ListGroupEntitlementsError,
+    ListGroupEntitlementsResponse,
+    ReturnType<typeof listGroupEntitlementsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listGroupEntitlements({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listGroupEntitlementsQueryKey(options),
+  });
+
+/**
+ * Add Group Entitlement
+ */
+export const addGroupEntitlementMutation = (
+  options?: Partial<Options<AddGroupEntitlementData>>
+): UseMutationOptions<
+  AddGroupEntitlementResponse,
+  AddGroupEntitlementError,
+  Options<AddGroupEntitlementData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    AddGroupEntitlementResponse,
+    AddGroupEntitlementError,
+    Options<AddGroupEntitlementData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await addGroupEntitlement({
         ...options,
         ...fnOptions,
         throwOnError: true,
