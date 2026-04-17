@@ -31,11 +31,7 @@ const useGroupsTableColumns = (): GroupsListColumnDef[] => {
         row: {
           original: { id, name },
         },
-      }) => (
-        <Link to={urls.userManagement.group.index({ id })}>
-          <strong>{name}</strong>
-        </Link>
-      ),
+      }) => <Link to={urls.userManagement.group.index({ id })}>{name}</Link>,
     },
     {
       id: "description",

@@ -17,6 +17,7 @@ const RemoveGroupMember = ({ group_id, user_id }: RemoveGroupMemberProps) => {
       aria-label="Remove group member"
       errors={removeMember.error}
       initialValues={{}}
+      message="Are you sure you want to remove this member from the group?"
       modelType="group member"
       onCancel={closeSidePanel}
       onSubmit={() => {
@@ -31,6 +32,7 @@ const RemoveGroupMember = ({ group_id, user_id }: RemoveGroupMemberProps) => {
       saved={removeMember.isSuccess}
       saving={removeMember.isPending}
       submitAppearance="negative"
+      submitLabel="Remove member"
     />
   );
 };

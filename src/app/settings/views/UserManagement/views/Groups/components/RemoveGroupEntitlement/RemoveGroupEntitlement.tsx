@@ -27,6 +27,7 @@ const RemoveGroupEntitlement = ({
       aria-label="Remove group entitlement"
       errors={removeEntitlement.error}
       initialValues={{}}
+      message="Are you sure you want to remove this entitlement from the group?"
       modelType="group entitlement"
       onCancel={closeSidePanel}
       onSubmit={() => {
@@ -43,6 +44,7 @@ const RemoveGroupEntitlement = ({
       saved={removeEntitlement.isSuccess}
       saving={removeEntitlement.isPending}
       submitAppearance="negative"
+      submitLabel="Remove entitlement"
     />
   );
 };
