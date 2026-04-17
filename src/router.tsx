@@ -5,7 +5,8 @@ import { createBrowserRouter, Navigate } from "react-router";
 import Login from "./app/login/Login";
 import LoginCallback from "./app/login/LoginCallback";
 import RequireLogin from "./app/login/RequireLogin";
-import Groups from "./app/settings/views/UserManagement/views/Groups";
+import GroupDetails from "./app/settings/views/UserManagement/views/Groups/views/GroupDetails";
+import GroupsList from "./app/settings/views/UserManagement/views/Groups/views/GroupsList";
 import TagDetails from "./app/tags/views/TagDetails";
 import TagList from "./app/tags/views/TagList";
 
@@ -622,7 +623,15 @@ export const router = createBrowserRouter(
                   ),
                   element: (
                     <ErrorBoundary>
-                      <Groups />
+                      <GroupsList />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  path: `${urls.settings.userManagement.group.index(null)}/*`,
+                  element: (
+                    <ErrorBoundary>
+                      <GroupDetails />
                     </ErrorBoundary>
                   ),
                 },

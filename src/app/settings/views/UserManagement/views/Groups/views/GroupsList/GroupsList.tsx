@@ -1,4 +1,4 @@
-import GroupsTable from "./components/GroupsTable";
+import GroupsTable from "../../components/GroupsTable";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
