@@ -25,8 +25,24 @@ import type {
   UpdateGroupResponses,
   CreateGroupResponses,
   UserGroupStatisticsResponse,
+  ListGroupEntitlementsData,
+  ListGroupEntitlementsErrors,
+  ListGroupEntitlementsResponses,
+  ListGroupMembersData,
+  ListGroupMembersErrors,
+  ListGroupMembersResponses,
+  RemoveGroupEntitlementData,
+  RemoveGroupEntitlementResponses,
+  RemoveGroupEntitlementErrors,
+  RemoveGroupMemberData,
+  RemoveGroupMemberErrors,
+  RemoveGroupMemberResponses,
 } from "@/app/apiclient";
 import {
+  removeGroupMember,
+  removeGroupEntitlement,
+  listGroupMembers,
+  listGroupEntitlements,
   deleteGroup,
   listGroups,
   getGroup,
@@ -36,6 +52,8 @@ import {
 } from "@/app/apiclient";
 import {
   getGroupQueryKey,
+  listGroupEntitlementsQueryKey,
+  listGroupMembersQueryKey,
   listGroupsQueryKey,
   listGroupsStatisticsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -92,15 +110,17 @@ export const useGroups = (
 };
 
 export const useGroupStatistics = (
-  options: Options<ListGroupsStatisticsData>
+  options: Options<ListGroupsStatisticsData>,
+  enabled = true
 ) => {
-  return useWebsocketAwareQuery(
-    queryOptionsWithHeaders<
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
       ListGroupsStatisticsResponses,
       ListGroupsStatisticsErrors,
       ListGroupsStatisticsData
-    >(options, listGroupsStatistics, listGroupsStatisticsQueryKey(options))
-  );
+    >(options, listGroupsStatistics, listGroupsStatisticsQueryKey(options)),
+    enabled,
+  });
 };
 
 export const useGetGroup = (options: Options<GetGroupData>) => {
@@ -156,6 +176,70 @@ export const useDeleteGroup = (mutationOptions?: Options<DeleteGroupData>) => {
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listGroupsQueryKey(),
+      });
+    },
+  });
+};
+
+// TODO: add entitlement query hook tests
+export const useGroupEntitlements = (
+  options: Options<ListGroupEntitlementsData>
+) => {
+  return useWebsocketAwareQuery(
+    queryOptionsWithHeaders<
+      ListGroupEntitlementsResponses,
+      ListGroupEntitlementsErrors,
+      ListGroupEntitlementsData
+    >(options, listGroupEntitlements, listGroupEntitlementsQueryKey(options))
+  );
+};
+
+export const useRemoveGroupEntitlement = (
+  mutationOptions?: Options<RemoveGroupEntitlementData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      RemoveGroupEntitlementResponses,
+      RemoveGroupEntitlementErrors,
+      RemoveGroupEntitlementData
+    >(mutationOptions, removeGroupEntitlement),
+    onSuccess: (_data, variables) => {
+      return queryClient.invalidateQueries({
+        queryKey: listGroupEntitlementsQueryKey({
+          path: { group_id: variables.path.group_id },
+        }),
+      });
+    },
+  });
+};
+
+// TODO: add member query hook tests
+export const useGroupMembers = (options: Options<ListGroupMembersData>) => {
+  return useWebsocketAwareQuery(
+    queryOptionsWithHeaders<
+      ListGroupMembersResponses,
+      ListGroupMembersErrors,
+      ListGroupMembersData
+    >(options, listGroupMembers, listGroupMembersQueryKey(options))
+  );
+};
+
+export const useRemoveGroupMember = (
+  mutationOptions?: Options<RemoveGroupMemberData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      RemoveGroupMemberResponses,
+      RemoveGroupMemberErrors,
+      RemoveGroupMemberData
+    >(mutationOptions, removeGroupMember),
+    onSuccess: (_data, variables) => {
+      return queryClient.invalidateQueries({
+        queryKey: listGroupMembersQueryKey({
+          path: { group_id: variables.path.group_id },
+        }),
       });
     },
   });
