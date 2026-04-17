@@ -14,7 +14,7 @@ Feature: Navigation - admin
   Scenario: Navigating to user preferences via the username link
     When the user clicks the username link in the main navigation
     Then the pathname should equal "/account/prefs/details"
-    And the "username" navigation item should be selected
+    And the username navigation item should be selected
     And the username link should have current page state
 
   Scenario Outline: Navigating via the main navigation highlights the active link
