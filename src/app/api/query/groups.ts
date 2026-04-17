@@ -1,3 +1,4 @@
+import type { UseQueryResult } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { mutationOptionsWithHeaders, queryOptionsWithHeaders } from "../utils";
@@ -23,6 +24,7 @@ import type {
   UpdateGroupErrors,
   UpdateGroupResponses,
   CreateGroupResponses,
+  UserGroupStatisticsResponse,
 } from "@/app/apiclient";
 import {
   deleteGroup,
@@ -39,7 +41,26 @@ import {
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import type { Options } from "@/app/apiclient/client";
 
-export const useGroups = (options?: Options<ListGroupsData>) => {
+type UseGroupsResult = {
+  data:
+    | {
+        items: {
+          statistics: UserGroupStatisticsResponse | undefined;
+          id: number;
+          name: string;
+          description?: string;
+        }[];
+        total: number;
+      }
+    | undefined;
+  isPending: UseQueryResult["isPending"];
+  isSuccess: UseQueryResult["isSuccess"];
+  isError: UseQueryResult["isError"];
+};
+
+export const useGroups = (
+  options?: Options<ListGroupsData>
+): UseGroupsResult => {
   const groups = useWebsocketAwareQuery(
     queryOptionsWithHeaders<
       ListGroupsResponses,

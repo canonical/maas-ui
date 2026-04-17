@@ -47,15 +47,13 @@ describe("GroupsTable", () => {
     it("displays the columns correctly", () => {
       renderWithProviders(<GroupsTable />);
 
-      ["Group name", "Description", "User count", "Action"].forEach(
-        (column) => {
-          expect(
-            screen.getByRole("columnheader", {
-              name: new RegExp(`^${column}`, "i"),
-            })
-          ).toBeInTheDocument();
-        }
-      );
+      ["Name", "Description", "User count", "Action"].forEach((column) => {
+        expect(
+          screen.getByRole("columnheader", {
+            name: new RegExp(`^${column}`, "i"),
+          })
+        ).toBeInTheDocument();
+      });
     });
   });
   describe("actions", () => {

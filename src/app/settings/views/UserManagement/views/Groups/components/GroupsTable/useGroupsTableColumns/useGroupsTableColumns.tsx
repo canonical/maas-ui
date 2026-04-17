@@ -25,7 +25,6 @@ const useGroupsTableColumns = (): GroupsListColumnDef[] => {
       id: "name",
       accessorKey: "name",
       enableSorting: true,
-      header: "Group name",
     },
     {
       id: "description",
