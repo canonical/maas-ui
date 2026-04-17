@@ -1,9 +1,5 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 
-Given("the main navigation is expanded", () => {
-  cy.expandMainNavigation();
-});
-
 Given(
   "the skipsetupintro cookie is set to {string}",
   (value: "true" | "false") => {
