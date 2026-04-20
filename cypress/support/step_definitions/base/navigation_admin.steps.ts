@@ -27,13 +27,6 @@ Then("the username link should have current page state", () => {
 });
 
 Then(
-  'the "{string}" navigation item should be selected',
-  (itemName: string) => {
-    cy.get(".p-side-navigation__item.is-selected a").contains(itemName);
-  }
-);
-
-Then(
   /^the\s+"([^"]+)"\s+link should have current page state\s*$/,
   (linkName: string) => {
     cy.findAllByRole("link", { current: "page", name: linkName }).should(

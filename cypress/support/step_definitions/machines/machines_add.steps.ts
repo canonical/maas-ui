@@ -1,4 +1,4 @@
-import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, When } from "@badeball/cypress-cucumber-preprocessor";
 import { customAlphabet } from "nanoid";
 import { generateMac } from "../../../e2e/utils";
 
@@ -19,12 +19,4 @@ When("the user fills in valid machine details", () => {
   cy.get("input[name='pxe_mac']").type(generateMac());
   cy.get("select[name='power_type']").select("manual");
   cy.get("select[name='power_type']").blur();
-});
-
-When("the user presses the Escape key", () => {
-  cy.get("body").type("{esc}");
-});
-
-Then("the add machine side panel should not be visible", () => {
-  cy.get("#aside-panel").should("not.be.visible");
 });

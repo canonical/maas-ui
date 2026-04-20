@@ -26,3 +26,7 @@ Then("the {string} header should not exist", (headerName: string) => {
 Then("the text matching {string} should exist", (text: string) => {
   cy.findByText(new RegExp(text, "i")).should("exist");
 });
+
+Then("the side panel should not be visible", () => {
+  cy.get("#aside-panel").should("not.be.visible");
+});
