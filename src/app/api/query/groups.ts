@@ -189,7 +189,6 @@ export const useDeleteGroup = (mutationOptions?: Options<DeleteGroupData>) => {
   });
 };
 
-// TODO: add entitlement query hook tests
 export const useGroupEntitlements = (
   options: Options<ListGroupEntitlementsData>
 ) => {
@@ -242,7 +241,6 @@ export const useRemoveGroupEntitlement = (
   });
 };
 
-// TODO: add member query hook tests
 export const useGroupMembers = (options: Options<ListGroupMembersData>) => {
   return useWebsocketAwareQuery(
     queryOptionsWithHeaders<

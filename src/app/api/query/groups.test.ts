@@ -1,13 +1,22 @@
 import {
+  useAddGroupEntitlement,
   useCreateGroup,
   useDeleteGroup,
   useGetGroup,
+  useGroupEntitlements,
+  useGroupMembers,
   useGroups,
+  useAddGroupMembers,
+  useRemoveGroupEntitlement,
+  useRemoveGroupMember,
   useUpdateGroup,
 } from "@/app/api/query/groups";
-import type { UserGroupRequest } from "@/app/apiclient";
+import type { EntitlementRequest, UserGroupRequest } from "@/app/apiclient";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import {
   groupsResolvers,
+  mockGroupEntitlements,
+  mockGroupMembers,
   mockGroups,
   mockGroupStatistics,
 } from "@/testing/resolvers/groups";
@@ -23,7 +32,13 @@ setupMockServer(
   groupsResolvers.getGroup.handler(),
   groupsResolvers.createGroup.handler(),
   groupsResolvers.updateGroup.handler(),
-  groupsResolvers.deleteGroup.handler()
+  groupsResolvers.deleteGroup.handler(),
+  groupsResolvers.listGroupEntitlements.handler(),
+  groupsResolvers.addGroupEntitlement.handler(),
+  groupsResolvers.removeGroupEntitlement.handler(),
+  groupsResolvers.listGroupMembers.handler(),
+  groupsResolvers.addGroupMember.handler(),
+  groupsResolvers.removeGroupMember.handler()
 );
 
 describe("useGroups", () => {
@@ -108,6 +123,95 @@ describe("useDeleteGroup", () => {
   it("should delete a group successfully", async () => {
     const { result } = renderHookWithProviders(() => useDeleteGroup());
     result.current.mutate({ path: { group_id: 1 } });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useGroupEntitlements", () => {
+  it("should return group entitlement data", async () => {
+    const { result } = renderHookWithProviders(() =>
+      useGroupEntitlements({ path: { group_id: 1 } })
+    );
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data).toMatchObject(mockGroupEntitlements);
+  });
+});
+
+describe("useAddGroupEntitlement", () => {
+  it("should create a group entitlement successfully", async () => {
+    const newEntitlement: EntitlementRequest = {
+      entitlement: Entitlement.CAN_VIEW_MACHINES,
+      resource_id: 0,
+      resource_type: "maas",
+    };
+    const { result } = renderHookWithProviders(() => useAddGroupEntitlement());
+    result.current.mutate({
+      body: newEntitlement,
+      path: {
+        group_id: 1,
+      },
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data).toMatchObject({ id: 1 });
+  });
+});
+
+describe("useRemoveGroupEntitlement", () => {
+  it("should delete a group entitlement successfully", async () => {
+    const { result } = renderHookWithProviders(() =>
+      useRemoveGroupEntitlement()
+    );
+    result.current.mutate({
+      path: { group_id: 1 },
+      query: {
+        resource_type: "maas",
+        resource_id: 0,
+        entitlement: Entitlement.CAN_VIEW_MACHINES,
+      },
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useGroupMembers", () => {
+  it("should return group members data", async () => {
+    const { result } = renderHookWithProviders(() =>
+      useGroupMembers({ path: { group_id: 1 } })
+    );
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data).toMatchObject(mockGroupMembers);
+  });
+});
+
+describe("useAddGroupMembers", () => {
+  it("should add a group member successfully", async () => {
+    const { result } = renderHookWithProviders(() => useAddGroupMembers());
+    result.current.mutate({
+      body: { user_id: 1 },
+      path: { group_id: 1 },
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+});
+
+describe("useRemoveGroupMember", () => {
+  it("should remove a group member successfully", async () => {
+    const { result } = renderHookWithProviders(() => useRemoveGroupMember());
+    result.current.mutate({
+      path: { group_id: 1, user_id: 1 },
+    });
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
