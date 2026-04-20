@@ -9,6 +9,7 @@ import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/settings/urls";
 import AddEntitlement from "@/app/settings/views/UserManagement/views/Groups/components/AddEntitlement";
+import AddMembers from "@/app/settings/views/UserManagement/views/Groups/components/AddMembers/AddMembers";
 import DeleteGroup from "@/app/settings/views/UserManagement/views/Groups/components/DeleteGroup";
 import EditGroup from "@/app/settings/views/UserManagement/views/Groups/components/EditGroup";
 
@@ -51,14 +52,15 @@ const GroupDetailsHeader = ({
                 },
               },
               {
-                children: "Add member...",
+                children: "Add members...",
                 onClick: () => {
                   openSidePanel({
-                    component: EditGroup,
-                    title: "Add member",
+                    component: AddMembers,
+                    title: "Add members",
                     props: {
-                      id: group!.id,
+                      group_id: group!.id,
                     },
+                    size: "large",
                   });
                 },
               },
