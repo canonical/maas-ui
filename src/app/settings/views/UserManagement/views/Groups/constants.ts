@@ -21,3 +21,10 @@ export enum Entitlement {
   CAN_VIEW_IPADDRESSES = "can_view_ipaddresses",
   CAN_VIEW_DNSRECORDS = "can_view_dnsrecords",
 }
+
+export const RestrictableEntitlements = [
+  Entitlement.CAN_EDIT_MACHINES,
+  Entitlement.CAN_DEPLOY_MACHINES,
+  Entitlement.CAN_VIEW_MACHINES,
+  Entitlement.CAN_VIEW_AVAILABLE_MACHINES,
+];

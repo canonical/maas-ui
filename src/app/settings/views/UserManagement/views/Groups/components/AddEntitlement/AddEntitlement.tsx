@@ -1,8 +1,10 @@
-import { Select } from "@canonical/react-components";
+import type { ChangeEvent } from "react";
+
+import { Icon, Select, Tooltip } from "@canonical/react-components";
 import type { FormikContextType } from "formik";
 import * as Yup from "yup";
 
-import { Entitlement } from "../../constants";
+import { Entitlement, RestrictableEntitlements } from "../../constants";
 
 import { useAddGroupEntitlement } from "@/app/api/query/groups";
 import { usePools } from "@/app/api/query/pools";
@@ -16,7 +18,7 @@ import { useSidePanel } from "@/app/base/side-panel-context";
 
 type AddEntitlementValues = {
   entitlement: string;
-  isGlobal: boolean;
+  isRestricted: boolean;
   pool_id: string;
 };
 
@@ -25,11 +27,11 @@ type AddEntitlementProps = {
 };
 
 const AddEntitlementSchema = Yup.object().shape({
-  entitlement: Yup.string().required("Entitlement is required"),
-  isGlobal: Yup.boolean(),
-  pool_id: Yup.string().when("isGlobal", {
+  entitlement: Yup.string().required("Entitlement is required."),
+  isRestricted: Yup.boolean(),
+  pool_id: Yup.string().when("isRestricted", {
     is: false,
-    then: (schema) => schema.required("Pool is required"),
+    then: (schema) => schema.required("Pool is required."),
     otherwise: (schema) => schema,
   }),
 });
@@ -42,7 +44,7 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
   const entitlementOptions = [
     { label: "Select entitlement", value: "", disabled: true },
     ...Object.values(Entitlement).map((value) => ({
-      label: value.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+      label: value,
       value,
     })),
   ];
@@ -61,7 +63,7 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
       errors={addEntitlement.error}
       initialValues={{
         entitlement: "",
-        isGlobal: true,
+        isRestricted: false,
         pool_id: "",
       }}
       onCancel={closeSidePanel}
@@ -69,8 +71,8 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
         addEntitlement.mutate({
           body: {
             entitlement: values.entitlement,
-            resource_type: values.isGlobal ? "maas" : "pool",
-            resource_id: values.isGlobal ? 0 : Number(values.pool_id),
+            resource_type: values.isRestricted ? "pool" : "maas",
+            resource_id: values.isRestricted ? Number(values.pool_id) : 0,
           },
           path: { group_id },
         });
@@ -82,32 +84,65 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
       submitLabel="Add entitlement"
       validationSchema={AddEntitlementSchema}
     >
-      {({ values }: FormikContextType<AddEntitlementValues>) => (
-        <>
-          <FormikField
-            component={Select}
-            label="Entitlement"
-            name="entitlement"
-            options={entitlementOptions}
-            required
-          />
-          <FormikField
-            label="Global entitlement"
-            name="isGlobal"
-            type="checkbox"
-          />
-          {!values.isGlobal && (
+      {({ values, setFieldValue }: FormikContextType<AddEntitlementValues>) => {
+        const isRestrictable = RestrictableEntitlements.includes(
+          values.entitlement as Entitlement
+        );
+
+        return (
+          <>
             <FormikField
               component={Select}
-              disabled={!pools.isSuccess}
-              label="Pool"
-              name="pool_id"
-              options={poolOptions}
+              label="Entitlement"
+              name="entitlement"
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                const newEntitlement = e.target.value;
+                void setFieldValue("entitlement", newEntitlement);
+                if (
+                  !RestrictableEntitlements.includes(
+                    newEntitlement as Entitlement
+                  )
+                ) {
+                  void setFieldValue("isRestricted", false);
+                }
+              }}
+              options={entitlementOptions}
               required
             />
-          )}
-        </>
-      )}
+            <FormikField
+              disabled={!isRestrictable}
+              help="Limits entitlement to a specific pool. If unchecked, the entitlement applies to the entire MAAS instance."
+              label={
+                <>
+                  Restrict to pool
+                  {values.entitlement && !isRestrictable && (
+                    <Tooltip
+                      className="u-nudge-right--small"
+                      message="The selected entitlement cannot be restricted."
+                    >
+                      <div className="u-nudge-right--x-large">
+                        <Icon name="help" />
+                      </div>
+                    </Tooltip>
+                  )}
+                </>
+              }
+              name="isRestricted"
+              type="checkbox"
+            />
+            {values.isRestricted && (
+              <FormikField
+                component={Select}
+                disabled={!pools.isSuccess}
+                label="Pool"
+                name="pool_id"
+                options={poolOptions}
+                required
+              />
+            )}
+          </>
+        );
+      }}
     </FormikForm>
   );
 };
