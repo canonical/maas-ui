@@ -18,7 +18,7 @@ import { useSidePanel } from "@/app/base/side-panel-context";
 
 type AddEntitlementValues = {
   entitlement: string;
-  isRestricted: boolean;
+  is_restricted: boolean;
   pool_id: string;
 };
 
@@ -28,9 +28,9 @@ type AddEntitlementProps = {
 
 const AddEntitlementSchema = Yup.object().shape({
   entitlement: Yup.string().required("Entitlement is required."),
-  isRestricted: Yup.boolean(),
-  pool_id: Yup.string().when("isRestricted", {
-    is: false,
+  is_restricted: Yup.boolean(),
+  pool_id: Yup.string().when("is_restricted", {
+    is: true,
     then: (schema) => schema.required("Pool is required."),
     otherwise: (schema) => schema,
   }),
@@ -63,7 +63,7 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
       errors={addEntitlement.error}
       initialValues={{
         entitlement: "",
-        isRestricted: false,
+        is_restricted: false,
         pool_id: "",
       }}
       onCancel={closeSidePanel}
@@ -71,8 +71,8 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
         addEntitlement.mutate({
           body: {
             entitlement: values.entitlement,
-            resource_type: values.isRestricted ? "pool" : "maas",
-            resource_id: values.isRestricted ? Number(values.pool_id) : 0,
+            resource_type: values.is_restricted ? "pool" : "maas",
+            resource_id: values.is_restricted ? Number(values.pool_id) : 0,
           },
           path: { group_id },
         });
@@ -103,7 +103,7 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
                     newEntitlement as Entitlement
                   )
                 ) {
-                  void setFieldValue("isRestricted", false);
+                  void setFieldValue("is_restricted", false);
                 }
               }}
               options={entitlementOptions}
@@ -127,10 +127,10 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
                   )}
                 </>
               }
-              name="isRestricted"
+              name="is_restricted"
               type="checkbox"
             />
-            {values.isRestricted && (
+            {values.is_restricted && (
               <FormikField
                 component={Select}
                 disabled={!pools.isSuccess}
