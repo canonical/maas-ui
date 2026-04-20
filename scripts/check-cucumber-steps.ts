@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from "fs";
-import { join, resolve, relative, dirname } from "path";
+import { dirname, join, relative, resolve } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -34,44 +34,49 @@ function findFiles(dir: string, suffix: string): string[] {
 /**
  * Extract the first argument of a step registration call (string or /regex/).
  * Returns the normalised pattern text and the position after the closing delimiter.
+ *
+ * @param content The string to be parsed
+ * @param startingPosition The starting position in the string
  */
 function parsePattern(
   content: string,
-  pos: number
+  startingPosition: number
 ): { pattern: string; endPos: number } | null {
-  while (pos < content.length && /\s/.test(content[pos])) pos++;
+  let position = startingPosition;
+  while (position < content.length && /\s/.test(content[position])) position++;
 
-  const ch = content[pos];
+  const character = content[position];
 
-  if (ch === '"' || ch === "'") {
-    const quote = ch;
-    pos++;
+  if (character === '"' || character === "'") {
+    const quote = character;
+    position++;
     let str = "";
-    while (pos < content.length && content[pos] !== quote) {
-      if (content[pos] === "\\") {
-        str += content[pos + 1]; // unescape
-        pos += 2;
+    while (position < content.length && content[position] !== quote) {
+      if (content[position] === "\\") {
+        str += content[position + 1]; // unescape
+        position += 2;
       } else {
-        str += content[pos++];
+        str += content[position++];
       }
     }
-    return { pattern: str, endPos: pos + 1 /* skip closing quote */ };
+    return { pattern: str, endPos: position + 1 /* skip closing quote */ };
   }
 
-  if (ch === "/") {
-    pos++;
+  if (character === "/") {
+    position++;
     let str = "";
-    while (pos < content.length && content[pos] !== "/") {
-      if (content[pos] === "\\") {
-        str += `\\${content[pos + 1]}`;
-        pos += 2;
+    while (position < content.length && content[position] !== "/") {
+      if (content[position] === "\\") {
+        str += `\\${content[position + 1]}`;
+        position += 2;
       } else {
-        str += content[pos++];
+        str += content[position++];
       }
     }
-    pos++; // skip closing "/"
-    while (pos < content.length && /[gimsuy]/.test(content[pos])) pos++; // skip flags
-    return { pattern: `/${str}/`, endPos: pos };
+    position++; // skip closing "/"
+    while (position < content.length && /[gimsuy]/.test(content[position]))
+      position++; // skip flags
+    return { pattern: `/${str}/`, endPos: position };
   }
 
   return null;
@@ -79,38 +84,41 @@ function parsePattern(
 
 /**
  * Skip a balanced parenthesised block, respecting string literals.
- * `start` must point at the opening `(`.
+ * `startingIndex` must point at the opening `(`.
  * Returns the index immediately after the closing `)`, or -1 on failure.
+ *
+ * @param content The string to be parsed
+ * @param startingIndex The starting index pointing at the opening parenthesis
  */
-function skipBalancedParens(content: string, start: number): number {
+function skipBalancedParens(content: string, startingIndex: number): number {
   let depth = 0;
-  let i = start;
-  let inSingle = false;
-  let inDouble = false;
-  let inTemplate = false;
+  let index = startingIndex;
+  let inSingleQuote = false;
+  let inDoubleQuote = false;
+  let inTemplateString = false;
 
-  while (i < content.length) {
-    const ch = content[i];
-    if (inSingle) {
-      if (ch === "\\") i++;
-      else if (ch === "'") inSingle = false;
-    } else if (inDouble) {
-      if (ch === "\\") i++;
-      else if (ch === '"') inDouble = false;
-    } else if (inTemplate) {
-      if (ch === "\\") i++;
-      else if (ch === "`") inTemplate = false;
+  while (index < content.length) {
+    const character = content[index];
+    if (inSingleQuote) {
+      if (character === "\\") index++;
+      else if (character === "'") inSingleQuote = false;
+    } else if (inDoubleQuote) {
+      if (character === "\\") index++;
+      else if (character === '"') inDoubleQuote = false;
+    } else if (inTemplateString) {
+      if (character === "\\") index++;
+      else if (character === "`") inTemplateString = false;
     } else {
-      if (ch === "'") inSingle = true;
-      else if (ch === '"') inDouble = true;
-      else if (ch === "`") inTemplate = true;
-      else if (ch === "(") depth++;
-      else if (ch === ")") {
+      if (character === "'") inSingleQuote = true;
+      else if (character === '"') inDoubleQuote = true;
+      else if (character === "`") inTemplateString = true;
+      else if (character === "(") depth++;
+      else if (character === ")") {
         depth--;
-        if (depth === 0) return i + 1;
+        if (depth === 0) return index + 1;
       }
     }
-    i++;
+    index++;
   }
   return -1;
 }
@@ -119,100 +127,111 @@ function skipBalancedParens(content: string, start: number): number {
  * Extract the body of the callback that is the second argument of a step
  * registration call. Supports both arrow functions and `function` expressions
  * (the latter is used when steps need `this` context for shared state).
+ *
+ * @param content The string to be parsed
+ * @param afterPatternPos The position after the closing delimiter of the pattern
  */
 function parseCallbackBody(
   content: string,
   afterPatternPos: number
 ): string | null {
-  let pos = afterPatternPos;
+  let position = afterPatternPos;
 
   // Skip comma + whitespace between pattern and callback
-  while (pos < content.length && /[\s,]/.test(content[pos])) pos++;
+  while (position < content.length && /[\s,]/.test(content[position]))
+    position++;
 
   // ── function / async function expression ────────────────────────────────
-  const isAsync = content.startsWith("async", pos);
+  const isAsync = content.startsWith("async", position);
   if (isAsync) {
-    pos += 5;
-    while (pos < content.length && /\s/.test(content[pos])) pos++;
+    position += "async".length;
+    while (position < content.length && /\s/.test(content[position]))
+      position++;
   }
 
-  if (content.startsWith("function", pos)) {
-    pos += 8; // skip "function"
+  if (content.startsWith("function", position)) {
+    position += "function".length;
     // Skip optional function name
-    while (pos < content.length && /\s/.test(content[pos])) pos++;
+    while (position < content.length && /\s/.test(content[position]))
+      position++;
     // Skip parameter list
-    if (content[pos] === "(") {
-      pos = skipBalancedParens(content, pos);
-      if (pos === -1) return null;
+    if (content[position] === "(") {
+      position = skipBalancedParens(content, position);
+      if (position === -1) return null;
     }
     // Skip to opening brace
-    while (pos < content.length && content[pos] !== "{") pos++;
-    if (pos >= content.length) return null;
-    return extractBraceBlock(content, pos);
+    while (position < content.length && content[position] !== "{") position++;
+    if (position >= content.length) return null;
+    return extractBraceBlock(content, position);
   }
 
   // ── Arrow function: (...params...) => { ... } ────────────────────────────
   // Balance the parameter list first so we don't accidentally pick up `=>`
   // from inside a regex or a later step.
-  if (content[pos] === "(") {
-    const afterParams = skipBalancedParens(content, pos);
+  if (content[position] === "(") {
+    const afterParams = skipBalancedParens(content, position);
     if (afterParams === -1) return null;
-    pos = afterParams;
+    position = afterParams;
   }
 
   // Skip whitespace then expect `=>`
-  while (pos < content.length && /[ \t]/.test(content[pos])) pos++;
-  if (content[pos] !== "=" || content[pos + 1] !== ">") return null;
-  pos += 2;
-  while (pos < content.length && /[ \t]/.test(content[pos])) pos++;
+  while (position < content.length && /[ \t]/.test(content[position]))
+    position++;
+  if (content[position] !== "=" || content[position + 1] !== ">") return null;
+  position += 2;
+  while (position < content.length && /[ \t]/.test(content[position]))
+    position++;
 
-  if (content[pos] === "{") {
-    return extractBraceBlock(content, pos);
+  if (content[position] === "{") {
+    return extractBraceBlock(content, position);
   }
 
   // Concise arrow body (single expression, no braces)
-  const lineEnd = content.indexOf("\n", pos);
-  return content.slice(pos, lineEnd !== -1 ? lineEnd : undefined).trim();
+  const lineEnd = content.indexOf("\n", position);
+  return content.slice(position, lineEnd !== -1 ? lineEnd : undefined).trim();
 }
 
 /**
- * Return the substring from `start` (which must point at `{`) to the
+ * Return the substring from `startingIndex` (which must point at `{`) to the
  * matching `}`, respecting string literals and nested braces.
+ *
+ * @param content The string to be parsed
+ * @param startingIndex The starting index pointing at the opening brace
  */
-function extractBraceBlock(content: string, start: number): string {
+function extractBraceBlock(content: string, startingIndex: number): string {
   let depth = 0;
-  let i = start;
-  let inSingle = false;
-  let inDouble = false;
-  let inTemplate = false;
+  let index = startingIndex;
+  let inSingleQuote = false;
+  let inDoubleQuote = false;
+  let inTemplateString = false;
 
-  while (i < content.length) {
-    const ch = content[i];
+  while (index < content.length) {
+    const character = content[index];
 
-    if (inSingle) {
-      if (ch === "\\") i++;
-      else if (ch === "'") inSingle = false;
-    } else if (inDouble) {
-      if (ch === "\\") i++;
-      else if (ch === '"') inDouble = false;
-    } else if (inTemplate) {
-      if (ch === "\\") i++;
-      else if (ch === "`") inTemplate = false;
+    if (inSingleQuote) {
+      if (character === "\\") index++;
+      else if (character === "'") inSingleQuote = false;
+    } else if (inDoubleQuote) {
+      if (character === "\\") index++;
+      else if (character === '"') inDoubleQuote = false;
+    } else if (inTemplateString) {
+      if (character === "\\") index++;
+      else if (character === "`") inTemplateString = false;
     } else {
-      if (ch === "'") inSingle = true;
-      else if (ch === '"') inDouble = true;
-      else if (ch === "`") inTemplate = true;
-      else if (ch === "{") depth++;
-      else if (ch === "}") {
+      if (character === "'") inSingleQuote = true;
+      else if (character === '"') inDoubleQuote = true;
+      else if (character === "`") inTemplateString = true;
+      else if (character === "{") depth++;
+      else if (character === "}") {
         depth--;
-        if (depth === 0) return content.slice(start, i + 1);
+        if (depth === 0) return content.slice(startingIndex, index + 1);
       }
     }
 
-    i++;
+    index++;
   }
 
-  return content.slice(start);
+  return content.slice(startingIndex);
 }
 
 // ── Step-definition file parser ───────────────────────────────────────────────
@@ -225,17 +244,23 @@ function normalizeBody(body: string): string {
     .trim();
 }
 
-function getLine(content: string, pos: number): number {
-  return (content.slice(0, pos).match(/\n/g) ?? []).length + 1;
+/**
+ * Get the line number corresponding to a position in the content string.
+ *
+ * @param content The string content
+ * @param position The position in the string
+ */
+function getLine(content: string, position: number): number {
+  return (content.slice(0, position).match(/\n/g) ?? []).length + 1;
 }
 
 function parseStepFile(filePath: string): StepDefinition[] {
   const content = readFileSync(filePath, "utf-8");
   const defs: StepDefinition[] = [];
-  const stepCallRe = /\b(Given|When|Then)\s*\(/g;
+  const stepCallRegex = /\b(Given|When|Then)\s*\(/g;
   let match: RegExpExecArray | null;
 
-  while ((match = stepCallRe.exec(content)) !== null) {
+  while ((match = stepCallRegex.exec(content)) !== null) {
     const keyword = match[1];
     const afterParen = match.index + match[0].length;
 
@@ -301,24 +326,26 @@ function main(): void {
 
   // ── Check 1: Duplicate patterns ───────────────────────────────────────────
   {
-    const byPattern = new Map<string, StepDefinition[]>();
-    for (const def of allDefs) {
-      const group = byPattern.get(def.pattern) ?? [];
-      group.push(def);
-      byPattern.set(def.pattern, group);
+    const patternGroups = new Map<string, StepDefinition[]>();
+    for (const definition of allDefs) {
+      const group = patternGroups.get(definition.pattern) ?? [];
+      group.push(definition);
+      patternGroups.set(definition.pattern, group);
     }
 
-    const duplicates = [...byPattern.values()].filter((g) => g.length > 1);
+    const duplicatePatterns = [...patternGroups.values()].filter(
+      (patternGroup) => patternGroup.length > 1
+    );
 
-    if (duplicates.length === 0) {
+    if (duplicatePatterns.length === 0) {
       console.log(`${GREEN}✓ No duplicate step patterns found.${RESET}`);
     } else {
       heading(
-        `✗ Duplicate step patterns (${duplicates.length} pattern(s) registered more than once):`
+        `✗ Duplicate step patterns (${duplicatePatterns.length} pattern(s) registered more than once):`
       );
-      for (const group of duplicates) {
-        console.log(`\n  Pattern: "${group[0].pattern}"`);
-        for (const def of group) printLocation(def);
+      for (const patternGroup of duplicatePatterns) {
+        console.log(`\n  Pattern: "${patternGroup[0].pattern}"`);
+        for (const definition of patternGroup) printLocation(definition);
         issueCount++;
       }
     }
@@ -326,38 +353,44 @@ function main(): void {
 
   // ── Check 2: Different patterns sharing the same implementation body ───────
   {
-    const byBody = new Map<string, StepDefinition[]>();
-    for (const def of allDefs) {
-      const group = byBody.get(def.normalizedBody) ?? [];
-      group.push(def);
-      byBody.set(def.normalizedBody, group);
+    const bodyGroups = new Map<string, StepDefinition[]>();
+    for (const definition of allDefs) {
+      const group = bodyGroups.get(definition.normalizedBody) ?? [];
+      group.push(definition);
+      bodyGroups.set(definition.normalizedBody, group);
     }
 
     // Only flag groups that contain at least two *distinct* patterns
-    const clones = [...byBody.values()].filter((group) => {
-      const patterns = new Set(group.map((d) => d.pattern));
-      return patterns.size > 1;
+    const clonedSteps = [...bodyGroups.values()].filter((group) => {
+      const uniquePatterns = new Set(
+        group.map((definition) => definition.pattern)
+      );
+      return uniquePatterns.size > 1;
     });
 
-    if (clones.length === 0) {
+    if (clonedSteps.length === 0) {
       console.log(
         `${GREEN}✓ No different patterns sharing an identical implementation found.${RESET}`
       );
     } else {
       heading(
-        `✗ Different patterns with identical implementation (${clones.length} group(s)):`,
+        `✗ Different patterns with identical implementation (${clonedSteps.length} group(s)):`,
         YELLOW
       );
       console.log(
         `${DIM}  These step patterns share the exact same callback body — they may be accidental duplicates or candidates for consolidation.${RESET}`
       );
-      for (const group of clones) {
+      for (const group of clonedSteps) {
         const uniquePatterns = [
-          ...new Set(group.map((d) => `[${d.keyword}] "${d.pattern}"`)),
+          ...new Set(
+            group.map(
+              (definition) => `[${definition.keyword}] "${definition.pattern}"`
+            )
+          ),
         ];
         console.log(`\n  Shared body:\n    ${group[0].body.trim()}`);
         console.log(`\n  Used by ${uniquePatterns.length} pattern(s):`);
-        for (const def of group) printLocation(def);
+        for (const definition of group) printLocation(definition);
         issueCount++;
       }
     }
