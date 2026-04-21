@@ -6,9 +6,12 @@ import { client } from "../client.gen";
 import {
   addGroupEntitlement,
   addGroupMember,
+  bulkAddGroupMembers,
   bulkCreateSelections,
   bulkDeleteCustomImages,
   bulkDeleteSelections,
+  bulkRemoveGroupEntitlements,
+  bulkRemoveGroupMembers,
   changePasswordAdmin,
   changePasswordUser,
   clearAllDiscoveriesWithOptionalIpAndMac,
@@ -204,6 +207,8 @@ import type {
   AddGroupEntitlementResponse,
   AddGroupMemberData,
   AddGroupMemberError,
+  BulkAddGroupMembersData,
+  BulkAddGroupMembersError,
   BulkCreateSelectionsData,
   BulkCreateSelectionsError,
   BulkCreateSelectionsResponse,
@@ -213,6 +218,12 @@ import type {
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsError,
   BulkDeleteSelectionsResponse,
+  BulkRemoveGroupEntitlementsData,
+  BulkRemoveGroupEntitlementsError,
+  BulkRemoveGroupEntitlementsResponse,
+  BulkRemoveGroupMembersData,
+  BulkRemoveGroupMembersError,
+  BulkRemoveGroupMembersResponse,
   ChangePasswordAdminData,
   ChangePasswordAdminError,
   ChangePasswordAdminResponse,
@@ -5019,6 +5030,224 @@ export const evaluateTagMutation = (
   return mutationOptions;
 };
 
+/**
+ * Remove Group Entitlement
+ */
+export const removeGroupEntitlementMutation = (
+  options?: Partial<Options<RemoveGroupEntitlementData>>
+): UseMutationOptions<
+  RemoveGroupEntitlementResponse,
+  RemoveGroupEntitlementError,
+  Options<RemoveGroupEntitlementData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    RemoveGroupEntitlementResponse,
+    RemoveGroupEntitlementError,
+    Options<RemoveGroupEntitlementData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await removeGroupEntitlement({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listGroupEntitlementsQueryKey = (
+  options: Options<ListGroupEntitlementsData>
+) => createQueryKey("listGroupEntitlements", options);
+
+/**
+ * List Group Entitlements
+ */
+export const listGroupEntitlementsOptions = (
+  options: Options<ListGroupEntitlementsData>
+) =>
+  queryOptions<
+    ListGroupEntitlementsResponse,
+    ListGroupEntitlementsError,
+    ListGroupEntitlementsResponse,
+    ReturnType<typeof listGroupEntitlementsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listGroupEntitlements({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listGroupEntitlementsQueryKey(options),
+  });
+
+/**
+ * Add Group Entitlement
+ */
+export const addGroupEntitlementMutation = (
+  options?: Partial<Options<AddGroupEntitlementData>>
+): UseMutationOptions<
+  AddGroupEntitlementResponse,
+  AddGroupEntitlementError,
+  Options<AddGroupEntitlementData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    AddGroupEntitlementResponse,
+    AddGroupEntitlementError,
+    Options<AddGroupEntitlementData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await addGroupEntitlement({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Bulk Remove Group Members
+ */
+export const bulkRemoveGroupMembersMutation = (
+  options?: Partial<Options<BulkRemoveGroupMembersData>>
+): UseMutationOptions<
+  BulkRemoveGroupMembersResponse,
+  BulkRemoveGroupMembersError,
+  Options<BulkRemoveGroupMembersData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    BulkRemoveGroupMembersResponse,
+    BulkRemoveGroupMembersError,
+    Options<BulkRemoveGroupMembersData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await bulkRemoveGroupMembers({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const listGroupMembersQueryKey = (
+  options: Options<ListGroupMembersData>
+) => createQueryKey("listGroupMembers", options);
+
+/**
+ * List Group Members
+ */
+export const listGroupMembersOptions = (
+  options: Options<ListGroupMembersData>
+) =>
+  queryOptions<
+    ListGroupMembersResponse,
+    ListGroupMembersError,
+    ListGroupMembersResponse,
+    ReturnType<typeof listGroupMembersQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listGroupMembers({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listGroupMembersQueryKey(options),
+  });
+
+/**
+ * Add Group Member
+ */
+export const addGroupMemberMutation = (
+  options?: Partial<Options<AddGroupMemberData>>
+): UseMutationOptions<
+  unknown,
+  AddGroupMemberError,
+  Options<AddGroupMemberData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    AddGroupMemberError,
+    Options<AddGroupMemberData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await addGroupMember({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Bulk Add Group Members
+ */
+export const bulkAddGroupMembersMutation = (
+  options?: Partial<Options<BulkAddGroupMembersData>>
+): UseMutationOptions<
+  unknown,
+  BulkAddGroupMembersError,
+  Options<BulkAddGroupMembersData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    BulkAddGroupMembersError,
+    Options<BulkAddGroupMembersData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await bulkAddGroupMembers({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Bulk Remove Group Entitlements
+ */
+export const bulkRemoveGroupEntitlementsMutation = (
+  options?: Partial<Options<BulkRemoveGroupEntitlementsData>>
+): UseMutationOptions<
+  BulkRemoveGroupEntitlementsResponse,
+  BulkRemoveGroupEntitlementsError,
+  Options<BulkRemoveGroupEntitlementsData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    BulkRemoveGroupEntitlementsResponse,
+    BulkRemoveGroupEntitlementsError,
+    Options<BulkRemoveGroupEntitlementsData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await bulkRemoveGroupEntitlements({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const listGroupsQueryKey = (options?: Options<ListGroupsData>) =>
   createQueryKey("listGroups", options);
 
@@ -5070,34 +5299,6 @@ export const createGroupMutation = (
   };
   return mutationOptions;
 };
-
-export const listGroupsStatisticsQueryKey = (
-  options?: Options<ListGroupsStatisticsData>
-) => createQueryKey("listGroupsStatistics", options);
-
-/**
- * List Groups Statistics
- */
-export const listGroupsStatisticsOptions = (
-  options?: Options<ListGroupsStatisticsData>
-) =>
-  queryOptions<
-    ListGroupsStatisticsResponse,
-    ListGroupsStatisticsError,
-    ListGroupsStatisticsResponse,
-    ReturnType<typeof listGroupsStatisticsQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listGroupsStatistics({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: listGroupsStatisticsQueryKey(options),
-  });
 
 /**
  * Delete Group
@@ -5178,24 +5379,24 @@ export const updateGroupMutation = (
   return mutationOptions;
 };
 
-export const listGroupMembersQueryKey = (
-  options: Options<ListGroupMembersData>
-) => createQueryKey("listGroupMembers", options);
+export const listGroupsStatisticsQueryKey = (
+  options?: Options<ListGroupsStatisticsData>
+) => createQueryKey("listGroupsStatistics", options);
 
 /**
- * List Group Members
+ * List Groups Statistics
  */
-export const listGroupMembersOptions = (
-  options: Options<ListGroupMembersData>
+export const listGroupsStatisticsOptions = (
+  options?: Options<ListGroupsStatisticsData>
 ) =>
   queryOptions<
-    ListGroupMembersResponse,
-    ListGroupMembersError,
-    ListGroupMembersResponse,
-    ReturnType<typeof listGroupMembersQueryKey>
+    ListGroupsStatisticsResponse,
+    ListGroupsStatisticsError,
+    ListGroupsStatisticsResponse,
+    ReturnType<typeof listGroupsStatisticsQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listGroupMembers({
+      const { data } = await listGroupsStatistics({
         ...options,
         ...queryKey[0],
         signal,
@@ -5203,35 +5404,8 @@ export const listGroupMembersOptions = (
       });
       return data;
     },
-    queryKey: listGroupMembersQueryKey(options),
+    queryKey: listGroupsStatisticsQueryKey(options),
   });
-
-/**
- * Add Group Member
- */
-export const addGroupMemberMutation = (
-  options?: Partial<Options<AddGroupMemberData>>
-): UseMutationOptions<
-  unknown,
-  AddGroupMemberError,
-  Options<AddGroupMemberData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    unknown,
-    AddGroupMemberError,
-    Options<AddGroupMemberData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await addGroupMember({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
 
 /**
  * Remove Group Member
@@ -5250,88 +5424,6 @@ export const removeGroupMemberMutation = (
   > = {
     mutationFn: async (fnOptions) => {
       const { data } = await removeGroupMember({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-/**
- * Remove Group Entitlement
- */
-export const removeGroupEntitlementMutation = (
-  options?: Partial<Options<RemoveGroupEntitlementData>>
-): UseMutationOptions<
-  RemoveGroupEntitlementResponse,
-  RemoveGroupEntitlementError,
-  Options<RemoveGroupEntitlementData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    RemoveGroupEntitlementResponse,
-    RemoveGroupEntitlementError,
-    Options<RemoveGroupEntitlementData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await removeGroupEntitlement({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const listGroupEntitlementsQueryKey = (
-  options: Options<ListGroupEntitlementsData>
-) => createQueryKey("listGroupEntitlements", options);
-
-/**
- * List Group Entitlements
- */
-export const listGroupEntitlementsOptions = (
-  options: Options<ListGroupEntitlementsData>
-) =>
-  queryOptions<
-    ListGroupEntitlementsResponse,
-    ListGroupEntitlementsError,
-    ListGroupEntitlementsResponse,
-    ReturnType<typeof listGroupEntitlementsQueryKey>
-  >({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listGroupEntitlements({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: listGroupEntitlementsQueryKey(options),
-  });
-
-/**
- * Add Group Entitlement
- */
-export const addGroupEntitlementMutation = (
-  options?: Partial<Options<AddGroupEntitlementData>>
-): UseMutationOptions<
-  AddGroupEntitlementResponse,
-  AddGroupEntitlementError,
-  Options<AddGroupEntitlementData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    AddGroupEntitlementResponse,
-    AddGroupEntitlementError,
-    Options<AddGroupEntitlementData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await addGroupEntitlement({
         ...options,
         ...fnOptions,
         throwOnError: true,
