@@ -1,50 +1,65 @@
-import { useRemoveGroupEntitlement } from "@/app/api/query/groups";
-import type {
-  OpenFgaEntitlementResourceType,
-  UserGroupResponse,
-} from "@/app/apiclient";
+import type { Dispatch, SetStateAction } from "react";
+
+import pluralize from "pluralize";
+
+import { useRemoveGroupEntitlements } from "@/app/api/query/groups";
+import type { EntitlementRequest, UserGroupResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
 type RemoveGroupEntitlementProps = {
   group_id: UserGroupResponse["id"];
-  entitlement: string;
-  resource_id: number;
-  resource_type: string;
+  entitlements: EntitlementRequest[];
+  setEntitlementSelection: Dispatch<SetStateAction<EntitlementRequest[]>>;
 };
 
 const RemoveGroupEntitlement = ({
   group_id,
-  entitlement,
-  resource_id,
-  resource_type,
+  entitlements,
+  setEntitlementSelection,
 }: RemoveGroupEntitlementProps) => {
   const { closeSidePanel } = useSidePanel();
-  const removeEntitlement = useRemoveGroupEntitlement();
+  const removeEntitlements = useRemoveGroupEntitlements();
 
   return (
     <ModelActionForm
       aria-label="Remove group entitlement"
-      errors={removeEntitlement.error}
+      errors={removeEntitlements.error}
       initialValues={{}}
-      message="Are you sure you want to remove this entitlement from the group?"
+      message={
+        <>
+          <p>
+            Are you sure you want to remove the following{" "}
+            {pluralize("entitlement", entitlements.length)} from the group?
+          </p>
+          <ul>
+            {entitlements.map(({ entitlement, resource_id, resource_type }) => (
+              <li key={`${entitlement}-${resource_id}`}>
+                {entitlement} ({resource_type}
+                {resource_id !== 0 ? `: ${resource_id}` : ""})
+              </li>
+            ))}
+          </ul>
+        </>
+      }
       modelType="group entitlement"
       onCancel={closeSidePanel}
       onSubmit={() => {
-        removeEntitlement.mutate({
+        removeEntitlements.mutate({
           path: { group_id },
-          query: {
-            resource_type: resource_type as OpenFgaEntitlementResourceType,
-            resource_id,
-            entitlement,
+          body: {
+            items: entitlements,
           },
         });
       }}
-      onSuccess={closeSidePanel}
-      saved={removeEntitlement.isSuccess}
-      saving={removeEntitlement.isPending}
+      onSuccess={() => {
+        setEntitlementSelection([]);
+        closeSidePanel();
+      }}
+      saved={removeEntitlements.isSuccess}
+      saving={removeEntitlements.isPending}
       submitAppearance="negative"
-      submitLabel="Remove entitlement"
+      submitLabel={`Remove ${entitlements.length} ${pluralize("entitlement", entitlements.length)}`}
     />
   );
 };

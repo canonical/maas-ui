@@ -1,38 +1,69 @@
-import { useRemoveGroupMember } from "@/app/api/query/groups";
-import type { UserGroupResponse } from "@/app/apiclient";
+import type { Dispatch, SetStateAction } from "react";
+
+import pluralize from "pluralize";
+
+import { useRemoveGroupMembers } from "@/app/api/query/groups";
+import type {
+  UserGroupMemberResponse,
+  UserGroupResponse,
+} from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
 type RemoveGroupMemberProps = {
   group_id: UserGroupResponse["id"];
-  user_id: number;
+  members: UserGroupMemberResponse[];
+  setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
 };
 
-const RemoveGroupMember = ({ group_id, user_id }: RemoveGroupMemberProps) => {
+const RemoveGroupMember = ({
+  group_id,
+  members,
+  setMemberSelection,
+}: RemoveGroupMemberProps) => {
   const { closeSidePanel } = useSidePanel();
-  const removeMember = useRemoveGroupMember();
+  const removeMembers = useRemoveGroupMembers();
 
   return (
     <ModelActionForm
       aria-label="Remove group member"
-      errors={removeMember.error}
+      errors={removeMembers.error}
       initialValues={{}}
-      message="Are you sure you want to remove this member from the group?"
+      message={
+        <>
+          <p>
+            Are you sure you want to remove the following{" "}
+            {pluralize("member", members.length)} from the group?
+          </p>
+          <ul>
+            {members.map(({ username, email }) => (
+              <li key={username}>
+                {username} ({email})
+              </li>
+            ))}
+          </ul>
+        </>
+      }
       modelType="group member"
       onCancel={closeSidePanel}
       onSubmit={() => {
-        removeMember.mutate({
+        removeMembers.mutate({
           path: {
             group_id,
-            user_id,
+          },
+          query: {
+            id: members.map((member) => member.user_id),
           },
         });
       }}
-      onSuccess={closeSidePanel}
-      saved={removeMember.isSuccess}
-      saving={removeMember.isPending}
+      onSuccess={() => {
+        setMemberSelection([]);
+        closeSidePanel();
+      }}
+      saved={removeMembers.isSuccess}
+      saving={removeMembers.isPending}
       submitAppearance="negative"
-      submitLabel="Remove member"
+      submitLabel={`Remove ${members.length} ${pluralize("member", members.length)}`}
     />
   );
 };
