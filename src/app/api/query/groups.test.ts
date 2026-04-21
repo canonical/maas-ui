@@ -7,9 +7,9 @@ import {
   useGroupMembers,
   useGroups,
   useAddGroupMembers,
-  useRemoveGroupEntitlement,
-  useRemoveGroupMember,
   useUpdateGroup,
+  useRemoveGroupMembers,
+  useRemoveGroupEntitlements,
 } from "@/app/api/query/groups";
 import type { EntitlementRequest, UserGroupRequest } from "@/app/apiclient";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
@@ -162,17 +162,21 @@ describe("useAddGroupEntitlement", () => {
   });
 });
 
-describe("useRemoveGroupEntitlement", () => {
+describe("useRemoveGroupEntitlements", () => {
   it("should delete a group entitlement successfully", async () => {
     const { result } = renderHookWithProviders(() =>
-      useRemoveGroupEntitlement()
+      useRemoveGroupEntitlements()
     );
     result.current.mutate({
       path: { group_id: 1 },
-      query: {
-        resource_type: "maas",
-        resource_id: 0,
-        entitlement: Entitlement.CAN_VIEW_MACHINES,
+      body: {
+        items: [
+          {
+            resource_type: "maas",
+            resource_id: 0,
+            entitlement: Entitlement.CAN_VIEW_MACHINES,
+          },
+        ],
       },
     });
     await waitFor(() => {
@@ -197,7 +201,7 @@ describe("useAddGroupMembers", () => {
   it("should add a group member successfully", async () => {
     const { result } = renderHookWithProviders(() => useAddGroupMembers());
     result.current.mutate({
-      body: { user_id: 1 },
+      body: { user_ids: [1] },
       path: { group_id: 1 },
     });
     await waitFor(() => {
@@ -206,11 +210,14 @@ describe("useAddGroupMembers", () => {
   });
 });
 
-describe("useRemoveGroupMember", () => {
+describe("useRemoveGroupMembers", () => {
   it("should remove a group member successfully", async () => {
-    const { result } = renderHookWithProviders(() => useRemoveGroupMember());
+    const { result } = renderHookWithProviders(() => useRemoveGroupMembers());
     result.current.mutate({
-      path: { group_id: 1, user_id: 1 },
+      path: { group_id: 1 },
+      query: {
+        id: [1],
+      },
     });
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);

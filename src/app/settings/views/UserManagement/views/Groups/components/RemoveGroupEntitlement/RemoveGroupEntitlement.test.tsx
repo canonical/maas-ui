@@ -1,7 +1,9 @@
 import RemoveGroupEntitlement from "./RemoveGroupEntitlement";
 
-import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
-import { groupsResolvers } from "@/testing/resolvers/groups";
+import {
+  groupsResolvers,
+  mockGroupEntitlements,
+} from "@/testing/resolvers/groups";
 import {
   userEvent,
   screen,
@@ -16,26 +18,31 @@ const mockServer = setupMockServer(
 );
 const { mockClose } = await mockSidePanel();
 
-const defaultProps = {
-  group_id: 1,
-  entitlement: Entitlement.CAN_DEPLOY_MACHINES,
-  resource_id: 0,
-  resource_type: "maas",
-};
-
 describe("RemoveGroupEntitlement", () => {
   it("closes the side panel when the cancel button is clicked", async () => {
-    renderWithProviders(<RemoveGroupEntitlement {...defaultProps} />);
+    renderWithProviders(
+      <RemoveGroupEntitlement
+        entitlements={mockGroupEntitlements.items}
+        group_id={1}
+        setEntitlementSelection={vi.fn}
+      />
+    );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls remove entitlement on confirm click", async () => {
-    renderWithProviders(<RemoveGroupEntitlement {...defaultProps} />);
+    renderWithProviders(
+      <RemoveGroupEntitlement
+        entitlements={mockGroupEntitlements.items}
+        group_id={1}
+        setEntitlementSelection={vi.fn}
+      />
+    );
 
     await userEvent.click(
-      screen.getByRole("button", { name: /Remove entitlement/i })
+      screen.getByRole("button", { name: /Remove 2 entitlements/i })
     );
 
     await waitFor(() => {
@@ -52,10 +59,16 @@ describe("RemoveGroupEntitlement", () => {
       })
     );
 
-    renderWithProviders(<RemoveGroupEntitlement {...defaultProps} />);
+    renderWithProviders(
+      <RemoveGroupEntitlement
+        entitlements={mockGroupEntitlements.items}
+        group_id={1}
+        setEntitlementSelection={vi.fn}
+      />
+    );
 
     await userEvent.click(
-      screen.getByRole("button", { name: /Remove entitlement/i })
+      screen.getByRole("button", { name: /Remove 2 entitlements/i })
     );
 
     await waitFor(() => {

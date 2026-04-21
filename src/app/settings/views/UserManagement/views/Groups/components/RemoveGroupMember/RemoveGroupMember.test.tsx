@@ -1,6 +1,6 @@
 import RemoveGroupMember from "./RemoveGroupMember";
 
-import { groupsResolvers } from "@/testing/resolvers/groups";
+import { groupsResolvers, mockGroupMembers } from "@/testing/resolvers/groups";
 import {
   userEvent,
   screen,
@@ -13,24 +13,31 @@ import {
 const mockServer = setupMockServer(groupsResolvers.removeGroupMember.handler());
 const { mockClose } = await mockSidePanel();
 
-const defaultProps = {
-  group_id: 1,
-  user_id: 1,
-};
-
 describe("RemoveGroupMember", () => {
   it("closes the side panel when the cancel button is clicked", async () => {
-    renderWithProviders(<RemoveGroupMember {...defaultProps} />);
+    renderWithProviders(
+      <RemoveGroupMember
+        group_id={1}
+        members={mockGroupMembers.items}
+        setMemberSelection={vi.fn}
+      />
+    );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(mockClose).toHaveBeenCalled();
   });
 
   it("calls remove member on confirm click", async () => {
-    renderWithProviders(<RemoveGroupMember {...defaultProps} />);
+    renderWithProviders(
+      <RemoveGroupMember
+        group_id={1}
+        members={mockGroupMembers.items}
+        setMemberSelection={vi.fn}
+      />
+    );
 
     await userEvent.click(
-      screen.getByRole("button", { name: /Remove member/i })
+      screen.getByRole("button", { name: /Remove 2 members/i })
     );
 
     await waitFor(() => {
@@ -47,10 +54,16 @@ describe("RemoveGroupMember", () => {
       })
     );
 
-    renderWithProviders(<RemoveGroupMember {...defaultProps} />);
+    renderWithProviders(
+      <RemoveGroupMember
+        group_id={1}
+        members={mockGroupMembers.items}
+        setMemberSelection={vi.fn}
+      />
+    );
 
     await userEvent.click(
-      screen.getByRole("button", { name: /Remove member/i })
+      screen.getByRole("button", { name: /Remove 2 members/i })
     );
 
     await waitFor(() => {

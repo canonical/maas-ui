@@ -30,7 +30,19 @@ describe("GroupDetailsHeader", () => {
   describe("display", () => {
     it("displays a spinner as the title when loading", () => {
       renderWithProviders(
-        <GroupDetailsHeader group={undefined} loading={true} />
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={undefined}
+          loading={true}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
       );
 
       expect(
@@ -40,7 +52,19 @@ describe("GroupDetailsHeader", () => {
 
     it("displays the group name as the title when loaded", async () => {
       renderWithProviders(
-        <GroupDetailsHeader group={mockGroup} loading={false} />
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
       );
       await waitForLoading();
 
@@ -53,7 +77,19 @@ describe("GroupDetailsHeader", () => {
 
     it("renders tab links for Entitlements and Members", () => {
       renderWithProviders(
-        <GroupDetailsHeader group={mockGroup} loading={false} />
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
       );
 
       expect(
@@ -64,7 +100,19 @@ describe("GroupDetailsHeader", () => {
 
     it("renders a Back to all groups link pointing to the groups url", async () => {
       renderWithProviders(
-        <GroupDetailsHeader group={mockGroup} loading={false} />
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
       );
       await waitForLoading();
 
@@ -75,15 +123,22 @@ describe("GroupDetailsHeader", () => {
 
     it("shows all action menu items when Take action is clicked", async () => {
       renderWithProviders(
-        <GroupDetailsHeader group={mockGroup} loading={false} />
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
       );
 
-      const actionLabels = [
-        "Add entitlement...",
-        "Add members...",
-        "Edit...",
-        "Delete...",
-      ];
+      const actionLabels = ["Edit group...", "Delete group..."];
       actionLabels.forEach((label) => {
         expect(
           screen.queryByRole("button", { name: label })
@@ -103,14 +158,24 @@ describe("GroupDetailsHeader", () => {
   describe("actions", () => {
     it("opens Add entitlement side panel on click", async () => {
       renderWithProviders(
-        <GroupDetailsHeader group={mockGroup} loading={false} />
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
       );
+      await waitForLoading();
 
       await userEvent.click(
-        screen.getByRole("button", { name: "Take action" })
-      );
-      await userEvent.click(
-        screen.getByRole("button", { name: "Add entitlement..." })
+        screen.getByRole("button", { name: "Add entitlement" })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -124,14 +189,24 @@ describe("GroupDetailsHeader", () => {
 
     it("opens Add members side panel on click", async () => {
       renderWithProviders(
-        <GroupDetailsHeader group={mockGroup} loading={false} />
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/members`,
+          ],
+        }
       );
+      await waitForLoading();
 
       await userEvent.click(
-        screen.getByRole("button", { name: "Take action" })
-      );
-      await userEvent.click(
-        screen.getByRole("button", { name: "Add members..." })
+        screen.getByRole("button", { name: "Add members" })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -146,13 +221,27 @@ describe("GroupDetailsHeader", () => {
 
     it("opens Edit group side panel on click", async () => {
       renderWithProviders(
-        <GroupDetailsHeader group={mockGroup} loading={false} />
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
       );
 
       await userEvent.click(
         screen.getByRole("button", { name: "Take action" })
       );
-      await userEvent.click(screen.getByRole("button", { name: "Edit..." }));
+      await userEvent.click(
+        screen.getByRole("button", { name: "Edit group..." })
+      );
 
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -165,7 +254,19 @@ describe("GroupDetailsHeader", () => {
 
     it("opens Delete group side panel on click with user count from statistics", async () => {
       renderWithProviders(
-        <GroupDetailsHeader group={mockGroup} loading={false} />
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
       );
 
       await waitFor(() => {
@@ -175,7 +276,9 @@ describe("GroupDetailsHeader", () => {
       await userEvent.click(
         screen.getByRole("button", { name: "Take action" })
       );
-      await userEvent.click(screen.getByRole("button", { name: "Delete..." }));
+      await userEvent.click(
+        screen.getByRole("button", { name: "Delete group..." })
+      );
 
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({

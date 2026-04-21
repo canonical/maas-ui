@@ -3,14 +3,18 @@ import type { Dispatch, SetStateAction } from "react";
 import pluralize from "pluralize";
 
 import { useRemoveGroupEntitlements } from "@/app/api/query/groups";
-import type { EntitlementRequest, UserGroupResponse } from "@/app/apiclient";
+import type {
+  BulkEntitlementDeleteItem,
+  EntitlementResponse,
+  UserGroupResponse,
+} from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
 type RemoveGroupEntitlementProps = {
   group_id: UserGroupResponse["id"];
-  entitlements: EntitlementRequest[];
-  setEntitlementSelection: Dispatch<SetStateAction<EntitlementRequest[]>>;
+  entitlements: EntitlementResponse[];
+  setEntitlementSelection: Dispatch<SetStateAction<EntitlementResponse[]>>;
 };
 
 const RemoveGroupEntitlement = ({
@@ -48,7 +52,7 @@ const RemoveGroupEntitlement = ({
         removeEntitlements.mutate({
           path: { group_id },
           body: {
-            items: entitlements,
+            items: entitlements as BulkEntitlementDeleteItem[],
           },
         });
       }}

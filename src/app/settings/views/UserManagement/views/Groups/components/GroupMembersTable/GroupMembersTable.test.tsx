@@ -20,7 +20,13 @@ describe("GroupMembersTable", () => {
   describe("display", () => {
     it("displays a loading component if members are loading", async () => {
       mockIsPending();
-      renderWithProviders(<GroupMembersTable id={1} />);
+      renderWithProviders(
+        <GroupMembersTable
+          id={1}
+          memberSelection={[]}
+          setMemberSelection={vi.fn}
+        />
+      );
 
       await waitFor(() => {
         expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -28,8 +34,16 @@ describe("GroupMembersTable", () => {
     });
 
     it("displays a message when rendering an empty list", async () => {
-      mockServer.use(groupsResolvers.listGroupMembers.handler({ items: [] }));
-      renderWithProviders(<GroupMembersTable id={1} />);
+      mockServer.use(
+        groupsResolvers.listGroupMembers.handler({ items: [], total: 0 })
+      );
+      renderWithProviders(
+        <GroupMembersTable
+          id={1}
+          memberSelection={[]}
+          setMemberSelection={vi.fn}
+        />
+      );
 
       await waitFor(() => {
         expect(screen.getByText("No group members found.")).toBeInTheDocument();
@@ -37,7 +51,13 @@ describe("GroupMembersTable", () => {
     });
 
     it("displays the columns correctly", () => {
-      renderWithProviders(<GroupMembersTable id={1} />);
+      renderWithProviders(
+        <GroupMembersTable
+          id={1}
+          memberSelection={[]}
+          setMemberSelection={vi.fn}
+        />
+      );
 
       ["Username", "Email", "Actions"].forEach((column) => {
         expect(
@@ -49,7 +69,13 @@ describe("GroupMembersTable", () => {
     });
 
     it("displays member rows", async () => {
-      renderWithProviders(<GroupMembersTable id={1} />);
+      renderWithProviders(
+        <GroupMembersTable
+          id={1}
+          memberSelection={[]}
+          setMemberSelection={vi.fn}
+        />
+      );
 
       await waitFor(() => {
         mockGroupMembers.items.forEach(({ username }) => {
@@ -61,7 +87,13 @@ describe("GroupMembersTable", () => {
 
   describe("actions", () => {
     it("opens the RemoveGroupMember side panel when clicking Remove member", async () => {
-      renderWithProviders(<GroupMembersTable id={1} />);
+      renderWithProviders(
+        <GroupMembersTable
+          id={1}
+          memberSelection={[]}
+          setMemberSelection={vi.fn}
+        />
+      );
 
       await waitFor(() => {
         expect(
@@ -84,7 +116,7 @@ describe("GroupMembersTable", () => {
           title: "Remove member",
           props: expect.objectContaining({
             group_id: 1,
-            user_id: selectedMember.user_id,
+            members: [selectedMember],
           }),
         })
       );

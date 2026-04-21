@@ -78,21 +78,23 @@ const mockGroupEntitlements: ListGroupEntitlementsResponse = {
       resource_type: "maas",
     }),
   ],
+  total: 2,
 };
 
 const mockGroupMembers: ListGroupMembersResponse = {
   items: [
-    groupMemberFactory.build({
+    groupMemberFactory({
       user_id: 1,
       username: "alice",
       email: "alice@example.com",
     }),
-    groupMemberFactory.build({
+    groupMemberFactory({
       user_id: 2,
       username: "bob",
       email: "bob@example.com",
     }),
   ],
+  total: 2,
 };
 
 const mockListError = {
@@ -225,15 +227,21 @@ const groupsResolvers = {
   removeGroupEntitlement: {
     resolved: false,
     handler: () =>
-      http.delete(`${BASE_URL}MAAS/a/v3/groups/:id/entitlements`, () => {
-        groupsResolvers.removeGroupEntitlement.resolved = true;
-        return HttpResponse.json({});
-      }),
+      http.post(
+        `${BASE_URL}MAAS/a/v3/groups/:id/entitlements:batch_delete`,
+        () => {
+          groupsResolvers.removeGroupEntitlement.resolved = true;
+          return HttpResponse.json({});
+        }
+      ),
     error: (error: RemoveGroupEntitlementError = mockGetError) =>
-      http.delete(`${BASE_URL}MAAS/a/v3/groups/:id/entitlements`, () => {
-        groupsResolvers.removeGroupEntitlement.resolved = true;
-        return HttpResponse.json(error, { status: error.code });
-      }),
+      http.post(
+        `${BASE_URL}MAAS/a/v3/groups/:id/entitlements:batch_delete`,
+        () => {
+          groupsResolvers.removeGroupEntitlement.resolved = true;
+          return HttpResponse.json(error, { status: error.code });
+        }
+      ),
   },
   listGroupMembers: {
     resolved: false,
@@ -251,12 +259,12 @@ const groupsResolvers = {
   addGroupMember: {
     resolved: false,
     handler: () =>
-      http.post(`${BASE_URL}MAAS/a/v3/groups/:id/members`, () => {
+      http.post(`${BASE_URL}MAAS/a/v3/groups/:id/members:batch_create`, () => {
         groupsResolvers.addGroupMember.resolved = true;
         return HttpResponse.json({});
       }),
     error: (error: AddGroupMemberError = mockCreateGroupError) =>
-      http.post(`${BASE_URL}MAAS/a/v3/groups/:id/members`, () => {
+      http.post(`${BASE_URL}MAAS/a/v3/groups/:id/members:batch_create`, () => {
         groupsResolvers.addGroupMember.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
@@ -264,12 +272,12 @@ const groupsResolvers = {
   removeGroupMember: {
     resolved: false,
     handler: () =>
-      http.delete(`${BASE_URL}MAAS/a/v3/groups/:id/members/:user_id`, () => {
+      http.delete(`${BASE_URL}MAAS/a/v3/groups/:id/members`, () => {
         groupsResolvers.removeGroupMember.resolved = true;
         return HttpResponse.json({});
       }),
     error: (error: RemoveGroupMemberError = mockGetError) =>
-      http.delete(`${BASE_URL}MAAS/a/v3/groups/:id/members/:user_id`, () => {
+      http.delete(`${BASE_URL}MAAS/a/v3/groups/:id/members`, () => {
         groupsResolvers.removeGroupMember.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),

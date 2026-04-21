@@ -27,7 +27,13 @@ describe("GroupEntitlementsTable", () => {
   describe("display", () => {
     it("displays a loading component if entitlements are loading", async () => {
       mockIsPending();
-      renderWithProviders(<GroupEntitlementsTable id={1} />);
+      renderWithProviders(
+        <GroupEntitlementsTable
+          entitlementSelection={[]}
+          id={1}
+          setEntitlementSelection={vi.fn}
+        />
+      );
 
       await waitFor(() => {
         expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -36,9 +42,15 @@ describe("GroupEntitlementsTable", () => {
 
     it("displays a message when rendering an empty list", async () => {
       mockServer.use(
-        groupsResolvers.listGroupEntitlements.handler({ items: [] })
+        groupsResolvers.listGroupEntitlements.handler({ items: [], total: 0 })
       );
-      renderWithProviders(<GroupEntitlementsTable id={1} />);
+      renderWithProviders(
+        <GroupEntitlementsTable
+          entitlementSelection={[]}
+          id={1}
+          setEntitlementSelection={vi.fn}
+        />
+      );
 
       await waitFor(() => {
         expect(
@@ -48,7 +60,13 @@ describe("GroupEntitlementsTable", () => {
     });
 
     it("displays the columns correctly", () => {
-      renderWithProviders(<GroupEntitlementsTable id={1} />);
+      renderWithProviders(
+        <GroupEntitlementsTable
+          entitlementSelection={[]}
+          id={1}
+          setEntitlementSelection={vi.fn}
+        />
+      );
 
       ["Entitlement", "Applies to", "Actions"].forEach((column) => {
         expect(
@@ -62,7 +80,13 @@ describe("GroupEntitlementsTable", () => {
 
   describe("actions", () => {
     it("opens the RemoveGroupEntitlement side panel when clicking Remove entitlement", async () => {
-      renderWithProviders(<GroupEntitlementsTable id={1} />);
+      renderWithProviders(
+        <GroupEntitlementsTable
+          entitlementSelection={[]}
+          id={1}
+          setEntitlementSelection={vi.fn}
+        />
+      );
 
       await waitFor(() => {
         expect(
@@ -85,9 +109,7 @@ describe("GroupEntitlementsTable", () => {
           title: "Remove entitlement",
           props: expect.objectContaining({
             group_id: 1,
-            entitlement: selectedEntitlement.entitlement,
-            resource_id: selectedEntitlement.resource_id,
-            resource_type: selectedEntitlement.resource_type,
+            entitlements: [selectedEntitlement],
           }),
         })
       );
