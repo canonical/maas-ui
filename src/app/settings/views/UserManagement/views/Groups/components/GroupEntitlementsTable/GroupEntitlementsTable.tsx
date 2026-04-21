@@ -12,7 +12,6 @@ import type {
 } from "@/app/apiclient";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import useGroupEntitlementsTableColumns from "@/app/settings/views/UserManagement/views/Groups/components/GroupEntitlementsTable/useGroupEntitlementsTableColumns/useGroupEntitlementsTableColumns";
-import { group } from "@/testing/factories/groups";
 
 type GroupEntitlementsTableProps = {
   id: UserGroupResponse["id"];
@@ -70,7 +69,7 @@ const GroupEntitlementsTable = ({
 
   return (
     <GenericTable
-      aria-label={`${group?.name || "Group"} entitlements`}
+      aria-label="Group entitlements table"
       className="groups-entitlements-table"
       columns={columns}
       data={entitlements ?? []}

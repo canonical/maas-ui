@@ -11,7 +11,6 @@ import type {
 } from "@/app/apiclient";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import useGroupMembersTableColumns from "@/app/settings/views/UserManagement/views/Groups/components/GroupMembersTable/useGroupMembersTableColumns/useGroupMembersTableColumns";
-import { group } from "@/testing/factories/groups";
 
 type GroupMembersTableProps = {
   id: UserGroupResponse["id"];
@@ -69,7 +68,7 @@ const GroupMembersTable = ({
 
   return (
     <GenericTable
-      aria-label={`${group?.name || "Group"} members`}
+      aria-label="Group members table"
       className="groups-members-table"
       columns={columns}
       data={members ?? []}
