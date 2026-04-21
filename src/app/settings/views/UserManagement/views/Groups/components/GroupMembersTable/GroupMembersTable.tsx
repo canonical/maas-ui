@@ -27,7 +27,10 @@ const GroupMembersTable = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const { page, size, handlePageSizeChange, setPage } = usePagination();
 
-  const columns = useGroupMembersTableColumns({ group_id: id });
+  const columns = useGroupMembersTableColumns({
+    group_id: id,
+    setMemberSelection,
+  });
 
   const { data, isPending } = useGroupMembers({
     path: { group_id: id! },

@@ -28,7 +28,10 @@ const GroupEntitlementsTable = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const { page, size, handlePageSizeChange, setPage } = usePagination();
 
-  const columns = useGroupEntitlementsTableColumns({ group_id: id });
+  const columns = useGroupEntitlementsTableColumns({
+    group_id: id,
+    setEntitlementSelection,
+  });
 
   const { data, isPending } = useGroupEntitlements({
     path: { group_id: id! },

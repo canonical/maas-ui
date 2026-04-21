@@ -53,7 +53,16 @@ const RemoveGroupEntitlement = ({
         });
       }}
       onSuccess={() => {
-        setEntitlementSelection([]);
+        setEntitlementSelection((prev) =>
+          prev.filter(
+            (e) =>
+              !entitlements.some(
+                (r) =>
+                  r.entitlement === e.entitlement &&
+                  r.resource_id === e.resource_id
+              )
+          )
+        );
         closeSidePanel();
       }}
       saved={removeEntitlements.isSuccess}

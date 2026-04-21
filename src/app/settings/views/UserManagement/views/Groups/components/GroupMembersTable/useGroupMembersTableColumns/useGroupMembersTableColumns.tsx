@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from "react";
+
 import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -15,8 +17,10 @@ export type MemberColumnDef = ColumnDef<
 
 const useGroupMembersTableColumns = ({
   group_id,
+  setMemberSelection,
 }: {
   group_id: UserGroupResponse["id"];
+  setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
 }): MemberColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   return [
@@ -36,7 +40,7 @@ const useGroupMembersTableColumns = ({
       enableSorting: false,
       cell: ({
         row: {
-          original: { user_id },
+          original: { user_id, username, email },
         },
       }) => (
         <ContextualMenu
@@ -48,7 +52,11 @@ const useGroupMembersTableColumns = ({
                 openSidePanel({
                   component: RemoveGroupMember,
                   title: "Remove member",
-                  props: { group_id, user_id },
+                  props: {
+                    group_id,
+                    members: [{ user_id, username, email }],
+                    setMemberSelection,
+                  },
                 });
               },
             },

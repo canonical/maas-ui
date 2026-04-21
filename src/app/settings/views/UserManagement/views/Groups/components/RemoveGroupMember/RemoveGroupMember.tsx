@@ -57,7 +57,9 @@ const RemoveGroupMember = ({
         });
       }}
       onSuccess={() => {
-        setMemberSelection([]);
+        setMemberSelection((prev) =>
+          prev.filter((m) => !members.some((r) => r.user_id === m.user_id))
+        );
         closeSidePanel();
       }}
       saved={removeMembers.isSuccess}

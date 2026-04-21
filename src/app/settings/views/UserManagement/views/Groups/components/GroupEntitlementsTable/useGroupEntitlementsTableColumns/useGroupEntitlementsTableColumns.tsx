@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -6,6 +6,7 @@ import { Link } from "react-router";
 
 import { useGetPool } from "@/app/api/query/pools";
 import type {
+  EntitlementRequest,
   EntitlementResponse,
   OpenFgaEntitlementResourceType,
   UserGroupResponse,
@@ -37,8 +38,10 @@ const AppliesToCell = ({
 
 const useGroupEntitlementsTableColumns = ({
   group_id,
+  setEntitlementSelection,
 }: {
   group_id: UserGroupResponse["id"];
+  setEntitlementSelection: Dispatch<SetStateAction<EntitlementRequest[]>>;
 }): EntitlementColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   return [
@@ -81,7 +84,18 @@ const useGroupEntitlementsTableColumns = ({
                 openSidePanel({
                   component: RemoveGroupEntitlement,
                   title: "Remove entitlement",
-                  props: { group_id, entitlement, resource_id, resource_type },
+                  props: {
+                    group_id,
+                    entitlements: [
+                      {
+                        entitlement,
+                        resource_id,
+                        resource_type:
+                          resource_type as OpenFgaEntitlementResourceType,
+                      },
+                    ],
+                    setEntitlementSelection,
+                  },
                 });
               },
             },

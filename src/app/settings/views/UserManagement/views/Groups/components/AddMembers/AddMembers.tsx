@@ -108,7 +108,7 @@ const AddMembers = ({ group_id }: AddMembersProps) => {
       resetOnSave
       saved={addMembers.isSuccess}
       saving={addMembers.isPending}
-      submitLabel={`Add ${selectedUserCount} group ${pluralize("member", selectedUserCount)}`}
+      submitLabel={`Add ${selectedUserCount} ${pluralize("member", selectedUserCount)}`}
       validationSchema={AddMembersSchema}
     >
       {({ setFieldValue }: FormikContextType<AddMembersValues>) => (
