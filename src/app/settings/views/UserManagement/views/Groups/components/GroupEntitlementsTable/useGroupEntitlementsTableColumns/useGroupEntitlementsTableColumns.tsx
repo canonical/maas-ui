@@ -6,7 +6,6 @@ import { Link } from "react-router";
 
 import { useGetPool } from "@/app/api/query/pools";
 import type {
-  EntitlementRequest,
   EntitlementResponse,
   OpenFgaEntitlementResourceType,
   UserGroupResponse,
@@ -41,7 +40,7 @@ const useGroupEntitlementsTableColumns = ({
   setEntitlementSelection,
 }: {
   group_id: UserGroupResponse["id"];
-  setEntitlementSelection: Dispatch<SetStateAction<EntitlementRequest[]>>;
+  setEntitlementSelection: Dispatch<SetStateAction<EntitlementResponse[]>>;
 }): EntitlementColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   return [

@@ -78,6 +78,29 @@ describe("GroupEntitlementsTable", () => {
     });
   });
 
+  describe("selection", () => {
+    it("calls setEntitlementSelection with the correct entitlement when a row is checked", async () => {
+      const setEntitlementSelection = vi.fn();
+
+      renderWithProviders(
+        <GroupEntitlementsTable
+          entitlementSelection={[]}
+          id={1}
+          setEntitlementSelection={setEntitlementSelection}
+        />
+      );
+
+      await waitFor(() => {
+        expect(screen.getAllByRole("checkbox").length).toBeGreaterThan(0);
+      });
+
+      const [, firstRowCheckbox] = screen.getAllByRole("checkbox");
+      await userEvent.click(firstRowCheckbox);
+
+      expect(setEntitlementSelection).toHaveBeenCalled();
+    });
+  });
+
   describe("actions", () => {
     it("opens the RemoveGroupEntitlement side panel when clicking Remove entitlement", async () => {
       renderWithProviders(

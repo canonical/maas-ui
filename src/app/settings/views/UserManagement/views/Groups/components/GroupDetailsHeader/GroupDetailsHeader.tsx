@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router";
 
 import { useGroupStatistics } from "@/app/api/query/groups";
 import type {
-  EntitlementRequest,
+  EntitlementResponse,
   UserGroupMemberResponse,
   UserGroupResponse,
 } from "@/app/apiclient";
@@ -22,8 +22,8 @@ import RemoveGroupMember from "@/app/settings/views/UserManagement/views/Groups/
 type GroupDetailsHeaderProps = {
   group: UserGroupResponse | undefined;
   loading: boolean;
-  entitlementSelection: EntitlementRequest[];
-  setEntitlementSelection: Dispatch<SetStateAction<EntitlementRequest[]>>;
+  entitlementSelection: EntitlementResponse[];
+  setEntitlementSelection: Dispatch<SetStateAction<EntitlementResponse[]>>;
   memberSelection: UserGroupMemberResponse[];
   setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
 };

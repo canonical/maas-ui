@@ -5,7 +5,12 @@ import AddEntitlement from "@/app/settings/views/UserManagement/views/Groups/com
 import AddMembers from "@/app/settings/views/UserManagement/views/Groups/components/AddMembers/AddMembers";
 import DeleteGroup from "@/app/settings/views/UserManagement/views/Groups/components/DeleteGroup";
 import EditGroup from "@/app/settings/views/UserManagement/views/Groups/components/EditGroup";
-import { group as groupFactory } from "@/testing/factories/groups";
+import RemoveGroupEntitlement from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupEntitlement";
+import RemoveGroupMember from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupMember";
+import {
+  groupMember as groupMemberFactory,
+  group as groupFactory,
+} from "@/testing/factories/groups";
 import {
   groupsResolvers,
   mockGroupStatistics,
@@ -153,6 +158,106 @@ describe("GroupDetailsHeader", () => {
         expect(screen.getByRole("button", { name: label })).toBeInTheDocument();
       });
     });
+
+    it("disables the Remove entitlements button when no entitlements are selected", () => {
+      renderWithProviders(
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
+      );
+
+      expect(
+        screen.getByRole("button", { name: "Remove entitlements" })
+      ).toBeAriaDisabled();
+    });
+
+    it("enables the Remove entitlements button when entitlements are selected", () => {
+      renderWithProviders(
+        <GroupDetailsHeader
+          entitlementSelection={[
+            {
+              entitlement: "can_edit_machines",
+              resource_id: 0,
+              resource_type: "maas",
+            },
+          ]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
+      );
+
+      expect(
+        screen.getByRole("button", { name: "Remove entitlements" })
+      ).not.toBeAriaDisabled();
+    });
+
+    it("disables the Remove members button when no members are selected", () => {
+      renderWithProviders(
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/members`,
+          ],
+        }
+      );
+
+      expect(
+        screen.getByRole("button", { name: "Remove members" })
+      ).toBeAriaDisabled();
+    });
+
+    it("enables the Remove members button when members are selected", () => {
+      const member = groupMemberFactory({
+        user_id: 1,
+        username: "alice",
+        email: "alice@example.com",
+      });
+
+      renderWithProviders(
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[member]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/members`,
+          ],
+        }
+      );
+
+      expect(
+        screen.getByRole("button", { name: "Remove members" })
+      ).not.toBeAriaDisabled();
+    });
   });
 
   describe("actions", () => {
@@ -288,6 +393,86 @@ describe("GroupDetailsHeader", () => {
             id: mockGroup.id,
             user_count: mockGroupStatistics.items[0].user_count,
           },
+        })
+      );
+    });
+
+    it("opens Remove entitlements side panel with the current selection", async () => {
+      const entitlementSelection = [
+        {
+          entitlement: "can_edit_machines",
+          resource_id: 0,
+          resource_type: "maas" as const,
+        },
+      ];
+
+      renderWithProviders(
+        <GroupDetailsHeader
+          entitlementSelection={entitlementSelection}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/entitlements`,
+          ],
+        }
+      );
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Remove entitlements" })
+      );
+
+      expect(mockOpen).toHaveBeenCalledWith(
+        expect.objectContaining({
+          component: RemoveGroupEntitlement,
+          title: "Remove entitlements",
+          props: expect.objectContaining({
+            group_id: mockGroup.id,
+            entitlements: entitlementSelection,
+          }),
+        })
+      );
+    });
+
+    it("opens Remove members side panel with the current selection", async () => {
+      const member = groupMemberFactory({
+        user_id: 1,
+        username: "alice",
+        email: "alice@example.com",
+      });
+
+      renderWithProviders(
+        <GroupDetailsHeader
+          entitlementSelection={[]}
+          group={mockGroup}
+          loading={false}
+          memberSelection={[member]}
+          setEntitlementSelection={vi.fn}
+          setMemberSelection={vi.fn}
+        />,
+        {
+          initialEntries: [
+            `/settings/user-management/group/${mockGroup.id}/members`,
+          ],
+        }
+      );
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Remove members" })
+      );
+
+      expect(mockOpen).toHaveBeenCalledWith(
+        expect.objectContaining({
+          component: RemoveGroupMember,
+          title: "Remove members",
+          props: expect.objectContaining({
+            group_id: mockGroup.id,
+            members: [member],
+          }),
         })
       );
     });

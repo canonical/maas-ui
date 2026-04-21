@@ -70,4 +70,50 @@ describe("RemoveGroupMember", () => {
       expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
     });
   });
+
+  it("lists each member with their email in the confirmation message", () => {
+    renderWithProviders(
+      <RemoveGroupMember
+        group_id={1}
+        members={mockGroupMembers.items}
+        setMemberSelection={vi.fn}
+      />
+    );
+
+    mockGroupMembers.items.forEach(({ username, email }) => {
+      expect(screen.getByText(`${username} (${email})`)).toBeInTheDocument();
+    });
+  });
+
+  it("uses singular label when removing a single member", () => {
+    renderWithProviders(
+      <RemoveGroupMember
+        group_id={1}
+        members={[mockGroupMembers.items[0]]}
+        setMemberSelection={vi.fn}
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Remove 1 member" })
+    ).toBeInTheDocument();
+  });
+
+  it("closes the side panel on successful removal", async () => {
+    renderWithProviders(
+      <RemoveGroupMember
+        group_id={1}
+        members={mockGroupMembers.items}
+        setMemberSelection={vi.fn}
+      />
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Remove 2 members/i })
+    );
+
+    await waitFor(() => {
+      expect(mockClose).toHaveBeenCalled();
+    });
+  });
 });

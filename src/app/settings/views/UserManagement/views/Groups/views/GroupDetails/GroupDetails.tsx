@@ -6,7 +6,7 @@ import { Navigate, Route, Routes } from "react-router";
 
 import { useGetGroup } from "@/app/api/query/groups";
 import type {
-  EntitlementRequest,
+  EntitlementResponse,
   UserGroupMemberResponse,
 } from "@/app/apiclient";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
@@ -27,7 +27,7 @@ const GroupDetails = (): ReactElement => {
   const isValidID = isId(id);
 
   const [entitlementSelection, setEntitlementSelection] = useState<
-    EntitlementRequest[]
+    EntitlementResponse[]
   >([]);
   const [memberSelection, setMemberSelection] = useState<
     UserGroupMemberResponse[]

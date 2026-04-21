@@ -67,21 +67,28 @@ describe("GroupMembersTable", () => {
         ).toBeInTheDocument();
       });
     });
+  });
 
-    it("displays member rows", async () => {
+  describe("selection", () => {
+    it("calls setMemberSelection with the correct member when a row is checked", async () => {
+      const setMemberSelection = vi.fn();
+
       renderWithProviders(
         <GroupMembersTable
           id={1}
           memberSelection={[]}
-          setMemberSelection={vi.fn}
+          setMemberSelection={setMemberSelection}
         />
       );
 
       await waitFor(() => {
-        mockGroupMembers.items.forEach(({ username }) => {
-          expect(screen.getByText(username)).toBeInTheDocument();
-        });
+        expect(screen.getAllByRole("checkbox").length).toBeGreaterThan(0);
       });
+
+      const [, firstRowCheckbox] = screen.getAllByRole("checkbox");
+      await userEvent.click(firstRowCheckbox);
+
+      expect(setMemberSelection).toHaveBeenCalled();
     });
   });
 

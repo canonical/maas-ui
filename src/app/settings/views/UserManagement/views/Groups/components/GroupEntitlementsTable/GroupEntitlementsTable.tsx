@@ -5,18 +5,14 @@ import { GenericTable } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { useGroupEntitlements } from "@/app/api/query/groups";
-import type {
-  EntitlementRequest,
-  OpenFgaEntitlementResourceType,
-  UserGroupResponse,
-} from "@/app/apiclient";
+import type { EntitlementResponse, UserGroupResponse } from "@/app/apiclient";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import useGroupEntitlementsTableColumns from "@/app/settings/views/UserManagement/views/Groups/components/GroupEntitlementsTable/useGroupEntitlementsTableColumns/useGroupEntitlementsTableColumns";
 
 type GroupEntitlementsTableProps = {
   id: UserGroupResponse["id"];
-  entitlementSelection: EntitlementRequest[];
-  setEntitlementSelection: Dispatch<SetStateAction<EntitlementRequest[]>>;
+  entitlementSelection: EntitlementResponse[];
+  setEntitlementSelection: Dispatch<SetStateAction<EntitlementResponse[]>>;
 };
 
 const GroupEntitlementsTable = ({
@@ -47,13 +43,7 @@ const GroupEntitlementsTable = ({
     setRowSelection((prev) => {
       const next = typeof updater === "function" ? updater(prev) : updater;
       const selected = (entitlements ?? []).filter((e) => next[e.id]);
-      setEntitlementSelection(
-        selected.map(({ entitlement, resource_id, resource_type }) => ({
-          entitlement,
-          resource_id,
-          resource_type: resource_type as OpenFgaEntitlementResourceType,
-        }))
-      );
+      setEntitlementSelection(selected.map(({ id: _id, ...rest }) => rest));
       return next;
     });
   };

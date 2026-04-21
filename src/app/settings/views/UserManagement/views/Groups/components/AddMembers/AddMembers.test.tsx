@@ -124,4 +124,40 @@ describe("AddMembers", () => {
       expect(usersResolvers.listUsers.resolved).toBeTruthy();
     });
   });
+
+  it("disables the submit button when no new members are selected", async () => {
+    renderWithProviders(<AddMembers group_id={1} />);
+
+    await waitForLoading();
+
+    // All users from mockUsers (ids 1 & 2) are already members — no new selection possible
+    expect(
+      screen.getByRole("button", { name: /Add 0 members/i })
+    ).toBeDisabled();
+  });
+
+  it("closes the side panel on successful add", async () => {
+    renderWithProviders(<AddMembers group_id={1} />);
+
+    await waitFor(() => {
+      expect(screen.getByText(mockUsers.items[2].username)).toBeInTheDocument();
+    });
+
+    const user3Checkbox = screen
+      .getAllByRole("checkbox")
+      .find(
+        (cb) =>
+          !(cb as HTMLInputElement).disabled &&
+          !(cb as HTMLInputElement).checked
+      );
+    await userEvent.click(user3Checkbox!);
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Add 1 member/i })
+    );
+
+    await waitFor(() => {
+      expect(mockClose).toHaveBeenCalled();
+    });
+  });
 });
