@@ -99,8 +99,7 @@ const AddMembers = ({ group_id }: AddMembersProps) => {
       onSubmit={(values) => {
         addMembers.mutate({
           body: {
-            // TODO: replace with array for bulk changes, filter out existing ids
-            user_id: values.user_ids,
+            user_ids: values.user_ids,
           },
           path: { group_id },
         });
