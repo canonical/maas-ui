@@ -18,11 +18,11 @@ export type AaaaRecord = {
  * AAAARecordResponse
  */
 export type AaaaRecordResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -47,11 +47,11 @@ export type ARecord = {
  * ARecordResponse
  */
 export type ARecordResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -77,7 +77,7 @@ export type AgentListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -88,11 +88,11 @@ export type AgentListResponse = {
  * AgentResponse
  */
 export type AgentResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -108,7 +108,7 @@ export type AgentResponse = {
   /**
    * Rackcontroller Id
    */
-  rackcontroller_id?: number | unknown;
+  rackcontroller_id?: number;
 };
 
 /**
@@ -124,11 +124,11 @@ export type AuthInfoResponse = {
   /**
    * Auth Url
    */
-  auth_url?: string | unknown;
+  auth_url?: string;
   /**
    * Provider Name
    */
-  provider_name?: string | unknown;
+  provider_name?: string;
   /**
    * Is Oidc
    */
@@ -154,7 +154,7 @@ export type BadGatewayErrorBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[] | unknown;
+  details?: BaseExceptionDetail[];
 };
 
 /**
@@ -176,7 +176,7 @@ export type BadRequestBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[] | unknown;
+  details?: BaseExceptionDetail[];
 };
 
 /**
@@ -194,11 +194,11 @@ export type BaseExceptionDetail = {
   /**
    * Field
    */
-  field?: string | unknown;
+  field?: string;
   /**
    * Location
    */
-  location?: string | unknown;
+  location?: string;
 };
 
 /**
@@ -229,11 +229,11 @@ export type BaseHrefWithId = {
   /**
    * Id
    */
-  id?: string | unknown;
+  id?: string;
   /**
    * Name
    */
-  name?: string | unknown;
+  name?: string;
 };
 
 /**
@@ -257,7 +257,7 @@ export type BodyLogin = {
   /**
    * Grant Type
    */
-  grant_type?: string | unknown;
+  grant_type?: string;
   /**
    * Username
    */
@@ -273,11 +273,11 @@ export type BodyLogin = {
   /**
    * Client Id
    */
-  client_id?: string | unknown;
+  client_id?: string;
   /**
    * Client Secret
    */
-  client_secret?: string | unknown;
+  client_secret?: string;
 };
 
 /**
@@ -312,7 +312,7 @@ export type BootResourceListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -323,11 +323,11 @@ export type BootResourceListResponse = {
  * BootResourceResponse
  */
 export type BootResourceResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -369,7 +369,7 @@ export type BootSourceAvailableImageListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -411,13 +411,13 @@ export type BootSourceCreateRequest = {
    *
    * File path to keyring to use for verifying signatures of the boot sources.
    */
-  keyring_filename?: string | unknown;
+  keyring_filename?: string;
   /**
    * Keyring Data
    *
    * Base64-encoded keyring data used for signature verification. Optional alternative to providing a keyring file path.
    */
-  keyring_data?: string | unknown;
+  keyring_data?: string;
   /**
    * Skip Keyring Verification
    *
@@ -447,13 +447,13 @@ export type BootSourceFetchRequest = {
    *
    * File path to keyring to use for verifying signatures of the boot sources.
    */
-  keyring_filename?: string | unknown;
+  keyring_filename?: string;
   /**
    * Keyring Data
    *
    * Base64-encoded keyring data used for signature verification. Optional alternative to providing a keyring file path.
    */
-  keyring_data?: string | unknown;
+  keyring_data?: string;
   /**
    * Skip Keyring Verification
    *
@@ -472,11 +472,11 @@ export type BootSourceFetchRequest = {
  * BootSourceResponse
  */
 export type BootSourceResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -492,11 +492,11 @@ export type BootSourceResponse = {
   /**
    * Keyring Filename
    */
-  keyring_filename?: string | unknown;
+  keyring_filename?: string;
   /**
    * Keyring Data
    */
-  keyring_data?: string | unknown;
+  keyring_data?: string;
   /**
    * Priority
    */
@@ -554,13 +554,13 @@ export type BootSourceUpdateRequest = {
    *
    * File path to keyring to use for verifying signatures of the boot sources.
    */
-  keyring_filename?: string | unknown;
+  keyring_filename?: string;
   /**
    * Keyring Data
    *
    * Base64-encoded keyring data used for signature verification. Optional alternative to providing a keyring file path.
    */
-  keyring_data?: string | unknown;
+  keyring_data?: string;
   /**
    * Skip Keyring Verification
    *
@@ -590,7 +590,7 @@ export type BootSourcesListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -612,7 +612,7 @@ export type BootloaderListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -623,11 +623,11 @@ export type BootloaderListResponse = {
  * BootloaderResponse
  */
 export type BootloaderResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -705,11 +705,11 @@ export type CnameRecord = {
  * CNAMERecordResponse
  */
 export type CnameRecordResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -745,11 +745,11 @@ export type ComponentsToDisableEnum = "multiverse" | "restricted" | "universe";
  * ConfigurationResponse
  */
 export type ConfigurationResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -768,11 +768,11 @@ export type ConfigurationResponse = {
  * ConfigurationsListResponse
  */
 export type ConfigurationsListResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -802,7 +802,7 @@ export type ConflictBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[] | unknown;
+  details?: BaseExceptionDetail[];
 };
 
 /**
@@ -816,37 +816,37 @@ export type DnsResourceRecordSetRequest = {
   /**
    * Ttl
    */
-  ttl?: number | unknown;
+  ttl?: number;
   rrtype: DnsResourceTypeEnum;
   /**
    * A Records
    */
-  a_records?: ARecord[] | unknown;
+  a_records?: ARecord[];
   /**
    * Aaaa Records
    */
-  aaaa_records?: AaaaRecord[] | unknown;
-  cname_record?: CnameRecord | unknown;
+  aaaa_records?: AaaaRecord[];
+  cname_record?: CnameRecord;
   /**
    * Mx Records
    */
-  mx_records?: MxRecord[] | unknown;
+  mx_records?: MxRecord[];
   /**
    * Ns Records
    */
-  ns_records?: NsRecord[] | unknown;
+  ns_records?: NsRecord[];
   /**
    * Sshfp Records
    */
-  sshfp_records?: SshfpRecord[] | unknown;
+  sshfp_records?: SshfpRecord[];
   /**
    * Srv Records
    */
-  srv_records?: SrvRecord[] | unknown;
+  srv_records?: SrvRecord[];
   /**
    * Txt Records
    */
-  txt_records?: TxtRecord[] | unknown;
+  txt_records?: TxtRecord[];
 };
 
 /**
@@ -877,7 +877,7 @@ export type DiscoveriesListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -888,11 +888,11 @@ export type DiscoveriesListResponse = {
  * DiscoveryResponse
  */
 export type DiscoveryResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -904,87 +904,87 @@ export type DiscoveryResponse = {
   /**
    * Discovery Id
    */
-  discovery_id?: string | unknown;
+  discovery_id?: string;
   /**
    * Neighbour Id
    */
-  neighbour_id?: number | unknown;
+  neighbour_id?: number;
   /**
    * Ip
    */
-  ip?: string | unknown;
+  ip?: string;
   /**
    * Mac Address
    */
-  mac_address?: string | unknown;
+  mac_address?: string;
   /**
    * Mac Organization
    */
-  mac_organization?: string | unknown;
+  mac_organization?: string;
   /**
    * Vid
    */
-  vid?: number | unknown;
+  vid?: number;
   /**
    * First Seen
    */
-  first_seen?: string | unknown;
+  first_seen?: string;
   /**
    * Last Seen
    */
-  last_seen?: string | unknown;
+  last_seen?: string;
   /**
    * Mdns Id
    */
-  mdns_id?: number | unknown;
+  mdns_id?: number;
   /**
    * Hostname
    */
-  hostname?: string | unknown;
+  hostname?: string;
   /**
    * Observer Id
    */
-  observer_id?: number | unknown;
+  observer_id?: number;
   /**
    * Observer System Id
    */
-  observer_system_id?: string | unknown;
+  observer_system_id?: string;
   /**
    * Observer Hostname
    */
-  observer_hostname?: string | unknown;
+  observer_hostname?: string;
   /**
    * Observer Interface Id
    */
-  observer_interface_id?: number | unknown;
+  observer_interface_id?: number;
   /**
    * Observer Interface Name
    */
-  observer_interface_name?: string | unknown;
+  observer_interface_name?: string;
   /**
    * Fabric Id
    */
-  fabric_id?: number | unknown;
+  fabric_id?: number;
   /**
    * Fabric Name
    */
-  fabric_name?: string | unknown;
+  fabric_name?: string;
   /**
    * Vlan Id
    */
-  vlan_id?: number | unknown;
+  vlan_id?: number;
   /**
    * Is External Dhcp
    */
-  is_external_dhcp?: boolean | unknown;
+  is_external_dhcp?: boolean;
   /**
    * Subnet Id
    */
-  subnet_id?: number | unknown;
+  subnet_id?: number;
   /**
    * Subnet Cidr
    */
-  subnet_cidr?: string | unknown;
+  subnet_cidr?: string;
 };
 
 /**
@@ -1008,7 +1008,7 @@ export type DomainRequest = {
    *
    * TTL for the domain.
    */
-  ttl?: number | unknown;
+  ttl?: number;
 };
 
 /**
@@ -1026,7 +1026,7 @@ export type DomainResourceRecordSetListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1037,11 +1037,11 @@ export type DomainResourceRecordSetListResponse = {
  * DomainResourceRecordSetResponse
  */
 export type DomainResourceRecordSetResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1053,52 +1053,52 @@ export type DomainResourceRecordSetResponse = {
   /**
    * Node Id
    */
-  node_id?: number | unknown;
+  node_id?: number;
   /**
    * Ttl
    */
-  ttl?: number | unknown;
+  ttl?: number;
   rrtype: DnsResourceTypeEnum;
   /**
    * A Records
    */
-  a_records?: ARecordResponse[] | unknown;
+  a_records?: ARecordResponse[];
   /**
    * Aaaa Records
    */
-  aaaa_records?: AaaaRecordResponse[] | unknown;
-  cname_record?: CnameRecordResponse | unknown;
+  aaaa_records?: AaaaRecordResponse[];
+  cname_record?: CnameRecordResponse;
   /**
    * Mx Records
    */
-  mx_records?: MxRecordResponse[] | unknown;
+  mx_records?: MxRecordResponse[];
   /**
    * Ns Records
    */
-  ns_records?: NsRecordResponse[] | unknown;
+  ns_records?: NsRecordResponse[];
   /**
    * Sshfp Records
    */
-  sshfp_records?: SshfpRecordResponse[] | unknown;
+  sshfp_records?: SshfpRecordResponse[];
   /**
    * Srv Records
    */
-  srv_records?: SrvRecordResponse[] | unknown;
+  srv_records?: SrvRecordResponse[];
   /**
    * Txt Records
    */
-  txt_records?: TxtRecordResponse[] | unknown;
+  txt_records?: TxtRecordResponse[];
 };
 
 /**
  * DomainResponse
  */
 export type DomainResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1110,7 +1110,7 @@ export type DomainResponse = {
   /**
    * Ttl
    */
-  ttl?: number | unknown;
+  ttl?: number;
   /**
    * Id
    */
@@ -1136,7 +1136,7 @@ export type DomainsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1199,7 +1199,7 @@ export type EntitlementsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1210,11 +1210,11 @@ export type EntitlementsListResponse = {
  * EventResponse
  */
 export type EventResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1235,7 +1235,7 @@ export type EventResponse = {
   /**
    * Node System Id
    */
-  node_system_id?: string | unknown;
+  node_system_id?: string;
   /**
    * Node Hostname
    */
@@ -1243,7 +1243,7 @@ export type EventResponse = {
   /**
    * User Id
    */
-  user_id?: number | unknown;
+  user_id?: number;
   /**
    * Owner
    */
@@ -1251,7 +1251,7 @@ export type EventResponse = {
   /**
    * Ip Address
    */
-  ip_address?: string | unknown;
+  ip_address?: string;
   /**
    * User Agent
    */
@@ -1307,7 +1307,7 @@ export type EventsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1329,22 +1329,22 @@ export type FabricRequest = {
    *
    * The description of the fabric.
    */
-  description?: string | unknown;
+  description?: string;
   /**
    * Class Type
    */
-  class_type?: string | unknown;
+  class_type?: string;
 };
 
 /**
  * FabricResponse
  */
 export type FabricResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1356,15 +1356,15 @@ export type FabricResponse = {
   /**
    * Name
    */
-  name?: string | unknown;
+  name?: string;
   /**
    * Description
    */
-  description?: string | unknown;
+  description?: string;
   /**
    * Class Type
    */
-  class_type?: string | unknown;
+  class_type?: string;
   vlans: BaseHref;
 };
 
@@ -1383,7 +1383,7 @@ export type FabricsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1394,11 +1394,11 @@ export type FabricsListResponse = {
  * FileListItemResponse
  */
 export type FileListItemResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1418,7 +1418,7 @@ export type FileListItemResponse = {
   /**
    * Owner Id
    */
-  owner_id?: number | unknown;
+  owner_id?: number;
 };
 
 /**
@@ -1439,11 +1439,11 @@ export type FileListResponse = {
  * FileResponse
  */
 export type FileResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1467,7 +1467,7 @@ export type FileResponse = {
   /**
    * Owner Id
    */
-  owner_id?: number | unknown;
+  owner_id?: number;
 };
 
 /**
@@ -1489,7 +1489,7 @@ export type ForbiddenBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[] | unknown;
+  details?: BaseExceptionDetail[];
 };
 
 /**
@@ -1519,13 +1519,13 @@ export type IpRangeCreateRequest = {
    *
    * A description of this range.
    */
-  comment?: string | unknown;
+  comment?: string;
   /**
    * Owner Id
    *
    * The owner of this range.
    */
-  owner_id?: number | unknown;
+  owner_id?: number;
 };
 
 /**
@@ -1543,7 +1543,7 @@ export type IpRangeListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1554,11 +1554,11 @@ export type IpRangeListResponse = {
  * IPRangeResponse
  */
 export type IpRangeResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1579,7 +1579,7 @@ export type IpRangeResponse = {
   /**
    * Comment
    */
-  comment?: string | unknown;
+  comment?: string;
   /**
    * Owner Id
    */
@@ -1615,7 +1615,7 @@ export type IpRangeUpdateRequest = {
    *
    * A description of this range.
    */
-  comment?: string | unknown;
+  comment?: string;
   /**
    * Owner Id
    *
@@ -1639,7 +1639,7 @@ export type ImageListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1650,11 +1650,11 @@ export type ImageListResponse = {
  * ImageResponse
  */
 export type ImageResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1682,7 +1682,7 @@ export type ImageResponse = {
   /**
    * Boot Source Id
    */
-  boot_source_id?: number | unknown;
+  boot_source_id?: number;
 };
 
 /**
@@ -1700,7 +1700,7 @@ export type ImageStatisticListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1722,11 +1722,11 @@ export type ImageStatisticResponse = {
   /**
    * Last Updated
    */
-  last_updated?: string | unknown;
+  last_updated?: string;
   /**
    * Last Deployed
    */
-  last_deployed?: string | unknown;
+  last_deployed?: string;
   /**
    * Size
    */
@@ -1765,7 +1765,7 @@ export type ImageStatusListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1827,7 +1827,7 @@ export type InterfaceListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -1838,11 +1838,11 @@ export type InterfaceListResponse = {
  * InterfaceResponse
  */
 export type InterfaceResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1859,7 +1859,7 @@ export type InterfaceResponse = {
   /**
    * Mac Address
    */
-  mac_address?: string | unknown;
+  mac_address?: string;
   /**
    * Link Connected
    */
@@ -1931,7 +1931,7 @@ export type LinkResponse = {
   /**
    * Ip Address
    */
-  ip_address?: string | unknown;
+  ip_address?: string;
 };
 
 /**
@@ -1952,11 +1952,11 @@ export type MxRecord = {
  * MXRecordResponse
  */
 export type MxRecordResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1975,11 +1975,11 @@ export type MxRecordResponse = {
  * MachineResponse
  */
 export type MachineResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -1999,7 +1999,7 @@ export type MachineResponse = {
   /**
    * Owner
    */
-  owner?: string | unknown;
+  owner?: string;
   /**
    * Cpu Speed Mhz
    */
@@ -2015,7 +2015,7 @@ export type MachineResponse = {
   /**
    * Architecture
    */
-  architecture?: string | unknown;
+  architecture?: string;
   /**
    * Distro Series
    */
@@ -2023,7 +2023,7 @@ export type MachineResponse = {
   /**
    * Hwe Kernel
    */
-  hwe_kernel?: string | unknown;
+  hwe_kernel?: string;
   /**
    * Locked
    */
@@ -2033,7 +2033,7 @@ export type MachineResponse = {
    */
   cpu_count: number;
   status: NodeStatus;
-  power_type?: PowerTypeEnum | unknown;
+  power_type?: PowerTypeEnum;
   /**
    * Fqdn
    */
@@ -2055,7 +2055,7 @@ export type MachinesListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -2076,11 +2076,11 @@ export type NsRecord = {
  * NSRecordResponse
  */
 export type NsRecordResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -2140,7 +2140,7 @@ export type NotFoundBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[] | unknown;
+  details?: BaseExceptionDetail[];
 };
 
 /**
@@ -2164,13 +2164,13 @@ export type NotificationRequest = {
    *
    * Unique identifier for this notification.
    */
-  ident?: string | unknown;
+  ident?: string;
   /**
    * User Id
    *
    * User ID this notification is intended for.By default it will not be targeted to any individual user.
    */
-  user_id?: number | unknown;
+  user_id?: number;
   /**
    * For Users
    *
@@ -2201,11 +2201,11 @@ export type NotificationRequest = {
  * NotificationResponse
  */
 export type NotificationResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -2217,7 +2217,7 @@ export type NotificationResponse = {
   /**
    * Ident
    */
-  ident?: string | unknown;
+  ident?: string;
   /**
    * Users
    */
@@ -2237,7 +2237,7 @@ export type NotificationResponse = {
   /**
    * User Id
    */
-  user_id?: number | unknown;
+  user_id?: number;
   /**
    * Category
    */
@@ -2263,7 +2263,7 @@ export type NotificationsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -2363,7 +2363,7 @@ export type OAuthProviderResponse = {
   /**
    * User Count
    */
-  user_count?: number | unknown;
+  user_count?: number;
   token_type: OAuthTokenTypeChoices;
 };
 
@@ -2382,7 +2382,7 @@ export type OAuthProvidersListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -2416,7 +2416,7 @@ export type PackageRepositoryCreateRequest = {
    *
    * The authentication key to use with the repository.
    */
-  key?: string | unknown;
+  key?: string;
   /**
    * Url
    *
@@ -2482,7 +2482,7 @@ export type PackageRepositoryListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -2493,11 +2493,11 @@ export type PackageRepositoryListResponse = {
  * PackageRepositoryResponse
  */
 export type PackageRepositoryResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -2563,7 +2563,7 @@ export type PackageRepositoryUpdateRequest = {
    *
    * The authentication key to use with the repository.
    */
-  key?: string | unknown;
+  key?: string;
   /**
    * Url
    *
@@ -2618,11 +2618,11 @@ export type PackageRepositoryUpdateRequest = {
  * PciDeviceResponse
  */
 export type PciDeviceResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -2681,7 +2681,7 @@ export type PciDevicesListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -2697,11 +2697,11 @@ export type PocketsToDisableEnum = "backports" | "security" | "updates";
  * PowerDriverResponse
  */
 export type PowerDriverResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -2762,7 +2762,7 @@ export type PreLoginInfoResponse = {
   /**
    * External Legacy Login Url
    */
-  external_legacy_login_url?: string | unknown;
+  external_legacy_login_url?: string;
 };
 
 /**
@@ -2784,7 +2784,7 @@ export type PreconditionFailedBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[] | unknown;
+  details?: BaseExceptionDetail[];
 };
 
 /**
@@ -2802,15 +2802,15 @@ export type ProviderMetadata = {
   /**
    * Userinfo Endpoint
    */
-  userinfo_endpoint?: string | unknown;
+  userinfo_endpoint?: string;
   /**
    * Introspection Endpoint
    */
-  introspection_endpoint?: string | unknown;
+  introspection_endpoint?: string;
   /**
    * Revocation Endpoint
    */
-  revocation_endpoint?: string | unknown;
+  revocation_endpoint?: string;
   /**
    * Jwks Uri
    */
@@ -2918,7 +2918,7 @@ export type RackListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -2941,11 +2941,11 @@ export type RackRequest = {
  * RackResponse
  */
 export type RackResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -2975,7 +2975,7 @@ export type RackWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -2986,11 +2986,11 @@ export type RackWithSummaryListResponse = {
  * RackWithSummaryResponse
  */
 export type RackWithSummaryResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3037,18 +3037,18 @@ export type ReservedIpCreateRequest = {
    *
    * A description of this reserved IP.
    */
-  comment?: string | unknown;
+  comment?: string;
 };
 
 /**
  * ReservedIPResponse
  */
 export type ReservedIpResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3068,7 +3068,7 @@ export type ReservedIpResponse = {
   /**
    * Comment
    */
-  comment?: string | unknown;
+  comment?: string;
 };
 
 /**
@@ -3092,7 +3092,7 @@ export type ReservedIpUpdateRequest = {
    *
    * A description of this reserved IP.
    */
-  comment?: string | unknown;
+  comment?: string;
 };
 
 /**
@@ -3110,7 +3110,7 @@ export type ReservedIpsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -3142,11 +3142,11 @@ export type ResourcePoolRequest = {
  * ResourcePoolResponse
  */
 export type ResourcePoolResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3169,11 +3169,11 @@ export type ResourcePoolResponse = {
  * ResourcePoolWithSummaryResponse
  */
 export type ResourcePoolWithSummaryResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3223,7 +3223,7 @@ export type ResourcePoolsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -3245,7 +3245,7 @@ export type ResourcePoolsWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -3278,11 +3278,11 @@ export type SrvRecord = {
  * SRVRecordResponse
  */
 export type SrvRecordResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3327,11 +3327,11 @@ export type SshfpRecord = {
  * SSHFPRecordResponse
  */
 export type SshfpRecordResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3365,7 +3365,7 @@ export type SslKeyListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -3388,11 +3388,11 @@ export type SslKeyRequest = {
  * SSLKeyResponse
  */
 export type SslKeyResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3411,11 +3411,11 @@ export type SslKeyResponse = {
  * SSLKeyWithSummaryResponse
  */
 export type SslKeyWithSummaryResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3449,7 +3449,7 @@ export type SslKeysWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -3541,18 +3541,18 @@ export type SpaceRequest = {
    *
    * The description of the zone.
    */
-  description?: string | unknown;
+  description?: string;
 };
 
 /**
  * SpaceResponse
  */
 export type SpaceResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3564,11 +3564,11 @@ export type SpaceResponse = {
   /**
    * Name
    */
-  name?: string | unknown;
+  name?: string;
   /**
    * Description
    */
-  description?: string | unknown;
+  description?: string;
   vlans: BaseHref;
   subnets: BaseHref;
 };
@@ -3588,7 +3588,7 @@ export type SpacesListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -3624,11 +3624,11 @@ export type SshKeyManualUploadRequest = {
  * SshKeyResponse
  */
 export type SshKeyResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3641,11 +3641,11 @@ export type SshKeyResponse = {
    * Key
    */
   key: string;
-  protocol?: SshKeysProtocolType | unknown;
+  protocol?: SshKeysProtocolType;
   /**
    * Auth Id
    */
-  auth_id?: string | unknown;
+  auth_id?: string;
 };
 
 /**
@@ -3663,7 +3663,7 @@ export type SshKeysListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -3703,11 +3703,11 @@ export type StaticRouteRequest = {
  * StaticRouteResponse
  */
 export type StaticRouteResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3745,7 +3745,7 @@ export type StaticRoutesListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -3761,13 +3761,13 @@ export type SubnetRequest = {
    *
    * The unique name of the entity.
    */
-  name?: string | unknown;
+  name?: string;
   /**
    * Description
    *
    * The description of the subnet.
    */
-  description?: string | unknown;
+  description?: string;
   /**
    * Cidr
    *
@@ -3780,7 +3780,7 @@ export type SubnetRequest = {
    *
    * The gateway IP for this subnet.
    */
-  gateway_ip?: string | unknown;
+  gateway_ip?: string;
   /**
    * Dns Servers
    *
@@ -3823,11 +3823,11 @@ export type SubnetRequest = {
  * SubnetResponse
  */
 export type SubnetResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3839,11 +3839,11 @@ export type SubnetResponse = {
   /**
    * Name
    */
-  name?: string | unknown;
+  name?: string;
   /**
    * Description
    */
-  description?: string | unknown;
+  description?: string;
   /**
    * Cidr
    */
@@ -3852,11 +3852,11 @@ export type SubnetResponse = {
   /**
    * Gateway Ip
    */
-  gateway_ip?: string | unknown;
+  gateway_ip?: string;
   /**
    * Dns Servers
    */
-  dns_servers?: string[] | unknown;
+  dns_servers?: string[];
   /**
    * Allow Dns
    */
@@ -3894,7 +3894,7 @@ export type SubnetsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -3916,7 +3916,7 @@ export type SwitchRequest = {
    *
    * Boot resource name for the NOS to install on the switch. Supports full format (e.g., 'onie/mellanox-3.8.0') or short format for ONIE images (e.g., 'mellanox-3.8.0').
    */
-  image?: string | unknown;
+  image?: string;
 };
 
 /**
@@ -3927,11 +3927,11 @@ export type SwitchRequest = {
  * Represents a network switch device with its target image configuration.
  */
 export type SwitchResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -3943,11 +3943,11 @@ export type SwitchResponse = {
   /**
    * Target Image Id
    */
-  target_image_id?: number | unknown;
+  target_image_id?: number;
   /**
    * Target Image
    */
-  target_image?: string | unknown;
+  target_image?: string;
 };
 
 /**
@@ -3961,7 +3961,7 @@ export type SwitchUpdateRequest = {
    *
    * Boot resource name for the NOS to install on the switch. Supports full format (e.g., 'onie/mellanox-3.8.0') or short format for ONIE images (e.g., 'mellanox-3.8.0').
    */
-  image?: string | unknown;
+  image?: string;
 };
 
 /**
@@ -3983,7 +3983,7 @@ export type SwitchesListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -4004,11 +4004,11 @@ export type TxtRecord = {
  * TXTRecordResponse
  */
 export type TxtRecordResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -4053,11 +4053,11 @@ export type TagRequest = {
  * TagResponse
  */
 export type TagResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -4099,7 +4099,7 @@ export type TagsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -4127,7 +4127,7 @@ export type TokenResponse = {
   /**
    * Refresh Token
    */
-  refresh_token?: string | unknown;
+  refresh_token?: string;
 };
 
 /**
@@ -4183,7 +4183,7 @@ export type UiSourceAvailableImageResponse = {
  */
 export type UiSubnetEmbeddedType = {
   fabric: BaseHrefWithId;
-  space: BaseHrefWithId | unknown;
+  space: BaseHrefWithId;
   vlan: VlanHref;
 };
 
@@ -4191,7 +4191,7 @@ export type UiSubnetEmbeddedType = {
  * UISubnetResponse
  */
 export type UiSubnetResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   _embedded: UiSubnetEmbeddedType;
   /**
    * Kind
@@ -4204,11 +4204,11 @@ export type UiSubnetResponse = {
   /**
    * Name
    */
-  name?: string | unknown;
+  name?: string;
   /**
    * Description
    */
-  description?: string | unknown;
+  description?: string;
   /**
    * Cidr
    */
@@ -4217,11 +4217,11 @@ export type UiSubnetResponse = {
   /**
    * Gateway Ip
    */
-  gateway_ip?: string | unknown;
+  gateway_ip?: string;
   /**
    * Dns Servers
    */
-  dns_servers?: string[] | unknown;
+  dns_servers?: string[];
   /**
    * Allow Dns
    */
@@ -4306,7 +4306,7 @@ export type UiSubnetsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -4332,7 +4332,7 @@ export type UnauthorizedBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[] | unknown;
+  details?: BaseExceptionDetail[];
 };
 
 /**
@@ -4376,11 +4376,11 @@ export type UpdateConfigurationsRequest = {
  * UsbDeviceResponse
  */
 export type UsbDeviceResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -4435,7 +4435,7 @@ export type UsbDevicesListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -4475,7 +4475,7 @@ export type UserCreateRequest = {
   /**
    * Email
    */
-  email?: string | unknown;
+  email?: string;
   /**
    * Password
    */
@@ -4531,7 +4531,7 @@ export type UserGroupMembersListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -4553,18 +4553,18 @@ export type UserGroupRequest = {
    *
    * The description of the group.
    */
-  description?: string | unknown;
+  description?: string;
 };
 
 /**
  * UserGroupResponse
  */
 export type UserGroupResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -4580,18 +4580,18 @@ export type UserGroupResponse = {
   /**
    * Description
    */
-  description?: string | unknown;
+  description?: string;
 };
 
 /**
  * UserGroupStatisticsResponse
  */
 export type UserGroupStatisticsResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -4621,7 +4621,7 @@ export type UserGroupsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -4643,7 +4643,7 @@ export type UserGroupsStatisticsListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -4672,11 +4672,11 @@ export type UserInfoResponse = {
  * UserResponse
  */
 export type UserResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -4700,7 +4700,7 @@ export type UserResponse = {
   /**
    * Last Name
    */
-  last_name?: string | unknown;
+  last_name?: string;
   /**
    * Date Joined
    */
@@ -4708,11 +4708,11 @@ export type UserResponse = {
   /**
    * Email
    */
-  email?: string | unknown;
+  email?: string;
   /**
    * Last Login
    */
-  last_login?: string | unknown;
+  last_login?: string;
 };
 
 /**
@@ -4738,22 +4738,22 @@ export type UserUpdateRequest = {
   /**
    * Email
    */
-  email?: string | unknown;
+  email?: string;
   /**
    * Password
    */
-  password?: string | unknown;
+  password?: string;
 };
 
 /**
  * UserWithSummaryResponse
  */
 export type UserWithSummaryResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -4769,7 +4769,7 @@ export type UserWithSummaryResponse = {
   /**
    * Email
    */
-  email?: string | unknown;
+  email?: string;
   /**
    * Is Local
    */
@@ -4781,11 +4781,11 @@ export type UserWithSummaryResponse = {
   /**
    * Last Name
    */
-  last_name?: string | unknown;
+  last_name?: string;
   /**
    * Last Login
    */
-  last_login?: string | unknown;
+  last_login?: string;
   /**
    * Machines Count
    */
@@ -4815,7 +4815,7 @@ export type UsersListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -4837,7 +4837,7 @@ export type UsersWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -4863,7 +4863,7 @@ export type ValidationErrorBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[] | unknown;
+  details?: BaseExceptionDetail[];
 };
 
 /**
@@ -4875,7 +4875,7 @@ export type VlanCreateRequest = {
    *
    * The unique name of the entity.
    */
-  name?: string | unknown;
+  name?: string;
   /**
    * Description
    *
@@ -4899,7 +4899,7 @@ export type VlanCreateRequest = {
    *
    * The space this VLAN should be placed in. If not specified, the VLAN will be placed in the 'undefined' space.
    */
-  space_id?: number | unknown;
+  space_id?: number;
 };
 
 /**
@@ -4913,11 +4913,11 @@ export type VlanHref = {
   /**
    * Id
    */
-  id?: string | unknown;
+  id?: string;
   /**
    * Name
    */
-  name?: string | unknown;
+  name?: string;
   /**
    * Vid
    */
@@ -4929,22 +4929,22 @@ export type VlanHref = {
   /**
    * External Dhcp
    */
-  external_dhcp?: string | unknown;
+  external_dhcp?: string;
   /**
    * Relay Vlan Id
    */
-  relay_vlan_id?: string | unknown;
+  relay_vlan_id?: string;
 };
 
 /**
  * VlanResponse
  */
 export type VlanResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -4960,7 +4960,7 @@ export type VlanResponse = {
   /**
    * Name
    */
-  name?: string | unknown;
+  name?: string;
   /**
    * Description
    */
@@ -4976,20 +4976,20 @@ export type VlanResponse = {
   /**
    * External Dhcp
    */
-  external_dhcp?: string | unknown;
+  external_dhcp?: string;
   /**
    * Primary Rack
    */
-  primary_rack?: number | unknown;
+  primary_rack?: number;
   /**
    * Secondary Rack
    */
-  secondary_rack?: number | unknown;
+  secondary_rack?: number;
   /**
    * Relay Vlan Id
    */
-  relay_vlan_id?: number | unknown;
-  space?: BaseHref | unknown;
+  relay_vlan_id?: number;
+  space?: BaseHref;
 };
 
 /**
@@ -5001,7 +5001,7 @@ export type VlanUpdateRequest = {
    *
    * The unique name of the entity.
    */
-  name?: string | unknown;
+  name?: string;
   /**
    * Description
    *
@@ -5025,7 +5025,7 @@ export type VlanUpdateRequest = {
    *
    * The space this VLAN should be placed in. If not specified, the VLAN will be placed in the 'undefined' space.
    */
-  space_id?: number | unknown;
+  space_id?: number;
   /**
    * Fabric Id
    *
@@ -5043,19 +5043,19 @@ export type VlanUpdateRequest = {
    *
    * The primary rack controller ID managing the VLAN.
    */
-  primary_rack_id?: number | unknown;
+  primary_rack_id?: number;
   /**
    * Secondary Rack Id
    *
    * The secondary rack controller ID managing the VLAN
    */
-  secondary_rack_id?: number | unknown;
+  secondary_rack_id?: number;
   /**
    * Relay Vlan Id
    *
    * Relay VLAN ID. Only set when this VLAN will be using a DHCP relay to forward DHCP requests to another VLAN that MAAS is managing. MAAS will not run the DHCP relay itself, it must be configured to proxy reqests to the primary and/or secondary rack controller interfaces for the VLAN specified in this field.
    */
-  relay_vlan_id?: number | unknown;
+  relay_vlan_id?: number;
 };
 
 /**
@@ -5073,7 +5073,7 @@ export type VlansListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -5095,18 +5095,18 @@ export type ZoneRequest = {
    *
    * The description of the zone.
    */
-  description?: string | unknown;
+  description?: string;
 };
 
 /**
  * ZoneResponse
  */
 export type ZoneResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -5129,11 +5129,11 @@ export type ZoneResponse = {
  * ZoneWithSummaryResponse
  */
 export type ZoneWithSummaryResponse = {
-  _links?: BaseHal | unknown;
+  _links?: BaseHal;
   /**
    * Embedded
    */
-  _embedded?: Record<string, unknown> | unknown;
+  _embedded?: Record<string, unknown>;
   /**
    * Kind
    */
@@ -5179,7 +5179,7 @@ export type ZonesListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -5201,7 +5201,7 @@ export type ZonesWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string | unknown;
+  next?: string;
   /**
    * Kind
    */
@@ -5311,7 +5311,7 @@ export type DeleteOauthProviderData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -5562,7 +5562,7 @@ export type InitiateAuthFlowData = {
     /**
      * Redirect Target
      */
-    redirect_target?: string | unknown;
+    redirect_target?: string;
   };
   url: "/MAAS/a/v3/auth/login_info";
 };
@@ -5891,7 +5891,7 @@ export type DeleteBootsourceData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -6004,7 +6004,7 @@ export type DeleteBootsourceBootsourceselectionData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -6438,13 +6438,13 @@ export type ListSelectionStatusData = {
      *
      * Filter by Boot Source Selection ID
      */
-    id?: number[] | unknown;
+    id?: number[];
     /**
      * Selected
      *
      * Filter by whether the boot source selection is selected
      */
-    selected?: boolean | unknown;
+    selected?: boolean;
     /**
      * Page
      */
@@ -6526,7 +6526,7 @@ export type ListSelectionStatisticData = {
      *
      * Filter by Boot Source Selection ID
      */
-    id?: number[] | unknown;
+    id?: number[];
     /**
      * Page
      */
@@ -6878,7 +6878,7 @@ export type ListCustomImagesStatusData = {
      *
      * Filter by Custom Image ID
      */
-    id?: number[] | unknown;
+    id?: number[];
     /**
      * Page
      */
@@ -6952,7 +6952,7 @@ export type ListCustomImagesStatisticData = {
      *
      * Filter by Custom Image ID
      */
-    id?: number[] | unknown;
+    id?: number[];
     /**
      * Page
      */
@@ -7128,13 +7128,13 @@ export type UploadCustomImageData = {
      *
      * Title for the boot resource.
      */
-    title?: string | unknown;
+    title?: string;
     /**
      * Base Image
      *
      * The Base OS image a custom image is built on top of. Only required for images of type 'custom'.
      */
-    "base-image"?: string | unknown;
+    "base-image"?: string;
   };
   path?: never;
   query?: never;
@@ -7171,7 +7171,7 @@ export type DeleteCustomImageByIdData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -7262,7 +7262,7 @@ export type ListEventsData = {
     /**
      * Filter by system id
      */
-    system_id?: string[] | unknown;
+    system_id?: string[];
   };
   url: "/MAAS/a/v3/events";
 };
@@ -7294,13 +7294,13 @@ export type ClearAllDiscoveriesWithOptionalIpAndMacData = {
      *
      * Delete discoveries with this IP.
      */
-    ip?: string | unknown;
+    ip?: string;
     /**
      * Mac
      *
      * Delete discoveries with this MAC.
      */
-    mac?: string | unknown;
+    mac?: string;
   };
   url: "/MAAS/a/v3/discoveries";
 };
@@ -7593,7 +7593,7 @@ export type DeleteDomainData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -7737,7 +7737,7 @@ export type DeleteFabricData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -7851,7 +7851,7 @@ export type DeleteFileData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path?: never;
   query: {
@@ -7898,7 +7898,7 @@ export type ListFilesData = {
      *
      * An optional prefix used to filter matching files.
      */
-    prefix?: string | unknown;
+    prefix?: string;
   };
   url: "/MAAS/a/v3/files";
 };
@@ -8169,7 +8169,7 @@ export type DeleteFabricVlanSubnetIprangeData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -8476,35 +8476,35 @@ export type GetNosInstallerData = {
     /**
      * Onie-Serial-Number
      */
-    "onie-serial-number"?: string | unknown;
+    "onie-serial-number"?: string;
     /**
      * Onie-Vendor-Id
      */
-    "onie-vendor-id"?: string | unknown;
+    "onie-vendor-id"?: string;
     /**
      * Onie-Machine
      */
-    "onie-machine"?: string | unknown;
+    "onie-machine"?: string;
     /**
      * Onie-Machine-Rev
      */
-    "onie-machine-rev"?: string | unknown;
+    "onie-machine-rev"?: string;
     /**
      * Onie-Arch
      */
-    "onie-arch"?: string | unknown;
+    "onie-arch"?: string;
     /**
      * Onie-Security-Key
      */
-    "onie-security-key"?: string | unknown;
+    "onie-security-key"?: string;
     /**
      * Onie-Operation
      */
-    "onie-operation"?: string | unknown;
+    "onie-operation"?: string;
     /**
      * Onie-Version
      */
-    "onie-version"?: string | unknown;
+    "onie-version"?: string;
   };
   path?: never;
   query?: never;
@@ -8545,7 +8545,7 @@ export type ListNotificationsData = {
      *
      * Wheter to return only the non-dismissed notifications
      */
-    only_active?: boolean | unknown;
+    only_active?: boolean;
     /**
      * Page
      */
@@ -8842,7 +8842,7 @@ export type DeletePackageRepositoryData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -9019,7 +9019,7 @@ export type DeleteRackAgentData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -9104,7 +9104,7 @@ export type DeleteRacksData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -9423,7 +9423,7 @@ export type DeleteFabricVlanSubnetReservedIpData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -9481,7 +9481,7 @@ export type UpdateFabricVlanSubnetReservedIpData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -9650,7 +9650,7 @@ export type DeleteResourcePoolData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -9897,7 +9897,7 @@ export type DeleteFabricVlanSubnetStaticrouteData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -10111,7 +10111,7 @@ export type DeleteSpaceData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -10300,7 +10300,7 @@ export type DeleteUserSshkeyData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -10483,7 +10483,7 @@ export type DeleteUserSslkeyData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -10685,7 +10685,7 @@ export type DeleteFabricVlanSubnetData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -11087,7 +11087,7 @@ export type DeleteTagData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -11575,13 +11575,13 @@ export type ListGroupsData = {
      *
      * Filter by Group ID
      */
-    id?: number[] | unknown;
+    id?: number[];
     /**
      * Group Name
      *
      * Filter by Group Name
      */
-    group_name?: string | unknown;
+    group_name?: string;
   };
   url: "/MAAS/a/v3/groups";
 };
@@ -11640,7 +11640,7 @@ export type DeleteGroupData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -11761,13 +11761,13 @@ export type ListGroupsStatisticsData = {
      *
      * Filter by Group ID
      */
-    id?: number[] | unknown;
+    id?: number[];
     /**
      * Group Name
      *
      * Filter by Group Name
      */
-    group_name?: string | unknown;
+    group_name?: string;
   };
   url: "/MAAS/a/v3/groups:statistics";
 };
@@ -12027,7 +12027,7 @@ export type DeleteUserData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -12041,7 +12041,7 @@ export type DeleteUserData = {
      *
      * The id of the user to transfer the resources to.
      */
-    transfer_resources_to?: number | unknown;
+    transfer_resources_to?: number;
   };
   url: "/MAAS/a/v3/users/{user_id}";
 };
@@ -12199,7 +12199,7 @@ export type ListUsersWithSummaryData = {
     /**
      * Filter by username or email
      */
-    username_or_email?: string | unknown;
+    username_or_email?: string;
   };
   url: "/MAAS/a/v3/users_with_summary";
 };
@@ -12307,7 +12307,7 @@ export type DeleteFabricVlanData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -12445,7 +12445,7 @@ export type ListZonesData = {
     /**
      * Filter by zone id
      */
-    id?: number[] | unknown;
+    id?: number[];
   };
   url: "/MAAS/a/v3/zones";
 };
@@ -12503,7 +12503,7 @@ export type DeleteZoneData = {
     /**
      * If-Match
      */
-    "if-match"?: string | unknown;
+    "if-match"?: string;
   };
   path: {
     /**
@@ -12694,31 +12694,31 @@ export type ListSubnetsData = {
     /**
      * Filter by subnet cidr
      */
-    cidr?: string[] | unknown;
+    cidr?: string[];
     /**
      * Filter by vlan id
      */
-    vlan_id?: number[] | unknown;
+    vlan_id?: number[];
     /**
      * Filter by fabric name
      */
-    fabric?: string[] | unknown;
+    fabric?: string[];
     /**
      * Filter by space name
      */
-    space?: string[] | unknown;
+    space?: string[];
     /**
      * Filter by subnet id
      */
-    subnet_id?: number[] | unknown;
+    subnet_id?: number[];
     /**
      * Properties to order by. You can wrap the property with `asc()` or `desc()` to modify the ordering
      */
-    order_by?: string[] | unknown;
+    order_by?: string[];
     /**
      * Free text search query
      */
-    q?: string | unknown;
+    q?: string;
   };
   url: "/MAAS/a/v3ui/subnets";
 };
