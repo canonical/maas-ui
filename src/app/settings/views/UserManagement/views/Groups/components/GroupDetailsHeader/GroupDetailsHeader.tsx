@@ -1,10 +1,14 @@
-import type { ReactElement } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 
-import { ContextualMenu } from "@canonical/react-components";
+import { Button, ContextualMenu } from "@canonical/react-components";
 import { Link, useLocation } from "react-router";
 
 import { useGroupStatistics } from "@/app/api/query/groups";
-import type { UserGroupResponse } from "@/app/apiclient";
+import type {
+  EntitlementRequest,
+  UserGroupMemberResponse,
+  UserGroupResponse,
+} from "@/app/apiclient";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/settings/urls";
@@ -12,15 +16,25 @@ import AddEntitlement from "@/app/settings/views/UserManagement/views/Groups/com
 import AddMembers from "@/app/settings/views/UserManagement/views/Groups/components/AddMembers/AddMembers";
 import DeleteGroup from "@/app/settings/views/UserManagement/views/Groups/components/DeleteGroup";
 import EditGroup from "@/app/settings/views/UserManagement/views/Groups/components/EditGroup";
+import RemoveGroupEntitlement from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupEntitlement";
+import RemoveGroupMember from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupMember";
 
 type GroupDetailsHeaderProps = {
   group: UserGroupResponse | undefined;
   loading: boolean;
+  entitlementSelection: EntitlementRequest[];
+  setEntitlementSelection: Dispatch<SetStateAction<EntitlementRequest[]>>;
+  memberSelection: UserGroupMemberResponse[];
+  setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
 };
 
 const GroupDetailsHeader = ({
   group,
   loading,
+  entitlementSelection,
+  setEntitlementSelection,
+  memberSelection,
+  setMemberSelection,
 }: GroupDetailsHeaderProps): ReactElement => {
   const { openSidePanel } = useSidePanel();
   const { pathname } = useLocation();
@@ -35,13 +49,28 @@ const GroupDetailsHeader = ({
   return (
     <SectionHeader
       buttons={[
-        <ContextualMenu
-          hasToggleIcon
-          links={[
-            [
-              {
-                children: "Add entitlement...",
-                onClick: () => {
+        ...(pathname.startsWith(`${urlBase}/entitlements`)
+          ? [
+              <Button
+                appearance="negative"
+                disabled={entitlementSelection.length <= 0}
+                onClick={() => {
+                  openSidePanel({
+                    component: RemoveGroupEntitlement,
+                    title: "Remove entitlements",
+                    props: {
+                      group_id: group!.id,
+                      entitlements: entitlementSelection,
+                      setEntitlementSelection: setEntitlementSelection,
+                    },
+                  });
+                }}
+                type="button"
+              >
+                Remove entitlements
+              </Button>,
+              <Button
+                onClick={() => {
                   openSidePanel({
                     component: AddEntitlement,
                     title: "Add entitlement",
@@ -49,11 +78,33 @@ const GroupDetailsHeader = ({
                       group_id: group!.id,
                     },
                   });
-                },
-              },
-              {
-                children: "Add members...",
-                onClick: () => {
+                }}
+                type="button"
+              >
+                Add entitlement
+              </Button>,
+            ]
+          : [
+              <Button
+                appearance="negative"
+                disabled={memberSelection.length <= 0}
+                onClick={() => {
+                  openSidePanel({
+                    component: RemoveGroupMember,
+                    props: {
+                      group_id: group!.id,
+                      members: memberSelection,
+                      setMemberSelection: setMemberSelection,
+                    },
+                    title: "Remove members",
+                  });
+                }}
+                type="button"
+              >
+                Remove members
+              </Button>,
+              <Button
+                onClick={() => {
                   openSidePanel({
                     component: AddMembers,
                     title: "Add members",
@@ -62,36 +113,40 @@ const GroupDetailsHeader = ({
                     },
                     size: "large",
                   });
-                },
+                }}
+                type="button"
+              >
+                Add members
+              </Button>,
+            ]),
+        <ContextualMenu
+          hasToggleIcon
+          links={[
+            {
+              children: "Edit group...",
+              onClick: () => {
+                openSidePanel({
+                  component: EditGroup,
+                  title: "Edit group",
+                  props: {
+                    id: group!.id,
+                  },
+                });
               },
-            ],
-            [
-              {
-                children: "Edit...",
-                onClick: () => {
-                  openSidePanel({
-                    component: EditGroup,
-                    title: "Edit group",
-                    props: {
-                      id: group!.id,
-                    },
-                  });
-                },
+            },
+            {
+              children: "Delete group...",
+              onClick: () => {
+                openSidePanel({
+                  component: DeleteGroup,
+                  title: "Delete group",
+                  props: {
+                    id: group!.id,
+                    user_count: statistics?.items[0]?.user_count ?? 0,
+                  },
+                });
               },
-              {
-                children: "Delete...",
-                onClick: () => {
-                  openSidePanel({
-                    component: DeleteGroup,
-                    title: "Delete group",
-                    props: {
-                      id: group!.id,
-                      user_count: statistics?.items[0]?.user_count ?? 0,
-                    },
-                  });
-                },
-              },
-            ],
+            },
           ]}
           position="right"
           toggleAppearance="positive"
