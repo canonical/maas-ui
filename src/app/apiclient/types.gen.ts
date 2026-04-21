@@ -16,29 +16,21 @@ export type AaaaRecord = {
 
 /**
  * AAAARecordResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type AaaaRecordResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
-  /**
-   * Ipv6Address
-   */
-  ipv6address: string;
+  _embedded?: Record<string, unknown> | unknown;
   /**
    * Kind
    */
   kind?: string;
+  /**
+   * Ipv6Address
+   */
+  ipv6address: string;
 };
 
 /**
@@ -53,36 +45,25 @@ export type ARecord = {
 
 /**
  * ARecordResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type ARecordResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
-  /**
-   * Ipv4Address
-   */
-  ipv4address: string;
+  _embedded?: Record<string, unknown> | unknown;
   /**
    * Kind
    */
   kind?: string;
+  /**
+   * Ipv4Address
+   */
+  ipv4address: string;
 };
 
 /**
  * AgentListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type AgentListResponse = {
   /**
@@ -96,7 +77,7 @@ export type AgentListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -105,21 +86,17 @@ export type AgentListResponse = {
 
 /**
  * AgentResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type AgentResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -131,11 +108,7 @@ export type AgentResponse = {
   /**
    * Rackcontroller Id
    */
-  rackcontroller_id?: number;
-  /**
-   * Kind
-   */
-  kind?: string;
+  rackcontroller_id?: number | unknown;
 };
 
 /**
@@ -145,21 +118,21 @@ export type AgentResponse = {
  */
 export type AuthInfoResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Auth Url
    */
-  auth_url?: string;
+  auth_url?: string | unknown;
   /**
    * Provider Name
    */
-  provider_name?: string;
+  provider_name?: string | unknown;
   /**
    * Is Oidc
    */
   is_oidc: boolean;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -167,6 +140,10 @@ export type AuthInfoResponse = {
  */
 export type BadGatewayErrorBodyResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Code
    */
   code?: number;
@@ -177,11 +154,7 @@ export type BadGatewayErrorBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[];
-  /**
-   * Kind
-   */
-  kind?: string;
+  details?: BaseExceptionDetail[] | unknown;
 };
 
 /**
@@ -189,6 +162,10 @@ export type BadGatewayErrorBodyResponse = {
  */
 export type BadRequestBodyResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Code
    */
   code?: number;
@@ -199,11 +176,7 @@ export type BadRequestBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[];
-  /**
-   * Kind
-   */
-  kind?: string;
+  details?: BaseExceptionDetail[] | unknown;
 };
 
 /**
@@ -221,11 +194,11 @@ export type BaseExceptionDetail = {
   /**
    * Field
    */
-  field?: string;
+  field?: string | unknown;
   /**
    * Location
    */
-  location?: string;
+  location?: string | unknown;
 };
 
 /**
@@ -256,11 +229,11 @@ export type BaseHrefWithId = {
   /**
    * Id
    */
-  id?: string;
+  id?: string | unknown;
   /**
    * Name
    */
-  name?: string;
+  name?: string | unknown;
 };
 
 /**
@@ -284,7 +257,7 @@ export type BodyLogin = {
   /**
    * Grant Type
    */
-  grant_type?: string;
+  grant_type?: string | unknown;
   /**
    * Username
    */
@@ -300,17 +273,15 @@ export type BodyLogin = {
   /**
    * Client Id
    */
-  client_id?: string;
+  client_id?: string | unknown;
   /**
    * Client Secret
    */
-  client_secret?: string;
+  client_secret?: string | unknown;
 };
 
 /**
  * BootResourceFileTypeChoice
- *
- * An enumeration.
  */
 export type BootResourceFileTypeChoice =
   | "ddbz2"
@@ -328,9 +299,6 @@ export type BootResourceFileTypeChoice =
 
 /**
  * BootResourceListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type BootResourceListResponse = {
   /**
@@ -344,7 +312,7 @@ export type BootResourceListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -353,21 +321,17 @@ export type BootResourceListResponse = {
 
 /**
  * BootResourceResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type BootResourceResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -388,17 +352,10 @@ export type BootResourceResponse = {
    * Sub Architecture
    */
   sub_architecture: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * BootSourceAvailableImageListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type BootSourceAvailableImageListResponse = {
   /**
@@ -412,7 +369,7 @@ export type BootSourceAvailableImageListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -454,13 +411,13 @@ export type BootSourceCreateRequest = {
    *
    * File path to keyring to use for verifying signatures of the boot sources.
    */
-  keyring_filename?: string;
+  keyring_filename?: string | unknown;
   /**
    * Keyring Data
    *
    * Base64-encoded keyring data used for signature verification. Optional alternative to providing a keyring file path.
    */
-  keyring_data?: string;
+  keyring_data?: string | unknown;
   /**
    * Skip Keyring Verification
    *
@@ -490,13 +447,13 @@ export type BootSourceFetchRequest = {
    *
    * File path to keyring to use for verifying signatures of the boot sources.
    */
-  keyring_filename?: string;
+  keyring_filename?: string | unknown;
   /**
    * Keyring Data
    *
    * Base64-encoded keyring data used for signature verification. Optional alternative to providing a keyring file path.
    */
-  keyring_data?: string;
+  keyring_data?: string | unknown;
   /**
    * Skip Keyring Verification
    *
@@ -513,21 +470,17 @@ export type BootSourceFetchRequest = {
 
 /**
  * BootSourceResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type BootSourceResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -539,11 +492,11 @@ export type BootSourceResponse = {
   /**
    * Keyring Filename
    */
-  keyring_filename?: string;
+  keyring_filename?: string | unknown;
   /**
    * Keyring Data
    */
-  keyring_data?: string;
+  keyring_data?: string | unknown;
   /**
    * Priority
    */
@@ -552,10 +505,6 @@ export type BootSourceResponse = {
    * Skip Keyring Verification
    */
   skip_keyring_verification: boolean;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -587,13 +536,13 @@ export type BootSourceSelectionRequest = {
  */
 export type BootSourceSelectionSyncResponse = {
   /**
-   * Monitor Url
-   */
-  monitor_url: string;
-  /**
    * Kind
    */
   kind?: string;
+  /**
+   * Monitor Url
+   */
+  monitor_url: string;
 };
 
 /**
@@ -605,13 +554,13 @@ export type BootSourceUpdateRequest = {
    *
    * File path to keyring to use for verifying signatures of the boot sources.
    */
-  keyring_filename?: string;
+  keyring_filename?: string | unknown;
   /**
    * Keyring Data
    *
    * Base64-encoded keyring data used for signature verification. Optional alternative to providing a keyring file path.
    */
-  keyring_data?: string;
+  keyring_data?: string | unknown;
   /**
    * Skip Keyring Verification
    *
@@ -628,9 +577,6 @@ export type BootSourceUpdateRequest = {
 
 /**
  * BootSourcesListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type BootSourcesListResponse = {
   /**
@@ -644,7 +590,7 @@ export type BootSourcesListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -653,9 +599,6 @@ export type BootSourcesListResponse = {
 
 /**
  * BootloaderListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type BootloaderListResponse = {
   /**
@@ -669,7 +612,7 @@ export type BootloaderListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -678,21 +621,17 @@ export type BootloaderListResponse = {
 
 /**
  * BootloaderResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type BootloaderResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -709,10 +648,47 @@ export type BootloaderResponse = {
    * Bootloader Type
    */
   bootloader_type: string;
+};
+
+/**
+ * BulkEntitlementDeleteItem
+ */
+export type BulkEntitlementDeleteItem = {
+  resource_type: OpenFgaEntitlementResourceType;
   /**
-   * Kind
+   * Resource Id
+   *
+   * The resource ID.
    */
-  kind?: string;
+  resource_id: number;
+  /**
+   * Entitlement
+   *
+   * The entitlement name.
+   */
+  entitlement: string;
+};
+
+/**
+ * BulkEntitlementDeleteRequest
+ */
+export type BulkEntitlementDeleteRequest = {
+  /**
+   * Items
+   */
+  items: BulkEntitlementDeleteItem[];
+};
+
+/**
+ * BulkGroupMemberRequest
+ */
+export type BulkGroupMemberRequest = {
+  /**
+   * User Ids
+   *
+   * The IDs of the users to add to the group.
+   */
+  user_ids: number[];
 };
 
 /**
@@ -727,29 +703,21 @@ export type CnameRecord = {
 
 /**
  * CNAMERecordResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type CnameRecordResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
-  /**
-   * Cname
-   */
-  cname: string;
+  _embedded?: Record<string, unknown> | unknown;
   /**
    * Kind
    */
   kind?: string;
+  /**
+   * Cname
+   */
+  cname: string;
 };
 
 /**
@@ -759,39 +727,33 @@ export type CnameRecordResponse = {
  */
 export type CallbackTargetResponse = {
   /**
-   * Redirect Target
-   */
-  redirect_target: string;
-  /**
    * Kind
    */
   kind?: string;
+  /**
+   * Redirect Target
+   */
+  redirect_target: string;
 };
 
 /**
  * ComponentsToDisableEnum
- *
- * An enumeration.
  */
 export type ComponentsToDisableEnum = "multiverse" | "restricted" | "universe";
 
 /**
  * ConfigurationResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type ConfigurationResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Name
    */
@@ -800,43 +762,35 @@ export type ConfigurationResponse = {
    * Value
    */
   value?: unknown;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * ConfigurationsListResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type ConfigurationsListResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
-  /**
-   * Items
-   */
-  items: ConfigurationResponse[];
+  _embedded?: Record<string, unknown> | unknown;
   /**
    * Kind
    */
   kind?: string;
+  /**
+   * Items
+   */
+  items: ConfigurationResponse[];
 };
 
 /**
  * ConflictBodyResponse
  */
 export type ConflictBodyResponse = {
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Code
    */
@@ -848,11 +802,7 @@ export type ConflictBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[];
-  /**
-   * Kind
-   */
-  kind?: string;
+  details?: BaseExceptionDetail[] | unknown;
 };
 
 /**
@@ -866,43 +816,41 @@ export type DnsResourceRecordSetRequest = {
   /**
    * Ttl
    */
-  ttl?: number;
+  ttl?: number | unknown;
   rrtype: DnsResourceTypeEnum;
   /**
    * A Records
    */
-  a_records?: ARecord[];
+  a_records?: ARecord[] | unknown;
   /**
    * Aaaa Records
    */
-  aaaa_records?: AaaaRecord[];
-  cname_record?: CnameRecord;
+  aaaa_records?: AaaaRecord[] | unknown;
+  cname_record?: CnameRecord | unknown;
   /**
    * Mx Records
    */
-  mx_records?: MxRecord[];
+  mx_records?: MxRecord[] | unknown;
   /**
    * Ns Records
    */
-  ns_records?: NsRecord[];
+  ns_records?: NsRecord[] | unknown;
   /**
    * Sshfp Records
    */
-  sshfp_records?: SshfpRecord[];
+  sshfp_records?: SshfpRecord[] | unknown;
   /**
    * Srv Records
    */
-  srv_records?: SrvRecord[];
+  srv_records?: SrvRecord[] | unknown;
   /**
    * Txt Records
    */
-  txt_records?: TxtRecord[];
+  txt_records?: TxtRecord[] | unknown;
 };
 
 /**
  * DNSResourceTypeEnum
- *
- * An enumeration.
  */
 export type DnsResourceTypeEnum =
   | "A"
@@ -916,9 +864,6 @@ export type DnsResourceTypeEnum =
 
 /**
  * DiscoveriesListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type DiscoveriesListResponse = {
   /**
@@ -932,7 +877,7 @@ export type DiscoveriesListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -941,21 +886,17 @@ export type DiscoveriesListResponse = {
 
 /**
  * DiscoveryResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type DiscoveryResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -963,91 +904,87 @@ export type DiscoveryResponse = {
   /**
    * Discovery Id
    */
-  discovery_id?: string;
+  discovery_id?: string | unknown;
   /**
    * Neighbour Id
    */
-  neighbour_id?: number;
+  neighbour_id?: number | unknown;
   /**
    * Ip
    */
-  ip?: string;
+  ip?: string | unknown;
   /**
    * Mac Address
    */
-  mac_address?: string;
+  mac_address?: string | unknown;
   /**
    * Mac Organization
    */
-  mac_organization?: string;
+  mac_organization?: string | unknown;
   /**
    * Vid
    */
-  vid?: number;
+  vid?: number | unknown;
   /**
    * First Seen
    */
-  first_seen?: string;
+  first_seen?: string | unknown;
   /**
    * Last Seen
    */
-  last_seen?: string;
+  last_seen?: string | unknown;
   /**
    * Mdns Id
    */
-  mdns_id?: number;
+  mdns_id?: number | unknown;
   /**
    * Hostname
    */
-  hostname?: string;
+  hostname?: string | unknown;
   /**
    * Observer Id
    */
-  observer_id?: number;
+  observer_id?: number | unknown;
   /**
    * Observer System Id
    */
-  observer_system_id?: string;
+  observer_system_id?: string | unknown;
   /**
    * Observer Hostname
    */
-  observer_hostname?: string;
+  observer_hostname?: string | unknown;
   /**
    * Observer Interface Id
    */
-  observer_interface_id?: number;
+  observer_interface_id?: number | unknown;
   /**
    * Observer Interface Name
    */
-  observer_interface_name?: string;
+  observer_interface_name?: string | unknown;
   /**
    * Fabric Id
    */
-  fabric_id?: number;
+  fabric_id?: number | unknown;
   /**
    * Fabric Name
    */
-  fabric_name?: string;
+  fabric_name?: string | unknown;
   /**
    * Vlan Id
    */
-  vlan_id?: number;
+  vlan_id?: number | unknown;
   /**
    * Is External Dhcp
    */
-  is_external_dhcp?: boolean;
+  is_external_dhcp?: boolean | unknown;
   /**
    * Subnet Id
    */
-  subnet_id?: number;
+  subnet_id?: number | unknown;
   /**
    * Subnet Cidr
    */
-  subnet_cidr?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
+  subnet_cidr?: string | unknown;
 };
 
 /**
@@ -1071,14 +1008,11 @@ export type DomainRequest = {
    *
    * TTL for the domain.
    */
-  ttl?: number;
+  ttl?: number | unknown;
 };
 
 /**
  * DomainResourceRecordSetListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type DomainResourceRecordSetListResponse = {
   /**
@@ -1092,7 +1026,7 @@ export type DomainResourceRecordSetListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -1101,21 +1035,17 @@ export type DomainResourceRecordSetListResponse = {
 
 /**
  * DomainResourceRecordSetResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type DomainResourceRecordSetResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Name
    */
@@ -1123,64 +1053,56 @@ export type DomainResourceRecordSetResponse = {
   /**
    * Node Id
    */
-  node_id?: number;
+  node_id?: number | unknown;
   /**
    * Ttl
    */
-  ttl?: number;
+  ttl?: number | unknown;
   rrtype: DnsResourceTypeEnum;
   /**
    * A Records
    */
-  a_records?: ARecordResponse[];
+  a_records?: ARecordResponse[] | unknown;
   /**
    * Aaaa Records
    */
-  aaaa_records?: AaaaRecordResponse[];
-  cname_record?: CnameRecordResponse;
+  aaaa_records?: AaaaRecordResponse[] | unknown;
+  cname_record?: CnameRecordResponse | unknown;
   /**
    * Mx Records
    */
-  mx_records?: MxRecordResponse[];
+  mx_records?: MxRecordResponse[] | unknown;
   /**
    * Ns Records
    */
-  ns_records?: NsRecordResponse[];
+  ns_records?: NsRecordResponse[] | unknown;
   /**
    * Sshfp Records
    */
-  sshfp_records?: SshfpRecordResponse[];
+  sshfp_records?: SshfpRecordResponse[] | unknown;
   /**
    * Srv Records
    */
-  srv_records?: SrvRecordResponse[];
+  srv_records?: SrvRecordResponse[] | unknown;
   /**
    * Txt Records
    */
-  txt_records?: TxtRecordResponse[];
-  /**
-   * Kind
-   */
-  kind?: string;
+  txt_records?: TxtRecordResponse[] | unknown;
 };
 
 /**
  * DomainResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type DomainResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Authoritative
    */
@@ -1188,7 +1110,7 @@ export type DomainResponse = {
   /**
    * Ttl
    */
-  ttl?: number;
+  ttl?: number | unknown;
   /**
    * Id
    */
@@ -1197,17 +1119,10 @@ export type DomainResponse = {
    * Name
    */
   name: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * DomainsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type DomainsListResponse = {
   /**
@@ -1221,7 +1136,7 @@ export type DomainsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -1232,9 +1147,6 @@ export type DomainsListResponse = {
  * EntitlementRequest
  */
 export type EntitlementRequest = {
-  /**
-   * The resource type (e.g. 'maas', 'pool').
-   */
   resource_type: OpenFgaEntitlementResourceType;
   /**
    * Resource Id
@@ -1255,6 +1167,10 @@ export type EntitlementRequest = {
  */
 export type EntitlementResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Resource Type
    */
   resource_type: string;
@@ -1266,10 +1182,6 @@ export type EntitlementResponse = {
    * Entitlement
    */
   entitlement: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -1281,6 +1193,14 @@ export type EntitlementsListResponse = {
    */
   items: EntitlementResponse[];
   /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string | unknown;
+  /**
    * Kind
    */
   kind?: string;
@@ -1288,21 +1208,17 @@ export type EntitlementsListResponse = {
 
 /**
  * EventResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type EventResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -1319,7 +1235,7 @@ export type EventResponse = {
   /**
    * Node System Id
    */
-  node_system_id?: string;
+  node_system_id?: string | unknown;
   /**
    * Node Hostname
    */
@@ -1327,7 +1243,7 @@ export type EventResponse = {
   /**
    * User Id
    */
-  user_id?: number;
+  user_id?: number | unknown;
   /**
    * Owner
    */
@@ -1335,7 +1251,7 @@ export type EventResponse = {
   /**
    * Ip Address
    */
-  ip_address?: string;
+  ip_address?: string | unknown;
   /**
    * User Agent
    */
@@ -1348,16 +1264,10 @@ export type EventResponse = {
    * Action
    */
   action: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * EventTypeLevelEnum
- *
- * An enumeration.
  */
 export type EventTypeLevelEnum =
   | "AUDIT"
@@ -1384,9 +1294,6 @@ export type EventTypeResponse = {
 
 /**
  * EventsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type EventsListResponse = {
   /**
@@ -1400,7 +1307,7 @@ export type EventsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -1422,30 +1329,26 @@ export type FabricRequest = {
    *
    * The description of the fabric.
    */
-  description?: string;
+  description?: string | unknown;
   /**
    * Class Type
    */
-  class_type?: string;
+  class_type?: string | unknown;
 };
 
 /**
  * FabricResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type FabricResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -1453,27 +1356,20 @@ export type FabricResponse = {
   /**
    * Name
    */
-  name?: string;
+  name?: string | unknown;
   /**
    * Description
    */
-  description?: string;
+  description?: string | unknown;
   /**
    * Class Type
    */
-  class_type?: string;
+  class_type?: string | unknown;
   vlans: BaseHref;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * FabricsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type FabricsListResponse = {
   /**
@@ -1487,7 +1383,7 @@ export type FabricsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -1496,21 +1392,17 @@ export type FabricsListResponse = {
 
 /**
  * FileListItemResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type FileListItemResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -1526,11 +1418,7 @@ export type FileListItemResponse = {
   /**
    * Owner Id
    */
-  owner_id?: number;
-  /**
-   * Kind
-   */
-  kind?: string;
+  owner_id?: number | unknown;
 };
 
 /**
@@ -1538,32 +1426,28 @@ export type FileListItemResponse = {
  */
 export type FileListResponse = {
   /**
-   * Items
-   */
-  items: FileListItemResponse[];
-  /**
    * Kind
    */
   kind?: string;
+  /**
+   * Items
+   */
+  items: FileListItemResponse[];
 };
 
 /**
  * FileResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type FileResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -1583,17 +1467,17 @@ export type FileResponse = {
   /**
    * Owner Id
    */
-  owner_id?: number;
-  /**
-   * Kind
-   */
-  kind?: string;
+  owner_id?: number | unknown;
 };
 
 /**
  * ForbiddenBodyResponse
  */
 export type ForbiddenBodyResponse = {
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Code
    */
@@ -1605,17 +1489,11 @@ export type ForbiddenBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[];
-  /**
-   * Kind
-   */
-  kind?: string;
+  details?: BaseExceptionDetail[] | unknown;
 };
 
 /**
  * HardwareDeviceTypeEnum
- *
- * An enumeration.
  */
 export type HardwareDeviceTypeEnum = 0 | 1 | 2 | 3 | 4 | 5;
 
@@ -1623,9 +1501,6 @@ export type HardwareDeviceTypeEnum = 0 | 1 | 2 | 3 | 4 | 5;
  * IPRangeCreateRequest
  */
 export type IpRangeCreateRequest = {
-  /**
-   * Type of this range.
-   */
   type: IpRangeType;
   /**
    * Start Ip
@@ -1644,20 +1519,17 @@ export type IpRangeCreateRequest = {
    *
    * A description of this range.
    */
-  comment?: string;
+  comment?: string | unknown;
   /**
    * Owner Id
    *
    * The owner of this range.
    */
-  owner_id?: number;
+  owner_id?: number | unknown;
 };
 
 /**
  * IPRangeListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type IpRangeListResponse = {
   /**
@@ -1671,7 +1543,7 @@ export type IpRangeListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -1680,21 +1552,17 @@ export type IpRangeListResponse = {
 
 /**
  * IPRangeResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type IpRangeResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -1711,15 +1579,11 @@ export type IpRangeResponse = {
   /**
    * Comment
    */
-  comment?: string;
+  comment?: string | unknown;
   /**
    * Owner Id
    */
   owner_id: number;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -1733,9 +1597,6 @@ export type IpRangeType = "dynamic" | "reserved";
  * IPRangeUpdateRequest
  */
 export type IpRangeUpdateRequest = {
-  /**
-   * Type of this range.
-   */
   type: IpRangeType;
   /**
    * Start Ip
@@ -1754,7 +1615,7 @@ export type IpRangeUpdateRequest = {
    *
    * A description of this range.
    */
-  comment?: string;
+  comment?: string | unknown;
   /**
    * Owner Id
    *
@@ -1765,9 +1626,6 @@ export type IpRangeUpdateRequest = {
 
 /**
  * ImageListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type ImageListResponse = {
   /**
@@ -1781,7 +1639,7 @@ export type ImageListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -1790,21 +1648,17 @@ export type ImageListResponse = {
 
 /**
  * ImageResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type ImageResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -1828,18 +1682,11 @@ export type ImageResponse = {
   /**
    * Boot Source Id
    */
-  boot_source_id?: number;
-  /**
-   * Kind
-   */
-  kind?: string;
+  boot_source_id?: number | unknown;
 };
 
 /**
  * ImageStatisticListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type ImageStatisticListResponse = {
   /**
@@ -1853,7 +1700,7 @@ export type ImageStatisticListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -1865,17 +1712,21 @@ export type ImageStatisticListResponse = {
  */
 export type ImageStatisticResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Id
    */
   id: number;
   /**
    * Last Updated
    */
-  last_updated?: string;
+  last_updated?: string | unknown;
   /**
    * Last Deployed
    */
-  last_deployed?: string;
+  last_deployed?: string | unknown;
   /**
    * Size
    */
@@ -1888,16 +1739,10 @@ export type ImageStatisticResponse = {
    * Deploy To Memory
    */
   deploy_to_memory: boolean;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * ImageStatus
- *
- * An enumeration.
  */
 export type ImageStatus =
   | "Downloading"
@@ -1907,9 +1752,6 @@ export type ImageStatus =
 
 /**
  * ImageStatusListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type ImageStatusListResponse = {
   /**
@@ -1923,7 +1765,7 @@ export type ImageStatusListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -1934,6 +1776,10 @@ export type ImageStatusListResponse = {
  * ImageStatusResponse
  */
 export type ImageStatusResponse = {
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -1948,16 +1794,10 @@ export type ImageStatusResponse = {
    * Selected
    */
   selected: boolean;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * ImageUpdateStatus
- *
- * An enumeration.
  */
 export type ImageUpdateStatus =
   | "Downloading"
@@ -1974,9 +1814,6 @@ export type InterfaceLinkType = "auto" | "dhcp" | "link_up" | "static";
 
 /**
  * InterfaceListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type InterfaceListResponse = {
   /**
@@ -1990,7 +1827,7 @@ export type InterfaceListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -1999,21 +1836,17 @@ export type InterfaceListResponse = {
 
 /**
  * InterfaceResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type InterfaceResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -2026,7 +1859,7 @@ export type InterfaceResponse = {
   /**
    * Mac Address
    */
-  mac_address?: string;
+  mac_address?: string | unknown;
   /**
    * Link Connected
    */
@@ -2051,10 +1884,6 @@ export type InterfaceResponse = {
    * Links
    */
   links?: LinkResponse[];
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -2072,8 +1901,6 @@ export type InterfaceType =
 
 /**
  * KnownArchesEnum
- *
- * An enumeration.
  */
 export type KnownArchesEnum =
   | "amd64"
@@ -2085,8 +1912,6 @@ export type KnownArchesEnum =
 
 /**
  * KnownComponentsEnum
- *
- * An enumeration.
  */
 export type KnownComponentsEnum =
   | "main"
@@ -2106,7 +1931,7 @@ export type LinkResponse = {
   /**
    * Ip Address
    */
-  ip_address?: string;
+  ip_address?: string | unknown;
 };
 
 /**
@@ -2125,21 +1950,17 @@ export type MxRecord = {
 
 /**
  * MXRecordResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type MxRecordResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Exchange
    */
@@ -2148,29 +1969,21 @@ export type MxRecordResponse = {
    * Preference
    */
   preference: number;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * MachineResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type MachineResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -2186,7 +1999,7 @@ export type MachineResponse = {
   /**
    * Owner
    */
-  owner?: string;
+  owner?: string | unknown;
   /**
    * Cpu Speed Mhz
    */
@@ -2202,7 +2015,7 @@ export type MachineResponse = {
   /**
    * Architecture
    */
-  architecture?: string;
+  architecture?: string | unknown;
   /**
    * Distro Series
    */
@@ -2210,7 +2023,7 @@ export type MachineResponse = {
   /**
    * Hwe Kernel
    */
-  hwe_kernel?: string;
+  hwe_kernel?: string | unknown;
   /**
    * Locked
    */
@@ -2220,22 +2033,15 @@ export type MachineResponse = {
    */
   cpu_count: number;
   status: NodeStatus;
-  power_type?: PowerTypeEnum;
+  power_type?: PowerTypeEnum | unknown;
   /**
    * Fqdn
    */
   fqdn: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * MachinesListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type MachinesListResponse = {
   /**
@@ -2249,7 +2055,7 @@ export type MachinesListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -2268,29 +2074,21 @@ export type NsRecord = {
 
 /**
  * NSRecordResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type NsRecordResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
-  /**
-   * Nsdname
-   */
-  nsdname: string;
+  _embedded?: Record<string, unknown> | unknown;
   /**
    * Kind
    */
   kind?: string;
+  /**
+   * Nsdname
+   */
+  nsdname: string;
 };
 
 /**
@@ -2328,6 +2126,10 @@ export type NodeStatus =
  */
 export type NotFoundBodyResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Code
    */
   code?: number;
@@ -2338,17 +2140,11 @@ export type NotFoundBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[];
-  /**
-   * Kind
-   */
-  kind?: string;
+  details?: BaseExceptionDetail[] | unknown;
 };
 
 /**
  * NotificationCategoryEnum
- *
- * An enumeration.
  */
 export type NotificationCategoryEnum = "error" | "info" | "success" | "warning";
 
@@ -2362,22 +2158,19 @@ export type NotificationRequest = {
    * The message for this notification. May contain basic HTML,such as formatting. This string will be sanitised before display sothat it doesn't break MAAS HTML.
    */
   message: string;
-  /**
-   * Choose from: ``error``,``warning``, ``success``, or ``info``. Defaults to ``info``.
-   */
   category?: NotificationCategoryEnum;
   /**
    * Ident
    *
    * Unique identifier for this notification.
    */
-  ident?: string;
+  ident?: string | unknown;
   /**
    * User Id
    *
    * User ID this notification is intended for.By default it will not be targeted to any individual user.
    */
-  user_id?: number;
+  user_id?: number | unknown;
   /**
    * For Users
    *
@@ -2406,21 +2199,17 @@ export type NotificationRequest = {
 
 /**
  * NotificationResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type NotificationResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -2428,7 +2217,7 @@ export type NotificationResponse = {
   /**
    * Ident
    */
-  ident?: string;
+  ident?: string | unknown;
   /**
    * Users
    */
@@ -2448,7 +2237,7 @@ export type NotificationResponse = {
   /**
    * User Id
    */
-  user_id?: number;
+  user_id?: number | unknown;
   /**
    * Category
    */
@@ -2457,17 +2246,10 @@ export type NotificationResponse = {
    * Dismissable
    */
   dismissable: boolean;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * NotificationsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type NotificationsListResponse = {
   /**
@@ -2481,7 +2263,7 @@ export type NotificationsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -2522,9 +2304,6 @@ export type OAuthProviderRequest = {
    * The callback URL in your application where the OIDC provider will redirect users after successful authentication.
    */
   redirect_uri: string;
-  /**
-   * The type of access tokens issued by the OIDC provider (e.g., JWT or opaque).
-   */
   token_type: OAuthTokenTypeChoices;
   /**
    * Scopes
@@ -2544,6 +2323,10 @@ export type OAuthProviderRequest = {
  * OAuthProviderResponse
  */
 export type OAuthProviderResponse = {
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Issuer Url
    */
@@ -2580,19 +2363,12 @@ export type OAuthProviderResponse = {
   /**
    * User Count
    */
-  user_count?: number;
+  user_count?: number | unknown;
   token_type: OAuthTokenTypeChoices;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * OAuthProvidersListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type OAuthProvidersListResponse = {
   /**
@@ -2606,7 +2382,7 @@ export type OAuthProvidersListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -2615,8 +2391,6 @@ export type OAuthProvidersListResponse = {
 
 /**
  * OAuthTokenTypeChoices
- *
- * An enumeration.
  */
 export type OAuthTokenTypeChoices = "JWT" | "Opaque";
 
@@ -2642,7 +2416,7 @@ export type PackageRepositoryCreateRequest = {
    *
    * The authentication key to use with the repository.
    */
-  key?: string;
+  key?: string | unknown;
   /**
    * Url
    *
@@ -2656,18 +2430,26 @@ export type PackageRepositoryCreateRequest = {
    */
   distributions?: string[];
   /**
+   * Components
+   *
    * The list of components to enable.Only applicable to custom repositories.
    */
   components?: KnownComponentsEnum[];
   /**
+   * Arches
+   *
    * The list of supported architectures.
    */
   arches?: KnownArchesEnum[];
   /**
+   * Disabled Pockets
+   *
    * The list of pockets to disable.
    */
   disabled_pockets?: PocketsToDisableEnum[];
   /**
+   * Disabled Components
+   *
    * The list of components to disable.Only applicable to the default Ubuntu repositories.
    */
   disabled_components?: ComponentsToDisableEnum[];
@@ -2687,9 +2469,6 @@ export type PackageRepositoryCreateRequest = {
 
 /**
  * PackageRepositoryListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type PackageRepositoryListResponse = {
   /**
@@ -2703,7 +2482,7 @@ export type PackageRepositoryListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -2712,21 +2491,17 @@ export type PackageRepositoryListResponse = {
 
 /**
  * PackageRepositoryResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type PackageRepositoryResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -2771,10 +2546,6 @@ export type PackageRepositoryResponse = {
    * Enabled
    */
   enabled: boolean;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -2792,7 +2563,7 @@ export type PackageRepositoryUpdateRequest = {
    *
    * The authentication key to use with the repository.
    */
-  key?: string;
+  key?: string | unknown;
   /**
    * Url
    *
@@ -2806,18 +2577,26 @@ export type PackageRepositoryUpdateRequest = {
    */
   distributions?: string[];
   /**
+   * Components
+   *
    * The list of components to enable.Only applicable to custom repositories.
    */
   components?: KnownComponentsEnum[];
   /**
+   * Arches
+   *
    * The list of supported architectures.
    */
   arches?: KnownArchesEnum[];
   /**
+   * Disabled Pockets
+   *
    * The list of pockets to disable.
    */
   disabled_pockets?: PocketsToDisableEnum[];
   /**
+   * Disabled Components
+   *
    * The list of components to disable.Only applicable to the default Ubuntu repositories.
    */
   disabled_components?: ComponentsToDisableEnum[];
@@ -2837,21 +2616,17 @@ export type PackageRepositoryUpdateRequest = {
 
 /**
  * PciDeviceResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type PciDeviceResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -2889,17 +2664,10 @@ export type PciDeviceResponse = {
    * Pci Address
    */
   pci_address: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * PciDevicesListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type PciDevicesListResponse = {
   /**
@@ -2913,7 +2681,7 @@ export type PciDevicesListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -2922,43 +2690,31 @@ export type PciDevicesListResponse = {
 
 /**
  * PocketsToDisableEnum
- *
- * An enumeration.
  */
 export type PocketsToDisableEnum = "backports" | "security" | "updates";
 
 /**
  * PowerDriverResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type PowerDriverResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   power_type: PowerTypeEnum;
   /**
    * Power Parameters
    */
   power_parameters: Record<string, unknown>;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * PowerTypeEnum
- *
- * An enumeration.
  */
 export type PowerTypeEnum =
   | "amt"
@@ -2992,6 +2748,10 @@ export type PowerTypeEnum =
  */
 export type PreLoginInfoResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Is Authenticated
    */
   is_authenticated: boolean;
@@ -3002,17 +2762,17 @@ export type PreLoginInfoResponse = {
   /**
    * External Legacy Login Url
    */
-  external_legacy_login_url?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
+  external_legacy_login_url?: string | unknown;
 };
 
 /**
  * PreconditionFailedBodyResponse
  */
 export type PreconditionFailedBodyResponse = {
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Code
    */
@@ -3024,11 +2784,7 @@ export type PreconditionFailedBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[];
-  /**
-   * Kind
-   */
-  kind?: string;
+  details?: BaseExceptionDetail[] | unknown;
 };
 
 /**
@@ -3046,15 +2802,15 @@ export type ProviderMetadata = {
   /**
    * Userinfo Endpoint
    */
-  userinfo_endpoint?: string;
+  userinfo_endpoint?: string | unknown;
   /**
    * Introspection Endpoint
    */
-  introspection_endpoint?: string;
+  introspection_endpoint?: string | unknown;
   /**
    * Revocation Endpoint
    */
-  revocation_endpoint?: string;
+  revocation_endpoint?: string | unknown;
   /**
    * Jwks Uri
    */
@@ -3063,8 +2819,6 @@ export type ProviderMetadata = {
 
 /**
  * PublicConfigName
- *
- * An enumeration.
  */
 export type PublicConfigName =
   | "active_discovery_interval"
@@ -3140,20 +2894,17 @@ export type PublicConfigName =
  */
 export type RackBootstrapTokenResponse = {
   /**
-   * Token
-   */
-  token: string;
-  /**
    * Kind
    */
   kind?: string;
+  /**
+   * Token
+   */
+  token: string;
 };
 
 /**
  * RackListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type RackListResponse = {
   /**
@@ -3167,7 +2918,7 @@ export type RackListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -3188,21 +2939,17 @@ export type RackRequest = {
 
 /**
  * RackResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type RackResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -3211,17 +2958,10 @@ export type RackResponse = {
    * Name
    */
   name: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * RackWithSummaryListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type RackWithSummaryListResponse = {
   /**
@@ -3235,7 +2975,7 @@ export type RackWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -3244,21 +2984,17 @@ export type RackWithSummaryListResponse = {
 
 /**
  * RackWithSummaryResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type RackWithSummaryResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -3271,10 +3007,6 @@ export type RackWithSummaryResponse = {
    * Registered Agents System Ids
    */
   registered_agents_system_ids: string[];
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -3305,26 +3037,22 @@ export type ReservedIpCreateRequest = {
    *
    * A description of this reserved IP.
    */
-  comment?: string;
+  comment?: string | unknown;
 };
 
 /**
  * ReservedIPResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type ReservedIpResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -3340,11 +3068,7 @@ export type ReservedIpResponse = {
   /**
    * Comment
    */
-  comment?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
+  comment?: string | unknown;
 };
 
 /**
@@ -3368,14 +3092,11 @@ export type ReservedIpUpdateRequest = {
    *
    * A description of this reserved IP.
    */
-  comment?: string;
+  comment?: string | unknown;
 };
 
 /**
  * ReservedIPsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type ReservedIpsListResponse = {
   /**
@@ -3389,7 +3110,7 @@ export type ReservedIpsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -3398,8 +3119,6 @@ export type ReservedIpsListResponse = {
 
 /**
  * ResourcePoolPermission
- *
- * An enumeration.
  */
 export type ResourcePoolPermission = "delete" | "edit";
 
@@ -3421,21 +3140,17 @@ export type ResourcePoolRequest = {
 
 /**
  * ResourcePoolResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type ResourcePoolResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -3448,29 +3163,21 @@ export type ResourcePoolResponse = {
    * Description
    */
   description: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * ResourcePoolWithSummaryResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type ResourcePoolWithSummaryResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -3483,10 +3190,6 @@ export type ResourcePoolWithSummaryResponse = {
    * Description
    */
   description: string;
-  /**
-   * Kind
-   */
-  kind?: string;
   /**
    * Machine Total Count
    */
@@ -3499,14 +3202,14 @@ export type ResourcePoolWithSummaryResponse = {
    * Is Default
    */
   is_default: boolean;
+  /**
+   * Permissions
+   */
   permissions: ResourcePoolPermission[];
 };
 
 /**
  * ResourcePoolsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type ResourcePoolsListResponse = {
   /**
@@ -3520,7 +3223,7 @@ export type ResourcePoolsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -3529,9 +3232,6 @@ export type ResourcePoolsListResponse = {
 
 /**
  * ResourcePoolsWithSummaryListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type ResourcePoolsWithSummaryListResponse = {
   /**
@@ -3545,7 +3245,7 @@ export type ResourcePoolsWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -3576,21 +3276,17 @@ export type SrvRecord = {
 
 /**
  * SRVRecordResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type SrvRecordResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Port
    */
@@ -3607,10 +3303,6 @@ export type SrvRecordResponse = {
    * Weight
    */
   weight: number;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -3633,21 +3325,17 @@ export type SshfpRecord = {
 
 /**
  * SSHFPRecordResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type SshfpRecordResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Algorithm
    */
@@ -3660,17 +3348,10 @@ export type SshfpRecordResponse = {
    * Fingerprint
    */
   fingerprint: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * SSLKeyListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type SslKeyListResponse = {
   /**
@@ -3684,7 +3365,7 @@ export type SslKeyListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -3705,21 +3386,17 @@ export type SslKeyRequest = {
 
 /**
  * SSLKeyResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type SslKeyResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -3728,29 +3405,21 @@ export type SslKeyResponse = {
    * Key
    */
   key: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * SSLKeyWithSummaryResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type SslKeyWithSummaryResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -3759,10 +3428,6 @@ export type SslKeyWithSummaryResponse = {
    * Key
    */
   key: string;
-  /**
-   * Kind
-   */
-  kind?: string;
   /**
    * Display
    */
@@ -3771,9 +3436,6 @@ export type SslKeyWithSummaryResponse = {
 
 /**
  * SSLKeysWithSummaryListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type SslKeysWithSummaryListResponse = {
   /**
@@ -3787,7 +3449,7 @@ export type SslKeysWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -3829,13 +3491,13 @@ export type SelectionRequest = {
  */
 export type SourceAvailableImageListResponse = {
   /**
-   * Items
-   */
-  items: SourceAvailableImageResponse[];
-  /**
    * Kind
    */
   kind?: string;
+  /**
+   * Items
+   */
+  items: SourceAvailableImageResponse[];
 };
 
 /**
@@ -3879,26 +3541,22 @@ export type SpaceRequest = {
    *
    * The description of the zone.
    */
-  description?: string;
+  description?: string | unknown;
 };
 
 /**
  * SpaceResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type SpaceResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -3906,24 +3564,17 @@ export type SpaceResponse = {
   /**
    * Name
    */
-  name?: string;
+  name?: string | unknown;
   /**
    * Description
    */
-  description?: string;
+  description?: string | unknown;
   vlans: BaseHref;
   subnets: BaseHref;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * SpacesListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type SpacesListResponse = {
   /**
@@ -3937,7 +3588,7 @@ export type SpacesListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -3948,9 +3599,6 @@ export type SpacesListResponse = {
  * SshKeyImportFromSourceRequest
  */
 export type SshKeyImportFromSourceRequest = {
-  /**
-   * The source from where to fetch the key.
-   */
   protocol: SshKeysProtocolType;
   /**
    * Auth Id
@@ -3974,21 +3622,17 @@ export type SshKeyManualUploadRequest = {
 
 /**
  * SshKeyResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type SshKeyResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -3997,22 +3641,15 @@ export type SshKeyResponse = {
    * Key
    */
   key: string;
-  protocol?: SshKeysProtocolType;
+  protocol?: SshKeysProtocolType | unknown;
   /**
    * Auth Id
    */
-  auth_id?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
+  auth_id?: string | unknown;
 };
 
 /**
  * SshKeysListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type SshKeysListResponse = {
   /**
@@ -4026,7 +3663,7 @@ export type SshKeysListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -4035,8 +3672,6 @@ export type SshKeysListResponse = {
 
 /**
  * SshKeysProtocolType
- *
- * An enumeration.
  */
 export type SshKeysProtocolType = "gh" | "lp";
 
@@ -4066,21 +3701,17 @@ export type StaticRouteRequest = {
 
 /**
  * StaticRouteResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type StaticRouteResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -4097,17 +3728,10 @@ export type StaticRouteResponse = {
    * Metric
    */
   metric: number;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * StaticRoutesListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type StaticRoutesListResponse = {
   /**
@@ -4121,7 +3745,7 @@ export type StaticRoutesListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -4137,29 +3761,26 @@ export type SubnetRequest = {
    *
    * The unique name of the entity.
    */
-  name?: string;
+  name?: string | unknown;
   /**
    * Description
    *
    * The description of the subnet.
    */
-  description?: string;
+  description?: string | unknown;
   /**
    * Cidr
    *
    * The network CIDR for this subnet.
    */
   cidr: string;
-  /**
-   * How reverse DNS is handled for this subnet. One of:- ``0`` Disabled: No reverse zone is created.- ``1`` Enabled: Generate reverse zone.- ``2`` RFC2317: Extends '1' to create the necessary parent zone with the appropriate CNAME resource records for the network, if the network is small enough to require the support described in RFC2317.
-   */
   rdns_mode?: RdnsMode;
   /**
    * Gateway Ip
    *
    * The gateway IP for this subnet.
    */
-  gateway_ip?: string;
+  gateway_ip?: string | unknown;
   /**
    * Dns Servers
    *
@@ -4200,21 +3821,17 @@ export type SubnetRequest = {
 
 /**
  * SubnetResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type SubnetResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -4222,11 +3839,11 @@ export type SubnetResponse = {
   /**
    * Name
    */
-  name?: string;
+  name?: string | unknown;
   /**
    * Description
    */
-  description?: string;
+  description?: string | unknown;
   /**
    * Cidr
    */
@@ -4235,11 +3852,11 @@ export type SubnetResponse = {
   /**
    * Gateway Ip
    */
-  gateway_ip?: string;
+  gateway_ip?: string | unknown;
   /**
    * Dns Servers
    */
-  dns_servers?: string[];
+  dns_servers?: string[] | unknown;
   /**
    * Allow Dns
    */
@@ -4260,17 +3877,10 @@ export type SubnetResponse = {
    * Disabled Boot Architectures
    */
   disabled_boot_architectures: string[];
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * SubnetsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type SubnetsListResponse = {
   /**
@@ -4284,7 +3894,7 @@ export type SubnetsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -4306,20 +3916,26 @@ export type SwitchRequest = {
    *
    * Boot resource name for the NOS to install on the switch. Supports full format (e.g., 'onie/mellanox-3.8.0') or short format for ONIE images (e.g., 'mellanox-3.8.0').
    */
-  image?: string;
+  image?: string | unknown;
 };
 
 /**
  * SwitchResponse
  *
  * Response model for a single switch.
+ *
+ * Represents a network switch device with its target image configuration.
  */
 export type SwitchResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -4327,15 +3943,11 @@ export type SwitchResponse = {
   /**
    * Target Image Id
    */
-  target_image_id?: number;
+  target_image_id?: number | unknown;
   /**
    * Target Image
    */
-  target_image?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
+  target_image?: string | unknown;
 };
 
 /**
@@ -4349,13 +3961,15 @@ export type SwitchUpdateRequest = {
    *
    * Boot resource name for the NOS to install on the switch. Supports full format (e.g., 'onie/mellanox-3.8.0') or short format for ONIE images (e.g., 'mellanox-3.8.0').
    */
-  image?: string;
+  image?: string | unknown;
 };
 
 /**
  * SwitchesListResponse
  *
- * Response model for a list of switches.
+ * Response model for a paginated list of switches.
+ *
+ * Contains a collection of SwitchResponse items with pagination metadata.
  */
 export type SwitchesListResponse = {
   /**
@@ -4369,7 +3983,7 @@ export type SwitchesListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -4388,29 +4002,21 @@ export type TxtRecord = {
 
 /**
  * TXTRecordResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type TxtRecordResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
-  /**
-   * Data
-   */
-  data: string;
+  _embedded?: Record<string, unknown> | unknown;
   /**
    * Kind
    */
   kind?: string;
+  /**
+   * Data
+   */
+  data: string;
 };
 
 /**
@@ -4445,21 +4051,17 @@ export type TagRequest = {
 
 /**
  * TagResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type TagResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -4480,17 +4082,10 @@ export type TagResponse = {
    * Kernel Opts
    */
   kernel_opts: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * TagsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type TagsListResponse = {
   /**
@@ -4504,7 +4099,7 @@ export type TagsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -4518,6 +4113,10 @@ export type TagsListResponse = {
  */
 export type TokenResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Token Type
    */
   token_type: string;
@@ -4528,11 +4127,7 @@ export type TokenResponse = {
   /**
    * Refresh Token
    */
-  refresh_token?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
+  refresh_token?: string | unknown;
 };
 
 /**
@@ -4540,13 +4135,13 @@ export type TokenResponse = {
  */
 export type UiSourceAvailableImageListResponse = {
   /**
-   * Items
-   */
-  items: UiSourceAvailableImageResponse[];
-  /**
    * Kind
    */
   kind?: string;
+  /**
+   * Items
+   */
+  items: UiSourceAvailableImageResponse[];
 };
 
 /**
@@ -4570,6 +4165,10 @@ export type UiSourceAvailableImageResponse = {
    */
   title: string;
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Source Id
    */
   source_id: number;
@@ -4577,10 +4176,6 @@ export type UiSourceAvailableImageResponse = {
    * Source Url
    */
   source_url: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -4588,24 +4183,20 @@ export type UiSourceAvailableImageResponse = {
  */
 export type UiSubnetEmbeddedType = {
   fabric: BaseHrefWithId;
-  space: BaseHrefWithId;
+  space: BaseHrefWithId | unknown;
   vlan: VlanHref;
 };
 
 /**
  * UISubnetResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type UiSubnetResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   _embedded: UiSubnetEmbeddedType;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -4613,11 +4204,11 @@ export type UiSubnetResponse = {
   /**
    * Name
    */
-  name?: string;
+  name?: string | unknown;
   /**
    * Description
    */
-  description?: string;
+  description?: string | unknown;
   /**
    * Cidr
    */
@@ -4626,11 +4217,11 @@ export type UiSubnetResponse = {
   /**
    * Gateway Ip
    */
-  gateway_ip?: string;
+  gateway_ip?: string | unknown;
   /**
    * Dns Servers
    */
-  dns_servers?: string[];
+  dns_servers?: string[] | unknown;
   /**
    * Allow Dns
    */
@@ -4652,10 +4243,6 @@ export type UiSubnetResponse = {
    */
   disabled_boot_architectures: string[];
   statistics: UiSubnetStatistics;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -4706,9 +4293,6 @@ export type UiSubnetStatistics = {
 
 /**
  * UISubnetsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type UiSubnetsListResponse = {
   /**
@@ -4722,7 +4306,7 @@ export type UiSubnetsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -4734,6 +4318,10 @@ export type UiSubnetsListResponse = {
  */
 export type UnauthorizedBodyResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Code
    */
   code?: number;
@@ -4744,11 +4332,7 @@ export type UnauthorizedBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[];
-  /**
-   * Kind
-   */
-  kind?: string;
+  details?: BaseExceptionDetail[] | unknown;
 };
 
 /**
@@ -4760,10 +4344,7 @@ export type UpdateConfigurationItemRequest = {
    *
    * The value of the configuration.
    */
-  value?: unknown;
-  /**
-   * The name of the configuration.
-   */
+  value: unknown;
   name: PublicConfigName;
 };
 
@@ -4776,7 +4357,7 @@ export type UpdateConfigurationRequest = {
    *
    * The value of the configuration.
    */
-  value?: unknown;
+  value: unknown;
 };
 
 /**
@@ -4793,21 +4374,17 @@ export type UpdateConfigurationsRequest = {
 
 /**
  * UsbDeviceResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type UsbDeviceResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -4841,17 +4418,10 @@ export type UsbDeviceResponse = {
    * Device Number
    */
   device_number: number;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * UsbDevicesListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type UsbDevicesListResponse = {
   /**
@@ -4865,7 +4435,7 @@ export type UsbDevicesListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -4905,7 +4475,7 @@ export type UserCreateRequest = {
   /**
    * Email
    */
-  email?: string;
+  email?: string | unknown;
   /**
    * Password
    */
@@ -4929,6 +4499,10 @@ export type UserGroupMemberRequest = {
  */
 export type UserGroupMemberResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * User Id
    */
   user_id: number;
@@ -4940,10 +4514,6 @@ export type UserGroupMemberResponse = {
    * Email
    */
   email: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
@@ -4954,6 +4524,14 @@ export type UserGroupMembersListResponse = {
    * Items
    */
   items: UserGroupMemberResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -4975,26 +4553,22 @@ export type UserGroupRequest = {
    *
    * The description of the group.
    */
-  description?: string;
+  description?: string | unknown;
 };
 
 /**
  * UserGroupResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type UserGroupResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -5006,30 +4580,22 @@ export type UserGroupResponse = {
   /**
    * Description
    */
-  description?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
+  description?: string | unknown;
 };
 
 /**
  * UserGroupStatisticsResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type UserGroupStatisticsResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -5038,17 +4604,10 @@ export type UserGroupStatisticsResponse = {
    * User Count
    */
   user_count: number;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * UserGroupsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type UserGroupsListResponse = {
   /**
@@ -5062,7 +4621,7 @@ export type UserGroupsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -5071,9 +4630,6 @@ export type UserGroupsListResponse = {
 
 /**
  * UserGroupsStatisticsListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type UserGroupsStatisticsListResponse = {
   /**
@@ -5087,7 +4643,7 @@ export type UserGroupsStatisticsListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -5114,21 +4670,17 @@ export type UserInfoResponse = {
 
 /**
  * UserResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type UserResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -5148,7 +4700,7 @@ export type UserResponse = {
   /**
    * Last Name
    */
-  last_name?: string;
+  last_name?: string | unknown;
   /**
    * Date Joined
    */
@@ -5156,15 +4708,11 @@ export type UserResponse = {
   /**
    * Email
    */
-  email?: string;
+  email?: string | unknown;
   /**
    * Last Login
    */
-  last_login?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
+  last_login?: string | unknown;
 };
 
 /**
@@ -5190,30 +4738,26 @@ export type UserUpdateRequest = {
   /**
    * Email
    */
-  email?: string;
+  email?: string | unknown;
   /**
    * Password
    */
-  password?: string;
+  password?: string | unknown;
 };
 
 /**
  * UserWithSummaryResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type UserWithSummaryResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -5225,7 +4769,7 @@ export type UserWithSummaryResponse = {
   /**
    * Email
    */
-  email?: string;
+  email?: string | unknown;
   /**
    * Is Local
    */
@@ -5237,11 +4781,11 @@ export type UserWithSummaryResponse = {
   /**
    * Last Name
    */
-  last_name?: string;
+  last_name?: string | unknown;
   /**
    * Last Login
    */
-  last_login?: string;
+  last_login?: string | unknown;
   /**
    * Machines Count
    */
@@ -5254,17 +4798,10 @@ export type UserWithSummaryResponse = {
    * Username
    */
   username: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * UsersListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type UsersListResponse = {
   /**
@@ -5278,7 +4815,7 @@ export type UsersListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -5287,9 +4824,6 @@ export type UsersListResponse = {
 
 /**
  * UsersWithSummaryListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type UsersWithSummaryListResponse = {
   /**
@@ -5303,7 +4837,7 @@ export type UsersWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -5315,6 +4849,10 @@ export type UsersWithSummaryListResponse = {
  */
 export type ValidationErrorBodyResponse = {
   /**
+   * Kind
+   */
+  kind?: string;
+  /**
    * Code
    */
   code?: number;
@@ -5325,11 +4863,7 @@ export type ValidationErrorBodyResponse = {
   /**
    * Details
    */
-  details?: BaseExceptionDetail[];
-  /**
-   * Kind
-   */
-  kind?: string;
+  details?: BaseExceptionDetail[] | unknown;
 };
 
 /**
@@ -5341,7 +4875,7 @@ export type VlanCreateRequest = {
    *
    * The unique name of the entity.
    */
-  name?: string;
+  name?: string | unknown;
   /**
    * Description
    *
@@ -5365,7 +4899,7 @@ export type VlanCreateRequest = {
    *
    * The space this VLAN should be placed in. If not specified, the VLAN will be placed in the 'undefined' space.
    */
-  space_id?: number;
+  space_id?: number | unknown;
 };
 
 /**
@@ -5379,11 +4913,11 @@ export type VlanHref = {
   /**
    * Id
    */
-  id?: string;
+  id?: string | unknown;
   /**
    * Name
    */
-  name?: string;
+  name?: string | unknown;
   /**
    * Vid
    */
@@ -5395,30 +4929,26 @@ export type VlanHref = {
   /**
    * External Dhcp
    */
-  external_dhcp?: string;
+  external_dhcp?: string | unknown;
   /**
    * Relay Vlan Id
    */
-  relay_vlan_id?: string;
+  relay_vlan_id?: string | unknown;
 };
 
 /**
  * VlanResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type VlanResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -5430,7 +4960,7 @@ export type VlanResponse = {
   /**
    * Name
    */
-  name?: string;
+  name?: string | unknown;
   /**
    * Description
    */
@@ -5446,24 +4976,20 @@ export type VlanResponse = {
   /**
    * External Dhcp
    */
-  external_dhcp?: string;
+  external_dhcp?: string | unknown;
   /**
    * Primary Rack
    */
-  primary_rack?: number;
+  primary_rack?: number | unknown;
   /**
    * Secondary Rack
    */
-  secondary_rack?: number;
+  secondary_rack?: number | unknown;
   /**
    * Relay Vlan Id
    */
-  relay_vlan_id?: number;
-  space?: BaseHref;
-  /**
-   * Kind
-   */
-  kind?: string;
+  relay_vlan_id?: number | unknown;
+  space?: BaseHref | unknown;
 };
 
 /**
@@ -5475,7 +5001,7 @@ export type VlanUpdateRequest = {
    *
    * The unique name of the entity.
    */
-  name?: string;
+  name?: string | unknown;
   /**
    * Description
    *
@@ -5499,7 +5025,7 @@ export type VlanUpdateRequest = {
    *
    * The space this VLAN should be placed in. If not specified, the VLAN will be placed in the 'undefined' space.
    */
-  space_id?: number;
+  space_id?: number | unknown;
   /**
    * Fabric Id
    *
@@ -5517,26 +5043,23 @@ export type VlanUpdateRequest = {
    *
    * The primary rack controller ID managing the VLAN.
    */
-  primary_rack_id?: number;
+  primary_rack_id?: number | unknown;
   /**
    * Secondary Rack Id
    *
    * The secondary rack controller ID managing the VLAN
    */
-  secondary_rack_id?: number;
+  secondary_rack_id?: number | unknown;
   /**
    * Relay Vlan Id
    *
    * Relay VLAN ID. Only set when this VLAN will be using a DHCP relay to forward DHCP requests to another VLAN that MAAS is managing. MAAS will not run the DHCP relay itself, it must be configured to proxy reqests to the primary and/or secondary rack controller interfaces for the VLAN specified in this field.
    */
-  relay_vlan_id?: number;
+  relay_vlan_id?: number | unknown;
 };
 
 /**
  * VlansListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type VlansListResponse = {
   /**
@@ -5550,7 +5073,7 @@ export type VlansListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -5572,26 +5095,22 @@ export type ZoneRequest = {
    *
    * The description of the zone.
    */
-  description?: string;
+  description?: string | unknown;
 };
 
 /**
  * ZoneResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type ZoneResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -5604,29 +5123,21 @@ export type ZoneResponse = {
    * Description
    */
   description: string;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * ZoneWithSummaryResponse
- *
- * Base HAL response class that every response object must extend. The response object will look like
- * {
- * '_links': {
- * 'self': {'href': '/api/v3/'}
- * },
- * '_embedded': {}
- * }
  */
 export type ZoneWithSummaryResponse = {
-  _links?: BaseHal;
+  _links?: BaseHal | unknown;
   /**
-   *  Embedded
+   * Embedded
    */
-  _embedded?: Record<string, unknown>;
+  _embedded?: Record<string, unknown> | unknown;
+  /**
+   * Kind
+   */
+  kind?: string;
   /**
    * Id
    */
@@ -5651,17 +5162,10 @@ export type ZoneWithSummaryResponse = {
    * Controllers Count
    */
   controllers_count: number;
-  /**
-   * Kind
-   */
-  kind?: string;
 };
 
 /**
  * ZonesListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type ZonesListResponse = {
   /**
@@ -5675,7 +5179,7 @@ export type ZonesListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -5684,9 +5188,6 @@ export type ZonesListResponse = {
 
 /**
  * ZonesWithSummaryListResponse
- *
- * Base class for offset-paginated responses.
- * Derived classes should overwrite the items property
  */
 export type ZonesWithSummaryListResponse = {
   /**
@@ -5700,7 +5201,7 @@ export type ZonesWithSummaryListResponse = {
   /**
    * Next
    */
-  next?: string;
+  next?: string | unknown;
   /**
    * Kind
    */
@@ -5725,7 +5226,7 @@ export type ListOauthProvidersData = {
 
 export type ListOauthProvidersErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -5756,7 +5257,7 @@ export type CreateOauthProviderErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
   /**
@@ -5787,7 +5288,7 @@ export type CreateSessionData = {
 
 export type CreateSessionErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -5810,7 +5311,7 @@ export type DeleteOauthProviderData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -5828,7 +5329,7 @@ export type DeleteOauthProviderErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -5864,7 +5365,7 @@ export type GetOauthProviderByIdErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -5900,7 +5401,7 @@ export type UpdateOauthProviderErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -5931,7 +5432,7 @@ export type ExtendSessionErrors = {
    */
   400: BadRequestBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -5961,7 +5462,7 @@ export type GetAccessTokenErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -5992,7 +5493,7 @@ export type GetOauthProviderErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6032,7 +5533,7 @@ export type HandleOauthCallbackErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6061,7 +5562,7 @@ export type InitiateAuthFlowData = {
     /**
      * Redirect Target
      */
-    redirect_target?: string;
+    redirect_target?: string | unknown;
   };
   url: "/MAAS/a/v3/auth/login_info";
 };
@@ -6072,7 +5573,7 @@ export type InitiateAuthFlowErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6099,7 +5600,7 @@ export type PreLoginData = {
 
 export type PreLoginErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6128,7 +5629,7 @@ export type LoginErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6153,7 +5654,7 @@ export type LogoutData = {
 
 export type LogoutErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6187,7 +5688,7 @@ export type GetBootloaderErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6222,7 +5723,7 @@ export type ListBootloadersData = {
 
 export type ListBootloadersErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6258,7 +5759,7 @@ export type ListBootsourcesData = {
 
 export type ListBootsourcesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6285,7 +5786,7 @@ export type CreateBootsourceData = {
 
 export type CreateBootsourceErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6330,7 +5831,7 @@ export type ListBootsourceBootsourceselectionErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6366,7 +5867,7 @@ export type CreateBootsourceBootsourceselectionErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6390,7 +5891,7 @@ export type DeleteBootsourceData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -6408,7 +5909,7 @@ export type DeleteBootsourceErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6444,7 +5945,7 @@ export type GetBootsourceErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6479,7 +5980,7 @@ export type UpdateBootsourceErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6503,7 +6004,7 @@ export type DeleteBootsourceBootsourceselectionData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -6525,7 +6026,7 @@ export type DeleteBootsourceBootsourceselectionErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6565,7 +6066,7 @@ export type GetBootsourceBootsourceselectionErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6605,7 +6106,7 @@ export type UpdateBootsourceBootsourceselectionErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6632,7 +6133,7 @@ export type FetchBootsourcesAvailableImagesData = {
 
 export type FetchBootsourcesAvailableImagesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6663,7 +6164,7 @@ export type GetAllAvailableImagesErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6708,7 +6209,7 @@ export type GetBootsourceAvailableImagesErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6752,7 +6253,7 @@ export type GetBootsourceBootsourceselectionResourceErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6801,7 +6302,7 @@ export type ListBootsourceBootsourceselectionResourcesErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6845,7 +6346,7 @@ export type StopSyncBootsourceBootsourceselectionErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6886,7 +6387,7 @@ export type SyncBootsourceBootsourceselectionErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6913,7 +6414,7 @@ export type UpdateManifestBootsourcesData = {
 
 export type UpdateManifestBootsourcesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6937,13 +6438,13 @@ export type ListSelectionStatusData = {
      *
      * Filter by Boot Source Selection ID
      */
-    id?: number[];
+    id?: number[] | unknown;
     /**
      * Selected
      *
      * Filter by whether the boot source selection is selected
      */
-    selected?: boolean;
+    selected?: boolean | unknown;
     /**
      * Page
      */
@@ -6962,7 +6463,7 @@ export type ListSelectionStatusErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -6998,7 +6499,7 @@ export type GetSelectionStatusErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7025,7 +6526,7 @@ export type ListSelectionStatisticData = {
      *
      * Filter by Boot Source Selection ID
      */
-    id?: number[];
+    id?: number[] | unknown;
     /**
      * Page
      */
@@ -7044,7 +6545,7 @@ export type ListSelectionStatisticErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7080,7 +6581,7 @@ export type GetSelectionStatisticErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7114,7 +6615,7 @@ export type BulkDeleteSelectionsData = {
 
 export type BulkDeleteSelectionsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7150,7 +6651,7 @@ export type ListSelectionsData = {
 
 export type ListSelectionsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7184,7 +6685,7 @@ export type BulkCreateSelectionsErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7216,7 +6717,7 @@ export type GetSelectionData = {
 
 export type GetSelectionErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7248,7 +6749,7 @@ export type GetConfigurationErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7281,7 +6782,7 @@ export type SetConfigurationErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7319,7 +6820,7 @@ export type GetConfigurationsErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7350,7 +6851,7 @@ export type SetConfigurationsErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7377,7 +6878,7 @@ export type ListCustomImagesStatusData = {
      *
      * Filter by Custom Image ID
      */
-    id?: number[];
+    id?: number[] | unknown;
     /**
      * Page
      */
@@ -7392,7 +6893,7 @@ export type ListCustomImagesStatusData = {
 
 export type ListCustomImagesStatusErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7424,7 +6925,7 @@ export type GetCustomImageStatusData = {
 
 export type GetCustomImageStatusErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7451,7 +6952,7 @@ export type ListCustomImagesStatisticData = {
      *
      * Filter by Custom Image ID
      */
-    id?: number[];
+    id?: number[] | unknown;
     /**
      * Page
      */
@@ -7466,7 +6967,7 @@ export type ListCustomImagesStatisticData = {
 
 export type ListCustomImagesStatisticErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7498,7 +6999,7 @@ export type GetCustomImageStatisticData = {
 
 export type GetCustomImageStatisticErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7540,7 +7041,7 @@ export type BulkDeleteCustomImagesErrors = {
    */
   412: PreconditionFailedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7576,7 +7077,7 @@ export type ListCustomImagesData = {
 
 export type ListCustomImagesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7627,13 +7128,13 @@ export type UploadCustomImageData = {
      *
      * Title for the boot resource.
      */
-    title?: string;
+    title?: string | unknown;
     /**
-     * Base-Image
+     * Base Image
      *
      * The Base OS image a custom image is built on top of. Only required for images of type 'custom'.
      */
-    "base-image"?: string;
+    "base-image"?: string | unknown;
   };
   path?: never;
   query?: never;
@@ -7646,7 +7147,7 @@ export type UploadCustomImageErrors = {
    */
   400: BadRequestBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7670,7 +7171,7 @@ export type DeleteCustomImageByIdData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -7692,7 +7193,7 @@ export type DeleteCustomImageByIdErrors = {
    */
   412: PreconditionFailedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7728,7 +7229,7 @@ export type GetCustomImageByIdErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7761,14 +7262,14 @@ export type ListEventsData = {
     /**
      * Filter by system id
      */
-    system_id?: string[];
+    system_id?: string[] | unknown;
   };
   url: "/MAAS/a/v3/events";
 };
 
 export type ListEventsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7793,20 +7294,20 @@ export type ClearAllDiscoveriesWithOptionalIpAndMacData = {
      *
      * Delete discoveries with this IP.
      */
-    ip?: string;
+    ip?: string | unknown;
     /**
      * Mac
      *
      * Delete discoveries with this MAC.
      */
-    mac?: string;
+    mac?: string | unknown;
   };
   url: "/MAAS/a/v3/discoveries";
 };
 
 export type ClearAllDiscoveriesWithOptionalIpAndMacErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7842,7 +7343,7 @@ export type ListDiscoveriesData = {
 
 export type ListDiscoveriesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7869,7 +7370,7 @@ export type ClearNeighboursDiscoveriesData = {
 
 export type ClearNeighboursDiscoveriesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7896,7 +7397,7 @@ export type ClearRdnsAndMdnsDiscoveriesData = {
 
 export type ClearRdnsAndMdnsDiscoveriesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7932,7 +7433,7 @@ export type GetDiscoveryErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7967,7 +7468,7 @@ export type ListDomainsData = {
 
 export type ListDomainsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -7997,7 +7498,7 @@ export type CreateDomainErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8032,7 +7533,7 @@ export type GetDomainRrsetsErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8068,7 +7569,7 @@ export type CreateDomainRrsetsErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8092,7 +7593,7 @@ export type DeleteDomainData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -8114,7 +7615,7 @@ export type DeleteDomainErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8149,7 +7650,7 @@ export type GetDomainErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8183,7 +7684,7 @@ export type ListFabricsData = {
 
 export type ListFabricsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8213,7 +7714,7 @@ export type CreateFabricErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8236,7 +7737,7 @@ export type DeleteFabricData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -8258,7 +7759,7 @@ export type DeleteFabricErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8293,7 +7794,7 @@ export type GetFabricErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8327,7 +7828,7 @@ export type UpdateFabricErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8350,7 +7851,7 @@ export type DeleteFileData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path?: never;
   query: {
@@ -8372,7 +7873,7 @@ export type DeleteFileErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8397,7 +7898,7 @@ export type ListFilesData = {
      *
      * An optional prefix used to filter matching files.
      */
-    prefix?: string;
+    prefix?: string | unknown;
   };
   url: "/MAAS/a/v3/files";
 };
@@ -8408,7 +7909,7 @@ export type ListFilesErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8441,7 +7942,7 @@ export type CreateOrReplaceFileErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8477,7 +7978,7 @@ export type GetFileErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8511,7 +8012,7 @@ export type GetFileByKeyErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8551,7 +8052,7 @@ export type ListInterfacesData = {
 
 export type ListInterfacesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8600,7 +8101,7 @@ export type ListFabricVlanSubnetIprangeData = {
 
 export type ListFabricVlanSubnetIprangeErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8644,7 +8145,7 @@ export type CreateFabricVlanSubnetIprangeErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8668,7 +8169,7 @@ export type DeleteFabricVlanSubnetIprangeData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -8698,7 +8199,7 @@ export type DeleteFabricVlanSubnetIprangeErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8746,7 +8247,7 @@ export type UpdateFabricVlanSubnetIprangeErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8794,7 +8295,7 @@ export type GetFabricVlanSubnetIprangeErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8830,7 +8331,7 @@ export type GetMachinePowerParametersErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8871,7 +8372,7 @@ export type ListMachinePciDevicesData = {
 
 export type ListMachinePciDevicesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8912,7 +8413,7 @@ export type ListMachineUsbDevicesData = {
 
 export type ListMachineUsbDevicesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8948,7 +8449,7 @@ export type ListMachinesData = {
 
 export type ListMachinesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -8975,35 +8476,35 @@ export type GetNosInstallerData = {
     /**
      * Onie-Serial-Number
      */
-    "onie-serial-number"?: string;
+    "onie-serial-number"?: string | unknown;
     /**
      * Onie-Vendor-Id
      */
-    "onie-vendor-id"?: string;
+    "onie-vendor-id"?: string | unknown;
     /**
      * Onie-Machine
      */
-    "onie-machine"?: string;
+    "onie-machine"?: string | unknown;
     /**
      * Onie-Machine-Rev
      */
-    "onie-machine-rev"?: string;
+    "onie-machine-rev"?: string | unknown;
     /**
      * Onie-Arch
      */
-    "onie-arch"?: string;
+    "onie-arch"?: string | unknown;
     /**
      * Onie-Security-Key
      */
-    "onie-security-key"?: string;
+    "onie-security-key"?: string | unknown;
     /**
      * Onie-Operation
      */
-    "onie-operation"?: string;
+    "onie-operation"?: string | unknown;
     /**
      * Onie-Version
      */
-    "onie-version"?: string;
+    "onie-version"?: string | unknown;
   };
   path?: never;
   query?: never;
@@ -9020,7 +8521,7 @@ export type GetNosInstallerErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9044,7 +8545,7 @@ export type ListNotificationsData = {
      *
      * Wheter to return only the non-dismissed notifications
      */
-    only_active?: boolean;
+    only_active?: boolean | unknown;
     /**
      * Page
      */
@@ -9059,7 +8560,7 @@ export type ListNotificationsData = {
 
 export type ListNotificationsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9090,7 +8591,7 @@ export type CreateNotificationErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9130,7 +8631,7 @@ export type DeleteNotificationErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9170,7 +8671,7 @@ export type GetNotificationErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9210,7 +8711,7 @@ export type UpdateNotificationErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9246,7 +8747,7 @@ export type DismissNotificationErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9286,7 +8787,7 @@ export type ListPackageRepositoriesData = {
 
 export type ListPackageRepositoriesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9317,7 +8818,7 @@ export type CreatePackageRepositoryErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9341,7 +8842,7 @@ export type DeletePackageRepositoryData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -9363,7 +8864,7 @@ export type DeletePackageRepositoryErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9399,7 +8900,7 @@ export type GetPackageRepositoryErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9435,7 +8936,7 @@ export type UpdatePackageRepositoryErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9471,7 +8972,7 @@ export type ListRacksData = {
 
 export type ListRacksErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9496,7 +8997,7 @@ export type CreateRackData = {
 
 export type CreateRackErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9518,7 +9019,7 @@ export type DeleteRackAgentData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -9540,7 +9041,7 @@ export type DeleteRackAgentErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9580,7 +9081,7 @@ export type GetRackAgentErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9603,7 +9104,7 @@ export type DeleteRacksData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -9621,7 +9122,7 @@ export type DeleteRacksErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9656,7 +9157,7 @@ export type GetRackErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9690,7 +9191,7 @@ export type UpdateRackErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9724,7 +9225,7 @@ export type GenerateRackBootstrapTokenErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9769,7 +9270,7 @@ export type ListRackAgentsErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9805,7 +9306,7 @@ export type ListRacksWithSummaryData = {
 
 export type ListRacksWithSummaryErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9854,7 +9355,7 @@ export type ListFabricVlanSubnetReservedIpsData = {
 
 export type ListFabricVlanSubnetReservedIpsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9898,7 +9399,7 @@ export type CreateFabricVlanSubnetReservedIpErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9922,7 +9423,7 @@ export type DeleteFabricVlanSubnetReservedIpData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -9952,7 +9453,7 @@ export type DeleteFabricVlanSubnetReservedIpErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -9980,7 +9481,7 @@ export type UpdateFabricVlanSubnetReservedIpData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -10010,7 +9511,7 @@ export type UpdateFabricVlanSubnetReservedIpErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10058,7 +9559,7 @@ export type GetFabricVlanSubnetReservedIpErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10094,7 +9595,7 @@ export type ListResourcePoolsData = {
 
 export type ListResourcePoolsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10125,7 +9626,7 @@ export type CreateResourcePoolErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10149,7 +9650,7 @@ export type DeleteResourcePoolData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -10171,7 +9672,7 @@ export type DeleteResourcePoolErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10207,7 +9708,7 @@ export type GetResourcePoolErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10243,7 +9744,7 @@ export type UpdateResourcePoolErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10279,7 +9780,7 @@ export type ListResourcePoolsWithSummaryData = {
 
 export type ListResourcePoolsWithSummaryErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10328,7 +9829,7 @@ export type ListFabricVlanSubnetStaticroutesData = {
 
 export type ListFabricVlanSubnetStaticroutesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10372,7 +9873,7 @@ export type CreateFabricVlanSubnetStaticrouteErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10396,7 +9897,7 @@ export type DeleteFabricVlanSubnetStaticrouteData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -10426,7 +9927,7 @@ export type DeleteFabricVlanSubnetStaticrouteErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10474,7 +9975,7 @@ export type GetFabricVlanSubnetStaticrouteErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10522,7 +10023,7 @@ export type UpdateFabricVlanSubnetStaticrouteErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10558,7 +10059,7 @@ export type ListSpacesData = {
 
 export type ListSpacesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10587,7 +10088,7 @@ export type CreateSpaceErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10610,7 +10111,7 @@ export type DeleteSpaceData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -10632,7 +10133,7 @@ export type DeleteSpaceErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10667,7 +10168,7 @@ export type GetSpaceErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10701,7 +10202,7 @@ export type UpdateSpaceErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10740,7 +10241,7 @@ export type ListUserSshkeysErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10775,7 +10276,7 @@ export type CreateUserSshkeysErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10799,7 +10300,7 @@ export type DeleteUserSshkeyData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -10821,7 +10322,7 @@ export type DeleteUserSshkeyErrors = {
    */
   412: PreconditionFailedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10857,7 +10358,7 @@ export type GetUserSshkeyErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10887,7 +10388,7 @@ export type ImportUserSshkeysErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10927,7 +10428,7 @@ export type GetUserSslkeysErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10958,7 +10459,7 @@ export type CreateUserSslkeyErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -10982,7 +10483,7 @@ export type DeleteUserSslkeyData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -11000,7 +10501,7 @@ export type DeleteUserSslkeyErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11036,7 +10537,7 @@ export type GetUserSslkeyErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11075,7 +10576,7 @@ export type GetUserSslkeysWithSummaryErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11120,7 +10621,7 @@ export type ListFabricVlanSubnetsData = {
 
 export type ListFabricVlanSubnetsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11160,7 +10661,7 @@ export type CreateFabricVlanSubnetErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11184,7 +10685,7 @@ export type DeleteFabricVlanSubnetData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -11210,7 +10711,7 @@ export type DeleteFabricVlanSubnetErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11254,7 +10755,7 @@ export type UpdateFabricVlanSubnetErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11298,7 +10799,7 @@ export type GetFabricVlanSubnetErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11338,7 +10839,7 @@ export type ListSwitchesErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11376,7 +10877,7 @@ export type CreateSwitchErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11419,7 +10920,7 @@ export type DeleteSwitchErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11458,7 +10959,7 @@ export type GetSwitchErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11504,7 +11005,7 @@ export type UpdateSwitchErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11539,7 +11040,7 @@ export type ListTagsData = {
 
 export type ListTagsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11564,7 +11065,7 @@ export type CreateTagData = {
 
 export type CreateTagErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11586,7 +11087,7 @@ export type DeleteTagData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -11604,7 +11105,7 @@ export type DeleteTagErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11638,7 +11139,7 @@ export type GetTagErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11672,7 +11173,7 @@ export type UpdateTagErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11706,7 +11207,7 @@ export type EvaluateTagErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -11719,353 +11220,6 @@ export type EvaluateTagResponses = {
    */
   202: unknown;
 };
-
-export type ListGroupsData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Size
-     */
-    size?: number;
-    /**
-     * Id
-     *
-     * Filter by Group ID
-     */
-    id?: number[];
-    /**
-     * Group Name
-     *
-     * Filter by Group Name
-     */
-    group_name?: string;
-  };
-  url: "/MAAS/a/v3/groups";
-};
-
-export type ListGroupsErrors = {
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type ListGroupsError = ListGroupsErrors[keyof ListGroupsErrors];
-
-export type ListGroupsResponses = {
-  /**
-   * Successful Response
-   */
-  200: UserGroupsListResponse;
-};
-
-export type ListGroupsResponse = ListGroupsResponses[keyof ListGroupsResponses];
-
-export type CreateGroupData = {
-  body: UserGroupRequest;
-  path?: never;
-  query?: never;
-  url: "/MAAS/a/v3/groups";
-};
-
-export type CreateGroupErrors = {
-  /**
-   * Conflict
-   */
-  409: ConflictBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type CreateGroupError = CreateGroupErrors[keyof CreateGroupErrors];
-
-export type CreateGroupResponses = {
-  /**
-   * Successful Response
-   */
-  201: UserGroupResponse;
-};
-
-export type CreateGroupResponse =
-  CreateGroupResponses[keyof CreateGroupResponses];
-
-export type ListGroupsStatisticsData = {
-  body?: never;
-  path?: never;
-  query?: {
-    /**
-     * Page
-     */
-    page?: number;
-    /**
-     * Size
-     */
-    size?: number;
-    /**
-     * Id
-     *
-     * Filter by Group ID
-     */
-    id?: number[];
-    /**
-     * Group Name
-     *
-     * Filter by Group Name
-     */
-    group_name?: string;
-  };
-  url: "/MAAS/a/v3/groups:statistics";
-};
-
-export type ListGroupsStatisticsErrors = {
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type ListGroupsStatisticsError =
-  ListGroupsStatisticsErrors[keyof ListGroupsStatisticsErrors];
-
-export type ListGroupsStatisticsResponses = {
-  /**
-   * Successful Response
-   */
-  200: UserGroupsStatisticsListResponse;
-};
-
-export type ListGroupsStatisticsResponse =
-  ListGroupsStatisticsResponses[keyof ListGroupsStatisticsResponses];
-
-export type DeleteGroupData = {
-  body?: never;
-  headers?: {
-    /**
-     * If-Match
-     */
-    "if-match"?: string;
-  };
-  path: {
-    /**
-     * Group Id
-     */
-    group_id: number;
-  };
-  query?: never;
-  url: "/MAAS/a/v3/groups/{group_id}";
-};
-
-export type DeleteGroupErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type DeleteGroupError = DeleteGroupErrors[keyof DeleteGroupErrors];
-
-export type DeleteGroupResponses = {
-  /**
-   * Successful Response
-   */
-  204: void;
-};
-
-export type DeleteGroupResponse =
-  DeleteGroupResponses[keyof DeleteGroupResponses];
-
-export type GetGroupData = {
-  body?: never;
-  path: {
-    /**
-     * Group Id
-     */
-    group_id: number;
-  };
-  query?: never;
-  url: "/MAAS/a/v3/groups/{group_id}";
-};
-
-export type GetGroupErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type GetGroupError = GetGroupErrors[keyof GetGroupErrors];
-
-export type GetGroupResponses = {
-  /**
-   * Successful Response
-   */
-  200: UserGroupResponse;
-};
-
-export type GetGroupResponse = GetGroupResponses[keyof GetGroupResponses];
-
-export type UpdateGroupData = {
-  body: UserGroupRequest;
-  path: {
-    /**
-     * Group Id
-     */
-    group_id: number;
-  };
-  query?: never;
-  url: "/MAAS/a/v3/groups/{group_id}";
-};
-
-export type UpdateGroupErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type UpdateGroupError = UpdateGroupErrors[keyof UpdateGroupErrors];
-
-export type UpdateGroupResponses = {
-  /**
-   * Successful Response
-   */
-  200: UserGroupResponse;
-};
-
-export type UpdateGroupResponse =
-  UpdateGroupResponses[keyof UpdateGroupResponses];
-
-export type ListGroupMembersData = {
-  body?: never;
-  path: {
-    /**
-     * Group Id
-     */
-    group_id: number;
-  };
-  query?: never;
-  url: "/MAAS/a/v3/groups/{group_id}/members";
-};
-
-export type ListGroupMembersErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type ListGroupMembersError =
-  ListGroupMembersErrors[keyof ListGroupMembersErrors];
-
-export type ListGroupMembersResponses = {
-  /**
-   * Successful Response
-   */
-  200: UserGroupMembersListResponse;
-};
-
-export type ListGroupMembersResponse =
-  ListGroupMembersResponses[keyof ListGroupMembersResponses];
-
-export type AddGroupMemberData = {
-  body: UserGroupMemberRequest;
-  path: {
-    /**
-     * Group Id
-     */
-    group_id: number;
-  };
-  query?: never;
-  url: "/MAAS/a/v3/groups/{group_id}/members";
-};
-
-export type AddGroupMemberErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Conflict
-   */
-  409: ConflictBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type AddGroupMemberError =
-  AddGroupMemberErrors[keyof AddGroupMemberErrors];
-
-export type AddGroupMemberResponses = {
-  /**
-   * Successful Response
-   */
-  200: unknown;
-};
-
-export type RemoveGroupMemberData = {
-  body?: never;
-  path: {
-    /**
-     * Group Id
-     */
-    group_id: number;
-    /**
-     * User Id
-     */
-    user_id: number;
-  };
-  query?: never;
-  url: "/MAAS/a/v3/groups/{group_id}/members/{user_id}";
-};
-
-export type RemoveGroupMemberErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Unprocessable Entity
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type RemoveGroupMemberError =
-  RemoveGroupMemberErrors[keyof RemoveGroupMemberErrors];
-
-export type RemoveGroupMemberResponses = {
-  /**
-   * Successful Response
-   */
-  204: void;
-};
-
-export type RemoveGroupMemberResponse =
-  RemoveGroupMemberResponses[keyof RemoveGroupMemberResponses];
 
 export type RemoveGroupEntitlementData = {
   body?: never;
@@ -12099,7 +11253,7 @@ export type RemoveGroupEntitlementErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12125,7 +11279,16 @@ export type ListGroupEntitlementsData = {
      */
     group_id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
   url: "/MAAS/a/v3/groups/{group_id}/entitlements";
 };
 
@@ -12135,7 +11298,7 @@ export type ListGroupEntitlementsErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12175,7 +11338,7 @@ export type AddGroupEntitlementErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12193,6 +11356,482 @@ export type AddGroupEntitlementResponses = {
 export type AddGroupEntitlementResponse =
   AddGroupEntitlementResponses[keyof AddGroupEntitlementResponses];
 
+export type BulkRemoveGroupMembersData = {
+  body?: never;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query: {
+    /**
+     * Id
+     *
+     * ids of users to remove from the group
+     */
+    id: number[];
+  };
+  url: "/MAAS/a/v3/groups/{group_id}/members";
+};
+
+export type BulkRemoveGroupMembersErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type BulkRemoveGroupMembersError =
+  BulkRemoveGroupMembersErrors[keyof BulkRemoveGroupMembersErrors];
+
+export type BulkRemoveGroupMembersResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type BulkRemoveGroupMembersResponse =
+  BulkRemoveGroupMembersResponses[keyof BulkRemoveGroupMembersResponses];
+
+export type ListGroupMembersData = {
+  body?: never;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/groups/{group_id}/members";
+};
+
+export type ListGroupMembersErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListGroupMembersError =
+  ListGroupMembersErrors[keyof ListGroupMembersErrors];
+
+export type ListGroupMembersResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserGroupMembersListResponse;
+};
+
+export type ListGroupMembersResponse =
+  ListGroupMembersResponses[keyof ListGroupMembersResponses];
+
+export type AddGroupMemberData = {
+  body: UserGroupMemberRequest;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}/members";
+};
+
+export type AddGroupMemberErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type AddGroupMemberError =
+  AddGroupMemberErrors[keyof AddGroupMemberErrors];
+
+export type AddGroupMemberResponses = {
+  /**
+   * Successful Response
+   */
+  200: unknown;
+};
+
+export type BulkAddGroupMembersData = {
+  body: BulkGroupMemberRequest;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}/members:batch_create";
+};
+
+export type BulkAddGroupMembersErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type BulkAddGroupMembersError =
+  BulkAddGroupMembersErrors[keyof BulkAddGroupMembersErrors];
+
+export type BulkAddGroupMembersResponses = {
+  /**
+   * Successful Response
+   */
+  200: unknown;
+};
+
+export type BulkRemoveGroupEntitlementsData = {
+  body: BulkEntitlementDeleteRequest;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}/entitlements:batch_delete";
+};
+
+export type BulkRemoveGroupEntitlementsErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type BulkRemoveGroupEntitlementsError =
+  BulkRemoveGroupEntitlementsErrors[keyof BulkRemoveGroupEntitlementsErrors];
+
+export type BulkRemoveGroupEntitlementsResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type BulkRemoveGroupEntitlementsResponse =
+  BulkRemoveGroupEntitlementsResponses[keyof BulkRemoveGroupEntitlementsResponses];
+
+export type ListGroupsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+    /**
+     * Id
+     *
+     * Filter by Group ID
+     */
+    id?: number[] | unknown;
+    /**
+     * Group Name
+     *
+     * Filter by Group Name
+     */
+    group_name?: string | unknown;
+  };
+  url: "/MAAS/a/v3/groups";
+};
+
+export type ListGroupsErrors = {
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListGroupsError = ListGroupsErrors[keyof ListGroupsErrors];
+
+export type ListGroupsResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserGroupsListResponse;
+};
+
+export type ListGroupsResponse = ListGroupsResponses[keyof ListGroupsResponses];
+
+export type CreateGroupData = {
+  body: UserGroupRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/groups";
+};
+
+export type CreateGroupErrors = {
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateGroupError = CreateGroupErrors[keyof CreateGroupErrors];
+
+export type CreateGroupResponses = {
+  /**
+   * Successful Response
+   */
+  201: UserGroupResponse;
+};
+
+export type CreateGroupResponse =
+  CreateGroupResponses[keyof CreateGroupResponses];
+
+export type DeleteGroupData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string | unknown;
+  };
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}";
+};
+
+export type DeleteGroupErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteGroupError = DeleteGroupErrors[keyof DeleteGroupErrors];
+
+export type DeleteGroupResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteGroupResponse =
+  DeleteGroupResponses[keyof DeleteGroupResponses];
+
+export type GetGroupData = {
+  body?: never;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}";
+};
+
+export type GetGroupErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetGroupError = GetGroupErrors[keyof GetGroupErrors];
+
+export type GetGroupResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserGroupResponse;
+};
+
+export type GetGroupResponse = GetGroupResponses[keyof GetGroupResponses];
+
+export type UpdateGroupData = {
+  body: UserGroupRequest;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}";
+};
+
+export type UpdateGroupErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateGroupError = UpdateGroupErrors[keyof UpdateGroupErrors];
+
+export type UpdateGroupResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserGroupResponse;
+};
+
+export type UpdateGroupResponse =
+  UpdateGroupResponses[keyof UpdateGroupResponses];
+
+export type ListGroupsStatisticsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+    /**
+     * Id
+     *
+     * Filter by Group ID
+     */
+    id?: number[] | unknown;
+    /**
+     * Group Name
+     *
+     * Filter by Group Name
+     */
+    group_name?: string | unknown;
+  };
+  url: "/MAAS/a/v3/groups:statistics";
+};
+
+export type ListGroupsStatisticsErrors = {
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListGroupsStatisticsError =
+  ListGroupsStatisticsErrors[keyof ListGroupsStatisticsErrors];
+
+export type ListGroupsStatisticsResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserGroupsStatisticsListResponse;
+};
+
+export type ListGroupsStatisticsResponse =
+  ListGroupsStatisticsResponses[keyof ListGroupsStatisticsResponses];
+
+export type RemoveGroupMemberData = {
+  body?: never;
+  path: {
+    /**
+     * Group Id
+     */
+    group_id: number;
+    /**
+     * User Id
+     */
+    user_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/groups/{group_id}/members/{user_id}";
+};
+
+export type RemoveGroupMemberErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type RemoveGroupMemberError =
+  RemoveGroupMemberErrors[keyof RemoveGroupMemberErrors];
+
+export type RemoveGroupMemberResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type RemoveGroupMemberResponse =
+  RemoveGroupMemberResponses[keyof RemoveGroupMemberResponses];
+
 export type GetMeWithSummaryData = {
   body?: never;
   path?: never;
@@ -12202,7 +11841,7 @@ export type GetMeWithSummaryData = {
 
 export type GetMeWithSummaryErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12233,7 +11872,7 @@ export type GetUserInfoErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12263,7 +11902,7 @@ export type CompleteIntroErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12297,7 +11936,7 @@ export type ChangePasswordUserErrors = {
    */
   401: UnauthorizedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12337,7 +11976,7 @@ export type ListUsersData = {
 
 export type ListUsersErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12366,7 +12005,7 @@ export type CreateUserErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12388,7 +12027,7 @@ export type DeleteUserData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -12402,7 +12041,7 @@ export type DeleteUserData = {
      *
      * The id of the user to transfer the resources to.
      */
-    transfer_resources_to?: number;
+    transfer_resources_to?: number | unknown;
   };
   url: "/MAAS/a/v3/users/{user_id}";
 };
@@ -12421,7 +12060,7 @@ export type DeleteUserErrors = {
    */
   412: PreconditionFailedBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12455,7 +12094,7 @@ export type GetUserErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12489,7 +12128,7 @@ export type UpdateUserErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12527,7 +12166,7 @@ export type ChangePasswordAdminErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12560,14 +12199,14 @@ export type ListUsersWithSummaryData = {
     /**
      * Filter by username or email
      */
-    username_or_email?: string;
+    username_or_email?: string | unknown;
   };
   url: "/MAAS/a/v3/users_with_summary";
 };
 
 export type ListUsersWithSummaryErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12608,7 +12247,7 @@ export type ListFabricVlansData = {
 
 export type ListFabricVlansErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12640,7 +12279,7 @@ export type CreateFabricVlanData = {
 
 export type CreateFabricVlanErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12668,7 +12307,7 @@ export type DeleteFabricVlanData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -12694,7 +12333,7 @@ export type DeleteFabricVlanErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12734,7 +12373,7 @@ export type GetFabricVlanErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12773,7 +12412,7 @@ export type UpdateFabricVlanErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12806,14 +12445,14 @@ export type ListZonesData = {
     /**
      * Filter by zone id
      */
-    id?: number[];
+    id?: number[] | unknown;
   };
   url: "/MAAS/a/v3/zones";
 };
 
 export type ListZonesErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12842,7 +12481,7 @@ export type CreateZoneErrors = {
    */
   409: ConflictBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12864,7 +12503,7 @@ export type DeleteZoneData = {
     /**
      * If-Match
      */
-    "if-match"?: string;
+    "if-match"?: string | unknown;
   };
   path: {
     /**
@@ -12886,7 +12525,7 @@ export type DeleteZoneErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12920,7 +12559,7 @@ export type GetZoneErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12954,7 +12593,7 @@ export type UpdateZoneErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -12988,7 +12627,7 @@ export type ListZonesWithSummaryData = {
 
 export type ListZonesWithSummaryErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -13024,7 +12663,7 @@ export type GetSubnetErrors = {
    */
   404: NotFoundBodyResponse;
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
@@ -13055,38 +12694,38 @@ export type ListSubnetsData = {
     /**
      * Filter by subnet cidr
      */
-    cidr?: string[];
+    cidr?: string[] | unknown;
     /**
      * Filter by vlan id
      */
-    vlan_id?: number[];
+    vlan_id?: number[] | unknown;
     /**
      * Filter by fabric name
      */
-    fabric?: string[];
+    fabric?: string[] | unknown;
     /**
      * Filter by space name
      */
-    space?: string[];
+    space?: string[] | unknown;
     /**
      * Filter by subnet id
      */
-    subnet_id?: number[];
+    subnet_id?: number[] | unknown;
     /**
      * Properties to order by. You can wrap the property with `asc()` or `desc()` to modify the ordering
      */
-    order_by?: string[];
+    order_by?: string[] | unknown;
     /**
-     * Q
+     * Free text search query
      */
-    q?: string;
+    q?: string | unknown;
   };
   url: "/MAAS/a/v3ui/subnets";
 };
 
 export type ListSubnetsErrors = {
   /**
-   * Unprocessable Entity
+   * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
