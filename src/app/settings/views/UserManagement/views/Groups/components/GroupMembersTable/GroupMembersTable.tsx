@@ -1,18 +1,30 @@
-import type { ReactElement } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
+import type { RowSelectionState } from "@tanstack/react-table";
 
 import { useGroupMembers } from "@/app/api/query/groups";
-import type { UserGroupResponse } from "@/app/apiclient";
+import type {
+  UserGroupMemberResponse,
+  UserGroupResponse,
+} from "@/app/apiclient";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import useGroupMembersTableColumns from "@/app/settings/views/UserManagement/views/Groups/components/GroupMembersTable/useGroupMembersTableColumns/useGroupMembersTableColumns";
 import { group } from "@/testing/factories/groups";
 
 type GroupMembersTableProps = {
   id: UserGroupResponse["id"];
+  memberSelection: UserGroupMemberResponse[];
+  setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
 };
 
-const GroupMembersTable = ({ id }: GroupMembersTableProps): ReactElement => {
+const GroupMembersTable = ({
+  id,
+  memberSelection,
+  setMemberSelection,
+}: GroupMembersTableProps): ReactElement => {
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const { page, size, handlePageSizeChange, setPage } = usePagination();
 
   const columns = useGroupMembersTableColumns({ group_id: id });
@@ -25,6 +37,32 @@ const GroupMembersTable = ({ id }: GroupMembersTableProps): ReactElement => {
     ...member,
     id: member.user_id.toString(),
   }));
+
+  const handleRowSelectionChange: Dispatch<
+    SetStateAction<RowSelectionState>
+  > = (updater) => {
+    setRowSelection((prev) => {
+      const next = typeof updater === "function" ? updater(prev) : updater;
+      const selected = (members ?? []).filter((e) => next[e.id]);
+      setMemberSelection(
+        selected.map(({ user_id, username, email }) => ({
+          user_id,
+          username,
+          email,
+        }))
+      );
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (
+      memberSelection.length === 0 &&
+      Object.keys(rowSelection).some((key) => rowSelection[key])
+    ) {
+      setRowSelection({});
+    }
+  }, [memberSelection, rowSelection]);
 
   return (
     <GenericTable
@@ -41,8 +79,9 @@ const GroupMembersTable = ({ id }: GroupMembersTableProps): ReactElement => {
         isPending: isPending,
         itemsPerPage: size,
         setCurrentPage: setPage,
-        totalItems: members?.total ?? 0,
+        totalItems: data?.total ?? 0,
       }}
+      selection={{ rowSelection, setRowSelection: handleRowSelectionChange }}
     />
   );
 };

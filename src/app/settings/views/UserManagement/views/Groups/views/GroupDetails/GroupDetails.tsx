@@ -1,9 +1,14 @@
 import type { ReactElement } from "react";
+import { useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { Navigate, Route, Routes } from "react-router";
 
 import { useGetGroup } from "@/app/api/query/groups";
+import type {
+  EntitlementRequest,
+  UserGroupMemberResponse,
+} from "@/app/apiclient";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
@@ -21,6 +26,13 @@ const GroupDetails = (): ReactElement => {
 
   const isValidID = isId(id);
 
+  const [entitlementSelection, setEntitlementSelection] = useState<
+    EntitlementRequest[]
+  >([]);
+  const [memberSelection, setMemberSelection] = useState<
+    UserGroupMemberResponse[]
+  >([]);
+
   useWindowTitle(`${group?.name || "Group"} details`);
 
   if ((!group || !isValidID) && !isPending) {
@@ -37,7 +49,16 @@ const GroupDetails = (): ReactElement => {
 
   return (
     <PageContent
-      header={<GroupDetailsHeader group={group} loading={isPending} />}
+      header={
+        <GroupDetailsHeader
+          entitlementSelection={entitlementSelection}
+          group={group}
+          loading={isPending}
+          memberSelection={memberSelection}
+          setEntitlementSelection={setEntitlementSelection}
+          setMemberSelection={setMemberSelection}
+        />
+      }
     >
       {isPending ? (
         <Spinner text="Loading..." />
@@ -53,14 +74,26 @@ const GroupDetails = (): ReactElement => {
             index
           />
           <Route
-            element={<GroupEntitlementsTable id={id!} />}
+            element={
+              <GroupEntitlementsTable
+                entitlementSelection={entitlementSelection}
+                id={id!}
+                setEntitlementSelection={setEntitlementSelection}
+              />
+            }
             path={getRelativeRoute(
               urls.userManagement.group.entitlements(null),
               base
             )}
           />
           <Route
-            element={<GroupMembersTable id={id!} />}
+            element={
+              <GroupMembersTable
+                id={id!}
+                memberSelection={memberSelection}
+                setMemberSelection={setMemberSelection}
+              />
+            }
             path={getRelativeRoute(
               urls.userManagement.group.members(null),
               base
