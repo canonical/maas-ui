@@ -122,7 +122,7 @@ describe("GroupMembersTable", () => {
           component: RemoveGroupMember,
           title: "Remove member",
           props: expect.objectContaining({
-            group_id: 1,
+            groupId: 1,
             members: [selectedMember],
           }),
         })
