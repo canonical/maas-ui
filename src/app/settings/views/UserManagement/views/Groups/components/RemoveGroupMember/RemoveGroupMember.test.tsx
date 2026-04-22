@@ -17,7 +17,7 @@ describe("RemoveGroupMember", () => {
   it("closes the side panel when the cancel button is clicked", async () => {
     renderWithProviders(
       <RemoveGroupMember
-        group_id={1}
+        groupId={1}
         members={mockGroupMembers.items}
         setMemberSelection={vi.fn}
       />
@@ -30,7 +30,7 @@ describe("RemoveGroupMember", () => {
   it("calls remove member on confirm click", async () => {
     renderWithProviders(
       <RemoveGroupMember
-        group_id={1}
+        groupId={1}
         members={mockGroupMembers.items}
         setMemberSelection={vi.fn}
       />
@@ -56,7 +56,7 @@ describe("RemoveGroupMember", () => {
 
     renderWithProviders(
       <RemoveGroupMember
-        group_id={1}
+        groupId={1}
         members={mockGroupMembers.items}
         setMemberSelection={vi.fn}
       />
@@ -74,7 +74,7 @@ describe("RemoveGroupMember", () => {
   it("lists each member with their email in the confirmation message", () => {
     renderWithProviders(
       <RemoveGroupMember
-        group_id={1}
+        groupId={1}
         members={mockGroupMembers.items}
         setMemberSelection={vi.fn}
       />
@@ -88,7 +88,7 @@ describe("RemoveGroupMember", () => {
   it("uses singular label when removing a single member", () => {
     renderWithProviders(
       <RemoveGroupMember
-        group_id={1}
+        groupId={1}
         members={[mockGroupMembers.items[0]]}
         setMemberSelection={vi.fn}
       />
@@ -102,7 +102,7 @@ describe("RemoveGroupMember", () => {
   it("closes the side panel on successful removal", async () => {
     renderWithProviders(
       <RemoveGroupMember
-        group_id={1}
+        groupId={1}
         members={mockGroupMembers.items}
         setMemberSelection={vi.fn}
       />

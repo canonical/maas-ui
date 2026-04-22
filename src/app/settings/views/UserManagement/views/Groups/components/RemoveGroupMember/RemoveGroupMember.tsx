@@ -11,13 +11,13 @@ import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
 type RemoveGroupMemberProps = {
-  group_id: UserGroupResponse["id"];
+  groupId: UserGroupResponse["id"];
   members: UserGroupMemberResponse[];
   setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
 };
 
 const RemoveGroupMember = ({
-  group_id,
+  groupId,
   members,
   setMemberSelection,
 }: RemoveGroupMemberProps) => {
@@ -49,7 +49,7 @@ const RemoveGroupMember = ({
       onSubmit={() => {
         removeMembers.mutate({
           path: {
-            group_id,
+            group_id: groupId,
           },
           query: {
             id: members.map((member) => member.user_id),

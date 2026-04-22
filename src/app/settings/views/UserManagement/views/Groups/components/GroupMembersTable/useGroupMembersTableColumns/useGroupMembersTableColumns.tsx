@@ -16,10 +16,10 @@ export type MemberColumnDef = ColumnDef<
 >;
 
 const useGroupMembersTableColumns = ({
-  group_id,
+  groupId,
   setMemberSelection,
 }: {
-  group_id: UserGroupResponse["id"];
+  groupId: UserGroupResponse["id"];
   setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
 }): MemberColumnDef[] => {
   const { openSidePanel } = useSidePanel();
@@ -53,7 +53,7 @@ const useGroupMembersTableColumns = ({
                   component: RemoveGroupMember,
                   title: "Remove member",
                   props: {
-                    group_id,
+                    groupId,
                     members: [{ user_id, username, email }],
                     setMemberSelection,
                   },

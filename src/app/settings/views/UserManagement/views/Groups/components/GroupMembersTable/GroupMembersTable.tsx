@@ -27,7 +27,7 @@ const GroupMembersTable = ({
   const { page, size, handlePageSizeChange, setPage } = usePagination();
 
   const columns = useGroupMembersTableColumns({
-    group_id: id,
+    groupId: id,
     setMemberSelection,
   });
 

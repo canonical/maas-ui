@@ -21,7 +21,7 @@ const { mockClose } = await mockSidePanel();
 
 describe("AddMembers", () => {
   it("closes the side panel when the cancel button is clicked", async () => {
-    renderWithProviders(<AddMembers group_id={1} />);
+    renderWithProviders(<AddMembers groupId={1} />);
 
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
 
@@ -29,7 +29,7 @@ describe("AddMembers", () => {
   });
 
   it("renders the users table with username and email columns", async () => {
-    renderWithProviders(<AddMembers group_id={1} />);
+    renderWithProviders(<AddMembers groupId={1} />);
 
     await waitForLoading();
 
@@ -42,7 +42,7 @@ describe("AddMembers", () => {
   });
 
   it("pre-selects existing group members as disabled rows", async () => {
-    renderWithProviders(<AddMembers group_id={1} />);
+    renderWithProviders(<AddMembers groupId={1} />);
 
     await waitForLoading();
 
@@ -54,7 +54,7 @@ describe("AddMembers", () => {
   });
 
   it("calls add group members on save click", async () => {
-    renderWithProviders(<AddMembers group_id={1} />);
+    renderWithProviders(<AddMembers groupId={1} />);
 
     await waitFor(() => {
       expect(screen.getByText(mockUsers.items[2].username)).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe("AddMembers", () => {
       })
     );
 
-    renderWithProviders(<AddMembers group_id={1} />);
+    renderWithProviders(<AddMembers groupId={1} />);
 
     await waitFor(() => {
       expect(screen.getByText(mockUsers.items[2].username)).toBeInTheDocument();
@@ -113,7 +113,7 @@ describe("AddMembers", () => {
   });
 
   it("filters users by search text", async () => {
-    renderWithProviders(<AddMembers group_id={1} />);
+    renderWithProviders(<AddMembers groupId={1} />);
 
     await waitForLoading();
 
@@ -126,7 +126,7 @@ describe("AddMembers", () => {
   });
 
   it("disables the submit button when no new members are selected", async () => {
-    renderWithProviders(<AddMembers group_id={1} />);
+    renderWithProviders(<AddMembers groupId={1} />);
 
     await waitForLoading();
 
@@ -137,7 +137,7 @@ describe("AddMembers", () => {
   });
 
   it("closes the side panel on successful add", async () => {
-    renderWithProviders(<AddMembers group_id={1} />);
+    renderWithProviders(<AddMembers groupId={1} />);
 
     await waitFor(() => {
       expect(screen.getByText(mockUsers.items[2].username)).toBeInTheDocument();

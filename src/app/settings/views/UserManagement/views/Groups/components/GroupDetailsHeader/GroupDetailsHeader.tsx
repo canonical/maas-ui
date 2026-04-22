@@ -92,7 +92,7 @@ const GroupDetailsHeader = ({
                   openSidePanel({
                     component: RemoveGroupMember,
                     props: {
-                      group_id: group!.id,
+                      groupId: group!.id,
                       members: memberSelection,
                       setMemberSelection: setMemberSelection,
                     },
@@ -109,7 +109,7 @@ const GroupDetailsHeader = ({
                     component: AddMembers,
                     title: "Add members",
                     props: {
-                      group_id: group!.id,
+                      groupId: group!.id,
                     },
                     size: "large",
                   });

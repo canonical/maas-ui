@@ -25,7 +25,7 @@ type AddMembersValues = {
 };
 
 type AddMembersProps = {
-  group_id: UserGroupResponse["id"];
+  groupId: UserGroupResponse["id"];
 };
 
 const AddMembersSchema = Yup.object().shape({
@@ -39,7 +39,7 @@ type AddMembersColumnDef = ColumnDef<
   Partial<UserWithSummaryResponse>
 >;
 
-const AddMembers = ({ group_id }: AddMembersProps) => {
+const AddMembers = ({ groupId }: AddMembersProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [selectedUserCount, setSelectedUserCount] = useState(0);
   const { closeSidePanel } = useSidePanel();
@@ -53,7 +53,7 @@ const AddMembers = ({ group_id }: AddMembersProps) => {
   });
 
   const { data: members, isPending: membersPending } = useGroupMembers({
-    path: { group_id },
+    path: { group_id: groupId },
   });
 
   const memberIds = useMemo(
@@ -101,7 +101,7 @@ const AddMembers = ({ group_id }: AddMembersProps) => {
           body: {
             user_ids: values.user_ids,
           },
-          path: { group_id },
+          path: { group_id: groupId },
         });
       }}
       onSuccess={closeSidePanel}
