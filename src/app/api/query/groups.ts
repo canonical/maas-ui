@@ -25,8 +25,32 @@ import type {
   UpdateGroupResponses,
   CreateGroupResponses,
   UserGroupStatisticsResponse,
+  ListGroupEntitlementsData,
+  ListGroupEntitlementsErrors,
+  ListGroupEntitlementsResponses,
+  ListGroupMembersData,
+  ListGroupMembersErrors,
+  ListGroupMembersResponses,
+  AddGroupEntitlementData,
+  AddGroupEntitlementErrors,
+  AddGroupEntitlementResponses,
+  BulkRemoveGroupEntitlementsData,
+  BulkRemoveGroupEntitlementsResponses,
+  BulkRemoveGroupEntitlementsErrors,
+  BulkRemoveGroupMembersData,
+  BulkRemoveGroupMembersResponses,
+  BulkRemoveGroupMembersErrors,
+  BulkAddGroupMembersData,
+  BulkAddGroupMembersResponses,
+  BulkAddGroupMembersErrors,
 } from "@/app/apiclient";
 import {
+  bulkAddGroupMembers,
+  bulkRemoveGroupMembers,
+  bulkRemoveGroupEntitlements,
+  addGroupEntitlement,
+  listGroupMembers,
+  listGroupEntitlements,
   deleteGroup,
   listGroups,
   getGroup,
@@ -36,6 +60,8 @@ import {
 } from "@/app/apiclient";
 import {
   getGroupQueryKey,
+  listGroupEntitlementsQueryKey,
+  listGroupMembersQueryKey,
   listGroupsQueryKey,
   listGroupsStatisticsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -48,7 +74,7 @@ type UseGroupsResult = {
           statistics: UserGroupStatisticsResponse | undefined;
           id: number;
           name: string;
-          description?: string;
+          description?: string | unknown;
         }[];
         total: number;
       }
@@ -92,15 +118,17 @@ export const useGroups = (
 };
 
 export const useGroupStatistics = (
-  options: Options<ListGroupsStatisticsData>
+  options: Options<ListGroupsStatisticsData>,
+  enabled = true
 ) => {
-  return useWebsocketAwareQuery(
-    queryOptionsWithHeaders<
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
       ListGroupsStatisticsResponses,
       ListGroupsStatisticsErrors,
       ListGroupsStatisticsData
-    >(options, listGroupsStatistics, listGroupsStatisticsQueryKey(options))
-  );
+    >(options, listGroupsStatistics, listGroupsStatisticsQueryKey(options)),
+    enabled,
+  });
 };
 
 export const useGetGroup = (options: Options<GetGroupData>) => {
@@ -156,6 +184,108 @@ export const useDeleteGroup = (mutationOptions?: Options<DeleteGroupData>) => {
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listGroupsQueryKey(),
+      });
+    },
+  });
+};
+
+export const useGroupEntitlements = (
+  options: Options<ListGroupEntitlementsData>
+) => {
+  return useWebsocketAwareQuery(
+    queryOptionsWithHeaders<
+      ListGroupEntitlementsResponses,
+      ListGroupEntitlementsErrors,
+      ListGroupEntitlementsData
+    >(options, listGroupEntitlements, listGroupEntitlementsQueryKey(options))
+  );
+};
+
+export const useAddGroupEntitlement = (
+  mutationOptions?: Options<AddGroupEntitlementData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      AddGroupEntitlementResponses,
+      AddGroupEntitlementErrors,
+      AddGroupEntitlementData
+    >(mutationOptions, addGroupEntitlement),
+    onSuccess: (_data, variables) => {
+      return queryClient.invalidateQueries({
+        queryKey: listGroupEntitlementsQueryKey({
+          path: { group_id: variables.path.group_id },
+        }),
+      });
+    },
+  });
+};
+
+export const useRemoveGroupEntitlements = (
+  mutationOptions?: Options<BulkRemoveGroupEntitlementsData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkRemoveGroupEntitlementsResponses,
+      BulkRemoveGroupEntitlementsErrors,
+      BulkRemoveGroupEntitlementsData
+    >(mutationOptions, bulkRemoveGroupEntitlements),
+    onSuccess: (_data, variables) => {
+      return queryClient.invalidateQueries({
+        queryKey: listGroupEntitlementsQueryKey({
+          path: { group_id: variables.path.group_id },
+        }),
+      });
+    },
+  });
+};
+
+export const useGroupMembers = (options: Options<ListGroupMembersData>) => {
+  return useWebsocketAwareQuery(
+    queryOptionsWithHeaders<
+      ListGroupMembersResponses,
+      ListGroupMembersErrors,
+      ListGroupMembersData
+    >(options, listGroupMembers, listGroupMembersQueryKey(options))
+  );
+};
+
+export const useAddGroupMembers = (
+  mutationOptions?: Options<BulkAddGroupMembersData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkAddGroupMembersResponses,
+      BulkAddGroupMembersErrors,
+      BulkAddGroupMembersData
+    >(mutationOptions, bulkAddGroupMembers),
+    onSuccess: (_data, variables) => {
+      return queryClient.invalidateQueries({
+        queryKey: listGroupMembersQueryKey({
+          path: { group_id: variables.path.group_id },
+        }),
+      });
+    },
+  });
+};
+
+export const useRemoveGroupMembers = (
+  mutationOptions?: Options<BulkRemoveGroupMembersData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      BulkRemoveGroupMembersResponses,
+      BulkRemoveGroupMembersErrors,
+      BulkRemoveGroupMembersData
+    >(mutationOptions, bulkRemoveGroupMembers),
+    onSuccess: (_data, variables) => {
+      return queryClient.invalidateQueries({
+        queryKey: listGroupMembersQueryKey({
+          path: { group_id: variables.path.group_id },
+        }),
       });
     },
   });

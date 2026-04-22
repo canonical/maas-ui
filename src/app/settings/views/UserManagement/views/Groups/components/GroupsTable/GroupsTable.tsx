@@ -22,6 +22,7 @@ const GroupsTable = () => {
   });
   const groupsData = (groups.data?.items ?? []).map((item) => ({
     ...item,
+    description: item.description as string | undefined,
     user_count: item.statistics?.user_count,
   }));
   return (
