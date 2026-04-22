@@ -318,7 +318,7 @@ describe("GroupDetailsHeader", () => {
         expect.objectContaining({
           component: AddMembers,
           title: "Add members",
-          props: { group_id: mockGroup.id },
+          props: { groupId: mockGroup.id },
           size: "large",
         })
       );
@@ -470,7 +470,7 @@ describe("GroupDetailsHeader", () => {
           component: RemoveGroupMember,
           title: "Remove members",
           props: expect.objectContaining({
-            group_id: mockGroup.id,
+            groupId: mockGroup.id,
             members: [member],
           }),
         })
