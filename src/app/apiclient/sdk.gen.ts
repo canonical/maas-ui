@@ -15,6 +15,9 @@ import type {
   AddGroupMemberData,
   AddGroupMemberErrors,
   AddGroupMemberResponses,
+  BulkAddGroupMembersData,
+  BulkAddGroupMembersErrors,
+  BulkAddGroupMembersResponses,
   BulkCreateSelectionsData,
   BulkCreateSelectionsErrors,
   BulkCreateSelectionsResponses,
@@ -24,6 +27,12 @@ import type {
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsErrors,
   BulkDeleteSelectionsResponses,
+  BulkRemoveGroupEntitlementsData,
+  BulkRemoveGroupEntitlementsErrors,
+  BulkRemoveGroupEntitlementsResponses,
+  BulkRemoveGroupMembersData,
+  BulkRemoveGroupMembersErrors,
+  BulkRemoveGroupMembersResponses,
   ChangePasswordAdminData,
   ChangePasswordAdminErrors,
   ChangePasswordAdminResponses,
@@ -99,6 +108,9 @@ import type {
   CreateSpaceData,
   CreateSpaceErrors,
   CreateSpaceResponses,
+  CreateSwitchData,
+  CreateSwitchErrors,
+  CreateSwitchResponses,
   CreateTagData,
   CreateTagErrors,
   CreateTagResponses,
@@ -171,6 +183,9 @@ import type {
   DeleteSpaceData,
   DeleteSpaceErrors,
   DeleteSpaceResponses,
+  DeleteSwitchData,
+  DeleteSwitchErrors,
+  DeleteSwitchResponses,
   DeleteTagData,
   DeleteTagErrors,
   DeleteTagResponses,
@@ -279,6 +294,9 @@ import type {
   GetMeWithSummaryData,
   GetMeWithSummaryErrors,
   GetMeWithSummaryResponses,
+  GetNosInstallerData,
+  GetNosInstallerErrors,
+  GetNosInstallerResponses,
   GetNotificationData,
   GetNotificationErrors,
   GetNotificationResponses,
@@ -315,6 +333,9 @@ import type {
   GetSubnetData,
   GetSubnetErrors,
   GetSubnetResponses,
+  GetSwitchData,
+  GetSwitchErrors,
+  GetSwitchResponses,
   GetTagData,
   GetTagErrors,
   GetTagResponses,
@@ -408,6 +429,9 @@ import type {
   ListGroupsData,
   ListGroupsErrors,
   ListGroupsResponses,
+  ListGroupsStatisticsData,
+  ListGroupsStatisticsErrors,
+  ListGroupsStatisticsResponses,
   ListInterfacesData,
   ListInterfacesErrors,
   ListInterfacesResponses,
@@ -459,6 +483,9 @@ import type {
   ListSubnetsData,
   ListSubnetsErrors,
   ListSubnetsResponses,
+  ListSwitchesData,
+  ListSwitchesErrors,
+  ListSwitchesResponses,
   ListTagsData,
   ListTagsErrors,
   ListTagsResponses,
@@ -552,6 +579,9 @@ import type {
   UpdateSpaceData,
   UpdateSpaceErrors,
   UpdateSpaceResponses,
+  UpdateSwitchData,
+  UpdateSwitchErrors,
+  UpdateSwitchResponses,
   UpdateTagData,
   UpdateTagErrors,
   UpdateTagResponses,
@@ -2019,12 +2049,6 @@ export const getDomainRrsets = <ThrowOnError extends boolean = false>(
     GetDomainRrsetsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
     url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
     ...options,
   });
@@ -2537,6 +2561,29 @@ export const listMachines = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/machines",
+    ...options,
+  });
+};
+
+/**
+ * Get Nos Installer
+ *
+ * Serve NOS installer binary.
+ *
+ * This endpoint:
+ * - Receives ONIE headers from the switch
+ * - Checks if an installer is assigned to the switch
+ * - If assigned, streams the installer binary to the switch
+ */
+export const getNosInstaller = <ThrowOnError extends boolean = false>(
+  options: Options<GetNosInstallerData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetNosInstallerResponses,
+    GetNosInstallerErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/nos-installer",
     ...options,
   });
 };
@@ -3822,6 +3869,134 @@ export const getFabricVlanSubnet = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Switches
+ *
+ * List all switches with pagination.
+ */
+export const listSwitches = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSwitchesData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListSwitchesResponses,
+    ListSwitchesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches",
+    ...options,
+  });
+};
+
+/**
+ * Create Switch
+ *
+ * Create a new switch with its management interface.
+ */
+export const createSwitch = <ThrowOnError extends boolean = false>(
+  options: Options<CreateSwitchData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    CreateSwitchResponses,
+    CreateSwitchErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete Switch
+ *
+ * Delete a switch and all related entries.
+ */
+export const deleteSwitch = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteSwitchData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    DeleteSwitchResponses,
+    DeleteSwitchErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches/{switch_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Switch
+ *
+ * Get a specific switch by ID.
+ */
+export const getSwitch = <ThrowOnError extends boolean = false>(
+  options: Options<GetSwitchData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    GetSwitchResponses,
+    GetSwitchErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches/{switch_id}",
+    ...options,
+  });
+};
+
+/**
+ * Update Switch
+ *
+ * Update a switch's target image.
+ */
+export const updateSwitch = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateSwitchData, ThrowOnError>
+) => {
+  return (options.client ?? client).patch<
+    UpdateSwitchResponses,
+    UpdateSwitchErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/switches/{switch_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
  * List Tags
  */
 export const listTags = <ThrowOnError extends boolean = false>(
@@ -4032,6 +4207,28 @@ export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Bulk Remove Group Members
+ */
+export const bulkRemoveGroupMembers = <ThrowOnError extends boolean = false>(
+  options: Options<BulkRemoveGroupMembersData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    BulkRemoveGroupMembersResponses,
+    BulkRemoveGroupMembersErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/members",
+    ...options,
+  });
+};
+
+/**
  * List Group Members
  */
 export const listGroupMembers = <ThrowOnError extends boolean = false>(
@@ -4071,6 +4268,60 @@ export const addGroupMember = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/groups/{group_id}/members",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Bulk Add Group Members
+ */
+export const bulkAddGroupMembers = <ThrowOnError extends boolean = false>(
+  options: Options<BulkAddGroupMembersData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    BulkAddGroupMembersResponses,
+    BulkAddGroupMembersErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/members:batch_create",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Bulk Remove Group Entitlements
+ */
+export const bulkRemoveGroupEntitlements = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<BulkRemoveGroupEntitlementsData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    BulkRemoveGroupEntitlementsResponses,
+    BulkRemoveGroupEntitlementsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups/{group_id}/entitlements:batch_delete",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -4194,6 +4445,28 @@ export const updateGroup = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * List Groups Statistics
+ */
+export const listGroupsStatistics = <ThrowOnError extends boolean = false>(
+  options?: Options<ListGroupsStatisticsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListGroupsStatisticsResponses,
+    ListGroupsStatisticsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/groups:statistics",
+    ...options,
   });
 };
 

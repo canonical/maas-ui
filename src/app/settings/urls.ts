@@ -1,3 +1,4 @@
+import type { UserGroupResponse } from "@/app/apiclient";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import type { PackageRepository } from "@/app/store/packagerepository/types";
@@ -73,6 +74,18 @@ const urls = {
   userManagement: {
     index: "/settings/user-management",
     users: "/settings/user-management/users",
+    groups: "/settings/user-management/groups",
+    group: {
+      index: argPath<{ id: UserGroupResponse["id"] }>(
+        "/settings/user-management/group/:id"
+      ),
+      entitlements: argPath<{ id: UserGroupResponse["id"] }>(
+        "/settings/user-management/group/:id/entitlements"
+      ),
+      members: argPath<{ id: UserGroupResponse["id"] }>(
+        "/settings/user-management/group/:id/members"
+      ),
+    },
     singleSignOn: "/settings/user-management/single-sign-on",
   },
 } as const;
