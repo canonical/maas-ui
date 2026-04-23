@@ -74,11 +74,11 @@ describe("EditBondForm", () => {
         interfaces,
       }),
     ];
-    const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
+    nic.parents = [interfaces[0].id, interfaces[1].id];
     renderWithProviders(
       <EditBondForm
         nic={nic}
-        selected={selected}
+        selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
@@ -107,6 +107,7 @@ describe("EditBondForm", () => {
       }),
     ];
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
+    nic.parents = [interfaces[0].id, interfaces[1].id];
     renderWithProviders(
       <EditBondForm
         nic={nic}
@@ -179,7 +180,9 @@ describe("EditBondForm", () => {
       />,
       { state }
     );
-    await userEvent.click(screen.getByTestId("edit-members"));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Edit bond members" })
+    );
 
     const rows = screen.getAllByRole("row");
     expect(within(rows[1]).getByTestId("name")).toHaveTextContent("valid0");
@@ -195,14 +198,17 @@ describe("EditBondForm", () => {
   it("disables the submit button if two interfaces aren't selected", async () => {
     const interfaces = [
       factory.machineInterface({
+        name: "eth0",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
       factory.machineInterface({
+        name: "eth1",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
       factory.machineInterface({
+        name: "eth2",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
@@ -213,26 +219,32 @@ describe("EditBondForm", () => {
         interfaces,
       }),
     ];
-    const { rerender } = renderWithProviders(
-      <EditBondForm
-        nic={nic}
-        selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setSelected={vi.fn()}
-        systemId="abc123"
-      />,
-      { state }
-    );
-    expect(
-      screen.getByRole("button", { name: "Save interface" })
-    ).not.toBeDisabled();
-    await userEvent.click(screen.getByTestId("edit-members"));
-    rerender(
+    nic.parents = [interfaces[0].id, interfaces[1].id];
+    renderWithProviders(
       <EditBondForm
         nic={nic}
         selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
-      />
+      />,
+      { state }
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Edit bond members" })
+    );
+    // Select eth2 to make membersHaveChanged=true → submit becomes enabled.
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "select eth2" })
+    );
+    expect(
+      screen.getByRole("button", { name: "Save interface" })
+    ).not.toBeDisabled();
+    // Deselect eth0 and eth1, leaving only eth2 → fewer than two selected → disabled.
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "select eth0" })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "select eth1" })
     );
     expect(
       screen.getByRole("button", { name: "Save interface" })
@@ -250,6 +262,7 @@ describe("EditBondForm", () => {
         vlan_id: 1,
       }),
       factory.machineInterface({
+        name: "eth2",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
@@ -261,10 +274,10 @@ describe("EditBondForm", () => {
       }),
     ];
     nic.parents = [interfaces[0].id, interfaces[1].id];
-    const { rerender } = renderWithProviders(
+    renderWithProviders(
       <EditBondForm
         nic={nic}
-        selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
+        selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
@@ -273,19 +286,12 @@ describe("EditBondForm", () => {
     expect(
       screen.getByRole("button", { name: "Save interface" })
     ).toBeDisabled();
-    await userEvent.click(screen.getByTestId("edit-members"));
-    // Select an extra interface.
-    rerender(
-      <EditBondForm
-        nic={nic}
-        selected={[
-          { nicId: interfaces[0].id },
-          { nicId: interfaces[1].id },
-          { nicId: interfaces[2].id },
-        ]}
-        setSelected={vi.fn()}
-        systemId="abc123"
-      />
+    await userEvent.click(
+      screen.getByRole("button", { name: "Edit bond members" })
+    );
+    // Select an extra interface — membersHaveChanged becomes true → submit enabled.
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "select eth2" })
     );
     expect(
       screen.getByRole("button", { name: "Save interface" })
@@ -327,6 +333,7 @@ describe("EditBondForm", () => {
     const bond = factory.machineInterface({
       id: 3,
       name: "bond1",
+      parents: [9, 10],
       type: NetworkInterfaceTypes.BOND,
       vlan_id: 1,
       params: {
