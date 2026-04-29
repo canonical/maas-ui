@@ -15,6 +15,10 @@ jobs:
       MAAS_URL: http://localhost:5240
     steps:
       - uses: actions/checkout@main
+      - name: Install snapd and core snaps
+        run: |
+          sudo snap install snapd
+          sudo snap install core26 --edge
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:

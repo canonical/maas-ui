@@ -23,6 +23,10 @@ jobs:
       - uses: actions/checkout@main
       - name: Get branch name
         uses: nelonoel/branch-name@v1.0.1
+      - name: Install snapd and core snaps
+        run: |
+          sudo snap install snapd
+          sudo snap install core26 --edge
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
