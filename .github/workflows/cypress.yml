@@ -26,7 +26,7 @@ jobs:
       - name: Install snapd and core snaps
         run: |
           sudo snap install snapd
-          sudo snap install core26 --edge
+          sudo snap install core26 --candidate
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
