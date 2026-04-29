@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -81,11 +81,23 @@ const InterfaceSchema = Yup.object().shape({
 const EditBondForm = ({
   link,
   nic,
-  selected,
-  setSelected,
+  selected: _selected,
+  setSelected: setParentSelected,
   systemId,
 }: EditBondProps): ReactElement | null => {
   const [editingMembers, setEditingMembers] = useState(false);
+  // Local state is required because `selected` is frozen in the side panel context when the panel opens and won't reflect parent updates.
+  // Initialise directly from the bond's parents so the table is populated regardless of the network table selection.
+  const [selected, setLocalSelected] = useState<Selected[]>(
+    () => nic?.parents.map((id) => ({ nicId: id })) ?? []
+  );
+  const setSelected: SetSelected = useCallback(
+    (newSelected) => {
+      setLocalSelected(newSelected);
+      setParentSelected(newSelected);
+    },
+    [setParentSelected]
+  );
   const dispatch = useDispatch();
   const { closeSidePanel } = useSidePanel();
   const machine = useSelector((state: RootState) =>
@@ -121,18 +133,6 @@ const EditBondForm = ({
     subnetActions.fetch,
     vlanActions.fetch,
   ]);
-
-  useEffect(() => {
-    // Set the bond parents as selected so that they appear in the table and the
-    // parents can be edited.
-    if (nic) {
-      setSelected(
-        nic.parents.map((id) => ({
-          nicId: id,
-        }))
-      );
-    }
-  }, [setSelected, nic]);
 
   if (
     !nic ||
