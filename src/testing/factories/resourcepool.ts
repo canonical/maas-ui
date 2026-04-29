@@ -1,8 +1,8 @@
 import { define, random } from "cooky-cutter";
 
-import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
+import type { ResourcePoolStatisticsResponse } from "@/app/apiclient";
 
-export const resourcePool = define<ResourcePoolWithSummaryResponse>({
+export const resourcePool = define<ResourcePoolStatisticsResponse>({
   description: "test description",
   is_default: false,
   machine_ready_count: random,
