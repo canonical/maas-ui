@@ -156,7 +156,7 @@ import {
   listRacks,
   listRacksWithSummary,
   listResourcePools,
-  listResourcePoolsWithSummary,
+  listResourcePoolsStatistics,
   listSelections,
   listSelectionStatistic,
   listSelectionStatus,
@@ -654,9 +654,9 @@ import type {
   ListResourcePoolsData,
   ListResourcePoolsError,
   ListResourcePoolsResponse,
-  ListResourcePoolsWithSummaryData,
-  ListResourcePoolsWithSummaryError,
-  ListResourcePoolsWithSummaryResponse,
+  ListResourcePoolsStatisticsData,
+  ListResourcePoolsStatisticsError,
+  ListResourcePoolsStatisticsResponse,
   ListSelectionsData,
   ListSelectionsError,
   ListSelectionsResponse,
@@ -4032,26 +4032,26 @@ export const updateResourcePoolMutation = (
   return mutationOptions;
 };
 
-export const listResourcePoolsWithSummaryQueryKey = (
-  options?: Options<ListResourcePoolsWithSummaryData>
-) => createQueryKey("listResourcePoolsWithSummary", options);
+export const listResourcePoolsStatisticsQueryKey = (
+  options?: Options<ListResourcePoolsStatisticsData>
+) => createQueryKey("listResourcePoolsStatistics", options);
 
 /**
- * List resource pools with a summary. ONLY FOR INTERNAL USAGE.
+ * List resource pools with statistics. ONLY FOR INTERNAL USAGE.
  *
- * List resource pools with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * List resource pools with statistics. This endpoint is only for internal usage and might be changed or removed without notice.
  */
-export const listResourcePoolsWithSummaryOptions = (
-  options?: Options<ListResourcePoolsWithSummaryData>
+export const listResourcePoolsStatisticsOptions = (
+  options?: Options<ListResourcePoolsStatisticsData>
 ) =>
   queryOptions<
-    ListResourcePoolsWithSummaryResponse,
-    ListResourcePoolsWithSummaryError,
-    ListResourcePoolsWithSummaryResponse,
-    ReturnType<typeof listResourcePoolsWithSummaryQueryKey>
+    ListResourcePoolsStatisticsResponse,
+    ListResourcePoolsStatisticsError,
+    ListResourcePoolsStatisticsResponse,
+    ReturnType<typeof listResourcePoolsStatisticsQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listResourcePoolsWithSummary({
+      const { data } = await listResourcePoolsStatistics({
         ...options,
         ...queryKey[0],
         signal,
@@ -4059,7 +4059,7 @@ export const listResourcePoolsWithSummaryOptions = (
       });
       return data;
     },
-    queryKey: listResourcePoolsWithSummaryQueryKey(options),
+    queryKey: listResourcePoolsStatisticsQueryKey(options),
   });
 
 export const listFabricVlanSubnetStaticroutesQueryKey = (
