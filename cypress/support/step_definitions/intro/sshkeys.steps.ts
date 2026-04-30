@@ -36,10 +36,6 @@ When("the new user logs in with their credentials", () => {
   cy.waitForPageToLoad();
 });
 
-Then("the user should be redirected to the user intro page", () => {
-  cy.location("pathname").should("eq", generateMAASURL("/intro/user"));
-});
-
 Then("the SSH keys import prompt should be visible", () => {
   cy.findByTestId("section-header-title")
     .contains(/SSH keys/i)

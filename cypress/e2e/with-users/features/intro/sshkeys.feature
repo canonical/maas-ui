@@ -5,5 +5,5 @@ Feature: SSH keys - new user intro
     When the admin creates a new user account
     And the admin logs out
     And the new user logs in with their credentials
-    Then the user should be redirected to the user intro page
+    Then the pathname should equal "/intro/user"
     And the SSH keys import prompt should be visible
