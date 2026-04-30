@@ -45,5 +45,7 @@ Then("the user should be redirected to the user intro page", () => {
 });
 
 Then("the SSH keys import prompt should be visible", () => {
-  cy.findByTestId("section-header-title").contains(/SSH keys/i).should("exist");
+  cy.findByTestId("section-header-title")
+    .contains(/SSH keys/i)
+    .should("exist");
 });
