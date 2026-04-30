@@ -13,7 +13,6 @@ import AuthenticationFormFields from "./AuthenticationFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { generalActions } from "@/app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "@/app/store/general/selectors";
 import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
@@ -74,12 +73,9 @@ export const AuthenticationForm = ({
     }
   }, [setStep, shouldGoToProjectStep]);
 
-  // The generated certificate is cleared as we only store one in state at a
-  // time. This will prepare the form for the next added KVM host. We also make
-  // sure to stop polling the LXD server for projects.
+  // Stop polling the LXD server when the component unmounts.
   useEffect(() => {
     return () => {
-      dispatch(generalActions.clearGeneratedCertificate());
       dispatch(podActions.pollLxdServerStop());
     };
   }, [dispatch]);

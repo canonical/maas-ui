@@ -6,6 +6,7 @@ import {
 } from "@canonical/react-components";
 import fileDownload from "js-file-download";
 
+import CopyButton from "@/app/base/components/CopyButton";
 import type { CertificateData } from "@/app/store/general/types";
 
 type Props = {
@@ -61,6 +62,9 @@ const CertificateDownload = ({
           <Icon name="begin-downloading" />
         </span>
       </Button>
+      <CopyButton
+        value={`lxc config trust add - <<EOF \n\n${certificate}\n EOF`}
+      />
     </>
   );
 };

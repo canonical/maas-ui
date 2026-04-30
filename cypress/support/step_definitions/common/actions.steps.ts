@@ -26,3 +26,11 @@ When(
       );
   }
 );
+
+When("the user refreshes the page", () => {
+  cy.reload(true);
+});
+
+When("the user presses the {string} key", (key: string) => {
+  cy.get("body").type(`{${key}}`);
+});

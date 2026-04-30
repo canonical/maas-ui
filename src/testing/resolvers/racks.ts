@@ -9,7 +9,8 @@ import type {
   GenerateRackBootstrapTokenError,
   GetRackError,
   ListRacksError,
-  ListRacksResponse,
+  ListRacksWithSummaryError,
+  ListRacksWithSummaryResponse,
   UpdateRackError,
 } from "@/app/apiclient";
 
@@ -48,13 +49,13 @@ const mockGenerateRackBootstrapTokenError: GenerateRackBootstrapTokenError = {
 const rackResolvers = {
   listRacks: {
     resolved: false,
-    handler: (data: ListRacksResponse = mockRacks) =>
-      http.get(`${BASE_URL}MAAS/a/v3/racks`, () => {
+    handler: (data: ListRacksWithSummaryResponse = mockRacks) =>
+      http.get(`${BASE_URL}MAAS/a/v3/racks_with_summary`, () => {
         rackResolvers.listRacks.resolved = true;
         return HttpResponse.json(data);
       }),
-    error: (error: ListRacksError = mockListRacksError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/racks`, () => {
+    error: (error: ListRacksWithSummaryError = mockListRacksError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/racks_with_summary`, () => {
         rackResolvers.listRacks.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
