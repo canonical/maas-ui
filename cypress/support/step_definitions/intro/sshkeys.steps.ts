@@ -1,14 +1,10 @@
-import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
+import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { customAlphabet } from "nanoid";
 import { generateMAASURL } from "../../../e2e/utils";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
 let newUsername = "";
 let newPassword = "";
-
-Given("the user is logged in as an administrator", () => {
-  cy.login();
-});
 
 When("the admin creates a new user account", () => {
   newUsername = `cy-user-${nanoid()}`;
