@@ -100,3 +100,44 @@ Then("fabric list should not include deleted subnet", function () {
 Then("text {string} should be visible", (text: string) => {
   cy.findByText(new RegExp(text, "i")).should("be.visible");
 });
+
+When("the user creates a subnet with a known CIDR", () => {
+  const subnetName = `cy-known-subnet-${generateId()}`;
+  const cidr = `192.168.${Math.floor(Math.random() * 100) + 100}.0/24`;
+  const knownIp = cidr.replace(".0/24", ".25");
+
+  Cypress.env("knownSubnetName", subnetName);
+  Cypress.env("knownSubnetCidr", cidr);
+  Cypress.env("knownDeviceIp", knownIp);
+  Cypress.env("useKnownDeviceIpForDnsRecordTest", true);
+
+  cy.findByRole("button", { name: "Add" }).click();
+  cy.findByRole("button", { name: "Subnet" }).click();
+  cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
+  cy.findByRole("textbox", { name: "Name" }).type(subnetName);
+
+  cy.findByRole("combobox", { name: "Fabric" })
+    .find("option")
+    .then(($options) => {
+      const values = [...$options]
+        .map((option) => option.getAttribute("value"))
+        .filter((value): value is string => !!value);
+
+      expect(values.length, "available fabric options").to.be.greaterThan(0);
+      cy.findByRole("combobox", { name: "Fabric" }).select(values[0]);
+    });
+
+  cy.findByRole("combobox", { name: "VLAN" })
+    .find("option")
+    .then(($options) => {
+      const values = [...$options]
+        .map((option) => option.getAttribute("value"))
+        .filter((value): value is string => !!value);
+
+      expect(values.length, "available VLAN options").to.be.greaterThan(0);
+      cy.findByRole("combobox", { name: "VLAN" }).select(values[0]);
+    });
+
+  cy.findByRole("button", { name: "Save subnet" }).click();
+  cy.findByRole("link", { name: new RegExp(subnetName) }).should("exist");
+});
