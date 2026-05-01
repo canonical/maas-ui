@@ -354,9 +354,6 @@ import type {
   GetUserSslkeysData,
   GetUserSslkeysErrors,
   GetUserSslkeysResponses,
-  GetUserSslkeysWithSummaryData,
-  GetUserSslkeysWithSummaryErrors,
-  GetUserSslkeysWithSummaryResponses,
   GetZoneData,
   GetZoneErrors,
   GetZoneResponses,
@@ -495,6 +492,9 @@ import type {
   ListUserSshkeysData,
   ListUserSshkeysErrors,
   ListUserSshkeysResponses,
+  ListUserSslkeysStatisticsData,
+  ListUserSslkeysStatisticsErrors,
+  ListUserSslkeysStatisticsResponses,
   ListUsersWithSummaryData,
   ListUsersWithSummaryErrors,
   ListUsersWithSummaryResponses,
@@ -3733,19 +3733,17 @@ export const getUserSslkey = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List sslkeys with a summary. ONLY FOR INTERNAL USAGE.
- *
- * List sslkeys with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * List User Sslkeys Statistics
  */
-export const getUserSslkeysWithSummary = <ThrowOnError extends boolean = false>(
-  options?: Options<GetUserSslkeysWithSummaryData, ThrowOnError>
+export const listUserSslkeysStatistics = <ThrowOnError extends boolean = false>(
+  options?: Options<ListUserSslkeysStatisticsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetUserSslkeysWithSummaryResponses,
-    GetUserSslkeysWithSummaryErrors,
+    ListUserSslkeysStatisticsResponses,
+    ListUserSslkeysStatisticsErrors,
     ThrowOnError
   >({
-    url: "/MAAS/a/v3/users/me/sslkeys_with_summary",
+    url: "/MAAS/a/v3/users/me/sslkeys:statistics",
     ...options,
   });
 };

@@ -3409,9 +3409,9 @@ export type SslKeyResponse = {
 };
 
 /**
- * SSLKeyWithSummaryResponse
+ * SSLKeyStatisticsResponse
  */
-export type SslKeyWithSummaryResponse = {
+export type SslKeyStatisticsResponse = {
   _links?: BaseHal;
   /**
    * Embedded
@@ -3436,13 +3436,13 @@ export type SslKeyWithSummaryResponse = {
 };
 
 /**
- * SSLKeysWithSummaryListResponse
+ * SSLKeysStatisticsListResponse
  */
-export type SslKeysWithSummaryListResponse = {
+export type SslKeysStatisticsListResponse = {
   /**
    * Items
    */
-  items: SslKeyWithSummaryResponse[];
+  items: SslKeyStatisticsResponse[];
   /**
    * Total
    */
@@ -10555,7 +10555,7 @@ export type GetUserSslkeyResponses = {
 export type GetUserSslkeyResponse =
   GetUserSslkeyResponses[keyof GetUserSslkeyResponses];
 
-export type GetUserSslkeysWithSummaryData = {
+export type ListUserSslkeysStatisticsData = {
   body?: never;
   path?: never;
   query?: {
@@ -10568,10 +10568,10 @@ export type GetUserSslkeysWithSummaryData = {
      */
     size?: number;
   };
-  url: "/MAAS/a/v3/users/me/sslkeys_with_summary";
+  url: "/MAAS/a/v3/users/me/sslkeys:statistics";
 };
 
-export type GetUserSslkeysWithSummaryErrors = {
+export type ListUserSslkeysStatisticsErrors = {
   /**
    * Unauthorized
    */
@@ -10582,18 +10582,18 @@ export type GetUserSslkeysWithSummaryErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetUserSslkeysWithSummaryError =
-  GetUserSslkeysWithSummaryErrors[keyof GetUserSslkeysWithSummaryErrors];
+export type ListUserSslkeysStatisticsError =
+  ListUserSslkeysStatisticsErrors[keyof ListUserSslkeysStatisticsErrors];
 
-export type GetUserSslkeysWithSummaryResponses = {
+export type ListUserSslkeysStatisticsResponses = {
   /**
    * Successful Response
    */
-  200: SslKeysWithSummaryListResponse;
+  200: SslKeysStatisticsListResponse;
 };
 
-export type GetUserSslkeysWithSummaryResponse =
-  GetUserSslkeysWithSummaryResponses[keyof GetUserSslkeysWithSummaryResponses];
+export type ListUserSslkeysStatisticsResponse =
+  ListUserSslkeysStatisticsResponses[keyof ListUserSslkeysStatisticsResponses];
 
 export type ListFabricVlanSubnetsData = {
   body?: never;

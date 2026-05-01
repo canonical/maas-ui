@@ -119,7 +119,6 @@ import {
   getUserSshkey,
   getUserSslkey,
   getUserSslkeys,
-  getUserSslkeysWithSummary,
   getZone,
   handleOauthCallback,
   importUserSshkeys,
@@ -166,6 +165,7 @@ import {
   listTags,
   listUsers,
   listUserSshkeys,
+  listUserSslkeysStatistics,
   listUsersWithSummary,
   listZones,
   listZonesWithSummary,
@@ -543,9 +543,6 @@ import type {
   GetUserSslkeysData,
   GetUserSslkeysError,
   GetUserSslkeysResponse,
-  GetUserSslkeysWithSummaryData,
-  GetUserSslkeysWithSummaryError,
-  GetUserSslkeysWithSummaryResponse,
   GetZoneData,
   GetZoneError,
   GetZoneResponse,
@@ -684,6 +681,9 @@ import type {
   ListUserSshkeysData,
   ListUserSshkeysError,
   ListUserSshkeysResponse,
+  ListUserSslkeysStatisticsData,
+  ListUserSslkeysStatisticsError,
+  ListUserSslkeysStatisticsResponse,
   ListUsersWithSummaryData,
   ListUsersWithSummaryError,
   ListUsersWithSummaryResponse,
@@ -4568,26 +4568,24 @@ export const getUserSslkeyOptions = (options: Options<GetUserSslkeyData>) =>
     queryKey: getUserSslkeyQueryKey(options),
   });
 
-export const getUserSslkeysWithSummaryQueryKey = (
-  options?: Options<GetUserSslkeysWithSummaryData>
-) => createQueryKey("getUserSslkeysWithSummary", options);
+export const listUserSslkeysStatisticsQueryKey = (
+  options?: Options<ListUserSslkeysStatisticsData>
+) => createQueryKey("listUserSslkeysStatistics", options);
 
 /**
- * List sslkeys with a summary. ONLY FOR INTERNAL USAGE.
- *
- * List sslkeys with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * List User Sslkeys Statistics
  */
-export const getUserSslkeysWithSummaryOptions = (
-  options?: Options<GetUserSslkeysWithSummaryData>
+export const listUserSslkeysStatisticsOptions = (
+  options?: Options<ListUserSslkeysStatisticsData>
 ) =>
   queryOptions<
-    GetUserSslkeysWithSummaryResponse,
-    GetUserSslkeysWithSummaryError,
-    GetUserSslkeysWithSummaryResponse,
-    ReturnType<typeof getUserSslkeysWithSummaryQueryKey>
+    ListUserSslkeysStatisticsResponse,
+    ListUserSslkeysStatisticsError,
+    ListUserSslkeysStatisticsResponse,
+    ReturnType<typeof listUserSslkeysStatisticsQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getUserSslkeysWithSummary({
+      const { data } = await listUserSslkeysStatistics({
         ...options,
         ...queryKey[0],
         signal,
@@ -4595,7 +4593,7 @@ export const getUserSslkeysWithSummaryOptions = (
       });
       return data;
     },
-    queryKey: getUserSslkeysWithSummaryQueryKey(options),
+    queryKey: listUserSslkeysStatisticsQueryKey(options),
   });
 
 export const listFabricVlanSubnetsQueryKey = (
