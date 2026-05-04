@@ -5,14 +5,7 @@ import {
   uniqueNamesGenerator,
 } from "unique-names-generator";
 
-import type { SwitchResponse } from "@/app/apiclient";
-
-type SwitchItem = SwitchResponse & {
-  name?: string;
-  mac_address?: string;
-  status?: string;
-  ztp_enabled?: boolean;
-};
+import type { SwitchItem } from "@/app/switches/types";
 
 export const switchFactory = Factory.define<SwitchItem>(({ sequence }) => {
   const name = uniqueNamesGenerator({

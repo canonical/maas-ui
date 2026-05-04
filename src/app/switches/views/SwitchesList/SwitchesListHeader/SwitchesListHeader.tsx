@@ -22,6 +22,7 @@ const SwitchesListHeader = ({ searchFilter, setSearchFilter }: Props) => {
     <MainToolbar>
       <MainToolbar.Title>Switches</MainToolbar.Title>
       <MainToolbar.Controls>
+        {/* TODO: Wire up search to the switches endpoint when it becomes available. */}
         <DebounceSearchBox
           onDebounced={(debouncedText) => {
             setSearchFilter(debouncedText);

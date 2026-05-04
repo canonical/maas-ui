@@ -4,6 +4,7 @@ import useSwitchesTableColumns from "./useSwitchesTableColumns/useSwitchesTableC
 
 import { useSwitches } from "@/app/api/query/switches";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
+import "./_index.scss";
 
 const SwitchesTable = () => {
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =

@@ -3,16 +3,9 @@ import { useMemo } from "react";
 import { Button, Icon } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
-import type { SwitchResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
-
-type SwitchItem = SwitchResponse & {
-  name?: string;
-  mac_address?: string;
-  status?: string;
-  ztp_enabled?: boolean;
-};
+import type { SwitchItem } from "@/app/switches/types";
 
 type SwitchColumnDef = ColumnDef<SwitchItem>;
 

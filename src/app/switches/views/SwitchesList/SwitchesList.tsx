@@ -14,6 +14,7 @@ const SwitchesList = (): ReactElement => {
   return (
     <PageContent
       header={
+        // TODO: Pass searchFilter to SwitchesTable when the switches endpoint supports search.
         <SwitchesListHeader
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
