@@ -13,6 +13,11 @@ const navGroups: NavGroup[] = [
         url: urls.machines.index,
       },
       {
+        highlight: [urls.switches.index],
+        label: "Switches",
+        url: urls.switches.index,
+      },
+      {
         highlight: [urls.devices.index, urls.devices.device.index(null)],
         label: "Devices",
         url: urls.devices.index,
