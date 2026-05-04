@@ -5,7 +5,7 @@ import { Col, Row, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { usePools } from "@/app/api/query/pools";
-import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
+import type { ResourcePoolStatisticsResponse } from "@/app/apiclient";
 import { useLXDClusterHostsTableColumns } from "@/app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHostsTable/useLXDClusterHostsTableColumns/useLXDClusterHostsTableColumns";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
@@ -30,7 +30,7 @@ export type LXDClusterHost = Pod & {
 
 export const generateRows = (
   hosts: Pod[],
-  pools: ResourcePoolWithSummaryResponse[] | undefined
+  pools: ResourcePoolStatisticsResponse[] | undefined
 ): LXDClusterHost[] =>
   hosts.map((host) => {
     const pool = pools?.find((pool) => host.pool === pool.id);

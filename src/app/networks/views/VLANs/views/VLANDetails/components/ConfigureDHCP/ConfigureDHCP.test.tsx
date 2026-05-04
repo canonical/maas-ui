@@ -4,10 +4,10 @@ import { getSubnetDisplay } from "@/app/store/subnet/utils";
 import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  screen,
-  waitFor,
   renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 describe("ConfigureDHCP", () => {

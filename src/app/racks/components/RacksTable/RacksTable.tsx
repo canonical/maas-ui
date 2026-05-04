@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 import { GenericTable } from "@canonical/maas-react-components";
 
 import useRacksTableColumns from "./useRacksTableColumns/useRacksTableColumns";
@@ -14,21 +12,13 @@ const RacksTable = () => {
   const racks = useRacks({
     query: { page: debouncedPage, size },
   });
+
   const columns = useRacksTableColumns();
-  const fakeData = useMemo(() => {
-    if (racks.data && racks.data.items.length > 0) {
-      return racks.data?.items.map((rack) => ({
-        ...rack,
-        registered: [`controller-${rack.id}`],
-      }));
-    } else {
-      return [];
-    }
-  }, [racks.data]);
+
   return (
     <GenericTable
       columns={columns}
-      data={fakeData}
+      data={racks.data?.items ?? []}
       isLoading={racks.isPending}
       noData="No racks found."
       pagination={{

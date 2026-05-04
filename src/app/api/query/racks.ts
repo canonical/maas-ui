@@ -19,34 +19,34 @@ import type {
   GetRackData,
   GetRackErrors,
   GetRackResponses,
-  ListRacksData,
-  ListRacksErrors,
-  ListRacksResponses,
+  ListRacksWithSummaryData,
+  ListRacksWithSummaryErrors,
+  ListRacksWithSummaryResponses,
   Options,
   UpdateRackData,
   UpdateRackErrors,
   UpdateRackResponses,
 } from "@/app/apiclient";
 import {
+  listRacksWithSummary,
   createRack,
   deleteRacks,
   generateRackBootstrapToken,
   updateRack,
   getRack,
-  listRacks,
 } from "@/app/apiclient";
 import {
   getRackQueryKey,
-  listRacksQueryKey,
+  listRacksWithSummaryQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
-export const useRacks = (options?: Options<ListRacksData>) => {
+export const useRacks = (options?: Options<ListRacksWithSummaryData>) => {
   return useWebsocketAwareQuery(
-    queryOptionsWithHeaders<ListRacksResponses, ListRacksErrors, ListRacksData>(
-      options,
-      listRacks,
-      listRacksQueryKey(options)
-    )
+    queryOptionsWithHeaders<
+      ListRacksWithSummaryResponses,
+      ListRacksWithSummaryErrors,
+      ListRacksWithSummaryData
+    >(options, listRacksWithSummary, listRacksWithSummaryQueryKey(options))
   );
 };
 
@@ -70,7 +70,7 @@ export const useCreateRack = (mutationOptions?: Options<CreateRackData>) => {
     >(mutationOptions, createRack),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listRacksQueryKey(),
+        queryKey: listRacksWithSummaryQueryKey(),
       });
     },
   });
@@ -86,7 +86,7 @@ export const useUpdateRack = (mutationOptions?: Options<UpdateRackData>) => {
     >(mutationOptions, updateRack),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listRacksQueryKey(),
+        queryKey: listRacksWithSummaryQueryKey(),
       });
     },
   });
@@ -102,7 +102,7 @@ export const useDeleteRack = (mutationOptions?: Options<DeleteRacksData>) => {
     >(mutationOptions, deleteRacks),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listRacksQueryKey(),
+        queryKey: listRacksWithSummaryQueryKey(),
       });
     },
   });

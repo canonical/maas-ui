@@ -27,6 +27,32 @@ describe("NodeTestDetails", () => {
     });
   });
 
+  it("shows the right columns", () => {
+    const scriptResult = factory.scriptResult({ id: 1 });
+    const scriptResults = [scriptResult];
+    state.nodescriptresult.items = { abc123: [1] };
+    state.scriptresult.items = scriptResults;
+    renderWithProviders(<NodeTestDetails getReturnPath={getReturnPath} />, {
+      initialEntries: ["/machine/abc123/testing/1/details"],
+      pattern: "/machine/:id/testing/:scriptResultId/details",
+      state,
+    });
+    [
+      "Status",
+      "Exit Status",
+      "Tags",
+      "Start time",
+      "End time",
+      "Runtime",
+    ].forEach((column) => {
+      expect(
+        screen.getByRole("columnheader", {
+          name: new RegExp(`^${column}`, "i"),
+        })
+      ).toBeInTheDocument();
+    });
+  });
+
   it("displays a spinner when loading", () => {
     state.scriptresult.loading = true;
     renderWithProviders(<NodeTestDetails getReturnPath={getReturnPath} />, {
