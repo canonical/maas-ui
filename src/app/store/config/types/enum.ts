@@ -11,6 +11,7 @@ export enum ConfigMeta {
 export enum ConfigNames {
   ACTIVE_DISCOVERY_INTERVAL = "active_discovery_interval",
   BOOT_IMAGES_AUTO_IMPORT = "boot_images_auto_import",
+  BOOT_IMAGES_IMPORT_INTERVAL_MINUTES = "boot_images_import_interval_minutes",
   BOOT_IMAGES_NO_PROXY = "boot_images_no_proxy",
   COMMISSIONING_DISTRO_SERIES = "commissioning_distro_series",
   COMPLETED_INTRO = "completed_intro",

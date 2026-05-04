@@ -33,24 +33,42 @@ const Synchronization = (): ReactElement => {
   const importConfig = useGetConfiguration({
     path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
   });
-  const configETag = importConfig.data?.headers?.get("ETag");
+
+  const intervalConfig = useGetConfiguration({
+    path: { name: ConfigNames.BOOT_IMAGES_IMPORT_INTERVAL_MINUTES },
+  });
+
+  const importConfigETag = importConfig.data?.headers?.get("ETag");
+  const intervalConfigETag = intervalConfig.data?.headers?.get("ETag");
+
   const autoImport = (importConfig.data?.value as boolean) ?? false;
+  const syncInterval = (intervalConfig.data?.value as number) ?? 60;
+
   const updateConfig = useSetConfiguration();
 
   const initialValues: SynchronizationValues = {
     autoSync: autoImport,
-    syncInterval: 60,
+    syncInterval: syncInterval,
   };
 
   const onSubmit = (values: SynchronizationValues) => {
     updateConfig.mutate({
       headers: {
-        ETag: configETag,
+        ETag: importConfigETag,
       },
       body: {
         value: values.autoSync,
       },
       path: { name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT },
+    });
+    updateConfig.mutate({
+      headers: {
+        ETag: intervalConfigETag,
+      },
+      body: {
+        value: values.syncInterval,
+      },
+      path: { name: ConfigNames.BOOT_IMAGES_IMPORT_INTERVAL_MINUTES },
     });
   };
 
@@ -81,7 +99,7 @@ const Synchronization = (): ReactElement => {
                   submitLabel="Save"
                   validationSchema={SynchronizationSchema}
                 >
-                  {() => {
+                  {({ values }: { values: SynchronizationValues }) => {
                     return (
                       <>
                         <FormikField
@@ -92,16 +110,15 @@ const Synchronization = (): ReactElement => {
                           name="autoSync"
                           type="checkbox"
                         />
-                        {/*TODO: uncomment when synchronization interval is available as a global configuration*/}
-                        {/*{values.autoSync ? (*/}
-                        {/*  <FormikField*/}
-                        {/*    help="Image synchronization interval, in minutes."*/}
-                        {/*    label="Sync interval"*/}
-                        {/*    name="syncInterval"*/}
-                        {/*    required*/}
-                        {/*    type="number"*/}
-                        {/*  />*/}
-                        {/*) : null}*/}
+                        {values.autoSync ? (
+                          <FormikField
+                            help="Image synchronization interval, in minutes."
+                            label="Sync interval"
+                            name="syncInterval"
+                            required
+                            type="number"
+                          />
+                        ) : null}
                       </>
                     );
                   }}
