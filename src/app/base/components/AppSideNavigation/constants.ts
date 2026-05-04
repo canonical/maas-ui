@@ -12,6 +12,15 @@ const navGroups: NavGroup[] = [
         label: "Machines",
         url: urls.machines.index,
       },
+      ...(import.meta.env.VITE_APP_SWITCH_PROVISIONING === "true"
+        ? [
+            {
+              highlight: [urls.switches.index],
+              label: "Switches",
+              url: urls.switches.index,
+            },
+          ]
+        : []),
       {
         highlight: [urls.devices.index, urls.devices.device.index(null)],
         label: "Devices",
