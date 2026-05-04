@@ -73,6 +73,7 @@ const NetworkDiscoverySettings = lazy(
 const Networks = lazy(() => import("@/app/networks"));
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const RacksList = lazy(() => import("@/app/racks/views/RacksList"));
+const SwitchesList = lazy(() => import("@/app/switches/views/SwitchesList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(
   () => import("@/app/networks/views/Fabrics/views/FabricDetails")
@@ -469,6 +470,14 @@ export const router = createBrowserRouter(
               element: (
                 <ErrorBoundary>
                   <RacksList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: `${urls.switches.index}/*`,
+              element: (
+                <ErrorBoundary>
+                  <SwitchesList />
                 </ErrorBoundary>
               ),
             },
