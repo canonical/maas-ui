@@ -1,5 +1,5 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
-import { generateName, generateMAASURL } from "../../../e2e/utils";
+import { generateName } from "../../../e2e/utils";
 
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -13,7 +13,7 @@ When("the user enters a record name", () => {
   });
 });
 
-When("the user clicks the default domain link", () => {
+When("the DNS default domain row is opened", () => {
   cy.findByRole("grid", { name: "Domains table" }).within(() => {
     cy.get("[data-testid='domain-name']").first().click();
   });
@@ -37,15 +37,11 @@ Then("the record name should appear as a link in the DNS record list", () => {
   }).should("exist");
 });
 
-When("the user clicks the record name link", () => {
+When("the created DNS record link is opened", () => {
   const recordName = String(Cypress.env("dnsRecordName") || "");
 
   expect(recordName, "DNS record name").to.not.equal("");
   cy.findByRole("link", {
     name: new RegExp(`^${escapeRegExp(recordName)}$`),
   }).click();
-});
-
-Then("the user should be redirected to the device details page", () => {
-  cy.location("pathname").should("include", generateMAASURL("/device/"));
 });

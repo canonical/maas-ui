@@ -13,16 +13,6 @@ When("the user submits the form", () => {
 });
 
 When("the user clicks the {string} link", (link: string) => {
-  // The default DNS domain row is rendered as "maas" even when test text uses
-  // "maas(default)" or "maas (default)".
-  if (/^maas\s*\(default\)$/i.test(link)) {
-    cy.findByRole("grid", { name: "Domains table" }).within(() => {
-      cy.get("[data-testid='domain-name']").first().click();
-    });
-
-    return;
-  }
-
   cy.findByRole("link", { name: link }).click();
 });
 

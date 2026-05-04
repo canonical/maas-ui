@@ -11,11 +11,11 @@ Feature: DNS record assignment
     And the user enters valid device details
     And the user clicks the "Save device" button
     And the user navigates to the domains page
-    And the user clicks the default domain link
+    And the DNS default domain row is opened
     And the user clicks the "Add record" button
     And the user enters a record name
     And the user enters the same IP address in the "data" field
     And the user submits the form
     Then the record name should appear as a link in the DNS record list
-    When the user clicks the record name link
-    Then the user should be redirected to the device details page
+    When the created DNS record link is opened
+    Then the pathname should equal "/device/*"
