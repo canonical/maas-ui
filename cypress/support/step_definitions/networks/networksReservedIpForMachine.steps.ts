@@ -9,7 +9,7 @@ import {
 } from "../../../e2e/utils";
 import { completeAddVlanForm, completeForm } from "./add.helpers";
 
-Given("the user has created a dedicated /24 subnet", function () {
+Given("the user has created a dedicated '/'24 subnet", function () {
   this.subnetFabric = `cy-fabric-${generateId()}`;
   const vid = generateVid();
   this.subnetVlan = `cy-vlan-${vid}`;
