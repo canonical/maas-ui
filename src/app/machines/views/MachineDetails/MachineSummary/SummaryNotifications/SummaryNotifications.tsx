@@ -24,6 +24,7 @@ import {
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import type { NodeEvent } from "@/app/store/types/node";
+import { isId } from "@/app/utils";
 
 const formatEventText = (event: NodeEvent) => {
   if (!event) {
@@ -58,7 +59,7 @@ const SummaryNotifications = (): React.ReactElement | null => {
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
   // complain that events don't exist on the base machine type).
-  if (!isMachineDetails(machine) || !architecturesLoaded) {
+  if (!isMachineDetails(machine) || !architecturesLoaded || !isId(id)) {
     return null;
   }
 
