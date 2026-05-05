@@ -1,6 +1,43 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { LONG_TIMEOUT } from "../../../constants";
-import { generateId, generateMac, generateMAASURL } from "../../../e2e/utils";
+import {
+  generateCidr,
+  generateId,
+  generateMAASURL,
+  generateMac,
+  generateVid,
+} from "../../../e2e/utils";
+import { completeAddVlanForm, completeForm } from "./add.helpers";
+
+Given("the user has created a dedicated /24 subnet", function () {
+  this.subnetFabric = `cy-fabric-${generateId()}`;
+  const vid = generateVid();
+  this.subnetVlan = `cy-vlan-${vid}`;
+  this.subnetCidr = generateCidr(); // always produces 192.168.x.0/24
+  this.subnetName = `cy-subnet-${generateId()}`;
+
+  completeForm("Fabric", this.subnetFabric);
+  completeAddVlanForm(vid, this.subnetVlan, this.subnetFabric);
+  cy.addSubnet({
+    subnetName: this.subnetName,
+    cidr: this.subnetCidr,
+    fabric: this.subnetFabric,
+    vid,
+    vlan: this.subnetVlan,
+  });
+});
+
+When(
+  "the user navigates to the dedicated subnet's address reservation page",
+  function () {
+    cy.findByRole("link", { name: new RegExp(this.subnetName) }).click({
+      force: true,
+    });
+    cy.findByRole("heading", { name: "Subnet summary" }).should("exist");
+    cy.findByRole("link", { name: /address reservation/i }).click();
+    cy.waitForPageToLoad();
+  }
+);
 
 When("the user navigates to the address reservation tab", () => {
   cy.findByRole("link", { name: /address reservation/i }).click();
