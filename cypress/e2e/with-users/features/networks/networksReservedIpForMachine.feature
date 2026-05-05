@@ -5,7 +5,7 @@ Background:
     And the user navigates to the networks by fabric page
     And the "Subnets by fabric" table has loaded
     And the viewport is "macbook-11"
-    And the user has created a dedicated /24 subnet
+    And the user has created a dedicated \/24 subnet
 
 Scenario: The user can reserve, edit and delete a static DHCP lease on a subnet
     When the user navigates to the dedicated subnet's address reservation page
