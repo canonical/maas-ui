@@ -6,12 +6,13 @@ import {
   useCanEdit,
   useIsRackControllerConnected,
 } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
 import urls from "@/app/base/urls";
 import MachineNotifications from "@/app/machines/views/MachineDetails/MachineNotifications";
 import { generalActions } from "@/app/store/general";
 import { architectures as architecturesSelectors } from "@/app/store/general/selectors";
 import machineSelectors from "@/app/store/machine/selectors";
-import type { Machine } from "@/app/store/machine/types";
+import { MachineMeta } from "@/app/store/machine/types";
 import {
   isMachineDetails,
   useHasInvalidArchitecture,
@@ -23,10 +24,6 @@ import {
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import type { NodeEvent } from "@/app/store/types/node";
-
-type Props = {
-  id: Machine["system_id"];
-};
 
 const formatEventText = (event: NodeEvent) => {
   if (!event) {
@@ -42,7 +39,8 @@ const formatEventText = (event: NodeEvent) => {
   return text.join(" - ");
 };
 
-const SummaryNotifications = ({ id }: Props): React.ReactElement | null => {
+const SummaryNotifications = (): React.ReactElement | null => {
+  const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );

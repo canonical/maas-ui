@@ -1,21 +1,9 @@
 import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import { Navigate, Route, Routes, useLocation } from "react-router";
+import { Outlet, useLocation } from "react-router";
 
-import MachineConfiguration from "./MachineConfiguration";
 import MachineHeader from "./MachineHeader";
-import MachineInstances from "./MachineInstances";
-import MachineLogs from "./MachineLogs";
-import MachineNetwork from "./MachineNetwork";
-import NetworkNotifications from "./MachineNetwork/NetworkNotifications";
-import MachinePCIDevices from "./MachinePCIDevices";
-import MachineScript from "./MachineScripts";
-import MachineStorage from "./MachineStorage";
-import StorageNotifications from "./MachineStorage/StorageNotifications";
-import MachineSummary from "./MachineSummary";
-import SummaryNotifications from "./MachineSummary/SummaryNotifications";
-import MachineUSBDevices from "./MachineUSBDevices";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
@@ -25,7 +13,7 @@ import { machineActions } from "@/app/store/machine";
 import { MachineMeta } from "@/app/store/machine/types";
 import { useFetchMachine } from "@/app/store/machine/utils/hooks";
 import { tagActions } from "@/app/store/tag";
-import { getRelativeRoute, isId } from "@/app/utils";
+import { isId } from "@/app/utils";
 
 const MachineDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -53,123 +41,21 @@ const MachineDetails = (): React.ReactElement => {
 
   if (!isId(id) || (detailsLoaded && !machine)) {
     return (
-      <ModelNotFound
-        id={id}
-        linkURL={urls.machines.index}
-        modelName="machine"
-      />
+      <>
+        <ModelNotFound
+          id={id}
+          linkURL={urls.machines.index}
+          modelName="machine"
+        />
+        pathname: {pathname}
+        id: {id}
+      </>
     );
   }
 
-  const base = urls.machines.machine.index(null);
-
   return (
     <PageContent header={<MachineHeader systemId={id} />}>
-      {machine && (
-        <Routes>
-          <Route
-            element={
-              <Navigate replace to={urls.machines.machine.summary({ id })} />
-            }
-            index
-          />
-          <Route
-            element={
-              <>
-                <SummaryNotifications id={id} />
-                <MachineSummary />
-              </>
-            }
-            path={getRelativeRoute(urls.machines.machine.summary(null), base)}
-          />
-          <Route
-            element={<MachineInstances />}
-            path={getRelativeRoute(urls.machines.machine.instances(null), base)}
-          />
-          <Route
-            element={
-              <>
-                <NetworkNotifications id={id} />
-                <MachineNetwork id={id} />
-              </>
-            }
-            path={getRelativeRoute(urls.machines.machine.network(null), base)}
-          />
-          <Route
-            element={
-              <>
-                <StorageNotifications id={id} />
-                <MachineStorage />
-              </>
-            }
-            path={getRelativeRoute(urls.machines.machine.storage(null), base)}
-          />
-          <Route
-            element={<MachinePCIDevices />}
-            path={getRelativeRoute(
-              urls.machines.machine.pciDevices(null),
-              base
-            )}
-          />
-          <Route
-            element={<MachineUSBDevices />}
-            path={getRelativeRoute(
-              urls.machines.machine.usbDevices(null),
-              base
-            )}
-          />
-          <Route
-            element={<MachineScript systemId={id} />}
-            path={getRelativeRoute(
-              `${urls.machines.machine.scriptsResults.index(null)}/*`,
-              base
-            )}
-          />
-          <Route
-            element={
-              <Navigate
-                replace
-                to={urls.machines.machine.scriptsResults.commissioning.index({
-                  id,
-                })}
-              />
-            }
-            path={getRelativeRoute(
-              urls.machines.machine.commissioning.index(null),
-              base
-            )}
-          />
-          <Route
-            element={<MachineLogs systemId={id} />}
-            path={getRelativeRoute(
-              `${urls.machines.machine.logs.index(null)}/*`,
-              base
-            )}
-          />
-          <Route
-            element={
-              <Navigate
-                replace
-                to={urls.machines.machine.logs.events({ id })}
-              />
-            }
-            path={getRelativeRoute(urls.machines.machine.events(null), base)}
-          />
-          <Route
-            element={<MachineConfiguration />}
-            path={getRelativeRoute(
-              urls.machines.machine.configuration(null),
-              base
-            )}
-          />
-          <Route
-            element={
-              <Navigate replace to={urls.machines.machine.summary({ id })} />
-            }
-            path={base}
-          />
-        </Routes>
-      )}
+      <Outlet />
     </PageContent>
   );
 };
