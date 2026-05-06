@@ -159,6 +159,11 @@ jobs:
         run: |
           sudo cp /var/snap/maas/common/certs/cert.pem /usr/local/share/ca-certificates/maas-selfsigned.crt
           sudo update-ca-certificates
+      - name: Re-login to MAAS API over HTTPS
+        if: matrix.groups == 'with-users'
+        run: |
+          export API_KEY=`sudo maas apikey --username=admin`
+          maas login admin https://localhost:5443/MAAS $API_KEY
       - name: Wait for MAAS boot resources
         if: matrix.groups == 'with-users'
         shell: bash
