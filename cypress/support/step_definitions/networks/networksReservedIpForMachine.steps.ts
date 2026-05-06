@@ -9,7 +9,7 @@ import {
 } from "../../../e2e/utils";
 import { completeAddVlanForm, completeForm } from "./add.helpers";
 
-Given("the user has created a dedicated '/'24 subnet", function () {
+Given("the user has created a dedicated subnet with a mask of 24", function () {
   this.subnetFabric = `cy-fabric-${generateId()}`;
   const vid = generateVid();
   this.subnetVlan = `cy-vlan-${vid}`;
@@ -28,7 +28,7 @@ Given("the user has created a dedicated '/'24 subnet", function () {
 });
 
 When(
-  "the user navigates to the dedicated subnet's address reservation page",
+  "the user navigates to the address reservation page of the dedicated subnet",
   function () {
     cy.findByRole("link", { name: new RegExp(this.subnetName) }).click({
       force: true,
