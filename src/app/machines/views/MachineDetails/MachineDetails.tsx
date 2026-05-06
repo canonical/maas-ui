@@ -19,7 +19,7 @@ const MachineDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
-  const { machine, loaded: detailsLoaded } = useFetchMachine(id);
+  const { machine, loaded: detailsLoaded, error } = useFetchMachine(id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,17 +39,13 @@ const MachineDetails = (): React.ReactElement => {
     };
   }, [dispatch, id]);
 
-  if (!isId(id) || (detailsLoaded && !machine)) {
+  if (!isId(id) || (detailsLoaded && !machine) || error) {
     return (
-      <>
-        <ModelNotFound
-          id={id}
-          linkURL={urls.machines.index}
-          modelName="machine"
-        />
-        pathname: {pathname}
-        id: {id}
-      </>
+      <ModelNotFound
+        id={id}
+        linkURL={urls.machines.index}
+        modelName="machine"
+      />
     );
   }
 
