@@ -4,44 +4,76 @@ import type {
   CreateZoneError,
   DeleteZoneError,
   GetZoneError,
+  ListZonesError,
+  ListZonesResponse,
   ListZonesWithStatisticsError,
   UpdateZoneError,
   ZonesWithStatisticsListResponse,
 } from "@/app/apiclient";
-import { zone as zoneFactory } from "@/testing/factories";
+import {
+  zone as zoneFactory,
+  zoneWithStatistics as zoneStatsFactory,
+} from "@/testing/factories";
 import { BASE_URL } from "@/testing/utils";
 
-const mockZones: ZonesWithStatisticsListResponse = {
+const mockZones: ListZonesResponse = {
   items: [
     zoneFactory({
       id: 1,
       name: "zone-1",
       description: "",
-      controllers_count: 0,
-      devices_count: 0,
-      machines_count: 0,
     }),
     zoneFactory({
       id: 2,
       name: "zone-2",
       description: "",
-      controllers_count: 0,
-      devices_count: 0,
-      machines_count: 0,
     }),
     zoneFactory({
       id: 3,
       name: "zone-3",
       description: "",
-      controllers_count: 0,
-      devices_count: 0,
-      machines_count: 0,
     }),
   ],
   total: 3,
 };
 
-const mockListZonesError: ListZonesWithStatisticsError = {
+const mockZonesWithStatistics: ZonesWithStatisticsListResponse = {
+  items: [
+    zoneStatsFactory({
+      id: 1,
+      name: "zone-1",
+      description: "",
+      controllers_count: 2,
+      devices_count: 5,
+      machines_count: 10,
+    }),
+    zoneStatsFactory({
+      id: 2,
+      name: "zone-2",
+      description: "",
+      controllers_count: 1,
+      devices_count: 3,
+      machines_count: 6,
+    }),
+    zoneStatsFactory({
+      id: 3,
+      name: "zone-3",
+      description: "",
+      controllers_count: 0,
+      devices_count: 2,
+      machines_count: 4,
+    }),
+  ],
+  total: 3,
+};
+
+const mockListZonesError: ListZonesError = {
+  message: "Unauthorized",
+  code: 401,
+  kind: "Error", // This will always be 'Error' for every error response
+};
+
+const mockListZonesWithStatisticsError: ListZonesWithStatisticsError = {
   message: "Unauthorized",
   code: 401,
   kind: "Error", // This will always be 'Error' for every error response
@@ -68,14 +100,31 @@ const mockUpdateZoneError: UpdateZoneError = {
 const zoneResolvers = {
   listZones: {
     resolved: false,
-    handler: (data: ZonesWithStatisticsListResponse = mockZones) =>
-      http.get(`${BASE_URL}MAAS/a/v3/zones:statistics`, () => {
+    handler: (data: ListZonesResponse = mockZones) =>
+      http.get(`${BASE_URL}MAAS/a/v3/zones`, () => {
         zoneResolvers.listZones.resolved = true;
         return HttpResponse.json(data);
       }),
-    error: (error: ListZonesWithStatisticsError = mockListZonesError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/zones:statistics`, () => {
+    error: (error: ListZonesError = mockListZonesError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/zones`, () => {
         zoneResolvers.listZones.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  listZonesWithStatistics: {
+    resolved: false,
+    handler: (
+      data: ZonesWithStatisticsListResponse = mockZonesWithStatistics
+    ) =>
+      http.get(`${BASE_URL}MAAS/a/v3/zones:statistics`, () => {
+        zoneResolvers.listZonesWithStatistics.resolved = true;
+        return HttpResponse.json(data);
+      }),
+    error: (
+      error: ListZonesWithStatisticsError = mockListZonesWithStatisticsError
+    ) =>
+      http.get(`${BASE_URL}MAAS/a/v3/zones:statistics`, () => {
+        zoneResolvers.listZonesWithStatistics.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
@@ -137,4 +186,4 @@ const zoneResolvers = {
   },
 };
 
-export { zoneResolvers, mockZones };
+export { zoneResolvers, mockZones, mockZonesWithStatistics };

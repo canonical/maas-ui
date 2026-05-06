@@ -46,7 +46,7 @@ export type LXDKVMHost = {
 
 export const generateSingleHostRows = (
   pods: Pod[],
-  zones: ZoneWithStatisticsResponse[] | undefined
+  zones: Pick<ZoneWithStatisticsResponse, "id" | "name">[] | undefined
 ): LXDKVMHost[] =>
   pods.map((pod): LXDKVMHost => {
     const zone = zones?.find((zone) => pod.zone === zone.id);

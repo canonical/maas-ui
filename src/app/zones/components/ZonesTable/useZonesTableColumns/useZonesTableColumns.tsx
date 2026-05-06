@@ -4,7 +4,7 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
-import type { ZoneWithStatisticsResponse } from "@/app/apiclient";
+import type { ZoneResponse, ZoneWithStatisticsResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
@@ -12,9 +12,13 @@ import { FilterDevices } from "@/app/store/device/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { DeleteZone, EditZone } from "@/app/zones/components";
 
+type ZonesColumnData = ZoneResponse & {
+  statistics?: ZoneWithStatisticsResponse;
+};
+
 export type ZoneColumnDef = ColumnDef<
-  ZoneWithStatisticsResponse,
-  Partial<ZoneWithStatisticsResponse>
+  ZonesColumnData,
+  Partial<ZonesColumnData>
 >;
 
 const filterDevices = (name: string) =>
@@ -49,13 +53,17 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         accessorKey: "machines_count",
         enableSorting: true,
         header: "Machines",
-        cell: ({ row }) => {
+        cell: ({
+          row: {
+            original: { statistics, name },
+          },
+        }) => {
           return (
             <Link
               className="u-align--right"
-              to={`${urls.machines.index}${machinesFilter(row.original.name)}`}
+              to={`${urls.machines.index}${machinesFilter(name)}`}
             >
-              {row.original.machines_count}
+              {statistics?.machines_count}
             </Link>
           );
         },
@@ -65,13 +73,17 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         accessorKey: "devices_count",
         enableSorting: true,
         header: "Devices",
-        cell: ({ row }) => {
+        cell: ({
+          row: {
+            original: { statistics, name },
+          },
+        }) => {
           return (
             <Link
               className="u-align--right"
-              to={`${urls.devices.index}${filterDevices(row.original.name)}`}
+              to={`${urls.devices.index}${filterDevices(name)}`}
             >
-              {row.original.devices_count}
+              {statistics?.devices_count}
             </Link>
           );
         },
@@ -81,10 +93,14 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         accessorKey: "controllers_count",
         enableSorting: true,
         header: "Controllers",
-        cell: ({ row }) => {
+        cell: ({
+          row: {
+            original: { statistics },
+          },
+        }) => {
           return (
             <Link className="u-align--right" to={`${urls.controllers.index}`}>
-              {row.original.controllers_count}
+              {statistics?.controllers_count}
             </Link>
           );
         },
@@ -94,7 +110,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",
-        cell: ({ row }: { row: Row<ZoneWithStatisticsResponse> }) => {
+        cell: ({ row }: { row: Row<ZonesColumnData> }) => {
           const canBeDeleted = isSuperUser.data && row.original.id !== 1;
           return (
             <TableActions
