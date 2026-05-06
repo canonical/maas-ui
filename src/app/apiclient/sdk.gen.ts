@@ -354,9 +354,6 @@ import type {
   GetUserSslkeysData,
   GetUserSslkeysErrors,
   GetUserSslkeysResponses,
-  GetUserSslkeysWithSummaryData,
-  GetUserSslkeysWithSummaryErrors,
-  GetUserSslkeysWithSummaryResponses,
   GetZoneData,
   GetZoneErrors,
   GetZoneResponses,
@@ -495,15 +492,18 @@ import type {
   ListUserSshkeysData,
   ListUserSshkeysErrors,
   ListUserSshkeysResponses,
+  ListUserSslkeysStatisticsData,
+  ListUserSslkeysStatisticsErrors,
+  ListUserSslkeysStatisticsResponses,
   ListUsersWithSummaryData,
   ListUsersWithSummaryErrors,
   ListUsersWithSummaryResponses,
   ListZonesData,
   ListZonesErrors,
   ListZonesResponses,
-  ListZonesWithSummaryData,
-  ListZonesWithSummaryErrors,
-  ListZonesWithSummaryResponses,
+  ListZonesWithStatisticsData,
+  ListZonesWithStatisticsErrors,
+  ListZonesWithStatisticsResponses,
   LoginData,
   LoginErrors,
   LoginResponses,
@@ -3733,19 +3733,17 @@ export const getUserSslkey = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List sslkeys with a summary. ONLY FOR INTERNAL USAGE.
- *
- * List sslkeys with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * List User Sslkeys Statistics
  */
-export const getUserSslkeysWithSummary = <ThrowOnError extends boolean = false>(
-  options?: Options<GetUserSslkeysWithSummaryData, ThrowOnError>
+export const listUserSslkeysStatistics = <ThrowOnError extends boolean = false>(
+  options?: Options<ListUserSslkeysStatisticsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetUserSslkeysWithSummaryResponses,
-    GetUserSslkeysWithSummaryErrors,
+    ListUserSslkeysStatisticsResponses,
+    ListUserSslkeysStatisticsErrors,
     ThrowOnError
   >({
-    url: "/MAAS/a/v3/users/me/sslkeys_with_summary",
+    url: "/MAAS/a/v3/users/me/sslkeys:statistics",
     ...options,
   });
 };
@@ -4969,16 +4967,16 @@ export const updateZone = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List zones with a summary. ONLY FOR INTERNAL USAGE.
+ * List zones with statistics. ONLY FOR INTERNAL USAGE.
  *
- * List zones with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * List zones with statistics. This endpoint is only for internal usage and might be changed or removed without notice.
  */
-export const listZonesWithSummary = <ThrowOnError extends boolean = false>(
-  options?: Options<ListZonesWithSummaryData, ThrowOnError>
+export const listZonesWithStatistics = <ThrowOnError extends boolean = false>(
+  options?: Options<ListZonesWithStatisticsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListZonesWithSummaryResponses,
-    ListZonesWithSummaryErrors,
+    ListZonesWithStatisticsResponses,
+    ListZonesWithStatisticsErrors,
     ThrowOnError
   >({
     security: [
@@ -4987,7 +4985,7 @@ export const listZonesWithSummary = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/zones_with_summary",
+    url: "/MAAS/a/v3/zones:statistics",
     ...options,
   });
 };

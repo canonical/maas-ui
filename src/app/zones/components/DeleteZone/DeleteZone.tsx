@@ -7,7 +7,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useDeleteZone, useGetZone } from "@/app/api/query/zones";
-import { listZonesWithSummaryQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
+import { listZonesWithStatisticsQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
@@ -47,7 +47,7 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ id }) => {
           onSuccess={() => {
             return queryClient
               .invalidateQueries({
-                queryKey: listZonesWithSummaryQueryKey(),
+                queryKey: listZonesWithStatisticsQueryKey(),
               })
               .then(closeSidePanel);
           }}
