@@ -163,6 +163,12 @@ jobs:
         if: matrix.groups == 'with-users'
         shell: bash
         run: while [ $(maas admin boot-resources is-importing -k | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
+      - name: Debug - print boot resource selections
+        if: matrix.groups == 'with-users'
+        shell: bash
+        run: |
+          maas admin boot-source-selections read 1 | python3 -m json.tool
+          maas admin boot-resources read 1 | python3 -m json.tool
       - name: Run Cypress tests
         uses: cypress-io/github-action@v4
         env:
