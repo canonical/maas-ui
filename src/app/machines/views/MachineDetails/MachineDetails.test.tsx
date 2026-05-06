@@ -40,6 +40,7 @@ describe("MachineDetails", () => {
       }),
       loaded: true,
       loading: false,
+      error: null,
     });
   });
 
@@ -73,8 +74,9 @@ describe("MachineDetails", () => {
   it("displays a message if the machine does not exist", () => {
     vi.mocked(useFetchMachine).mockReturnValue({
       machine: null,
-      loaded: true,
+      loaded: false,
       loading: false,
+      error: "Uh oh!",
     });
     renderWithProviders(<MachineDetails />, {
       initialEntries: [urls.machines.machine.summary({ id: "not-valid-id" })],
