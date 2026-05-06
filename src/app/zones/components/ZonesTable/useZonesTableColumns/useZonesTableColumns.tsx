@@ -4,7 +4,7 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router";
 
 import { useGetIsSuperUser } from "@/app/api/query/auth";
-import type { ZoneWithSummaryResponse } from "@/app/apiclient";
+import type { ZoneWithStatisticsResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
@@ -13,8 +13,8 @@ import { FilterMachines } from "@/app/store/machine/utils";
 import { DeleteZone, EditZone } from "@/app/zones/components";
 
 export type ZoneColumnDef = ColumnDef<
-  ZoneWithSummaryResponse,
-  Partial<ZoneWithSummaryResponse>
+  ZoneWithStatisticsResponse,
+  Partial<ZoneWithStatisticsResponse>
 >;
 
 const filterDevices = (name: string) =>
@@ -94,7 +94,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",
-        cell: ({ row }: { row: Row<ZoneWithSummaryResponse> }) => {
+        cell: ({ row }: { row: Row<ZoneWithStatisticsResponse> }) => {
           const canBeDeleted = isSuperUser.data && row.original.id !== 1;
           return (
             <TableActions

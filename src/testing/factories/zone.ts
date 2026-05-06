@@ -1,8 +1,8 @@
 import { define, random } from "cooky-cutter";
 
-import type { ZoneWithSummaryResponse } from "@/app/apiclient";
+import type { ZoneWithStatisticsResponse } from "@/app/apiclient";
 
-export const zone = define<ZoneWithSummaryResponse>({
+export const zone = define<ZoneWithStatisticsResponse>({
   controllers_count: random,
   description: "test description",
   devices_count: random,

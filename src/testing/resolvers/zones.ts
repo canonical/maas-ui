@@ -4,14 +4,14 @@ import type {
   CreateZoneError,
   DeleteZoneError,
   GetZoneError,
-  ListZonesWithSummaryError,
+  ListZonesWithStatisticsError,
   UpdateZoneError,
-  ZonesWithSummaryListResponse,
+  ZonesWithStatisticsListResponse,
 } from "@/app/apiclient";
 import { zone as zoneFactory } from "@/testing/factories";
 import { BASE_URL } from "@/testing/utils";
 
-const mockZones: ZonesWithSummaryListResponse = {
+const mockZones: ZonesWithStatisticsListResponse = {
   items: [
     zoneFactory({
       id: 1,
@@ -41,7 +41,7 @@ const mockZones: ZonesWithSummaryListResponse = {
   total: 3,
 };
 
-const mockListZonesError: ListZonesWithSummaryError = {
+const mockListZonesError: ListZonesWithStatisticsError = {
   message: "Unauthorized",
   code: 401,
   kind: "Error", // This will always be 'Error' for every error response
@@ -68,13 +68,13 @@ const mockUpdateZoneError: UpdateZoneError = {
 const zoneResolvers = {
   listZones: {
     resolved: false,
-    handler: (data: ZonesWithSummaryListResponse = mockZones) =>
-      http.get(`${BASE_URL}MAAS/a/v3/zones_with_summary`, () => {
+    handler: (data: ZonesWithStatisticsListResponse = mockZones) =>
+      http.get(`${BASE_URL}MAAS/a/v3/zones:statistics`, () => {
         zoneResolvers.listZones.resolved = true;
         return HttpResponse.json(data);
       }),
-    error: (error: ListZonesWithSummaryError = mockListZonesError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/zones_with_summary`, () => {
+    error: (error: ListZonesWithStatisticsError = mockListZonesError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/zones:statistics`, () => {
         zoneResolvers.listZones.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
