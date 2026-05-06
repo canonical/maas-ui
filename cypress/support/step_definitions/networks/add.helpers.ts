@@ -18,7 +18,9 @@ export const completeAddVlanForm = (
   openAddForm("VLAN");
   cy.findByRole("textbox", { name: "VID" }).type(vid);
   cy.findByRole("combobox", { name: "Fabric" }).select(fabricName || 1);
-  cy.findByRole("combobox", { name: "Space" }).select(spaceName || 1);
+  if (spaceName) {
+    cy.findByRole("combobox", { name: "Space" }).select(spaceName);
+  }
   cy.findByRole("textbox", { name: "Name" }).type(name);
   cy.findByRole("button", { name: "Save VLAN" }).click();
 };
