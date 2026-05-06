@@ -24,7 +24,7 @@ describe("MachineLogs", () => {
         items: [],
       }),
     });
-    renderWithProviders(<MachineLogs systemId="abc123" />, {
+    renderWithProviders(<MachineLogs />, {
       state,
     });
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe("MachineLogs", () => {
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
-      renderWithProviders(<MachineLogs systemId="abc123" />, {
+      renderWithProviders(<MachineLogs />, {
         initialEntries: [path],
         state,
         pattern: `${urls.machines.machine.logs.index(null)}/*`,

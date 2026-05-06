@@ -11,17 +11,14 @@ import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
 import NetworkTable from "@/app/base/components/node/networking/NetworkTable";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
 import machineSelectors from "@/app/store/machine/selectors";
-import type { Machine } from "@/app/store/machine/types";
 import { MachineMeta } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 
-type MachineNetworkProps = {
-  id: Machine[MachineMeta.PK];
-};
-
-const MachineNetwork = ({ id }: MachineNetworkProps): ReactElement => {
+const MachineNetwork = (): ReactElement => {
+  const id = useGetURLId(MachineMeta.PK);
   const [selected, setSelected] = useState<Selected[]>([]);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -40,7 +37,7 @@ const MachineNetwork = ({ id }: MachineNetworkProps): ReactElement => {
           expanded={expanded}
           selected={selected}
           setSelected={setSelected}
-          systemId={id}
+          systemId={id!}
         />
       )}
       aria-label="Machine network"

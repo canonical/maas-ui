@@ -662,7 +662,12 @@ export const useFetchMachines = (
  */
 export const useFetchMachine = (
   id?: Machine[MachineMeta.PK] | null
-): { machine: Machine | null; loading?: boolean; loaded?: boolean } => {
+): {
+  machine: Machine | null;
+  loading?: boolean;
+  loaded?: boolean;
+  error: APIError;
+} => {
   const [callId, setCallId] = useState<string | null>(null);
   const previousId = usePrevious(id, false);
   const previousCallId = usePrevious(callId);
@@ -675,6 +680,9 @@ export const useFetchMachine = (
   );
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
+  );
+  const error = useSelector((state: RootState) =>
+    machineSelectors.errors(state)
   );
   useCleanup(callId);
 
@@ -695,6 +703,7 @@ export const useFetchMachine = (
     machine,
     loading,
     loaded,
+    error,
   };
 };
 

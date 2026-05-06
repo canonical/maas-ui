@@ -1,10 +1,14 @@
 import SummaryNotifications from "./SummaryNotifications";
 
+import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { screen, within, renderWithProviders } from "@/testing/utils";
+
+const machineRoutePattern = `${urls.machines.machine.index(null)}/*`;
+const summaryUrl = urls.machines.machine.summary({ id: "abc123" });
 
 describe("SummaryNotifications", () => {
   let state: RootState;
@@ -32,9 +36,10 @@ describe("SummaryNotifications", () => {
   });
 
   it("handles no notifications", () => {
-    renderWithProviders(<SummaryNotifications id="abc123" />, {
+    renderWithProviders(<SummaryNotifications />, {
       state,
-      initialEntries: ["/machine/abc123"],
+      initialEntries: [summaryUrl],
+      pattern: machineRoutePattern,
     });
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
@@ -57,9 +62,10 @@ describe("SummaryNotifications", () => {
       }),
     ];
 
-    renderWithProviders(<SummaryNotifications id="abc123" />, {
+    renderWithProviders(<SummaryNotifications />, {
       state,
-      initialEntries: ["/machine/abc123"],
+      initialEntries: [summaryUrl],
+      pattern: machineRoutePattern,
     });
     expect(screen.getByRole("alert")).toHaveTextContent(
       /Script - machine timed out/i
@@ -69,9 +75,10 @@ describe("SummaryNotifications", () => {
   it("can display a rack connection error", () => {
     state.general.powerTypes.data = [];
 
-    renderWithProviders(<SummaryNotifications id="abc123" />, {
+    renderWithProviders(<SummaryNotifications />, {
       state,
-      initialEntries: ["/machine/abc123"],
+      initialEntries: [summaryUrl],
+      pattern: machineRoutePattern,
     });
 
     expect(screen.getByRole("alert")).toHaveTextContent(
@@ -82,9 +89,10 @@ describe("SummaryNotifications", () => {
   it("can display an architecture error", () => {
     state.machine.items[0].architecture = "";
 
-    renderWithProviders(<SummaryNotifications id="abc123" />, {
+    renderWithProviders(<SummaryNotifications />, {
       state,
-      initialEntries: ["/machine/abc123"],
+      initialEntries: [summaryUrl],
+      pattern: machineRoutePattern,
     });
     expect(screen.getByRole("alert")).toHaveTextContent(
       /This machine currently has an invalid architecture/i
@@ -97,9 +105,10 @@ describe("SummaryNotifications", () => {
       loaded: true,
     });
 
-    renderWithProviders(<SummaryNotifications id="abc123" />, {
+    renderWithProviders(<SummaryNotifications />, {
       state,
-      initialEntries: ["/machine/abc123"],
+      initialEntries: [summaryUrl],
+      pattern: machineRoutePattern,
     });
 
     expect(screen.getByRole("alert")).toHaveTextContent(
@@ -110,9 +119,10 @@ describe("SummaryNotifications", () => {
   it("can display a hardware status", () => {
     state.machine.items[0].cpu_count = 0;
 
-    renderWithProviders(<SummaryNotifications id="abc123" />, {
+    renderWithProviders(<SummaryNotifications />, {
       state,
-      initialEntries: ["/machine/abc123"],
+      initialEntries: [summaryUrl],
+      pattern: machineRoutePattern,
     });
     expect(screen.getByRole("status")).toHaveTextContent(
       /Commission this machine to get CPU/i
@@ -129,9 +139,10 @@ describe("SummaryNotifications", () => {
       }),
     ];
 
-    renderWithProviders(<SummaryNotifications id="abc123" />, {
+    renderWithProviders(<SummaryNotifications />, {
       state,
-      initialEntries: ["/machine/abc123"],
+      initialEntries: [summaryUrl],
+      pattern: machineRoutePattern,
     });
     expect(screen.getByRole("status")).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent(

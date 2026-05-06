@@ -1,10 +1,14 @@
 import StorageNotifications from "./StorageNotifications";
 
+import urls from "@/app/base/urls";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatusCode } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen } from "@/testing/utils";
+
+const machineRoutePattern = `${urls.machines.machine.index(null)}/*`;
+const storageUrl = urls.machines.machine.storage({ id: "abc123" });
 
 describe("StorageNotifications", () => {
   let state: RootState;
@@ -28,7 +32,9 @@ describe("StorageNotifications", () => {
   });
 
   it("handles no notifications", () => {
-    renderWithProviders(<StorageNotifications id="abc123" />, {
+    renderWithProviders(<StorageNotifications />, {
+      initialEntries: [storageUrl],
+      pattern: machineRoutePattern,
       state,
     });
 
@@ -39,7 +45,9 @@ describe("StorageNotifications", () => {
 
   it("can display a commissioning error", () => {
     machine.disks = [];
-    renderWithProviders(<StorageNotifications id="abc123" />, {
+    renderWithProviders(<StorageNotifications />, {
+      initialEntries: [storageUrl],
+      pattern: machineRoutePattern,
       state,
     });
 
@@ -52,7 +60,9 @@ describe("StorageNotifications", () => {
 
   it("can display a machine state error", () => {
     machine.status_code = NodeStatusCode.NEW;
-    renderWithProviders(<StorageNotifications id="abc123" />, {
+    renderWithProviders(<StorageNotifications />, {
+      initialEntries: [storageUrl],
+      pattern: machineRoutePattern,
       state,
     });
 
@@ -65,7 +75,9 @@ describe("StorageNotifications", () => {
 
   it("can display an OS storage configuration notification", () => {
     machine.osystem = "windows";
-    renderWithProviders(<StorageNotifications id="abc123" />, {
+    renderWithProviders(<StorageNotifications />, {
+      initialEntries: [storageUrl],
+      pattern: machineRoutePattern,
       state,
     });
 
@@ -78,7 +90,9 @@ describe("StorageNotifications", () => {
 
   it("can display a bcache ZFS error", () => {
     machine.osystem = "centos";
-    renderWithProviders(<StorageNotifications id="abc123" />, {
+    renderWithProviders(<StorageNotifications />, {
+      initialEntries: [storageUrl],
+      pattern: machineRoutePattern,
       state,
     });
 
@@ -89,7 +103,9 @@ describe("StorageNotifications", () => {
 
   it("can display a list of storage layout issues", () => {
     machine.storage_layout_issues = ["it's bad", "it won't work"];
-    renderWithProviders(<StorageNotifications id="abc123" />, {
+    renderWithProviders(<StorageNotifications />, {
+      initialEntries: [storageUrl],
+      pattern: machineRoutePattern,
       state,
     });
 
