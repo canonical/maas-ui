@@ -6,7 +6,7 @@ on:
       - "3.*"
       - "*cypress*"
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   cypress:
@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        groups: ["no-users", "with-users"]
+        groups: [ "no-users", "with-users" ]
     env:
       MAAS_URL: https://localhost:5443
       MAAS_UI_URL: https://localhost:8400
@@ -152,32 +152,17 @@ jobs:
             -out /var/snap/maas/common/certs/cert.pem \
             -subj "/C=US/ST=State/L=City/O=Org/OU=Unit/CN=localhost" \
             -addext "subjectAltName=DNS:localhost,IP:127.0.0.1" && \
-            
+          
           echo "y" | sudo maas config-tls enable /var/snap/maas/common/certs/key.pem /var/snap/maas/common/certs/cert.pem
           sudo chmod 644 /var/snap/maas/common/certs/key.pem /var/snap/maas/common/certs/cert.pem
       - name: Trust self-signed certificate
         run: |
           sudo cp /var/snap/maas/common/certs/cert.pem /usr/local/share/ca-certificates/maas-selfsigned.crt
           sudo update-ca-certificates
-      - name: Re-login to MAAS API over HTTPS
-        if: matrix.groups == 'with-users'
-        run: |
-          export API_KEY=`sudo maas apikey --username=admin`
-          maas login admin https://localhost:5443/MAAS $API_KEY
       - name: Wait for MAAS boot resources
         if: matrix.groups == 'with-users'
         shell: bash
         run: while [ $(maas admin boot-resources is-importing -k | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
-      - name: Debug - print boot resource selections
-        if: matrix.groups == 'with-users'
-        shell: bash
-        run: |
-          echo "=== Boot sources ==="
-          maas admin boot-sources read
-          echo "=== Boot source selections ==="
-          maas admin boot-source-selections read 1
-          echo "=== Boot resources ==="
-          maas admin boot-resources read
       - name: Run Cypress tests
         uses: cypress-io/github-action@v4
         env:

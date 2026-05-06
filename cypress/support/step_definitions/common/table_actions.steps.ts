@@ -1,7 +1,7 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { LONG_TIMEOUT } from "../../../constants";
 
-function findRow(identifier: string, timeout?: number) {
+export function findRow(identifier: string, timeout?: number) {
   const hasSelectors = identifier
     .split(/\s+/)
     .map((part) => `:has(:contains("${part}"))`)
