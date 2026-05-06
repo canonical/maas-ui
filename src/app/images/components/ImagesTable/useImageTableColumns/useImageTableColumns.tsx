@@ -437,7 +437,7 @@ const useImageTableColumns = ({
                         }
                         openSidePanel({
                           component: DeleteImages,
-                          title: `Delete ${selectedImageCount > 1 ? selectedImageCount : ""} ${pluralize("image", selectedImageCount)}`,
+                          title: `Delete ${selectedImageCount > 1 ? `${selectedImageCount} ` : ""}${pluralize("image", selectedImageCount)}`,
                           props: {
                             rowSelection: { ...selectedRows, [rowId]: true },
                             setRowSelection: setSelectedRows,
