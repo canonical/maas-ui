@@ -465,9 +465,9 @@ import type {
   ListResourcePoolsData,
   ListResourcePoolsErrors,
   ListResourcePoolsResponses,
-  ListResourcePoolsWithSummaryData,
-  ListResourcePoolsWithSummaryErrors,
-  ListResourcePoolsWithSummaryResponses,
+  ListResourcePoolsStatisticsData,
+  ListResourcePoolsStatisticsErrors,
+  ListResourcePoolsStatisticsResponses,
   ListSelectionsData,
   ListSelectionsErrors,
   ListSelectionsResponses,
@@ -3305,18 +3305,18 @@ export const updateResourcePool = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List resource pools with a summary. ONLY FOR INTERNAL USAGE.
+ * List resource pools with statistics. ONLY FOR INTERNAL USAGE.
  *
- * List resource pools with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * List resource pools with statistics. This endpoint is only for internal usage and might be changed or removed without notice.
  */
-export const listResourcePoolsWithSummary = <
+export const listResourcePoolsStatistics = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListResourcePoolsWithSummaryData, ThrowOnError>
+  options?: Options<ListResourcePoolsStatisticsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListResourcePoolsWithSummaryResponses,
-    ListResourcePoolsWithSummaryErrors,
+    ListResourcePoolsStatisticsResponses,
+    ListResourcePoolsStatisticsErrors,
     ThrowOnError
   >({
     security: [
@@ -3325,7 +3325,7 @@ export const listResourcePoolsWithSummary = <
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/resource_pools_with_summary",
+    url: "/MAAS/a/v3/resource_pools:statistics",
     ...options,
   });
 };

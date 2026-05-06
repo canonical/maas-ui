@@ -16,9 +16,9 @@ import type {
   GetResourcePoolData,
   GetResourcePoolErrors,
   GetResourcePoolResponses,
-  ListResourcePoolsWithSummaryData,
-  ListResourcePoolsWithSummaryErrors,
-  ListResourcePoolsWithSummaryResponses,
+  ListResourcePoolsStatisticsData,
+  ListResourcePoolsStatisticsErrors,
+  ListResourcePoolsStatisticsResponses,
   Options,
   UpdateResourcePoolData,
   UpdateResourcePoolErrors,
@@ -29,41 +29,41 @@ import {
   deleteResourcePool,
   updateResourcePool,
   getResourcePool,
-  listResourcePoolsWithSummary,
+  listResourcePoolsStatistics,
 } from "@/app/apiclient";
 import {
   getResourcePoolQueryKey,
-  listResourcePoolsWithSummaryQueryKey,
+  listResourcePoolsStatisticsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const usePools = (
-  options?: Options<ListResourcePoolsWithSummaryData>
+  options?: Options<ListResourcePoolsStatisticsData>
 ) => {
   return useWebsocketAwareQuery(
     queryOptionsWithHeaders<
-      ListResourcePoolsWithSummaryResponses,
-      ListResourcePoolsWithSummaryErrors,
-      ListResourcePoolsWithSummaryData
+      ListResourcePoolsStatisticsResponses,
+      ListResourcePoolsStatisticsErrors,
+      ListResourcePoolsStatisticsData
     >(
       options,
-      listResourcePoolsWithSummary,
-      listResourcePoolsWithSummaryQueryKey(options)
+      listResourcePoolsStatistics,
+      listResourcePoolsStatisticsQueryKey(options)
     )
   );
 };
 
 export const usePoolCount = (
-  options?: Options<ListResourcePoolsWithSummaryData>
+  options?: Options<ListResourcePoolsStatisticsData>
 ) => {
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
-      ListResourcePoolsWithSummaryResponses,
-      ListResourcePoolsWithSummaryErrors,
-      ListResourcePoolsWithSummaryData
+      ListResourcePoolsStatisticsResponses,
+      ListResourcePoolsStatisticsErrors,
+      ListResourcePoolsStatisticsData
     >(
       options,
-      listResourcePoolsWithSummary,
-      listResourcePoolsWithSummaryQueryKey(options)
+      listResourcePoolsStatistics,
+      listResourcePoolsStatisticsQueryKey(options)
     ),
     select: (data) => data?.total ?? 0,
   });
@@ -91,7 +91,7 @@ export const useCreatePool = (
     >(mutationOptions, createResourcePool),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listResourcePoolsWithSummaryQueryKey(),
+        queryKey: listResourcePoolsStatisticsQueryKey(),
       });
     },
   });
@@ -109,7 +109,7 @@ export const useUpdatePool = (
     >(mutationOptions, updateResourcePool),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listResourcePoolsWithSummaryQueryKey(),
+        queryKey: listResourcePoolsStatisticsQueryKey(),
       });
     },
   });
@@ -127,7 +127,7 @@ export const useDeletePool = (
     >(mutationOptions, deleteResourcePool),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: listResourcePoolsWithSummaryQueryKey(),
+        queryKey: listResourcePoolsStatisticsQueryKey(),
       });
     },
   });

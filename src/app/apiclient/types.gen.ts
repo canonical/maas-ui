@@ -3166,9 +3166,31 @@ export type ResourcePoolResponse = {
 };
 
 /**
- * ResourcePoolWithSummaryResponse
+ * ResourcePoolStatisticsListResponse
  */
-export type ResourcePoolWithSummaryResponse = {
+export type ResourcePoolStatisticsListResponse = {
+  /**
+   * Items
+   */
+  items: ResourcePoolStatisticsResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * ResourcePoolStatisticsResponse
+ */
+export type ResourcePoolStatisticsResponse = {
   _links?: BaseHal;
   /**
    * Embedded
@@ -3216,28 +3238,6 @@ export type ResourcePoolsListResponse = {
    * Items
    */
   items: ResourcePoolResponse[];
-  /**
-   * Total
-   */
-  total: number;
-  /**
-   * Next
-   */
-  next?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
-};
-
-/**
- * ResourcePoolsWithSummaryListResponse
- */
-export type ResourcePoolsWithSummaryListResponse = {
-  /**
-   * Items
-   */
-  items: ResourcePoolWithSummaryResponse[];
   /**
    * Total
    */
@@ -9762,7 +9762,7 @@ export type UpdateResourcePoolResponses = {
 export type UpdateResourcePoolResponse =
   UpdateResourcePoolResponses[keyof UpdateResourcePoolResponses];
 
-export type ListResourcePoolsWithSummaryData = {
+export type ListResourcePoolsStatisticsData = {
   body?: never;
   path?: never;
   query?: {
@@ -9775,28 +9775,28 @@ export type ListResourcePoolsWithSummaryData = {
      */
     size?: number;
   };
-  url: "/MAAS/a/v3/resource_pools_with_summary";
+  url: "/MAAS/a/v3/resource_pools:statistics";
 };
 
-export type ListResourcePoolsWithSummaryErrors = {
+export type ListResourcePoolsStatisticsErrors = {
   /**
    * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListResourcePoolsWithSummaryError =
-  ListResourcePoolsWithSummaryErrors[keyof ListResourcePoolsWithSummaryErrors];
+export type ListResourcePoolsStatisticsError =
+  ListResourcePoolsStatisticsErrors[keyof ListResourcePoolsStatisticsErrors];
 
-export type ListResourcePoolsWithSummaryResponses = {
+export type ListResourcePoolsStatisticsResponses = {
   /**
    * Successful Response
    */
-  200: ResourcePoolsWithSummaryListResponse;
+  200: ResourcePoolStatisticsListResponse;
 };
 
-export type ListResourcePoolsWithSummaryResponse =
-  ListResourcePoolsWithSummaryResponses[keyof ListResourcePoolsWithSummaryResponses];
+export type ListResourcePoolsStatisticsResponse =
+  ListResourcePoolsStatisticsResponses[keyof ListResourcePoolsStatisticsResponses];
 
 export type ListFabricVlanSubnetStaticroutesData = {
   body?: never;

@@ -3,14 +3,14 @@ import { useMemo } from "react";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router";
 
-import type { ResourcePoolWithSummaryResponse } from "@/app/apiclient";
+import type { ResourcePoolStatisticsResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { DeletePool, EditPool } from "@/app/pools/components";
 import { FilterMachines } from "@/app/store/machine/utils";
 
-const getMachinesLabel = (row: Row<ResourcePoolWithSummaryResponse>) => {
+const getMachinesLabel = (row: Row<ResourcePoolStatisticsResponse>) => {
   if (row.original.machine_total_count === 0) {
     return "Empty pool";
   }
@@ -25,8 +25,8 @@ const getMachinesLabel = (row: Row<ResourcePoolWithSummaryResponse>) => {
 };
 
 export type PoolsColumnDef = ColumnDef<
-  ResourcePoolWithSummaryResponse,
-  Partial<ResourcePoolWithSummaryResponse>
+  ResourcePoolStatisticsResponse,
+  Partial<ResourcePoolStatisticsResponse>
 >;
 
 const usePoolsTableColumns = (): PoolsColumnDef[] => {
