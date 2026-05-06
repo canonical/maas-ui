@@ -73,6 +73,7 @@ const ImagesTable = ({
 
   return (
     <GenericTable
+      aria-label="Images table"
       columns={columns}
       data={images.data.items}
       filterCells={filterCells}

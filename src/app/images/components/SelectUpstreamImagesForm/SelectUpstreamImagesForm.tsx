@@ -185,6 +185,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
               </NotificationBanner>
             )}
             <FormikForm
+              aria-label="Select upstream images to sync"
               buttonsBehavior="independent"
               enableReinitialize
               errors={addSelections.error}
