@@ -9,6 +9,15 @@ function findRow(identifier: string, timeout?: number) {
   return cy.get(`tr${hasSelectors}`, timeout ? { timeout } : undefined);
 }
 
+When("the user logs all visible image rows", () => {
+  cy.findByRole("grid")
+    .findAllByRole("row")
+    .each(($row, index) => {
+      const text = $row.text().trim().replace(/\s+/g, " ");
+      cy.log(`Row ${index + 1}: ${text}`);
+    });
+});
+
 Then(
   "a row matching {string} should be visible in the table",
   (rowIdentifier: string) => {

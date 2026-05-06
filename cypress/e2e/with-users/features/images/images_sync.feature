@@ -6,6 +6,9 @@ Feature: Images sync
     And the page is loaded
 
   Scenario: The user can add, manage, and delete a synced image
+    # Debug: report all visible rows before the test begins
+    And the user logs all visible image rows
+
     # Add the image
     When the user clicks the "Select upstream images" button
     And the "Select upstream images to sync" heading is visible
