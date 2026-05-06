@@ -3,19 +3,19 @@ import { useSelector } from "react-redux";
 
 import NodeLogs from "@/app/base/components/node/NodeLogs";
 import { useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
 import urls from "@/app/base/urls";
 import machineSelectors from "@/app/store/machine/selectors";
-import type { Machine } from "@/app/store/machine/types";
+import { MachineMeta } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
-
-type Props = { systemId: Machine["system_id"] };
 
 export enum Label {
   Loading = "Loading logs",
 }
 
-const MachineLogs = ({ systemId }: Props): React.ReactElement => {
+const MachineLogs = (): React.ReactElement => {
+  const systemId = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );

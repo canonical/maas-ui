@@ -1,17 +1,15 @@
 import { useSelector } from "react-redux";
 
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
 import MachineNotifications from "@/app/machines/views/MachineDetails/MachineNotifications";
 import machineSelectors from "@/app/store/machine/selectors";
-import type { Machine } from "@/app/store/machine/types";
+import { MachineMeta } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = {
-  id: Machine["system_id"];
-};
-
-const NetworkNotifications = ({ id }: Props): React.ReactElement | null => {
+const NetworkNotifications = (): React.ReactElement | null => {
+  const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );

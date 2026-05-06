@@ -11,6 +11,7 @@ import { default as pools } from "@/app/pools/urls";
 import { default as preferences } from "@/app/preferences/urls";
 import { default as racks } from "@/app/racks/urls";
 import { default as settings } from "@/app/settings/urls";
+import { default as switches } from "@/app/switches/urls";
 import { default as tags } from "@/app/tags/urls";
 import { default as zones } from "@/app/zones/urls";
 
@@ -28,6 +29,7 @@ const urls = {
   machines,
   pools,
   racks,
+  switches,
   preferences,
   settings,
   networks,
