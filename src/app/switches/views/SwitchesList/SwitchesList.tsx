@@ -1,7 +1,7 @@
 import { useState, type ReactElement } from "react";
 
-import SwitchesListHeader from "./SwitchesListHeader";
-import SwitchesTable from "./components/SwitchesTable";
+import SwitchesListHeader from "@/app/switches/components/SwitchesListHeader";
+import SwitchesTable from "@/app/switches/components/SwitchesTable";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
