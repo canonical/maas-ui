@@ -172,6 +172,8 @@ jobs:
         if: matrix.groups == 'with-users'
         shell: bash
         run: |
+          echo "=== Boot sources ==="
+          maas admin boot-sources read
           echo "=== Boot source selections ==="
           maas admin boot-source-selections read 1
           echo "=== Boot resources ==="
