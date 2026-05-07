@@ -5,7 +5,7 @@ import { findRow } from "../common/table_actions.steps";
 let selectedImageId = "";
 
 When("the user opens the first available release dropdown", () => {
-  cy.findByRole("complementary")
+  cy.findByRole("complementary", { name: "Select upstream images to sync" })
     .find("tr")
     .filter(":has([role='combobox'])")
     .first()
