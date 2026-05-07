@@ -9,13 +9,8 @@ export function findRow(identifier: string, timeout?: number) {
   return cy.get(`tr${hasSelectors}`, timeout ? { timeout } : undefined);
 }
 
-When("the user logs all visible image rows", () => {
-  cy.findByRole("grid")
-    .findAllByRole("row")
-    .each(($row, index) => {
-      const text = $row.text().trim().replace(/\s+/g, " ");
-      cy.log(`Row ${index + 1}: ${text}`);
-    });
+Then("the user selects all rows", () => {
+  cy.findByRole("checkbox", { name: "select all" }).click({ force: true });
 });
 
 Then(

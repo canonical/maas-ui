@@ -4,6 +4,23 @@ import { findRow } from "../common/table_actions.steps";
 
 let selectedImageId = "";
 
+When("the user opens the {string} release dropdown", (release: string) => {
+  const hasSelectors = release
+    .split(/\s+/)
+    .map((part) => `:has(:contains("${part}"))`)
+    .join("");
+  cy.findByRole("complementary", { name: "Select upstream images to sync" })
+    .find(`tr${hasSelectors}`)
+    .first()
+    .then(($row) => {
+      const title = $row.find("td:first-of-type div div").first().text().trim();
+      const codename = $row.find("td:first-of-type small").text().trim();
+      selectedImageId = [title, codename].filter(Boolean).join(" ");
+    })
+    .findByRole("combobox")
+    .click();
+});
+
 When("the user opens the first available release dropdown", () => {
   cy.findByRole("complementary", { name: "Select upstream images to sync" })
     .find("tr")
