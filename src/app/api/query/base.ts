@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 import {
   listUserSshkeysQueryKey,
-  listZonesWithSummaryQueryKey,
+  listZonesWithStatisticsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import { WebSocketContext } from "@/app/base/websocket-context";
 import statusSelectors from "@/app/store/status/selectors";
@@ -15,7 +15,7 @@ import type { WebSocketEndpointModel } from "@/websocket-client";
 import { WebSocketMessageType } from "@/websocket-client";
 
 const wsToQueryKeyMapping: Partial<Record<WebSocketEndpointModel, unknown>> = {
-  zone: listZonesWithSummaryQueryKey(),
+  zone: listZonesWithStatisticsQueryKey(),
   sshkey: listUserSshkeysQueryKey(),
 };
 
