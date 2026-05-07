@@ -180,7 +180,6 @@ import {
   stopSyncBootsourceBootsourceselection,
   syncBootsourceBootsourceselection,
   updateBootsource,
-  updateBootsourceBootsourceselection,
   updateFabric,
   updateFabricVlan,
   updateFabricVlanSubnet,
@@ -719,9 +718,6 @@ import type {
   SyncBootsourceBootsourceselectionData,
   SyncBootsourceBootsourceselectionError,
   SyncBootsourceBootsourceselectionResponse,
-  UpdateBootsourceBootsourceselectionData,
-  UpdateBootsourceBootsourceselectionError,
-  UpdateBootsourceBootsourceselectionResponse,
   UpdateBootsourceData,
   UpdateBootsourceError,
   UpdateBootsourceResponse,
@@ -1495,33 +1491,6 @@ export const getBootsourceBootsourceselectionOptions = (
     },
     queryKey: getBootsourceBootsourceselectionQueryKey(options),
   });
-
-/**
- * Update Bootsource Bootsourceselection
- */
-export const updateBootsourceBootsourceselectionMutation = (
-  options?: Partial<Options<UpdateBootsourceBootsourceselectionData>>
-): UseMutationOptions<
-  UpdateBootsourceBootsourceselectionResponse,
-  UpdateBootsourceBootsourceselectionError,
-  Options<UpdateBootsourceBootsourceselectionData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    UpdateBootsourceBootsourceselectionResponse,
-    UpdateBootsourceBootsourceselectionError,
-    Options<UpdateBootsourceBootsourceselectionData>
-  > = {
-    mutationFn: async (fnOptions) => {
-      const { data } = await updateBootsourceBootsourceselection({
-        ...options,
-        ...fnOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
 
 /**
  * Fetch Bootsources Available Images

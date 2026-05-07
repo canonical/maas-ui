@@ -10,8 +10,6 @@ export const zone = define<ZoneResponse>({
 
 export const zoneWithStatistics = define<ZoneWithStatisticsResponse>({
   id: (i: number) => i,
-  name: (i: number) => `zone-${i}`,
-  description: "test description",
   controllers_count: random,
   devices_count: random,
   machines_count: random,

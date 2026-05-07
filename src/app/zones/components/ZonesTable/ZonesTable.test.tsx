@@ -80,7 +80,6 @@ describe("ZonesTable", () => {
         zoneResolvers.listZonesWithStatistics.handler({
           items: [
             factory.zoneWithStatistics({
-              name: "default",
               machines_count: 5,
             }),
           ],
@@ -117,7 +116,6 @@ describe("ZonesTable", () => {
         zoneResolvers.listZonesWithStatistics.handler({
           items: [
             factory.zoneWithStatistics({
-              name: "default",
               devices_count: 2,
             }),
           ],
@@ -154,7 +152,6 @@ describe("ZonesTable", () => {
         zoneResolvers.listZonesWithStatistics.handler({
           items: [
             factory.zoneWithStatistics({
-              name: "default",
               controllers_count: 1,
             }),
           ],

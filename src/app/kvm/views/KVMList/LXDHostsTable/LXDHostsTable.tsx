@@ -2,7 +2,7 @@ import { GenericTable } from "@canonical/maas-react-components";
 import { useSelector } from "react-redux";
 
 import { useZones } from "@/app/api/query/zones";
-import type { ZoneWithStatisticsResponse } from "@/app/apiclient";
+import type { ZoneResponse } from "@/app/apiclient";
 import urls from "@/app/base/urls";
 import type { Props as RAMColumnProps } from "@/app/kvm/components/RAMColumn/RAMColumn";
 import type { KVMResource, KVMStoragePoolResources } from "@/app/kvm/types";
@@ -46,7 +46,7 @@ export type LXDKVMHost = {
 
 export const generateSingleHostRows = (
   pods: Pod[],
-  zones: Pick<ZoneWithStatisticsResponse, "id" | "name">[] | undefined
+  zones?: ZoneResponse[]
 ): LXDKVMHost[] =>
   pods.map((pod): LXDKVMHost => {
     const zone = zones?.find((zone) => pod.zone === zone.id);

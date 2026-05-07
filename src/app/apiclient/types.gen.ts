@@ -5144,14 +5144,6 @@ export type ZoneWithStatisticsResponse = {
    */
   id: number;
   /**
-   * Name
-   */
-  name: string;
-  /**
-   * Description
-   */
-  description: string;
-  /**
    * Devices Count
    */
   devices_count: number;
@@ -12451,6 +12443,10 @@ export type ListZonesData = {
      * Size
      */
     size?: number;
+    /**
+     * Filter by zone id
+     */
+    id?: number[];
   };
   url: "/MAAS/a/v3/zones";
 };
