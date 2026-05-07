@@ -7,5 +7,5 @@ Feature: Settings - Group details
     And the user fills in valid group details
     And the user submits the form
     Then the group creation should succeed
-    When the user clicks on the newly created group link
+    When the user clicks the created group
     Then the group details page should display the group name

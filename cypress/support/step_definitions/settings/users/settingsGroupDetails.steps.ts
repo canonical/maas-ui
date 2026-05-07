@@ -14,7 +14,7 @@ Then("the group creation should succeed", () => {
   cy.findByText(groupName).should("exist");
 });
 
-When("the user clicks on the newly created group link", () => {
+When("the user clicks the created group", () => {
   cy.findByRole("link", { name: groupName }).click();
 });
 
