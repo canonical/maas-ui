@@ -64,3 +64,6 @@ export const routes: Record<string, string> = {
 };
 // longer timeout that can be useful for slow commands
 export const LONG_TIMEOUT = 30000;
+// extra-long timeout for operations that may take significantly
+// longer due to backend workflows (e.g. first-time image sync)
+export const VERY_LONG_TIMEOUT = 60000;
