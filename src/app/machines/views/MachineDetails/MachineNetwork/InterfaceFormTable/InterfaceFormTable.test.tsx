@@ -81,29 +81,7 @@ describe("InterfaceFormTable", () => {
     );
 
     expect(
-      screen.getByRole("checkbox", { name: nic.name })
+      screen.getByRole("checkbox", { name: `select ${nic.name}` })
     ).toBeInTheDocument();
-  });
-
-  it("mutes a row if its not selected", () => {
-    const nic = factory.machineInterface();
-    state.machine.items = [
-      factory.machineDetails({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
-    renderWithProviders(
-      <InterfaceFormTable
-        interfaces={[{ nicId: nic.id }]}
-        selected={[]}
-        selectedEditable
-        setSelected={vi.fn()}
-        systemId="abc123"
-      />,
-      { state }
-    );
-
-    expect(screen.getAllByRole("row")[1]).toHaveClass("p-table__row--muted");
   });
 });

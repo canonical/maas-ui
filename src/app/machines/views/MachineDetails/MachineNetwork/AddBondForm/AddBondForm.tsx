@@ -80,11 +80,21 @@ const InterfaceSchema = Yup.object().shape({
 
 // TODO: better prop typing, these are sometimes undefined
 const AddBondForm = ({
-  selected,
-  setSelected,
+  selected: initialSelected,
+  setSelected: setParentSelected,
   systemId,
 }: AddBondProps): ReactElement => {
   const { closeSidePanel } = useSidePanel();
+
+  // Local state is required because `selected` is frozen in the side panel context when the panel opens and won't reflect parent updates.
+  const [selected, setLocalSelected] = useState<Selected[]>(initialSelected);
+  const setSelected: SetSelected = useCallback(
+    (newSelected) => {
+      setLocalSelected(newSelected);
+      setParentSelected(newSelected);
+    },
+    [setParentSelected]
+  );
   const [editingMembers, setEditingMembers] = useState(false);
   const [bondVLAN, setBondVLAN] = useState<NetworkInterface["vlan_id"] | null>(
     null
