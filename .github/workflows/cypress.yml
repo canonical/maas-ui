@@ -170,7 +170,7 @@ jobs:
           HTTPS_KEY: /var/snap/maas/common/certs/key.pem
           NODE_EXTRA_CA_CERTS: /var/snap/maas/common/certs/cert.pem
         with:
-          config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
+          config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000,video=true,videoCompression=32
           install: false
           start: yarn start
           spec: cypress/e2e/${{ matrix.groups }}/**/*.{spec.ts,feature}
@@ -179,8 +179,15 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-${{ matrix.groups }}
           path: cypress/screenshots
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-videos-${{ matrix.groups }}
+          path: cypress/videos
+          if-no-files-found: ignore
       - name: Collect MAAS logs
         if: failure()
         shell: bash
@@ -188,5 +195,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: maas_logs
+          name: maas-logs-${{ matrix.groups }}
           path: cypress/maas_logs.txt
+          if-no-files-found: ignore
