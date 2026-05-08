@@ -77,11 +77,13 @@ describe("useGetImageSource", () => {
 
 describe("useChangeImageSource", () => {
   const newImageSource: BootSourceCreateRequest = {
+    name: "Custom",
     url: "http://updated.images.io/",
     keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
     keyring_data: "newdata",
     priority: 5,
     skip_keyring_verification: false,
+    enabled: true,
   };
 
   afterEach(() => {
@@ -129,12 +131,15 @@ describe("useChangeImageSource", () => {
 });
 
 describe("useUpdateImageSource", () => {
-  it("should update a pool", async () => {
+  it("should update a source", async () => {
     const updatedImageSource: BootSourceUpdateRequest = {
+      name: "Custom",
+      url: "http://updated.images.io/",
       keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
       keyring_data: "newdata",
       priority: 5,
       skip_keyring_verification: false,
+      enabled: true,
     };
     const { result } = renderHookWithProviders(() => useUpdateImageSource());
     result.current.mutate({
