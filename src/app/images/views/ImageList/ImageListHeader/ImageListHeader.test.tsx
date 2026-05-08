@@ -115,7 +115,7 @@ describe("Delete", () => {
         rowSelection: { 1: true },
         setRowSelection: expect.any(Function),
       },
-      title: "Delete images",
+      title: "Delete image",
     });
   });
 });

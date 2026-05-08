@@ -334,6 +334,12 @@ const useImageTableColumns = ({
 
             const canBeDeleted = !isCommissioningImage && !downloadInProgress;
 
+            const selectedImageCount =
+              Object.entries(selectedRows).filter(
+                ([selectedRowId, isSelected]) =>
+                  selectedRowId !== rowId && isSelected
+              ).length + 1;
+
             return getIsGrouped() ? null : (
               <div>
                 {isCustom ? null : downloadInProgress ? (
@@ -431,7 +437,7 @@ const useImageTableColumns = ({
                         }
                         openSidePanel({
                           component: DeleteImages,
-                          title: "Delete images",
+                          title: `Delete ${selectedImageCount > 1 ? `${selectedImageCount} ` : ""}${pluralize("image", selectedImageCount)}`,
                           props: {
                             rowSelection: { ...selectedRows, [rowId]: true },
                             setRowSelection: setSelectedRows,

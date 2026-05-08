@@ -13,6 +13,7 @@ import {
 
 const { mockClose } = await mockSidePanel();
 const mockServer = setupMockServer(
+  imageResolvers.listSelections.handler(),
   imageResolvers.deleteSelections.handler(),
   imageResolvers.deleteCustomImages.handler()
 );
@@ -55,7 +56,9 @@ describe("DeleteImages", () => {
       />
     );
     await waitForLoading();
-    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Delete 1 image" })
+    );
     await waitFor(() => {
       expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
     });

@@ -6,7 +6,7 @@ on:
       - "3.*"
       - "*cypress*"
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   cypress:
@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        groups: ["no-users", "with-users"]
+        groups: [ "no-users", "with-users" ]
     env:
       MAAS_URL: https://localhost:5443
       MAAS_UI_URL: https://localhost:8400
@@ -152,7 +152,7 @@ jobs:
             -out /var/snap/maas/common/certs/cert.pem \
             -subj "/C=US/ST=State/L=City/O=Org/OU=Unit/CN=localhost" \
             -addext "subjectAltName=DNS:localhost,IP:127.0.0.1" && \
-            
+          
           echo "y" | sudo maas config-tls enable /var/snap/maas/common/certs/key.pem /var/snap/maas/common/certs/cert.pem
           sudo chmod 644 /var/snap/maas/common/certs/key.pem /var/snap/maas/common/certs/cert.pem
       - name: Trust self-signed certificate
