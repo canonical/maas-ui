@@ -425,6 +425,12 @@ export type BootSourceCreateRequest = {
    */
   skip_keyring_verification?: boolean;
   /**
+   * Name
+   *
+   * Name of this boot source.
+   */
+  name: string;
+  /**
    * Priority
    *
    * Priority value. Higher values mean higher priority. Must be non-negative.
@@ -436,6 +442,12 @@ export type BootSourceCreateRequest = {
    * URL of SimpleStreams server providing boot source information.
    */
   url: string;
+  /**
+   * Enabled
+   *
+   * Whether to enable downloads from this source or not.
+   */
+  enabled: boolean;
 };
 
 /**
@@ -486,6 +498,10 @@ export type BootSourceResponse = {
    */
   id: number;
   /**
+   * Name
+   */
+  name: string;
+  /**
    * Url
    */
   url: string;
@@ -505,6 +521,10 @@ export type BootSourceResponse = {
    * Skip Keyring Verification
    */
   skip_keyring_verification: boolean;
+  /**
+   * Enabled
+   */
+  enabled: boolean;
 };
 
 /**
@@ -568,11 +588,29 @@ export type BootSourceUpdateRequest = {
    */
   skip_keyring_verification?: boolean;
   /**
+   * Name
+   *
+   * Name of this boot source.
+   */
+  name: string;
+  /**
    * Priority
    *
    * Priority value. Higher values mean higher priority. Must be non-negative.
    */
   priority: number;
+  /**
+   * Url
+   *
+   * URL of SimpleStreams server providing boot source information.
+   */
+  url: string;
+  /**
+   * Enabled
+   *
+   * Whether to enable downloads from this source or not.
+   */
+  enabled: boolean;
 };
 
 /**
@@ -6084,46 +6122,6 @@ export type GetBootsourceBootsourceselectionResponses = {
 
 export type GetBootsourceBootsourceselectionResponse =
   GetBootsourceBootsourceselectionResponses[keyof GetBootsourceBootsourceselectionResponses];
-
-export type UpdateBootsourceBootsourceselectionData = {
-  body: BootSourceSelectionRequest;
-  path: {
-    /**
-     * Boot Source Id
-     */
-    boot_source_id: number;
-    /**
-     * Id
-     */
-    id: number;
-  };
-  query?: never;
-  url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}";
-};
-
-export type UpdateBootsourceBootsourceselectionErrors = {
-  /**
-   * Not Found
-   */
-  404: NotFoundBodyResponse;
-  /**
-   * Unprocessable Content
-   */
-  422: ValidationErrorBodyResponse;
-};
-
-export type UpdateBootsourceBootsourceselectionError =
-  UpdateBootsourceBootsourceselectionErrors[keyof UpdateBootsourceBootsourceselectionErrors];
-
-export type UpdateBootsourceBootsourceselectionResponses = {
-  /**
-   * Successful Response
-   */
-  200: BootSourceResponse;
-};
-
-export type UpdateBootsourceBootsourceselectionResponse =
-  UpdateBootsourceBootsourceselectionResponses[keyof UpdateBootsourceBootsourceselectionResponses];
 
 export type FetchBootsourcesAvailableImagesData = {
   body: BootSourceFetchRequest;
