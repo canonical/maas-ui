@@ -12,7 +12,9 @@ export const Labels = {
 };
 
 const GroupSchema = Yup.object().shape({
-  name: Yup.string().required(`${Labels.name} is required`),
+  name: Yup.string()
+    .required(`${Labels.name} is required`)
+    .matches(/^[a-zA-Z0-9 _-]+$/, "Name cannot contain special characters"),
   description: Yup.string(),
 });
 

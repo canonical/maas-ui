@@ -2,10 +2,12 @@ import {
   Notification as NotificationBanner,
   Spinner,
 } from "@canonical/react-components";
+import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
 import { useGetGroup, useUpdateGroup } from "@/app/api/query/groups";
 import type { UpdateGroupError, UserGroupRequest } from "@/app/apiclient";
+import { getGroupQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -20,7 +22,9 @@ export const Labels = {
 };
 
 const GroupSchema = Yup.object().shape({
-  name: Yup.string().required(`${Labels.name} is required`),
+  name: Yup.string()
+    .required(`${Labels.name} is required`)
+    .matches(/^[a-zA-Z0-9 _-]+$/, "Name cannot contain special characters"),
   description: Yup.string(),
 });
 
@@ -29,6 +33,7 @@ const EditGroup = ({ id }: Props) => {
   const group = useGetGroup({ path: { group_id: id } });
   const eTag = group.data?.headers?.get("ETag");
   const updateGroup = useUpdateGroup();
+  const queryClient = useQueryClient();
 
   return (
     <>
@@ -57,7 +62,12 @@ const EditGroup = ({ id }: Props) => {
               path: { group_id: id },
             });
           }}
-          onSuccess={closeSidePanel}
+          onSuccess={async () => {
+            await queryClient.invalidateQueries({
+              queryKey: getGroupQueryKey({ path: { group_id: id } }),
+            });
+            closeSidePanel();
+          }}
           resetOnSave={true}
           saved={updateGroup.isSuccess}
           saving={updateGroup.isPending}

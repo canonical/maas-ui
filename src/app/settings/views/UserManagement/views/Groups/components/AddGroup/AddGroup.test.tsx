@@ -64,4 +64,21 @@ describe("AddGroup", () => {
       expect(screen.getByText("Uh oh!")).toBeInTheDocument();
     });
   });
+
+  it("prevents special characters in group name", async () => {
+    renderWithProviders(<AddGroup />);
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /group name/i }),
+      "invalid/group*name"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Save group/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Name cannot contain special characters")
+      ).toBeInTheDocument();
+    });
+  });
 });
