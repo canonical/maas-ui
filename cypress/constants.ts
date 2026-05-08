@@ -42,6 +42,7 @@ export const routes: Record<string, string> = {
   "settings token expiration": "/settings/security/session-timeout",
   "settings ipmi settings": "/settings/security/ipmi-settings",
   "settings users": "/settings/user-management/users",
+  "settings groups": "/settings/user-management/groups",
   "settings single sign-on": "/settings/user-management/single-sign-on",
   "settings ubuntu images": "/settings/images/ubuntu",
   "settings windows images": "/settings/images/windows",
