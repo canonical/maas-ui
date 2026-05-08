@@ -163,12 +163,6 @@ jobs:
         if: matrix.groups == 'with-users'
         shell: bash
         run: while [ $(maas admin boot-resources is-importing -k | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
-      - name: Throttle network for image sync tests
-        if: matrix.groups == 'with-users'
-        run: |
-          IFACE=$(ip route | awk '/^default/ { print $5; exit }')
-          sudo tc qdisc add dev $IFACE root tbf rate 10mbit burst 1mbit latency 400ms
-          echo "Throttled $IFACE to 10mbit"
       - name: Run Cypress tests
         uses: cypress-io/github-action@v4
         env:
@@ -187,11 +181,6 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots
-      - name: Restore network speed
-        if: always() && matrix.groups == 'with-users'
-        run: |
-          IFACE=$(ip route | awk '/^default/ { print $5; exit }')
-          sudo tc qdisc del dev $IFACE root || true
       - name: Collect MAAS logs
         if: failure()
         shell: bash
