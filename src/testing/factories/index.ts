@@ -205,5 +205,5 @@ export {
   vmClusterStoragePoolResource,
   vmHost,
 } from "./vmcluster";
-export { zone } from "./zone";
+export { zone, zoneWithStatistics } from "./zone";
 export { zonesGet } from "./response";

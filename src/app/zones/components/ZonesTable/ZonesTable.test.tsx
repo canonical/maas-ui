@@ -19,6 +19,7 @@ import {
 
 const mockServer = setupMockServer(
   zoneResolvers.listZones.handler(),
+  zoneResolvers.listZonesWithStatistics.handler(),
   zoneResolvers.getZone.handler(),
   authResolvers.getCurrentUser.handler()
 );
@@ -69,9 +70,17 @@ describe("ZonesTable", () => {
           items: [
             factory.zone({
               name: "default",
+            }),
+          ],
+          total: 1,
+        })
+      );
+
+      mockServer.use(
+        zoneResolvers.listZonesWithStatistics.handler({
+          items: [
+            factory.zoneWithStatistics({
               machines_count: 5,
-              devices_count: 2,
-              controllers_count: 1,
             }),
           ],
           total: 1,
@@ -97,9 +106,17 @@ describe("ZonesTable", () => {
           items: [
             factory.zone({
               name: "default",
-              machines_count: 5,
+            }),
+          ],
+          total: 1,
+        })
+      );
+
+      mockServer.use(
+        zoneResolvers.listZonesWithStatistics.handler({
+          items: [
+            factory.zoneWithStatistics({
               devices_count: 2,
-              controllers_count: 1,
             }),
           ],
           total: 1,
@@ -125,8 +142,16 @@ describe("ZonesTable", () => {
           items: [
             factory.zone({
               name: "default",
-              machines_count: 5,
-              devices_count: 2,
+            }),
+          ],
+          total: 1,
+        })
+      );
+
+      mockServer.use(
+        zoneResolvers.listZonesWithStatistics.handler({
+          items: [
+            factory.zoneWithStatistics({
               controllers_count: 1,
             }),
           ],

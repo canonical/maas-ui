@@ -5,9 +5,14 @@ import {
   useCreateZone,
   useUpdateZone,
   useDeleteZone,
+  useZonesStatistics,
 } from "@/app/api/query/zones";
 import type { ZoneRequest } from "@/app/apiclient";
-import { mockZones, zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  mockZones,
+  zoneResolvers,
+  mockZonesWithStatistics,
+} from "@/testing/resolvers/zones";
 import {
   renderHookWithProviders,
   setupMockServer,
@@ -16,6 +21,7 @@ import {
 
 const mockServer = setupMockServer(
   zoneResolvers.listZones.handler(),
+  zoneResolvers.listZonesWithStatistics.handler(),
   zoneResolvers.getZone.handler(),
   zoneResolvers.createZone.handler(),
   zoneResolvers.updateZone.handler(),
@@ -29,6 +35,18 @@ describe("useZones", () => {
       expect(result.current.isSuccess).toBe(true);
     });
     expect(result.current.data).toMatchObject(mockZones);
+  });
+});
+
+describe("useZonesStatistics", () => {
+  it("should return zones statistics data", async () => {
+    const { result } = renderHookWithProviders(() => useZonesStatistics());
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data?.items[0]).toMatchObject(
+      mockZonesWithStatistics.items[0]
+    );
   });
 });
 
