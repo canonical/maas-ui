@@ -7,7 +7,10 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useDeleteZone, useGetZone } from "@/app/api/query/zones";
-import { listZonesWithSummaryQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
+import {
+  listZonesQueryKey,
+  listZonesWithStatisticsQueryKey,
+} from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
@@ -44,12 +47,14 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ id }) => {
               path: { zone_id: id },
             });
           }}
-          onSuccess={() => {
-            return queryClient
-              .invalidateQueries({
-                queryKey: listZonesWithSummaryQueryKey(),
-              })
-              .then(closeSidePanel);
+          onSuccess={async () => {
+            await queryClient.invalidateQueries({
+              queryKey: listZonesWithStatisticsQueryKey(),
+            });
+            await queryClient.invalidateQueries({
+              queryKey: listZonesQueryKey(),
+            });
+            closeSidePanel();
           }}
           saved={deleteZone.isSuccess}
           saving={deleteZone.isPending}

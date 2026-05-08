@@ -3409,9 +3409,9 @@ export type SslKeyResponse = {
 };
 
 /**
- * SSLKeyWithSummaryResponse
+ * SSLKeyStatisticsResponse
  */
-export type SslKeyWithSummaryResponse = {
+export type SslKeyStatisticsResponse = {
   _links?: BaseHal;
   /**
    * Embedded
@@ -3436,13 +3436,13 @@ export type SslKeyWithSummaryResponse = {
 };
 
 /**
- * SSLKeysWithSummaryListResponse
+ * SSLKeysStatisticsListResponse
  */
-export type SslKeysWithSummaryListResponse = {
+export type SslKeysStatisticsListResponse = {
   /**
    * Items
    */
-  items: SslKeyWithSummaryResponse[];
+  items: SslKeyStatisticsResponse[];
   /**
    * Total
    */
@@ -5127,9 +5127,9 @@ export type ZoneResponse = {
 };
 
 /**
- * ZoneWithSummaryResponse
+ * ZoneWithStatisticsResponse
  */
-export type ZoneWithSummaryResponse = {
+export type ZoneWithStatisticsResponse = {
   _links?: BaseHal;
   /**
    * Embedded
@@ -5143,14 +5143,6 @@ export type ZoneWithSummaryResponse = {
    * Id
    */
   id: number;
-  /**
-   * Name
-   */
-  name: string;
-  /**
-   * Description
-   */
-  description: string;
   /**
    * Devices Count
    */
@@ -5188,13 +5180,13 @@ export type ZonesListResponse = {
 };
 
 /**
- * ZonesWithSummaryListResponse
+ * ZonesWithStatisticsListResponse
  */
-export type ZonesWithSummaryListResponse = {
+export type ZonesWithStatisticsListResponse = {
   /**
    * Items
    */
-  items: ZoneWithSummaryResponse[];
+  items: ZoneWithStatisticsResponse[];
   /**
    * Total
    */
@@ -5906,6 +5898,10 @@ export type DeleteBootsourceData = {
 
 export type DeleteBootsourceErrors = {
   /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
    * Not Found
    */
   404: NotFoundBodyResponse;
@@ -5976,6 +5972,10 @@ export type UpdateBootsourceData = {
 };
 
 export type UpdateBootsourceErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
   /**
    * Not Found
    */
@@ -10555,7 +10555,7 @@ export type GetUserSslkeyResponses = {
 export type GetUserSslkeyResponse =
   GetUserSslkeyResponses[keyof GetUserSslkeyResponses];
 
-export type GetUserSslkeysWithSummaryData = {
+export type ListUserSslkeysStatisticsData = {
   body?: never;
   path?: never;
   query?: {
@@ -10568,10 +10568,10 @@ export type GetUserSslkeysWithSummaryData = {
      */
     size?: number;
   };
-  url: "/MAAS/a/v3/users/me/sslkeys_with_summary";
+  url: "/MAAS/a/v3/users/me/sslkeys:statistics";
 };
 
-export type GetUserSslkeysWithSummaryErrors = {
+export type ListUserSslkeysStatisticsErrors = {
   /**
    * Unauthorized
    */
@@ -10582,18 +10582,18 @@ export type GetUserSslkeysWithSummaryErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetUserSslkeysWithSummaryError =
-  GetUserSslkeysWithSummaryErrors[keyof GetUserSslkeysWithSummaryErrors];
+export type ListUserSslkeysStatisticsError =
+  ListUserSslkeysStatisticsErrors[keyof ListUserSslkeysStatisticsErrors];
 
-export type GetUserSslkeysWithSummaryResponses = {
+export type ListUserSslkeysStatisticsResponses = {
   /**
    * Successful Response
    */
-  200: SslKeysWithSummaryListResponse;
+  200: SslKeysStatisticsListResponse;
 };
 
-export type GetUserSslkeysWithSummaryResponse =
-  GetUserSslkeysWithSummaryResponses[keyof GetUserSslkeysWithSummaryResponses];
+export type ListUserSslkeysStatisticsResponse =
+  ListUserSslkeysStatisticsResponses[keyof ListUserSslkeysStatisticsResponses];
 
 export type ListFabricVlanSubnetsData = {
   body?: never;
@@ -12610,10 +12610,14 @@ export type UpdateZoneResponses = {
 
 export type UpdateZoneResponse = UpdateZoneResponses[keyof UpdateZoneResponses];
 
-export type ListZonesWithSummaryData = {
+export type ListZonesWithStatisticsData = {
   body?: never;
   path?: never;
   query?: {
+    /**
+     * Filter by zone id
+     */
+    id?: number[];
     /**
      * Page
      */
@@ -12623,28 +12627,28 @@ export type ListZonesWithSummaryData = {
      */
     size?: number;
   };
-  url: "/MAAS/a/v3/zones_with_summary";
+  url: "/MAAS/a/v3/zones:statistics";
 };
 
-export type ListZonesWithSummaryErrors = {
+export type ListZonesWithStatisticsErrors = {
   /**
    * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListZonesWithSummaryError =
-  ListZonesWithSummaryErrors[keyof ListZonesWithSummaryErrors];
+export type ListZonesWithStatisticsError =
+  ListZonesWithStatisticsErrors[keyof ListZonesWithStatisticsErrors];
 
-export type ListZonesWithSummaryResponses = {
+export type ListZonesWithStatisticsResponses = {
   /**
    * Successful Response
    */
-  200: ZonesWithSummaryListResponse;
+  200: ZonesWithStatisticsListResponse;
 };
 
-export type ListZonesWithSummaryResponse =
-  ListZonesWithSummaryResponses[keyof ListZonesWithSummaryResponses];
+export type ListZonesWithStatisticsResponse =
+  ListZonesWithStatisticsResponses[keyof ListZonesWithStatisticsResponses];
 
 export type GetSubnetData = {
   body?: never;

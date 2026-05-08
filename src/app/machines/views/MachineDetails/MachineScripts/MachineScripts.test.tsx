@@ -27,7 +27,7 @@ describe("MachineScripts", () => {
       }),
     });
 
-    renderWithProviders(<MachineScripts systemId="abc123" />, {
+    renderWithProviders(<MachineScripts />, {
       state,
     });
 
@@ -59,7 +59,7 @@ describe("MachineScripts", () => {
     },
   ].forEach(({ label, path }) => {
     it(`displays: ${label} at: ${path}`, () => {
-      renderWithProviders(<MachineScripts systemId="abc123" />, {
+      renderWithProviders(<MachineScripts />, {
         initialEntries: [path],
         state,
         pattern: `${urls.machines.machine.scriptsResults.index(null)}/*`,

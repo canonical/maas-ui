@@ -11,8 +11,10 @@ import TagList from "./app/tags/views/TagList";
 import App from "@/app/App";
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";
 import PageContent from "@/app/base/components/PageContent";
+import { useGetURLId } from "@/app/base/hooks/urls";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
+import machineUrls from "@/app/machines/urls";
 import APIKeyList from "@/app/preferences/views/APIKeys/views";
 import Details from "@/app/preferences/views/Details";
 import SSHKeysList from "@/app/preferences/views/SSHKeys/views";
@@ -39,6 +41,7 @@ import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
 import SingleSignOn from "@/app/settings/views/UserManagement/views/SingleSignOn";
 import UsersList from "@/app/settings/views/UserManagement/views/UsersList/UsersList";
+import { MachineMeta } from "@/app/store/machine/types";
 import { getRelativeRoute } from "@/app/utils";
 
 const ControllerDetails = lazy(
@@ -62,6 +65,51 @@ const VirshDetails = lazy(() => import("@/app/kvm/views/VirshDetails"));
 const MachineDetails = lazy(
   () => import("@/app/machines/views/MachineDetails")
 );
+const MachineConfiguration = lazy(
+  () => import("@/app/machines/views/MachineDetails/MachineConfiguration")
+);
+const MachineInstances = lazy(
+  () => import("@/app/machines/views/MachineDetails/MachineInstances")
+);
+const MachineLogs = lazy(
+  () => import("@/app/machines/views/MachineDetails/MachineLogs")
+);
+const MachineNetwork = lazy(
+  () => import("@/app/machines/views/MachineDetails/MachineNetwork")
+);
+const NetworkNotifications = lazy(
+  () =>
+    import(
+      "@/app/machines/views/MachineDetails/MachineNetwork/NetworkNotifications"
+    )
+);
+const MachinePCIDevices = lazy(
+  () => import("@/app/machines/views/MachineDetails/MachinePCIDevices")
+);
+const MachineScript = lazy(
+  () => import("@/app/machines/views/MachineDetails/MachineScripts")
+);
+const MachineStorage = lazy(
+  () => import("@/app/machines/views/MachineDetails/MachineStorage")
+);
+const StorageNotifications = lazy(
+  () =>
+    import(
+      "@/app/machines/views/MachineDetails/MachineStorage/StorageNotifications"
+    )
+);
+const MachineSummary = lazy(
+  () => import("@/app/machines/views/MachineDetails/MachineSummary")
+);
+const SummaryNotifications = lazy(
+  () =>
+    import(
+      "@/app/machines/views/MachineDetails/MachineSummary/SummaryNotifications"
+    )
+);
+const MachineUSBDevices = lazy(
+  () => import("@/app/machines/views/MachineDetails/MachineUSBDevices")
+);
 const Machines = lazy(() => import("@/app/machines/views/Machines"));
 const DiscoveriesList = lazy(
   () => import("@/app/networkDiscovery/views/DiscoveriesList")
@@ -72,6 +120,7 @@ const NetworkDiscoverySettings = lazy(
 const Networks = lazy(() => import("@/app/networks"));
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const RacksList = lazy(() => import("@/app/racks/views/RacksList"));
+const SwitchesList = lazy(() => import("@/app/switches/views/SwitchesList"));
 const Settings = lazy(() => import("@/app/settings/views/Settings"));
 const FabricDetails = lazy(
   () => import("@/app/networks/views/Fabrics/views/FabricDetails")
@@ -102,6 +151,16 @@ const VLANsList = lazy(
   () => import("@/app/networks/views/VLANs/views/VLANsList")
 );
 const ZonesList = lazy(() => import("@/app/zones/views"));
+
+const MachineRedirect = ({
+  to,
+}: {
+  to: (params: { id: string }) => string;
+}): React.ReactElement | null => {
+  const id = useGetURLId(MachineMeta.PK);
+  if (!id) return null;
+  return <Navigate replace to={to({ id })} />;
+};
 
 export const router = createBrowserRouter(
   [
@@ -298,12 +357,118 @@ export const router = createBrowserRouter(
               ],
             },
             {
-              path: `${urls.machines.machine.index(null)}/*`,
+              path: urls.machines.machine.index(null),
               element: (
                 <ErrorBoundary>
                   <MachineDetails />
                 </ErrorBoundary>
               ),
+              children: [
+                {
+                  index: true,
+                  element: <MachineRedirect to={machineUrls.machine.summary} />,
+                },
+                {
+                  path: getRelativeRoute(
+                    machineUrls.machine.summary(null),
+                    machineUrls.machine.index(null)
+                  ),
+                  element: (
+                    <>
+                      <SummaryNotifications />
+                      <MachineSummary />
+                    </>
+                  ),
+                },
+                {
+                  path: getRelativeRoute(
+                    machineUrls.machine.instances(null),
+                    machineUrls.machine.index(null)
+                  ),
+                  element: <MachineInstances />,
+                },
+                {
+                  path: getRelativeRoute(
+                    machineUrls.machine.network(null),
+                    machineUrls.machine.index(null)
+                  ),
+                  element: (
+                    <>
+                      <NetworkNotifications />
+                      <MachineNetwork />
+                    </>
+                  ),
+                },
+                {
+                  path: getRelativeRoute(
+                    machineUrls.machine.storage(null),
+                    machineUrls.machine.index(null)
+                  ),
+                  element: (
+                    <>
+                      <StorageNotifications />
+                      <MachineStorage />
+                    </>
+                  ),
+                },
+                {
+                  path: getRelativeRoute(
+                    machineUrls.machine.pciDevices(null),
+                    machineUrls.machine.index(null)
+                  ),
+                  element: <MachinePCIDevices />,
+                },
+                {
+                  path: getRelativeRoute(
+                    machineUrls.machine.usbDevices(null),
+                    machineUrls.machine.index(null)
+                  ),
+                  element: <MachineUSBDevices />,
+                },
+                {
+                  path: `${getRelativeRoute(
+                    machineUrls.machine.scriptsResults.index(null),
+                    machineUrls.machine.index(null)
+                  )}/*`,
+                  element: <MachineScript />,
+                },
+                {
+                  path: getRelativeRoute(
+                    machineUrls.machine.commissioning.index(null),
+                    machineUrls.machine.index(null)
+                  ),
+                  element: (
+                    <MachineRedirect
+                      to={
+                        machineUrls.machine.scriptsResults.commissioning.index
+                      }
+                    />
+                  ),
+                },
+                {
+                  path: `${getRelativeRoute(
+                    machineUrls.machine.logs.index(null),
+                    machineUrls.machine.index(null)
+                  )}/*`,
+                  element: <MachineLogs />,
+                },
+                {
+                  path: getRelativeRoute(
+                    machineUrls.machine.events(null),
+                    machineUrls.machine.index(null)
+                  ),
+                  element: (
+                    <MachineRedirect to={machineUrls.machine.logs.events} />
+                  ),
+                },
+                {
+                  path: getRelativeRoute(
+                    machineUrls.machine.configuration(null),
+                    machineUrls.machine.index(null)
+                  ),
+                  element: <MachineConfiguration />,
+                },
+              ],
             },
             {
               path: `${urls.networks.fabric.index(null)}/*`,
@@ -472,6 +637,14 @@ export const router = createBrowserRouter(
               element: (
                 <ErrorBoundary>
                   <RacksList />
+                </ErrorBoundary>
+              ),
+            },
+            {
+              path: `${urls.switches.index}/*`,
+              element: (
+                <ErrorBoundary>
+                  <SwitchesList />
                 </ErrorBoundary>
               ),
             },
