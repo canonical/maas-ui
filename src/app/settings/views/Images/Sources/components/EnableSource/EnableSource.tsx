@@ -38,9 +38,9 @@ const EnableSource = ({ id }: EnableSourceProps): ReactElement => {
           errors={enableSource.error}
           initialValues={{}}
           message={
-            // TODO: add actual source name
             <>
-              <strong>Source</strong> will now be used to download images.
+              <strong>{source.data.name}</strong> will now be used to download
+              images.
             </>
           }
           modelType="default source"

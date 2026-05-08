@@ -12,8 +12,6 @@ import SourcesTable from "@/app/settings/views/Images/Sources/components/Sources
 
 export type ImageSource = BootSourceResponse & {
   type: BootResourceSourceType;
-  // TODO: implement v3 enabled state
-  enabled?: boolean;
 };
 
 const Sources = (): ReactElement => {

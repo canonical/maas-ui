@@ -38,10 +38,9 @@ const DisableSource = ({ id }: DisableSourceProps): ReactElement => {
           errors={disableSource.error}
           initialValues={{}}
           message={
-            // TODO: add actual source name
             <>
-              Are you sure you want to disable <strong>Source</strong> (
-              {source.data.url})?
+              Are you sure you want to disable{" "}
+              <strong>{source.data.name}</strong> ({source.data.url})?
             </>
           }
           modelType="default source"

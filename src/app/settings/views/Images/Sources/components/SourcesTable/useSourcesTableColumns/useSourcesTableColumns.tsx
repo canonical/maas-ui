@@ -65,7 +65,7 @@ const useSourcesTableColumns = ({
           header: "Name",
           cell: ({
             row: {
-              original: { type, url },
+              original: { type, url, name },
             },
           }: {
             row: Row<ImageSource>;
@@ -75,8 +75,7 @@ const useSourcesTableColumns = ({
                 ? "MAAS Stable"
                 : "MAAS Candidate";
             }
-            // TODO: implement the proper name return when available
-            return "—";
+            return name;
           },
         },
         {
