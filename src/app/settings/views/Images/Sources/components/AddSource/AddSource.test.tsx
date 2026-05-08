@@ -197,6 +197,8 @@ describe("AddSource", () => {
   it("calls create source on save click", async () => {
     renderWithProviders(<AddSource />);
     await waitForLoading();
+    const nameInput = screen.getByRole("textbox", { name: Labels.Name });
+    await userEvent.type(nameInput, "Custom Source");
     const urlInput = screen.getByRole("textbox", { name: Labels.Url });
     await userEvent.clear(urlInput);
     await userEvent.type(urlInput, "http://invalid.example.com/");
@@ -225,6 +227,8 @@ describe("AddSource", () => {
     );
     renderWithProviders(<AddSource />);
     await waitForLoading();
+    const nameInput = screen.getByRole("textbox", { name: Labels.Name });
+    await userEvent.type(nameInput, "Custom Source");
     const urlInput = screen.getByRole("textbox", { name: Labels.Url });
     await userEvent.clear(urlInput);
     await userEvent.type(urlInput, "http://invalid.example.com/");
