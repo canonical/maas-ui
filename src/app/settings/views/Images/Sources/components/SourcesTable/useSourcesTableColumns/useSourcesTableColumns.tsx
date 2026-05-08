@@ -9,7 +9,9 @@ import { MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ImageSource } from "@/app/settings/views/Images/Sources/Sources";
 import DeleteSource from "@/app/settings/views/Images/Sources/components/DeleteSource";
+import DisableSource from "@/app/settings/views/Images/Sources/components/DisableSource";
 import EditSource from "@/app/settings/views/Images/Sources/components/EditSource";
+import EnableSource from "@/app/settings/views/Images/Sources/components/EnableSource";
 
 type SourcesColumnDef = ColumnDef<ImageSource, Partial<ImageSource>>;
 
@@ -57,7 +59,6 @@ const useSourcesTableColumns = ({
             );
           },
         },
-        // TODO: add the disabled source styling and tooltip
         {
           id: "name",
           accessorKey: "name",
@@ -65,15 +66,28 @@ const useSourcesTableColumns = ({
           header: "Name",
           cell: ({
             row: {
-              original: { type, url, name },
+              original: { type, url, name, enabled },
             },
           }: {
             row: Row<ImageSource>;
           }) => {
             if (type === BootResourceSourceType.MAAS_IO) {
-              return new RegExp(MAAS_IO_URLS.stable).test(url)
+              const label = new RegExp(MAAS_IO_URLS.stable).test(url)
                 ? "MAAS Stable"
                 : "MAAS Candidate";
+              return (
+                <>
+                  {!enabled && (
+                    <Tooltip
+                      className="disabled-source-tooltip"
+                      message="This default source is disabled."
+                    >
+                      <Icon name="help" />
+                    </Tooltip>
+                  )}
+                  {label}
+                </>
+              );
             }
             return name;
           },
@@ -143,38 +157,38 @@ const useSourcesTableColumns = ({
                       });
                     },
                   },
-                  original.type === BootResourceSourceType.CUSTOM && {
-                    children: "Delete source...",
-                    onClick: () => {
-                      openSidePanel({
-                        component: DeleteSource,
-                        title: "Delete custom source",
-                        props: { id: original.id },
-                      });
-                    },
-                  },
-                  // TODO: insert enable/disable items for type === MAAS_IO when backend is ready
-                  // original.enabled
-                  //   ? {
-                  //       children: "Disable source...",
-                  //       onClick: () => {
-                  //         openSidePanel({
-                  //           component: DisableSource,
-                  //           title: "Disable default source",
-                  //           props: { id: original.id },
-                  //         });
-                  //       },
-                  //     }
-                  //   : {
-                  //       children: "Enable source...",
-                  //       onClick: () => {
-                  //         openSidePanel({
-                  //           component: EnableSource,
-                  //           title: "Enable default source",
-                  //           props: { id: original.id },
-                  //         });
-                  //       },
-                  //     },
+                  original.type === BootResourceSourceType.CUSTOM
+                    ? {
+                        children: "Delete source...",
+                        onClick: () => {
+                          openSidePanel({
+                            component: DeleteSource,
+                            title: "Delete custom source",
+                            props: { id: original.id },
+                          });
+                        },
+                      }
+                    : original.enabled
+                      ? {
+                          children: "Disable source...",
+                          onClick: () => {
+                            openSidePanel({
+                              component: DisableSource,
+                              title: "Disable default source",
+                              props: { id: original.id },
+                            });
+                          },
+                        }
+                      : {
+                          children: "Enable source...",
+                          onClick: () => {
+                            openSidePanel({
+                              component: EnableSource,
+                              title: "Enable default source",
+                              props: { id: original.id },
+                            });
+                          },
+                        },
                 ]}
                 toggleAppearance="base"
                 toggleClassName="row-menu-toggle u-no-margin--bottom"
