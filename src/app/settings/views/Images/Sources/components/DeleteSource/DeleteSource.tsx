@@ -47,10 +47,9 @@ const DeleteSource = ({ id }: DeleteSourceProps): ReactElement => {
             errors={deleteSource.error}
             initialValues={{}}
             message={
-              // TODO: add actual source name
               <>
-                Are you sure you want to remove <strong>Source</strong> (
-                {source.data.url})?
+                Are you sure you want to remove{" "}
+                <strong>{source.data.name}</strong> ({source.data.url})?
               </>
             }
             modelType="custom source"

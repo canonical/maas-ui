@@ -6,8 +6,8 @@ import {
 } from "@canonical/react-components";
 
 import {
-  useEnableImageSource,
   useGetImageSource,
+  useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -22,7 +22,7 @@ const EnableSource = ({ id }: EnableSourceProps): ReactElement => {
   const source = useGetImageSource({ path: { boot_source_id: id } }, true);
 
   const eTag = source.data?.headers?.get("ETag");
-  const enableSource = useEnableImageSource();
+  const enableSource = useUpdateImageSource();
 
   return (
     <>
@@ -38,9 +38,9 @@ const EnableSource = ({ id }: EnableSourceProps): ReactElement => {
           errors={enableSource.error}
           initialValues={{}}
           message={
-            // TODO: add actual source name
             <>
-              <strong>Source</strong> will now be used to download images.
+              <strong>{source.data.name}</strong> will now be used to download
+              images.
             </>
           }
           modelType="default source"
@@ -49,6 +49,16 @@ const EnableSource = ({ id }: EnableSourceProps): ReactElement => {
             enableSource.mutate({
               headers: { ETag: eTag },
               path: { boot_source_id: id },
+              body: {
+                name: source.data.name,
+                url: source.data.url,
+                keyring_filename: source.data.keyring_filename,
+                keyring_data: source.data.keyring_data,
+                skip_keyring_verification:
+                  source.data.skip_keyring_verification,
+                priority: source.data.priority,
+                enabled: true,
+              },
             });
           }}
           onSuccess={closeSidePanel}

@@ -19,6 +19,7 @@ const mockServer = setupMockServer(
   imageSourceResolvers.getImageSource.handler(
     imageSourceFactory.build({
       id: 1,
+      name: "Custom",
       url: "http://custom.image.source/stable/",
       keyring_filename: "/custom/keyring/file.gpg",
       keyring_data: "aabbccdd",

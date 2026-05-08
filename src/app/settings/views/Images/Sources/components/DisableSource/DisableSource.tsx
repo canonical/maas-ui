@@ -6,8 +6,8 @@ import {
 } from "@canonical/react-components";
 
 import {
-  useDisableImageSource,
   useGetImageSource,
+  useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -22,7 +22,7 @@ const DisableSource = ({ id }: DisableSourceProps): ReactElement => {
   const source = useGetImageSource({ path: { boot_source_id: id } }, true);
 
   const eTag = source.data?.headers?.get("ETag");
-  const disableSource = useDisableImageSource();
+  const disableSource = useUpdateImageSource();
 
   return (
     <>
@@ -38,10 +38,9 @@ const DisableSource = ({ id }: DisableSourceProps): ReactElement => {
           errors={disableSource.error}
           initialValues={{}}
           message={
-            // TODO: add actual source name
             <>
-              Are you sure you want to disable <strong>Source</strong> (
-              {source.data.url})?
+              Are you sure you want to disable{" "}
+              <strong>{source.data.name}</strong> ({source.data.url})?
             </>
           }
           modelType="default source"
@@ -50,6 +49,16 @@ const DisableSource = ({ id }: DisableSourceProps): ReactElement => {
             disableSource.mutate({
               headers: { ETag: eTag },
               path: { boot_source_id: id },
+              body: {
+                name: source.data.name,
+                url: source.data.url,
+                keyring_filename: source.data.keyring_filename,
+                keyring_data: source.data.keyring_data,
+                skip_keyring_verification:
+                  source.data.skip_keyring_verification,
+                priority: source.data.priority,
+                enabled: false,
+              },
             });
           }}
           onSuccess={closeSidePanel}

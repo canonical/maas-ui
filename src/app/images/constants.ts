@@ -1,8 +1,8 @@
 import type { Accept } from "react-dropzone";
 
 export const MAAS_IO_URLS = {
-  stable: "http://images.maas.io/ephemeral-v3/stable/",
-  candidate: "http://images.maas.io/ephemeral-v3/candidate/",
+  stable: "http://images.maas.io/ephemeral-v3/stable",
+  candidate: "http://images.maas.io/ephemeral-v3/candidate",
 } as const;
 
 export const MAAS_IO_DEFAULT_KEYRING_FILE_PATHS = {

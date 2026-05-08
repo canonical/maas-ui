@@ -81,9 +81,10 @@ describe("SourcesTable", () => {
       mockServer.use(
         imageSourceResolvers.listImageSources.handler({
           items: [
-            factory.imageSourceFactory.build({ id: 1 }),
+            factory.imageSourceFactory.build({ id: 1, enabled: true }),
+            factory.imageSourceFactory.build({ id: 2, enabled: false }),
             factory.imageSourceFactory.build({
-              id: 2,
+              id: 3,
               url: "http://custom.image.source/stable/",
             }),
           ],
@@ -97,9 +98,9 @@ describe("SourcesTable", () => {
       const rowActions = screen.getAllByRole("button", {
         name: "Toggle menu",
       });
-      expect(rowActions.length).toBe(2);
+      expect(rowActions.length).toBe(3);
 
-      // Default source
+      // Default source (enabled)
       await userEvent.click(rowActions[0]);
       expect(
         screen.getByRole("button", { name: "Edit source..." })
@@ -107,17 +108,44 @@ describe("SourcesTable", () => {
       expect(
         screen.queryByRole("button", { name: "Delete source..." })
       ).not.toBeInTheDocument();
-      // TODO: add enable/disable checks when backend is ready
+      expect(
+        screen.queryByRole("button", { name: "Enable source..." })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Disable source..." })
+      ).toBeInTheDocument();
       await userEvent.click(rowActions[0]);
 
-      // Custom source
+      // Default source (disabled)
       await userEvent.click(rowActions[1]);
+      expect(
+        screen.getByRole("button", { name: "Edit source..." })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Delete source..." })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Enable source..." })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Disable source..." })
+      ).not.toBeInTheDocument();
+      await userEvent.click(rowActions[1]);
+
+      // Custom source
+      await userEvent.click(rowActions[2]);
       expect(
         screen.getByRole("button", { name: "Edit source..." })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("button", { name: "Delete source..." })
       ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Enable source..." })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Disable source..." })
+      ).not.toBeInTheDocument();
     });
   });
 

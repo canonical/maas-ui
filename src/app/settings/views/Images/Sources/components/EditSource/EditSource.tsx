@@ -51,6 +51,7 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
 
   const initialValues = useMemo<SourceValues>(
     () => ({
+      name: source.data?.name ?? "",
       url: source.data?.url ?? "",
       keyring_type: source.data
         ? getInitialKeyringType(source.data)
@@ -59,6 +60,7 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
       keyring_data: source.data?.keyring_data ?? "",
       skip_keyring_verification: source.data?.skip_keyring_verification,
       priority: source.data?.priority ?? 10,
+      enabled: source.data?.enabled ?? true,
     }),
     [source.data]
   );
@@ -146,6 +148,8 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
                 headers: { ETag: eTag },
                 path: { boot_source_id: id },
                 body: {
+                  name: values.name,
+                  url: values.url,
                   keyring_filename:
                     values.keyring_type === "keyring_filename"
                       ? values.keyring_filename
@@ -159,6 +163,7 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
                       ? true
                       : undefined,
                   priority: values.priority,
+                  enabled: values.enabled,
                 },
               },
               { onSuccess: closeSidePanel }
@@ -186,13 +191,12 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
               <>
                 {!isDefault && (
                   <>
-                    {/*TODO: uncomment when name field is available*/}
-                    {/*<FormikField*/}
-                    {/*  label={Labels.Name}*/}
-                    {/*  name="name"*/}
-                    {/*  required*/}
-                    {/*  type="text"*/}
-                    {/*/>*/}
+                    <FormikField
+                      label={Labels.Name}
+                      name="name"
+                      required
+                      type="text"
+                    />
                     <FormikField
                       aria-label={Labels.Url}
                       disabled

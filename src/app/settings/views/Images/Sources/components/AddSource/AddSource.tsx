@@ -124,6 +124,7 @@ const AddSource = (): ReactElement => {
       buttonsBehavior="independent"
       errors={errors}
       initialValues={{
+        name: "",
         url: "",
         keyring_type: "keyring_filename",
         keyring_filename:
@@ -133,12 +134,14 @@ const AddSource = (): ReactElement => {
         keyring_data: "",
         skip_keyring_verification: undefined,
         priority: 10,
+        enabled: true,
       }}
       onCancel={closeSidePanel}
       onSubmit={(values) => {
         createSource.mutate(
           {
             body: {
+              name: values.name,
               url: values.url,
               keyring_filename:
                 values.keyring_type === "keyring_filename"
@@ -151,6 +154,7 @@ const AddSource = (): ReactElement => {
               skip_keyring_verification:
                 values.keyring_type === "keyring_unsigned" ? true : undefined,
               priority: values.priority,
+              enabled: true,
             },
           },
           { onSuccess: closeSidePanel }
@@ -174,8 +178,7 @@ const AddSource = (): ReactElement => {
       }: FormikContextType<SourceValues>) => {
         return (
           <>
-            {/*TODO: uncomment when name field is available*/}
-            {/*<FormikField label={Labels.Name} name="name" required type="text" />*/}
+            <FormikField label={Labels.Name} name="name" required type="text" />
             <FormikField
               label={Labels.Url}
               name="url"
