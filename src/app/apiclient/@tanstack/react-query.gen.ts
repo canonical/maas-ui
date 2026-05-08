@@ -98,7 +98,7 @@ import {
   getFileByKey,
   getGroup,
   getMachinePowerParameters,
-  getMeWithSummary,
+  getMeStatistics,
   getNosInstaller,
   getNotification,
   getOauthProvider,
@@ -166,7 +166,7 @@ import {
   listUsers,
   listUserSshkeys,
   listUserSslkeysStatistics,
-  listUsersWithSummary,
+  listUsersStatistics,
   listZones,
   listZonesWithStatistics,
   login,
@@ -480,9 +480,9 @@ import type {
   GetMachinePowerParametersData,
   GetMachinePowerParametersError,
   GetMachinePowerParametersResponse,
-  GetMeWithSummaryData,
-  GetMeWithSummaryError,
-  GetMeWithSummaryResponse,
+  GetMeStatisticsData,
+  GetMeStatisticsError,
+  GetMeStatisticsResponse,
   GetNosInstallerData,
   GetNosInstallerError,
   GetNotificationData,
@@ -683,9 +683,9 @@ import type {
   ListUserSslkeysStatisticsData,
   ListUserSslkeysStatisticsError,
   ListUserSslkeysStatisticsResponse,
-  ListUsersWithSummaryData,
-  ListUsersWithSummaryError,
-  ListUsersWithSummaryResponse,
+  ListUsersStatisticsData,
+  ListUsersStatisticsError,
+  ListUsersStatisticsResponse,
   ListZonesData,
   ListZonesError,
   ListZonesResponse,
@@ -5401,26 +5401,24 @@ export const removeGroupMemberMutation = (
   return mutationOptions;
 };
 
-export const getMeWithSummaryQueryKey = (
-  options?: Options<GetMeWithSummaryData>
-) => createQueryKey("getMeWithSummary", options);
+export const getMeStatisticsQueryKey = (
+  options?: Options<GetMeStatisticsData>
+) => createQueryKey("getMeStatistics", options);
 
 /**
- * Get user with a summary. ONLY FOR INTERNAL USAGE.
- *
- * Get user with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * Get additional statistics for the logged-in user, e.g. machine count.
  */
-export const getMeWithSummaryOptions = (
-  options?: Options<GetMeWithSummaryData>
+export const getMeStatisticsOptions = (
+  options?: Options<GetMeStatisticsData>
 ) =>
   queryOptions<
-    GetMeWithSummaryResponse,
-    GetMeWithSummaryError,
-    GetMeWithSummaryResponse,
-    ReturnType<typeof getMeWithSummaryQueryKey>
+    GetMeStatisticsResponse,
+    GetMeStatisticsError,
+    GetMeStatisticsResponse,
+    ReturnType<typeof getMeStatisticsQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getMeWithSummary({
+      const { data } = await getMeStatistics({
         ...options,
         ...queryKey[0],
         signal,
@@ -5428,7 +5426,7 @@ export const getMeWithSummaryOptions = (
       });
       return data;
     },
-    queryKey: getMeWithSummaryQueryKey(options),
+    queryKey: getMeStatisticsQueryKey(options),
   });
 
 export const getUserInfoQueryKey = (options?: Options<GetUserInfoData>) =>
@@ -5668,26 +5666,24 @@ export const changePasswordAdminMutation = (
   return mutationOptions;
 };
 
-export const listUsersWithSummaryQueryKey = (
-  options?: Options<ListUsersWithSummaryData>
-) => createQueryKey("listUsersWithSummary", options);
+export const listUsersStatisticsQueryKey = (
+  options?: Options<ListUsersStatisticsData>
+) => createQueryKey("listUsersStatistics", options);
 
 /**
- * List users with a summary. ONLY FOR INTERNAL USAGE.
- *
- * List users with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * List additional statistics of users, e.g. machine count.
  */
-export const listUsersWithSummaryOptions = (
-  options?: Options<ListUsersWithSummaryData>
+export const listUsersStatisticsOptions = (
+  options?: Options<ListUsersStatisticsData>
 ) =>
   queryOptions<
-    ListUsersWithSummaryResponse,
-    ListUsersWithSummaryError,
-    ListUsersWithSummaryResponse,
-    ReturnType<typeof listUsersWithSummaryQueryKey>
+    ListUsersStatisticsResponse,
+    ListUsersStatisticsError,
+    ListUsersStatisticsResponse,
+    ReturnType<typeof listUsersStatisticsQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listUsersWithSummary({
+      const { data } = await listUsersStatistics({
         ...options,
         ...queryKey[0],
         signal,
@@ -5695,7 +5691,7 @@ export const listUsersWithSummaryOptions = (
       });
       return data;
     },
-    queryKey: listUsersWithSummaryQueryKey(options),
+    queryKey: listUsersStatisticsQueryKey(options),
   });
 
 export const listFabricVlansQueryKey = (

@@ -291,9 +291,9 @@ import type {
   GetMachinePowerParametersData,
   GetMachinePowerParametersErrors,
   GetMachinePowerParametersResponses,
-  GetMeWithSummaryData,
-  GetMeWithSummaryErrors,
-  GetMeWithSummaryResponses,
+  GetMeStatisticsData,
+  GetMeStatisticsErrors,
+  GetMeStatisticsResponses,
   GetNosInstallerData,
   GetNosInstallerErrors,
   GetNosInstallerResponses,
@@ -495,9 +495,9 @@ import type {
   ListUserSslkeysStatisticsData,
   ListUserSslkeysStatisticsErrors,
   ListUserSslkeysStatisticsResponses,
-  ListUsersWithSummaryData,
-  ListUsersWithSummaryErrors,
-  ListUsersWithSummaryResponses,
+  ListUsersStatisticsData,
+  ListUsersStatisticsErrors,
+  ListUsersStatisticsResponses,
   ListZonesData,
   ListZonesErrors,
   ListZonesResponses,
@@ -531,9 +531,6 @@ import type {
   SyncBootsourceBootsourceselectionData,
   SyncBootsourceBootsourceselectionErrors,
   SyncBootsourceBootsourceselectionResponses,
-  UpdateBootsourceBootsourceselectionData,
-  UpdateBootsourceBootsourceselectionErrors,
-  UpdateBootsourceBootsourceselectionResponses,
   UpdateBootsourceData,
   UpdateBootsourceErrors,
   UpdateBootsourceResponses,
@@ -1150,34 +1147,6 @@ export const getBootsourceBootsourceselection = <
     ],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}",
     ...options,
-  });
-};
-
-/**
- * Update Bootsource Bootsourceselection
- */
-export const updateBootsourceBootsourceselection = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<UpdateBootsourceBootsourceselectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
-    UpdateBootsourceBootsourceselectionResponses,
-    UpdateBootsourceBootsourceselectionErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
   });
 };
 
@@ -4491,19 +4460,17 @@ export const removeGroupMember = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Get user with a summary. ONLY FOR INTERNAL USAGE.
- *
- * Get user with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * Get additional statistics for the logged-in user, e.g. machine count.
  */
-export const getMeWithSummary = <ThrowOnError extends boolean = false>(
-  options?: Options<GetMeWithSummaryData, ThrowOnError>
+export const getMeStatistics = <ThrowOnError extends boolean = false>(
+  options?: Options<GetMeStatisticsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetMeWithSummaryResponses,
-    GetMeWithSummaryErrors,
+    GetMeStatisticsResponses,
+    GetMeStatisticsErrors,
     ThrowOnError
   >({
-    url: "/MAAS/a/v3/users/me_with_summary",
+    url: "/MAAS/a/v3/users/me:statistics",
     ...options,
   });
 };
@@ -4705,16 +4672,14 @@ export const changePasswordAdmin = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List users with a summary. ONLY FOR INTERNAL USAGE.
- *
- * List users with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ * List additional statistics of users, e.g. machine count.
  */
-export const listUsersWithSummary = <ThrowOnError extends boolean = false>(
-  options?: Options<ListUsersWithSummaryData, ThrowOnError>
+export const listUsersStatistics = <ThrowOnError extends boolean = false>(
+  options?: Options<ListUsersStatisticsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListUsersWithSummaryResponses,
-    ListUsersWithSummaryErrors,
+    ListUsersStatisticsResponses,
+    ListUsersStatisticsErrors,
     ThrowOnError
   >({
     security: [
@@ -4723,7 +4688,7 @@ export const listUsersWithSummary = <ThrowOnError extends boolean = false>(
         type: "http",
       },
     ],
-    url: "/MAAS/a/v3/users_with_summary",
+    url: "/MAAS/a/v3/users:statistics",
     ...options,
   });
 };
