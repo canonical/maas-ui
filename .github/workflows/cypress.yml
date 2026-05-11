@@ -23,10 +23,6 @@ jobs:
       - uses: actions/checkout@main
       - name: Get branch name
         uses: nelonoel/branch-name@v1.0.1
-      - name: Install snapd and core snaps
-        run: |
-          sudo snap install snapd
-          sudo snap install core26 --candidate
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
@@ -122,23 +118,26 @@ jobs:
           build: yarn build
       - name: Create MAAS admin
         if: matrix.groups == 'with-users'
-        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+        run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Create MAAS non-admin user
         if: matrix.groups == 'with-users'
         run: |
-          export API_KEY=`sudo maas apikey --username=admin`
-          maas login admin http://localhost:5240/MAAS $API_KEY
-          maas admin users create username=user password=test email=fake-user@example.org is_superuser=0
+          API_KEY=$(lxc exec maas-backend -- maas apikey --username=admin)
+          lxc exec maas-backend -- maas login admin http://localhost:5240/MAAS "$API_KEY"
+          lxc exec maas-backend -- maas admin users create username=user password=test email=fake-user@example.org is_superuser=0
       - name: Add Keycloak as OIDC provider in MAAS
         if: matrix.groups == 'with-users'
         shell: bash
         run: |
-          maas admin oidc-providers create \
+          # MAAS runs inside the LXD container; resolve the host IP as seen from the
+          # container so it can reach Keycloak (Docker on the host).
+          HOST_IP=$(lxc exec maas-backend -- ip route | awk '/default/ {print $3}')
+          lxc exec maas-backend -- maas admin oidc-providers create \
             name="Keycloak" \
             client_id="maas-client" \
             client_secret="$KC_CLIENT_SECRET" \
             enabled=True \
-            issuer_url="http://localhost:8080/realms/test-realm" \
+            issuer_url="http://${HOST_IP}:8080/realms/test-realm" \
             token_type="JWT" \
             redirect_uri="https://localhost:8400/MAAS/r/login/oidc/callback" \
             scopes="openid profile email offline_access"
@@ -146,29 +145,43 @@ jobs:
         shell: bash
         run: |
           echo "Generating self-signed certificate"
-          sudo mkdir -p /var/snap/maas/common/certs && \
-          sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-            -keyout /var/snap/maas/common/certs/key.pem \
-            -out /var/snap/maas/common/certs/cert.pem \
+          mkdir -p /tmp/maas-certs
+          openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+            -keyout /tmp/maas-certs/key.pem \
+            -out /tmp/maas-certs/cert.pem \
             -subj "/C=US/ST=State/L=City/O=Org/OU=Unit/CN=localhost" \
-            -addext "subjectAltName=DNS:localhost,IP:127.0.0.1" && \
-          
-          echo "y" | sudo maas config-tls enable /var/snap/maas/common/certs/key.pem /var/snap/maas/common/certs/cert.pem
-          sudo chmod 644 /var/snap/maas/common/certs/key.pem /var/snap/maas/common/certs/cert.pem
+            -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
+
+          lxc exec maas-backend -- mkdir -p /var/snap/maas/common/certs
+          lxc file push /tmp/maas-certs/key.pem maas-backend/var/snap/maas/common/certs/key.pem
+          lxc file push /tmp/maas-certs/cert.pem maas-backend/var/snap/maas/common/certs/cert.pem
+          lxc exec maas-backend -- chmod 644 /var/snap/maas/common/certs/key.pem /var/snap/maas/common/certs/cert.pem
+
+          echo "y" | lxc exec maas-backend -- maas config-tls enable \
+            /var/snap/maas/common/certs/key.pem \
+            /var/snap/maas/common/certs/cert.pem
+
+          # Forward the HTTPS port from the host to the container
+          MAAS_IP=$(lxc query /1.0/containers/maas-backend/state | jq -r '.network.eth0.addresses[0].address')
+          sudo socat TCP-LISTEN:5443,fork,reuseaddr TCP:${MAAS_IP}:5443 &
       - name: Trust self-signed certificate
         run: |
-          sudo cp /var/snap/maas/common/certs/cert.pem /usr/local/share/ca-certificates/maas-selfsigned.crt
+          sudo cp /tmp/maas-certs/cert.pem /usr/local/share/ca-certificates/maas-selfsigned.crt
           sudo update-ca-certificates
       - name: Wait for MAAS boot resources
         if: matrix.groups == 'with-users'
         shell: bash
-        run: while [ $(maas admin boot-resources is-importing -k | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
+        run: |
+          # TLS is now enabled; re-login using the HTTPS endpoint inside the container
+          API_KEY=$(lxc exec maas-backend -- maas apikey --username=admin)
+          lxc exec maas-backend -- maas login admin https://localhost:5443/MAAS "$API_KEY"
+          lxc exec maas-backend -- bash -c 'while [ $(maas admin boot-resources is-importing -k | cat) == "true" ]; do sleep 10; done; echo "syncing finished"'
       - name: Run Cypress tests
         uses: cypress-io/github-action@v4
         env:
-          HTTPS_CERT: /var/snap/maas/common/certs/cert.pem
-          HTTPS_KEY: /var/snap/maas/common/certs/key.pem
-          NODE_EXTRA_CA_CERTS: /var/snap/maas/common/certs/cert.pem
+          HTTPS_CERT: /tmp/maas-certs/cert.pem
+          HTTPS_KEY: /tmp/maas-certs/key.pem
+          NODE_EXTRA_CA_CERTS: /tmp/maas-certs/cert.pem
         with:
           config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
           install: false
@@ -184,7 +197,7 @@ jobs:
       - name: Collect MAAS logs
         if: failure()
         shell: bash
-        run: journalctl -u snap.maas.pebble.service --since="1 hour ago" > cypress/maas_logs.txt
+        run: lxc exec maas-backend -- journalctl -u snap.maas.pebble.service --since="1 hour ago" > cypress/maas_logs.txt
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
