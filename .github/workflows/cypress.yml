@@ -166,8 +166,12 @@ jobs:
           sudo socat TCP-LISTEN:5443,fork,reuseaddr TCP:${MAAS_IP}:5443 &
       - name: Trust self-signed certificate
         run: |
+          # Trust on the host (for Cypress / socat-proxied connections)
           sudo cp /tmp/maas-certs/cert.pem /usr/local/share/ca-certificates/maas-selfsigned.crt
           sudo update-ca-certificates
+          # Trust inside the LXD container (for maas CLI → HTTPS MAAS API calls)
+          lxc file push /tmp/maas-certs/cert.pem maas-backend/usr/local/share/ca-certificates/maas-selfsigned.crt
+          lxc exec maas-backend -- update-ca-certificates
       - name: Wait for MAAS boot resources
         if: matrix.groups == 'with-users'
         shell: bash
