@@ -38,7 +38,7 @@ const UserIntro = (): React.ReactElement => {
       errors={errorMessage}
       loading={user.isPending || sshKeyLoading}
       shouldExitIntro={
-        user.data?.completed_intro ||
+        user.data?.statistics?.completed_intro ||
         (completeIntro.isSuccess && markedIntroComplete)
       }
       windowTitle="User"

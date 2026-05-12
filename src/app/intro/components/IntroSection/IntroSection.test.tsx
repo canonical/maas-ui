@@ -5,7 +5,10 @@ import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
+);
 
 describe("IntroSection", () => {
   it("can display a loading spinner", () => {
@@ -19,7 +22,10 @@ describe("IntroSection", () => {
   it("can redirect to close the intro", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: true })
+        factory.user()
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: true })
       )
     );
     const { router } = renderWithProviders(
@@ -32,7 +38,10 @@ describe("IntroSection", () => {
   it("redirects to the machine list for admins", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: true, is_superuser: true })
+        factory.user({ is_superuser: true })
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: true })
       )
     );
     const { router } = renderWithProviders(
@@ -45,7 +54,10 @@ describe("IntroSection", () => {
   it("redirects to the machine list for non-admins", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: true, is_superuser: false })
+        factory.user({ is_superuser: false })
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: true })
       )
     );
     const { router } = renderWithProviders(

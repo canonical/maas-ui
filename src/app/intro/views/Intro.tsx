@@ -33,7 +33,7 @@ const Intro = (): ReactElement => {
   const user = useGetCurrentUser();
 
   const showIncomplete =
-    !completedIntro && !user.data?.completed_intro && !user.data?.is_superuser;
+    !completedIntro && !completedUserIntro && !user.data?.is_superuser;
 
   useEffect(() => {
     if (!user.isPending && !configLoading && !showIncomplete) {

@@ -19,7 +19,10 @@ import {
 
 setupMockServer(
   authResolvers.getCurrentUser.handler(
-    factory.user({ completed_intro: false, is_superuser: true })
+    factory.user({ is_superuser: true })
+  ),
+  authResolvers.getMeStatistics.handler(
+    factory.userStatistics({ completed_intro: false })
   )
 );
 
