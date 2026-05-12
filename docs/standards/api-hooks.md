@@ -8,7 +8,22 @@
 - Use `useMutation` with `mutationOptionsWithHeaders` and `invalidateQueries` in `onSuccess` for mutations
 - Create mock resolvers in `src/testing/resolvers/` using MSW (Mock Service Worker)
 - Test hooks using `renderHookWithProviders` and mock resolvers
-- Follow naming convention: `use<Resource>` for list queries, `use<Action><Resource>` for single item and operation queries
+- Follow naming convention: `use<ResourcePlural>` for list queries, `useGet<Resource>` for single-item queries, `use<Action><Resource>` for single-resource mutations, `use<Action><ResourcePlural>` or `useBulk<Action><Resource>` for bulk mutations
+
+## Naming Conventions
+
+| Hook type | Pattern | Example |
+|---|---|---|
+| List query | `use<ResourcePlural>` | `usePools`, `useUsers` |
+| Single item query | `useGet<Resource>` | `useGetPool`, `useGetUser` |
+| Derived query (via `select`) | `use<Resource><Derivation>` | `usePoolCount` |
+| Create mutation | `useCreate<Resource>` | `useCreatePool` |
+| Update mutation | `useUpdate<Resource>` | `useUpdatePool` |
+| Delete mutation | `useDelete<Resource>` | `useDeletePool` |
+| Bulk mutation (plural resource) | `use<Action><ResourcePlural>` | `useCreateSshKeys`, `useDeleteCustomImages` |
+| Bulk mutation (explicit prefix) | `useBulk<Action><Resource>` | `useBulkSetConfigurations` |
+
+Queries that use `select` to derive data from a list query should be named `use<Resource><Derivation>` — not `useGet*`. `useGet*` is reserved for single-item queries that fetch by ID.
 
 ## Overview
 
@@ -130,6 +145,46 @@ export const useDeleteUser = (mutationOptions?: Options<DeleteUserData>) => {
   });
 };
 ```
+
+## WebSocket-Aware Queries
+
+`useWebsocketAwareQuery` wraps `useQuery` with two additional behaviours:
+
+1. **WebSocket NOTIFY invalidation** — when the WebSocket sends a NOTIFY message for a model that maps to this query's key, the query is automatically invalidated and refetched.
+2. **Reconnect invalidation** — when the WebSocket reconnects (tracked via `connectedCount` from Redux status selectors), the query is invalidated so stale data is not shown.
+
+Always use `useWebsocketAwareQuery` with `queryOptionsWithHeaders` for all queries. Never use bare `useQuery`.
+
+```typescript
+export const usePools = (
+  options?: Options<ListResourcePoolsStatisticsData>
+) => {
+  return useWebsocketAwareQuery(
+    queryOptionsWithHeaders<
+      ListResourcePoolsStatisticsResponses,
+      ListResourcePoolsStatisticsErrors,
+      ListResourcePoolsStatisticsData
+    >(
+      options,
+      listResourcePoolsStatistics,
+      listResourcePoolsStatisticsQueryKey(options)
+    )
+  );
+};
+```
+
+### Adding Real-Time Updates for a New Resource
+
+The model-to-query-key mapping lives in `wsToQueryKeyMapping` in `src/app/api/query/base.ts`. To wire up WebSocket invalidation for a new resource, add its mapping there:
+
+```typescript
+const wsToQueryKeyMapping: Partial<Record<WebSocketEndpointModel, unknown>> = {
+  zone: listZonesWithStatisticsQueryKey(),
+  sshkey: listUserSshkeysQueryKey(),
+};
+```
+
+Add an entry using the `WebSocketEndpointModel` value for the resource and the corresponding generated query key function called with no arguments.
 
 ## Writing Mock Resolvers
 
@@ -453,3 +508,27 @@ describe("useGetUser", () => {
 - **Don't** forget to set `resolved` flag in resolvers - it's useful for testing
 - **Don't** forget to handle empty states in tests
 - **Don't** forget to provide all three type parameters (`Responses`, `Errors`, `Data`) to the utility functions
+
+### Query Key Scoping in invalidateQueries
+
+Always call the query key function with no arguments in `invalidateQueries` to invalidate the full list. Passing `options` only invalidates the specific page or filter combination, leaving other cached pages stale.
+
+**Do** — invalidates every cached result for that resource:
+
+```typescript
+onSuccess: () => {
+  return queryClient.invalidateQueries({
+    queryKey: listResourcePoolsStatisticsQueryKey(),
+  });
+},
+```
+
+**Don't** — scopes invalidation to the exact query key matching `options`, leaving other cached pages stale:
+
+```typescript
+onSuccess: () => {
+  return queryClient.invalidateQueries({
+    queryKey: listResourcePoolsStatisticsQueryKey(options),
+  });
+},
+```
