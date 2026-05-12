@@ -8,7 +8,7 @@
 - `props` are typed via the `TProps` generic on `openSidePanel`.
 - The panel auto-closes on any route change and when the user presses Escape.
 - Call `closeSidePanel` on cancel and after a successful mutation.
-- Four sizes: `narrow`, `regular` (default), `wide`, `large`. Change dynamically with `setSidePanelSize`.
+- Three sizes: `regular` (default), `wide`, `large`. Change dynamically with `setSidePanelSize`.
 - One panel per page — only one can be open at a time.
 - Test with `mockSidePanel` from `@/testing/utils`. Always call it with `await` at the module level.
 - `mockSidePanel` returns `{ mockOpen, mockClose }` for asserting open and close behaviour.
@@ -90,7 +90,6 @@ The panel also closes automatically when:
 
 | Size | When to use |
 |---|---|
-| `narrow` | Confirmation dialogs, very short forms |
 | `regular` | Default — standard add/edit forms |
 | `wide` | Complex forms with multiple sections |
 | `large` | Full-width content, data-heavy panels |

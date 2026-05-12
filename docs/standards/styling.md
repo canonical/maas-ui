@@ -2,16 +2,14 @@
 
 ## TL;DR
 
-- Global styles live in `src/scss/index.scss` — that file is the single entry point.
-- Component styles go in a `_index.scss` file next to the component, defined as a SCSS mixin.
-- Every new mixin requires two lines in `src/scss/index.scss`: one `@import` and one `@include`.
 - Use Vanilla Framework (`p-`, `u-`, `l-` classes) before writing any custom CSS.
+- Component styles go in a `_index.scss` file next to the component and are imported directly from the `.tsx` file.
+- Write plain SCSS in `_index.scss` — no mixin wrapper required.
 - Override Vanilla only in `src/scss/_vanilla-overrides.scss`.
-- Never import a stylesheet from a `.tsx` file.
-- Never use inline `style={{}}` except for values that cannot be expressed in CSS.
 - `@canonical/maas-react-components` CSS is imported globally — do not re-import it.
-- View-specific styles belong alongside the view's `_index.scss`, not in the global `src/scss/` directory.
-- Scope all custom rules inside the mixin — do not write bare selectors at file root.
+- Never use inline `style={{}}` except for values that are genuinely computed at runtime.
+- The global `src/scss/` directory is for framework-level concerns only — not component styles.
+- The SCSS mixin pattern (global `@import` / `@include` registration) is legacy — do not use it for new components.
 
 ---
 
@@ -19,27 +17,7 @@
 
 - **Vanilla Framework** — Canonical base CSS library. Provides the `p-`, `u-`, and `l-` utility and pattern classes used throughout the UI. Reach for these before writing custom CSS.
 - **`@canonical/maas-react-components`** — MAAS-specific component library. Its stylesheet is imported once in `src/scss/index.scss` and available globally.
-- **SCSS** — All custom styles are written in SCSS. Encapsulation is enforced by wrapping rules inside named mixins.
-
----
-
-## File Organisation
-
-`src/scss/index.scss` is the single stylesheet entry point. It:
-
-1. Imports and includes Vanilla Framework.
-2. Imports `src/scss/_vanilla-overrides.scss` for any Vanilla overrides.
-3. Imports the `@canonical/maas-react-components` CSS.
-4. Imports and includes every component mixin, grouped by domain.
-
-The registration pattern for a component mixin is always two lines:
-
-```scss
-@import "@/app/base/components/SectionHeader";
-@include SectionHeader;
-```
-
-All `@import` lines for a domain are grouped together, followed by all `@include` lines for that domain. See the existing `// base`, `// machines`, `// settings` groupings in `src/scss/index.scss` as the model to follow.
+- **SCSS** — Custom styles are written in SCSS and imported directly from the component file.
 
 ---
 
@@ -48,54 +26,48 @@ All `@import` lines for a domain are grouped together, followed by all `@include
 ### Step-by-step
 
 1. Create `_index.scss` in the same directory as the component file.
-2. Define a mixin named after the component:
+2. Write plain SCSS — no mixin wrapper needed:
 
 ```scss
-@mixin SectionHeader {
-  .section-header__title {
-    margin: 0 $sph--large $spv--large 0;
-    padding-top: 0.051rem;
-  }
-
-  .section-header__buttons {
-    > [class*="p-button"],
-    > * > [class*="p-button"],
-    .p-contextual-menu__toggle {
-      margin-bottom: $spv--small;
+.zones-table {
+  th,
+  td {
+    &:is(.machines, .devices, .controllers) {
+      text-align: right;
     }
   }
 }
 ```
 
-3. Register the mixin in `src/scss/index.scss` with both `@import` and `@include`.
-4. Do not import the stylesheet from the `.tsx` file.
+3. Import the stylesheet from the component's `.tsx` file:
 
-The mixin name must match the component name exactly. This is the name used in `@include` in `src/scss/index.scss`.
+```tsx
+import "./_index.scss";
+```
+
+That's it. No registration in `src/scss/index.scss` is needed.
 
 ### Do
 
+```tsx
+import "./_index.scss";
+
+const ZonesTable = () => <div className="zones-table">...</div>;
+```
+
 ```scss
-@mixin NotificationGroup {
-  .p-notification-group {
-    .p-notification-group__notification {
-      background-image: none;
-      border-top: 0;
-    }
-  }
+.zones-table {
+  margin-bottom: 0;
 }
 ```
 
 ### Don't
 
-```scss
-.p-notification-group {
-  .p-notification-group__notification {
-    background-image: none;
-  }
-}
+```tsx
+const ZonesTable = () => (
+  <div style={{ marginBottom: 0 }}>...</div>
+);
 ```
-
-Bare selectors at file root are not encapsulated and will not be included by `src/scss/index.scss` because there is no mixin to `@include`.
 
 ---
 
@@ -123,11 +95,9 @@ Inline styles bypass Vanilla theming, dark mode, and Vanilla override logic. Onl
 
 ## Overriding Vanilla
 
-All Vanilla Framework overrides go in `src/scss/_vanilla-overrides.scss`. Do not override Vanilla patterns inline in component mixins.
+All Vanilla Framework overrides go in `src/scss/_vanilla-overrides.scss`. Do not override Vanilla patterns inside component stylesheets.
 
 ### Do
-
-Place the override in `src/scss/_vanilla-overrides.scss`:
 
 ```scss
 .p-table--expanding__panel {
@@ -135,19 +105,40 @@ Place the override in `src/scss/_vanilla-overrides.scss`:
 }
 ```
 
+Place this in `src/scss/_vanilla-overrides.scss`.
+
 ### Don't
 
-Override Vanilla classes inside a component mixin:
+```scss
+.my-component .p-table--expanding__panel {
+  padding: 0;
+}
+```
+
+Cross-cutting Vanilla overrides belong in `_vanilla-overrides.scss` so they apply consistently everywhere the Vanilla class appears.
+
+---
+
+## Legacy: SCSS Mixin Pattern
+
+Older components use a mixin-based pattern where styles are not imported from the `.tsx` file but instead registered globally in `src/scss/index.scss`:
 
 ```scss
-@mixin MachineList {
-  .p-table--expanding__panel {
-    padding: 0;
+@import "@/app/base/components/SectionHeader";
+@include SectionHeader;
+```
+
+The corresponding `_index.scss` wraps all rules in a named mixin:
+
+```scss
+@mixin SectionHeader {
+  .section-header__title {
+    margin: 0;
   }
 }
 ```
 
-Component mixins are for styles that are specific to a component's own class names. Cross-cutting Vanilla overrides belong in `_vanilla-overrides.scss` so they are applied consistently everywhere the Vanilla class appears.
+This pattern is being phased out. Do not use it for new components. When touching an existing component that uses the mixin pattern, migrating it to the direct import approach is encouraged but not required.
 
 ---
 
@@ -157,20 +148,14 @@ Component mixins are for styles that are specific to a component's own class nam
 
 **Don't** duplicate Vanilla styles — check the [Vanilla documentation](https://vanillaframework.io/docs) first.
 
-**Do** scope all custom rules inside a named SCSS mixin in `_index.scss`.
+**Do** import `_index.scss` directly from the component's `.tsx` file.
 
-**Don't** write bare selectors at the root of a `_index.scss` file.
+**Don't** register new component styles in `src/scss/index.scss` via `@import` / `@include`.
 
-**Do** register every new mixin in `src/scss/index.scss` with both `@import` and `@include`.
+**Do** write plain SCSS in `_index.scss` without a mixin wrapper.
 
-**Don't** leave a mixin defined but not registered — it will never be included in the build.
-
-**Do** place view-specific `_index.scss` files alongside the view component they style.
-
-**Don't** place view-specific styles in the global `src/scss/` directory.
+**Don't** use inline `style={{}}` for values that can be expressed as CSS.
 
 **Do** put Vanilla overrides in `src/scss/_vanilla-overrides.scss`.
 
-**Don't** import stylesheets from `.tsx` files.
-
-**Don't** use inline `style={{}}` for values that can be expressed as CSS.
+**Don't** place component-specific styles in the global `src/scss/` directory.

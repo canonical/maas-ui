@@ -127,7 +127,6 @@ Props relevant to views:
 | Prop | Type | Purpose |
 |---|---|---|
 | `header` | `ReactNode` | Renders the `SectionHeader` above the content area |
-| `sidebar` | `ReactNode` | Optional sidebar content |
 | `children` | `ReactNode` | Main page content |
 
 ### `SectionHeader`

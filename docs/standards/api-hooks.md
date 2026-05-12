@@ -8,7 +8,7 @@
 - Use `useMutation` with `mutationOptionsWithHeaders` and `invalidateQueries` in `onSuccess` for mutations
 - Create mock resolvers in `src/testing/resolvers/` using MSW (Mock Service Worker)
 - Test hooks using `renderHookWithProviders` and mock resolvers
-- Follow naming convention: `use<ResourcePlural>` for list queries, `useGet<Resource>` for single-item queries, `use<Action><Resource>` for mutations
+- Follow naming convention: `use<ResourcePlural>` for list queries, `useGet<Resource>` for single-item queries, `use<Action><Resource>` for single-resource mutations, `use<Action><ResourcePlural>` or `useBulk<Action><Resource>` for bulk mutations
 
 ## Naming Conventions
 
@@ -20,6 +20,8 @@
 | Create mutation | `useCreate<Resource>` | `useCreatePool` |
 | Update mutation | `useUpdate<Resource>` | `useUpdatePool` |
 | Delete mutation | `useDelete<Resource>` | `useDeletePool` |
+| Bulk mutation (plural resource) | `use<Action><ResourcePlural>` | `useCreateSshKeys`, `useDeleteCustomImages` |
+| Bulk mutation (explicit prefix) | `useBulk<Action><Resource>` | `useBulkSetConfigurations` |
 
 Queries that use `select` to derive data from a list query should be named `use<Resource><Derivation>` — not `useGet*`. `useGet*` is reserved for single-item queries that fetch by ID.
 

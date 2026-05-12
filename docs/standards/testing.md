@@ -361,46 +361,63 @@ MSW will warn you if an unhandled request is detected, which helps identify miss
 
 ## Factories
 
-Factories live in `src/testing/factories/`. Each domain has its own factory file. All factories are exported from `src/testing/factories/index.ts` and imported via `@/testing/factories`.
+Factories live in `src/testing/factories/`, one file per model. All factories are exported from `src/testing/factories/index.ts`.
 
-Factories use `cooky-cutter`. Two main functions:
-- `define<T>(defaults)` — creates a factory from scratch.
-- `extend<Base, T>(baseFactory, additions)` — inherits from another factory.
+### New factories — fishery
 
-Real example from `src/testing/factories/resourcepool.ts`:
+Use `fishery` for all new factories. Three supporting libraries are available:
+- `fishery` — `Factory.define()` creates the factory; `sequence` auto-increments per build call.
+- `unique-names-generator` — generates readable fake names for models displayed in lists.
+- `chance` — generates realistic random data (URLs, GUIDs, booleans, etc.). Seed with `sequence` for deterministic output.
 
 ```ts
-import { define, random } from "cooky-cutter";
+import Chance from "chance";
+import { Factory } from "fishery";
+import { adjectives, animals, uniqueNamesGenerator } from "unique-names-generator";
 
-import type { ResourcePoolStatisticsResponse } from "@/app/apiclient";
+import type { RackWithSummaryResponse } from "@/app/apiclient";
 
-export const resourcePool = define<ResourcePoolStatisticsResponse>({
-  description: "test description",
-  is_default: false,
-  machine_ready_count: random,
-  machine_total_count: random,
-  name: (i: number) => `test name ${i}`,
-  permissions: () => [],
-  id: (i: number) => i,
+export const rackFactory = Factory.define<RackWithSummaryResponse>(({ sequence }) => {
+  const chance = new Chance(`maas-${sequence}`);
+  const name = uniqueNamesGenerator({
+    dictionaries: [adjectives, animals],
+    separator: "_",
+    style: "lowerCase",
+    seed: sequence,
+  });
+  return {
+    id: sequence,
+    name,
+    registered_agents_system_ids: [chance.guid()],
+  };
 });
 ```
 
-Using factories in tests:
+Using a fishery factory in tests:
 
-```tsx
-import { factory } from "@/testing/factories";
+```ts
+import { rackFactory } from "@/testing/factories/racks";
 
-const pool = factory.resourcePool({ name: "production", is_default: true });
-
-mockServer.use(
-  authResolvers.getCurrentUser.handler(factory.user({ is_superuser: true }))
-);
-renderWithProviders(<MyComponent />);
+const rack = rackFactory.build();
+const namedRack = rackFactory.build({ name: "my-rack" });
+const racks = rackFactory.buildList(3);
 ```
 
-Always use factories rather than hand-crafting raw object literals in tests.
+### Legacy factories — cooky-cutter
 
-When to add a new factory: any time a test needs a typed mock object that does not have a factory yet. Add it to the appropriate domain file in `src/testing/factories/` and export from `index.ts`.
+Older factories use `cooky-cutter`. Do not add new factories with `cooky-cutter` — all new factories use fishery. Existing cooky-cutter factories are being migrated over time.
+
+Legacy factories are called as functions via the `factory` namespace:
+
+```ts
+import { factory } from "@/testing/factories";
+
+const pool = factory.resourcePool({ name: "production" });
+```
+
+### When to add a new factory
+
+Any time a test needs a typed mock object that does not have a factory yet. Add a fishery factory to the appropriate file in `src/testing/factories/` and export it from `index.ts`. Never hand-craft raw object literals in tests.
 
 ## Resolvers
 
