@@ -100,12 +100,12 @@ const usersResolvers = {
   listUsersStatistics: {
     resolved: false,
     handler: (data: ListUsersStatisticsResponse = mockUsersStatistics) =>
-      http.get(`${BASE_URL}MAAS/a/v3/users:statistics`, () => {
+      http.get(`${BASE_URL}MAAS/a/v3/users\:statistics`, () => {
         usersResolvers.listUsersStatistics.resolved = true;
         return HttpResponse.json(data);
       }),
     error: (error: ListUsersStatisticsError = mockListUsersStatisticsError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/users:statistics`, () => {
+      http.get(`${BASE_URL}MAAS/a/v3/users\:statistics`, () => {
         usersResolvers.listUsersStatistics.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),

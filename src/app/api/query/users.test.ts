@@ -8,6 +8,7 @@ import {
   useUsersStatistics,
 } from "@/app/api/query/users";
 import type { UserCreateRequest, UserUpdateRequest } from "@/app/apiclient";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockUsers,
   mockUsersStatistics,
@@ -24,7 +25,8 @@ const mockServer = setupMockServer(
   usersResolvers.getUser.handler(),
   usersResolvers.createUser.handler(),
   usersResolvers.updateUser.handler(),
-  usersResolvers.deleteUser.handler()
+  usersResolvers.deleteUser.handler(),
+  authResolvers.getCurrentUser.handler()
 );
 
 describe("useUsers", () => {
