@@ -122,6 +122,12 @@ For more complex actions, use `TableActionsDropdown`:
 }
 ```
 
+### Row Click vs Action Columns
+
+- Navigation on row click: use a `<Link>` in the cell renderer of the relevant column (e.g. the name column).
+- Edit and delete actions: use `TableActions` or `TableActionsDropdown` in a dedicated actions column.
+- Do not mix navigation and action triggers on the same row click — each interaction must have a clear, single target element.
+
 ## Table Component Implementation
 
 ### Basic Structure
@@ -328,9 +334,11 @@ describe("permissions", () => {
 Test user interactions and side effects:
 
 ```tsx
-describe("actions", () => {
-  const { mockOpen } = await mockSidePanel();
+import { mockSidePanel, renderWithProviders, screen, userEvent, waitFor } from "@/testing/utils";
 
+const { mockOpen } = await mockSidePanel();
+
+describe("actions", () => {
   it("can trigger edit action", async () => {
     renderWithProviders(<MyTable />);
 
