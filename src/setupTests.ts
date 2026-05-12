@@ -23,6 +23,19 @@ beforeAll(() => {
   });
 });
 
+// Mock Web Animations API - not implemented in jsdom but used by
+// @canonical/react-components ToastNotification/Animate
+Element.prototype.animate = vi.fn().mockReturnValue({
+  finished: Promise.resolve(),
+  cancel: vi.fn(),
+  finish: vi.fn(),
+  pause: vi.fn(),
+  play: vi.fn(),
+  reverse: vi.fn(),
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+});
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
