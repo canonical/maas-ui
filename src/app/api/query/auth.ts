@@ -26,12 +26,14 @@ import type {
   ExtendSessionErrors,
   ExtendSessionResponses,
   GetMeStatisticsData,
+  GetMeStatisticsError,
   GetMeStatisticsErrors,
   GetMeStatisticsResponses,
   GetOauthProviderData,
   GetOauthProviderErrors,
   GetOauthProviderResponses,
   GetUserInfoData,
+  GetUserInfoError,
   GetUserInfoErrors,
   GetUserInfoResponses,
   HandleOauthCallbackData,
@@ -249,6 +251,8 @@ export const useGetCurrentUser = (
   isPending: boolean;
   isSuccess: boolean;
   isError: boolean;
+  error: GetUserInfoError | null;
+  statisticsError: GetMeStatisticsError | null;
 } => {
   const userInfo = useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
@@ -277,6 +281,8 @@ export const useGetCurrentUser = (
           statistics: statistics.data,
         } as UserWithStatistics)
       : undefined,
+    error: userInfo.error,
+    statisticsError: statistics.error,
   };
 };
 

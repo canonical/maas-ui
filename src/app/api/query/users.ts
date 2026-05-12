@@ -2,6 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
+import type { WithHeaders } from "@/app/api/utils";
 import {
   mutationOptionsWithHeaders,
   queryOptionsWithHeaders,
@@ -17,9 +18,11 @@ import type {
   GetUserErrors,
   GetUserResponses,
   ListUsersData,
+  ListUsersError,
   ListUsersErrors,
   ListUsersResponses,
   ListUsersStatisticsData,
+  ListUsersStatisticsError,
   ListUsersStatisticsErrors,
   ListUsersStatisticsResponses,
   Options,
@@ -43,7 +46,7 @@ import {
   listUsersStatisticsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 
-export type UserWithStatistics = UserResponse & {
+export type UserWithStatistics = WithHeaders<UserResponse> & {
   statistics: UserStatisticsResponse | undefined;
 };
 
@@ -58,6 +61,8 @@ export type UseUsersResult = {
   statisticsPending: UseQueryResult["isPending"];
   isSuccess: UseQueryResult["isSuccess"];
   isError: UseQueryResult["isError"];
+  error: ListUsersError | null;
+  statisticsError: ListUsersStatisticsError | null;
 };
 
 export const useUsers = (options?: Options<ListUsersData>): UseUsersResult => {
@@ -87,6 +92,8 @@ export const useUsers = (options?: Options<ListUsersData>): UseUsersResult => {
           })),
         }
       : undefined,
+    error: users.error,
+    statisticsError: statistics.error,
   };
 };
 

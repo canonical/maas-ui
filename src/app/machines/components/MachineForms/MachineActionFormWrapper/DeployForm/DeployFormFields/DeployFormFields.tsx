@@ -382,7 +382,7 @@ export const DeployFormFields = (): React.ReactElement => {
             />
           </Col>
         </Row>
-        {user && user.data?.sshkeys_count === 0 && (
+        {user && user.data?.statistics?.sshkeys_count === 0 && (
           <Row>
             <Col size={12}>
               <p className="u-no-max-width" data-testid="sshkeys-warning">

@@ -108,8 +108,12 @@ describe("GlobalSideNav", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
         factory.user({
-          completed_intro: false,
           username: "koala",
+        })
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({
+          completed_intro: false,
         })
       )
     );
