@@ -7,8 +7,9 @@ open-source tool for discovering, commissioning, and deploying bare-metal
 servers. It is a Vite-based single-page application written in strict
 TypeScript. The UI communicates with the MAAS backend over REST (via TanStack
 Query) and WebSockets (via Redux-Saga). Redux is actively being migrated out —
-TanStack Query is the current standard for all REST endpoints, while Redux-Saga
-remains only for WebSocket messaging.
+TanStack Query is the preferred approach for all new REST endpoints. Redux-Saga
+handles WebSocket messaging and still contains some legacy REST flows (e.g.
+login, licence keys); do not add new REST calls there.
 
 ## Tech stack
 
@@ -19,21 +20,22 @@ remains only for WebSocket messaging.
 - @canonical/react-components and @canonical/maas-react-components (Vanilla UI)
 - Vitest + React Testing Library (unit/integration)
 - MSW (Mock Service Worker) for API mocking in tests
-- Cypress + Cucumber (E2E) — Playwright is being phased out
+- Cypress + Cucumber (E2E) — Playwright is only used for documentation link checking; do not use it for new E2E tests
 
 ## Dos
 
 - Use TanStack Query hooks in `src/app/api/query/` for any new REST endpoint —
   never Redux
-- Wrap queries with `useWebsocketAwareQuery` + `queryOptionsWithHeaders`; call
-  `queryClient.invalidateQueries` in `onSuccess` for all mutations
+- Wrap queries with `useWebsocketAwareQuery` + `queryOptionsWithHeaders`; when
+   a mutation changes cached server state, invalidate the relevant query keys in
+   `onSuccess`
 - Use `mutationOptionsWithHeaders` (not bare `useMutation`) so response headers
   are included
 - Create MSW mock resolvers in `src/testing/resolvers/` and use
   `renderWithProviders` / `renderHookWithProviders` in all component/hook tests
 - Write function components only; use hooks for state and side effects
 - Place views in `<domain>/views/`, domain-shared components in
-  `<domain>/components/`, app-wide shared components in `app/base/components/`
+  `<domain>/components/`, app-wide shared components in `src/app/base/components/`
 - Use `FormikForm` + `FormikField` for forms; `ModelActionForm` for simple
   confirmation dialogs; Yup for all validation schemas
 - Query elements by accessible role/label/text (Testing Library best practices);
@@ -50,7 +52,7 @@ remains only for WebSocket messaging.
 - Don't write class components
 - Don't use `data-testid` in new code — use accessible semantic queries instead
   (`getByRole`, `getByLabelText`, etc.)
-- Don't use `any` — use `TSFixMe` (importable from `app/base/types`) only as a
+- Don't use `any` — use `TSFixMe` (importable from `@/app/base/types`) only as a
   last resort and leave a comment flagging it for future fixing
 - Don't use `configureStore()` from `redux-mock-store` in new tests — pass
   state via `renderWithProviders` instead and if you need to check actions in the store then `renderWithProviders` returns the store for this purpose
