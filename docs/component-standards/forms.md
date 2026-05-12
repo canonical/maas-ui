@@ -125,3 +125,86 @@ describe("AddUserForm", () => {
 - Organize tests by display, validation, permissions, and actions
 - Use `ModelActionForm` for confirmation dialogs
 - Use Yup for validation
+
+## Closing the Side Panel on Success
+
+After a successful mutation, close the side panel by passing `saved={mutation.isSuccess}` and `onSuccess={closeSidePanel}` to `FormikForm`. When `saved` becomes `true`, `FormikForm` calls `onSuccess` automatically.
+
+```tsx
+const AddPool = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
+  const createPool = useCreatePool();
+
+  return (
+    <FormikForm<ResourcePoolRequest, CreateResourcePoolError>
+      aria-label="Add pool"
+      errors={createPool.error}
+      initialValues={{ description: "", name: "" }}
+      onCancel={closeSidePanel}
+      onSubmit={(values) => {
+        createPool.mutate({ body: { name: values.name, description: values.description } });
+      }}
+      onSuccess={closeSidePanel}
+      saved={createPool.isSuccess}
+      saving={createPool.isPending}
+      submitLabel="Save pool"
+      validationSchema={PoolSchema}
+    >
+      <FormikField label="Name (required)" name="name" type="text" />
+      <FormikField label="Description" name="description" type="text" />
+    </FormikForm>
+  );
+};
+```
+
+Do not call `closeSidePanel` inside `onSubmit` — the mutation may still be in flight at that point.
+
+## API Error Display
+
+Pass `errors={mutation.error}` to `FormikForm`. The component automatically formats and displays server-side validation errors inline. Do not build custom error UI for API errors.
+
+```tsx
+<FormikForm<ResourcePoolRequest, CreateResourcePoolError>
+  errors={createPool.error}
+  ...
+>
+```
+
+The generic type parameter `E` (e.g. `CreateResourcePoolError`) tells TypeScript the shape of the error object. The formatted error message appears above the form buttons without any additional code.
+
+## Testing Side Panel Close After Submission
+
+Use `mockSidePanel` from `@/testing/utils` to verify that the side panel closes after a successful form submission.
+
+```tsx
+import { waitFor } from "@testing-library/react";
+
+import AddPool from "./AddPool";
+
+import { poolsResolvers } from "@/testing/resolvers/pools";
+import {
+  screen,
+  renderWithProviders,
+  userEvent,
+  setupMockServer,
+  mockSidePanel,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(poolsResolvers.createPool.handler());
+const { mockClose } = await mockSidePanel();
+
+describe("AddPool", () => {
+  it("closes the side panel after successful submission", async () => {
+    renderWithProviders(<AddPool />);
+
+    await userEvent.type(screen.getByRole("textbox", { name: /name/i }), "test-pool");
+    await userEvent.click(screen.getByRole("button", { name: /Save pool/i }));
+
+    await waitFor(() => {
+      expect(mockClose).toHaveBeenCalled();
+    });
+  });
+});
+```
+
+`mockSidePanel` must be called with `await` at the top level of the test file, outside any `describe` or `it` block. The returned `mockClose` is a spy on `closeSidePanel`.

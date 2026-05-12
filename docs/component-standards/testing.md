@@ -1,5 +1,7 @@
 # Testing Best Practices
 
+## Unit Tests
+
 ## TL;DR
 
 - Run tests using `yarn test path/to/file.test.tsx`, add `--run` to only run once instead of watching
@@ -356,3 +358,162 @@ screen.logTestingPlaygroundURL();
 ### View Network Requests
 
 MSW will warn you if an unhandled request is detected, which helps identify missing mock handlers. For more detailed request logging, you can add custom logging to your mock resolvers or use MSW's debugging features.
+
+## Factories
+
+Factories live in `src/testing/factories/`. Each domain has its own factory file. All factories are exported from `src/testing/factories/index.ts` and imported via `@/testing/factories`.
+
+Factories use `cooky-cutter`. Two main functions:
+- `define<T>(defaults)` — creates a factory from scratch.
+- `extend<Base, T>(baseFactory, additions)` — inherits from another factory.
+
+Real example from `src/testing/factories/resourcepool.ts`:
+
+```ts
+import { define, random } from "cooky-cutter";
+
+import type { ResourcePoolStatisticsResponse } from "@/app/apiclient";
+
+export const resourcePool = define<ResourcePoolStatisticsResponse>({
+  description: "test description",
+  is_default: false,
+  machine_ready_count: random,
+  machine_total_count: random,
+  name: (i: number) => `test name ${i}`,
+  permissions: () => [],
+  id: (i: number) => i,
+});
+```
+
+Using factories in tests:
+
+```tsx
+import { factory } from "@/testing/factories";
+
+const pool = factory.resourcePool({ name: "production", is_default: true });
+
+renderWithProviders(<MyComponent />, {
+  state: factory.rootState({
+    auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
+  }),
+});
+```
+
+Always use factories rather than hand-crafting raw object literals in tests.
+
+When to add a new factory: any time a test needs a typed mock object that does not have a factory yet. Add it to the appropriate domain file in `src/testing/factories/` and export from `index.ts`.
+
+## Resolvers
+
+Resolvers live in `src/testing/resolvers/<domain>.ts`. The full authoring guide is in `api-hooks.md` — this section covers consuming resolvers in tests.
+
+```ts
+const mockServer = setupMockServer(poolsResolvers.listPools.handler());
+
+mockServer.use(poolsResolvers.listPools.handler({ items: [], total: 0 }));
+
+mockServer.use(poolsResolvers.deletePool.error());
+
+await waitFor(() => {
+  expect(poolsResolvers.createPool.resolved).toBeTruthy();
+});
+```
+
+## E2E Tests
+
+Stack: Cypress with `@badeball/cypress-cucumber-preprocessor`. Gherkin `.feature` files describe scenarios; TypeScript `.steps.ts` files implement them. Do not use Playwright for new E2E tests — it is only used for documentation link-checking in this project.
+
+Directory layout:
+
+```
+cypress/
+├── e2e/
+│   └── with-users/
+│       └── features/
+│           └── <domain>/
+│               └── <feature>.feature
+├── support/
+│   └── step_definitions/
+│       ├── common/
+│       │   ├── auth.steps.ts
+│       │   ├── navigation.steps.ts
+│       │   └── actions.steps.ts
+│       └── <domain>/
+│           └── <feature>.steps.ts
+```
+
+Writing a feature file:
+
+```gherkin
+Feature: DNS record assignment
+
+  Background:
+    Given the user is logged in
+
+  Scenario: Create DNS record from a device IP and follow link to device details
+    Given the user navigates to the domains page
+    When the DNS default domain row is opened
+    And the user clicks the "Add record" button
+    And the user enters a record name
+    And the user submits the form
+    Then the record name should appear as a link in the DNS record list
+```
+
+Writing step definitions:
+
+```ts
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+
+When("the DNS default domain row is opened", () => {
+  cy.findByRole("grid", { name: "Domains table" }).within(() => {
+    cy.get("[data-testid='domain-name']").first().click();
+  });
+});
+
+Then("the record name should appear as a link in the DNS record list", () => {
+  cy.findByRole("link", { name: /my-record/i }).should("exist");
+});
+```
+
+Running E2E tests:
+
+```bash
+yarn cypress open
+yarn cypress run
+```
+
+## Avoiding Step Duplication in E2E Tests
+
+**Use `Background` for shared setup.** Steps shared by all scenarios in a feature file go in `Background`, not repeated in every `Scenario`.
+
+**Use common step definitions for cross-domain steps.** Generic steps live in `cypress/support/step_definitions/common/` and are available to all feature files with no import required.
+
+**Extract repeated command sequences into helpers:**
+
+```ts
+export const completeAddMachineForm = () => {
+  cy.waitForPageToLoad();
+  cy.waitForTableToLoad({ name: /Machines/i });
+  cy.findByRole("button", { name: "Add hardware" }).click();
+  cy.get(".p-contextual-menu__link").contains("Machine").click();
+};
+```
+
+**Parametrise steps instead of duplicating them:**
+
+```ts
+When("the user clicks the {string} button", (button: string) => {
+  cy.findByRole("button", { name: button }).click();
+});
+
+When("the user clicks the button matching {string}", (button: string) => {
+  cy.findByRole("button", { name: new RegExp(button, "i") }).click();
+});
+```
+
+Dos and Don'ts:
+- **Do** put reused auth and navigation steps in `common/`.
+- **Do** use `Background` for setup shared across all scenarios.
+- **Do** extract repeated sequences into `*.helpers.ts`.
+- **Don't** copy-paste step implementations.
+- **Don't** put domain-specific steps in `common/`.
