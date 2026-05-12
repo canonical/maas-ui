@@ -26,7 +26,8 @@ const route = urls.controllers.controller.index({ id: controller.system_id });
 let state: ReturnType<typeof factory.rootState>;
 setupMockServer(
   zoneResolvers.listZones.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
 );
 
 describe("ControllerConfiguration", () => {

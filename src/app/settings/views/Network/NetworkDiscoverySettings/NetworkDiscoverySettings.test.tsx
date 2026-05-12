@@ -9,7 +9,8 @@ import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   networkDiscoveryResolvers.listNetworkDiscoveries.handler(),
-  authResolvers.getCurrentUser.handler({ ...mockAuth, is_superuser: true })
+  authResolvers.getCurrentUser.handler({ ...mockAuth, is_superuser: true }),
+  authResolvers.getMeStatistics.handler()
 );
 
 describe("NetworkDiscoverySettings", () => {

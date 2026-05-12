@@ -5,15 +5,16 @@ import DiscoveriesList from "./DiscoveriesList";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { networkDiscoveryResolvers } from "@/testing/resolvers/networkDiscovery";
 import {
-  userEvent,
-  screen,
   renderWithProviders,
+  screen,
   setupMockServer,
+  userEvent,
 } from "@/testing/utils";
 
 setupMockServer(
   networkDiscoveryResolvers.listNetworkDiscoveries.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
 );
 
 describe("DiscoveriesList", () => {

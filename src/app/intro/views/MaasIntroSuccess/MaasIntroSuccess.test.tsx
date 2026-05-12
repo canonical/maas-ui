@@ -11,13 +11,16 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  userEvent,
-  screen,
   renderWithProviders,
+  screen,
   setupMockServer,
+  userEvent,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
+);
 
 describe("MaasIntroSuccess", () => {
   let state: RootState;
@@ -33,8 +36,9 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the user intro if not yet completed", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: false })
+      authResolvers.getCurrentUser.handler(factory.user()),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: false })
       )
     );
     renderWithProviders(<MaasIntroSuccess />, {
@@ -49,7 +53,10 @@ describe("MaasIntroSuccess", () => {
   it("links to the machine list if an admin that has completed the user intro", async () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: true, is_superuser: true })
+        factory.user({ is_superuser: true })
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: true })
       )
     );
     renderWithProviders(<MaasIntroSuccess />, {
@@ -66,7 +73,10 @@ describe("MaasIntroSuccess", () => {
   it("links to the machine list if a non-admin that has completed the user intro", async () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: true, is_superuser: false })
+        factory.user({ is_superuser: false })
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: true })
       )
     );
 

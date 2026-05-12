@@ -4755,6 +4755,41 @@ export type UserResponse = {
 };
 
 /**
+ * UserStatisticsResponse
+ */
+export type UserStatisticsResponse = {
+  _links?: BaseHal;
+  /**
+   * Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Kind
+   */
+  kind?: string;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Completed Intro
+   */
+  completed_intro: boolean;
+  /**
+   * Is Local
+   */
+  is_local: boolean;
+  /**
+   * Machines Count
+   */
+  machines_count: number;
+  /**
+   * Sshkeys Count
+   */
+  sshkeys_count: number;
+};
+
+/**
  * UserUpdateRequest
  */
 export type UserUpdateRequest = {
@@ -4785,61 +4820,6 @@ export type UserUpdateRequest = {
 };
 
 /**
- * UserWithSummaryResponse
- */
-export type UserWithSummaryResponse = {
-  _links?: BaseHal;
-  /**
-   * Embedded
-   */
-  _embedded?: Record<string, unknown>;
-  /**
-   * Kind
-   */
-  kind?: string;
-  /**
-   * Id
-   */
-  id: number;
-  /**
-   * Completed Intro
-   */
-  completed_intro: boolean;
-  /**
-   * Email
-   */
-  email?: string;
-  /**
-   * Is Local
-   */
-  is_local: boolean;
-  /**
-   * Is Superuser
-   */
-  is_superuser: boolean;
-  /**
-   * Last Name
-   */
-  last_name?: string;
-  /**
-   * Last Login
-   */
-  last_login?: string;
-  /**
-   * Machines Count
-   */
-  machines_count: number;
-  /**
-   * Sshkeys Count
-   */
-  sshkeys_count: number;
-  /**
-   * Username
-   */
-  username: string;
-};
-
-/**
  * UsersListResponse
  */
 export type UsersListResponse = {
@@ -4862,13 +4842,13 @@ export type UsersListResponse = {
 };
 
 /**
- * UsersWithSummaryListResponse
+ * UsersStatisticsListResponse
  */
-export type UsersWithSummaryListResponse = {
+export type UsersStatisticsListResponse = {
   /**
    * Items
    */
-  items: UserWithSummaryResponse[];
+  items: UserStatisticsResponse[];
   /**
    * Total
    */
@@ -11831,32 +11811,32 @@ export type RemoveGroupMemberResponses = {
 export type RemoveGroupMemberResponse =
   RemoveGroupMemberResponses[keyof RemoveGroupMemberResponses];
 
-export type GetMeWithSummaryData = {
+export type GetMeStatisticsData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/MAAS/a/v3/users/me_with_summary";
+  url: "/MAAS/a/v3/users/me:statistics";
 };
 
-export type GetMeWithSummaryErrors = {
+export type GetMeStatisticsErrors = {
   /**
    * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type GetMeWithSummaryError =
-  GetMeWithSummaryErrors[keyof GetMeWithSummaryErrors];
+export type GetMeStatisticsError =
+  GetMeStatisticsErrors[keyof GetMeStatisticsErrors];
 
-export type GetMeWithSummaryResponses = {
+export type GetMeStatisticsResponses = {
   /**
    * Successful Response
    */
-  200: UserWithSummaryResponse;
+  200: UserStatisticsResponse;
 };
 
-export type GetMeWithSummaryResponse =
-  GetMeWithSummaryResponses[keyof GetMeWithSummaryResponses];
+export type GetMeStatisticsResponse =
+  GetMeStatisticsResponses[keyof GetMeStatisticsResponses];
 
 export type GetUserInfoData = {
   body?: never;
@@ -11969,6 +11949,16 @@ export type ListUsersData = {
      * Size
      */
     size?: number;
+    /**
+     * Id
+     *
+     * Filter by User ID
+     */
+    id?: number[];
+    /**
+     * Filter by username or email
+     */
+    username_or_email?: string;
   };
   url: "/MAAS/a/v3/users";
 };
@@ -12183,7 +12173,7 @@ export type ChangePasswordAdminResponses = {
 export type ChangePasswordAdminResponse =
   ChangePasswordAdminResponses[keyof ChangePasswordAdminResponses];
 
-export type ListUsersWithSummaryData = {
+export type ListUsersStatisticsData = {
   body?: never;
   path?: never;
   query?: {
@@ -12196,32 +12186,38 @@ export type ListUsersWithSummaryData = {
      */
     size?: number;
     /**
+     * Id
+     *
+     * Filter by User ID
+     */
+    id?: number[];
+    /**
      * Filter by username or email
      */
     username_or_email?: string;
   };
-  url: "/MAAS/a/v3/users_with_summary";
+  url: "/MAAS/a/v3/users:statistics";
 };
 
-export type ListUsersWithSummaryErrors = {
+export type ListUsersStatisticsErrors = {
   /**
    * Unprocessable Content
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListUsersWithSummaryError =
-  ListUsersWithSummaryErrors[keyof ListUsersWithSummaryErrors];
+export type ListUsersStatisticsError =
+  ListUsersStatisticsErrors[keyof ListUsersStatisticsErrors];
 
-export type ListUsersWithSummaryResponses = {
+export type ListUsersStatisticsResponses = {
   /**
    * Successful Response
    */
-  200: UsersWithSummaryListResponse;
+  200: UsersStatisticsListResponse;
 };
 
-export type ListUsersWithSummaryResponse =
-  ListUsersWithSummaryResponses[keyof ListUsersWithSummaryResponses];
+export type ListUsersStatisticsResponse =
+  ListUsersStatisticsResponses[keyof ListUsersStatisticsResponses];
 
 export type ListFabricVlansData = {
   body?: never;

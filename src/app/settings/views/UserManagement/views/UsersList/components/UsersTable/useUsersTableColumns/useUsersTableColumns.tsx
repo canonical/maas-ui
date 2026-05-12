@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 
+import { Spinner } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import { useGetCurrentUser } from "@/app/api/query/auth";
-import type { UserWithSummaryResponse } from "@/app/apiclient";
+import type { UserWithStatistics } from "@/app/api/query/users";
 import TableActions from "@/app/base/components/TableActions";
 import TableHeader from "@/app/base/components/TableHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
@@ -15,11 +16,15 @@ import {
 } from "@/app/settings/views/UserManagement/views/UsersList/components";
 
 type UsersColumnDef = ColumnDef<
-  UserWithSummaryResponse,
-  Partial<UserWithSummaryResponse>
+  UserWithStatistics,
+  Partial<UserWithStatistics>
 >;
 
-const useUsersTableColumns = (): UsersColumnDef[] => {
+const useUsersTableColumns = ({
+  statisticsPending,
+}: {
+  statisticsPending: boolean;
+}): UsersColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   const authUser = useGetCurrentUser();
   const [isDisplayingUsername, setIsDisplayingUsername] = useState(true);
@@ -74,6 +79,16 @@ const useUsersTableColumns = (): UsersColumnDef[] => {
           accessorKey: "machines_count",
           enableSorting: true,
           header: "Machines",
+          cell: ({
+            row: {
+              original: { statistics },
+            },
+          }) =>
+            statisticsPending ? (
+              <Spinner aria-label="Loading machines count" />
+            ) : (
+              statistics?.machines_count
+            ),
         },
         {
           id: "is_local",
@@ -82,10 +97,12 @@ const useUsersTableColumns = (): UsersColumnDef[] => {
           header: "Local",
           cell: ({
             row: {
-              original: { is_local },
+              original: { statistics },
             },
           }) =>
-            is_local ? (
+            statisticsPending ? (
+              <Spinner aria-label="Loading local status" />
+            ) : statistics?.is_local ? (
               <TooltipButton
                 iconName="task-outstanding"
                 iconProps={{ "aria-label": "supported" }}
@@ -144,6 +161,16 @@ const useUsersTableColumns = (): UsersColumnDef[] => {
           accessorKey: "sshkeys_count",
           enableSorting: true,
           header: "MAAS keys",
+          cell: ({
+            row: {
+              original: { statistics },
+            },
+          }) =>
+            statisticsPending ? (
+              <Spinner aria-label="Loading SSH keys count" />
+            ) : (
+              statistics?.sshkeys_count
+            ),
         },
         {
           id: "actions",
@@ -187,7 +214,7 @@ const useUsersTableColumns = (): UsersColumnDef[] => {
           },
         },
       ] as UsersColumnDef[],
-    [authUser.data?.id, isDisplayingUsername, openSidePanel]
+    [authUser.data?.id, isDisplayingUsername, openSidePanel, statisticsPending]
   );
 };
 

@@ -137,7 +137,7 @@ const MaasIntro = (): React.ReactElement => {
           <Card data-testid="skip-setup" highlighted>
             <TableConfirm
               confirmLabel={
-                user.data?.completed_intro
+                user.data?.statistics?.completed_intro
                   ? Labels.SecondarySubmit
                   : Labels.SkipToUserSetup
               }
@@ -153,7 +153,7 @@ const MaasIntro = (): React.ReactElement => {
               onConfirm={() => {
                 dispatch(configActions.update({ completed_intro: true }));
                 setCookie("skipsetupintro", "true");
-                if (!user.data?.completed_intro) {
+                if (!user.data?.statistics?.completed_intro) {
                   navigate({ pathname: urls.intro.user });
                 } else {
                   navigate({

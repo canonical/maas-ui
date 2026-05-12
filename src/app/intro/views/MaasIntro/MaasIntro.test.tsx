@@ -11,15 +11,16 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  userEvent,
-  screen,
   renderWithProviders,
+  screen,
   setupMockServer,
+  userEvent,
 } from "@/testing/utils";
 
 setupMockServer(
-  authResolvers.getCurrentUser.handler(
-    factory.user({ completed_intro: false, is_superuser: true })
+  authResolvers.getCurrentUser.handler(factory.user({ is_superuser: true })),
+  authResolvers.getMeStatistics.handler(
+    factory.userStatistics({ completed_intro: false })
   )
 );
 

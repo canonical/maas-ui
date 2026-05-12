@@ -2,9 +2,12 @@ import Settings from "./Settings";
 
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
-import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
+import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
-setupMockServer(authResolvers.getCurrentUser.handler());
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
+);
 
 describe("Settings", () => {
   it("dispatches action to fetch config on load", () => {

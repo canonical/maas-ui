@@ -33,5 +33,5 @@ export const useCompletedUserIntro = (): boolean => {
       return true;
     }
   }
-  return !!user.data?.completed_intro;
+  return !!user.data?.statistics?.completed_intro;
 };

@@ -24,7 +24,14 @@ vi.mock("react-router", async () => {
   };
 });
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(
+    factory.user({ is_superuser: true, id: 1 })
+  ),
+  authResolvers.getMeStatistics.handler(
+    factory.userStatistics({ id: 1, completed_intro: true })
+  )
+);
 
 afterEach(() => {
   vi.resetModules();
@@ -108,8 +115,12 @@ describe("GlobalSideNav", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
         factory.user({
-          completed_intro: false,
           username: "koala",
+        })
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({
+          completed_intro: false,
         })
       )
     );

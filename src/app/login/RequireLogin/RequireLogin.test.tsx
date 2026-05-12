@@ -9,12 +9,12 @@ import urls from "@/app/base/urls";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
+import * as factory from "@/testing/factories";
 import {
+  configState as configStateFactory,
   rootState as rootStateFactory,
   statusState as statusStateFactory,
-  configState as configStateFactory,
 } from "@/testing/factories";
-import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { render, screen, setupMockServer, waitFor } from "@/testing/utils";
 
@@ -22,7 +22,10 @@ const mockStore = configureStore();
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, staleTime: Infinity } },
 });
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
+);
 
 describe("RequireLogin", () => {
   let state: RootState;
@@ -155,13 +158,15 @@ describe("RequireLogin", () => {
   });
 
   it("redirects to the user intro page if user intro not completed", async () => {
+    const userId = 1;
     state.status.authenticated = true;
     state.config.items = [
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
     ];
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: false })
+      authResolvers.getCurrentUser.handler(factory.user({ id: userId })),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ id: userId, completed_intro: false })
       )
     );
 
