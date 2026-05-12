@@ -83,11 +83,9 @@ Pass state via `renderWithProviders`. Do not create a mock store manually.
 
 ```tsx
 renderWithProviders(<MyComponent />, {
-  state: {
-    user: factory.userState({
-      auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
-    }),
-  },
+  state: factory.rootState({
+    status: factory.statusState({ connected: true, authenticated: true }),
+  }),
 });
 
 const { store } = renderWithProviders(<MyComponent />);

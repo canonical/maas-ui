@@ -392,11 +392,10 @@ import { factory } from "@/testing/factories";
 
 const pool = factory.resourcePool({ name: "production", is_default: true });
 
-renderWithProviders(<MyComponent />, {
-  state: factory.rootState({
-    auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
-  }),
-});
+mockServer.use(
+  authResolvers.getCurrentUser.handler(factory.user({ is_superuser: true }))
+);
+renderWithProviders(<MyComponent />);
 ```
 
 Always use factories rather than hand-crafting raw object literals in tests.

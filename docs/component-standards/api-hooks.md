@@ -8,7 +8,7 @@
 - Use `useMutation` with `mutationOptionsWithHeaders` and `invalidateQueries` in `onSuccess` for mutations
 - Create mock resolvers in `src/testing/resolvers/` using MSW (Mock Service Worker)
 - Test hooks using `renderHookWithProviders` and mock resolvers
-- Follow naming convention: `use<Resource>` for list queries, `use<Action><Resource>` for single item and operation queries
+- Follow naming convention: `use<ResourcePlural>` for list queries, `useGet<Resource>` for single-item queries, `use<Action><Resource>` for mutations
 
 ## Naming Conventions
 
