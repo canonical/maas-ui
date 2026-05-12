@@ -9,10 +9,10 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  userEvent,
+  renderWithProviders,
   screen,
   setupMockServer,
-  renderWithProviders,
+  userEvent,
 } from "@/testing/utils";
 
 setupMockServer(

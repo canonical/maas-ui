@@ -36,9 +36,7 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the user intro if not yet completed", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.user()
-      ),
+      authResolvers.getCurrentUser.handler(factory.user()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: false })
       )

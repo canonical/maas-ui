@@ -3,7 +3,7 @@ import IntroSection from "./IntroSection";
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
-import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
+import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
@@ -21,9 +21,7 @@ describe("IntroSection", () => {
 
   it("can redirect to close the intro", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.user()
-      ),
+      authResolvers.getCurrentUser.handler(factory.user()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )

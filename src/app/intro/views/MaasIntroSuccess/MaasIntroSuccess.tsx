@@ -17,7 +17,9 @@ const MaasIntroSuccess = (): React.ReactElement => {
   const dispatch = useDispatch();
   const user = useGetCurrentUser();
   const exitURL = useExitURL();
-  const continueLink = user.data?.statistics?.completed_intro ? exitURL : urls.intro.user;
+  const continueLink = user.data?.statistics?.completed_intro
+    ? exitURL
+    : urls.intro.user;
 
   return (
     <IntroSection windowTitle="Success">
