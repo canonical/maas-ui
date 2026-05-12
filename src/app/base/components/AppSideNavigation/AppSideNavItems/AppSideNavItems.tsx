@@ -8,12 +8,12 @@ import type { SideNavigationProps } from "../AppSideNavigation";
 import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
-import type { UserWithSummaryResponse } from "@/app/apiclient";
+import type { UserResponse } from "@/app/apiclient";
 import { useId } from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
 
 type Props = {
-  authUser: UserWithSummaryResponse | null;
+  authUser: UserResponse | null;
   groups: NavGroup[];
   isAdmin: boolean;
   isAuthenticated: boolean;

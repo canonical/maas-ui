@@ -4,14 +4,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
+import type { UserWithStatistics } from "@/app/api/query/users";
 import {
   mutationOptionsWithHeaders,
   queryOptionsWithHeaders,
 } from "@/app/api/utils";
 import type {
-  HandleOauthCallbackResponses,
-  HandleOauthCallbackErrors,
-  HandleOauthCallbackData,
   CompleteIntroData,
   CompleteIntroErrors,
   CompleteIntroResponses,
@@ -24,48 +22,56 @@ import type {
   DeleteOauthProviderData,
   DeleteOauthProviderErrors,
   DeleteOauthProviderResponses,
-  GetMeWithSummaryData,
-  GetMeWithSummaryErrors,
-  GetMeWithSummaryResponses,
+  ExtendSessionData,
+  ExtendSessionErrors,
+  ExtendSessionResponses,
+  GetMeStatisticsData,
+  GetMeStatisticsErrors,
+  GetMeStatisticsResponses,
   GetOauthProviderData,
   GetOauthProviderErrors,
   GetOauthProviderResponses,
+  GetUserInfoData,
+  GetUserInfoErrors,
+  GetUserInfoResponses,
+  HandleOauthCallbackData,
+  HandleOauthCallbackErrors,
+  HandleOauthCallbackResponses,
+  InitiateAuthFlowData,
+  InitiateAuthFlowErrors,
+  InitiateAuthFlowResponses,
   LoginData,
+  LoginError,
   LoginErrors,
   LoginResponses,
   Options,
+  PreLoginData,
+  PreLoginErrors,
+  PreLoginResponses,
+  TokenResponse,
   UpdateOauthProviderData,
   UpdateOauthProviderErrors,
   UpdateOauthProviderResponses,
-  PreLoginData,
-  PreLoginResponses,
-  PreLoginErrors,
-  TokenResponse,
-  LoginError,
-  ExtendSessionResponses,
-  ExtendSessionErrors,
-  ExtendSessionData,
-  InitiateAuthFlowData,
-  InitiateAuthFlowResponses,
-  InitiateAuthFlowErrors,
 } from "@/app/apiclient";
 import {
-  deleteOauthProvider,
-  updateOauthProvider,
-  createOauthProvider,
   completeIntro,
-  getOauthProvider,
-  getMeWithSummary,
-  login,
+  createOauthProvider,
   createSession,
-  preLogin,
+  deleteOauthProvider,
   extendSession,
-  initiateAuthFlow,
+  getMeStatistics,
+  getOauthProvider,
+  getUserInfo,
   handleOauthCallback,
+  initiateAuthFlow,
+  login,
+  preLogin,
+  updateOauthProvider,
 } from "@/app/apiclient";
 import {
-  getMeWithSummaryQueryKey,
+  getMeStatisticsQueryKey,
   getOauthProviderQueryKey,
+  getUserInfoQueryKey,
   handleOauthCallbackQueryKey,
   initiateAuthFlowQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -236,24 +242,51 @@ export const useExtendSession = (
   });
 };
 
-export const useGetCurrentUser = (options?: Options<GetMeWithSummaryData>) => {
-  return useWebsocketAwareQuery({
+export const useGetCurrentUser = (
+  options?: Options<GetUserInfoData>
+): {
+  data: UserWithStatistics | undefined;
+  isPending: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+} => {
+  const userInfo = useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
-      GetMeWithSummaryResponses,
-      GetMeWithSummaryErrors,
-      GetMeWithSummaryData
-    >(options, getMeWithSummary, getMeWithSummaryQueryKey(options)),
+      GetUserInfoResponses,
+      GetUserInfoErrors,
+      GetUserInfoData
+    >(options, getUserInfo, getUserInfoQueryKey(options)),
     retry: false, // explicitly set retry to false
   });
+
+  const statistics = useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<
+      GetMeStatisticsResponses,
+      GetMeStatisticsErrors,
+      GetMeStatisticsData
+    >({}, getMeStatistics, getMeStatisticsQueryKey()),
+    enabled: userInfo.isSuccess,
+    retry: false,
+  });
+
+  return {
+    ...userInfo,
+    data: userInfo.data
+      ? ({
+          ...userInfo.data,
+          statistics: statistics.data,
+        } as UserWithStatistics)
+      : undefined,
+  };
 };
 
-export const useGetIsSuperUser = (options?: Options<GetMeWithSummaryData>) => {
+export const useGetIsSuperUser = (options?: Options<GetUserInfoData>) => {
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
-      GetMeWithSummaryResponses,
-      GetMeWithSummaryErrors,
-      GetMeWithSummaryData
-    >(options, getMeWithSummary, getMeWithSummaryQueryKey(options)),
+      GetUserInfoResponses,
+      GetUserInfoErrors,
+      GetUserInfoData
+    >(options, getUserInfo, getUserInfoQueryKey(options)),
     select: (data) => data.is_superuser,
   });
 };
@@ -270,7 +303,7 @@ export const useCompleteIntro = (
     >(mutationOptions, completeIntro),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: getMeWithSummaryQueryKey(),
+        queryKey: getUserInfoQueryKey(),
       });
     },
   });

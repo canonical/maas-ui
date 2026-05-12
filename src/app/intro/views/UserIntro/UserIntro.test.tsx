@@ -8,17 +8,18 @@ import urls from "@/app/base/urls";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
-  userEvent,
-  screen,
-  within,
   renderWithProviders,
+  screen,
   setupMockServer,
+  userEvent,
   waitForLoading,
+  within,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   sshKeyResolvers.listSshKeys.handler(),
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler(),
   authResolvers.completeIntro.handler()
 );
 

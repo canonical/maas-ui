@@ -23,7 +23,8 @@ import {
 
 const mockServer = setupMockServer(
   usersResolvers.listUsers.handler(),
-  usersResolvers.getUser.handler()
+  usersResolvers.getUser.handler(),
+  usersResolvers.listUsersStatistics.handler()
 );
 const { mockOpen } = await mockSidePanel();
 

@@ -20,7 +20,9 @@ const UsersTable = () => {
     query: { page: debouncedPage, size, username_or_email: searchText },
   });
 
-  const columns = useUsersTableColumns();
+  const columns = useUsersTableColumns({
+    statisticsPending: users.statisticsPending,
+  });
 
   return (
     <div className="users-table">
