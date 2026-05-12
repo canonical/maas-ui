@@ -4,31 +4,37 @@ import { oAuthProviderFactory } from "../factories/auth";
 import { BASE_URL } from "../utils";
 
 import type {
-  PreLoginResponse,
-  PreLoginError,
-  CreateSessionError,
-  LoginResponse,
   CompleteIntroError,
   CreateOauthProviderError,
-  GetMeWithSummaryError,
-  GetOauthProviderError,
-  LoginError,
-  OAuthProviderResponse,
-  UpdateOauthProviderError,
-  UpdateUserError,
-  UserWithSummaryResponse,
+  CreateSessionError,
   ExtendSessionError,
-  InitiateAuthFlowResponse,
-  InitiateAuthFlowError,
+  GetMeStatisticsError,
+  GetOauthProviderError,
+  GetUserInfoError,
   HandleOauthCallbackError,
   HandleOauthCallbackResponse,
+  InitiateAuthFlowError,
+  InitiateAuthFlowResponse,
+  LoginError,
+  LoginResponse,
+  OAuthProviderResponse,
+  PreLoginError,
+  PreLoginResponse,
+  UpdateOauthProviderError,
+  UpdateUserError,
+  UserResponse,
+  UserStatisticsResponse,
 } from "@/app/apiclient";
-import { user } from "@/testing/factories";
+import { user, userStatistics } from "@/testing/factories";
 
-const mockAuth: UserWithSummaryResponse = user({
+const mockAuth: UserResponse = user({
   id: 1,
   email: "user1@example.com",
   username: "user1",
+});
+
+const mockAuthStatistics: UserStatisticsResponse = userStatistics({
+  id: 1,
 });
 
 const mockPreLoginResponse: PreLoginResponse = {
@@ -205,13 +211,26 @@ const authResolvers = {
   getCurrentUser: {
     resolved: false,
     handler: (data = mockAuth) =>
-      http.get(`${BASE_URL}MAAS/a/v3/users/me_with_summary`, () => {
+      http.get(`${BASE_URL}MAAS/a/v3/users/me`, () => {
         authResolvers.getCurrentUser.resolved = true;
         return HttpResponse.json(data);
       }),
-    error: (error: GetMeWithSummaryError = mockAuthenticateError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/users/me_with_summary`, () => {
+    error: (error: GetUserInfoError = mockAuthenticateError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users/me`, () => {
         authResolvers.getCurrentUser.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  getMeStatistics: {
+    resolved: false,
+    handler: (data = mockAuthStatistics) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users/me:statistics`, () => {
+        authResolvers.getMeStatistics.resolved = true;
+        return HttpResponse.json(data);
+      }),
+    error: (error: GetMeStatisticsError = mockAuthenticateError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users/me:statistics`, () => {
+        authResolvers.getMeStatistics.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },

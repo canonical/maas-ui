@@ -13,6 +13,7 @@ import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler(),
   authResolvers.createSession.handler(),
   notificationResolvers.listNotifications.handler()
 );

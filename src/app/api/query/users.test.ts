@@ -5,9 +5,14 @@ import {
   useUpdateUser,
   useUserCount,
   useUsers,
+  useUsersStatistics,
 } from "@/app/api/query/users";
 import type { UserCreateRequest, UserUpdateRequest } from "@/app/apiclient";
-import { mockUsers, usersResolvers } from "@/testing/resolvers/users";
+import {
+  mockUsers,
+  mockUsersStatistics,
+  usersResolvers,
+} from "@/testing/resolvers/users";
 import {
   renderHookWithProviders,
   setupMockServer,
@@ -29,6 +34,16 @@ describe("useUsers", () => {
       expect(result.current.isSuccess).toBe(true);
     });
     expect(result.current.data).toMatchObject(mockUsers);
+  });
+});
+
+describe("useUsersStatistics", () => {
+  it("should return users statistics data", async () => {
+    const { result } = renderHookWithProviders(() => useUsersStatistics());
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data).toMatchObject(mockUsersStatistics);
   });
 });
 

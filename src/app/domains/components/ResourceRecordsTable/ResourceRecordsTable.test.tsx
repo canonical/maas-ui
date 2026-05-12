@@ -12,7 +12,10 @@ import {
   within,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
+);
 
 describe("ResourceRecordsTable", () => {
   let items: DomainDetails;
