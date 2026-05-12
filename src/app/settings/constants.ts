@@ -45,7 +45,10 @@ export const settingsNavItems: NavItem[] = [
         path: settingsURLs.userManagement.users,
         label: "Users",
       },
-
+      {
+        path: settingsURLs.userManagement.groups,
+        label: "Groups",
+      },
       {
         label: "OIDC/Single sign-on",
         path: settingsURLs.userManagement.singleSignOn,
