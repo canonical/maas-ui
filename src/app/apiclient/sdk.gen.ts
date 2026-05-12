@@ -531,9 +531,6 @@ import type {
   SyncBootsourceBootsourceselectionData,
   SyncBootsourceBootsourceselectionErrors,
   SyncBootsourceBootsourceselectionResponses,
-  UpdateBootsourceBootsourceselectionData,
-  UpdateBootsourceBootsourceselectionErrors,
-  UpdateBootsourceBootsourceselectionResponses,
   UpdateBootsourceData,
   UpdateBootsourceErrors,
   UpdateBootsourceResponses,
@@ -1150,34 +1147,6 @@ export const getBootsourceBootsourceselection = <
     ],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}",
     ...options,
-  });
-};
-
-/**
- * Update Bootsource Bootsourceselection
- */
-export const updateBootsourceBootsourceselection = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<UpdateBootsourceBootsourceselectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
-    UpdateBootsourceBootsourceselectionResponses,
-    UpdateBootsourceBootsourceselectionErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
   });
 };
 

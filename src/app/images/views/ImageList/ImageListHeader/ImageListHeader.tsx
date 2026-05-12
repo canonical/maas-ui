@@ -3,6 +3,7 @@ import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
+import pluralize from "pluralize";
 
 import { useImageSources } from "@/app/api/query/imageSources";
 import { useSelectionStatuses } from "@/app/api/query/images";
@@ -28,7 +29,7 @@ const getImageSyncText = (sources: BootSourceResponse[]) => {
     }
     return mainSource.url;
   }
-  return "sources";
+  return "multiple sources";
 };
 
 const ImageListHeader = ({
@@ -42,6 +43,10 @@ const ImageListHeader = ({
 
   const isPending = sources.isPending || selectionsStatuses.isPending;
   const isDeleteDisabled = Object.keys(selectedRows).length <= 0;
+
+  const selectedImageCount = Object.values(selectedRows).filter(
+    (isSelected) => isSelected
+  ).length;
 
   return (
     <MainToolbar>
@@ -59,11 +64,11 @@ const ImageListHeader = ({
             onClick={() => {
               openSidePanel({
                 component: DeleteImages,
+                title: `Delete ${selectedImageCount > 1 ? `${selectedImageCount} ` : ""}${pluralize("image", selectedImageCount)}`,
                 props: {
                   rowSelection: selectedRows,
                   setRowSelection: setSelectedRows,
                 },
-                title: "Delete images",
               });
             }}
             type="button"

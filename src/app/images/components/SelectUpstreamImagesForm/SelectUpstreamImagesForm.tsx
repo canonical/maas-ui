@@ -13,7 +13,6 @@ import SelectUpstreamImagesSelect, {
 } from "./SelectUpstreamImagesSelect";
 import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 
-import { useImageSources } from "@/app/api/query/imageSources";
 import {
   useAddSelections,
   useAvailableSelections,
@@ -128,7 +127,6 @@ export const groupArchesByTitle = (images: ImagesByOS): GroupedImages => {
 const SelectUpstreamImagesForm = (): ReactElement => {
   const { closeSidePanel } = useSidePanel();
 
-  const { data: sources, isPending: isSourcesPending } = useImageSources();
   const { data: selectedImages, isPending: isSelectedImagesPending } =
     useSelections();
   const { data: availableImages, isPending: isAvailableImagesPending } =
@@ -138,9 +136,7 @@ const SelectUpstreamImagesForm = (): ReactElement => {
 
   const [groupedImages, setGroupedImages] = useState<GroupedImages>({});
 
-  const isPending =
-    isSourcesPending || isSelectedImagesPending || isAvailableImagesPending;
-  const tooManySources = (sources?.total ?? 0) > 1;
+  const isPending = isSelectedImagesPending || isAvailableImagesPending;
 
   useEffect(() => {
     if (selectedImages && availableImages) {
@@ -178,16 +174,6 @@ const SelectUpstreamImagesForm = (): ReactElement => {
           <Spinner text="Loading..." />
         ) : (
           <>
-            {tooManySources && (
-              <NotificationBanner
-                data-testid="too-many-sources"
-                severity="caution"
-              >
-                More than one image source exists. The UI does not support
-                updating synced images when more than one source has been
-                defined. Use the API to adjust your sources.
-              </NotificationBanner>
-            )}
             {noAvailableImages && (
               <NotificationBanner
                 data-testid="no-available-images-warning"
@@ -195,12 +181,12 @@ const SelectUpstreamImagesForm = (): ReactElement => {
               >
                 No available upstream images found. This could be caused by an
                 ongoing image source change. If you recently changed the image
-                source, please come back after some time.
+                source settings, please come back after some time.
               </NotificationBanner>
             )}
             <FormikForm
+              aria-label="Select upstream images to sync"
               buttonsBehavior="independent"
-              editable={!tooManySources}
               enableReinitialize
               errors={addSelections.error}
               initialValues={initialValues}
