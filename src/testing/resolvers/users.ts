@@ -7,13 +7,17 @@ import type {
   DeleteUserError,
   GetUserError,
   ListUsersError,
-  ListUsersWithSummaryResponse,
+  ListUsersResponse,
+  ListUsersStatisticsError,
+  ListUsersStatisticsResponse,
   UpdateUserError,
-  UsersWithSummaryListResponse,
 } from "@/app/apiclient";
-import { user as userFactory } from "@/testing/factories";
+import {
+  user as userFactory,
+  userStatistics as userStatisticsFactory,
+} from "@/testing/factories";
 
-const mockUsers: ListUsersWithSummaryResponse = {
+const mockUsers: ListUsersResponse = {
   items: [
     userFactory({
       id: 1,
@@ -34,10 +38,31 @@ const mockUsers: ListUsersWithSummaryResponse = {
   total: 3,
 };
 
+const mockUsersStatistics: ListUsersStatisticsResponse = {
+  items: [
+    userStatisticsFactory({
+      id: 1,
+    }),
+    userStatisticsFactory({
+      id: 2,
+    }),
+    userStatisticsFactory({
+      id: 3,
+    }),
+  ],
+  total: 3,
+};
+
 const mockListUsersError: ListUsersError = {
   message: "Unauthorized",
   code: 401,
   kind: "Error", // This will always be 'Error' for every error response
+};
+
+const mockListUsersStatisticsError: ListUsersStatisticsError = {
+  message: "Unauthorized",
+  code: 401,
+  kind: "Error",
 };
 
 const mockGetUserError: GetUserError = {
@@ -61,14 +86,27 @@ const mockUpdateUserError: UpdateUserError = {
 const usersResolvers = {
   listUsers: {
     resolved: false,
-    handler: (data: UsersWithSummaryListResponse = mockUsers) =>
-      http.get(`${BASE_URL}MAAS/a/v3/users_with_summary`, () => {
+    handler: (data: ListUsersResponse = mockUsers) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users`, () => {
         usersResolvers.listUsers.resolved = true;
         return HttpResponse.json(data);
       }),
     error: (error: ListUsersError = mockListUsersError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/users_with_summary`, () => {
+      http.get(`${BASE_URL}MAAS/a/v3/users`, () => {
         usersResolvers.listUsers.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  listUsersStatistics: {
+    resolved: false,
+    handler: (data: ListUsersStatisticsResponse = mockUsersStatistics) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users\:statistics`, () => {
+        usersResolvers.listUsersStatistics.resolved = true;
+        return HttpResponse.json(data);
+      }),
+    error: (error: ListUsersStatisticsError = mockListUsersStatisticsError) =>
+      http.get(`${BASE_URL}MAAS/a/v3/users\:statistics`, () => {
+        usersResolvers.listUsersStatistics.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
@@ -130,4 +168,4 @@ const usersResolvers = {
   },
 };
 
-export { usersResolvers, mockUsers };
+export { mockUsers, mockUsersStatistics, usersResolvers };

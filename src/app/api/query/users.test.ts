@@ -5,9 +5,15 @@ import {
   useUpdateUser,
   useUserCount,
   useUsers,
+  useUsersStatistics,
 } from "@/app/api/query/users";
 import type { UserCreateRequest, UserUpdateRequest } from "@/app/apiclient";
-import { mockUsers, usersResolvers } from "@/testing/resolvers/users";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  mockUsers,
+  mockUsersStatistics,
+  usersResolvers,
+} from "@/testing/resolvers/users";
 import {
   renderHookWithProviders,
   setupMockServer,
@@ -16,10 +22,12 @@ import {
 
 const mockServer = setupMockServer(
   usersResolvers.listUsers.handler(),
+  usersResolvers.listUsersStatistics.handler(),
   usersResolvers.getUser.handler(),
   usersResolvers.createUser.handler(),
   usersResolvers.updateUser.handler(),
-  usersResolvers.deleteUser.handler()
+  usersResolvers.deleteUser.handler(),
+  authResolvers.getCurrentUser.handler()
 );
 
 describe("useUsers", () => {
@@ -29,6 +37,16 @@ describe("useUsers", () => {
       expect(result.current.isSuccess).toBe(true);
     });
     expect(result.current.data).toMatchObject(mockUsers);
+  });
+});
+
+describe("useUsersStatistics", () => {
+  it("should return users statistics data", async () => {
+    const { result } = renderHookWithProviders(() => useUsersStatistics());
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data).toMatchObject(mockUsersStatistics);
   });
 });
 

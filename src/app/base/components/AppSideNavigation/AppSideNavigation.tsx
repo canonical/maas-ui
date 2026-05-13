@@ -20,7 +20,7 @@ import NavigationBanner from "./NavigationBanner";
 import { navGroups } from "./constants";
 
 import { useGetCurrentUser } from "@/app/api/query/auth";
-import type { UserWithSummaryResponse } from "@/app/apiclient";
+import type { UserResponse } from "@/app/apiclient";
 import {
   useCompletedIntro,
   useCompletedUserIntro,
@@ -36,7 +36,7 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 export type SideNavigationProps = {
-  authUser: UserWithSummaryResponse;
+  authUser: UserResponse;
   filteredGroups: typeof navGroups;
   isAuthenticated: boolean;
   isCollapsed: boolean;

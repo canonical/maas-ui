@@ -7,12 +7,9 @@ import pluralize from "pluralize";
 import * as Yup from "yup";
 
 import { useAddGroupMembers, useGroupMembers } from "@/app/api/query/groups";
+import type { UserWithStatistics } from "@/app/api/query/users";
 import { useUsers } from "@/app/api/query/users";
-import type {
-  AddGroupMemberError,
-  UserGroupResponse,
-  UserWithSummaryResponse,
-} from "@/app/apiclient";
+import type { AddGroupMemberError, UserGroupResponse } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import SearchBox from "@/app/base/components/SearchBox";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
@@ -35,8 +32,8 @@ const AddMembersSchema = Yup.object().shape({
 });
 
 type AddMembersColumnDef = ColumnDef<
-  UserWithSummaryResponse,
-  Partial<UserWithSummaryResponse>
+  UserWithStatistics,
+  Partial<UserWithStatistics>
 >;
 
 const AddMembers = ({ groupId }: AddMembersProps) => {

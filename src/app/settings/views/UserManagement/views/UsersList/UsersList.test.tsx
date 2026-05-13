@@ -14,7 +14,8 @@ import {
 setupMockServer(
   usersResolvers.listUsers.handler(),
   usersResolvers.getUser.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
 );
 
 describe("UsersList", () => {

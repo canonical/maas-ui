@@ -18,6 +18,7 @@ import {
 setupMockServer(
   authResolvers.authenticate.handler(),
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler(),
   usersResolvers.getUser.handler(),
   usersResolvers.updateUser.handler()
 );

@@ -8,13 +8,16 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  screen,
   renderWithProviders,
+  screen,
   setupMockServer,
   waitForLoading,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
+);
 
 describe("Intro", () => {
   let state: RootState;
@@ -38,7 +41,10 @@ describe("Intro", () => {
   it("displays a message if the user is not an admin", async () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: false, is_superuser: false })
+        factory.user({ id: 1, is_superuser: false })
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ id: 1, completed_intro: false })
       )
     );
     renderWithProviders(<Intro />, {
@@ -57,7 +63,10 @@ describe("Intro", () => {
   it("does not display a message if the user is an admin", async () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: false, is_superuser: true })
+        factory.user({ is_superuser: true })
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: false })
       )
     );
     const { router } = renderWithProviders(<Intro />, {
@@ -83,7 +92,10 @@ describe("Intro", () => {
     });
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: true, is_superuser: true })
+        factory.user({ is_superuser: true })
+      ),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: true })
       )
     );
     const { router } = renderWithProviders(<Intro />, {
@@ -110,8 +122,9 @@ describe("Intro", () => {
       items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.user({ completed_intro: false })
+      authResolvers.getCurrentUser.handler(factory.user()),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: false })
       )
     );
     const { router } = renderWithProviders(<Intro />, {

@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
+import configureStore from "redux-mock-store";
 
 import { useExitURL } from "./hooks";
 
@@ -15,7 +15,10 @@ import { authResolvers } from "@/testing/resolvers/auth";
 import { setupMockServer } from "@/testing/utils";
 
 const mockStore = configureStore();
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
+);
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>) =>
