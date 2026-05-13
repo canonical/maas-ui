@@ -13,6 +13,7 @@ import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 
+import { useLlmSearch } from "@/app/api/query/llm";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import GroupSelect from "@/app/base/components/GroupSelect";
 import urls from "@/app/base/urls";
@@ -39,11 +40,13 @@ export type MachineListControlsProps = {
 };
 
 const useNaturalLanguageSearch = () => {
+  const llmSearchMutation = useLlmSearch();
+
   const mutate = (text: string) => {
-    console.log(text);
+    llmSearchMutation.mutate({ body: { text } });
   };
 
-  const filterText = "pool:(=default) status:(=ready)";
+  const filterText = llmSearchMutation.data?.query ?? "";
 
   return { mutate, filterText };
 };
