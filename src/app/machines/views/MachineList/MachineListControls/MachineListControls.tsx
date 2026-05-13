@@ -2,7 +2,13 @@ import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
-import { Button, Col, Icon } from "@canonical/react-components";
+import {
+  Button,
+  CodeSnippet,
+  Col,
+  Icon,
+  Modal,
+} from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
@@ -32,6 +38,16 @@ export type MachineListControlsProps = {
   setHiddenColumns: ReturnType<typeof useResponsiveColumns>[1];
 };
 
+const useNaturalLanguageSearch = () => {
+  const mutate = (text: string) => {
+    console.log(text);
+  };
+
+  const filterText = "pool:(=default) status:(=ready)";
+
+  return { mutate, filterText };
+};
+
 const MachineListControls = ({
   machineCount,
   resourcePoolsCount,
@@ -44,13 +60,17 @@ const MachineListControls = ({
   setHiddenColumns,
 }: MachineListControlsProps): ReactElement => {
   const [searchText, setSearchText] = useState(filter);
+  const [natLangSearchText, setNatLangSearchText] = useState("");
   const hasSelection = useHasSelection();
   const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // If the filters change then update the search input text.
     setSearchText(filter);
   }, [filter]);
+
+  const natLangSearch = useNaturalLanguageSearch();
 
   return (
     <MainToolbar>
@@ -78,6 +98,44 @@ const MachineListControls = ({
               searchText={searchText}
               setSearchText={setSearchText}
             />
+            <Button
+              appearance="base"
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+            >
+              <Icon name="search" />✨
+            </Button>
+            {isModalOpen && (
+              <Modal
+                close={() => {
+                  setIsModalOpen(false);
+                }}
+                title={<>Natural language search ✨ </>}
+              >
+                <p>
+                  <small>
+                    <Icon name="information" /> This search box converts natural
+                    language into MAAS query syntax so you can more easily
+                    search for machines. Press <code>Enter</code> to search.
+                  </small>
+                </p>
+                <DebounceSearchBox
+                  onDebounced={() => {
+                    natLangSearch.mutate(natLangSearchText);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setSearchText(natLangSearch.filterText);
+                      setIsModalOpen(false);
+                    }
+                  }}
+                  searchText={natLangSearchText}
+                  setSearchText={setNatLangSearchText}
+                />
+                <CodeSnippet blocks={[{ code: natLangSearch.filterText }]} />
+              </Modal>
+            )}
             <GroupSelect<FetchGroupKey>
               groupOptions={groupOptions}
               grouping={grouping}
