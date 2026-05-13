@@ -143,7 +143,7 @@ const MachineListControls = ({
                   blocks={[
                     {
                       code: natLangSearch.isPending ? (
-                        <Spinner text="" />
+                        <Spinner text="Thinking..." />
                       ) : (
                         natLangSearch.filterText
                       ),
