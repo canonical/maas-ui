@@ -132,6 +132,8 @@ jobs:
           # MAAS runs inside the LXD container; resolve the host IP as seen from the
           # container so it can reach Keycloak (Docker on the host).
           HOST_IP=$(lxc exec maas-backend -- ip route | awk '/default/ {print $3}')
+          # Export so the Cypress run step can construct the matching cy.origin() URL.
+          echo "KEYCLOAK_HOST=$HOST_IP" >> $GITHUB_ENV
           lxc exec maas-backend -- maas admin oidc-providers create \
             name="Keycloak" \
             client_id="maas-client" \
@@ -186,6 +188,11 @@ jobs:
           HTTPS_CERT: /tmp/maas-certs/cert.pem
           HTTPS_KEY: /tmp/maas-certs/key.pem
           NODE_EXTRA_CA_CERTS: /tmp/maas-certs/cert.pem
+          # cy.origin() in the SSO login step needs to match the origin the browser
+          # is actually redirected to — the Keycloak authorization URL embeds HOST_IP
+          # (the LXD default-gateway IP on which Docker publishes Keycloak port 8080).
+          CYPRESS_KEYCLOAK_URL: http://${{ env.KEYCLOAK_HOST }}
+          CYPRESS_KEYCLOAK_PORT: 8080
         with:
           config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
           install: false
