@@ -120,16 +120,18 @@ const MachineListControls = ({
                   <small>
                     <Icon name="information" /> This search box converts natural
                     language into MAAS query syntax so you can more easily
-                    search for machines. Press <code>Enter</code> to search.
+                    search for machines. Press <code>Ctrl + Enter</code> to
+                    search.
                   </small>
                 </p>
                 <DebounceSearchBox
-                  onDebounced={() => {
-                    natLangSearch.mutate(natLangSearchText);
+                  onDebounced={(debouncedText) => {
+                    natLangSearch.mutate(debouncedText);
                   }}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") {
+                    if (e.key === "Enter" && e.ctrlKey) {
                       setSearchText(natLangSearch.filterText);
+                      setFilter(natLangSearch.filterText);
                       setIsModalOpen(false);
                     }
                   }}
