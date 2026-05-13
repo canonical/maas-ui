@@ -8,6 +8,7 @@ import {
   Col,
   Icon,
   Modal,
+  Spinner,
 } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
@@ -48,7 +49,7 @@ const useNaturalLanguageSearch = () => {
 
   const filterText = llmSearchMutation.data?.query ?? "";
 
-  return { mutate, filterText };
+  return { mutate, filterText, isPending: llmSearchMutation.isPending };
 };
 
 const MachineListControls = ({
@@ -138,7 +139,17 @@ const MachineListControls = ({
                   searchText={natLangSearchText}
                   setSearchText={setNatLangSearchText}
                 />
-                <CodeSnippet blocks={[{ code: natLangSearch.filterText }]} />
+                <CodeSnippet
+                  blocks={[
+                    {
+                      code: natLangSearch.isPending ? (
+                        <Spinner text="" />
+                      ) : (
+                        natLangSearch.filterText
+                      ),
+                    },
+                  ]}
+                />
               </Modal>
             )}
             <GroupSelect<FetchGroupKey>
