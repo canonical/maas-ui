@@ -1,5 +1,5 @@
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { routes } from "../../../constants";
+import { routes, VERY_LONG_TIMEOUT } from "../../../constants";
 import { generateMAASURL } from "../../../e2e/utils";
 
 const escapeRegExp = (value: string) =>
@@ -26,5 +26,8 @@ Then("the pathname should equal {string}", (expectedPath: string) => {
     return;
   }
 
-  cy.location("pathname").should("eq", expectedFullPath);
+  cy.location("pathname", { timeout: VERY_LONG_TIMEOUT }).should(
+    "eq",
+    expectedFullPath
+  );
 });

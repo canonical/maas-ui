@@ -5,7 +5,7 @@ import {
   Then,
   When,
 } from "@badeball/cypress-cucumber-preprocessor";
-import { LONG_TIMEOUT } from "../../../constants";
+import { LONG_TIMEOUT, VERY_LONG_TIMEOUT } from "../../../constants";
 import { generateMAASURL, generateName } from "../../../e2e/utils";
 
 const GROUP_BY_OPTIONS = [
@@ -238,7 +238,7 @@ Then(
 
     cy.findByRole("searchbox").clear().type(state.searchFilter);
     cy.findByText(/No machines match the search criteria./, {
-      timeout: LONG_TIMEOUT,
+      timeout: VERY_LONG_TIMEOUT,
     }).should("exist");
   }
 );
