@@ -82,12 +82,18 @@ it("displays available tags in the dropdown", async () => {
     </Formik>,
     { state }
   );
-  const changes = screen.getByRole("table", {
+  const changes = screen.getByRole("grid", {
     name: TagFormChangesLabel.Table,
   });
-  const tagRow = within(changes).getByRole("row", {
-    name: "tag3",
-  });
+  const tagRow = within(changes)
+    .getAllByRole("row")
+    .find((row) => {
+      try {
+        return within(row).getByText(new RegExp("^tag3\\s"));
+      } catch {
+        return false;
+      }
+    })!;
   // Set a tag to be removed.
   await userEvent.click(
     within(tagRow).getByRole("button", { name: TagFormChangesLabel.Remove })
@@ -125,7 +131,7 @@ it("displays the tags to be added", () => {
     </Formik>,
     { state }
   );
-  const changes = screen.getByRole("table", {
+  const changes = screen.getByRole("grid", {
     name: TagFormChangesLabel.Table,
   });
   expect(
@@ -157,7 +163,7 @@ it.skip("updates the new tags after creating a tag", async () => {
     </Formik>
   );
   const { rerender } = renderWithProviders(<Form tags={[]} />, { state });
-  const changes = screen.getByRole("table", {
+  const changes = screen.getByRole("grid", {
     name: TagFormChangesLabel.Table,
   });
   const newTag = factory.tag({ id: 8, name: "new-tag" });

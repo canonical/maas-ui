@@ -1,7 +1,7 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 
-import TagFormChanges, { Label, RowType } from "./TagFormChanges";
+import TagFormChanges, { Label } from "./TagFormChanges";
 
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
@@ -61,6 +61,31 @@ beforeEach(() => {
   });
 });
 
+const getTable = () => screen.getByRole("grid", { name: Label.Table });
+
+const findRowByTagName = (tagName: string) =>
+  within(getTable())
+    .getAllByRole("row")
+    .find((row) => {
+      try {
+        // Tag name appears inside a Chip with value like "tag1 (1/2)"
+        return within(row).getByText(new RegExp(`^${tagName}\\s`));
+      } catch {
+        return false;
+      }
+    })!;
+
+const getRowByTagName = (tagName: string) =>
+  within(getTable())
+    .getAllByRole("row")
+    .find((row) => {
+      try {
+        return within(row).getByText(new RegExp(`^${tagName}\\s`));
+      } catch {
+        return false;
+      }
+    })!;
+
 it("displays manual tags", () => {
   tags[0].definition = "";
   tags[1].definition = "";
@@ -71,17 +96,13 @@ it("displays manual tags", () => {
     </Formik>,
     { state }
   );
-  const labelCell = screen.getByRole("cell", { name: Label.Manual });
-  expect(labelCell).toBeInTheDocument();
-  expect(labelCell).toHaveAttribute("rowSpan", "2");
-  expect(screen.getByRole("row", { name: "tag1" })).toHaveAttribute(
-    "data-testid",
-    RowType.Manual
-  );
-  expect(screen.getByRole("row", { name: "tag2" })).toHaveAttribute(
-    "data-testid",
-    RowType.Manual
-  );
+  const table = getTable();
+  // Each manual tag row should have the "Currently assigned" category label
+  expect(
+    within(table).getAllByRole("cell", { name: Label.Manual })
+  ).toHaveLength(2);
+  expect(findRowByTagName("tag1")).toBeTruthy();
+  expect(findRowByTagName("tag2")).toBeTruthy();
 });
 
 it("displays automatic tags", () => {
@@ -94,19 +115,13 @@ it("displays automatic tags", () => {
     </Formik>,
     { state }
   );
-  const labelCell = screen.getByRole("cell", {
-    name: new RegExp(Label.Automatic),
-  });
-  expect(labelCell).toBeInTheDocument();
-  expect(labelCell).toHaveAttribute("rowSpan", "2");
-  expect(screen.getByRole("row", { name: "tag1" })).toHaveAttribute(
-    "data-testid",
-    RowType.Auto
-  );
-  expect(screen.getByRole("row", { name: "tag2" })).toHaveAttribute(
-    "data-testid",
-    RowType.Auto
-  );
+  const table = getTable();
+  // Each automatic tag row should have the "Automatic tags" category label
+  expect(
+    within(table).getAllByRole("cell", { name: Label.Automatic })
+  ).toHaveLength(2);
+  expect(findRowByTagName("tag1")).toBeTruthy();
+  expect(findRowByTagName("tag2")).toBeTruthy();
 });
 
 it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
@@ -119,16 +134,14 @@ it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
     </Formik>,
     { state }
   );
-  const labelCell = screen.getByRole("cell", {
-    name: new RegExp(Label.Added),
-  });
-  const existingTagRow = screen.getByRole("row", { name: "tag1" });
-  const newTagRow = screen.getByRole("row", { name: "tag2" });
-  expect(labelCell).toBeInTheDocument();
-  expect(labelCell).toHaveAttribute("rowSpan", "2");
-  expect(existingTagRow).toHaveAttribute("data-testid", RowType.Added);
+  const table = getTable();
+  // Each added tag row should have the "To be added" category label
+  expect(
+    within(table).getAllByRole("cell", { name: Label.Added })
+  ).toHaveLength(2);
+  const existingTagRow = getRowByTagName("tag1");
+  const newTagRow = getRowByTagName("tag2");
   expect(within(existingTagRow).queryByText("New")).not.toBeInTheDocument();
-  expect(newTagRow).toHaveAttribute("data-testid", RowType.Added);
   expect(within(newTagRow).getByText("NEW")).toBeInTheDocument();
 });
 
@@ -142,13 +155,12 @@ it("discards added tags", async () => {
     </Formik>,
     { state }
   );
-  const row = screen.getByRole("row", { name: "tag1" });
-  expect(row).toHaveAttribute("data-testid", RowType.Added);
+  const row = getRowByTagName("tag1");
   await userEvent.click(
     within(row).getByRole("button", { name: Label.Discard })
   );
   await waitFor(() => {
-    expect(screen.queryByRole("row", { name: "tag1" })).not.toBeInTheDocument();
+    expect(screen.queryByText("tag1")).not.toBeInTheDocument();
   });
 });
 
@@ -183,15 +195,20 @@ it("can remove manual tags", async () => {
     { state }
   );
   const tagName = "tag1";
-  const manualRow = screen.getByRole("row", { name: tagName });
-  expect(manualRow).toHaveAttribute("data-testid", RowType.Manual);
+  const manualRow = getRowByTagName(tagName);
+  // The row should have the "Currently assigned" category label
+  expect(
+    within(manualRow).getByRole("cell", { name: Label.Manual })
+  ).toBeInTheDocument();
   await userEvent.click(
     within(manualRow).getByRole("button", { name: Label.Remove })
   );
-  // Get the tag's new row.
-  const updatedRow = screen.getByRole("row", { name: tagName });
+  // After removing, the tag should now appear in the "To be removed" category
+  const updatedRow = getRowByTagName(tagName);
   await waitFor(() => {
-    expect(updatedRow).toHaveAttribute("data-testid", RowType.Removed);
+    expect(
+      within(updatedRow).getByRole("cell", { name: Label.Removed })
+    ).toBeInTheDocument();
   });
 });
 
@@ -207,19 +224,13 @@ it("displays removed tags", () => {
     </Formik>,
     { state }
   );
-  const labelCell = screen.getByRole("cell", {
-    name: new RegExp(Label.Removed),
-  });
-  expect(labelCell).toBeInTheDocument();
-  expect(labelCell).toHaveAttribute("rowSpan", "2");
-  expect(screen.getByRole("row", { name: "tag1" })).toHaveAttribute(
-    "data-testid",
-    RowType.Removed
-  );
-  expect(screen.getByRole("row", { name: "tag2" })).toHaveAttribute(
-    "data-testid",
-    RowType.Removed
-  );
+  const table = getTable();
+  // Each removed tag row should have the "To be removed" category label
+  expect(
+    within(table).getAllByRole("cell", { name: Label.Removed })
+  ).toHaveLength(2);
+  expect(findRowByTagName("tag1")).toBeTruthy();
+  expect(findRowByTagName("tag2")).toBeTruthy();
 });
 
 it("discards removed tags", async () => {
@@ -232,16 +243,20 @@ it("discards removed tags", async () => {
     </Formik>,
     { state }
   );
-  const row = screen.getByRole("row", { name: "tag1" });
-  expect(row).toHaveAttribute("data-testid", RowType.Removed);
+  const row = getRowByTagName("tag1");
+  // The row should have the "To be removed" category label
+  expect(
+    within(row).getByRole("cell", { name: Label.Removed })
+  ).toBeInTheDocument();
   await userEvent.click(
     within(row).getByRole("button", { name: Label.Discard })
   );
+  // After discarding, the tag should now appear in the "Currently assigned" category
+  const updatedRow = getRowByTagName("tag1");
   await waitFor(() => {
-    expect(screen.queryByRole("row", { name: "tag1" })).toHaveAttribute(
-      "data-testid",
-      RowType.Manual
-    );
+    expect(
+      within(updatedRow).getByRole("cell", { name: Label.Manual })
+    ).toBeInTheDocument();
   });
 });
 
