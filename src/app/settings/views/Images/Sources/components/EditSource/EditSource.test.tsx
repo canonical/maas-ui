@@ -216,7 +216,7 @@ describe("EditSource", () => {
     expect(screen.getByRole("button", { name: "Validate" })).toBeEnabled();
     expect(
       screen.queryByRole("button", { name: "Save source" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("calls update source on save click", async () => {

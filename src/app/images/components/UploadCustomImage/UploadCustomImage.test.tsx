@@ -184,7 +184,7 @@ describe("UploadCustomImage", () => {
 
     // Submit button should be disabled without file
     const submitButton = screen.getByRole("button", { name: "Upload" });
-    expect(submitButton).toBeDisabled();
+    expect(submitButton).toBeAriaDisabled();
   });
 
   it("should show errors for all required fields when empty", async () => {
@@ -244,7 +244,7 @@ describe("UploadCustomImage", () => {
 
     // Submit button should be disabled without file
     const submitButton = screen.getByRole("button", { name: "Upload" });
-    expect(submitButton).toBeDisabled();
+    expect(submitButton).toBeAriaDisabled();
 
     // Upload a valid file
     const file = new File(["dummy content"], "test-image.tgz");
@@ -255,7 +255,7 @@ describe("UploadCustomImage", () => {
 
     // Submit button should now be enabled
     await waitFor(() => {
-      expect(submitButton).not.toBeDisabled();
+      expect(submitButton).not.toBeAriaDisabled();
     });
   });
 

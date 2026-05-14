@@ -16,6 +16,7 @@ import {
 
 setupMockServer(
   zoneResolvers.listZones.handler(),
+  zoneResolvers.listZonesWithStatistics.handler(),
   poolsResolvers.listPools.handler()
 );
 
@@ -104,7 +105,7 @@ describe("SubnetSelect", () => {
       screen.getByRole("button", { name: "Select subnet..." })
     );
 
-    const spaceGroups = screen.getByLabelText("submenu").children;
+    const spaceGroups = screen.getByLabelText("sub").children;
 
     expect(spaceGroups).toHaveLength(5);
     expect(spaceGroups[0]).toHaveTextContent("Space: Outer");
@@ -150,7 +151,7 @@ describe("SubnetSelect", () => {
       screen.getByRole("button", { name: "Select subnet..." })
     );
 
-    let spaceGroups = screen.getByLabelText("submenu").children;
+    let spaceGroups = screen.getByLabelText("sub").children;
 
     expect(spaceGroups[0]).toHaveTextContent("Space: Outer");
     expect(spaceGroups[1]).toHaveTextContent("sub1");
@@ -169,7 +170,7 @@ describe("SubnetSelect", () => {
       screen.getByRole("button", { name: "Select subnet..." })
     );
 
-    spaceGroups = screen.getByLabelText("submenu").children;
+    spaceGroups = screen.getByLabelText("sub").children;
 
     expect(spaceGroups).toHaveLength(1);
     expect(spaceGroups[0]).toHaveTextContent("sub1");
@@ -227,7 +228,7 @@ describe("SubnetSelect", () => {
       screen.getAllByRole("button", { name: "Select subnet..." })[0]
     );
     await userEvent.click(
-      within(screen.getByLabelText("submenu")).getByRole("button", {
+      within(screen.getByLabelText("sub")).getByRole("button", {
         name: /non-pxe/i,
       })
     );
@@ -241,7 +242,7 @@ describe("SubnetSelect", () => {
       screen.getAllByRole("button", { name: "Select subnet..." })[0]
     );
     await userEvent.click(
-      within(screen.getByLabelText("submenu")).getByRole("button", {
+      within(screen.getByLabelText("sub")).getByRole("button", {
         name: /non-pxe/i,
       })
     );
@@ -252,7 +253,7 @@ describe("SubnetSelect", () => {
     // Select PXE network for the second interface - error should be removed.
     await userEvent.click(screen.getAllByText("non-pxe")[1]);
     await userEvent.click(
-      within(screen.getByLabelText("submenu")).getByRole("button", {
+      within(screen.getByLabelText("sub")).getByRole("button", {
         name: /pxe test-vlan-1/i,
       })
     );

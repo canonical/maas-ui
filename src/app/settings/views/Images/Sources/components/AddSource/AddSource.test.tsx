@@ -191,7 +191,7 @@ describe("AddSource", () => {
     expect(screen.getByRole("button", { name: "Validate" })).toBeEnabled();
     expect(
       screen.queryByRole("button", { name: "Save source" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("calls create source on save click", async () => {
