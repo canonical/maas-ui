@@ -24,6 +24,8 @@
     "generate-api-client": "export NODE_TLS_REJECT_UNAUTHORIZED=0 && openapi-ts && sed -i 's/ | unknown//g' src/app/apiclient/types.gen.ts",
     "lint": "npmPkgJsonLint . && eslint src cypress && tsc --project tsconfig.json --noEmit && tsc --project cypress/tsconfig.json --noEmit && npx tsx scripts/check-cucumber-steps.ts",
     "lint-fix": "npmPkgJsonLint . && eslint src cypress --fix && tsc --project tsconfig.json --noEmit && tsc --project cypress/tsconfig.json --noEmit && npx tsx scripts/check-cucumber-steps.ts",
+    "check-standards": "npx tsx scripts/check-standards.ts",
+    "check-standards:changed": "npx tsx scripts/check-standards.ts --changed-only",
     "link-components": "yarn link \"@canonical/react-components\" && yarn link \"react\" && yarn install",
     "percy": "./cypress/percy.sh",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
