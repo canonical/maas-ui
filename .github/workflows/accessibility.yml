@@ -14,10 +14,6 @@ jobs:
       - uses: actions/checkout@main
       - name: Get branch name
         uses: nelonoel/branch-name@v1.0.1
-      - name: Install snapd and core snaps
-        run: |
-          sudo snap install snapd
-          sudo snap install core26 --candidate
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
@@ -32,7 +28,7 @@ jobs:
           runTests: false
           install-command: yarn install
       - name: Create MAAS admin
-        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+        run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Run cypress-axe accessibility tests
         uses: cypress-io/github-action@v4
         with:

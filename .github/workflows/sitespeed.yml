@@ -15,10 +15,6 @@ jobs:
       MAAS_URL: http://localhost:5240
     steps:
       - uses: actions/checkout@main
-      - name: Install snapd and core snaps
-        run: |
-          sudo snap install snapd
-          sudo snap install core26 --candidate
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
@@ -26,7 +22,7 @@ jobs:
           use-maasdb-dump: true
           maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-24.04-master-1000.dump
       - name: Create MAAS admin
-        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+        run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Wait for MAAS
         uses: nev7n/wait_for_response@v1
         with:
@@ -38,8 +34,8 @@ jobs:
         run: |
           # Retry admin login up to 5 times with 10s intervals to account for delays in MAAS becoming fully operational
           for attempt in {1..5}; do
-            export API_KEY=$(sudo maas apikey --username=admin)
-            if maas login admin http://localhost:5240/MAAS $API_KEY; then
+            API_KEY=$(lxc exec maas-backend -- maas apikey --username=admin)
+            if lxc exec maas-backend -- maas login admin http://localhost:5240/MAAS "$API_KEY"; then
               echo "Login successful."
               break
             else
@@ -49,13 +45,13 @@ jobs:
           done
       - name: Wait for MAAS boot resources
         shell: bash
-        run: while [ $(maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
+        run: while [ $(lxc exec maas-backend -- maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
       - name: Run sitespeed.io tests
         run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
       - name: Collect MAAS logs
         if: failure()
         shell: bash
-        run: journalctl -u snap.maas.pebble.service --since="1 hour ago" > sitespeed.io/maas_logs.txt
+        run: lxc exec maas-backend -- journalctl -u snap.maas.pebble.service --since="1 hour ago" > sitespeed.io/maas_logs.txt
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
