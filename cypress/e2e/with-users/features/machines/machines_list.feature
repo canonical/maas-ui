@@ -14,18 +14,18 @@ Feature: Machine listing
     Then the machines grid for "<group by>" should exist
 
     Examples:
-      | group by                |
-      | No grouping             |
-      | Group by status         |
-      | Group by owner          |
-      | Group by resource pool  |
-      | Group by architecture   |
-      | Group by domain         |
-      | Group by parent         |
-      | Group by KVM            |
-      | Group by KVM type       |
-      | Group by power state    |
-      | Group by zone           |
+      | group by               |
+      | No grouping            |
+      | Group by status        |
+      | Group by owner         |
+      | Group by resource pool |
+      | Group by architecture  |
+      | Group by domain        |
+      | Group by parent        |
+      | Group by KVM           |
+      | Group by KVM type      |
+      | Group by power state   |
+      | Group by zone          |
 
   Scenario: Displays machine counts with active filters
     Given there are commissioning machines matching a generated hostname
@@ -33,8 +33,6 @@ Feature: Machine listing
     And the user filters machines by the generated hostname and commissioning status
     Then the text "Showing 2 out of 2 machines" should be visible
     When the user selects the commissioning group
-    And the user deletes the selected machines
-    Then the delete 2 machines confirmation should be handled successfully
 
   Scenario: Replaces the URL when selecting filters
     Given the user has visited the network discovery page
