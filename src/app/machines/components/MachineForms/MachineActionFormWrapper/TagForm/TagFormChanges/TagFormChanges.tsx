@@ -63,19 +63,27 @@ const buildRowData = (
   onRemove?: (tag: Tag) => void,
   removeLabel?: React.ReactNode
 ): TagFormChangesRowData[] => {
+  let categoryLabel: Label;
+  switch (rowType) {
+    case RowType.Added:
+      categoryLabel = Label.Added;
+      break;
+    case RowType.Auto:
+      categoryLabel = Label.Automatic;
+      break;
+    case RowType.Manual:
+      categoryLabel = Label.Manual;
+      break;
+    case RowType.Removed:
+      categoryLabel = Label.Removed;
+      break;
+  }
   return tags.map((tag) => ({
     id: `${rowType}-${tag.id}`,
     tagId: tag.id,
     tagName: tag.name,
     category: rowType,
-    categoryLabel:
-      rowType === RowType.Added
-        ? Label.Added
-        : rowType === RowType.Removed
-          ? Label.Removed
-          : rowType === RowType.Manual
-            ? Label.Manual
-            : Label.Automatic,
+    categoryLabel: categoryLabel,
     kernelOpts: tag.kernel_opts,
     isNew: rowType === RowType.Added && newTags.includes(tag.id),
     chipAppearance,
