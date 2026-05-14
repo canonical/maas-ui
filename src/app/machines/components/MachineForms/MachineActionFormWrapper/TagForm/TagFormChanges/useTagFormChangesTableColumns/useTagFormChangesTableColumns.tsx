@@ -34,12 +34,12 @@ const useTagFormChangesTableColumns = (): ColumnDef<
   return useMemo(
     () => [
       {
-        accessorKey: "categoryLabel",
+        accessorKey: "label",
         header: Column.Label,
         cell: ({ row: { original } }) => original.categoryLabel || null,
       },
       {
-        accessorKey: "tagName",
+        accessorKey: "name",
         header: Column.Name,
         cell: ({
           row: {
@@ -66,7 +66,7 @@ const useTagFormChangesTableColumns = (): ColumnDef<
         ),
       },
       {
-        accessorKey: "kernelOpts",
+        accessorKey: "kernel_opts",
         header: Column.Options,
         cell: ({
           row: {
@@ -75,7 +75,7 @@ const useTagFormChangesTableColumns = (): ColumnDef<
         }) => (kernelOpts ? <Icon aria-label="ticked" name="tick" /> : null),
       },
       {
-        accessorKey: "id",
+        accessorKey: "actions",
         header: Column.Action,
         enableSorting: false,
         cell: ({
