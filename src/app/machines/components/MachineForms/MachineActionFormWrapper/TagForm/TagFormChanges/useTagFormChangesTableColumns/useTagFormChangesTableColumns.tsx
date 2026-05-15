@@ -2,10 +2,10 @@ import { useMemo, type ReactNode } from "react";
 
 import type { ChipProps } from "@canonical/react-components";
 import { Button, Icon } from "@canonical/react-components";
-import type { ColumnDef } from "@tanstack/react-table";
+import type { Column, ColumnDef, Header, Row } from "@tanstack/react-table";
 
 import TagChip from "../../TagChip";
-import { type RowType, Column } from "../TagFormChanges";
+import { type RowType, Column as ColumnLabel } from "../TagFormChanges";
 
 import type { TagIdCountMap } from "@/app/store/machine/utils";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
@@ -27,6 +27,23 @@ export type TagFormChangesRowData = {
   tag: Tag;
 };
 
+export const filterCells = (
+  row: Row<TagFormChangesRowData>,
+  column: Column<TagFormChangesRowData>
+): boolean => {
+  if (row.getIsGrouped()) {
+    // For grouped rows, only show the category label column.
+    return ["categoryLabel"].includes(column.id);
+  }
+  // For non-grouped rows, hide the category label column (it's shown
+  // via the group header row instead).
+  return !["categoryLabel"].includes(column.id);
+};
+
+export const filterHeaders = (
+  header: Header<TagFormChangesRowData, unknown>
+): boolean => header.column.id !== "categoryLabel";
+
 const useTagFormChangesTableColumns = (): ColumnDef<
   TagFormChangesRowData,
   Partial<TagFormChangesRowData>
@@ -34,13 +51,18 @@ const useTagFormChangesTableColumns = (): ColumnDef<
   return useMemo(
     () => [
       {
-        accessorKey: "label",
-        header: Column.Label,
-        cell: ({ row: { original } }) => original.categoryLabel || null,
+        id: "categoryLabel",
+        accessorKey: "categoryLabel",
+        cell: ({ row }: { row: Row<TagFormChangesRowData> }) => {
+          if (row.getIsGrouped()) {
+            return <strong>{row.getValue("categoryLabel")}</strong>;
+          }
+          return null;
+        },
       },
       {
-        accessorKey: "name",
-        header: Column.Name,
+        accessorKey: "tagName",
+        header: ColumnLabel.Name,
         cell: ({
           row: {
             original: {
@@ -66,8 +88,8 @@ const useTagFormChangesTableColumns = (): ColumnDef<
         ),
       },
       {
-        accessorKey: "kernel_opts",
-        header: Column.Options,
+        accessorKey: "kernelOpts",
+        header: ColumnLabel.Options,
         cell: ({
           row: {
             original: { kernelOpts },
@@ -75,8 +97,8 @@ const useTagFormChangesTableColumns = (): ColumnDef<
         }) => (kernelOpts ? <Icon aria-label="ticked" name="tick" /> : null),
       },
       {
-        accessorKey: "actions",
-        header: Column.Action,
+        accessorKey: "id",
+        header: ColumnLabel.Action,
         enableSorting: false,
         cell: ({
           row: {

@@ -9,6 +9,8 @@ import type { TagFormValues } from "../types";
 
 import useTagFormChangesTableColumns, {
   type TagFormChangesRowData,
+  filterCells,
+  filterHeaders,
 } from "./useTagFormChangesTableColumns";
 
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
@@ -49,7 +51,7 @@ export enum Column {
   Action = "action",
   Label = "label",
   Name = "name",
-  Options = "options",
+  Options = "kernel options",
 }
 
 const buildRowData = (
@@ -228,8 +230,12 @@ export const TagFormChanges = ({
         className="tag-form__changes"
         columns={columns}
         data={data}
+        filterCells={filterCells}
+        filterHeaders={filterHeaders}
+        groupBy={["categoryLabel"]}
         isLoading={false}
         noData={Label.NoTags}
+        showChevron
         variant="regular"
       />
       {hasAutomaticTags && (
