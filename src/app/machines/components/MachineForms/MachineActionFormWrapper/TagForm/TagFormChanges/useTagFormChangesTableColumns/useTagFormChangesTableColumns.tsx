@@ -32,11 +32,8 @@ export const filterCells = (
   column: Column<TagFormChangesRowData>
 ): boolean => {
   if (row.getIsGrouped()) {
-    // For grouped rows, only show the category label column.
     return ["categoryLabel"].includes(column.id);
   }
-  // For non-grouped rows, hide the category label column (it's shown
-  // via the group header row instead).
   return !["categoryLabel"].includes(column.id);
 };
 
@@ -51,7 +48,7 @@ const useTagFormChangesTableColumns = (): ColumnDef<
   return useMemo(
     () => [
       {
-        id: "categoryLabel",
+        id: "category_label",
         accessorKey: "categoryLabel",
         cell: ({ row }: { row: Row<TagFormChangesRowData> }) => {
           if (row.getIsGrouped()) {

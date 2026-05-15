@@ -92,8 +92,6 @@ const getRowByTagName = (tagName: string) =>
       }
     })!;
 
-/** Check if a tag row is under a given group by verifying the group row
- * appears before the tag row in the row list. */
 const isTagUnderGroup = (tagName: string, groupLabel: string) => {
   const rows = within(getTable()).getAllByRole("row");
   const groupIndex = rows.findIndex((row) => {
