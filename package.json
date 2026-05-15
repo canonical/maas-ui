@@ -174,7 +174,7 @@
     "redux-saga-test-plan": "4.0.6",
     "sass": "1.99.0",
     "start-server-and-test": "2.1.5",
-    "storybook": "7.6.20",
+    "storybook": "7.6.21",
     "timezone-mock": "1.4.2",
     "typescript-eslint": "8.59.3",
     "unique-names-generator": "4.7.1",
