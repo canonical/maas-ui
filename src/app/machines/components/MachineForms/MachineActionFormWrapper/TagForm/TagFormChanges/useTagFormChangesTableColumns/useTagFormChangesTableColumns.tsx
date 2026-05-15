@@ -48,7 +48,7 @@ const useTagFormChangesTableColumns = (): ColumnDef<
   return useMemo(
     () => [
       {
-        id: "category_label",
+        id: "categoryLabel",
         accessorKey: "categoryLabel",
         cell: ({ row }: { row: Row<TagFormChangesRowData> }) => {
           if (row.getIsGrouped()) {
