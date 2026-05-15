@@ -90,7 +90,7 @@
     "redux-saga": "1.4.3",
     "typed-redux-saga": "1.5.0",
     "typescript": "5.9.3",
-    "vanilla-framework": "4.51.2",
+    "vanilla-framework": "4.51.0",
     "vite": "6.4.2",
     "vite-plugin-svgr": "4.5.0",
     "vite-tsconfig-paths": "5.1.4",
