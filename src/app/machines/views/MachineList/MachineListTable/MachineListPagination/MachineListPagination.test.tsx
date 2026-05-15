@@ -1,13 +1,13 @@
-import MachineListPagination, { Label } from "./MachineListPagination";
 import type { Props as MachineListPaginationProps } from "./MachineListPagination";
+import MachineListPagination, { Label } from "./MachineListPagination";
 
 import {
   fireEvent,
   render,
+  renderWithProviders,
   screen,
   userEvent,
   waitFor,
-  renderWithProviders,
 } from "@/testing/utils";
 
 describe("MachineListPagination", () => {
@@ -146,6 +146,7 @@ describe("MachineListPagination", () => {
   it("does not trigger native form event when the pagination buttons are pressed", async () => {
     const handleSubmit = vi.fn();
     renderWithProviders(
+      // check-standards-ignore: This is not a traditional form.
       <form onSubmit={handleSubmit}>
         <MachineListPagination {...props} />
       </form>
