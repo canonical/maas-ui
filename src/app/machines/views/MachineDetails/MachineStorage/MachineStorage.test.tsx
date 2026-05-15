@@ -51,7 +51,7 @@ it("renders storage layout dropdown if machine's storage can be edited", async (
   await userEvent.click(
     screen.getByRole("button", { name: "Change storage layout" })
   );
-  expect(screen.getByLabelText("submenu")).toBeInTheDocument();
+  expect(screen.getByLabelText("sub")).toBeInTheDocument();
   storageLayoutOptions.forEach((group) => {
     group.forEach((option) => {
       expect(

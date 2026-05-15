@@ -84,10 +84,10 @@ describe("AddEntitlement", () => {
     // 2. is_restricted checkbox and submit button are disabled before entitlement selection
     expect(
       screen.getByRole("checkbox", { name: /restrict to pool/i })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
     expect(
       screen.getByRole("button", { name: /Add entitlement/i })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
 
     // 3. Select a restrictable entitlement
     await userEvent.selectOptions(
@@ -98,10 +98,10 @@ describe("AddEntitlement", () => {
     // 4. is_restricted checkbox and submit button are now enabled
     expect(
       screen.getByRole("checkbox", { name: /restrict to pool/i })
-    ).not.toBeDisabled();
+    ).not.toBeAriaDisabled();
     expect(
       screen.getByRole("button", { name: /Add entitlement/i })
-    ).not.toBeDisabled();
+    ).not.toBeAriaDisabled();
 
     // 5. Check the is_restricted checkbox
     await userEvent.click(
@@ -111,14 +111,14 @@ describe("AddEntitlement", () => {
     // 6. Submit button is disabled (pool not yet selected) and pool select appears
     expect(
       screen.getByRole("button", { name: /Add entitlement/i })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
     expect(screen.getByRole("combobox", { name: /pool/i })).toBeInTheDocument();
 
     // 7. Select a pool — submit button becomes enabled
     await waitFor(() => {
       expect(
         screen.getByRole("combobox", { name: /pool/i })
-      ).not.toBeDisabled();
+      ).not.toBeAriaDisabled();
     });
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /pool/i }),
@@ -126,6 +126,6 @@ describe("AddEntitlement", () => {
     );
     expect(
       screen.getByRole("button", { name: /Add entitlement/i })
-    ).not.toBeDisabled();
+    ).not.toBeAriaDisabled();
   });
 });

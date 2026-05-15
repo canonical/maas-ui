@@ -17,6 +17,7 @@ import {
 
 setupMockServer(
   zoneResolvers.listZones.handler(),
+  zoneResolvers.listZonesWithStatistics.handler(),
   poolsResolvers.listPools.handler()
 );
 
@@ -210,7 +211,7 @@ describe("InterfacesTable", () => {
     // Choose the subnet in state from the dropdown
     // Fabric and VLAN nams should display, PXE should be true
     await userEvent.click(
-      within(screen.getByLabelText("submenu")).getByRole("button")
+      within(screen.getByLabelText("sub")).getByRole("button")
     );
     expect(screen.getByText(fabric.name)).toHaveAccessibleName("Fabric");
     expect(screen.getByText(vlan.name)).toHaveAccessibleName("VLAN");

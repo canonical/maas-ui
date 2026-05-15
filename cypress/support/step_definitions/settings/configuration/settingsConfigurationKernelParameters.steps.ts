@@ -10,7 +10,7 @@ const getKernelParamsInput = () =>
 After({ tags: "@kernel-parameters-cleanup" }, () => {
   getKernelParamsInput().clear();
   getSaveButton().click();
-  getSaveButton().should("be.disabled");
+  getSaveButton().should("have.attr", "aria-disabled", "true");
 });
 
 When("the user clears the kernel parameters field", () => {
@@ -27,7 +27,7 @@ When("the user saves the kernel parameters", () => {
 });
 
 Then("the save button should be disabled", () => {
-  getSaveButton().should("be.disabled");
+  getSaveButton().should("have.attr", "aria-disabled", "true");
 });
 
 Then("the kernel parameters field should have the updated value", () => {

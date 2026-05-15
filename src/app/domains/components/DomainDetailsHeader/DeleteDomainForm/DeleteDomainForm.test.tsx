@@ -90,6 +90,6 @@ describe("DeleteDomainForm", () => {
 
     expect(
       screen.getByRole("button", { name: DeleteDomainFormLabels.DeleteLabel })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 });

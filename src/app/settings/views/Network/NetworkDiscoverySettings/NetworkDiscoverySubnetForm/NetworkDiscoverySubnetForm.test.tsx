@@ -61,10 +61,10 @@ describe("NetworkDiscoverySubnetForm", () => {
       state,
     });
 
-    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
     const checkboxes = screen.getAllByRole("checkbox");
     checkboxes.forEach((checkbox) => {
-      expect(checkbox).toBeDisabled();
+      expect(checkbox).toBeAriaDisabled();
     });
   });
 
