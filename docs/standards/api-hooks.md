@@ -2,7 +2,8 @@
 
 ## TL;DR
 
-- Auto-generated SDK lives in `src/app/apiclient`
+- Auto-generated SDK lives in `src/app/apiclient` — do not edit it by hand
+- `import type` from `@/app/apiclient` is allowed anywhere for TypeScript types; query key helpers from `@/app/apiclient/@tanstack/react-query.gen` are allowed for cache invalidation; all other value imports from `apiclient` in component files are banned — use hooks in `src/app/api/query/` instead
 - Manually write hooks in `src/app/api/query/` using the generated react-query.ts hooks
 - Use `useWebsocketAwareQuery` with `queryOptionsWithHeaders` for queries to auto-invalidate on websocket updates and include response headers
 - Use `useMutation` with `mutationOptionsWithHeaders` and `invalidateQueries` in `onSuccess` for mutations
@@ -29,8 +30,8 @@ Queries that use `select` to derive data from a list query should be named `use<
 
 Our API layer follows a three-tier architecture:
 
-1. **Auto-generated SDK** (`src/app/apiclient`) - Generated from OpenAPI spec
-2. **Custom hooks** (`src/app/api/query/`) - Manually written React Query hooks
+1. **Auto-generated SDK** (`src/app/apiclient`) - Generated from OpenAPI spec. Two things from this layer are allowed in component files: `import type` (TypeScript types only) and query key helpers from `@/app/apiclient/@tanstack/react-query.gen` (e.g. `listDiscoveriesQueryKey`) used for cache invalidation in `onSuccess`. All other value imports from `apiclient` in component files are banned — go through the custom hooks layer instead.
+2. **Custom hooks** (`src/app/api/query/`) - Manually written React Query hooks. This is the only layer components should import values from.
 3. **Mock resolvers** (`src/testing/resolvers/`) - MSW handlers for testing
 
 ## Writing Query Hooks
