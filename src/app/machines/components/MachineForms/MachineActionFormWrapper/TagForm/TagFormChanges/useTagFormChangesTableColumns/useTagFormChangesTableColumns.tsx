@@ -58,6 +58,7 @@ const useTagFormChangesTableColumns = (): ColumnDef<
         },
       },
       {
+        id: "tagName",
         accessorKey: "tagName",
         header: ColumnLabel.Name,
         cell: ({
@@ -85,6 +86,7 @@ const useTagFormChangesTableColumns = (): ColumnDef<
         ),
       },
       {
+        id: "kernelOpts",
         accessorKey: "kernelOpts",
         header: ColumnLabel.Options,
         cell: ({
@@ -94,7 +96,8 @@ const useTagFormChangesTableColumns = (): ColumnDef<
         }) => (kernelOpts ? <Icon aria-label="ticked" name="tick" /> : null),
       },
       {
-        accessorKey: "id",
+        id: "actions",
+        accessorKey: "actions",
         header: ColumnLabel.Action,
         enableSorting: false,
         cell: ({

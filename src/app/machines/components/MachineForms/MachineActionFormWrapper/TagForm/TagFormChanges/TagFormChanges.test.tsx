@@ -118,7 +118,7 @@ const isTagUnderGroup = (tagName: string, groupLabel: string) => {
 
 describe("TagFormChanges", () => {
   describe("display", () => {
-    it("displays the correct column headers", () => {
+    it("displays the required columns", () => {
       renderWithProviders(
         <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
           <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
