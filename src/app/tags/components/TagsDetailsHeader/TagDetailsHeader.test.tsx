@@ -72,5 +72,5 @@ it("triggers onUpdate with the correct tag ID", async () => {
     { initialEntries: [urls.tags.tag.index({ id: 1 })], state }
   );
   await userEvent.click(screen.getByRole("button", { name: "Edit" }));
-  expect(onUpdate).toBeCalledWith(1);
+  expect(onUpdate).toHaveBeenCalledWith(1);
 });

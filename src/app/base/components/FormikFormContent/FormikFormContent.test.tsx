@@ -80,7 +80,7 @@ describe("FormikFormContent", () => {
       { state }
     );
 
-    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
   });
 
   it("can override disabling cancel button while saving", () => {
@@ -93,7 +93,7 @@ describe("FormikFormContent", () => {
       { state }
     );
 
-    expect(screen.getByTestId(TestIds.CancelButton)).not.toBeDisabled();
+    expect(screen.getByTestId(TestIds.CancelButton)).not.toBeAriaDisabled();
   });
 
   it("can display non-field errors from a string", () => {

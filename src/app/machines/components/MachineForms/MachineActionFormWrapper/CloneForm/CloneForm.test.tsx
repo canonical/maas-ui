@@ -71,10 +71,10 @@ describe("CloneForm", () => {
     // Checkboxes and submit should be disabled at first.
     expect(
       screen.getByRole("button", { name: "Clone to machine" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
     expect(
       screen.getByRole("checkbox", { name: "Clone network configuration" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
 
     // Select a source machine - form should update
     await userEvent.click(
@@ -83,7 +83,7 @@ describe("CloneForm", () => {
 
     expect(
       screen.getByRole("button", { name: "Clone to machine" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
 
     await waitFor(() => {
       expect(

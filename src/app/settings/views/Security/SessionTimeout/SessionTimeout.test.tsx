@@ -100,7 +100,7 @@ describe("SessionTimeout", () => {
 
     expect(
       screen.getByRole("button", { name: SessionTimeoutLabels.Save })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
@@ -113,7 +113,7 @@ describe("SessionTimeout", () => {
 
     expect(
       screen.getByRole("button", { name: SessionTimeoutLabels.Save })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
@@ -126,7 +126,7 @@ describe("SessionTimeout", () => {
 
     expect(
       screen.getByRole("button", { name: SessionTimeoutLabels.Save })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
@@ -139,7 +139,7 @@ describe("SessionTimeout", () => {
 
     expect(
       screen.getByRole("button", { name: SessionTimeoutLabels.Save })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
@@ -152,7 +152,7 @@ describe("SessionTimeout", () => {
 
     expect(
       screen.getByRole("button", { name: SessionTimeoutLabels.Save })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("correctly converts time values to seconds on save", async () => {

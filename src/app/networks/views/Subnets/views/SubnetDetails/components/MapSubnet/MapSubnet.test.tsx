@@ -29,7 +29,9 @@ describe("MapSubnet", () => {
     expect(
       screen.getByText("Only IPv4 subnets can be scanned.")
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Map subnet" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Map subnet" })
+    ).toBeAriaDisabled();
   });
 
   it("can map an IPv4 subnet", async () => {

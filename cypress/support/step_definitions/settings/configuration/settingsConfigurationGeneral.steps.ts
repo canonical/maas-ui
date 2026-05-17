@@ -4,7 +4,7 @@ Given("the default theme is applied", () => {
   cy.findByRole("radio", { name: "Default" }).click();
 
   cy.findByRole("button", { name: "Save" }).then(($button) => {
-    if ($button.is(":disabled")) {
+    if ($button.is("[aria-disabled='true']")) {
       return;
     }
 
@@ -28,7 +28,11 @@ Then(
 );
 
 Then("the {string} button should be disabled", (buttonName: string) => {
-  cy.findByRole("button", { name: buttonName }).should("be.disabled");
+  cy.findByRole("button", { name: buttonName }).should(
+    "have.attr",
+    "aria-disabled",
+    "true"
+  );
 });
 
 Then("the {string} checkbox should be checked", (label: string) => {
