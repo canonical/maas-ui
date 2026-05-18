@@ -143,7 +143,9 @@ describe("UserIntro", () => {
       initialEntries: ["/intro/user"],
     });
     await waitForLoading();
-    expect(router.state.location.pathname).toBe(urls.machines.index);
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(urls.machines.index);
+    });
   });
 
   it("can skip the user setup", async () => {
