@@ -11,6 +11,9 @@ export const completeAddMachineForm = () => {
   cy.findByLabelText("MAC address").type(generateMac());
   cy.findByLabelText("Power type").select("Manual");
   cy.findByLabelText("Power type").blur();
-  cy.get('[type="submit"]').should("not.have.attr", "aria-disabled").click();
+  cy.findByRole("button", { name: /Save machine/i })
+    .should("not.have.attr", "aria-disabled", "true")
+    .and("not.be.disabled")
+    .click();
   return { name };
 };

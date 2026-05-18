@@ -1,5 +1,13 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 
+const clickVisibleSubmitButton = () => {
+  cy.get('button[type="submit"]:visible, input[type="submit"]:visible')
+    .last()
+    .should("not.have.attr", "aria-disabled", "true")
+    .and("not.be.disabled")
+    .click();
+};
+
 Then("the {string} button should be enabled", (button: string) => {
   cy.findByRole("button", {
     name: button,
@@ -15,7 +23,7 @@ When("the user clicks the button matching {string}", (button: string) => {
 });
 
 When("the user submits the form", () => {
-  cy.get('[type="submit"]').should("not.have.attr", "aria-disabled").click();
+  clickVisibleSubmitButton();
 });
 
 When("the user clicks the {string} link", (link: string) => {
