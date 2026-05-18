@@ -15,11 +15,7 @@ When("the user clicks the button matching {string}", (button: string) => {
 });
 
 When("the user submits the form", () => {
-  cy.get("button[type='submit']")
-    .should(($button) => {
-      expect($button).not.to.have.attr("aria-disabled", "true");
-    })
-    .click();
+  cy.get('[type="submit"]').should("not.have.attr", "aria-disabled").click();
 });
 
 When("the user clicks the {string} link", (link: string) => {
