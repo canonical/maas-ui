@@ -15,7 +15,7 @@ When("the user clicks the button matching {string}", (button: string) => {
 });
 
 When("the user submits the form", () => {
-  cy.get("button[type='submit']").click();
+  cy.findByRole("button", { name: /Save .*/ }).click();
 });
 
 When("the user clicks the {string} link", (link: string) => {

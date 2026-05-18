@@ -112,7 +112,7 @@ When("the user creates a subnet with a known CIDR", () => {
   Cypress.env("useKnownDeviceIpForDnsRecordTest", true);
 
   cy.findByRole("button", { name: "Add" }).click();
-  cy.findByRole("button", { name: "Subnet" }).click();
+  cy.findByRole("menuitem", { name: "Subnet" }).click();
   cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
   cy.findByRole("textbox", { name: "Name" }).type(subnetName);
 
