@@ -1019,10 +1019,10 @@
     "@types/sjcl" "1.0.30"
     macaroon "3.0.4"
 
-"@canonical/react-components@3.12.4":
-  version "3.12.4"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-3.12.4.tgz#c3866397c34c806f027fe57a56849ef516df9e71"
-  integrity sha512-3i++qm4hs0TTUc9gwMmtxYaXwXibPmHI4s5qOesVpALcjrdcHWH1qkDEAvIrELUPINCxj/ATfgtL0gBvP16tyQ==
+"@canonical/react-components@4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-4.5.2.tgz#a3d470c48ca8dbffdf2e4609f5dc6c48c7f58373"
+  integrity sha512-N/e046Sa+14pO8yXXBoShRcZ+BuKMWuY+dhdFoD12+/MtHSuttNzj9rpLVpOItT3L1NxOOCodjbiXjuDU6u3MA==
   dependencies:
     "@types/jest" "30.0.0"
     "@types/node" "20.19.30"

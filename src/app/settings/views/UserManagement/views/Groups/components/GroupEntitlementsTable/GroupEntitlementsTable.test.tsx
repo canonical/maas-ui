@@ -122,7 +122,7 @@ describe("GroupEntitlementsTable", () => {
       );
 
       await userEvent.click(
-        screen.getByRole("button", { name: "Remove entitlement..." })
+        screen.getByRole("menuitem", { name: "Remove entitlement..." })
       );
 
       const selectedEntitlement = mockGroupEntitlements.items[0];

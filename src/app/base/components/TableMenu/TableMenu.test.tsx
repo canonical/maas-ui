@@ -14,6 +14,6 @@ describe("TableMenu ", () => {
     ).not.toBeInTheDocument();
     await userEvent.click(actionsButton);
     expect(actionsButton).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getByRole("button", { name: "Item1" })).toBeInTheDocument();
+    expect(screen.getByRole("menuitem", { name: "Item1" })).toBeInTheDocument();
   });
 });

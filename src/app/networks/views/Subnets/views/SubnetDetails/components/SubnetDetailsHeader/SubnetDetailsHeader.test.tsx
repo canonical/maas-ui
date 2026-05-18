@@ -33,12 +33,12 @@ it("displays available actions", async () => {
   renderWithProviders(<SubnetDetailsHeader subnet={subnet} />);
 
   ["Map subnet", "Edit boot architectures", "Delete subnet"].forEach((name) => {
-    expect(screen.queryByRole("button", { name })).not.toBeInTheDocument();
+    expect(screen.queryByRole("menuitem", { name })).not.toBeInTheDocument();
   });
 
   await userEvent.click(screen.getByRole("button", { name: "Take action" }));
 
   ["Map subnet", "Edit boot architectures", "Delete subnet"].forEach((name) => {
-    expect(screen.getByRole("button", { name })).toBeInTheDocument();
+    expect(screen.getByRole("menuitem", { name })).toBeInTheDocument();
   });
 });

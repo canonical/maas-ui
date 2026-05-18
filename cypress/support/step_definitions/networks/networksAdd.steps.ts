@@ -46,7 +46,7 @@ When("the user deletes the created subnet", function () {
   cy.findByRole("heading", { name: "Subnet summary" }).should("exist");
 
   cy.findByRole("button", { name: "Take action" }).click();
-  cy.findByRole("button", { name: "Delete subnet" }).click();
+  cy.findByRole("menuitem", { name: "Delete subnet" }).click();
   cy.findByText(/Are you sure you want to delete this subnet?/).should(
     "be.visible"
   );
@@ -112,7 +112,7 @@ When("the user creates a subnet with a known CIDR", () => {
   Cypress.env("useKnownDeviceIpForDnsRecordTest", true);
 
   cy.findByRole("button", { name: "Add" }).click();
-  cy.findByRole("button", { name: "Subnet" }).click();
+  cy.findByRole("menuitem", { name: "Subnet" }).click();
   cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
   cy.findByRole("textbox", { name: "Name" }).type(subnetName);
 

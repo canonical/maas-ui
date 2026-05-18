@@ -125,7 +125,7 @@ describe("MachineHeader", () => {
 
       await userEvent.click(screen.getByRole("button", { name: /Power/i }));
       await userEvent.click(
-        screen.getByRole("button", { name: /check power/i })
+        screen.getByRole("menuitem", { name: /check power/i })
       );
 
       expect(

@@ -67,12 +67,12 @@ Then("the correct number of controllers is displayed", () => {
   });
 });
 Then("the {string} action should exist", (action: string) => {
-  cy.findByRole("button", {
+  cy.findByRole("menuitem", {
     name: new RegExp(action, "i"),
   }).should("exist");
 });
 Then("the {string} action should not exist", (action: string) => {
-  cy.findByRole("button", {
+  cy.findByRole("menuitem", {
     name: new RegExp(action, "i"),
   }).should("not.exist");
 });

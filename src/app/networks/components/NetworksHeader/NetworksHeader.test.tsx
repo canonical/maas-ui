@@ -48,7 +48,7 @@ describe("NetworksHeader", () => {
       renderWithProviders(<NetworksHeader />);
 
       await userEvent.click(screen.getByRole("button", { name: "Add" }));
-      await userEvent.click(screen.getByRole("button", { name: "Fabric" }));
+      await userEvent.click(screen.getByRole("menuitem", { name: "Fabric" }));
 
       expect(mockOpen).toHaveBeenCalledWith({
         component: AddFabric,
@@ -60,7 +60,7 @@ describe("NetworksHeader", () => {
       renderWithProviders(<NetworksHeader />);
 
       await userEvent.click(screen.getByRole("button", { name: "Add" }));
-      await userEvent.click(screen.getByRole("button", { name: "VLAN" }));
+      await userEvent.click(screen.getByRole("menuitem", { name: "VLAN" }));
 
       expect(mockOpen).toHaveBeenCalledWith({
         component: AddVlan,
@@ -72,7 +72,7 @@ describe("NetworksHeader", () => {
       renderWithProviders(<NetworksHeader />);
 
       await userEvent.click(screen.getByRole("button", { name: "Add" }));
-      await userEvent.click(screen.getByRole("button", { name: "Space" }));
+      await userEvent.click(screen.getByRole("menuitem", { name: "Space" }));
 
       expect(mockOpen).toHaveBeenCalledWith({
         component: AddSpace,
@@ -84,7 +84,7 @@ describe("NetworksHeader", () => {
       renderWithProviders(<NetworksHeader />);
 
       await userEvent.click(screen.getByRole("button", { name: "Add" }));
-      await userEvent.click(screen.getByRole("button", { name: "Subnet" }));
+      await userEvent.click(screen.getByRole("menuitem", { name: "Subnet" }));
 
       expect(mockOpen).toHaveBeenCalledWith({
         component: AddSubnet,
