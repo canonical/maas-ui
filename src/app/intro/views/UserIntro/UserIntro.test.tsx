@@ -64,7 +64,9 @@ describe("UserIntro", () => {
       initialEntries: ["/intro/user"],
     });
     await waitForLoading();
-    expect(router.state.location.pathname).toBe(urls.machines.index);
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(urls.machines.index);
+    });
   });
 
   it("disables the continue button if there are no ssh keys", async () => {
