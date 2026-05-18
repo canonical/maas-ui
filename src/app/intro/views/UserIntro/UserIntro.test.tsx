@@ -79,7 +79,7 @@ describe("UserIntro", () => {
 
     expect(
       screen.getByRole("button", { name: UserIntroLabels.Continue })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("hides the SSH list if there are no ssh keys", async () => {

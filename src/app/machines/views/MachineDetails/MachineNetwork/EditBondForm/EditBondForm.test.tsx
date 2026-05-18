@@ -238,7 +238,7 @@ describe("EditBondForm", () => {
     );
     expect(
       screen.getByRole("button", { name: "Save interface" })
-    ).not.toBeDisabled();
+    ).not.toBeAriaDisabled();
     // Deselect eth0 and eth1, leaving only eth2 → fewer than two selected → disabled.
     await userEvent.click(
       screen.getByRole("checkbox", { name: "select eth0" })
@@ -248,7 +248,7 @@ describe("EditBondForm", () => {
     );
     expect(
       screen.getByRole("button", { name: "Save interface" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("enables the submit button if only the members have changed", async () => {
@@ -285,7 +285,7 @@ describe("EditBondForm", () => {
     );
     expect(
       screen.getByRole("button", { name: "Save interface" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
     await userEvent.click(
       screen.getByRole("button", { name: "Edit bond members" })
     );
@@ -295,7 +295,7 @@ describe("EditBondForm", () => {
     );
     expect(
       screen.getByRole("button", { name: "Save interface" })
-    ).not.toBeDisabled();
+    ).not.toBeAriaDisabled();
   });
 
   it("fetches the necessary data on load", async () => {

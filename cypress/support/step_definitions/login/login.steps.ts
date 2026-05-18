@@ -19,10 +19,10 @@ When("the user enters invalid username and password", () => {
 });
 
 When("the user provides correct username and password", () => {
-  cy.get("input[name='username']").type(Cypress.env("username"));
+  cy.findByRole("textbox", { name: /Username/ }).type(Cypress.env("username"));
   cy.findByRole("button", { name: /Next/ }).click();
-  cy.get("input[name='password']").type(Cypress.env("password"));
-  cy.get("button[type='submit']").click();
+  cy.findByLabelText(/Password/).type(Cypress.env("password"));
+  cy.findByRole("button", { name: /Login/ }).click();
 });
 
 When("the user clicks on the {string} button", (buttonText: string) => {

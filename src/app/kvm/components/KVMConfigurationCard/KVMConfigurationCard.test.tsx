@@ -167,7 +167,9 @@ describe("KVMConfigurationCard", () => {
     );
 
     // Submit should be disabled by default.
-    expect(screen.getByRole("button", { name: "Save changes" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Save changes" })
+    ).toBeAriaDisabled();
 
     // Change value to something other than the initial.
     fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
@@ -178,7 +180,7 @@ describe("KVMConfigurationCard", () => {
     await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Save changes" })
-      ).not.toBeDisabled();
+      ).not.toBeAriaDisabled();
     });
 
     // Update the pod with a new value.
@@ -189,6 +191,8 @@ describe("KVMConfigurationCard", () => {
     rerender(<KVMConfigurationCard pod={updatedPod} />);
 
     // Submit should be disabled again.
-    expect(screen.getByRole("button", { name: "Save changes" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Save changes" })
+    ).toBeAriaDisabled();
   });
 });

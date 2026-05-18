@@ -140,7 +140,7 @@ describe("ConfigureDHCP", () => {
     await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Configure DHCP" })
-      ).toBeDisabled();
+      ).toBeAriaDisabled();
     });
   });
 
@@ -179,7 +179,7 @@ describe("ConfigureDHCP", () => {
     });
     expect(
       screen.getByRole("button", { name: "Configure DHCP" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
@@ -274,7 +274,7 @@ describe("ConfigureDHCP", () => {
     await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Configure DHCP" })
-      ).not.toBeDisabled();
+      ).not.toBeAriaDisabled();
     });
 
     await userEvent.click(
@@ -334,7 +334,7 @@ describe("ConfigureDHCP", () => {
     expect(screen.getByText(/Subnet is required/)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Configure DHCP" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("can configure relayed DHCP", async () => {
@@ -443,7 +443,7 @@ describe("ConfigureDHCP", () => {
     await waitFor(() => {
       expect(
         screen.getByRole("button", { name: "Configure DHCP" })
-      ).not.toBeDisabled();
+      ).not.toBeAriaDisabled();
     });
     await userEvent.click(
       screen.getByRole("button", { name: "Configure DHCP" })

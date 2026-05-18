@@ -212,11 +212,11 @@ describe("StatusColumn", () => {
         screen.getByRole("button", { name: /take action/i })
       );
       expect(
-        within(screen.getByLabelText("submenu")).getAllByRole("button")
+        within(screen.getByLabelText("sub")).getAllByRole("button")
       ).toHaveLength(machine.actions.length);
       machine.actions.forEach((action) => {
         expect(
-          within(screen.getByLabelText("submenu")).getByRole("button", {
+          within(screen.getByLabelText("sub")).getByRole("button", {
             name: action,
           })
         ).toBeInTheDocument();

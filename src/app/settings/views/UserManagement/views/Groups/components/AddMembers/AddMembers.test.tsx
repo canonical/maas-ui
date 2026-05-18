@@ -133,7 +133,7 @@ describe("AddMembers", () => {
     // All users from mockUsers (ids 1 & 2) are already members — no new selection possible
     expect(
       screen.getByRole("button", { name: /Add 0 members/i })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("closes the side panel on successful add", async () => {

@@ -75,7 +75,7 @@ describe("ActionForm", () => {
     expect(screen.getByTestId(TestIds.SavingLabel).textContent).toBe(
       "Processing 1 of 2 machines..."
     );
-    expect(screen.getByRole("button")).toBeDisabled();
+    expect(screen.getByRole("button")).toBeAriaDisabled();
   });
 
   it("disables the submit button when selectedCount equals 0", async () => {
@@ -89,7 +89,7 @@ describe("ActionForm", () => {
       />
     );
 
-    expect(screen.getByRole("button")).toBeDisabled();
+    expect(screen.getByRole("button")).toBeAriaDisabled();
   });
 
   it("can override showing the processing count", async () => {
