@@ -254,7 +254,7 @@ describe("FilesystemsTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: "Remove filesystem..." })
+        screen.getByRole("menuitem", { name: "Remove filesystem..." })
       );
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -289,7 +289,7 @@ describe("FilesystemsTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: "Remove filesystem..." })
+        screen.getByRole("menuitem", { name: "Remove filesystem..." })
       );
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -321,7 +321,7 @@ describe("FilesystemsTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: "Remove filesystem..." })
+        screen.getByRole("menuitem", { name: "Remove filesystem..." })
       );
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -352,7 +352,7 @@ describe("FilesystemsTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: "Unmount filesystem..." })
+        screen.getByRole("menuitem", { name: "Unmount filesystem..." })
       );
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -387,7 +387,7 @@ describe("FilesystemsTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: "Unmount filesystem..." })
+        screen.getByRole("menuitem", { name: "Unmount filesystem..." })
       );
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({

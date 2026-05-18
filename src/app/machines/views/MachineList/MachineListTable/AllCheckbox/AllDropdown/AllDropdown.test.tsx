@@ -39,7 +39,7 @@ it("can dispatch an action to select all machines using a dropdown", async () =>
     })
   );
   await userEvent.click(
-    screen.getByRole("button", {
+    screen.getByRole("menuitem", {
       name: AllDropdownLabel.SelectAllMachines,
     })
   );
@@ -79,7 +79,7 @@ it("can dispatch an action to select all machines on current page using a dropdo
     })
   );
   await userEvent.click(
-    screen.getByRole("button", {
+    screen.getByRole("menuitem", {
       name: AllDropdownLabel.SelectAllMachinesOnThisPage,
     })
   );

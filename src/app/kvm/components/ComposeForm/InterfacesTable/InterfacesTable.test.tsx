@@ -211,7 +211,7 @@ describe("InterfacesTable", () => {
     // Choose the subnet in state from the dropdown
     // Fabric and VLAN nams should display, PXE should be true
     await userEvent.click(
-      within(screen.getByLabelText("sub")).getByRole("button")
+      within(screen.getByLabelText("sub")).getByRole("menuitem")
     );
     expect(screen.getByText(fabric.name)).toHaveAccessibleName("Fabric");
     expect(screen.getByText(vlan.name)).toHaveAccessibleName("VLAN");

@@ -55,7 +55,7 @@ it("renders storage layout dropdown if machine's storage can be edited", async (
   storageLayoutOptions.forEach((group) => {
     group.forEach((option) => {
       expect(
-        screen.getByRole("button", { name: option.label })
+        screen.getByRole("menuitem", { name: option.label })
       ).toBeInTheDocument();
     });
   });
