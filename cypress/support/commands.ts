@@ -138,7 +138,7 @@ Cypress.Commands.add(
     cy.visit(generateMAASURL("/networks"));
     cy.waitForTableToLoad({ name: "Subnets by fabric" });
     cy.findByRole("button", { name: "Add" }).click();
-    cy.findByRole("button", { name: "Subnet" }).click();
+    cy.findByRole("menuitem", { name: "Subnet" }).click();
     cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
     cy.findByRole("textbox", { name: "Name" }).type(subnetName);
     cy.findByRole("combobox", { name: "Fabric" }).select(fabric);

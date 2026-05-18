@@ -104,8 +104,11 @@ Then("the following action groups should be available:", (table: DataTable) => {
     openMachineActionDropdown(group);
 
     cy.findByLabelText(`${group} submenu`).within(() => {
-      cy.findAllByRole("button").should("have.length", expectedActions.length);
-      cy.findAllByRole("button").should("be.enabled");
+      cy.findAllByRole("menuitem").should(
+        "have.length",
+        expectedActions.length
+      );
+      cy.findAllByRole("menuitem").should("be.enabled");
     });
   });
 });
