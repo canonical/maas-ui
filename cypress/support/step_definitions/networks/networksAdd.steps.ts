@@ -46,7 +46,7 @@ When("the user deletes the created subnet", function () {
   cy.findByRole("heading", { name: "Subnet summary" }).should("exist");
 
   cy.findByRole("button", { name: "Take action" }).click();
-  cy.findByRole("button", { name: "Delete subnet" }).click();
+  cy.findByRole("menuitem", { name: "Delete subnet" }).click();
   cy.findByText(/Are you sure you want to delete this subnet?/).should(
     "be.visible"
   );

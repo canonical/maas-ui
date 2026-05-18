@@ -6,9 +6,7 @@ export const completeAddMachineForm = () => {
   cy.waitForPageToLoad();
   cy.waitForTableToLoad({ name: /Machines/i });
   cy.findByRole("button", { name: "Add hardware" }).click();
-  cy.get(".p-contextual-menu__link")
-    .contains("Machine", { timeout: LONG_TIMEOUT })
-    .click();
+  cy.findByRole("menuitem", { name: "Machine", timeout: LONG_TIMEOUT }).click();
   cy.findByLabelText("Machine name").type(name);
   cy.findByLabelText("MAC address").type(generateMac());
   cy.findByLabelText("Power type").select("Manual");
