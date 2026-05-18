@@ -173,7 +173,7 @@
     "nodemon": "3.1.14",
     "npm-package-json-lint": "8.0.0",
     "postcss-normalize": "13.0.1",
-    "prettier": "3.6.2",
+    "prettier": "3.8.3",
     "redux-mock-store": "1.5.5",
     "redux-saga-test-plan": "4.0.6",
     "sass": "1.99.0",
