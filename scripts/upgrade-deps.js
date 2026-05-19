@@ -2,7 +2,9 @@ import { execSync } from "child_process";
 
 const arg = process.argv[2];
 if (arg !== "--patch" && arg !== "--minor" && arg !== "--major") {
-  console.error("Usage: node scripts/upgrade-deps.js --patch | --minor | --major");
+  console.error(
+    "Usage: node scripts/upgrade-deps.js --patch | --minor | --major"
+  );
   process.exit(1);
 }
 
