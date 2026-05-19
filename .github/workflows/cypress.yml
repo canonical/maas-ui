@@ -111,7 +111,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
       - name: Install Cypress
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v7.3.0
         with:
           runTests: false
           install-command: yarn install
@@ -183,7 +183,7 @@ jobs:
           lxc exec maas-backend -- maas login admin https://localhost:5443/MAAS "$API_KEY"
           lxc exec maas-backend -- bash -c 'while [ $(maas admin boot-resources is-importing -k | cat) == "true" ]; do sleep 10; done; echo "syncing finished"'
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v7.3.0
         env:
           HTTPS_CERT: /tmp/maas-certs/cert.pem
           HTTPS_KEY: /tmp/maas-certs/key.pem
