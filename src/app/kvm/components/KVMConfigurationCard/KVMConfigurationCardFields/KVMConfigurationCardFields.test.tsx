@@ -16,7 +16,8 @@ import {
 
 setupMockServer(
   poolsResolvers.listPools.handler(),
-  zoneResolvers.listZones.handler()
+  zoneResolvers.listZones.handler(),
+  zoneResolvers.listZonesWithStatistics.handler()
 );
 
 describe("KVMConfigurationCardFields", () => {
