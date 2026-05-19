@@ -1,7 +1,16 @@
 import { execSync } from "child_process";
 
+const arg = process.argv[2];
+if (arg !== "--patch" && arg !== "--minor" && arg !== "--major") {
+  console.error("Usage: node scripts/upgrade-deps.js --patch | --minor | --major");
+  process.exit(1);
+}
+
 const NCU = "npx --yes npm-check-updates";
-const TARGET = "--target patch";
+// ncu uses "latest" to mean greatest released version (includes major bumps)
+const ncuTarget = arg === "--major" ? "latest" : arg.slice(2);
+const TARGET = `--target ${ncuTarget}`;
+const label = arg.slice(2);
 
 let upgraded;
 try {
@@ -18,11 +27,11 @@ try {
 const packages = Object.entries(upgraded);
 
 if (packages.length === 0) {
-  console.log("All patch-level dependencies are already up to date.");
+  console.log(`All ${label}-level dependencies are already up to date.`);
   process.exit(0);
 }
 
-console.log(`Upgrading ${packages.length} package(s) to latest patch:\n`);
+console.log(`Upgrading ${packages.length} package(s) to latest ${label}:\n`);
 for (const [name, version] of packages) {
   console.log(`  ${name}  →  ${version}`);
 }
