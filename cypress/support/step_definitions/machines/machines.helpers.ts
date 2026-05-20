@@ -11,7 +11,7 @@ export const completeAddMachineForm = () => {
   cy.findByLabelText("MAC address").type(generateMac());
   cy.findByLabelText("Power type").select("Manual");
   cy.findByLabelText("Power type").blur();
-  cy.findByRole("complementary")
+  cy.get("aside#aside-panel.l-aside")
     .find('[type="submit"]')
     .should(($btn) => {
       expect($btn).to.not.have.attr("aria-disabled", "true");
