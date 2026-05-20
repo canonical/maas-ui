@@ -11,6 +11,10 @@ export const completeAddMachineForm = () => {
   cy.findByLabelText("MAC address").type(generateMac());
   cy.findByLabelText("Power type").select("Manual");
   cy.findByLabelText("Power type").blur();
-  cy.get('[type="submit"]').should("not.have.attr", "aria-disabled").click();
+  cy.get('[type="submit"]')
+    .should(($btn) => {
+      expect($btn).to.not.have.attr("aria-disabled", "true");
+    })
+    .click();
   return { name };
 };
