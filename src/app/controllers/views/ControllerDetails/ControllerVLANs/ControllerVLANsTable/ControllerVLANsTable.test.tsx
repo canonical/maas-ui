@@ -1,5 +1,4 @@
 import ControllerVLANsTable from "./ControllerVLANsTable";
-import { ControllerVLANsColumns } from "./constants";
 
 import urls from "@/app/base/urls";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
@@ -65,7 +64,7 @@ it("displays correct text when loading", function () {
     }
   );
 
-  const vlanTable = screen.getByRole("table", { name: "Controller VLANs" });
+  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
   expect(within(vlanTable).getByText("Loading...")).toBeInTheDocument();
 });
 
@@ -94,8 +93,8 @@ it("displays correct text for no VLANs", function () {
     }
   );
 
-  const vlanTable = screen.getByRole("table", { name: "Controller VLANs" });
-  expect(within(vlanTable).getByText("No VLANs found")).toBeInTheDocument();
+  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
+  expect(within(vlanTable).getByText(/No VLANs found/)).toBeInTheDocument();
 });
 
 it("displays a VLANs table with a single row", function () {
@@ -123,11 +122,12 @@ it("displays a VLANs table with a single row", function () {
     }
   );
 
-  const vlanTable = screen.getByRole("table", { name: "Controller VLANs" });
+  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
   expect(vlanTable).toBeInTheDocument();
   const tableBody = within(vlanTable).getAllByRole("rowgroup")[1];
   const vlanTableRows = within(tableBody).getAllByRole("row");
-  expect(vlanTableRows.length).toEqual(1);
+  // GenericTable with groupBy renders one fabric group row + one leaf VLAN row per unique VLAN
+  expect(vlanTableRows.length).toEqual(2);
 });
 
 it("displays no duplicate vlans", function () {
@@ -170,7 +170,8 @@ it("displays no duplicate vlans", function () {
 
   const tableBody = screen.getAllByRole("rowgroup")[1];
   const vlanTableRows = within(tableBody).getAllByRole("row");
-  expect(vlanTableRows.length).toEqual(1);
+  // GenericTable with groupBy renders one fabric group row + one leaf VLAN row per unique VLAN
+  expect(vlanTableRows.length).toEqual(2);
 });
 
 it("displays correct text within each cell", () => {
@@ -198,19 +199,14 @@ it("displays correct text within each cell", () => {
     }
   );
 
-  const expectedColumnContent = {
-    [ControllerVLANsColumns.FABRIC]: net.fabric0.name,
-    [ControllerVLANsColumns.VLAN]: net.vlan0.name,
-    [ControllerVLANsColumns.DHCP]: "No DHCP",
-  };
+  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
+  const tableBody = within(vlanTable).getAllByRole("rowgroup")[1];
+  const [fabricGroupRow, vlanLeafRow] = within(tableBody).getAllByRole("row");
 
-  const row = screen.getByRole("row", {
-    name: new RegExp(net.fabric0.name),
-  });
+  // The fabric group row shows only the fabric name (filterCells hides other columns)
+  expect(fabricGroupRow).toHaveTextContent(net.fabric0.name);
 
-  Object.values(expectedColumnContent).forEach((value, index) => {
-    expect(within(row).getAllByRole("cell")[index]).toHaveTextContent(
-      new RegExp(value)
-    );
-  });
+  // The leaf VLAN row shows VLAN, DHCP, etc. (filterCells hides the fabric column)
+  expect(vlanLeafRow).toHaveTextContent(net.vlan0.name);
+  expect(vlanLeafRow).toHaveTextContent("No DHCP");
 });
