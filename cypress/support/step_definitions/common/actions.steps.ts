@@ -15,7 +15,8 @@ When("the user clicks the button matching {string}", (button: string) => {
 });
 
 When("the user submits the form", () => {
-  cy.get('[type="submit"]')
+  cy.findByRole("complementary")
+    .find('[type="submit"]')
     .should(($btn) => {
       expect($btn).to.not.have.attr("aria-disabled", "true");
     })
