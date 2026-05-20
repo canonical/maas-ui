@@ -146,7 +146,7 @@ Then("the new pool name should be visible in the machines grid", () => {
 Then(
   "the {string} table should contain the new tag marked {string}",
   (tableName: string, status: string) => {
-    cy.findByRole("table", { name: new RegExp(tableName, "i") }).within(() => {
+    cy.findByRole("grid", { name: new RegExp(tableName, "i") }).within(() => {
       cy.findByRole("cell", { name: new RegExp(status, "i") }).should("exist");
       cy.findByRole("cell", { name: new RegExp(newTagName, "i") }).should(
         "exist"
