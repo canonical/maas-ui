@@ -32,7 +32,7 @@ When("the user switches to an ipad mini landscape viewport", () => {
 
 When("the user deletes the current machine", () => {
   cy.findByRole("button", { name: /Menu/i }).click();
-  cy.findByRole("button", { name: /Delete/i }).click();
+  cy.findByRole("menuitem", { name: /Delete/i }).click();
   cy.findByRole("button", { name: /Delete machine/i }).click();
   cy.waitForPageToLoad();
 });
@@ -46,9 +46,9 @@ When("the user opens the machine actions menu", () => {
 
 When("the user aborts commissioning", () => {
   cy.findByLabelText("Actions submenu").within(() => {
-    cy.findByRole("button", { name: /Abort/i }).should("be.visible");
+    cy.findByRole("menuitem", { name: /Abort/i }).should("be.visible");
 
-    cy.findByRole("button", { name: /Abort/i }).click({ force: true });
+    cy.findByRole("menuitem", { name: /Abort/i }).click({ force: true });
   });
 
   cy.findByRole("button", { name: /Abort actions/i })

@@ -6,6 +6,7 @@ import {
   When,
 } from "@badeball/cypress-cucumber-preprocessor";
 import { generateName } from "../../../e2e/utils";
+import { LONG_TIMEOUT } from "../../../constants";
 
 let machineName = "";
 let newPoolName = "";
@@ -138,7 +139,7 @@ Then("the {string} side panel should not exist", (panelName: string) => {
 
 Then("the new pool name should be visible in the machines grid", () => {
   cy.findByRole("grid", { name: /Machines/i }).within(() => {
-    cy.findByText(newPoolName).should("exist");
+    cy.findByText(newPoolName, { timeout: LONG_TIMEOUT }).should("exist");
   });
 });
 
