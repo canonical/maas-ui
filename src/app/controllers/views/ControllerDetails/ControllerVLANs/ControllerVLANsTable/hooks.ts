@@ -52,6 +52,7 @@ const getTableData = (
         controllerVlan.fabric
       );
       rows.push({
+        id: controllerVlan.id.toString(),
         fabric: controllerFabric,
         vlan: controllerVlan,
         dhcp: getDHCPStatus(controllerVlan, data.vlans, data.fabrics),

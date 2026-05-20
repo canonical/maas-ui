@@ -4,6 +4,7 @@ import type { Subnet } from "@/app/store/subnet/types";
 import type { VLAN } from "@/app/store/vlan/types";
 
 export type ControllerTableData = {
+  id: string;
   fabric?: Fabric | null;
   vlan?: VLAN | null;
   dhcp: string;
