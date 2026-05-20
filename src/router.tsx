@@ -81,7 +81,9 @@ const MachineNetwork = lazy(
 );
 const NetworkNotifications = lazy(
   () =>
-    import("@/app/machines/views/MachineDetails/MachineNetwork/NetworkNotifications")
+    import(
+      "@/app/machines/views/MachineDetails/MachineNetwork/NetworkNotifications"
+    )
 );
 const MachinePCIDevices = lazy(
   () => import("@/app/machines/views/MachineDetails/MachinePCIDevices")
@@ -94,14 +96,18 @@ const MachineStorage = lazy(
 );
 const StorageNotifications = lazy(
   () =>
-    import("@/app/machines/views/MachineDetails/MachineStorage/StorageNotifications")
+    import(
+      "@/app/machines/views/MachineDetails/MachineStorage/StorageNotifications"
+    )
 );
 const MachineSummary = lazy(
   () => import("@/app/machines/views/MachineDetails/MachineSummary")
 );
 const SummaryNotifications = lazy(
   () =>
-    import("@/app/machines/views/MachineDetails/MachineSummary/SummaryNotifications")
+    import(
+      "@/app/machines/views/MachineDetails/MachineSummary/SummaryNotifications"
+    )
 );
 const MachineUSBDevices = lazy(
   () => import("@/app/machines/views/MachineDetails/MachineUSBDevices")
