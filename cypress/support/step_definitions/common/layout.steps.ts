@@ -17,7 +17,8 @@ Then("the heading should be {string}", (expectedHeading: string) => {
 });
 
 Then("the heading matching {string} text should exist", (heading: string) => {
-  cy.contains("h1, h2, h3, h4, h5, h6", new RegExp(heading, "i"), {
+  cy.findByRole("heading", {
+    name: new RegExp(heading, "i"),
     timeout: LONG_TIMEOUT,
   }).should("exist");
 });

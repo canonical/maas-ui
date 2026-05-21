@@ -12,7 +12,9 @@ Given(/^the user navigates to the (.+) page$/, (page: string) => {
       ? `${Cypress.env("BASENAME")}${path}`
       : generateMAASURL(path);
   cy.visit(url);
-  cy.waitForPageToLoad();
+  if (page !== "home") {
+    cy.waitForPageToLoad();
+  }
 });
 
 Then(/^the user is redirected to the (.+) page$/, (page: string) => {
