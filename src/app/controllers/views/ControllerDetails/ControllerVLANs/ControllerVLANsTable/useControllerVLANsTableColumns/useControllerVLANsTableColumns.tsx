@@ -21,7 +21,7 @@ const useControllerVLANsTableColumns = (): ControllerVLANsColumnDef[] => {
         id: "fabric",
         header: "Fabric",
         accessorKey: "fabric_id",
-        enableSorting: true,
+        enableSorting: false,
         cell: ({
           row: {
             original: { fabric_id },
