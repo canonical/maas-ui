@@ -1,22 +1,26 @@
 .p-generic-table.controller-vlans-table {
+  .fabric {
+    width: 15%
+  }
+
   .vlan {
-    width: 18%;
+    width: 15%;
   }
 
   .dhcp {
-    width: 13%;
+    width: 10%;
   }
 
   .subnets {
-    width: 23%;
+    width: 20%;
   }
 
   .primary_rack {
-    width: 23%;
+    width: 20%;
   }
 
   .secondary_rack {
     text-align: left !important;
-    width: 23%;
+    width: 20%;
   }
 }

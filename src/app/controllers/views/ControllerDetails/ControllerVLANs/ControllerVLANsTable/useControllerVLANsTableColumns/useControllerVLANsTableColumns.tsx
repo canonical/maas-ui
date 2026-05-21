@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import pluralize from "pluralize";
 
 import ControllerLink from "@/app/base/components/ControllerLink";
 import FabricLink from "@/app/base/components/FabricLink";
@@ -20,45 +19,37 @@ const useControllerVLANsTableColumns = (): ControllerVLANsColumnDef[] => {
     () => [
       {
         id: "fabric",
-        accessorKey: "fabric",
-        enableSorting: false,
-        cell: ({ row }) => {
-          return (
-            <div>
-              <div>
-                <strong>
-                  <FabricLink id={row.original.fabric?.id} />
-                </strong>
-              </div>
-              <small className="u-text--muted">
-                {pluralize("subnets", row.getLeafRows().length ?? 0, true)}
-              </small>
-            </div>
-          );
-        },
+        header: "Fabric",
+        accessorKey: "fabric_id",
+        enableSorting: true,
+        cell: ({
+          row: {
+            original: { fabric_id },
+          },
+        }) => <FabricLink id={fabric_id} />,
       },
       {
         id: "vlan",
         header: "VLAN",
-        accessorKey: "vlan",
-        enableSorting: true,
+        accessorKey: "vlan_id",
+        enableSorting: false,
         cell: ({
           row: {
-            original: { vlan },
+            original: { vlan_id },
           },
-        }) => <VLANLink id={vlan?.id} />,
+        }) => <VLANLink id={vlan_id} />,
       },
       {
         id: "dhcp",
         header: "DHCP",
         accessorKey: "dhcp",
-        enableSorting: true,
+        enableSorting: false,
       },
       {
         id: "subnets",
         header: "Subnets",
         accessorKey: "subnets",
-        enableSorting: true,
+        enableSorting: false,
         cell: ({
           row: {
             original: { subnet },
@@ -77,7 +68,7 @@ const useControllerVLANsTableColumns = (): ControllerVLANsColumnDef[] => {
         id: "primary_rack",
         header: "Primary rack",
         accessorKey: "primary_rack",
-        enableSorting: true,
+        enableSorting: false,
         cell: ({
           row: {
             original: { primary_rack },
@@ -88,7 +79,7 @@ const useControllerVLANsTableColumns = (): ControllerVLANsColumnDef[] => {
         id: "secondary_rack",
         header: "Secondary rack",
         accessorKey: "secondary_rack",
-        enableSorting: true,
+        enableSorting: false,
         cell: ({
           row: {
             original: { secondary_rack },

@@ -42,7 +42,7 @@ const getTableData = (
   const rows: ControllerTableData[] = controller.interfaces.reduce<
     ControllerTableData[]
   >((rows, nic) => {
-    const rowExists = rows.some((row) => row.vlan?.id === nic.vlan_id);
+    const rowExists = rows.some((row) => row.vlan_id === nic.vlan_id);
     const hasBondOrBridgeChild = !!getBondOrBridgeChild(controller, nic);
     const controllerVlan = getVlanById(data.vlans, nic.vlan_id);
 
@@ -53,8 +53,8 @@ const getTableData = (
       );
       rows.push({
         id: controllerVlan.id.toString(),
-        fabric: controllerFabric,
-        vlan: controllerVlan,
+        fabric_id: controllerFabric?.id,
+        vlan_id: controllerVlan.id,
         dhcp: getDHCPStatus(controllerVlan, data.vlans, data.fabrics),
         subnet: getSubnetsInVLAN(data.subnets, nic.vlan_id),
         sortKey: controllerFabric

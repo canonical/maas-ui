@@ -5,8 +5,8 @@ import type { VLAN } from "@/app/store/vlan/types";
 
 export type ControllerTableData = {
   id: string;
-  fabric?: Fabric | null;
-  vlan?: VLAN | null;
+  fabric_id?: Fabric["id"];
+  vlan_id: VLAN["id"];
   dhcp: string;
   subnet?: Subnet[];
   primary_rack?: Controller[ControllerMeta.PK] | null;

@@ -26,16 +26,9 @@ const ControllerVLANsTable = ({
       className="controller-vlans-table"
       columns={columns}
       data={data}
-      filterCells={(row, column) =>
-        row.getIsGrouped()
-          ? ["fabric"].includes(column.id)
-          : !["fabric"].includes(column.id)
-      }
-      filterHeaders={(header) => !["fabric"].includes(header.column.id)}
-      groupBy={["fabric"]}
       isLoading={!loaded}
       noData="No VLANs found."
-      showChevron
+      sorting={[{ id: "fabric", desc: true }]}
       variant="full-height"
     />
   );
