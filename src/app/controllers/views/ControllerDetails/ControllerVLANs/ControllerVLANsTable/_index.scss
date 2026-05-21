@@ -1,27 +1,26 @@
-@mixin ControllerVLANsTable {
-    .controller-vlans-table {
-        @media (min-width: $breakpoint-small) {
-            th,
-            td {
-                &:nth-child(1) {
-                    width: 15%;
-                }
-                &:nth-child(2) {
-                    width: 15%;
-                }
-                &:nth-child(3) {
-                    width: 10%;
-                }
-                &:nth-child(4) {
-                    width: 20%;
-                }
-                &:nth-child(5) {
-                    width: 20%;
-                }
-                &:nth-child(6) {
-                    width: 20%;
-                }
-            }
-        }
-    }
+.p-generic-table.controller-vlans-table {
+  .fabric {
+    width: 15%
+  }
+
+  .vlan {
+    width: 15%;
+  }
+
+  .dhcp {
+    width: 10%;
+  }
+
+  .subnets {
+    width: 20%;
+  }
+
+  .primary_rack {
+    width: 20%;
+  }
+
+  .secondary_rack {
+    text-align: left !important;
+    width: 20%;
+  }
 }

@@ -1,5 +1,4 @@
 import ControllerVLANsTable from "./ControllerVLANsTable";
-import { ControllerVLANsColumns } from "./constants";
 
 import urls from "@/app/base/urls";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
@@ -65,7 +64,7 @@ it("displays correct text when loading", function () {
     }
   );
 
-  const vlanTable = screen.getByRole("table", { name: "Controller VLANs" });
+  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
   expect(within(vlanTable).getByText("Loading...")).toBeInTheDocument();
 });
 
@@ -94,8 +93,8 @@ it("displays correct text for no VLANs", function () {
     }
   );
 
-  const vlanTable = screen.getByRole("table", { name: "Controller VLANs" });
-  expect(within(vlanTable).getByText("No VLANs found")).toBeInTheDocument();
+  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
+  expect(within(vlanTable).getByText(/No VLANs found/)).toBeInTheDocument();
 });
 
 it("displays a VLANs table with a single row", function () {
@@ -123,7 +122,7 @@ it("displays a VLANs table with a single row", function () {
     }
   );
 
-  const vlanTable = screen.getByRole("table", { name: "Controller VLANs" });
+  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
   expect(vlanTable).toBeInTheDocument();
   const tableBody = within(vlanTable).getAllByRole("rowgroup")[1];
   const vlanTableRows = within(tableBody).getAllByRole("row");
@@ -199,9 +198,9 @@ it("displays correct text within each cell", () => {
   );
 
   const expectedColumnContent = {
-    [ControllerVLANsColumns.FABRIC]: net.fabric0.name,
-    [ControllerVLANsColumns.VLAN]: net.vlan0.name,
-    [ControllerVLANsColumns.DHCP]: "No DHCP",
+    ["Fabric"]: net.fabric0.name,
+    ["VLAN"]: net.vlan0.name,
+    ["DHCP"]: "No DHCP",
   };
 
   const row = screen.getByRole("row", {
