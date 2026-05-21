@@ -126,8 +126,7 @@ it("displays a VLANs table with a single row", function () {
   expect(vlanTable).toBeInTheDocument();
   const tableBody = within(vlanTable).getAllByRole("rowgroup")[1];
   const vlanTableRows = within(tableBody).getAllByRole("row");
-  // GenericTable with groupBy renders one fabric group row + one leaf VLAN row per unique VLAN
-  expect(vlanTableRows.length).toEqual(2);
+  expect(vlanTableRows.length).toEqual(1);
 });
 
 it("displays no duplicate vlans", function () {
@@ -170,8 +169,7 @@ it("displays no duplicate vlans", function () {
 
   const tableBody = screen.getAllByRole("rowgroup")[1];
   const vlanTableRows = within(tableBody).getAllByRole("row");
-  // GenericTable with groupBy renders one fabric group row + one leaf VLAN row per unique VLAN
-  expect(vlanTableRows.length).toEqual(2);
+  expect(vlanTableRows.length).toEqual(1);
 });
 
 it("displays correct text within each cell", () => {
@@ -199,14 +197,19 @@ it("displays correct text within each cell", () => {
     }
   );
 
-  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
-  const tableBody = within(vlanTable).getAllByRole("rowgroup")[1];
-  const [fabricGroupRow, vlanLeafRow] = within(tableBody).getAllByRole("row");
+  const expectedColumnContent = {
+    ["Fabric"]: net.fabric0.name,
+    ["VLAN"]: net.vlan0.name,
+    ["DHCP"]: "No DHCP",
+  };
 
-  // The fabric group row shows only the fabric name (filterCells hides other columns)
-  expect(fabricGroupRow).toHaveTextContent(net.fabric0.name);
+  const row = screen.getByRole("row", {
+    name: new RegExp(net.fabric0.name),
+  });
 
-  // The leaf VLAN row shows VLAN, DHCP, etc. (filterCells hides the fabric column)
-  expect(vlanLeafRow).toHaveTextContent(net.vlan0.name);
-  expect(vlanLeafRow).toHaveTextContent("No DHCP");
+  Object.values(expectedColumnContent).forEach((value, index) => {
+    expect(within(row).getAllByRole("cell")[index]).toHaveTextContent(
+      new RegExp(value)
+    );
+  });
 });
