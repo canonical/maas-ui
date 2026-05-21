@@ -155,7 +155,9 @@ describe("GroupDetailsHeader", () => {
       );
 
       actionLabels.forEach((label) => {
-        expect(screen.getByRole("button", { name: label })).toBeInTheDocument();
+        expect(
+          screen.getByRole("menuitem", { name: label })
+        ).toBeInTheDocument();
       });
     });
 
@@ -345,7 +347,7 @@ describe("GroupDetailsHeader", () => {
         screen.getByRole("button", { name: "Take action" })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: "Edit group..." })
+        screen.getByRole("menuitem", { name: "Edit group..." })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -382,7 +384,7 @@ describe("GroupDetailsHeader", () => {
         screen.getByRole("button", { name: "Take action" })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: "Delete group..." })
+        screen.getByRole("menuitem", { name: "Delete group..." })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(

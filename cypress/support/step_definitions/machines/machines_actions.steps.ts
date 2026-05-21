@@ -6,6 +6,7 @@ import {
   When,
 } from "@badeball/cypress-cucumber-preprocessor";
 import { generateName } from "../../../e2e/utils";
+import { LONG_TIMEOUT } from "../../../constants";
 
 let machineName = "";
 let newPoolName = "";
@@ -19,7 +20,7 @@ const openMachineActionDropdown = (groupLabel: string) => {
 const openMachineActionForm = (groupLabel: string, action: string) => {
   openMachineActionDropdown(groupLabel);
   cy.findByLabelText(`${groupLabel} submenu`).within(() => {
-    cy.findAllByRole("button", {
+    cy.findAllByRole("menuitem", {
       name: new RegExp(`${action}...`),
     }).click();
   });
@@ -104,8 +105,11 @@ Then("the following action groups should be available:", (table: DataTable) => {
     openMachineActionDropdown(group);
 
     cy.findByLabelText(`${group} submenu`).within(() => {
-      cy.findAllByRole("button").should("have.length", expectedActions.length);
-      cy.findAllByRole("button").should("be.enabled");
+      cy.findAllByRole("menuitem").should(
+        "have.length",
+        expectedActions.length
+      );
+      cy.findAllByRole("menuitem").should("be.enabled");
     });
   });
 });
@@ -135,7 +139,7 @@ Then("the {string} side panel should not exist", (panelName: string) => {
 
 Then("the new pool name should be visible in the machines grid", () => {
   cy.findByRole("grid", { name: /Machines/i }).within(() => {
-    cy.findByText(newPoolName).should("exist");
+    cy.findByText(newPoolName, { timeout: LONG_TIMEOUT }).should("exist");
   });
 });
 

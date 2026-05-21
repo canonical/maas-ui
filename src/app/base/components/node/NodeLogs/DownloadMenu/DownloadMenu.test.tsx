@@ -113,7 +113,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
-      screen.getByRole("button", { name: "Machine output (YAML)" })
+      screen.getByRole("menuitem", { name: "Machine output (YAML)" })
     ).toBeInTheDocument();
   });
 
@@ -126,7 +126,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     await userEvent.click(
-      screen.getByRole("button", { name: "Machine output (YAML)" })
+      screen.getByRole("menuitem", { name: "Machine output (YAML)" })
     );
     expect(downloadSpy).toHaveBeenCalledWith(
       "test yaml file",
@@ -158,7 +158,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
-      screen.getByRole("button", { name: "Machine output (XML)" })
+      screen.getByRole("menuitem", { name: "Machine output (XML)" })
     ).toBeInTheDocument();
   });
 
@@ -171,7 +171,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     await userEvent.click(
-      screen.getByRole("button", { name: "Machine output (XML)" })
+      screen.getByRole("menuitem", { name: "Machine output (XML)" })
     );
     await waitFor(() => {
       expect(downloadSpy).toHaveBeenCalledWith(
@@ -190,7 +190,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     await userEvent.click(
-      screen.getByRole("button", { name: "Machine output (XML)" })
+      screen.getByRole("menuitem", { name: "Machine output (XML)" })
     );
     await waitFor(() => {
       expect(downloadSpy).toHaveBeenCalledWith(
@@ -219,7 +219,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
-      screen.getByRole("button", { name: Label.InstallationOutput })
+      screen.getByRole("menuitem", { name: Label.InstallationOutput })
     ).toBeInTheDocument();
   });
 
@@ -231,7 +231,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     await userEvent.click(
-      screen.getByRole("button", { name: Label.InstallationOutput })
+      screen.getByRole("menuitem", { name: Label.InstallationOutput })
     );
     await waitFor(() => {
       expect(downloadSpy).toHaveBeenCalledWith(
@@ -269,7 +269,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
-      screen.getByRole("button", { name: Label.CurtinLogs })
+      screen.getByRole("menuitem", { name: Label.CurtinLogs })
     ).toBeInTheDocument();
   });
 
@@ -315,7 +315,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
     await userEvent.click(
-      screen.getByRole("button", { name: Label.CurtinLogs })
+      screen.getByRole("menuitem", { name: Label.CurtinLogs })
     );
     await Promise.resolve();
     await waitFor(() => {

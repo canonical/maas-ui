@@ -15,7 +15,12 @@ When("the user clicks the button matching {string}", (button: string) => {
 });
 
 When("the user submits the form", () => {
-  cy.get("button[type='submit']").click();
+  cy.get("aside#aside-panel.l-aside")
+    .find('[type="submit"]')
+    .should(($btn) => {
+      expect($btn).to.not.have.attr("aria-disabled", "true");
+    })
+    .click();
 });
 
 When("the user clicks the {string} link", (link: string) => {

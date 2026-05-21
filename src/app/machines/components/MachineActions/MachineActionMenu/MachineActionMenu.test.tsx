@@ -28,12 +28,12 @@ describe("MachineActionMenu", async () => {
   };
 
   const getActionButton = (action: NodeActions) =>
-    screen.getByRole("button", {
+    screen.getByRole("menuitem", {
       name: new RegExp(getNodeActionTitle(action)),
     });
 
   const queryActionButton = (action: NodeActions) =>
-    screen.queryByRole("button", {
+    screen.queryByRole("menuitem", {
       name: new RegExp(getNodeActionTitle(action)),
     });
 

@@ -113,7 +113,7 @@ describe("GroupMembersTable", () => {
       );
 
       await userEvent.click(
-        screen.getByRole("button", { name: "Remove member..." })
+        screen.getByRole("menuitem", { name: "Remove member..." })
       );
 
       const selectedMember = mockGroupMembers.items[0];

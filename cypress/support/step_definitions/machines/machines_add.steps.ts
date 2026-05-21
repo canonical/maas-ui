@@ -6,7 +6,7 @@ const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
 Given("the user opens the add machine form", () => {
   cy.findByRole("button", { name: "Add hardware" }).click();
-  cy.get(".p-contextual-menu__link").contains("Machine").click();
+  cy.findByRole("menuitem", { name: "Machine" }).click();
 });
 
 Given("the {string} heading is visible", (heading: string) => {

@@ -77,7 +77,7 @@ describe("PoolColumn", () => {
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "No other pools available" })
+        screen.getByRole("menuitem", { name: "No other pools available" })
       ).toBeInTheDocument();
     });
   });
@@ -94,7 +94,7 @@ describe("PoolColumn", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
     expect(
-      screen.getByRole("button", {
+      screen.getByRole("menuitem", {
         name: "Cannot change pool of this machine",
       })
     ).toBeAriaDisabled();
@@ -120,10 +120,10 @@ describe("PoolColumn", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "swimming" })
+        screen.getByRole("menuitem", { name: "swimming" })
       ).toBeInTheDocument();
     });
-    await userEvent.click(screen.getByRole("button", { name: "swimming" }));
+    await userEvent.click(screen.getByRole("menuitem", { name: "swimming" }));
 
     expect(
       store.getActions().find((action) => action.type === "machine/setPool")
@@ -163,10 +163,10 @@ describe("PoolColumn", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "swimming" })
+        screen.getByRole("menuitem", { name: "swimming" })
       ).toBeInTheDocument();
     });
-    await userEvent.click(screen.getByRole("button", { name: "swimming" }));
+    await userEvent.click(screen.getByRole("menuitem", { name: "swimming" }));
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 

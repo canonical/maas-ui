@@ -88,7 +88,7 @@ it("displays actions in take action menu", async () => {
 
   actionLabels.forEach((name) => {
     expect(
-      screen.getByRole("button", { name: new RegExp(name) })
+      screen.getByRole("menuitem", { name: new RegExp(name) })
     ).toBeInTheDocument();
   });
 });

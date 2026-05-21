@@ -103,48 +103,48 @@ describe("SourcesTable", () => {
       // Default source (enabled)
       await userEvent.click(rowActions[0]);
       expect(
-        screen.getByRole("button", { name: "Edit source..." })
+        screen.getByRole("menuitem", { name: "Edit source..." })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("button", { name: "Delete source..." })
+        screen.queryByRole("menuitem", { name: "Delete source..." })
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByRole("button", { name: "Enable source..." })
+        screen.queryByRole("menuitem", { name: "Enable source..." })
       ).not.toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "Disable source..." })
+        screen.getByRole("menuitem", { name: "Disable source..." })
       ).toBeInTheDocument();
       await userEvent.click(rowActions[0]);
 
       // Default source (disabled)
       await userEvent.click(rowActions[1]);
       expect(
-        screen.getByRole("button", { name: "Edit source..." })
+        screen.getByRole("menuitem", { name: "Edit source..." })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("button", { name: "Delete source..." })
+        screen.queryByRole("menuitem", { name: "Delete source..." })
       ).not.toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "Enable source..." })
+        screen.getByRole("menuitem", { name: "Enable source..." })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("button", { name: "Disable source..." })
+        screen.queryByRole("menuitem", { name: "Disable source..." })
       ).not.toBeInTheDocument();
       await userEvent.click(rowActions[1]);
 
       // Custom source
       await userEvent.click(rowActions[2]);
       expect(
-        screen.getByRole("button", { name: "Edit source..." })
+        screen.getByRole("menuitem", { name: "Edit source..." })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "Delete source..." })
+        screen.getByRole("menuitem", { name: "Delete source..." })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("button", { name: "Enable source..." })
+        screen.queryByRole("menuitem", { name: "Enable source..." })
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByRole("button", { name: "Disable source..." })
+        screen.queryByRole("menuitem", { name: "Disable source..." })
       ).not.toBeInTheDocument();
     });
   });
@@ -171,11 +171,11 @@ describe("SourcesTable", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByRole("button", { name: "Edit source..." })
+          screen.getByRole("menuitem", { name: "Edit source..." })
         ).toBeInTheDocument();
       });
       await userEvent.click(
-        screen.getByRole("button", { name: "Edit source..." })
+        screen.getByRole("menuitem", { name: "Edit source..." })
       );
 
       expect(mockOpen).toHaveBeenCalledWith({
@@ -211,11 +211,11 @@ describe("SourcesTable", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByRole("button", { name: "Delete source..." })
+          screen.getByRole("menuitem", { name: "Delete source..." })
         ).toBeInTheDocument();
       });
       await userEvent.click(
-        screen.getByRole("button", { name: "Delete source..." })
+        screen.getByRole("menuitem", { name: "Delete source..." })
       );
 
       expect(mockOpen).toHaveBeenCalledWith({
