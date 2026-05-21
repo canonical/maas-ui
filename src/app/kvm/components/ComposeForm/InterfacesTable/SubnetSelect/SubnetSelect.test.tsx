@@ -228,7 +228,7 @@ describe("SubnetSelect", () => {
       screen.getAllByRole("button", { name: "Select subnet..." })[0]
     );
     await userEvent.click(
-      within(screen.getByLabelText("sub")).getByRole("button", {
+      within(screen.getByLabelText("sub")).getByRole("menuitem", {
         name: /non-pxe/i,
       })
     );
@@ -242,7 +242,7 @@ describe("SubnetSelect", () => {
       screen.getAllByRole("button", { name: "Select subnet..." })[0]
     );
     await userEvent.click(
-      within(screen.getByLabelText("sub")).getByRole("button", {
+      within(screen.getByLabelText("sub")).getByRole("menuitem", {
         name: /non-pxe/i,
       })
     );
@@ -253,7 +253,7 @@ describe("SubnetSelect", () => {
     // Select PXE network for the second interface - error should be removed.
     await userEvent.click(screen.getAllByText("non-pxe")[1]);
     await userEvent.click(
-      within(screen.getByLabelText("sub")).getByRole("button", {
+      within(screen.getByLabelText("sub")).getByRole("menuitem", {
         name: /pxe test-vlan-1/i,
       })
     );

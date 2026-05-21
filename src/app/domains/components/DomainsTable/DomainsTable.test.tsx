@@ -102,7 +102,7 @@ describe("DomainsTable", () => {
       );
 
       await userEvent.click(
-        screen.getByRole("button", { name: DomainsTableLabels.SetDefault })
+        screen.getByRole("menuitem", { name: DomainsTableLabels.SetDefault })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(

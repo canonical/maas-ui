@@ -142,14 +142,12 @@ Given("the user has created a machine with a known MAC address", function () {
   cy.waitForPageToLoad();
 
   cy.findByRole("button", { name: "Add hardware" }).click();
-  cy.get(".p-contextual-menu__link")
-    .contains("Machine", { timeout: LONG_TIMEOUT })
-    .click();
+  cy.findByRole("menuitem", { name: "Machine", timeout: LONG_TIMEOUT }).click();
   cy.findByLabelText("Machine name").type(this.machineName);
   cy.findByLabelText("MAC address").type(this.machineMac);
   cy.findByLabelText("Power type").select("Manual");
   cy.findByLabelText("Power type").blur();
-  cy.get("button[type='submit']").click();
+  cy.findByRole("button", { name: /save machine/i }).click();
 
   cy.findByRole("heading", { name: /Add machine/i }).should("not.exist");
 });

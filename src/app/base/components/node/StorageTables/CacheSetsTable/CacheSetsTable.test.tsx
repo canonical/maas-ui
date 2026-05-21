@@ -118,7 +118,7 @@ describe("CacheSetsTable", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
     await userEvent.click(
-      screen.getByRole("button", { name: "Remove cache set..." })
+      screen.getByRole("menuitem", { name: "Remove cache set..." })
     );
 
     expect(mockOpen).toHaveBeenCalledWith(

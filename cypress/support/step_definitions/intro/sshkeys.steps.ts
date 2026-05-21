@@ -17,7 +17,7 @@ When("the admin creates a new user account", () => {
   cy.get("input[name='email']").type(`${newUsername}@example.com`);
   cy.get("input[name='password']").type(newPassword);
   cy.get("input[name='passwordConfirm']").type(newPassword);
-  cy.get("button[type='submit']").click();
+  cy.findByRole("button", { name: "Save user" }).click();
   cy.findByText(newUsername).should("exist");
 });
 

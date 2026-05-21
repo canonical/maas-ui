@@ -12,7 +12,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  zoneResolvers.listZonesWithStatistics.handler()
+);
 
 describe("ZoneColumn", () => {
   let state: RootState;
@@ -88,7 +91,9 @@ describe("ZoneColumn", () => {
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
 
     expect(
-      screen.getByRole("button", { name: "Cannot change zone of this machine" })
+      screen.getByRole("menuitem", {
+        name: "Cannot change zone of this machine",
+      })
     ).toBeAriaDisabled();
   });
 

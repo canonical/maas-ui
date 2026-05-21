@@ -64,9 +64,7 @@ Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.waitForPageToLoad();
   cy.waitForTableToLoad({ name: /Machines/i });
   cy.findByRole("button", { name: "Add hardware" }).click();
-  cy.get(".p-contextual-menu__link")
-    .contains("Machine", { timeout: LONG_TIMEOUT })
-    .click();
+  cy.findByRole("menuitem", { name: "Machine", timeout: LONG_TIMEOUT }).click();
   cy.get("input[name='hostname']").type(hostname);
   cy.get("input[name='pxe_mac']").type(generateMac());
   cy.get("select[name='power_type']").select("manual");
@@ -108,7 +106,7 @@ Cypress.Commands.add("deletePool", (pool: string) => {
 Cypress.Commands.add("addMachines", (hostnames: string[]) => {
   cy.visit(generateMAASURL("/machines"));
   cy.findByRole("button", { name: "Add hardware" }).click();
-  cy.get(".p-contextual-menu__link").contains("Machine").click();
+  cy.findByRole("menuitem", { name: "Machine" }).click();
   hostnames.forEach((hostname, index) => {
     cy.get("input[name='hostname']").type(hostname);
     cy.get("input[name='pxe_mac']").type(generateMac());
@@ -138,7 +136,7 @@ Cypress.Commands.add(
     cy.visit(generateMAASURL("/networks"));
     cy.waitForTableToLoad({ name: "Subnets by fabric" });
     cy.findByRole("button", { name: "Add" }).click();
-    cy.findByRole("button", { name: "Subnet" }).click();
+    cy.findByRole("menuitem", { name: "Subnet" }).click();
     cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
     cy.findByRole("textbox", { name: "Name" }).type(subnetName);
     cy.findByRole("combobox", { name: "Fabric" }).select(fabric);

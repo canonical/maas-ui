@@ -111,7 +111,7 @@ describe("OwnerColumn", () => {
     await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 
     expect(
-      screen.getByRole("button", { name: "Allocate..." })
+      screen.getByRole("menuitem", { name: "Allocate..." })
     ).toBeInTheDocument();
   });
 
@@ -125,7 +125,7 @@ describe("OwnerColumn", () => {
     await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 
     expect(
-      screen.getByRole("button", { name: "Release..." })
+      screen.getByRole("menuitem", { name: "Release..." })
     ).toBeInTheDocument();
   });
 

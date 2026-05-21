@@ -47,7 +47,9 @@ describe("TestActions", () => {
 
     await openMenu();
 
-    expect(screen.getByRole("link", { name: /View details/i })).toHaveAttribute(
+    expect(
+      screen.getByRole("menuitem", { name: /View details/i })
+    ).toHaveAttribute(
       "href",
       urls.machines.machine.commissioning.scriptResult({
         id: machine.system_id,
@@ -71,7 +73,9 @@ describe("TestActions", () => {
     );
 
     await openMenu();
-    expect(screen.getByRole("link", { name: /View details/i })).toHaveAttribute(
+    expect(
+      screen.getByRole("menuitem", { name: /View details/i })
+    ).toHaveAttribute(
       "href",
       urls.controllers.controller.commissioning.scriptResult({
         id: controller.system_id,
@@ -96,7 +100,9 @@ describe("TestActions", () => {
 
     await openMenu();
 
-    expect(screen.getByRole("link", { name: /View details/i })).toHaveAttribute(
+    expect(
+      screen.getByRole("menuitem", { name: /View details/i })
+    ).toHaveAttribute(
       "href",
       urls.machines.machine.testing.scriptResult({
         id: machine.system_id,
@@ -121,7 +127,7 @@ describe("TestActions", () => {
 
     await openMenu();
     expect(
-      screen.getByRole("button", { name: /View metrics/i })
+      screen.getByRole("menuitem", { name: /View metrics/i })
     ).toBeInTheDocument();
   });
 
@@ -139,7 +145,7 @@ describe("TestActions", () => {
 
     await openMenu();
     await userEvent.click(
-      screen.getByRole("button", { name: /view previous tests/i })
+      screen.getByRole("menuitem", { name: /view previous tests/i })
     );
 
     expect(mockSendAnalytics).toHaveBeenCalled();
@@ -164,7 +170,7 @@ describe("TestActions", () => {
 
     await openMenu();
     await userEvent.click(
-      screen.getByRole("button", { name: /view metrics/i })
+      screen.getByRole("menuitem", { name: /view metrics/i })
     );
 
     expect(mockSendAnalytics).toHaveBeenCalled();

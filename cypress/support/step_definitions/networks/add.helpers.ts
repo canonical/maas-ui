@@ -1,6 +1,6 @@
 export const openAddForm = (name: string) => {
   cy.findByRole("button", { name: "Add" }).click();
-  cy.findByRole("button", { name }).click();
+  cy.findByRole("menuitem", { name }).click();
 };
 
 export const submitForm = (formName: string) => {

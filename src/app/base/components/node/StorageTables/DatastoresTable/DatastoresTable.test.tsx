@@ -152,7 +152,7 @@ describe("DatastoresTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: "Remove datastore..." })
+        screen.getByRole("menuitem", { name: "Remove datastore..." })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(

@@ -131,7 +131,7 @@ describe("DiscoveriesTable", () => {
       );
 
       await userEvent.click(
-        screen.getByRole("button", { name: Labels.AddDiscovery })
+        screen.getByRole("menuitem", { name: Labels.AddDiscovery })
       );
 
       await waitFor(() => {
@@ -165,7 +165,7 @@ describe("DiscoveriesTable", () => {
       );
 
       await userEvent.click(
-        screen.getByRole("button", { name: Labels.DeleteDiscovery })
+        screen.getByRole("menuitem", { name: Labels.DeleteDiscovery })
       );
 
       await waitFor(() => {

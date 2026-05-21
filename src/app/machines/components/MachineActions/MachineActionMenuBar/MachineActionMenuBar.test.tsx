@@ -21,12 +21,12 @@ describe("MachineActionMenuBar", () => {
   const getSubMenu = (name: string) => screen.getByLabelText(`${name} submenu`);
 
   const getActionButton = (submenu: HTMLElement, name: NodeActions) =>
-    within(submenu).getByRole("button", {
+    within(submenu).getByRole("menuitem", {
       name: RegExp(getNodeActionTitle(name)),
     });
 
   const queryActionButton = (submenu: HTMLElement, name: NodeActions) =>
-    within(submenu).queryByRole("button", {
+    within(submenu).queryByRole("menuitem", {
       name: RegExp(getNodeActionTitle(name)),
     });
 

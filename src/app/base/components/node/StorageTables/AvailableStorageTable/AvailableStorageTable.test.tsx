@@ -201,7 +201,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: /Add partition/ })
+        screen.getByRole("menuitem", { name: /Add partition/ })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -237,7 +237,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: /Edit partition/ })
+        screen.getByRole("menuitem", { name: /Edit partition/ })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -273,7 +273,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: /Add logical volume/ })
+        screen.getByRole("menuitem", { name: /Add logical volume/ })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -307,7 +307,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: /Edit physical disk/ })
+        screen.getByRole("menuitem", { name: /Edit physical disk/ })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -339,7 +339,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: /Create bcache/ })
+        screen.getByRole("menuitem", { name: /Create bcache/ })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -419,7 +419,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: /Create cache set/ })
+        screen.getByRole("menuitem", { name: /Create cache set/ })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -456,7 +456,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: /Remove volume group/ })
+        screen.getByRole("menuitem", { name: /Remove volume group/ })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(
@@ -495,7 +495,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("button", { name: /Take action/ })
       );
       await userEvent.click(
-        screen.getByRole("button", { name: /Remove partition/ })
+        screen.getByRole("menuitem", { name: /Remove partition/ })
       );
 
       expect(mockOpen).toHaveBeenCalledWith(

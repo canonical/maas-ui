@@ -56,8 +56,7 @@ Feature: Machine listing - actions
     Then the "Delete" side panel should not exist
 
   Scenario: Can create and set the pool of a machine
-    Given the user filters the machine list by the generated machine
-    And the user selects that machine
+    When the user selects the first machine in the grid
     When the user opens the "Set pool" form from the "Categorise" menu
     And the user creates a new pool
     And the user clicks the button matching "Set pool for machine"
@@ -65,8 +64,7 @@ Feature: Machine listing - actions
     And the new pool name should be visible in the machines grid
 
   Scenario: Can create and add a tag to a machine
-    Given the user filters the machine list by the generated machine
-    And the user selects that machine
+    When the user selects the first machine in the grid
     When the user opens the "Tag" form from the "Categorise" menu
     And the user creates a new tag
     Then the "Tag changes" table should contain the new tag marked "To be added"

@@ -40,6 +40,6 @@ it("displays sub options when clicked", async () => {
   });
   await userEvent.click(storageBtn);
   testStorageOptions.forEach((option) => {
-    expect(screen.getByRole("button", { name: option.label }));
+    expect(screen.getByRole("menuitem", { name: option.label }));
   });
 });

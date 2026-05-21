@@ -76,7 +76,7 @@ describe("NetworkTableActions", () => {
     await openMenu();
 
     expect(
-      screen.getByRole("button", { name: /Mark as connected/ })
+      screen.getByRole("menuitem", { name: /Mark as connected/ })
     ).toBeInTheDocument();
   });
 
@@ -91,7 +91,7 @@ describe("NetworkTableActions", () => {
     await openMenu();
 
     expect(
-      screen.getByRole("button", { name: /Mark as disconnected/ })
+      screen.getByRole("menuitem", { name: /Mark as disconnected/ })
     ).toBeInTheDocument();
   });
 
@@ -138,7 +138,7 @@ describe("NetworkTableActions", () => {
     // Open the menu:
     await openMenu();
     expect(
-      screen.getByRole("button", { name: "Remove Bond..." })
+      screen.getByRole("menuitem", { name: "Remove Bond..." })
     ).toBeInTheDocument();
   });
 
@@ -158,7 +158,7 @@ describe("NetworkTableActions", () => {
     );
     // Open the menu:
     await openMenu();
-    const editBondButton = screen.getByRole("button", {
+    const editBondButton = screen.getByRole("menuitem", {
       name: /Edit Bond/,
     });
     expect(editBondButton).toBeInTheDocument();
@@ -179,7 +179,7 @@ describe("NetworkTableActions", () => {
     });
     // Open the menu:
     await openMenu();
-    const editPhysicalButton = screen.getByRole("button", {
+    const editPhysicalButton = screen.getByRole("menuitem", {
       name: /Edit Physical/,
     });
     expect(editPhysicalButton).toBeInTheDocument();
@@ -200,7 +200,7 @@ describe("NetworkTableActions", () => {
     });
     // Open the menu:
     await openMenu();
-    const addAlias = screen.getByRole("button", {
+    const addAlias = screen.getByRole("menuitem", {
       name: /Add alias/i,
     });
     expect(addAlias).toBeInTheDocument();
@@ -222,7 +222,7 @@ describe("NetworkTableActions", () => {
     });
     // Open the menu:
     await openMenu();
-    const addAlias = screen.getByRole("button", {
+    const addAlias = screen.getByRole("menuitem", {
       name: /Add alias/i,
     });
     expect(addAlias).toBeInTheDocument();
@@ -246,7 +246,7 @@ describe("NetworkTableActions", () => {
     });
     // Open the menu:
     await openMenu();
-    const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
+    const addVLAN = screen.getByRole("menuitem", { name: /Add VLAN/i });
     expect(addVLAN).toBeInTheDocument();
     expect(addVLAN).not.toBeAriaDisabled();
     expect(
@@ -265,7 +265,7 @@ describe("NetworkTableActions", () => {
     });
     // Open the menu:
     await openMenu();
-    const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
+    const addVLAN = screen.getByRole("menuitem", { name: /Add VLAN/i });
     expect(addVLAN).toBeInTheDocument();
     expect(addVLAN).toBeAriaDisabled();
     await expectTooltipOnHover(

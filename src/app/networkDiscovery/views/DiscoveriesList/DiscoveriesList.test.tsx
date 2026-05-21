@@ -27,7 +27,7 @@ describe("DiscoveriesList", () => {
       screen.getAllByRole("button", { name: "Toggle menu" })[0]
     );
     await userEvent.click(
-      screen.getByRole("button", { name: "Add discovery..." })
+      screen.getByRole("menuitem", { name: "Add discovery..." })
     );
     await waitFor(() => {
       expect(
@@ -45,7 +45,7 @@ describe("DiscoveriesList", () => {
       screen.getAllByRole("button", { name: "Toggle menu" })[0]
     );
     await userEvent.click(
-      screen.getByRole("button", { name: "Delete discovery..." })
+      screen.getByRole("menuitem", { name: "Delete discovery..." })
     );
     await waitFor(() => {
       expect(
