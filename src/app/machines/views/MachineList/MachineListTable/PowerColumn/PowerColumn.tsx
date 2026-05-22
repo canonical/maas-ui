@@ -118,6 +118,7 @@ export const PowerColumn = ({
         </Tooltip>
       }
       iconSpace={true}
+      menuAriaLabel={`Take power action for ${machine.hostname}`}
       menuClassName="p-table-menu--hasIcon"
       menuLinks={onToggleMenu && menuLinks}
       menuTitle="Take action:"

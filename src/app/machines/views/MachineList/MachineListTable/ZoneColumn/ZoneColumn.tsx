@@ -88,6 +88,7 @@ export const ZoneColumn = ({
 
   return (
     <DoubleRow
+      menuAriaLabel={`Change availability zone for ${machine.hostname}`}
       menuLinks={onToggleMenu && zoneLinks}
       menuTitle="Change AZ:"
       onToggleMenu={toggleMenu}
@@ -96,7 +97,11 @@ export const ZoneColumn = ({
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}
-          <Link className="p-link--soft" to={urls.zones.index}>
+          <Link
+            aria-label={`Zone: ${machine.zone.name} — view all availability zones`}
+            className="p-link--soft"
+            to={urls.zones.index}
+          >
             {machine.zone.name}
           </Link>
         </span>

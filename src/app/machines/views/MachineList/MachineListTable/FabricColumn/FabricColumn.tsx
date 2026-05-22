@@ -35,6 +35,7 @@ export const FabricColumn = ({
           >
             {fabricName && (fabricID || fabricID === 0) ? (
               <Link
+                aria-label={`Fabric: ${fabricName} — go to fabric details`}
                 className="p-link--soft"
                 to={urls.networks.fabric.index({ id: fabricID })}
               >

@@ -75,6 +75,7 @@ export const PoolColumn = ({
 
   return (
     <DoubleRow
+      menuAriaLabel={`Change pool for ${machine.hostname}`}
       menuLinks={onToggleMenu && poolLinks}
       menuTitle="Change pool:"
       onToggleMenu={toggleMenu}
@@ -83,7 +84,11 @@ export const PoolColumn = ({
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}
-          <Link className="p-link--soft" to={urls.pools.index}>
+          <Link
+            aria-label={`Pool: ${machine.pool.name} — view all pools`}
+            className="p-link--soft"
+            to={urls.pools.index}
+          >
             {machine.pool.name}
           </Link>
         </span>

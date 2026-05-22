@@ -88,7 +88,9 @@ describe("ZoneColumn", () => {
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { initialEntries: ["/machines"], state }
     );
-    await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /change availability zone for/i })
+    );
 
     expect(
       screen.getByRole("menuitem", {
@@ -106,7 +108,9 @@ describe("ZoneColumn", () => {
       expect(zoneResolvers.listZones.resolved).toBeTruthy();
     });
     await userEvent.click(
-      await screen.findByRole("button", { name: "Change AZ:" })
+      await screen.findByRole("button", {
+        name: /change availability zone for/i,
+      })
     );
     const changeZoneLinks = await screen.findAllByTestId("change-zone-link");
     await userEvent.click(changeZoneLinks[0]);
@@ -138,10 +142,12 @@ describe("ZoneColumn", () => {
     );
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "Change AZ:" })
+        screen.getByRole("button", { name: /change availability zone for/i })
       ).toBeInTheDocument();
     });
-    await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /change availability zone for/i })
+    );
     const changeZoneLinks = await screen.findAllByTestId("change-zone-link");
     await userEvent.click(changeZoneLinks[0]);
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -153,7 +159,7 @@ describe("ZoneColumn", () => {
       state,
     });
     expect(
-      screen.queryByRole("button", { name: "Change AZ:" })
+      screen.queryByRole("button", { name: /change availability zone for/i })
     ).not.toBeInTheDocument();
   });
 });

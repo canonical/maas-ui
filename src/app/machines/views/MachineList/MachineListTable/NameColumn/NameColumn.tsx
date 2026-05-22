@@ -30,7 +30,11 @@ type Props = {
 
 const generateFQDN = (machine: Machine, machineURL: string) => {
   return (
-    <Link title={machine.fqdn} to={machineURL}>
+    <Link
+      aria-label={`${machine.fqdn} — go to machine details`}
+      title={machine.fqdn}
+      to={machineURL}
+    >
       <strong data-testid="hostname">
         {machine.locked ? (
           <span title="This machine is locked. You have to unlock it to perform any actions.">
@@ -114,7 +118,11 @@ const generateIPAddresses = (machine: Machine) => {
 const generateMAC = (machine: Machine, machineURL: string) => {
   return (
     <>
-      <Link title={machine.fqdn} to={machineURL}>
+      <Link
+        aria-label={`${machine.fqdn} — go to machine details`}
+        title={machine.fqdn}
+        to={machineURL}
+      >
         <MacAddressDisplay>{machine.pxe_mac}</MacAddressDisplay>
       </Link>
       {machine.extra_macs && machine.extra_macs.length > 0 ? (

@@ -45,4 +45,21 @@ describe("DoubleRow ", () => {
       screen.getByRole("button", { name: "Take action:" })
     ).toBeInTheDocument();
   });
+
+  it("uses menuAriaLabel for the menu toggle button accessible name when provided", () => {
+    renderWithProviders(
+      <DoubleRow
+        menuAriaLabel="Take action for machine.example.com"
+        menuLinks={[{ children: "Link1" }]}
+        menuTitle="Take action:"
+        primary="Top row"
+      />
+    );
+
+    expect(
+      screen.getByRole("button", {
+        name: "Take action for machine.example.com",
+      })
+    ).toBeInTheDocument();
+  });
 });

@@ -84,6 +84,9 @@ export const OwnerColumn = ({
 
   return (
     <DoubleRow
+      menuAriaLabel={
+        machine ? `Take ownership action for ${machine.hostname}` : undefined
+      }
       menuLinks={onToggleMenu ? menuLinks : null}
       menuTitle="Take action:"
       onToggleMenu={toggleMenu}
