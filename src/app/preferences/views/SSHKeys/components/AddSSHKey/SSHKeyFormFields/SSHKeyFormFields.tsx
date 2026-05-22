@@ -7,6 +7,10 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import docsUrls from "@/app/base/docsUrls";
 import type { SSHKeyFormValues } from "@/app/preferences/views/SSHKeys/components/AddSSHKey/AddSSHKey";
 
+export const Labels = {
+  Source: "SSH key source",
+} as const;
+
 export const SSHKeyFormFields = (): React.ReactElement => {
   const { values } = useFormikContext<SSHKeyFormValues>();
   const { protocol } = values;
@@ -18,7 +22,7 @@ export const SSHKeyFormFields = (): React.ReactElement => {
         <Col size={12}>
           <FormikField
             component={Select}
-            label="Source"
+            label={Labels.Source}
             name="protocol"
             options={[
               { value: "", label: "Select source" },

@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 
-import SSHKeyFormFields from "./SSHKeyFormFields";
+import SSHKeyFormFields, { Labels } from "./SSHKeyFormFields";
 
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
@@ -12,7 +12,7 @@ describe("SSHKeyFormFields", () => {
       </Formik>
     );
     expect(
-      screen.getByRole("combobox", { name: "Source" })
+      screen.getByRole("combobox", { name: Labels.Source })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("option", { name: "Launchpad" })
@@ -29,7 +29,7 @@ describe("SSHKeyFormFields", () => {
       </Formik>
     );
     await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Source" }),
+      screen.getByRole("combobox", { name: Labels.Source }),
       "lp"
     );
     expect(
@@ -44,7 +44,7 @@ describe("SSHKeyFormFields", () => {
       </Formik>
     );
     await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Source" }),
+      screen.getByRole("combobox", { name: Labels.Source }),
       "upload"
     );
     expect(
