@@ -29,6 +29,7 @@ export type Props<V> = {
   secondarySubmitLabel?: FormikContextFunc<V, string> | string | null;
   secondarySubmitTooltip?: string | null;
   submitAppearance?: ActionButtonProps["appearance"];
+  submitAriaDescription?: string;
   submitDisabled?: boolean;
   submitLabel?: string;
   /**
@@ -70,6 +71,7 @@ export const FormikFormButtons = <V,>({
   secondarySubmitLabel,
   secondarySubmitTooltip,
   submitAppearance = "positive",
+  submitAriaDescription,
   submitDisabled,
   submitLabel = "Save",
   buttonsBehavior = "coupled",
@@ -159,6 +161,7 @@ export const FormikFormButtons = <V,>({
         {secondaryButton}
         <ActionButton
           appearance={submitAppearance}
+          aria-description={submitAriaDescription}
           className="formik-form-buttons__button"
           disabled={submitDisabled}
           loading={saving}

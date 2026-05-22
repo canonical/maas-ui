@@ -44,6 +44,7 @@ export const Labels = {
   NoUsers: "No admin user has been created yet",
   Password: "Password",
   Submit: "Login",
+  SubmitNextAriaDescription: "Continues to password entry",
   Username: "Username",
   IncorrectCredentials:
     "Please enter a correct username and password. Note that both fields may be case-sensitive.",
@@ -183,6 +184,11 @@ export const Login = (): ReactElement => {
                     }}
                     saved={authenticate.isSuccess}
                     saving={loginState.isPending || authenticate.isPending}
+                    submitAriaDescription={
+                      !hasEnteredUsername
+                        ? Labels.SubmitNextAriaDescription
+                        : undefined
+                    }
                     submitLabel={
                       !hasEnteredUsername
                         ? "Next"

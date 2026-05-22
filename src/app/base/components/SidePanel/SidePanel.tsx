@@ -52,7 +52,7 @@ const SidePanel = (): ReactElement => {
 
   return (
     <AppAside
-      aria-label={title ?? undefined}
+      aria-label={title || "Side panel"}
       className={classNames({
         "is-narrow": size === "narrow",
         "is-large": size === "large",

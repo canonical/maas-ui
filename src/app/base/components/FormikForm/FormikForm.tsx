@@ -48,6 +48,7 @@ const FormikForm = <V extends object, E = null>({
   secondarySubmitLabel,
   secondarySubmitTooltip,
   submitAppearance,
+  submitAriaDescription,
   submitDisabled,
   submitLabel,
   "aria-label": ariaLabel,
@@ -88,6 +89,7 @@ const FormikForm = <V extends object, E = null>({
         secondarySubmitSaving={secondarySubmitSaving}
         secondarySubmitTooltip={secondarySubmitTooltip}
         submitAppearance={submitAppearance}
+        submitAriaDescription={submitAriaDescription}
         submitDisabled={submitDisabled}
         submitLabel={submitLabel}
       >
