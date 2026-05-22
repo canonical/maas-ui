@@ -47,14 +47,14 @@ const useSSHKeysTableColumns = (): SSHKeysColumnDef[] => {
           }) => (
             <ul className="p-table-sub-cols__list">
               {keys.map((key) => (
-                <div
+                <li
                   className="p-table-sub-cols__item sshkey-list__keys"
                   key={key.key}
                 >
                   <div className="sshkey-list__keys-key" title={key.key}>
                     {formatKey(key.key)}
                   </div>
-                </div>
+                </li>
               ))}
             </ul>
           ),
@@ -66,12 +66,14 @@ const useSSHKeysTableColumns = (): SSHKeysColumnDef[] => {
           header: "Actions",
           cell: ({
             row: {
-              original: { keys },
+              original: { keys, source, auth_id },
             },
           }) => {
+            const contextLabel = auth_id ? `${source} (${auth_id})` : source;
             return (
               <TableActions
                 data-testid="ssh-key-actions"
+                deleteAriaLabel={`Delete SSH keys from ${contextLabel}`}
                 onDelete={() => {
                   openSidePanel({
                     component: DeleteSSHKey,

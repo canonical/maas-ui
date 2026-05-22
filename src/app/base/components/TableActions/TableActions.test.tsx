@@ -35,6 +35,28 @@ describe("TableActions ", () => {
     expect(onDelete).toHaveBeenCalled();
   });
 
+  it("renders an edit button with custom aria-label", () => {
+    renderWithProviders(
+      <TableActions editAriaLabel="Edit SSH key from GitHub" onEdit={vi.fn()} />
+    );
+    expect(
+      screen.getByRole("button", { name: "Edit SSH key from GitHub" })
+    ).toBeInTheDocument();
+  });
+
+  it("renders a delete button with custom aria-label", async () => {
+    const onDelete = vi.fn();
+    renderWithProviders(
+      <TableActions
+        deleteAriaLabel="Delete SSH keys from GitHub (user)"
+        onDelete={onDelete}
+      />
+    );
+    expect(
+      screen.getByRole("button", { name: "Delete SSH keys from GitHub (user)" })
+    ).toBeInTheDocument();
+  });
+
   it("correctly renders tooltips", async () => {
     renderWithProviders(
       <TableActions
