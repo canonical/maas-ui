@@ -18,6 +18,54 @@ mockedUseFetchMachineCount.mockReturnValue({
   machineCount: 2,
 });
 
+it("toggle button has aria-expanded=false when group is collapsed", () => {
+  const group = factory.machineStateListGroup({
+    collapsed: true,
+    count: 3,
+    name: "Deployed",
+    value: "deployed",
+  });
+  renderWithProviders(
+    <GroupColumn
+      callId="test-call-id"
+      filter={null}
+      group={group}
+      grouping={FetchGroupKey.Status}
+      hiddenGroups={["deployed"]}
+      setHiddenGroups={vi.fn()}
+      showActions={false}
+    />
+  );
+  const toggle = screen.getByRole("button", {
+    name: "Show Deployed machines group",
+  });
+  expect(toggle).toHaveAttribute("aria-expanded", "false");
+});
+
+it("toggle button has aria-expanded=true when group is expanded", () => {
+  const group = factory.machineStateListGroup({
+    collapsed: false,
+    count: 3,
+    name: "Ready",
+    value: "ready",
+  });
+  renderWithProviders(
+    <GroupColumn
+      callId="test-call-id"
+      filter={null}
+      group={group}
+      grouping={FetchGroupKey.Status}
+      hiddenGroups={[]}
+      setHiddenGroups={vi.fn()}
+      showActions={false}
+    />
+  );
+  const toggle = screen.getByRole("button", {
+    name: "Hide Ready machines group",
+  });
+  expect(toggle).toHaveAttribute("aria-expanded", "true");
+});
+
 it("displays the correct column name and machines count", () => {
   const group = factory.machineStateListGroup({
     collapsed: false,
