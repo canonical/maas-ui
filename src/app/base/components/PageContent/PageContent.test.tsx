@@ -6,6 +6,13 @@ import { getTestState, renderWithProviders, screen } from "@/testing/utils";
 
 const state = getTestState();
 
+it("renders the main landmark with an accessible label", () => {
+  renderWithProviders(<PageContent>content</PageContent>, { state });
+  expect(
+    screen.getByRole("main", { name: "Main content" })
+  ).toBeInTheDocument();
+});
+
 it("shows the secondary navigation for settings", () => {
   state.status.authenticated = true;
   state.status.connected = true;

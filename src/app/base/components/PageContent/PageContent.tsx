@@ -39,7 +39,7 @@ const PageContent = ({
 
   return (
     <>
-      <AppMain>
+      <AppMain aria-label="Main content">
         {isSecondaryNavVisible ? (
           <div
             className={classNames("l-main__nav", `is-maas-${theme}--accent`)}
