@@ -61,7 +61,7 @@ const SidePanel = (): ReactElement => {
       collapsed={!isOpen}
       id="aside-panel"
     >
-      <ContentSection>
+      <ContentSection aria-label={title || "Side panel content"}>
         {title ? (
           <div className="row section-header section-header--side-panel">
             <div className="col-12">

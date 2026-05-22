@@ -86,7 +86,7 @@ const SectionHeader = <P,>({
             className={titleClassName}
             data-testid="section-header-title-spinner"
           >
-            <Spinner aria-hidden="true" text="Loading..." />
+            <Spinner text="Loading..." />
           </MainToolbar.Title>
         ) : title ? (
           <MainToolbar.Title
