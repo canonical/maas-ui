@@ -19,10 +19,11 @@ describe("SSHKeyFormFields", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("option", { name: "GitHub" })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: "Upload" })).toBeInTheDocument();
+    expect(screen.getByText(Labels.SourceHelp)).toBeInTheDocument();
     expect(screen.getByText("About SSH keys")).toBeInTheDocument();
   });
 
-  it("can show id field", async () => {
+  it("can show id field with help text for Launchpad", async () => {
     renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
@@ -33,8 +34,25 @@ describe("SSHKeyFormFields", () => {
       "lp"
     );
     expect(
-      screen.getByRole("textbox", { name: "Launchpad ID" })
+      screen.getByRole("textbox", { name: Labels.LaunchpadID })
     ).toBeInTheDocument();
+    expect(screen.getByText(Labels.LaunchpadIDHelp)).toBeInTheDocument();
+  });
+
+  it("can show id field with help text for GitHub", async () => {
+    renderWithProviders(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <SSHKeyFormFields />
+      </Formik>
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: Labels.Source }),
+      "gh"
+    );
+    expect(
+      screen.getByRole("textbox", { name: Labels.GitHubUsername })
+    ).toBeInTheDocument();
+    expect(screen.getByText(Labels.GitHubUsernameHelp)).toBeInTheDocument();
   });
 
   it("can show key field", async () => {
