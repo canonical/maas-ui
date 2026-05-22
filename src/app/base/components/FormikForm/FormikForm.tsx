@@ -50,6 +50,7 @@ const FormikForm = <V extends object, E = null>({
   submitAppearance,
   submitAriaDescription,
   submitDisabled,
+  submitDisabledTooltip,
   submitLabel,
   "aria-label": ariaLabel,
   buttonsBehavior = "coupled",
@@ -91,6 +92,7 @@ const FormikForm = <V extends object, E = null>({
         submitAppearance={submitAppearance}
         submitAriaDescription={submitAriaDescription}
         submitDisabled={submitDisabled}
+        submitDisabledTooltip={submitDisabledTooltip}
         submitLabel={submitLabel}
       >
         {children}

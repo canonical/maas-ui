@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-import { ActionButton, Button, Card, Icon } from "@canonical/react-components";
+import {
+  ActionButton,
+  Button,
+  Card,
+  Icon,
+  Tooltip,
+} from "@canonical/react-components";
 
 import { useCompleteIntro, useGetCurrentUser } from "@/app/api/query/auth";
 import { useListSshKeys } from "@/app/api/query/sshKeys";
@@ -14,6 +20,8 @@ import { formatErrors, setCookie } from "@/app/utils";
 
 export enum Labels {
   Continue = "Finish setup",
+  ContinueAriaDescription = "Final step: complete your user introduction to MAAS",
+  ContinueDisabledTooltip = "Add at least one SSH key to finish setup.",
   Skip = "Skip user setup",
   AreYouSure = "Are you sure you want to skip your user setup? You will still be able to manage your SSH keys in your user preferences.",
 }
@@ -65,22 +73,28 @@ const UserIntro = (): React.ReactElement => {
         >
           {Labels.Skip}
         </Button>
-        <ActionButton
-          appearance="positive"
-          data-testid="continue-button"
-          disabled={!hasSSHKeys}
-          loading={completeIntro.isPending && !showSkip}
-          onClick={() => {
-            completeIntro.mutate({
-              headers: {
-                ETag: eTag,
-              },
-            });
-          }}
-          success={completeIntro.isSuccess}
+        <Tooltip
+          message={!hasSSHKeys ? Labels.ContinueDisabledTooltip : null}
+          position="top-left"
         >
-          {Labels.Continue}
-        </ActionButton>
+          <ActionButton
+            appearance="positive"
+            aria-description={Labels.ContinueAriaDescription}
+            data-testid="continue-button"
+            disabled={!hasSSHKeys}
+            loading={completeIntro.isPending && !showSkip}
+            onClick={() => {
+              completeIntro.mutate({
+                headers: {
+                  ETag: eTag,
+                },
+              });
+            }}
+            success={completeIntro.isSuccess}
+          >
+            {Labels.Continue}
+          </ActionButton>
+        </Tooltip>
       </div>
       {showSkip && (
         <Card data-testid="skip-setup" highlighted>

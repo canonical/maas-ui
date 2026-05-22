@@ -21,6 +21,7 @@ type AddSSHKeyProps = {
 export const Labels = {
   SubmitLabel: "Import SSH key",
   SubmitAriaDescription: "Import SSH key from selected source",
+  SubmitDisabledTooltip: "Select an SSH key source to enable import.",
 } as const;
 
 export type SSHKeyFormValues = {
@@ -81,6 +82,7 @@ const AddSSHKey = ({ isIntro = false }: AddSSHKeyProps): ReactElement => {
       saved={uploadSshKey.isSuccess || importSshKey.isSuccess}
       saving={uploadSshKey.isPending || importSshKey.isPending}
       submitAriaDescription={Labels.SubmitAriaDescription}
+      submitDisabledTooltip={Labels.SubmitDisabledTooltip}
       submitLabel={Labels.SubmitLabel}
       validationSchema={SSHKeySchema}
     >
