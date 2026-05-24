@@ -504,6 +504,9 @@ import type {
   ListZonesWithStatisticsData,
   ListZonesWithStatisticsErrors,
   ListZonesWithStatisticsResponses,
+  LlmSearchData,
+  LlmSearchErrors,
+  LlmSearchResponses,
   LoginData,
   LoginErrors,
   LoginResponses,
@@ -2443,6 +2446,26 @@ export const getFabricVlanSubnetIprange = <
   >({
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{id}",
     ...options,
+  });
+};
+
+/**
+ * Llm Search
+ */
+export const llmSearch = <ThrowOnError extends boolean = false>(
+  options: Options<LlmSearchData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    LlmSearchResponses,
+    LlmSearchErrors,
+    ThrowOnError
+  >({
+    url: "/MAAS/a/v3/llm_search",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 
