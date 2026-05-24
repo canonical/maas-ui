@@ -6859,6 +6859,12 @@ export type ListCustomImagesStatusData = {
      */
     id?: number[];
     /**
+     * File Type
+     *
+     * Filter by file type (e.g., self-extracting for switch images)
+     */
+    file_type?: BootResourceFileTypeChoice;
+    /**
      * Page
      */
     page?: number;
@@ -6932,6 +6938,12 @@ export type ListCustomImagesStatisticData = {
      * Filter by Custom Image ID
      */
     id?: number[];
+    /**
+     * File Type
+     *
+     * Filter by file type (e.g., self-extracting for switch images)
+     */
+    file_type?: BootResourceFileTypeChoice;
     /**
      * Page
      */
@@ -7042,6 +7054,18 @@ export type ListCustomImagesData = {
   body?: never;
   path?: never;
   query?: {
+    /**
+     * Id
+     *
+     * Filter by Custom Image ID
+     */
+    id?: number[];
+    /**
+     * File Type
+     *
+     * Filter by file type (e.g., self-extracting for switch images)
+     */
+    file_type?: BootResourceFileTypeChoice;
     /**
      * Page
      */
