@@ -1,4 +1,5 @@
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
+import { LONG_TIMEOUT } from "../../../constants";
 
 Then("the main toolbar heading should be {string}", (expectedHeading) => {
   cy.get("[data-testid='main-toolbar-heading']").should(
@@ -16,7 +17,10 @@ Then("the heading should be {string}", (expectedHeading: string) => {
 });
 
 Then("the heading matching {string} text should exist", (heading: string) => {
-  cy.findByRole("heading", { name: new RegExp(heading, "i") }).should("exist");
+  cy.findByRole("heading", {
+    name: new RegExp(heading, "i"),
+    timeout: LONG_TIMEOUT,
+  }).should("exist");
 });
 
 Then("the {string} header should not exist", (headerName: string) => {

@@ -7,8 +7,14 @@ const escapeRegExp = (value: string) =>
 
 Given(/^the user navigates to the (.+) page$/, (page: string) => {
   const path = routes[page];
-  cy.visit(generateMAASURL(path));
-  cy.waitForPageToLoad();
+  const url =
+    page === "docs"
+      ? `${Cypress.env("BASENAME")}${path}`
+      : generateMAASURL(path);
+  cy.visit(url);
+  if (page !== "home") {
+    cy.waitForPageToLoad();
+  }
 });
 
 Then(/^the user is redirected to the (.+) page$/, (page: string) => {

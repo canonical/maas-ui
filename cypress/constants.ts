@@ -19,6 +19,7 @@ export const pages: Page[] = [
 ];
 export const routes: Record<string, string> = {
   controllers: "/controllers",
+  docs: "/docs",
   devices: "/devices",
   domains: "/domains",
   home: "/",
