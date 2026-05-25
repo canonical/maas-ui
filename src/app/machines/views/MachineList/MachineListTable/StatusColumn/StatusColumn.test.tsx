@@ -209,7 +209,7 @@ describe("StatusColumn", () => {
         { state }
       );
       await userEvent.click(
-        screen.getByRole("button", { name: /take action/i })
+        screen.getByRole("button", { name: /Take status action/i })
       );
       expect(
         within(screen.getByLabelText("sub")).getAllByRole("menuitem")

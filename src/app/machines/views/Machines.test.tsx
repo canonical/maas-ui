@@ -1,6 +1,5 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 
-import { Label } from "./MachineList/MachineListTable/GroupColumn";
 import { DEFAULTS } from "./MachineList/MachineListTable/constants";
 import Machines from "./Machines";
 
@@ -28,7 +27,8 @@ import {
 
 setupMockServer(
   poolsResolvers.listPools.handler(),
-  usersResolvers.listUsers.handler()
+  usersResolvers.listUsers.handler(),
+  usersResolvers.listUsersStatistics.handler()
 );
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -289,7 +289,7 @@ describe("Machines", () => {
     await userEvent.click(
       within(
         screen.getByRole("row", { name: "Failed testing machines group" })
-      ).getByRole("button", { name: Label.HideGroup })
+      ).getByRole("button", { name: /Hide/i })
     );
     await waitFor(() => {
       expect(getFetchActions()).toHaveLength(2);
@@ -415,7 +415,7 @@ describe("Machines", () => {
     await userEvent.click(
       within(
         screen.getByRole("row", { name: "Deployed machines group" })
-      ).getByRole("button", { name: Label.HideGroup })
+      ).getByRole("button", { name: /Hide/i })
     );
     // Render another machine list, this time it should restore the
     // hidden group state.
