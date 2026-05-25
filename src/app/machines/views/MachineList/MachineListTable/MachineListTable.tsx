@@ -466,6 +466,11 @@ export const MachineListTable = ({
       <hr />
       <MainTable
         aria-describedby="machine-list-description"
+        aria-description={
+          machinesLoading
+            ? Label.Loading
+            : `${machineCount} ${Label.Machines.toLowerCase()}${groupByStatus ? `, grouped by ${groupByStatus}` : ""}`
+        }
         aria-label={
           machinesLoading
             ? Label.Loading

@@ -60,7 +60,6 @@ const GroupColumn = ({
       <div className="machine-list__group-toggle">
         <Button
           appearance="base"
-          aria-expanded={!collapsed}
           aria-label={`${collapsed ? "Show" : "Hide"} ${name} machines group`}
           dense
           hasIcon
