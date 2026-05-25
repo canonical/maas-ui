@@ -30,8 +30,8 @@ jobs:
         id: resolve
         shell: bash
         run: |
-          # On a scheduled run always execute the full suite.
-          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          # Run the full suite on everything except PRs, where we can diff.
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
             echo "spec_glob=all" >> "$GITHUB_OUTPUT"
             exit 0
           fi
