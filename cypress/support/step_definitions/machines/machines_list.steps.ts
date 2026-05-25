@@ -197,7 +197,9 @@ When("the user selects the first machine", () => {
     throw new Error("First generated machine was not initialized");
   }
 
-  cy.findByRole("checkbox", { name: `${firstMachine}.maas` }).click({
+  cy.findByRole("checkbox", {
+    name: new RegExp(`${firstMachine}.maas`, "i"),
+  }).click({
     force: true,
   });
 });
