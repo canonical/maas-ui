@@ -5,12 +5,101 @@ on:
       - main
       - "3.*"
       - "*cypress*"
+  workflow_dispatch:
   pull_request:
     types: [ opened, synchronize, reopened ]
+  schedule:
+    - cron: "0 3 * * *"   # daily at 03:00 UTC
 
 jobs:
+  # Detect which app/ directories changed (PR only) and resolve the matching
+  # features/ subdirectories that exist on disk.
+  # On a scheduled run this job emits spec_glob="all" so the cypress job knows
+  # to run the full suite.
+  detect-changes:
+    name: Detect changed domains
+    runs-on: ubuntu-24.04
+    outputs:
+      spec_glob: ${{ steps.resolve.outputs.spec_glob }}
+    steps:
+      - uses: actions/checkout@main
+        with:
+          fetch-depth: 0 # need full history for diff
+
+      - name: Resolve spec glob
+        id: resolve
+        shell: bash
+        run: |
+          # On a scheduled run always execute the full suite.
+          if [ "${{ github.event_name }}" = "schedule" || "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "spec_glob=all" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Directories under app/ that map 1-to-1 with directories under
+          # cypress/e2e/with-users/features/.
+          # Add or remove entries here if the project structure changes.
+          DOMAIN_DIRS=(
+            base
+            controllers
+            devices
+            domains
+            images
+            intro
+            kvm
+            login
+            machines
+            networkDiscovery
+            networks
+            pools
+            preferences
+            settings
+            zones
+          )
+
+          # Collect the app/ directories touched by this PR.
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+                    grep '^app/' | \
+                    awk -F'/' '{print $2}' | \
+                    sort -u)
+
+          echo "Changed app/ directories:"
+          echo "$CHANGED"
+
+          # Intersect with the known domain list and check the feature dir exists.
+          MATCHED_GLOBS=()
+          for dir in "${DOMAIN_DIRS[@]}"; do
+            if echo "$CHANGED" | grep -qx "$dir"; then
+              FEATURE_DIR="cypress/e2e/with-users/features/$dir"
+              if [ -d "$FEATURE_DIR" ]; then
+                MATCHED_GLOBS+=("$FEATURE_DIR/**/*.{spec.ts,feature}")
+                echo "  matched: $FEATURE_DIR"
+              else
+                echo "  skipped (no feature dir): $FEATURE_DIR"
+              fi
+            fi
+          done
+
+          if [ "${#MATCHED_GLOBS[@]}" -eq 0 ]; then
+            # Nothing relevant changed – signal the cypress job to skip.
+            echo "spec_glob=none" >> "$GITHUB_OUTPUT"
+          else
+            # Join with comma – Cypress accepts a comma-separated glob list.
+            GLOB=$(IFS=,; echo "${MATCHED_GLOBS[*]}")
+            echo "spec_glob=$GLOB" >> "$GITHUB_OUTPUT"
+            echo "Resolved spec glob: $GLOB"
+          fi
+
   cypress:
     name: Cypress
+    needs: detect-changes
+    # Skip the with-users matrix leg on a PR when no relevant features matched.
+    # The no-users leg always runs.
+    if: |
+      needs.detect-changes.outputs.spec_glob != 'none' ||
+      matrix.groups == 'no-users'
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -182,6 +271,19 @@ jobs:
           API_KEY=$(lxc exec maas-backend -- maas apikey --username=admin)
           lxc exec maas-backend -- maas login admin https://localhost:5443/MAAS "$API_KEY"
           lxc exec maas-backend -- bash -c 'while [ $(maas admin boot-resources is-importing -k | cat) == "true" ]; do sleep 10; done; echo "syncing finished"'
+
+      - name: Set spec pattern
+        id: spec
+        shell: bash
+        run: |
+          if [ "${{ matrix.groups }}" = "no-users" ]; then
+            echo "pattern=cypress/e2e/no-users/**/*.{spec.ts,feature}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ needs.detect-changes.outputs.spec_glob }}" = "all" ]; then
+            echo "pattern=cypress/e2e/with-users/**/*.{spec.ts,feature}" >> "$GITHUB_OUTPUT"
+          else
+            echo "pattern=${{ needs.detect-changes.outputs.spec_glob }}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run Cypress tests
         uses: cypress-io/github-action@v7.3.0
         env:
@@ -197,7 +299,7 @@ jobs:
           config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
           install: false
           start: yarn start
-          spec: cypress/e2e/${{ matrix.groups }}/**/*.{spec.ts,feature}
+          spec: ${{ steps.spec.outputs.pattern }}
           wait-on: ${{env.MAAS_UI_URL}}/MAAS/r/machines
           wait-on-timeout: 120
       - uses: actions/upload-artifact@v4
