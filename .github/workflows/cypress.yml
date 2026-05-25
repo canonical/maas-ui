@@ -117,11 +117,6 @@ jobs:
   cypress:
     name: Cypress
     needs: detect-changes
-    # Skip the with-users matrix leg on a PR when no relevant features matched.
-    # The no-users leg always runs.
-    if: |
-      needs.detect-changes.outputs.spec_glob != 'none' ||
-      matrix.groups == 'no-users'
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -302,11 +297,14 @@ jobs:
             echo "pattern=cypress/e2e/no-users/**/*.{spec.ts,feature}" >> "$GITHUB_OUTPUT"
           elif [ "${{ needs.detect-changes.outputs.spec_glob }}" = "all" ]; then
             echo "pattern=cypress/e2e/with-users/**/*.{spec.ts,feature}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ needs.detect-changes.outputs.spec_glob }}" = "none" ]; then
+            echo "pattern=none" >> "$GITHUB_OUTPUT"
           else
             echo "pattern=${{ needs.detect-changes.outputs.spec_glob }}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run Cypress tests
+        if: steps.spec.outputs.pattern != 'none'
         uses: cypress-io/github-action@v7.3.0
         env:
           HTTPS_CERT: /tmp/maas-certs/cert.pem
