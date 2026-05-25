@@ -140,6 +140,37 @@ jobs:
           runTests: false
           install-command: yarn install
           build: yarn build
+      - name: Enable TLS for MAAS
+        shell: bash
+        run: |
+          echo "Generating self-signed certificate"
+          mkdir -p /tmp/maas-certs
+          openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+            -keyout /tmp/maas-certs/key.pem \
+            -out /tmp/maas-certs/cert.pem \
+            -subj "/C=US/ST=State/L=City/O=Org/OU=Unit/CN=localhost" \
+            -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
+
+          lxc exec maas-backend -- mkdir -p /var/snap/maas/common/certs
+          lxc file push /tmp/maas-certs/key.pem maas-backend/var/snap/maas/common/certs/key.pem
+          lxc file push /tmp/maas-certs/cert.pem maas-backend/var/snap/maas/common/certs/cert.pem
+          lxc exec maas-backend -- chmod 644 /var/snap/maas/common/certs/key.pem /var/snap/maas/common/certs/cert.pem
+
+          echo "y" | lxc exec maas-backend -- maas config-tls enable \
+            /var/snap/maas/common/certs/key.pem \
+            /var/snap/maas/common/certs/cert.pem
+
+          # Forward the HTTPS port from the host to the container
+          MAAS_IP=$(lxc query /1.0/containers/maas-backend/state | jq -r '.network.eth0.addresses[0].address')
+          sudo socat TCP-LISTEN:5443,fork,reuseaddr TCP:${MAAS_IP}:5443 &
+      - name: Trust self-signed certificate
+        run: |
+          # Trust on the host (for Cypress / socat-proxied connections)
+          sudo cp /tmp/maas-certs/cert.pem /usr/local/share/ca-certificates/maas-selfsigned.crt
+          sudo update-ca-certificates
+          # Trust inside the LXD container (for maas CLI → HTTPS MAAS API calls)
+          lxc file push /tmp/maas-certs/cert.pem maas-backend/usr/local/share/ca-certificates/maas-selfsigned.crt
+          lxc exec maas-backend -- update-ca-certificates
       - name: Run Cypress tests
         uses: cypress-io/github-action@v7.3.0
         env:
