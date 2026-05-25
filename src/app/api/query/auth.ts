@@ -308,9 +308,14 @@ export const useCompleteIntro = (
       CompleteIntroData
     >(mutationOptions, completeIntro),
     onSuccess: () => {
-      return queryClient.invalidateQueries({
-        queryKey: getUserInfoQueryKey(),
-      });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: getUserInfoQueryKey(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: getMeStatisticsQueryKey(),
+        }),
+      ]);
     },
   });
 };
