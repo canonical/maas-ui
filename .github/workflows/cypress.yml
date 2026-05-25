@@ -17,7 +17,7 @@ jobs:
   # On a scheduled run this job emits spec_glob="all" so the cypress job knows
   # to run the full suite.
   detect-changes:
-    name: Detect changed domains
+    name: Detect domains
     runs-on: ubuntu-24.04
     outputs:
       spec_glob: ${{ steps.resolve.outputs.spec_glob }}
