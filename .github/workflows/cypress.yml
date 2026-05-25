@@ -58,16 +58,17 @@ jobs:
           )
 
           # Collect the app/ directories touched by this PR.
+          # grep || true prevents exit code 1 under pipefail when nothing matches.
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
           HEAD_SHA="${{ github.event.pull_request.head.sha }}"
           CHANGED_APP=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
-                        grep '^app/' | \
+                        (grep '^app/' || true) | \
                         awk -F'/' '{print $2}' | \
                         sort -u)
 
           # Collect the features/ subdirectories directly touched by this PR.
           CHANGED_FEATURE=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
-                            grep '^cypress/e2e/with-users/features/' | \
+                            (grep '^cypress/e2e/with-users/features/' || true) | \
                             awk -F'/' '{print $5}' | \
                             sort -u)
 
@@ -94,7 +95,7 @@ jobs:
 
           # Source 1: app/ changes mapped through the domain list.
           for dir in "${DOMAIN_DIRS[@]}"; do
-            if echo "$CHANGED_APP" | grep -qx "$dir"; then
+            if echo "$CHANGED_APP" | grep -qx "$dir" 2>/dev/null || false; then
               add_feature_dir "$dir"
             fi
           done
