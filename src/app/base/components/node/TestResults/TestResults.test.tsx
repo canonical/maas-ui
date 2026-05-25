@@ -29,7 +29,9 @@ describe("TestResults", () => {
       }
     );
 
-    expect(screen.getByRole("link", { name: "2" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /2 cpu tests passed/i })
+    ).toBeInTheDocument();
   });
 
   it("renders a link with a count of pending and running memory tests", () => {
@@ -47,7 +49,9 @@ describe("TestResults", () => {
       }
     );
 
-    expect(screen.getByRole("link", { name: "3" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /3 memory tests running/i })
+    ).toBeInTheDocument();
   });
 
   it("renders a link with a count of failed storage tests", () => {
@@ -64,7 +68,9 @@ describe("TestResults", () => {
       }
     );
 
-    expect(screen.getByRole("link", { name: "5" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /5 storage tests failed/i })
+    ).toBeInTheDocument();
   });
 
   it("renders a results link", () => {

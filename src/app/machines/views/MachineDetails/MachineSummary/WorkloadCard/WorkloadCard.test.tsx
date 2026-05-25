@@ -93,9 +93,8 @@ describe("WorkloadCard", () => {
       state,
     });
 
-    expect(screen.getByRole("link", { name: "value" })).toHaveAttribute(
-      "href",
-      "/machines?workload-key=value"
-    );
+    expect(
+      screen.getByRole("link", { name: /filter machines by key: value/i })
+    ).toHaveAttribute("href", "/machines?workload-key=value");
   });
 });

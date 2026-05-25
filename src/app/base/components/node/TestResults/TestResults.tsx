@@ -62,6 +62,7 @@ const TestResults = ({
         {testStatus.passed ? (
           <li className="p-inline-list__item">
             <Link
+              aria-label={`${testStatus.passed} ${scriptType} tests passed`}
               onClick={() => {
                 sendAnalytics(
                   "Machine details",
@@ -82,6 +83,7 @@ const TestResults = ({
         {testStatus.pending + testStatus.running > 0 ? (
           <li className="p-inline-list__item">
             <Link
+              aria-label={`${testStatus.pending + testStatus.running} ${scriptType} tests running`}
               onClick={() => {
                 sendAnalytics(
                   "Machine details",
@@ -102,6 +104,7 @@ const TestResults = ({
         {testStatus.failed > 0 ? (
           <li className="p-inline-list__item">
             <Link
+              aria-label={`${testStatus.failed} ${scriptType} tests failed`}
               onClick={() => {
                 sendAnalytics(
                   "Machine details",

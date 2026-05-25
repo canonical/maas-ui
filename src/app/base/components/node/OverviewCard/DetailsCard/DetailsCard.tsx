@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import { Icon, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
@@ -47,6 +49,7 @@ const DetailsCard = ({ node }: Props): React.ReactElement => {
   );
   const sendAnalytics = useSendAnalytics();
   const canEdit = useCanEdit(node, true);
+  const uid = useId();
 
   const isMachine = nodeIsMachine(node);
   const configTabUrl = isMachine
@@ -106,6 +109,7 @@ const DetailsCard = ({ node }: Props): React.ReactElement => {
         <div>
           {canEdit ? (
             <Link
+              aria-describedby={`${uid}-zone-value`}
               className="p-link__chevron"
               onClick={() => {
                 sendAnalytics(
@@ -122,13 +126,16 @@ const DetailsCard = ({ node }: Props): React.ReactElement => {
             <span className="u-text--muted">{Labels.Zone}</span>
           )}
         </div>
-        <span title={node.zone.name}>{node.zone.name}</span>
+        <span id={`${uid}-zone-value`} title={node.zone.name}>
+          {node.zone.name}
+        </span>
       </div>
       {isMachine && (
         <div data-testid="resource-pool">
           <div>
             {canEdit ? (
               <Link
+                aria-describedby={`${uid}-pool-value`}
                 className="p-link__chevron"
                 onClick={() => {
                   sendAnalytics(
@@ -145,13 +152,16 @@ const DetailsCard = ({ node }: Props): React.ReactElement => {
               <span className="u-text--muted">{Labels.Pool}</span>
             )}
           </div>
-          <span title={node.pool.name}>{node.pool.name}</span>
+          <span id={`${uid}-pool-value`} title={node.pool.name}>
+            {node.pool.name}
+          </span>
         </div>
       )}
       <div>
         <div>
           {canEdit ? (
             <Link
+              aria-describedby={`${uid}-power-type-value`}
               className="p-link__chevron"
               onClick={() => {
                 sendAnalytics(
@@ -168,7 +178,11 @@ const DetailsCard = ({ node }: Props): React.ReactElement => {
             <span className="u-text--muted">{Labels.PowerType}</span>
           )}
         </div>
-        <span data-testid="power-type" title={node.power_type ?? undefined}>
+        <span
+          data-testid="power-type"
+          id={`${uid}-power-type-value`}
+          title={node.power_type ?? undefined}
+        >
           {powerTypeDisplay || node.power_type || <em>None</em>}
         </span>
       </div>
@@ -176,6 +190,7 @@ const DetailsCard = ({ node }: Props): React.ReactElement => {
         <div>
           {canEdit ? (
             <Link
+              aria-describedby={`${uid}-tags-value`}
               className="p-link__chevron"
               onClick={() => {
                 sendAnalytics(
@@ -193,7 +208,11 @@ const DetailsCard = ({ node }: Props): React.ReactElement => {
           )}
         </div>
         {tagsLoaded ? (
-          <span data-testid="machine-tags" title={tagsDisplay}>
+          <span
+            data-testid="machine-tags"
+            id={`${uid}-tags-value`}
+            title={tagsDisplay}
+          >
             {tagsDisplay}
           </span>
         ) : (
