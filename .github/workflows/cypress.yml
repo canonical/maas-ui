@@ -5,17 +5,210 @@ on:
       - main
       - "3.*"
       - "*cypress*"
+  workflow_dispatch:
   pull_request:
     types: [ opened, synchronize, reopened ]
+  schedule:
+    - cron: "0 3 * * *"   # daily at 03:00 UTC
 
 jobs:
-  cypress:
-    name: Cypress
+  # Detect which app/ directories changed (PR only) and resolve the matching
+  # features/ subdirectories that exist on disk.
+  # On a scheduled run this job emits spec_glob="all" so the cypress job knows
+  # to run the full suite.
+  detect-changes:
+    name: Detect domains
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        groups: [ "no-users", "with-users" ]
+    outputs:
+      spec_glob: ${{ steps.resolve.outputs.spec_glob }}
+    steps:
+      - uses: actions/checkout@main
+        with:
+          fetch-depth: 0 # need full history for diff
+
+      - name: Resolve spec glob
+        id: resolve
+        shell: bash
+        run: |
+          # Run the full suite on everything except PRs, where we can diff.
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            echo "spec_glob=all" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Directories under src/app/ that map 1-to-1 with directories under
+          # cypress/e2e/with-users/features/.
+          # Add or remove entries here if the project structure changes.
+          DOMAIN_DIRS=(
+            base
+            controllers
+            devices
+            domains
+            images
+            intro
+            kvm
+            login
+            machines
+            networkDiscovery
+            networks
+            pools
+            preferences
+            racks
+            settings
+            switches
+            tags
+            zones
+          )
+
+          # Collect the src/app/ directories touched by this PR.
+          # grep || true prevents exit code 1 under pipefail when nothing matches.
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          CHANGED_APP=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+                        (grep '^src/app/' || true) | \
+                        awk -F'/' '{print $3}' | \
+                        sort -u)
+
+          # Collect the features/ subdirectories directly touched by this PR.
+          CHANGED_FEATURE=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+                            (grep '^cypress/e2e/with-users/features/' || true) | \
+                            awk -F'/' '{print $5}' | \
+                            sort -u)
+
+          echo "Changed app/ directories:"
+          echo "$CHANGED_APP"
+          echo "Changed feature/ directories:"
+          echo "$CHANGED_FEATURE"
+
+          # Helper: add a feature dir to the glob list, skipping duplicates.
+          declare -A SEEN
+          MATCHED_GLOBS=()
+          add_feature_dir() {
+            local dir="$1"
+            [ -n "${SEEN[$dir]+_}" ] && return
+            SEEN[$dir]=1
+            local feature_dir="cypress/e2e/with-users/features/$dir"
+            if [ -d "$feature_dir" ]; then
+              MATCHED_GLOBS+=("$feature_dir/**/*.{spec.ts,feature}")
+              echo "  matched: $feature_dir"
+            else
+              echo "  skipped (no feature dir): $feature_dir"
+            fi
+          }
+
+          # Source 1: app/ changes mapped through the domain list.
+          for dir in "${DOMAIN_DIRS[@]}"; do
+            if echo "$CHANGED_APP" | grep -qx "$dir" 2>/dev/null || false; then
+              add_feature_dir "$dir"
+            fi
+          done
+
+          # Source 2: feature directories changed directly.
+          for dir in $CHANGED_FEATURE; do
+            add_feature_dir "$dir"
+          done
+
+          if [ "${#MATCHED_GLOBS[@]}" -eq 0 ]; then
+            # Nothing relevant changed – signal the cypress job to skip.
+            echo "spec_glob=none" >> "$GITHUB_OUTPUT"
+          else
+            # Join with comma – Cypress accepts a comma-separated glob list.
+            GLOB=$(IFS=,; echo "${MATCHED_GLOBS[*]}")
+            echo "spec_glob=$GLOB" >> "$GITHUB_OUTPUT"
+            echo "Resolved spec glob: $GLOB"
+          fi
+
+  cypress-no-users:
+    name: Cypress (no-users)
+    needs: detect-changes
+    runs-on: ubuntu-24.04
+    env:
+      MAAS_URL: https://localhost:5443
+      MAAS_UI_URL: https://localhost:8400
+    steps:
+      - uses: actions/checkout@main
+      - name: Get branch name
+        uses: nelonoel/branch-name@v1.0.1
+      - name: Setup MAAS
+        uses: canonical/setup-maas@main
+        with:
+          maas-url: http://localhost:5240/MAAS
+      - name: Use Node.js from .nvmrc
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Install Cypress
+        uses: cypress-io/github-action@v7.3.0
+        with:
+          runTests: false
+          install-command: yarn install
+          build: yarn build
+      - name: Enable TLS for MAAS
+        shell: bash
+        run: |
+          echo "Generating self-signed certificate"
+          mkdir -p /tmp/maas-certs
+          openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+            -keyout /tmp/maas-certs/key.pem \
+            -out /tmp/maas-certs/cert.pem \
+            -subj "/C=US/ST=State/L=City/O=Org/OU=Unit/CN=localhost" \
+            -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
+
+          lxc exec maas-backend -- mkdir -p /var/snap/maas/common/certs
+          lxc file push /tmp/maas-certs/key.pem maas-backend/var/snap/maas/common/certs/key.pem
+          lxc file push /tmp/maas-certs/cert.pem maas-backend/var/snap/maas/common/certs/cert.pem
+          lxc exec maas-backend -- chmod 644 /var/snap/maas/common/certs/key.pem /var/snap/maas/common/certs/cert.pem
+
+          echo "y" | lxc exec maas-backend -- maas config-tls enable \
+            /var/snap/maas/common/certs/key.pem \
+            /var/snap/maas/common/certs/cert.pem
+
+          # Forward the HTTPS port from the host to the container
+          MAAS_IP=$(lxc query /1.0/containers/maas-backend/state | jq -r '.network.eth0.addresses[0].address')
+          sudo socat TCP-LISTEN:5443,fork,reuseaddr TCP:${MAAS_IP}:5443 &
+      - name: Trust self-signed certificate
+        run: |
+          # Trust on the host (for Cypress / socat-proxied connections)
+          sudo cp /tmp/maas-certs/cert.pem /usr/local/share/ca-certificates/maas-selfsigned.crt
+          sudo update-ca-certificates
+          # Trust inside the LXD container (for maas CLI → HTTPS MAAS API calls)
+          lxc file push /tmp/maas-certs/cert.pem maas-backend/usr/local/share/ca-certificates/maas-selfsigned.crt
+          lxc exec maas-backend -- update-ca-certificates
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v7.3.0
+        env:
+          HTTPS_CERT: /tmp/maas-certs/cert.pem
+          HTTPS_KEY: /tmp/maas-certs/key.pem
+          NODE_EXTRA_CA_CERTS: /tmp/maas-certs/cert.pem
+        with:
+          config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
+          install: false
+          start: yarn start
+          spec: cypress/e2e/no-users/**/*.{spec.ts,feature}
+          wait-on: ${{env.MAAS_UI_URL}}/MAAS/r/machines
+          wait-on-timeout: 120
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots-no-users
+          path: cypress/screenshots
+      - name: Collect MAAS logs
+        if: failure()
+        shell: bash
+        run: lxc exec maas-backend -- journalctl -u snap.maas.pebble.service --since="1 hour ago" > cypress/maas_logs.txt
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: maas_logs-no-users
+          path: cypress/maas_logs.txt
+
+  cypress-with-users:
+    name: Cypress (with-users)
+    needs: detect-changes
+    # Skip entirely on PRs when no relevant app/ or features/ files were changed.
+    # On push/schedule/workflow_dispatch spec_glob is 'all', so the job always runs.
+    if: needs.detect-changes.outputs.spec_glob != 'none'
+    runs-on: ubuntu-24.04
     env:
       MAAS_URL: https://localhost:5443
       MAAS_UI_URL: https://localhost:8400
@@ -117,16 +310,13 @@ jobs:
           install-command: yarn install
           build: yarn build
       - name: Create MAAS admin
-        if: matrix.groups == 'with-users'
         run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Create MAAS non-admin user
-        if: matrix.groups == 'with-users'
         run: |
           API_KEY=$(lxc exec maas-backend -- maas apikey --username=admin)
           lxc exec maas-backend -- maas login admin http://localhost:5240/MAAS "$API_KEY"
           lxc exec maas-backend -- maas admin users create username=user password=test email=fake-user@example.org is_superuser=0
       - name: Add Keycloak as OIDC provider in MAAS
-        if: matrix.groups == 'with-users'
         shell: bash
         run: |
           # MAAS runs inside the LXD container; resolve the host IP as seen from the
@@ -175,13 +365,21 @@ jobs:
           lxc file push /tmp/maas-certs/cert.pem maas-backend/usr/local/share/ca-certificates/maas-selfsigned.crt
           lxc exec maas-backend -- update-ca-certificates
       - name: Wait for MAAS boot resources
-        if: matrix.groups == 'with-users'
         shell: bash
         run: |
           # TLS is now enabled; re-login using the HTTPS endpoint inside the container
           API_KEY=$(lxc exec maas-backend -- maas apikey --username=admin)
           lxc exec maas-backend -- maas login admin https://localhost:5443/MAAS "$API_KEY"
           lxc exec maas-backend -- bash -c 'while [ $(maas admin boot-resources is-importing -k | cat) == "true" ]; do sleep 10; done; echo "syncing finished"'
+      - name: Set spec pattern
+        id: spec
+        shell: bash
+        run: |
+          if [ "${{ needs.detect-changes.outputs.spec_glob }}" = "all" ]; then
+            echo "pattern=cypress/e2e/with-users/**/*.{spec.ts,feature}" >> "$GITHUB_OUTPUT"
+          else
+            echo "pattern=${{ needs.detect-changes.outputs.spec_glob }}" >> "$GITHUB_OUTPUT"
+          fi
       - name: Run Cypress tests
         uses: cypress-io/github-action@v7.3.0
         env:
@@ -197,13 +395,13 @@ jobs:
           config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
           install: false
           start: yarn start
-          spec: cypress/e2e/${{ matrix.groups }}/**/*.{spec.ts,feature}
+          spec: ${{ steps.spec.outputs.pattern }}
           wait-on: ${{env.MAAS_UI_URL}}/MAAS/r/machines
           wait-on-timeout: 120
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-with-users
           path: cypress/screenshots
       - name: Collect MAAS logs
         if: failure()
@@ -212,5 +410,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: maas_logs
+          name: maas_logs-with-users
           path: cypress/maas_logs.txt
