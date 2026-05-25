@@ -31,7 +31,7 @@ jobs:
         shell: bash
         run: |
           # On a scheduled run always execute the full suite.
-          if [ "${{ github.event_name }}" = "schedule" || "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "spec_glob=all" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -60,26 +60,48 @@ jobs:
           # Collect the app/ directories touched by this PR.
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
           HEAD_SHA="${{ github.event.pull_request.head.sha }}"
-          CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
-                    grep '^app/' | \
-                    awk -F'/' '{print $2}' | \
-                    sort -u)
+          CHANGED_APP=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+                        grep '^app/' | \
+                        awk -F'/' '{print $2}' | \
+                        sort -u)
+
+          # Collect the features/ subdirectories directly touched by this PR.
+          CHANGED_FEATURE=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+                            grep '^cypress/e2e/with-users/features/' | \
+                            awk -F'/' '{print $5}' | \
+                            sort -u)
 
           echo "Changed app/ directories:"
-          echo "$CHANGED"
+          echo "$CHANGED_APP"
+          echo "Changed feature/ directories:"
+          echo "$CHANGED_FEATURE"
 
-          # Intersect with the known domain list and check the feature dir exists.
+          # Helper: add a feature dir to the glob list, skipping duplicates.
+          declare -A SEEN
           MATCHED_GLOBS=()
-          for dir in "${DOMAIN_DIRS[@]}"; do
-            if echo "$CHANGED" | grep -qx "$dir"; then
-              FEATURE_DIR="cypress/e2e/with-users/features/$dir"
-              if [ -d "$FEATURE_DIR" ]; then
-                MATCHED_GLOBS+=("$FEATURE_DIR/**/*.{spec.ts,feature}")
-                echo "  matched: $FEATURE_DIR"
-              else
-                echo "  skipped (no feature dir): $FEATURE_DIR"
-              fi
+          add_feature_dir() {
+            local dir="$1"
+            [ -n "${SEEN[$dir]+_}" ] && return
+            SEEN[$dir]=1
+            local feature_dir="cypress/e2e/with-users/features/$dir"
+            if [ -d "$feature_dir" ]; then
+              MATCHED_GLOBS+=("$feature_dir/**/*.{spec.ts,feature}")
+              echo "  matched: $feature_dir"
+            else
+              echo "  skipped (no feature dir): $feature_dir"
             fi
+          }
+
+          # Source 1: app/ changes mapped through the domain list.
+          for dir in "${DOMAIN_DIRS[@]}"; do
+            if echo "$CHANGED_APP" | grep -qx "$dir"; then
+              add_feature_dir "$dir"
+            fi
+          done
+
+          # Source 2: feature directories changed directly.
+          for dir in $CHANGED_FEATURE; do
+            add_feature_dir "$dir"
           done
 
           if [ "${#MATCHED_GLOBS[@]}" -eq 0 ]; then
