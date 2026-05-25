@@ -36,7 +36,7 @@ jobs:
             exit 0
           fi
 
-          # Directories under app/ that map 1-to-1 with directories under
+          # Directories under src/app/ that map 1-to-1 with directories under
           # cypress/e2e/with-users/features/.
           # Add or remove entries here if the project structure changes.
           DOMAIN_DIRS=(
@@ -53,17 +53,20 @@ jobs:
             networks
             pools
             preferences
+            racks
             settings
+            switches
+            tags
             zones
           )
 
-          # Collect the app/ directories touched by this PR.
+          # Collect the src/app/ directories touched by this PR.
           # grep || true prevents exit code 1 under pipefail when nothing matches.
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
           HEAD_SHA="${{ github.event.pull_request.head.sha }}"
           CHANGED_APP=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
-                        (grep '^app/' || true) | \
-                        awk -F'/' '{print $2}' | \
+                        (grep '^src/app/' || true) | \
+                        awk -F'/' '{print $3}' | \
                         sort -u)
 
           # Collect the features/ subdirectories directly touched by this PR.
