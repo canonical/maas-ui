@@ -56,6 +56,31 @@ it("can generate a secondary submit label via a function", async () => {
   expect(secondarySubmit).toHaveBeenCalled();
 });
 
+it("can display a tooltip for disabled submit", async () => {
+  renderWithProviders(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <FormikFormButtons
+        submitDisabled={true}
+        submitDisabledTooltip={"Submit is disabled"}
+        submitLabel="Save user"
+      />
+    </Formik>
+  );
+  await userEvent.hover(screen.getByRole("button", { name: "Save user" }));
+
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: "Save user" })
+    ).toHaveAccessibleDescription("Submit is disabled");
+  });
+
+  await waitFor(() => {
+    expect(
+      screen.getByRole("tooltip", { name: "Submit is disabled" })
+    ).toBeInTheDocument();
+  });
+});
+
 it("can display a tooltip for the secondary submit action", async () => {
   renderWithProviders(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
