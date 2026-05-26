@@ -211,7 +211,9 @@ When("the user shift-selects the third machine", () => {
     throw new Error("Third generated machine was not initialized");
   }
 
-  cy.findByRole("checkbox", { name: `${thirdMachine}.maas` }).click({
+  cy.findByRole("checkbox", {
+    name: new RegExp(`${thirdMachine}.maas`, "i"),
+  }).click({
     shiftKey: true,
     force: true,
   });
