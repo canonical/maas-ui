@@ -78,7 +78,9 @@ When("the user creates a new pool", () => {
   newPoolName = generateName("pool");
   cy.findByRole("complementary", { name: /Set pool/i }).should("exist");
   cy.findByLabelText(/Create pool/i).click({ force: true });
-  cy.findByLabelText(/Name/i).type(newPoolName);
+  cy.findByRole("complementary", { name: /Set pool/i })
+    .findByLabelText(/Name/i)
+    .type(newPoolName);
 });
 
 When("the user creates a new tag", () => {

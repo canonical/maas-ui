@@ -81,12 +81,13 @@ const SectionHeader = <P,>({
       <MainToolbar>
         {loading ? (
           <MainToolbar.Title
-            aria-label="loading"
+            aria-label="Loading page content"
+            aria-live="polite"
             as="h4"
             className={titleClassName}
             data-testid="section-header-title-spinner"
           >
-            <Spinner aria-hidden="true" text="Loading..." />
+            <Spinner text="Loading..." />
           </MainToolbar.Title>
         ) : title ? (
           <MainToolbar.Title

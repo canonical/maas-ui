@@ -26,8 +26,10 @@ import {
 
 setupMockServer(
   usersResolvers.listUsers.handler(),
+  usersResolvers.listUsersStatistics.handler(),
   poolsResolvers.listPools.handler(),
-  zoneResolvers.listZones.handler()
+  zoneResolvers.listZones.handler(),
+  zoneResolvers.listZonesWithStatistics.handler()
 );
 
 const callId = "mocked-nanoid";

@@ -197,7 +197,9 @@ When("the user selects the first machine", () => {
     throw new Error("First generated machine was not initialized");
   }
 
-  cy.findByRole("checkbox", { name: `${firstMachine}.maas` }).click({
+  cy.findByRole("checkbox", {
+    name: new RegExp(`${firstMachine}.maas`, "i"),
+  }).click({
     force: true,
   });
 });
@@ -209,7 +211,9 @@ When("the user shift-selects the third machine", () => {
     throw new Error("Third generated machine was not initialized");
   }
 
-  cy.findByRole("checkbox", { name: `${thirdMachine}.maas` }).click({
+  cy.findByRole("checkbox", {
+    name: new RegExp(`${thirdMachine}.maas`, "i"),
+  }).click({
     shiftKey: true,
     force: true,
   });
@@ -277,9 +281,9 @@ Then("the second machine should be selected", () => {
     throw new Error("Second generated machine was not initialized");
   }
 
-  cy.findByRole("checkbox", { name: `${secondMachine}.maas` }).should(
-    "be.checked"
-  );
+  cy.findByRole("checkbox", {
+    name: new RegExp(`${secondMachine}.maas`, "i"),
+  }).should("be.checked");
 });
 
 Then("the {string} filter should be visible", (filterName: string) => {

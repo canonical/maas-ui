@@ -4,12 +4,15 @@ import { Link } from "react-router";
 import CopyButton from "@/app/base/components/CopyButton";
 
 type Props = {
+  clearAriaLabel?: string;
   clearDisabled?: boolean;
   clearTooltip?: string | null;
   copyValue?: string;
+  deleteAriaLabel?: string;
   deleteDisabled?: boolean;
   deleteTooltip?: string | null;
   deletePath?: string;
+  editAriaLabel?: string;
   editDisabled?: boolean;
   editPath?: string;
   editTooltip?: string | null;
@@ -19,12 +22,15 @@ type Props = {
 };
 
 const TableActions = ({
+  clearAriaLabel,
   clearDisabled,
   clearTooltip,
   copyValue,
+  deleteAriaLabel,
   deleteDisabled,
   deletePath,
   deleteTooltip,
+  editAriaLabel,
   editDisabled,
   editPath,
   editTooltip,
@@ -38,6 +44,7 @@ const TableActions = ({
       <Tooltip message={editTooltip} position="left">
         <Button
           appearance="base"
+          aria-label={editAriaLabel}
           className="is-dense u-table-cell-padding-overlap"
           data-testid="table-actions-edit"
           disabled={editDisabled}
@@ -58,6 +65,7 @@ const TableActions = ({
       <Tooltip message={deleteTooltip} position="left">
         <Button
           appearance="base"
+          aria-label={deleteAriaLabel}
           className="is-dense u-table-cell-padding-overlap"
           data-testid="table-actions-delete"
           disabled={deleteDisabled}
@@ -79,6 +87,7 @@ const TableActions = ({
       <Tooltip message={clearTooltip} position="left">
         <Button
           appearance="base"
+          aria-label={clearAriaLabel}
           className="is-dense u-table-cell-padding-overlap"
           data-testid="table-actions-clear"
           disabled={clearDisabled}

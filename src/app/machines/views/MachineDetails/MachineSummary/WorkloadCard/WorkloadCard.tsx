@@ -45,7 +45,10 @@ const WorkloadCard = ({ id }: Props): React.ReactElement => {
                     });
                     return (
                       <div key={`${key}-${val}`}>
-                        <RouterLink to={`${urls.machines.index}${filter}`}>
+                        <RouterLink
+                          aria-label={`Filter machines by ${key}: ${val}`}
+                          to={`${urls.machines.index}${filter}`}
+                        >
                           {val}
                         </RouterLink>
                       </div>

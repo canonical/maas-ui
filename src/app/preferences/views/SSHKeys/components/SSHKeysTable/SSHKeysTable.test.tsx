@@ -101,11 +101,13 @@ describe("SSHKeysTable", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByRole("button", { name: "Delete" })
+          screen.getByRole("button", { name: /delete ssh keys from/i })
         ).toBeInTheDocument();
       });
 
-      await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+      await userEvent.click(
+        screen.getByRole("button", { name: /delete ssh keys from/i })
+      );
 
       expect(mockOpen).toHaveBeenCalledWith({
         component: DeleteSSHKey,

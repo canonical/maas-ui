@@ -67,8 +67,22 @@
     text-overflow: clip !important;
   }
 
+  // Keep .p-table-menu in block layout so the toggle button stays in the tab
+  // order. Only hide it visually so keyboard users can always Tab to it.
   .machine-list__machine .p-table-menu {
-    display: none;
+    display: block;
+
+    .p-table-menu__toggle {
+      opacity: 0;
+      pointer-events: none;
+
+      // Show the button when it directly receives keyboard focus so it has a
+      // visible focus indicator (WCAG 2.4.7: Focus Visible).
+      &:focus-visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
   }
 
   .machine-list .select-all-dropdown {
@@ -91,10 +105,9 @@
     background-color: $colors--light-theme--background-hover;
 
     .p-table-menu {
-      display: block;
-
       .p-table-menu__toggle {
         opacity: 0.25;
+        pointer-events: auto;
       }
     }
 
@@ -191,10 +204,9 @@
       background-color: $colors--dark-theme--background-hover;
   
       .p-table-menu {
-        display: block;
-  
         .p-table-menu__toggle {
           opacity: 0.25;
+          pointer-events: auto;
         }
       }
   

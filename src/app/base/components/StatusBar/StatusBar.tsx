@@ -187,7 +187,12 @@ export const StatusBar = (): React.ReactElement | null => {
     <AppStatus aria-label="status bar" className="p-status-bar">
       <div className="p-status-bar__row u-flex">
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
-          <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>
+          <strong
+            aria-label={`MAAS instance name: ${maasName} MAAS`}
+            data-testid="status-bar-maas-name"
+          >
+            {maasName} MAAS
+          </strong>
           :&nbsp;
           <span data-testid="status-bar-version">
             {version} ({installType})

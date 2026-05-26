@@ -10,6 +10,7 @@ type Props<L> = {
   className?: string | null;
   icon?: ReactNode | null;
   iconSpace?: boolean | null;
+  menuAriaLabel?: string | null;
   menuClassName?: string | null;
   menuLinks?: TableMenuProps<L>["links"];
   menuTitle?: string | null;
@@ -36,6 +37,7 @@ const DoubleRow = <L,>({
   className,
   icon,
   iconSpace,
+  menuAriaLabel,
   menuClassName,
   menuLinks,
   menuTitle,
@@ -91,6 +93,7 @@ const DoubleRow = <L,>({
           </div>
           {menuLinks ? (
             <TableMenu
+              aria-label={menuAriaLabel || undefined}
               className={menuClassName}
               links={menuLinks}
               onToggleMenu={onToggleMenu}

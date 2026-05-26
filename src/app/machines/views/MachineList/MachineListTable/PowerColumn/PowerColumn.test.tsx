@@ -60,7 +60,9 @@ describe("PowerColumn", () => {
       { state }
     );
     // Open the menu so the elements get rendered.
-    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Take power action/i })
+    );
 
     expect(screen.getByText("Turn on")).toBeInTheDocument();
   });
@@ -74,7 +76,9 @@ describe("PowerColumn", () => {
     );
 
     // Open the menu so the elements get rendered.
-    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Take power action/i })
+    );
 
     expect(screen.getByText("Turn off")).toBeInTheDocument();
   });
@@ -86,7 +90,9 @@ describe("PowerColumn", () => {
     );
 
     // Open the menu so the elements get rendered.
-    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Take power action/i })
+    );
 
     expect(screen.getByText("Check power")).toBeInTheDocument();
   });
@@ -100,7 +106,9 @@ describe("PowerColumn", () => {
     );
 
     // Open the menu so the elements get rendered.
-    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Take power action/i })
+    );
 
     expect(screen.getByText("No power actions available")).toBeInTheDocument();
   });
@@ -111,7 +119,7 @@ describe("PowerColumn", () => {
     });
 
     expect(
-      screen.queryByRole("button", { name: "Take action:" })
+      screen.queryByRole("button", { name: /Take power action/i })
     ).not.toBeInTheDocument();
   });
 

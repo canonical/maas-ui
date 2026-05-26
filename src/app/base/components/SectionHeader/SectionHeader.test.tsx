@@ -42,6 +42,13 @@ describe("SectionHeader", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("loading spinner has a descriptive aria-label and aria-live attribute", () => {
+    renderWithProviders(<SectionHeader loading />);
+    const spinner = screen.getByTestId("section-header-title-spinner");
+    expect(spinner).toHaveAttribute("aria-label", "Loading page content");
+    expect(spinner).toHaveAttribute("aria-live", "polite");
+  });
+
   it("shows a spinner instead of subtitle if subtitle loading", () => {
     renderWithProviders(
       <SectionHeader subtitle="Subtitle" subtitleLoading title="Title" />

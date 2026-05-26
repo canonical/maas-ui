@@ -165,6 +165,7 @@ export const StatusColumn = ({
       <DoubleRow
         icon={icon}
         iconSpace={true}
+        menuAriaLabel={`Take status action for ${machine.hostname}`}
         menuLinks={onToggleMenu ? menuLinks : null}
         menuTitle="Take action:"
         onToggleMenu={toggleMenu}

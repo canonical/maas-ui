@@ -25,9 +25,11 @@ describe("SSHKeysList", () => {
   it("renders DeleteSSHKey when valid sshKeyIds are provided", async () => {
     renderWithProviders(<SSHKeysList />);
     await waitFor(() => {
-      expect(screen.getAllByRole("button", { name: "Delete" }));
+      expect(screen.getAllByRole("button", { name: /Delete/i }));
     });
-    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
+    await userEvent.click(
+      screen.getAllByRole("button", { name: /Delete/i })[0]
+    );
     expect(
       screen.getByRole("complementary", { name: "Delete SSH keys" })
     ).toBeInTheDocument();

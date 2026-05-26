@@ -37,7 +37,10 @@ const MachineNotifications = ({ notifications }: Props): React.ReactElement => {
   );
 
   return (
-    <section className="p-strip u-no-padding--top u-no-padding--bottom">
+    <section
+      aria-label="Machine notifications"
+      className="p-strip u-no-padding--top u-no-padding--bottom"
+    >
       <div className="row" data-testid="machine-notifications-list">
         {notificationList}
       </div>

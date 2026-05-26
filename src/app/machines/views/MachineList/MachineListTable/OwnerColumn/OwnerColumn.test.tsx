@@ -16,7 +16,8 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
-  usersResolvers.listUsers.handler()
+  usersResolvers.listUsers.handler(),
+  usersResolvers.listUsersStatistics.handler()
 );
 
 describe("OwnerColumn", () => {
@@ -108,7 +109,9 @@ describe("OwnerColumn", () => {
       { state }
     );
     // Open the menu so the elements get rendered.
-    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Take ownership action/i })
+    );
 
     expect(
       screen.getByRole("menuitem", { name: "Allocate..." })
@@ -122,7 +125,9 @@ describe("OwnerColumn", () => {
       { state }
     );
     // Open the menu so the elements get rendered.
-    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Take ownership action/i })
+    );
 
     expect(
       screen.getByRole("menuitem", { name: "Release..." })
@@ -135,7 +140,9 @@ describe("OwnerColumn", () => {
       { state }
     );
     // Open the menu so the elements get rendered.
-    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Take ownership action/i })
+    );
 
     expect(screen.getByText("No owner actions available")).toBeInTheDocument();
   });
@@ -145,7 +152,7 @@ describe("OwnerColumn", () => {
       state,
     });
     expect(
-      screen.queryByRole("button", { name: "Take action:" })
+      screen.queryByRole("button", { name: /Take ownership action/i })
     ).not.toBeInTheDocument();
   });
 });

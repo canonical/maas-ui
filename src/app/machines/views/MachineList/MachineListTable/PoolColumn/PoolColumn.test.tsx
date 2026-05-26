@@ -72,9 +72,11 @@ describe("PoolColumn", () => {
       }
     );
     await waitFor(() =>
-      expect(screen.getByRole("button", { name: "Change pool:" }))
+      expect(screen.getByRole("button", { name: /change pool for/i }))
     );
-    await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /change pool for/i })
+    );
     await waitFor(() => {
       expect(
         screen.getByRole("menuitem", { name: "No other pools available" })
@@ -92,7 +94,9 @@ describe("PoolColumn", () => {
         state,
       }
     );
-    await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /change pool for/i })
+    );
     expect(
       screen.getByRole("menuitem", {
         name: "Cannot change pool of this machine",
@@ -113,10 +117,12 @@ describe("PoolColumn", () => {
     });
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "Change pool:" })
+        screen.getByRole("button", { name: /change pool for/i })
       ).toBeInTheDocument();
     });
-    await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /change pool for/i })
+    );
 
     await waitFor(() => {
       expect(
@@ -156,10 +162,12 @@ describe("PoolColumn", () => {
     expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "Change pool:" })
+        screen.getByRole("button", { name: /change pool for/i })
       ).toBeInTheDocument();
     });
-    await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /change pool for/i })
+    );
 
     await waitFor(() => {
       expect(
@@ -177,7 +185,7 @@ describe("PoolColumn", () => {
     });
 
     expect(
-      screen.queryByRole("button", { name: "Change pool:" })
+      screen.queryByRole("button", { name: /change pool for/i })
     ).not.toBeInTheDocument();
   });
 });

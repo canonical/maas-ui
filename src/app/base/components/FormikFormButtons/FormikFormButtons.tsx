@@ -29,7 +29,9 @@ export type Props<V> = {
   secondarySubmitLabel?: FormikContextFunc<V, string> | string | null;
   secondarySubmitTooltip?: string | null;
   submitAppearance?: ActionButtonProps["appearance"];
+  submitAriaDescription?: string;
   submitDisabled?: boolean;
+  submitDisabledTooltip?: string | null;
   submitLabel?: string;
   /**
    * Determines the behavior of the primary and secondary submit buttons.
@@ -70,7 +72,9 @@ export const FormikFormButtons = <V,>({
   secondarySubmitLabel,
   secondarySubmitTooltip,
   submitAppearance = "positive",
+  submitAriaDescription,
   submitDisabled,
+  submitDisabledTooltip,
   submitLabel = "Save",
   buttonsBehavior = "coupled",
 }: Props<V>): React.ReactElement => {
@@ -157,16 +161,37 @@ export const FormikFormButtons = <V,>({
           </Button>
         )}
         {secondaryButton}
-        <ActionButton
-          appearance={submitAppearance}
-          className="formik-form-buttons__button"
-          disabled={submitDisabled}
-          loading={saving}
-          success={saved}
-          type="submit"
-        >
-          {submitLabel}
-        </ActionButton>
+        {submitDisabledTooltip && submitDisabled ? (
+          <Tooltip
+            message={submitDisabledTooltip}
+            position="top-center"
+            positionElementClassName="u-nudge-left"
+          >
+            <ActionButton
+              appearance={submitAppearance}
+              aria-description={submitAriaDescription}
+              className="formik-form-buttons__button"
+              disabled={submitDisabled}
+              loading={saving}
+              success={saved}
+              type="submit"
+            >
+              {submitLabel}
+            </ActionButton>
+          </Tooltip>
+        ) : (
+          <ActionButton
+            appearance={submitAppearance}
+            aria-description={submitAriaDescription}
+            className="formik-form-buttons__button"
+            disabled={submitDisabled}
+            loading={saving}
+            success={saved}
+            type="submit"
+          >
+            {submitLabel}
+          </ActionButton>
+        )}
       </div>
       {saving && savingLabel && (
         <p

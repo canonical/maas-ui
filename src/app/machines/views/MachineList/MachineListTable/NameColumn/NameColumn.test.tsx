@@ -69,7 +69,9 @@ describe("NameColumn", () => {
       state,
     });
     expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
-    const button = screen.getByRole("button", { name: "+1" });
+    const button = screen.getByRole("button", {
+      name: /show all 2 ip addresses/i,
+    });
     expect(button).toBeInTheDocument();
 
     await userEvent.hover(button);

@@ -58,7 +58,9 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
     renderWithProviders(<CpuCard node={machine} />, { state });
-    expect(screen.getByRole("link", { name: "2" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /2 cpu tests passed/i })
+    ).toBeInTheDocument();
   });
 
   it("renders a link with a count of pending and running tests", () => {
@@ -69,7 +71,9 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
     renderWithProviders(<CpuCard node={machine} />, { state });
-    expect(screen.getByRole("link", { name: "3" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /3 cpu tests running/i })
+    ).toBeInTheDocument();
   });
 
   it("renders a link with a count of failed tests", () => {
@@ -79,7 +83,9 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
     renderWithProviders(<CpuCard node={machine} />, { state });
-    expect(screen.getByRole("link", { name: "5" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /5 cpu tests failed/i })
+    ).toBeInTheDocument();
   });
 
   it("renders a results link", () => {

@@ -42,15 +42,21 @@ const MachineSummary = (): ReactElement => {
   ].includes(machine?.status_code);
 
   return (
-    <div className="machine-summary__cards">
-      <div className="machine-summary__overview-card">
+    <section aria-label="Machine summary" className="machine-summary__cards">
+      <div aria-label="Overview" className="machine-summary__overview-card">
         <OverviewCard node={machine} />
       </div>
-      <div className="machine-summary__hardware-card">
+      <div
+        aria-label="Hardware information"
+        className="machine-summary__hardware-card"
+      >
         <HardwareCard node={machine} />
       </div>
       <NumaCard id={id} />
-      <div className="machine-summary__network-card">
+      <div
+        aria-label="Network information"
+        className="machine-summary__network-card"
+      >
         <NodeSummaryNetworkCard
           interfaces={isMachineDetails(machine) ? machine.interfaces : null}
           networkURL={networkURL}
@@ -69,7 +75,7 @@ const MachineSummary = (): ReactElement => {
         </NodeSummaryNetworkCard>
       </div>
       {showWorkloadCard ? <WorkloadCard id={id} /> : null}
-    </div>
+    </section>
   );
 };
 
