@@ -281,9 +281,9 @@ Then("the second machine should be selected", () => {
     throw new Error("Second generated machine was not initialized");
   }
 
-  cy.findByRole("checkbox", { name: `${secondMachine}.maas` }).should(
-    "be.checked"
-  );
+  cy.findByRole("checkbox", {
+    name: new RegExp(`${secondMachine}.maas`, "i"),
+  }).should("be.checked");
 });
 
 Then("the {string} filter should be visible", (filterName: string) => {
