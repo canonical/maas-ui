@@ -84,6 +84,14 @@ const statusSlice = createSlice({
       state.authenticationError = action.payload;
       state.authenticating = false;
     },
+    // TODO [candid/rbac] Delete this when we remove support for candid/rbac
+    externalSessionExpired: (state: StatusState) => {
+      state.authenticated = false;
+      state.authenticating = false;
+      state.authenticationError = "Session expired";
+      state.connected = false;
+      state.connecting = false;
+    },
     logout: {
       prepare: () => ({
         payload: null,
