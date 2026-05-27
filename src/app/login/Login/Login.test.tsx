@@ -53,6 +53,26 @@ describe("Login", () => {
     ).toBeInTheDocument();
   });
 
+  it("does not restart external login when already authenticated", async () => {
+    state.status.authenticated = true;
+    state.status.externalAuthURL = "http://login.example.com";
+
+    const { router, store } = renderWithProviders(<Login />, {
+      initialEntries: ["/login"],
+      state,
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/machines");
+    });
+
+    expect(
+      store
+        .getActions()
+        .some((action) => action.type === statusActions.externalLogin().type)
+    ).toBe(false);
+  });
+
   it("hides the password field when a username has not been entered", async () => {
     renderWithProviders(<Login />, { initialEntries: ["/login"], state });
 
