@@ -8,7 +8,6 @@ import { statusActions } from "@/app/store/status";
 const visit = (error: { Info: { VisitURL: string } }) => {
   const url = error.Info.VisitURL;
   store.dispatch(statusActions.externalLoginURL({ url }));
-  window.open(url, "_blank");
 };
 
 const bakery = new Bakery({
