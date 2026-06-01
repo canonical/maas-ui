@@ -2,16 +2,20 @@ import { Labels as ScriptsListLabels } from "./ScriptsList";
 
 import ScriptsList from ".";
 
-import { fileContextStore } from "@/app/base/file-context";
+import ScriptDetails from "@/app/settings/views/Scripts/ScriptDetails";
+import DeleteScript from "@/app/settings/views/Scripts/ScriptsList/components/DeleteScript/DeleteScript";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
 import {
+  mockSidePanel,
   renderWithProviders,
   screen,
   userEvent,
   within,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockSidePanel();
 
 describe("ScriptsList", () => {
   afterEach(() => {
@@ -77,82 +81,55 @@ describe("ScriptsList", () => {
   it("Displays commissioning scripts by default", () => {
     renderWithProviders(<ScriptsList />, { state });
 
-    expect(screen.getAllByTestId("script-row")).toHaveLength(1);
-
-    const commissioning_script = screen.getByRole("row", {
-      name: "commissioning-script",
-    });
-
-    expect(commissioning_script).toBeInTheDocument();
     expect(
-      within(commissioning_script).getByRole("gridcell", {
-        name: "a commissioning script",
-      })
+      screen.getByRole("row", { name: /commissioning-script/ })
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("row", { name: /^testing-script/ })
+    ).not.toBeInTheDocument();
   });
 
   it("Displays testing scripts", () => {
     renderWithProviders(<ScriptsList type="testing" />, { state });
 
-    expect(screen.getAllByTestId("script-row")).toHaveLength(2);
-
-    const testing_script = screen.getByRole("row", {
-      name: "testing-script",
-    });
-
-    const another_testing_script = screen.getByRole("row", {
-      name: "testing-script-2",
-    });
-
-    expect(testing_script).toBeInTheDocument();
     expect(
-      within(testing_script).getByRole("gridcell", {
-        name: "a testing script",
-      })
+      screen.getByRole("row", { name: /^testing-script / })
     ).toBeInTheDocument();
-
-    expect(another_testing_script).toBeInTheDocument();
     expect(
-      within(another_testing_script).getByRole("gridcell", {
-        name: "another testing script",
-      })
+      screen.getByRole("row", { name: /testing-script-2/ })
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("row", { name: /commissioning-script/ })
+    ).not.toBeInTheDocument();
   });
 
   it("Displays deployment scripts", () => {
     renderWithProviders(<ScriptsList type="deployment" />, { state });
 
-    expect(screen.getAllByTestId("script-row")).toHaveLength(1);
-
-    const deployment_script = screen.getByRole("row", {
-      name: "deployment-script",
-    });
-
-    expect(deployment_script).toBeInTheDocument();
     expect(
-      within(deployment_script).getByRole("gridcell", {
-        name: "a deployment script",
-      })
+      screen.getByRole("row", { name: /deployment-script/ })
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("row", { name: /commissioning-script/ })
+    ).not.toBeInTheDocument();
   });
 
-  it("can show a delete confirmation", async () => {
+  it("opens the delete script side panel when delete is clicked", async () => {
     renderWithProviders(<ScriptsList />, { state });
 
-    let row = screen.getByRole("row", { name: "commissioning-script" });
-    expect(row).not.toHaveClass("is-active");
-    // Click on the delete button:
-    await userEvent.click(
-      within(within(row).getByLabelText(ScriptsListLabels.Actions)).getByRole(
-        "button",
-        { name: "Delete" }
-      )
+    const row = screen.getByRole("row", { name: /commissioning-script/ });
+    await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
+
+    expect(mockOpen).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: DeleteScript,
+        title: "Delete script",
+        props: { id: 1 },
+      })
     );
-    row = screen.getByRole("row", { name: "commissioning-script" });
-    expect(row).toHaveClass("is-active");
   });
 
-  it("disables the delete button if a default script", () => {
+  it("disables the delete button for default scripts", () => {
     const state = factory.rootState({
       script: factory.scriptState({
         loaded: true,
@@ -171,75 +148,32 @@ describe("ScriptsList", () => {
 
     renderWithProviders(<ScriptsList type="testing" />, { state });
 
+    // getAllByRole("row") returns [header, dataRow1, dataRow2]
+    const dataRows = screen.getAllByRole("row").slice(1);
+
     expect(
-      within(
-        within(screen.getByRole("row", { name: "test name 29" })).getByRole(
-          "gridcell",
-          { name: ScriptsListLabels.Actions }
-        )
-      ).getByRole("button")
+      within(dataRows[0]).getByRole("button", { name: "Delete" })
     ).toBeAriaDisabled();
 
     expect(
-      within(
-        within(screen.getByRole("row", { name: "test name 30" })).getByRole(
-          "gridcell",
-          { name: ScriptsListLabels.Actions }
-        )
-      ).getByRole("button")
+      within(dataRows[1]).getByRole("button", { name: "Delete" })
     ).not.toBeAriaDisabled();
   });
 
-  it("can delete a script", async () => {
-    const { store } = renderWithProviders(<ScriptsList />, { state });
-    const row = screen.getByRole("row", { name: "commissioning-script" });
-    expect(row).not.toHaveClass("is-active");
-    // Click on the delete button:
-    await userEvent.click(
-      within(within(row).getByLabelText(ScriptsListLabels.Actions)).getByRole(
-        "button",
-        { name: "Delete" }
-      )
-    );
-    // Click on the delete confirm button
-    await userEvent.click(
-      within(
-        within(row).getByLabelText(ScriptsListLabels.DeleteConfirm)
-      ).getByRole("button", { name: "Delete" })
-    );
-
-    expect(
-      store.getActions().find((action) => action.type === "script/delete")
-    ).toEqual({
-      meta: {
-        method: "delete",
-        model: "script",
-      },
-      type: "script/delete",
-      payload: {
-        params: {
-          id: 1,
-        },
-      },
-    });
-  });
-
-  it("can show script source", async () => {
-    vi.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
-
+  it("opens the script details side panel when the script name is clicked", async () => {
     renderWithProviders(<ScriptsList />, { state });
-    let row = screen.getByRole("row", { name: "commissioning-script" });
-    expect(row).not.toHaveClass("is-active");
 
-    // Click on the expand button:
     await userEvent.click(
-      within(row).getByRole("button", { name: "Show/hide details" })
+      screen.getByRole("button", { name: "commissioning-script" })
     );
-    row = screen.getByRole("row", { name: "commissioning-script" });
-    expect(row).toHaveClass("is-active");
 
-    // expect script source to be decoded base64
-    expect(screen.getByText("test script contents")).toBeInTheDocument();
+    expect(mockOpen).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: ScriptDetails,
+        title: "Script details",
+        props: { id: 1 },
+      })
+    );
   });
 
   it("displays a message if there are no scripts", () => {

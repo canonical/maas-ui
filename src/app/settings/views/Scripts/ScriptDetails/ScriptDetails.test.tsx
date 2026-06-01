@@ -4,7 +4,14 @@ import FileContext, { fileContextStore } from "@/app/base/file-context";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithProviders } from "@/testing/utils";
+import {
+  mockSidePanel,
+  renderWithProviders,
+  screen,
+  userEvent,
+} from "@/testing/utils";
+
+const { mockClose } = await mockSidePanel();
 
 describe("ScriptDetails", () => {
   let state: RootState;
@@ -63,22 +70,8 @@ describe("ScriptDetails", () => {
     expect(screen.getByText("test script contents")).toBeInTheDocument();
   });
 
-  it("displays a collapse button if 'isCollapsible' prop is provided", () => {
-    vi.spyOn(fileContextStore, "get").mockReturnValue("some random text");
-    renderWithProviders(
-      <FileContext.Provider value={fileContextStore}>
-        <ScriptDetails id={1} isCollapsible />
-      </FileContext.Provider>,
-      { state }
-    );
-
-    expect(
-      screen.getByRole("button", { name: /close snippet/i })
-    ).toBeInTheDocument();
-  });
-
-  it("doesn't display a collapse button if 'isCollapsible' prop is not provided", () => {
-    vi.spyOn(fileContextStore, "get").mockReturnValue("some random text");
+  it("closes the side panel when Close is clicked", async () => {
+    vi.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
     renderWithProviders(
       <FileContext.Provider value={fileContextStore}>
         <ScriptDetails id={1} />
@@ -86,8 +79,8 @@ describe("ScriptDetails", () => {
       { state }
     );
 
-    expect(
-      screen.queryByRole("button", { name: /close snippet/i })
-    ).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Close" }));
+
+    expect(mockClose).toHaveBeenCalled();
   });
 });
