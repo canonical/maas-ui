@@ -3,10 +3,11 @@ import { useMemo } from "react";
 import { Button } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
+import DeleteScript from "../../components/DeleteScript";
+
 import TableActions from "@/app/base/components/TableActions";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import ScriptDetails from "@/app/settings/views/Scripts/ScriptDetails";
-import DeleteScript from "@/app/settings/views/Scripts/ScriptsList/components/DeleteScript";
 import type { Script } from "@/app/store/script/types";
 import { formatUtcDatetime } from "@/app/utils/time";
 
