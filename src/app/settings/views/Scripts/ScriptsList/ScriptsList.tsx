@@ -85,6 +85,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
             data={scriptsLoaded ? userScripts : []}
             isLoading={scriptsLoading && !scriptsLoaded}
             noData={noDataMessage}
+            sorting={[{ id: "name", desc: false }]}
           />
         </div>
       </ContentSection.Content>
