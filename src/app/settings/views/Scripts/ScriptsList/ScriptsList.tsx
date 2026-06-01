@@ -81,6 +81,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
             </MainToolbar.Controls>
           </MainToolbar>
           <GenericTable
+            className="scripts-list"
             columns={columns}
             data={scriptsLoaded ? userScripts : []}
             isLoading={scriptsLoading && !scriptsLoaded}
