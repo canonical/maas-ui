@@ -10,7 +10,7 @@
     border-radius: 2px;
     border-color: $color-mid-x-light;
     border-style: dashed;
-    background-color: $color-light;
+    background-color: var(--vf-color-background-alt);
     color: $color-mid;
     outline: none;
     transition: border 0.24s ease-in-out;
