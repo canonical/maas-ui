@@ -1,3 +1,4 @@
+import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
@@ -21,7 +22,16 @@ const DeleteScript = ({ id }: Props): React.ReactElement | null => {
     scriptSelectors.getById(state, id)
   );
 
-  if (!script) return null;
+  if (!script) {
+    return (
+      <>
+        <p>Script could not be found.</p>
+        <Button appearance="base" onClick={closeSidePanel} type="button">
+          Close
+        </Button>
+      </>
+    );
+  }
 
   return (
     <ModelActionForm

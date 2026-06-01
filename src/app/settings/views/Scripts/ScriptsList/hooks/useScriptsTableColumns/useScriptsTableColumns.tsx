@@ -50,16 +50,12 @@ const useScriptsTableColumns = (): ScriptColumnDef[] => {
         header: "Description",
       },
       {
-        id: "uploaded_on",
+        id: "created",
         accessorKey: "created",
         enableSorting: true,
         header: "Uploaded on",
         cell: ({ row }) => {
-          try {
-            return formatUtcDatetime(row.original.created);
-          } catch {
-            return "Never";
-          }
+          return formatUtcDatetime(row.original.created);
         },
       },
       {
