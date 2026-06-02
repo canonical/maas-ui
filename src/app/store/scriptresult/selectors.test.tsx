@@ -96,7 +96,33 @@ describe("scriptResult selectors", () => {
       }),
       nodescriptresult: factory.nodeScriptResultState(),
     });
-    expect(selectors.getByNodeId(state, "abc123")).toStrictEqual(null);
+    expect(selectors.getByNodeId(state, "abc123")).toStrictEqual([]);
+  });
+
+  it("returns empty array for a node with empty result IDs", () => {
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
+        items: [],
+      }),
+      nodescriptresult: factory.nodeScriptResultState({
+        items: { abc123: [] },
+      }),
+    });
+    expect(selectors.getByNodeId(state, "abc123")).toStrictEqual([]);
+  });
+
+  it("returns empty array for commissioning results when node has empty result IDs", () => {
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
+        items: [],
+      }),
+      nodescriptresult: factory.nodeScriptResultState({
+        items: { abc123: [] },
+      }),
+    });
+    expect(selectors.getCommissioningByNodeId(state, "abc123")).toStrictEqual(
+      []
+    );
   });
 
   it("returns hardware testing script results by node id", () => {

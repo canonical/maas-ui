@@ -41,9 +41,6 @@ const MachineTests = (): React.ReactElement => {
     machineSelectors.getById(state, id)
   );
   const previousTestingStatus = usePrevious(machine?.testing_status, true);
-  const scriptResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getByNodeId(state, id)
-  );
   const hardwareResults = useSelector((state: RootState) =>
     scriptResultSelectors.getHardwareTestingByNodeId(state, id)
   );
@@ -54,6 +51,7 @@ const MachineTests = (): React.ReactElement => {
     scriptResultSelectors.getOtherTestingByNodeId(state, id)
   );
   const loading = useSelector(scriptResultSelectors.loading);
+  const loaded = useSelector(scriptResultSelectors.loaded);
   useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
   const isDetails = isMachineDetails(machine);
 
@@ -78,7 +76,7 @@ const MachineTests = (): React.ReactElement => {
     }
   }, [dispatch, previousTestingStatus, loading, machine, id]);
 
-  if (isId(id) && isDetails && scriptResults?.length) {
+  if (isId(id) && isDetails && loaded) {
     return (
       <div aria-label={Label.Title}>
         {hardwareResults?.length && hardwareResults.length > 0
