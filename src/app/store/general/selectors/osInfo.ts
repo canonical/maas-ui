@@ -79,7 +79,7 @@ const getAllUbuntuKernelOptions = createSelector(
 
 /**
  * Returns OS releases
- * @param {OSInfo} data - The osinfo data.
+ * @param {OSInfo} allOsInfo - The osinfo data.
  * @param {String} os - the OS to get releases of
  * @returns {OSInfoOption[]} - the available OS releases
  */
@@ -96,10 +96,12 @@ const _getOsReleases = (
         release[0].includes(os)
       );
     }
-    osReleases = releases.map((release: OSInfoRelease) => ({
-      value: release[0].split("/")[1],
-      label: release[1],
-    }));
+    osReleases = releases.map((release: OSInfoRelease) => {
+      const releaseKey = release[0]; // e.g. "ubuntu/precise"
+      const value = releaseKey.split("/")[1];
+      const label = release[1] || releaseKey;
+      return { value, label };
+    });
   }
 
   return osReleases;
