@@ -245,10 +245,6 @@ describe("machine hook utils", () => {
         .mockReturnValueOnce("mocked-nanoid-2")
         .mockReturnValueOnce("mocked-nanoid-3");
       vi.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
-      // Set connectedCount > 0 so the hook dispatches fetches (it gates on
-      // websocket connection status to avoid the race where the saga's
-      // takeEvery listener is not yet active).
-      state.status = factory.statusState({ connectedCount: 1 });
     });
 
     afterEach(() => {
@@ -488,19 +484,6 @@ describe("machine hook utils", () => {
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
     });
-
-    it("does not fetch if websocket is not connected", () => {
-      state.status = factory.statusState({ connectedCount: 0 });
-      const store = mockStore(state);
-      renderHook(() => useFetchMachines(), {
-        wrapper: generateWrapper(store),
-      });
-      const expected = machineActions.fetch(mockCallId);
-      const getDispatches = store
-        .getActions()
-        .filter((action) => action.type === expected.type);
-      expect(getDispatches).toHaveLength(0);
-    });
   });
 
   const generateWrapper =
@@ -524,7 +507,6 @@ describe("machine hook utils", () => {
       vi.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
       const selected = { items: ["abc123", "def456"] };
       state.machine.selected = selected;
-      state.status = factory.statusState({ connectedCount: 1 });
       const store = mockStore(state);
       renderHook(useFetchSelectedMachines, {
         wrapper: generateWrapper(store),

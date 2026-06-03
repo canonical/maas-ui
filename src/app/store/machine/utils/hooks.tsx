@@ -39,7 +39,6 @@ import type {
   SelectedMachines,
 } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import statusSelectors from "@/app/store/status/selectors";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { Host } from "@/app/store/types/host";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
@@ -548,7 +547,6 @@ export const useFetchMachines = (
   const isStale = useSelector((state: RootState) =>
     machineSelectors.listStale(state, callId)
   );
-  const connectedCount = useSelector(statusSelectors.connectedCount);
 
   useEffect(() => {
     if (isStale) {
@@ -608,9 +606,7 @@ export const useFetchMachines = (
   useEffect(() => {
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
-    // Only generate a callId after the websocket is connected to avoid dispatching
-    // before the saga's takeEvery listener is active.
-    if (isEnabled && connectedCount > 0) {
+    if (isEnabled) {
       if (
         !fastDeepEqual(options || {}, previousOptions || {}) ||
         !callId ||
@@ -626,17 +622,13 @@ export const useFetchMachines = (
     previousOptions,
     isEnabled,
     previousIsEnabled,
-    connectedCount,
   ]);
 
   useEffect(() => {
-    // Only dispatch after the websocket is connected to avoid the race where
-    // the saga's takeEvery listener is not yet active.
     if (
-      connectedCount > 0 &&
-      ((isEnabled && callId && isEnabled !== previousIsEnabled) ||
-        (isEnabled && callId && callId !== previousCallId) ||
-        (isEnabled && callId && staleCount !== previousStaleCount))
+      (isEnabled && callId && isEnabled !== previousIsEnabled) ||
+      (isEnabled && callId && callId !== previousCallId) ||
+      (isEnabled && callId && staleCount !== previousStaleCount)
     ) {
       dispatch(machineActions.fetch(callId, transformToFetchParams(options)));
     }
@@ -649,7 +641,6 @@ export const useFetchMachines = (
     previousIsEnabled,
     staleCount,
     previousStaleCount,
-    connectedCount,
   ]);
 
   return {
