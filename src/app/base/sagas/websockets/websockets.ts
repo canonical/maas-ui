@@ -213,7 +213,6 @@ export function* handleWebsocketEvent(
       }
 
       case "open": {
-        // Reconnection is handled by the race in setupWebSocket.
         // Only reset the loaded cache here so the saga can re-fetch stale data.
         resetLoaded();
         break;
@@ -458,7 +457,7 @@ export function* setupWebSocket({
         reopen: take("status/websocketConnect"),
       });
       if (reopen) {
-        // Reconnection detected — reset cache and loop to re-register takeEvery.
+        // Reconnection detected -> reset cache and loop to re-register takeEvery.
         resetLoaded();
         yield* put({ type: "status/websocketConnected" });
         continue;
