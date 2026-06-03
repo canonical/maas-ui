@@ -209,6 +209,21 @@ describe("osInfo selectors", () => {
       state.general.osInfo.data = null;
       expect(osInfo.getOsReleases(state, "ubuntu")).toEqual([]);
     });
+
+    it("falls back to the release key when the label is an empty string", () => {
+      const stateWithEmptyLabel = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
+            data: factory.osInfo({
+              releases: [["ubuntu/jammy", ""]],
+            }),
+          }),
+        }),
+      });
+      expect(osInfo.getOsReleases(stateWithEmptyLabel, "ubuntu")).toEqual([
+        { value: "jammy", label: "ubuntu/jammy" },
+      ]);
+    });
   });
 
   describe("getAllOsReleases", () => {
@@ -254,6 +269,33 @@ describe("osInfo selectors", () => {
     it("handles no data", () => {
       state.general.osInfo.data = null;
       expect(osInfo.getAllOsReleases(state)).toEqual({});
+    });
+
+    it("falls back to the release key when a label is an empty string", () => {
+      const stateWithEmptyLabel = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
+            loading: false,
+            loaded: true,
+            data: factory.osInfo({
+              osystems: [["ubuntu", "Ubuntu"]],
+              releases: [
+                ["ubuntu/focal", ""],
+                ["ubuntu/jammy", "Ubuntu 22.04 LTS 'Jammy Jellyfish'"],
+              ],
+            }),
+          }),
+        }),
+      });
+      expect(osInfo.getAllOsReleases(stateWithEmptyLabel)).toEqual({
+        ubuntu: [
+          { value: "focal", label: "ubuntu/focal" },
+          {
+            value: "jammy",
+            label: "Ubuntu 22.04 LTS 'Jammy Jellyfish'",
+          },
+        ],
+      });
     });
   });
 
