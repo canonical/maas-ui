@@ -22,6 +22,7 @@ import {
 
 setupMockServer(
   zoneResolvers.listZones.handler(),
+  zoneResolvers.listZonesWithStatistics.handler(),
   poolsResolvers.listPools.handler()
 );
 

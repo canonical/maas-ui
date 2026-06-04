@@ -1,1 +1,1 @@
-export { default } from "./MachineCommissioning";
+export { default, Label } from "./MachineCommissioning";

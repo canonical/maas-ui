@@ -1,1 +1,1 @@
-export { default } from "./MachineTests";
+export { default, Label } from "./MachineTests";

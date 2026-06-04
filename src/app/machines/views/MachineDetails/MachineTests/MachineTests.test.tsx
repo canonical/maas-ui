@@ -1,6 +1,6 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 
-import MachineTests from ".";
+import MachineTests, { Label } from ".";
 
 import { HardwareType } from "@/app/base/enum";
 import type { RootState } from "@/app/store/root/types";
@@ -248,5 +248,19 @@ describe("MachineTests", () => {
         .getActions()
         .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(2);
+  });
+
+  it("renders content (not spinner) when script results are loaded but empty", () => {
+    state.nodescriptresult.items = { abc123: [] };
+    state.scriptresult.items = [];
+    state.scriptresult.loaded = true;
+    state.scriptresult.loading = false;
+    renderWithProviders(<MachineTests />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
+    expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+    expect(screen.getByLabelText(Label.Title)).toBeInTheDocument();
   });
 });

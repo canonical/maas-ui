@@ -1,7 +1,7 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { screen } from "@testing-library/react";
 
-import MachineCommissioning from ".";
+import MachineCommissioning, { Label } from "./MachineCommissioning";
 
 import { HardwareType } from "@/app/base/enum";
 import type { RootState } from "@/app/store/root/types";
@@ -40,6 +40,8 @@ describe("MachineCommissioning", () => {
   });
 
   it("renders the spinner while script results are loading.", () => {
+    state.scriptresult.loading = true;
+    state.scriptresult.loaded = false;
     renderWithProviders(<MachineCommissioning />, {
       state,
       initialEntries: ["/machine/abc123"],
@@ -121,5 +123,19 @@ describe("MachineCommissioning", () => {
         .getActions()
         .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(1);
+  });
+
+  it("renders content (not spinner) when script results are loaded but empty", () => {
+    state.nodescriptresult.items = { abc123: [] };
+    state.scriptresult.items = [];
+    state.scriptresult.loaded = true;
+    state.scriptresult.loading = false;
+    renderWithProviders(<MachineCommissioning />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+      pattern: "/machine/:id",
+    });
+    expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+    expect(screen.getByLabelText(Label.Title)).toBeInTheDocument();
   });
 });
