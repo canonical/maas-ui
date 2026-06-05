@@ -1,6 +1,8 @@
+import type { ReactElement } from "react";
 import { useEffect } from "react";
 
-import { Spinner, Row, Col, MainTable } from "@canonical/react-components";
+import { GenericTable } from "@canonical/maas-react-components";
+import { Row, Col } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
@@ -8,6 +10,9 @@ import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
+import useMachineInstancesColumns, {
+  filterCells,
+} from "@/app/machines/views/MachineDetails/MachineInstances/useMachineInstancesColumns/useMachineInstancesColumns";
 import machineSelectors from "@/app/store/machine/selectors";
 import { MachineMeta } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
@@ -18,73 +23,43 @@ import type {
   NodeDeviceRef,
 } from "@/app/store/types/node";
 
-type InterfaceRow = {
-  key: string;
-  columns: { content: React.ReactElement }[];
+import "./_index.scss";
+
+export type MachineInstance = {
+  id: string;
+  name: NodeDeviceRef["fqdn"];
+  mac: NetworkInterface["mac_address"];
+  ip: NetworkLink["ip_address"];
+  interfaceCount: number;
 };
 
-const formatRowData = (
-  name: NodeDeviceRef["fqdn"],
-  macAddress: NetworkInterface["mac_address"],
-  ipAddress: NetworkLink["ip_address"]
-): InterfaceRow => {
-  return {
-    key: name + macAddress + ipAddress,
-    columns: [
-      { content: <span data-testid="name">{name}</span> },
-      { content: <span data-testid="mac">{macAddress}</span> },
-      { content: <span data-testid="ip">{ipAddress}</span> },
-    ],
-  };
-};
-
-const generateRows = (devices: NodeDeviceRef[]) => {
-  const formattedDevices: InterfaceRow[] = [];
-
-  devices.forEach((device) => {
-    let deviceName = device.fqdn;
-    if (device.interfaces && device.interfaces.length > 0) {
-      device.interfaces.forEach((deviceInterface, deviceIndex) => {
-        // Remove device name so it is not duplicated in the table since this
-        // is another MAC address on this device.
-        if (deviceIndex > 0) {
-          deviceName = "";
-        }
-
-        let interfaceMacAddress = deviceInterface.mac_address;
-
-        if (deviceInterface.links && deviceInterface.links.length > 0) {
-          deviceInterface.links.forEach((interfaceLink, interfaceIndex) => {
-            // Remove the MAC address so it is not duplicated in the table
-            // since this is another link on this interface.
-            if (interfaceIndex > 0) {
-              interfaceMacAddress = "";
-              deviceName = "";
-            }
-
-            formattedDevices.push(
-              formatRowData(
-                deviceName,
-                interfaceMacAddress,
-                interfaceLink.ip_address
-              )
-            );
-          });
-        } else {
-          formattedDevices.push(
-            formatRowData(deviceName, interfaceMacAddress, "")
-          );
-        }
-      });
-    } else {
-      formattedDevices.push(formatRowData(deviceName, "", ""));
+const generateTableData = (devices: NodeDeviceRef[]): MachineInstance[] =>
+  devices.flatMap((device): MachineInstance[] => {
+    const interfaceCount = device.interfaces?.length ?? 0;
+    if (!interfaceCount) {
+      return [
+        { id: device.fqdn, name: device.fqdn, mac: "", ip: "", interfaceCount },
+      ];
     }
+    return device.interfaces.flatMap((iface, ifaceIndex) => [
+      {
+        id: `${device.fqdn}-${ifaceIndex}`,
+        name: device.fqdn,
+        mac: iface.mac_address,
+        ip: iface.links?.[0]?.ip_address ?? "",
+        interfaceCount,
+      },
+      ...(iface.links?.slice(1).map((link, linkIndex) => ({
+        id: `${device.fqdn}-${ifaceIndex}-${linkIndex + 1}`,
+        name: device.fqdn,
+        mac: "",
+        ip: link.ip_address ?? "",
+        interfaceCount,
+      })) ?? []),
+    ]);
   });
 
-  return formattedDevices;
-};
-
-const MachineInstances = (): React.ReactElement => {
+const MachineInstances = (): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
@@ -104,28 +79,25 @@ const MachineInstances = (): React.ReactElement => {
     }
   }, [navigate, machine]);
 
-  if (!machine || !isMachineDetails(machine)) {
-    return <Spinner text="Loading..." />;
-  }
+  const data =
+    machine && isMachineDetails(machine) && machine.devices.length > 0
+      ? generateTableData(machine.devices)
+      : [];
+  const columns = useMachineInstancesColumns();
 
   return (
     <Row>
       <Col size={12}>
-        <MainTable
-          aria-label="machine instances"
-          headers={[
-            {
-              content: "Name",
-            },
-            {
-              content: "MAC",
-            },
-            {
-              content: "IP Address",
-            },
-          ]}
-          paginate={50}
-          rows={generateRows(machine.devices)}
+        <GenericTable
+          aria-label="Machine instances table"
+          className="machine-instances-table"
+          columns={columns}
+          data={data}
+          filterCells={filterCells}
+          groupBy={["name"]}
+          isLoading={!machine || !isMachineDetails(machine)}
+          showChevron
+          variant="full-height"
         />
       </Col>
     </Row>
