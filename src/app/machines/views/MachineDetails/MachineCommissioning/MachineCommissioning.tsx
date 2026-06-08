@@ -31,6 +31,9 @@ const MachineCommissioning = (): React.ReactElement => {
   const loading = useSelector((state: RootState) =>
     scriptResultSelectors.loading(state)
   );
+  const loaded = useSelector((state: RootState) =>
+    scriptResultSelectors.loaded(state)
+  );
   const isDetails = isMachineDetails(machine);
   const previousCommissioningStatus = usePrevious(
     isDetails ? machine.commissioning_status.status : null,
@@ -62,7 +65,7 @@ const MachineCommissioning = (): React.ReactElement => {
     isDetails,
   ]);
 
-  if (isId(id) && isDetails && scriptResults?.length) {
+  if (isId(id) && isDetails && loaded) {
     return (
       <div>
         {commissioningResults?.length && commissioningResults.length > 0 ? (

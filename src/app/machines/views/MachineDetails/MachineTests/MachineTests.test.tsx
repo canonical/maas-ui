@@ -299,4 +299,25 @@ describe("MachineTests", () => {
         .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(2);
   });
+
+  it("renders content (not spinner) when script results are loaded but empty", () => {
+    state.nodescriptresult.items = { abc123: [] };
+    state.scriptresult.items = [];
+    state.scriptresult.loaded = true;
+    state.scriptresult.loading = false;
+    const store = mockStore(state);
+    renderWithMockStore(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
+        </MemoryRouter>
+      </Provider>,
+      { store }
+    );
+    expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+  });
 });

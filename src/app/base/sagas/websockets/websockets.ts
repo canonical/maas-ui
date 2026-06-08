@@ -213,7 +213,7 @@ export function* handleWebsocketEvent(
       }
 
       case "open": {
-        yield* put({ type: "status/websocketConnect" });
+        // Only reset the loaded cache here so the saga can re-fetch stale data.
         resetLoaded();
         break;
       }
@@ -423,7 +423,7 @@ export function* setupWebSocket({
     resetLoaded();
     const socketChannel = yield* call(watchWebsocketEvents, socketClient);
     while (true) {
-      const { cancel } = yield* race({
+      const { cancel, reopen } = yield* race({
         task: all(
           [
             call(handleWebsocketEvent, socketChannel, socketClient),
@@ -452,7 +452,16 @@ export function* setupWebSocket({
           )
         ),
         cancel: take("status/websocketDisconnect"),
+        // Handle reconnection within the saga instead of letting takeLatest
+        // cancel this instance, which would kill in-flight requests.
+        reopen: take("status/websocketConnect"),
       });
+      if (reopen) {
+        // Reconnection detected -> reset cache and loop to re-register takeEvery.
+        resetLoaded();
+        yield* put({ type: "status/websocketConnected" });
+        continue;
+      }
       if (cancel) {
         yield* put({ type: "status/websocketDisconnected" });
       }

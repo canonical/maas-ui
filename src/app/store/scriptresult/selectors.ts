@@ -112,7 +112,7 @@ const getResult = (
   const nodeResultIds =
     nodeId in nodeScriptResult ? nodeScriptResult[nodeId] : [];
   if (!nodeResultIds.length) {
-    return null;
+    return [];
   }
   return scriptResults.filter((scriptResult) => {
     const matchesId = nodeResultIds.includes(scriptResult.id);
@@ -399,7 +399,7 @@ const getInstallationLogsByNodeId = createSelector(
     const results = getResult(nodeScriptResult, scriptResults, nodeId, [
       ScriptResultType.INSTALLATION,
     ]);
-    if (!results) {
+    if (!results?.length) {
       return null;
     }
     return results.reduce<ScriptResultData[]>((resultData, result) => {
