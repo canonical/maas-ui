@@ -64,7 +64,7 @@ const useSourcesTableColumns = ({
           header: "Name",
           cell: ({
             row: {
-              original: { type, url, name, enabled },
+              original: { type, url, name },
             },
           }: {
             row: Row<ImageSource>;
@@ -75,14 +75,15 @@ const useSourcesTableColumns = ({
                 : "MAAS Candidate";
               return (
                 <>
-                  {!enabled && (
-                    <Tooltip
-                      className="disabled-source-tooltip"
-                      message="This default source is disabled."
-                    >
-                      <Icon name="help" />
-                    </Tooltip>
-                  )}
+                  {/*TODO: re-introduce disabled styling with immutable defaults*/}
+                  {/*{!enabled && (*/}
+                  {/*  <Tooltip*/}
+                  {/*    className="disabled-source-tooltip"*/}
+                  {/*    message="This default source is disabled."*/}
+                  {/*  >*/}
+                  {/*    <Icon name="help" />*/}
+                  {/*  </Tooltip>*/}
+                  {/*)}*/}
                   {label}
                 </>
               );
