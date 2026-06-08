@@ -100,37 +100,15 @@ describe("SourcesTable", () => {
       });
       expect(rowActions.length).toBe(3);
 
-      // Default source (enabled)
+      // Default source
       await userEvent.click(rowActions[0]);
       expect(
         screen.getByRole("menuitem", { name: "Edit source..." })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("menuitem", { name: "Delete source..." })
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByRole("menuitem", { name: "Enable source..." })
-      ).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("menuitem", { name: "Disable source..." })
+        screen.getByRole("menuitem", { name: "Delete source..." })
       ).toBeInTheDocument();
       await userEvent.click(rowActions[0]);
-
-      // Default source (disabled)
-      await userEvent.click(rowActions[1]);
-      expect(
-        screen.getByRole("menuitem", { name: "Edit source..." })
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByRole("menuitem", { name: "Delete source..." })
-      ).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("menuitem", { name: "Enable source..." })
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByRole("menuitem", { name: "Disable source..." })
-      ).not.toBeInTheDocument();
-      await userEvent.click(rowActions[1]);
 
       // Custom source
       await userEvent.click(rowActions[2]);
@@ -140,12 +118,6 @@ describe("SourcesTable", () => {
       expect(
         screen.getByRole("menuitem", { name: "Delete source..." })
       ).toBeInTheDocument();
-      expect(
-        screen.queryByRole("menuitem", { name: "Enable source..." })
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByRole("menuitem", { name: "Disable source..." })
-      ).not.toBeInTheDocument();
     });
   });
 

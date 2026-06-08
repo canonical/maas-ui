@@ -9,9 +9,7 @@ import { MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ImageSource } from "@/app/settings/views/Images/Sources/Sources";
 import DeleteSource from "@/app/settings/views/Images/Sources/components/DeleteSource";
-import DisableSource from "@/app/settings/views/Images/Sources/components/DisableSource";
 import EditSource from "@/app/settings/views/Images/Sources/components/EditSource";
-import EnableSource from "@/app/settings/views/Images/Sources/components/EnableSource";
 
 type SourcesColumnDef = ColumnDef<ImageSource, Partial<ImageSource>>;
 
@@ -157,38 +155,19 @@ const useSourcesTableColumns = ({
                       });
                     },
                   },
-                  original.type === BootResourceSourceType.CUSTOM
-                    ? {
-                        children: "Delete source...",
-                        onClick: () => {
-                          openSidePanel({
-                            component: DeleteSource,
-                            title: "Delete custom source",
-                            props: { id: original.id },
-                          });
-                        },
-                      }
-                    : original.enabled
-                      ? {
-                          children: "Disable source...",
-                          onClick: () => {
-                            openSidePanel({
-                              component: DisableSource,
-                              title: "Disable default source",
-                              props: { id: original.id },
-                            });
-                          },
-                        }
-                      : {
-                          children: "Enable source...",
-                          onClick: () => {
-                            openSidePanel({
-                              component: EnableSource,
-                              title: "Enable default source",
-                              props: { id: original.id },
-                            });
-                          },
-                        },
+                  // TODO: When the backend re-introduces the immutable default source
+                  //  feature, restore the type-conditional disable/enable action and remove
+                  //  the unconditional "Delete source..." entry.
+                  {
+                    children: "Delete source...",
+                    onClick: () => {
+                      openSidePanel({
+                        component: DeleteSource,
+                        title: `Delete ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
+                        props: { id: original.id },
+                      });
+                    },
+                  },
                 ]}
                 toggleAppearance="base"
                 toggleClassName="row-menu-toggle u-no-margin--bottom"
