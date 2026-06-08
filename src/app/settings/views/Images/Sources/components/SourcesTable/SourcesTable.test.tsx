@@ -153,7 +153,7 @@ describe("SourcesTable", () => {
       expect(mockOpen).toHaveBeenCalledWith({
         component: EditSource,
         title: "Edit default source",
-        props: { id: 1, isDefault: true },
+        props: { id: 1 },
       });
     });
 

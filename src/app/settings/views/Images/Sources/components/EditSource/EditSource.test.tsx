@@ -33,16 +33,14 @@ const { mockClose } = await mockSidePanel();
 
 describe("EditSource", () => {
   it("calls closeForm on cancel click", async () => {
-    renderWithProviders(<EditSource id={1} isDefault={false} />);
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(mockClose).toHaveBeenCalled();
   });
 
   it("correctly renders edit fields for custom and default sources", async () => {
-    const { rerender } = renderWithProviders(
-      <EditSource id={1} isDefault={false} />
-    );
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
 
     expect(
@@ -64,25 +62,26 @@ describe("EditSource", () => {
       screen.getByRole("spinbutton", { name: Labels.Priority })
     ).toHaveValue(0);
 
-    rerender(<EditSource id={1} isDefault={true} />);
-    await waitForLoading();
-
-    expect(
-      screen.queryByRole("textbox", { name: Labels.Url })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("textbox", { name: Labels.KeyringFilename })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.getByRole("spinbutton", { name: Labels.Priority })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("spinbutton", { name: Labels.Priority })
-    ).toHaveValue(0);
+    // TODO: re-introduce default variance to the edit form
+    // rerender(<EditSource id={1} isDefault={true} />);
+    // await waitForLoading();
+    //
+    // expect(
+    //   screen.queryByRole("textbox", { name: Labels.Url })
+    // ).not.toBeInTheDocument();
+    // expect(
+    //   screen.queryByRole("textbox", { name: Labels.KeyringFilename })
+    // ).not.toBeInTheDocument();
+    // expect(
+    //   screen.getByRole("spinbutton", { name: Labels.Priority })
+    // ).toBeInTheDocument();
+    // expect(
+    //   screen.getByRole("spinbutton", { name: Labels.Priority })
+    // ).toHaveValue(0);
   });
 
   it("switches between keyring filename and keyring data fields when selecting different options", async () => {
-    renderWithProviders(<EditSource id={1} isDefault={false} />);
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
     expect(
       screen.getByRole("textbox", { name: Labels.KeyringFilename })
@@ -104,7 +103,7 @@ describe("EditSource", () => {
   });
 
   it("clears the other field when switching between keyring types", async () => {
-    renderWithProviders(<EditSource id={1} isDefault={false} />);
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
     // The default keyring filename is the editing source filename
     expect(
@@ -130,7 +129,7 @@ describe("EditSource", () => {
   });
 
   it("does not display keyring fields when unsigned keyring type is selected", async () => {
-    renderWithProviders(<EditSource id={1} isDefault={false} />);
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
 
     const select = screen.getByRole("combobox");
@@ -151,7 +150,7 @@ describe("EditSource", () => {
   });
 
   it("shows error when keyring_filename is empty and keyring_type is keyring_filename", async () => {
-    renderWithProviders(<EditSource id={1} isDefault={false} />);
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
 
     const select = screen.getByRole("combobox");
@@ -173,7 +172,7 @@ describe("EditSource", () => {
   });
 
   it("shows error when keyring_data is empty and keyring_type is keyring_data", async () => {
-    renderWithProviders(<EditSource id={1} isDefault={false} />);
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
 
     const select = screen.getByRole("combobox");
@@ -200,7 +199,7 @@ describe("EditSource", () => {
       })
     );
 
-    renderWithProviders(<EditSource id={1} isDefault={false} />);
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
 
     const select = screen.getByRole("combobox");
@@ -220,7 +219,7 @@ describe("EditSource", () => {
   });
 
   it("calls update source on save click", async () => {
-    renderWithProviders(<EditSource id={1} isDefault={false} />);
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
 
     const select = screen.getByRole("combobox");
@@ -245,7 +244,7 @@ describe("EditSource", () => {
         message: "Uh oh!",
       })
     );
-    renderWithProviders(<EditSource id={1} isDefault={false} />);
+    renderWithProviders(<EditSource id={1} />);
     await waitForLoading();
 
     const select = screen.getByRole("combobox");
