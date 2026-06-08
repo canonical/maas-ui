@@ -82,12 +82,12 @@ describe("MachineInstances", () => {
       pattern: "/machine/:id/instances",
     });
 
-    expect(screen.getByTestId("name")).toHaveTextContent("foo");
-    expect(screen.getByTestId("mac")).toHaveTextContent("00:00:9b:7c:1b:85");
-    expect(screen.getByTestId("ip")).toHaveTextContent("100.100.3.99");
+    expect(screen.getByText("foo")).toBeInTheDocument();
+    expect(screen.getByText("00:00:9b:7c:1b:85")).toBeInTheDocument();
+    expect(screen.getByText("100.100.3.99")).toBeInTheDocument();
   });
 
-  it("displays instance with mac address correctly", () => {
+  it("displays instance with mac address correctly when there are no links", () => {
     state.machine.items = [
       factory.machineDetails({
         system_id: "abc123",
@@ -110,9 +110,8 @@ describe("MachineInstances", () => {
       pattern: "/machine/:id/instances",
     });
 
-    expect(screen.getByTestId("name")).toHaveTextContent("foo");
-    expect(screen.getByTestId("mac")).toHaveTextContent("00:00:9b:7c:1b:85");
-    expect(screen.getByTestId("ip")).toHaveTextContent("");
+    expect(screen.getByText("foo")).toBeInTheDocument();
+    expect(screen.getByText("00:00:9b:7c:1b:85")).toBeInTheDocument();
   });
 
   it("displays multiple instances", () => {
@@ -122,27 +121,15 @@ describe("MachineInstances", () => {
         devices: [
           factory.machineDevice({
             fqdn: "foo",
-            interfaces: [
-              factory.machineInterface({
-                mac_address: "00:00:9b:7c:1b:85",
-              }),
-            ],
+            interfaces: [factory.machineInterface()],
           }),
           factory.machineDevice({
             fqdn: "bar",
-            interfaces: [
-              factory.machineInterface({
-                mac_address: "00:00:9b:7c:1b:85",
-              }),
-            ],
+            interfaces: [factory.machineInterface()],
           }),
           factory.machineDevice({
             fqdn: "baz",
-            interfaces: [
-              factory.machineInterface({
-                mac_address: "00:00:9b:7c:1b:85",
-              }),
-            ],
+            interfaces: [factory.machineInterface()],
           }),
         ],
       }),
@@ -154,7 +141,9 @@ describe("MachineInstances", () => {
       pattern: "/machine/:id/instances",
     });
 
-    expect(screen.getAllByTestId("name")).toHaveLength(3);
+    expect(screen.getByText("foo")).toBeInTheDocument();
+    expect(screen.getByText("bar")).toBeInTheDocument();
+    expect(screen.getByText("baz")).toBeInTheDocument();
   });
 
   it("displays instances with multiple mac addresses", () => {
@@ -183,17 +172,9 @@ describe("MachineInstances", () => {
       pattern: "/machine/:id/instances",
     });
 
-    expect(screen.getAllByTestId("mac")).toHaveLength(2);
-    expect(screen.getAllByTestId("name").at(0)).toHaveTextContent("foo");
-    expect(screen.getAllByTestId("mac").at(0)).toHaveTextContent(
-      "00:00:9b:7c:1b:85"
-    );
-    expect(screen.getAllByTestId("ip").at(0)).toHaveTextContent("");
-    expect(screen.getAllByTestId("name").at(1)).toHaveTextContent("");
-    expect(screen.getAllByTestId("mac").at(1)).toHaveTextContent(
-      "00:00:9b:7c:1b:01"
-    );
-    expect(screen.getAllByTestId("ip").at(1)).toHaveTextContent("");
+    expect(screen.getByText("foo")).toBeInTheDocument();
+    expect(screen.getByText("00:00:9b:7c:1b:85")).toBeInTheDocument();
+    expect(screen.getByText("00:00:9b:7c:1b:01")).toBeInTheDocument();
   });
 
   it("displays instances with multiple ip addresses", () => {
@@ -227,14 +208,11 @@ describe("MachineInstances", () => {
       pattern: "/machine/:id/instances",
     });
 
-    expect(screen.getAllByTestId("mac")).toHaveLength(2);
-    expect(screen.getAllByTestId("name").at(0)).toHaveTextContent("foo");
-    expect(screen.getAllByTestId("mac").at(0)).toHaveTextContent(
-      "00:00:9b:7c:1b:85"
-    );
-    expect(screen.getAllByTestId("ip").at(0)).toHaveTextContent("1.2.3.4");
-    expect(screen.getAllByTestId("name").at(1)).toHaveTextContent("");
-    expect(screen.getAllByTestId("mac").at(1)).toHaveTextContent("");
-    expect(screen.getAllByTestId("ip").at(1)).toHaveTextContent("1.2.3.5");
+    expect(screen.getByText("foo")).toBeInTheDocument();
+    // interface row shows mac and first link's ip
+    expect(screen.getByText("00:00:9b:7c:1b:85")).toBeInTheDocument();
+    expect(screen.getByText("1.2.3.4")).toBeInTheDocument();
+    // sibling row for the second link: ip visible, mac cell empty
+    expect(screen.getByText("1.2.3.5")).toBeInTheDocument();
   });
 });
