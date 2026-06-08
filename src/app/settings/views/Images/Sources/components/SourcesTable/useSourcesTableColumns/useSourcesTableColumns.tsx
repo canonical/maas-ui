@@ -149,8 +149,9 @@ const useSourcesTableColumns = ({
                         title: `Edit ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
                         props: {
                           id: original.id,
-                          isDefault:
-                            original.type === BootResourceSourceType.MAAS_IO,
+                          // TODO: Re-introduce default variant when immutable default sources are re-implemented
+                          // isDefault:
+                          //   original.type === BootResourceSourceType.MAAS_IO,
                         },
                       });
                     },
