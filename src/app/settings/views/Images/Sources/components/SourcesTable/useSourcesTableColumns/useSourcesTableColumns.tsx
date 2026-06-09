@@ -85,7 +85,7 @@ const useSourcesTableColumns = ({
                       <Icon name="help" />
                     </Tooltip>
                   )}
-                  {label}
+                  <div>{label}</div>
                 </>
               );
             }
