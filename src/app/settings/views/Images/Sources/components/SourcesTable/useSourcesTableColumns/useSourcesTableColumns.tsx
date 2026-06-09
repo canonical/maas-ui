@@ -9,7 +9,9 @@ import { MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ImageSource } from "@/app/settings/views/Images/Sources/Sources";
 import DeleteSource from "@/app/settings/views/Images/Sources/components/DeleteSource";
+import DisableSource from "@/app/settings/views/Images/Sources/components/DisableSource";
 import EditSource from "@/app/settings/views/Images/Sources/components/EditSource";
+import EnableSource from "@/app/settings/views/Images/Sources/components/EnableSource";
 
 type SourcesColumnDef = ColumnDef<ImageSource, Partial<ImageSource>>;
 
@@ -64,7 +66,7 @@ const useSourcesTableColumns = ({
           header: "Name",
           cell: ({
             row: {
-              original: { type, url, name },
+              original: { type, url, name, enabled },
             },
           }: {
             row: Row<ImageSource>;
@@ -75,15 +77,14 @@ const useSourcesTableColumns = ({
                 : "MAAS Candidate";
               return (
                 <>
-                  {/*TODO: re-introduce disabled styling with immutable defaults*/}
-                  {/*{!enabled && (*/}
-                  {/*  <Tooltip*/}
-                  {/*    className="disabled-source-tooltip"*/}
-                  {/*    message="This default source is disabled."*/}
-                  {/*  >*/}
-                  {/*    <Icon name="help" />*/}
-                  {/*  </Tooltip>*/}
-                  {/*)}*/}
+                  {!enabled && (
+                    <Tooltip
+                      className="disabled-source-tooltip"
+                      message={`This ${type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source is disabled.`}
+                    >
+                      <Icon name="help" />
+                    </Tooltip>
+                  )}
                   {label}
                 </>
               );
@@ -157,9 +158,27 @@ const useSourcesTableColumns = ({
                       });
                     },
                   },
-                  // TODO: When the backend re-introduces the immutable default source
-                  //  feature, restore the type-conditional disable/enable action and remove
-                  //  the unconditional "Delete source..." entry.
+                  original.enabled
+                    ? {
+                        children: "Disable source...",
+                        onClick: () => {
+                          openSidePanel({
+                            component: DisableSource,
+                            title: `Disable ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
+                            props: { id: original.id },
+                          });
+                        },
+                      }
+                    : {
+                        children: "Enable source...",
+                        onClick: () => {
+                          openSidePanel({
+                            component: EnableSource,
+                            title: `Enable ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
+                            props: { id: original.id },
+                          });
+                        },
+                      },
                   {
                     children: "Delete source...",
                     onClick: () => {
