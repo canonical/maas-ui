@@ -560,9 +560,9 @@ describe("websocket sagas", () => {
   it("can handle a WebSocket open message", () => {
     const saga = handleWebsocketEvent(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
-    expect(saga.next({ type: "open" }).value).toEqual(
-      put({ type: "status/websocketConnect" })
-    );
+    // On open, resetLoaded() runs synchronously (no yield), so the saga
+    // continues to the next yield which is take(socketChannel) again.
+    expect(saga.next({ type: "open" }).value).toEqual(take(socketChannel));
   });
 
   it("can store a file context action when sending a WebSocket message", () => {

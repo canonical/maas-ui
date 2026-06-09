@@ -41,6 +41,8 @@ describe("MachineCommissioning", () => {
     });
   });
   it("renders the spinner while script results are loading.", () => {
+    state.scriptresult.loading = true;
+    state.scriptresult.loaded = false;
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -150,5 +152,24 @@ describe("MachineCommissioning", () => {
         .getActions()
         .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(1);
+  });
+  it("renders content (not spinner) when script results are loaded but empty", () => {
+    state.nodescriptresult.items = { abc123: [] };
+    state.scriptresult.items = [];
+    state.scriptresult.loaded = true;
+    state.scriptresult.loading = false;
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <Routes>
+            <Route element={<MachineCommissioning />} path="/machine/:id" />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
   });
 });
