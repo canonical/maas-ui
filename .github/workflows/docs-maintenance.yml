@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "0 9 * * 1"
   workflow_dispatch: {}
+  push:
+    branches:
+      - debug-docs-maintenance-*
 
 permissions:
   contents: write
@@ -17,9 +20,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version-file: ".nvmrc"
 
       - name: Run Gemini docs update
         env:

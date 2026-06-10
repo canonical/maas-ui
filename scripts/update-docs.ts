@@ -4,13 +4,19 @@ import * as path from "path";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 if (!GEMINI_API_KEY) {
-  console.error("❌ GEMINI_API_KEY environment variable is required");
+  console.error("GEMINI_API_KEY environment variable is required");
   process.exit(1);
 }
 
 const SENTINEL_FILE = ".github/docs-last-reviewed-sha";
 const DOCS_DIR = "docs/standards";
 const MODEL = "gemini-2.0-flash";
+
+// Prompt injection safeguards
+const MAX_DOC_SIZE = 50000; // chars
+const MAX_SOURCE_SAMPLE_SIZE = 20000; // chars per file
+const MAX_PROMPT_SIZE = 100000; // chars total
+const MAX_SOURCE_FILES_PER_DOC = 3;
 
 interface PathToDocMapping {
   pattern: RegExp;
@@ -34,6 +40,14 @@ const PATH_TO_DOCS: PathToDocMapping[] = [
   { pattern: /^cypress\//, docs: ["testing.md"] },
   { pattern: /^src\/app\/.*constants.*/, docs: ["constants.md"] },
 ];
+
+function sanitizeForPrompt(text: string, maxSize: number): string {
+  // Prevent prompt injection by limiting size and stripping potentially dangerous patterns
+  let sanitized = text.substring(0, maxSize);
+  // Remove null bytes and other control characters
+  sanitized = sanitized.replace(/[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f]/g, " ");
+  return sanitized;
+}
 
 async function callGemini(prompt: string): Promise<string> {
   try {
@@ -116,20 +130,23 @@ function mapFilesToDocs(files: string[]): Map<string, Set<string>> {
   return result;
 }
 
-function readSourceSample(files: string[], maxFiles = 3): string {
+function readSourceSample(files: string[], maxFiles = MAX_SOURCE_FILES_PER_DOC): string {
   const samples: string[] = [];
+  let totalSize = 0;
   const filesToRead = files.slice(0, maxFiles);
 
   for (const file of filesToRead) {
     if (!fs.existsSync(file)) continue;
+    if (totalSize > MAX_SOURCE_SAMPLE_SIZE) break;
+
     try {
       let content = fs.readFileSync(file, "utf-8");
-      // Truncate to ~200 lines max
-      const lines = content.split("\n");
-      if (lines.length > 200) {
-        content = lines.slice(0, 200).join("\n") + "\n... (truncated)";
-      }
-      samples.push(`\n## File: ${file}\n\`\`\`\n${content}\n\`\`\``);
+      content = sanitizeForPrompt(content, MAX_SOURCE_SAMPLE_SIZE - totalSize);
+
+      samples.push(
+        `\n## File: ${path.basename(file)}\n\`\`\`\n${content}\n\`\`\``
+      );
+      totalSize += content.length;
     } catch {
       // skip unreadable files
     }
@@ -142,18 +159,32 @@ async function reviewDoc(
   docName: string,
   changedFiles: string[]
 ): Promise<string | null> {
-  const docPath = path.join(DOCS_DIR, docName);
-  if (!fs.existsSync(docPath)) {
-    console.log(`⚠️  Doc not found: ${docName}`);
+  // Validate doc name to prevent path traversal
+  if (!docName.match(/^[\w\-]+\.md$/)) {
+    console.log(`Invalid doc name: ${docName}`);
     return null;
   }
 
-  const docContent = fs.readFileSync(docPath, "utf-8");
+  const docPath = path.join(DOCS_DIR, docName);
+  if (!fs.existsSync(docPath)) {
+    console.log(`Doc not found: ${docName}`);
+    return null;
+  }
+
+  let docContent = fs.readFileSync(docPath, "utf-8");
+  docContent = sanitizeForPrompt(docContent, MAX_DOC_SIZE);
+
   const sourcesSample = readSourceSample(Array.from(changedFiles));
 
   const prompt = `You are a documentation reviewer for the maas-ui project.
 
 Review this standards documentation file and determine if it needs updating based on the recent code changes below.
+
+IMPORTANT: Respond ONLY with:
+- CHANGES: no
+- OR: CHANGES: yes followed by ---BEGIN DOC--- and ---END DOC--- markers
+
+Do not add any other text or instructions.
 
 ## Current Documentation
 
@@ -179,13 +210,19 @@ ${sourcesSample}
 
 Only update the documentation if you find inaccuracies or missing patterns. Preserve the existing structure and tone. Make targeted edits, not full rewrites.`;
 
+  // Validate prompt size
+  if (prompt.length > MAX_PROMPT_SIZE) {
+    console.log(`Prompt too large for ${docName}, skipping`);
+    return null;
+  }
+
   try {
     const response = await callGemini(prompt);
     const lines = response.split("\n");
     const firstLine = lines[0].trim();
 
     if (firstLine === "CHANGES: no") {
-      console.log(`✓ ${docName}: no changes needed`);
+      console.log(`${docName}: no changes needed`);
       return null;
     }
 
@@ -193,25 +230,26 @@ Only update the documentation if you find inaccuracies or missing patterns. Pres
       const beginIdx = response.indexOf("---BEGIN DOC---");
       const endIdx = response.indexOf("---END DOC---");
       if (beginIdx !== -1 && endIdx !== -1) {
-        const updatedDoc = response
+        let updatedDoc = response
           .substring(beginIdx + "---BEGIN DOC---".length, endIdx)
           .trim();
-        console.log(`✓ ${docName}: updated`);
+        updatedDoc = sanitizeForPrompt(updatedDoc, MAX_DOC_SIZE);
+        console.log(`${docName}: updated`);
         return updatedDoc;
       }
     }
 
-    console.log(`⚠️  ${docName}: unexpected response format`);
+    console.log(`${docName}: unexpected response format`);
     return null;
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
-    console.error(`❌ ${docName}: ${msg}`);
+    console.error(`${docName}: ${msg}`);
     return null;
   }
 }
 
 async function main() {
-  console.log("🔄 Docs Maintenance Agent");
+  console.log("Docs Maintenance Agent");
   console.log(`Model: ${MODEL}\n`);
 
   const sentinelSha = getSentinelSha();
@@ -256,21 +294,21 @@ async function main() {
   }
 
   if (updatedDocs.size === 0) {
-    console.log("\n✓ All docs up to date. No changes needed.");
+    console.log("\nAll docs up to date. No changes needed.");
     process.exit(0);
   }
 
-  console.log(`\n📝 Writing ${updatedDocs.size} updated doc(s)...`);
+  console.log(`\nWriting ${updatedDocs.size} updated doc(s)...`);
 
   for (const [docName, content] of updatedDocs) {
     const docPath = path.join(DOCS_DIR, docName);
     fs.writeFileSync(docPath, content, "utf-8");
-    console.log(`  ✓ ${docName}`);
+    console.log(`  ${docName}`);
   }
 
   // Update sentinel
   fs.writeFileSync(SENTINEL_FILE, headSha + "\n", "utf-8");
-  console.log(`\n✓ Updated sentinel to ${headSha.slice(0, 8)}`);
+  console.log(`\nUpdated sentinel to ${headSha.slice(0, 8)}`);
 
   // Write PR body
   const prBody = `## Automated Standards Documentation Update
@@ -287,7 +325,7 @@ _This PR was auto-generated by the docs-maintenance workflow._`;
 
   fs.writeFileSync("/tmp/pr-body.md", prBody, "utf-8");
 
-  console.log("\n✓ Ready to create PR");
+  console.log("\nReady to create PR");
 }
 
 main().catch((error) => {
