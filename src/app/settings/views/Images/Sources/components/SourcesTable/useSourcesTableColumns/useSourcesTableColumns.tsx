@@ -71,25 +71,25 @@ const useSourcesTableColumns = ({
           }: {
             row: Row<ImageSource>;
           }) => {
-            if (type === BootResourceSourceType.MAAS_IO) {
-              const label = new RegExp(MAAS_IO_URLS.stable).test(url)
-                ? "MAAS Stable"
-                : "MAAS Candidate";
-              return (
-                <>
-                  {!enabled && (
-                    <Tooltip
-                      className="disabled-source-tooltip"
-                      message={`This ${type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source is disabled.`}
-                    >
-                      <Icon name="help" />
-                    </Tooltip>
-                  )}
-                  <div>{label}</div>
-                </>
-              );
-            }
-            return name;
+            return (
+              <>
+                {!enabled && (
+                  <Tooltip
+                    className="disabled-source-tooltip"
+                    message={`This ${type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source is disabled.`}
+                  >
+                    <Icon name="help" />
+                  </Tooltip>
+                )}
+                <div>
+                  {type === BootResourceSourceType.CUSTOM
+                    ? name
+                    : new RegExp(MAAS_IO_URLS.stable).test(url)
+                      ? "MAAS Stable"
+                      : "MAAS Candidate"}
+                </div>
+              </>
+            );
           },
         },
         {
