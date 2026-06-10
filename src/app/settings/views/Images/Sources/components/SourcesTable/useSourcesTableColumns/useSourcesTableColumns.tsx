@@ -71,25 +71,25 @@ const useSourcesTableColumns = ({
           }: {
             row: Row<ImageSource>;
           }) => {
-            if (type === BootResourceSourceType.MAAS_IO) {
-              const label = new RegExp(MAAS_IO_URLS.stable).test(url)
-                ? "MAAS Stable"
-                : "MAAS Candidate";
-              return (
-                <>
-                  {!enabled && (
-                    <Tooltip
-                      className="disabled-source-tooltip"
-                      message="This default source is disabled."
-                    >
-                      <Icon name="help" />
-                    </Tooltip>
-                  )}
-                  {label}
-                </>
-              );
-            }
-            return name;
+            return (
+              <>
+                {!enabled && (
+                  <Tooltip
+                    className="disabled-source-tooltip"
+                    message={`This ${type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source is disabled.`}
+                  >
+                    <Icon name="help" />
+                  </Tooltip>
+                )}
+                <div>
+                  {type === BootResourceSourceType.CUSTOM
+                    ? name
+                    : new RegExp(MAAS_IO_URLS.stable).test(url)
+                      ? "MAAS Stable"
+                      : "MAAS Candidate"}
+                </div>
+              </>
+            );
           },
         },
         {
@@ -151,44 +151,44 @@ const useSourcesTableColumns = ({
                         title: `Edit ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
                         props: {
                           id: original.id,
-                          isDefault:
-                            original.type === BootResourceSourceType.MAAS_IO,
+                          // TODO: Re-introduce default variant when immutable default sources are re-implemented
+                          // isDefault:
+                          //   original.type === BootResourceSourceType.MAAS_IO,
                         },
                       });
                     },
                   },
-                  original.type === BootResourceSourceType.CUSTOM
+                  original.enabled
                     ? {
-                        children: "Delete source...",
+                        children: "Disable source...",
                         onClick: () => {
                           openSidePanel({
-                            component: DeleteSource,
-                            title: "Delete custom source",
+                            component: DisableSource,
+                            title: `Disable ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
                             props: { id: original.id },
                           });
                         },
                       }
-                    : original.enabled
-                      ? {
-                          children: "Disable source...",
-                          onClick: () => {
-                            openSidePanel({
-                              component: DisableSource,
-                              title: "Disable default source",
-                              props: { id: original.id },
-                            });
-                          },
-                        }
-                      : {
-                          children: "Enable source...",
-                          onClick: () => {
-                            openSidePanel({
-                              component: EnableSource,
-                              title: "Enable default source",
-                              props: { id: original.id },
-                            });
-                          },
+                    : {
+                        children: "Enable source...",
+                        onClick: () => {
+                          openSidePanel({
+                            component: EnableSource,
+                            title: `Enable ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
+                            props: { id: original.id },
+                          });
                         },
+                      },
+                  {
+                    children: "Delete source...",
+                    onClick: () => {
+                      openSidePanel({
+                        component: DeleteSource,
+                        title: `Delete ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
+                        props: { id: original.id },
+                      });
+                    },
+                  },
                 ]}
                 toggleAppearance="base"
                 toggleClassName="row-menu-toggle u-no-margin--bottom"

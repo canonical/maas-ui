@@ -106,13 +106,13 @@ describe("SourcesTable", () => {
         screen.getByRole("menuitem", { name: "Edit source..." })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("menuitem", { name: "Delete source..." })
-      ).not.toBeInTheDocument();
-      expect(
         screen.queryByRole("menuitem", { name: "Enable source..." })
       ).not.toBeInTheDocument();
       expect(
         screen.getByRole("menuitem", { name: "Disable source..." })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("menuitem", { name: "Delete source..." })
       ).toBeInTheDocument();
       await userEvent.click(rowActions[0]);
 
@@ -122,14 +122,14 @@ describe("SourcesTable", () => {
         screen.getByRole("menuitem", { name: "Edit source..." })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("menuitem", { name: "Delete source..." })
-      ).not.toBeInTheDocument();
-      expect(
         screen.getByRole("menuitem", { name: "Enable source..." })
       ).toBeInTheDocument();
       expect(
         screen.queryByRole("menuitem", { name: "Disable source..." })
       ).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("menuitem", { name: "Delete source..." })
+      ).toBeInTheDocument();
       await userEvent.click(rowActions[1]);
 
       // Custom source
@@ -138,14 +138,14 @@ describe("SourcesTable", () => {
         screen.getByRole("menuitem", { name: "Edit source..." })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("menuitem", { name: "Delete source..." })
-      ).toBeInTheDocument();
-      expect(
         screen.queryByRole("menuitem", { name: "Enable source..." })
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByRole("menuitem", { name: "Disable source..." })
-      ).not.toBeInTheDocument();
+        screen.getByRole("menuitem", { name: "Disable source..." })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("menuitem", { name: "Delete source..." })
+      ).toBeInTheDocument();
     });
   });
 
@@ -181,7 +181,7 @@ describe("SourcesTable", () => {
       expect(mockOpen).toHaveBeenCalledWith({
         component: EditSource,
         title: "Edit default source",
-        props: { id: 1, isDefault: true },
+        props: { id: 1 },
       });
     });
 
