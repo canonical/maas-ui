@@ -20,7 +20,7 @@
 
   .ram-popover__secondary {
     @extend %ram-popover-grid;
-    background: $color-light;
+    background: $colors--theme--background-alt;
   }
 
   .ram-popover__separator {

@@ -20,7 +20,7 @@
 
   .cpu-popover__secondary {
     @extend %cpu-popover-grid;
-    background: $color-light;
+    background: $colors--theme--background-alt;
   }
 
   .cpu-popover__separator {
