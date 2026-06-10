@@ -4,8 +4,6 @@ import { Tooltip } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import classNames from "classnames";
 
-import useDarkMode from "../../hooks/useDarkMode/useDarkMode";
-
 type Segment = {
   /**
    * The colour of the segment.
@@ -64,8 +62,6 @@ export const DoughnutChart = ({
   const [tooltipMessage, setTooltipMessage] = useState<
     Segment["tooltip"] | null
   >(null);
-
-  const [isDarkMode] = useDarkMode();
 
   const id = useRef(`doughnut-chart-${nanoid()}`);
   const hoverIncrease = segmentHoverWidth - segmentWidth;
@@ -186,7 +182,6 @@ export const DoughnutChart = ({
           </g>
           {label ? (
             <text
-              fill={isDarkMode ? "white" : "black"}
               x={radius + adjustedHoverWidth / 2}
               y={radius + adjustedHoverWidth / 2}
             >

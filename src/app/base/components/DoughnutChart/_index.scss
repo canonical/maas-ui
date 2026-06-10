@@ -17,6 +17,13 @@
     // Center the text in the circle.
     dominant-baseline: middle;
     text-anchor: middle;
+    // Inherit color so that .is-dark class changes cascade through to the SVG
+    // text without relying on React state, which is only set once at mount.
+    fill: $color-dark;
+
+    .is-dark & {
+      fill: $color-light;
+    }
   }
 
   .doughnut-chart__segment {

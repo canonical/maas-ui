@@ -1,7 +1,6 @@
 @mixin NumaResourcesCard {
   .numa-resources-card {
     @extend %vf-is-bordered;
-    @extend %vf-bg--x-light;
     margin-bottom: $spv--x-large;
   }
 
