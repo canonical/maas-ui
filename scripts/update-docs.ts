@@ -25,11 +25,17 @@ interface PathToDocMapping {
 
 const PATH_TO_DOCS: PathToDocMapping[] = [
   { pattern: /^src\/app\/api\/query\//, docs: ["api-hooks.md"] },
-  { pattern: /^src\/app\/apiclient\//, docs: ["api-hooks.md", "architecture.md"] },
+  {
+    pattern: /^src\/app\/apiclient\//,
+    docs: ["api-hooks.md", "architecture.md"],
+  },
   { pattern: /^src\/app\/store\//, docs: ["store-management.md"] },
   { pattern: /^src\/app\/base\/components\//, docs: ["architecture.md"] },
   { pattern: /^src\/app\/base\/hooks\//, docs: ["architecture.md"] },
-  { pattern: /^src\/app\/.*\/views\//, docs: ["architecture.md", "routing.md"] },
+  {
+    pattern: /^src\/app\/.*\/views\//,
+    docs: ["architecture.md", "routing.md"],
+  },
   { pattern: /^src\/app\/.*\/urls\.ts$/, docs: ["routing.md"] },
   { pattern: /^src\/app\/.*\.scss$/, docs: ["styling.md"] },
   { pattern: /^src\/app\/.*Form.*/, docs: ["forms.md"] },
@@ -116,13 +122,13 @@ function mapFilesToDocs(files: string[]): Map<string, Set<string>> {
 
   for (const file of files) {
     for (const mapping of PATH_TO_DOCS) {
-      if (mapping.pattern.test(file)) {
-        for (const doc of mapping.docs) {
-          if (!result.has(doc)) {
-            result.set(doc, new Set());
-          }
-          result.get(doc)!.add(file);
+      if (!mapping.pattern.test(file)) continue;
+
+      for (const doc of mapping.docs) {
+        if (!result.has(doc)) {
+          result.set(doc, new Set());
         }
+        result.get(doc)!.add(file);
       }
     }
   }
@@ -130,7 +136,10 @@ function mapFilesToDocs(files: string[]): Map<string, Set<string>> {
   return result;
 }
 
-function readSourceSample(files: string[], maxFiles = MAX_SOURCE_FILES_PER_DOC): string {
+function readSourceSample(
+  files: string[],
+  maxFiles = MAX_SOURCE_FILES_PER_DOC
+): string {
   const samples: string[] = [];
   let totalSize = 0;
   const filesToRead = files.slice(0, maxFiles);
