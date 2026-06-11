@@ -8,6 +8,17 @@
   tr {
     .name {
       width: 20%;
+
+      div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .url {
+      width: 25%;
+      word-break: break-all;
+      white-space: normal;
     }
 
     .priority {

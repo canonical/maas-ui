@@ -31,7 +31,6 @@ import { Labels } from "@/app/settings/views/Images/Sources/constants";
 
 type EditSourceProps = {
   id: number;
-  isDefault: boolean;
 };
 
 const getInitialKeyringType = (
@@ -42,7 +41,7 @@ const getInitialKeyringType = (
   return "keyring_unsigned";
 };
 
-const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
+const EditSource = ({ id }: EditSourceProps): ReactElement => {
   const { closeSidePanel } = useSidePanel();
 
   const source = useGetImageSource({ path: { boot_source_id: id } }, true);
@@ -172,13 +171,11 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
           onValuesChanged={onValuesChanged}
           saved={updateSource.isSuccess}
           saving={updateSource.isPending}
-          secondarySubmit={!isDefault ? onValidate : undefined}
-          secondarySubmitLabel={
-            !isValidated && !isDefault ? "Validate" : undefined
-          }
+          secondarySubmit={onValidate}
+          secondarySubmitLabel={!isValidated ? "Validate" : undefined}
           secondarySubmitSaved={isValidated}
           secondarySubmitSaving={fetchImageSource.isPending}
-          submitDisabled={!isValidated && !isDefault}
+          submitDisabled={!isValidated}
           submitLabel="Save source"
           validationSchema={SourceSchema}
         >
@@ -189,106 +186,100 @@ const EditSource = ({ id, isDefault }: EditSourceProps): ReactElement => {
           }: FormikContextType<SourceValues>) => {
             return (
               <>
-                {!isDefault && (
-                  <>
-                    <FormikField
-                      label={Labels.Name}
-                      name="name"
-                      required
-                      type="text"
-                    />
-                    <FormikField
-                      aria-label={Labels.Url}
-                      disabled
-                      label={
-                        <>
-                          {Labels.Url}
-                          <Tooltip
-                            className="u-nudge-right--small"
-                            message="Source URL is immutable. You must delete this source, and create a new one to change the URL."
-                          >
-                            <Icon name="help" />
-                          </Tooltip>
-                        </>
-                      }
-                      name="url"
-                      type="text"
-                    />
-                    <Select
-                      label="Keyring"
-                      name="keyring_type"
-                      onChange={async (
-                        e: React.ChangeEvent<HTMLSelectElement>
-                      ) => {
-                        const newType = e.target.value as
-                          | "keyring_data"
-                          | "keyring_filename"
-                          | "keyring_unsigned";
-                        await setFieldValue("keyring_type", newType).catch(
-                          (reason: unknown) => {
-                            throw new FormikFieldChangeError(
-                              "keyring_type",
-                              "setFieldValue",
-                              reason as string
-                            );
-                          }
+                <FormikField
+                  label={Labels.Name}
+                  name="name"
+                  required
+                  type="text"
+                />
+                <FormikField
+                  aria-label={Labels.Url}
+                  disabled
+                  label={
+                    <>
+                      {Labels.Url}
+                      <Tooltip
+                        className="u-nudge-right--small"
+                        message="Source URL is immutable. You must delete this source, and create a new one to change the URL."
+                      >
+                        <Icon name="help" />
+                      </Tooltip>
+                    </>
+                  }
+                  name="url"
+                  type="text"
+                />
+                <Select
+                  label="Keyring"
+                  name="keyring_type"
+                  onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+                    const newType = e.target.value as
+                      | "keyring_data"
+                      | "keyring_filename"
+                      | "keyring_unsigned";
+                    await setFieldValue("keyring_type", newType).catch(
+                      (reason: unknown) => {
+                        throw new FormikFieldChangeError(
+                          "keyring_type",
+                          "setFieldValue",
+                          reason as string
                         );
-                        // Clear the other field when switching types
-                        if (newType === "keyring_filename") {
-                          await setFieldValue("keyring_data", "").catch(
-                            (reason: unknown) => {
-                              throw new FormikFieldChangeError(
-                                "keyring_data",
-                                "setFieldValue",
-                                reason as string
-                              );
-                            }
-                          );
-                        } else if (newType === "keyring_data") {
-                          await setFieldValue("keyring_filename", "").catch(
-                            (reason: unknown) => {
-                              throw new FormikFieldChangeError(
-                                "keyring_filename",
-                                "setFieldValue",
-                                reason as string
-                              );
-                            }
+                      }
+                    );
+                    // Clear the other field when switching types
+                    if (newType === "keyring_filename") {
+                      await setFieldValue("keyring_data", "").catch(
+                        (reason: unknown) => {
+                          throw new FormikFieldChangeError(
+                            "keyring_data",
+                            "setFieldValue",
+                            reason as string
                           );
                         }
-                        await validateForm();
-                      }}
-                      options={[
-                        {
-                          label: "Keyring filename",
-                          value: "keyring_filename",
-                        },
-                        { label: "Keyring data", value: "keyring_data" },
-                        { label: "Unsigned", value: "keyring_unsigned" },
-                      ]}
-                      required
-                      value={values.keyring_type}
-                    />
-                    {values.keyring_type === "keyring_filename" ? (
-                      <FormikField
-                        aria-label={Labels.KeyringFilename}
-                        help="Path to the keyring to validate the mirror path."
-                        name="keyring_filename"
-                        placeholder="e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
-                        required
-                        type="text"
-                      />
-                    ) : values.keyring_type === "keyring_data" ? (
-                      <FormikField
-                        aria-label={Labels.KeyringData}
-                        component={Textarea}
-                        help="Contents on the keyring to validate the mirror path."
-                        name="keyring_data"
-                        placeholder="Contents of GPG key (base64 encoded)"
-                        required
-                      />
-                    ) : null}
-                  </>
-                )}
+                      );
+                    } else if (newType === "keyring_data") {
+                      await setFieldValue("keyring_filename", "").catch(
+                        (reason: unknown) => {
+                          throw new FormikFieldChangeError(
+                            "keyring_filename",
+                            "setFieldValue",
+                            reason as string
+                          );
+                        }
+                      );
+                    }
+                    await validateForm();
+                  }}
+                  options={[
+                    {
+                      label: "Keyring filename",
+                      value: "keyring_filename",
+                    },
+                    { label: "Keyring data", value: "keyring_data" },
+                    { label: "Unsigned", value: "keyring_unsigned" },
+                  ]}
+                  required
+                  value={values.keyring_type}
+                />
+                {values.keyring_type === "keyring_filename" ? (
+                  <FormikField
+                    aria-label={Labels.KeyringFilename}
+                    help="Path to the keyring to validate the mirror path."
+                    name="keyring_filename"
+                    placeholder="e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
+                    required
+                    type="text"
+                  />
+                ) : values.keyring_type === "keyring_data" ? (
+                  <FormikField
+                    aria-label={Labels.KeyringData}
+                    component={Textarea}
+                    help="Contents on the keyring to validate the mirror path."
+                    name="keyring_data"
+                    placeholder="Contents of GPG key (base64 encoded)"
+                    required
+                  />
+                ) : null}
                 <FormikField
                   help="If the same image is available from several sources, the image from the higher priority takes precedence. 1 is the lowest priority."
                   label={Labels.Priority}
