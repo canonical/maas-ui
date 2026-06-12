@@ -1,0 +1,62 @@
+name: Standards Compliance Review
+
+on:
+  schedule:
+    - cron: "0 10 * * 1"
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to check (leave empty for weekly full scan)"
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: read
+
+jobs:
+  pr-review:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.pr_number != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Review PR standards
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.inputs.pr_number }}
+        run: npx tsx scripts/check-standards-review.ts
+
+  weekly-scan:
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.pr_number == '')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Scan standards
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: npx tsx scripts/check-standards-review.ts
+
+      - name: Create or update PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: standards-review/weekly
+          commit-message: "review: automated standards compliance check"
+          title: "review: weekly standards compliance check"
+          labels: review,automated
+          body-path: /tmp/pr-body.md
+          delete-branch: false
