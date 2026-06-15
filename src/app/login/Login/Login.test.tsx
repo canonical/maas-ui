@@ -1,6 +1,7 @@
 import Login, { Labels } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
+import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
@@ -51,6 +52,26 @@ describe("Login", () => {
     expect(
       screen.getByRole("link", { name: Labels.ExternalLoginButton })
     ).toBeInTheDocument();
+  });
+
+  it("does not restart external login when already authenticated", async () => {
+    state.status.authenticated = true;
+    state.status.externalAuthURL = "http://login.example.com";
+
+    const { router, store } = renderWithProviders(<Login />, {
+      initialEntries: ["/login"],
+      state,
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/machines");
+    });
+
+    expect(
+      store
+        .getActions()
+        .some((action) => action.type === statusActions.externalLogin().type)
+    ).toBe(false);
   });
 
   it("hides the password field when a username has not been entered", async () => {

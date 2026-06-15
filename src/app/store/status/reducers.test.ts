@@ -307,6 +307,31 @@ describe("status", () => {
     );
   });
 
+  it("should correctly reduce status/externalSessionExpired", () => {
+    expect(
+      reducers(
+        factory.statusState({
+          authenticated: true,
+          authenticating: true,
+          authenticationError: null,
+          connected: true,
+          connecting: true,
+        }),
+        {
+          type: "status/externalSessionExpired",
+        }
+      )
+    ).toStrictEqual(
+      factory.statusState({
+        authenticated: false,
+        authenticating: false,
+        authenticationError: "Session expired",
+        connected: false,
+        connecting: false,
+      })
+    );
+  });
+
   it("should correctly reduce status/checkAuthenticatedError", () => {
     expect(
       reducers(
