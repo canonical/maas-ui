@@ -7,6 +7,8 @@ const docsUrls = {
     "https://canonical.com/maas/docs/pre-3.7/how-to-guides/manage-machines/#add-via-chassis",
   autoRenewTLSCert:
     "https://canonical.com/maas/docs/pre-3.7/how-to-guides/enhance-maas-security/#renew-certificates",
+  customisingDeployedMachines:
+    "https://canonical.com/maas/docs/pre-3.7/explanation/machine-customization/#machine-customization",
   cloudInit:
     "https://canonical.com/maas/docs/pre-3.7/reference/configuration-guides/cloud-init/#basic-cloud-init-configurations-for-maas",
   configurationJourney:
