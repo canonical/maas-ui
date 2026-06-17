@@ -1,5 +1,5 @@
 @mixin MachineSelectTable {
-  .machine-select-table {
+  .p-generic-table.machine-select-table {
     tr.p-generic-table__individual-row {
       cursor: pointer;
 
@@ -12,6 +12,18 @@
     // substrings, so it's increased slightly here.
     strong {
       font-weight: 600;
+    }
+
+    th.p-column-header.owner {
+      text-align: left;
+    }
+
+    td {
+      padding: 0;
+    }
+
+    .machine-select-table__cell {
+      padding: 0.75rem;
     }
   }
 }

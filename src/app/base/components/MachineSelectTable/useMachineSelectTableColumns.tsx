@@ -57,7 +57,8 @@ const useMachineSelectTableColumns = ({
             />
           );
           return (
-            <span
+            <div
+              className="machine-select-table__cell"
               onClick={() => {
                 setSearchText(machine.hostname);
                 onMachineClick(machine);
@@ -67,7 +68,7 @@ const useMachineSelectTableColumns = ({
                 primary={highlightedText(machine.hostname)}
                 secondary={highlightedText(machine.system_id)}
               />
-            </span>
+            </div>
           );
         },
       },
@@ -91,7 +92,8 @@ const useMachineSelectTableColumns = ({
             />
           );
           return (
-            <span
+            <div
+              className="machine-select-table__cell"
               onClick={() => {
                 setSearchText(machine.hostname);
                 onMachineClick(machine);
@@ -107,7 +109,7 @@ const useMachineSelectTableColumns = ({
                     : "-"
                 }
               />
-            </span>
+            </div>
           );
         },
       },
