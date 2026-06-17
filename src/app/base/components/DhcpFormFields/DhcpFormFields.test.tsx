@@ -8,11 +8,11 @@ import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  userEvent,
-  screen,
-  waitFor,
-  within,
+  fireEvent,
   renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
@@ -177,12 +177,18 @@ describe("DhcpFormFields", () => {
     await waitFor(() => {
       expect(screen.getByRole("grid")).toHaveAttribute("aria-busy", "false");
     });
-    await userEvent.click(
-      within(screen.getByRole("grid")).getByText(machine.hostname)
+    // need to use fireEvent here to click through the element and trigger the onCLick handler
+    // eslint-disable-next-line testing-library/prefer-user-event
+    fireEvent.click(
+      screen.getByRole("cell", {
+        name: new RegExp(machine.hostname),
+      }).firstChild as Element
     );
-    expect(
-      screen.getByRole("button", { name: new RegExp(machine.hostname, "i") })
-    ).toHaveAccessibleDescription(Labels.AppliesTo);
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: new RegExp(machine.hostname, "i") })
+      ).toHaveAccessibleDescription(Labels.AppliesTo);
+    });
     // Change the type. The select value should be cleared.
     await userEvent.selectOptions(typeSelect, "subnet");
     expect(

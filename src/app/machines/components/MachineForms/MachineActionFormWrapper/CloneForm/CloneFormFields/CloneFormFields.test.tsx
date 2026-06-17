@@ -99,7 +99,13 @@ describe("CloneFormFields", () => {
       </Formik>,
       { state }
     );
-    await userEvent.click(screen.getAllByTestId("machine-select-row")[0]);
+
+    // nested span contains the onClick handler
+    await userEvent.click(
+      screen.getByRole("cell", {
+        name: new RegExp(`^${machine.hostname}`),
+      }).firstChild as Element
+    );
     const expectedAction = machineActions.get(machine.system_id, callId);
 
     await waitFor(() => {

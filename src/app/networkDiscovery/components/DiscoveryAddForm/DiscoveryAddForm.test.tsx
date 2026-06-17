@@ -16,6 +16,7 @@ import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
+  fireEvent,
   renderWithProviders,
   screen,
   userEvent,
@@ -180,9 +181,10 @@ describe("DiscoveryAddForm", () => {
         name: "Select parent (optional) - open list",
       })
     );
-    await userEvent.click(
-      within(screen.getByRole("listbox")).getByText("abc123")
-    );
+
+    // fireEvent is necessary to click through the element and trigger the handler
+    // eslint-disable-next-line testing-library/prefer-user-event
+    fireEvent.click(within(screen.getByRole("listbox")).getByText("abc123"));
 
     await userEvent.clear(
       screen.getByRole("textbox", {

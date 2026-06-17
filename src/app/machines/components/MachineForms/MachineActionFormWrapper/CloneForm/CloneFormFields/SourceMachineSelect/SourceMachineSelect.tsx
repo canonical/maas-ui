@@ -73,7 +73,6 @@ export const SourceMachineSelect = ({
           machines={machines}
           machinesLoading={loading}
           onMachineClick={onMachineClick}
-          pageSize={pageSize}
           searchText={searchText}
           setSearchText={setSearchText}
         />

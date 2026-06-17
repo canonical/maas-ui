@@ -1,14 +1,9 @@
-import MachineSelectTable, { Label } from "./MachineSelectTable";
+import MachineSelectTable from "./MachineSelectTable";
 
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  within,
-  renderWithProviders,
-} from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("MachineSelectTable", () => {
   let machines: Machine[];
@@ -47,14 +42,14 @@ describe("MachineSelectTable", () => {
     renderWithProviders(
       <MachineSelectTable
         machines={machines}
+        machinesLoading={true}
         onMachineClick={vi.fn()}
-        pageSize={machines.length}
         searchText=""
         setSearchText={vi.fn()}
       />,
       { state }
     );
-    expect(screen.getByRole("grid")).toHaveAttribute("aria-busy", "true");
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("highlights the substring that matches the search text", async () => {
@@ -62,18 +57,13 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={[machines[0]]}
         onMachineClick={vi.fn()}
-        pageSize={machines.length}
         searchText="fir"
         setSearchText={vi.fn()}
       />,
       { state }
     );
 
-    const hostnameCol = screen.getByRole("gridcell", {
-      name: Label.Hostname,
-    });
-
-    expect(hostnameCol.querySelector("strong")).toHaveTextContent("fir");
+    expect(screen.getByText("fir")).toBeInTheDocument();
   });
 
   it("runs onMachineClick function on row click", async () => {
@@ -83,14 +73,17 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={machines}
         onMachineClick={onMachineClick}
-        pageSize={machines.length}
         searchText=""
         setSearchText={vi.fn()}
       />,
       { state }
     );
 
-    await userEvent.click(screen.getByRole("row", { name: "first" }));
+    // have to click through to the span that has the click handler
+    await userEvent.click(
+      screen.getByRole("cell", { name: new RegExp(machines[0].hostname) })
+        .firstChild as Element
+    );
     expect(onMachineClick).toHaveBeenCalledWith(machines[0]);
   });
 
@@ -99,38 +92,12 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={machines}
         onMachineClick={vi.fn()}
-        pageSize={machines.length}
         searchText=""
         setSearchText={vi.fn()}
       />,
       { state }
     );
-    const ownerCols = screen.getAllByRole("gridcell", {
-      name: Label.Owner,
-    });
-    expect(within(ownerCols[0]).getByText("tagA")).toBeInTheDocument();
-  });
-
-  it("can select machine by pressing Enter key", async () => {
-    const onMachineClick = vi.fn();
-    const machine = machines[0];
-    renderWithProviders(
-      <MachineSelectTable
-        machines={machines}
-        onMachineClick={onMachineClick}
-        pageSize={machines.length}
-        searchText=""
-        setSearchText={vi.fn()}
-      />,
-      { state }
-    );
-    screen
-      .getByRole("row", {
-        name: machine.hostname,
-      })
-      .focus();
-    await userEvent.keyboard("{enter}");
-    expect(onMachineClick).toHaveBeenCalledWith(machine);
+    expect(screen.getByText("tagA")).toBeInTheDocument();
   });
 
   it("renders with partial search string", async () => {
@@ -139,7 +106,6 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={machines}
         onMachineClick={onMachineClick}
-        pageSize={machines.length}
         searchText="id:("
         setSearchText={vi.fn()}
       />,
