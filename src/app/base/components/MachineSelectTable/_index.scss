@@ -1,9 +1,11 @@
 @mixin MachineSelectTable {
-  .machine-select-table__row {
-    cursor: pointer;
+  .machine-select-table {
+    tr.p-generic-table__individual-row {
+      cursor: pointer;
 
-    &:hover {
-      background-color: var(--vf-color-background-hover);
+      &:hover {
+        background-color: var(--vf-color-background-hover);
+      }
     }
 
     // The default <strong> font-weight is a bit subtle for highlighting

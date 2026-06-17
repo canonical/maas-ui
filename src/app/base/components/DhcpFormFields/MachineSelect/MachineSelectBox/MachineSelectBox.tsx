@@ -49,7 +49,6 @@ const MachineSelectBox = ({
           onMachineClick={(machine) => {
             onSelect(machine);
           }}
-          pageSize={pageSize}
           searchText={searchText}
           setSearchText={setSearchText}
         />
