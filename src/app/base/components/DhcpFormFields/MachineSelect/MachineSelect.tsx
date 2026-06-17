@@ -1,7 +1,7 @@
 import type { HTMLProps } from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useId, useState } from "react";
 
-import { useId, useOnEscapePressed } from "@canonical/react-components";
+import { useOnEscapePressed } from "@canonical/react-components";
 import Field from "@canonical/react-components/dist/components/Field";
 import className from "classnames";
 import { useFormikContext } from "formik";
@@ -51,10 +51,10 @@ export const MachineSelect = ({
     []
   );
   const handleSelect = (machine: Machine | null) => {
-    handleClose();
     setFieldValue(name, machine?.system_id || null).catch((reason: unknown) => {
       throw new FormikFieldChangeError(name, "setFieldValue", reason as string);
     });
+    setIsOpen(false);
   };
   useOnEscapePressed(handleClose);
   const { machine } = useFetchMachine(value as string);
