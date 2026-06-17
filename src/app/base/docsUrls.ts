@@ -1,35 +1,39 @@
 const docsUrls = {
   aboutNativeTLS:
-    "https://maas.io/docs/how-to-enhance-maas-security#p-9102-configure-tls-33",
+    "https://canonical.com/maas/docs/3.7/how-to-guides/enhance-maas-security/#configure-tls-3-3",
   addMachines:
-    "https://maas.io/docs/how-to-manage-machines#p-9078-add-configure-machines",
-  addNodesViaChassis: "https://maas.io/docs/how-to-manage-machines",
+    "https://canonical.com/maas/docs/3.7/how-to-guides/manage-machines/#add-a-machine",
+  addNodesViaChassis:
+    "https://canonical.com/maas/docs/3.7/how-to-guides/manage-machines/#add-via-chassis",
   autoRenewTLSCert:
-    "https://maas.io/docs/how-to-enhance-maas-security#p-9102-renew-certificates",
-  cloudInit: "https://maas.io/docs/how-to-use-cloud-init-with-maas",
+    "https://canonical.com/maas/docs/3.7/how-to-guides/enhance-maas-security/#renew-certificates",
+  cloudInit:
+    "https://canonical.com/maas/docs/3.7/reference/configuration-guides/cloud-init/#basic-cloud-init-configurations-for-maas",
   configurationJourney:
-    "https://maas.io/docs/how-to-get-maas-up-and-running#p-9034-maas-ui-setup",
-  dhcp: "https://maas.io/docs/about-maas-networking#p-20679-dhcp",
+    "https://canonical.com/maas/docs/3.7/how-to-guides/get-started/install-maas/#access-the-maas-ui",
+  dhcp: "https://canonical.com/maas/docs/3.7/explanation/networking/#dhcp",
   hardwareSync:
-    "https://maas.io/docs/how-to-manage-machines#p-9078-enable-hardware-sync-maas-32",
-  ipmi: "https://maas.io/docs/reference-power-drivers#p-17434-ipmi",
+    "https://canonical.com/maas/docs/3.7/explanation/deploying-running-machines/#hardware-sync",
+  ipmi: "https://canonical.com/maas/docs/3.7/reference/configuration-guides/power-drivers/#id6",
   ipRanges:
-    "https://maas.io/docs/about-maas-networking#p-20679-ip-range-management-and-static-ip-assignments",
-  kvmIntroduction: "https://maas.io/docs/how-to-manage-machines#p-9078-add-vms",
+    "https://canonical.com/maas/docs/3.7/explanation/networking/#ip-range-management-and-static-ip-assignments",
+  kvmIntroduction:
+    "https://canonical.com/maas/docs/3.7/how-to-guides/manage-machines/#use-lxd-vms",
   networkDiscovery:
-    "https://maas.io/docs/about-maas-networking#p-20679-network-discovery",
+    "https://canonical.com/maas/docs/3.7/explanation/networking/#network-discovery",
   rackController:
-    "https://maas.io/docs/about-controllers#p-13954-rack-controllers",
+    "https://canonical.com/maas/docs/3.7/explanation/controllers/#rack-controllers",
   sshKeys:
-    "https://maas.io/docs/how-to-enhance-maas-security#p-9102-manage-users",
-  tagsAutomatic: "https://maas.io/docs/about-machine-groups",
+    "https://canonical.com/maas/docs/3.7/how-to-guides/enhance-maas-security/#manage-users",
+  tagsAutomatic:
+    "https://canonical.com/maas/docs/3.7/explanation/machine-groups/#machine-groups",
   tagsKernelOptions:
-    "https://maas.io/docs/how-to-manage-machines#p-9078-set-kernel-parameters",
+    "https://canonical.com/maas/docs/3.7/how-to-guides/manage-machines/#kernel-configuration",
   tagsXpathExpressions: "https://www.w3schools.com/xml/XPath_intro.asp",
   vaultIntegration:
-    "https://maas.io/docs/how-to-enhance-maas-security#p-9102-manage-vault",
+    "https://canonical.com/maas/docs/3.7/how-to-guides/enhance-maas-security/#manage-vault",
   windowsImages:
-    "https://maas.io/docs/how-to-build-custom-images#p-17423-build-windows-images",
+    "https://canonical.com/maas/docs/3.7/how-to-guides/build-custom-images/#build-custom-images",
 } as const;
 
 export default docsUrls;
