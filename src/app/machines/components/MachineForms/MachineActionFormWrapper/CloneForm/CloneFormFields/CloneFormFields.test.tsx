@@ -8,10 +8,10 @@ import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-    renderWithProviders,
-    screen,
-    userEvent,
-    waitFor,
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 const callId = "mocked-nanoid";
