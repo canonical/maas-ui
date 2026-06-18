@@ -40,6 +40,7 @@ export type LoginValues = {
 
 export const Labels = {
   APILoginForm: "Login",
+  Back: "Back",
   ExternalLoginButton: "Go to login page",
   NoUsers: "No admin user has been created yet",
   Password: "Password",
@@ -108,6 +109,21 @@ export const Login = (): ReactElement => {
     }
   }, [authenticated, dispatch, externalAuthURL]);
 
+  const handleBack = useCallback(
+    (
+      _values: LoginValues,
+      formikContext: {
+        setFieldTouched: (field: string, isTouched?: boolean) => void;
+        setFieldValue: (field: string, value: string) => void;
+      }
+    ) => {
+      setSubmittedUsername(null);
+      formikContext.setFieldValue("password", "");
+      formikContext.setFieldTouched("password", false);
+    },
+    [setSubmittedUsername]
+  );
+
   const handleSubmit = (values: LoginValues) => {
     authenticate.mutate({
       body: {
@@ -165,10 +181,12 @@ export const Login = (): ReactElement => {
                 ) : (
                   <FormikForm<LoginValues, LoginError>
                     aria-label={Labels.APILoginForm}
+                    cancelLabel={Labels.Back}
                     initialValues={{
                       password: "",
                       username: "",
                     }}
+                    onCancel={hasEnteredUsername ? handleBack : null}
                     onSubmit={(values) => {
                       if (!hasEnteredUsername) {
                         setSubmittedUsername(values.username);
@@ -202,9 +220,8 @@ export const Login = (): ReactElement => {
                       </p>
                     ) : null}
                     <FormikField
-                      aria-hidden={hasEnteredUsername}
-                      hidden={hasEnteredUsername}
-                      label={hasEnteredUsername ? "" : Labels.Username}
+                      disabled={hasEnteredUsername}
+                      label={Labels.Username}
                       name="username"
                       required={true}
                       takeFocus={!hasEnteredUsername}

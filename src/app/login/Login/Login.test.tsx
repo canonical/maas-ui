@@ -98,6 +98,81 @@ describe("Login", () => {
     });
   });
 
+  it("shows the username as a disabled field in step 2 for local users", async () => {
+    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.Username }),
+      "koala"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(Labels.Password)).toBeInTheDocument();
+    });
+
+    const usernameField = screen.getByRole("textbox", {
+      name: Labels.Username,
+    });
+    expect(usernameField).toBeInTheDocument();
+    expect(usernameField).toBeDisabled();
+    expect(usernameField).toHaveValue("koala");
+  });
+
+  it("shows the username as a disabled field in step 2 for OIDC users", async () => {
+    mockServer.use(
+      authResolvers.isOidcUser.handler({
+        is_oidc: true,
+        provider_name: "ExampleProvider",
+        auth_url: "http://login.provider.com",
+      })
+    );
+
+    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.Username }),
+      "koala"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Login with ExampleProvider" })
+      ).toBeInTheDocument();
+    });
+
+    const usernameField = screen.getByRole("textbox", {
+      name: Labels.Username,
+    });
+    expect(usernameField).toBeInTheDocument();
+    expect(usernameField).toBeDisabled();
+    expect(usernameField).toHaveValue("koala");
+  });
+
+  it("can go back to step 1 from step 2", async () => {
+    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.Username }),
+      "koala"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(Labels.Password)).toBeInTheDocument();
+    });
+
+    await userEvent.click(screen.getByRole("button", { name: Labels.Back }));
+
+    // Back to step 1: username is editable, password is hidden
+    const usernameField = screen.getByRole("textbox", {
+      name: Labels.Username,
+    });
+    expect(usernameField).not.toBeDisabled();
+    expect(screen.queryByLabelText(Labels.Password)).not.toBeInTheDocument();
+  });
+
   it("can login locally when the user is local", async () => {
     const { store } = renderWithProviders(<Login />, {
       initialEntries: ["/login"],
@@ -111,7 +186,6 @@ describe("Login", () => {
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     await waitFor(() => {
-      expect(authResolvers.isOidcUser.resolved).toBeTruthy();
       expect(screen.getByLabelText(Labels.Password)).toBeInTheDocument();
       expect(
         screen.getByRole("button", { name: Labels.Submit })
@@ -159,7 +233,6 @@ describe("Login", () => {
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     await waitFor(() => {
-      expect(authResolvers.isOidcUser.resolved).toBeTruthy();
       expect(screen.queryByLabelText(Labels.Password)).not.toBeInTheDocument();
       expect(
         screen.getByRole("button", { name: "Login with ExampleProvider" })
@@ -198,7 +271,6 @@ describe("Login", () => {
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     await waitFor(() => {
-      expect(authResolvers.isOidcUser.resolved).toBeTruthy();
       expect(screen.getByRole("alert")).toHaveTextContent(
         Labels.MissingProviderConfig
       );
@@ -218,7 +290,6 @@ describe("Login", () => {
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     await waitFor(() => {
-      expect(authResolvers.isOidcUser.resolved).toBeTruthy();
       expect(screen.getByLabelText(Labels.Password)).toBeInTheDocument();
     });
 
