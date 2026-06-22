@@ -335,59 +335,82 @@ const useImageTableColumns = ({
           accessorKey: "source",
           enableSorting: false,
           header: () => "Source",
-          cell: ({ row: { original } }) => {
-            if (!original.isUpstream) {
+          cell: ({
+            row: {
+              original: {
+                id,
+                os,
+                release,
+                architecture,
+                boot_source_id,
+                isUpstream,
+                status,
+                update_status,
+              },
+            },
+          }) => {
+            if (!isUpstream) {
               return null;
             }
 
-            if (isSourcesPending || isAvailableImagesPending) {
+            if (
+              isStatusLoading ||
+              isSourcesPending ||
+              isAvailableImagesPending
+            ) {
               return <Spinner text="Loading..." />;
             }
 
-            const key = `${original.os}/${original.release}/${original.architecture}`;
+            const key = `${os}/${release}/${architecture}`;
             const switchableSources = sourcesByImageKey[key] ?? [];
             const currentSource = switchableSources.find(
-              (source) => source.id === original.boot_source_id
+              (source) => source.id === boot_source_id
             );
 
             return (
-              <>
-                <span>{currentSource?.name}</span>
-                <ContextualMenu
-                  className="p-table-menu"
-                  hasToggleIcon
-                  links={[
-                    "Change source:",
-                    ...switchableSources.map(
-                      (source): MenuLink => ({
-                        disabled: source.id === original.boot_source_id,
-                        children: source.name,
-                        onClick: () => {
-                          deleteSelections
-                            .mutateAsync({
-                              query: { id: [Number.parseInt(original.id)] },
-                            })
-                            .then(() => {
-                              addSelections.mutate({
-                                body: [
-                                  {
-                                    os: original.os,
-                                    release: original.release,
-                                    arch: original.architecture,
-                                    boot_source_id: source.id,
-                                  },
-                                ],
-                              });
+              <ContextualMenu
+                className="p-table-menu"
+                hasToggleIcon
+                links={[
+                  "Change source:",
+                  ...switchableSources.map(
+                    (source): MenuLink => ({
+                      disabled: source.id === currentSource?.id,
+                      children: source.name,
+                      onClick: () => {
+                        deleteSelections
+                          .mutateAsync({
+                            query: { id: [Number.parseInt(id)] },
+                          })
+                          .then(() => {
+                            addSelections.mutate({
+                              body: [
+                                {
+                                  os: os,
+                                  release: release,
+                                  arch: architecture,
+                                  boot_source_id: source.id,
+                                },
+                              ],
                             });
-                        },
-                      })
-                    ),
-                  ]}
-                  position="right"
-                  toggleAppearance="base"
-                  toggleClassName="u-no-margin--bottom p-table-menu__toggle"
-                />
-              </>
+                          });
+                      },
+                    })
+                  ),
+                ]}
+                position="right"
+                toggleAppearance="base"
+                toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+                toggleDisabled={
+                  status === "Downloading" ||
+                  status === "OptimisticDownloading" ||
+                  status === "OptimisticStopping" ||
+                  update_status === "Downloading" ||
+                  update_status === "OptimisticDownloading" ||
+                  update_status === "OptimisticStopping"
+                }
+                toggleLabel={currentSource?.name}
+              />
             );
           },
         },
