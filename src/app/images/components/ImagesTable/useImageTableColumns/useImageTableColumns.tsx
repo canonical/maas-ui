@@ -1,7 +1,9 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
+import type { MenuLink } from "@canonical/react-components";
 import {
   Button,
+  ContextualMenu,
   Icon,
   Spinner,
   Tooltip,
@@ -16,7 +18,14 @@ import type {
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
+import { useImageSources } from "@/app/api/query/imageSources";
 import { useStartImageSync, useStopImageSync } from "@/app/api/query/imageSync";
+import {
+  useAddSelections,
+  useAvailableSelections,
+  useDeleteSelections,
+} from "@/app/api/query/images";
+import type { BootSourceResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
@@ -69,6 +78,30 @@ const useImageTableColumns = ({
   const { failure } = useToastNotification();
   const startSync = useStartImageSync();
   const stopSync = useStopImageSync();
+
+  const { data: sources, isPending: isSourcesPending } = useImageSources();
+  const { data: availableImages, isPending: isAvailableImagesPending } =
+    useAvailableSelections();
+  const addSelections = useAddSelections();
+  const deleteSelections = useDeleteSelections();
+
+  // Pre-compute a map of os/release/arch -> deduplicated BootSourceResponse[]
+  const sourcesByImageKey = useMemo(() => {
+    const map: Record<string, BootSourceResponse[]> = {};
+    if (!sources?.items || !availableImages?.items) return map;
+
+    for (const image of availableImages.items) {
+      const key = `${image.os}/${image.release}/${image.architecture}`;
+      const source = sources.items.find((s) => s.id === image.source_id);
+      if (!source) continue;
+      if (!map[key]) {
+        map[key] = [source];
+      } else if (!map[key].some((s) => s.id === source.id)) {
+        map[key].push(source);
+      }
+    }
+    return map;
+  }, [sources, availableImages]);
 
   return useMemo(
     () =>
@@ -298,6 +331,67 @@ const useImageTableColumns = ({
           },
         },
         {
+          id: "source",
+          accessorKey: "source",
+          enableSorting: false,
+          header: () => "Source",
+          cell: ({ row: { original } }) => {
+            if (!original.isUpstream) {
+              return null;
+            }
+
+            if (isSourcesPending || isAvailableImagesPending) {
+              return <Spinner text="Loading..." />;
+            }
+
+            const key = `${original.os}/${original.release}/${original.architecture}`;
+            const switchableSources = sourcesByImageKey[key] ?? [];
+            const currentSource = switchableSources.find(
+              (source) => source.id === original.boot_source_id
+            );
+
+            return (
+              <>
+                <span>{currentSource?.name}</span>
+                <ContextualMenu
+                  className="p-table-menu"
+                  hasToggleIcon
+                  links={[
+                    "Change source:",
+                    ...switchableSources.map(
+                      (source): MenuLink => ({
+                        disabled: source.id === original.boot_source_id,
+                        children: source.name,
+                        onClick: () => {
+                          deleteSelections
+                            .mutateAsync({
+                              query: { id: [Number.parseInt(original.id)] },
+                            })
+                            .then(() => {
+                              addSelections.mutate({
+                                body: [
+                                  {
+                                    os: original.os,
+                                    release: original.release,
+                                    arch: original.architecture,
+                                    boot_source_id: source.id,
+                                  },
+                                ],
+                              });
+                            });
+                        },
+                      })
+                    ),
+                  ]}
+                  position="right"
+                  toggleAppearance="base"
+                  toggleClassName="u-no-margin--bottom p-table-menu__toggle"
+                />
+              </>
+            );
+          },
+        },
+        {
           id: "actions",
           accessorKey: "id",
           enableSorting: false,
@@ -457,6 +551,11 @@ const useImageTableColumns = ({
     [
       isStatisticsLoading,
       isStatusLoading,
+      isSourcesPending,
+      isAvailableImagesPending,
+      sourcesByImageKey,
+      deleteSelections,
+      addSelections,
       commissioningRelease,
       startSync,
       stopSync,
