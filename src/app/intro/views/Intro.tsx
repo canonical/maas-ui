@@ -18,10 +18,10 @@ import SectionHeader from "@/app/base/components/SectionHeader";
 import { useCompletedIntro, useCompletedUserIntro } from "@/app/base/hooks";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import configSelectors from "@/app/store/config/selectors";
 import { getRelativeRoute } from "@/app/utils";
 import { hasPermissions } from "@/app/utils/permissions";
-import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 
 const Intro = (): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
