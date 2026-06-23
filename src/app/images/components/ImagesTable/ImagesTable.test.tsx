@@ -5,8 +5,14 @@ import ImagesTable from "./ImagesTable";
 
 import DeleteImages from "@/app/images/components/DeleteImages";
 import { ConfigNames } from "@/app/store/config/types";
-import { imageFactory, imageStatusFactory } from "@/testing/factories";
+import {
+  availableImageFactory,
+  imageFactory,
+  imageSourceFactory,
+  imageStatusFactory,
+} from "@/testing/factories";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import { imageSyncResolvers } from "@/testing/resolvers/imageSync";
 import { imageResolvers } from "@/testing/resolvers/images";
 import {
@@ -27,6 +33,8 @@ const mockServer = setupMockServer(
   imageResolvers.listCustomImages.handler(),
   imageResolvers.listCustomImageStatistics.handler(),
   imageResolvers.listCustomImageStatuses.handler(),
+  imageResolvers.listAvailableSelections.handler(),
+  imageSourceResolvers.listImageSources.handler(),
   imageSyncResolvers.startSynchronization.handler(),
   imageSyncResolvers.stopSynchronization.handler(),
   configurationsResolvers.getConfiguration.handler({
@@ -81,6 +89,7 @@ describe("ImagesTable", () => {
         "Size",
         "Version",
         "Status",
+        "Source",
         "Actions",
       ].forEach((column) => {
         expect(
@@ -111,6 +120,31 @@ describe("ImagesTable", () => {
   });
 
   describe("permissions", () => {
+    it("disables image source change for images being downloaded", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [
+            imageFactory.build({ id: 1, release: "jammy", title: "22.04 LTS" }),
+          ],
+          total: 1,
+        }),
+        imageResolvers.listSelectionStatuses.handler({
+          items: [imageStatusFactory.build({ id: 1, status: "Downloading" })],
+          total: 1,
+        })
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+      await waitForLoading();
+
+      const row = screen.getByRole("row", { name: /jammy/i });
+      const sourceToggle = within(row).getByRole("button", {
+        name: /MAAS Stable/i,
+      });
+      expect(sourceToggle).toBeAriaDisabled();
+    });
+
     it("disables delete and select for default commissioning release images", async () => {
       renderWithProviders(
         <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
@@ -226,6 +260,68 @@ describe("ImagesTable", () => {
   });
 
   describe("actions", () => {
+    it("calls image delete, and then adds the new selection on source change", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [
+            imageFactory.build({
+              id: 1,
+              release: "jammy",
+              title: "22.04 LTS",
+              architecture: "amd64",
+              boot_source_id: 1,
+            }),
+          ],
+          total: 1,
+        }),
+        imageResolvers.listAvailableSelections.handler({
+          items: [
+            availableImageFactory.build({
+              os: "ubuntu",
+              release: "jammy",
+              architecture: "amd64",
+              source_id: 1,
+            }),
+            availableImageFactory.build({
+              os: "ubuntu",
+              release: "jammy",
+              architecture: "amd64",
+              source_id: 2,
+            }),
+          ],
+        }),
+        imageSourceResolvers.listImageSources.handler({
+          items: [
+            imageSourceFactory.build({ id: 1, name: "MAAS Stable" }),
+            imageSourceFactory.build({ id: 2, name: "MAAS Daily" }),
+          ],
+          total: 2,
+        }),
+        imageResolvers.deleteSelections.handler(),
+        imageResolvers.addSelections.handler()
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+      await waitForLoading();
+
+      const row = screen.getByRole("row", { name: /jammy/i });
+      await userEvent.click(
+        within(row).getByRole("button", { name: /MAAS Stable/i })
+      );
+
+      await userEvent.click(
+        screen.getByRole("menuitem", { name: "MAAS Daily" })
+      );
+
+      await waitFor(() => {
+        expect(imageResolvers.deleteSelections.resolved).toBeTruthy();
+      });
+      await waitFor(() => {
+        expect(imageResolvers.addSelections.resolved).toBeTruthy();
+      });
+    });
+
     it("opens delete image side panel form", async () => {
       mockServer.use(
         imageResolvers.listSelections.handler({
