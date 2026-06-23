@@ -1,7 +1,10 @@
 import { describe, it, expect } from "vitest";
 
 import Synchronization from "@/app/settings/views/Images/Synchronization/Synchronization";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
+import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   renderWithProviders,
@@ -21,7 +24,8 @@ const mockServer = setupMockServer(
     name: ConfigNames.BOOT_IMAGES_IMPORT_INTERVAL_MINUTES,
     value: 60,
   }),
-  configurationsResolvers.setConfiguration.handler()
+  configurationsResolvers.setConfiguration.handler(),
+  authResolvers.getCurrentUser.handler()
 );
 
 describe("Synchronization", () => {
@@ -113,5 +117,30 @@ describe("Synchronization", () => {
     await waitFor(() => {
       expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
     });
+  });
+
+  it("disables the form fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
+            }),
+          ],
+        })
+      )
+    );
+    renderWithProviders(<Synchronization />);
+    await waitForLoading();
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("checkbox", { name: /Automatically sync images/i })
+      ).toBeDisabled();
+    });
+    expect(
+      screen.getByRole("spinbutton", { name: /Sync interval/i })
+    ).toBeDisabled();
   });
 });

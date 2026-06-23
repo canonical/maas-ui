@@ -31,8 +31,10 @@ export const filterHeaders = (header: Header<ImageSource, unknown>): boolean =>
 
 const useSourcesTableColumns = ({
   canChangeSource,
+  canEdit,
 }: {
   canChangeSource: boolean;
+  canEdit: boolean;
 }): SourcesColumnDef[] => {
   const { openSidePanel } = useSidePanel();
 
@@ -192,13 +194,13 @@ const useSourcesTableColumns = ({
                 ]}
                 toggleAppearance="base"
                 toggleClassName="row-menu-toggle u-no-margin--bottom"
-                toggleDisabled={!canChangeSource}
+                toggleDisabled={!canChangeSource || !canEdit}
               />
             );
           },
         },
       ] as SourcesColumnDef[],
-    [canChangeSource, openSidePanel]
+    [canChangeSource, canEdit, openSidePanel]
   );
 };
 

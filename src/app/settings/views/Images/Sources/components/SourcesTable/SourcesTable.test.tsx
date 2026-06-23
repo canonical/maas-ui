@@ -41,7 +41,7 @@ describe("SourcesTable", () => {
   describe("display", () => {
     it("displays a loading component if sources are loading", async () => {
       mockIsPending();
-      renderWithProviders(<SourcesTable />);
+      renderWithProviders(<SourcesTable canEdit />);
 
       await waitFor(() => {
         expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe("SourcesTable", () => {
       mockServer.use(
         imageSourceResolvers.listImageSources.handler({ items: [], total: 0 })
       );
-      renderWithProviders(<SourcesTable />);
+      renderWithProviders(<SourcesTable canEdit />);
 
       await waitFor(() => {
         expect(screen.getByText("No sources found.")).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe("SourcesTable", () => {
     });
 
     it("displays the columns correctly", () => {
-      renderWithProviders(<SourcesTable />);
+      renderWithProviders(<SourcesTable canEdit />);
 
       [
         "Name",
@@ -92,7 +92,7 @@ describe("SourcesTable", () => {
         })
       );
 
-      renderWithProviders(<SourcesTable />);
+      renderWithProviders(<SourcesTable canEdit />);
       await waitForLoading();
 
       const rowActions = screen.getAllByRole("button", {
@@ -147,6 +147,22 @@ describe("SourcesTable", () => {
         screen.getByRole("menuitem", { name: "Delete source..." })
       ).toBeInTheDocument();
     });
+
+    it("disables the row actions menu when the user cannot edit", async () => {
+      mockServer.use(
+        imageSourceResolvers.listImageSources.handler({
+          items: [factory.imageSourceFactory.build({ id: 1, enabled: true })],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<SourcesTable canEdit={false} />);
+      await waitForLoading();
+
+      expect(
+        screen.getByRole("button", { name: "Toggle menu" })
+      ).toBeAriaDisabled();
+    });
   });
 
   describe("actions", () => {
@@ -158,7 +174,7 @@ describe("SourcesTable", () => {
         })
       );
 
-      renderWithProviders(<SourcesTable />);
+      renderWithProviders(<SourcesTable canEdit />);
 
       await waitFor(() => {
         expect(
@@ -198,7 +214,7 @@ describe("SourcesTable", () => {
         })
       );
 
-      renderWithProviders(<SourcesTable />);
+      renderWithProviders(<SourcesTable canEdit />);
 
       await waitFor(() => {
         expect(

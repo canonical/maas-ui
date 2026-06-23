@@ -2,6 +2,9 @@ import type { ReactElement } from "react";
 
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useBulkSetConfigurations,
   useConfigurations,
@@ -12,6 +15,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
+import { hasPermissions } from "@/app/utils/permissions";
 
 const VMWareSchema = Yup.object().shape({
   vcenter_server: Yup.string(),
@@ -46,6 +50,10 @@ const VMWareForm = (): ReactElement => {
     vcenter_datacenter,
   } = getConfigsFromResponse(data?.items || [], names);
   const updateConfig = useBulkSetConfigurations();
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
   return (
     <FormikForm
       aria-label={Labels.FormLabel}
@@ -95,24 +103,28 @@ const VMWareForm = (): ReactElement => {
       validationSchema={VMWareSchema}
     >
       <FormikField
+        disabled={!canEdit}
         help="VMware vCenter server FQDN or IP address which is passed to a deployed VMware ESXi host."
         label={Labels.ServerLabel}
         name="vcenter_server"
         type="text"
       />
       <FormikField
+        disabled={!canEdit}
         help="VMware vCenter server username which is passed to a deployed VMware ESXi host."
         label={Labels.UsernameLabel}
         name="vcenter_username"
         type="text"
       />
       <FormikField
+        disabled={!canEdit}
         help="VMware vCenter server password which is passed to a deployed VMware ESXi host."
         label={Labels.PasswordLabel}
         name="vcenter_password"
         type="password"
       />
       <FormikField
+        disabled={!canEdit}
         help="VMware vCenter datacenter which is passed to a deployed VMware ESXi host."
         label={Labels.DatacenterLabel}
         name="vcenter_datacenter"
